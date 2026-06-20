@@ -131,17 +131,41 @@ $s_n=n\cdot(\pi/3)$.
 For every $n\in\N$, $\;s_{n+1}-s_n=\pi/3$.
 \end{theorem}
 
-\begin{theorem}[Emergent radius; \code{HelixLogFree.norm\_helixPt}]\label{thm:arealaw}
-Let $\mathrm{helixPt}(n)=\sqrt n\cdot(\mathrm{wind}\,n)$ (Definition~\ref{def:wind}). The distance of
-the $n$-th site from the axis is
+\begin{theorem}[Area-law bound; \code{arclengthClosed\_lower\_bound}, \code{arclengthClosed\_upper\_bound}]\label{thm:areabound}
+For $r>0$ and $k\ge 0$,
 \[
-  \|\mathrm{helixPt}(n)\| \;=\; \sqrt n,
+  \pi r\,k^2 \;\le\; S(k;p,r) \;\le\; \pi r\,k^2 + 2k\sqrt{p^2+r^2}.
 \]
-so the enclosed area $\pi\,\|\mathrm{helixPt}(n)\|^2=\pi n$ is linear in $n$. The winding contributes
-unit modulus (Theorem~\ref{thm:windmul}); the factor $\sqrt n$ is read off the placement, not posited.
-The uniform spacing $\Delta=\pi/3$ enters separately, through the index $N(y)=S(k(y);p,r)/\Delta$ of
-Definition~\ref{def:placement} ($\mathrm{helixPt}$ is the unit-gauge carrier point).
 \end{theorem}
+
+\begin{definition}[Wound integer placement; \code{Geometry.windParameter}, \code{windIntegerSite}, \code{exists\_unique\_windParameter}]\label{def:wound}
+Integer $n$ sits at arclength $s_n=n\Delta$ on the unwound line (Definition~\ref{def:placement}).
+\emph{Winding the line onto the helix} places it at the unique parameter $k_n\ge 0$ with
+$S(k_n;p,r)=n\Delta$ (\code{exists\_unique\_windParameter}; the map $s\mapsto k_n$ is
+\code{windParameter}). The wound site is $\mathrm{windIntegerSite}(n)=\gamma(k_n)$, with cylindrical
+radius $r_n=r\,k_n$ (\code{windIntegerSite\_cyl\_radius}).
+\end{definition}
+
+\begin{theorem}[Emergent radius / area law; \code{emergent\_radius\_sq\_tendsto}, \code{windIntegerSite\_radius\_sq\_tendsto}]\label{thm:arealaw}
+For the wound placement $S(k_n;p,r)=n\Delta$ of Definition~\ref{def:wound},
+\[
+  \frac{r_n^{\,2}}{n}\;=\;\frac{(r\,k_n)^2}{n}\;\xrightarrow[\;n\to\infty\;]{}\;\frac{r\Delta}{\pi},
+  \qquad\text{equivalently}\qquad r_n\;\sim\;\sqrt{\tfrac{r\Delta}{\pi}}\;\sqrt n,
+\]
+so the enclosed area $\pi r_n^{\,2}\sim r\Delta\,n$ is linear in $n$. The factor $\sqrt n$ is thus
+\emph{derived from the arclength geometry}: the bound of Theorem~\ref{thm:areabound} forces
+$S(k)\propto k^2$, hence $k_n\propto\sqrt n$ and $r_n=r\,k_n\propto\sqrt n$ --- it is not posited.
+\end{theorem}
+
+\begin{remark}[Unit gauge; \code{windIntegerSite\_radius\_sq\_tendsto\_unit\_gauge}]\label{rem:gauge}
+The area-law constant is $r\Delta/\pi$; with the native spacing $\Delta=\pi/3$ it equals $r/3$, so
+$r_n\sim\sqrt n$ \emph{exactly} in the gauge $r\Delta=\pi$, i.e.\ $r=3$
+(\code{windIntegerSite\_radius\_sq\_tendsto\_unit\_gauge}); the companion implementation's plot uses
+$r=1$, giving the constant $1/\sqrt3$. In this unit gauge the carrier point
+$\mathrm{helixPt}(n)=\sqrt n\cdot\mathrm{wind}(n)$ (Definition~\ref{def:wind}) has modulus
+$\|\mathrm{helixPt}(n)\|=\sqrt n$ (\code{HelixLogFree.norm\_helixPt}), matching the emergent radius
+$r_n$; the winding contributes unit modulus (Theorem~\ref{thm:windmul}).
+\end{remark}
 
 \subsection{The mod-$6$ bucket structure}
 
@@ -506,7 +530,7 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \cite{Mathlib2020}, in the package
 \code{RequestProject} (files \code{ClosedForm.lean}, \code{HelixLogFreeFTA.lean},
 \code{HelixCollapseReality.lean}, \code{LFunctionPhasor.lean}, \code{GeometricProjectionHolds.lean},
-\code{Faithfulness.lean}). Each named
+\code{Faithfulness.lean}, \code{AreaLaw.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -519,7 +543,8 @@ The capstone identities --- the strip extension (Theorems~\ref{thm:dstrip},~\ref
 the conjugacy of the two chiralities (Theorem~\ref{thm:conjhelix}), and the determinant identity
 (Theorem~\ref{thm:det}) --- are collected in \code{Faithfulness.lean}; the geometry
 (Section~\ref{sec:carrier}) and the log-free winding (Section~\ref{sec:winding}) live in
-\code{ClosedForm.lean} and \code{HelixLogFreeFTA.lean}.
+\code{ClosedForm.lean} and \code{HelixLogFreeFTA.lean}, with the emergent area-law radius
+(Theorem~\ref{thm:arealaw}, Definition~\ref{def:wound}) in \code{AreaLaw.lean}.
 
 \begin{remark}[Scope]\label{rem:scope}
 This paper presents a geometric tool: the double-ended chiral helix carrier and its phasor fiber, on

@@ -65,6 +65,45 @@ def spin_angle(n):
     return n * DELTA
 
 
+# ---- arclength-uniform placement: wind the pi/3 line onto the helix (AreaLaw.lean) ----
+
+def arclength_bounds(p, r, k):
+    """AreaLaw.arclengthClosed_lower_bound / _upper_bound:
+    pi r k^2 <= S(k;p,r) <= pi r k^2 + 2k sqrt(p^2+r^2)  (r>0, k>=0)."""
+    lo = PI * r * k * k
+    hi = PI * r * k * k + 2 * k * math.sqrt(p * p + r * r)
+    return lo, hi
+
+def wind_parameter(p, r, s):
+    """Geometry.windParameter (AreaLaw.exists_unique_windParameter): the unique k>=0 with
+    arclength(p,r,k)=s.  S is strictly increasing (positive speed), so invert by bisection.
+    This is "winding the unwound line onto the helix": the point at arclength s lands at parameter k."""
+    if s <= 0:
+        return 0.0
+    hi = 1.0
+    while arclength(p, r, hi) < s:
+        hi *= 2.0
+    lo = 0.0
+    for _ in range(200):
+        mid = 0.5 * (lo + hi)
+        if arclength(p, r, mid) < s:
+            lo = mid
+        else:
+            hi = mid
+    return 0.5 * (lo + hi)
+
+def wind_integer_site(p, r, n):
+    """Geometry.windIntegerSite: integer n, at arclength s_n = n*Delta = spinAngle(n) on the unwound
+    line, wound onto the helix.  The CORRECT (arclength-uniform) placement — note numberSite's k=n
+    would give cylindrical radius ~ r*n (linear), NOT the area-law sqrt(n)."""
+    return helix(p, r, wind_parameter(p, r, spin_angle(n)))
+
+def wound_radius(p, r, n):
+    """Cylindrical radius r*k_n of the wound integer site (windIntegerSite_cyl_radius)."""
+    x, y, _ = wind_integer_site(p, r, n)
+    return math.hypot(x, y)
+
+
 # ============================================================================
 # Section 3 — the log-free FTA winding and the bridge      (HelixLogFreeFTA.lean)
 # ============================================================================
@@ -90,7 +129,10 @@ def wind(n, theta):
     return cmath.exp(1j * wind_angle(n, theta))
 
 def helix_pt(n, theta):
-    """HelixLogFree.helixPt / norm_helixPt (Def 3.1, Thm 2.6): sqrt(n) wind(n); ||.|| = sqrt(n)."""
+    """HelixLogFree.helixPt (Def 3.1): sqrt(n) wind(n); ||.|| = sqrt(n) (norm_helixPt).
+    The sqrt(n) is the EMERGENT area-law radius (AreaLaw.windIntegerSite_radius_sq_tendsto): it equals
+    the radius r_n = r*k_n of the arclength-wound integer (wound_radius) asymptotically — exactly in
+    the unit gauge r*Delta = pi (r=3 at Delta=pi/3).  Here it is that unit-gauge carrier point."""
     return math.sqrt(n) * wind(n, theta)
 
 def bridge_theta(gamma):
@@ -252,7 +294,12 @@ def _demo():
     for n in range(7):
         print(f"   n={n}:  s_n mod 2pi = {spin_angle(n) % (2 * PI):8.4f}")
     print(f"   carrier_spacing: s_(n+1)-s_n = {spin_angle(5) - spin_angle(4):.6f}  (= pi/3 = {DELTA:.6f})")
-    print(f"   norm_helixPt(9) = {abs(helix_pt(9, bridge_theta(1.0))):.4f}  (= sqrt 9 = 3, emergent)")
+    print("   emergent radius: wind the pi/3 line onto the helix; radius^2/n -> r*Delta/pi (sqrt n emerges)")
+    for rr in (3.0, 1.0):
+        ratios = [wound_radius(1.0, rr, n) ** 2 / n for n in (200, 2000, 20000)]
+        seq = ", ".join(f"{x:.4f}" for x in ratios)
+        print(f"     r={rr:.0f}: radius^2/n at n=200,2k,20k = {seq}  ->  r*Delta/pi = {rr * DELTA / PI:.4f}"
+              + ("   (unit gauge r*Delta=pi: radius ~ sqrt n)" if abs(rr * DELTA / PI - 1) < 1e-9 else ""))
 
     print("\n[Sec 3] HelixLogFree winding is a multiplicative character (wind_mul):")
     th = bridge_theta(1.0)
