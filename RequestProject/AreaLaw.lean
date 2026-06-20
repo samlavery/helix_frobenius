@@ -294,4 +294,96 @@ theorem windIntegerSite_radius_sq_tendsto_unit_gauge :
   have he : (3 : ℝ) * (Real.pi / 3) / Real.pi = 1 := by field_simp
   rwa [he] at h
 
+/-! ## 4. The critical exponent `σ = ½` is *forced* by the area law (not posited)
+
+The fiber rides the carrier with amplitude `n^{-σ}`; the carrier radius is the *derived*
+`carrierRadius ~ √n`. The scale-balance product `n^{-σ}·carrierRadius` settles at a positive limit
+**iff `σ = ½`** — so the critical line is the unique exponent where the fiber amplitude reciprocates
+the area-law radius. The `½` of `Re s = ½` is the `½` of `radius = n^{1/2}`. -/
+
+/-- **The area-law carrier radius** at integer site `n`: the genuine, arclength-derived cylindrical
+distance from the helix axis (`windIntegerSite_cyl_radius`), whose `√n` scaling is *proven*
+(`windIntegerSite_radius_sq_tendsto`), never posited. -/
+noncomputable def carrierRadius (p r : ℝ) (n : ℕ) : ℝ :=
+  Real.sqrt ((windIntegerSite p r n).1 ^ 2 + (windIntegerSite p r n).2.1 ^ 2)
+
+theorem carrierRadius_nonneg (p r : ℝ) (n : ℕ) : 0 ≤ carrierRadius p r n := Real.sqrt_nonneg _
+
+/-- `carrierRadius² / n → r·Δ/π` (restatement of `windIntegerSite_radius_sq_tendsto`). -/
+theorem carrierRadius_sq_div_tendsto (p r : ℝ) (hr : 0 < r) :
+    Tendsto (fun n : ℕ => (carrierRadius p r n) ^ 2 / (n : ℝ)) atTop
+      (𝓝 (r * (Real.pi / 3) / Real.pi)) := by
+  unfold carrierRadius
+  exact windIntegerSite_radius_sq_tendsto p r hr
+
+/-- **The radius is `√(rΔ/π)·√n`**: `carrierRadius / √n → √(rΔ/π)`. Taking `√` of the area law. -/
+theorem carrierRadius_div_sqrt_tendsto (p r : ℝ) (hr : 0 < r) :
+    Tendsto (fun n : ℕ => carrierRadius p r n / Real.sqrt n) atTop
+      (𝓝 (Real.sqrt (r * (Real.pi / 3) / Real.pi))) := by
+  have h : Tendsto (fun n : ℕ => Real.sqrt ((carrierRadius p r n) ^ 2 / (n : ℝ))) atTop
+      (𝓝 (Real.sqrt (r * (Real.pi / 3) / Real.pi))) :=
+    (Real.continuous_sqrt.tendsto _).comp (carrierRadius_sq_div_tendsto p r hr)
+  refine h.congr (fun n => ?_)
+  rw [Real.sqrt_div (sq_nonneg _), Real.sqrt_sq (carrierRadius_nonneg p r n)]
+
+/-- **`σ = ½` is the unique scale-critical exponent — derived from the area law.** Riding the carrier,
+the fiber amplitude is `n^{-σ}`; the carrier radius is the proven `carrierRadius ~ √n`. Their
+scale-balance product `n^{-σ}·carrierRadius` tends to a **positive** limit **iff `σ = ½`**:
+
+* `σ > ½` — the fiber decays faster than the carrier grows; the product `→ 0`;
+* `σ < ½` — the fiber outruns the carrier; the product diverges (`→ ∞`);
+* `σ = ½` — the amplitude reciprocates the radius; the product settles at `√(rΔ/π) > 0`.
+
+The critical line `Re s = ½` is thus the unique exponent at which the phasor amplitude and the
+area-law radius hold the same scale — and the `½` is **gauge-independent** (the gauge `rΔ` fixes only
+the *value* of the limit, never *which* `σ` is critical). This is the `½` of `√n = n^{1/2}`: not
+inserted, but the conclusion of the geometry. -/
+theorem sigma_half_is_scale_critical (p r : ℝ) (hr : 0 < r) (σ : ℝ) :
+    (∃ L : ℝ, 0 < L ∧
+      Tendsto (fun n : ℕ => (n : ℝ) ^ (-σ) * carrierRadius p r n) atTop (𝓝 L))
+      ↔ σ = 1 / 2 := by
+  have hcpos : (0 : ℝ) < r * (Real.pi / 3) / Real.pi :=
+    div_pos (mul_pos hr (by positivity)) Real.pi_pos
+  set c : ℝ := Real.sqrt (r * (Real.pi / 3) / Real.pi) with hcd
+  have hc : 0 < c := Real.sqrt_pos.mpr hcpos
+  have hbal : Tendsto (fun n : ℕ => carrierRadius p r n / Real.sqrt n) atTop (𝓝 c) :=
+    carrierRadius_div_sqrt_tendsto p r hr
+  -- pointwise factorization of the balance product, for n ≥ 1
+  have key : ∀ n : ℕ, 1 ≤ n →
+      (n : ℝ) ^ (-σ) * carrierRadius p r n
+        = (carrierRadius p r n / Real.sqrt n) * (n : ℝ) ^ (1 / 2 - σ) := by
+    intro n hn
+    have hn0 : (0 : ℝ) < n := by exact_mod_cast hn
+    have e1 : (n : ℝ) ^ (-σ) = (n : ℝ) ^ (1 / 2 - σ) / (n : ℝ) ^ ((1 : ℝ) / 2) := by
+      rw [← Real.rpow_sub hn0]; congr 1; ring
+    rw [e1, Real.sqrt_eq_rpow]; ring
+  have hFeq : (fun n : ℕ => (n : ℝ) ^ (-σ) * carrierRadius p r n)
+      =ᶠ[atTop] (fun n : ℕ => (carrierRadius p r n / Real.sqrt n) * (n : ℝ) ^ (1 / 2 - σ)) := by
+    filter_upwards [eventually_ge_atTop 1] with n hn using key n hn
+  constructor
+  · rintro ⟨L, hLpos, hL⟩
+    by_contra hσ
+    rcases lt_or_gt_of_ne hσ with hlt | hgt
+    · -- σ < ½: the product diverges, contradicting the finite limit L
+      have he : 0 < (1 : ℝ) / 2 - σ := by linarith
+      have hpow : Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / 2 - σ)) atTop atTop :=
+        (tendsto_rpow_atTop he).comp tendsto_natCast_atTop_atTop
+      have hprod : Tendsto (fun n : ℕ => (carrierRadius p r n / Real.sqrt n) * (n : ℝ) ^ (1 / 2 - σ))
+          atTop atTop := hbal.pos_mul_atTop hc hpow
+      exact not_tendsto_nhds_of_tendsto_atTop (hprod.congr' hFeq.symm) L hL
+    · -- σ > ½: the product → 0, so L = 0, contradicting 0 < L
+      have he : 0 < σ - (1 : ℝ) / 2 := by linarith
+      have hpow : Tendsto (fun n : ℕ => (n : ℝ) ^ (1 / 2 - σ)) atTop (𝓝 0) := by
+        have h := (tendsto_rpow_neg_atTop he).comp tendsto_natCast_atTop_atTop
+        simpa only [Function.comp_def, neg_sub] using h
+      have hprod : Tendsto (fun n : ℕ => (carrierRadius p r n / Real.sqrt n) * (n : ℝ) ^ (1 / 2 - σ))
+          atTop (𝓝 (c * 0)) := hbal.mul hpow
+      rw [mul_zero] at hprod
+      have : L = 0 := tendsto_nhds_unique hL (hprod.congr' hFeq.symm)
+      linarith
+  · rintro rfl
+    refine ⟨c, hc, hbal.congr' ?_⟩
+    filter_upwards [eventually_ge_atTop 1] with n hn
+    rw [key n hn, show (1 : ℝ) / 2 - 1 / 2 = (0 : ℝ) by norm_num, Real.rpow_zero, mul_one]
+
 end CriticalLinePhasor.Geometry

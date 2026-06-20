@@ -1,4 +1,5 @@
 import RequestProject.ClosedForm
+import RequestProject.AreaLaw
 import RequestProject.HelixLogFreeFTA
 import RequestProject.HelixCollapseReality
 import RequestProject.LFunctionPhasor
@@ -90,9 +91,12 @@ theorem carrier_spacing (n : ℕ) :
 
 /-! ## The fiber rides the carrier and accumulates (in 3-D) to `L` -/
 
-/-- **The fiber phasor at carrier site `n`.** Magnitude `n^{-1/2}` (the reciprocal of the emergent
-carrier radius `√n`, the `σ = ½` balance) times the bridge winding `wind(-t·log) n = n^{-it}` equals
-the Dirichlet phasor `n^{-(½+it)}`. The fiber riding the 3-D carrier. -/
+/-- **The fiber phasor at carrier site `n`.** Magnitude `n^{-1/2}` — the reciprocal of the emergent
+carrier radius `√n` — times the bridge winding `wind(-t·log) n = n^{-it}` equals the Dirichlet phasor
+`n^{-(½+it)}`. The fiber riding the 3-D carrier. The exponent `½` here is **not** a chosen constant:
+it is the unique scale-critical exponent forced by the area-law radius
+(`Geometry.sigma_half_is_scale_critical`, re-exported as `critical_exponent_is_scale_critical`) — the
+`½` at which the amplitude `n^{-σ}` balances the carrier radius `√n`. -/
 theorem fiber_rides_carrier (t : ℝ) {n : ℕ} (hn : 0 < n) :
     (((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ)
         * (HelixLogFree.wind (fun p => -t * Real.log p) n : ℂ)
@@ -102,6 +106,36 @@ theorem fiber_rides_carrier (t : ℝ) {n : ℕ} (hn : 0 < n) :
   congr 2
   push_cast
   ring
+
+/-- **`σ = ½` is the carrier's scale-critical exponent — derived, not chosen** (re-export of
+`Geometry.sigma_half_is_scale_critical` at the unit-gauge carrier `r = 3` the ζ/`L` fiber rides). The
+fiber amplitude `n^{-σ}` balances the area-law carrier radius (`carrierRadius ~ √n`) — the product
+`n^{-σ}·carrierRadius` tends to a positive limit — **iff `σ = ½`**. So the critical line
+`Re s = ½` of `fiber_rides_carrier` is the unique scale-balance exponent forced by the geometry, not
+an inserted constant. -/
+theorem critical_exponent_is_scale_critical (σ : ℝ) :
+    (∃ L : ℝ, 0 < L ∧ Filter.Tendsto
+      (fun n : ℕ => (n : ℝ) ^ (-σ) * Geometry.carrierRadius 1 3 n) Filter.atTop (nhds L))
+      ↔ σ = 1 / 2 :=
+  Geometry.sigma_half_is_scale_critical 1 3 (by norm_num) σ
+
+/-- **The posited `√n` is the area-law radius — wiring, not assertion.** The helix point's distance
+from the axis is `‖helixPt n‖ = √n` (`HelixLogFree.norm_helixPt`), written with a literal `√n`. Here
+that literal is *identified* with the genuine, arclength-derived carrier radius
+(`Geometry.carrierRadius`, whose `√n` scaling is **proven** in `windIntegerSite_radius_sq_tendsto`):
+in the unit gauge `r = 3` (`rΔ = π`) the ratio of the two radii tends to `1`. The `√n` the fiber
+rides is the emergent radius, not a free posit. -/
+theorem helixPt_radius_matches_areaLaw (θ : ℕ → ℝ) :
+    Filter.Tendsto (fun n : ℕ => ‖HelixLogFree.helixPt θ n‖ / Geometry.carrierRadius 1 3 n)
+      Filter.atTop (nhds 1) := by
+  have hbal : Filter.Tendsto (fun n : ℕ => Geometry.carrierRadius 1 3 n / Real.sqrt n)
+      Filter.atTop (nhds 1) := by
+    have h := Geometry.carrierRadius_div_sqrt_tendsto 1 3 (by norm_num)
+    rwa [show (3 : ℝ) * (Real.pi / 3) / Real.pi = 1 by field_simp, Real.sqrt_one] at h
+  have hinv := hbal.inv₀ (by norm_num)
+  rw [inv_one] at hinv
+  refine hinv.congr (fun n => ?_)
+  rw [HelixLogFree.norm_helixPt, inv_div]
 
 /-- **The fiber IS the L-function, accumulated in 3-D.** The partial sums of the carrier-riding
 phasors `∑_{n<N} χ(n)·n^{-s}` converge to `L(s,χ)` for `Re s > 1`: induct the accumulation and out
