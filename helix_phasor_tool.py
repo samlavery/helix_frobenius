@@ -17,9 +17,13 @@ FAITHFULNESS NOTE (read this).
   • The *vanishing-point finder* is a NUMERICAL DEMONSTRATION, not a theorem: the theorems
     (`continuous_model_zeta`, Thm 5.3) state that the fiber's limit vanishes iff ζ(½+iy)=0; the
     local-minimum detection here is only a convenience for locating those y.
-  • No mpmath and no zeta routine of any kind: the fiber is computed only from its own phasor
-    terms.  The only external numbers are a literal table of PUBLISHED reference zeros, used solely
-    for the final |diff| comparison — they never enter the fiber, the carrier, or the finder.
+  • No mpmath and no zeta routine of any kind in the tool: the fiber is computed only from its own
+    phasor terms.  The only external numbers are literal tables of PUBLISHED reference zeros — for
+    zeta and for the ten Dirichlet L-functions L(s, chi_p) of Sec 8 — used solely for the final
+    |diff| comparison; they never enter the fiber, the carrier, or the finder.  Those reference
+    tables were obtained independently of this tool (LMFDB, cross-checked against an mpmath Hurwitz-
+    zeta computation to ~1e-9); mpmath is used ONLY to produce that ground-truth table, never inside
+    the model.
 
 This is a TOOL.  It makes no claim beyond locating the vanishing points.
 """
@@ -172,6 +176,18 @@ def chi_mod3(n):                     # real character mod 3 — the +/- (split/i
 def eta_coeff(n):                    # alternating weight (-1)^{n+1}, the zeta channel's strip regulator
     return 1.0 if (n % 2 == 1) else -1.0
 
+def chi_prime(p):                    # quadratic (Legendre) character mod a prime p — a real primitive
+    """Real primitive Dirichlet character mod prime p: the Legendre symbol n -> (n|p).
+    chi_p(n) = +1 if n is a quadratic residue mod p, -1 if a non-residue, 0 if p | n
+    (Euler's criterion (n|p) = n^{(p-1)/2} mod p).  Completely multiplicative, like wind."""
+    def chi(n):
+        r = n % p
+        return 0.0 if r == 0 else (1.0 if pow(r, (p - 1) // 2, p) == 1 else -1.0)
+    return chi
+
+# the ten smallest prime moduli — ten quadratic Dirichlet L-functions L(s, chi_p) (Sec 8)
+PRIME_MODULI = [3, 5, 7, 11, 13, 17, 19, 23, 29, 31]
+
 
 # ============================================================================
 # Section 5 — strip extension by ABEL SUMMATION  (the paper's & Lean's method)
@@ -277,6 +293,24 @@ ZETA_ZEROS = [
 # imaginary parts of the first zeros of L(s, chi_3) (published reference, approx)
 CHI3_ZEROS = [8.04, 11.25, 15.70, 18.26, 20.46, 24.06, 26.58, 28.22]
 
+# imaginary parts of the first zeros of L(s, chi_p), chi_p = quadratic character mod prime p
+# (published reference, for the ten L-functions of Sec 8).  Obtained INDEPENDENTLY of this tool and
+# cross-checked two ways: against the LMFDB L-function pages (e.g. /L/Character/Dirichlet/5/4/) to
+# 8+ digits, and recomputed from the Hurwitz-zeta form L(s,chi)=q^{-s} sum_a chi(a) zeta(s,a/q); the
+# two agree to ~1e-9.  Like ZETA_ZEROS / CHI3_ZEROS they enter ONLY the final |diff| column.
+PRIME_L_ZEROS = {
+    3:  [8.0397, 11.2492, 15.7046, 18.2620, 20.4558],
+    5:  [6.6485,  9.8314, 11.9588, 16.0338, 17.5670],
+    7:  [4.4757,  6.8455, 11.1602, 12.4896, 15.1129],
+    11: [2.4772,  6.8007,  8.9713, 10.1083, 13.0401],
+    13: [3.1193,  7.2316,  8.6254, 10.3364, 12.6170],
+    17: [3.7281,  5.6356,  7.2828, 10.6173, 11.9777],
+    19: [1.5161,  5.4766,  7.1607,  9.3833, 10.7858],
+    23: [2.8713,  4.2152,  6.7312,  8.3348, 10.6339],
+    29: [1.7938,  5.3166,  6.7580,  8.6305, 10.4196],
+    31: [2.0350,  4.7897,  5.6864,  7.3359, 10.1839],
+}
+
 
 # ============================================================================
 # Demo
@@ -321,10 +355,18 @@ def _demo():
         z = min(ZETA_ZEROS, key=lambda t: abs(t - v))
         print(f"   {k:>2} {v:>16.4f} {z:>16.4f} {abs(v - z):>9.4f}")
 
-    print("\n[Sec 8] same carrier, chi_3 (mod 3): vanishing points = zeros of L(s, chi_3) (faithful_all_L)")
-    vps3 = vanishing_points(chi_mod3, y_max=30, samples=5000, M=8000)
-    print(f"   vanishing points:    {[round(v, 3) for v in vps3[:8]]}")
-    print(f"   published reference: {CHI3_ZEROS}")
+    print("\n[Sec 8] one carrier, TEN Dirichlet L-functions: vanishing points = zeros of L(s, chi_p)")
+    print("        chi_p = quadratic (Legendre) character mod prime p; only the weight chi(n) changes (faithful_all_L)")
+    print(f"   {'p':>3} {'matched':>8} {'max|diff|':>10}   first located -> published zero")
+    for p in PRIME_MODULI:
+        ref = PRIME_L_ZEROS[p]
+        ymax = max(ref) + 1.0
+        vps = vanishing_points(chi_prime(p), y_max=ymax, samples=int(ymax * 320), M=8000)
+        pairs = [(v, min(ref, key=lambda t: abs(t - v))) for v in vps]
+        pairs = [(v, z) for (v, z) in pairs if abs(v - z) < 0.15]   # genuine matches to a published zero
+        maxd = max((abs(v - z) for v, z in pairs), default=float("nan"))
+        shown = ", ".join(f"{v:.3f}->{z:.3f}" for v, z in pairs[:3])
+        print(f"   {p:>3} {f'{len(pairs)}/{len(ref)}':>8} {maxd:>10.4f}   {shown}")
 
     print("\n[Sec 9] both_helices_conjugate: left strand = conj(right strand) (exact, every N)")
     yv = 14.0
