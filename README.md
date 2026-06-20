@@ -25,7 +25,9 @@ it and accumulates phasors. The angular winding is a log-free, completely multip
 built from prime angles by the fundamental theorem of arithmetic; the logarithm enters only in the
 external bridge `wind n ↔ n^{it}` that identifies the geometric winding with the analytic phasor.
 The fiber's vanishing points — where the phasors cancel — are the zeros of `L(s, χ)`, verified
-numerically for the leading zeros of `ζ` and several Dirichlet `L`-functions.
+numerically for the leading zeros of `ζ` and ten Dirichlet `L`-functions (the quadratic characters
+mod the primes 3–31), with the published reference zeros taken from LMFDB and cross-checked against
+an mpmath Hurwitz-zeta computation to ~1e-9.
 
 The correspondence between the paper's statements and the Lean declarations is given by the
 identifiers in parentheses throughout the paper (e.g. `frobenius_conjugate_det_one`); the Python
