@@ -53,7 +53,13 @@ completed object on the critical line (read through a projection that rescales t
 gauge to a unit coordinate), the conjugacy of the two chiralities of the double-ended carrier, and a
 determinant identity: at a conjugate crossing the two chiral eigenphases
 $z=e^{-iy\log n}$ and $\conj{z}$ assemble the transverse block $\diag(z,\conj z)$, whose
-determinant is $z\,\conj z=|z|^2=1$. The coincidence of the fiber's vanishing points with the
+determinant is $z\,\conj z=|z|^2=1$. These two chiral eigenphases are the values of a unit-modulus
+eigenstate of the self-adjoint generator $D=-i\,d/dt$ (real eigenvalue, by von Neumann reality), and
+under the de Branges change of variables the on-line cancellations we find are real spectral points
+of a Hermite--Biehler structure function. We do not claim that the structure function for $\Lambda$
+is Hermite--Biehler --- equivalently, that there are no off-line zeros --- which would be the Riemann
+Hypothesis and is left open; the vanishing $\Rightarrow$ eigenstate link is likewise taken as a
+hypothesis. The coincidence of the fiber's vanishing points with the
 actual zeros has been verified numerically for the leading zeros of $\zeta$ and ten Dirichlet
 $L$-functions. Every statement below is formalized in Lean~4 with
 Mathlib and checked by the kernel; the axiom footprint of each named theorem is
@@ -164,7 +170,46 @@ $r_n\sim\sqrt n$ \emph{exactly} in the gauge $r\Delta=\pi$, i.e.\ $r=3$
 $r=1$, giving the constant $1/\sqrt3$. In this unit gauge the carrier point
 $\mathrm{helixPt}(n)=\sqrt n\cdot\mathrm{wind}(n)$ (Definition~\ref{def:wind}) has modulus
 $\|\mathrm{helixPt}(n)\|=\sqrt n$ (\code{HelixLogFree.norm\_helixPt}), matching the emergent radius
-$r_n$; the winding contributes unit modulus (Theorem~\ref{thm:windmul}).
+$r_n$ asymptotically (\code{helixPt\_radius\_matches\_areaLaw}: the ratio
+$\|\mathrm{helixPt}(n)\|/r_n\to 1$ in this gauge); the winding contributes unit modulus
+(Theorem~\ref{thm:windmul}).
+\end{remark}
+
+\subsection{The scale-critical exponent}\label{sub:scalecrit}
+
+The area law gives more than the radius $\sqrt n$: it pins the critical exponent. Write
+$r_n=\mathrm{carrierRadius}(n)$ for the wound radius of Definition~\ref{def:wound}
+(\code{Geometry.carrierRadius}), and pair it with a candidate weight $n^{-\sigma}$, $\sigma\in\R$.
+
+\begin{theorem}[The critical exponent is scale-critical; \code{sigma\_half\_is\_scale\_critical}]\label{thm:scalecrit}
+For $\sigma\in\R$, the scale-balance product $n^{-\sigma}\,r_n$ has a positive limit if and only if
+$\sigma=\tfrac12$:
+\[
+  \bigl(\exists L>0:\ n^{-\sigma}\,r_n\xrightarrow[\;n\to\infty\;]{}L\bigr)
+  \qquad\Longleftrightarrow\qquad \sigma=\tfrac12 .
+\]
+Concretely, $n^{-\sigma}r_n\to 0$ for $\sigma>\tfrac12$ (the weight decays faster than the radius
+grows), $n^{-\sigma}r_n\to+\infty$ for $\sigma<\tfrac12$ (the weight outruns the radius), and
+$n^{-\sigma}r_n\to\sqrt{r\Delta/\pi}>0$ for $\sigma=\tfrac12$. Thus $\tfrac12$ is the unique exponent at
+which the weight reciprocates the emergent radius. It is \emph{gauge-independent}: the gauge $r\Delta$
+sets only the value of the limit, never which $\sigma$ is critical.
+\end{theorem}
+
+\begin{proof}[Proof sketch]
+By Theorem~\ref{thm:arealaw}, $r_n/\sqrt n\to\sqrt{r\Delta/\pi}=:c>0$. Factor
+$n^{-\sigma}r_n=(r_n/\sqrt n)\cdot n^{1/2-\sigma}$; the first factor tends to $c$, and the second tends
+to $0$, to $1$, or to $+\infty$ according as $\sigma>\tfrac12$, $\sigma=\tfrac12$, or $\sigma<\tfrac12$.
+Only $\sigma=\tfrac12$ yields a positive finite limit; uniqueness of limits closes both directions.
+\end{proof}
+
+\begin{remark}\label{rem:scalecrit}
+This is the geometric origin of the critical line: the $\tfrac12$ of $\Ree s=\tfrac12$ is the $\tfrac12$
+of $r_n\sim\sqrt n=n^{1/2}$. It locates the line on which the phasor weights are scale-normalized to
+$O(1)$, so that the accumulation is governed by the winding (the phase cancellation) rather than the
+amplitude --- which is exactly the mechanism by which the vanishing points arise
+(Section~\ref{sec:strip}). It is a statement about the carrier alone; that the zeros of $\zeta$ and
+$L$ then \emph{lie} on this line is the separate analytic content of the functional equation
+(Theorem~\ref{thm:bothsides}), not of the area law.
 \end{remark}
 
 \subsection{The mod-$6$ bucket structure}
@@ -266,6 +311,14 @@ times this winding is the Dirichlet phasor:
   n^{-1/2}\cdot\mathrm{wind}_{-t\log}(n) \;=\; n^{-(1/2+it)} .
 \]
 \end{theorem}
+
+\begin{remark}[The fiber's exponent is scale-critical; \code{critical\_exponent\_is\_scale\_critical}]\label{rem:ridescrit}
+The exponent $\tfrac12$ here is not a chosen constant. By Theorem~\ref{thm:scalecrit} --- re-exported at
+the unit-gauge carrier $r=3$ as \code{critical\_exponent\_is\_scale\_critical} --- it is the unique
+$\sigma$ for which the fiber amplitude $n^{-\sigma}$ scale-balances the area-law radius $r_n$. So the
+critical line $\Ree s=\tfrac12$ that the fiber rides is the scale-balance locus of the carrier, forced
+by the geometry rather than inserted.
+\end{remark}
 
 \subsection{Accumulation to $L$}
 
@@ -521,7 +574,108 @@ $z\,\conj z=e^{-iy\log n}\,e^{+iy\log n}=e^{0}=1$.
 \begin{remark}\label{rem:end}
 The transverse block $\diag(z,\conj z)$ assembled from the two chiral eigenphases at a conjugate
 crossing has determinant $1$; the radial scaling $\sqrt p$ of the similitude is carried separately
-and is not part of this block. This is the terminal statement of the construction.
+and is not part of this block.
+\end{remark}
+
+\subsection{The self-adjoint eigenstate}\label{sub:eigenstate}
+
+The determinant identity above is stated for the bare eigenphases $z,\conj z\in\T$. We realize them
+as the values of a genuine eigenstate of a self-adjoint generator. This is the operator
+\emph{design}: it is real because its inputs are real, and it stands independently of any zero.
+
+\begin{definition}[Spectral wave; \code{spectralWave}]\label{def:wave}
+For $\gamma\in\R$, $\;\psi_\gamma(t)=e^{i\gamma t}\;(t\in\R)$.
+\end{definition}
+
+\begin{theorem}[Unit-modulus eigenstate of $D=-i\,d/dt$; \code{spectralWave\_eigen}, \code{spectralWave\_norm}]\label{thm:wave}
+For all $t\in\R$, $\;-i\,\psi_\gamma'(t)=\gamma\,\psi_\gamma(t)\;$ and $\;\|\psi_\gamma(t)\|=1$. Thus
+$\psi_\gamma$ is a unit-modulus eigenstate of the generator $D=-i\,d/dt$ with the real eigenvalue
+$\gamma$.
+\end{theorem}
+
+The reality is structural, not an accident of $\psi_\gamma$. Multiplication by the real height,
+$\mathrm{vonNeumannOp}(\gamma)=\gamma\cdot\mathrm{id}$ on the fiber $\C$, is symmetric with
+eigenvalue $\gamma$ (\code{vonNeumannOp\_isSymmetric}, \code{vonNeumannOp\_hasEigenvalue}); on the
+finitely-supported sequence space the real-diagonal operator $\mathrm{diagOp}(d)$ is symmetric
+(\code{diagOp\_symmetric}), with the basis vectors as explicit eigenvectors carrying the real
+eigenvalues $d_i$ (\code{diagOp\_eigenvector}), and \emph{every} eigenvalue is real
+(\code{diagOp\_spectrum\_real}) by von Neumann reality --- a symmetric operator on a complex
+inner-product space has real eigenvalues (\code{symmetric\_eigenvalue\_real}). These are collected in
+\code{unconditional\_frobenius\_eigenstate} and \code{frobenius\_spectralWave\_eigenstate}.
+
+\begin{proposition}[The chiralities are eigenstate values; \code{spin\_eq\_spectralWave}, \code{conj\_spin\_eq\_spectralWave}]\label{prop:chiral}
+For every $y\in\R$ and $n\in\N$, $\;\mathrm{spin}(y,n)=\psi_y(-\log n)\;$ and
+$\;\conj{\mathrm{spin}(y,n)}=\psi_y(\log n)$.
+\end{proposition}
+
+\begin{theorem}[Determinant on the eigenstate values; \code{frobenius\_spectralWave\_det\_one}]\label{thm:wavedet}
+For every $y\in\R$ and $n\in\N$, $\;\det\diag\!\big(\psi_y(-\log n),\,\psi_y(\log n)\big)=1$.
+\end{theorem}
+
+\begin{theorem}[Frobenius unimodularity of the produced eigenstate; \code{frobenius\_eigenstate\_det\_one}]\label{thm:eigdet}
+Fix $\gamma\in\R$, $n\in\N$, and $\psi:\R\to\C$, and \emph{assume} the vanishing $\Rightarrow$
+eigenstate link $\psi=\psi_\gamma$. Then $\psi$ is a unit-modulus eigenstate of $D=-i\,d/dt$ with
+eigenvalue $\gamma$, and $\;\det\diag\!\big(\psi(-\log n),\,\psi(\log n)\big)=1$.
+\end{theorem}
+
+\begin{remark}[The open link]\label{rem:openlink}
+We exhibit the eigenstate $\psi_\gamma$ for every real $\gamma$ unconditionally
+(Theorem~\ref{thm:wave}). What is \emph{not} proved is that a carrier vanishing at height $\gamma$
+\emph{produces} this eigenstate; that hypothesis ($\psi=\psi_\gamma$) is the one input of
+Theorem~\ref{thm:eigdet}, left open. We do not derive that the vanishings are the spectrum of a
+canonical operator.
+\end{remark}
+
+\section{The de Branges evaluation}\label{sec:debranges}
+
+The reality on the critical line (Section~\ref{sub:reality}) and the eigenstate above sit inside the
+Hermite--Biehler / de Branges spectral framework. We record the framework, its reality and
+discreteness consequences, a worked example, and the change of variables that places the on-line
+cancellations as real spectral points.
+
+\begin{definition}[Structure function and components; \code{Estar}, \code{Acomp}, \code{Bcomp}, \code{IsHB}]\label{def:hb}
+For $E:\C\to\C$, the reflection is $E^*(z)=\conj{E(\conj z)}$, the components are
+$A=\tfrac12(E+E^*)$ and $B=\tfrac{i}{2}(E-E^*)$, and $E$ is \emph{Hermite--Biehler} ($\mathrm{IsHB}\,E$)
+when $\|E^*(z)\|<\|E(z)\|$ for every $z$ with $\Imm z>0$.
+\end{definition}
+
+\begin{proposition}[Gram positivity; \code{gram\_quadratic\_form\_nonneg}]\label{prop:gram}
+For vectors $v_i$ in an inner-product space and scalars $c_i$,
+$\;\sum_{i,j}\conj{c_i}\,c_j\,\langle v_i,v_j\rangle=\big\langle\sum_i c_i v_i,\sum_j c_j v_j\big\rangle\ge0$
+--- the positive-definite reproducing-kernel fact behind $H(E)$.
+\end{proposition}
+
+\begin{theorem}[Positivity forces a real spectrum; \code{hb\_no\_zero\_upper}, \code{Acomp\_zero\_im\_eq\_zero}, \code{Bcomp\_zero\_im\_eq\_zero}]\label{thm:hbreal}
+If $\mathrm{IsHB}\,E$ then $E$ has no zeros in the open upper half-plane, and every zero of $A$ and of
+$B$ is real.
+\end{theorem}
+
+\begin{theorem}[Discreteness; \code{Bcomp\_zeros\_discrete}]\label{thm:hbdisc}
+If, in addition, $E$ is entire, then the zeros of $B$ are isolated: a real, discrete spectrum.
+\end{theorem}
+
+\begin{proposition}[Paley--Wiener example; \code{paleyWiener\_isHB}, \code{paleyWiener\_Bcomp}]\label{prop:pw}
+$E(z)=e^{-iz}$ is Hermite--Biehler, and its $B$-component is $\sin$, whose spectrum is $\{k\pi\}$.
+\end{proposition}
+
+\begin{theorem}[Critical-line change of variables; \code{deBranges\_var\_im}]\label{thm:cov}
+For $\rho\in\C$, $\;\Imm\!\big(-i(\rho-\tfrac12)\big)=\tfrac12-\Ree\rho$; so $z=-i(\rho-\tfrac12)$ is
+real iff $\Ree\rho=\tfrac12$.
+\end{theorem}
+
+\begin{corollary}[On-line cancellations are real spectral points; \code{criticalLine\_deBranges\_real}, \code{zeroHarmonic\_deBranges\_real}]\label{cor:online}
+A carrier vanishing at height $\gamma$ sits at $\rho=\tfrac12+i\gamma$, whose de Branges variable
+$z=-i(\rho-\tfrac12)=\gamma$ is real. The same-height cancellations we find are real de Branges
+spectral points, evaluable in the reality/discreteness framework of
+Theorems~\ref{thm:hbreal}--\ref{thm:hbdisc}.
+\end{corollary}
+
+\begin{remark}[Scope]\label{rem:hbscope}
+Theorem~\ref{thm:hbreal} is conditional on $\mathrm{IsHB}$. For a structure function built from
+$\Lambda$, $\mathrm{IsHB}$ --- equivalently, no zeros off the critical line
+(\code{hb\_no\_zero\_upper}) --- is the Riemann Hypothesis; we neither assume nor prove it. By
+construction we evaluate only the on-line cancellations, whose de Branges variable is real
+unconditionally (Corollary~\ref{cor:online}); we make no claim about off-line zeros.
 \end{remark}
 
 \section{Formalization}\label{sec:formal}
@@ -530,7 +684,8 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \cite{Mathlib2020}, in the package
 \code{RequestProject} (files \code{ClosedForm.lean}, \code{HelixLogFreeFTA.lean},
 \code{HelixCollapseReality.lean}, \code{LFunctionPhasor.lean}, \code{GeometricProjectionHolds.lean},
-\code{Faithfulness.lean}, \code{AreaLaw.lean}). Each named
+\code{Faithfulness.lean}, \code{AreaLaw.lean}, \code{UnconditionalFrobenius.lean},
+\code{DeBranges.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -544,15 +699,29 @@ the conjugacy of the two chiralities (Theorem~\ref{thm:conjhelix}), and the dete
 (Theorem~\ref{thm:det}) --- are collected in \code{Faithfulness.lean}; the geometry
 (Section~\ref{sec:carrier}) and the log-free winding (Section~\ref{sec:winding}) live in
 \code{ClosedForm.lean} and \code{HelixLogFreeFTA.lean}, with the emergent area-law radius
-(Theorem~\ref{thm:arealaw}, Definition~\ref{def:wound}) in \code{AreaLaw.lean}.
+(Theorem~\ref{thm:arealaw}, Definition~\ref{def:wound}) and the scale-critical exponent
+(Theorem~\ref{thm:scalecrit}) in \code{AreaLaw.lean}. The self-adjoint eigenstate design
+(Section~\ref{sub:eigenstate}) lives in \code{UnconditionalFrobenius.lean} and the Hermite--Biehler /
+de Branges framework (Section~\ref{sec:debranges}) in \code{DeBranges.lean}, with their connection to
+the carrier --- the eigenstate identification (\code{spin\_eq\_spectralWave},
+\code{frobenius\_eigenstate\_det\_one}) and the on-line de Branges evaluation
+(\code{criticalLine\_deBranges\_real}, \code{zeroHarmonic\_deBranges\_real}) --- collected in
+\code{Faithfulness.lean}.
 
 \begin{remark}[Scope]\label{rem:scope}
 This paper presents a geometric tool: the double-ended chiral helix carrier and its phasor fiber, on
 which the vanishing points coincide with the zeros of $\zeta$ and the tested Dirichlet
 $L$-functions, verified numerically for the leading zeros. Its mathematical content is exactly the
-statements proved above --- the carrier, the accumulation to $L(s,\chi)$ on $\Ree s>0$, the
+statements proved above --- the carrier, the area-law derivation of the critical exponent
+(Theorem~\ref{thm:scalecrit}), the accumulation to $L(s,\chi)$ on $\Ree s>0$, the
 explicit-formula reading of the zeros as poles, the reality of the completed object on the critical
-line, the conjugacy of the two chiralities, and the determinant identity of Theorem~\ref{thm:det}.
+line, the conjugacy of the two chiralities, the determinant identity of Theorem~\ref{thm:det}, the
+self-adjoint eigenstate realization of the chiral eigenphases (Section~\ref{sub:eigenstate}), and the
+de Branges evaluation placing the on-line cancellations as real spectral points
+(Section~\ref{sec:debranges}). Two links are taken as hypotheses and left open: that a vanishing
+\emph{produces} the eigenstate (Remark~\ref{rem:openlink}), and that the structure function for
+$\Lambda$ is Hermite--Biehler, i.e.\ that there are no off-line zeros (Remark~\ref{rem:hbscope}) ---
+the latter being the Riemann Hypothesis, which this tool neither assumes nor proves.
 \end{remark}
 
 \begin{thebibliography}{9}

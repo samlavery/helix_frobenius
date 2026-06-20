@@ -176,7 +176,7 @@ def eta_coeff(n):                    # alternating weight (-1)^{n+1}, the zeta c
 # ============================================================================
 # Section 5 — strip extension by ABEL SUMMATION  (the paper's & Lean's method)
 #   eta_strip_tendsto (line 1098), dirichlet_strip_tendsto_LFunction (line 647),
-#   continuous_model_zeta (Faithfulness.lean:256)
+#   continuous_model_zeta (Faithfulness.lean:290)
 # ============================================================================
 
 def _partial_char_sums(coeff, M):
@@ -251,7 +251,7 @@ def projection(t):
 # ============================================================================
 
 def frobenius_conjugate_det(y, n):
-    """Faithful.frobenius_conjugate_det_one (Thm 10.1, Faithfulness.lean:335):
+    """Faithful.frobenius_conjugate_det_one (Thm 10.1, Faithfulness.lean:369):
     det !![spin y n, 0; 0, conj(spin y n)] = z conj z = |z|^2 = 1, z = spin(y,n).
     (Transverse phase block; the radial sqrt(p) of the similitude is carried separately.)"""
     z = spin(y, n)

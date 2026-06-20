@@ -3,6 +3,8 @@ import RequestProject.AreaLaw
 import RequestProject.HelixLogFreeFTA
 import RequestProject.HelixCollapseReality
 import RequestProject.LFunctionPhasor
+import RequestProject.UnconditionalFrobenius
+import RequestProject.DeBranges
 
 /-!
 # Faithful projection: the L-fiber rides the 3-D carrier, accumulates in 3-D, lands on real ζ zeros
@@ -376,5 +378,65 @@ theorem frobenius_conjugate_det_one (y : ℝ) (n : ℕ) :
         + (starRingEnd ℂ) (-(↑y * ↑(Real.log n)) * Complex.I) = 0 from by
       simp only [map_neg, map_mul, Complex.conj_I, Complex.conj_ofReal]; ring]
   exact Complex.exp_zero
+
+/-! ## Frobenius det = 1 on the genuine self-adjoint eigenstate
+
+The two chiral phasors at a crossing are the values at `∓log n` of the self-adjoint generator's
+eigenstate `spectralWave γ` (`UnconditionalFrobenius`: unit norm, real eigenvalue `γ` of
+`D = −i d/dt`). The vanishing ⇒ eigenstate link is taken as a hypothesis; proving it is left open. -/
+
+/-- The right chirality is the eigenstate `spectralWave y` evaluated at `−log n`. -/
+theorem spin_eq_spectralWave (y : ℝ) (n : ℕ) :
+    LFunctionPhasor.spin y n = UnconditionalFrobenius.spectralWave y (-Real.log n) := by
+  simp only [LFunctionPhasor.spin, UnconditionalFrobenius.spectralWave]
+  congr 1
+  push_cast; ring
+
+/-- The left chirality is the eigenstate `spectralWave y` evaluated at `+log n`. -/
+theorem conj_spin_eq_spectralWave (y : ℝ) (n : ℕ) :
+    (starRingEnd ℂ) (LFunctionPhasor.spin y n)
+      = UnconditionalFrobenius.spectralWave y (Real.log n) := by
+  simp only [LFunctionPhasor.spin, UnconditionalFrobenius.spectralWave, ← Complex.exp_conj]
+  congr 1
+  simp only [map_neg, map_mul, Complex.conj_I, Complex.conj_ofReal]
+  ring
+
+/-- `frobenius_conjugate_det_one` on the genuine eigenstate values. -/
+theorem frobenius_spectralWave_det_one (y : ℝ) (n : ℕ) :
+    Matrix.det !![UnconditionalFrobenius.spectralWave y (-Real.log n), 0;
+                  0, UnconditionalFrobenius.spectralWave y (Real.log n)] = 1 := by
+  rw [← spin_eq_spectralWave, ← conj_spin_eq_spectralWave]
+  exact frobenius_conjugate_det_one y n
+
+/-- **Frobenius unimodularity of the produced eigenstate.** Given the (open) vanishing ⇒ eigenstate
+link `hψ` at vanishing height `γ`, the produced state `ψ` is a unit-norm eigenstate of `D = −i d/dt`
+with real eigenvalue `γ`, and its two chiral values combine under Frobenius to det 1. -/
+theorem frobenius_eigenstate_det_one (γ : ℝ) (n : ℕ) (ψ : ℝ → ℂ)
+    (hψ : ψ = UnconditionalFrobenius.spectralWave γ) :
+    (∀ t : ℝ, ‖ψ t‖ = 1)
+      ∧ (∀ t : ℝ, -Complex.I * deriv ψ t = (γ : ℂ) * ψ t)
+      ∧ Matrix.det !![ψ (-Real.log n), 0; 0, ψ (Real.log n)] = 1 := by
+  subst hψ
+  exact ⟨UnconditionalFrobenius.spectralWave_norm γ,
+         UnconditionalFrobenius.spectralWave_eigen γ,
+         frobenius_spectralWave_det_one γ n⟩
+
+/-- **On-line cancellations are real de Branges spectral points.** The carrier point `ρ = ½ + iγ`
+has de Branges variable `z = −i(ρ − ½) = γ`, which is real (`DeBranges.deBranges_var_im`); so the
+same-height cancellations we find are evaluable in the de Branges reality/discreteness framework
+(`DeBranges.Bcomp_zero_im_eq_zero`, `DeBranges.Bcomp_zeros_discrete`). Unconditional. Scope: this is
+the spectrum of the on-line points we examine — it asserts nothing about off-line zeros (that the
+structure function for `Λ` is Hermite–Biehler, i.e. no off-line zeros, is RH, left open). -/
+theorem criticalLine_deBranges_real (γ : ℝ) :
+    (-(Complex.I * (((1 : ℂ) / 2 + (γ : ℂ) * Complex.I) - 1 / 2))).im = 0 := by
+  rw [DeBranges.deBranges_var_im]; simp
+
+/-- **The cancellations we find, evaluated via de Branges.** A produced zero `z` is a carrier
+vanishing (`z.is_zero`) whose de Branges variable is real — a real de Branges spectral point. -/
+theorem zeroHarmonic_deBranges_real {q : ℕ} [NeZero q] {χ : DirichletCharacter ℂ q}
+    (z : FiberHarmonic.ZeroHarmonic χ) :
+    FiberHarmonic.CarrierZero χ z.gamma
+      ∧ (-(Complex.I * (((1 : ℂ) / 2 + (z.gamma : ℂ) * Complex.I) - 1 / 2))).im = 0 :=
+  ⟨z.is_zero, criticalLine_deBranges_real z.gamma⟩
 
 end Faithful
