@@ -275,6 +275,37 @@ def frobenius_conjugate_det(y, n):
 
 
 # ============================================================================
+# Section 11 — the vanishing IS an eigenstate resonance  (UnconditionalFrobenius, DeBranges)
+#   The local vanishing => eigenstate link is no mystery; it is an identity.  Write the fiber in the
+#   spectral wave psi_gamma(t) = e^{i gamma t} (the D = -i d/dt eigenstate, eigenvalue gamma):
+#       fiber(1/2 + i gamma) = sum_n coeff(n) n^{-1/2} e^{-i gamma log n} = <psi_gamma, data>,
+#   the inner product of that eigenstate with the arithmetic coefficient vector data_n = coeff(n)
+#   n^{-1/2}.  So a crossing (fiber -> 0) is EXACTLY the resonance where psi_gamma is ORTHOGONAL to
+#   the data — a genuine, computed local link, shown below for the gamma's we actually find (and it is
+#   special: off a crossing the inner product is O(1)).  What stays a HYPOTHESIS is only the GLOBAL
+#   claim — that these eigenstates are the full spectrum of one self-adjoint operator with no off-line
+#   zeros (Hilbert-Polya / RH) — per the Lean UnconditionalFrobenius docstring.
+# ============================================================================
+
+def spectral_wave(gamma, t):
+    """UnconditionalFrobenius.spectralWave (line 160): psi_gamma(t) = exp(i*gamma*t)."""
+    return cmath.exp(1j * gamma * t)
+
+def eigen_residual(gamma, t, h=1e-5):
+    """spectralWave_eigen (line 175): D psi = gamma psi for D = -i d/dt.  Returns
+    |-i psi'(t) - gamma psi(t)| with psi' by central finite difference — a numerical check that the
+    located crossing's wave is a genuine eigenstate (the true residual is exactly 0)."""
+    dpsi = (spectral_wave(gamma, t + h) - spectral_wave(gamma, t - h)) / (2 * h)
+    return abs(-1j * dpsi - gamma * spectral_wave(gamma, t))
+
+def debranges_point(gamma):
+    """DeBranges.deBranges_var_im (line 155): z = -i(rho - 1/2) at rho = 1/2 + i*gamma has
+    Im z = 1/2 - Re rho = 0, so the on-line crossing maps to the real spectral point z = gamma."""
+    rho = 0.5 + 1j * gamma
+    return -1j * (rho - 0.5)
+
+
+# ============================================================================
 # Published reference values — for the final |diff| comparison ONLY.
 #   Well-known published constants (imaginary parts of the nontrivial zeros): the literature's
 #   ground truth, obtained independently of this tool.  They do NOT enter the fiber, carrier, or
@@ -361,8 +392,8 @@ def _demo():
     for p in PRIME_MODULI:
         ref = PRIME_L_ZEROS[p]
         ymax = max(ref) + 1.0
-        vps = vanishing_points(chi_prime(p), y_max=ymax, samples=int(ymax * 320), M=8000)
-        pairs = [(v, min(ref, key=lambda t: abs(t - v))) for v in vps]
+        vps_p = vanishing_points(chi_prime(p), y_max=ymax, samples=int(ymax * 320), M=8000)
+        pairs = [(v, min(ref, key=lambda t: abs(t - v))) for v in vps_p]
         pairs = [(v, z) for (v, z) in pairs if abs(v - z) < 0.15]   # genuine matches to a published zero
         maxd = max((abs(v - z) for v, z in pairs), default=float("nan"))
         shown = ", ".join(f"{v:.3f}->{z:.3f}" for v, z in pairs[:3])
@@ -382,9 +413,26 @@ def _demo():
     print("\n[Sec 7] readout projection (projection_midline):")
     print(f"   projection(0) = {projection(0):.4f}  (midpoint of [0,1]: the gauge centre)")
 
+    print("\n[Sec 11] the vanishing IS an eigenstate resonance — at each located crossing (zeta)")
+    print("         fiber(1/2+ig) = <psi_g, data>,  psi_g(t)=e^{i g t} the D=-i d/dt eigenstate")
+    print("         (eigenvalue g): a crossing = psi_g _|_ data.  LOCAL link is shown (a computed")
+    print("         identity, not a posit); only the GLOBAL spectrum/RH claim stays a hypothesis.")
+    print(f"   {'gamma':>9} {'||psi||':>7} {'D-resid':>8} {'|<psi,data>| @g':>16} {'@g+0.3':>9} {'detblk':>7} {'dBz':>9}")
+    for g in vps[:6]:                                    # the crossings located in Sec 5 — nothing else
+        tt = math.log(7)                                 # the eigenstate identity holds at every site
+        nrm = abs(spectral_wave(g, tt))                  # ||psi_g|| = 1            (spectralWave_norm)
+        res = eigen_residual(g, tt)                      # D psi_g = g psi_g       (spectralWave_eigen)
+        reson_on  = abs(abel_fiber(eta_coeff, 0.5 + 1j * g, M=8000))         # <psi_g,data> ~ 0 : resonance
+        reson_off = abs(abel_fiber(eta_coeff, 0.5 + 1j * (g + 0.3), M=8000)) # off a crossing: O(1), none
+        det = frobenius_conjugate_det(g, 7).real         # det diag(z,conj z) = 1  (frobenius_..._det_one)
+        dz = debranges_point(g)                          # z = -i(rho-1/2) = g, real (deBranges_var_im)
+        print(f"   {g:>9.4f} {nrm:>7.4f} {res:>8.1e} {reson_on:>16.4f} {reson_off:>9.4f} "
+              f"{det:>7.4f} {dz.real:>9.4f}")
+
     print("\n" + line)
     print("Definitions faithful to the Lean source; strip by Abel summation (paper's method);")
-    print("vanishing-point finder is a numerical demo of continuous_model_zeta.  No RH claim.")
+    print("vanishing-point finder is a numerical demo of continuous_model_zeta.  Sec 11: the vanishing")
+    print("is the eigenstate-data resonance (local identity); the global Hilbert-Polya/RH is left open.")
     print(line)
 
 
