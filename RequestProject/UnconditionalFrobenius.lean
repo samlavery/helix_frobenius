@@ -13,8 +13,17 @@ the self-adjoint *design* itself.
   eigenvalue `γ`.
 
 This is the operator/eigenstate **design**: it is real because the inputs (`d : ι → ℝ`, `γ : ℝ`) are
-real — a symmetric operator has real eigenvalues.  It does **not** connect the design to any actual
-zeros; that link is left out.  Mathlib-only; self-contained; no GRH.
+real — a symmetric operator has real eigenvalues.  The zeros we actually derive are on the critical
+line **by construction** — and that line is not assumed: the fiber is ridden on `σ = ½`, where `½` is
+itself **derived from the geometry**, the unique scale-critical exponent at which the phasor amplitude
+`n^{-σ}` balances the area-law carrier radius `√n` (`sigma_half_is_scale_critical`), not a posited
+constant; a located crossing is then certified on-line by `crossing_is_zero_on_line`.  At such a `γ`
+the eigenstate `spectralWave γ` is the resonance where it is orthogonal to the arithmetic data — the
+genuine *local* link.  What this does **not** do is
+connect the design to *all* actual zeros: it makes no claim that the on-line zeros it derives exhaust
+the zeros (no off-line zeros — the Riemann Hypothesis), nor that these eigenstates form the spectrum
+of a single self-adjoint operator (Hilbert–Pólya).  Those *global* links are left open.
+Mathlib-only; self-contained; no GRH.
 -/
 
 open Complex
