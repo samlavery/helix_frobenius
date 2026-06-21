@@ -219,6 +219,56 @@ def abel_fiber(coeff, s, M=8000):
     return complex(np.sum(B * (n ** (-s) - (n + 1) ** (-s))))
 
 
+def smooth_fiber(coeff, s, N=4000):
+    """NUMERICAL ACCELERATOR (not a separate theorem) for the SAME strip-extension limit as
+    `abel_fiber`.  A smooth C-infinity taper w(n/N) -- w(0)=1, and w with all derivatives -> 0 at
+    n=N -- replaces the hard cutoff:
+
+        sum_n  w(n/N) coeff(n) n^{-s}   ->   (1 - 2^{1-s}) zeta(s)   (resp. L(s,chi)),
+
+    the SAME limit (because w(0)=1), but with spectral (faster-than-any-power) convergence.  The
+    untapered cutoff converges only ~1/sqrt(N) on the line (conditional convergence), so its located
+    minima carry a ~1/sqrt(N) floor; the smooth taper removes that floor, pinning a vanishing point's
+    y to ~1e-6 at a modest N.  Used only to LOCATE the y accurately; the proven object is the
+    untapered limit of `abel_fiber`."""
+    n = np.arange(1, N, dtype=float)
+    w = np.exp(1.0 - 1.0 / np.clip(1.0 - (n / N) ** 2, 1e-15, None))
+    c = np.array([coeff(int(k)) for k in n])
+    return complex(np.sum(w * c * n ** (-s)))
+
+
+def _abel_kernel(coeff, M):
+    """(amplitudes, log-phases) for fast |abel_fiber(1/2 + iy)| -- the FAITHFUL untapered fiber."""
+    B = _partial_char_sums(coeff, M)
+    n = np.arange(1, M + 1, dtype=float)
+    amp = np.concatenate([B * n ** (-0.5), -B * (n + 1) ** (-0.5)])
+    return amp, np.concatenate([np.log(n), np.log(n + 1)])
+
+
+def _taper_kernel(coeff, N):
+    """(amplitudes, log-phases) for fast |smooth_fiber(1/2 + iy)| -- the tapered ACCELERATOR."""
+    n = np.arange(1, N, dtype=float)
+    w = np.exp(1.0 - 1.0 / np.clip(1.0 - (n / N) ** 2, 1e-15, None))
+    c = np.array([coeff(int(k)) for k in n])
+    return (w * c) * n ** (-0.5), np.log(n)
+
+
+def _refine_min(kernel, y0, half, iters=70):
+    """Golden-section minimiser of |fiber(1/2 + iy)| (from a precomputed kernel) in [y0-half, y0+half]."""
+    amp, logp = kernel
+    f = lambda y: abs(complex(np.sum(amp * np.exp(-1j * y * logp))))
+    gr = (5.0 ** 0.5 - 1.0) / 2.0
+    a, b = y0 - half, y0 + half
+    c, d = b - gr * (b - a), a + gr * (b - a)
+    fc, fd = f(c), f(d)
+    for _ in range(iters):
+        if fc < fd:
+            b, d, fd = d, c, fc; c = b - gr * (b - a); fc = f(c)
+        else:
+            a, c, fc = c, d, fd; d = a + gr * (b - a); fd = f(d)
+    return 0.5 * (a + b)
+
+
 # ---- vanishing points on the critical line (NUMERICAL DEMO of continuous_model_zeta) ----
 
 def _vanishing_sweep(coeff, ys, M=8000, sigma=0.5):
@@ -233,16 +283,31 @@ def _vanishing_sweep(coeff, ys, M=8000, sigma=0.5):
         out[i:i + 200] = np.abs(Mx @ amp)
     return out
 
-def vanishing_points(coeff, y_max=52.0, samples=6000, M=8000, thresh=0.3):
+def vanishing_points(coeff, y_max=52.0, samples=6000, M=8000, thresh=0.3,
+                     refine=True, accelerate=False, M_refine=100000, N_taper=4000):
     """NUMERICAL DEMONSTRATION (not a theorem).  `continuous_model_zeta` (Thm 5.3) proves the
-    Abel-summed fiber's limit vanishes iff ζ(½+iy)=0 (resp. L(½+iy,χ)=0); this scans the line and
-    returns the local minima of |fiber| — the located vanishing points.  The minimum-detection is a
-    demo convenience for finding the y, not part of any theorem."""
+    Abel-summed fiber's limit vanishes iff ζ(½+iy)=0 (resp. L(½+iy,χ)=0).  This (i) detects candidate
+    vanishing points as local minima of the faithful untapered |abel_fiber| on a coarse grid, then
+    (ii) refines each by golden section.  A bare grid argmin carries an O(grid step) ~ 1e-2 error;
+    refinement removes that discretisation error.  Two refinement modes:
+
+      accelerate=False (default): refine on the SAME faithful untapered fiber at `M_refine` terms.
+        NO smoothing; the residual is the intrinsic conditional-convergence floor ~ 1/sqrt(M_refine)
+        (~7e-4 at M_refine=1e5, ~2e-4 at 1e6).
+      accelerate=True: refine on the smooth-tapered `smooth_fiber` (same limit, spectral
+        convergence) -> ~1e-6 at a modest N_taper.  An optional accelerator, not load-bearing.
+
+    Minimum-detection is a demo convenience for finding the y, not part of any theorem."""
     ys = np.linspace(1.0, y_max, samples)
     mags = _vanishing_sweep(coeff, ys, M)
     base = float(np.median(mags))
-    return [float(ys[i]) for i in range(1, len(ys) - 1)
-            if mags[i] < mags[i - 1] and mags[i] < mags[i + 1] and mags[i] < thresh * base]
+    cands = [float(ys[i]) for i in range(1, len(ys) - 1)
+             if mags[i] < mags[i - 1] and mags[i] < mags[i + 1] and mags[i] < thresh * base]
+    if not refine or not cands:
+        return cands
+    kernel = _taper_kernel(coeff, N_taper) if accelerate else _abel_kernel(coeff, M_refine)
+    half = 1.5 * float(ys[1] - ys[0])
+    return [_refine_min(kernel, y0, half) for y0 in cands]
 
 
 # ============================================================================
@@ -380,11 +445,13 @@ def _demo():
 
     print("\n[Sec 5] strip extension by ABEL SUMMATION; vanishing points vs zeta zeros")
     print("        (continuous_model_zeta: eta-fiber -> 0  iff  zeta(1/2+iy)=0)")
-    vps = vanishing_points(eta_coeff, y_max=52, samples=6000, M=8000)
-    print(f"   {'k':>2} {'vanishing point':>16} {'published zero':>16} {'|diff|':>9}")
+    print("        candidates from faithful untapered |abel_fiber|; y refined (accelerate=True:")
+    print("        smooth taper, SAME limit -> ~1e-6;  accelerate=False is faithful-only, ~7e-4)")
+    vps = vanishing_points(eta_coeff, y_max=52, samples=6000, M=8000, accelerate=True)
+    print(f"   {'k':>2} {'vanishing point':>16} {'published zero':>16} {'|diff|':>10}")
     for k, v in enumerate(vps[:12], 1):
         z = min(ZETA_ZEROS, key=lambda t: abs(t - v))
-        print(f"   {k:>2} {v:>16.4f} {z:>16.4f} {abs(v - z):>9.4f}")
+        print(f"   {k:>2} {v:>16.6f} {z:>16.6f} {abs(v - z):>10.1e}")
 
     print("\n[Sec 8] one carrier, TEN Dirichlet L-functions: vanishing points = zeros of L(s, chi_p)")
     print("        chi_p = quadratic (Legendre) character mod prime p; only the weight chi(n) changes (faithful_all_L)")
@@ -392,12 +459,13 @@ def _demo():
     for p in PRIME_MODULI:
         ref = PRIME_L_ZEROS[p]
         ymax = max(ref) + 1.0
-        vps_p = vanishing_points(chi_prime(p), y_max=ymax, samples=int(ymax * 320), M=8000)
+        vps_p = vanishing_points(chi_prime(p), y_max=ymax, samples=int(ymax * 320), M=8000,
+                                 accelerate=True)
         pairs = [(v, min(ref, key=lambda t: abs(t - v))) for v in vps_p]
         pairs = [(v, z) for (v, z) in pairs if abs(v - z) < 0.15]   # genuine matches to a published zero
         maxd = max((abs(v - z) for v, z in pairs), default=float("nan"))
-        shown = ", ".join(f"{v:.3f}->{z:.3f}" for v, z in pairs[:3])
-        print(f"   {p:>3} {f'{len(pairs)}/{len(ref)}':>8} {maxd:>10.4f}   {shown}")
+        shown = ", ".join(f"{v:.4f}->{z:.4f}" for v, z in pairs[:3])
+        print(f"   {p:>3} {f'{len(pairs)}/{len(ref)}':>8} {maxd:>10.1e}   {shown}")
 
     print("\n[Sec 9] both_helices_conjugate: left strand = conj(right strand) (exact, every N)")
     yv = 14.0

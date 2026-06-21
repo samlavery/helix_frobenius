@@ -27,8 +27,8 @@
 \newcommand{\conj}[1]{\overline{#1}}
 \newcommand{\code}[1]{\texttt{#1}}
 
-\title{The Double-Ended Helix: A Three-Dimensional Geometric Tool\\
-for the Vanishing Points of Dirichlet $L$-Functions}
+\title{The Double-Ended Helix: An Intrinsically On-Axis Geometric State Space\\
+for Dirichlet $L$-Function Phasors}
 \author{Samuel Lavery}
 \date{2026-06-19}
 
@@ -36,13 +36,16 @@ for the Vanishing Points of Dirichlet $L$-Functions}
 \maketitle
 
 \begin{abstract}
-We present a three-dimensional geometric tool: a double-ended chiral helix carrier on which a
-phasor fiber identifies the vanishing points --- the crossings where the phasor accumulation
-cancels --- that coincide with the zeros of the Riemann zeta function and Dirichlet $L$-functions. The carrier is a growing-radius helix with
-integers placed at uniform arclength spacing $\Delta=\pi/3$; a fiber rides it and accumulates
-phasors. The growing radius $\sqrt n$ is itself emergent from the arclength geometry (the area law),
-and the critical exponent $\tfrac12$ on which the zeros are found is not assumed but \emph{derived}
-from it --- the unique $\sigma$ at which the phasor amplitude $n^{-\sigma}$ balances that radius. The
+We introduce a formally specified three-dimensional, double-ended \emph{Frobenius-dual helix carrier}
+for Dirichlet $L$-function phasors. Uniform arclength placement on the growing-radius helix forces
+$r_n\sim C\sqrt n$ (the area law), making $n^{-1/2}$ the \emph{unique} reciprocal scale for an
+admissible fiber; prime multiplication acts by a similitude $w\mapsto\sqrt m\,\mathrm{wind}(m)\,w$
+(\code{helixPt\_mul}, \code{frobeniusSimilitude\_mul}), and the functional equation pairs the two
+chiral fibers under $s\leftrightarrow1-s$. Thus the carrier's admissible balanced-state space is
+intrinsically the critical line $\Ree s=\tfrac12$ (\code{scaleBalanced\_iff},
+\code{no\_native\_offaxis\_support}): off-axis abscissae are not scale-normalized and define no such
+state, so the carrier has \emph{no native off-axis support} --- a geometric state-space restriction,
+\emph{not} a proof of the Riemann Hypothesis. The
 fiber attached to a Dirichlet character $\chi$ is the
 partial-sum sequence $\sum_{n<N}\chi(n)\,n^{-s}$; its limit is the Dirichlet $L$-function
 $L(s,\chi)$ on $\Ree s>1$, and, after Abel summation, on the whole half-plane $\Ree s>0$,
@@ -56,20 +59,23 @@ completed object on the critical line (read through a projection that rescales t
 gauge to a unit coordinate), the conjugacy of the two chiralities of the double-ended carrier, and a
 determinant identity: at a conjugate crossing the two chiral eigenphases
 $z=e^{-iy\log n}$ and $\conj{z}$ assemble the transverse block $\diag(z,\conj z)$, whose
-determinant is $z\,\conj z=|z|^2=1$. These two chiral eigenphases are the values of a unit-modulus
+determinant is $z\,\conj z=|z|^2=1$; this transverse block is in fact \emph{unitary}
+(\code{frobeniusBlock\_unitary}), the orientation- and volume-preserving chiral invariant of the
+transverse phase dynamics. These two chiral eigenphases are the values of a unit-modulus
 eigenstate of the self-adjoint generator $D=-i\,d/dt$ (real eigenvalue, by von Neumann reality), and
 under the de Branges change of variables the on-line cancellations we find are real spectral points
 of a Hermite--Biehler structure function. We do not claim that the structure function for $\Lambda$
 is Hermite--Biehler --- equivalently, that there are no off-line zeros --- which would be the Riemann
 Hypothesis and is left open. The \emph{local} vanishing--eigenstate link, by contrast, is an identity
-rather than a hypothesis: on the line the fiber is the inner product
-$\langle\psi_\gamma,\mathrm{data}\rangle$ of the unit eigenstate $\psi_\gamma(t)=e^{i\gamma t}$ of $D$
-with the arithmetic coefficient vector, so a vanishing point is exactly the resonance where
-$\psi_\gamma$ is orthogonal to the data --- exhibited at each located crossing. Only the \emph{global}
+rather than a hypothesis: on the line the fiber accumulation is exactly the $\ell^2$ inner product
+$\langle\psi_\gamma,\mathrm{data}\rangle$ of the sampled unit eigenstate $\psi_\gamma(t)=e^{i\gamma t}$
+of $D$ with the arithmetic coefficient vector (\code{fiberCarrierFinite\_eq\_inner}), so a vanishing
+point is exactly the resonance where $\psi_\gamma$ is orthogonal to the data
+(\code{fiberCarrierFinite\_eq\_zero\_iff\_orthogonal}) --- exhibited at each located crossing. Only the \emph{global}
 statement is hypothetical: that these eigenstates form the full spectrum of a single self-adjoint
-operator with no off-line zeros. The coincidence of the fiber's vanishing points with the
-actual zeros has been verified numerically for the leading zeros of $\zeta$ and ten Dirichlet
-$L$-functions. Every statement below is formalized in Lean~4 with
+operator with no off-line zeros. The regularized critical-line vanishings of the carrier coincide
+with the zeros of $\zeta$ and ten Dirichlet $L$-functions, verified numerically for the leading
+zeros. Every statement below is formalized in Lean~4 with
 Mathlib and checked by the kernel; the axiom footprint of each named theorem is
 $\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$, with no \code{sorry}
 and no additional axioms.
@@ -86,6 +92,20 @@ $s=\tfrac12+iy$, $y\in\R$. We write $\T=\{z\in\C:|z|=1\}$ for the unit circle (M
 \code{Circle}) and $\conj{\,\cdot\,}$ for complex conjugation (\code{starRingEnd}~$\C$). For an
 arithmetic weight $\chi$ the \emph{phasor} attached to the integer $n\ge 1$ on the vertical line
 $s=\sigma+iy$ is $\chi(n)\,n^{-s}$.
+
+\medskip
+\noindent\emph{The abscissa $\tfrac12$.} Every $\tfrac12$ below is one of two \emph{derived}
+constants, neither of which assumes where the zeros lie. As the carrier's \emph{scale-critical
+exponent} it is the unique $\sigma$ at which the phasor amplitude $n^{-\sigma}$ balances the emergent
+area-law radius $r_n\sim\sqrt n$ (Theorem~\ref{thm:scalecrit}); this fixes the amplitude $n^{-1/2}$
+and the abscissa of the line the fiber rides, from the carrier geometry alone. As the \emph{reflection
+axis} $\Ree s=\tfrac12$ it is the fixed line of $s\mapsto 1-s$, on which $\conj s=1-s$; with the
+functional equation $\Lambda(1-s)=\Lambda(s)$ this is what makes the completed object real on the line
+(Theorem~\ref{thm:real}) and pairs the two chiralities (Theorem~\ref{thm:bothsides}). The Riemann
+Hypothesis --- that the \emph{zeros} $\rho$ satisfy $\Ree\rho=\tfrac12$ --- is a third, distinct
+statement, never assumed here: the on-line results below are either unconditional in $y$ or
+conditional on a zero being present at the stated height, and they assert nothing about off-line
+zeros.
 
 The classical analytic theory of $\zeta$ and Dirichlet $L$-functions --- the Euler product, the
 functional equation, and the von Mangoldt explicit formula
@@ -112,6 +132,18 @@ and the squared speed is
 The \emph{climber} is $k(y)=e^{y}/p$, so the height is $z=p\,k(y)=e^{y}$ and the cylindrical radius
 is $R(y)=r\,k(y)=(r/p)e^{y}$.
 \end{definition}
+
+\begin{remark}[Constant height law: $\Delta z=1$ per integer $n$, not per phasor; \code{Geometry.heightLaw}, \code{Geometry.resonance\_height}]\label{rem:height}
+Discretely, the carrier assigns integer $n$ the height $z_n=n$: a constant $\Delta z=1$
+\emph{per integer $n$}---every slot, whether or not its arithmetic weight $\chi(n)$ is nonzero.
+A neutral slot ($\chi(n)=0$) carries no arrow yet still occupies its place and still advances the
+height. Counting instead per \emph{active} phasor would climb by the active fraction
+$\varphi(q)/q$ per integer and land the resonance at $(\varphi(q)/q)\,e^{\gamma}$, short by exactly
+that fraction. Since phasor $n$ resonates at $y=\log n$, integer $n$ sits at $z_n=n=e^{\log n}$---the
+height of its own resonant frequency---so a zero at frequency $\gamma$ (resonant term
+$n^\ast=e^{\gamma}$) lands at height $z=e^{\gamma}$, for every $L$-function (it rides only on
+$\mathrm{spin}=\log n$). This is the discrete form of the climber height $z=p\,k(y)=e^{y}$ above.
+\end{remark}
 
 \begin{definition}[Arclength; \code{Geometry.arclength}, \code{arclengthClosed}]\label{def:arclength}
 The arclength of $\gamma$ from $0$ to $k$ is
@@ -452,7 +484,10 @@ returns on the completed object is real --- it lands on the real axis (Section~\
 \subsection{Reality on the line}\label{sub:reality}
 
 The supporting analytic facts are the conjugation (Schwarz reflection \cite{Ahlfors1979}) and
-functional symmetries of $\Lambda$.
+functional symmetries of $\Lambda$. The $\tfrac12$ in this subsection is the \emph{reflection axis}
+$\Ree s=\tfrac12$ --- the fixed line of $s\mapsto 1-s$ on which $\conj s=1-s$
+(Section~\ref{sec:notation}) --- \emph{not} the scale-critical exponent of
+Section~\ref{sub:scalecrit}: the reality is read off the functional equation, not the area law.
 
 \begin{theorem}[Conjugation symmetry; \code{HelixCollapse.completedRiemannZeta\_conj}]\label{thm:conj}
 For all $s\in\C$, $\;\conj{\Lambda(\conj s)}=\Lambda(s)$.
@@ -553,16 +588,33 @@ $\tfrac12-iy=1-(\tfrac12+iy)$, so this is $\Lambda(1-s)=\Lambda(s)$
 
 \section{The Frobenius similitude and the determinant identity}\label{sec:det}
 
-The map $n\mapsto pn$ is the Frobenius self-similarity of the carrier. By Theorem~\ref{thm:windmul}
-it acts on the carrier point $\mathrm{helixPt}(n)=\sqrt n\,\mathrm{wind}(n)$ as
+The map $n\mapsto pn$ --- and more generally $n\mapsto mn$ --- is the \emph{Frobenius
+self-similarity} of the carrier. We define it precisely, as a similitude of the carrier line.
+
+\begin{definition}[Frobenius similitude; \code{frobeniusMultiplier}, \code{frobeniusSimilitude}]\label{def:simil}
+For an integer $m$ the \emph{Frobenius multiplier} is
+$\mu_\theta(m)=\sqrt m\,\mathrm{wind}_\theta(m)\in\C$, and the \emph{Frobenius similitude}
+$\mathrm{Sim}_\theta(m)$ is the $\C$-linear self-map $w\mapsto\mu_\theta(m)\,w$ of the carrier line $\C$.
+\end{definition}
+
+\begin{theorem}[Prime multiplication acts by similitude; \code{helixPt\_mul}, \code{helixPt\_eq\_similitude}, \code{norm\_frobeniusMultiplier}, \code{frobeniusSimilitude\_mul}]\label{thm:simil}
+For $m,n\neq0$, multiplication $n\mapsto mn$ acts on the carrier point
+$\mathrm{helixPt}_\theta(n)=\sqrt n\,\mathrm{wind}_\theta(n)$ by the similitude
 \[
-  \mathrm{helixPt}(pn) \;=\; \sqrt{pn}\,\mathrm{wind}(pn)
-   \;=\; \underbrace{\sqrt p}_{\text{radial}}\;\underbrace{\mathrm{wind}(p)}_{\text{rotation}}\;\mathrm{helixPt}(n),
+  \mathrm{helixPt}_\theta(mn) \;=\; \mathrm{Sim}_\theta(m)\bigl(\mathrm{helixPt}_\theta(n)\bigr)
+   \;=\; \underbrace{\sqrt m}_{\text{radial}}\;\underbrace{\mathrm{wind}_\theta(m)}_{\text{rotation}}\;\mathrm{helixPt}_\theta(n).
 \]
-a similitude: radial scaling $\sqrt p$ (the area-law factor of Theorem~\ref{thm:arealaw}) times a
-rotation by the unit-modulus winding $\mathrm{wind}(p)$. Under the bridge (Theorem~\ref{thm:bridge})
-the rotation eigenphase at ordinate $y$ is the spin $z=\mathrm{spin}(y,n)=e^{-iy\log n}\in\T$. The two
-chiralities (Theorem~\ref{thm:conjhelix}) carry $z$ and $\conj z$.
+Its multiplier has modulus $\lVert\mu_\theta(m)\rVert=\sqrt m$ --- the area-law factor of
+Theorem~\ref{thm:arealaw}, the winding rotation being unit-modulus --- so the map scales every length
+by $\sqrt m$. Moreover the similitudes \emph{compose},
+$\mathrm{Sim}_\theta(mn)=\mathrm{Sim}_\theta(m)\circ\mathrm{Sim}_\theta(n)$: the carrier is
+\emph{self-similar} under the whole multiplicative monoid generated by the primes (the Frobenius maps).
+\end{theorem}
+
+Under the bridge (Theorem~\ref{thm:bridge}), with prime-angle assignment $\theta(p)=-y\log p$ the
+rotation eigenphase at ordinate $y$ is the spin $z=\mathrm{spin}(y,n)=e^{-iy\log n}\in\T$
+(\code{frobeniusMultiplier\_bridge}). The two chiralities (Theorem~\ref{thm:conjhelix}) carry
+$z$ and $\conj z$.
 
 \begin{theorem}[Conjugate-eigenstate determinant; \code{frobenius\_conjugate\_det\_one}]\label{thm:det}
 For every $y\in\R$ and $n\in\N$, with $z=\mathrm{spin}(y,n)=e^{-iy\log n}$,
@@ -579,17 +631,25 @@ The $2\times2$ determinant is $z\cdot\conj z-0\cdot0=z\,\conj z$. Since $\conj z
 $z\,\conj z=e^{-iy\log n}\,e^{+iy\log n}=e^{0}=1$.
 \end{proof}
 
-\begin{remark}\label{rem:end}
+\begin{theorem}[Unitary transverse block; \code{frobeniusBlock\_det\_one}, \code{frobeniusBlock\_unitary}]\label{thm:unitary}
 The transverse block $\diag(z,\conj z)$ assembled from the two chiral eigenphases at a conjugate
-crossing has determinant $1$; the radial scaling $\sqrt p$ of the similitude is carried separately
-and is not part of this block.
-\end{remark}
+crossing is \emph{unitary}, $M^{\mathsf H}M=I$, with determinant $z\,\conj z=|z|^2=1$ --- the
+orientation- and volume-preserving chiral invariant of the transverse phase dynamics. The radial
+scaling $\sqrt m$ of the similitude (Theorem~\ref{thm:simil}) is carried separately and is not part of
+this block.
+\end{theorem}
 
 \subsection{The self-adjoint eigenstate}\label{sub:eigenstate}
 
 The determinant identity above is stated for the bare eigenphases $z,\conj z\in\T$. We realize them
 as the values of a genuine eigenstate of a self-adjoint generator. This is the operator
 \emph{design}: it is real because its inputs are real, and it stands independently of any zero.
+Reading the nontrivial zeros as the spectrum of a self-adjoint operator is the
+\emph{Hilbert--P\'olya} program --- supported by the random-matrix law of the zero statistics
+\cite{Montgomery1973} and pursued through the Berry--Keating $H=xp$ quantization
+\cite{BerryKeating1999} and Connes's noncommutative-geometry trace formula \cite{Connes1999}; the
+operator design here is unconditional and per-height, and makes no claim to be that canonical
+operator (Remark~\ref{rem:openlink}).
 
 \begin{definition}[Spectral wave; \code{spectralWave}]\label{def:wave}
 For $\gamma\in\R$, $\;\psi_\gamma(t)=e^{i\gamma t}\;(t\in\R)$.
@@ -609,11 +669,35 @@ finitely-supported sequence space the real-diagonal operator $\mathrm{diagOp}(d)
 eigenvalues $d_i$ (\code{diagOp\_eigenvector}), and \emph{every} eigenvalue is real
 (\code{diagOp\_spectrum\_real}) by von Neumann reality --- a symmetric operator on a complex
 inner-product space has real eigenvalues (\code{symmetric\_eigenvalue\_real}). These are collected in
-\code{unconditional\_frobenius\_eigenstate} and \code{frobenius\_spectralWave\_eigenstate}.
+\code{unconditional\_frobenius\_eigenstate} and \code{frobenius\_spectralWave\_eigenstate}. The
+eigenwave is a one-parameter unitary group, $\psi_\gamma(s+t)=\psi_\gamma(s)\,\psi_\gamma(t)$ with
+$\psi_\gamma(0)=1$ (\code{spectralWave\_add}, \code{spectralWave\_zero}): the unitary flow generated by
+the real spectral parameter $\gamma$ (Stone form).
 
 \begin{proposition}[The chiralities are eigenstate values; \code{spin\_eq\_spectralWave}, \code{conj\_spin\_eq\_spectralWave}]\label{prop:chiral}
 For every $y\in\R$ and $n\in\N$, $\;\mathrm{spin}(y,n)=\psi_y(-\log n)\;$ and
 $\;\conj{\mathrm{spin}(y,n)}=\psi_y(\log n)$.
+\end{proposition}
+
+The useful spectral content is not the mere existence of the eigenwave $\psi_y$ --- every real $y$
+gives one --- but its \emph{orthogonality} to the arithmetic data at a vanishing.
+
+\begin{proposition}[The accumulation is an eigenstate--data inner product; \code{fiberCarrierFinite\_eq\_inner}, \code{fiberCarrierFinite\_eq\_zero\_iff\_orthogonal}]\label{prop:ortho}
+Split the critical-line phasor $\chi(n)\,n^{-(1/2+iy)}$ into the arithmetic datum
+$\chi(n)\,n^{-1/2}$ (the finitely-supported vector $\code{dataVec}(\chi,N)$) and the eigenwave sample
+$\conj{\mathrm{spin}(y,n)}=\psi_y(\log n)$ (the vector $\code{waveVec}(y,N)$). With the $\ell^2$ inner
+product $\langle f,g\rangle=\sum_n\conj{f(n)}\,g(n)$ on the finitely-supported sequence space, the
+finite accumulation is their pairing,
+\[
+  \sum_{n<N}\chi(n)\,n^{-(1/2+iy)} \;=\; \bigl\langle\,\code{waveVec}(y,N),\ \code{dataVec}(\chi,N)\,\bigr\rangle ,
+\]
+so it vanishes \emph{iff} the sampled eigenwave is $\ell^2$-orthogonal to the arithmetic data
+(\code{fiberCarrierFinite\_eq\_zero\_iff\_orthogonal}). A vanishing point is exactly a real-frequency
+orthogonality event, exhibited at each $N$ (and the pairing is the partial phasor sum
+$G_{\chi,N}(\tfrac12+iy)$, which accumulates to the carrier value $L(\tfrac12+iy,\chi)$;
+\code{inner\_eq\_finiteCarrier}). The Gram form of any finite family of such vectors is
+positive-semidefinite (\code{carrier\_gram\_nonneg}), the positive-kernel background for the de Branges
+evaluation of Section~\ref{sec:debranges}.
 \end{proposition}
 
 \begin{theorem}[Determinant on the eigenstate values; \code{frobenius\_spectralWave\_det\_one}]\label{thm:wavedet}
@@ -637,7 +721,7 @@ canonical operator.
 \section{The de Branges evaluation}\label{sec:debranges}
 
 The reality on the critical line (Section~\ref{sub:reality}) and the eigenstate above sit inside the
-Hermite--Biehler / de Branges spectral framework. We record the framework, its reality and
+Hermite--Biehler / de Branges spectral framework \cite{Levin1980,deBranges1968}. We record the framework, its reality and
 discreteness consequences, a worked example, and the change of variables that places the on-line
 cancellations as real spectral points.
 
@@ -686,6 +770,80 @@ construction we evaluate only the on-line cancellations, whose de Branges variab
 unconditionally (Corollary~\ref{cor:online}); we make no claim about off-line zeros.
 \end{remark}
 
+\section{Admissibility: the carrier has no native off-axis support}\label{sec:admissible}
+
+The constructions above combine into a single intrinsic, on-axis statement about the carrier's
+\emph{state space} --- sharper than ``a phasor plot that finds the zeros,'' and strictly weaker than
+the Riemann Hypothesis. A point of the vertical line $s=\sigma+iy$ rides the carrier as a stable,
+scale-normalized fiber only when its amplitude $n^{-\sigma}$ reciprocates the emergent area-law radius
+$r_n\sim\sqrt n$ to a finite positive scale. We call such a $\sigma$ an \emph{admissible
+(scale-balanced) state}.
+
+\begin{definition}[Scale-balanced admissible state; \code{ScaleBalanced}]\label{def:admissible}
+For a carrier $(p,r)$ and abscissa $\sigma\in\R$, $\sigma$ is \emph{scale-balanced} when the
+scale-balance product has a positive finite limit: $\exists L>0,\ n^{-\sigma}\,r_n\to L$, where
+$r_n=\mathrm{carrierRadius}(p,r,n)$ is the emergent area-law radius (Definition~\ref{def:wound},
+Theorem~\ref{thm:arealaw}).
+\end{definition}
+
+\begin{theorem}[The admissible exponent is forced, not chosen; \code{scaleBalanced\_iff}, \code{scaleBalanced\_setOf\_eq}]\label{thm:admissible}
+For every carrier $(p,r)$ with $r>0$, $\sigma$ is scale-balanced \emph{iff} $\sigma=\tfrac12$;
+equivalently $\{\sigma\in\R:\sigma\text{ scale-balanced}\}=\{\tfrac12\}$. The critical abscissa is the
+\emph{unique} exponent compatible with the arclength area law (Theorem~\ref{thm:scalecrit}), and the
+conclusion is gauge-independent: the gauge $(p,r)$ fixes only the value of the limit, never which
+$\sigma$ is admissible.
+\end{theorem}
+
+\begin{corollary}[No native off-axis support; \code{not\_scaleBalanced\_of\_ne}]\label{cor:offaxis}
+For $\sigma\neq\tfrac12$ the fiber is \emph{not} a scale-balanced state: its amplitude $n^{-\sigma}$ is
+not scale-normalized to the carrier (it decays faster than the radius grows, or outruns it). The
+carrier supports no admissible off-axis state.
+\end{corollary}
+
+\begin{remark}[Answering the ``designed around $\tfrac12$'' objection]\label{rem:notchosen}
+The exclusion of off-axis states is not built in: $\tfrac12$ is \emph{derived} from the arclength area
+law (Theorems~\ref{thm:arealaw},~\ref{thm:scalecrit}) as the unique exponent at which $n^{-\sigma}$
+reciprocates $r_n\sim\sqrt n$. It is the $\tfrac12$ of $\sqrt n=n^{1/2}$, not a posited abscissa.
+\end{remark}
+
+The functional equation supplies the global counterpart: the reflection $s\mapsto1-s$, which pairs the
+two chiral fibers, fixes exactly the critical line.
+
+\begin{theorem}[The reflection fixes exactly the critical line; \code{reflection\_fixes\_iff}]\label{thm:reflfix}
+For $s\in\C$, $\;\Ree(1-s)=\Ree s\iff\Ree s=\tfrac12$. Off-axis, $s\mapsto1-s$ sends an abscissa
+imbalance $\sigma$ to the opposite imbalance $1-\sigma$ --- a dual \emph{pair}, not a self-conjugate
+state --- so the double-ended carrier closes only on the fixed locus $\Ree s=\tfrac12$.
+\end{theorem}
+
+\begin{theorem}[The hierarchy, assembled; \code{no\_native\_offaxis\_support}]\label{thm:hierarchy}
+For every carrier $(p,r)$ with $r>0$, height $y$, and site $n$, the following hold simultaneously:
+\begin{enumerate}[label=\textup{(\arabic*)}]
+\item the area law $r_n^{\,2}/n\to r(\pi/3)/\pi$ (so $r_n\sim\sqrt n$), from the arclength geometry;
+\item scale balance holds iff $\sigma=\tfrac12$ (forced, not chosen);
+\item every $\sigma\neq\tfrac12$ is inadmissible;
+\item at the balanced axis the chiral fibers $z,\conj z$ form a determinant-one \emph{unitary}
+transverse block (Theorem~\ref{thm:unitary}); and
+\item $s\mapsto1-s$ fixes exactly $\Ree s=\tfrac12$, on which the de Branges variable is real
+(Corollary~\ref{cor:online}).
+\end{enumerate}
+The chain
+\[
+  r_n\sim\sqrt n \;\Longrightarrow\; \sigma=\tfrac12 \;\Longrightarrow\;
+  \text{unitary chiral block} \;\Longrightarrow\; \det=1 \;\Longrightarrow\;
+  s\leftrightarrow1-s \text{ closes on } \Ree s=\tfrac12
+\]
+is the carrier's intrinsic logic: it reads as a geometry, not a graphing of $L(\tfrac12+it)$.
+\end{theorem}
+
+\begin{remark}[Scope of the admissibility claim]\label{rem:admissiblescope}
+Theorem~\ref{thm:hierarchy} restricts the carrier's admissible \emph{internal} state space to the
+critical line: off-axis points are unsupported / inadmissible / not scale-normalized. It is \emph{not}
+the claim that every analytic zero must arise from an admissible carrier state, nor that there are no
+off-line zeros (the Riemann Hypothesis); that global completeness question is left open
+(Remark~\ref{rem:scope}). The statement is geometric and unconditional, and ``Frobenius'' here means
+precisely the prime-multiplication similitude of Definition~\ref{def:simil}.
+\end{remark}
+
 \section{Formalization}\label{sec:formal}
 
 Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against Mathlib
@@ -693,7 +851,7 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \code{RequestProject} (files \code{ClosedForm.lean}, \code{HelixLogFreeFTA.lean},
 \code{HelixCollapseReality.lean}, \code{LFunctionPhasor.lean}, \code{GeometricProjectionHolds.lean},
 \code{Faithfulness.lean}, \code{AreaLaw.lean}, \code{UnconditionalFrobenius.lean},
-\code{DeBranges.lean}). Each named
+\code{DeBranges.lean}, \code{FrobeniusSimilitude.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -714,19 +872,32 @@ de Branges framework (Section~\ref{sec:debranges}) in \code{DeBranges.lean}, wit
 the carrier --- the eigenstate identification (\code{spin\_eq\_spectralWave},
 \code{frobenius\_eigenstate\_det\_one}) and the on-line de Branges evaluation
 (\code{criticalLine\_deBranges\_real}, \code{zeroHarmonic\_deBranges\_real}) --- collected in
-\code{Faithfulness.lean}.
+\code{Faithfulness.lean}. The compact local spectral mechanism of Section~\ref{sec:det} --- the
+Frobenius similitude (Definition~\ref{def:simil}, Theorem~\ref{thm:simil}), the unitary transverse
+block (Theorem~\ref{thm:unitary}), the eigenstate--data orthogonality
+(Proposition~\ref{prop:ortho}), and the admissibility / no-off-axis-support results of
+Section~\ref{sec:admissible} (Theorems~\ref{thm:admissible},~\ref{thm:reflfix},~\ref{thm:hierarchy})
+--- lives in \code{FrobeniusSimilitude.lean}, assembled in
+\code{frobenius\_local\_spectral\_mechanism} and \code{no\_native\_offaxis\_support}.
 
 \begin{remark}[Scope]\label{rem:scope}
-This paper presents a geometric tool: the double-ended chiral helix carrier and its phasor fiber, on
-which the vanishing points coincide with the zeros of $\zeta$ and the tested Dirichlet
-$L$-functions, verified numerically for the leading zeros. Its mathematical content is exactly the
+This paper presents a geometric state space: the double-ended Frobenius helix carrier and its phasor
+fiber, whose admissible scale-balanced states exist only on the critical line
+(Section~\ref{sec:admissible}) and on which the vanishing points coincide with the zeros of $\zeta$
+and the tested Dirichlet $L$-functions, verified numerically for the leading zeros. Its central
+contribution is intrinsic: the carrier has \emph{no native off-axis support}
+(Theorem~\ref{thm:hierarchy}) --- a geometric state-space restriction, strictly weaker than RH.
+Its mathematical content is exactly the
 statements proved above --- the carrier, the area-law derivation of the critical exponent
 (Theorem~\ref{thm:scalecrit}), the accumulation to $L(s,\chi)$ on $\Ree s>0$, the
 explicit-formula reading of the zeros as poles, the reality of the completed object on the critical
-line, the conjugacy of the two chiralities, the determinant identity of Theorem~\ref{thm:det}, the
-self-adjoint eigenstate realization of the chiral eigenphases (Section~\ref{sub:eigenstate}), and the
-de Branges evaluation placing the on-line cancellations as real spectral points
-(Section~\ref{sec:debranges}). Two links are taken as hypotheses and left open: that a vanishing
+line, the conjugacy of the two chiralities, the Frobenius similitude (Theorem~\ref{thm:simil}), the
+unitary transverse block (Theorem~\ref{thm:unitary}), the eigenstate--data orthogonality
+(Proposition~\ref{prop:ortho}), the self-adjoint eigenstate realization of the chiral eigenphases
+(Section~\ref{sub:eigenstate}), the de Branges evaluation placing the on-line cancellations as real
+spectral points (Section~\ref{sec:debranges}), and the admissibility restriction of the carrier's
+state space to the critical line (Section~\ref{sec:admissible}). Two links are taken as hypotheses
+and left open: that a vanishing
 \emph{produces} the eigenstate (Remark~\ref{rem:openlink}), and that the structure function for
 $\Lambda$ is Hermite--Biehler, i.e.\ that there are no off-line zeros (Remark~\ref{rem:hbscope}) ---
 the latter being the Riemann Hypothesis, which this tool neither assumes nor proves.
@@ -764,10 +935,29 @@ Cambridge Studies in Advanced Mathematics~97, 2007.
 \bibitem{Ahlfors1979} L.~V.~Ahlfors,
 \emph{Complex Analysis}, 3rd ed., McGraw-Hill, 1979.
 
+\bibitem{Levin1980} B.~Ya.~Levin,
+\emph{Distribution of Zeros of Entire Functions}, rev.\ ed., Translations of Mathematical
+Monographs~5, American Mathematical Society, 1980.
+
+\bibitem{deBranges1968} L.~de~Branges,
+\emph{Hilbert Spaces of Entire Functions}, Prentice-Hall, Englewood Cliffs, N.J., 1968.
+
 \bibitem{Tate1967} J.~T.~Tate,
 \emph{Fourier analysis in number fields and Hecke's zeta-functions}, in
 J.~W.~S.~Cassels and A.~Fr\"ohlich (eds.), \emph{Algebraic Number Theory},
 Academic Press, 1967, pp.~305--347.
+
+\bibitem{Montgomery1973} H.~L.~Montgomery,
+\emph{The pair correlation of zeros of the zeta function}, in \emph{Analytic Number Theory}
+(Proc.\ Sympos.\ Pure Math.~XXIV, St.~Louis, 1972), American Mathematical Society, 1973,
+pp.~181--193.
+
+\bibitem{BerryKeating1999} M.~V.~Berry and J.~P.~Keating,
+\emph{The Riemann zeros and eigenvalue asymptotics}, SIAM Review~\textbf{41} (1999), 236--266.
+
+\bibitem{Connes1999} A.~Connes,
+\emph{Trace formula in noncommutative geometry and the zeros of the Riemann zeta function},
+Selecta Math.\ (N.S.)~\textbf{5} (1999), 29--106.
 
 \bibitem{Mathlib2020} The mathlib Community,
 \emph{The Lean Mathematical Library},
