@@ -125,6 +125,41 @@ theorem Bcomp_zeros_discrete {E : ℂ → ℂ} (hEnt : AnalyticOnNhd ℂ E Set.u
     trivial;
   exact absurd ( h_id ( CriticalLinePhasor.DeBranges.Bcomp_analyticOnNhd hEnt ) ( by simpa using h ) ) ( by simpa using CriticalLinePhasor.DeBranges.Bcomp_not_eventually_zero hE )
 
+/-! ## Helix / anti-helix domination
+
+`E` and its reflection `E*` are the *helix* and the *anti-helix*.  On the real axis they are
+balanced, `‖E z‖ = ‖E* z‖` (no domination).  Off the real axis the positivity `IsHB E` forces a
+strict **domination**: in the open upper half-plane the helix dominates (`‖E* z‖ < ‖E z‖`), in the
+open lower half-plane the anti-helix dominates (`‖E z‖ < ‖E* z‖`).  Consequently an off-axis point
+can never be balanced, so an off-line/off-axis spectral zero — which is exactly a balance point of
+the helix and anti-helix — cannot exist: the two helices cannot conspire to both meet (a zero) and
+retain no domination away from the real axis. -/
+
+/-- A spectral zero is exactly a balance point of the helix and anti-helix: `B z = 0 ↔ E z = E* z`. -/
+theorem Bcomp_eq_zero_iff (E : ℂ → ℂ) (z : ℂ) : Bcomp E z = 0 ↔ E z = Estar E z := by
+  unfold Bcomp
+  rw [div_eq_zero_iff]
+  simp [Complex.I_ne_zero, sub_eq_zero]
+
+/-- **Domination dichotomy.**  Off the real axis exactly one helix strictly dominates the other:
+in the upper half-plane the helix dominates, in the lower half-plane the anti-helix dominates. -/
+theorem hb_domination_dichotomy {E : ℂ → ℂ} (hE : IsHB E) {z : ℂ} (hz : z.im ≠ 0) :
+    ‖Estar E z‖ < ‖E z‖ ∨ ‖E z‖ < ‖Estar E z‖ := by
+  rcases lt_or_gt_of_ne hz with h | h
+  · exact Or.inr (hb_lower hE h)
+  · exact Or.inl (hE z h)
+
+/-- **No off-axis balance.**  Away from the real axis the helix and anti-helix can never be
+balanced; one is forced to dominate. -/
+theorem hb_no_offaxis_balance {E : ℂ → ℂ} (hE : IsHB E) {z : ℂ} (hz : z.im ≠ 0) :
+    ‖E z‖ ≠ ‖Estar E z‖ := fun h => hz (norm_eq_imp_im_zero hE h)
+
+/-- **No off-line spectral zero.**  A spectral zero (a balance point of helix and anti-helix)
+cannot lie off the real axis: the two helices cannot conspire to both vanish-balance and retain no
+domination. -/
+theorem hb_no_offaxis_spectral_zero {E : ℂ → ℂ} (hE : IsHB E) {z : ℂ} (hz : z.im ≠ 0) :
+    Bcomp E z ≠ 0 := fun h => hz (Bcomp_zero_im_eq_zero hE h)
+
 /-! ## A concrete Hermite–Biehler structure function: Paley–Wiener -/
 
 /-- The Paley–Wiener structure function `E(z) = e^{−i z}`. -/
