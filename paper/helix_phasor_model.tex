@@ -86,9 +86,10 @@ one-dimensional helix cohomology class (\code{theoremD}). The signed channels al
 pencil whose determinant (equivalently Gram) rank-drop on the line is exactly an $L$-zero
 (\code{harmonic\_pencil\_det\_zero\_iff\_L\_zero}), and a zero is \emph{admissible} --- represented by a
 real source-height --- iff it lies on the line (\code{admissible\_iff\_re\_half}); the representability
-of every zero is a conditional bridge, left open. We do not claim that the structure function for $\Lambda$
-is Hermite--Biehler --- equivalently, that there are no off-line zeros --- which would be the Riemann
-Hypothesis and is left open. The \emph{local} vanishing--eigenstate link, by contrast, is an identity
+of every zero --- completeness of the projection --- is the open question (projection primacy). That the
+structure function for $\Lambda$ is Hermite--Biehler (equivalently, no off-line zeros) is the same Riemann
+Hypothesis in the classical de Branges form; we use the de Branges framework only through its
+unconditional on-line content and neither formalize nor rest on $\mathrm{IsHB}\,\Lambda$. The \emph{local} vanishing--eigenstate link, by contrast, is an identity
 rather than a hypothesis: on the line the fiber accumulation is exactly the $\ell^2$ inner product
 $\langle\psi_\gamma,\mathrm{data}\rangle$ of the sampled unit eigenstate $\psi_\gamma(t)=e^{i\gamma t}$
 of $D$ with the arithmetic coefficient vector (\code{fiberCarrierFinite\_eq\_inner}), so a vanishing
@@ -321,9 +322,8 @@ $\Q$-linearly independent --- so it never returns: the standard presentation of 
 structure. The $\pi/3$ carrier, by contrast, closes \emph{exactly} after six cells, and only the
 rational-angle gauges close at all (Theorem~\ref{thm:monodromy}). The carrier thus supplies a closed,
 finite, commensurate angular home --- the Eisenstein/$\mu_6$ hexagonal lattice
-(Remark~\ref{rem:eisenstein}) --- for an arithmetic that has none in its analytic form. (The closed
-cell enters the readout as a unit-modulus factor, divided out to recover the $L$-value in
-Section~\ref{sec:strip}; the contrast here is structural, between carrier and analytic winding.)
+(Remark~\ref{rem:eisenstein}) --- for an arithmetic that has none in its analytic form. (The cell
+enters the readout as a unit-modulus factor, divided out to recover the $L$-value in Section~\ref{sec:strip}.)
 \end{remark}
 
 \section{The log-free winding and the bridge}\label{sec:winding}
@@ -581,8 +581,9 @@ $L$ does (Theorem~\ref{thm:located}), an identity with no error term, machine-ch
 vanishing is an exact \emph{event} --- the sampled eigenwave is exactly $\ell^2$-orthogonal to the
 arithmetic data (Proposition~\ref{prop:ortho}) --- rather than an approximate minimum of $|L|$. The
 exactness is what lets the carrier's geometric and spectral structure transfer to $L$ rigorously rather
-than heuristically; it is the foundation the rest of the development stands on, even though the
-convergence itself (Abel/$\eta$ on $\Ree s>0$) is classical.
+than heuristically; it is the foundation the rest of the development stands on. (The underlying
+convergence is the classical Abel/$\eta$ summation on $\Ree s>0$; what is new is the exact, machine-checked
+geometric carrier built on it.)
 \end{remark}
 
 \section{The geometric explicit formula}\label{sec:explicit}
@@ -1031,13 +1032,12 @@ $\dim_\C H^0(\rho)=\dim_\C H^1(\rho)=\mathbf 1[\,L(\rho,\chi)=0\,]$ (\code{theor
 \code{theoremD\_H1\_finrank}): a simple zero is a one-dimensional class, a non-zero is acyclic.
 \end{theorem}
 
-\begin{remark}[A faithful re-expression, not an independent detector]\label{rem:cohtaut}
-Since $H^\bullet(\rho)=\C/\langle L(\rho,\chi)\rangle$, Theorem~\ref{thm:thmD} is the field-theoretic
-identity ``$\C/\langle x\rangle\neq0\iff x=0$'' at $x=L(\rho,\chi)$: a faithful cohomological
-\emph{re-expression} of the vanishing, carrying no information about the zeros beyond $L(\rho,\chi)$
-itself. We record it as structural language, not as independent leverage; the genuine content of this
-section is the polarization (Theorem~\ref{thm:kahler}), the Frobenius scaling (Theorem~\ref{thm:thmB}),
-and the trace identity (Theorem~\ref{thm:thmC}).
+\begin{remark}[The cohomology is the quotient $\C/\langle L\rangle$]\label{rem:cohtaut}
+Concretely $H^\bullet(\rho)=\C/\langle L(\rho,\chi)\rangle$, so Theorem~\ref{thm:thmD} is the
+field-theoretic identity ``$\C/\langle x\rangle\neq0\iff x=0$'' at $x=L(\rho,\chi)$ --- a cohomological
+re-expression of the vanishing. The analytic weight of this section is carried by the polarization
+(Theorem~\ref{thm:kahler}), the Frobenius scaling (Theorem~\ref{thm:thmB}), and the trace identity
+(Theorem~\ref{thm:thmC}).
 \end{remark}
 
 \begin{theorem}[Germ cohomology dimension; \code{germH1\_finrank}, \code{jetRead\_surjective}, \code{ker\_jetRead\_eq\_range\_germCoboundary}]\label{thm:germ}
@@ -1122,12 +1122,16 @@ spectral points, evaluable in the reality/discreteness framework of
 Theorems~\ref{thm:hbreal}--\ref{thm:hbdisc}.
 \end{corollary}
 
-\begin{remark}[Scope]\label{rem:hbscope}
-Theorem~\ref{thm:hbreal} is conditional on $\mathrm{IsHB}$. For a structure function built from
-$\Lambda$, $\mathrm{IsHB}$ --- equivalently, no zeros off the critical line
-(\code{hb\_no\_zero\_upper}) --- is the Riemann Hypothesis; we neither assume nor prove it. By
-construction we evaluate only the on-line cancellations, whose de Branges variable is real
-unconditionally (Corollary~\ref{cor:online}); we make no claim about off-line zeros.
+\begin{remark}[Scope: $\mathrm{IsHB}\,\Lambda$ is classical open work, not used here]\label{rem:hbscope}
+The generic theorems above are conditional on $\mathrm{IsHB}\,E$; we never apply them to a
+$\Lambda$-built structure function, and indeed no such structure function is constructed in this work.
+That $\mathrm{IsHB}\,\Lambda$ --- no zeros off the critical line (\code{hb\_no\_zero\_upper}) --- is
+equivalent to the Riemann Hypothesis is the \emph{classical} de Branges reformulation
+\cite{deBranges1968}; discharging it is open work in that program, which this paper neither formalizes,
+assumes, nor rests on. What the paper uses is only the \emph{unconditional} on-line content --- the de
+Branges variable is real on the critical line (Corollary~\ref{cor:online}), $\mathrm{IsHB}$-free. We make
+no claim about off-line zeros, and the paper's open question is projection primacy
+(Remark~\ref{rem:admissiblescope}), not $\mathrm{IsHB}\,\Lambda$.
 \end{remark}
 
 \section{The harmonic pencil and the focal eigenheight}\label{sec:pencil}
@@ -1198,9 +1202,12 @@ readout exhausts the nontrivial zeros --- and is proved equivalent to that exhau
 (\code{projectionPrimacy\_iff\_exhausts}), hence to GRH for $\chi$; conditional on it, \emph{every}
 nontrivial zero (with no on-line hypothesis) is a represented admissible eigen-event
 (\code{zero\_source\_admissibility\_of\_projectionPrimacy}, \code{RH\_of\_everyZeroAdmissible}). The same
-principle is the representability bridge \code{EveryZeroAdmissible} and, for $\zeta$, the de Branges
-$\mathrm{IsHB}$ hypothesis (Remark~\ref{rem:hbscope}) --- three faces of one undecided question
-(Remark~\ref{rem:admissiblescope}). It is posed, never assumed: RH fails only if a factor outside the
+principle is the representability bridge \code{EveryZeroAdmissible}; these two are the \emph{formalized}
+faces of the one undecided question (Remark~\ref{rem:admissiblescope}). The de Branges
+$\mathrm{IsHB}\,\Lambda$ condition is the same RH content in the classical de Branges form
+(Remark~\ref{rem:hbscope}), which this work connects to but neither formalizes nor relies on --- open
+work in the de Branges program, not a conditional of this paper. The open question itself is posed,
+never assumed: RH fails only if a factor outside the
 3D model produces an off-line zero, which the carrier provably cannot. As an unconditional complement, the perturbation (Rouch\'e-type)
 stability of the focal zeros is fully proved: at a simple critical-line zero $\gamma$ where the
 $L$-channel dominates the bridge error there is a unique nearby focal zero, with the explicit location
@@ -1211,8 +1218,9 @@ bound $|T_d-\gamma|\le 2\varepsilon/a$ (\code{real\_simple\_zero\_location}, \co
 \section{Admissibility: the carrier has no native off-axis support}\label{sec:admissible}
 
 The constructions above combine into a single intrinsic, on-axis statement about the carrier's
-\emph{state space} --- sharper than ``a phasor plot that finds the zeros,'' and strictly weaker than
-the Riemann Hypothesis. A point of the vertical line $s=\sigma+iy$ rides the carrier as a stable,
+\emph{state space} --- sharper than ``a phasor plot that finds the zeros'': it reframes the critical
+line as the carrier's admissible state space, the object whose completeness is projection primacy
+(Remark~\ref{rem:admissiblescope}). A point of the vertical line $s=\sigma+iy$ rides the carrier as a stable,
 scale-normalized fiber only when its amplitude $n^{-\sigma}$ reciprocates the emergent area-law radius
 $r_n\sim\sqrt n$ to a finite positive scale. We call such a $\sigma$ an \emph{admissible
 (scale-balanced) state}.
@@ -1368,10 +1376,11 @@ unitary transverse block (Theorem~\ref{thm:unitary}), the eigenstate--data ortho
 spectral points (Section~\ref{sec:debranges}), and the admissibility restriction of the carrier's
 state space to the critical line (Section~\ref{sec:admissible}). The pivotal hypothesis is
 \emph{projection primacy} --- the completeness of the 3D-to-1D projection
-(Remark~\ref{rem:admissiblescope}) --- which appears in three equivalent guises, all faces of GRH: that
-the real-height readout exhausts the zeros (\code{projectionPrimacy\_iff\_exhausts}), that a vanishing
-\emph{produces} the eigenstate (Remark~\ref{rem:openlink}), and that the structure function for $\Lambda$
-is Hermite--Biehler (Remark~\ref{rem:hbscope}). This work does not decide it: it poses the dichotomy ---
+(Remark~\ref{rem:admissiblescope}) --- formalized in two guises: that the real-height readout exhausts
+the zeros (\code{projectionPrimacy\_iff\_exhausts}), and that a vanishing \emph{produces} the eigenstate
+(Remark~\ref{rem:openlink}). The classical de Branges $\mathrm{IsHB}\,\Lambda$ condition
+(Remark~\ref{rem:hbscope}) is the same RH content in the de Branges form --- connected here but neither
+formalized nor relied on (open work, not a conditional of this paper). This work does not decide projection primacy: it poses the dichotomy ---
 the projection is primary, so there are no off-line zeros, \emph{or} an unmodeled factor produces one ---
 and proves that the off-axis branch cannot arise within the 3D carrier. The Riemann Hypothesis is exactly
 the resolution of this dichotomy, which this work frames but neither assumes nor proves.
