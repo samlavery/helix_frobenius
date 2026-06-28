@@ -54,7 +54,7 @@ theorem criticalLine_phasor_closure_iff_L_zero
       (fun N : ℕ => ∑ n ∈ Finset.range N,
         χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (t : ℂ) * I)))
       atTop (nhds 0) := by
-  have h := CriticalLinePhasor.LFunctionPhasor.dirichlet_strip_tendsto_LFunction χ hχ ( show 0 < ( 1 / 2 + t * I |> Complex.re ) by norm_num ) ; simp_all +decide [ Complex.add_re, Complex.mul_re, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im ] ;
+  have h := CriticalLinePhasor.LFunctionPhasor.dirichlet_strip_tendsto_LFunction χ hχ ( show 0 < ( 1 / 2 + t * I |> Complex.re ) by norm_num ) ; simp_all +decide ;
   exact ⟨ fun h' => by simpa [ h' ] using h, fun h' => tendsto_nhds_unique h h' ⟩
 
 /-! ## 2. Positive / negative lane split -/
@@ -115,7 +115,7 @@ theorem L_zero_iff_lane_limits_eq
       convert h_neg.sub h.2 using 2 ; norm_num [ Finset.sum_ite ];
       ring;
     have h_neg : Filter.Tendsto (fun N : ℕ => -∑ n ∈ Finset.range N, if χ n = -1 then (n : ℂ) ^ (-(1 / 2 + t * I)) else 0) Filter.atTop (nhds (-ℓ)) := by
-      convert h_neg using 2 ; norm_num [ Finset.sum_ite ] ; ring;
+      convert h_neg using 2 ; norm_num [ Finset.sum_ite ] ; ring_nf;
       rw [ Finset.sum_filter, Finset.sum_filter ] ; rw [ ← Finset.sum_neg_distrib ] ; rw [ ← Finset.sum_sub_distrib ] ; congr ; ext ; rcases hval ‹_› with h | h | h <;> norm_num [ h ] ;
     exact ⟨ h.2, by simpa [ Finset.sum_filter ] using h_neg.neg ⟩;
   · convert criticalLine_phasor_closure_iff_L_zero χ hχ t |>.2 _ using 1;

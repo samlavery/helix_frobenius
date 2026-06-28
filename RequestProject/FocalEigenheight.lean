@@ -185,9 +185,9 @@ theorem channel_diff_tendsto (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
     (hsign : ∀ n : ℕ, χ (n : ZMod q) = 1 ∨ χ (n : ZMod q) = -1 ∨ χ (n : ZMod q) = 0) (Z : ℝ) :
     Tendsto (fun N : ℕ => Pchan χ N (Real.log Z) - Mchan χ N (Real.log Z)) atTop
       (nhds (((Real.pi / 3 : ℝ) : ℂ) * Phi χ Z)) := by
-  convert Filter.Tendsto.mul tendsto_const_nhds ( readout_partialSum_tendsto χ hχ Z |> Filter.Tendsto.comp <| Filter.tendsto_add_atTop_nat 1 ) using 2 ; ring;
+  convert Filter.Tendsto.mul tendsto_const_nhds ( readout_partialSum_tendsto χ hχ Z |> Filter.Tendsto.comp <| Filter.tendsto_add_atTop_nat 1 ) using 2 ; ring_nf;
   convert channel_diff χ _ _ hsign using 1 ; norm_num [ add_comm, Finset.sum_range_succ' ];
-  erw [ Finset.sum_Ico_eq_sub _ _ ] <;> norm_num [ Finset.sum_range_succ' ] ; ring;
+  erw [ Finset.sum_Ico_eq_sub _ _ ] <;> norm_num [ Finset.sum_range_succ' ] ; ring_nf;
   unfold readoutTerm; norm_num;
 
 /-
@@ -231,8 +231,8 @@ theorem log_dilation_phase (n : ℕ) (hn : 0 < n) (Z t : ℝ) (hZ : 0 < Z) :
 theorem helix_phase_pullback (n : ℕ) (hn : 0 < n) (t Z : ℝ) (hZ : 0 < Z) :
     readoutMode t (Z / n) / readoutMode t Z = Complex.exp (-((t : ℂ) * (Real.log n : ℂ)) * I) := by
   rw [ div_eq_iff ];
-  · unfold readoutMode; rw [ ← Complex.exp_add ] ; ring;
-    rw [ Real.log_mul ( by positivity ) ( by positivity ), Real.log_inv ] ; push_cast ; ring;
+  · unfold readoutMode; rw [ ← Complex.exp_add ] ; ring_nf;
+    rw [ Real.log_mul ( by positivity ) ( by positivity ), Real.log_inv ] ; push_cast ; ring_nf;
   · exact Complex.exp_ne_zero _
 
 /-- **The relative readout factor.**  The phase pulled back from the dilation `Z ↦ Z/n`. -/

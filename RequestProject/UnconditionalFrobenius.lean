@@ -184,7 +184,7 @@ theorem spectralWave_hasDerivAt (γ : ℝ) (t : ℝ) :
 
 theorem spectralWave_eigen (γ : ℝ) (t : ℝ) :
     -Complex.I * deriv (spectralWave γ) t = (γ : ℂ) * spectralWave γ t := by
-  convert congr_arg ( fun x : ℂ => -Complex.I * x ) ( HasDerivAt.deriv ( spectralWave_hasDerivAt γ t ) ) using 1 ; ring;
+  convert congr_arg ( fun x : ℂ => -Complex.I * x ) ( HasDerivAt.deriv ( spectralWave_hasDerivAt γ t ) ) using 1 ; ring_nf;
   norm_num
 
 theorem spectralWave_norm (γ : ℝ) (t : ℝ) : ‖spectralWave γ t‖ = 1 := by
