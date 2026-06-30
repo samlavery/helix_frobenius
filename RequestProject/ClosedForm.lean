@@ -229,9 +229,9 @@ theorem helix_hasDerivAt (p r k : ℝ) :
 theorem helix_speed_sq (p r k : ℝ) :
     (helixVel p r k).1 ^ 2 + (helixVel p r k).2.1 ^ 2 + (helixVel p r k).2.2 ^ 2
       = p ^ 2 + r ^ 2 + (2 * Real.pi * r * k) ^ 2 := by
-  convert congr_arg ( fun x : ℝ => x ^ 2 + ( Real.sin ( 2 * Real.pi * k ) * r + Real.cos ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) ^ 2 + p ^ 2 ) ( show Real.cos ( 2 * Real.pi * k ) * r - Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) = - ( Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) + Real.cos ( 2 * Real.pi * k ) * r by ring ) using 1 ; ring_nf;
-  · unfold CriticalLinePhasor.Geometry.helixVel; ring_nf;
-  · ring_nf ; rw [ Real.sin_sq, Real.cos_sq ] ; ring;
+  convert congr_arg ( fun x : ℝ => x ^ 2 + ( Real.sin ( 2 * Real.pi * k ) * r + Real.cos ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) ^ 2 + p ^ 2 ) ( show Real.cos ( 2 * Real.pi * k ) * r - Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) = - ( Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) + Real.cos ( 2 * Real.pi * k ) * r by ring ) using 1 ; ring;
+  · unfold CriticalLinePhasor.Geometry.helixVel; ring;
+  · ring ; rw [ Real.sin_sq, Real.cos_sq ] ; ring;
 
 /-- The climber `k(y) = e^y / p`. -/
 noncomputable def kClimb (p y : ℝ) : ℝ := Real.exp y / p
@@ -258,8 +258,8 @@ The cylindrical radius of a helix point equals `|r·k|`
 -/
 theorem helix_cyl_radius (p r k : ℝ) :
     Real.sqrt ((helix p r k).1 ^ 2 + (helix p r k).2.1 ^ 2) = |r * k| := by
-  unfold CriticalLinePhasor.Geometry.helix; rw [ ← Real.sqrt_sq_eq_abs ] ; ring_nf;
-  rw [ Real.sin_sq, Real.cos_sq ] ; ring_nf
+  unfold CriticalLinePhasor.Geometry.helix; rw [ ← Real.sqrt_sq_eq_abs ] ; ring;
+  rw [ Real.sin_sq, Real.cos_sq ] ; ring
 
 /-- The full 3D point attached to ordinate `y`: `γ(y) = helix p r (k(y))`. -/
 noncomputable def gammaY (p r y : ℝ) : ℝ × ℝ × ℝ := helix p r (kClimb p y)
@@ -273,7 +273,7 @@ theorem gammaY_eq (p r y : ℝ) (hp : p ≠ 0) :
        (r / p) * Real.exp y * Real.sin (2 * Real.pi * Real.exp y / p),
        Real.exp y) := by
   unfold CriticalLinePhasor.Geometry.gammaY;
-  unfold CriticalLinePhasor.Geometry.helix CriticalLinePhasor.Geometry.kClimb; ring_nf;
+  unfold CriticalLinePhasor.Geometry.helix CriticalLinePhasor.Geometry.kClimb; ring;
   norm_num [ hp ]
 
 /-- The helix speed `√(p² + r² + (2π r k)²)`. -/
@@ -372,7 +372,10 @@ theorem arclength_substitution (p r k : ℝ) (hp : 0 < p) :
     rw [ Real.sqrt_div' _ ( by positivity ), Real.sqrt_sq hp.le, mul_div_cancel₀ _ hp.ne' ];
   · norm_num [ hp.ne' ]
 
-/-- The integer angular scaling `s_n = n·(π/3)`. -/
+/-- **The geometric carrier spin** (the primary spin of the model): the integer placement winding
+`s_n = n·(π/3)`, the μ6 cell.  It is linear in `n` and carries **no logarithm** — this is the
+actual helix geometry.  (The log-`n` rotation that appears elsewhere is the *analytic readout /
+Mellin* spin `LFunctionPhasor.mellinSpin`, a property of the readout, not of the carrier.) -/
 noncomputable def spinAngle (n : ℕ) : ℝ := n * (Real.pi / 3)
 
 /--
@@ -437,8 +440,8 @@ principal-character `L`-function is, on `s = σ + iy`,
 theorem euler_factor_vertical_line (ell : ℕ) (hell : 0 < ell) (σ y : ℝ) :
     1 - (ell : ℂ) ^ (-((σ : ℂ) + (y : ℂ) * I)) =
       1 - (((ell : ℝ) ^ (-σ) : ℝ) : ℂ) * Complex.exp (-(y * Real.log ell) * I) := by
-  norm_num [ Complex.ofReal_cpow, hell.ne', Complex.cpow_def, Complex.exp_ne_zero ] ; ring_nf;
-  rw [ ← Complex.exp_add ] ; ring_nf
+  norm_num [ Complex.ofReal_cpow, hell.ne', Complex.cpow_def, Complex.exp_ne_zero ] ; ring;
+  rw [ ← Complex.exp_add ] ; ring
 
 end CriticalLinePhasor.Geometry
 
@@ -662,9 +665,9 @@ theorem norm_half_add_mul_I (γ : ℝ) :
 -/
 theorem arg_half_add_mul_I (γ : ℝ) :
     Complex.arg ((1 / 2 : ℂ) + (γ : ℂ) * I) = Real.arctan (2 * γ) := by
-  rw [ Complex.arg, Complex.norm_def, Complex.normSq_apply ] ; norm_num ; ring_nf;
+  rw [ Complex.arg, Complex.norm_def, Complex.normSq_apply ] ; norm_num ; ring;
   rw [ Real.arctan_eq_arcsin ] ; ring_nf ; norm_num;
-  rw [ show 1 + γ ^ 2 * 4 = 4 * ( 1 / 4 + γ ^ 2 ) by ring, Real.sqrt_mul ( by norm_num ) ] ; ring_nf
+  rw [ show 1 + γ ^ 2 * 4 = 4 * ( 1 / 4 + γ ^ 2 ) by ring, Real.sqrt_mul ( by norm_num ) ] ; ring
 
 /-- The **explicit-formula residue harmonic** `−x^ρ/ρ` at `ρ = 1/2 + iγ`. -/
 noncomputable def residueHarmonic (x γ : ℝ) : ℂ :=
@@ -684,20 +687,20 @@ theorem residueHarmonic_phasor (x γ : ℝ) (hx : 0 < x) :
   -- Write the formula for `residueHarmonic` using `Complex.cpow_def_of_ne_zero` (base ≠ 0 since x>0).
   have h_cpow_def : (x : ℂ) ^ ((1 / 2 : ℂ) + (γ : ℂ) * I) = (Real.sqrt x : ℂ) * Complex.exp ((γ * Real.log x : ℝ) * I) := by
     rw [ Complex.cpow_def_of_ne_zero ] <;> norm_num [ hx.ne', Real.sqrt_eq_rpow ];
-    rw [ Complex.ofReal_log ( by positivity ), Complex.log ] ; norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Complex.log_re, Complex.log_im, Real.rpow_def_of_pos hx ] ; ring_nf;
+    rw [ Complex.ofReal_log ( by positivity ), Complex.log ] ; norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Complex.log_re, Complex.log_im, Real.rpow_def_of_pos hx ] ; ring;
     norm_num [ Complex.arg_ofReal_of_nonneg hx.le, Real.exp_add, Real.exp_sub ];
   -- Write the formula for `ρ` using `Complex.norm_mul_exp_arg_mul_I`.
   have h_rho_def : (1 / 2 : ℂ) + (γ : ℂ) * I = (Real.sqrt (γ ^ 2 + 1 / 4) : ℂ) * Complex.exp ((Real.arctan (2 * γ) : ℝ) * I) := by
-    convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring_nf;
-    · convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) |> Eq.symm using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring_nf;
-    · norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring_nf ; norm_num [ hx.le ] ; ring_nf;
-      norm_cast ; norm_num [ Real.cos_arctan, Real.sin_arctan ] ; ring_nf ; norm_num [ hx.le ] ; ring_nf;
-      rw [ show ( 1 / 4 + γ ^ 2 ) = ( 1 + γ ^ 2 * 4 ) / 4 by ring, Real.sqrt_div' ] <;> norm_num ; ring_nf ; norm_num [ hx.le ] ; ring_nf;
+    convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring;
+    · convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) |> Eq.symm using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring;
+    · norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring ; norm_num [ hx.le ] ; ring;
+      norm_cast ; norm_num [ Real.cos_arctan, Real.sin_arctan ] ; ring ; norm_num [ hx.le ] ; ring;
+      rw [ show ( 1 / 4 + γ ^ 2 ) = ( 1 + γ ^ 2 * 4 ) / 4 by ring, Real.sqrt_div' ] <;> norm_num ; ring ; norm_num [ hx.le ] ; ring;
       exact ⟨ mul_inv_cancel₀ <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity, mul_div_cancel_right₀ _ <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity ⟩;
   simp_all +decide [ CriticalLinePhasor.Residue.residueHarmonic ];
   rw [ div_mul_eq_mul_div, div_eq_div_iff ];
-  · norm_num [ sub_mul, add_mul, mul_assoc, ← Complex.exp_add ] ; ring_nf;
-    norm_num [ mul_assoc, ← Complex.exp_add ] ; ring_nf ; norm_num;
+  · norm_num [ sub_mul, add_mul, mul_assoc, ← Complex.exp_add ] ; ring;
+    norm_num [ mul_assoc, ← Complex.exp_add ] ; ring ; norm_num;
   · exact mul_ne_zero ( Complex.ofReal_ne_zero.mpr <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity ) <| Complex.exp_ne_zero _;
   · exact_mod_cast ne_of_gt <| Real.sqrt_pos.mpr <| by positivity
 
@@ -706,7 +709,7 @@ theorem residueHarmonic_phasor (x γ : ℝ) (hx : 0 < x) :
 -/
 theorem norm_residueHarmonic (x γ : ℝ) (hx : 0 < x) :
     ‖residueHarmonic x γ‖ = Real.sqrt x / Real.sqrt (γ ^ 2 + 1 / 4) := by
-  convert congr_arg Norm.norm ( residueHarmonic_phasor x γ hx ) using 1 ; norm_num [ Complex.norm_exp_ofReal_mul_I, abs_of_pos, hx ] ; ring_nf;
+  convert congr_arg Norm.norm ( residueHarmonic_phasor x γ hx ) using 1 ; norm_num [ Complex.norm_exp_ofReal_mul_I, abs_of_pos, hx ] ; ring;
   norm_num [ Complex.norm_exp ];
   norm_cast ; norm_num [ abs_of_nonneg, Real.sqrt_nonneg ]
 
@@ -839,7 +842,7 @@ theorem etaTrivial_eq_tsum {s : ℂ} (hs : 1 < s.re) :
   -- Split the sum into even and odd terms.
   have h_split : ∑' n : ℕ, (1 : ℂ) / ((n : ℂ) + 1) ^ s - ∑' n : ℕ, (-1 : ℂ) ^ n / ((n : ℂ) + 1) ^ s = ∑' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s) := by
     rw [ ← Summable.tsum_sub ];
-    · rw [ ← tsum_even_add_odd ] <;> norm_num [ pow_add, pow_mul, div_eq_mul_inv ] ; ring_nf;
+    · rw [ ← tsum_even_add_odd ] <;> norm_num [ pow_add, pow_mul, div_eq_mul_inv ] ; ring;
       -- The series $\sum_{k=0}^{\infty} \frac{1}{(2k+2)^s}$ is a p-series with $p = s$, which converges since $s > 1$.
       have h_pseries : Summable (fun k : ℕ => (1 : ℂ) / ((k + 1 : ℂ) ^ s)) := by
         have := summable_one_div_nat_cpow.2 hs;
@@ -854,9 +857,9 @@ theorem etaTrivial_eq_tsum {s : ℂ} (hs : 1 < s.re) :
       rw [ ← Complex.norm_cpow_eq_rpow_re_of_pos ( by positivity ) ] ; norm_num;
   -- Simplify the expression $\sum' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s)$ to $2^{1-s} \sum' k : ℕ, (1 : ℂ) / ((k + 1) : ℂ) ^ s$.
   have h_simplify : ∑' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s) = 2 ^ (1 - s) * ∑' k : ℕ, (1 : ℂ) / ((k + 1) : ℂ) ^ s := by
-    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun k => _ ; rw [ Complex.cpow_sub ] <;> norm_num ; ring_nf;
-    rw [ show ( 2 + k * 2 : ℂ ) = 2 * ( 1 + k ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring_nf ; norm_cast ; norm_num;
-    · rw [ ← mul_inv, ← Complex.exp_add ] ; rw [ show ( 2 + k * 2 : ℝ ) = 2 * ( 1 + k ) by ring, Real.log_mul ( by positivity ) ( by positivity ) ] ; norm_num ; ring_nf;
+    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun k => _ ; rw [ Complex.cpow_sub ] <;> norm_num ; ring;
+    rw [ show ( 2 + k * 2 : ℂ ) = 2 * ( 1 + k ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring ; norm_cast ; norm_num;
+    · rw [ ← mul_inv, ← Complex.exp_add ] ; rw [ show ( 2 + k * 2 : ℝ ) = 2 * ( 1 + k ) by ring, Real.log_mul ( by positivity ) ( by positivity ) ] ; norm_num ; ring;
     · exact mod_cast by positivity;
     · exact mod_cast by positivity;
   grind
@@ -1291,7 +1294,7 @@ theorem etaTwist_eq_tsum {s : ℂ} (hs : 1 < s.re) :
   have h_split : ∑' n : ℕ, (-1 : ℂ) ^ n * χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s = (∑' n : ℕ, χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s) - 2 * (∑' n : ℕ, χ (2 * n + 2 : ZMod q) / (2 * n + 2 : ℂ) ^ s) := by
     rw [ ← tsum_even_add_odd ];
     · rw [ eq_comm, ← tsum_even_add_odd ];
-      · norm_num [ pow_add, pow_mul, neg_div, tsum_neg, tsum_mul_left ] ; ring_nf;
+      · norm_num [ pow_add, pow_mul, neg_div, tsum_neg, tsum_mul_left ] ; ring;
       · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 1 ) from fun a b h => by simpa using h ) ).congr fun k => ?_
         simp only [Function.comp]
         push_cast
@@ -1300,7 +1303,7 @@ theorem etaTwist_eq_tsum {s : ℂ} (hs : 1 < s.re) :
         simp only [Function.comp]
         push_cast
         rw [ div_eq_mul_inv, Complex.cpow_neg ]
-        ring_nf
+        ring
     · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 1 ) from fun a b h => by simpa using h ) ).congr fun k => ?_
       simp only [Function.comp]
       push_cast
@@ -1312,12 +1315,12 @@ theorem etaTwist_eq_tsum {s : ℂ} (hs : 1 < s.re) :
       rw [ div_eq_mul_inv, Complex.cpow_neg ]
       rw [ show 2 * k + 1 = 2 * k + 1 from rfl, pow_succ, pow_mul ]
       norm_num
-      ring_nf
+      ring
   have h_even : ∑' n : ℕ, χ (2 * n + 2 : ZMod q) / (2 * n + 2 : ℂ) ^ s = (2 : ℂ) ^ (-(s : ℂ)) * χ (2 : ZMod q) * ∑' n : ℕ, χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s := by
-    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun n => _ ; ring_nf;
-    rw [ show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring_nf;
-    · rw [ show ( 2 + n * 2 : ZMod q ) = 2 * ( 1 + n ) by ring, show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.log_mul ] <;> norm_num ; ring_nf;
-      · rw [ Complex.cpow_def_of_ne_zero ( by norm_cast; linarith ) ] ; rw [ Complex.exp_add ] ; ring_nf;
+    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun n => _ ; ring;
+    rw [ show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring;
+    · rw [ show ( 2 + n * 2 : ZMod q ) = 2 * ( 1 + n ) by ring, show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.log_mul ] <;> norm_num ; ring;
+      · rw [ Complex.cpow_def_of_ne_zero ( by norm_cast; linarith ) ] ; rw [ Complex.exp_add ] ; ring;
         rw [ ← Complex.exp_neg ] ; ring;
       · exact mod_cast by positivity;
       · norm_num [ Complex.arg_le_pi, Complex.neg_pi_lt_arg ];
@@ -1447,7 +1450,7 @@ omit [NeZero q] in
 theorem fiberPhasor_eigen (n : ℕ) (y : ℝ) :
     Complex.I * deriv (fun y : ℝ => fiberPhasor χ n y) y
       = (Real.log n : ℂ) * fiberPhasor χ n y := by
-  convert congr_arg ( fun x : ℂ => Complex.I * x ) ( HasDerivAt.deriv ( fiberPhasor_hasDerivAt χ n y ) ) using 1 ; ring_nf;
+  convert congr_arg ( fun x : ℂ => Complex.I * x ) ( HasDerivAt.deriv ( fiberPhasor_hasDerivAt χ n y ) ) using 1 ; ring;
   norm_num
 
 /-- **The finite fiber carrier** `G_{χ,N}(y) = ∑_{n<N} v_n(y)`. -/
@@ -1549,7 +1552,7 @@ omit [NeZero q] in
 theorem fiberPhasor_eq_mellin_character (n : ℕ) (y : ℝ) :
     χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * Complex.I))
       = χ (n : ZMod q) * ((n : ℝ) : ℂ) ^ (-(1 / 2 : ℂ) - (y : ℂ) * Complex.I) := by
-  convert rfl using 2 ; ring_nf;
+  convert rfl using 2 ; ring;
   norm_num
 
 /-

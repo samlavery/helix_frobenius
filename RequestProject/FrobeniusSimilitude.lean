@@ -136,10 +136,10 @@ assignment `θ p = −y·log p`, the unit winding rotation is exactly the analyt
 `e^{−iy·log m}`, so `frobeniusMultiplier (−y·log) m = √m · spin y m`. -/
 theorem frobeniusMultiplier_bridge (y : ℝ) {m : ℕ} (hm : m ≠ 0) :
     frobeniusMultiplier (fun p => -y * Real.log p) m
-      = (Real.sqrt m : ℂ) * LFunctionPhasor.spin y m := by
+      = (Real.sqrt m : ℂ) * LFunctionPhasor.mellinSpin y m := by
   rw [frobeniusMultiplier]
   congr 1
-  rw [HelixLogFree.wind, Circle.coe_exp, Faithful.windAngle_glog (-y) hm, LFunctionPhasor.spin]
+  rw [HelixLogFree.wind, Circle.coe_exp, Faithful.windAngle_glog (-y) hm, LFunctionPhasor.mellinSpin]
   congr 1
   push_cast
   ring
@@ -149,8 +149,8 @@ theorem frobeniusMultiplier_bridge (y : ℝ) {m : ℕ} (hm : m ≠ 0) :
 /-- **`z · z̄ = |z|² = 1`** — the two chiral eigenphases are reciprocal; their product collapses the
 scale to unity. -/
 theorem spin_mul_conj (y : ℝ) (n : ℕ) :
-    LFunctionPhasor.spin y n * (starRingEnd ℂ) (LFunctionPhasor.spin y n) = 1 := by
-  simp only [LFunctionPhasor.spin]
+    LFunctionPhasor.mellinSpin y n * (starRingEnd ℂ) (LFunctionPhasor.mellinSpin y n) = 1 := by
+  simp only [LFunctionPhasor.mellinSpin]
   rw [← Complex.exp_conj, ← Complex.exp_add,
     show (-(↑y * ↑(Real.log n)) * Complex.I)
         + (starRingEnd ℂ) (-(↑y * ↑(Real.log n)) * Complex.I) = 0 from by
@@ -160,7 +160,7 @@ theorem spin_mul_conj (y : ℝ) (n : ℕ) :
 /-- The **transverse chiral block** at height `y`, site `n`: the diagonal `diag(z, z̄)` of the right
 spin `z = spin y n` and the left (conjugate) spin `z̄`. -/
 noncomputable def frobeniusBlock (y : ℝ) (n : ℕ) : Matrix (Fin 2) (Fin 2) ℂ :=
-  Matrix.diagonal ![LFunctionPhasor.spin y n, (starRingEnd ℂ) (LFunctionPhasor.spin y n)]
+  Matrix.diagonal ![LFunctionPhasor.mellinSpin y n, (starRingEnd ℂ) (LFunctionPhasor.mellinSpin y n)]
 
 /-- **Determinant one.**  `det diag(z, z̄) = z · z̄ = |z|² = 1`: the chiral block is
 volume/orientation‑preserving on the transverse plane. -/
@@ -247,7 +247,7 @@ theorem fiberCarrierFinite_eq_inner {q : ℕ} [NeZero q] (χ : DirichletCharacte
   rw [hin, FiberHarmonic.fiberCarrierFinite]
   refine Finset.sum_congr rfl fun k hk => ?_
   rw [waveVec_apply hk, dataVec_apply χ hk, ← Faithful.conj_spin_eq_spectralWave,
-    Complex.conj_conj, FiberHarmonic.fiberPhasor, LFunctionPhasor.spin]
+    Complex.conj_conj, FiberHarmonic.fiberPhasor, LFunctionPhasor.mellinSpin]
   ring
 
 /-- **Vanishing is arithmetic orthogonality.**  The accumulation vanishes exactly when the sampled
@@ -320,7 +320,7 @@ theorem frobenius_local_spectral_mechanism
     -- (2) determinant‑one unitary transverse block
     ∧ ((frobeniusBlock y n).det = 1 ∧ (frobeniusBlock y n)ᴴ * frobeniusBlock y n = 1)
     -- (3) real eigenphase / von Neumann reality
-    ∧ (LFunctionPhasor.spin y n = UnconditionalFrobenius.spectralWave y (-Real.log n)
+    ∧ (LFunctionPhasor.mellinSpin y n = UnconditionalFrobenius.spectralWave y (-Real.log n)
       ∧ (∀ t : ℝ, -Complex.I * deriv (UnconditionalFrobenius.spectralWave y) t
           = (y : ℂ) * UnconditionalFrobenius.spectralWave y t)
       ∧ (∀ t : ℝ, ‖UnconditionalFrobenius.spectralWave y t‖ = 1)
@@ -439,21 +439,21 @@ Branges side in isolation. -/
 `frobeniusBlock y n = diag(z, z̄)` with `z = spin y n` is definitionally
 `DeBranges.conjPairBlock (spin y n)` — the matrix avatar of the conjugate (chiral) pair. -/
 theorem frobeniusBlock_eq_conjPairBlock (y : ℝ) (n : ℕ) :
-    frobeniusBlock y n = DeBranges.conjPairBlock (LFunctionPhasor.spin y n) := rfl
+    frobeniusBlock y n = DeBranges.conjPairBlock (LFunctionPhasor.mellinSpin y n) := rfl
 
 /-- **det = 1 ⟺ |spin| = 1.**  The Frobenius transverse block is unimodular exactly when the spin
 eigenphase has unit modulus — the same `det diag(w, w̄) = 1 ⟺ |w| = 1` invariant as on the de Branges
 side, here with `w = spin y n`. -/
 theorem frobeniusBlock_det_eq_one_iff (y : ℝ) (n : ℕ) :
-    (frobeniusBlock y n).det = 1 ↔ ‖LFunctionPhasor.spin y n‖ = 1 := by
+    (frobeniusBlock y n).det = 1 ↔ ‖LFunctionPhasor.mellinSpin y n‖ = 1 := by
   rw [frobeniusBlock_eq_conjPairBlock, DeBranges.conjPairBlock_det_eq_one_iff]
 
 /-- **`frobeniusBlock_det_one` re-derived through the de Branges unimodular-block bridge.**  The spin
-eigenphase is unimodular (`spin_norm`), so the Frobenius transverse block determinant is always `1`
+eigenphase is unimodular (`mellinSpin_norm`), so the Frobenius transverse block determinant is always `1`
 — the algebraic shadow of the real ordinate `y`. -/
 theorem frobeniusBlock_det_one_via_spin_norm (y : ℝ) (n : ℕ) :
     (frobeniusBlock y n).det = 1 :=
-  (frobeniusBlock_det_eq_one_iff y n).mpr (LFunctionPhasor.spin_norm y n)
+  (frobeniusBlock_det_eq_one_iff y n).mpr (LFunctionPhasor.mellinSpin_norm y n)
 
 /-- **The Frobenius det-one block and the de Branges reality locus, wired together.**  The Frobenius
 transverse block is *always* unimodular and unitary (`frobeniusBlock_det_one`,

@@ -123,9 +123,9 @@ omit [NeZero q] in
 theorem frobeniusLocal_eq_channelTerm (σ h : ℝ) (n : ℕ) :
     frobeniusLocal χ σ h n = channelTerm χ σ h n := by
   by_cases hn : n = 0 <;> simp_all +decide [ frobeniusLocal, channelTerm, specParam ];
-  norm_num [ Complex.cpow_def_of_ne_zero, hn ] ; ring_nf;
-  norm_num [ Real.rpow_def_of_pos ( Nat.cast_pos.mpr ( Nat.pos_of_ne_zero hn ) ), Complex.ofReal_log ( Nat.cast_nonneg _ ) ] ; ring_nf;
-  rw [ mul_assoc, ← Complex.exp_add ] ; ring_nf
+  norm_num [ Complex.cpow_def_of_ne_zero, hn ] ; ring;
+  norm_num [ Real.rpow_def_of_pos ( Nat.cast_pos.mpr ( Nat.pos_of_ne_zero hn ) ), Complex.ofReal_log ( Nat.cast_nonneg _ ) ] ; ring;
+  rw [ mul_assoc, ← Complex.exp_add ] ; ring
 
 /-
 **Euler/Mangoldt superposition.**  The channel is the superposition of the local Frobenius
@@ -185,8 +185,8 @@ theorem cup_self_eq_two_energy (F : ℕ →₀ ℂ) :
   rw [ show ( iotaR F - Jconj ( iotaL F ) |> Finsupp.support ) = ( F.support.image ( fun n => 2 * n ) ) ∪ ( F.support.image ( fun n => 2 * n + 1 ) ) from ?_ ];
   · rw [ Finset.sum_union ];
     · rw [ Finset.sum_image, Finset.sum_image ] <;> norm_num [ iotaR, iotaL, Jconj ];
-      rw [ ← Finset.sum_add_distrib ] ; rw [ Finset.mul_sum ] ; refine' Finset.sum_congr rfl fun x hx => _ ; simp +decide [ Finsupp.embDomain_apply, embR, embL ] ; ring_nf;
-      split_ifs <;> norm_num [ Complex.mul_conj, Complex.normSq_eq_norm_sq ] ; ring_nf; all_goals omega;
+      rw [ ← Finset.sum_add_distrib ] ; rw [ Finset.mul_sum ] ; refine' Finset.sum_congr rfl fun x hx => _ ; simp +decide [ Finsupp.embDomain_apply, embR, embL ] ; ring;
+      split_ifs <;> norm_num [ Complex.mul_conj, Complex.normSq_eq_norm_sq ] ; ring; all_goals omega;
     · norm_num [ Finset.disjoint_right ];
       intros; omega;
   · ext n; simp +decide [ Finsupp.mem_support_iff ] ;

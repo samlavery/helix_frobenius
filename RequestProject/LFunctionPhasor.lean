@@ -1,10 +1,19 @@
 import RequestProject.ClosedForm
 /-!
-# L-functions in phasor form: character buckets, log-`n` spin, and magnitude decay
+# L-functions in phasor form: character buckets, the log-`n` READOUT (Mellin) spin, and magnitude decay
+
+This is the **readout / projection layer** of the model.  The *geometric* carrier spin is the
+linear placement winding `n·(π/3)` (`ClosedForm.spinAngle`, the μ6 cell) — that is where the
+geometry lives and it carries **no logarithm**.  The logarithm enters *only here*, in the analytic
+Mellin readout: reading the carrier off along the vertical line `s = σ + i y` produces a phasor that
+rotates in `log n` as the readout ordinate `y` advances.  We therefore call the unit phasor
+`exp(-(y·log n)·i)` the **Mellin readout spin** `mellinSpin` — it is the readout/Mellin rate, *not*
+the geometric carrier spin.
+
 This file makes precise, and proves, the informal statement
 > *L-functions can be represented in phasor form: the fiber/conductor modulus is set by the
 > Dirichlet character, which accumulates the phasors into negative / positive / neutral
-> buckets; the phasors spin in `log n` and decay towards `0` in magnitude.*
+> buckets; on the analytic readout the phasors spin in `log n` and decay towards `0` in magnitude.*
 The mathematically honest content is a **representation equality** for the Dirichlet `L`-series
 ```
 L(χ, s) = ∑ₙ χ(n) · n^{-s},   s = σ + i y,
@@ -22,9 +31,10 @@ a complex number with
   modulus/conductor of the character (`bucket_eq_of_mod_eq`);
 * **magnitude** `|χ(n)|·n^{-σ}` (`phasorTerm_norm`), which **decays towards `0`** as `n → ∞`
   whenever `σ > 0` (`phasorMagnitude_tendsto_zero`, `phasorTerm_norm_tendsto_zero`);
-* **spin** the unit phasor `exp(-(y·log n)·i)` (`spin`), of modulus `1` (`spin_norm`), which
-  **spins in `log n`**: the angle is additive in `log n`, so the spin is multiplicative in `n`
-  (`spin_mul`).
+* **Mellin readout spin** the unit phasor `exp(-(y·log n)·i)` (`mellinSpin`), of modulus `1`
+  (`mellinSpin_norm`), which **spins in `log n` on the readout** (the geometric carrier spin is
+  `n·(π/3)`): the angle is additive in `log n`, so the readout spin is multiplicative in `n`
+  (`mellinSpin_mul`).
 The capstone `LSeries_phasor_representation` records the representation equality
 `L(χ, s) = ∑ₙ phasorTerm χ σ y n`, and `lfunction_phasor_form` bundles the full geometric
 picture for a quadratic character.  No `axiom`, no `sorry`.
@@ -33,26 +43,28 @@ open Complex
 open scoped BigOperators
 namespace CriticalLinePhasor.LFunctionPhasor
 open CriticalLinePhasor
-/-- The **spin phasor** attached to `n` on the line `s = σ + i y`: the unit-modulus rotation
-`exp(-(y · log n)·i)`.  Its angle `-(y · log n)` is what "spins in `log n`". -/
-noncomputable def spin (y : ℝ) (n : ℕ) : ℂ := Complex.exp (-(y * Real.log n) * I)
+/-- The **Mellin readout spin** attached to `n` on the readout line `s = σ + i y`: the unit-modulus
+rotation `exp(-(y · log n)·i)`.  Its angle `-(y · log n)` is what "spins in `log n`" *on the analytic
+readout* as the readout ordinate `y` advances.  This is the readout/Mellin rate; it is **not** the
+geometric carrier spin (the placement winding `n·(π/3)` of `ClosedForm.spinAngle`). -/
+noncomputable def mellinSpin (y : ℝ) (n : ℕ) : ℂ := Complex.exp (-(y * Real.log n) * I)
 /-- The **phasor term** of the Dirichlet series with weight `χ` on the line `s = σ + i y`:
 `χ(n) · n^{-σ} · exp(-(y · log n)·i)` for `n ≥ 1`, and `0` at `n = 0` (matching `LSeries.term`).
-Its magnitude is `|χ(n)|·n^{-σ}`, its bucket is `χ(n)` and its spin is `spin y n`. -/
+Its magnitude is `|χ(n)|·n^{-σ}`, its bucket is `χ(n)` and its readout spin is `mellinSpin y n`. -/
 noncomputable def phasorTerm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) : ℂ :=
-  if n = 0 then 0 else χ n * ((n : ℝ) ^ (-σ) : ℝ) * spin y n
-/-! ## 1. The spin: unit modulus, and "spins in `log n`" -/
-/-- The spin phasor has **unit modulus**: `‖exp(-(y · log n)·i)‖ = 1`. -/
-theorem spin_norm (y : ℝ) (n : ℕ) : ‖spin y n‖ = 1 := by
-  rw [show spin y n = Complex.exp (-(y * Real.log n) * I) from rfl, Complex.norm_exp]
+  if n = 0 then 0 else χ n * ((n : ℝ) ^ (-σ) : ℝ) * mellinSpin y n
+/-! ## 1. The Mellin readout spin: unit modulus, and "spins in `log n`" on the readout -/
+/-- The Mellin readout spin has **unit modulus**: `‖exp(-(y · log n)·i)‖ = 1`. -/
+theorem mellinSpin_norm (y : ℝ) (n : ℕ) : ‖mellinSpin y n‖ = 1 := by
+  rw [show mellinSpin y n = Complex.exp (-(y * Real.log n) * I) from rfl, Complex.norm_exp]
   norm_num [Complex.log_im]
-/-- **The spin spins in `log n`.**  Because `log` turns products into sums, the spin angle is
-*additive in `log n`*, hence the spin phasor is **multiplicative in `n`**:
-`spin y (m·n) = spin y m · spin y n` for positive `m, n`.  This is the precise sense in which
-"the phasors spin in `log n`". -/
-theorem spin_mul (y : ℝ) (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
-    spin y (m * n) = spin y m * spin y n := by
-  rw [spin, spin, spin, ← Complex.exp_add]
+/-- **The readout spin spins in `log n`.**  Because `log` turns products into sums, the readout
+spin angle is *additive in `log n`*, hence the readout spin phasor is **multiplicative in `n`**:
+`mellinSpin y (m·n) = mellinSpin y m · mellinSpin y n` for positive `m, n`.  This is the precise
+sense in which "the phasors spin in `log n`" on the analytic readout. -/
+theorem mellinSpin_mul (y : ℝ) (m n : ℕ) (hm : 0 < m) (hn : 0 < n) :
+    mellinSpin y (m * n) = mellinSpin y m * mellinSpin y n := by
+  rw [mellinSpin, mellinSpin, mellinSpin, ← Complex.exp_add]
   push_cast [Real.log_mul (by positivity : (m : ℝ) ≠ 0) (by positivity : (n : ℝ) ≠ 0)]
   ring_nf
 /-! ## 2. The representation equality `L(χ, s) = ∑ₙ phasorTerm` -/
@@ -63,7 +75,7 @@ theorem term_eq_phasorTerm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) :
     LSeries.term χ ((σ : ℂ) + (y : ℂ) * I) n = phasorTerm χ σ y n := by
   rcases eq_or_ne n 0 with hn | hn
   · simp [LSeries.term, phasorTerm, hn]
-  · rw [LSeries.term_of_ne_zero hn, phasorTerm, if_neg hn, spin, div_eq_mul_inv,
+  · rw [LSeries.term_of_ne_zero hn, phasorTerm, if_neg hn, mellinSpin, div_eq_mul_inv,
       ← Complex.cpow_neg]
     have h := CriticalLinePhasor.cpow_vertical_line_phasor (n : ℝ) (by positivity) σ y
     push_cast at h ⊢
@@ -83,7 +95,7 @@ the character bucket sets the amplitude weight, the spin contributes modulus `1`
 theorem phasorTerm_norm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) (hn : 0 < n) :
     ‖phasorTerm χ σ y n‖ = ‖χ n‖ * (n : ℝ) ^ (-σ) := by
   unfold phasorTerm
-  rw [if_neg hn.ne', norm_mul, norm_mul, spin_norm, mul_one, Complex.norm_real,
+  rw [if_neg hn.ne', norm_mul, norm_mul, mellinSpin_norm, mul_one, Complex.norm_real,
     Real.norm_of_nonneg (by positivity)]
 /-- **Magnitude bound for a bounded (e.g. Dirichlet) character.**  If `‖χ(n)‖ ≤ 1`, the phasor
 magnitude is at most `n^{-σ}`. -/
@@ -120,15 +132,15 @@ theorem phasorTerm_bucket_trichotomy {q : ℕ} [NeZero q] (χ : DirichletCharact
     χ n = 0 ∨ χ n = 1 ∨ χ n = -1 :=
   hq n
 /-- **Bucketed phasor term for a quadratic character.**  For `n ≥ 1` the phasor term is the
-common magnitude·spin `n^{-σ}·exp(-(y·log n)·i)` multiplied by the bucket sign `χ(n) ∈ {0,±1}`:
+common magnitude·mellinSpin `n^{-σ}·exp(-(y·log n)·i)` multiplied by the bucket sign `χ(n) ∈ {0,±1}`:
 the positive bucket adds it, the negative bucket subtracts it, the neutral bucket drops it. -/
 theorem phasorTerm_bucketed {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
     (hq : χ.IsQuadratic) (σ y : ℝ) (n : ℕ) (hn : 0 < n) :
     (phasorTerm (fun k => χ k) σ y n
-        = ((n : ℝ) ^ (-σ) : ℝ) * spin y n
+        = ((n : ℝ) ^ (-σ) : ℝ) * mellinSpin y n
       ∧ χ n = 1)
     ∨ (phasorTerm (fun k => χ k) σ y n
-        = -(((n : ℝ) ^ (-σ) : ℝ) * spin y n)
+        = -(((n : ℝ) ^ (-σ) : ℝ) * mellinSpin y n)
       ∧ χ n = -1)
     ∨ (phasorTerm (fun k => χ k) σ y n = 0 ∧ χ n = 0) := by
   unfold phasorTerm
@@ -137,8 +149,8 @@ theorem phasorTerm_bucketed {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 /-- **L-function phasor form (full picture).**  For a real (quadratic) Dirichlet character `χ`
 modulo `q`, on the vertical line `s = σ + i y` with `σ > 0`:
 1. **representation equality** `L(χ, s) = ∑ₙ phasorTerm χ σ y n`;
-2. each term factors as `χ(n) · n^{-σ} · spin y n` with **unit-modulus spin** `‖spin y n‖ = 1`;
-3. the spin **spins in `log n`** — `spin y (m·n) = spin y m · spin y n`;
+2. each term factors as `χ(n) · n^{-σ} · mellinSpin y n` with **unit-modulus mellinSpin** `‖mellinSpin y n‖ = 1`;
+3. the mellinSpin **spins in `log n`** — `mellinSpin y (m·n) = mellinSpin y m · mellinSpin y n`;
 4. the **magnitudes decay to `0`** — `‖phasorTerm χ σ y n‖ → 0`;
 5. the **conductor modulus `q` sets the bucket** — `m ≡ n (mod q) ⟹ χ(m) = χ(n)`;
 6. the buckets are **neg / pos / neutral** — `χ(n) ∈ {-1, 0, +1}`. -/
@@ -146,13 +158,13 @@ theorem lfunction_phasor_form {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ 
     (hq : χ.IsQuadratic) (σ y : ℝ) (hσ : 0 < σ) :
     LSeries (fun n => χ n) ((σ : ℂ) + (y : ℂ) * I) = ∑' n, phasorTerm (fun n => χ n) σ y n
       ∧ (∀ n : ℕ, 0 < n →
-          phasorTerm (fun n => χ n) σ y n = χ n * ((n : ℝ) ^ (-σ) : ℝ) * spin y n)
-      ∧ (∀ n : ℕ, ‖spin y n‖ = 1)
-      ∧ (∀ m n : ℕ, 0 < m → 0 < n → spin y (m * n) = spin y m * spin y n)
+          phasorTerm (fun n => χ n) σ y n = χ n * ((n : ℝ) ^ (-σ) : ℝ) * mellinSpin y n)
+      ∧ (∀ n : ℕ, ‖mellinSpin y n‖ = 1)
+      ∧ (∀ m n : ℕ, 0 < m → 0 < n → mellinSpin y (m * n) = mellinSpin y m * mellinSpin y n)
       ∧ Filter.Tendsto (fun n : ℕ => ‖phasorTerm (fun n => χ n) σ y n‖) Filter.atTop (nhds 0)
       ∧ (∀ m n : ℕ, (m : ZMod q) = (n : ZMod q) → χ m = χ n)
       ∧ (∀ n : ℕ, χ n = 0 ∨ χ n = 1 ∨ χ n = -1) := by
-  refine ⟨LSeries_phasor_representation (fun n => χ n) σ y, ?_, spin_norm y, spin_mul y, ?_,
+  refine ⟨LSeries_phasor_representation (fun n => χ n) σ y, ?_, mellinSpin_norm y, mellinSpin_mul y, ?_,
     fun m n h => bucket_eq_of_mod_eq χ m n h, fun n => phasorTerm_bucket_trichotomy χ hq n⟩
   · intro n hn
     simp only [phasorTerm, if_neg hn.ne']

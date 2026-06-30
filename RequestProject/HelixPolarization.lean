@@ -156,7 +156,7 @@ theorem frobT_weighted_adjoint (m : ℕ) (sgn : ℂ) (hsgn : ‖sgn‖ = 1) (x y
     (inner ℂ (frobT m sgn x) (frobT m sgn y) : ℂ) = (m : ℂ) * inner ℂ x y := by
       unfold frobT;
       simp_all +decide [ Tw, inner_smul_left, inner_smul_right ];
-      ring_nf;
+      ring;
       norm_cast ; simp +decide [ mul_comm, Real.sq_sqrt ( Nat.cast_nonneg m ) ];
       simp +decide [ mul_left_comm sgn, mul_assoc, Complex.mul_conj, Complex.normSq_eq_norm_sq, hsgn ]
 

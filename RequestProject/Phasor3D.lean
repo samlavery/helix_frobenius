@@ -33,14 +33,16 @@ The headline upgrade is **magnitude conservation across all three channels**: th
 Euclidean length `mag3` of every term is exactly `n^{-σ}`, *including the neutral channel*
 (`phasor3D_mag3`), whereas the planar arrow length was `‖χ(n)‖·n^{-σ}` and vanished there.
 
-* **No intrinsic spin for the neutral channel.** Its 3-D phasor is independent of the frequency `y`
-  (`phasor3D_neutral_no_spin`): it is a *standing* (resonant) mode, not a travelling one.  The
-  charged channels, by contrast, rotate at rate `log n` as `y` advances (`phasor3D_charged_spin`).
+* **No readout spin for the neutral channel.** Its 3-D phasor is independent of the readout ordinate
+  `y` (`phasor3D_neutral_no_spin`): it is a *standing* (resonant) mode, not a travelling one.  The
+  charged channels, by contrast, rotate at the readout/Mellin rate `log n` as the readout ordinate
+  `y` advances (`phasor3D_charged_spin`).  (This `log n` rotation is the *analytic readout* spin; the
+  *geometric* carrier spin is the linear placement winding `n·(π/3)` of `ClosedForm.spinAngle`.)
 * **Mass for absorption and resonance.** On the neutral channel the magnitude is *absorbed* off the
   radiating spin plane (`phasor3D_neutral_plane_zero`: it contributes `0` to the L-series) and
   *stored* on the mass axis as a positive amplitude `n^{-σ}` (`phasor3D_neutral_mass_pos`).  This
-  standing mass resonates at frequency `resonantFreq n = log n` and height `resonantHeight n = n`
-  with `resonantHeight n = exp (resonantFreq n)` (`resonantHeight_eq_exp_resonantFreq`), matching
+  standing mass resonates at frequency `mellinReadoutFreq n = log n` and height `resonantHeight n = n`
+  with `resonantHeight n = exp (mellinReadoutFreq n)` (`resonantHeight_eq_exp_mellinReadoutFreq`), matching
   the carrier height law `z_n = n = e^{y_n}` of the geometric model.
 
 No `axiom`, no `sorry`.
@@ -192,38 +194,41 @@ theorem phasor3D_charged_plane_norm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) (h
   rcases h with h | h <;> simp [h]
 
 /--
-**The charged channels spin at rate `log n`.**  As the frequency advances `y ↦ y + t`, the
-spin-plane arrow rotates by the angle `-(t·log n)` — an *intrinsic spin* at rate `log n`.  (This
-rotation law in fact holds for every `χ`; the point is that on the neutral channel the arrow is `0`,
-so the rotation is invisible — no intrinsic spin.)
+**The charged channels spin at the readout/Mellin rate `log n`.**  As the *readout ordinate*
+advances `y ↦ y + t`, the spin-plane arrow rotates by the angle `-(t·log n)` — the readout/Mellin
+spin at rate `log n`.  (This is the analytic *readout* rotation, **not** the geometric carrier spin,
+which is the linear placement winding `n·(π/3)` of `ClosedForm.spinAngle`.  The rotation law holds
+for every `χ`; on the neutral channel the arrow is `0`, so the readout rotation is invisible.)
 -/
 theorem phasor3D_charged_spin (χ : ℕ → ℂ) (σ y t : ℝ) (n : ℕ) :
     plane (phasor3D χ σ (y + t) n)
       = Complex.exp (-(t * Real.log n) * I) * plane (phasor3D χ σ y n) := by
   by_cases hn : n = 0
   · simp [phasor3D_plane, phasorTerm, hn]
-  · simp only [phasor3D_plane, phasorTerm, if_neg hn, spin]
+  · simp only [phasor3D_plane, phasorTerm, if_neg hn, mellinSpin]
     have hexp : Complex.exp (-(↑(y + t) * ↑(Real.log ↑n)) * I)
         = Complex.exp (-(↑t * ↑(Real.log ↑n)) * I) * Complex.exp (-(↑y * ↑(Real.log ↑n)) * I) := by
       rw [← Complex.exp_add]; push_cast; ring_nf
     rw [hexp]; ring
 
-/-! ## 6. Resonance: the neutral mass sits at its resonant frequency / height -/
+/-! ## 6. Resonance: the neutral mass sits at its readout frequency / height -/
 
-/-- The **resonant frequency** of index `n`: the spin rate `log n` (the frequency at which the
-`n`-th phasor resonates). -/
-noncomputable def resonantFreq (n : ℕ) : ℝ := Real.log n
+/-- The **readout / Mellin frequency** of index `n`: the readout rate `log n` (the readout-ordinate
+frequency at which the `n`-th phasor resonates).  This is the readout/Mellin rate; it is **not** the
+geometric carrier spin (the placement winding `n·(π/3)` of `ClosedForm.spinAngle`). -/
+noncomputable def mellinReadoutFreq (n : ℕ) : ℝ := Real.log n
 
 /-- The **resonant height** of index `n` on the carrier: `z_n = n` (the geometric height law). -/
 def resonantHeight (n : ℕ) : ℝ := (n : ℝ)
 
 /--
-**Resonance condition `height = exp(frequency)`.**  For `n ≥ 1` the resonant height `n` is the
-exponential of the resonant frequency `log n`: `resonantHeight n = exp (resonantFreq n)`.  This is
-the carrier height law `z_n = n = e^{y_n}` realised on the neutral channel's standing mass.
+**Resonance condition `height = exp(readout frequency)`.**  For `n ≥ 1` the resonant height `n` is
+the exponential of the readout/Mellin frequency `log n`: `resonantHeight n = exp (mellinReadoutFreq n)`.
+The height `z_n = n` is geometric (no logarithm); the `exp(log n)` recovers it by inverting the
+readout `y = log z`, realised on the neutral channel's standing mass.
 -/
-theorem resonantHeight_eq_exp_resonantFreq (n : ℕ) (hn : 0 < n) :
-    resonantHeight n = Real.exp (resonantFreq n) := by
+theorem resonantHeight_eq_exp_mellinReadoutFreq (n : ℕ) (hn : 0 < n) :
+    resonantHeight n = Real.exp (mellinReadoutFreq n) := by
   exact_mod_cast Eq.symm ( Real.exp_log ( Nat.cast_pos.mpr hn ) )
 
 /-! ## 7. Capstone: the full 3-D three-channel picture for a quadratic L-function -/
@@ -237,7 +242,7 @@ theorem resonantHeight_eq_exp_resonantFreq (n : ℕ) (hn : 0 < n) :
    `plane = 0` (absorption) and `mass = n^{-σ} > 0`;
 4. **charged channels spin, no mass** — for `χ(n) = ±1` the mass axis is `0`, the full magnitude
    `n^{-σ}` lives in the spin plane, rotating at rate `log n`;
-5. **resonance** — the neutral mass resonates at height `resonantHeight n = exp (resonantFreq n)`.
+5. **resonance** — the neutral mass resonates at height `resonantHeight n = exp (mellinReadoutFreq n)`.
 -/
 theorem phasor3D_three_channel_form {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
     (hq : χ.IsQuadratic) (σ y : ℝ) :
@@ -250,13 +255,13 @@ theorem phasor3D_three_channel_form {q : ℕ} [NeZero q] (χ : DirichletCharacte
       ∧ (∀ n : ℕ, (χ n = 1 ∨ χ n = -1) →
           massAxis (phasor3D (fun n => χ n) σ y n) = 0
             ∧ (0 < n → ‖plane (phasor3D (fun n => χ n) σ y n)‖ = (n : ℝ) ^ (-σ)))
-      ∧ (∀ n : ℕ, 0 < n → resonantHeight n = Real.exp (resonantFreq n)) := by
+      ∧ (∀ n : ℕ, 0 < n → resonantHeight n = Real.exp (mellinReadoutFreq n)) := by
   refine ⟨phasor3D_plane_tsum (fun n => χ n) σ y,
     fun n hn => phasor3D_mag3 χ hq σ y n hn,
     fun n h => ⟨phasor3D_neutral _ σ y n h, phasor3D_neutral_plane_zero _ σ y n h,
       fun hn => phasor3D_neutral_mass_pos _ σ y n h hn⟩,
     fun n h => ⟨phasor3D_charged_massless _ σ y n h,
       fun hn => phasor3D_charged_plane_norm _ σ y n hn h⟩,
-    fun n hn => resonantHeight_eq_exp_resonantFreq n hn⟩
+    fun n hn => resonantHeight_eq_exp_mellinReadoutFreq n hn⟩
 
 end CriticalLinePhasor.Phasor3D

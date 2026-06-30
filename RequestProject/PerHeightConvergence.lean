@@ -65,21 +65,21 @@ theorem carrier_ne_zero (θ : ℕ → ℝ) {n : ℕ} (hn : 0 < n) :
 
 /-- **The fiber spin is unimodular.**  Attaching the fiber only rotates the carrier, preserving
 its `√n` radial profile. -/
-theorem fiber_spin_unimodular (y : ℝ) (n : ℕ) : ‖LFunctionPhasor.spin y n‖ = 1 :=
-  LFunctionPhasor.spin_norm y n
+theorem fiber_spin_unimodular (y : ℝ) (n : ℕ) : ‖LFunctionPhasor.mellinSpin y n‖ = 1 :=
+  LFunctionPhasor.mellinSpin_norm y n
 
 /-- **Carrier rigidity: pairing a fiber cannot change the radial profile.**  Multiplying the
 carrier by the unit-modulus spin (the fiber) only rotates it; the modulus stays `‖helixPt θ n‖`.
 The only way the `√n` profile could change is to abandon the area-law geometry itself — the carrier
 is rigid (drift-free), not mutable by the fiber. -/
 theorem carrier_fiber_pairing_rigid (θ : ℕ → ℝ) (y : ℝ) (n : ℕ) :
-    ‖LFunctionPhasor.spin y n * HelixLogFree.helixPt θ n‖ = ‖HelixLogFree.helixPt θ n‖ := by
-  rw [norm_mul, LFunctionPhasor.spin_norm, one_mul]
+    ‖LFunctionPhasor.mellinSpin y n * HelixLogFree.helixPt θ n‖ = ‖HelixLogFree.helixPt θ n‖ := by
+  rw [norm_mul, LFunctionPhasor.mellinSpin_norm, one_mul]
 
 /-- **Carrier rigidity, explicit form.**  Pairing any fiber `spin y n` against the carrier leaves
 the radial profile at the area-law baseline `√n`, for every height `y`. -/
 theorem carrier_fiber_pairing_norm_sqrt (θ : ℕ → ℝ) (y : ℝ) (n : ℕ) :
-    ‖LFunctionPhasor.spin y n * HelixLogFree.helixPt θ n‖ = Real.sqrt n := by
+    ‖LFunctionPhasor.mellinSpin y n * HelixLogFree.helixPt θ n‖ = Real.sqrt n := by
   rw [carrier_fiber_pairing_rigid, HelixLogFree.norm_helixPt]
 
 /-! ## 2. The fiber pairing equals the finite phasor carrier -/

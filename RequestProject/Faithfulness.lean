@@ -140,13 +140,16 @@ theorem helixPt_radius_matches_areaLaw (θ : ℕ → ℝ) :
   rw [HelixLogFree.norm_helixPt, inv_div]
 
 /-- **The fiber IS the L-function, accumulated in 3-D.** The partial sums of the carrier-riding
-phasors `∑_{n<N} χ(n)·n^{-s}` converge to `L(s,χ)` for `Re s > 1`: induct the accumulation and out
-comes the L-function. -/
-theorem fiber_accumulates_to_L {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) {s : ℂ}
-    (hs : 1 < s.re) :
+phasors `∑_{n<N} χ(n)·n^{-s}` converge to `L(s,χ)` for **every** `Re s > 0` (non-principal `χ`) —
+the whole open right half-plane, not merely the absolute-convergence region `Re s > 1`: this is the
+strip extension `LFunctionPhasor.dirichlet_strip_tendsto_LFunction`.  Induct the accumulation and out
+comes the L-function, across the entire critical strip and onto the line. -/
+theorem fiber_accumulates_to_L {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1)
+    {s : ℂ} (hs : 0 < s.re) :
     Filter.Tendsto (DirichletPhasorCarrier.finiteCarrier χ s) Filter.atTop
-      (nhds (DirichletCharacter.LFunction χ s)) :=
-  DirichletPhasorCarrier.finiteCarrier_tendsto_LFunction χ hs
+      (nhds (DirichletCharacter.LFunction χ s)) := by
+  refine (LFunctionPhasor.dirichlet_strip_tendsto_LFunction χ hχ hs).congr (fun N => ?_)
+  simp only [DirichletPhasorCarrier.finiteCarrier, DirichletPhasorCarrier.phasorTerm]
 
 /-! ## Projection 3-D → 2-D → 1-D: landing on the real ζ zeros -/
 
@@ -248,19 +251,32 @@ character weight `χ(n)` on each phasor changes — the carrier (right helix, sp
 `n^(-1/2)`) is fixed. For every Dirichlet character `χ`:
 
 * **the fiber is the accumulation** — the partial phasor sums `∑_{n<N} χ(n)·n^(-s)` converge to
-  `L(s,χ)` for `Re s > 1`; and
+  `L(s,χ)` for **every** `Re s > 0` (non-principal `χ`; the strip extension, not just `Re s > 1`); and
 * **its crossings are that `L`'s own zeros** — on the critical line the eta-twisted accumulation
   vanishes exactly where `L(·,χ)` does.
 
 The ten characters checked numerically are instances of this one statement. -/
-theorem faithful_all_L {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) :
-    (∀ s : ℂ, 1 < s.re →
+theorem faithful_all_L {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
+    (∀ s : ℂ, 0 < s.re →
         Filter.Tendsto (DirichletPhasorCarrier.finiteCarrier χ s) Filter.atTop
           (nhds (DirichletCharacter.LFunction χ s))) ∧
     (∀ s : ℂ, s.re = 1 / 2 →
         (DirichletPhasorCarrier.etaTwistClosed χ s = 0 ↔ DirichletCharacter.LFunction χ s = 0)) :=
-  ⟨fun _ hs => DirichletPhasorCarrier.finiteCarrier_tendsto_LFunction χ hs,
+  ⟨fun _ hs => fiber_accumulates_to_L χ hχ hs,
    fun s hs => DirichletPhasorCarrier.etaTwistClosed_eq_zero_iff_critical χ s hs⟩
+
+/-- **The principal character (mod `1`, i.e. `ζ`), covered via the eta-twisted readout.** For the
+principal character the raw phasor sums do not converge on `0 < Re s ≤ 1`, so the fiber is read off
+through the **eta-twisted** alternating weight `(-1)^(n+1)`: for every `Re s > 0` with `s ≠ 1` the
+alternating partial sums converge to `(1 - 2^(1-s))·L(s,χ) = (1 - 2^(1-s))·ζ(s)` — the strip
+extension of the principal-character fiber, onto the critical line. -/
+theorem faithful_principal_L_eta_strip (χ : DirichletCharacter ℂ 1) {s : ℂ} (hs : 0 < s.re)
+    (hs1 : s ≠ 1) :
+    Filter.Tendsto
+        (fun N : ℕ => ∑ n ∈ Finset.range N, (-1 : ℂ) ^ (n + 1) * (n : ℂ) ^ (-s)) Filter.atTop
+        (nhds ((1 - (2 : ℂ) ^ (1 - s)) * DirichletCharacter.LFunction χ s)) := by
+  rw [DirichletCharacter.LFunction_modOne_eq]
+  exact LFunctionPhasor.eta_strip_tendsto hs hs1
 
 /-- **Tate-completed — the same faithfulness, now carrying the functional equation.** For every
 *primitive* `χ`, complete the fiber by the archimedean Γ-factor: `Λ(s,χ) = gammaFactor·L(s,χ)`. The
@@ -369,10 +385,10 @@ the two chiralities are the screw's eigenphases: the right spin `z = e^(−iy·l
 is `z·conj(z) = |z|² = 1`. The Frobenius rotation is **unimodular** — unit-modulus eigenphases, no
 radial drift (the similitude's `√p` scaling is the radius/area-law, carried separately). -/
 theorem frobenius_conjugate_det_one (y : ℝ) (n : ℕ) :
-    Matrix.det !![LFunctionPhasor.spin y n, 0;
-                  0, (starRingEnd ℂ) (LFunctionPhasor.spin y n)] = 1 := by
+    Matrix.det !![LFunctionPhasor.mellinSpin y n, 0;
+                  0, (starRingEnd ℂ) (LFunctionPhasor.mellinSpin y n)] = 1 := by
   rw [Matrix.det_fin_two_of, mul_zero, sub_zero]
-  simp only [LFunctionPhasor.spin]
+  simp only [LFunctionPhasor.mellinSpin]
   rw [← Complex.exp_conj, ← Complex.exp_add,
     show (-(↑y * ↑(Real.log n)) * Complex.I)
         + (starRingEnd ℂ) (-(↑y * ↑(Real.log n)) * Complex.I) = 0 from by
@@ -387,16 +403,16 @@ eigenstate `spectralWave γ` (`UnconditionalFrobenius`: unit norm, real eigenval
 
 /-- The right chirality is the eigenstate `spectralWave y` evaluated at `−log n`. -/
 theorem spin_eq_spectralWave (y : ℝ) (n : ℕ) :
-    LFunctionPhasor.spin y n = UnconditionalFrobenius.spectralWave y (-Real.log n) := by
-  simp only [LFunctionPhasor.spin, UnconditionalFrobenius.spectralWave]
+    LFunctionPhasor.mellinSpin y n = UnconditionalFrobenius.spectralWave y (-Real.log n) := by
+  simp only [LFunctionPhasor.mellinSpin, UnconditionalFrobenius.spectralWave]
   congr 1
   push_cast; ring
 
 /-- The left chirality is the eigenstate `spectralWave y` evaluated at `+log n`. -/
 theorem conj_spin_eq_spectralWave (y : ℝ) (n : ℕ) :
-    (starRingEnd ℂ) (LFunctionPhasor.spin y n)
+    (starRingEnd ℂ) (LFunctionPhasor.mellinSpin y n)
       = UnconditionalFrobenius.spectralWave y (Real.log n) := by
-  simp only [LFunctionPhasor.spin, UnconditionalFrobenius.spectralWave, ← Complex.exp_conj]
+  simp only [LFunctionPhasor.mellinSpin, UnconditionalFrobenius.spectralWave, ← Complex.exp_conj]
   congr 1
   simp only [map_neg, map_mul, Complex.conj_I, Complex.conj_ofReal]
   ring

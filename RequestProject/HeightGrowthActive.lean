@@ -1,6 +1,7 @@
 import RequestProject.AreaLaw
 import RequestProject.ClosedForm
 import RequestProject.LFunctionPhasor
+import RequestProject.GeometricPhasorClosure
 
 /-!
 # Spec update: constant height law `z_n = n`, L-dependent growth `e^(mod q)`, active fraction
@@ -10,10 +11,11 @@ Everything here is new; the existing files are untouched and stay `sorry`-free.
 
 * **Constant height law `z_n = n`** (Δz = 1 per integer `n`, NOT per phasor: the neutral bucket
   `χ(n)=0` carries no arrow but still occupies its slot and still ticks the height; counting per
-  active phasor would climb by `φ(q)/q` per integer and miss `e^γ` by the active fraction).  Since
-  `spin y n = exp(-(y·log n)·i)` spins at rate `log n`, integer `n` sits at `z_n = n = e^{log n}` —
-  the height of its own resonant frequency.  So a zero of `L` at frequency `γ` (resonant term
-  `n* = e^γ`) lands at height `z = e^γ`, for **every** `L`-function (it rides only on `spin = log n`).
+  active phasor would climb by `φ(q)/q` per integer and miss `e^γ` by the active fraction).  The
+  geometric carrier height is `z_n = n` (no logarithm).  Reading it off through the **readout**
+  `analyticHeight z = log z` (`y = log z`) gives the analytic ordinate; inverting the readout
+  (`z = e^y`) sends a zero at readout-ordinate `γ` to height `z = e^γ`, for **every** `L`-function.
+  The `e^γ` is produced by the readout, not by a "spin rate = log n".
 * **L-dependent radial growth `g = e^(mod q)`** (eta `e²`, chi3 `e³`, chi4 `e⁴`, …): the radial gap
   per turn, used as the area-law radius parameter `r`.  The general `radius ~ √n` specializes to
   `carrierRadius / √n → √(e^q / 3)`; same shape for every `L`, only the constant differs.
@@ -28,15 +30,24 @@ namespace CriticalLinePhasor.Geometry
 
 open Real
 
-/-! ## 1. Constant height law `z_n = n` -/
+/-! ## 1. Constant height law `z_n = n`, with `z = e^γ` derived through the readout
 
-/-- The **spin rate** of phasor `n`: `log n` (the rate of `spin y n = exp(-(y·log n)·i)` in `y`). -/
-noncomputable def spinRate (n : ℕ) : ℝ := Real.log n
+The geometry lives in the carrier: the height law `z_n = n` and the geometric placement spin
+`n·(π/3)` carry **no logarithm**.  The logarithm appears only in the *readout* map
+`CriticalLinePhasor.Geometric.analyticHeight Z = log Z` (2-D→1-D, `y = log z`).  Consequently the
+identity `z = e^γ` for a zero at readout-ordinate `γ` is **derived through the readout**
+(`y = log z ⟹ z = e^y`; at a zero `y = γ ⟹ z = e^γ`), not from any "spin rate = log n". -/
 
-/-- The spin phasor really spins at `spinRate`: `spin y n = exp(-(y · spinRate n)·i)`. -/
-theorem spin_eq_spinRate (y : ℝ) (n : ℕ) :
-    CriticalLinePhasor.LFunctionPhasor.spin y n
-      = Complex.exp (-(y * spinRate n) * Complex.I) := rfl
+/-- The **readout / Mellin rate** of index `n`: `log n` (the rate of the analytic readout spin
+`mellinSpin y n = exp(-(y·log n)·i)` in the readout ordinate `y`).  This is the readout/Mellin rate;
+it is **not** the geometric carrier spin (the placement winding `n·(π/3)` of `ClosedForm.spinAngle`). -/
+noncomputable def mellinRate (n : ℕ) : ℝ := Real.log n
+
+/-- The Mellin readout spin really spins at `mellinRate`:
+`mellinSpin y n = exp(-(y · mellinRate n)·i)`. -/
+theorem mellinSpin_eq_mellinRate (y : ℝ) (n : ℕ) :
+    CriticalLinePhasor.LFunctionPhasor.mellinSpin y n
+      = Complex.exp (-(y * mellinRate n) * Complex.I) := rfl
 
 /-- **Constant height law** `z_n = n`: every integer slot rises by the same `Δz = 1`, per
 integer `n` (every slot, including `χ(n)=0`), not per active phasor (spec §2). -/
@@ -46,19 +57,36 @@ def heightLaw (n : ℕ) : ℝ := n
 theorem heightLaw_step (n : ℕ) : heightLaw (n + 1) - heightLaw n = 1 := by
   unfold heightLaw; push_cast; ring
 
-/-- **Each phasor sits at the height of its own resonant frequency**: `z_n = e^{spinRate n}`
-(i.e. `n = e^{log n}`). -/
-theorem heightLaw_eq_exp_spinRate (n : ℕ) (hn : 0 < n) :
-    heightLaw n = Real.exp (spinRate n) := by
-  unfold heightLaw spinRate
-  rw [Real.exp_log (by exact_mod_cast hn : (0:ℝ) < n)]
+/-- The carrier height `z_n = n` is **strictly positive** for `n ≥ 1`, so the readout `log z` is
+defined on it. -/
+theorem heightLaw_pos (n : ℕ) (hn : 0 < n) : 0 < heightLaw n := by
+  unfold heightLaw; exact_mod_cast hn
 
-/-- **Zeros land at `z = e^γ`.**  If phasor `n` resonates at frequency `γ` (`spinRate n = γ`), its
-height is `e^γ`.  At a zero `γ_k` of `L` the resonant term is `n* = e^{γ_k}`, so the cancellation
-sits at height `z = e^{γ_k}` — for every `L`-function (it rides on `spin = log n`). -/
-theorem resonance_height {γ : ℝ} {n : ℕ} (hn : 0 < n) (hres : spinRate n = γ) :
+/-- **The readout rate is the readout of the height.**  Reading the carrier height `z_n = n` off
+through the 2-D→1-D readout `analyticHeight = log` returns exactly the readout/Mellin rate:
+`analyticHeight (heightLaw n) = mellinRate n`.  (Both sides are `log n`; this records that the
+logarithm lives in the *readout*, applied to the geometric height.) -/
+theorem readout_heightLaw (n : ℕ) :
+    CriticalLinePhasor.Geometric.analyticHeight (heightLaw n) = mellinRate n := rfl
+
+/-- **Each carrier height is the exponential of its own readout ordinate**: `z_n = e^{log z_n}`,
+phrased through the readout map as `heightLaw n = exp (analyticHeight (heightLaw n))`.  This is the
+readout identity `z = e^{y}` with `y = log z`, *derived through the readout* `exp_analyticHeight`,
+not from a spin rate.  Equivalently `heightLaw n = exp (mellinRate n)`. -/
+theorem heightLaw_eq_exp_mellinRate (n : ℕ) (hn : 0 < n) :
+    heightLaw n = Real.exp (mellinRate n) := by
+  rw [← readout_heightLaw n,
+    CriticalLinePhasor.Geometric.exp_analyticHeight (heightLaw_pos n hn)]
+
+/-- **Zeros land at `z = e^γ`, derived through the readout.**  If the readout ordinate of the
+carrier height `z_n` is `γ` — i.e. `y = log z_n = analyticHeight (heightLaw n) = γ` — then the height
+is `z_n = e^γ`.  This is the readout chain `y = log z ⟹ z = e^y`; at a zero `y = γ ⟹ z = e^γ`, for
+every `L`-function.  The `e^γ` comes out of the **readout** (`exp_analyticHeight`), never from a
+"spin rate = log n". -/
+theorem resonance_height {γ : ℝ} {n : ℕ} (hn : 0 < n)
+    (hres : CriticalLinePhasor.Geometric.analyticHeight (heightLaw n) = γ) :
     heightLaw n = Real.exp γ := by
-  rw [heightLaw_eq_exp_spinRate n hn, hres]
+  rw [← hres, CriticalLinePhasor.Geometric.exp_analyticHeight (heightLaw_pos n hn)]
 
 /-! ## 2. L-dependent radial growth `g = e^(mod q)` -/
 
@@ -133,9 +161,10 @@ theorem live_per_turn (geo : ℝ) (χ : DirichletCharacter ℂ q) :
 
 /-! ## 4. The height encoding is faithful: real `e^γ`, no branch, no information lost
 
-The height of a vanishing is `z = e^γ` with `γ` **real** (the resonant ordinate, `spinRate n = γ`).
+The height of a vanishing is `z = e^γ` with `γ` **real** (the readout ordinate, `log z = γ`).
 This is the *real* exponential `Real.exp`, NOT the periodic phasor `e^{iγ}` on the unit circle.  The
-spin `spin y n = e^{-(y·log n)·i}` is what lives on the circle; the *carrier height* it resonates at
+Mellin readout spin `mellinSpin y n = e^{-(y·log n)·i}` is what lives on the circle; the *carrier
+height* it resonates at
 is the real number `e^γ`.  Because `Real.exp : ℝ → ℝ` is a single-valued, globally defined, strictly
 monotone injection with the everywhere-defined inverse `Real.log`, the encoding `γ ↦ e^γ` needs no
 branch choice and loses no information — `γ` is recovered exactly as `log z`.  By contrast, the
@@ -148,9 +177,9 @@ winding/branch ambiguity to fix. -/
 theorem resonanceHeight_injective : Function.Injective (fun γ : ℝ => Real.exp γ) :=
   Real.exp_injective
 
-/-- **The ordinate is recovered from the height by `log`** — a global, single-valued inverse, so
-there is no branch cut: `log (e^γ) = γ`. -/
-theorem spinRate_of_resonanceHeight (γ : ℝ) : Real.log (Real.exp γ) = γ :=
+/-- **The ordinate is recovered from the height by the readout `log`** — a global, single-valued
+inverse, so there is no branch cut: `log (e^γ) = γ`. -/
+theorem readout_of_resonanceHeight (γ : ℝ) : Real.log (Real.exp γ) = γ :=
   Real.log_exp γ
 
 /-- **The resonance-height map `γ ↦ e^γ` is surjective onto the positive heights.**  Every positive

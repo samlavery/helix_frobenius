@@ -395,11 +395,10 @@ realizable as a real source height.  Whether *every* nontrivial zero satisfies `
 Riemann Hypothesis (GRH); it is neither assumed nor proved here.  This theorem establishes the
 exhaustion for the critical-line zeros, in the project's honest style. -/
 theorem zero_source_admissibility (χ : DirichletCharacter ℂ q) (ρ : ℂ)
-    (hρ : DirichletCharacter.LFunction χ ρ = 0) (hnontriv : NontrivialZeroChi χ ρ)
+    (hnontriv : NontrivialZeroChi χ ρ)
     (hcrit : ρ.re = 1 / 2) :
     ∃ Z : ℝ, 0 < Z ∧ Admissible χ Z
       ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I := by
-  have _hzero : DirichletCharacter.LFunction χ ρ = 0 := hρ
   obtain ⟨_, _, _⟩ := hnontriv
   refine ⟨Real.exp ρ.im, Real.exp_pos _, admissible_of_pos χ _, ?_⟩
   rw [tauChi, Real.log_exp]
@@ -452,6 +451,6 @@ theorem zero_source_admissibility_of_projectionPrimacy (χ : DirichletCharacter 
     (hpp : ProjectionPrimacy χ) (ρ : ℂ) (hnontriv : NontrivialZeroChi χ ρ) :
     ∃ Z : ℝ, 0 < Z ∧ Admissible χ Z
       ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I :=
-  zero_source_admissibility χ ρ hnontriv.1 hnontriv (hpp ρ hnontriv)
+  zero_source_admissibility χ ρ hnontriv (hpp ρ hnontriv)
 
 end CriticalLinePhasor.HarmonicCell

@@ -115,7 +115,7 @@ theorem L_zero_iff_lane_limits_eq
       convert h_neg.sub h.2 using 2 ; norm_num [ Finset.sum_ite ];
       ring;
     have h_neg : Filter.Tendsto (fun N : ℕ => -∑ n ∈ Finset.range N, if χ n = -1 then (n : ℂ) ^ (-(1 / 2 + t * I)) else 0) Filter.atTop (nhds (-ℓ)) := by
-      convert h_neg using 2 ; norm_num [ Finset.sum_ite ] ; ring_nf;
+      convert h_neg using 2 ; norm_num [ Finset.sum_ite ] ; ring;
       rw [ Finset.sum_filter, Finset.sum_filter ] ; rw [ ← Finset.sum_neg_distrib ] ; rw [ ← Finset.sum_sub_distrib ] ; congr ; ext ; rcases hval ‹_› with h | h | h <;> norm_num [ h ] ;
     exact ⟨ h.2, by simpa [ Finset.sum_filter ] using h_neg.neg ⟩;
   · convert criticalLine_phasor_closure_iff_L_zero χ hχ t |>.2 _ using 1;
