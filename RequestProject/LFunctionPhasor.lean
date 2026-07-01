@@ -1,19 +1,27 @@
 import RequestProject.ClosedForm
 /-!
-# L-functions in phasor form: character buckets, the log-`n` READOUT (Mellin) spin, and magnitude decay
+# The 1-D Dirichlet L-function readout: character buckets, the log-`n` READOUT (Mellin) spin, and magnitude decay
+
+**Vocabulary (ontology).**  The **1-D object is the Dirichlet L-function**; the **phasor
+representation is the 3-D bank** on the carrier (`Phasor3D`, the spin plane × mass axis).
+There is no "1-D phasor representation": what this file calls `phasorTerm` is the **1-D
+readout term** — the projected shadow of the 3-D phasor under the analytic readout — and the
+strip/Abel machinery below is a device of that 1-D projection only (the geometry has no free
+abscissa: `σ = 1/2` is forced by the area law).  The L-function values produced here serve as
+**final readout verification** for the 3-D representation, never as its definition.
 
 This is the **readout / projection layer** of the model.  The *geometric* carrier spin is the
 linear placement winding `n·(π/3)` (`ClosedForm.spinAngle`, the μ6 cell) — that is where the
 geometry lives and it carries **no logarithm**.  The logarithm enters *only here*, in the analytic
-Mellin readout: reading the carrier off along the vertical line `s = σ + i y` produces a phasor that
-rotates in `log n` as the readout ordinate `y` advances.  We therefore call the unit phasor
+Mellin readout: reading the carrier off along the vertical line `s = σ + i y` produces a term that
+rotates in `log n` as the readout ordinate `y` advances.  We therefore call the unit factor
 `exp(-(y·log n)·i)` the **Mellin readout spin** `mellinSpin` — it is the readout/Mellin rate, *not*
 the geometric carrier spin.
 
 This file makes precise, and proves, the informal statement
-> *L-functions can be represented in phasor form: the fiber/conductor modulus is set by the
-> Dirichlet character, which accumulates the phasors into negative / positive / neutral
-> buckets; on the analytic readout the phasors spin in `log n` and decay towards `0` in magnitude.*
+> *the 1-D Dirichlet L-series is the readout of the bank: the fiber/conductor modulus is set by
+> the Dirichlet character, which accumulates the terms into negative / positive / neutral
+> buckets; on the analytic readout the terms spin in `log n` and decay towards `0` in magnitude.*
 The mathematically honest content is a **representation equality** for the Dirichlet `L`-series
 ```
 L(χ, s) = ∑ₙ χ(n) · n^{-s},   s = σ + i y,

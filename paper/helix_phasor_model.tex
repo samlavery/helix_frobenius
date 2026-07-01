@@ -3,6 +3,7 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage{array}
+\usepackage{longtable}
 \usepackage{enumitem}
 \usepackage[hidelinks]{hyperref}
 \setlength{\emergencystretch}{3em}
@@ -29,101 +30,107 @@
 \newcommand{\code}[1]{\texttt{#1}}
 
 \title{The Double-Ended Helix and Projection Primacy:\\
-A Formally Verified Three-Dimensional Carrier for Dirichlet $L$-Functions,\\
+A Machine-Checked Spectral Realization for Dirichlet $L$-Functions,\\
 with the Generalized Riemann Hypothesis as the Completeness of its Projection}
 \author{Samuel Lavery}
-\date{2026-06-19}
+\date{2026-07-01 (major revision; v1 2026-06-19)}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-We introduce a formally specified three-dimensional, double-ended \emph{Frobenius-dual helix
-carrier} for Dirichlet $L$-function phasors.  The main point is not numerical agreement with known
-zeros, but a Lean-verified package of geometric, analytic, and spectral statements.  Uniform
-arclength placement on the growing-radius helix forces the area law $r_n\sim C\sqrt n$
-(\code{windIntegerSite\_radius\_sq\_tendsto}); consequently $n^{-1/2}$ is the unique reciprocal
-scale for a stable fiber (\code{sigma\_half\_is\_scale\_critical},
-\code{scaleBalanced\_iff}).  Thus the abscissa $\Ree s=\tfrac12$ is derived from the carrier's
-scale geometry before any zero-location statement enters.
+We present a geometric spectral realization for Dirichlet $L$-functions --- a three-dimensional,
+double-ended \emph{Frobenius-dual helix carrier} whose phasor fiber accumulates $L$ --- together
+with a machine-checked equivalence isolating exactly where the Generalized Riemann Hypothesis
+enters.  Three theorems carry the paper.  \emph{Unconditional realization}: every zero of
+$L(s,\chi)$ on the critical line is realized as an admissible real source-height eigen-event
+$Z=e^{\gamma}>0$ of a Hermitian positive-semidefinite pencil family --- the unsigned channel alive,
+the signed channel closed, the Gram determinant rank-dropping by exactly one
+(\code{nontrivial\_zero\_represented}, \code{no\_double\_cancellation}).  \emph{Unconditional
+converse implication}: any nontrivial cancellation realized as a kernel of the fixed self-adjoint
+generator lies on the critical line, by von Neumann reality
+(\code{GRH\_from\_nontrivial\_A$\chi$\_realization}).  \emph{The isolated gap}: whether \emph{all}
+nontrivial zeros are so realized --- the \emph{projection-primacy principle} --- is proved
+equivalent to the real-height exhaustion of the zeros, hence to GRH for $\chi$
+(\code{projectionPrimacy\_iff\_exhausts}); it is neither assumed nor proved.  The Riemann Hypothesis
+is thus reframed, not approached: it is exactly the completeness of the carrier's projection.
 
-The analytic fiber is equally explicit.  For a non-principal Dirichlet character $\chi$, the
-phasor partial sums $\sum_{n<N}\chi(n)n^{-s}$ go all the way into the half-plane $\Ree s>0$ and
-converge exactly to $L(s,\chi)$ (\code{dirichlet\_strip\_tendsto\_LFunction}), not merely in the
-absolutely convergent region.  The proof formalizes bounded character sums, Abel summation, locally
-uniform tail summability, and an identity-theorem identification with Mathlib's $L$-function.  For
-the principal case, the eta-regularized channel converges exactly to $(1-2^{1-s})\zeta(s)$ on
-$\Ree s>0$, $s\neq1$ (\code{eta\_strip\_tendsto}); on the critical line the correction factor is
-nonzero, so vanishing of the regularized fiber is exactly vanishing of $\zeta$
-(\code{continuous\_model\_zeta}, \code{FullFiber\_eq\_zero\_iff\_zeta}).  There is no cutoff error or
-asymptotic remainder in these identities.
+The geometry beneath these statements is derived, not designed.  Uniform $\pi/3$-arclength placement
+on the growing-radius helix forces the area law $r_n\sim C\sqrt n$
+(\code{windIntegerSite\_radius\_sq\_tendsto}), and $\sigma=\tfrac12$ is the unique scale-balanced
+exponent (\code{sigma\_half\_is\_scale\_critical}): the abscissa of the critical line comes from the
+carrier's scale geometry before any zero-location statement enters.  The analytic fiber is exact:
+for non-principal $\chi$ the partial sums $\sum_{n<N}\chi(n)n^{-s}$ converge to $L(s,\chi)$ on all
+of $\Ree s>0$ (\code{dirichlet\_strip\_tendsto\_LFunction}), and the $\eta$-regularized principal
+channel identifies $\zeta$'s on-line vanishings exactly (\code{FullFiber\_eq\_zero\_iff\_zeta}) ---
+identities with no cutoff error, machine-checked.
 
-The three-dimensional lift separates the charged spinning channels from the neutral mass channel
-while preserving the $L$-series readout (\code{phasor3D\_plane\_tsum}, \code{phasor3D\_mag3}).
-The carrier's angular winding is built from prime angles by the fundamental theorem of arithmetic;
-the logarithm appears only in the external Mellin bridge
-$\mathrm{wind}\,n\leftrightarrow n^{it}$ (\code{wind\_glog\_eq\_cpow}).  Prime multiplication acts
-by a Frobenius similitude $w\mapsto\sqrt m\,\mathrm{wind}(m)w$; conjugate chiral eigenphases form a
-determinant-one unitary transverse block (\code{frobeniusSimilitude\_mul},
-\code{frobeniusBlock\_unitary}).  The local vanishing mechanism is also spectral: on the line the
-finite fiber is the $\ell^2$ inner product of the sampled eigenwave
-$\psi_\gamma(t)=e^{i\gamma t}$ with the arithmetic data, and vanishing is exactly orthogonality
-(\code{fiberCarrierFinite\_eq\_inner}, \code{fiberCarrierFinite\_eq\_zero\_iff\_orthogonal}).
+The model is also an experimental instrument, and we report its phenomenology.  The partial-absorption
+law (each phasor completes exactly at its own integer site, one at a time --- the finite shadow of
+\code{no\_double\_cancellation}) reproduces the focal cancellation at \emph{all 111 critical-line
+zeros below height 36} of the eight real primitive Dirichlet characters of conductor $\le 12$, at
+eigenheights up to $N=e^{\gamma}\approx3.8\times10^{15}$, with residuals at the truncation scale
+$\sim N^{-1/2}$; an error budget separates zero-precision, truncation, and evaluator floors.  The
+same machinery, with lanes given by coefficient signs instead of residue classes, locates the zeros
+of degree-two $L$-functions ($\Delta$ and the level-$11$ elliptic newform) --- the mechanism does not
+depend on character periodicity.  Negative results are reported alongside.
 
-The harmonic-pencil layer packages the same event algebraically.  The exact $\pi/3$ cell scaling is
-not cosmetic: it is the nonzero six-cell normalization that turns the signed channel closure into
-$(\pi/3)L(\tfrac12+i\log Z,\chi)$, so the harmonic cancellation event is exactly the $L$-zero event
-(\code{Ucell\_ne\_zero}, \code{cell\_normalized\_scalar\_exact},
-\code{scalar\_zero\_iff\_L\_zero}).  The signed and unsigned channels assemble a $2\times2$ pencil
-whose determinant, and equivalently its Gram rank-drop, vanishes exactly at the corresponding
-critical-line $L$-zero (\code{harmonic\_pencil\_det\_zero\_iff\_L\_zero},
-\code{gramH\_rank\_drop\_iff\_L\_zero}).  More generally, the no-log-trap helix-height pencil has
-Hermitian positive Gram form and real generalized eigenheights as Rayleigh quotients
-(\code{helix\_eigenheight\_real}, \code{helix\_eigenheight\_rayleigh}).  A real source-height readout
-lands on the critical line, and every point on that line has such a readout
-(\code{admissible\_iff\_re\_half}); projection primacy is the separate completeness principle that
-the real-height readout exhausts all nontrivial zeros (\code{ProjectionPrimacy},
-\code{projectionPrimacy\_iff\_exhausts}).
-
-Every named statement below is formalized in Lean~4 with Mathlib and checked by the kernel.  The
-project builds with no \code{sorry}, \code{admit}, or construction-specific axiom; the axiom
-footprint of the named theorems is
-$\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$.
+Every named statement is formalized in Lean~4 over Mathlib and checked by the kernel: no
+\code{sorry}, no construction-specific axiom; the axiom footprint of the named theorems is
+$\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$.  Appendix~\ref{app:claims}
+maps every headline claim to its Lean identifier.
 \end{abstract}
 
 \tableofcontents
 
-\section{Main formalized contributions}\label{sec:contrib}
+\section{Main results}\label{sec:contrib}
 
-The formal development proves four independent pieces which are easily blurred if the helix picture
-is read only as a visualization.
+The paper has two halves: a body of theorems (Sections~\ref{sec:carrier}--\ref{sec:admissible}), every one
+machine-checked, and a body of computational phenomenology (Section~\ref{sec:phenomenology}) validating the geometric mechanism at scale.  Five
+results carry the mathematical half; they are easily blurred if the helix picture is read only as a visualization.
 
 \begin{enumerate}[label=\textup{(\arabic*)}]
-\item \emph{Scale geometry.}  The $\sqrt n$ radius is not stipulated.  Integers are placed at fixed
-arclength spacing on the unwound line and then wound onto the helix; the resulting cylindrical
-radius satisfies $r_n^2/n\to r(\pi/3)/\pi$ (Theorem~\ref{thm:arealaw}).  From this, the unique
-scale-balanced exponent is $\sigma=\tfrac12$ (Theorem~\ref{thm:scalecrit}).
+\item \emph{Scale geometry (Section~\ref{sec:carrier}).}  The $\sqrt n$ radius is not stipulated.
+Integers are placed at fixed $\pi/3$ arclength spacing and wound onto the helix; the resulting
+radius satisfies $r_n^2/n\to r(\pi/3)/\pi$ (Theorem~\ref{thm:arealaw}), and $\sigma=\tfrac12$ is the
+\emph{unique} scale-balanced exponent (Theorem~\ref{thm:scalecrit}).  The abscissa of the critical
+line is derived from the carrier geometry before any zero-location statement enters.
 
-\item \emph{Exact analytic accumulation.}  For non-principal characters, the phasor channel goes
-into all of $\Ree s>0$ and converges exactly to $L(s,\chi)$ (Theorem~\ref{thm:dstrip}); for $\zeta$,
-the eta channel reaches the same half-plane and identifies zero events on the critical line exactly
-(Theorems~\ref{thm:etastrip},~\ref{thm:cont},~\ref{thm:fullfiber}).  This is the analytic core of
-the model: the fiber has an exact value in the strip, not a finite-window approximation.
+\item \emph{Exact analytic accumulation (Section~\ref{sec:strip}).}  For non-principal characters
+the phasor channel converges exactly to $L(s,\chi)$ on all of $\Ree s>0$
+(Theorem~\ref{thm:dstrip}); the $\eta$-regularized principal channel identifies $\zeta$'s on-line
+vanishings exactly (Theorems~\ref{thm:etastrip},~\ref{thm:cont},~\ref{thm:fullfiber}).  The fiber
+has an exact value in the strip --- no finite-window approximation, no remainder term.
 
-\item \emph{Spectral and pencil readouts.}  The local on-line vanishing event is an eigenwave-data
-orthogonality identity (Proposition~\ref{prop:ortho}); the harmonic pencil and its Gram form have
-rank-drop exactly at the same $L$-zero event (Theorems~\ref{thm:pencildet},~\ref{thm:gram}).  The
-normalizing factor is the exact $\pi/3$ cell unit, so the harmonic cancellation is an exact scalar
-multiple of the $L$-fiber rather than a fitted calibration.  The finite helix-height pencil has the
-self-adjoint positivity mechanism that forces real eigenheights.
+\item \emph{Unconditional realization (Sections~\ref{sec:pencil},~\ref{sec:spectralGRH}).}  Every
+critical-line zero of $L(\cdot,\chi)$ is realized as an admissible real source-height eigen-event
+$Z=e^{\gamma}>0$: unsigned channel alive, signed channel closed, and the Hermitian
+positive-semidefinite harmonic Gram pencil rank-drops --- by exactly one, never to the zero matrix,
+and calibration-independently across the whole pencil family
+(Theorem~\ref{thm:admiss}; \code{nontrivial\_zero\_represented},
+\code{gram\_rank\_drop\_calibration\_independent}, \code{no\_double\_cancellation}).
 
-\item \emph{Admissibility boundary.}  A real source-height readout reaches exactly the critical
-line, and every point of the critical line is represented by such a height
-(Theorem~\ref{thm:admiss}).  Completeness of this readout is named separately as projection primacy;
-it is not used to prove the unconditional on-line identities.
+\item \emph{Self-adjointness forces the line (Section~\ref{sec:spectralGRH}).}  Conversely, any
+nontrivial cancellation realized as a kernel event of the fixed self-adjoint generator $A_\chi$ has
+$\Ree s=\tfrac12$, by von Neumann reality (Theorem~\ref{thm:kernelonline}).  Together with (3) this
+is a two-sided, unconditional Hilbert--P\'olya-type package for the critical-line zeros.
+
+\item \emph{The isolated gap is exactly GRH (Sections~\ref{sec:spectralGRH},~\ref{sec:admissible}).}
+Whether \emph{all} nontrivial zeros are so realized --- \emph{projection primacy} --- is proved
+equivalent to the real-height exhaustion of the zeros, hence to GRH for $\chi$
+(Theorem~\ref{thm:grhreal}, Remark~\ref{rem:admissiblescope}).  It is stated as an explicit named
+hypothesis, neither assumed nor proved; conditional on it, every nontrivial zero is a represented
+eigen-event.
 \end{enumerate}
 
-The rest of the paper expands these four points and records the Lean identifiers for each theorem.
+The phenomenology half reports the model as an instrument: the partial-absorption law and its validation at all
+$111$ critical-line zeros below height $36$ of the eight real primitive characters of conductor
+$\le12$ (eigenheights to $3.8\times10^{15}$), a measured error budget, the degree-two ($\Delta$,
+level-$11$ newform) extension showing the mechanism is not an artifact of character periodicity, and
+the negative results.  Section~\ref{sec:outlook} collects structural frameworks (chiral cup, K\"ahler
+polarization, de Branges evaluation) as machine-checked scaffolding for future work, deliberately
+demoted from the main line.  Section~\ref{sec:formal} records the verification;
+Appendix~\ref{app:claims} maps the headline claims to Lean identifiers.
 
 \section{Objects and notation}\label{sec:notation}
 
@@ -610,87 +617,6 @@ convergence is the classical Abel/$\eta$ summation on $\Ree s>0$; what is new is
 geometric carrier built on it.)
 \end{remark}
 
-\subsection{Python carrier-fiber method for locating vanishings}\label{sub:pythonfinder}
-
-The finite Python harness \code{carrier\_fiber/carrier\_fiber.py} separates the carrier geometry from
-the analytic calibration.  Its native finite path uses the pitch-one $\pi/3$ carrier directly: a
-height $z>0$ absorbs
-\[
-  N=\lfloor z\rfloor
-\]
-complete integer slots and the fractional part $\alpha=z-N$ of the next slot.  With a real periodic
-coefficient $c(n)$, the signed finite fiber term is
-\[
-  v_n=c(n)\,((\pi/3)n)^{-1/2}\exp\!\bigl(i(n-1)\pi/3\bigr).
-\]
-The whole-fiber focal value at height $z$ is therefore the piecewise-linear path
-\[
-  B(z)=\sum_{n=1}^{N}v_n+\alpha v_{N+1}.
-\]
-The readout ordinate printed by the harness is $\log z$; the height itself is the carrier coordinate.
-
-The native scan \code{find\_continuous\_focal\_crossings} finds candidate vanishings without a
-one-dimensional nonlinear root solver.  On each interval $[N,N+1]$ it writes
-$S_N=\sum_{n=1}^{N}v_n$ and minimizes the distance from the origin to the segment
-$S_N+\alpha v_{N+1}$ by the explicit projection
-\[
-  \alpha_N=\operatorname{clip}_{[0,1]}
-    \left(-\frac{\Ree(S_N\overline{v_{N+1}})}{|v_{N+1}|^2}\right).
-\]
-The residual is
-\[
-  r_N=\bigl|S_N+\alpha_Nv_{N+1}\bigr|.
-\]
-Heights with $r_N$ below the requested tolerance are reported as exact finite focal crossings; if no
-exact crossing is present in the scan range, the harness reports the smallest residuals.  In compact
-form:
-\begin{verbatim}
-terms = c(n) * ((pi/3) * n)**(-0.5) * exp(1j * slot * pi/3)
-prefix[N] = sum_{n <= N} terms[n]
-alpha[N] = clip(-real(prefix[N] * conj(terms[N+1])) / abs(terms[N+1])**2, 0, 1)
-height[N] = N + alpha[N]
-residual[N] = abs(prefix[N] + alpha[N] * terms[N+1])
-\end{verbatim}
-
-The same scan also evaluates the harmonic pencil marker.  The unsigned admissibility channel is
-\[
-  A(z)=\sum_{n=1}^{N}|c(n)|\,((\pi/3)n)^{-1/2}
-       +\alpha |c(N+1)|\,((\pi/3)(N+1))^{-1/2}.
-\]
-For each pencil
-\[
-  H(z)=
-  \begin{pmatrix}
-    A(z) & B(z)\\
-    \mu A(z) & \lambda B(z)
-  \end{pmatrix},
-\]
-the code checks
-\[
-  \det H=(\lambda-\mu)A(z)B(z),\qquad
-  \det(H^*H)=|\det H|^2.
-\]
-Thus, whenever $A(z)\ne0$ and $\lambda\ne\mu$, the Gram rank-drop marker is exactly the same event as
-the finite focal cancellation $B(z)=0$.
-
-The default validation command uses the cumulative c1 carrier clock, which is the Lean-aligned
-readout used for the $L$-channel:
-\[
-  T=\gamma/(\pi/3),\qquad
-  B_N(T)=\frac{\pi}{3}\sum_{n\le N}c(n)n^{-1/2}
-    \exp\!\bigl(-i(\pi/3)T\log n\bigr).
-\]
-In finite mode the harness evaluates this finite sum and locally minimizes $|B_N(T)|^2$ by a coarse
-grid followed by golden-section refinement in the window around $T=\gamma/(\pi/3)$.  In analytic mode
-it uses the exact calibrated channels
-\[
-  A(T)=L(3/2+i\gamma,\chi),\qquad
-  B(T)=(\pi/3)L(1/2+i\gamma,\chi),
-\]
-then applies the same determinant and Gram determinant checks.  The reference $\gamma$ table selects
-which displayed ordinates to validate; the focal marker remains $B=0$ and the pencil marker remains
-\(\det H=0\).
-
 \section{The geometric explicit formula}\label{sec:explicit}
 
 The logarithmic derivative of the fiber is the prime-power accumulation weighted by the winding.
@@ -999,246 +925,6 @@ Theorem~\ref{thm:eigdet}, left open. We do not derive that the vanishings are th
 canonical operator.
 \end{remark}
 
-\section{The chiral cup and its Hilbert completion}\label{sec:cup}
-
-The pairing underlying the on-line spectral reading is the \emph{chiral cup}, a Hermitian form on the
-finitely-supported fibre space $\ell_0=\code{(}\N\to_0\C\code{)}$ assembled from the forward and reverse
-(right/left) chiralities of the double-ended carrier (Section~\ref{sec:double}).
-
-\begin{definition}[Chiral defect and cup; \code{CupIdentity.Dop}, \code{Cup}, \code{Jconj}, \code{iotaR}, \code{iotaL}]\label{def:chiralcup}
-With the right/left site embeddings $\iota_R,\iota_L$ and the conjugation $J$, the \emph{chiral defect}
-is $\mathrm{Dop}\,F=\iota_R F-J(\iota_L F)$ --- the failure of the forward embedding to match the
-conjugated reverse --- and the \emph{cup} is the sesquilinear pairing
-$\mathrm{Cup}(F,G)=\langle \mathrm{Dop}\,F,\ \mathrm{Dop}\,G\rangle$.
-\end{definition}
-
-\begin{theorem}[The cup is a definite Hermitian form; \code{cup\_hermitian}, \code{cup\_positive\_semidefinite}, \code{cup\_self\_im}, \code{cup\_nullspace\_safe}, \code{cup\_null\_iff}]\label{thm:cuppos}
-$\mathrm{Cup}$ is Hermitian ($\mathrm{Cup}(G,F)=\conj{\mathrm{Cup}(F,G)}$), positive semidefinite
-($0\le\Ree\,\mathrm{Cup}(F,F)$), real on the diagonal ($\Imm\,\mathrm{Cup}(F,F)=0$), and \emph{definite}:
-$\mathrm{Cup}(F,F)=0\iff \mathrm{Dop}\,F=0\iff F=0$ (\code{cup\_null\_iff},
-\code{dop\_eq\_zero\_iff\_carrier\_zero}). The closure therefore preserves all arithmetic content
-(\code{closure\_preserves\_arithmetic\_content}): it never collapses a nonzero fibre, and the readout
-$\mathrm{Dop}$ is injective (\code{spectral\_readout\_faithful}).
-\end{theorem}
-
-\begin{theorem}[Hilbert completion; \code{hilbert\_completion\_exists}, \code{cup\_self\_eq\_two\_energy}]\label{thm:hilbert}
-The cup completes to a genuine Hilbert space: there is a complete inner-product space into which
-$\mathrm{Dop}$ embeds with $\langle \mathrm{Dop}\,F,\mathrm{Dop}\,G\rangle=\mathrm{Cup}(F,G)$. On the
-diagonal the cup is the $\ell^2$ energy, $\mathrm{Cup}(F,F)=2\sum_n\|F(n)\|^2$.
-\end{theorem}
-
-\begin{theorem}[Frobenius transport is a cup similitude; \code{Tw}, \code{transport\_cup\_modulus}, \code{frobenius\_weighted\_cup\_identity}, \code{transport\_unitary\_after\_normalization}]\label{thm:transport}
-The weight transport $T_\mu$ scales the cup by $\|\mu\|^2$,
-$\langle T_\mu(\mathrm{Dop}\,F),T_\mu(\mathrm{Dop}\,G)\rangle=\|\mu\|^2\,\mathrm{Cup}(F,G)$, and a unit
-weight ($\|\mu\|=1$) transports \emph{unitarily} (\code{transport\_unitary\_after\_normalization}). With
-$\mu=\mathrm{amp}\cdot\mathrm{sgn}$, $\|\mathrm{sgn}\|=1$, the cup scales by $\mathrm{amp}^2$: this is the
-cup-level form of the Frobenius similitude (Theorem~\ref{thm:simil}), whose radial factor $\sqrt m$
-squares to the area-law weight $m$.
-\end{theorem}
-
-\begin{theorem}[Von Neumann reality and modulus balance; \code{von\_neumann\_reality}, \code{diagOp\_spectrum\_real}, \code{midpoint\_forcing}]\label{thm:vnreality}
-Every eigenvalue of a symmetric operator on a complex inner-product space is real
-(\code{von\_neumann\_reality}), and the real-diagonal operator $\mathrm{diagOp}\,d$ has real spectrum
-(\code{diagOp\_spectrum\_real}). The cup-level reflection pins the readout to the line: for $q>1$, if
-$\|q^{s}\|^2=q$ then $\Ree s=\tfrac12$ (\code{midpoint\_forcing}) --- since
-$\|q^{s}\|^2=q^{2\Ree s}=q$ forces $2\Ree s=1$, a balance-to-line implication independent of any zero.
-\end{theorem}
-
-\begin{theorem}[No chiral dominance, by crossing induction; \code{no\_dominance\_by\_crossing\_induction}, \code{crossing\_balance\_preserved}, \code{crossing\_no\_dominance\_cup}]\label{thm:crossing}
-For a crossing helix with a positive Frobenius cup, weighted forward/reverse transport, and
-zero-readout exhaustion, the modulus balance $\|\mathrm{fwd}(n)\|=\|\mathrm{rev}(n)\|$ propagates from
-each crossing to the next (\code{crossing\_balance\_preserved}); hence no chirality dominates at any
-crossing (\code{no\_dominance\_by\_crossing\_induction}) and the forward and reverse cup energies agree
-at every site (\code{crossing\_no\_dominance\_cup}). The hypotheses are inhabited and non-vacuous: a
-balanced helix satisfies all of them, while an unbalanced one fails exhaustion
-(\code{balancedHelix\_exhaust}, \code{unbalancedHelix\_not\_exhaust}).
-\end{theorem}
-
-\begin{remark}[The cup carries the von Mangoldt prime field; \code{PrimePowerProbe.cup\_intertwining}, \code{vonMangoldtChannel\_eq\_neg\_logDeriv}]\label{rem:cupvm}
-On the prime-power probe fibre the cup energy is exactly the squared norm of the winding-weighted von
-Mangoldt terms, $\mathrm{Cup}(\mathrm{probe},\mathrm{probe})=2\sum_{n<N}\|\,\mathrm{channelTerm}(n)\|^2$
-(\code{cup\_intertwining}), supported on prime powers (\code{channelTerm\_eq\_zero\_of\_not\_isPrimePow}),
-whose superposition is $-L'/L$ for $\Ree s>1$ (\code{vonMangoldtChannel\_eq\_neg\_logDeriv}); in that
-region the channel never vanishes (\code{noDominance\_no\_offline\_zero}). This is the explicit formula
-of Section~\ref{sec:explicit} read through the cup energy.
-\end{remark}
-
-\section{The K\"ahler polarization, the trace formula, and a cohomological re-expression of the zeros}\label{sec:kahler}
-
-The fibre carries a compatible triple --- a symplectic form, a complex structure, and a metric --- under
-which the Frobenius maps act as conformal symplectic similitudes, the von Mangoldt prime field appears
-as an operator trace, and the vanishing of $L$ is re-expressed as a one-dimensional cohomology.
-
-\subsection{The polarization and its K\"ahler identity}
-
-\begin{definition}[Symplectic form, complex structure, metric; \code{HelixPolarization.OmegaH}, \code{JH}, \code{gH}]\label{def:polarization}
-On the fibre $H=\code{(}\N\to_0\C\code{)}$: the real antisymmetric $\R$-bilinear form $\Omega$
-(\code{OmegaH\_antisymm}, \code{OmegaH\_add\_right}, \code{OmegaH\_smul\_right}), the almost-complex
-structure $J$ with $J^2=-\mathrm{id}$ (\code{JH\_sq}), and the metric $g$.
-\end{definition}
-
-\begin{theorem}[K\"ahler compatibility; \code{OmegaH\_JH}, \code{gH\_symm}, \code{OmegaH\_compat}, \code{inner\_eq\_gH\_add\_I\_OmegaH}]\label{thm:kahler}
-The triple is compatible: $\Omega(x,Jy)=g(x,y)$, $g$ is symmetric, and $J$ preserves $\Omega$
-($\Omega(Jx,Jy)=\Omega(x,y)$). The Hermitian inner product splits into its metric and symplectic parts,
-\[
-  \langle x,y\rangle \;=\; g(x,y) \;+\; i\,\Omega(x,y),
-\]
-the K\"ahler identity (\code{inner\_eq\_gH\_add\_I\_OmegaH}).
-\end{theorem}
-
-\begin{theorem}[Positivity of the polarization; \code{theoremA}, \code{gH\_Dop\_self}]\label{thm:thmA}
-For $F\neq0$, $\;0<\Omega(\mathrm{Dop}\,F,\ J\,\mathrm{Dop}\,F)$: the polarization is strictly positive on
-the chiral defect (\code{theoremA}). The metric recovers the cup energy,
-$g(\mathrm{Dop}\,F,\mathrm{Dop}\,F)=\Ree\,\mathrm{Cup}(F,F)$ (\code{gH\_Dop\_self}).
-\end{theorem}
-
-\subsection{Frobenius as a conformal symplectic similitude}
-
-\begin{theorem}[Frobenius scales the symplectic form by $m$; \code{frobT\_weighted\_adjoint}, \code{theoremB}, \code{frobT\_mul}, \code{siteShift\_weighted\_adjoint}, \code{siteShift\_mul}]\label{thm:thmB}
-The Frobenius transport $\mathrm{frobT}(m,\mathrm{sgn})$ (unit sign) scales the inner product by $m$,
-$\langle \mathrm{frobT}\,x,\mathrm{frobT}\,y\rangle=m\,\langle x,y\rangle$
-(\code{frobT\_weighted\_adjoint}), and on the polarization it scales the symplectic pairing by exactly
-$p^{r}$,
-\[
-  \Omega\bigl(\mathrm{frobT}(p^{r})\,x,\ J\,\mathrm{frobT}(p^{r})\,y\bigr)
-   \;=\; p^{r}\,\Omega(x,Jy)\qquad(\text{\code{theoremB}}).
-\]
-The maps compose multiplicatively, $\mathrm{frobT}(mn,s_1s_2)=\mathrm{frobT}(m,s_1)\circ\mathrm{frobT}(n,s_2)$
-(\code{frobT\_mul}). The companion geometric site shift
-$\mathrm{siteShift}(m):\delta_n\mapsto\sqrt m\,\delta_{mn}$ is the same $\sqrt m$ similitude on sites,
-unitary up to the $m$-factor and multiplicative (\code{siteShift\_weighted\_adjoint},
-\code{siteShift\_mul}) --- the operator avatar of $\mathrm{helixPt}(mn)=\sqrt m\,\mathrm{wind}(m)\,\mathrm{helixPt}(n)$.
-\end{theorem}
-
-\subsection{The von Mangoldt trace}
-
-\begin{theorem}[The weighted trace is $-L'/L$; \code{theoremC}, \code{traceWeighted\_eq\_superposition}, \code{theoremC\_trace}, \code{specDiag\_siteShift}, \code{localTrace\_mul}]\label{thm:thmC}
-The weighted local trace is the prime-power superposition
-$\mathrm{traceWeighted}(\sigma,h)=\sum_{n}\chi(n)\Lambda(n)\,\langle\delta_n,\mathrm{specDiag}\,\delta_n\rangle$
-(\code{theoremC\_trace}), equal to the von Mangoldt channel (\code{traceWeighted\_eq\_superposition}),
-which for $\sigma>1$ is the logarithmic derivative
-$-L'(\,\cdot\,)/L(\,\cdot\,)$ at the spectral parameter (\code{theoremC}). The local factor is
-completely multiplicative (\code{localTrace\_mul}) and intertwines with the site shift,
-$\mathrm{specDiag}\circ\mathrm{siteShift}(m)=\mathrm{localTrace}(m)\cdot(\mathrm{siteShift}(m)\circ\mathrm{specDiag})$
-(\code{specDiag\_siteShift}). This is the geometric explicit formula (Section~\ref{sec:explicit})
-realized as an operator trace.
-\end{theorem}
-
-\subsection{A cohomological re-expression of the vanishing}
-
-\begin{theorem}[$L$ vanishes iff the helix cohomology is nontrivial; \code{theoremD}, \code{theoremD\_H0\_finrank}, \code{theoremD\_H1\_finrank}, \code{theoremD\_diff}]\label{thm:thmD}
-The helix cohomology at $\rho$ is the quotient $H^\bullet(\rho)=\C/\langle L(\rho,\chi)\rangle$, with the
-eigenclass the class of $1$. Then
-\[
-  L(\rho,\chi)=0 \;\iff\; \text{eigenclass}(\rho)\neq0 \;\iff\; H^1(\rho)\ \text{nontrivial},
-\]
-and the cohomology dimension is the exact indicator
-$\dim_\C H^0(\rho)=\dim_\C H^1(\rho)=\mathbf 1[\,L(\rho,\chi)=0\,]$ (\code{theoremD\_H0\_finrank},
-\code{theoremD\_H1\_finrank}): a simple zero is a one-dimensional class, a non-zero is acyclic.
-\end{theorem}
-
-\begin{remark}[The cohomology is the quotient $\C/\langle L\rangle$]\label{rem:cohtaut}
-Concretely $H^\bullet(\rho)=\C/\langle L(\rho,\chi)\rangle$, so Theorem~\ref{thm:thmD} is the
-field-theoretic identity ``$\C/\langle x\rangle\neq0\iff x=0$'' at $x=L(\rho,\chi)$ --- a cohomological
-re-expression of the vanishing. The analytic weight of this section is carried by the polarization
-(Theorem~\ref{thm:kahler}), the Frobenius scaling (Theorem~\ref{thm:thmB}), and the trace identity
-(Theorem~\ref{thm:thmC}).
-\end{remark}
-
-\begin{theorem}[Germ cohomology dimension; \code{germH1\_finrank}, \code{jetRead\_surjective}, \code{ker\_jetRead\_eq\_range\_germCoboundary}]\label{thm:germ}
-The $n$-jet germ cohomology has dimension exactly $n$: $\dim_\C H^1_{\mathrm{germ}}(n)=n$
-(\code{germH1\_finrank}), via the surjective jet readout (\code{jetRead\_surjective}) and
-$\ker(\mathrm{jetRead})=\mathrm{range}(\mathrm{germCoboundary})$
-(\code{ker\_jetRead\_eq\_range\_germCoboundary}): the local jet data of order $n$ is an $n$-dimensional
-obstruction space.
-\end{theorem}
-
-\section{The de Branges evaluation}\label{sec:debranges}
-
-The reality on the critical line (Section~\ref{sub:reality}) and the eigenstate above sit inside the
-Hermite--Biehler / de Branges spectral framework \cite{Levin1980,deBranges1968}. We record the framework, its reality and
-discreteness consequences, a worked example, and the change of variables that places the on-line
-cancellations as real spectral points.
-
-\begin{definition}[Structure function and components; \code{Estar}, \code{Acomp}, \code{Bcomp}, \code{IsHB}]\label{def:hb}
-For $E:\C\to\C$, the reflection is $E^*(z)=\conj{E(\conj z)}$, the components are
-$A=\tfrac12(E+E^*)$ and $B=\tfrac{i}{2}(E-E^*)$, and $E$ is \emph{Hermite--Biehler} ($\mathrm{IsHB}\,E$)
-when $\|E^*(z)\|<\|E(z)\|$ for every $z$ with $\Imm z>0$.
-\end{definition}
-
-\begin{proposition}[Gram positivity; \code{gram\_quadratic\_form\_nonneg}]\label{prop:gram}
-For vectors $v_i$ in an inner-product space and scalars $c_i$,
-$\;\sum_{i,j}\conj{c_i}\,c_j\,\langle v_i,v_j\rangle=\big\langle\sum_i c_i v_i,\sum_j c_j v_j\big\rangle\ge0$
---- the positive-definite reproducing-kernel fact behind $H(E)$.
-\end{proposition}
-
-\begin{theorem}[A positive feature map forces Hermite--Biehler; \code{CupIdentity.deBrangesKernel}, \code{deBrangesKernel\_diag}, \code{featureMap\_forces\_HB}, \code{no\_featureMap\_of\_not\_HB}]\label{thm:rkhs}
-The de Branges kernel has diagonal
-$K_E(w,w)=\bigl(\|E(w)\|^2-\|E^*(w)\|^2\bigr)/(4\pi\,\Imm w)$ (\code{deBrangesKernel\_diag}). If a feature
-map $\varphi$ \emph{reproduces} it --- $\langle\varphi(z),\varphi(w)\rangle=K_E(w,z)$ for all $z,w$ ---
-then on the open upper half-plane $\|E^*(w)\|\le\|E(w)\|$, i.e.\ the Hermite--Biehler inequality
-(\code{featureMap\_forces\_HB}), and the kernel diagonal is nonnegative there
-(\code{featureMap\_forces\_diag\_nonneg}). Contrapositively, no positive (reproducing-kernel) feature map
-can exist where $\mathrm{HB}$ fails (\code{no\_featureMap\_of\_not\_HB}). Thus $\mathrm{HB}$ is precisely the
-condition for the structure kernel to be a genuine inner-product Gram kernel --- the positive-kernel
-background (Proposition~\ref{prop:gram}) made into a dichotomy.
-\end{theorem}
-
-\begin{theorem}[Positivity forces a real spectrum; \code{hb\_no\_zero\_upper}, \code{Acomp\_zero\_im\_eq\_zero}, \code{Bcomp\_zero\_im\_eq\_zero}]\label{thm:hbreal}
-If $\mathrm{IsHB}\,E$ then $E$ has no zeros in the open upper half-plane, and every zero of $A$ and of
-$B$ is real.
-\end{theorem}
-
-\begin{theorem}[Discreteness; \code{Bcomp\_zeros\_discrete}]\label{thm:hbdisc}
-If, in addition, $E$ is entire, then the zeros of $B$ are isolated: a real, discrete spectrum.
-\end{theorem}
-
-\begin{proposition}[Paley--Wiener example; \code{paleyWiener\_isHB}, \code{paleyWiener\_Bcomp}]\label{prop:pw}
-$E(z)=e^{-iz}$ is Hermite--Biehler, and its $B$-component is $\sin$, whose spectrum is $\{k\pi\}$.
-\end{proposition}
-
-\begin{theorem}[The unconditional Paley--Wiener template; \code{paleyWiener\_no\_zero\_upper}, \code{paleyWiener\_balance\_iff\_real}, \code{paleyWiener\_unimodular\_block\_unifies}, \code{paleyWiener\_Bcomp\_zeros\_discrete}]\label{thm:pwtemplate}
-For this genuine Hermite--Biehler $E$ all the conditional readings of the paper hold \emph{unconditionally}
-and coincide. There are no zeros in the upper half-plane (\code{paleyWiener\_no\_zero\_upper}), the
-structure is rigid off the real axis (\code{paleyWiener\_carrierRigid}), and the three readings are
-mutually equivalent and equivalent to reality:
-\[
-  \det\,\mathrm{conjPairBlock}\!\bigl(E(z)/E^*(z)\bigr)=1
-  \;\iff\; \|E(z)\|=\|E^*(z)\| \;\iff\; \Imm z=0
-\]
-(\code{paleyWiener\_unimodular\_block\_unifies}, \code{paleyWiener\_balance\_iff\_real},
-\code{paleyWiener\_conjugate\_det\_one\_iff\_reality}). Its $B$-component zeros are real
-(\code{paleyWiener\_Bcomp\_zero\_im\_eq\_zero}) and discrete (\code{paleyWiener\_Bcomp\_zeros\_discrete}),
-the spectrum $\{k\pi\}$ of $\sin$. This is the unconditional model of exactly what an $\mathrm{HB}$
-structure function delivers --- the unitary conjugate-pair block (Theorem~\ref{thm:unitary}) and the
-critical-line readout (Corollary~\ref{cor:online}) become a single equivalence; for $\Lambda$ the
-identical package is conditional on $\mathrm{IsHB}\,\Lambda$, i.e.\ RH (Remark~\ref{rem:hbscope}).
-\end{theorem}
-
-\begin{theorem}[Critical-line change of variables; \code{deBranges\_var\_im}]\label{thm:cov}
-For $\rho\in\C$, $\;\Imm\!\big(-i(\rho-\tfrac12)\big)=\tfrac12-\Ree\rho$; so $z=-i(\rho-\tfrac12)$ is
-real iff $\Ree\rho=\tfrac12$.
-\end{theorem}
-
-\begin{corollary}[On-line cancellations are real spectral points; \code{criticalLine\_deBranges\_real}, \code{zeroHarmonic\_deBranges\_real}]\label{cor:online}
-A carrier vanishing at height $\gamma$ sits at $\rho=\tfrac12+i\gamma$, whose de Branges variable
-$z=-i(\rho-\tfrac12)=\gamma$ is real. The same-height cancellations we find are real de Branges
-spectral points, evaluable in the reality/discreteness framework of
-Theorems~\ref{thm:hbreal}--\ref{thm:hbdisc}.
-\end{corollary}
-
-\begin{remark}[Scope: $\mathrm{IsHB}\,\Lambda$ is classical open work, not used here]\label{rem:hbscope}
-The generic theorems above are conditional on $\mathrm{IsHB}\,E$; we never apply them to a
-$\Lambda$-built structure function, and indeed no such structure function is constructed in this work.
-That $\mathrm{IsHB}\,\Lambda$ --- no zeros off the critical line (\code{hb\_no\_zero\_upper}) --- is
-equivalent to the Riemann Hypothesis is the \emph{classical} de Branges reformulation
-\cite{deBranges1968}; discharging it is open work in that program, which this paper neither formalizes,
-assumes, nor rests on. What the paper uses is only the \emph{unconditional} on-line content --- the de
-Branges variable is real on the critical line (Corollary~\ref{cor:online}), $\mathrm{IsHB}$-free. We make
-no claim about off-line zeros, and the paper's open question is projection primacy
-(Remark~\ref{rem:admissiblescope}), not $\mathrm{IsHB}\,\Lambda$.
-\end{remark}
-
 \section{The harmonic pencil and the focal eigenheight}\label{sec:pencil}
 
 The positive/negative channels of the 3D phasor (Section~\ref{sec:phasor3d}) assemble into a
@@ -1290,6 +976,42 @@ $Z=\langle v,Av\rangle/\langle v,Bv\rangle$ (\code{helix\_eigenheight\_real},
 \code{helix\_eigenheight\_rayleigh}), the no-log-trap height diagonal being $Z_n=n$, not $\log n$.
 \end{theorem}
 
+\subsection{The pencil as a family, and the finite crutch-free layer}\label{sub:pencilfamily}
+
+The pencil is not a single matrix but a \emph{family} of harmonic Gram interlaced operators
+$\{H_\chi(\mu,\lambda)\}$ over the admissible calibrations, and the rank-drop event is
+calibration-independent: all admissible members drop simultaneously, exactly when the signed
+channel closes (\code{gram\_rank\_drop\_calibration\_independent}; the event is governed solely by
+$B_\chi$, independent of the unsigned mode --- \code{projection\_primacy}).  Each member's Gram is
+Hermitian positive semidefinite (\code{gramH\_posSemidef}) and is \emph{never the zero matrix}: the
+rank drops by exactly one --- a single cancellation, never a simultaneous double one
+(\code{specGram\_apply00}, \code{specGram\_ne\_zero}; Section~\ref{sec:spectralGRH}).
+
+The detector itself is channel-agnostic --- pure matrix algebra on a supplied pair, with no
+$L$-function in the statement: for any $A\neq0$ and $\lambda\neq\mu$,
+$\det H(A,B;\mu,\lambda)=0\iff B=0$, and likewise for the Gram
+(\code{harmonic\_pencil\_det\_zero\_iff\_channel\_zero},
+\code{harmonicGram\_rank\_drop\_iff\_channel\_zero},
+\code{harmonicGram\_rank\_drop\_calibration\_independent}).  Two instantiations are formalized.
+The \emph{analytic} channels are $A_\chi=L(\tfrac32+i\log Z,\chi)$ and
+$B_\chi=(\pi/3)L(\tfrac12+i\log Z,\chi)$, with admissibility unconditional at the
+absolute-convergence abscissa (\code{Achan\_ne\_zero}).  The \emph{finite} channels are the live
+phasor-bank sums
+\[
+  A^{\mathrm{fin}}_{\chi}(a,N)=\sum_{n=1}^{N}\|\chi(n)\|\,a_n,\qquad
+  B^{\mathrm{fin}}_{\chi}(a,\varphi,N)=\sum_{n=1}^{N}\chi(n)\,a_n\,e^{i\varphi_n},
+\]
+with \emph{arbitrary} magnitude window $a$ and phase profile $\varphi$; here admissibility is
+discharged by \emph{positivity} --- $\chi(1)=1$ and $a_1>0$ force $A^{\mathrm{fin}}>0$ --- with no
+analytic input (\code{finiteA\_pos}, \code{finiteA\_ne\_zero}), and the family theorems specialize
+verbatim (\code{finite\_gramH\_posSemidef}, \code{finite\_gramH\_rank\_drop\_iff\_channel\_zero},
+\code{finite\_gram\_rank\_drop\_calibration\_independent}).  A separate module re-houses the pencil
+test entirely on the finite side --- $L$ appears only in the final-verification bridge: the finite
+channels converge to the analytic ones (\code{AchanFin\_tendsto}, \code{BchanFin\_tendsto}), the
+finite signed channel closes in the growth limit iff $L(\tfrac12+i\log Z,\chi)=0$
+(\code{BchanFin\_closure\_iff\_L\_zero}), and the asymptotic finite-pencil rank-drop is equivalent
+to the $L$-zero (\code{finite\_pencil\_rank\_drop\_iff\_L\_zero}).
+
 \subsection{Admissibility of the source-height readout}
 
 \begin{theorem}[Real source-height $\Rightarrow$ critical line; \code{Admissible.admissible\_iff\_re\_half}, \code{admissible\_real\_height\_implies\_critical\_readout}, \code{nontrivial\_zero\_represented}]\label{thm:admiss}
@@ -1322,6 +1044,54 @@ stability of the focal zeros is fully proved: at a simple critical-line zero $\g
 $L$-channel dominates the bridge error there is a unique nearby focal zero, with the explicit location
 bound $|T_d-\gamma|\le 2\varepsilon/a$ (\code{real\_simple\_zero\_location}, \code{real\_simple\_zero\_exists},
 \code{real\_simple\_zero\_unique}).
+\end{remark}
+
+\section{The self-adjoint realization and the GRH equivalence}\label{sec:spectralGRH}
+
+The spectral layer realizes the cancellation events as kernel events of a fixed operator and then
+isolates, exactly, the RH-strength statement.  The 3D spectral-fiber readout converges to the
+analytic $L$-function (\code{spectral\_fiber\_is\_Lfunction}); a zero is a kernel event of the
+configured spectral operator, and conversely (\code{spectral\_zero\_has\_kernel},
+\code{spectral\_kernel\_iff\_zero}, \code{cancellation\_equivalence}).  The generator $A_\chi$ is
+the real-diagonal operator with eigen-heights $\log(n+1)$ --- strictly increasing because
+\emph{only one phasor is growing continuously at a time} (\code{logGen\_strictMono}); this is the
+formal counterpart of the partial-absorption law of Section~\ref{sub:absorption}.
+
+\begin{theorem}[No double cancellation; \code{no\_double\_cancellation}, \code{cancellation\_modes\_subsingleton}, \code{cancellation\_energy\_not\_split}]\label{thm:nodouble}
+At a fixed spectral parameter $s$, at most one basis mode is a kernel vector of
+$\mathrm{specOp}\,A_\chi\,s$: two cancelling modes are the same mode.  A cancellation event
+concentrates on a single site; the cancelled energy cannot be split between two distinct modes.
+Correspondingly the harmonic Gram matrix is never the zero matrix --- its $(0,0)$ entry is
+$1+\|\mu\|^2\ge1$ (\code{specGram\_apply00}) --- so the pencil family of
+Section~\ref{sub:pencilfamily} drops rank by exactly one per event.
+\end{theorem}
+
+\begin{theorem}[A realized cancellation is on the critical line; \code{nontrivial\_A$\chi$\_kernel\_no\_offline}]\label{thm:kernelonline}
+If $s$ lies in the open critical strip and some basis mode is a kernel vector of
+$\mathrm{specOp}\,A_\chi\,s$, then $\Ree s=\tfrac12$.  The mechanism is von Neumann reality: the
+kernel condition forces the spectral height $\mathrm{specHeight}(s)=-i(s-\tfrac12)$ to equal a real
+eigen-height, hence to be real.
+\end{theorem}
+
+\begin{theorem}[GRH from a self-adjoint realization; \code{GRH\_from\_nontrivial\_A$\chi$\_realization}, \code{GRH\_from\_spectral\_exhaustion}]\label{thm:grhreal}
+If every nontrivial cancellation of $L(\cdot,\chi)$ is realized as a kernel of the fixed
+self-adjoint generator $A_\chi$, then every nontrivial zero lies on the critical line --- GRH for
+$\chi$.  The implication is unconditional; the realization hypothesis is the isolated RH-strength
+input.  The twin formulation through the sign-flip mechanism is equivalent: on the critical line the
+realization holds outright, and a real-generator cancellation forces $\Ree s=\tfrac12$
+(\code{nontrivial\_spectral\_cancellation\_to\_real\_generator\_of\_re\_half},
+\code{realGeneratorCancellation\_re\_half}).
+\end{theorem}
+
+\begin{remark}[The two-sided package, and where GRH sits]\label{rem:sandwich}
+Theorem~\ref{thm:admiss} realizes every \emph{critical-line} zero as an admissible real-height
+eigen-event, unconditionally.  Theorem~\ref{thm:kernelonline} shows any \emph{realized} nontrivial
+cancellation is on the critical line, unconditionally.  The single unproved statement between them
+--- that every nontrivial cancellation \emph{is} realized --- is the projection-primacy principle,
+proved equivalent to the real-height exhaustion of the zeros
+(\code{projectionPrimacy\_iff\_exhausts}) and hence to GRH for $\chi$
+(Remark~\ref{rem:admissiblescope}).  This is a reframing of GRH as a completeness property of an
+explicit, elementary operator; it is not evidence for GRH, and nothing in this paper decides it.
 \end{remark}
 
 \section{Admissibility: the carrier has no native off-axis support}\label{sec:admissible}
@@ -1407,6 +1177,237 @@ work poses the dichotomy and proves the off-axis branch impossible \emph{within}
 here means precisely the prime-multiplication similitude of Definition~\ref{def:simil}.
 \end{remark}
 
+\section{Computational phenomenology}\label{sec:phenomenology}
+
+The preceding sections are theorems.  This section is science: the model run as an instrument, with
+its measurements, its error budget, and its negative results.  All quantities below are reproduced
+by the repository harnesses (\code{phasor\_explorer/model.py}, \code{focal\_closure.py},
+\code{carrier\_fiber/carrier\_fiber.py}) and the interactive WebGL explorer
+(\code{phasor\_explorer/explorer\_v2.html}), which renders up to $10^5$ phasors with shader-evaluated
+phases and exposes every mode discussed here.
+
+\subsection{The partial-absorption law}\label{sub:absorption}
+
+The fiber starts empty at the carrier origin (the $n=0$ site carries nothing; the bank lives at
+heights $>0$), and each phasor is absorbed \emph{continuously}: with head height $H$, phasor $n$
+carries the window
+\[
+  a_n(H) \;=\; n^{-1/2}\,\mathrm{clip}\bigl(H-n+1,\,0,\,1\bigr),
+\]
+so it starts growing as the head leaves site $n-1$ and completes exactly \emph{at} its own integer
+site --- one phasor partial at any instant, nothing discontinuous.  At integer heads the absorbed
+bank equals the completed snapshot exactly, and between sites the signed sum moves along a straight
+segment whose velocity is the single absorbing phasor's term ($\alpha$-linearity, verified to
+$10^{-12}$).  One-at-a-time absorption is load-bearing: it keeps the eigen-heights strictly
+monotone, which is the hypothesis chain of Theorem~\ref{thm:nodouble}.  A $\tau$-window variant
+$a_n(H)=n^{-1/2}\mathrm{clip}((H-n)/\tau,0,1)$ --- many phasors growing simultaneously --- remains
+available as a smoothing device; it sharpens the focal residual (below) at the cost of the
+one-at-a-time structure.
+
+\subsection{Validation: all critical-line zeros below height 36, eight characters}\label{sub:validation}
+
+For the eight real primitive characters of conductor $q\le12$ (the $\eta$-regularized principal
+channel and the quadratic characters of conductor $3,4,5,7,8,11,12$) we computed \emph{every}
+critical-line zero with $\gamma<36$ --- $111$ ordinates in total
+($5,11,12,14,16,16,18,19$ per conductor) --- by Newton refinement on
+$L(s,\chi)=q^{-s}\sum_a\chi(a)\zeta(s,a/q)$ (Hurwitz-zeta evaluation, $22$ significant digits,
+stored to $10$ decimals).  The bound $\gamma<36$ is an integer-exactness cap, not a cost cap: the
+eigenheight $N=\mathrm{round}(e^{\gamma})$ must stay below $2^{53}$ for exact modular arithmetic.
+
+At every one of the $111$ pairs $(\gamma_k,\,N=e^{\gamma_k})$ the focal event of
+Theorem~\ref{thm:channelclosure} was evaluated.  With the absorption law (equivalently the completed
+snapshot, since $N$ is an integer) the residual $|B|$ lies below the display threshold $0.05$ at
+$108/111$ zeros; the three exceptions are precisely the smallest banks --- conductor $7$
+($\gamma_1$, $N=88$, $|B|=0.107\approx1/\sqrt{88}$), conductor $8$ ($N=134$, $0.087$), conductor
+$12$ ($N=45$, $0.153$) --- honest truncation at that scale, and the $\tau$-window closes all three
+($0.008$--$0.016$ at $\tau=400$).  At the deep end the residuals sit at the truncation scale
+$\sim N^{-1/2}$: for conductor $11$, $\gamma_{18}=35.4850851876$ gives
+$N=2{,}576{,}182{,}862{,}426{,}122\approx2.6\times10^{15}$ and $|B|=7.3\times10^{-11}$; for $\zeta$,
+$\gamma_4$ gives $N\approx1.6\times10^{13}$ and $|B|=1.2\times10^{-7}\approx N^{-1/2}/2$.
+
+\subsection{The error budget}\label{sub:errorbudget}
+
+The residual at a focal event decomposes into three measurable floors.  \emph{Zero precision}: with
+ordinates stored to $6$ decimals the deep residuals are dominated by the rounding of $\gamma$ itself
+(conductor $11$, $\gamma_{18}$: $6.2\times10^{-7}$ at $6$ decimals versus $7.3\times10^{-11}$ at
+$10$), so headline depths quote the data precision, not the model.  \emph{Truncation}: with the
+zeros at $10$ decimals the residual tracks $\sim N^{-1/2}$ across ten orders of magnitude of $N$.
+\emph{Evaluator}: beneath both lies the analytic evaluator's own floor
+($\approx10^{-9}$--$10^{-10}$, next subsection).  Misattributing the first floor to the second is
+the kind of error this budget exists to prevent.
+
+\subsection{The $O(1)$ evaluator}\label{sub:fasteval}
+
+Brute evaluation is $O(N)$ and the eigenheights reach $10^{15}$.  Every phase mode except the
+continuous carrier-rate comparison has residue-class structure, so the bank sum splits as an exact
+$6000$-term head plus per-class Euler--Maclaurin tails (integral, boundary, and
+$B_2,B_4,B_6$ corrections, all closed-form for $n^{-s}$), with the absorption window contributing
+one explicit partial term.  The cost is independent of $N$; the absolute error is
+$\sim10^{-9}$.  The evaluator is validated against the brute sum on $240$ configurations (eight
+characters $\times$ three phase modes $\times$ five magnitude laws $\times$ two sizes, agreement
+$<10^{-8}$) plus a $6.6\times10^{6}$-term brute anchor, and the JavaScript mirror agrees with the
+Python reference to nine decimals at fractional heads.  This is what makes
+Section~\ref{sub:validation} a table instead of a supercomputer allocation.
+
+\subsection{Degree two: the mechanism does not require periodicity}\label{sub:gl2}
+
+The cheapest dismissal of Section~\ref{sub:validation} would be that character periodicity ---
+complete residue blocks cancelling --- secretly does all the work.  It does not.  The locator of
+\code{focal\_closure.py} runs the same construction on degree-two $L$-functions, with the lanes
+given by \emph{coefficient signs} instead of residue classes: for the Ramanujan form,
+$\lambda(n)=\tau(n)/n^{11/2}$ built exactly from $\eta(q)^{24}$ (with Hecke multiplicativity and
+Deligne-bound assertions checked at build time), and for the level-$11$ elliptic newform,
+$\lambda(n)=a_n/\sqrt n$ from $\eta(q)^2\eta(q^{11})^2$.  The growth locator finds the first zero of
+$L(\Delta,s)$ unaided to $10^{-6}$ of the reference ordinate $9.2223793999\ldots$, with genuine
+closures reaching depth $10^{-6}$--$10^{-12}$ as the bank deepens; the level-$11$ zeros likewise.
+Neither form is periodic, neither has unimodular coefficients.  Within the arrows the $\pi/3$ scale
+is provably inert (a constant amplitude and a global phase, cancelling between lanes --- the gauge
+test of \code{focal\_closure.py}); its load-bearing roles are exactly the two proved ones: the
+carrier placement forcing the area law (Theorem~\ref{thm:arealaw}) and the exact cell normalization
+$B=(\pi/3)L$ (Theorem~\ref{thm:channelclosure}).
+
+\subsection{Negative results}\label{sub:nulls}
+
+Three natural conjectures about the carrier were tested and are null, and one phenomenological law
+is positive.  (i)~A $\pi/3\cdot\mu_6$ carrier-pattern search for \emph{close pairs} of zeros shows
+no enrichment: lift $\approx1.0$, $p\approx0.9$.  (ii)~A pair-precursor signal (structure in the
+fiber preceding a close pair) is absent.  (iii)~A $6$- or $12$-fold ``harmonic clock'' in the
+zero sequence is absent; only the $k=1$ harmonic is real.  (iv)~Positive: after each cancellation
+the fiber's imbalance \emph{reopens} at a fixed linear rate ($p\approx1.05$, uncorrelated with the
+gap to the next zero), with close (Lehmer-type) pairs entering through a quadratic crossover rather
+than any repulsion mechanism; the reverb kernels are formalized in
+\code{ReverbResidue.lean}.  We report (i)--(iii) with the same confidence as the positive results:
+the carrier structure is a home for the cancellation event, not a hidden periodicity in the zeros.
+
+\subsection{The finite instrument}\label{sub:pythonfinder}
+
+
+The finite Python harness \code{carrier\_fiber/carrier\_fiber.py} separates the carrier geometry from
+the analytic calibration.  Its native finite path uses the pitch-one $\pi/3$ carrier directly: a
+height $z>0$ absorbs
+\[
+  N=\lfloor z\rfloor
+\]
+complete integer slots and the fractional part $\alpha=z-N$ of the next slot.  With a real periodic
+coefficient $c(n)$, the signed finite fiber term is
+\[
+  v_n=c(n)\,((\pi/3)n)^{-1/2}\exp\!\bigl(i(n-1)\pi/3\bigr).
+\]
+The whole-fiber focal value at height $z$ is therefore the piecewise-linear path
+\[
+  B(z)=\sum_{n=1}^{N}v_n+\alpha v_{N+1}.
+\]
+The readout ordinate printed by the harness is $\log z$; the height itself is the carrier coordinate.
+
+The native scan \code{find\_continuous\_focal\_crossings} finds candidate vanishings without a
+one-dimensional nonlinear root solver.  On each interval $[N,N+1]$ it writes
+$S_N=\sum_{n=1}^{N}v_n$ and minimizes the distance from the origin to the segment
+$S_N+\alpha v_{N+1}$ by the explicit projection
+\[
+  \alpha_N=\operatorname{clip}_{[0,1]}
+    \left(-\frac{\Ree(S_N\overline{v_{N+1}})}{|v_{N+1}|^2}\right).
+\]
+The residual is
+\[
+  r_N=\bigl|S_N+\alpha_Nv_{N+1}\bigr|.
+\]
+Heights with $r_N$ below the requested tolerance are reported as exact finite focal crossings; if no
+exact crossing is present in the scan range, the harness reports the smallest residuals.  In compact
+form:
+\begin{verbatim}
+terms = c(n) * ((pi/3) * n)**(-0.5) * exp(1j * slot * pi/3)
+prefix[N] = sum_{n <= N} terms[n]
+alpha[N] = clip(-real(prefix[N] * conj(terms[N+1])) / abs(terms[N+1])**2, 0, 1)
+height[N] = N + alpha[N]
+residual[N] = abs(prefix[N] + alpha[N] * terms[N+1])
+\end{verbatim}
+
+The same scan also evaluates the harmonic pencil marker.  The unsigned admissibility channel is
+\[
+  A(z)=\sum_{n=1}^{N}|c(n)|\,((\pi/3)n)^{-1/2}
+       +\alpha |c(N+1)|\,((\pi/3)(N+1))^{-1/2}.
+\]
+For each pencil
+\[
+  H(z)=
+  \begin{pmatrix}
+    A(z) & B(z)\\
+    \mu A(z) & \lambda B(z)
+  \end{pmatrix},
+\]
+the code checks
+\[
+  \det H=(\lambda-\mu)A(z)B(z),\qquad
+  \det(H^*H)=|\det H|^2.
+\]
+Thus, whenever $A(z)\ne0$ and $\lambda\ne\mu$, the Gram rank-drop marker is exactly the same event as
+the finite focal cancellation $B(z)=0$.
+
+The default validation command uses the cumulative c1 carrier clock, which is the Lean-aligned
+readout used for the $L$-channel:
+\[
+  T=\gamma/(\pi/3),\qquad
+  B_N(T)=\frac{\pi}{3}\sum_{n\le N}c(n)n^{-1/2}
+    \exp\!\bigl(-i(\pi/3)T\log n\bigr).
+\]
+In finite mode the harness evaluates this finite sum and locally minimizes $|B_N(T)|^2$ by a coarse
+grid followed by golden-section refinement in the window around $T=\gamma/(\pi/3)$.  In analytic mode
+it uses the exact calibrated channels
+\[
+  A(T)=L(3/2+i\gamma,\chi),\qquad
+  B(T)=(\pi/3)L(1/2+i\gamma,\chi),
+\]
+then applies the same determinant and Gram determinant checks.  The reference $\gamma$ table selects
+which displayed ordinates to validate; the focal marker remains $B=0$ and the pencil marker remains
+\(\det H=0\).
+
+
+\section{Structural frameworks (outlook)}\label{sec:outlook}
+
+Three machine-checked frameworks sit above the main line.  They are scaffolding --- correct,
+kernel-checked, and deliberately demoted here until they carry mathematical weight of their own.
+
+\subsection{The chiral cup}\label{sec:cup}
+The forward/reverse chiralities of the double-ended carrier assemble a Hermitian, positive
+\emph{definite} sesquilinear cup on the finitely-supported fibre space, which completes to a genuine
+Hilbert space with the $\ell^2$ energy on the diagonal (\code{cup\_hermitian},
+\code{cup\_null\_iff}, \code{hilbert\_completion\_exists}); the Frobenius transport acts as a cup
+similitude scaling by $\|\mu\|^2$, unitary after normalization
+(\code{transport\_unitary\_after\_normalization}), a crossing-induction argument propagates chiral
+modulus balance (\code{no\_dominance\_by\_crossing\_induction}), and on the prime-power probe the
+cup energy carries the von Mangoldt field, $-L'/L$ for $\Ree s>1$
+(\code{cup\_intertwining}, \code{vonMangoldtChannel\_eq\_neg\_logDeriv}).
+
+\subsection{The K\"ahler polarization and the trace}\label{sec:kahler}
+The fibre carries a compatible triple $(\Omega,J,g)$ with the K\"ahler identity
+$\langle x,y\rangle=g(x,y)+i\,\Omega(x,y)$, strictly positive on the chiral defect
+(\code{inner\_eq\_gH\_add\_I\_OmegaH}, \code{theoremA}); Frobenius transport scales the symplectic
+pairing by exactly $p^{r}$ (\code{theoremB}), and the weighted local trace of the site-shift
+dynamics is the von Mangoldt superposition, equal to $-L'/L$ for $\sigma>1$ (\code{theoremC}).  A
+cohomological re-expression of the vanishing exists ($H^\bullet(\rho)=\C/\langle
+L(\rho,\chi)\rangle$; \code{theoremD}) but is, as formalized, the field-theoretic identity
+``$\C/\langle x\rangle\neq0\iff x=0$'' --- we record it as notation awaiting content, not as a
+cohomology theory.
+
+\subsection{The de Branges evaluation}\label{sec:debranges}
+The Hermite--Biehler/de Branges framework is formalized generically: positivity of the structure
+kernel forces the $\mathrm{HB}$ inequality and hence a real, discrete spectrum
+(\code{featureMap\_forces\_HB}, \code{hb\_no\_zero\_upper}, \code{Bcomp\_zeros\_discrete}), with the
+Paley--Wiener function $e^{-iz}$ as the fully unconditional worked template
+(\code{paleyWiener\_isHB}; spectrum $\{k\pi\}$).
+\begin{corollary}[On-line cancellations are real spectral points; \code{criticalLine\_deBranges\_real}, \code{zeroHarmonic\_deBranges\_real}]\label{cor:online}
+Under the change of variables $z=-i(\rho-\tfrac12)$, a carrier vanishing at height $\gamma$ sits at
+the \emph{real} de Branges point $z=\gamma$; reality of $z$ is exactly $\Ree\rho=\tfrac12$
+(\code{deBranges\_var\_im}).
+\end{corollary}
+\begin{remark}[Scope: $\mathrm{IsHB}\,\Lambda$ is classical open work, not used here]\label{rem:hbscope}
+That a $\Lambda$-built structure function is Hermite--Biehler is equivalent to the Riemann
+Hypothesis --- the classical de Branges reformulation.  No such structure function is constructed
+here; only the unconditional on-line content (Corollary~\ref{cor:online}) is used.  The open
+question of this paper is projection primacy (Remark~\ref{rem:admissiblescope}), not
+$\mathrm{IsHB}\,\Lambda$.
+\end{remark}
+
 \section{Formalization}\label{sec:formal}
 
 Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against Mathlib
@@ -1417,7 +1418,7 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \code{DeBranges.lean}, \code{FrobeniusSimilitude.lean}, \code{PerHeightConvergence.lean},
 \code{HeightGrowthActive.lean}, \code{CircleMonodromy.lean}, \code{CriticalLineBridge.lean},
 \code{GeometricPhasorClosure.lean}, \code{Phasor3D.lean}, \code{FocalEigenheight.lean},
-\code{HarmonicPencilCell.lean}, \code{AdmissibleEigenheight.lean}, \code{FullFiber.lean},
+\code{HarmonicPencilCell.lean}, \code{FinitePencil.lean}, \code{AdmissibleEigenheight.lean}, \code{FullFiber.lean},
 \code{PrimePowerProbe.lean}, \code{CupIdentity.lean}, \code{ChiralCup.lean},
 \code{CrossingInduction.lean}, \code{CrossingEncodingAudit.lean}, \code{HelixPolarization.lean},
 \code{ConditionalToUnconditional.lean}, \code{SpectralFiberIsLFunction.lean},
@@ -1426,8 +1427,8 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \code{NoDoubleCancellation.lean}, \code{SpectralExhaustion.lean},
 \code{SpectralGramEvent.lean}, \code{SpectralRealizationGRH.lean},
 \code{FocalResidualVanishes.lean}, \code{FocalCancellationFindsZeros.lean},
-\code{FocalCancellationEigenstate.lean}, \code{GeometricReadout.lean}, and
-\code{MeromorphicTraceIdentity.lean}). Each named
+\code{FocalCancellationEigenstate.lean}, \code{GeometricReadout.lean},
+\code{ReverbResidue.lean}, and \code{MeromorphicTraceIdentity.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -1468,7 +1469,7 @@ live in \code{CupIdentity.lean}, \code{ChiralCup.lean}, \code{CrossingInduction.
 non-vacuity audit \code{CrossingEncodingAudit.lean}) and \code{PrimePowerProbe.lean}; the K\"ahler
 polarization, the trace formula, and the cohomological re-expression of the zeros (Section~\ref{sec:kahler}) are
 \code{HelixPolarization.lean}; the convergent $\eta$-fibre (Section~\ref{sub:fullfiber}) is
-\code{FullFiber.lean}; and the unconditional Paley--Wiener template (Theorem~\ref{thm:pwtemplate}) is
+\code{FullFiber.lean}; and the unconditional Paley--Wiener template (Section~\ref{sec:debranges}) is
 \code{ConditionalToUnconditional.lean}.
 
 The updated spectral/focal layer is split into smaller audit modules.  \code{SpectralFiberIsLFunction.lean}
@@ -1495,6 +1496,16 @@ produces a standing/eigenstate package with conserved magnitude
 (\code{focal\_cancellation\_produces\_eigenstate}).  \code{GeometricReadout.lean} collects the
 height-readout and no-double-residue facts, and \code{MeromorphicTraceIdentity.lean} records the
 completed trace identities for the spectral operator.
+
+\medskip
+\noindent\emph{Reproduction.}  The Lean claims: \code{lake build} (Mathlib pinned by the manifest);
+axiom footprints via \code{\#print axioms}.  The phenomenology of
+Section~\ref{sec:phenomenology}: \code{python3 model.py} (absorption law, evaluator-vs-brute on 240
+configurations, pencil family), \code{python3 focal\_closure.py test} (growth locator; the
+degree-two families with Hecke/Deligne build-time checks), and \code{python3 carrier\_fiber.py test}
+(finite carrier-clock harness).  The interactive explorer
+(\code{phasor\_explorer/explorer\_v2.html}) exposes every character, every listed zero, and every
+magnitude law of this paper.  Appendix~\ref{app:claims} is the claim-by-claim map.
 
 \begin{remark}[Scope]\label{rem:scope}
 This paper presents a geometric state space: the double-ended Frobenius helix carrier and its phasor
@@ -1526,6 +1537,42 @@ the projection is primary, so there are no off-line zeros, \emph{or} an unmodele
 and proves that the off-axis branch cannot arise within the 3D carrier. The Riemann Hypothesis is exactly
 the resolution of this dichotomy, which this work frames but neither assumes nor proves.
 \end{remark}
+
+\appendix
+
+\section{Headline claims and their Lean identifiers}\label{app:claims}
+
+Each row is a claim of this paper, the Lean identifier that proves it, and its file (package
+\code{RequestProject}, 43 modules).  All rows compile with no \code{sorry}; axiom footprint
+$\{\mathrm{propext},\mathrm{Classical.choice},\mathrm{Quot.sound}\}$.
+
+\begingroup\small
+\begin{longtable}{p{0.34\textwidth} p{0.38\textwidth} p{0.21\textwidth}}
+\textbf{Claim} & \textbf{Lean identifier} & \textbf{File}\\
+\hline
+\endhead
+Area law $r_n^2/n\to r\Delta/\pi$ & \code{windIntegerSite\_radius\_sq\_tendsto} & \code{AreaLaw}\\
+$\sigma=\tfrac12$ uniquely scale-balanced & \code{sigma\_half\_is\_scale\_critical}, \code{scaleBalanced\_iff} & \code{AreaLaw}\\
+$\pi/3$ has exact finite monodromy & \code{pi3\_finite\_monodromy} & \code{CircleMonodromy}\\
+Strip convergence to $L(s,\chi)$, $\Ree s>0$ & \code{dirichlet\_strip\_tendsto\_LFunction} & \code{LFunctionPhasor}\\
+$\eta$-channel identifies $\zeta$'s on-line zeros & \code{FullFiber\_eq\_zero\_iff\_zeta} & \code{FullFiber}\\
+Vanishing $=$ eigenwave--data orthogonality & \code{fiberCarrierFinite\_eq\_zero\_iff\_orthogonal} & \code{FrobeniusSimilitude}\\
+Channel closure $\iff$ $L$-zero & \code{channel\_closure\_iff\_L\_zero} & \code{FocalEigenheight}\\
+Pencil det $=(\lambda-\mu)AB$; rank-drop $\iff$ $L$-zero & \code{harmonicPencil\_det}, \code{gramH\_rank\_drop\_iff\_L\_zero} & \code{HarmonicPencilCell}\\
+Rank-drop is calibration-independent & \code{gram\_rank\_drop\_calibration\_independent} & \code{HarmonicPencilCell}\\
+Channel-agnostic detector (no $L$ in statement) & \code{harmonicGram\_rank\_drop\_iff\_channel\_zero} & \code{HarmonicPencilCell}\\
+Finite admissibility by positivity & \code{finiteA\_pos}, \code{finite\_gramH\_rank\_drop\_iff\_channel\_zero} & \code{HarmonicPencilCell}\\
+Finite pencil $\to$ $L$ only at final verification & \code{finite\_pencil\_rank\_drop\_iff\_L\_zero} & \code{FinitePencil}\\
+Every critical-line zero realized at $Z=e^{\gamma}$ & \code{nontrivial\_zero\_represented} & \code{HarmonicPencilCell}\\
+One cancellation site per event & \code{no\_double\_cancellation} & \code{NoDoubleCancellation}\\
+Realized cancellation $\Rightarrow$ on the line & \code{nontrivial\_A$\chi$\_kernel\_no\_offline} & \code{SpectralRealizationGRH}\\
+Realization of all cancellations $\Rightarrow$ GRH & \code{GRH\_from\_nontrivial\_A$\chi$\_realization} & \code{SpectralRealizationGRH}\\
+Projection primacy $\iff$ real-height exhaustion ($=$ GRH) & \code{projectionPrimacy\_iff\_exhausts} & \code{HarmonicPencilCell}\\
+No native off-axis support & \code{no\_native\_offaxis\_support} & \code{FrobeniusSimilitude}\\
+Reality of $\Lambda$ on the line & \code{completedRiemannZeta\_critical\_line\_im\_zero} & \code{HelixCollapseReality}\\
+Reverb reopening kernels & \code{ReverbResidue} (module) & \code{ReverbResidue}\\
+\end{longtable}
+\endgroup
 
 \begin{thebibliography}{9}
 
@@ -1582,6 +1629,12 @@ pp.~181--193.
 \bibitem{Connes1999} A.~Connes,
 \emph{Trace formula in noncommutative geometry and the zeros of the Riemann zeta function},
 Selecta Math.\ (N.S.)~\textbf{5} (1999), 29--106.
+
+\bibitem{Deligne1974} P.~Deligne,
+\emph{La conjecture de Weil.~I}, Publ.\ Math.\ IH\'ES~\textbf{43} (1974), 273--307.
+
+\bibitem{LMFDB} The LMFDB Collaboration,
+\emph{The $L$-functions and Modular Forms Database}, \url{https://www.lmfdb.org}, 2026.
 
 \bibitem{Mathlib2020} The mathlib Community,
 \emph{The Lean Mathematical Library},

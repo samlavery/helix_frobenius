@@ -3,8 +3,14 @@ import RequestProject.LFunctionPhasor
 /-!
 # True 3-D phasors: three channels (positive / negative / neutral) with magnitude as mass
 
-This file upgrades the planar L-function phasor model of `LFunctionPhasor.lean` to a **genuinely
-three-dimensional phasor model**.  In the planar model the `n`-th term is the complex number
+**Vocabulary (ontology).**  The 3-D phasor defined here **is the phasor representation** of the
+model; the planar `phasorTerm` of `LFunctionPhasor.lean` is its 1-D **readout shadow** (the
+spin-plane projection), and the 1-D object it sums to is the Dirichlet L-function.  The code's
+dependency arrow (this file building on the 1-D term) is a formalization convenience; the
+ontological arrow runs the other way: 3-D representation → projection → 1-D L-function, with
+the L-value serving only as final readout verification.
+
+In the planar readout the `n`-th term is the complex number
 `phasorTerm χ σ y n = χ(n)·n^{-σ}·exp(-(y·log n)·i)`, a 2-D arrow whose length is the magnitude
 `|χ(n)|·n^{-σ}` — so on the **neutral** channel `χ(n)=0` the arrow collapses to `0` and *the
 magnitude is lost*.

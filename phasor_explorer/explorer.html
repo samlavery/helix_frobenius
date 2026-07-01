@@ -1,0 +1,852 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phasor fiber — focal cancellation at L-zero eigenheights</title>
+<style>
+  html,body{margin:0;background:#0b0c10;}
+  body{padding:16px 8px;}
+  #phx{font-family:var(--font-sans,ui-sans-serif,system-ui,sans-serif);color:var(--text-primary,#e9e9ec);
+       max-width:760px;margin:0 auto;font-size:13px;line-height:1.4;background:#030405;
+       padding:12px;border-radius:8px;box-sizing:border-box;}
+  #phx .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);}
+  #phx h3{font-size:14px;margin:0 0 2px;font-weight:600;}
+  #phx .sub{color:var(--text-secondary,#a6a6ad);font-size:12px;margin:0 0 10px;}
+  #phx .row{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin-bottom:9px;}
+  #phx label{color:var(--text-secondary,#a6a6ad);font-size:11.5px;}
+  #phx select,#phx button{font:inherit;color:inherit;background:var(--bg-secondary,rgba(140,140,150,.12));
+       border:1px solid var(--border,rgba(140,140,150,.3));border-radius:6px;padding:3px 8px;cursor:pointer;}
+  #phx button.on{background:var(--accent,#c86bd6);border-color:var(--accent,#c86bd6);color:#fff;}
+  #phx .modes{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:9px;}
+  #phx .modes button{font-size:11.5px;}
+  #phx input[type=range]{vertical-align:middle;width:150px;accent-color:var(--accent,#c86bd6);}
+  #phx .val{font-variant-numeric:tabular-nums;color:var(--text-primary,#e9e9ec);min-width:58px;display:inline-block;}
+  #phx .grid{display:grid;grid-template-columns:360px minmax(0,1fr);gap:12px;align-items:start;}
+  #phx canvas{display:block;border:1px solid rgba(255,255,255,.18);border-radius:8px;
+       background:#000;touch-action:none;max-width:100%;height:auto;}
+  @media (max-width:800px){#phx .grid{grid-template-columns:1fr;}}
+  #phx .stack{display:flex;flex-direction:column;gap:12px;}
+  #phx .verdict{font-weight:600;font-size:13px;margin:2px 0;}
+  #phx .formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11px;
+       color:#d7d7dc;border-left:3px solid #2bb98a;padding:4px 7px;margin:4px 0 7px;
+       background:rgba(43,185,138,.08);overflow-wrap:anywhere;}
+  #phx .formula strong{color:#2bb98a;font-weight:700;}
+  #phx .formula .res{color:#fff;font-weight:700;}
+  #phx .formula.warn{border-left-color:#c86bd6;background:rgba(200,107,214,.1);}
+  #phx .formula.warn strong{color:#d96be9;}
+  #phx .pencil{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:10.5px;
+       color:#d7d7dc;border:1px solid rgba(255,255,255,.16);border-radius:6px;
+       padding:6px 7px;margin:0 0 7px;background:rgba(90,155,232,.08);overflow-wrap:anywhere;}
+  #phx .pencil strong{color:#5a9be8;font-weight:700;}
+  #phx .pencil .drop{color:#2bb98a;font-weight:700;}
+  #phx .pencil .warn{color:#c86bd6;font-weight:700;}
+  #phx .pencil input{font:inherit;color:#e9e9ec;background:rgba(90,155,232,.14);border:1px solid rgba(90,155,232,.4);
+       border-radius:4px;padding:1px 4px;width:62px;margin-left:3px;}
+  #phx .pencil input.bad{border-color:#e06a3a;background:rgba(224,106,58,.18);}
+  #phx .pencil select{font:inherit;font-size:10px;color:inherit;background:rgba(90,155,232,.14);
+       border:1px solid rgba(90,155,232,.4);border-radius:4px;padding:1px 3px;margin-left:8px;cursor:pointer;}
+  #phx .pencil .pctl{margin-left:9px;white-space:nowrap;}
+  #phx .pmatg{display:inline-grid;grid-template-columns:auto auto;gap:1px 16px;padding:2px 9px;margin:3px 0 2px;
+       border-left:2px solid #5a9be8;border-right:2px solid #5a9be8;vertical-align:middle;text-align:center;}
+  #phx table{border-collapse:collapse;font-size:11.5px;font-variant-numeric:tabular-nums;margin-top:8px;width:100%;}
+  #phx th,#phx td{text-align:right;padding:2px 7px;border-bottom:1px solid var(--border,rgba(140,140,150,.18));}
+  #phx th:first-child,#phx td:first-child{text-align:left;}
+  #phx .cap{color:var(--text-secondary,#a6a6ad);font-size:11.5px;margin-top:10px;}
+  #phx .dotP{color:#2bb98a}#phx .dotM{color:#e06a3a}#phx .dotU{color:#8b8b99}
+  #phx .hint{color:var(--text-secondary,#8b8b93);font-size:11px;}
+</style>
+</head>
+<body>
+<div id="phx">
+  <h2 class="sr-only">Each phasor spins at its own rate; sweep the ordinate and the chain vanishes at each zero of the character's L-function.</h2>
+  <h3>Phasor fiber — mathematical focal cancellation at L-zero eigenheights</h3>
+  <p class="sub">The 3-D carrier uses x=(π/3)n for radius √x — uniform arclength π/3 per integer site; the height is the pitch-1 law z=n (drawn to a linear scale). The analytic L-phasors stay unscaled: completed magnitude n<sup>−1/2</sup> and phase φ<sub>n</sub>(ω)=−ω log n. The fiber starts at the carrier origin (the empty n=0 site) and each phasor is absorbed <em>continuously</em>: it starts growing as the head leaves the previous site and completes exactly at its own integer site — one phasor partial at a time, nothing pops. Phasor n sits at carrier angle φ<sub>n</sub>(log N)−π, so <em>all arrows point into the focal point exactly when ω=log N</em> — the head at its own eigenheight, no zero table involved. The white ring is the <em>eigenheight target</em>: it sits on the axis at the height of e<sup>ω</sup> and rides up as ω grows, docking at the head exactly when ω=log N. The white arrow on it is the live residual B; at a zero (pick γ: ω→γ, N→e<sup>γ</sup>) the aligned star and the cancellation B→0 close together on the docked target.</p>
+
+  <div class="row">
+    <label>character <select id="phx-char">
+      <option value="trivial">ζ trivial (η) — zeros 14.13, 21.02, 25.01…</option>
+      <option value="chi3">χ mod 3 — zeros 8.04, 11.25, 15.70…</option>
+      <option value="chi4">χ mod 4 — zeros 6.02, 10.24, 12.99…</option>
+      <option value="chi5">χ mod 5 — zeros 6.65, 9.83, 11.96…</option>
+      <option value="chi7">χ mod 7 — zeros 4.48, 6.85, 11.16…</option>
+      <option value="chi8">χ mod 8 — zeros 4.90, 7.63, 10.81…</option>
+      <option value="chi11">χ mod 11 — zeros 2.48, 6.80, 8.97…</option>
+      <option value="chi12">χ mod 12 — zeros 3.80, 6.69, 8.89…</option>
+    </select></label>
+    <button id="phx-grow">grow ▶ terms</button>
+    <button id="phx-spin">spin ▶ own rates</button>
+  </div>
+  <div class="modes" id="phx-modes"></div>
+  <div class="row">
+    <label>terms N <input type="range" id="phx-N" min="200" max="8000" step="1"><span class="val" id="phx-Nv"></span></label>
+    <label id="phx-Rwrap">ordinate <span id="phx-Rlabel">ω</span> <input type="range" id="phx-R" min="0.5" max="36" step="0.02"><span class="val" id="phx-Rv"></span></label>
+    <label id="phx-Fwrap">focus γ <select id="phx-F"></select></label>
+  </div>
+  <div class="row">
+    <label>magnitude <select id="phx-mag"><option value="absorb">absorb → n⁻¹ᐟ² (completes at its site)</option><option value="grow">grow window τ → n⁻¹ᐟ²</option><option value="static">completed n⁻¹ᐟ²</option><option value="grow_equal">grow window τ → equal</option><option value="equal">equal (block)</option></select></label>
+    <label>spin speed <input type="range" id="phx-play" min="0.05" max="1.2" step="0.01"><span class="val" id="phx-playv"></span></label>
+    <label id="phx-tauwrap">completion length τ <input type="range" id="phx-tau" min="1" max="1500" step="1"><span class="val" id="phx-tauv"></span></label>
+    <span id="phx-eig" class="hint"></span>
+  </div>
+
+  <div class="grid">
+    <div>
+      <canvas id="phx-helix" width="360" height="360"></canvas>
+      <div class="hint" style="margin-top:4px">white ring = eigenheight target at height e<sup>ω</sup>, docks at the head when ω=log N &nbsp;·&nbsp; arrows point into it ⟺ ω=log N &nbsp;·&nbsp; white arrow = residual B</div>
+    </div>
+    <div class="stack">
+      <div>
+        <div class="verdict" id="phx-verdict"></div>
+        <div class="formula" id="phx-formula"></div>
+        <div class="pencil" id="phx-pencil">
+          <div><strong>PENCIL FAMILY</strong> {H(μ,λ)}=[[A,B],[μ·A,λ·B]] — harmonic Gram interlaced operators, crutch-free on the supplied channels
+            <span class="pctl">μ<input id="phx-mu" value="0" spellcheck="false"></span>
+            <span class="pctl">λ<input id="phx-lam" value="1" spellcheck="false"></span>
+            <select id="phx-ppre" title="pencil pair presets">
+              <option value="0|1">0, 1 (canonical)</option>
+              <option value="1j|2-1j">i, 2−i</option>
+              <option value="-1|1">−1, 1</option>
+              <option value="1|1">1, 1 (degenerate)</option>
+            </select></div>
+          <div id="phx-pmat"></div>
+          <div id="phx-pstats"></div>
+        </div>
+        <canvas id="phx-walk" width="364" height="230"></canvas>
+      </div>
+      <div>
+        <div class="hint" id="phx-scanlabel"></div>
+        <canvas id="phx-scan" width="364" height="150"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <table id="phx-tbl">
+    <thead><tr><th>channel</th><th>count</th><th>total |mag|</th><th>|resultant|</th><th>points</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <p class="cap" id="phx-cap"></p>
+</div>
+<script>
+(function(){
+  const PI=Math.PI, PI3=PI/3, SIGMA=0.5;
+  // ALL critical-line zeros γ<36 per character, refined to 10dp against the actual
+  // L-functions (Hurwitz-zeta Newton, mpmath); zeros[0] === g1 so the focus <select>
+  // round-trips. 36 is the honest cap: N=e^γ must stay below 2^53 for exact integers.
+  const CH5=[0,1,-1,-1,1],CH7=[0,1,1,-1,1,-1,-1],CH8=[0,1,0,-1,0,-1,0,1],
+        CH11=[0,1,-1,1,1,1,-1,-1,-1,1,-1],CH12=[0,1,0,0,0,-1,0,-1,0,0,0,1];
+  const CHARS={
+    trivial:{mod:2, chi:n=>(n%2===1?1:-1), g1:14.1347251417, zeros:[14.1347251417,21.0220396388,25.0108575801,30.4248761259,32.9350615877], label:'ζ (trivial · η)'},
+    chi3:{mod:3, chi:n=>{let r=n%3;return r===1?1:r===2?-1:0;}, g1:8.0397371557, zeros:[8.0397371557,11.2492062078,15.7046191767,18.2619974957,20.4557708077,24.0594148565,26.5778687358,28.2181645062,30.7450402614,33.8973889273,35.6084126539], label:'χ mod 3'},
+    chi4:{mod:4, chi:n=>{let r=n%4;return r===1?1:r===3?-1:0;}, g1:6.0209489047, zeros:[6.0209489047,10.2437703042,12.9880980123,16.3426071046,18.2919931961,21.4506113440,23.2783765205,25.7287564251,28.3596343430,29.6563840146,32.5921865271,34.1999575092], label:'χ mod 4'},
+    chi5:{mod:5, chi:n=>CH5[n%5], g1:6.6484533447, zeros:[6.6484533447,9.8314444329,11.9588456261,16.0338211284,17.5669942923,19.5407326228,22.2274054545,24.5884662174,26.7760959480,28.4610351002,29.7079093505,33.0004560069,34.7288129789,35.8686383718], label:'χ mod 5'},
+    chi7:{mod:7, chi:n=>CH7[n%7], g1:4.4757382837, zeros:[4.4757382837,6.8454917125,11.1601845431,12.4896033430,15.1128822587,16.8028764757,19.6118780567,21.8999137033,23.1629717997,24.4988475554,27.3614775190,29.1788796664,30.7218996445,32.4758875915,34.1112407830,35.3118474590], label:'χ mod 7'},
+    chi8:{mod:8, chi:n=>CH8[n%8], g1:4.8999739970, zeros:[4.8999739970,7.6284288418,10.8065881639,12.3105429942,15.1957542506,17.0222859743,18.8059589077,21.1316459622,23.0838499962,24.2019635578,26.9585351804,28.0974449606,29.9307642102,31.6381394913,33.8456308952,34.7457770062], label:'χ mod 8'},
+    chi11:{mod:11, chi:n=>CH11[n%11], g1:2.4772437112, zeros:[2.4772437112,6.8007084084,8.9712843685,10.1083373574,13.0401153288,15.1091582467,16.9907107010,18.7972465362,20.0675933286,21.6381778183,24.6728368611,25.6859624354,26.7868956841,28.8323430013,29.9746911725,32.1099172408,33.5228026453,35.4850851876], label:'χ mod 11'},
+    chi12:{mod:12, chi:n=>CH12[n%12], g1:3.8046276331, zeros:[3.8046276331,6.6922233205,8.8905929587,11.1883927451,12.9661788080,15.1814808759,16.6326332745,18.8843694571,20.1039281912,22.2858391072,23.5613197131,25.4116338924,27.0139439859,28.4422032577,30.2040065564,31.6480776149,33.0371328795,35.0273784850,35.7780445765], label:'χ mod 12'}
+  };
+  // above FAST_MIN terms the sums are evaluated analytically (Euler–Maclaurin class
+  // tails, mirrors model.py _fast_core, abs err ~1e-9); spin_cont has no class
+  // structure, so it stays brute-force and is truncated at SPINCONT_MAX.
+  const FAST_MIN=200000, FAST_HEAD=6000, SPINCONT_MAX=5000000;
+  const MODES={
+    spin_step:{label:'Spin (π/3)·n — faster newer', usesR:false},
+    winding:  {label:'Winding (fixed)',             usesR:false},
+    spin_cont:{label:'Spin (π/3)·n — continuous',   usesR:true, rlabel:'y', rmin:0.05, rmax:12},
+    log_entry:{label:'Own spin log n — turns & vanishes', usesR:true, rlabel:'ω', rmin:0.5, rmax:36}
+  };
+  const COL={P:'#2bb98a',M:'#e06a3a',U:'#8b8b99',walk:'#5a9be8',mark:'#c86bd6',
+             grid:'rgba(150,150,160,.22)',axis:'rgba(150,150,160,.5)',txt:'#b8b8c0'};
+  const eigenN=g=>Math.max(1,Math.round(Math.exp(g)));
+  const state={char:'chi3', mode:'log_entry', N:eigenN(CHARS.chi3.g1), R:CHARS.chi3.g1, focusR:CHARS.chi3.g1, magMode:'absorb', playback:0.28, tau:400,
+               pmu:[0,0], plam:[1,0], lastW:null, lastBvec:null, lastBmag:null};
+
+  function growFrac(n,H,tau){return Math.max(0,Math.min(1,(H-n)/tau));}
+  // the partial-absorption law: phasor n grows across [n−1, n] and completes AT its site
+  function absorbFrac(n,H){return Math.max(0,Math.min(1,H-n+1));}
+  function mag(n,N,mm,tau){const base=Math.pow(n,-SIGMA);
+    if(mm==='static')return base;
+    if(mm==='absorb')return base*absorbFrac(n,N);
+    const g=growFrac(n,N,tau);
+    if(mm==='grow')return base*g; if(mm==='equal')return 1; return g;}
+  // winding/spin_step use exact mod-12/mod-6 forms (identical mod 2π for integer n, N):
+  // the raw products overflow float precision once n(N−n) > 2^53, and cos/sin of ~1e14
+  // rad have no accuracy left at the big eigenheights.
+  function phase(n,mode,N,R){
+    if(mode==='winding')  return PI3*(n%12);
+    if(mode==='spin_step'){const Ni=Math.round(N);return PI3*(((n%6)*(((Ni-n)%6+6)%6))%6);}
+    if(mode==='spin_cont')return PI3*n*R;
+    return -R*Math.log(n); // L-term phase: n^(-1/2-iω); π/3 is only geometry scale
+  }
+
+  function ctxOf(id){const cv=document.getElementById(id),dpr=window.devicePixelRatio||1,
+     w=+cv.getAttribute('width'),h=+cv.getAttribute('height');
+     cv.width=w*dpr;cv.height=h*dpr;cv.style.width=w+'px'; // height comes from CSS height:auto so max-width:100% keeps the aspect
+     const c=cv.getContext('2d');c.setTransform(dpr,0,0,dpr,0,0);c._w=w;c._h=h;return c;}
+  let cH=ctxOf('phx-helix'),cW=ctxOf('phx-walk'),cS=ctxOf('phx-scan');
+
+  const chanAng=(x,y)=>((Math.atan2(y,x)*180/PI)+360)%360;
+  // single pass: signed walk + per-channel stats. O(N) — used for N ≤ FAST_MIN and for
+  // spin_cont (no class structure), truncated at SPINCONT_MAX with a flag.
+  function bruteWalk(Nh){
+    const {char,mode,R}=state,H=Nh!=null?Nh:state.N,chi=CHARS[char].chi;let re=0,im=0;const pts=[[0,0]];let mx=1e-9;
+    // head < 1 means the bank is still empty; 'absorb' includes the one partially-
+    // absorbed phasor at site ⌊H⌋+1 (its weight is the head's fractional part)
+    let last=Math.max(0,state.magMode==='absorb'?Math.ceil(H):Math.floor(H)),truncated=false;
+    if(mode==='spin_cont'&&last>SPINCONT_MAX){last=SPINCONT_MAX;truncated=true;}
+    let Pr=0,Pi=0,Mr=0,Mi=0,unsigned=0,Pc=0,Mc=0,Uc=0,Pt=0,Mt=0,Ut=0,ptStep=Math.max(1,Math.ceil(last/2400));
+    for(let n=1;n<=last;n++){const c=chi(n),g=mag(n,H,state.magMode,state.tau);
+      if(c){const p=phase(n,mode,H,R),a=c*g;re+=a*Math.cos(p);im+=a*Math.sin(p);
+        unsigned+=g;
+        if(c>0){Pc++;Pt+=g;Pr+=g*Math.cos(p);Pi+=g*Math.sin(p);}else{Mc++;Mt+=g;Mr+=g*Math.cos(p);Mi+=g*Math.sin(p);}}
+      else{Uc++;Ut+=g;}
+      if(n===last||n%ptStep===0)pts.push([re,im]);const m=Math.hypot(re,im);if(m>mx)mx=m;}
+    return {re,im,pts,mx,B:Math.hypot(re,im),A:unsigned,P:[Pr,Pi],M:[Mr,Mi],truncated,
+      ch:{P:{count:Pc,tot:Pt,res:Math.hypot(Pr,Pi),ang:chanAng(Pr,Pi)},
+          M:{count:Mc,tot:Mt,res:Math.hypot(Mr,Mi),ang:chanAng(Mr,Mi)},
+          U:{count:Uc,tot:Ut,res:Ut,ang:null}}};
+  }
+
+  // ---- fast evaluator: Euler–Maclaurin class tails (mirrors model.py _fast_core) ----
+  function cmul(a,b){return [a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]];}
+  function cdiv(a,b){const d=b[0]*b[0]+b[1]*b[1];return [(a[0]*b[0]+a[1]*b[1])/d,(a[1]*b[0]-a[0]*b[1])/d];}
+  function cpowE(n,er,ei){const L=Math.log(n),m=Math.exp(er*L),th=ei*L;return [m*Math.cos(th),m*Math.sin(th)];}
+  // sum of n^-(sr+i·si) over n=Q·m+r in (lo,hi]; abs err ~1e-10 for lo ≥ FAST_HEAD
+  function emTail(Q,r,lo,hi,sr,si){
+    const m1=Math.floor((lo-r)/Q)+1,m2=Math.floor((hi-r)/Q);
+    if(m2<m1)return [0,0];
+    const a=Q*m1+r,b=Q*m2+r;
+    if(m2-m1<64){let re=0,im=0;for(let m=m1;m<=m2;m++){const t=cpowE(Q*m+r,-sr,-si);re+=t[0];im+=t[1];}return [re,im];}
+    const d1=[-sr,-si],d3=cmul(d1,cmul([sr+1,si],[sr+2,si])),d5=cmul(d3,cmul([sr+3,si],[sr+4,si]));
+    const ga=cpowE(a,-sr,-si),gb=cpowE(b,-sr,-si),Ga=cpowE(a,1-sr,-si),Gb=cpowE(b,1-sr,-si);
+    const out=cdiv([Gb[0]-Ga[0],Gb[1]-Ga[1]],[Q*(1-sr),-Q*si]);          // integral
+    out[0]+=(ga[0]+gb[0])/2;out[1]+=(ga[1]+gb[1])/2;                     // boundary
+    const t1a=cmul(d1,cpowE(a,-sr-1,-si)),t1b=cmul(d1,cpowE(b,-sr-1,-si));
+    out[0]+=(Q/12)*(t1b[0]-t1a[0]);out[1]+=(Q/12)*(t1b[1]-t1a[1]);       // B2/2!
+    const t3a=cmul(d3,cpowE(a,-sr-3,-si)),t3b=cmul(d3,cpowE(b,-sr-3,-si));
+    out[0]-=(Q*Q*Q/720)*(t3b[0]-t3a[0]);out[1]-=(Q*Q*Q/720)*(t3b[1]-t3a[1]); // B4/4!
+    const q5=Q*Q*Q*Q*Q,t5a=cmul(d5,cpowE(a,-sr-5,-si)),t5b=cmul(d5,cpowE(b,-sr-5,-si));
+    out[0]+=(q5/30240)*(t5b[0]-t5a[0]);out[1]+=(q5/30240)*(t5b[1]-t5a[1]);   // B6/6!
+    return out;
+  }
+  function magParams(){
+    return {sigma:(state.magMode==='grow'||state.magMode==='static'||state.magMode==='absorb')?0.5:0,
+            windowed:(state.magMode==='grow'||state.magMode==='grow_equal')};
+  }
+  // |B(R, NN)| only — used by the scan sweep
+  function fastB(NN,RR){
+    const {char,mode}=state,chi=CHARS[char].chi,q=CHARS[char].mod,{sigma,windowed}=magParams(),tau=state.tau;
+    const H=NN,Nl=Math.floor(NN),n0=FAST_HEAD;
+    let re=0,im=0;
+    for(let n=1;n<=n0;n++){const c=chi(n);if(c){const g=mag(n,H,state.magMode,tau),p=phase(n,mode,Nl,RR);re+=c*g*Math.cos(p);im+=c*g*Math.sin(p);}}
+    const isLog=mode==='log_entry',Q=isLog?q:12,si=isLog?RR:0;
+    for(let r=1;r<=Q;r++){const c=chi(r);if(!c)continue;
+      if(isLog){const z=emTail(Q,r,n0,Nl,sigma,si);re+=c*z[0];im+=c*z[1];}
+      else{const t=emTail(Q,r,n0,Nl,sigma,0)[0],p=phase(r,mode,Nl,RR);re+=c*t*Math.cos(p);im+=c*t*Math.sin(p);}}
+    if(windowed){const lo=Math.max(n0,Math.floor(H-tau));
+      for(let n=lo+1;n<=Nl;n++){const c=chi(n);if(c){const d=(1-Math.min(1,Math.max(0,(H-n)/tau)))*Math.pow(n,-sigma),p=phase(n,mode,Nl,RR);re-=c*d*Math.cos(p);im-=c*d*Math.sin(p);}}}
+    if(state.magMode==='absorb'){const f=H-Nl;    // the one partially-absorbed phasor
+      if(f>1e-12){const n=Nl+1,c=chi(n);if(c){const d=f*Math.pow(n,-sigma),p=phase(n,mode,Nl,RR);re+=c*d*Math.cos(p);im+=c*d*Math.sin(p);}}}
+    return Math.hypot(re,im);
+  }
+  // full walk result (channels + log-spaced partial-sum path), O(FAST_HEAD+tau+cuts)
+  function fastWalk(Nh){
+    const {char,mode,R}=state,H=Nh!=null?Nh:state.N,Nl=Math.floor(H),chi=CHARS[char].chi,q=CHARS[char].mod;
+    const {sigma,windowed}=magParams(),tau=state.tau,n0=FAST_HEAD;
+    let P=[0,0],M=[0,0],Pc=0,Mc=0,Uc=0,Pt=0,Mt=0,Ut=0,re=0,im=0;
+    const pts=[[0,0]];let mx=1e-9;
+    const pushPt=()=>{pts.push([re,im]);const m=Math.hypot(re,im);if(m>mx)mx=m;};
+    // exact head (window can't reach it: Nl−τ > n0 whenever this path is taken)
+    const headStep=Math.max(1,Math.floor(n0/240));
+    for(let n=1;n<=n0;n++){const c=chi(n),g=mag(n,H,state.magMode,tau);
+      if(c){const p=phase(n,mode,Nl,R),co=Math.cos(p),sn=Math.sin(p);
+        if(c>0){Pc++;Pt+=g;P[0]+=g*co;P[1]+=g*sn;re+=g*co;im+=g*sn;}
+        else{Mc++;Mt+=g;M[0]+=g*co;M[1]+=g*sn;re-=g*co;im-=g*sn;}}
+      else{Uc++;Ut+=g;}
+      if(n<=50||n%headStep===0)pushPt();}
+    const reHead=re,imHead=im;
+    // class reps + final tails at Nl
+    const isLog=mode==='log_entry',Q=isLog?q:12,si=isLog?R:0,reps=[];
+    for(let r=1;r<=Q;r++){const c=chi(r);let e=null;
+      if(!isLog&&c){const p=phase(r,mode,Nl,R);e=[Math.cos(p),Math.sin(p)];}
+      reps.push({r,c,e});}
+    for(const {r,c,e} of reps){
+      const m1=Math.floor((n0-r)/Q)+1,m2=Math.floor((Nl-r)/Q);if(m2<m1)continue;
+      const cnt=m2-m1+1,tot=emTail(Q,r,n0,Nl,sigma,0)[0];
+      if(!c){Uc+=cnt;Ut+=tot;continue;}
+      const z=isLog?emTail(Q,r,n0,Nl,sigma,si):[tot*e[0],tot*e[1]];
+      if(c>0){Pc+=cnt;Pt+=tot;P[0]+=z[0];P[1]+=z[1];}
+      else{Mc+=cnt;Mt+=tot;M[0]+=z[0];M[1]+=z[1];}}
+    // log-spaced tail cuts for the walk path
+    const CUTS=420,lnA=Math.log(n0),lnB=Math.log(Nl),cutList=[];
+    for(let j=1;j<=CUTS;j++){const x=Math.min(Nl,Math.round(Math.exp(lnA+(lnB-lnA)*j/CUTS)));
+      if(x>n0&&(cutList.length===0||x>cutList[cutList.length-1]))cutList.push(x);}
+    if(cutList[cutList.length-1]!==Nl)cutList.push(Nl);
+    // window deficit: cumulative at each affected cut + channel totals
+    const wlo=windowed?Math.max(n0,Math.floor(H-tau)):Infinity;
+    const corrAt=new Map();
+    if(windowed){
+      const wcuts=cutList.filter(x=>x>=wlo+1);let k=0,cre=0,cim=0;
+      let dP=[0,0],dM=[0,0],dPt=0,dMt=0,dUt=0;
+      for(let n=wlo+1;n<=Nl;n++){
+        const c=chi(n),d=(1-Math.min(1,Math.max(0,(H-n)/tau)))*Math.pow(n,-sigma);
+        if(c){const p=phase(n,mode,Nl,R),co=d*Math.cos(p),sn=d*Math.sin(p);
+          cre+=c*co;cim+=c*sn;
+          if(c>0){dP[0]+=co;dP[1]+=sn;dPt+=d;}else{dM[0]+=co;dM[1]+=sn;dMt+=d;}}
+        else dUt+=d;
+        while(k<wcuts.length&&n===wcuts[k]){corrAt.set(wcuts[k],[cre,cim]);k++;}}
+      P[0]-=dP[0];P[1]-=dP[1];M[0]-=dM[0];M[1]-=dM[1];Pt-=dPt;Mt-=dMt;Ut-=dUt;
+    }
+    // partial sums at the cuts
+    for(const x of cutList){
+      let tre=reHead,tim=imHead;
+      for(const {r,c,e} of reps){
+        if(!c)continue;
+        if(isLog){const z=emTail(Q,r,n0,x,sigma,si);tre+=c*z[0];tim+=c*z[1];}
+        else{const t=emTail(Q,r,n0,x,sigma,0)[0];tre+=c*t*e[0];tim+=c*t*e[1];}}
+      const cc=corrAt.get(x);if(cc){tre-=cc[0];tim-=cc[1];}
+      re=tre;im=tim;pushPt();}
+    // 'absorb': add the one partially-absorbed phasor at site Nl+1
+    if(state.magMode==='absorb'){const f=H-Nl;
+      if(f>1e-12){const n1=Nl+1,c=chi(n1),d=f*Math.pow(n1,-sigma);
+        if(c){const p=phase(n1,mode,Nl,R),co=d*Math.cos(p),sn=d*Math.sin(p);
+          if(c>0){Pc++;Pt+=d;P[0]+=co;P[1]+=sn;re+=co;im+=sn;}
+          else{Mc++;Mt+=d;M[0]+=co;M[1]+=sn;re-=co;im-=sn;}
+          pushPt();}
+        else{Uc++;Ut+=d;}}}
+    return {re,im,pts,mx,B:Math.hypot(re,im),A:Pt+Mt,P,M,truncated:false,fast:true,
+      ch:{P:{count:Pc,tot:Pt,res:Math.hypot(P[0],P[1]),ang:chanAng(P[0],P[1])},
+          M:{count:Mc,tot:Mt,res:Math.hypot(M[0],M[1]),ang:chanAng(M[0],M[1])},
+          U:{count:Uc,tot:Ut,res:Ut,ang:null}}};
+  }
+  function walk(Nh){
+    const H=Nh!=null?Nh:state.N;
+    if(state.mode!=='spin_cont'&&H>FAST_MIN)return fastWalk(Nh);
+    return bruteWalk(Nh);
+  }
+  // The scan sweeps sumB over the whole x-range; at big eigenheights (ζ trivial: N≈1.4e6,
+  // ~60ms per point) doing that synchronously froze the page for ~1s per interaction.
+  // Small sweeps stay synchronous; big ones fill in chunked slices and redraw as they go.
+  const scanCache=new Map();let scanJob=null;
+  function scanKey(){return [state.char,state.mode,state.magMode,state.tau,state.N].join('|');}
+  function sumB(NN,RR){
+    const chi=CHARS[state.char].chi;let re=0,im=0;
+    for(let n=1;n<=NN;n++){const c=chi(n);if(c){const a=c*mag(n,NN,state.magMode,state.tau),p=phase(n,state.mode,NN,RR);re+=a*Math.cos(p);im+=a*Math.sin(p);}}
+    return Math.hypot(re,im);
+  }
+  function scanSpec(){
+    const {char,mode,N}=state;
+    const steps=(mode!=='spin_cont'&&N>FAST_MIN)?220   // analytic points are ~free
+      :Math.max(24,Math.min(220,Math.floor(3000000/Math.max(1,Math.min(N,SPINCONT_MAX)))));
+    let xs=[],xmin,xmax,xlabel,zeros=[];
+    if(!MODES[mode].usesR){
+      xmin=Math.max(20,Math.round(N*0.25));xmax=Math.max(xmin+100,Math.round(N*1.4));xlabel='head height H (=terms)';
+      for(let i=0;i<steps;i++)xs.push(Math.round(xmin+(xmax-xmin)*i/(steps-1)));
+    }else{
+      xmin=MODES[mode].rmin;xmax=MODES[mode].rmax;xlabel='ordinate '+MODES[mode].rlabel;
+      zeros=(mode==='log_entry'?(CHARS[char].zeros||[]):[]).filter(z=>z>=xmin&&z<=xmax);
+      for(let i=0;i<steps;i++)xs.push(xmin+(xmax-xmin)*i/(steps-1));
+    }
+    return {xs,ys:[],xmin,xmax,xlabel,zeros,usesR:MODES[mode].usesR,N};
+  }
+  function sumBany(NN,RR){
+    if(state.mode!=='spin_cont'&&NN>FAST_MIN)return fastB(NN,RR);
+    return sumB(Math.min(NN,state.mode==='spin_cont'?SPINCONT_MAX:NN),RR);
+  }
+  function scanState(){
+    const key=scanKey();
+    if(scanCache.has(key))return scanCache.get(key);
+    if(scanJob&&scanJob.key===key)return scanJob.v;
+    const v=scanSpec();
+    // cost estimate: brute points cost their term count, analytic points ~a head's worth
+    const ops=v.xs.reduce((s,x)=>{const NN=v.usesR?v.N:x;
+      return s+((state.mode!=='spin_cont'&&NN>FAST_MIN)?2*FAST_HEAD:Math.min(NN,SPINCONT_MAX));},0);
+    const finish=vv=>{scanCache.set(key,vv);while(scanCache.size>8)scanCache.delete(scanCache.keys().next().value);scanJob=null;};
+    if(ops<=3000000){
+      for(const x of v.xs)v.ys.push(v.usesR?sumBany(v.N,x):sumBany(x,0));
+      finish(v);return v;
+    }
+    const job={key,v};scanJob=job;
+    (function slice(){
+      if(scanJob!==job||scanKey()!==job.key)return; // superseded
+      const t0=performance.now();
+      while(job.v.ys.length<job.v.xs.length&&performance.now()-t0<40){
+        const x=job.v.xs[job.v.ys.length];
+        job.v.ys.push(job.v.usesR?sumBany(job.v.N,x):sumBany(x,0));
+      }
+      drawScan(job.v);
+      if(job.v.ys.length>=job.v.xs.length)finish(job.v);
+      else setTimeout(slice,16);
+    })();
+    return v;
+  }
+
+  const view={az:0.7,el:0.92};
+  function signedPhase(n,mode,N,R,cc){return phase(n,mode,N,R)+(cc<0?PI:0);}
+  // placement: phasor n sits at its OWN signed phase evaluated at ω=log N, minus π.
+  // Arrow directions are the true phases at the current ω, so all arrows point into
+  // the focal point ⟺ ω = log N — a table-free identity, not a selected-γ rig.
+  function helixTheta(n,mode,N,cc){
+    const x0=PI3*n,r=Math.sqrt(x0);
+    if(mode==='log_entry'&&cc)return signedPhase(n,mode,N,Math.log(state.N),cc)-PI;
+    return 2*r;
+  }
+  function draw3D(Nh){
+    const c=cH,W=c._w,H=c._h;c.clearRect(0,0,W,H);
+    // Nh==null means the full head; Nh may legitimately be 0 (empty bank at the carrier origin)
+    const {char,mode,R}=state,Hhead=Nh!=null?Nh:state.N,N=Math.max(0,Math.floor(Hhead)),Nfull=state.N,chi=CHARS[char].chi;
+    const Nm=Nfull,stepF=Math.max(1,Math.ceil(Nm/340));
+    const rmax=Math.sqrt(PI3*Nm),hgt=nn=>0.7*(PI3*nn)/rmax,zmax=hgt(Nm);
+    // eigenheight target: the axis point at the height of e^ω — it rides the axis with
+    // the ordinate and docks at the head exactly when ω = log N (the star condition)
+    const eigT=Math.exp(R),nT=Math.max(1,Math.min(eigT,Nm)),zTarget=hgt(nT),overshoot=eigT>Nm*1.001;
+    const scale=(W*0.40)/rmax,cx=W/2,cy=H*0.5;
+    const ca=Math.cos(view.az),sa=Math.sin(view.az),ce=Math.cos(view.el),se=Math.sin(view.el);
+    const proj=(a,b,z)=>{const X=a*ca-b*sa,Y=a*sa+b*ca;return [cx+X*scale, cy-(z-zmax/2)*scale*ce+Y*scale*se, Y];};
+    const focal=proj(0,0,zTarget);
+    // aligned: the star condition ω=log N (matches the placement identity exactly);
+    // closed: the residual of the actual sum is ~0. The focal event needs BOTH.
+    const starAligned=mode==='log_entry'&&Math.abs(R-Math.log(Nfull))<0.025;
+    const starClosed=starAligned&&state.lastBmag!=null&&state.lastBmag<0.05;
+    function arrow2D(A,B,col,alpha){const dx=B[0]-A[0],dy=B[1]-A[1],dist=Math.hypot(dx,dy),ang=Math.atan2(dy,dx),head=Math.min(6,Math.max(3,dist*0.45));
+      c.globalAlpha=alpha;c.fillStyle=col;
+      if(dist<1.5){c.beginPath();c.arc(A[0],A[1],1.7,0,7);c.fill();return;}
+      c.strokeStyle=col;c.lineWidth=1.6;c.beginPath();c.moveTo(A[0],A[1]);c.lineTo(B[0],B[1]);c.stroke();
+      c.fillStyle=col;c.beginPath();c.moveTo(B[0],B[1]);c.lineTo(B[0]-head*Math.cos(ang-0.45),B[1]-head*Math.sin(ang-0.45));c.lineTo(B[0]-head*Math.cos(ang+0.45),B[1]-head*Math.sin(ang+0.45));c.closePath();c.fill();
+      c.beginPath();c.arc(A[0],A[1],1.4,0,7);c.fill();}
+    {const A=proj(0,0,0),B=proj(0,0,zmax);c.strokeStyle='rgba(255,255,255,.32)';
+      c.lineWidth=1;c.setLineDash([4,4]);c.beginPath();c.moveTo(A[0],A[1]);c.lineTo(B[0],B[1]);c.stroke();c.setLineDash([]);}
+    if(mode==='log_entry'){
+      c.strokeStyle=starClosed?'rgba(43,185,138,.55)':'rgba(200,107,214,.45)';
+      c.lineWidth=1.2;
+      for(const rr of [13,24,38]){c.globalAlpha=rr===13?0.95:0.35;c.beginPath();c.arc(focal[0],focal[1],rr,0,7);c.stroke();}
+      c.globalAlpha=1;
+    }
+    // site n's carrier position; n=0 is the carrier origin (contributes nothing — the bank
+    // lives at heights > 0, cf. FinitePencil.lean "Indexing, the bank origin")
+    const sitePos=n=>{if(n<1)return [0,0,0];
+      const x0=PI3*n,r=Math.sqrt(x0),cc=chi(n),th=helixTheta(n,mode,Hhead,cc);
+      return [r*Math.cos(th),r*Math.sin(th),hgt(n)];};
+    // the fiber tip rides CONTINUOUSLY between sites: at head H the current phasor
+    // (site ⌊H⌋+1) is partially absorbed with fraction H−⌊H⌋
+    const tipPos=()=>{const f=Math.floor(Hhead),fr=Hhead-f;
+      if(fr<1e-9)return sitePos(f);
+      const a=sitePos(f),b=sitePos(f+1);
+      return [a[0]+(b[0]-a[0])*fr,a[1]+(b[1]-a[1])*fr,a[2]+(b[2]-a[2])*fr];};
+    // CARRIER — the fixed spiral, anchored at the carrier origin.
+    c.strokeStyle='rgba(150,150,160,.12)';c.lineWidth=1;c.beginPath();
+    {const O=proj(0,0,0);c.moveTo(O[0],O[1]);}
+    for(let n=1;n<=Nm;n+=stepF){const s=sitePos(n),P=proj(s[0],s[1],s[2]);c.lineTo(P[0],P[1]);}
+    c.stroke();
+    // FIBER — starts at the carrier origin (empty n=0 site) and grows along the carrier;
+    // each phasor enters at zero magnitude when the head reaches its site (the arrows'
+    // grow window shows the current phasor finishing continuously).
+    c.strokeStyle='rgba(120,165,225,.55)';c.lineWidth=1.7;c.beginPath();
+    {const O=proj(0,0,0);c.moveTo(O[0],O[1]);}
+    for(let n=1;n<=N;n+=stepF){const s=sitePos(n),P=proj(s[0],s[1],s[2]);c.lineTo(P[0],P[1]);}
+    {const t=tipPos(),P=proj(t[0],t[1],t[2]);c.lineTo(P[0],P[1]);}
+    c.stroke();
+    // PHASORS — positions and arrows use the same signed L-term phase.
+    // At ω=γ, th = signedPhase(γ)-π, so the arrow direction is inward.
+    // sample with a FRACTIONAL step so we don't alias with the character period (that made every
+    // drawn term the same residue → all one colour). This hits all of P/M/U.
+    const items=[],guides=[],AL=rmax*0.11,shown=Math.min(N,360);
+    const mkItem=n=>{const cc=chi(n),k=cc>0?'P':cc<0?'M':'U';
+      const x0=PI3*n,r=Math.sqrt(x0),th=helixTheta(n,mode,Hhead,cc),z=hgt(n),x=r*Math.cos(th),y=r*Math.sin(th),P=proj(x,y,z);
+      const sp=signedPhase(n,mode,Hhead,R,cc),baseLen=Math.min(AL,Math.max(AL*0.35,r*0.9));
+      const amp=(state.magMode==='grow'||state.magMode==='grow_equal')?growFrac(n,Hhead,state.tau)
+        :(state.magMode==='absorb'?absorbFrac(n,Hhead):1);
+      const completeLen=(mode==='log_entry'&&cc)?Math.min(r*0.55,Math.max(baseLen,AL*2.2)):baseLen;
+      const len=completeLen*amp;
+      let Pt;
+      if(mode==='log_entry'&&cc){
+        const pitch=(zTarget-z)/Math.max(r,1e-6),norm=Math.hypot(1,pitch);
+        Pt=proj(x+Math.cos(sp)*len/norm,y+Math.sin(sp)*len/norm,z+pitch*len/norm);
+      }else{
+        Pt=proj(x+Math.cos(sp)*len,y+Math.sin(sp)*len,z);
+      }
+      return {P,Pt,k,depth:P[2],cc};};
+    for(let i=0;i<shown;i++){const n=1+Math.round(i*(N-1)/Math.max(1,shown-1));
+      const it=mkItem(n);items.push(it);
+      if(mode==='log_entry'&&starClosed&&it.cc&&i%17===0)guides.push({P:it.P,k:it.k,depth:it.depth});}
+    // the one currently-absorbing phasor (site ⌊H⌋+1): drawn growing, never popping
+    if(state.magMode==='absorb'&&Hhead-N>1e-9&&N+1<=Nm)items.push(mkItem(N+1));
+    items.sort((p,q)=>p.depth-q.depth);
+    guides.sort((p,q)=>p.depth-q.depth);
+    for(const g of guides){c.globalAlpha=0.18;c.strokeStyle=COL[g.k];c.lineWidth=1;c.beginPath();c.moveTo(g.P[0],g.P[1]);c.lineTo(focal[0],focal[1]);c.stroke();}
+    for(const it of items)arrow2D(it.P,it.Pt,COL[it.k],it.k==='U'?0.35:0.9);
+    if(mode==='log_entry'){
+      // the eigenheight target marker itself — dimmed when e^ω is beyond the head
+      c.globalAlpha=overshoot?0.45:1;c.fillStyle='#fff';
+      c.beginPath();c.arc(focal[0],focal[1],3.4,0,7);c.fill();
+      c.strokeStyle='rgba(255,255,255,.85)';c.lineWidth=1.3;c.beginPath();c.arc(focal[0],focal[1],8,0,7);c.stroke();
+      c.globalAlpha=1;c.font='10px ui-sans-serif';
+      if(overshoot){c.fillStyle=COL.txt;c.fillText('e^ω beyond head (N < e^ω)',focal[0]+12,focal[1]+13);}
+      else if(!starAligned){c.fillStyle=COL.txt;c.fillText('target e^ω',focal[0]+12,focal[1]+13);}
+      // residual vector B drawn AT the target: the uncancelled remainder of the signed
+      // sum, in the same complex plane the arrows live in. The vanish event is this
+      // arrow collapsing to a dot while the star points into it.
+      if(state.lastBvec){
+        const bm=Math.hypot(state.lastBvec[0],state.lastBvec[1]);
+        if(bm>=0.05){
+          const s=(rmax*0.35)/Math.max(1,bm);
+          const Bt=proj(state.lastBvec[0]*s,state.lastBvec[1]*s,zTarget);
+          arrow2D(focal,Bt,'#ffffff',0.95);
+          c.globalAlpha=1;c.fillStyle='#fff';c.fillText('residual |B|='+sci(bm),focal[0]+12,focal[1]-11);
+        }else{
+          c.fillStyle=COL.P;c.beginPath();c.arc(focal[0],focal[1],2.4,0,7);c.fill();
+          c.fillText('residual B≈0',focal[0]+12,focal[1]-11);
+        }
+      }
+      if(window.__phxDiag)window.__phxDiag.lastTarget={nT,zTarget,zmax,overshoot,frac:zTarget/zmax};
+    }
+    {const t=tipPos(),P=proj(t[0],t[1],t[2]);
+     c.fillStyle='#fff';c.beginPath();c.arc(P[0],P[1],3,0,7);c.fill();c.strokeStyle='#78a5e1';c.lineWidth=1.5;c.stroke();}
+    c.globalAlpha=1;
+  }
+
+  function drawWalk(w){
+    const c=cW,W=c._w,H=c._h;c.clearRect(0,0,W,H);
+    const cx=W/2,cy=H/2,pad=22,mxAll=Math.max(w.mx,Math.hypot(w.P[0],w.P[1]),Math.hypot(w.M[0],w.M[1]),w.B),sc=(Math.min(W,H)/2-pad)/(mxAll||1);
+    c.strokeStyle=COL.grid;c.lineWidth=1;c.beginPath();c.moveTo(pad,cy);c.lineTo(W-pad,cy);c.moveTo(cx,pad);c.lineTo(cx,H-pad);c.stroke();
+    // faint full walk (all the little phasors, tip-to-tail) for context
+    const p=w.pts;c.lineWidth=1;c.globalAlpha=0.35;c.beginPath();
+    for(let i=0;i<p.length;i++){const X=cx+p[i][0]*sc,Y=cy-p[i][1]*sc;i?c.lineTo(X,Y):c.moveTo(X,Y);}
+    c.strokeStyle=COL.walk;c.stroke();c.globalAlpha=1;
+    const XY=v=>[cx+v[0]*sc,cy-v[1]*sc];
+    function bigArrow(a,b,col,lab,midLabel=false){const A=XY(a),B=XY(b),ang=Math.atan2(B[1]-A[1],B[0]-A[0]);
+      c.strokeStyle=col;c.lineWidth=2.6;c.beginPath();c.moveTo(A[0],A[1]);c.lineTo(B[0],B[1]);c.stroke();
+      c.fillStyle=col;c.beginPath();c.moveTo(B[0],B[1]);c.lineTo(B[0]-9*Math.cos(ang-0.4),B[1]-9*Math.sin(ang-0.4));c.lineTo(B[0]-9*Math.cos(ang+0.4),B[1]-9*Math.sin(ang+0.4));c.closePath();c.fill();
+      const lx=midLabel?(A[0]+B[0])/2:B[0],ly=midLabel?(A[1]+B[1])/2:B[1];
+      c.font='11px ui-sans-serif';c.fillText(lab,lx+5,ly-2);return B;}
+    const O=[0,0],Bv=[w.re,w.im];
+    const cancelled=w.B<0.05;
+    c.strokeStyle=cancelled?COL.P:COL.axis;c.lineWidth=1.3;c.globalAlpha=cancelled?0.9:0.45;
+    for(const rr of [8,16]){c.beginPath();c.arc(cx,cy,rr,0,7);c.stroke();}
+    c.globalAlpha=1;
+    bigArrow(O,w.P,COL.P,'P +');
+    const Bxy=bigArrow(w.P,Bv,COL.M,'−M',true);
+    c.fillStyle=COL.axis;c.beginPath();c.arc(cx,cy,3,0,7);c.fill();
+    c.strokeStyle=cancelled?COL.P:COL.mark;c.lineWidth=cancelled?1.8:1.2;c.setLineDash([3,3]);c.beginPath();c.moveTo(cx,cy);c.lineTo(Bxy[0],Bxy[1]);c.stroke();c.setLineDash([]);
+    c.fillStyle=cancelled?COL.P:COL.mark;c.font='10px ui-sans-serif';
+    c.fillText('B=P−M residual',Math.min(W-102,Math.max(8,(cx+Bxy[0])/2+5)),Math.max(18,Math.min(H-22,(cy+Bxy[1])/2-3)));
+    // when the signed -M arrow returns to the center, the focal channel cancels
+    if(w.B<0.12){const sx=Bxy[0],sy=Bxy[1];
+      c.strokeStyle='#fff';c.lineWidth=1.6;c.beginPath();c.arc(sx,sy,8,0,7);c.stroke();
+      c.fillStyle='#fff';c.font='11px ui-sans-serif';c.fillText(cancelled?'B≈0 focal cancellation':'back to center → cancel',sx+11,sy+3);}
+    c.fillStyle=cancelled?COL.P:COL.txt;c.font='10px ui-sans-serif';c.fillText('signed L-sum: B=P−M, |B|='+w.B.toFixed(3),8,H-7);
+  }
+
+  function drawScan(s){
+    const c=cS,W=c._w,H=c._h;c.clearRect(0,0,W,H);const pad=6,by=H-16,ty=8;
+    const ymax=Math.max(0.8,(s.ys.length?Math.max.apply(null,s.ys):0)*1.05);
+    const X=x=>pad+(W-2*pad)*(x-s.xmin)/(s.xmax-s.xmin), Y=y=>by-(by-ty)*Math.min(y,ymax)/ymax;
+    c.strokeStyle=COL.grid;c.lineWidth=1;c.beginPath();c.moveTo(pad,by);c.lineTo(W-pad,by);c.stroke();
+    c.fillStyle=COL.txt;c.font='9px ui-sans-serif';c.fillText('|P−M|',3,ty+3);
+    // mark every zero (crossing) in range
+    if(s.zeros&&s.zeros.length){c.strokeStyle=COL.mark;c.setLineDash([3,3]);c.lineWidth=1;
+      for(const z of s.zeros){if(z<s.xmin||z>s.xmax)continue;const zx=X(z);c.beginPath();c.moveTo(zx,ty);c.lineTo(zx,by);c.stroke();
+        c.setLineDash([]);c.fillStyle=COL.mark;c.fillText(z.toFixed(1),zx-8,by+11);c.setLineDash([3,3]);}
+      c.setLineDash([]);c.fillStyle=COL.mark;c.fillText('known zeros ↓',6,ty+9);}
+    c.strokeStyle=COL.walk;c.lineWidth=1.4;c.beginPath();
+    for(let i=0;i<s.ys.length;i++){const xx=X(s.xs[i]),yy=Y(s.ys[i]);i?c.lineTo(xx,yy):c.moveTo(xx,yy);}
+    c.stroke();
+    if(s.ys.length<s.xs.length){c.fillStyle=COL.txt;c.fillText('scanning… '+s.ys.length+'/'+s.xs.length,W-78,ty+3);}
+    if(state.mode==='log_entry'&&state.focusR>=s.xmin&&state.focusR<=s.xmax){
+      const fx=X(state.focusR);c.strokeStyle=COL.P;c.lineWidth=1.8;c.beginPath();c.moveTo(fx,ty);c.lineTo(fx,by);c.stroke();
+      c.fillStyle=COL.P;c.font='9px ui-sans-serif';c.fillText('selected γ',Math.min(W-58,fx+4),ty+20);
+    }
+    const curx=(!MODES[state.mode].usesR)?state.N:state.R;
+    if(curx>=s.xmin&&curx<=s.xmax){const px=X(curx);c.strokeStyle='rgba(150,150,160,.65)';c.lineWidth=1;c.beginPath();c.moveTo(px,ty);c.lineTo(px,by);c.stroke();}
+  }
+
+  function nearestZero(w){const zs=CHARS[state.char].zeros||[];let best=null,bd=1e9;for(const z of zs){const d=Math.abs(z-state.R);if(d<bd){bd=d;best=z;}}return {z:best,d:bd};}
+  function focalState(){
+    const eig=eigenN(state.focusR),atEig=state.N===eig,logN=Math.log(state.N);
+    // aligned = the star identity ω=log N (math-true, table-free) — matches draw3D
+    return {eig,atEig,logN,aligned:state.mode==='log_entry'&&Math.abs(state.R-logN)<0.025};
+  }
+  function signedComplexText(w){
+    const im=Math.abs(w.im).toFixed(3),sgn=w.im<0?' - ':' + ';
+    return w.re.toFixed(3)+sgn+im+'i';
+  }
+  function csci(re,im){
+    if(Math.abs(im)<1e-14*Math.max(1,Math.abs(re)))return sci(re);
+    if(Math.abs(re)<1e-14*Math.max(1,Math.abs(im)))return sci(im)+'i';
+    return sci(re)+(im<0?' − ':' + ')+sci(Math.abs(im))+'i';
+  }
+  // accepts '0', '-1.5', '1j', '-j', '2-1j', '0.5+0.25j', '1e-3j'; i and j both work
+  function parseComplex(str){
+    let s=String(str).trim().replace(/\s+/g,'').replace(/[iI]/g,'j').replace(/J/g,'j');
+    if(!s)return null;
+    const num=t=>{if(t===''||t==='+')return 1;if(t==='-')return -1;const v=Number(t);return Number.isFinite(v)?v:null;};
+    if(s.endsWith('j')){
+      const body=s.slice(0,-1);
+      for(let k=body.length-1;k>0;k--){
+        const ch=body[k];
+        if((ch==='+'||ch==='-')&&body[k-1]!=='e'&&body[k-1]!=='E'){
+          const re=Number(body.slice(0,k)),imt=num(body.slice(k));
+          return (Number.isFinite(re)&&imt!=null)?[re,imt]:null;
+        }
+      }
+      const imt=num(body);return imt==null?null:[0,imt];
+    }
+    const v=Number(s);return Number.isFinite(v)?[v,0]:null;
+  }
+  function sci(x){
+    if(!Number.isFinite(x))return 'NaN';
+    if(x===0)return '0';
+    const ax=Math.abs(x);
+    return (ax>=1e4||ax<1e-3)?x.toExponential(2):x.toFixed(3);
+  }
+  function refreshFormula(w,fs){
+    const f=document.getElementById('phx-formula');if(!f)return;
+    const residual='<span class="res">|B|='+sci(w.B)+'</span>',z=signedComplexText(w);
+    if(state.mode!=='log_entry'){
+      f.className='formula warn';
+      f.innerHTML='<strong>SIGNED CHANNEL SUM</strong> B=Σ<sub>n≤N</sub>χ(n)a<sub>n</sub>(N)e<sup>iφ<sub>n</sub></sup> = '+z+', '+residual;
+    }else if(fs.aligned&&w.B<0.05){
+      f.className='formula';
+      f.innerHTML='<strong>FOCAL CANCELLATION</strong> B(ω,N)=Σ<sub>n≤N</sub>χ(n)a<sub>n</sub>(N)e<sup>−iω log n</sup> = '+z+', '+residual+' ≈ 0 with ω=log N';
+    }else if(fs.aligned){
+      f.className='formula warn';
+      f.innerHTML='<strong>STAR ALIGNED, CHANNEL OPEN</strong> ω=log N so every arrow aims at the focus, but the magnitudes do not close: B = '+z+', '+residual;
+    }else{
+      f.className='formula warn';
+      f.innerHTML='<strong>CURRENT L-SUM</strong> B(ω,N)=Σ<sub>n≤N</sub>χ(n)a<sub>n</sub>(N)e<sup>−iω log n</sup> = '+z+', '+residual+'; star alignment needs ω=log N='+fs.logN.toFixed(3);
+    }
+  }
+  // interlaced harmonic pencil H(μ,λ)=[[A,B],[μA,λB]] — mirrors model.py pencil_operator.
+  // CRUTCH-FREE: the detector sees only the supplied channel pair (A,B) from the live
+  // fiber (whatever the active mode is) plus (μ,λ), and does arithmetic on them — it
+  // never evaluates an L-function, and its marker verdict uses its own tolerance on the
+  // supplied B (carrier_fiber pencil semantics: admissible |A|>0, marker |B|<tol).
+  // The analytic L-calibration (A=L(3/2+iγ) etc.) lives in carrier_fiber validate, not here.
+  // det H is computed BOTH by the closed formula (λ−μ)A·B and by direct expansion;
+  // their live agreement is the consistency check from carrier_fiber's pencil family.
+  const PENCIL_TOL=0.05; // marker tolerance on the supplied |B| (display residual floor)
+  // fixed family members; the μ/λ inputs edit a fourth, custom member
+  const PENCIL_FAMILY=[
+    {label:'0, 1',   mu:[0,0],  lam:[1,0]},
+    {label:'i, 2−i', mu:[0,1],  lam:[2,-1]},
+    {label:'−1, 1',  mu:[-1,0], lam:[1,0]}
+  ];
+  function pencilMember(A,Bv,mu,lam){
+    const muA=[mu[0]*A,mu[1]*A],lamB=cmul(lam,Bv),dl=[lam[0]-mu[0],lam[1]-mu[1]];
+    const detF=cmul(dl,[A*Bv[0],A*Bv[1]]);                 // (λ−μ)·A·B
+    const BmuA=cmul(Bv,muA);
+    const detD=[A*lamB[0]-BmuA[0],A*lamB[1]-BmuA[1]];      // A·(λB) − B·(μA)
+    const detAbs=Math.hypot(detD[0],detD[1]),gramDet=detAbs*detAbs;
+    const err=Math.hypot(detD[0]-detF[0],detD[1]-detF[1]);
+    const mu2=mu[0]*mu[0]+mu[1]*mu[1],lam2=lam[0]*lam[0]+lam[1]*lam[1];
+    const g11=A*A*(1+mu2),g22=(Bv[0]*Bv[0]+Bv[1]*Bv[1])*(1+lam2);
+    const t=g11+g22,disc=Math.sqrt(Math.max(0,t*t-4*gramDet));
+    const s1=Math.sqrt((t+disc)/2),s2=Math.sqrt(Math.max(0,(t-disc)/2));
+    return {muA,lamB,detAbs,gramDet,err,s1,s2,ratio:s1>0?s2/s1:0,
+            admissible:A>1e-12&&Math.hypot(dl[0],dl[1])>1e-12};
+  }
+  function refreshPencil(w){
+    const mat=document.getElementById('phx-pmat'),st=document.getElementById('phx-pstats');if(!mat||!st)return;
+    const A=w.A||0,Bv=[w.re,w.im],absB=w.B,marker=absB<PENCIL_TOL;
+    const cust=pencilMember(A,Bv,state.pmu,state.plam);
+    mat.innerHTML='H(μ,λ) = <span class="pmatg"><span>'+sci(A)+'</span><span>'+csci(Bv[0],Bv[1])+'</span>'+
+      '<span>'+csci(cust.muA[0],cust.muA[1])+'</span><span>'+csci(cust.lamB[0],cust.lamB[1])+'</span></span>'+
+      '&nbsp; σ₁='+sci(cust.s1)+', σ₂='+sci(cust.s2)+', |direct−formula|='+sci(cust.err);
+    const rows=PENCIL_FAMILY.map(f=>({label:f.label,m:pencilMember(A,Bv,f.mu,f.lam)}));
+    rows.push({label:'custom',m:cust});
+    const chip=m=>!m.admissible?'<span class="warn">inadmissible (needs A≠0, λ≠μ)</span>'
+      :(marker?'<span class="drop">drop</span>':'<span class="warn">full</span>');
+    const fam=rows.map(r=>'<br>&nbsp;&nbsp;(μ,λ = '+r.label+'):  |det H|='+sci(r.m.detAbs)+',  σ₂/σ₁='+sci(r.m.ratio)+'  — '+chip(r.m)).join('');
+    const adm=rows.filter(r=>r.m.admissible).length;
+    let famLine;
+    if(!adm)famLine='<span class="warn">no admissible member — the family needs A≠0 and λ≠μ</span>';
+    else if(marker)famLine='<span class="drop">marker |B|='+sci(absB)+' &lt; '+PENCIL_TOL+' → all '+adm+' admissible members rank-drop TOGETHER (calibration-independent) — each by exactly ONE: σ₁='+sci(cust.s1)+' stays alive, the Gram is never the zero matrix (no double cancellation)</span>';
+    else famLine='<span class="warn">|B|='+sci(absB)+' → every member full rank until B→0</span>';
+    st.innerHTML='family {H(μ,λ)} on the one supplied pair; each Gram G=H<sup>ᴴ</sup>H Hermitian PSD:'+fam+'<br>'+famLine+
+      '<br><span style="opacity:.75">Lean HarmonicPencilCell, finite layer: admissibility by positivity (finiteA_pos) · finite_gramH_rank_drop_iff_channel_zero · finite_gram_rank_drop_calibration_independent · finite_gramH_posSemidef — arithmetic on the supplied (A,B) only, no L-function evaluated</span>';
+  }
+  function refreshText(w){
+    const ch=w.ch,tb=document.querySelector('#phx-tbl tbody');tb.innerHTML='';
+    const rows=[['P','dotP',ch.P],['M','dotM',ch.M],['U (mass)','dotU',ch.U]];
+    for(const [nm,cl,o] of rows){const tr=document.createElement('tr');
+      tr.innerHTML=`<td><span class="${cl}">●</span> ${nm}</td><td>${o.count.toLocaleString()}</td><td>${sci(o.tot)}</td><td>${sci(o.res)}</td><td>${o.ang==null?'mass axis':o.ang.toFixed(1)+'°'}</td>`;
+      tb.appendChild(tr);}
+    const v=document.getElementById('phx-verdict'),fs=focalState();
+    refreshFormula(w,fs);
+    refreshPencil(w);
+    const trunc=w.truncated?'[first '+SPINCONT_MAX.toLocaleString()+' terms — O(N) mode] ':'';
+    if(w.B<0.05&&fs.aligned){v.textContent='● VANISHING — focal star closed: ω='+state.R.toFixed(3)+' = log N, N='+state.N.toLocaleString()+', |P−M|='+sci(w.B);v.style.color=COL.P;}
+    else if(w.B<0.05){const nz=nearestZero(w),near=nz.z&&nz.d<0.08?' at γ≈'+nz.z.toFixed(3):'';
+      v.textContent=trunc+'analytic cancellation'+near+' (|P−M|='+sci(w.B)+') — the focal star also needs its eigenheight: set N≈e^ω='+Math.round(Math.exp(state.R)).toLocaleString();v.style.color=COL.mark;}
+    else if(fs.aligned){v.textContent=trunc+'star aligned (ω=log N) but the channel is open — |P−M|='+sci(w.B)+' (this magnitude mode does not cancel here)';v.style.color=COL.mark;}
+    else{v.textContent=trunc+'not cancelled — |P−M|='+sci(w.B)+'  (select γ to move to its eigenheight)';v.style.color=COL.M;}
+    document.getElementById('phx-eig').textContent='selected γ='+state.focusR.toFixed(3)+' → eigenheight N≈e^γ='+fs.eig.toLocaleString()+(fs.atEig?'':' (manual N)');
+    const Mm=MODES[state.mode],xl=Mm.usesR?('ordinate '+Mm.rlabel):'head height H (=terms)';
+    document.getElementById('phx-scanlabel').textContent='|P−M| vs '+xl+'  (purple = zeros, green = selected γ, grey = current '+(Mm.usesR?Mm.rlabel:'N')+')';
+    document.getElementById('phx-cap').innerHTML=capFor(state.mode)+engineNote();
+  }
+  function engineNote(){
+    if(state.mode==='spin_cont')
+      return state.N>SPINCONT_MAX?' <strong>note:</strong> this phase has no residue-class structure (O(N) brute sum) — truncated to the first 5,000,000 terms.':'';
+    if(state.N>FAST_MIN)
+      return ' Sums at this N are evaluated analytically (exact head + Euler–Maclaurin class tails, abs err ≲10⁻⁹) — the same quantity as the term-by-term sum, computed in O(1) time.';
+    return '';
+  }
+  function capFor(m){
+    if(m==='spin_step')return 'Spin (π/3)·n → φ<sub>n</sub>=(π/3)·n·(H−n). n·(H−n) is an integer, so the arrows only point in six directions — they never turn into a vanishing configuration, at any ordinate. (No ω to sweep; use grow ▶.)';
+    if(m==='winding')return 'φ<sub>n</sub>=n·π/3, six directions. Magnitude = equal gives the exact six-cell closure, but height-independent — the same at every block, not at zeros. (No ω to sweep.)';
+    if(m==='spin_cont')return 'φ<sub>n</sub>=(π/3)·n·y, one shared carrier-rate mode. Periodic in y; no alignment at the L-zeros.';
+    return 'Each phasor uses the regular L-term phase φ<sub>n</sub>(ω)=−ω log n. Its completed magnitude is n<sup>−1/2</sup>; in the default <strong>absorb</strong> mode a<sub>n</sub>(H)=n<sup>−1/2</sup>·clip(H−n+1,0,1) — the partial-absorption law: each phasor grows across one height unit and completes exactly at its own site, one partial phasor at a time (at integer heads this equals the completed snapshot; the grow-window modes smooth over τ sites instead). One-at-a-time is load-bearing: the eigen-heights stay strictly monotone, so a single height cannot cancel at two sites — the fiber vanishes at one place per event and the pencil drops rank by exactly one, never to the zero matrix (Lean: no_double_cancellation, specGram_ne_zero). The π/3 factor is only the 3-D carrier scale for radius and height. Placement: phasor n sits at carrier angle φ<sub>n</sub>(log N)−π, so <strong>every arrow points into the eigenheight target exactly when ω=log N</strong> — no zero table involved. The target itself rides the axis at the height of e<sup>ω</sup> and docks at the head when ω=log N; the white arrow on it is the live residual B. A zero is precisely the event where the docked, aligned star also cancels (residual→0); a magnitude mode that cannot cancel shows an aligned star with an open residual, honestly.';
+  }
+
+  function render(){const w=walk();state.lastW=w;state.lastBvec=[w.re,w.im];state.lastBmag=w.B;
+    draw3D();drawWalk(w);drawScan(scanState());refreshText(w);}
+  // coalesce slider-drag renders to one per frame (a full render at ζ-trivial N is ~100ms)
+  let renderQueued=false;
+  function requestRender(){if(renderQueued)return;renderQueued=true;requestAnimationFrame(()=>{renderQueued=false;render();});}
+
+  let growRaf=null,spinRaf=null,spinRunning=false;
+  function syncSpinButton(on){
+    const b=document.getElementById('phx-spin');if(!b)return;
+    b.className=on?'on':'';b.textContent=on?'spin ■ stop':'spin ▶ own rates';
+  }
+  function syncGrowButton(on){
+    const b=document.getElementById('phx-grow');if(!b)return;
+    b.className=on?'on':'';b.textContent=on?'grow ■ stop':'grow ▶ terms';
+  }
+  function stopGrow(rerender){if(growRaf){cancelAnimationFrame(growRaf);growRaf=null;}syncGrowButton(false);if(rerender)render();}
+  function stopSpin(rerender){spinRunning=false;if(spinRaf){cancelAnimationFrame(spinRaf);spinRaf=null;}syncSpinButton(false);if(rerender)render();}
+  function stopAnims(){stopGrow(false);stopSpin(false);}
+  function growAnim(){
+    if(growRaf){stopGrow(true);return;}
+    stopSpin(false);
+    let frameNo=0;const frames=180,
+      walkEvery=(state.mode==='spin_cont'&&state.N>150000)?4:1;
+    const v=document.getElementById('phx-verdict');
+    syncGrowButton(true);
+    function frame(){const t=Math.min(1,frameNo/frames);
+      // the fiber starts EMPTY at the carrier origin (head 0); each phasor enters at zero
+      // magnitude when the head reaches its site and grows until finished
+      // (FinitePencil.lean, "the bank origin"). Log-uniform sweep 0 → N.
+      const hh=Math.min(state.N,Math.exp(t*Math.log(state.N+1))-1);
+      draw3D(hh);
+      if(frameNo%walkEvery===0||frameNo>=frames){const w=walk(hh);drawWalk(w);
+        state.lastW=w;state.lastBvec=[w.re,w.im];state.lastBmag=w.B;
+        v.textContent='continuous growth…  head H='+Math.round(hh).toLocaleString()+' / '+state.N.toLocaleString()+'   |P−M|='+sci(w.B);v.style.color=COL.txt;}
+      if(frameNo++>=frames){growRaf=null;stopGrow(true);}else{growRaf=requestAnimationFrame(frame);}}
+    growRaf=requestAnimationFrame(frame);
+  }
+  // spin: run the ordinate continuously.  Playback is dω/dt; the math rate per unit ω
+  // remains -log n, so wall-clock angular velocity is -playback*log n.
+  function spinAnim(){
+    if(spinRunning){stopSpin(true);return;}
+    stopGrow(false);
+    if(!MODES[state.mode].usesR){render();document.getElementById('phx-verdict').textContent='pick “Own spin log n” to sweep ω across the zeros';return;}
+    const M=MODES[state.mode],
+      walkEvery=state.mode==='spin_cont'?(state.N>150000?24:8):(state.N>FAST_MIN?2:8);
+    let last=null,w=Math.max(M.rmin,Math.min(M.rmax,state.R)),frameNo=0;
+    spinRunning=true;syncSpinButton(true);
+    const v=document.getElementById('phx-verdict'),Rin=document.getElementById('phx-R'),Rv=document.getElementById('phx-Rv');
+    function frame(ts){if(!spinRunning)return;
+      if(last==null)last=ts;const dt=Math.min(0.1,(ts-last)/1000);last=ts;
+      w+=dt*state.playback;if(w>M.rmax)w=M.rmin+(w-M.rmax);state.R=w;
+      Rin.value=w;Rv.textContent=M.rlabel+'='+w.toFixed(2);
+      draw3D();
+      if(frameNo++%walkEvery===0){const ww=walk();drawWalk(ww);drawScan(scanState());
+        state.lastW=ww;state.lastBvec=[ww.re,ww.im];state.lastBmag=ww.B;
+        const starAligned=Math.abs(w-Math.log(state.N))<0.025;
+        if(ww.B<0.06&&starAligned){v.textContent='● FOCAL PASS — star aligned: ω='+w.toFixed(3)+' = log N, N='+state.N.toLocaleString()+' (|P−M|='+sci(ww.B)+')';v.style.color=COL.P;}
+        else if(ww.B<0.06){v.textContent='analytic pass at ω='+w.toFixed(2)+' (|P−M|='+sci(ww.B)+') — the star needs N≈e^ω';v.style.color=COL.mark;}
+        else{v.textContent='own-rate spin… ω='+w.toFixed(2)+'   |P−M|='+sci(ww.B);v.style.color=COL.txt;}}
+      if(spinRunning)spinRaf=requestAnimationFrame(frame);}
+    spinRaf=requestAnimationFrame(frame);
+  }
+
+  function buildModes(){const box=document.getElementById('phx-modes');box.innerHTML='';
+    for(const id in MODES){const b=document.createElement('button');b.textContent=MODES[id].label;b.dataset.id=id;
+      if(id===state.mode)b.className='on';
+      b.onclick=()=>{stopAnims();state.mode=id;
+        // re-entering the focal mode while still at the focal eigenheight: restore ω=γ
+        // (other modes' narrower ranges may have clamped it)
+        if(id==='log_entry'&&state.N===eigenN(state.focusR))state.R=state.focusR;
+        syncR();syncFocus();[...box.children].forEach(x=>x.className=x.dataset.id===id?'on':'');render();};
+      box.appendChild(b);}}
+  // N spans 200 .. ~e^γ_last (up to ~3×10¹⁴ for ζ) — the slider works in log-N positions
+  const NPOS_MAX=2000;
+  function charNMax(){const zs=CHARS[state.char].zeros;return Math.max(8000,Math.round(1.5*eigenN(zs[zs.length-1])));}
+  function posToN(p){const lo=Math.log(200),hi=Math.log(charNMax());
+    return Math.max(200,Math.round(Math.exp(lo+(hi-lo)*p/NPOS_MAX)));}
+  function nToPos(N){const lo=Math.log(200),hi=Math.log(charNMax());
+    return Math.round(NPOS_MAX*(Math.log(Math.max(200,N))-lo)/(hi-lo));}
+  function syncN(){
+    const N=document.getElementById('phx-N');if(!N)return;
+    N.min=0;N.max=NPOS_MAX;N.step=1;N.value=nToPos(state.N);
+    document.getElementById('phx-Nv').textContent='N='+state.N.toLocaleString();
+  }
+  function setEigenheight(g){
+    state.focusR=g;state.R=g;state.N=eigenN(g);syncN();syncR();
+  }
+  function syncR(){const uses=MODES[state.mode].usesR;const wrap=document.getElementById('phx-Rwrap');
+    wrap.style.opacity=uses?1:0.35;document.getElementById('phx-R').disabled=!uses;
+    if(uses){const M=MODES[state.mode];const R=document.getElementById('phx-R');R.min=M.rmin;R.max=M.rmax;
+      document.getElementById('phx-Rlabel').textContent=M.rlabel;
+      state.R=Math.max(M.rmin,Math.min(M.rmax,state.R)); // clamp so slider and state can't disagree
+      R.value=state.R;document.getElementById('phx-Rv').textContent=M.rlabel+'='+(+state.R).toFixed(2);}}
+  function syncFocus(){
+    const F=document.getElementById('phx-F'),wrap=document.getElementById('phx-Fwrap'),uses=state.mode==='log_entry';
+    wrap.style.opacity=uses?1:0.35;F.disabled=!uses;F.innerHTML='';
+    // every listed zero is selectable: the Euler–Maclaurin evaluator makes the sums
+    // O(1) in N, so even N=e^γ ~ 10^14 is instant
+    const ch=CHARS[state.char],zs=ch.zeros||[];
+    for(let i=0;i<zs.length;i++){const o=document.createElement('option');o.value=zs[i];
+      o.textContent='γ'+(i+1)+' '+zs[i].toFixed(3)+' (N='+eigenN(zs[i]).toLocaleString()+')';F.appendChild(o);}
+    if(!zs.some(z=>Math.abs(z-state.focusR)<1e-6))state.focusR=zs[0]||ch.g1;
+    F.value=String(state.focusR);
+  }
+  function initControls(){
+    const cs=document.getElementById('phx-char');cs.value=state.char;
+    cs.onchange=()=>{stopAnims();state.char=cs.value;setEigenheight(CHARS[state.char].g1);syncFocus();render();};
+    const N=document.getElementById('phx-N');syncN();
+    N.oninput=()=>{state.N=posToN(+N.value);document.getElementById('phx-Nv').textContent='N='+state.N.toLocaleString();requestRender();};
+    const R=document.getElementById('phx-R');
+    R.oninput=()=>{stopSpin(false);state.R=+R.value;document.getElementById('phx-Rv').textContent=MODES[state.mode].rlabel+'='+state.R.toFixed(2);requestRender();};
+    const F=document.getElementById('phx-F');
+    F.onchange=()=>{stopAnims();setEigenheight(+F.value);render();};
+    const magSel=document.getElementById('phx-mag');magSel.value=state.magMode;
+    const play=document.getElementById('phx-play');play.value=state.playback;document.getElementById('phx-playv').textContent='dω/dt='+state.playback.toFixed(2);
+    play.oninput=()=>{state.playback=+play.value;document.getElementById('phx-playv').textContent='dω/dt='+state.playback.toFixed(2);};
+    const tau=document.getElementById('phx-tau');tau.value=state.tau;
+    function syncTau(){const uses=(state.magMode==='grow'||state.magMode==='grow_equal');
+      document.getElementById('phx-tauwrap').style.opacity=uses?1:0.35;tau.disabled=!uses;
+      document.getElementById('phx-tauv').textContent='τ='+state.tau;}
+    magSel.onchange=()=>{state.magMode=magSel.value;syncTau();render();};
+    tau.oninput=()=>{state.tau=+tau.value;document.getElementById('phx-tauv').textContent='τ='+state.tau;requestRender();};
+    syncTau();
+    document.getElementById('phx-grow').onclick=growAnim;
+    document.getElementById('phx-spin').onclick=spinAnim;
+    // interlaced pencil controls: complex μ, λ (accepts 1j / 2-1j / i forms)
+    const muIn=document.getElementById('phx-mu'),lamIn=document.getElementById('phx-lam'),ppre=document.getElementById('phx-ppre');
+    function readPencil(){
+      const m=parseComplex(muIn.value),l=parseComplex(lamIn.value);
+      muIn.className=m?'':'bad';lamIn.className=l?'':'bad';
+      if(m)state.pmu=m;if(l)state.plam=l;
+      if(state.lastW)refreshPencil(state.lastW);
+    }
+    muIn.oninput=readPencil;lamIn.oninput=readPencil;
+    ppre.onchange=()=>{const [m,l]=ppre.value.split('|');muIn.value=m;lamIn.value=l;readPencil();};
+    const hv=document.getElementById('phx-helix');let drag=null;
+    hv.addEventListener('pointerdown',e=>{drag={x:e.clientX,y:e.clientY,az:view.az,el:view.el};hv.setPointerCapture(e.pointerId);});
+    hv.addEventListener('pointermove',e=>{if(!drag)return;view.az=drag.az+(e.clientX-drag.x)*0.01;
+      view.el=Math.max(0.05,Math.min(1.45,drag.el+(e.clientY-drag.y)*0.006));draw3D();});
+    hv.addEventListener('pointerup',()=>drag=null);hv.addEventListener('pointercancel',()=>drag=null);
+  }
+
+  // validation hook: compare the analytic evaluator against the brute sum from the console;
+  // walkAt/drawAt take a fractional head height (0 = empty bank at the carrier origin)
+  window.__phxDiag={fastB,bruteB:(NN,RR)=>sumB(NN,RR),fastWalk:()=>fastWalk(),bruteWalk:()=>bruteWalk(),
+    walkAt:h=>walk(h),drawAt:h=>{const w=walk(h);state.lastBvec=[w.re,w.im];state.lastBmag=w.B;draw3D(h);drawWalk(w);return {B:w.B,counts:[w.ch.P.count,w.ch.M.count,w.ch.U.count]};},state};
+  buildModes();initControls();syncR();syncFocus();render();
+})();
+</script>
+</body>
+</html>

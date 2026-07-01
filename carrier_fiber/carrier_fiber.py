@@ -243,6 +243,52 @@ class CellClockCheck:
 
 
 @dataclass(frozen=True)
+class NoLogPhaseScan:
+    law: str
+    count: int
+    tau: float
+    residual: float
+    min_abs_A: float
+    max_abs_det: float
+    max_abs_gram_det: float
+    passed: bool
+
+
+@dataclass(frozen=True)
+class NoLogLaneFit:
+    law: str
+    count: int
+    alpha: float
+    beta: float
+    residual: float
+    min_abs_A: float
+    max_abs_det: float
+    max_abs_gram_det: float
+    nfev: int
+    passed: bool
+
+
+@dataclass(frozen=True)
+class NoLogPrefixHit:
+    count: int
+    residual: float
+    readout: float
+
+
+@dataclass(frozen=True)
+class NoLogFocalHit:
+    law: str
+    tau: float
+    height: float
+    absorbed_count: int
+    partial: float
+    gap: float
+    determinant: float
+    readout: float
+    passed: bool
+
+
+@dataclass(frozen=True)
 class HeightAbsorption:
     height: float
     readout: float
@@ -384,6 +430,306 @@ class CarrierFiber:
         c = self.character(n)
         amp = (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
         return c * amp * self.native_phase(slot)
+
+    def no_log_phase_data(self, count: int, law: str) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+        """Amplitude, fixed phase, and no-log phase frequency for a whole-fiber search.
+
+        The scan value is `sum amp_n * exp(i*(base_n + tau*freq_n))`.
+        No law here uses `log n`; the continuous parameter `tau` is a geometric
+        twist/readout for the already-built carrier.
+        """
+        if count <= 0:
+            raise ValueError("count must be positive")
+        slot = self.slots(count)
+        n = slot + 1
+        coeff = self.character(n) * (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
+        zeros = np.zeros(count, dtype=np.float64)
+        if law == "cell":
+            return coeff, self.settings.delta * slot.astype(np.float64), zeros
+        if law == "freq-n":
+            return coeff, zeros, n.astype(np.float64)
+        if law == "cell-twist":
+            return coeff, self.settings.delta * slot.astype(np.float64), slot.astype(np.float64)
+        if law == "helix":
+            return coeff, zeros, 2.0 * PI * self.settings.wind_parameter(n)
+        if law == "helix-cell":
+            return coeff, self.settings.delta * slot.astype(np.float64), 2.0 * PI * self.settings.wind_parameter(n)
+        raise ValueError(f"unknown no-log phase law {law!r}")
+
+    def no_log_phase_value(self, tau: float, count: int, law: str) -> complex:
+        coeff, base, freq = self.no_log_phase_data(count, law)
+        return complex(np.sum(coeff * np.exp(1j * (base + tau * freq))))
+
+    def scan_no_log_phase(
+        self,
+        count: int,
+        law: str,
+        tolerance: float = 1e-10,
+        grid: int = 721,
+        tau_min: float = 0.0,
+        tau_max: float = 2.0 * PI,
+        chunk: int = 8,
+        refine_iters: int = 48,
+    ) -> NoLogPhaseScan:
+        """Scan a no-log whole-fiber phase law for focal cancellation.
+
+        This intentionally ignores six-cell block cancellation.  It tests the
+        cumulative fiber as one vector and then computes the same 2x2 pencil
+        marker from the unsigned channel `A` and signed channel `B`.
+        """
+        if tau_max <= tau_min:
+            raise ValueError("tau-max must be greater than tau-min")
+        grid = max(5, int(grid))
+        chunk = max(1, int(chunk))
+        coeff, base, freq = self.no_log_phase_data(count, law)
+        unsigned = float(np.sum(np.abs(coeff)))
+
+        def objective(tau: float) -> float:
+            z = complex(np.sum(coeff * np.exp(1j * (base + tau * freq))))
+            return float(z.real * z.real + z.imag * z.imag)
+
+        taus = np.linspace(tau_min, tau_max, grid, dtype=np.float64)
+        vals = np.empty(grid, dtype=np.float64)
+        for start in range(0, grid, chunk):
+            stop = min(start + chunk, grid)
+            phase = base[None, :] + taus[start:stop, None] * freq[None, :]
+            z = (coeff[None, :] * np.exp(1j * phase)).sum(axis=1)
+            vals[start:stop] = z.real * z.real + z.imag * z.imag
+
+        i = int(np.argmin(vals))
+        left = float(taus[max(0, i - 1)])
+        right = float(taus[min(grid - 1, i + 1)])
+        if left == right:
+            tau_best = float(taus[i])
+            best_sq = float(vals[i])
+        else:
+            gr = (math.sqrt(5.0) - 1.0) / 2.0
+            a = left
+            b = right
+            c = b - gr * (b - a)
+            d = a + gr * (b - a)
+            fc = objective(c)
+            fd = objective(d)
+            for _ in range(max(0, int(refine_iters))):
+                if fc <= fd:
+                    b = d
+                    d = c
+                    fd = fc
+                    c = b - gr * (b - a)
+                    fc = objective(c)
+                else:
+                    a = c
+                    c = d
+                    fc = fd
+                    d = a + gr * (b - a)
+                    fd = objective(d)
+            tau_best = 0.5 * (a + b)
+            best_sq = objective(tau_best)
+
+        residual = math.sqrt(max(best_sq, 0.0))
+        max_abs_det = unsigned * residual
+        return NoLogPhaseScan(
+            law=law,
+            count=count,
+            tau=tau_best,
+            residual=residual,
+            min_abs_A=unsigned,
+            max_abs_det=max_abs_det,
+            max_abs_gram_det=max_abs_det * max_abs_det,
+            passed=residual <= tolerance,
+        )
+
+    def no_log_lane_helix_value(self, alpha: float, beta: float, count: int) -> complex:
+        """Whole-fiber no-log lane-helix value.
+
+        `alpha` is the shared helix winding readout and `beta` is the
+        lane-differential helix readout.  The phase is
+        `cell + alpha*theta + beta*chi(n)*theta`; no term uses `log n`.
+        """
+        if count <= 0:
+            raise ValueError("count must be positive")
+        slot = self.slots(count)
+        n = slot + 1
+        lane = self.character(n)
+        amp = (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
+        cell = self.settings.delta * slot.astype(np.float64)
+        theta = 2.0 * PI * self.settings.wind_parameter(n)
+        phase = cell + alpha * theta + beta * lane * theta
+        return complex(np.sum(lane * amp * np.exp(1j * phase)))
+
+    def no_log_lane_helix_prefix_hits(
+        self,
+        alpha: float,
+        beta: float,
+        count_max: int,
+        threshold: float,
+    ) -> tuple[NoLogPrefixHit | None, NoLogPrefixHit]:
+        """Scan fixed-parameter no-log lane-helix prefixes up to `count_max`.
+
+        Returns the first prefix below `threshold`, if any, and the best prefix
+        over the whole scanned range.  Parameters are fixed before this scan, so
+        this is the count-discovery check rather than a refit at every count.
+        """
+        if count_max <= 0:
+            raise ValueError("count-max must be positive")
+        slot = self.slots(count_max)
+        n = slot + 1
+        lane = self.character(n)
+        amp = (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
+        cell = self.settings.delta * slot.astype(np.float64)
+        theta = 2.0 * PI * self.settings.wind_parameter(n)
+        phase = cell + alpha * theta + beta * lane * theta
+        prefixes = np.cumsum(lane * amp * np.exp(1j * phase))
+        residuals = np.abs(prefixes)
+        first_idx = np.flatnonzero(residuals <= threshold)
+        first = None
+        if len(first_idx):
+            i = int(first_idx[0])
+            first = NoLogPrefixHit(i + 1, float(residuals[i]), math.log(i + 1))
+        j = int(np.argmin(residuals))
+        best = NoLogPrefixHit(j + 1, float(residuals[j]), math.log(j + 1))
+        return first, best
+
+    def no_log_focal_eigenheight_scan(
+        self,
+        count_max: int,
+        law: str,
+        tau: float = 0.0,
+        threshold: float = 1e-10,
+        min_height: float = 0.0,
+        moment: str = "auto",
+    ) -> NoLogFocalHit:
+        """Scan continuous no-log prefixes for focal eigenheight cancellation.
+
+        The focal condition is lane-centroid equality:
+        `Pz/P = Mz/M`, equivalently `K = Pz*M - Mz*P = 0`.
+        This does not use the block marker and does not use the whole-vector
+        `B = P-M = 0` surrogate.
+        """
+        if count_max <= 1:
+            raise ValueError("count-max must be greater than 1")
+        if min_height < 0.0:
+            raise ValueError("min-height must be nonnegative")
+        n = self.indices(count_max + 1)
+        lane = self.character(n)
+        amp = (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
+        coeff, base, freq = self.no_log_phase_data(count_max + 1, law)
+        term = amp * np.exp(1j * (base + tau * freq))
+        if moment == "auto":
+            moment = "wind" if law in ("helix", "helix-cell") else "count"
+        if moment == "count":
+            zcoord = n.astype(np.float64)
+        elif moment == "wind":
+            zcoord = np.asarray(self.settings.wind_parameter(n), dtype=np.float64)
+        elif moment == "theta":
+            zcoord = 2.0 * PI * np.asarray(self.settings.wind_parameter(n), dtype=np.float64)
+        else:
+            raise ValueError(f"unknown no-log focal moment {moment!r}")
+        pos = lane > 0
+        neg = lane < 0
+
+        P_prefix = np.r_[0.0 + 0.0j, np.cumsum(np.where(pos, term, 0.0 + 0.0j))[:-1]]
+        M_prefix = np.r_[0.0 + 0.0j, np.cumsum(np.where(neg, term, 0.0 + 0.0j))[:-1]]
+        Pz_prefix = np.r_[0.0 + 0.0j, np.cumsum(np.where(pos, zcoord * term, 0.0 + 0.0j))[:-1]]
+        Mz_prefix = np.r_[0.0 + 0.0j, np.cumsum(np.where(neg, zcoord * term, 0.0 + 0.0j))[:-1]]
+
+        K0 = Pz_prefix * M_prefix - Mz_prefix * P_prefix
+        dK = np.zeros(count_max + 1, dtype=np.complex128)
+        dK[pos] = term[pos] * (zcoord[pos] * M_prefix[pos] - Mz_prefix[pos])
+        dK[neg] = term[neg] * (Pz_prefix[neg] - zcoord[neg] * P_prefix[neg])
+        denom = np.abs(dK) ** 2
+        alpha = np.zeros(count_max + 1, dtype=np.float64)
+        active = denom > 1e-300
+        alpha[active] = -np.real(K0[active] * np.conjugate(dK[active])) / denom[active]
+        alpha = np.clip(alpha, 0.0, 1.0)
+
+        term_alpha = alpha * term
+        P = P_prefix + np.where(pos, term_alpha, 0.0 + 0.0j)
+        M = M_prefix + np.where(neg, term_alpha, 0.0 + 0.0j)
+        Pz = Pz_prefix + np.where(pos, alpha * zcoord * term, 0.0 + 0.0j)
+        Mz = Mz_prefix + np.where(neg, alpha * zcoord * term, 0.0 + 0.0j)
+        K = Pz * M - Mz * P
+        min_idx = max(2, int(math.floor(min_height)))
+        valid = (np.arange(count_max + 1) >= min_idx) & (np.abs(P) > 1e-12) & (np.abs(M) > 1e-12)
+        gap = np.full(count_max + 1, np.inf, dtype=np.float64)
+        gap[valid] = np.abs(Pz[valid] / P[valid] - Mz[valid] / M[valid])
+
+        passed = valid & (gap <= threshold)
+        if np.any(passed):
+            idx = int(np.flatnonzero(passed)[0])
+        else:
+            idx = int(np.argmin(gap))
+        height = float(idx + alpha[idx])
+        return NoLogFocalHit(
+            law=law,
+            tau=float(tau),
+            height=height,
+            absorbed_count=idx,
+            partial=float(alpha[idx]),
+            gap=float(gap[idx]),
+            determinant=float(abs(K[idx])),
+            readout=math.log(height),
+            passed=bool(gap[idx] <= threshold),
+        )
+
+    def fit_no_log_lane_helix(
+        self,
+        count: int,
+        starts: tuple[tuple[float, float], ...],
+        tolerance: float = 1e-10,
+        max_nfev: int = 80,
+    ) -> NoLogLaneFit:
+        """Fit the two-parameter no-log lane-helix readout against the whole fiber."""
+        try:
+            from scipy.optimize import least_squares
+        except ImportError as exc:  # pragma: no cover
+            raise RuntimeError("no-log lane fitting requires scipy") from exc
+        if count <= 0:
+            raise ValueError("count must be positive")
+        if not starts:
+            raise ValueError("at least one start is required")
+        slot = self.slots(count)
+        n = slot + 1
+        lane = self.character(n)
+        amp = (self.phasor_scale * n.astype(np.float64)) ** (-self.sigma)
+        cell = self.settings.delta * slot.astype(np.float64)
+        theta = 2.0 * PI * self.settings.wind_parameter(n)
+        unsigned = float(np.sum(np.abs(lane) * amp))
+
+        def residual_vec(x: np.ndarray) -> np.ndarray:
+            phase = cell + float(x[0]) * theta + float(x[1]) * lane * theta
+            z = complex(np.sum(lane * amp * np.exp(1j * phase)))
+            return np.array([z.real, z.imag], dtype=np.float64)
+
+        best = None
+        for start in starts:
+            result = least_squares(
+                residual_vec,
+                np.array(start, dtype=np.float64),
+                xtol=1e-12,
+                ftol=1e-12,
+                gtol=1e-12,
+                max_nfev=max_nfev,
+                method="lm",
+            )
+            residual = float(np.linalg.norm(result.fun))
+            if best is None or residual < best[0]:
+                best = (residual, result)
+        assert best is not None
+        residual, result = best
+        max_abs_det = unsigned * residual
+        return NoLogLaneFit(
+            law="lane-helix",
+            count=count,
+            alpha=float(result.x[0]),
+            beta=float(result.x[1]),
+            residual=residual,
+            min_abs_A=unsigned,
+            max_abs_det=max_abs_det,
+            max_abs_gram_det=max_abs_det * max_abs_det,
+            nfev=int(result.nfev),
+            passed=residual <= tolerance,
+        )
 
     def continuous_focal_value(self, height: float) -> complex:
         """Finite focal value at height z.
@@ -950,6 +1296,64 @@ class CarrierFiberTests(unittest.TestCase):
         self.assertTrue(all(hit.min_abs_A > 0 for hit in hits))
         self.assertTrue(all(hit.max_abs_gram_det >= 0 for hit in hits))
 
+    def test_no_log_cell_law_matches_native_prefix(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        count = 128
+        self.assertLess(
+            abs(fiber.no_log_phase_value(0.0, count, "cell") - fiber.continuous_focal_value(float(count))),
+            1e-14,
+        )
+
+    def test_no_log_phase_scan_reports_whole_fiber_marker(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        result = fiber.scan_no_log_phase(256, "freq-n", grid=65, chunk=4)
+        self.assertEqual(result.law, "freq-n")
+        self.assertEqual(result.count, 256)
+        self.assertGreaterEqual(result.tau, 0.0)
+        self.assertLessEqual(result.tau, 2.0 * PI)
+        self.assertGreaterEqual(result.residual, 0.0)
+        self.assertGreater(result.min_abs_A, 0.0)
+        self.assertAlmostEqual(result.max_abs_gram_det, result.max_abs_det * result.max_abs_det)
+
+    def test_no_log_helix_law_has_unique_spin_rates(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        _, _, freq = fiber.no_log_phase_data(64, "helix")
+        rounded = np.round(freq, 12)
+        self.assertEqual(len(np.unique(rounded)), len(rounded))
+        self.assertTrue(np.all(np.diff(freq) > 0.0))
+
+    def test_no_log_lane_helix_value_is_finite(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        z = fiber.no_log_lane_helix_value(0.1, 0.2, 64)
+        self.assertTrue(np.isfinite(z.real))
+        self.assertTrue(np.isfinite(z.imag))
+
+    def test_no_log_lane_helix_prefix_hits_report_best(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        first, best = fiber.no_log_lane_helix_prefix_hits(0.1, 0.2, 64, 1e-12)
+        self.assertIsNone(first)
+        self.assertGreaterEqual(best.count, 1)
+        self.assertLessEqual(best.count, 64)
+        self.assertGreaterEqual(best.residual, 0.0)
+
+    def test_no_log_focal_eigenheight_scan_reports_gap(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        hit = fiber.no_log_focal_eigenheight_scan(256, "cell", threshold=1e-12)
+        self.assertEqual(hit.law, "cell")
+        self.assertGreater(hit.height, 0.0)
+        self.assertGreaterEqual(hit.gap, 0.0)
+        self.assertGreaterEqual(hit.determinant, 0.0)
+        gated = fiber.no_log_focal_eigenheight_scan(256, "cell", threshold=1e-12, min_height=128.0)
+        self.assertGreaterEqual(gated.height, 128.0)
+
+    def test_no_log_helix_focal_auto_uses_winding_moment(self) -> None:
+        fiber = CarrierFiber(CHARACTERS["eta_trivial"])
+        auto = fiber.no_log_focal_eigenheight_scan(256, "helix", threshold=1e-12, moment="auto")
+        wind = fiber.no_log_focal_eigenheight_scan(256, "helix", threshold=1e-12, moment="wind")
+        count = fiber.no_log_focal_eigenheight_scan(256, "helix", threshold=1e-12, moment="count")
+        self.assertAlmostEqual(auto.gap, wind.gap)
+        self.assertNotAlmostEqual(auto.gap, count.gap)
+
     def test_c1_cell_clock_matches_scaled_eta_sum(self) -> None:
         fiber = CarrierFiber(CHARACTERS["eta_trivial"])
         gamma = 2.5
@@ -1131,6 +1535,11 @@ def run_validate_c1(args: argparse.Namespace) -> int:
     char = get_character(args.char)
     if char.name not in REFERENCE_GAMMAS:
         raise SystemExit(f"no reference gamma table for {char.name!r}")
+    if args.threshold is None:
+        # finite mode carries the conditional-convergence floor of the
+        # truncated bank, ~(pi/3)*c/sqrt(count) ~ 5e-4 at the default count;
+        # the analytic certificate has no floor.
+        args.threshold = 1e-10 if args.mode == "analytic" else 1e-3
     fiber = CarrierFiber(
         char,
         HelixSettings(pitch=args.pitch, radial_rate=args.radial_rate),
@@ -1183,6 +1592,204 @@ def run_validate_c1(args: argparse.Namespace) -> int:
             f"{check.max_abs_gram_det:>12.3e} {result:>7}"
         )
     return 0 if all(check.passed for check in checks) else 1
+
+
+def run_no_log_search(args: argparse.Namespace) -> int:
+    char = get_character(args.char)
+    fiber = CarrierFiber(
+        char,
+        HelixSettings(pitch=args.pitch, radial_rate=args.radial_rate),
+        sigma=args.sigma,
+        phasor_scale=parse_height_scale(args.phasor_scale),
+    )
+    laws = tuple(args.law or ("freq-n", "cell-twist", "helix", "helix-cell"))
+    print(f"character       : {char.name} ({char.description})")
+    print(f"count           : {args.count}")
+    print(f"sigma           : {args.sigma:.6g}")
+    print(f"pitch           : {fiber.settings.pitch}")
+    print(f"cell unit       : pi/3 = {fiber.settings.delta:.16f}")
+    print(f"phasor scale    : {fiber.phasor_scale:.12f}")
+    print(f"tau interval    : [{args.tau_min:.9g}, {args.tau_max:.9g}]")
+    print(f"grid/chunk      : {args.grid}/{args.chunk}")
+    print(f"threshold       : {args.threshold:.3e}")
+    print("block path      : ignored")
+    print(
+        f"{'law':>12} {'tau*':>14} {'|B|':>12} {'|A|':>12} "
+        f"{'|detH|':>12} {'detGram':>12} {'result':>7}"
+    )
+    results = []
+    for law in laws:
+        result = fiber.scan_no_log_phase(
+            args.count,
+            law,
+            tolerance=args.threshold,
+            grid=args.grid,
+            tau_min=args.tau_min,
+            tau_max=args.tau_max,
+            chunk=args.chunk,
+            refine_iters=args.refine_iters,
+        )
+        results.append(result)
+        tag = "pass" if result.passed else "miss"
+        print(
+            f"{result.law:>12} {result.tau:>14.9f} {result.residual:>12.3e} "
+            f"{result.min_abs_A:>12.3e} {result.max_abs_det:>12.3e} "
+            f"{result.max_abs_gram_det:>12.3e} {tag:>7}"
+        )
+    return 0 if any(result.passed for result in results) else 1
+
+
+def run_no_log_fit(args: argparse.Namespace) -> int:
+    char = get_character(args.char)
+    fiber = CarrierFiber(
+        char,
+        HelixSettings(pitch=args.pitch, radial_rate=args.radial_rate),
+        sigma=args.sigma,
+        phasor_scale=parse_height_scale(args.phasor_scale),
+    )
+    starts = tuple(parse_start(item) for item in args.start)
+    result = fiber.fit_no_log_lane_helix(
+        args.count,
+        starts=starts,
+        tolerance=args.threshold,
+        max_nfev=args.max_nfev,
+    )
+    check = abs(fiber.no_log_lane_helix_value(result.alpha, result.beta, args.count))
+    print(f"character       : {char.name} ({char.description})")
+    print(f"count           : {args.count}")
+    print(f"sigma           : {args.sigma:.6g}")
+    print(f"pitch           : {fiber.settings.pitch}")
+    print(f"cell unit       : pi/3 = {fiber.settings.delta:.16f}")
+    print(f"phasor scale    : {fiber.phasor_scale:.12f}")
+    print("law             : cell + alpha*helix_theta + beta*lane*helix_theta")
+    print("block path      : ignored")
+    print(f"starts          : {len(starts)}")
+    print(f"threshold       : {args.threshold:.3e}")
+    print(
+        f"{'law':>12} {'alpha':>14} {'beta':>14} {'|B|':>12} {'direct |B|':>12} "
+        f"{'|A|':>12} {'|detH|':>12} {'detGram':>12} {'nfev':>6} {'result':>7}"
+    )
+    tag = "pass" if result.passed else "miss"
+    print(
+        f"{result.law:>12} {result.alpha:>14.9f} {result.beta:>14.9f} "
+        f"{result.residual:>12.3e} {check:>12.3e} {result.min_abs_A:>12.3e} "
+        f"{result.max_abs_det:>12.3e} {result.max_abs_gram_det:>12.3e} "
+        f"{result.nfev:>6} {tag:>7}"
+    )
+    return 0 if result.passed else 1
+
+
+def run_no_log_discover(args: argparse.Namespace) -> int:
+    char = get_character(args.char)
+    fiber = CarrierFiber(
+        char,
+        HelixSettings(pitch=args.pitch, radial_rate=args.radial_rate),
+        sigma=args.sigma,
+        phasor_scale=parse_height_scale(args.phasor_scale),
+    )
+    starts = tuple(parse_start(item) for item in args.start)
+    fitted = fiber.fit_no_log_lane_helix(
+        args.count_max,
+        starts=starts,
+        tolerance=args.threshold,
+        max_nfev=args.max_nfev,
+    )
+    first, best = fiber.no_log_lane_helix_prefix_hits(
+        fitted.alpha,
+        fitted.beta,
+        args.count_max,
+        args.threshold,
+    )
+    print(f"character       : {char.name} ({char.description})")
+    print(f"count max       : {args.count_max}")
+    print(f"sigma           : {args.sigma:.6g}")
+    print(f"pitch           : {fiber.settings.pitch}")
+    print(f"cell unit       : pi/3 = {fiber.settings.delta:.16f}")
+    print(f"phasor scale    : {fiber.phasor_scale:.12f}")
+    print("law             : cell + alpha*helix_theta + beta*lane*helix_theta")
+    print("block path      : ignored")
+    print(f"threshold       : {args.threshold:.3e}")
+    print(f"fitted alpha    : {fitted.alpha:.12f}")
+    print(f"fitted beta     : {fitted.beta:.12f}")
+    print(f"fit |B|max      : {fitted.residual:.3e}")
+    endpoint_only = first is not None and first.count == args.count_max
+    if first is None:
+        print("first prefix    : none")
+    else:
+        print(
+            f"first prefix    : count={first.count} log(count)={first.readout:.12f} "
+            f"|B|={first.residual:.3e}"
+        )
+    print(
+        f"best prefix     : count={best.count} log(count)={best.readout:.12f} "
+        f"|B|={best.residual:.3e}"
+    )
+    if endpoint_only and not args.allow_endpoint:
+        print("result          : endpoint-only")
+        return 1
+    print(f"result          : {'pass' if first is not None else 'miss'}")
+    return 0 if first is not None else 1
+
+
+def run_no_log_focal_discover(args: argparse.Namespace) -> int:
+    char = get_character(args.char)
+    fiber = CarrierFiber(
+        char,
+        HelixSettings(pitch=args.pitch, radial_rate=args.radial_rate),
+        sigma=args.sigma,
+        phasor_scale=parse_height_scale(args.phasor_scale),
+    )
+    laws = tuple(args.law or ("cell", "freq-n", "cell-twist", "helix", "helix-cell"))
+    taus = [float(x) for x in (args.tau or [])]
+    if args.tau_grid:
+        if args.tau_grid < 2:
+            raise SystemExit("--tau-grid must be at least 2")
+        taus.extend(float(x) for x in np.linspace(args.tau_min, args.tau_max, args.tau_grid, endpoint=False))
+    if not taus:
+        taus = [0.0]
+    deduped_taus = []
+    seen_taus = set()
+    for tau in taus:
+        key = round(tau, 12)
+        if key not in seen_taus:
+            seen_taus.add(key)
+            deduped_taus.append(tau)
+    taus = deduped_taus
+    print(f"character       : {char.name} ({char.description})")
+    print(f"count max       : {args.count_max}")
+    print(f"sigma           : {args.sigma:.6g}")
+    print(f"pitch           : {fiber.settings.pitch}")
+    print(f"cell unit       : pi/3 = {fiber.settings.delta:.16f}")
+    print(f"phasor scale    : {fiber.phasor_scale:.12f}")
+    print("condition       : Pz/P = Mz/M")
+    print("block path      : ignored")
+    print(f"moment          : {args.moment}")
+    print(f"min height      : {args.min_height:.6f}")
+    print(f"tau count       : {len(taus)}")
+    print(f"threshold       : {args.threshold:.3e}")
+    print(
+        f"{'law':>12} {'tau':>12} {'height':>14} {'log(height)':>14} "
+        f"{'absorbed':>10} {'partial':>9} {'gap':>12} {'|K|':>12} {'result':>7}"
+    )
+    hits = []
+    for law in laws:
+        for tau in taus:
+            hit = fiber.no_log_focal_eigenheight_scan(
+                args.count_max,
+                law,
+                tau=tau,
+                threshold=args.threshold,
+                min_height=args.min_height,
+                moment=args.moment,
+            )
+            hits.append(hit)
+            tag = "pass" if hit.passed else "miss"
+            print(
+                f"{hit.law:>12} {hit.tau:>12.6f} {hit.height:>14.6f} "
+                f"{hit.readout:>14.9f} {hit.absorbed_count:>10} {hit.partial:>9.6f} "
+                f"{hit.gap:>12.3e} {hit.determinant:>12.3e} {tag:>7}"
+            )
+    return 0 if any(hit.passed for hit in hits) else 1
 
 
 def get_character(name: str) -> PeriodicCharacter:
@@ -1243,6 +1850,16 @@ def parse_pairs(items: list[str]) -> tuple[tuple[complex, complex], ...]:
     return tuple(pairs)
 
 
+def parse_start(text: str) -> tuple[float, float]:
+    if ":" not in text:
+        raise argparse.ArgumentTypeError("start must be formatted as alpha:beta")
+    raw_alpha, raw_beta = text.split(":", 1)
+    try:
+        return (float(raw_alpha), float(raw_beta))
+    except ValueError as exc:
+        raise argparse.ArgumentTypeError(f"invalid start {text!r}") from exc
+
+
 def format_complex(z: complex) -> str:
     return f"{z.real:.6g}{z.imag:+.6g}j"
 
@@ -1292,8 +1909,11 @@ def build_parser() -> argparse.ArgumentParser:
     validate.add_argument("--char", default="eta_trivial")
     validate.add_argument("--limit", type=int, default=10)
     validate.add_argument("--max-height", type=float, default=TRIVIAL_FIRST_FOCAL_HEIGHT)
-    validate.add_argument("--threshold", type=float, default=1e-10)
-    validate.add_argument("--mode", choices=("analytic", "finite"), default="analytic")
+    validate.add_argument("--threshold", type=float, default=None,
+                          help="pass threshold; default 1e-3 (finite floor) or 1e-10 (analytic)")
+    validate.add_argument("--mode", choices=("analytic", "finite"), default="finite",
+                          help="finite (default): channels from the truncated phasor bank, no L call; "
+                               "analytic: mpmath L-value certificate (final-validation use only)")
     validate.add_argument("--dps", type=int, default=50, help="decimal precision for analytic mode")
     validate.add_argument("--count", type=int, default=DEFAULT_C1_COUNT, help="override absorbed integer slots directly")
     validate.add_argument("--t-window", type=float, default=0.05, help="carrier-T search radius around gamma/(pi/3)")
@@ -1307,8 +1927,9 @@ def build_parser() -> argparse.ArgumentParser:
     validate_c1.add_argument("--char", default="eta_trivial")
     validate_c1.add_argument("--limit", type=int, default=10)
     validate_c1.add_argument("--max-height", type=float, default=TRIVIAL_FIRST_FOCAL_HEIGHT)
-    validate_c1.add_argument("--threshold", type=float, default=1e-10)
-    validate_c1.add_argument("--mode", choices=("analytic", "finite"), default="analytic")
+    validate_c1.add_argument("--threshold", type=float, default=None,
+                             help="pass threshold; default 1e-3 (finite floor) or 1e-10 (analytic)")
+    validate_c1.add_argument("--mode", choices=("analytic", "finite"), default="finite")
     validate_c1.add_argument("--dps", type=int, default=50, help="decimal precision for analytic mode")
     validate_c1.add_argument("--count", type=int, default=DEFAULT_C1_COUNT, help="override absorbed integer slots directly")
     validate_c1.add_argument("--t-window", type=float, default=0.05, help="carrier-T search radius around gamma/(pi/3)")
@@ -1328,6 +1949,74 @@ def build_parser() -> argparse.ArgumentParser:
     validate_native.add_argument("--radial-rate", type=float, default=3.0)
     validate_native.add_argument("--phasor-scale", default="pi/3", help="scale inside phasor magnitude")
     validate_native.set_defaults(func=run_validate_native)
+
+    no_log_search = sub.add_parser("no-log-search", help="scan whole-fiber no-log phase laws")
+    no_log_search.add_argument("--char", default="eta_trivial")
+    no_log_search.add_argument("--count", type=int, default=TRIVIAL_FOCAL_COUNT)
+    no_log_search.add_argument("--law", action="append", default=None, choices=("cell", "freq-n", "cell-twist", "helix", "helix-cell"))
+    no_log_search.add_argument("--sigma", type=float, default=0.5)
+    no_log_search.add_argument("--pitch", type=float, default=1.0)
+    no_log_search.add_argument("--radial-rate", type=float, default=3.0)
+    no_log_search.add_argument("--phasor-scale", default="pi/3", help="scale inside phasor magnitude")
+    no_log_search.add_argument("--tau-min", type=float, default=0.0)
+    no_log_search.add_argument("--tau-max", type=float, default=2.0 * PI)
+    no_log_search.add_argument("--grid", type=int, default=721)
+    no_log_search.add_argument("--chunk", type=int, default=8)
+    no_log_search.add_argument("--refine-iters", type=int, default=48)
+    no_log_search.add_argument("--threshold", type=float, default=1e-10)
+    no_log_search.set_defaults(func=run_no_log_search)
+
+    no_log_fit = sub.add_parser("no-log-fit", help="fit the whole-fiber no-log lane-helix readout")
+    no_log_fit.add_argument("--char", default="eta_trivial")
+    no_log_fit.add_argument("--count", type=int, default=TRIVIAL_FOCAL_COUNT)
+    no_log_fit.add_argument("--sigma", type=float, default=0.5)
+    no_log_fit.add_argument("--pitch", type=float, default=1.0)
+    no_log_fit.add_argument("--radial-rate", type=float, default=3.0)
+    no_log_fit.add_argument("--phasor-scale", default="pi/3", help="scale inside phasor magnitude")
+    no_log_fit.add_argument("--threshold", type=float, default=1e-10)
+    no_log_fit.add_argument("--max-nfev", type=int, default=80)
+    no_log_fit.add_argument(
+        "--start",
+        action="append",
+        default=["14.39639015:1", "0.005:1", "0:1", "1:1"],
+        help="initial alpha:beta for the fit; repeatable",
+    )
+    no_log_fit.set_defaults(func=run_no_log_fit)
+
+    no_log_discover = sub.add_parser("no-log-discover", help="fit once, then discover fixed-parameter prefix crossings")
+    no_log_discover.add_argument("--char", default="eta_trivial")
+    no_log_discover.add_argument("--count-max", type=int, default=2_000_000)
+    no_log_discover.add_argument("--sigma", type=float, default=0.5)
+    no_log_discover.add_argument("--pitch", type=float, default=1.0)
+    no_log_discover.add_argument("--radial-rate", type=float, default=3.0)
+    no_log_discover.add_argument("--phasor-scale", default="pi/3", help="scale inside phasor magnitude")
+    no_log_discover.add_argument("--threshold", type=float, default=1e-10)
+    no_log_discover.add_argument("--max-nfev", type=int, default=80)
+    no_log_discover.add_argument("--allow-endpoint", action="store_true")
+    no_log_discover.add_argument(
+        "--start",
+        action="append",
+        default=["14.39639015:1", "0.005:1", "0:1", "1:1"],
+        help="initial alpha:beta for the max-count fit; repeatable",
+    )
+    no_log_discover.set_defaults(func=run_no_log_discover)
+
+    no_log_focal = sub.add_parser("no-log-focal-discover", help="discover no-log focal eigenheights")
+    no_log_focal.add_argument("--char", default="eta_trivial")
+    no_log_focal.add_argument("--count-max", type=int, default=2_000_000)
+    no_log_focal.add_argument("--law", action="append", default=None, choices=("cell", "freq-n", "cell-twist", "helix", "helix-cell"))
+    no_log_focal.add_argument("--tau", action="append", default=None, help="fixed no-log twist tau; repeatable")
+    no_log_focal.add_argument("--tau-grid", type=int, default=0, help="add this many evenly-spaced tau values")
+    no_log_focal.add_argument("--tau-min", type=float, default=0.0)
+    no_log_focal.add_argument("--tau-max", type=float, default=2.0 * PI)
+    no_log_focal.add_argument("--min-height", type=float, default=0.0, help="ignore focal candidates below this height")
+    no_log_focal.add_argument("--moment", default="auto", choices=("auto", "count", "wind", "theta"))
+    no_log_focal.add_argument("--sigma", type=float, default=0.5)
+    no_log_focal.add_argument("--pitch", type=float, default=1.0)
+    no_log_focal.add_argument("--radial-rate", type=float, default=3.0)
+    no_log_focal.add_argument("--phasor-scale", default="pi/3", help="scale inside phasor magnitude")
+    no_log_focal.add_argument("--threshold", type=float, default=1e-10)
+    no_log_focal.set_defaults(func=run_no_log_focal_discover)
 
     test = sub.add_parser("test", help="run built-in tests")
     test.set_defaults(func=lambda _args: run_tests())

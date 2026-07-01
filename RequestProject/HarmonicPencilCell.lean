@@ -49,6 +49,15 @@ absolute-convergence abscissa `σ = 3/2`, where it never vanishes
   (`Aχ ≠ 0`, `λ ≠ μ`) the Gram rank-drop `det Gᶜχ,h = 0` is exactly the scalar L-zero closure.
 * `nontrivial_zero_represented` — **every nontrivial critical-line zero is represented by an
   admissible real source-height cell harmonic Gram eigen-event** `Z = exp t > 0`.
+* `harmonic_pencil_det_zero_iff_channel_zero` / `harmonicGram_rank_drop_iff_channel_zero` /
+  `harmonicGram_rank_drop_calibration_independent` — the **channel-agnostic pencil layer**: for
+  ANY supplied channel pair (`A ≠ 0`, `λ ≠ μ`), the pencil/Gram rank-drop is exactly `B = 0`,
+  independently of the admissible calibration — no L-function in the statement.
+* `finiteA_pos` / `finiteA_ne_zero` / `finite_gramH_posSemidef` /
+  `finite_gramH_rank_drop_iff_channel_zero` / `finite_gram_rank_drop_calibration_independent` —
+  the **finite (crutch-free) instantiation**: the live phasor-bank channels of a finite fiber,
+  with admissibility discharged by *positivity* of the unsigned channel (`χ(1) = 1`, `a 1 > 0`)
+  rather than by the analytic `σ = 3/2` admissibility of `Achan`.
 
 ## Honest scope
 
@@ -452,5 +461,107 @@ theorem zero_source_admissibility_of_projectionPrimacy (χ : DirichletCharacter 
     ∃ Z : ℝ, 0 < Z ∧ Admissible χ Z
       ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I :=
   zero_source_admissibility χ ρ hnontriv (hpp ρ hnontriv)
+
+/-! ## 11. The channel-agnostic pencil layer and the finite (crutch-free) instantiation
+
+The `Achan`/`Bchan` instantiation above reads the channels from analytic L-values.  The pencil
+detector itself, however, is pure arithmetic on a supplied channel pair — so we state it that
+way once and for all, then instantiate it with the FINITE phasor-bank channels of a live fiber
+(the objects the interactive explorer `phasor_explorer/` actually computes): magnitude window
+`a : ℕ → ℝ`, arbitrary phase profile `φ : ℕ → ℝ` (any spin mode),
+
+  `finiteA χ a N   = ∑_{n=1}^{N} ‖χ n‖ · a n`            (unsigned mass channel)
+  `finiteB χ a φ N = ∑_{n=1}^{N} χ n · a n · e^{i·φ n}`   (signed focal channel).
+
+Admissibility of the finite unsigned channel is *positivity*, not analytic continuation:
+`χ 1 = 1` and `a 1 > 0` already force `finiteA > 0`.  No L-function appears anywhere in this
+section. -/
+
+/-- **Channel-agnostic pencil rank-drop.**  For ANY supplied channels `A B : ℂ` with `A ≠ 0`
+and `λ ≠ μ`, `det H(μ,λ) = 0 ↔ B = 0` — the crutch-free detector statement, no number theory. -/
+theorem harmonic_pencil_det_zero_iff_channel_zero (A B μ lam : ℂ) (hA : A ≠ 0)
+    (hlam : lam ≠ μ) : (harmonicPencil A B μ lam).det = 0 ↔ B = 0 := by
+  rw [harmonicPencil_det, mul_eq_zero, mul_eq_zero]
+  constructor
+  · rintro ((h | h) | h)
+    · exact absurd (sub_eq_zero.mp h) hlam
+    · exact absurd h hA
+    · exact h
+  · intro h; exact Or.inr h
+
+/-- **Channel-agnostic harmonic Gram rank-drop**: `det(Hᴴ·H) = 0 ↔ B = 0` for any supplied
+channels with `A ≠ 0` and `λ ≠ μ`. -/
+theorem harmonicGram_rank_drop_iff_channel_zero (A B μ lam : ℂ) (hA : A ≠ 0)
+    (hlam : lam ≠ μ) :
+    ((harmonicPencil A B μ lam)ᴴ * harmonicPencil A B μ lam).det = 0 ↔ B = 0 := by
+  rw [gram_rank_drop_iff_det_cell_zero,
+    harmonic_pencil_det_zero_iff_channel_zero A B μ lam hA hlam]
+
+/-- **Channel-agnostic calibration independence**: the Gram rank-drop event of the family
+`{H(μ,λ)}` does not depend on the choice of admissible pair. -/
+theorem harmonicGram_rank_drop_calibration_independent (A B μ₁ lam₁ μ₂ lam₂ : ℂ)
+    (hA : A ≠ 0) (h₁ : lam₁ ≠ μ₁) (h₂ : lam₂ ≠ μ₂) :
+    (((harmonicPencil A B μ₁ lam₁)ᴴ * harmonicPencil A B μ₁ lam₁).det = 0 ↔
+      ((harmonicPencil A B μ₂ lam₂)ᴴ * harmonicPencil A B μ₂ lam₂).det = 0) := by
+  rw [harmonicGram_rank_drop_iff_channel_zero A B μ₁ lam₁ hA h₁,
+    harmonicGram_rank_drop_iff_channel_zero A B μ₂ lam₂ hA h₂]
+
+/-- **The finite unsigned (mass) channel** of a live fiber of `N` phasors with magnitude
+window `a`. -/
+noncomputable def finiteA (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ) (N : ℕ) : ℝ :=
+  ∑ n ∈ Finset.Icc 1 N, ‖χ (n : ZMod q)‖ * a n
+
+/-- **The finite signed (focal) channel**: magnitude window `a`, arbitrary phase profile `φ`
+(any of the explorer's spin modes). -/
+noncomputable def finiteB (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ) (φ : ℕ → ℝ) (N : ℕ) : ℂ :=
+  ∑ n ∈ Finset.Icc 1 N, χ (n : ZMod q) * (a n : ℂ) * Complex.exp ((φ n : ℂ) * I)
+
+omit [NeZero q] in
+/-- **Finite admissibility is positivity** — crutch-free: `χ 1 = 1` and `a 1 > 0` force
+`finiteA χ a N > 0` for every `N ≥ 1`, with no analytic input. -/
+theorem finiteA_pos (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ) (N : ℕ) (hN : 1 ≤ N)
+    (ha1 : 0 < a 1) (ha : ∀ n, 0 ≤ a n) : 0 < finiteA χ a N := by
+  refine Finset.sum_pos' (fun n _ => mul_nonneg (norm_nonneg _) (ha n))
+    ⟨1, Finset.mem_Icc.mpr ⟨le_refl 1, hN⟩, ?_⟩
+  rw [Nat.cast_one, map_one, norm_one, one_mul]
+  exact ha1
+
+omit [NeZero q] in
+/-- The finite unsigned channel, as a complex number, is nonzero. -/
+theorem finiteA_ne_zero (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ) (N : ℕ) (hN : 1 ≤ N)
+    (ha1 : 0 < a 1) (ha : ∀ n, 0 ≤ a n) : ((finiteA χ a N : ℝ) : ℂ) ≠ 0 := by
+  exact_mod_cast (finiteA_pos χ a N hN ha1 ha).ne'
+
+omit [NeZero q] in
+/-- Every member of the finite harmonic Gram family is Hermitian positive semidefinite. -/
+theorem finite_gramH_posSemidef (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ) (φ : ℕ → ℝ)
+    (N : ℕ) (μ lam : ℂ) :
+    ((harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ lam)ᴴ *
+        harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ lam).PosSemidef :=
+  gram_pos_semidefinite_cell _
+
+omit [NeZero q] in
+/-- **The finite harmonic Gram rank-drop ⇔ finite channel zero** — the explorer's pencil,
+with admissibility discharged by positivity instead of the analytic `σ = 3/2` reading. -/
+theorem finite_gramH_rank_drop_iff_channel_zero (χ : DirichletCharacter ℂ q) (a : ℕ → ℝ)
+    (φ : ℕ → ℝ) (N : ℕ) (hN : 1 ≤ N) (ha1 : 0 < a 1) (ha : ∀ n, 0 ≤ a n)
+    (μ lam : ℂ) (hlam : lam ≠ μ) :
+    ((harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ lam)ᴴ *
+        harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ lam).det = 0
+      ↔ finiteB χ a φ N = 0 :=
+  harmonicGram_rank_drop_iff_channel_zero _ _ μ lam (finiteA_ne_zero χ a N hN ha1 ha) hlam
+
+omit [NeZero q] in
+/-- **Finite calibration independence**: the finite family's rank-drop event is
+`(μ,λ)`-independent — all admissible members drop simultaneously. -/
+theorem finite_gram_rank_drop_calibration_independent (χ : DirichletCharacter ℂ q)
+    (a : ℕ → ℝ) (φ : ℕ → ℝ) (N : ℕ) (hN : 1 ≤ N) (ha1 : 0 < a 1) (ha : ∀ n, 0 ≤ a n)
+    (μ₁ lam₁ μ₂ lam₂ : ℂ) (h₁ : lam₁ ≠ μ₁) (h₂ : lam₂ ≠ μ₂) :
+    (((harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ₁ lam₁)ᴴ *
+        harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ₁ lam₁).det = 0 ↔
+      ((harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ₂ lam₂)ᴴ *
+        harmonicPencil ((finiteA χ a N : ℝ) : ℂ) (finiteB χ a φ N) μ₂ lam₂).det = 0) :=
+  harmonicGram_rank_drop_calibration_independent _ _ μ₁ lam₁ μ₂ lam₂
+    (finiteA_ne_zero χ a N hN ha1 ha) h₁ h₂
 
 end CriticalLinePhasor.HarmonicCell
