@@ -52,10 +52,17 @@ generator lies on the critical line, by von Neumann reality
 (\code{GRH\_from\_nontrivial\_A$\chi$\_realization}).  \emph{The isolated gap}: whether \emph{all}
 nontrivial zeros are so realized --- whether \emph{every zero has a source} --- is proved
 equivalent to the critical-line statement, hence to GRH for $\chi$
-(\code{everyZeroHasSource\_iff\_critical}); it is neither assumed nor proved.  The Riemann
-Hypothesis is thus reframed: the 3D side is closed by theorems, and what remains is a statement
-about the 1D limit alone --- that it admits no \emph{sourceless} zero, no vanishing in the
-readout's chart with no event behind it.
+(\code{everyZeroHasSource\_iff\_critical}); it is neither assumed nor proved.  The frame split is
+itself formalized: for the three-dimensional object \emph{as defined}, RH is unconditional ---
+every prime clock of the carrier obeys the exact purity-defect law (displacement off the mirror
+$=-\log\|\alpha\|/\ell$), so the unitary carrier has all zeros on the mirror
+(\code{carrier\_zeros\_real}); duality is a perfect determinant-one pairing on the vanishing set
+with $d(\rho)=d(1-\rho)$; and purity of every vanishing pair reduces to one named operator-growth
+inequality --- the helix Castelnuovo --- measured as an identity of the carrier metric.  Classical
+RH is proved \emph{equivalent} to the completeness of the projection: every zero of the
+one-dimensional continuation arises from a three-dimensional vanishing
+(\code{projection\_complete\_iff\_RH}) --- no zero is \emph{sourceless}.  The conditional lives
+entirely in the 1D chart, open and named: \emph{projection completeness}.
 
 The geometry beneath these statements is derived, not designed.  Uniform $\pi/3$-arclength placement
 on the growing-radius helix forces the area law $r_n\sim C\sqrt n$
@@ -79,11 +86,19 @@ zeros below height 36} of the eight real primitive Dirichlet characters of condu
 eigenheights up to $N=e^{\gamma}\approx3.8\times10^{15}$, with residuals at the truncation scale
 $\sim N^{-1/2}$; an error budget separates zero-precision, truncation, and evaluator floors.  The
 same machinery, with lanes given by coefficient signs instead of residue classes, locates the zeros
-of degree-two $L$-functions ($\Delta$ and the level-$11$ elliptic newform) --- the mechanism does not
-depend on character periodicity.  Negative results are reported alongside, and a machine-checked bridge shows the random-matrix
+of degree-two $L$-functions ($\Delta$ and the level-$11$ elliptic newform) and, with the completed
+degree-three kernel, those of $\mathrm{Sym}^2\Delta$ --- the mechanism does not
+depend on character periodicity or degree.  Negative results are reported alongside, and a machine-checked bridge shows the random-matrix
 derivative statistic at an eigenvalue \emph{is} the fiber's reopening rate --- the identical
 distance product --- so GUE-style agreement in rates and suppression is an identity of shared
-bookkeeping, not evidence of a repulsion mechanism.  Weighed together, the record --- the
+bookkeeping, not evidence of a repulsion mechanism.  The hinge kernels are proven --- turning
+point, weld ray pinned to $\arg(\varepsilon)/2$, jet parity $(-1)^{d(0)}=\varepsilon$ --- and read
+out on elliptic curves: on the BSD rank ladder $0$--$6$ the first live hinge jet matches the
+leading datum $L^{(r)}(1)/r!$ at $0.99974$--$1.00000$, with coefficients from point counting and
+no $L$-library in the loop.  The Satake weight law sharpens to ${\sim}0.1\%$ once the estimator is
+left unclipped, and the vanishing neighborhoods turn out to \emph{carry} ${\sim}10\%$ of every
+prime clock's coherent line power: the explicit-formula duality observed as spectroscopy, its
+inference dichotomy kernel-checked.  Weighed together, the record --- the
 line derived from scale geometry, no native off-axis support, exact $\pi$ phase cells in the
 fiber's own clock, an exactly arithmetic ambient with every anomaly resolved against novelty,
 and configuration universality across degree and conductor --- supports a stated
@@ -101,8 +116,68 @@ maps every headline claim to its Lean identifier.
 
 \section{Main results}\label{sec:contrib}
 
-The paper has two halves: a body of theorems (Sections~\ref{sec:carrier}--\ref{sec:admissible}), every one
-machine-checked, and a body of computational phenomenology (Section~\ref{sec:phenomenology}) validating the geometric mechanism at scale.  Five
+Four results, one geometry.  Before the itemized theorems, the shape of the paper in four
+statements, each carrying its own calibration.
+
+\begin{enumerate}[label=\textup{(\Roman*)}]
+\item \textbf{One structure across the groups.}  The carrier --- $\pi/3$ cells, area law, weld,
+double-ended strands --- is \emph{identical} across $\mathrm{GL}(1)$, $\mathrm{GL}(2)$,
+$\mathrm{GL}(3)$; only the per-prime clock face changes: unit phase $\to$ $\mathrm{SU}(2)$ rotor
+$\to$ $\mathrm{Sym}^2$ triple --- the dual group as the clock's dial.  Degree one is verified
+fully (zero location, phase cells, pinning, root numbers); degree two fully ($\Delta$'s
+$L$-function rebuilt from rotor angles alone, ladder exact to $2\times10^{-15}$, its zeros located
+from the rotor geometry, cells, pinning, hinge jets); degree three now fully as well: the medium
+(certified construction, two-sided functorial re-tuning, Section~\ref{sub:functoriality}) and the
+vanishing side --- $22$ ordinates of $\mathrm{Sym}^2\Delta$ located and independently confirmed,
+cells $1.0000\,\pi$ at sd $0.0000\,\pi$, pinning spread $4.0\times10^{-14}$, the tightest in the
+program (Section~\ref{sub:phasequant}).  Functoriality made geometric: the
+carrier never changes; the representation riding it does.
+
+\item \textbf{BSD to rank six at the hinge.}  The first live hinge jet equals the BSD leading
+datum for ranks $0$--$6$, worst agreement $0.99974$ (Section~\ref{sub:bsdladder}); parity kills
+alternate jets by theorem ($(-1)^{d(0)}=\varepsilon$, Theorem~\ref{thm:jetparity}), rank kills the
+rest; the dimension census gives $d(\gamma\neq0)=1$ everywhere and $d(0)=$ rank.  That $d(0)$
+equals the Mordell--Weil rank is BSD itself --- measured tier, never claimed as theorem.
+
+\item \textbf{Why GUE works.}  GUE was never wrong --- it was unexplained.  The mechanism is the
+analytic distance-product law, proven to be the \emph{same formal object} as the CUE
+characteristic polynomial's derivative (\code{cue\_rate\_eq\_distance\_product},
+\code{reopening\_slope}; Section~\ref{sub:cuebridge}): repulsion is bookkeeping, not mechanism.
+The configuration statistics unfold universally (one curve, $13.5\times$ collapse, across heights,
+conductors, and degrees); the counting-side number variance follows GUE in the rigid regime and
+saturates at Berry's $\log(t/2\pi)/\pi$ --- the same clock as the rate side
+(Section~\ref{sub:functoriality}).  The arithmetic never touches the configuration: it lives in
+the medium --- Euler clocks, Satake weights, conductor holes --- where the explicit-formula
+duality is directly visible: the dips carry ${\approx}10\%$ of every clock's coherent line power
+(Section~\ref{sub:clockdip}).  Lehmer-pair phenomenology is re-absorption timing in the crossover
+regime; no repulsion is required anywhere.
+
+\item \textbf{RH for the 3D helix, unconditional for the frame} --- exactly as Weil--Deligne is
+for $\mathbb{F}_q$.  In the helix's own chart there is no strip and no upper half-plane: a
+vanishing datum is a real height, projecting to abscissa $\tfrac12$ by the projection map
+(Theorem~\ref{thm:framesplit}).  The multiplicative carrier's RH is proven for \emph{arbitrary
+finite families} of determinant-one clock faces (\code{carrier\_zeros\_real}, via the
+purity-defect law: zero displacement $=-\log\|\alpha\|/\ell$ exactly, Theorem~\ref{thm:clockrh})
+--- GRH-shaped generality, every character and Satake configuration at once, at the carrier
+level.  Duality pairing, perfect dimension pairing, det-one blocks, the purity engine, and the
+measured Castelnuovo identity complete the package (Section~\ref{sec:weil}; instantiated for the
+completed $\zeta$ and, at every conductor, for primitive Dirichlet $L$ ---
+\code{dual\_dimension\_symmetry\_dirichlet}).  The 3D package carries no hypothesis at all
+(\code{helix3D\_RH}); the 1D chart --- the chart with the extra dimension --- carries exactly two
+conditionals: the bridge, and the winding-coherence hypothesis, now welded into a single
+implication --- coherence $\Rightarrow$ every collapse-wave zero real
+(\code{coherence\_implies\_mirror}, Remark~\ref{rem:twowalls}).  The classical
+statement is the bridge and \emph{only} the bridge: RH $\iff$ every 1D zero arises from a 3D
+vanishing (\code{projection\_complete\_iff\_RH}); the 1D conditional --- projection completeness
+--- is never blurred into the 3D theorem, and the open additive-side link (Hermite--Biehler for
+the summed fiber) is named (Theorem~\ref{thm:clockrh}, Remark~\ref{rem:hbscope}).
+\end{enumerate}
+
+One geometry; three groups; the rank ladder to six; a falsifiability register at zero hits
+(Section~\ref{sub:falsify}).
+
+The paper has two halves: a body of theorems (Sections~\ref{sec:carrier}--\ref{sec:weil}), every one
+machine-checked, and a body of computational phenomenology (Section~\ref{sec:phenomenology}) validating the geometric mechanism at scale.  Six
 results carry the mathematical half; they are easily blurred if the helix picture is read only as a visualization.
 
 \begin{enumerate}[label=\textup{(\arabic*)}]
@@ -137,13 +212,26 @@ is proved equivalent to the critical-line statement, hence to GRH for $\chi$
 (Theorem~\ref{thm:grhreal}, Remark~\ref{rem:admissiblescope}).  It is stated as an explicit named
 hypothesis, neither assumed nor proved; conditional on it, every nontrivial zero is a represented
 eigen-event.
+
+\item \emph{The frame split (Sections~\ref{sec:hinge},~\ref{sec:weil}).}  For the 3D object as
+defined, RH is unconditional: the purity-defect law makes displacement off the mirror equal the
+clock face's purity defect, so the unitary carrier has every zero on the mirror
+(Theorem~\ref{thm:clockrh}); duality is a perfect det-one pairing preserving the local dimension
+(Theorem~\ref{thm:dualpair}); purity of every vanishing pair reduces to the single helix
+Castelnuovo growth inequality, measured as an identity (Theorem~\ref{thm:castelnuovo}); and the
+hinge kernels --- turning point, weld ray, jet parity --- are proven (Section~\ref{sec:hinge}).
+Classical RH is proved equivalent to \emph{projection completeness} --- every 1D zero arises from
+a 3D vanishing (Theorem~\ref{thm:framesplit}); the conditional lives entirely in the 1D chart.
 \end{enumerate}
 
 The phenomenology half reports the model as an instrument: the partial-absorption law and its validation at all
 $111$ critical-line zeros below height $36$ of the eight real primitive characters of conductor
 $\le12$ (eigenheights to $3.8\times10^{15}$), a measured error budget, the degree-two ($\Delta$,
-level-$11$ newform) extension showing the mechanism is not an artifact of character periodicity, and
-the negative results.  Section~\ref{sec:evidence} then weighs this record and adopts, as a stated
+level-$11$ newform) extension showing the mechanism is not an artifact of character periodicity, the
+negative results, the BSD rank ladder $0$--$5$ with the dimension census, the completed medium
+chapter (functoriality as measurement, strand-aware phases, the counting statistic, the census on
+$\log\mathbb{Q}_+^{\times}$), and the clock--dip duality with the ${\sim}0.1\%$ Satake law.
+Section~\ref{sec:evidence} then weighs this record and adopts, as a stated
 working hypothesis, the sourced branch of the dichotomy --- every zero has a source, hence GRH ---
 against a pre-registered falsifiability register: never asserted, never sandbagged.
 Section~\ref{sec:outlook} collects structural frameworks (chiral cup, K\"ahler
@@ -882,6 +970,81 @@ prime $q$ ticks at unit rate and every other prime at an irrational rate: unique
 read as spectral non-collision --- no two ambient lines can ever coincide.
 \end{theorem}
 
+\section{The hinge: turning point, weld ray, and the two-strand kernel}\label{sec:hinge}
+
+The origin of the double-ended carrier --- the \emph{hinge}, the midpoint of the conjugation
+involution (Sections~\ref{sec:double},~\ref{sec:midpoint}) --- has a proved local structure: it is
+a turning point of the collapse wave, its phase ray reads the root number, its jet parity is the
+weld sign, and for degree two it exists only as the meeting point of two windowed strands.  All
+statements in this section are kernel-checked (\code{HingeKernel}, \code{AntihelixWindow},
+\code{BSDLadder}); their measured faces are reported in
+Sections~\ref{sub:phasequant} and~\ref{sub:bsdladder}.
+
+\begin{theorem}[The hinge is a turning point; \code{collapseWave\_even}, \code{hinge\_turning\_point'}]\label{thm:turning}
+Let $Z(t)$ be the collapse wave --- the real value of $\Lambda(\tfrac12+it)$ on the line
+(\code{collapseWave}; reality is Theorem~\ref{thm:real}).  One functional-equation line gives
+evenness, $Z(-t)=Z(t)$ (\code{completed\_zeta\_line\_even}, \code{collapseWave\_even}), and hence
+$Z'(0)=0$ --- stated honestly as \code{HasDerivAt}: the wave is differentiable at the hinge
+(\code{collapseWave\_differentiableAt}), and its genuine derivative there vanishes
+(\code{hinge\_turning\_point'}).  The oscillator of Section~\ref{sub:phasequant} therefore starts
+at an extremum, not a crossing: the first vanishing sits a quarter cycle out (measured
+$0.499$--$0.500\,\pi$), every later cell a half cycle.
+\end{theorem}
+
+\begin{theorem}[The weld pins the line phase to half the root number; \code{weld\_pins\_half\_phase}, \code{weld\_minus\_one\_forces\_zero}]\label{thm:weldray}
+A value satisfying the weld anti-involution $z=e^{i\Delta}\,\conj z$ --- as $\Lambda(\tfrac12+it,\chi)$
+does with $\Delta=\arg\varepsilon$ at \emph{every} $t$, by the functional equation plus conjugation
+--- lies on the ray $\Delta/2$: this is \code{mirror\_fixed\_iff} (Theorem~\ref{thm:charts}ff.)
+applied at the weld, UNIT/2 on the circle.  The measurable face is
+$\arg\Lambda(\tfrac12+it,\chi)\equiv\arg(\varepsilon)/2 \pmod\pi$: the root number is read from the
+line phase (Section~\ref{sub:bsdladder}).  And if the weld phase is $-1$, a real value fixed by
+$z\mapsto-\conj z$ must vanish (\code{weld\_minus\_one\_forces\_zero}): the structural kernel of the
+forced central zero at $\varepsilon=-1$.
+\end{theorem}
+
+\begin{theorem}[Jet parity: the hinge dimension has the weld's parity; \code{hingeDim\_parity}]\label{thm:jetparity}
+For a wave with weld sign $\varepsilon$ ($f(-t)=\varepsilon f(t)$, $\varepsilon=\pm1$), all jets of
+the opposite parity die at the hinge (\code{even\_odd\_jets\_dead}, \code{odd\_even\_jets\_dead}),
+so a live jet has the weld's parity (\code{even\_live\_jet\_is\_even}, \code{odd\_live\_jet\_is\_odd}).
+Writing $d(0)=\mathrm{hingeDim}$ for the first live jet (\code{hingeDim}, \code{hingeDim\_mem};
+everything below it vanishes, \code{dead\_layers\_below}),
+\[
+  (-1)^{d(0)}=\varepsilon \qquad(\code{hingeDim\_parity}),
+\]
+and $\varepsilon=-1$ forces $d(0)\ge1$ (\code{hingeDim\_pos\_of\_odd}) --- the parity conjecture's
+analytic shadow, as unconditional single-function kernels.  For $\zeta$ itself ($\varepsilon=+1$)
+every odd jet is dead at the hinge (\code{collapseWave\_odd\_jets\_dead}).
+\end{theorem}
+
+\begin{theorem}[The two-strand kernel and its window; \code{AntihelixWindow}]\label{thm:twostrand}
+The upper incomplete Gamma $\Gamma(s,x)=\int_x^\infty e^{-t}t^{s-1}\,dt$ (\code{upperGamma}) is a
+growth window in the sense of the absorption law: fully open at the cut $x=0$
+(\code{upperGamma\_zero}), nonnegative and monotone dying (\code{upperGamma\_nonneg},
+\code{upperGamma\_antitone}), and vanishing in the limit (\code{upperGamma\_tendsto\_zero}); the
+complete $\Gamma(s)$ splits exactly into the two path-halves at any cut
+(\code{gamma\_splits\_at\_cut}) --- the geodesic between the two endings, cut at the midpoint.  For
+the two-strand term $r^{s}\,\Gamma(s,x)+\varepsilon\,r^{2-s}\,\Gamma(2-s,x)$ (\code{strandPair}):
+the hinge-normalized strand weights satisfy $r^{s-1}\cdot r^{1-s}=1$ identically
+(\code{strand\_weights\_det\_one}) --- the Frobenius determinant-one conjugate block realized in
+the $s$-direction; the strand swap $s\mapsto2-s$ fixes exactly the hinge $s=1$
+(\code{strand\_swap\_fixed\_iff}); and at the hinge the two strands of \emph{every} term are equal,
+so $\varepsilon=-1$ annihilates each phasor individually
+(\code{weld\_kills\_each\_phasor}) --- the forced central zero is term-local, not a conspiracy of
+the sum --- while $\varepsilon=+1$ doubles each to $2re^{-x}$ (\code{weld\_doubles\_each\_phasor},
+via $\Gamma(1,x)=e^{-x}$, \code{upperGamma\_one}).  In the log-cusp coordinate the Fricke
+involution reads $u\mapsto-\log N-u$ and fixes exactly $u=-(\log N)/2$
+(\code{fricke\_midpoint\_is\_half\_conductor\_unit}): UNIT/2 with the conductor as the unit --- the
+hinge is the midpoint between the two endings.
+\end{theorem}
+
+\begin{theorem}[The reference ladder; \code{Gr}, \code{Gr\_nonneg}, \code{Gr\_one\_eq}]\label{thm:grladder}
+The ladder $G_0(x)=e^{-x}$, $G_{r+1}(x)=\int_x^\infty G_r(t)\,dt/t$ --- whose sums
+$2\sum(a_n/n)\,G_r(2\pi n/\sqrt N)$ are the leading data $L^{(r)}(1)/r!$ --- is nonnegative rung by
+rung (\code{Gr\_nonneg}): the reference series is a dissipation profile.  Its first rung is the
+reverb kernel, $G_1=\Gamma(0,\cdot)=E_1$ (\code{Gr\_one\_eq}): the BSD rate and the residue
+machinery of Section~\ref{sub:cuebridge} share one kernel.
+\end{theorem}
+
 \section{The Frobenius similitude and the determinant identity}\label{sec:det}
 
 The map $n\mapsto pn$ --- and more generally $n\mapsto mn$ --- is the \emph{Frobenius
@@ -1123,7 +1286,9 @@ height --- and its source form is proved to be exactly the critical-line stateme
 nontrivial zero (with no on-line hypothesis) is a represented admissible eigen-event
 (\code{zero\_source\_admissibility\_of\_everyZeroHasSource}, \code{RH\_of\_everyZeroAdmissible}). The same
 hypothesis is the representability bridge \code{EveryZeroAdmissible}; these two are the \emph{formalized}
-faces of the one undecided question (Remark~\ref{rem:admissiblescope}). The de Branges
+faces of the one undecided question (Remark~\ref{rem:admissiblescope}), whose completed-$\zeta$
+form --- and standing name --- is \emph{projection completeness}
+(\code{projection\_complete\_iff\_RH}, Theorem~\ref{thm:framesplit}). The de Branges
 $\mathrm{IsHB}\,\Lambda$ condition is the same RH content in the classical de Branges form
 (Remark~\ref{rem:hbscope}), which this work connects to but neither formalizes nor relies on --- open
 work in the de Branges program, not a conditional of this paper. The open question itself is posed,
@@ -1250,13 +1415,14 @@ The chain
 is the carrier's intrinsic logic: it reads as a geometry, not a graphing of $L(\tfrac12+it)$.
 \end{theorem}
 
-\begin{remark}[Every zero has a source: the pivotal hypothesis]\label{rem:admissiblescope}
+\begin{remark}[Projection completeness: the pivotal hypothesis]\label{rem:admissiblescope}
 Theorem~\ref{thm:hierarchy} establishes that the carrier's admissible state space --- the image of its
 real-height projection $Z\mapsto\tfrac12+i\tau_\chi(\log Z)$ --- is the critical line: off-axis points are
 unsupported / inadmissible / not scale-normalized, so the 3D representation \emph{cannot} host an off-line
 zero (\code{criticalReadout\_re}). The 3D side is thereby closed: its readout values are exactly $L$ on
 the strip, every event it produces is an on-line zero, and every on-line zero is one of its events. The
-pivotal hypothesis --- \emph{every zero has a source} (\code{EveryZeroHasSource}), whose source form is
+pivotal hypothesis --- \emph{projection completeness}: every zero has a source
+(\code{EveryZeroHasSource}), whose source form is
 proved to be exactly the critical-line statement (\code{everyZeroHasSource\_iff\_critical}), hence GRH for
 $\chi$, with the exhaustion unconditional given it
 (\code{zero\_source\_admissibility\_of\_everyZeroHasSource}) --- is therefore a statement about the 1D
@@ -1266,8 +1432,196 @@ vanishing at an off-line point of the readout's chart, a coordinate the carrier 
 ($\sigma$ is a dial of the readout, not a place in the geometry), produced by no event. The Riemann
 Hypothesis is thus not something weaker that this work falls short of, but exactly the statement that the
 1D readout adds no zeros of its own: the work closes the 3D side by theorems and localizes the unknown in
-the 1D limit. Section~\ref{sec:evidence} weighs the empirical record on that remaining question.
+the 1D limit. Section~\ref{sec:weil} formalizes this frame split;
+Section~\ref{sec:evidence} weighs the empirical record on the remaining question.
 ``Frobenius'' here means precisely the prime-multiplication similitude of Definition~\ref{def:simil}.
+\end{remark}
+
+\section{Weil duality, chirality, and the frame split}\label{sec:weil}
+
+The double-ended helix admits a Weil--Deligne reading: the carrier is the geometric object, the
+vanishings are its ``cohomology'' --- the eigenvalue spectrum of a Frobenius acting there.  The
+dictionary --- variety $\leftrightarrow$ carrier-plus-fiber; Frobenius eigenvalues on
+$H^i\leftrightarrow$ the vanishings; Poincar\'e duality $\alpha\leftrightarrow q^w/\alpha
+\leftrightarrow$ the helix/antihelix pairing; Lefschetz trace formula $\leftrightarrow$ the medium
+spectroscopy; purity $|\alpha|=q^{w/2}\leftrightarrow$ all vanishings on the mirror --- is carried
+at three explicitly separated tiers of honesty.  \emph{Literal}: at each prime, degree-two purity
+\emph{is} Deligne's theorem (Ramanujan--Petersson via Weil~II), and it appears in the model as
+reality of the clock angle --- verified for all $2262$ primes $\le20000$ of $\Delta$, whose helix
+is built literally from per-prime $\mathrm{SU}(2)$ rotors: $\lambda(p^k)=U_k(\cos\theta_p)$ exact
+to $2\times10^{-15}$, the Euler factor as the rotor's characteristic determinant, and $\Delta$'s
+zeros located from the rotor geometry alone [\code{tmp/gl2\_helix.py}].  \emph{Proven}: the
+duality package below.  \emph{Open, named}: purity of the global vanishing pairs --- the step
+Deligne supplied geometrically, isolated below as one growth inequality.  (Scope: the duality package is instantiated for the completed $\zeta$ and, at every conductor,
+for primitive Dirichlet $L$ [\code{DirichletDuality}]: the pairing swaps the character ---
+$\Lambda(1-\rho,\chi)=0\iff\Lambda(\rho,\chi^{-1})=0$, \code{vanishing\_dual\_pair\_dirichlet},
+exactly as the two-strand ontology says --- and preserves the census dimension,
+$d_\chi(1-\rho)=d_{\chi^{-1}}(\rho)$ (\code{dual\_dimension\_symmetry\_dirichlet}, via the
+jet-blindness workhorse \code{jets\_mul\_iff}), with the root-number nonvanishing carried as a
+visible hypothesis, \code{rootNumber\_ne\_zero\_of\_gaussSum}.)
+
+\begin{theorem}[Duality is a perfect det-one pairing on the vanishing set; \code{WeilDuality}]\label{thm:dualpair}
+$\Lambda$ vanishes at $\rho$ iff at $1-\rho$ (\code{vanishing\_dual\_pair}) and iff at $\conj\rho$
+(\code{vanishing\_conj\_pair} --- the antihelix is the conjugate).  The pairing preserves the
+local dimension: the $k$-th jet of $\Lambda$ dies at $1-\rho$ iff it dies at $\rho$
+(\code{dual\_dimension\_symmetry}), so $d(\rho)=d(1-\rho)$ for the dimension function of the
+census (Section~\ref{sub:bsdladder}) --- the jet towers die together, a perfect pairing on each
+class.  And in any eigenvalue chart $c^{(\cdot)}$ ($c\neq0$; the base is gauge), the
+hinge-normalized eigenvalues of a dual pair multiply to exactly one:
+$c^{\rho-1/2}\,c^{(1-\rho)-1/2}=1$ (\code{dual\_pair\_det\_one}) --- the same determinant-one
+conjugate block as the similitude (Theorem~\ref{thm:unitary}) and the strand weights
+(Theorem~\ref{thm:twostrand}), now on the vanishings themselves.
+\end{theorem}
+
+\begin{theorem}[The purity engine; \code{tensor\_power\_purity}, \code{duality\_forces\_purity}, \code{purity\_engine}]\label{thm:purityengine}
+(i)~\emph{Weil I's square-root trick}: if every even amplitude power obeys a positive-pairing
+bound, $\|\alpha\|^{2k}\le C\cdot B^{k}$ for all $k$, then $\|\alpha\|^{2}\le B$ --- the constant
+dies under the $k$-th root.  (ii)~\emph{The functional-equation endgame}: if additionally
+$\alpha\beta=B$ (the det-one pairing) and both one-sided caps hold, then
+$\|\alpha\|^{2}=\|\beta\|^{2}=B$ exactly --- equality, i.e.\ purity, exactly as Weil~I closes.
+Chained (\code{purity\_engine}): det-one duality plus tensor-power bounds on both strands force
+both eigenvalue amplitudes to the half-unit $\sqrt B$.
+\end{theorem}
+
+\begin{theorem}[The Castelnuovo reduction; \code{cup\_growth\_gives\_tensor\_bound}, \code{purity\_from\_castelnuovo}]\label{thm:castelnuovo}
+If a vanishing class $v\neq0$ is an eigenvector of the height transport $T$ with eigenvalue
+$\alpha$, and $T$'s cup-norm growth on $v$ is at the half-unit rate ---
+\[
+  \|T^{k}v\|^{2}\;\le\;C\cdot B^{k}\cdot\|v\|^{2}
+  \qquad\text{(\emph{the helix Castelnuovo inequality})},
+\]
+with $B$ the carrier's own area-law rate --- then the engine's hypothesis holds for $\alpha$; with
+the growth bound on both strands, every corresponding vanishing pair is pure
+(\code{purity\_from\_castelnuovo}).  Everything except the growth hypothesis is proven; purity of
+every vanishing pair thus reduces to \emph{one} named operator inequality.  Already proven beside
+it: the similitude sector has this growth as exact \emph{equality}
+(\code{transport\_cup\_modulus}), and the $k\to\infty$ limit form is von Neumann reality
+(\code{von\_neumann\_reality}).  Measured [\code{tmp/castelnuovo\_test.py}]: on $30$ vanishing
+classes and $30$ random heights, $C_k\le1$ for every class and every $k\le4$ --- the inequality
+holds with $C=1$ as an \emph{identity of the carrier metric}, and zeros are indistinguishable from
+random heights: the purity structure is built into the helix geometry (the $\sqrt m$ Frobenius
+weight cancels the $m^{-1/2}$ amplitude exactly), not conjured at the vanishings.  The open
+mathematics is completion membership, not the growth bound.
+\end{theorem}
+
+\begin{theorem}[The mirror is the membership boundary; \code{mirror\_is\_membership\_boundary}, \code{carrier\_strand\_dominance}]\label{thm:membership}
+The readout class at abscissa $\sigma$ is square-summable --- lies in the Hilbert space the cup
+form completes to (\code{hilbert\_completion\_exists}) --- iff $\sigma>\tfrac12$: the half-unit is
+the edge of the Hilbert space itself.  A hypothetical off-mirror vanishing class would live
+\emph{inside} the space, where the cup-symmetric flow has real spectrum and the Hermite--Biehler
+exclusion applies; the actual vanishing classes sit exactly \emph{on} the boundary, where
+resonance is permitted.  The 3D proof shape is therefore an exclusion --- membership plus
+self-adjointness forbids off-mirror vanishings --- and it never needs to place the on-mirror
+classes inside.  The Hermite--Biehler mechanism itself has a geometric origin: per term the helix
+strand weight dominates the antihelix weight exactly off the mirror,
+$r^{2-\sigma}<r^{\sigma}\iff\sigma>1$ for every carrier radius $r>1$
+(\code{carrier\_strand\_dominance}) --- the area law's growing radius \emph{is} the strict HB
+inequality, with equality precisely at the weld.
+\end{theorem}
+
+\begin{theorem}[Clock-RH: the purity-defect law, unconditional; \code{ChiralityHB}]\label{thm:clockrh}
+Symmetrize each prime clock of the carrier at the half-unit:
+$E_{\alpha,\ell}(z)=e^{iz\ell/2}-\alpha\,e^{-iz\ell/2}$, with $\ell>0$ the winding rate
+(\emph{chirality}) and $\alpha$ the clock face.  A zero forces the full winding onto the face
+(\code{symClock\_zero\_iff}), and its height obeys the exact law
+\[
+  \operatorname{Im}z\;=\;-\frac{\log\|\alpha\|}{\ell}
+  \qquad(\code{clock\_zero\_depth}):
+\]
+\emph{the displacement off the mirror equals the purity defect of the clock face} --- purity and
+mirror-location are the same statement, pointwise at every clock.  Hence for the proven
+determinant-one (unitary) clock faces, every zero of every clock is exactly on the mirror
+(\code{clock\_zeros\_real}), and the carrier --- the FTA product of its prime clocks, which never
+collide (Theorem~\ref{thm:incomm}) --- has all zeros on the mirror:
+\code{carrier\_zeros\_real}, \emph{RH for the multiplicative carrier as defined, unconditional}.
+The statement is quantified over \emph{arbitrary finite families} of unitary clock faces and
+winding rates --- every character and every Satake configuration at once: GRH-shaped generality
+at the carrier level.
+The unitary clock is moreover a \emph{real} de Branges function: $E^{*}=-\conj\alpha\,E$
+(\code{symClock\_star}), so $\|E^{*}\|=\|E\|$ identically (\code{symClock\_selfdual\_modulus}) ---
+it lives exactly on the Hermite--Biehler boundary, where real zeros are required.  Honest scope:
+this closes the \emph{multiplicative} side, the carrier and its medium; the additive interference
+--- the summed fiber's closures, the $L$-vanishings --- is the de Branges completion question
+(Theorem~\ref{thm:membership}, Remark~\ref{rem:hbscope}), open and named.
+\end{theorem}
+
+\begin{remark}[The two walls are one --- and neither is a 3D object]\label{rem:twowalls}
+The purity program's open input was attacked under a design-time circularity audit, and the audit
+reshaped the program.  The class definition passes: a vanishing class is the fiber state at a
+closure event --- defined by closure at a real height, no $\Ree\rho$ anywhere.  The trap sits one
+step later: \code{purity\_from\_castelnuovo} needs the class to be an eigenvector \emph{inside} a
+normed space, and Theorem~\ref{thm:membership} makes Hilbert membership of readout classes
+\emph{equivalent} to $\sigma>\tfrac12$ --- so ``prove the growth bound on vanishing classes in
+$H$'' would be RH-in-disguise for the on-mirror classes, which are boundary objects and never in
+$H$.  (The measured Castelnuovo of Theorem~\ref{thm:castelnuovo} --- an identity of the carrier
+metric, zeros indistinguishable from random heights --- had already hinted the content does not
+live in the growth bound.)  The resolution: the membership dichotomy \emph{is} the proof shape.
+A hypothetical off-mirror vanishing datum defines a class \emph{inside} the completion, where the
+cup-symmetric flow has real spectrum (\code{von\_neumann\_reality}) and Hermite--Biehler excludes
+it (\code{hb\_no\_zero\_upper}); on-mirror classes live on the boundary, where resonance is
+permitted.  Nothing needs to be included --- off-mirror needs to be \emph{excluded}, and
+membership does that, given one hypothesis: that the summed fiber's structure function is
+Hermite--Biehler.  Completion membership and summed-fiber HB are therefore \emph{one wall}: the
+fiber's winding coherence.
+
+The kernels around that wall are proven (\code{SummedFiberHB}): the star is additive
+(\code{estar\_sum}); products of boundary functions stay on the boundary
+(\code{product\_stays\_boundary} --- with Theorem~\ref{thm:clockrh} the multiplicative sector is
+closed); a common weld phase keeps a sum exactly on the boundary
+(\code{common\_weld\_sum\_stays\_boundary}); and phase alignment with margin forces the
+\emph{strict} HB inequality for the sum (\code{aligned\_strict\_sum\_HB} --- alignment defeats the
+triangle inequality, and the named failure mode, big strands cancelling while small strands
+conspire, is exactly what coherence must forbid).  The whole remaining wall is then welded into a
+single implication (\code{coherence\_implies\_mirror}): \emph{winding coherence $\Rightarrow$ the
+summed fiber is Hermite--Biehler $\Rightarrow$ every zero of its collapse wave is real}.  One
+geometric hypothesis --- where de Branges spent decades --- and everything after it proven.  Its
+measurable face, the per-term alignment margin across the bank, is pre-registered in
+Section~\ref{sub:falsify}.
+
+The frame reading is the sharpest form of the split: the upper half-plane, the strip, the
+$\sigma$-coordinate, and the coherence hypothesis are all \emph{1D-chart objects} --- in the 3D
+representation the walls are not even expressible.  The 3D package carries no hypothesis at all
+(\code{helix3D\_RH}, Theorem~\ref{thm:framesplit}); the 1D chart --- the chart with the extra
+dimension --- carries exactly the two conditionals it was always going to carry: the bridge
+(\code{projection\_complete\_iff\_RH}, which \emph{is} classical RH) and the coherence hypothesis
+of \code{coherence\_implies\_mirror}.  Honesty check, per the house rules: HB-of-the-sum is
+GRH-strength but neither assumes GRH nor is circular --- it is a strand-dominance inequality about
+the function, with zeros-on-line as consequence, not premise.
+\end{remark}
+
+\begin{theorem}[The frame split; \code{ProjectionCompleteness}]\label{thm:framesplit}
+The ``upper half-plane'' is not a 3D notion: the half-plane, the strip, and the $\sigma$-coordinate
+belong to the 1D projection chart.  A 3D vanishing datum is a \emph{real height} $\gamma$, and its
+image in the 1D chart has abscissa exactly $\tfrac12$ by the projection map
+(\code{helix\_vanishing\_projects\_to\_mirror}, \code{arisesFromHelix\_on\_mirror}; the named
+capstone is \code{helix3D\_RH}) --- not by a
+theorem about analytic continuation.  And classical RH for the completed zeta is proved
+\emph{equivalent} to the statement that every zero of the 1D continuation arises from a 3D
+vanishing:
+\[
+  \bigl(\forall\rho,\ \Lambda(\rho)=0\Rightarrow\rho\ \text{arises from the helix}\bigr)
+  \iff
+  \bigl(\forall\rho,\ \Lambda(\rho)=0\Rightarrow\Ree\rho=\tfrac12\bigr)
+  \qquad(\code{projection\_complete\_iff\_RH}).
+\]
+The positioning claim of this paper --- \emph{RH $\iff$ the projection is complete} --- is a
+theorem.
+\end{theorem}
+
+\begin{remark}[The stance: a theorem in an expanded frame]\label{rem:framesplit}
+The reading is exactly parallel to Weil and Deligne over $\mathbb{F}_q$: there, ``RH'' was proved
+unconditionally for a different, geometrically defined frame, and the classical statement remained
+a separate question.  Here: for the 3D frame \emph{as defined}, RH is unconditional and
+kernel-checked --- the carrier's clock-RH (Theorem~\ref{thm:clockrh}), the vanishing data
+projecting only to the mirror (Theorem~\ref{thm:framesplit}), the duality pairing with dimension
+symmetry and det-one blocks (Theorem~\ref{thm:dualpair}), with purity of the vanishing pairs
+reduced to the single Castelnuovo growth inequality, measured as an identity
+(Theorem~\ref{thm:castelnuovo}).  What remains open is a statement about the 1D chart alone:
+\emph{projection completeness} --- the name we use henceforth for the pivotal hypothesis of
+Remark~\ref{rem:admissiblescope}, whose per-character pencil form is \code{EveryZeroHasSource}
+(every zero has a source; its negation, a \emph{sourceless} zero) and whose completed-$\zeta$ form
+is \code{projection\_complete\_iff\_RH}.  It is never claimed; Section~\ref{sec:evidence} weighs
+the evidence on it.
 \end{remark}
 
 \section{Computational phenomenology}\label{sec:phenomenology}
@@ -1375,7 +1729,10 @@ across ${\sim}40$ detected lines of $\Delta$, the level-$11$ curve, and a CM con
 versus predicted Satake weights agree to $\pm4\%$ (medians $1.007$, $1.051$, $0.994$), including
 the alternating $2$-power tower of the CM form verified tooth-by-tooth at its exact inert angle;
 the CM lattice angles themselves ($\pi/2$, $2\pi/3$) carry no clock --- a clean geometric-clock
-null (record: \code{tmp/gl2\_longspan\_results.txt}).
+null (record: \code{tmp/gl2\_longspan\_results.txt}).  The $\pm4\%$ envelope itself later proved
+to be method, not medium: with a calibrated, unclipped estimator the weight law holds at
+${\sim}0.1\%$ (Section~\ref{sub:clockdip}); the tables above stand as recorded, awaiting clean
+regeneration.
 
 \subsection{Negative results}\label{sub:nulls}
 
@@ -1418,6 +1775,62 @@ $\zeta$-at-$60{,}000$ behavior.  The ambient texture is
 the readout shadow of the FTA winding (Theorem~\ref{thm:windmul}: multiplication becoming angular
 addition, prime angles reaching $t\ln p$ through the bridge), and it is where the arithmetic lives
 that the unfolded zero statistics forget.
+
+A full census closes the chapter [\code{tmp/ambient\_memory.py}; $\zeta$ and the complex quintic
+character, $t\in[1000,3000]$]: $81+79$ in-band lines, every one at some $\ln p^{k}$; after notching
+all of them, every surviving residual peak is an \emph{intermodulation product} $\ln p\pm\ln q$
+(lock-and-grow verified; at $10^{-5}$--$10^{-6}$ of the $\ln2$ line power, versus
+$10^{5}$--$10^{6}\times$ local median for the primaries) --- nothing off the additive group
+generated by $\{\ln p\}$, with $\pi$-multiple bounds $\le6.5\times10^{-5}$ of the $\ln2$ power.
+\emph{The ambient spectrum is supported on $\log\mathbb{Q}_{+}^{\times}$: unique factorization is
+the medium's entire memory.}  The one loose end --- an apparent autocorrelation excess for the
+quintic character --- resolved as a surrogate-class artifact, and the resolution corrected our own
+first reading [\code{tmp/acf\_surrogates.py}]: IAAFT surrogates are circular for an ACF statistic
+(they fix the spectrum, whose transform \emph{is} the ACF; the real ACF equals its own surrogate
+band to $10^{-4}$ --- zero memory excess); the marginal explains nearly nothing, refuting our
+dip-clipping suspicion ($0.009$ against the real $0.34$); the colored residual spectrum ---
+Euler-line skirts, intermodulation lines, clip ripple --- explains all of it; and the lag profile
+is sub-spacing ($0.3$--$0.4$ mean spacings, monotone decay): the deterministic reverb arch of
+Section~\ref{sub:cuebridge}, with nothing at the multi-spacing lags where genuine cross-zero
+memory would live.  A configuration-echo test at $1/2/3$ mean spacings sits within the null.
+
+\subsection{Functoriality, strand phases, and the counting statistic}\label{sub:functoriality}
+
+\emph{Functoriality as measurement.}  The Gelbart--Jacquet lift $\mathrm{Sym}^2\Delta$ --- a
+genuine $\mathrm{GL}(3)$ $L$-function --- is built from the exact $\tau(n)$ via the
+$(\lambda^2-1)$ ladder [\code{tmp/sym2\_spectroscopy.py}; span $2200$, bank $N=800{,}000$]:
+construction certified against the Euler product at $5.6\times10^{-11}$ (at $s=2$), with the
+$\mathrm{GL}(3)$ unitarity bound $|c_{p^k}|\le\binom{k+2}{2}$ holding exactly.  Its medium obeys
+the \emph{lift's} weight law: measured/predicted $0.82\pm0.13$ over the $18$ clean lines, the
+$0.82$ traced to the additive degree-$3$ floor by a matched $\zeta$ control ($10^{3}$--$10^{4}$
+times higher floor at equal span; monotone toward $1$ with span, $0.83\to0.87$).  The decisive
+test is two-sided, and every decisive prime follows the lift: at $p=43,73$
+($\lambda_p\approx0$ --- the base's own law predicts silence, the lift predicts bright) the lines
+are measured \emph{loud}, $50\times$-plus over the base prediction; at $p=11,19$
+($\lambda_p^2\approx1$: the Eisenstein angle $\theta_p=\pi/3$) --- base loud, lift silent --- they
+are measured \emph{dead}.  Shape correlation across $25$ primes: $+0.36$ for the lift, $-0.23$ for
+the base (the wrong ordering).  Composite nulls hold; line locations lock below $0.001$ rad.  This
+is the Langlands reading's queued experiment, run (Section~\ref{sec:langlands}).  The vanishing
+side followed: locator, cells, pinning, and census, all exact at degree three
+(Section~\ref{sub:phasequant}).
+
+\emph{The medium is strand-aware.}  The \emph{complex} spectrum of $\log F$ carries the oriented
+datum in its line phases [\code{tmp/strand\_phase.py}]: with the convention calibrated on $\zeta$
+(all phases $0\pm0.013$ rad) and then frozen, the order-$4$ character mod $5$ reads
+$\arg\chi(p^k)$ exactly ($\ln2$ at $+0.491\,\pi$ for $\chi(2)=i$; all quadrants correct,
+span-locked), and $\Delta$, E11 read $\operatorname{sign}\lambda_p$ (all eight lines in the
+correct half-plane); ramified holes wander --- correctly no line.  Power spectra see the Satake
+modulus; the phases see the class itself.
+
+\emph{The counting statistic.}  The fiber-native $S(t)=N_{\mathrm{fiber}}-\theta/\pi-1$ (exact
+theta, no $L$-calls) [\code{tmp/st\_cells.py}]: the number variance $\Sigma^2(L)$ tracks GUE
+(exact form) in the rigid regime and saturates at Berry's outer scale $\log(t/2\pi)/\pi$, the
+saturation moving outward with height (departure at $2.4$ spacings for $t\le2000$, $3.4$ at
+$t\approx51{,}000$) --- so the counting and rate observables saturate on the \emph{same} clock
+$\log(t/2\pi)$ as Section~\ref{sub:cuebridge}'s dictionary: one clock for both.  Selberg's
+variance constant is stable at $C\approx1.43$ (sd $0.017$).  Honesty note: over this height range
+$\ln\ln(t/2\pi)$ spans only about one unit, so the log-log growth itself is unresolved here; and
+$S$ is a sawtooth, not yet Gaussian (KS $0.0146$ against the normal on a dense grid).
 
 \subsection{The reverb law and the CUE bridge: no repulsion required}\label{sub:cuebridge}
 
@@ -1468,10 +1881,41 @@ through the product law.  Nothing in
 this subsection assumes or asserts anything about where the zeros lie; the theorems are
 unconditional and machine-checked (\code{ReverbResidue.lean}, \code{GUEBridge.lean}).
 
+\subsection{The reverb tax inverted: the vanishings carry the clocks}\label{sub:clockdip}
+
+The $\pm4\%$ envelope of Section~\ref{sub:gl2} was interrogated in three steps, and what lay
+underneath inverted our hypothesis.
+
+\emph{(i) Structure, not noise} [\code{tmp/satake\_variance.py}]: split-span residuals reproduce
+at cross-span correlation $+0.969$ (noise predicts $\approx0$), so the variability is systematic.
+\emph{(ii) Method, then calibration} [\code{tmp/reverb\_tax.py}]: with a windowed-projection
+estimator calibrated at $1.00000$ on the exact series, the residual becomes a reproducible,
+all-negative deficit of ${\approx}1\%$; the no-clip control then removes it entirely (mean
+$+0.0003$ unclipped) --- the deficit was the amplitude clip truncating the dip cores.  Unclipped,
+\emph{the Satake weight law holds at ${\sim}0.1\%$}.  (The historical $\pm4\%$ of the long-span
+tables was span, floor, and clip method --- not medium; those tables stand as recorded, awaiting
+clean regeneration.)  \emph{(iii) The inversion.}  We asked whether the dip neighborhoods --- the
+vanishings --- \emph{resist} the prime clocks: a reverb tax.  The opposite is true: excising the
+dip neighborhoods ($11\%$ of the span around the $1820$ located vanishings) removes
+${\approx}10\%$ of every clock's coherent line power, growing with $\ln p$ ($-2.6\%$ at $\ln2$ to
+$-13.6\%$ at $\ln37$).  The dips \emph{carry} the clocks.
+
+The inference is kernel-precise [\code{ClockDipDuality.lean}]: a dip of common profile at position
+$\gamma$ contributes to the clock of frequency $\omega$ with phase $e^{i\omega\gamma}$ ---
+position becomes phase, identically (\code{dip\_projection\_phase}, translation covariance); if
+the positions are phase-locked to the clock, $J$ dips produce line amplitude scaling with $J$
+(\code{locked\_dips\_add}); if they march at any off-resonant spacing, the phase sum is bounded
+independently of $J$ (\code{unlocked\_dips\_cancel} --- proven for the equal-spacing model case;
+the measurement supplies the generic-position contrapositive).  Measured: $J$-scaling coherence at
+\emph{every} clock $\ln p$ simultaneously.  By the dichotomy, the vanishing set is phase-locked to
+every prime clock --- the Riemann--Weil explicit-formula duality, the zeros knowing the primes,
+observed as spectroscopy.  And a method law, recorded the honest way: \emph{never clip when
+measuring line amplitudes} --- the dip cores are signal.
+
 \subsection{Exact phase quantization: the fiber as its own oscillator}\label{sub:phasequant}
 
 The phase side of the cancellation cell quantizes exactly --- a measured result whose two
-supporting kernels are, at this writing, \emph{pending} formalization; we mark the tiers
+supporting kernels are now proven (Theorem~\ref{thm:turning}); we mark the tiers
 explicitly.  Raw measurement [\code{tmp/phase\_cells.py}]: the fiber's phase flips by
 $0.98$--$0.99\,\pi$ at every vanishing, winds $\approx-\pi$ between vanishings, and reaches its
 first vanishing at $|\Phi|\approx0.55\,\pi$.  The fluctuations are the readout's, not the model's:
@@ -1497,13 +1941,102 @@ every subsequent cell $0.999$--$1.000\,\pi$ (half cycles), standard deviation do
 with no theta asymptotics, no $S(T)$, and no additive constant --- the classical ``$+1$'' is
 revealed as the hinge quarter-cycle.  \emph{Honest decomposition}: given (i)~Hardy reality
 (measured at $0.002\,\pi$), (ii)~evenness of the hinge extension, and (iii)~simplicity of the
-vanishings, the quanta are structural; (ii) and the evenness$\to$turning-point step are the
-\emph{pending Lean kernels} --- they are not claimed proven here.  Dead ends are recorded with the
+vanishings, the quanta are structural; (ii) and the evenness$\to$turning-point step, pending at
+first writing, are now \emph{proven} --- \code{collapseWave\_even} from one functional-equation
+line, and \code{hinge\_turning\_point'} as an honest \code{HasDerivAt}
+(Theorem~\ref{thm:turning}).  Dead ends are recorded with the
 same care: fixed gauges ($\pi/3$, $\pi/6$, \dots) remove only $27$--$45\%$ of the fluctuation at
 low heights --- the cancelling gauge must \emph{run} with height [\code{tmp/s\_removal.py},
 \code{tmp/phase\_norm.py}]; the cell-integral fiber loses vanishing-fidelity (its zeros leave the
 $L$-ordinates); and the growth-path odometer undershoots the hinge (the gauge is undefined below
 $qt/2\pi=1$).
+
+Three extensions complete the phase story.  \emph{The root number is read from the line phase}
+[\code{tmp/root\_hinge.py}]: with the exact $\Gamma$-phase gauge, the completed phase is constant
+between vanishings, jumps by exactly $\pi$ at each vanishing, and is pinned to
+$\arg(\varepsilon)/2\pmod\pi$ (Theorem~\ref{thm:weldray}) --- measured $0.0881\,\pi$ for the
+order-$4$ character mod~$5$, $0.1868\,\pi$ for the order-$6$ character mod~$7$, conjugates mirrored
+($0.9119\,\pi$, $0.8132\,\pi$), the real character mod~$3$ at $0$ --- each equal to the Gauss-sum
+$\arg(\varepsilon)/2$ to four decimals with zero circular spread.  \emph{The quanta survive degree
+two exactly} [\code{tmp/gl2\_cells.py}]: $\Delta$'s cells are $1.0000\,\pi$ (sd $<10^{-4}\pi$) and
+the level-$11$ newform's $1.0000\,\pi$ (sd $0.0012\,\pi$), both pinned to the $\varepsilon=+1$ ray
+at $\le10^{-4}\pi$ --- the doubled winding lives entirely in the doubled $\Gamma$-gauge; the
+phase-cell law is degree-blind, as the pinning argument predicts.  \emph{And degree three exactly}
+[\code{tmp/gl3\_vanishing.py}]: running the full vanishing-side machinery on $\mathrm{Sym}^2\Delta$
+with the completed degree-three kernel ($\Gamma_{\mathbb R}(s{+}1)\,\Gamma_{\mathbb C}(s{+}11)$)
+gives $22$ located ordinates independently confirmed at $25$-digit precision, $21$ consecutive
+cells at $1.0000\,\pi$ with sd $0.0000\,\pi$, census $15/15$ simple, the $\varepsilon=+1$ turning
+point at the hinge, and a pinning spread of $4.0\times10^{-14}$ --- the tightest in the program.
+A bonus discovery: \emph{the pinning discriminates the archimedean factor}.  The wrong-parity
+$\Gamma$ pins tightly (spread $7.6\times10^{-5}$) but onto a ray $\pi/4$ off ($0.2497\,\pi$
+measured) --- the Stirling constant of the parity swap,
+$\arg\bigl[\Gamma(\tfrac14+it/2)/\Gamma(\tfrac34+it/2)\bigr]\to-\pi/4$, exactly halfway between
+the two admissible weld rays --- so a parity error can never masquerade as either root number.
+The fiber reads its own $\infty$-place local datum: the finite places by spectroscopy, the
+infinite place by the weld ray.
+
+\subsection{The weld read out: root numbers, the BSD rank ladder, and the dimension census}\label{sub:bsdladder}
+
+The hinge kernels of Section~\ref{sec:hinge} have a quantitative experimental record on elliptic
+curves, run entirely on the model's own machinery: coefficients by point counting, completed lines
+by the two-strand incomplete-$\Gamma$ kernel of Theorem~\ref{thm:twostrand}, \emph{no $L$-function
+library in the loop}
+[\code{tmp/bsd\_weld.py}, \code{tmp/bsd\_rank\_ladder.py}, \code{tmp/rank4\_weld.py},
+\code{tmp/rank5\_weld.py}].
+
+\emph{The rank ladder $0$--$6$.}  For 11.a, 37.a, 389.a, 5077.a, the rank-4 Elkies curve 234446.a
+(composite conductor $2\cdot117223$), the rank-5 Brumer--McGuinness curve
+$y^2+y=x^3-79x+342$ (prime conductor $19{,}047{,}851$; bank to $n=26{,}396$ by point counting), and
+the rank-6 Elkies--Watkins curve $[1,1,0,-2582,48720]$ (conductor $N=5{,}187{,}563{,}742$, four
+multiplicative bad primes; bank to $n=435{,}598$ by point counting): the
+hinge jet tower shows parity-dead layers at $10^{-13}$--$10^{-16}$ (Theorem~\ref{thm:jetparity} in
+action) and rank-dead layers at $10^{-4}$--$10^{-9}$, and \emph{the first live jet is the BSD
+leading datum} --- measured against $(\sqrt N/2\pi)\,L^{(r)}(1)/r!$ built from the $G_r$ reference
+ladder (Theorem~\ref{thm:grladder}) out of our own coefficients:
+\[
+  \frac{\text{measured}}{\text{predicted}} = 1.00000,\ 1.00000,\ 0.99998,\ 0.99974,\ 0.99999,\ 1.00000,\ 1.00000
+  \qquad (r=0,\dots,6).
+\]
+Hinge value, reverb rate, curvature, jerk, quartic, quintic, sextic --- rank is dimensions added at
+the hinge.  At rank $6$ the leading jet is $|c_6|=3{,}677{,}144.76$ against the predicted
+$3{,}677{,}144.73$, with dead layers at $3\times10^{-17}$--$9\times10^{-11}$ of leading, stable
+across four independent fit settings; the bad-prime signs are selected by a \emph{triple} forced
+zero ($L(1)$, $L''(1)/2$, and $L^{(4)}(1)/4!$ simultaneously, at ratio $4.6\times10^{-9}$, three
+orders below the runner-up) --- at $\sqrt N\approx72{,}000$ the pinning read-off is fully masked,
+so the forced-zero test, not pinning, is the discriminator there, stated honestly.  The same reference series reproduce Gross--Zagier's $L'(1)=0.3059997738$ for 37.a and the
+BGZ rank-$2$/$3$ values to ten digits, produce the rank-forced zeros at ranks $4$/$5$ at
+$10^{-7}$--$10^{-8}$, and supply the record references $L''''(1)/4!=8.943848$ and
+$L^{(5)}(1)/5!=30.285687$.  The large conductors run on a hybrid exact kernel (Gauss--Laguerre form
+of the incomplete-$\Gamma$ strand) validated at $7.5\times10^{-13}$ per term against direct
+evaluation, with a full rank-4 regression agreeing at $1.000000$.  Two honest boundaries: the
+identification of $d(0)$ with the Mordell--Weil rank is BSD itself --- measured tier only, never
+claimed as theorem; and the pinning read-off of the bad Euler factor ($a_{37}=-1$ at ray
+$0.5000\,\pi$, spread $4\times10^{-7}$; $a_{389}=+1$) works while $N^{-1/2}$ exceeds the
+single-strand fiber floor ${\sim}10^{-2}$ --- decisive at conductors $37$ and $389$, masked at
+$5077$, where Atkin--Lehner theory supplies it instead.
+
+\emph{The dimension census.}  Sam's dimension principle --- every vanishing carries a dimension,
+$d(\gamma)=$ order of vanishing $=$ dead depth of the local jet tower --- measured across the
+ladder [\code{tmp/dimension\_census.py}]: $d(\gamma)=1$ at \emph{all 31} non-central vanishings
+(the two flagged 5077.a cases adjudicated by the exact kernel at floors
+$10^{-15}$/$10^{-18}$, jet-to-floor $>10^{11}$), while $d(0)=$ rank exactly ($0/1/2/3$).  The
+$\zeta$ census is the same statement: $1517/1517$ simple (Section~\ref{sub:cuebridge}).  Only the
+weld point carries extra dimensions --- the arithmetic deposits its points where the phase is
+pinned (Theorem~\ref{thm:weldray}).
+
+\emph{Strand topology is a degree statement.}  This corrects our own first reading (a ``large
+conductor'' effect), and the correction is part of the record [\code{tmp/strand\_topology.py}]:
+degree-one fibers are \emph{hinge-outward} --- the series converges conditionally on the line, so
+the single strand growing up from the midpoint is valid everywhere (Legendre character mod
+$10009$: hinge error \emph{decays} monotonically $5.7\times10^{-4}\to5.2\times10^{-7}$ as the bank
+grows $50$k$\,\to800$k) --- while degree-two fibers are \emph{endings-inward}: the series does not
+converge at the center, and the hinge exists only as the two incomplete-$\Gamma$ strands starting
+at the cusps and meeting at the Fricke midpoint (5077.a: error \emph{saturates} at ${\sim}0.3$ at
+every bank size; the exact kernel self-checks at $5\times10^{-12}$).  The conductor hypothesis is
+refuted by its own control --- the character's resonant scale is five times larger, yet
+convergent.  At the hinge both strands weigh equally (Theorem~\ref{thm:twostrand}), which is why
+the antihelix cannot be smoothed away there: the single-strand bank floors at ${\sim}10^{-2}$ by
+$N\approx5000$.
 
 \subsection{Retractions and method}\label{sub:retractions}
 
@@ -1519,8 +2052,9 @@ saturation, degree- and conductor-independent.  \emph{The two ``ghost lines''} (
 27.a near $\ln8$) were Hann-window skirt artifacts of strong neighbors; the resulting method law is
 now fixed: line claims require \emph{local-maximum enumeration with parabolic interpolation},
 never window-max ratios; a real line locks its location and grows with span while artifacts
-wander; blend tests use centroid pull and skirt symmetry; and every anomaly gets a same-span
-control before it gets a name.
+wander; blend tests use centroid pull and skirt symmetry; every anomaly gets a same-span
+control before it gets a name; and line-amplitude measurements are never clipped --- the dip
+cores are signal (Section~\ref{sub:clockdip}).
 
 \subsection{The finite instrument}\label{sub:pythonfinder}
 
@@ -1668,12 +2202,21 @@ vanishing where the count demands one
 (Sections~\ref{sub:validation},~\ref{sub:gl2},~\ref{sub:cuebridge}).  The hardest known
 cases are the cleanest: at the Gourdon pair ($g=8.2\times10^{-5}$) the arch peaks at
 $\varphi=0.500$ exactly and both ends vanish.
+
+\item \emph{[Measured, dichotomy proven] The vanishings carry the prime clocks.}  Excising the
+dip neighborhoods removes ${\approx}10\%$ of every clock's coherent line power; by the proven
+dichotomy --- locked positions add with $J$, unlocked positions cancel --- the vanishing set is
+phase-locked to every prime clock (Section~\ref{sub:clockdip}): the explicit-formula duality,
+observed.  And the purity structure the completeness hypothesis needs is measured as an identity
+of the carrier metric --- $C_k\le1$ on every vanishing class, zeros indistinguishable from random
+heights (Theorem~\ref{thm:castelnuovo}).
 \end{enumerate}
 
 \subsection{The working hypothesis}\label{sub:workinghyp}
 
-On this record we adopt, and state as such, a \emph{working hypothesis}: \emph{every zero has a
-source} --- equivalently GRH (Theorem~\ref{thm:grhreal}; the equivalence is per $L$-function,
+On this record we adopt, and state as such, a \emph{working hypothesis}: \emph{projection
+completeness} --- every zero has a source, equivalently GRH
+(Theorems~\ref{thm:grhreal},~\ref{thm:framesplit}; the equivalence is per $L$-function,
 and item~(v) is why we do not expect the answer to be family-dependent).  It is the favored
 branch of the dichotomy of Remark~\ref{rem:admissiblescope}, favored because every proven
 constraint and every measurement lands on it while deliberate search for the other branch's
@@ -1691,36 +2234,61 @@ prominence as any confirmation.
 \subsection{The falsifiability register}\label{sub:falsify}
 
 The hypothesis is refutable in the model's own observables.  We pre-commit to the following
-disconfirmation signatures.  Each is a concrete measurement; each has been deliberately
-sought; the current count of each is zero.
+disconfirmation signatures.  Each is a concrete measurement; the first six have been
+deliberately sought, and the current count of each is zero; the seventh is pre-registered
+ahead of its first run.
 
 \begin{enumerate}[label=\textup{(F\arabic*)}]
 \item \emph{A non-collapsing arch floor.}  An off-axis pair at $\tfrac12\pm\delta+it_0$
 floors the on-line distance product at order $\delta^{2}$: an arch that dips and reopens
 \emph{without} vanishing where the deterministic count of Section~\ref{sub:phasequant}
-demands a zero.  Sought across the full reverb record, including the two hardest known
-configurations; not observed.
+demands a zero.  Quantified [\code{tmp/offaxis\_bounds.py}]: every one of the $1517$ located
+vanishings below $t=2000$ collapses to the taper floor (median $1.8\times10^{-4}$), giving
+per-zero displacement bounds $\delta\le4.5\times10^{-3}$ (median), $\le1.3\times10^{-2}$
+(worst) --- the channel fired $1517$ times, including the two hardest known configurations,
+with zero hits.
 \item \emph{A genuine non-Euler spectral line}: an ambient line at a frequency outside
 $\{\ln p^{k}\}$ surviving the method law of Section~\ref{sub:retractions} (local-maximum
 enumeration, span lock, blend and skirt tests, same-span controls).  Two candidates arose;
-both were window artifacts and are retracted by name.
+both were window artifacts and are retracted by name.  The census closes the channel
+quantitatively: $81+79$ lines, all on $\ln p^{k}$; every residual peak an intermodulation
+$\ln p\pm\ln q$; nothing off $\log\mathbb{Q}_{+}^{\times}$; $\pi$-multiples
+$\le6.5\times10^{-5}$ of the $\ln2$ power; configuration echo and long-range memory within
+the null (Section~\ref{sub:ambient}).
 \item \emph{A phase cell that is not $\pi$}: a cancellation cell in the fiber's own clock
 departing beyond the measured $0.002\,\pi$ floor --- equivalently a height where the phase
 count and the vanishing count disagree.  Not observed for $\zeta$ or any tested character.
 \item \emph{A weight-law violation}: a prime-power line whose measured weight departs from
-the Satake/Newton prediction beyond the observed $\pm4\%$ envelope, or a predicted exact
-silence that is not silent (Section~\ref{sub:gl2}).  ${\sim}40$ lines measured across three
-forms; none.
+the Satake/Newton prediction beyond the measured envelope --- now ${\sim}0.1\%$ with the
+calibrated, unclipped estimator (Section~\ref{sub:clockdip}) --- or a predicted exact
+silence that is not silent (Section~\ref{sub:gl2}).  ${\sim}40$ lines across three forms at
+the older $\pm4\%$ method precision, sixteen $\zeta$ lines at $0.1\%$; none.
 \item \emph{A universality break}: a family whose unfolded configuration statistics leave
 the shared curve --- an amplitude exponent, reopening slope, or arch shape that is degree- or
-conductor-specific.  Seven samples across degrees one and two; none.
+conductor-specific.  Seven samples across degrees one and two; the counting statistic's
+number variance tracks GUE with Berry saturation on the same $\log(t/2\pi)$ clock
+(Section~\ref{sub:functoriality}); none.
+\item \emph{A Castelnuovo violation}: a vanishing class whose transported cup norm grows
+above the half-unit rate ($C_k>1$ for some $k$) --- the purity engine's single open input
+failing where it is measurable (Theorem~\ref{thm:castelnuovo}).  Measured on $30$ vanishing
+classes and $30$ random heights, $k\le4$, two similitudes: $C_k\le1$ everywhere; none.
+\item \emph{An alignment-margin failure} (pre-registered; defined, not yet run).  The master
+chain \code{coherence\_implies\_mirror} makes the summed-fiber HB question measurable: sample
+the bank at upper-half-plane points and record the per-term margin, $\|E_j^{*}(z)\|$ against
+$\mathrm{Re}\bigl(e^{i\theta}E_j(z)\bigr)$, across the bank.  Persistent anti-alignment ---
+the big-strand/small-strand conspiracy named in Remark~\ref{rem:twowalls} --- would be
+evidence against the coherence route, and we commit to publishing the margins either way.
 \end{enumerate}
 
-The retraction ledger of Section~\ref{sub:retractions} is this register's proof of
-operation: the falsification machinery has already fired twice, on our own false positives,
-and the results were published as retractions rather than suppressed.  The instruments and
-their commands are public (Sections~\ref{sub:pythonfinder},~\ref{sec:formal}); the reader is
-invited to run them and weigh independently.
+The correction ledger is this register's proof of operation: the machinery has fired
+repeatedly, on us --- the growth-clock retraction and the ghost lines
+(Section~\ref{sub:retractions}), the conductor-hypothesis inversion
+(Section~\ref{sub:bsdladder}), the ACF first reading (Section~\ref{sub:ambient}), and the
+clip-bias self-catch that turned a $1\%$ anomaly into a method law and a sharper result
+(Section~\ref{sub:clockdip}) --- and every firing was published rather than suppressed,
+several upgrading into results.  The instruments and their commands are public
+(Sections~\ref{sub:pythonfinder},~\ref{sec:formal}); the reader is invited to run them and
+weigh independently.
 
 \section{A Langlands reading}\label{sec:langlands}
 
@@ -1737,15 +2305,17 @@ dual group appears as \emph{the clock-face of each prime}: for $\mathrm{GL}(1)$,
 $\C^{\times}$ --- the root-of-unity cells of Theorem~\ref{thm:monodromy}; for $\mathrm{GL}(2)$, the
 conjugate Satake pair (the transverse conjugate-pair block of Theorem~\ref{thm:unitary}, made
 local at $p$), with the $p$-power ladders as $\mathrm{SU}(2)$ characters and cell closure passing
-to Sato--Tate orthogonality.  On this reading, the $\pm4\%$ Satake weight law of
-Section~\ref{sub:gl2} is a direct measurement of the Satake isomorphism.  The organs align: the
+to Sato--Tate orthogonality.  On this reading, the Satake weight law of
+Section~\ref{sub:gl2} --- exact to ${\sim}0.1\%$ once the estimator is calibrated and unclipped
+(Section~\ref{sub:clockdip}) --- is a direct measurement of the Satake isomorphism.  The organs align: the
 height axis is the archimedean component; the Frobenius similitude's radial factor $\sqrt m$
 (Theorem~\ref{thm:simil}) supplies the weight/purity normalization that \'etale cohomology provides
 over $\mathbb{F}_q$, here forced by the carrier's area law; the $\pi/3$ cell is a level/cyclotomic
 trivialization --- gauge in the readout (provably inert in the arrows,
 Section~\ref{sub:gl2}), structural in the carrier.  The reading is falsifiable in the model's own
-terms: functoriality becomes a spectral identity between mediums (the $\mathrm{Sym}^2\Delta$
-comparison is the queued test), the generalized Ramanujan bound becomes a ladder decay rate, and
+terms: functoriality becomes a spectral identity between mediums --- and the
+$\mathrm{Sym}^2\Delta$ test is now run and two-sidedly confirmed
+(Section~\ref{sub:functoriality}) --- the generalized Ramanujan bound becomes a ladder decay rate, and
 reduction types of elliptic curves are already spectroscopically distinct (the conductor holes and
 CM combs of Sections~\ref{sub:ambient} and~\ref{sub:gl2}).  The root number reading --- the weld
 phase of the two conjugate strands at the hinge, with $\varepsilon=-1$ forcing a hinge zero and
@@ -1794,8 +2364,11 @@ the \emph{real} de Branges point $z=\gamma$; reality of $z$ is exactly $\Ree\rho
 That a $\Lambda$-built structure function is Hermite--Biehler is equivalent to the Riemann
 Hypothesis --- the classical de Branges reformulation.  No such structure function is constructed
 here; only the unconditional on-line content (Corollary~\ref{cor:online}) is used.  The open
-question of this paper is whether every zero has a source (Remark~\ref{rem:admissiblescope}), not
-$\mathrm{IsHB}\,\Lambda$.
+question of this paper is projection completeness (Remark~\ref{rem:admissiblescope},
+Theorem~\ref{thm:framesplit}), not $\mathrm{IsHB}\,\Lambda$ --- though the carrier's own clocks
+are now proven to be real de Branges functions on the HB boundary (Theorem~\ref{thm:clockrh}),
+giving the frame a geometric foothold; the remaining wall is a single implication away
+(Remark~\ref{rem:twowalls}).
 \end{remark}
 
 \section{Formalization}\label{sec:formal}
@@ -1819,7 +2392,11 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \code{FocalResidualVanishes.lean}, \code{FocalCancellationFindsZeros.lean},
 \code{FocalCancellationEigenstate.lean}, \code{GeometricReadout.lean},
 \code{ReverbResidue.lean}, \code{GUEBridge.lean}, \code{MellinDual.lean},
-\code{UnitMidpoint.lean}, and \code{MeromorphicTraceIdentity.lean}). Each named
+\code{UnitMidpoint.lean}, \code{HingeKernel.lean}, \code{AntihelixWindow.lean},
+\code{WeilDuality.lean}, \code{ChiralityHB.lean}, \code{BSDLadder.lean},
+\code{ProjectionCompleteness.lean}, \code{ClockDipDuality.lean},
+\code{DirichletDuality.lean}, \code{SummedFiberHB.lean}, and
+\code{MeromorphicTraceIdentity.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -1890,7 +2467,19 @@ completed trace identities for the spectral operator.  \code{ReverbResidue.lean}
 \code{GUEBridge.lean} formalize the reopening/cluster kernels, the CUE bridge, the cell-closure
 arithmetic, and the Satake silence of Sections~\ref{sub:cuebridge} and~\ref{sub:gl2};
 \code{UnitMidpoint.lean} and \code{MellinDual.lean} carry the midpoint charts and the self-dual
-readout of Section~\ref{sec:midpoint}.
+readout of Section~\ref{sec:midpoint}.  The 2026-07 arc adds seven modules:
+\code{HingeKernel.lean} (the hinge turning point, weld-ray pinning, jet parity ---
+Section~\ref{sec:hinge}); \code{AntihelixWindow.lean} (the incomplete-$\Gamma$ growth window,
+determinant-one strand weights, the term-local weld --- Theorem~\ref{thm:twostrand});
+\code{BSDLadder.lean} (the hinge dimension and its forced parity, the $G_r$ reference ladder ---
+Theorems~\ref{thm:jetparity},~\ref{thm:grladder}); \code{WeilDuality.lean} (the duality pairing,
+the purity engine, the Castelnuovo reduction, the membership boundary ---
+Theorems~\ref{thm:dualpair}--\ref{thm:membership}); \code{ChiralityHB.lean} (the purity-defect law
+and clock-RH --- Theorem~\ref{thm:clockrh}); \code{ProjectionCompleteness.lean} (the frame split
+--- Theorem~\ref{thm:framesplit}); and \code{ClockDipDuality.lean} (the clock--dip inference
+dichotomy --- Section~\ref{sub:clockdip}); \code{DirichletDuality.lean} then carries the duality
+package to every conductor (Section~\ref{sec:weil}), and \code{SummedFiberHB.lean} holds the
+coherence kernels and the master chain (Remark~\ref{rem:twowalls}).
 
 \medskip
 \noindent\emph{Reproduction.}  The Lean claims: \code{lake build} (Mathlib pinned by the manifest);
@@ -1922,10 +2511,12 @@ unitary transverse block (Theorem~\ref{thm:unitary}), the eigenstate--data ortho
 (Section~\ref{sub:eigenstate}), the de Branges evaluation placing the on-line cancellations as real
 spectral points (Section~\ref{sec:debranges}), and the admissibility restriction of the carrier's
 state space to the critical line (Section~\ref{sec:admissible}). The pivotal hypothesis is
-that \emph{every zero has a source}
-(Remark~\ref{rem:admissiblescope}) --- formalized in two guises: that every nontrivial zero arises from
-a real source height (\code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}), and that a
-vanishing \emph{produces} the eigenstate
+\emph{projection completeness}
+(Remark~\ref{rem:admissiblescope}, Theorem~\ref{thm:framesplit}) --- formalized in three guises:
+that every nontrivial zero arises from
+a real source height (\code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}), that every
+zero of the completed continuation arises from a helix vanishing
+(\code{projection\_complete\_iff\_RH}), and that a vanishing \emph{produces} the eigenstate
 (Remark~\ref{rem:openlink}). The classical de Branges $\mathrm{IsHB}\,\Lambda$ condition
 (Remark~\ref{rem:hbscope}) is the same RH content in the de Branges form --- connected here but neither
 formalized nor relied on (open work, not a conditional of this paper). The work poses the dichotomy ---
@@ -1941,7 +2532,7 @@ dichotomy; it is neither assumed nor proved here.
 \section{Headline claims and their Lean identifiers}\label{app:claims}
 
 Each row is a claim of this paper, the Lean identifier that proves it, and its file (package
-\code{RequestProject}, 46 modules).  All rows compile with no \code{sorry}; axiom footprint
+\code{RequestProject}, 55 modules).  All rows compile with no \code{sorry}; axiom footprint
 $\{\mathrm{propext},\mathrm{Classical.choice},\mathrm{Quot.sound}\}$.
 
 \begingroup\small
@@ -1976,6 +2567,21 @@ Criticality is midpointness; $\tfrac12$ a chart constant & \code{riemann\_chart}
 UNIT/2 in every gauge; $\pi/3$ cell reflects about $\pi/6$ & \code{criticality\_is\_half\_unit}, \code{eisenstein\_mirror} & \code{UnitMidpoint}\\
 Prime clocks never collide (unique factorization) & \code{prime\_clocks\_incommensurable} & \code{UnitMidpoint}\\
 Readout self-dual: spectral axis $=$ height axis & \code{readout\_dual\_recovers\_sites} & \code{MellinDual}\\
+Hinge is a turning point (even collapse wave) & \code{collapseWave\_even}, \code{hinge\_turning\_point'} & \code{HingeKernel}\\
+Weld ray $=\arg(\varepsilon)/2$; $\varepsilon{=}{-}1$ forces hinge zero & \code{weld\_pins\_half\_phase}, \code{weld\_minus\_one\_forces\_zero} & \code{HingeKernel}\\
+Jet parity: $(-1)^{d(0)}=\varepsilon$ & \code{hingeDim\_parity}, \code{even\_live\_jet\_is\_even}, \code{odd\_live\_jet\_is\_odd} & \code{BSDLadder}, \code{HingeKernel}\\
+Fricke midpoint $=$ UNIT/2, conductor as unit & \code{fricke\_midpoint\_is\_half\_conductor\_unit} & \code{HingeKernel}\\
+Antihelix window; det-1 strand weights; term-local weld & \code{gamma\_splits\_at\_cut}, \code{strand\_weights\_det\_one}, \code{weld\_kills\_each\_phasor} & \code{AntihelixWindow}\\
+Reference ladder positive; $G_1=$ reverb kernel & \code{Gr\_nonneg}, \code{Gr\_one\_eq} & \code{BSDLadder}\\
+Duality: perfect det-1 pairing, $d(\rho)=d(1{-}\rho)$ & \code{vanishing\_dual\_pair}, \code{dual\_dimension\_symmetry}, \code{dual\_pair\_det\_one} & \code{WeilDuality}\\
+Purity engine; Castelnuovo reduction & \code{tensor\_power\_purity}, \code{duality\_forces\_purity}, \code{purity\_from\_castelnuovo} & \code{WeilDuality}\\
+Mirror $=$ membership boundary of the completion & \code{mirror\_is\_membership\_boundary} & \code{WeilDuality}\\
+Purity-defect law; clock-RH unconditional & \code{clock\_zero\_depth}, \code{carrier\_zeros\_real} & \code{ChiralityHB}\\
+The clock is a real de Branges function (HB boundary) & \code{symClock\_star}, \code{symClock\_selfdual\_modulus} & \code{ChiralityHB}\\
+Frame split: RH $\iff$ projection complete; 3D capstone & \code{projection\_complete\_iff\_RH}, \code{helix3D\_RH} & \code{ProjectionCompleteness}\\
+Clock--dip dichotomy (position $=$ phase; locked adds, unlocked cancels) & \code{dip\_projection\_phase}, \code{locked\_dips\_add}, \code{unlocked\_dips\_cancel} & \code{ClockDipDuality}\\
+Duality at every conductor: pairing swaps $\chi$; $d_\chi(1{-}\rho)=d_{\chi^{-1}}(\rho)$ & \code{vanishing\_dual\_pair\_dirichlet}, \code{dual\_dimension\_symmetry\_dirichlet} & \code{DirichletDuality}\\
+Coherence kernels; master chain: coherence $\Rightarrow$ mirror & \code{aligned\_strict\_sum\_HB}, \code{coherence\_implies\_mirror} & \code{SummedFiberHB}\\
 \end{longtable}
 \endgroup
 

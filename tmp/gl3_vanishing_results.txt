@@ -1,0 +1,87 @@
+GL(3) VANISHING-SIDE TEST  --  Sym^2 Delta (Gelbart-Jacquet, level 1, eps=+1)
+==============================================================================
+First degree-3 run of the vanishing-side machinery: locator + phase cells +
+weld pinning + dimension census.  Fiber-only (no L-library in any locator).
+bank N=300000; sweep t in (0,40], dy=0.002.
+Degree-3 AFE scale ~ (t/2pi)^{3/2}: at t=40 the scale is ~16, so N>=640
+already resolves; N=300000 is >4x10^4 the requirement.
+
+[build] base lambda + Sym^2 coeffs, N=300000: 0.2s
+
+CONSTRUCTION CERTIFICATE (must reproduce before proceeding)
+  s=2 truncated Dirichlet sum = 0.805875209550
+  s=2 Euler product (p<=N)    = 0.805875209466
+  relative difference         = 1.035e-10  [OK, certificate reproduces]
+  unitarity |c_pk| <= C(k+2,2): worst ratio 1.0000 => OK
+
+[sweep] fiber F(1/2+it) on 20000 points: 5.0s
+
+SELF-VALIDATION -- WELD PINNING  (reported first; this is the correctness test)
+  self-dual, eps=+1  ==>  psi(t)=arg F+theta mod pi must be CONSTANT ~0 between
+  zeros (jump pi at each).  A wrong gamma / coeffs / small bank make psi wander.
+  ('dist to eps ray' = circular distance mod pi to the eps=+1 ray, which is 0
+   mod pi; a ray printed as 1.0000pi is 0 wrapped to the far end of [0,pi).)
+                        gamma factor    ray/pi  dist eps/pi     spread  circ sd/pi
+  PRIMARY  Gamma_R(s+1)Gamma_C(s+11)   1.0000p      0.0000p   3.97e-14     0.0000p
+  ALT      Gamma_R(s)  Gamma_C(s+11)   0.7503p      0.2497p   7.61e-05     0.0020p
+  -> PRIMARY gamma PINS (spread 3.97e-14 < 1e-2); using it below.
+
+1. LOCATOR  (|Lambda| minima on the completed line + Newton refinement)
+  found 22 vanishings on (0, 40]
+  gamma-factor density estimate N(40) ~ integral (dtheta/dt)/pi = 21.40  [count cross-check]
+    k    ordinate t_k   |Lambda(1/2+it_k)|   floor ratio
+    1        7.070224            9.895e-16      1.16e-01
+    2       10.326318            1.051e-16      1.24e-02
+    3       12.214218            7.419e-18      8.72e-04
+    4       15.689153            7.622e-20      8.96e-06
+    5       16.770235            1.473e-20      1.73e-06
+    6       18.824920            8.366e-22      9.83e-08
+    7       20.119941            8.189e-23      9.62e-09
+    8       22.075394            5.418e-24      6.37e-10
+    9       23.796499            3.039e-25      3.57e-11
+   10       25.186426            2.602e-26      3.06e-12
+   11       26.638543            1.961e-27      2.30e-13
+   12       28.012461            1.649e-28      1.94e-14
+   13       29.141679            2.169e-29      2.55e-15
+   14       30.016884            1.279e-30      1.50e-16
+   15       31.989361            1.647e-31      1.94e-17
+
+2. PHASE CELLS  (degree-3 quantization test: cells in pi units)
+   degree 1 and degree 2 both gave 1.0000pi (sd <= 0.0012pi).
+   21 consecutive-zero cells
+   cell mean = 1.0000pi   sd = 0.0000pi   min = 1.0000pi   max = 1.0000pi
+
+3. HINGE  (eps=+1: turning point -- dLambda/dt(0) = 0 exactly, Lambda(1/2) finite)
+   Lambda(1/2) = 4.136875e-03   (finite, turning point -- NOT a forced zero)
+   Lambda even in t: |Lam(+2dt) - conj Lam(-2dt)| = 6.89e-06  (evenness to machine precision)
+   dLambda/dt(0) = -2.252e-06   vs off-hinge scale 3.494e-03  (ratio 6.44e-04: exactly 0 => turning point, as eps=+1 demands)
+   Dirichlet-series-at-2 sanity  sum c(n)n^-2 = 0.805875  (matches the s=2 certificate 0.805875)
+
+4. DIMENSION CENSUS at degree 3  (jet depth d(gamma) at each located zero; expect d=1)
+   d = number of vanishing jet layers before the fiber floors: a simple zero
+   (d=1) has Lambda=0 but dLambda/dt != 0.  We photograph |Lambda|, |dLambda/dt|
+   at each ordinate, normalized to the local off-zero scale.
+     k          t_k   |Lam|/scale  |dLam/dt|/scale   d
+     1     7.070224      8.07e-11        1.296e+00   1
+     2    10.326318      8.81e-10        1.554e+00   1
+     3    12.214218      1.18e-09        2.258e+00   1
+     4    15.689153      4.01e-09        2.059e+00   1
+     5    16.770235      5.11e-09        1.798e+00   1
+     6    18.824920      1.14e-08        2.406e+00   1
+     7    20.119941      1.20e-08        2.937e+00   1
+     8    22.075394      3.03e-08        4.565e+00   1
+     9    23.796499      4.45e-08        4.059e+00   1
+    10    25.186426      5.52e-08        3.603e+00   1
+    11    26.638543      7.01e-08        3.387e+00   1
+    12    28.012461      8.76e-08        2.771e+00   1
+    13    29.141679      1.08e-07        2.431e+00   1
+    14    30.016884      3.63e-08        3.805e+00   1
+    15    31.989361      2.45e-07        7.552e+00   1
+   census verdict: d(gamma) = 1 at 15/15 located zeros  => ALL SIMPLE (degree-3 dimensions live at every vanishing, d=1)
+
+==============================================================================
+PAPER SENTENCE:
+  "Vanishing-side machinery verified at degree 3 (Sym^2 Delta, GL(3)): phase
+   cells 1.0000pi +- 0.0000pi, weld pinned to the eps=+1 ray
+   (distance 4.7e-09pi) at spread 4.0e-14, 22 located ordinates, all
+   vanishings simple (d=1)."

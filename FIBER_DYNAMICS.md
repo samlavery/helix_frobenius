@@ -192,6 +192,16 @@ The phase side of the reverb cell (Sam's phase-cell law, refined through seven c
   Γ-phase gauge, Δ's cells are 1.0000π (sd < 10⁻⁴π) and E11's 1.0000π (sd 0.0012π), both
   pinned to the ε = +1 ray at ≤ 10⁻⁴π — the doubled winding lives entirely in the doubled
   Γ-gauge; the phase-cell law is degree-blind, as the pinning argument predicts.
+- **…and GL(3) exactly** [measured, `tmp/gl3_vanishing.py`]: Sym²Δ with the completed
+  degree-3 kernel: cells 1.0000π ± 0.0000π (21 cells), pinning spread 4.0×10⁻¹⁴ (the
+  tightest in the program), 22 ordinates independently confirmed at 25-digit precision,
+  census 15/15 simple, ε = +1 hinge turning point. Bonus discovery: **the pinning
+  discriminates the archimedean factor** — the wrong-parity Γ pins TIGHTLY (spread
+  7.6×10⁻⁵) but onto the ray π/4 off (0.2497π measured): the Stirling constant of the
+  parity swap, arg[Γ(¼+it/2)/Γ(¾+it/2)] → (¼−¾)·π/2 = −π/4 — **exactly halfway between
+  the two admissible weld rays** (0 and π/2), so a parity error can never masquerade as
+  either root number. The fiber reads its own ∞-place local datum, completing the
+  local-data picture (finite places by spectroscopy, the infinite place by the weld ray).
 - Exactness decomposition [honesty]: given (i) Hardy reality (measured 0.002π), (ii) hinge
   evenness (conjugate midpoint), (iii) simple zeros — the quanta are structural. (ii) and
   evenness→turning-point are now **[proven]** (`HingeKernel.lean`: `collapseWave_even` from
@@ -219,10 +229,16 @@ The phase side of the reverb cell (Sam's phase-cell law, refined through seven c
   contragredient; ε (root number) = the weld phase; ε = −1 ⇒ forced hinge zero (rank parity
   as interference — the kernel is **[proven]**, `HingeKernel.weld_minus_one_forces_zero`).
 - **The BSD rank ladder at the hinge** [measured, `tmp/bsd_weld.py` + `tmp/bsd_rank_ladder.py`
-  + `tmp/rank4_weld.py` + `tmp/rank5_weld.py`]: ranks 0–5 (11.a / 37.a / 389.a / 5077.a /
-  234446.a Elkies (composite conductor 2·117223) / the Brumer–McGuinness rank-5 curve
-  y² + y = x³ − 79x + 342, prime conductor 19,047,851; coefficients by point counting,
-  no L-library in the loop). The weld pins each completed line to arg(ε)/2 (37.a: 0.5000π at
+  + `tmp/rank4_weld.py` + `tmp/rank5_weld.py` + `tmp/rank6_weld.py`]: ranks 0–6 (11.a /
+  37.a / 389.a / 5077.a / 234446.a Elkies (composite conductor 2·117223) / the
+  Brumer–McGuinness rank-5 curve (prime conductor 19,047,851) / the Elkies–Watkins
+  rank-6 curve [1,1,0,−2582,48720], N = 5,187,563,742 with four multiplicative bad
+  primes; coefficients by point counting, no L-library in the loop). Full ladder:
+  **1.00000 / 1.00000 / 0.99998 / 0.99974 / 0.99999 / 1.00000 / 1.00000** (r = 0…6);
+  rank 6: c₆ = 3,677,144.76 vs 3,677,144.73, dead layers 3×10⁻¹⁷–9×10⁻¹¹ relative, bad
+  signs selected by a TRIPLE forced zero at 4.6×10⁻⁹ (three orders below the runner-up;
+  bad-prime masking is total at √N = 72k — the forced-zero test, not pinning, is the
+  discriminator there, stated honestly). The weld pins each completed line to arg(ε)/2 (37.a: 0.5000π at
   spread 4×10⁻⁷; 11.a: 0 at 10⁻⁹) — and the pinning determines the bad Euler factor
   empirically: a₃₇ = −1, a₃₈₉ = +1 (= ε; Atkin–Lehner read off the line; discrimination
   works while N^(−1/2) exceeds the fiber floor — decisive at 389, masked at 5077). Parity
@@ -284,6 +300,7 @@ All files build on Mathlib v4.31.0, no `sorry`/`axiom`, footprint
 | `UnitMidpoint.lean` | UNIT/2, centered charts, hexagon mirror, base covariance, prime-clock incommensurability (8 thms) |
 | `HingeKernel.lean` | hinge turning point (even collapse wave from the FE; honest `HasDerivAt` 0), weld-ray phase pinning (root number from the line phase), ε = −1 forced hinge zero, Fricke midpoint = UNIT/2 with conductor as unit, **jet parity: even/odd waves force even/odd hinge dimension** (`even_odd_jets_dead`, `odd_live_jet_is_odd`, … — the parity conjecture's analytic shadow, unconditional) (14 thms) |
 | `AntihelixWindow.lean` | the two-strand kernel: incomplete-Γ tail IS a growth window (full at 0, antitone, → 0; `gamma_splits_at_cut` = the endings-path cut at the midpoint); **`strand_weights_det_one`** — helix/antihelix weights r^{s−1}·r^{1−s} = 1: Frobenius det 1 in the s-direction (Sam's identification); `strand_swap_fixed_iff` (hinge = swap fixed point, unit = weight); **`weld_kills_each_phasor`/`weld_doubles_each_phasor`** — at the hinge ε = −1 annihilates every phasor TERM-LOCALLY (the forced central zero is not a conspiracy of the sum), ε = +1 doubles each to 2re^{−x} (10 decls) |
+| `ClockDipDuality.lean` | the reverb-tax inversion made kernel-precise: `dip_projection_phase` (translation covariance — a dip's clock contribution has phase = its position on that clock), `locked_dips_add` (locked positions ⇒ line power scales with dip count J), `unlocked_dips_cancel` (off-resonant positions ⇒ bounded geometric sum, per-dip coherence → 0). With the measured J-scaling at every clock (`tmp/reverb_tax.py`: dips carry ~10% of line power; unclipped law exact to ~0.1%), the dichotomy forces: **the vanishing set is phase-locked to every prime clock — explicit-formula duality observed as spectroscopy**. Method law: never clip line-amplitude measurements (3 thms) |
 | `ProjectionCompleteness.lean` | **the frame split, formalized**: `helix_vanishing_projects_to_mirror` (a 3D vanishing datum is a real height; its projection has abscissa ½ by the projection map — the 3D side is UNCONDITIONAL, and the "upper half-plane" never appears: not a 3D notion); **`projection_complete_iff_RH`** — classical RH ⟺ every 1D zero arises from a 3D vanishing: the positioning claim ("RH ⟺ projection complete") is now a THEOREM, and the conditional lives entirely in the 1D chart (3 thms) |
 | `ChiralityHB.lean` | **3D-helix-RH for the multiplicative carrier, unconditional**: the symmetrized prime clock E = e^{izℓ/2} − α·e^{−izℓ/2} obeys the **purity-defect law** — a zero sits at Im z = −log‖α‖/ℓ exactly (displacement off the mirror = purity defect); `clock_zeros_real` (det-1/unitary face ⇒ all zeros ON the mirror), `carrier_zeros_real` (the FTA product of pure clocks: every zero on the mirror), `symClock_star` (weld identity E* = −ᾱ·E) + `symClock_selfdual_modulus` (the clock is a REAL de Branges function — lives on the HB boundary where real zeros are required). Chirality ℓ > 0 = the clock's existence. Open remainder honestly named: the additive interference (L-vanishings) = the dB completion question (6 thms) |
 | `BSDLadder.lean` | the BSD arc's formal skeleton: `hingeDim` (first live jet = d(0) of the census), **`hingeDim_even_of_even` / `hingeDim_odd_of_odd`** (weld parity forces dimension parity — the parity conjecture's shadow at dimension level), `hingeDim_pos_of_odd` (ε = −1 forces d(0) ≥ 1), the reference ladder `Gr` (G₀ = e^{−x}, G_{r+1} = ∫G_r/t) with `Gr_nonneg` (dissipation profile rung by rung) and `Gr_one_eq` (first rung = the reverb kernel E₁ — BSD rate and residue machinery share one kernel). d(0) = Mordell–Weil rank stays measured-tier (6 thms) |
@@ -293,6 +310,41 @@ Also: `LFunctionPhasor.lean`/`Phasor3D.lean` docstrings reframed (1D readout / 3
 representation); `carrier_fiber.py validate` flipped finite-first; `focal_closure.py` added
 (canonical 3D locator + exactness tests; grand-RH families: complex characters, Δ, E11 —
 all located without L-calls).
+
+## 7b. The Castelnuovo/membership audit: two walls are one (2026-07)
+
+The purity program's open input was attacked under a design-time circularity audit, with
+this outcome:
+
+- **The class definition passes the audit**: a vanishing class = the fiber state at a
+  closure event (lane balance at a real height) — defined by closure, not by zero
+  location; no `Re ρ` enters; not circular by the CLAUDE.md two-question test.
+- **The trap, located precisely**: `purity_from_castelnuovo` needs the class to be an
+  eigenvector *inside* a normed space. But `mirror_is_membership_boundary` proves
+  Hilbert-membership of readout classes is EQUIVALENT to σ > ½ — so "prove the growth
+  bound on vanishing classes in H" would be RH-in-disguise for on-mirror zeros (their
+  classes are boundary objects, never in H). The measured Castelnuovo (an identity of
+  the carrier metric, zeros ≡ random) had already hinted the growth bound was not where
+  the content lives.
+- **The resolution — the membership dichotomy IS the proof shape**: a hypothetical
+  off-mirror vanishing datum defines a class INSIDE the cup completion (σ > ½ side,
+  summable), where the cup-symmetric flow has real spectrum (`von_neumann_reality`) and
+  Hermite–Biehler excludes it (`hb_no_zero_upper`) — contradiction. On-mirror classes
+  live on the boundary, where resonance is permitted. Nothing needs to be "included";
+  off-mirror needs to be **excluded**, and membership does that automatically — GIVEN
+  the one remaining hypothesis, that the summed fiber's structure function is HB.
+- **Therefore wall 5 reduces to wall 6**: completion membership and summed-fiber HB are
+  the same wall — the fiber's winding coherence. Partial kernels now proven
+  (`SummedFiberHB.lean`): common weld phase ⇒ the sum stays boundary (A-type);
+  phase alignment with margin ⇒ strict HB (`aligned_strict_sum_HB`); products stay
+  boundary (closing the multiplicative sector with `carrier_zeros_real`). The named
+  failure mode — big strands cancelling while small strands conspire — is exactly what
+  coherence must forbid, and it is measurable: the alignment margin
+  ‖E_j*(z)‖ vs Re(e^{iθ}E_j(z)) across the bank at upper-half-plane sample points is a
+  concrete experiment for the register.
+- Honesty check: HB-of-the-sum is GRH-strength but neither assumes GRH nor is circular
+  (it is a strand-dominance inequality about the function, with zeros-on-line as
+  consequence, not premise) — a valid target under house rules.
 
 ## 8. Open threads
 

@@ -70,4 +70,14 @@ theorem projection_complete_iff_RH :
       · simp [Complex.add_im, Complex.mul_im]
     exact ⟨ρ.im, hρ'.symm, by rw [hρ']; exact hρ⟩
 
+/-- **3D-helix RH, unconditional** — the named capstone: every zero that arises from the
+helix lies on the mirror.  No hypothesis: the 3D representation's vanishing data are
+real heights, and the projection map puts them at abscissa `1/2`.  The only conditional
+statement in the program is `projection_complete_iff_RH` — and it lives entirely in the
+1D chart, where it is EXACTLY classical RH.  (The upper half-plane, the strip, and the
+coherence hypothesis of `SummedFiberHB.coherence_implies_mirror` are all 1D-chart
+objects; the 3D representation never needs them.) -/
+theorem helix3D_RH {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re = 1 / 2 :=
+  arisesFromHelix_on_mirror h
+
 end CriticalLinePhasor.ProjectionCompleteness
