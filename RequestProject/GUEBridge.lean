@@ -42,6 +42,15 @@ the `p²`-line is silent **iff** `λ² = 2` (`satake_silence_iff`) — realized 
 11.a at `p = 2` (`a₂ = −2`, so `λ = −√2`): `e11_ln4_silent`, the exact null measured in the
 ambient spectrum.
 
+The general weight law `|αᵖᵏ + βᵖᵏ|/k · p^{−k/2}` (whose `k = 2` silence these theorems prove
+algebraically) is a *measured* envelope, not a theorem here.  Its clean regeneration
+(`tmp/satake_clean.py`, unclipped windowed projection, per-run calibration = `1.00000` on the
+exact truncated explicit series, bank `N = 1.5·10⁶`) reads, on calibration-gated `k = 1` lines:
+Δ `0.9997 ± 1.1%`, level-11 `0.9636 ± 1.0%` (degree 2); and for `Sym²Δ` (degree 3) `1.0006 ± 0.2%`
+at a height the degree-3 bank supports — retiring the historical `±4%`/`0.82` as finite-bank and
+clip method.  The `k = 2` and supersingular silences (`e11_ln4_silent` here; `ln19`, `ln29`)
+sit at the detection floor in that run, as the algebra requires.
+
 Everything is unconditional; nothing assumes GRH/RH or zero locations.  Mathlib-only;
 no `sorry`, no `axiom`.
 -/

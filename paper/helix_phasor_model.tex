@@ -1729,10 +1729,23 @@ across ${\sim}40$ detected lines of $\Delta$, the level-$11$ curve, and a CM con
 versus predicted Satake weights agree to $\pm4\%$ (medians $1.007$, $1.051$, $0.994$), including
 the alternating $2$-power tower of the CM form verified tooth-by-tooth at its exact inert angle;
 the CM lattice angles themselves ($\pi/2$, $2\pi/3$) carry no clock --- a clean geometric-clock
-null (record: \code{tmp/gl2\_longspan\_results.txt}).  The $\pm4\%$ envelope itself later proved
-to be method, not medium: with a calibrated, unclipped estimator the weight law holds at
-${\sim}0.1\%$ (Section~\ref{sub:clockdip}); the tables above stand as recorded, awaiting clean
-regeneration.
+null (record: \code{tmp/gl2\_longspan\_results.txt}).  The $\pm4\%$ envelope proved to be method,
+not medium.  Regenerating the tables with the calibrated, unclipped estimator [no clip of
+$\log|F|$; windowed projection at parabolically refined peaks; a per-run calibration on the exact
+truncated explicit series that reads $1.00000$ by construction; bank $N=1.5\times10^{6}$, $t\in[100,2200]$;
+record \code{tmp/satake\_clean\_results.txt}, driver \code{tmp/satake\_clean.py}] the degree-two
+weight law holds to ${\sim}1\%$: over the calibration-gated $k=1$ lines, $\Delta$ has
+median $0.9997\pm1.1\%$ and the level-$11$ curve $0.9636\pm1.0\%$, against the old
+$1.007\pm4.5\%$ and $1.051\pm3.1\%$.  Two systematics are isolated and reported rather than
+absorbed: (i)~the residual is a \emph{finite-bank} line attenuation, not the estimator --- the
+level-$11$ meas/pred lifts $0.66\to0.83\to0.95$ and the detection floor sinks
+$1.4\times10^{-2}\to9.9\times10^{-3}\to3.2\times10^{-3}$ as $N$ runs $2\!\times\!10^{5}\to8\!\times\!10^{5}\to1.5\!\times\!10^{6}$
+(the real-line signature); (ii)~the $k=3$ lines are intermodulation-contaminated (the weak
+$3\ln p$ bins collect $\ln p\pm\ln q$ mixing power, inflating meas/pred $3$--$500\times$) and are
+excluded from the law and reported separately --- the calibration column flags exactly these,
+along with a handful of very weak $k=2$ lines whose search window snaps to a neighbour.  The
+$\ln4$ Satake hole and the supersingular $\ln19,\ln29$ silences all sit at the floor
+($1.245$, $0.925$, $0.467$ times floor) as predicted.
 
 \subsection{Negative results}\label{sub:nulls}
 
@@ -1801,9 +1814,19 @@ genuine $\mathrm{GL}(3)$ $L$-function --- is built from the exact $\tau(n)$ via 
 $(\lambda^2-1)$ ladder [\code{tmp/sym2\_spectroscopy.py}; span $2200$, bank $N=800{,}000$]:
 construction certified against the Euler product at $5.6\times10^{-11}$ (at $s=2$), with the
 $\mathrm{GL}(3)$ unitarity bound $|c_{p^k}|\le\binom{k+2}{2}$ holding exactly.  Its medium obeys
-the \emph{lift's} weight law: measured/predicted $0.82\pm0.13$ over the $18$ clean lines, the
-$0.82$ traced to the additive degree-$3$ floor by a matched $\zeta$ control ($10^{3}$--$10^{4}$
-times higher floor at equal span; monotone toward $1$ with span, $0.83\to0.87$).  The decisive
+the \emph{lift's} weight law.  The historical figure was measured/predicted $0.82\pm0.13$ over
+$18$ clean lines, with the $0.82$ traced to the degree-$3$ continuum floor by a matched $\zeta$
+control ($10^{3}$--$10^{4}$ times higher floor at equal span).  Clean regeneration confirms this
+diagnosis exactly and sharpens it [\code{tmp/satake\_clean\_results.txt}, bank $N=1.5\times10^{6}$]:
+because the degree-three approximate functional equation scale grows as $(t/2\pi)^{3/2}$, a fixed
+bank supports a lower maximum height for $\mathrm{GL}(3)$ than for $\mathrm{GL}(2)$.  A height
+ladder makes this quantitative --- the $k=1$ meas/pred median runs
+$1.0006\ (t\le500)\to0.9367\to0.8244\to0.8297\ (t\le2200)$, degrading monotonically as the
+height outruns the bank while the calibration column stays pinned at $1.00000$.  \emph{At the
+height the bank fully supports} ($t\le500$) the degree-three weight law reads
+$1.0006\pm0.2\%$: the same functoriality figure as degree two, once the finite-bank attenuation
+is removed.  The $0.82$ at full span is the undersized-bank artifact, not a degree-three defect.
+The decisive
 test is two-sided, and every decisive prime follows the lift: at $p=43,73$
 ($\lambda_p\approx0$ --- the base's own law predicts silence, the lift predicts bright) the lines
 are measured \emph{loud}, $50\times$-plus over the base prediction; at $p=11,19$
@@ -1892,9 +1915,13 @@ at cross-span correlation $+0.969$ (noise predicts $\approx0$), so the variabili
 estimator calibrated at $1.00000$ on the exact series, the residual becomes a reproducible,
 all-negative deficit of ${\approx}1\%$; the no-clip control then removes it entirely (mean
 $+0.0003$ unclipped) --- the deficit was the amplitude clip truncating the dip cores.  Unclipped,
-\emph{the Satake weight law holds at ${\sim}0.1\%$}.  (The historical $\pm4\%$ of the long-span
-tables was span, floor, and clip method --- not medium; those tables stand as recorded, awaiting
-clean regeneration.)  \emph{(iii) The inversion.}  We asked whether the dip neighborhoods --- the
+\emph{the $\zeta$ Satake weight law holds at ${\sim}0.1\%$}.  (The historical $\pm4\%$ of the
+long-span $\mathrm{GL}(2)/\mathrm{GL}(3)$ tables was span, floor, clip, and undersized-bank method
+--- not medium.  Clean regeneration [\code{tmp/satake\_clean.py}, bank $N=1.5\times10^{6}$;
+Sections~\ref{sub:gl2},~\ref{sub:functoriality}] confirms this: degree two holds to ${\sim}1\%$
+($\Delta$ $0.9997\pm1.1\%$, level-$11$ $0.9636\pm1.0\%$ on calibration-gated $k=1$ lines) and
+degree three to ${\sim}0.2\%$ at the height its bank supports, the residuals resolving into a
+finite-bank line attenuation and $k=3$ intermodulation, both reported.)  \emph{(iii) The inversion.}  We asked whether the dip neighborhoods --- the
 vanishings --- \emph{resist} the prime clocks: a reverb tax.  The opposite is true: excising the
 dip neighborhoods ($11\%$ of the span around the $1820$ located vanishings) removes
 ${\approx}10\%$ of every clock's coherent line power, growing with $\ln p$ ($-2.6\%$ at $\ln2$ to

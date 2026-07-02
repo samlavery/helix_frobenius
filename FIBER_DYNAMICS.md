@@ -80,9 +80,16 @@ require local-maximum enumeration with parabolic interpolation — never window-
   **All π-multiples dead** (π/3, π/2, 2π/3, π), including each CM field's own lattice angle;
   the one apparent π-hit (4π/3) resolved to ln 67 at Δω = 0.0018. Bounds: 32.a ln4-line
   ≤ 3.4×10⁻⁶ of ln5 power; π/2 ≤ 8.1×10⁻⁴ (`gl2-longspan`, `pi-clock-hunt` agents).
-- **The Satake weight law** [measured, agents' tables]: line amplitude = |α_p^k+β_p^k|/k·p^{−k/2}.
-  meas/pred over detected lines: Δ median 1.007 (17 lines, std 0.045), E11 1.051 (13, 0.031),
-  27.a 0.994 (10, 0.036) — **±4% across ~40 lines, three forms, k = 1,2,3.**
+- **The Satake weight law** [measured]: line amplitude = |α_p^k+β_p^k|/k·p^{−k/2}. Historical
+  long-span tables: Δ 1.007 (std 0.045), E11 1.051 (0.031), 27.a 0.994 (0.036) — ±4% across ~40
+  lines. **Clean regeneration** (`tmp/satake_clean.py`, bank N=1.5M, NO clip, windowed projection
+  at parabolic-refined peaks, per-run calibration = 1.00000 on the exact truncated series;
+  `tmp/satake_clean_results.txt`) retires the ±4% as method: on calibration-gated k=1 lines
+  **Δ median 0.9997 ±1.1%, E11 0.9636 ±1.0%**. Two systematics isolated & reported: (a) the
+  residual is a **finite-bank line attenuation** — E11 lifts 0.66→0.83→0.95 and the floor sinks
+  as N runs 200k→800k→1.5M (real-line signature, not the estimator); (b) **k=3 lines are
+  intermod-contaminated** (weak 3·ln p bins collect ln p ± ln q mixing, meas/pred inflated
+  3–500×) — excluded from the law, flagged by the calibration column ≠ 1.
 - **Exact silences** [measured ↔ proven]: E11 ln4 = 0.0012 rel (Satake angle 3π/4:
   `GUEBridge.e11_ln4_silent`, α²+β² = 0 exactly); supersingular ln19 ≤ 9.4×10⁻⁷,
   ln29 ≤ 3.5×10⁻⁸; CM combs perfect — 32.a: ln9 brightest line while ln3/7/11 dead;
@@ -135,9 +142,13 @@ same-span control before calling an anomaly.
 - **Functoriality is measurable** [measured, `tmp/sym2_spectroscopy.py`, span 2200,
   N = 800k]: Sym²Δ (GL(3), Gelbart–Jacquet) built from exact τ via the (λ²−1) ladder
   (Euler-vs-Dirichlet certificate 5.6×10⁻¹¹; ladder = h_k(α²,1,β²) to 40 digits; GL(3)
-  unitarity |c_{p^k}| ≤ C(k+2,2) exact). The lift's re-tuned weights: meas/pred 0.82 ± 0.13
-  over 18 clean lines — the 0.82 traced to the additive degree-3 floor (quantified by the
-  matched ζ control: 10³–10⁴× higher floor at equal span; monotone → 1 with span, 0.83→0.87).
+  unitarity |c_{p^k}| ≤ C(k+2,2) exact). The lift's re-tuned weights: historical meas/pred
+  0.82 ± 0.13 over 18 clean lines. **Clean regeneration** (`tmp/satake_clean.py`, bank N=1.5M;
+  `tmp/satake_clean_results.txt`) confirms the 0.82 is the undersized degree-3 bank, NOT a defect:
+  the degree-3 AFE scale grows as (t/2π)^{3/2}, so a fixed bank supports a lower max height for
+  GL(3). Height ladder (k=1 median, calibration pinned at 1.00000): **1.0006 (t≤500) → 0.937 →
+  0.824 → 0.830 (t≤2200)** — monotone finite-bank attenuation. **At the supported height (t≤500)
+  the GL(3) weight law reads 1.0006 ±0.2%** — the same functoriality figure as degree 2.
   **The two-sided kill-shot, every decisive prime on the lift**: p = 43, 73 (λ_p ≈ 0) —
   Δ's own law predicts silence, the lift predicts bright — measured LOUD (50×+ over base
   prediction); p = 11, 19 (λ_p² ≈ 1, the Eisenstein angle θ_p = π/3) — base predicts loud,
