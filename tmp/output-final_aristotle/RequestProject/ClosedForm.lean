@@ -1,0 +1,1874 @@
+import Mathlib
+
+open scoped BigOperators
+open scoped Real
+open scoped Nat
+open scoped Classical
+open scoped Pointwise
+
+set_option maxHeartbeats 8000000
+set_option maxRecDepth 4000
+set_option synthInstance.maxHeartbeats 20000
+set_option synthInstance.maxSize 128
+
+set_option relaxedAutoImplicit false
+set_option autoImplicit false
+
+set_option pp.fullNames true
+set_option pp.structureInstances true
+set_option pp.coercions.types true
+set_option pp.funBinderTypes true
+set_option pp.letVarTypes true
+set_option pp.piBinderTypes true
+
+set_option grind.warning false
+
+/-!
+# Critical-line phasor identities for Dirichlet-`L`-like series
+
+This file formalizes, unconditionally, the genuine mathematical core of the informal
+"phasor / helix" discussion.  The heuristic geometric scaffolding (helices, arclength,
+bucket counts) is not a mathematical claim; what *is* a precise and provable statement is
+the phasor decomposition of a Dirichlet-series term on a vertical line.
+
+On the vertical line `s = σ + i y`, a positive integer (more generally a positive real `x`)
+contributes the *phasor*
+```
+x ^ (-s) = x ^ (-σ) * exp (-(y * log x) * I),
+```
+i.e. magnitude `A(x) = x ^ (-σ)` and value-dependent spin `φ_x(y) = -(y * log x)`.
+Specializing to the **critical line** `σ = 1/2` gives the boxed magnitude `A(n) = n ^ (-1/2)`.
+
+We also record:
+* the magnitude (`norm`) of the phasor is exactly `x ^ (-σ)`;
+* the general Dirichlet term `χ(n) · n^(-s)` (covering the trivial/principal character
+  `χ ≡ 1` and the alternating "eta-mode" weight `χ(n) = (-1)^(n-1)`);
+* the fact that the eta correction factor `1 - 2^(1-s)` vanishes only on the line
+  `Re s = 1`, hence never on the critical line `Re s = 1/2`.
+-/
+
+namespace CriticalLinePhasor
+
+open Complex
+
+/-- **Phasor decomposition on a vertical line.**
+For a positive real base `x` and the line `s = σ + i y`,
+```
+x ^ (-s) = x ^ (-σ) · exp(-(y · log x)·i).
+```
+The magnitude factor is `x ^ (-σ)` and the spin (phase) is `-(y · log x)`. -/
+theorem cpow_vertical_line_phasor (x : ℝ) (hx : 0 < x) (σ y : ℝ) :
+    (x : ℂ) ^ (-((σ : ℂ) + (y : ℂ) * I)) =
+      ((x ^ (-σ) : ℝ) : ℂ) * Complex.exp (-(y * Real.log x) * I) := by
+  rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast ne_of_gt hx)]
+  rw [← Complex.ofReal_log hx.le, Real.rpow_def_of_pos hx]
+  push_cast
+  rw [← Complex.exp_add]
+  ring_nf
+
+/-- **Magnitude of the phasor.**  On the line `s = σ + i y`, the magnitude of `x ^ (-s)`
+is exactly `x ^ (-σ)`, independent of `y`.  (For `σ = 1/2` this is the boxed weight
+`A(x) = x ^ (-1/2)`.) -/
+theorem norm_cpow_vertical_line (x : ℝ) (hx : 0 < x) (σ y : ℝ) :
+    ‖(x : ℂ) ^ (-((σ : ℂ) + (y : ℂ) * I))‖ = (x ^ (-σ) : ℝ) := by
+  rw [Complex.norm_cpow_eq_rpow_re_of_pos hx]
+  congr 1
+  simp
+
+/-- **Critical-line phasor for a positive integer.**  Specializing the vertical-line
+decomposition to `σ = 1/2` and base `n` gives
+```
+n ^ (-(1/2 + i y)) = n ^ (-1/2) · exp(-(y · log n)·i),
+```
+i.e. canonical critical-line magnitude `A(n) = n^(-1/2)` and spin `-(y · log n)`. -/
+theorem cpow_critical_line (y : ℝ) (n : ℕ) (hn : 0 < n) :
+    (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I)) =
+      (((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) * Complex.exp (-(y * Real.log n) * I) := by
+  have h := cpow_vertical_line_phasor (n : ℝ) (by exact_mod_cast hn) (1 / 2) y
+  push_cast at h ⊢
+  convert h using 3
+
+/-- **Magnitude on the critical line.**  The boxed identity `A(n) = n^(-1/2)`:
+the magnitude of the critical-line term `n^(-(1/2 + i y))` is `n^(-1/2)` for every `y`. -/
+theorem norm_cpow_critical_line (y : ℝ) (n : ℕ) (hn : 0 < n) :
+    ‖(n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I))‖ = ((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) := by
+  have h := norm_cpow_vertical_line (n : ℝ) (by exact_mod_cast hn) (1 / 2) y
+  push_cast at h ⊢
+  convert h using 2
+
+/-- **General Dirichlet-series phasor term.**  For an arbitrary arithmetic weight
+`χ : ℕ → ℂ`, the term `χ(n) · x^(-s)` on the line `s = σ + i y` is
+```
+χ(n) · x^(-σ) · exp(-(y · log x)·i).
+```
+This covers:
+* the *trivial / principal character* `χ ≡ 1` (giving `ζ`-like terms `n^(-s)`); and
+* the alternating **eta-mode** weight `χ(n) = (-1)^(n-1)` (giving `(-1)^(n-1) n^(-s)`). -/
+theorem dirichlet_term_phasor (χ : ℕ → ℂ) (x : ℝ) (hx : 0 < x) (σ y : ℝ) (n : ℕ) :
+    χ n * (x : ℂ) ^ (-((σ : ℂ) + (y : ℂ) * I)) =
+      χ n * ((x ^ (-σ) : ℝ) : ℂ) * Complex.exp (-(y * Real.log x) * I) := by
+  rw [cpow_vertical_line_phasor x hx σ y]
+  ring
+
+/-- **Eta-mode term on the critical line.**  The alternating ("eta") phasor attached to
+the integer `n` is `(-1)^(n-1) · n^(-1/2) · exp(-(y · log n)·i)`. -/
+theorem eta_term_critical_line (y : ℝ) (n : ℕ) (hn : 0 < n) :
+    ((-1 : ℂ) ^ (n - 1)) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I)) =
+      ((-1 : ℂ) ^ (n - 1)) * (((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
+        Complex.exp (-(y * Real.log n) * I) := by
+  rw [cpow_critical_line y n hn]
+  ring
+
+/-- **The eta correction factor only vanishes on the line `Re s = 1`.**
+The factor `1 - 2^(1-s)` relating `η` and `ζ` (via `η(s) = (1 - 2^(1-s)) ζ(s)`) vanishes
+iff `2^(1-s) = 1`, and any such `s` has `Re s = 1`.  In particular it never vanishes on the
+critical line `Re s = 1/2`, so eta-mode is safe there. -/
+theorem correction_factor_zero_re_eq_one (s : ℂ) (h : (2 : ℂ) ^ (1 - s) = 1) :
+    s.re = 1 := by
+  have hbase : (2 : ℂ) = ((2 : ℝ) : ℂ) := by norm_num
+  rw [hbase] at h
+  have h2 : ‖((2 : ℝ) : ℂ) ^ (1 - s)‖ = 1 := by rw [h]; simp
+  rw [Complex.norm_cpow_eq_rpow_re_of_pos (by norm_num)] at h2
+  have hre : (1 - s).re = 0 := by
+    rcases lt_trichotomy (1 - s).re 0 with hlt | heq | hgt
+    · have := Real.rpow_lt_one_of_one_lt_of_neg (x := (2 : ℝ)) (by norm_num) hlt
+      linarith
+    · exact heq
+    · have := (Real.one_lt_rpow_iff_of_pos (x := (2 : ℝ)) (by norm_num) (y := (1 - s).re)).2
+        (Or.inl ⟨by norm_num, hgt⟩)
+      linarith
+  simp [Complex.sub_re] at hre
+  linarith
+
+/-- Consequence: on the critical line `Re s = 1/2`, the eta correction factor is nonzero,
+so `η(s) = 0 ↔ ζ(s) = 0` there is governed purely by the phasor sum. -/
+theorem correction_factor_ne_zero_on_critical_line (s : ℂ) (hs : s.re = 1 / 2) :
+    (2 : ℂ) ^ (1 - s) ≠ 1 := by
+  intro h
+  have := correction_factor_zero_re_eq_one s h
+  rw [hs] at this
+  norm_num at this
+
+end CriticalLinePhasor
+
+/-!
+## Geometric scaffolding: helices, arclength, and bucket counts
+
+This section makes the heuristic "helix" geometry of the informal model precise and proves
+the genuine geometric facts behind it.  The growing-radius helix is
+```
+γ(k) = (r·k·cos(2πk), r·k·sin(2πk), p·k),
+```
+with climber `k(y) = e^y / p`, so the height is `z = e^y = p·k(y)` and the cylindrical
+radius is `R(y) = r·k(y) = (r/p) e^y`.  We compute the velocity vector (the analytic
+derivative), show the squared speed is `p² + r² + (2π r k)²`, and define the arclength
+```
+S(k;p,r) = ∫₀ᵏ √(p² + r² + (2π r t)²) dt,
+```
+with the closed forms `S(k;p,0) = p·k` (constant pitch) and, for `r > 0`,
+```
+S(k;p,r) = (k/2)·√(p²+r²+4π²r²k²) + ((p²+r²)/(4π r))·arsinh(2π r k / √(p²+r²)).
+```
+We then define the continuous geometric integer index `N(y) = S(k(y);p,r)/Δ` with the
+fixed spacing `Δ = π/3`, and finally make the mod-6 "bucket" structure precise: the
+integer angular scaling `s_n = n·π/3` is `6`-periodic, and each residue bucket mod 6
+receives exactly the expected count of integers.
+-/
+
+namespace CriticalLinePhasor.Geometry
+
+open Complex Real intervalIntegral
+
+/-- The growing-radius helix `γ(k) = (r·k·cos(2πk), r·k·sin(2πk), p·k)`. -/
+noncomputable def helix (p r : ℝ) (k : ℝ) : ℝ × ℝ × ℝ :=
+  (r * k * Real.cos (2 * Real.pi * k),
+   r * k * Real.sin (2 * Real.pi * k),
+   p * k)
+
+/-- The velocity (analytic derivative) vector of the helix. -/
+noncomputable def helixVel (p r : ℝ) (k : ℝ) : ℝ × ℝ × ℝ :=
+  (r * Real.cos (2 * Real.pi * k) - r * k * (2 * Real.pi) * Real.sin (2 * Real.pi * k),
+   r * Real.sin (2 * Real.pi * k) + r * k * (2 * Real.pi) * Real.cos (2 * Real.pi * k),
+   p)
+
+/-
+`helixVel` is genuinely the derivative of `helix`.
+-/
+theorem helix_hasDerivAt (p r k : ℝ) :
+    HasDerivAt (helix p r) (helixVel p r k) k := by
+  have hrk : HasDerivAt (fun k : ℝ => r * k) r k := by
+    simpa using (hasDerivAt_id k).const_mul r
+  have hcos : HasDerivAt (fun k : ℝ => Real.cos (2 * Real.pi * k))
+      (-Real.sin (2 * Real.pi * k) * (2 * Real.pi)) k := by
+    simpa using ((hasDerivAt_id k).const_mul (2 * Real.pi)).cos
+  have hsin : HasDerivAt (fun k : ℝ => Real.sin (2 * Real.pi * k))
+      (Real.cos (2 * Real.pi * k) * (2 * Real.pi)) k := by
+    simpa using ((hasDerivAt_id k).const_mul (2 * Real.pi)).sin
+  have h1 : HasDerivAt (fun k : ℝ => r * k * Real.cos (2 * Real.pi * k))
+      (r * Real.cos (2 * Real.pi * k) - r * k * (2 * Real.pi) * Real.sin (2 * Real.pi * k)) k := by
+    have h := hrk.mul hcos
+    rw [show r * Real.cos (2 * Real.pi * k) - r * k * (2 * Real.pi) * Real.sin (2 * Real.pi * k)
+        = r * Real.cos (2 * Real.pi * k) + r * k * (-Real.sin (2 * Real.pi * k) * (2 * Real.pi)) by
+      ring]
+    exact h
+  have h2 : HasDerivAt (fun k : ℝ => r * k * Real.sin (2 * Real.pi * k))
+      (r * Real.sin (2 * Real.pi * k) + r * k * (2 * Real.pi) * Real.cos (2 * Real.pi * k)) k := by
+    have h := hrk.mul hsin
+    rw [show r * Real.sin (2 * Real.pi * k) + r * k * (2 * Real.pi) * Real.cos (2 * Real.pi * k)
+        = r * Real.sin (2 * Real.pi * k) + r * k * (Real.cos (2 * Real.pi * k) * (2 * Real.pi)) by
+      ring]
+    exact h
+  have h3 : HasDerivAt (fun k : ℝ => p * k) p k := by
+    simpa using (hasDerivAt_id k).const_mul p
+  exact h1.prodMk (h2.prodMk h3)
+
+/--
+**Squared speed of the helix is constant-free of the trig terms:**
+`‖γ'(k)‖² = p² + r² + (2π r k)²`.
+-/
+theorem helix_speed_sq (p r k : ℝ) :
+    (helixVel p r k).1 ^ 2 + (helixVel p r k).2.1 ^ 2 + (helixVel p r k).2.2 ^ 2
+      = p ^ 2 + r ^ 2 + (2 * Real.pi * r * k) ^ 2 := by
+  convert congr_arg ( fun x : ℝ => x ^ 2 + ( Real.sin ( 2 * Real.pi * k ) * r + Real.cos ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) ^ 2 + p ^ 2 ) ( show Real.cos ( 2 * Real.pi * k ) * r - Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) = - ( Real.sin ( 2 * Real.pi * k ) * ( r * ( 2 * k * Real.pi ) ) ) + Real.cos ( 2 * Real.pi * k ) * r by ring ) using 1 ; ring;
+  · unfold CriticalLinePhasor.Geometry.helixVel; ring;
+  · ring ; rw [ Real.sin_sq, Real.cos_sq ] ; ring;
+
+/-- The climber `k(y) = e^y / p`. -/
+noncomputable def kClimb (p y : ℝ) : ℝ := Real.exp y / p
+
+/--
+**Height identity** `z = e^y = p · k(y)`.
+-/
+theorem height_eq_p_mul_kClimb (p y : ℝ) (hp : p ≠ 0) :
+    Real.exp y = p * kClimb p y := by
+  exact Eq.symm ( mul_div_cancel₀ _ hp )
+
+/-- The cylindrical radius `R(y) = r · k(y) = (r/p) e^y`. -/
+noncomputable def radius (p r y : ℝ) : ℝ := r * kClimb p y
+
+/--
+`R(y) = (r/p) e^y`.
+-/
+theorem radius_eq (p r y : ℝ) : radius p r y = (r / p) * Real.exp y := by
+  unfold CriticalLinePhasor.Geometry.radius CriticalLinePhasor.Geometry.kClimb; ring;
+
+/--
+The cylindrical radius of a helix point equals `|r·k|`
+(`√(x² + y²) = |r k|`).
+-/
+theorem helix_cyl_radius (p r k : ℝ) :
+    Real.sqrt ((helix p r k).1 ^ 2 + (helix p r k).2.1 ^ 2) = |r * k| := by
+  unfold CriticalLinePhasor.Geometry.helix; rw [ ← Real.sqrt_sq_eq_abs ] ; ring;
+  rw [ Real.sin_sq, Real.cos_sq ] ; ring
+
+/-- The full 3D point attached to ordinate `y`: `γ(y) = helix p r (k(y))`. -/
+noncomputable def gammaY (p r y : ℝ) : ℝ × ℝ × ℝ := helix p r (kClimb p y)
+
+/--
+**The boxed point** `γ(y) = ((r/p)e^y cos(2π e^y/p), (r/p)e^y sin(2π e^y/p), e^y)`.
+-/
+theorem gammaY_eq (p r y : ℝ) (hp : p ≠ 0) :
+    gammaY p r y =
+      ((r / p) * Real.exp y * Real.cos (2 * Real.pi * Real.exp y / p),
+       (r / p) * Real.exp y * Real.sin (2 * Real.pi * Real.exp y / p),
+       Real.exp y) := by
+  unfold CriticalLinePhasor.Geometry.gammaY;
+  unfold CriticalLinePhasor.Geometry.helix CriticalLinePhasor.Geometry.kClimb; ring;
+  norm_num [ hp ]
+
+/-- The helix speed `√(p² + r² + (2π r k)²)`. -/
+noncomputable def speed (p r k : ℝ) : ℝ := Real.sqrt (p ^ 2 + r ^ 2 + (2 * Real.pi * r * k) ^ 2)
+
+/-- **Arclength** of the helix from `0` to `k`:
+`S(k;p,r) = ∫₀ᵏ √(p² + r² + (2π r t)²) dt`. -/
+noncomputable def arclength (p r k : ℝ) : ℝ := ∫ t in (0 : ℝ)..k, speed p r t
+
+/--
+**Constant-pitch closed form** `S(k;p,0) = p·k` (for `p ≥ 0`).
+-/
+theorem arclength_r_zero (p k : ℝ) (hp : 0 ≤ p) : arclength p 0 k = p * k := by
+  unfold arclength
+  simp [speed];
+  rw [ Real.sqrt_sq hp, mul_comm ]
+
+/-- The explicit closed-form antiderivative for `r > 0`. -/
+noncomputable def arclengthClosed (p r k : ℝ) : ℝ :=
+  k / 2 * Real.sqrt (p ^ 2 + r ^ 2 + 4 * Real.pi ^ 2 * r ^ 2 * k ^ 2)
+    + (p ^ 2 + r ^ 2) / (4 * Real.pi * r)
+        * Real.arsinh (2 * Real.pi * r * k / Real.sqrt (p ^ 2 + r ^ 2))
+
+/-
+**Closed-form arclength for `r > 0`:**
+`S(k;p,r) = (k/2)√(p²+r²+4π²r²k²) + ((p²+r²)/(4π r)) arsinh(2π r k/√(p²+r²))`.
+-/
+theorem arclength_closed_form (p r k : ℝ) (hr : 0 < r) :
+    arclength p r k = arclengthClosed p r k := by
+  -- To prove the equality, it suffices to show that the derivative of `arclengthClosed p r t` is `speed p r t`.
+  suffices h_deriv : ∀ t : ℝ, HasDerivAt (fun t => CriticalLinePhasor.Geometry.arclengthClosed p r t) (CriticalLinePhasor.Geometry.speed p r t) t by
+    rw [ CriticalLinePhasor.Geometry.arclength ];
+    rw [ intervalIntegral.integral_deriv_eq_sub' ];
+    rotate_left;
+    exacts [ fun t => CriticalLinePhasor.Geometry.arclengthClosed p r t, funext fun t => HasDerivAt.deriv ( h_deriv t ), fun t ht => HasDerivAt.differentiableAt ( h_deriv t ), Continuous.continuousOn <| by exact Continuous.sqrt <| by continuity, by simp +decide [ CriticalLinePhasor.Geometry.arclengthClosed ] ];
+  intros t
+  have hpr : (0:ℝ) < p ^ 2 + r ^ 2 := by positivity
+  have hD : (0:ℝ) < p ^ 2 + r ^ 2 + 4 * Real.pi ^ 2 * r ^ 2 * t ^ 2 := by positivity
+  have hsqpr : Real.sqrt (p ^ 2 + r ^ 2) ≠ 0 := by positivity
+  have hsqD : Real.sqrt (p ^ 2 + r ^ 2 + 4 * Real.pi ^ 2 * r ^ 2 * t ^ 2) ≠ 0 := by positivity
+  have hd := HasDerivAt.add
+    (HasDerivAt.mul (HasDerivAt.div_const (hasDerivAt_id t) (2:ℝ))
+      (HasDerivAt.sqrt (HasDerivAt.add (hasDerivAt_const t (p ^ 2 + r ^ 2))
+        (HasDerivAt.mul (hasDerivAt_const t (4 * Real.pi ^ 2 * r ^ 2)) (hasDerivAt_pow 2 t))) hD.ne'))
+    (HasDerivAt.mul (hasDerivAt_const t ((p ^ 2 + r ^ 2) / (4 * Real.pi * r)))
+      (HasDerivAt.arsinh (HasDerivAt.div_const
+        (HasDerivAt.mul (hasDerivAt_const t (2 * Real.pi * r)) (hasDerivAt_id t))
+        (Real.sqrt (p ^ 2 + r ^ 2)))))
+  have hsqrt_eq : Real.sqrt (1 + (2 * Real.pi * r * t / Real.sqrt (p ^ 2 + r ^ 2)) ^ 2)
+      = Real.sqrt (p ^ 2 + r ^ 2 + 4 * Real.pi ^ 2 * r ^ 2 * t ^ 2) / Real.sqrt (p ^ 2 + r ^ 2) := by
+    rw [show (1:ℝ) + (2 * Real.pi * r * t / Real.sqrt (p ^ 2 + r ^ 2)) ^ 2
+        = (p ^ 2 + r ^ 2 + 4 * Real.pi ^ 2 * r ^ 2 * t ^ 2) / (p ^ 2 + r ^ 2) by
+      rw [div_pow, Real.sq_sqrt hpr.le]; field_simp; ring]
+    rw [Real.sqrt_div hD.le]
+  convert hd using 1
+  case e'_9 =>
+    rw [CriticalLinePhasor.Geometry.speed,
+      show (2 * Real.pi * r * t) ^ 2 = 4 * Real.pi ^ 2 * r ^ 2 * t ^ 2 from by ring]
+    simp only [Pi.mul_apply, Pi.add_apply, id_eq, smul_eq_mul, show (2:ℕ) - 1 = 1 from rfl,
+      pow_one]
+    rw [hsqrt_eq]
+    field_simp
+    simp only [Real.sq_sqrt
+      (show (0:ℝ) ≤ p ^ 2 + r ^ 2 + r ^ 2 * 4 * Real.pi ^ 2 * t ^ 2 by positivity)]
+    ring
+  all_goals rfl
+
+/-- The fixed geometric integer spacing `Δ = π/3`. -/
+noncomputable def Delta : ℝ := Real.pi / 3
+
+/-- The continuous geometric integer index `N(y) = S(k(y);p,r)/Δ`. -/
+noncomputable def Nindex (p r y : ℝ) : ℝ := arclength p r (kClimb p y) / Delta
+
+/--
+**The boxed index** `N(y) = (3/π)·S(e^y/p;p,r)`.
+-/
+theorem Nindex_eq (p r y : ℝ) : Nindex p r y = (3 / Real.pi) * arclength p r (kClimb p y) := by
+  unfold CriticalLinePhasor.Geometry.Nindex CriticalLinePhasor.Geometry.Delta;
+  ring
+
+/--
+**Compensation / change of variables.**  With `x = p·t` (`p > 0`) the arclength becomes
+`∫₀^{p k} √(1 + (r/p)² + (2π (r/p) x / p)²) dx`, so the integrand depends on `p` and `r`
+only through `q_r = r/p` (and the upper limit through `p·k`).  (This corrects the informal
+boxed formula, which dropped the substitution Jacobian.)
+-/
+theorem arclength_substitution (p r k : ℝ) (hp : 0 < p) :
+    arclength p r k =
+      ∫ x in (0 : ℝ)..(p * k),
+        Real.sqrt (1 + (r / p) ^ 2 + (2 * Real.pi * (r / p) * x / p) ^ 2) := by
+  unfold CriticalLinePhasor.Geometry.arclength;
+  convert intervalIntegral.integral_comp_mul_left _ hp.ne' using 3;
+  any_goals exact fun x => p * Real.sqrt ( 1 + ( r / p ) ^ 2 + ( 2 * Real.pi * ( r / p ) * x / p ) ^ 2 );
+  · unfold CriticalLinePhasor.Geometry.speed;
+    field_simp;
+    rw [ Real.sqrt_div' _ ( by positivity ), Real.sqrt_sq hp.le, mul_div_cancel₀ _ hp.ne' ];
+  · norm_num [ hp.ne' ]
+
+/-- **The geometric carrier spin** (the primary spin of the model): the integer placement winding
+`s_n = n·(π/3)`, the μ6 cell.  It is linear in `n` and carries **no logarithm** — this is the
+actual helix geometry.  (The log-`n` rotation that appears elsewhere is the *analytic readout /
+Mellin* spin `LFunctionPhasor.mellinSpin`, a property of the readout, not of the carrier.) -/
+noncomputable def spinAngle (n : ℕ) : ℝ := n * (Real.pi / 3)
+
+/--
+**Bucket periodicity (cos):** the spin phasor is `6`-periodic since `6·(π/3) = 2π`.
+-/
+theorem spin_cos_period6 (n : ℕ) :
+    Real.cos (spinAngle (n + 6)) = Real.cos (spinAngle n) := by
+  unfold CriticalLinePhasor.Geometry.spinAngle
+  rw [show ((n + 6 : ℕ) : ℝ) * (Real.pi / 3) = (n : ℝ) * (Real.pi / 3) + 2 * Real.pi by
+        push_cast; ring, Real.cos_add_two_pi]
+
+/--
+**Bucket periodicity (sin).**
+-/
+theorem spin_sin_period6 (n : ℕ) :
+    Real.sin (spinAngle (n + 6)) = Real.sin (spinAngle n) := by
+  unfold CriticalLinePhasor.Geometry.spinAngle
+  rw [show ((n + 6 : ℕ) : ℝ) * (Real.pi / 3) = (n : ℝ) * (Real.pi / 3) + 2 * Real.pi by
+        push_cast; ring, Real.sin_add_two_pi]
+
+/--
+**Bucket periodicity (complex phasor).**
+-/
+theorem spin_phasor_period6 (n : ℕ) :
+    Complex.exp ((spinAngle (n + 6) : ℂ) * Complex.I)
+      = Complex.exp ((spinAngle n : ℂ) * Complex.I) := by
+  convert Complex.exp_periodic _ using 2 ; push_cast [ spinAngle ] ; ring
+
+/--
+**Bucket window:** in any block of 6 consecutive integers each residue class mod 6
+occurs exactly once (here the canonical window `{0,…,5}`).
+-/
+theorem bucket_window (a : ℕ) (ha : a < 6) :
+    (Finset.range 6).filter (fun n => n % 6 = a) = {a} := by
+  interval_cases a <;> trivial
+
+/--
+**Bucket count:** exactly `N` of the integers in `[0, 6N)` lie in each residue bucket
+mod 6.
+-/
+theorem bucket_count (a N : ℕ) (ha : a < 6) :
+    ((Finset.range (6 * N)).filter (fun n => n % 6 = a)).card = N := by
+  induction N <;> simp_all +decide [ Nat.mul_succ ];
+  simp_all +decide [ Finset.filter ];
+  interval_cases a <;> simp_all +arith +decide [ Nat.add_mod ]
+
+/--
+**Eta-acceleration sign identity:** `(-1)^(n-1) = 1 - 2·𝟙_{2∣n}` for `n ≥ 1`.
+This is the algebraic core of writing `(-1)^(n-1) = 1 - 2·1_{2|n}` used to relate the
+eta-mode series to the plain Dirichlet series.
+-/
+theorem eta_sign_identity (n : ℕ) (hn : 1 ≤ n) :
+    ((-1 : ℂ)) ^ (n - 1) = 1 - 2 * (if 2 ∣ n then 1 else 0) := by
+  rcases Nat.even_or_odd' n with ⟨ k, rfl | rfl ⟩ <;> norm_num [ Nat.even_iff ] at *;
+  cases k <;> simp_all +arith +decide [ Nat.mul_succ, pow_succ' ]
+
+/-
+**Euler-factor phasor on a vertical line.**  Each finite Euler factor `1 - ℓ^{-s}` of a
+principal-character `L`-function is, on `s = σ + iy`,
+`1 - ℓ^{-σ}·exp(-(y·log ℓ)·i)`.
+-/
+theorem euler_factor_vertical_line (ell : ℕ) (hell : 0 < ell) (σ y : ℝ) :
+    1 - (ell : ℂ) ^ (-((σ : ℂ) + (y : ℂ) * I)) =
+      1 - (((ell : ℝ) ^ (-σ) : ℝ) : ℂ) * Complex.exp (-(y * Real.log ell) * I) := by
+  norm_num [ Complex.ofReal_cpow, hell.ne', Complex.cpow_def, Complex.exp_ne_zero ] ; ring;
+  rw [ ← Complex.exp_add ] ; ring
+
+end CriticalLinePhasor.Geometry
+
+/-!
+## Vanishing (cancellation) events force a sign change
+
+The phasor model identifies a *cancellation event* (a zero of the relevant critical-line
+observable) as the mechanism producing zeros.  The requested result is the implication
+
+> **vanishing ⟹ sign change**
+
+and that is the primary theorem of this section (`vanishing_forces_sign_change`, with the
+explicit-derivative form `simple_zero_forces_sign_change`).  We also record the converse
+(`sign_change_forces_zero`) as supplementary.
+
+The relevant observable is real-valued: although the raw phasor sum `C(y)` is complex, the
+quantity whose vanishing detects critical-line zeros is the real Hardy-type function
+`Z(y)` obtained by removing the unimodular rotation factor (`Z(y) = e^{iθ(y)} L(½+iy)`,
+which is real).  So the mathematically honest statements are about a real function
+`f : ℝ → ℝ` whose zeros are exactly the cancellation events.
+
+* **Vanishing ⟹ sign change** (`vanishing_forces_sign_change`,
+  `simple_zero_forces_sign_change`): a cancellation event — a zero `f x₀ = 0` that is
+  *transversal*, i.e. has nonzero derivative there — forces `f` to take strictly opposite
+  signs immediately to the left and to the right of `x₀`.  The transversality (nonzero
+  derivative / simple-zero) hypothesis is genuinely necessary and is the precise
+  unconditional content of "vanishing forces a sign change": a bare zero (e.g. the double
+  zero of `y ↦ y²` at `0`) need not change sign, but a transversal/simple zero always does.
+
+* **Sign change ⟹ vanishing** (`sign_change_forces_zero`): the converse, via the
+  Intermediate Value Theorem.  If a continuous observable has opposite signs at two
+  ordinates, a cancellation event occurs strictly between them.
+
+Together these give the equivalence (`simple_zero_iff_sign_change`): for an observable with
+simple zeros, cancellation events and sign changes are the same phenomenon.
+-/
+
+namespace CriticalLinePhasor.SignChange
+
+open Set Filter Topology
+
+/-- **Sign change forces a vanishing (cancellation) event (converse).**
+If a real observable `f` is continuous on `[a, b]` and takes values of strictly opposite
+sign at the endpoints, then it has a zero strictly inside `(a, b)` — a cancellation event.
+This is the Intermediate Value Theorem in the form relevant to the phasor model. -/
+theorem sign_change_forces_zero (f : ℝ → ℝ) (a b : ℝ) (hab : a < b)
+    (hf : ContinuousOn f (Set.Icc a b)) (hsign : f a * f b < 0) :
+    ∃ c ∈ Set.Ioo a b, f c = 0 := by
+  rw [ mul_neg_iff ] at hsign;
+  cases' hsign with hsign hsign;
+  · apply_rules [ intermediate_value_Ioo' ] ; linarith;
+  · apply_rules [ intermediate_value_Ioo, hf ];
+    linarith
+
+/-- **A simple (transversal) cancellation event forces a sign change.**
+The explicit-derivative form underlying `vanishing_forces_sign_change`.
+If `f` has a zero at `x₀` (`f x₀ = 0`) with nonzero derivative `L` there, then `f` changes
+sign across `x₀`: there is a punctured neighbourhood `(x₀ - δ, x₀) ∪ (x₀, x₀ + δ)` on which
+every value to the left and every value to the right have strictly opposite signs
+(`f y * f z < 0`).  This is the precise unconditional sense in which a cancellation/vanishing
+event forces a sign change; the nonvanishing-derivative (simplicity) hypothesis is essential. -/
+theorem simple_zero_forces_sign_change (f : ℝ → ℝ) (x₀ L : ℝ)
+    (hf : HasDerivAt f L x₀) (hL : L ≠ 0) (h0 : f x₀ = 0) :
+    ∃ δ > 0, ∀ y ∈ Set.Ioo (x₀ - δ) x₀, ∀ z ∈ Set.Ioo x₀ (x₀ + δ),
+      f y * f z < 0 := by
+  -- Since $L \neq 0$, we can choose $\delta > 0$ such that for all $y$ with $|y - x₀| < \delta$ and $y \neq x₀$, we have $\frac{f(y) - f(x₀)}{y - x₀} > 0$ if $L > 0$ and $\frac{f(y) - f(x₀)}{y - x₀} < 0$ if $L < 0$.
+  obtain ⟨δ, hδ_pos, hδ⟩ : ∃ δ > 0, ∀ y, abs (y - x₀) < δ → y ≠ x₀ → (f y - f x₀) / (y - x₀) * L > 0 := by
+    have := Metric.tendsto_nhdsWithin_nhds.1 ( show Filter.Tendsto ( fun y => ( f y - f x₀ ) / ( y - x₀ ) ) ( nhdsWithin x₀ { x₀ } ᶜ ) ( nhds L ) from ?_ );
+    · exact Exists.elim ( this ( |L| ) ( abs_pos.mpr hL ) ) fun δ hδ => ⟨ δ, hδ.1, fun y hy hy' => by cases abs_cases L <;> nlinarith [ abs_lt.mp ( hδ.2 hy' hy ) ] ⟩;
+    · rw [ hasDerivAt_iff_tendsto_slope ] at hf;
+      convert hf using 2 with y; rw [ slope_def_field ];
+  refine ⟨δ, hδ_pos, ?_⟩
+  intro y hy z hz
+  have hy_abs : |y - x₀| < δ := by
+    rw [abs_lt]
+    constructor <;> linarith [hy.1, hy.2]
+  have hz_abs : |z - x₀| < δ := by
+    rw [abs_lt]
+    constructor <;> linarith [hz.1, hz.2]
+  have hy_ne : y ≠ x₀ := ne_of_lt hy.2
+  have hz_ne : z ≠ x₀ := Ne.symm (ne_of_lt hz.1)
+  have hy_slope := hδ y hy_abs hy_ne
+  have hz_slope := hδ z hz_abs hz_ne
+  have hy_left : y - x₀ < 0 := by linarith [hy.2]
+  have hz_right : 0 < z - x₀ := by linarith [hz.1]
+  have hy_FL_neg : f y * L < 0 := by
+    have hmul : ((f y - f x₀) / (y - x₀) * L) * (y - x₀) < 0 :=
+      mul_neg_of_pos_of_neg hy_slope hy_left
+    rw [h0] at hmul
+    field_simp [sub_ne_zero.mpr hy_ne] at hmul
+    nlinarith
+  have hz_FL_pos : 0 < f z * L := by
+    have hmul : 0 < ((f z - f x₀) / (z - x₀) * L) * (z - x₀) :=
+      mul_pos hz_slope hz_right
+    rw [h0] at hmul
+    field_simp [sub_ne_zero.mpr hz_ne] at hmul
+    nlinarith
+  have hprodL : (f y * L) * (f z * L) < 0 :=
+    mul_neg_of_neg_of_pos hy_FL_neg hz_FL_pos
+  have hLsq : 0 < L * L := mul_self_pos.mpr hL
+  nlinarith [hprodL, hLsq]
+
+/-- **A vanishing (cancellation) event forces a sign change.**
+This is the requested direction, stated with the vanishing hypothesis first.  If `f` has a
+zero at `x₀` (`f x₀ = 0`) that is transversal — meaning it has nonzero derivative `L` there —
+then `f` changes sign across `x₀`: there is a punctured neighbourhood
+`(x₀ - δ, x₀) ∪ (x₀, x₀ + δ)` on which every value to the left and every value to the right
+have strictly opposite signs (`f y * f z < 0`).  The transversality (nonzero-derivative /
+simple-zero) hypothesis is essential: a bare zero need not change sign, but a transversal one
+always does. -/
+theorem vanishing_forces_sign_change (f : ℝ → ℝ) (x₀ L : ℝ)
+    (hvanish : f x₀ = 0) (hf : HasDerivAt f L x₀) (hL : L ≠ 0) :
+    ∃ δ > 0, ∀ y ∈ Set.Ioo (x₀ - δ) x₀, ∀ z ∈ Set.Ioo x₀ (x₀ + δ),
+      f y * f z < 0 :=
+  simple_zero_forces_sign_change f x₀ L hf hL hvanish
+
+/-- **Equivalence at a simple zero.**  Combining the two directions: for a function with a
+simple zero at `x₀`, a cancellation/vanishing event at `x₀` is accompanied by a genuine
+sign change, and conversely any sign change of a continuous `f` produces a vanishing event.
+This records the converse direction as the immediate IVT consequence of the sign change
+produced by `simple_zero_forces_sign_change`. -/
+theorem simple_zero_iff_sign_change (f : ℝ → ℝ) (x₀ L : ℝ)
+    (hf : HasDerivAt f L x₀) (hL : L ≠ 0) (h0 : f x₀ = 0) :
+    ∃ δ > 0, (∀ y ∈ Set.Ioo (x₀ - δ) x₀, ∀ z ∈ Set.Ioo x₀ (x₀ + δ), f y * f z < 0) ∧
+      ∀ y ∈ Set.Ioo (x₀ - δ) x₀, ∀ z ∈ Set.Ioo x₀ (x₀ + δ),
+        ∃ c ∈ Set.Ioo y z, f c = 0 := by
+  obtain ⟨ δ, hδ, h ⟩ := CriticalLinePhasor.SignChange.simple_zero_forces_sign_change f x₀ L hf hL h0;
+  grind +splitImp
+
+end CriticalLinePhasor.SignChange
+/-!
+## Fractional geometric offset and the explicit-formula residue harmonic
+
+This section makes precise the relationship between the *geometric* picture (a vanishing
+occurring strictly between two integer lattice sites of the carrier) and the *analytic*
+explicit-formula residue attached to a critical zero `ρ = 1/2 + iγ`.
+
+Two genuinely provable, unconditional facts are isolated; the heuristic congruences relating
+the fractional offset to the residue *phase* are normalization choices (impositions), not
+theorems, and are therefore **not** asserted here — only the honest mathematical content is
+proved.
+
+* **Part A — fractional offset (`Nindex_floor_add_offset`, `arclengthGap_eq`).**
+  The continuous geometric index `ν(y) = N(y) = S(e^y/p;p,r)/Δ` (with `Δ = π/3`) splits as
+  `ν = ⌊ν⌋ + δ` with `0 ≤ δ < 1`; the physical arclength gap from the previous integer site
+  is `d = δ·Δ = S − ⌊ν⌋·Δ`.
+
+* **Part B — residue harmonic phasor (`residueHarmonic_phasor`, `norm_residueHarmonic`).**
+  The explicit-formula residue term `−x^ρ/ρ` at `ρ = 1/2 + iγ` decomposes (for `x > 0`) as
+  magnitude `√x / √(γ² + 1/4)` times the unit phasor with phase
+  `γ·log x − arctan(2γ) + π`.
+
+* **Part C — simple-pole residue (`residue_logDeriv_simple_zero`).**
+  For an analytic `f` with a *simple* zero at `ρ ≠ 0` (so `f ρ = 0`, `f' ρ ≠ 0`), the
+  residue of the explicit-formula kernel `−(f'/f)(s)·x^s/s` at `ρ` — computed as the
+  simple-pole limit `lim_{s→ρ}(s−ρ)·(·)` — equals `−x^ρ/ρ`.  At a critical zero this is
+  exactly the residue harmonic of Part B.
+-/
+
+namespace CriticalLinePhasor.Residue
+
+open Complex CriticalLinePhasor.Geometry
+
+/-! ### Part A: the fractional geometric offset between consecutive integers -/
+
+/-- The integer lattice site `N = ⌊ν(y)⌋` immediately preceding the vanishing index. -/
+noncomputable def geomFloor (p r y : ℝ) : ℤ := ⌊Nindex p r y⌋
+
+/-- The fractional geometric offset `δ = ν(y) − ⌊ν(y)⌋ ∈ [0,1)`. -/
+noncomputable def geomOffset (p r y : ℝ) : ℝ := Int.fract (Nindex p r y)
+
+/-- The physical arclength gap `d = δ·Δ` from the previous integer lattice site. -/
+noncomputable def arclengthGap (p r y : ℝ) : ℝ := geomOffset p r y * Delta
+
+/-
+**Integer-plus-fractional split** `ν = ⌊ν⌋ + δ`.
+-/
+theorem Nindex_floor_add_offset (p r y : ℝ) :
+    Nindex p r y = (geomFloor p r y : ℝ) + geomOffset p r y := by
+  exact Eq.symm ( Int.floor_add_fract _ )
+
+/-
+The fractional offset is nonnegative.
+-/
+theorem geomOffset_nonneg (p r y : ℝ) : 0 ≤ geomOffset p r y := by
+  exact Int.fract_nonneg _
+
+/-
+The fractional offset is strictly less than one.
+-/
+theorem geomOffset_lt_one (p r y : ℝ) : geomOffset p r y < 1 := by
+  exact Int.fract_lt_one _
+
+/-
+The arclength is the index times the spacing: `S = ν·Δ`.
+-/
+theorem arclength_eq_Nindex_mul_Delta (p r y : ℝ) :
+    arclength p r (kClimb p y) = Nindex p r y * Delta := by
+  rw [ CriticalLinePhasor.Geometry.Nindex, CriticalLinePhasor.Geometry.Delta ];
+  rw [ div_mul_cancel₀ _ ( by positivity ) ]
+
+/-
+**The arclength gap from the previous integer site** `d = S − ⌊ν⌋·Δ = δ·Δ`.
+-/
+theorem arclengthGap_eq (p r y : ℝ) :
+    arclengthGap p r y = arclength p r (kClimb p y) - (geomFloor p r y : ℝ) * Delta := by
+  unfold arclengthGap geomOffset geomFloor;
+  rw [ Int.fract ] ; rw [ arclength_eq_Nindex_mul_Delta ] ; ring;
+
+/-! ### Part B: the explicit-formula residue harmonic and its phasor form -/
+
+/-
+`|1/2 + iγ| = √(γ² + 1/4)`.
+-/
+theorem norm_half_add_mul_I (γ : ℝ) :
+    ‖((1 / 2 : ℂ) + (γ : ℂ) * I)‖ = Real.sqrt (γ ^ 2 + 1 / 4) := by
+  convert Complex.norm_def _ using 2 ; norm_num [ Complex.normSq ] ; ring
+
+/-
+`arg(1/2 + iγ) = arctan(2γ)` (the real part `1/2` is positive).
+-/
+theorem arg_half_add_mul_I (γ : ℝ) :
+    Complex.arg ((1 / 2 : ℂ) + (γ : ℂ) * I) = Real.arctan (2 * γ) := by
+  rw [ Complex.arg, Complex.norm_def, Complex.normSq_apply ] ; norm_num ; ring;
+  rw [ Real.arctan_eq_arcsin ] ; ring_nf ; norm_num;
+  rw [ show 1 + γ ^ 2 * 4 = 4 * ( 1 / 4 + γ ^ 2 ) by ring, Real.sqrt_mul ( by norm_num ) ] ; ring
+
+/-- The **explicit-formula residue harmonic** `−x^ρ/ρ` at `ρ = 1/2 + iγ`. -/
+noncomputable def residueHarmonic (x γ : ℝ) : ℂ :=
+  -(x : ℂ) ^ ((1 / 2 : ℂ) + (γ : ℂ) * I) / ((1 / 2 : ℂ) + (γ : ℂ) * I)
+
+/-
+**Residue-harmonic phasor decomposition.**  For `x > 0`,
+```
+−x^(1/2+iγ)/(1/2+iγ) = (√x / √(γ²+1/4)) · exp( i·(γ·log x − arctan(2γ) + π) ).
+```
+Magnitude `√x/√(γ²+1/4)`, phase `γ·log x − arctan(2γ) + π`.
+-/
+theorem residueHarmonic_phasor (x γ : ℝ) (hx : 0 < x) :
+    residueHarmonic x γ =
+      ((Real.sqrt x / Real.sqrt (γ ^ 2 + 1 / 4) : ℝ) : ℂ) *
+        Complex.exp (((γ * Real.log x - Real.arctan (2 * γ) + Real.pi) : ℝ) * I) := by
+  -- Write the formula for `residueHarmonic` using `Complex.cpow_def_of_ne_zero` (base ≠ 0 since x>0).
+  have h_cpow_def : (x : ℂ) ^ ((1 / 2 : ℂ) + (γ : ℂ) * I) = (Real.sqrt x : ℂ) * Complex.exp ((γ * Real.log x : ℝ) * I) := by
+    rw [ Complex.cpow_def_of_ne_zero ] <;> norm_num [ hx.ne', Real.sqrt_eq_rpow ];
+    rw [ Complex.ofReal_log ( by positivity ), Complex.log ] ; norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Complex.log_re, Complex.log_im, Real.rpow_def_of_pos hx ] ; ring;
+    norm_num [ Complex.arg_ofReal_of_nonneg hx.le, Real.exp_add, Real.exp_sub ];
+  -- Write the formula for `ρ` using `Complex.norm_mul_exp_arg_mul_I`.
+  have h_rho_def : (1 / 2 : ℂ) + (γ : ℂ) * I = (Real.sqrt (γ ^ 2 + 1 / 4) : ℂ) * Complex.exp ((Real.arctan (2 * γ) : ℝ) * I) := by
+    convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring;
+    · convert Complex.norm_mul_exp_arg_mul_I ( 1 / 2 + γ * Complex.I ) |> Eq.symm using 1 ; norm_num [ Complex.normSq, Complex.norm_def, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring;
+    · norm_num [ Complex.ext_iff, Complex.exp_re, Complex.exp_im, Real.cos_arctan, Real.sin_arctan ] ; ring ; norm_num [ hx.le ] ; ring;
+      norm_cast ; norm_num [ Real.cos_arctan, Real.sin_arctan ] ; ring ; norm_num [ hx.le ] ; ring;
+      rw [ show ( 1 / 4 + γ ^ 2 ) = ( 1 + γ ^ 2 * 4 ) / 4 by ring, Real.sqrt_div' ] <;> norm_num ; ring ; norm_num [ hx.le ] ; ring;
+      exact ⟨ mul_inv_cancel₀ <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity, mul_div_cancel_right₀ _ <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity ⟩;
+  simp_all +decide [ CriticalLinePhasor.Residue.residueHarmonic ];
+  rw [ div_mul_eq_mul_div, div_eq_div_iff ];
+  · norm_num [ sub_mul, add_mul, mul_assoc, ← Complex.exp_add ] ; ring;
+    norm_num [ mul_assoc, ← Complex.exp_add ] ; ring ; norm_num;
+  · exact mul_ne_zero ( Complex.ofReal_ne_zero.mpr <| ne_of_gt <| Real.sqrt_pos.mpr <| by positivity ) <| Complex.exp_ne_zero _;
+  · exact_mod_cast ne_of_gt <| Real.sqrt_pos.mpr <| by positivity
+
+/-
+**Magnitude of the residue harmonic** `‖−x^ρ/ρ‖ = √x/√(γ²+1/4)`.
+-/
+theorem norm_residueHarmonic (x γ : ℝ) (hx : 0 < x) :
+    ‖residueHarmonic x γ‖ = Real.sqrt x / Real.sqrt (γ ^ 2 + 1 / 4) := by
+  convert congr_arg Norm.norm ( residueHarmonic_phasor x γ hx ) using 1 ; norm_num [ Complex.norm_exp_ofReal_mul_I, abs_of_pos, hx ] ; ring;
+  norm_num [ Complex.norm_exp ];
+  norm_cast ; norm_num [ abs_of_nonneg, Real.sqrt_nonneg ]
+
+/-! ### Part C: the simple-pole residue of the explicit-formula kernel -/
+
+open Filter Topology
+
+/-
+**Simple-pole residue of the explicit-formula kernel.**
+If `f` is differentiable on a neighbourhood of `ρ` (with derivative function `f'`, continuous
+at `ρ`) and has a *simple* zero there (`f ρ = 0`, `f' ρ ≠ 0`), and `ρ ≠ 0`, `x > 0`, then the
+residue at `ρ` of the kernel `−(f'/f)(s)·x^s/s`, computed as the simple-pole limit
+`lim_{s→ρ}(s−ρ)·(·)`, equals `−x^ρ/ρ`.
+-/
+theorem residue_logDeriv_simple_zero
+    (f f' : ℂ → ℂ) (ρ : ℂ) (x : ℝ)
+    (hx : 0 < x) (hρ : ρ ≠ 0) (hf0 : f ρ = 0)
+    (hderiv : ∀ᶠ s in nhds ρ, HasDerivAt f (f' s) s)
+    (hf'cont : ContinuousAt f' ρ) (hf'0 : f' ρ ≠ 0) :
+    Filter.Tendsto
+      (fun s => (s - ρ) * (-(f' s / f s) * ((x : ℂ) ^ s / s)))
+      (nhdsWithin ρ {ρ}ᶜ) (nhds (-(x : ℂ) ^ ρ / ρ)) := by
+  -- Apply the fact that the product of limits holds under certain conditions.
+  have h_prod : Filter.Tendsto (fun s => -(f' s) * ((x : ℂ) ^ s / s) * ((s - ρ) / f s)) (nhdsWithin ρ {ρ}ᶜ) (nhds (-(f' ρ) * ((x : ℂ) ^ ρ / ρ) * (1 / f' ρ))) := by
+    refine' Filter.Tendsto.mul ( Filter.Tendsto.mul ( Filter.Tendsto.neg ( hf'cont.mono_left inf_le_left ) ) _ ) _;
+    · refine' Filter.Tendsto.div _ _ hρ;
+      · exact tendsto_nhdsWithin_of_tendsto_nhds ( ContinuousAt.cpow continuousAt_const continuousAt_id <| Or.inl <| by norm_num; linarith );
+      · exact Filter.tendsto_id.mono_left inf_le_left;
+    · have h_slope : Filter.Tendsto (fun s => (f s - f ρ) / (s - ρ)) (nhdsWithin ρ {ρ}ᶜ) (nhds (f' ρ)) := by
+        have := hderiv.self_of_nhds;
+        rw [ hasDerivAt_iff_tendsto_slope ] at this;
+        convert this using 2 with s; rw [ slope_def_field ];
+      simpa [ hf0 ] using h_slope.inv₀ hf'0;
+  grind
+
+/-
+**The explicit-formula residue at a critical zero is the residue harmonic.**
+Specializing `residue_logDeriv_simple_zero` to `ρ = 1/2 + iγ` gives exactly the residue
+harmonic `−x^(1/2+iγ)/(1/2+iγ)` of Part B.
+-/
+theorem residue_at_critical_zero_eq_residueHarmonic
+    (f f' : ℂ → ℂ) (γ x : ℝ)
+    (hx : 0 < x) (hf0 : f ((1 / 2 : ℂ) + (γ : ℂ) * I) = 0)
+    (hderiv : ∀ᶠ s in nhds ((1 / 2 : ℂ) + (γ : ℂ) * I), HasDerivAt f (f' s) s)
+    (hf'cont : ContinuousAt f' ((1 / 2 : ℂ) + (γ : ℂ) * I))
+    (hf'0 : f' ((1 / 2 : ℂ) + (γ : ℂ) * I) ≠ 0) :
+    Filter.Tendsto
+      (fun s => (s - ((1 / 2 : ℂ) + (γ : ℂ) * I)) * (-(f' s / f s) * ((x : ℂ) ^ s / s)))
+      (nhdsWithin ((1 / 2 : ℂ) + (γ : ℂ) * I) {((1 / 2 : ℂ) + (γ : ℂ) * I)}ᶜ)
+      (nhds (residueHarmonic x γ)) := by
+  convert residue_logDeriv_simple_zero f f' ( 1 / 2 + γ * Complex.I ) x hx _ hf0 hderiv hf'cont hf'0 using 2 ; norm_num [ residueHarmonic ];
+  norm_num [ Complex.ext_iff ]
+
+end CriticalLinePhasor.Residue
+/-!
+## The Dirichlet eta function for the trivial character (eta-mode)
+
+This section formalizes the cleanest "regularized phasor" identity requested for the trivial
+character: the Dirichlet eta function
+
+```
+η(s) = ∑_{n=1}^∞ (-1)^(n-1) n^(-s)   (Re s > 1),  written via analytic continuation as
+η(s) = (1 - 2^(1-s)) ζ(s).
+```
+
+On the critical line `s = 1/2 + i y` the correction factor `1 - 2^(1-s)` is nonzero
+(it only vanishes on `Re s = 1`), hence
+
+```
+η(1/2 + i y) = 0  ↔  ζ(1/2 + i y) = 0.
+```
+
+We also record the genuine phasor-sum identity in the region of convergence `Re s > 1`,
+and the critical-line phasor form of the individual eta term (`eta_term_critical_line`).
+-/
+
+namespace CriticalLinePhasor.EtaTrivial
+
+open Complex CriticalLinePhasor
+
+/-- **The Dirichlet eta function** (trivial character), defined everywhere via the
+analytic continuation of `ζ` by the standard formula `η(s) = (1 - 2^(1-s)) ζ(s)`. -/
+noncomputable def etaTrivial (s : ℂ) : ℂ := (1 - (2 : ℂ) ^ (1 - s)) * riemannZeta s
+
+/-- **The defining identity** `η(s) = (1 - 2^(1-s)) ζ(s)`. -/
+theorem etaTrivial_eq (s : ℂ) :
+    etaTrivial s = (1 - (2 : ℂ) ^ (1 - s)) * riemannZeta s := rfl
+
+/-- The eta correction factor `1 - 2^(1-s)` is nonzero on the critical line `Re s = 1/2`. -/
+theorem one_sub_two_cpow_ne_zero_on_critical_line (s : ℂ) (hs : s.re = 1 / 2) :
+    (1 - (2 : ℂ) ^ (1 - s)) ≠ 0 := by
+  have h := correction_factor_ne_zero_on_critical_line s hs
+  intro hc
+  apply h
+  have : (2 : ℂ) ^ (1 - s) = 1 := by
+    have := sub_eq_zero.mp hc
+    exact this.symm
+  exact this
+
+/-- **Zero equivalence on the critical line.**  Since the eta correction factor is nonzero
+on `Re s = 1/2`, we have `η(s) = 0 ↔ ζ(s) = 0` there. -/
+theorem etaTrivial_eq_zero_iff (s : ℂ) (hs : s.re = 1 / 2) :
+    etaTrivial s = 0 ↔ riemannZeta s = 0 := by
+  rw [etaTrivial, mul_eq_zero]
+  constructor
+  · rintro (h | h)
+    · exact absurd h (one_sub_two_cpow_ne_zero_on_critical_line s hs)
+    · exact h
+  · intro h; exact Or.inr h
+
+/-- **Boxed zero equivalence in the `s = 1/2 + i y` form.**
+`η(1/2 + i y) = 0  ↔  ζ(1/2 + i y) = 0`. -/
+theorem etaTrivial_eq_zero_iff_critical (y : ℝ) :
+    etaTrivial ((1 / 2 : ℂ) + (y : ℂ) * I) = 0 ↔
+      riemannZeta ((1 / 2 : ℂ) + (y : ℂ) * I) = 0 := by
+  apply etaTrivial_eq_zero_iff
+  simp [Complex.add_re, Complex.mul_re, Complex.I_re, Complex.I_im]
+
+/-
+**The eta phasor sum in the region of convergence** `Re s > 1`:
+`η(s) = ∑' n, (-1)^n / (n+1)^s` (i.e. `∑_{k≥1} (-1)^(k-1) k^(-s)`).
+-/
+theorem etaTrivial_eq_tsum {s : ℂ} (hs : 1 < s.re) :
+    etaTrivial s = ∑' n : ℕ, (-1 : ℂ) ^ n / ((n : ℂ) + 1) ^ s := by
+  -- By definition of `etaTrivial`, we have `etaTrivial s = (1 - 2^(1-s)) * riemannZeta s`.
+  unfold CriticalLinePhasor.EtaTrivial.etaTrivial
+  have hzeta : riemannZeta s = ∑' n : ℕ, (1 : ℂ) / ((n : ℂ) + 1) ^ s := by
+    convert zeta_eq_tsum_one_div_nat_add_one_cpow hs using 1
+  rw [hzeta];
+  -- Split the sum into even and odd terms.
+  have h_split : ∑' n : ℕ, (1 : ℂ) / ((n : ℂ) + 1) ^ s - ∑' n : ℕ, (-1 : ℂ) ^ n / ((n : ℂ) + 1) ^ s = ∑' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s) := by
+    rw [ ← Summable.tsum_sub ];
+    · rw [ ← tsum_even_add_odd ] <;> norm_num [ pow_add, pow_mul, div_eq_mul_inv ] ; ring;
+      -- The series $\sum_{k=0}^{\infty} \frac{1}{(2k+2)^s}$ is a p-series with $p = s$, which converges since $s > 1$.
+      have h_pseries : Summable (fun k : ℕ => (1 : ℂ) / ((k + 1 : ℂ) ^ s)) := by
+        have := summable_one_div_nat_cpow.2 hs;
+        exact_mod_cast this.comp_injective Nat.succ_injective;
+      refine ( h_pseries.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 1 ) from fun a b h => by simpa using h ) |> Summable.mul_left 2 ).congr fun x => ?_ ; norm_num ; ring;
+    · have := summable_nat_add_iff 1 |>.2 <| Real.summable_one_div_nat_rpow.2 hs;
+      convert this.of_norm_bounded _;
+      · infer_instance;
+      · intro n; have := Complex.norm_cpow_eq_rpow_re_of_pos ( Nat.cast_add_one_pos n ) s; aesop;
+    · refine' .of_norm _;
+      refine ( summable_nat_add_iff 1 |>.2 <| Real.summable_one_div_nat_rpow.2 hs ).congr fun n => ?_
+      rw [ ← Complex.norm_cpow_eq_rpow_re_of_pos ( by positivity ) ] ; norm_num;
+  -- Simplify the expression $\sum' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s)$ to $2^{1-s} \sum' k : ℕ, (1 : ℂ) / ((k + 1) : ℂ) ^ s$.
+  have h_simplify : ∑' k : ℕ, (2 : ℂ) / ((2 * (k + 1) : ℂ) ^ s) = 2 ^ (1 - s) * ∑' k : ℕ, (1 : ℂ) / ((k + 1) : ℂ) ^ s := by
+    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun k => _ ; rw [ Complex.cpow_sub ] <;> norm_num ; ring;
+    rw [ show ( 2 + k * 2 : ℂ ) = 2 * ( 1 + k ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring ; norm_cast ; norm_num;
+    · rw [ ← mul_inv, ← Complex.exp_add ] ; rw [ show ( 2 + k * 2 : ℝ ) = 2 * ( 1 + k ) by ring, Real.log_mul ( by positivity ) ( by positivity ) ] ; norm_num ; ring;
+    · exact mod_cast by positivity;
+    · exact mod_cast by positivity;
+  grind
+
+/-- **Critical-line phasor form of the eta sum's terms.**
+The `k`-th term of the eta phasor sum on the critical line `s = 1/2 + i y` is
+`(-1)^(k-1) · k^(-1/2) · exp(-(y·log k)·i)`. -/
+theorem etaTrivial_term_phasor_critical (y : ℝ) (k : ℕ) (hk : 0 < k) :
+    ((-1 : ℂ) ^ (k - 1)) * (k : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I)) =
+      ((-1 : ℂ) ^ (k - 1)) * (((k : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
+        Complex.exp (-(y * Real.log k) * I) :=
+  eta_term_critical_line y k hk
+
+/-!
+### Surjectivity / exhaustion: zeta zeros are exactly carrier zeros
+
+We package the boxed critical-line identity into the *carrier* `F_η(y) := η(1/2 + i y)`
+and record the **surjectivity (exhaustion)** statement requested: every zeta zero on the
+critical line is a carrier zero, and in fact the carrier-zero set is *exactly* the
+critical-line zeta-zero set.
+-/
+
+/-- **The eta carrier on the critical line**, `F_η(y) := η(1/2 + i y)`. -/
+noncomputable def Feta (y : ℝ) : ℂ := etaTrivial ((1 / 2 : ℂ) + (y : ℂ) * I)
+
+/-- The carrier vanishes exactly when `ζ` vanishes on the critical line:
+`F_η(y) = 0 ↔ ζ(1/2 + i y) = 0`. -/
+theorem Feta_eq_zero_iff (y : ℝ) :
+    Feta y = 0 ↔ riemannZeta ((1 / 2 : ℂ) + (y : ℂ) * I) = 0 :=
+  etaTrivial_eq_zero_iff_critical y
+
+/-- **Carrier zero set** `CarrierZeros = { y | F_η(y) = 0 }`. -/
+def CarrierZeros : Set ℝ := {y : ℝ | Feta y = 0}
+
+/-- **Surjectivity / exhaustion (backward implication).**
+Every zero of `ζ` on the critical line is a carrier zero:
+`ζ(1/2 + i γ) = 0 ⟹ γ ∈ CarrierZeros`. -/
+theorem zeta_zero_imp_carrier_zero (γ : ℝ)
+    (h : riemannZeta ((1 / 2 : ℂ) + (γ : ℂ) * I) = 0) : γ ∈ CarrierZeros :=
+  (Feta_eq_zero_iff γ).2 h
+
+/-- **Exhaustion as a set identity.**  The carrier-zero set is exactly the set of
+critical-line zeta zeros, so the carrier `F_η` exhausts (is surjective onto) the
+critical-line zeros of `ζ`. -/
+theorem CarrierZeros_eq :
+    CarrierZeros = {y : ℝ | riemannZeta ((1 / 2 : ℂ) + (y : ℂ) * I) = 0} := by
+  ext y; exact Feta_eq_zero_iff y
+
+/-!
+### Finite carrier and its limit in the region of convergence
+
+The finite carrier (partial phasor sum) is
+`F_{η,N}(s) = ∑_{n<N} (-1)^n / (n+1)^s` (i.e. `∑_{k=1}^{N} (-1)^{k-1} k^{-s}`).
+In the half-plane `Re s > 1` the eta series is absolutely convergent and its partial
+sums converge to `η(s)`.
+-/
+
+/-- **Finite eta carrier** `F_{η,N}(s) = ∑_{n<N} (-1)^n / (n+1)^s`. -/
+noncomputable def etaCarrierFinite (s : ℂ) (N : ℕ) : ℂ :=
+  ∑ n ∈ Finset.range N, (-1 : ℂ) ^ n / ((n : ℂ) + 1) ^ s
+
+/-- The eta series is (absolutely) summable for `Re s > 1`. -/
+theorem etaCarrier_summable {s : ℂ} (hs : 1 < s.re) :
+    Summable (fun n : ℕ => (-1 : ℂ) ^ n / ((n : ℂ) + 1) ^ s) := by
+  have h_summable : Summable (fun n : ℕ => (1 : ℂ) / (n : ℂ) ^ s) :=
+    summable_one_div_nat_cpow.2 hs
+  exact Summable.of_norm <| by simpa using (summable_nat_add_iff 1).2 h_summable.norm
+
+/-- **Limit identity in the convergence half-plane.**  For `Re s > 1`, the finite
+carrier converges to `η(s)`:
+`lim_{N→∞} F_{η,N}(s) = η(s)`. -/
+theorem etaCarrierFinite_tendsto {s : ℂ} (hs : 1 < s.re) :
+    Filter.Tendsto (etaCarrierFinite s) Filter.atTop (nhds (etaTrivial s)) := by
+  rw [ CriticalLinePhasor.EtaTrivial.etaTrivial_eq_tsum hs ];
+  exact ( etaCarrier_summable hs |> Summable.hasSum |> HasSum.tendsto_sum_nat )
+
+end CriticalLinePhasor.EtaTrivial
+/-!
+## Weighted phasors for a general Dirichlet character `χ` mod `q`
+
+The trivial-character ("eta") development above is the `χ ≡ 1` (twisted) case.  The genuine
+critical-line picture for a Dirichlet `L`-function uses *weighted* phasors
+
+```
+v_n(y) = χ(n) · n^(-1/2) · e^(-i y log n),   |v_n(y)| = |χ(n)| · n^(-1/2),
+```
+
+so the magnitudes are the **critical-line weights**: `n^(-1/2)` when `(n,q) = 1` and `0`
+otherwise (the latter because `χ(n) = 0` on non-units).  These absolute values are the mass
+distribution of the cancellation polygon; the phases `-y log n` select the cancellation
+height.
+
+This section records, unconditionally and from Mathlib's `DirichletCharacter.LFunction`:
+
+* the per-term phasor decomposition and its magnitude case-split (`dirichlet_char_norm_eq`,
+  `dirichlet_char_norm_coprime`, `dirichlet_term_phasor_critical`,
+  `dirichlet_term_magnitude_critical`);
+* the **carrier** `F_χ(y) := L(1/2 + i y, χ)` with the trivial completion factor
+  `E_χ ≡ 1`, so the zero condition `F_χ(γ) = 0 ↔ L(1/2 + i γ, χ) = 0` (the "weighted phasor
+  polygon closes" statement), and the exhaustion of the critical-line `L`-zeros
+  (`DirichletCarrierZeros_eq`);
+* the carrier phasor-sum identity in the region of convergence `Re s > 1`
+  (`dirichletCarrier_eq_tsum`);
+* the **log-weight derivative** `F'`-content (`dirichlet_deriv_eq_tsum`); and
+* the **bridge to the prime weights** `Λ(n)` via the negative logarithmic derivative
+  `-L'/L(s,χ) = ∑_n χ(n) Λ(n) n^(-s)` (`dirichlet_logDeriv_eq_tsum`), the analytic core of
+  the chain `n^(-1/2) phasor magnitudes → L(1/2+iγ,χ)=0 → L'/L → Λ(n) prime weights`.
+
+As the request itself flags, the raw sum on the critical line is only conditionally
+convergent there, so the absolutely-convergent phasor/`tsum` identities are stated in the
+convergence half-plane `Re s > 1`; the unconditional critical-line deliverable is the exact
+zero-equivalence and the magnitude/phasor structure.  The Riemann Hypothesis for `L(·,χ)` is
+not assumed or claimed.
+-/
+
+namespace CriticalLinePhasor.DirichletCarrier
+
+open Complex DirichletCharacter ArithmeticFunction
+open scoped LSeries.notation
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-- **Magnitude case-split for a Dirichlet character.**
+`‖χ(n)‖ = 1` if `n` is a unit mod `q`, and `0` otherwise. -/
+theorem dirichlet_char_norm_eq (n : ℕ) :
+    ‖χ (n : ZMod q)‖ = if IsUnit (n : ZMod q) then 1 else 0 := by
+  by_cases h : IsUnit (n : ZMod q)
+  · rw [if_pos h]
+    obtain ⟨u, hu⟩ := h
+    rw [← hu]; exact DirichletCharacter.unit_norm_eq_one χ u
+  · rw [if_neg h, MulChar.map_nonunit χ h, norm_zero]
+
+omit [NeZero q] in
+/-- **Magnitude case-split, coprimality form.**
+`‖χ(n)‖ = 1` when `(n,q) = 1`, and `0` otherwise. -/
+theorem dirichlet_char_norm_coprime (n : ℕ) :
+    ‖χ (n : ZMod q)‖ = if Nat.Coprime n q then 1 else 0 := by
+  by_cases h : Nat.Coprime n q
+  · rw [if_pos h]
+    obtain ⟨u, hu⟩ := (ZMod.isUnit_iff_coprime n q).mpr h
+    rw [← hu]; exact DirichletCharacter.unit_norm_eq_one χ u
+  · rw [if_neg h]
+    have hu : ¬ IsUnit (n : ZMod q) := fun hu => h ((ZMod.isUnit_iff_coprime n q).mp hu)
+    rw [MulChar.map_nonunit χ hu, norm_zero]
+
+omit [NeZero q] in
+/-- **Per-term weighted phasor on the critical line.**
+`χ(n) · n^(-(1/2 + i y)) = χ(n) · n^(-1/2) · exp(-(y · log n)·i)`. -/
+theorem dirichlet_term_phasor_critical (y : ℝ) (n : ℕ) (hn : 0 < n) :
+    χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I)) =
+      χ (n : ZMod q) * (((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
+        Complex.exp (-(y * Real.log n) * I) := by
+  rw [CriticalLinePhasor.cpow_critical_line y n hn]; ring
+
+omit [NeZero q] in
+/-- **Magnitude of the weighted phasor on the critical line:** the boxed identity
+`|v_n(y)| = |χ(n)| · n^(-1/2)`. -/
+theorem dirichlet_term_magnitude_critical (y : ℝ) (n : ℕ) (hn : 0 < n) :
+    ‖χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * I))‖
+      = ‖χ (n : ZMod q)‖ * ((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) := by
+  rw [norm_mul, CriticalLinePhasor.norm_cpow_critical_line y n hn]
+
+/-- **Carrier phasor-sum identity** in the convergence half-plane `Re s > 1`:
+`L(s,χ) = ∑_n χ(n) · n^(-s)`, the weighted phasor sum. -/
+theorem dirichletCarrier_eq_tsum {s : ℂ} (hs : 1 < s.re) :
+    LFunction χ s = ∑' n : ℕ, χ (n : ZMod q) * (n : ℂ) ^ (-s) := by
+  have hs0 : s ≠ 0 := by rintro rfl; simp at hs; linarith
+  rw [LFunction_eq_LSeries χ hs, LSeries]
+  refine tsum_congr (fun n => ?_)
+  rw [LSeries.term_def]
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
+  · rw [if_neg hn, Complex.cpow_neg, div_eq_mul_inv]
+
+/-- **Log-weight derivative content** in `Re s > 1`:
+`L'(s,χ) = -∑_n (log n) χ(n) n^(-s)`.  Combined with the chain rule
+`d/dy L(1/2 + i y, χ) = i · L'(1/2 + i y, χ)`, this is exactly the weighted-log-moment
+form of `F'`. -/
+theorem dirichlet_deriv_eq_tsum {s : ℂ} (hs : 1 < s.re) :
+    deriv (L (fun n => χ (n : ZMod q))) s
+      = -∑' n : ℕ, (Real.log n : ℂ) * χ (n : ZMod q) * (n : ℂ) ^ (-s) := by
+  have hs0 : s ≠ 0 := by rintro rfl; simp at hs; linarith
+  have habs : LSeries.abscissaOfAbsConv (fun n => χ (n : ZMod q)) < (s.re : EReal) := by
+    rw [DirichletCharacter.absicssaOfAbsConv_eq_one (NeZero.ne q)]
+    exact_mod_cast hs
+  rw [LSeries_deriv habs, LSeries]
+  congr 1
+  refine tsum_congr (fun n => ?_)
+  rw [LSeries.term_def]
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
+  · rw [if_neg hn, LSeries.logMul, Complex.cpow_neg, div_eq_mul_inv, ← Complex.natCast_log,
+      mul_assoc]
+
+omit [NeZero q] in
+/-- **Bridge to the prime weights `Λ(n)`.**  The negative logarithmic derivative of the
+Dirichlet `L`-series is the `L`-series of the von-Mangoldt twist, i.e. for `Re s > 1`
+```
+-L'(s,χ)/L(s,χ) = ∑_n χ(n) Λ(n) n^(-s).
+```
+This is the analytic step in the chain
+`n^(-1/2) phasor magnitudes → L(1/2+iγ,χ)=0 → L'/L → Λ(n) prime weights → ψ(x) − x`. -/
+theorem dirichlet_logDeriv_eq_tsum {s : ℂ} (hs : 1 < s.re) :
+    -deriv (L (fun n => χ (n : ZMod q))) s / L (fun n => χ (n : ZMod q)) s
+      = ∑' n : ℕ, χ (n : ZMod q) * (Λ n : ℂ) * (n : ℂ) ^ (-s) := by
+  have hs0 : s ≠ 0 := by rintro rfl; simp at hs; linarith
+  rw [← LSeries_twist_vonMangoldt_eq χ hs, LSeries]
+  refine tsum_congr (fun n => ?_)
+  rw [LSeries.term_def]
+  rcases eq_or_ne n 0 with rfl | hn
+  · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
+  · rw [if_neg hn, Complex.cpow_neg, Pi.mul_apply, div_eq_mul_inv, mul_assoc]
+
+/-!
+### The carrier and its zero set (exhaustion of the critical-line `L`-zeros)
+
+We package the critical line into the **carrier** `F_χ(y) := L(1/2 + i y, χ)`.  With the
+trivial completion factor `E_χ ≡ 1`, the "weighted phasor polygon closes" exactly at the
+critical-line zeros of `L(·,χ)`.
+-/
+
+/-- **The Dirichlet carrier on the critical line**, `F_χ(y) := L(1/2 + i y, χ)`. -/
+noncomputable def Fchi (y : ℝ) : ℂ := LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * I)
+
+/-- **Weighted phasor polygon closes ⟺ `L(1/2 + i γ, χ) = 0`.**
+With completion factor `E_χ ≡ 1`, the carrier vanishes exactly at the critical-line zeros of
+`L(·,χ)`. -/
+theorem Fchi_eq_zero_iff (y : ℝ) :
+    Fchi χ y = 0 ↔ LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * I) = 0 := Iff.rfl
+
+/-- **Carrier-zero set** of the Dirichlet character. -/
+def DirichletCarrierZeros : Set ℝ := {y : ℝ | Fchi χ y = 0}
+
+/-- **Exhaustion as a set identity.**  The carrier-zero set is exactly the set of
+critical-line zeros of `L(·,χ)`: the carrier `F_χ` is surjective onto them. -/
+theorem DirichletCarrierZeros_eq :
+    DirichletCarrierZeros χ =
+      {y : ℝ | LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * I) = 0} := by
+  ext y; exact Fchi_eq_zero_iff χ y
+
+end CriticalLinePhasor.DirichletCarrier
+
+/-!
+## Exhaustion of the helix by the numbers, and the number-fiber
+
+This section makes precise the informal slogans that
+
+* **every number lives on the helix, just scaled** — each natural number `n` is placed at
+  the integer parameter site `helix p r n`, whose cylindrical radius is `|r·n|` (so larger
+  numbers sit on larger loops: the helix is *scaled* by the number);
+* the construction is **infinite by construction, unconditionally** — when the pitch is
+  non-degenerate (`p ≠ 0`) the placement is injective, so the set of number-sites on the
+  helix is infinite (no analytic hypothesis such as RH is used);
+* the **fiber starts as an empty construction at the spiral's origin** — indexing the fiber
+  by an upper count `N`, the fiber at the origin `N = 0` is the empty set; and
+* the **fiber spans the entire helix, by construction** — the union of all fibers is all of
+  `ℕ`, and the union of their images is the entire helix lattice `range (numberSite p r)`.
+
+Everything here is unconditional and holds purely by construction.
+-/
+
+namespace CriticalLinePhasor.HelixExhaustion
+
+open CriticalLinePhasor.Geometry
+
+/-- **The site where the number `n` lives on the helix**: the helix point at the integer
+parameter `n` (radius scaled by `r·n`). -/
+noncomputable def numberSite (p r : ℝ) (n : ℕ) : ℝ × ℝ × ℝ := helix p r (n : ℝ)
+
+/-- **The spiral's origin.**  The `0`-site is the origin point `(0,0,0)` of the helix. -/
+theorem numberSite_zero (p r : ℝ) : numberSite p r 0 = (0, 0, 0) := by
+  unfold CriticalLinePhasor.HelixExhaustion.numberSite CriticalLinePhasor.Geometry.helix; norm_num
+
+/-- **Every number lives on the helix.**  The site of any number `n` is a point of the
+helix curve `range (helix p r)`. -/
+theorem numberSite_mem_helix (p r : ℝ) (n : ℕ) :
+    numberSite p r n ∈ Set.range (helix p r) := by
+      exact Set.mem_range_self _
+
+/-- **Just scaled.**  The cylindrical radius of the `n`-th site is `|r·n|`: the number `n`
+scales the loop radius linearly. -/
+theorem numberSite_radius (p r : ℝ) (n : ℕ) :
+    Real.sqrt ((numberSite p r n).1 ^ 2 + (numberSite p r n).2.1 ^ 2) = |r * (n : ℝ)| := by
+  unfold CriticalLinePhasor.HelixExhaustion.numberSite
+  exact CriticalLinePhasor.Geometry.helix_cyl_radius p r n
+
+/-- The helix is **injective in its parameter** whenever the pitch is non-degenerate
+(`p ≠ 0`), since the height coordinate is `p·k`. -/
+theorem helix_injective (p r : ℝ) (hp : p ≠ 0) : Function.Injective (helix p r) := by
+  intro a b; simp +decide [ CriticalLinePhasor.Geometry.helix ] ;
+  aesop
+
+/-
+**Distinct numbers occupy distinct helix sites** (for non-degenerate pitch).
+-/
+theorem numberSite_injective (p r : ℝ) (hp : p ≠ 0) :
+    Function.Injective (numberSite p r) := by
+  intro a b; simp +decide [ CriticalLinePhasor.HelixExhaustion.numberSite ] ;
+  exact fun h => Nat.cast_injective ( helix_injective p r hp h )
+
+/-- **The helix lattice**: the set of all number-sites living on the helix. -/
+noncomputable def helixLattice (p r : ℝ) : Set (ℝ × ℝ × ℝ) := Set.range (numberSite p r)
+
+/-- **Infinite by construction, unconditionally.**  For non-degenerate pitch the helix
+lattice of number-sites is infinite — this uses no analytic hypothesis. -/
+theorem helixLattice_infinite (p r : ℝ) (hp : p ≠ 0) :
+    (helixLattice p r).Infinite := by
+      exact Set.infinite_range_of_injective ( CriticalLinePhasor.HelixExhaustion.numberSite_injective p r hp )
+
+/-- **The number-fiber up to count `N`**: the numbers `0, 1, …, N-1` placed on the helix,
+modeled as the finite set of their indices. -/
+def fiber (N : ℕ) : Finset ℕ := Finset.range N
+
+/-- **The fiber starts as an empty construction at the spiral's origin** (`N = 0`). -/
+theorem fiber_origin : fiber 0 = ∅ := by
+  rfl
+
+/-- The fiber only grows: it is **monotone** in the count. -/
+theorem fiber_mono : Monotone fiber := by
+  exact fun a b hab => Finset.range_mono hab
+
+/-- **The fiber spans the entire helix, by construction (index form).**  Every number lies
+in some fiber: the union of all fibers is all of `ℕ`. -/
+theorem fiber_iUnion : (⋃ N : ℕ, (fiber N : Set ℕ)) = Set.univ := by
+  ext n
+  simp [CriticalLinePhasor.HelixExhaustion.fiber]
+
+/-- **The fiber spans the entire helix, by construction (geometric form).**  The union of
+the fiber images is exactly the whole helix lattice `range (numberSite p r)`. -/
+theorem fiber_image_iUnion (p r : ℝ) :
+    (⋃ N : ℕ, (fiber N).image (numberSite p r) : Set (ℝ × ℝ × ℝ)) = helixLattice p r := by
+  ext x; simp [helixLattice, numberSite, fiber];
+  exact ⟨ fun ⟨ i, j, hj, hx ⟩ => ⟨ j, hx ⟩, fun ⟨ j, hx ⟩ => ⟨ j + 1, j, Nat.lt_succ_self _, hx ⟩ ⟩
+
+end CriticalLinePhasor.HelixExhaustion
+/-!
+## The independently-built phasor carrier and its identification with the `L`-function
+
+The carrier `F_χ(y) := L(1/2 + i y, χ)` of the previous section is *defined* to be the
+`L`-function, so `F_χ = 0 ↔ L = 0` holds by definition.  Here we build the carrier the other
+way around — from the **phasor data itself** — and prove the non-tautological identification
+
+```
+G_χ(s) = F_χ(s)        (= L(s,χ)),   for Re s > 1,
+```
+
+where `G_χ` is the regularized (absolutely convergent) limit of the **finite phasor carrier**
+
+```
+G_{χ,N}(s) = ∑_{n<N} χ(n)·n^(-s),
+```
+
+a genuine partial sum of the weighted phasors `v_n = χ(n)·n^(-s)`.  We also develop the
+**eta-twist** of a general Dirichlet character, the "safer" critical-line phasor sum
+`∑_n (-1)^(n-1) χ(n) n^(-s) = (1 - 2^(1-s)·χ(2))·L(s,χ)`, and prove that its correction
+factor never vanishes on the critical line — giving an *unconditional* critical-line zero
+equivalence with `L(·,χ)` for every Dirichlet character.
+-/
+
+namespace CriticalLinePhasor.DirichletPhasorCarrier
+
+open Complex DirichletCharacter
+open scoped LSeries.notation
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-- **The weighted phasor term** `v_n(s) = χ(n)·n^(-s)`. -/
+noncomputable def phasorTerm (s : ℂ) (n : ℕ) : ℂ := χ (n : ZMod q) * (n : ℂ) ^ (-s)
+
+/-- **The finite phasor carrier** `G_{χ,N}(s) = ∑_{n<N} χ(n)·n^(-s)`. -/
+noncomputable def finiteCarrier (s : ℂ) (N : ℕ) : ℂ :=
+  ∑ n ∈ Finset.range N, phasorTerm χ s n
+
+/-- **The regularized phasor carrier** `G_χ(s) = ∑'_n χ(n)·n^(-s)` (the absolutely
+convergent limit of the finite carriers). -/
+noncomputable def regCarrier (s : ℂ) : ℂ := ∑' n : ℕ, phasorTerm χ s n
+
+omit [NeZero q] in
+/-- The weighted phasor series is summable for `Re s > 1`. -/
+theorem phasor_summable {s : ℂ} (hs : 1 < s.re) :
+    Summable (fun n : ℕ => phasorTerm χ s n) := by
+      have := @DirichletCharacter.LSeriesSummable_of_one_lt_re q;
+      have := this χ hs;
+      convert this.congr _;
+      intro n; by_cases hn : n = 0 <;> simp +decide [ hn, phasorTerm ] ;
+      · exact Or.inr ( by rintro rfl; norm_num at hs );
+      · rw [ div_eq_mul_inv, Complex.cpow_neg ]
+
+/-- **The non-tautological identification `G_χ = F_χ`.**  For `Re s > 1` the regularized
+phasor carrier built from the phasor data equals the analytic carrier `L(s,χ)`. -/
+theorem regCarrier_eq_LFunction {s : ℂ} (hs : 1 < s.re) :
+    regCarrier χ s = LFunction χ s := by
+      unfold CriticalLinePhasor.DirichletPhasorCarrier.regCarrier CriticalLinePhasor.DirichletPhasorCarrier.phasorTerm
+      exact (CriticalLinePhasor.DirichletCarrier.dirichletCarrier_eq_tsum χ hs).symm
+
+omit [NeZero q] in
+/-- **The finite carrier converges to the regularized carrier.** -/
+theorem finiteCarrier_tendsto {s : ℂ} (hs : 1 < s.re) :
+    Filter.Tendsto (finiteCarrier χ s) Filter.atTop (nhds (regCarrier χ s)) := by
+      exact ( phasor_summable χ hs |> Summable.hasSum |> HasSum.tendsto_sum_nat )
+
+/-- **The finite carrier converges to the analytic carrier `L(s,χ)`.**  This is the
+generation statement: the partial phasor sums `G_{χ,N}` converge to `F_χ = L(·,χ)`. -/
+theorem finiteCarrier_tendsto_LFunction {s : ℂ} (hs : 1 < s.re) :
+    Filter.Tendsto (finiteCarrier χ s) Filter.atTop (nhds (LFunction χ s)) := by
+      convert CriticalLinePhasor.DirichletPhasorCarrier.regCarrier_eq_LFunction χ hs ▸ CriticalLinePhasor.DirichletPhasorCarrier.finiteCarrier_tendsto χ hs
+
+/-!
+### The eta-twist of a general Dirichlet character
+
+The "safer" critical-line phasor sum is the alternating (eta-twisted) series
+`∑_n (-1)^(n-1) χ(n) n^(-s)`.  Splitting even/odd and using multiplicativity
+`χ(2m) = χ(2)·χ(m)` gives the closed form `(1 - 2^(1-s)·χ(2))·L(s,χ)`.
+-/
+
+/-- **The eta-twisted closed form** `L_χ^(η)(s) = (1 - 2^(1-s)·χ(2))·L(s,χ)`. -/
+noncomputable def etaTwistClosed (s : ℂ) : ℂ :=
+  (1 - (2 : ℂ) ^ (1 - s) * χ (2 : ZMod q)) * LFunction χ s
+
+/-- The defining identity for the eta-twisted closed form. -/
+theorem etaTwistClosed_eq (s : ℂ) :
+    etaTwistClosed χ s = (1 - (2 : ℂ) ^ (1 - s) * χ (2 : ZMod q)) * LFunction χ s := rfl
+
+/-- **The eta-twist phasor sum** in the convergence half-plane `Re s > 1`:
+`(1 - 2^(1-s)·χ(2))·L(s,χ) = ∑_n (-1)^n·χ(n+1)·(n+1)^(-s)`
+(i.e. `∑_{k≥1} (-1)^(k-1)·χ(k)·k^(-s)`). -/
+theorem etaTwist_eq_tsum {s : ℂ} (hs : 1 < s.re) :
+    etaTwistClosed χ s =
+      ∑' n : ℕ, (-1 : ℂ) ^ n * χ ((n + 1 : ℕ) : ZMod q) / ((n : ℂ) + 1) ^ s := by
+  have h_summable : Summable (fun n : ℕ => χ (n : ZMod q) * (n : ℂ) ^ (-s)) := by
+    apply phasor_summable χ hs;
+  have h_split : ∑' n : ℕ, (-1 : ℂ) ^ n * χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s = (∑' n : ℕ, χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s) - 2 * (∑' n : ℕ, χ (2 * n + 2 : ZMod q) / (2 * n + 2 : ℂ) ^ s) := by
+    rw [ ← tsum_even_add_odd ];
+    · rw [ eq_comm, ← tsum_even_add_odd ];
+      · norm_num [ pow_add, pow_mul, neg_div, tsum_neg, tsum_mul_left ] ; ring;
+      · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 1 ) from fun a b h => by simpa using h ) ).congr fun k => ?_
+        simp only [Function.comp]
+        push_cast
+        rw [ div_eq_mul_inv, Complex.cpow_neg ]
+      · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 2 ) from fun a b h => by simpa using h ) ).congr fun k => ?_
+        simp only [Function.comp]
+        push_cast
+        rw [ div_eq_mul_inv, Complex.cpow_neg ]
+        ring
+    · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 1 ) from fun a b h => by simpa using h ) ).congr fun k => ?_
+      simp only [Function.comp]
+      push_cast
+      rw [ div_eq_mul_inv, Complex.cpow_neg, pow_mul ]
+      norm_num
+    · refine ( h_summable.comp_injective ( show Function.Injective ( fun k : ℕ => 2 * k + 2 ) from fun a b h => by simpa using h ) ).neg.congr fun k => ?_
+      simp only [Function.comp]
+      push_cast
+      rw [ div_eq_mul_inv, Complex.cpow_neg ]
+      rw [ show 2 * k + 1 = 2 * k + 1 from rfl, pow_succ, pow_mul ]
+      norm_num
+      ring
+  have h_even : ∑' n : ℕ, χ (2 * n + 2 : ZMod q) / (2 * n + 2 : ℂ) ^ s = (2 : ℂ) ^ (-(s : ℂ)) * χ (2 : ZMod q) * ∑' n : ℕ, χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s := by
+    rw [ ← tsum_mul_left ] ; refine' tsum_congr fun n => _ ; ring;
+    rw [ show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.cpow_def_of_ne_zero, Complex.cpow_def_of_ne_zero ] <;> norm_num ; ring;
+    · rw [ show ( 2 + n * 2 : ZMod q ) = 2 * ( 1 + n ) by ring, show ( 2 + n * 2 : ℂ ) = 2 * ( 1 + n ) by ring, Complex.log_mul ] <;> norm_num ; ring;
+      · rw [ Complex.cpow_def_of_ne_zero ( by norm_cast; linarith ) ] ; rw [ Complex.exp_add ] ; ring;
+        rw [ ← Complex.exp_neg ] ; ring;
+      · exact mod_cast by positivity;
+      · norm_num [ Complex.arg_le_pi, Complex.neg_pi_lt_arg ];
+    · norm_cast ; linarith;
+  have h_sum : ∑' n : ℕ, χ (n + 1 : ZMod q) / (n + 1 : ℂ) ^ s = LFunction χ s := by
+    rw [ ← eq_comm,CriticalLinePhasor.DirichletCarrier.dirichletCarrier_eq_tsum χ hs ];
+    rw [ Summable.tsum_eq_zero_add h_summable ] ; norm_num [ Complex.cpow_neg ];
+    rw [ Complex.zero_cpow ( by rintro rfl; norm_num at hs ) ] ; norm_num [ div_eq_mul_inv ];
+  simp_all +decide [ CriticalLinePhasor.DirichletPhasorCarrier.etaTwistClosed ];
+  rw [ show ( 1 - s : ℂ ) = -s + 1 by ring, Complex.cpow_add ] <;> norm_num ; ring
+
+/-- **The eta-twist correction factor never vanishes on the critical line.**
+On `Re s = 1/2` we have `‖2^(1-s)·χ(2)‖ ∈ {0, √2}`, never `1`, so the factor
+`1 - 2^(1-s)·χ(2)` is nonzero for *every* Dirichlet character. -/
+theorem etaTwist_factor_ne_zero_critical (s : ℂ) (hs : s.re = 1 / 2) :
+    (1 - (2 : ℂ) ^ (1 - s) * χ (2 : ZMod q)) ≠ 0 := by
+      by_cases h : IsUnit ( 2 : ZMod q ) <;> simp_all +decide [ Complex.cpow_def ];
+      · have h_norm : ‖(2 : ℂ) ^ (1 - s) * χ 2‖ = Real.sqrt 2 := by
+          rw [ norm_mul, Complex.norm_cpow_of_ne_zero ] <;> norm_num [ hs ];
+          rw [ Real.sqrt_eq_rpow, show ‖χ 2‖ = 1 from ?_ ] ; norm_num [ hs ];
+          convert χ.norm_le_one _ |> le_antisymm <| _;
+          obtain ⟨ k, hk ⟩ := h.exists_left_inv; have := χ.map_mul 2 k; simp_all +decide ;
+          have := congr_arg Norm.norm ( χ.map_mul k 2 ) ; norm_num [ hk ] at this;
+          nlinarith [ show ‖χ k‖ ≤ 1 from χ.norm_le_one k, show ‖χ 2‖ ≥ 0 from norm_nonneg _ ];
+        contrapose! h_norm; simp_all +decide [ Complex.cpow_def ] ;
+        rw [ sub_eq_zero ] at h_norm ; replace h_norm := congr_arg Norm.norm h_norm ; norm_num at h_norm ; nlinarith [ Real.sqrt_nonneg 2, Real.sq_sqrt zero_le_two ] ;
+      · erw [ χ.map_nonunit ] <;> aesop
+
+/-- **Unconditional critical-line zero equivalence.**  Because the eta-twist factor is
+nonzero on `Re s = 1/2`, the eta-twisted carrier vanishes exactly at the critical-line zeros
+of `L(·,χ)`, for every Dirichlet character:
+`L_χ^(η)(s) = 0 ↔ L(s,χ) = 0` on the critical line. -/
+theorem etaTwistClosed_eq_zero_iff_critical (s : ℂ) (hs : s.re = 1 / 2) :
+    etaTwistClosed χ s = 0 ↔ LFunction χ s = 0 := by
+      exact mul_eq_zero.trans <| or_iff_right <| CriticalLinePhasor.DirichletPhasorCarrier.etaTwist_factor_ne_zero_critical χ s hs
+
+end CriticalLinePhasor.DirichletPhasorCarrier
+/-!
+## Fiber harmonics, carrier cancellation, and the zero-harmonic bridge
+
+This final section makes precise the "vertical flow" picture of the carrier.  On the
+critical line the `n`-th weighted phasor, viewed as a function of the height `y`, is the
+*fiber*
+```
+v_n(y) = χ(n) · n^(-1/2) · exp(-(y·log n)·i).
+```
+
+### Fiber harmonic theorem
+Each fiber is a harmonic oscillator / eigenmode of the vertical-flow operator `A = i·d/dy`,
+with **frequency `log n`** (the Dirichlet-side harmonic value — *not* the zero ordinate `γ`):
+```
+A v_n = (log n) · v_n,   i.e.   i · v_n'(y) = (log n) · v_n(y).
+```
+
+### Carrier cancellation theorem
+The total carrier `G_χ(y) = L(1/2 + i y, χ)` cancels exactly at the *zero ordinates* `γ`:
+```
+G_χ(γ) = 0  ↔  L(1/2 + i γ, χ) = 0.
+```
+The ordinate `γ` is therefore the **global cancellation height** of all fibers rotating
+together — it is *not* an eigenvalue `log n` of any single fiber.  At the finite level the
+log-weight moment `G_{χ,N}'(y) = -i·∑_{n<N} (log n)·v_n(y)` records the analytic harmonic
+content.
+
+### Hilbert–Pólya layer (scope)
+The genuine Hilbert–Pólya statement `H_χ ψ_γ = γ · ψ_γ`, turning each cancellation height
+`γ` into a spectral eigenvalue of a self-adjoint operator, is the open Hilbert–Pólya
+conjecture and is *not* claimed here.  We record the abstract `ZeroHarmonic` packaging of a
+zero ordinate, which is exactly a carrier cancellation height.
+-/
+
+namespace CriticalLinePhasor.FiberHarmonic
+
+open Complex DirichletCharacter
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-- **The fiber phasor** `v_n(y) = χ(n) · n^(-1/2) · exp(-(y·log n)·i)`, the `n`-th
+weighted phasor on the critical line viewed as a function of the height `y`. -/
+noncomputable def fiberPhasor (n : ℕ) (y : ℝ) : ℂ :=
+  χ (n : ZMod q) * (((n : ℝ) ^ (-(1 / 2 : ℝ)) : ℝ) : ℂ) *
+    Complex.exp (-(y * Real.log n) * Complex.I)
+
+/-
+The fiber phasor is the critical-line value of the weighted phasor term:
+`v_n(y) = χ(n) · n^(-(1/2 + i y))`.
+-/
+omit [NeZero q] in
+theorem fiberPhasor_eq_cpow (n : ℕ) (hn : 0 < n) (y : ℝ) :
+    fiberPhasor χ n y = χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * Complex.I)) := by
+  rw [ CriticalLinePhasor.DirichletCarrier.dirichlet_term_phasor_critical χ y n hn ]
+  unfold CriticalLinePhasor.FiberHarmonic.fiberPhasor; push_cast; ring_nf
+
+/-
+**Fiber harmonic theorem (derivative form).**  Each fiber `v_n` satisfies
+`v_n'(y) = (-(log n)·i) · v_n(y)`: it is an eigenmode of `d/dy`.
+-/
+omit [NeZero q] in
+theorem fiberPhasor_hasDerivAt (n : ℕ) (y : ℝ) :
+    HasDerivAt (fun y : ℝ => fiberPhasor χ n y)
+      ((-Real.log n : ℂ) * Complex.I * fiberPhasor χ n y) y := by
+  have hb : HasDerivAt (fun y : ℝ => (y : ℂ)) 1 y := (hasDerivAt_id y).ofReal_comp
+  have hg : HasDerivAt (fun y : ℝ => -((y : ℂ) * (Real.log n : ℂ)) * Complex.I)
+      (-(Real.log n : ℂ) * Complex.I) y := by
+    have key : HasDerivAt (fun y : ℝ => (y : ℂ) * (-(Real.log n : ℂ) * Complex.I))
+        (1 * (-(Real.log n : ℂ) * Complex.I)) y := hb.mul_const _
+    refine key.congr_deriv ?_ |>.congr_of_eventuallyEq ?_
+    · ring
+    · filter_upwards with t; ring
+  have h := ( ( Complex.hasDerivAt_exp _ ).comp y hg ).const_mul ( (χ (n : ZMod q)) * (((n : ℝ) ^ (-(1/2 : ℝ)) : ℝ) : ℂ) )
+  have h2 : HasDerivAt (fun y : ℝ => fiberPhasor χ n y)
+      ((χ (n : ZMod q)) * (((n : ℝ) ^ (-(1/2 : ℝ)) : ℝ) : ℂ) *
+        (Complex.exp (-((y : ℂ) * (Real.log n : ℂ)) * Complex.I) * (-(Real.log n : ℂ) * Complex.I))) y := by
+    refine h.congr_of_eventuallyEq ?_
+    filter_upwards with t
+    simp only [fiberPhasor, Function.comp]
+  refine h2.congr_deriv ?_
+  unfold CriticalLinePhasor.FiberHarmonic.fiberPhasor
+  ring
+
+/-
+**Fiber harmonic eigenvalue equation.**  For the vertical-flow operator `A = i·d/dy`,
+each fiber is an eigenmode with frequency `log n`:
+`i · v_n'(y) = (log n) · v_n(y)`.
+-/
+omit [NeZero q] in
+theorem fiberPhasor_eigen (n : ℕ) (y : ℝ) :
+    Complex.I * deriv (fun y : ℝ => fiberPhasor χ n y) y
+      = (Real.log n : ℂ) * fiberPhasor χ n y := by
+  convert congr_arg ( fun x : ℂ => Complex.I * x ) ( HasDerivAt.deriv ( fiberPhasor_hasDerivAt χ n y ) ) using 1 ; ring;
+  norm_num
+
+/-- **The finite fiber carrier** `G_{χ,N}(y) = ∑_{n<N} v_n(y)`. -/
+noncomputable def fiberCarrierFinite (N : ℕ) (y : ℝ) : ℂ :=
+  ∑ n ∈ Finset.range N, fiberPhasor χ n y
+
+/-
+**Carrier log-weight moment (finite level).**  The derivative of the finite fiber
+carrier is the `-i`-scaled log-weighted sum of the fibers:
+`G_{χ,N}'(y) = -i · ∑_{n<N} (log n)·v_n(y)`.
+-/
+omit [NeZero q] in
+theorem fiberCarrierFinite_hasDerivAt (N : ℕ) (y : ℝ) :
+    HasDerivAt (fun y : ℝ => fiberCarrierFinite χ N y)
+      (-Complex.I * ∑ n ∈ Finset.range N, (Real.log n : ℂ) * fiberPhasor χ n y) y := by
+  have hsum : HasDerivAt (∑ n ∈ Finset.range N, fun y : ℝ => fiberPhasor χ n y)
+      (∑ n ∈ Finset.range N, ((-Real.log n : ℂ) * Complex.I * fiberPhasor χ n y)) y :=
+    HasDerivAt.sum fun n _ => CriticalLinePhasor.FiberHarmonic.fiberPhasor_hasDerivAt χ n y
+  refine hsum.congr_of_eventuallyEq ?_ |>.congr_deriv ?_
+  · filter_upwards with t
+    simp only [CriticalLinePhasor.FiberHarmonic.fiberCarrierFinite, Finset.sum_apply]
+  · rw [Finset.mul_sum]
+    exact Finset.sum_congr rfl fun _ _ => by ring
+
+/-- **The carrier on the critical line**, `G_χ(y) := L(1/2 + i y, χ)`. -/
+noncomputable def carrier (y : ℝ) : ℂ :=
+  LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * Complex.I)
+
+/-- **Carrier cancellation** at height `γ`: the carrier vanishes there. -/
+def CarrierZero (γ : ℝ) : Prop := carrier χ γ = 0
+
+/-- **Carrier cancellation theorem.**  The carrier cancels at height `γ` exactly when
+`L(1/2 + i γ, χ) = 0`: `γ` is a global cancellation ordinate of all fibers. -/
+theorem carrierZero_iff_L_zero (γ : ℝ) :
+    CarrierZero χ γ ↔ LFunction χ ((1 / 2 : ℂ) + (γ : ℂ) * Complex.I) = 0 := Iff.rfl
+
+/-- **A zero ordinate** of the carrier: a height `γ` together with a proof that the
+critical-line `L`-value vanishes there.  This is the "expelled zero height" that
+Hilbert–Pólya would turn into a spectral eigenvalue. -/
+structure ZeroHarmonic where
+  /-- The zero ordinate (cancellation height). -/
+  gamma : ℝ
+  /-- The carrier cancels at `gamma`. -/
+  is_zero : LFunction χ ((1 / 2 : ℂ) + (gamma : ℂ) * Complex.I) = 0
+
+/-- A `ZeroHarmonic` is precisely a carrier cancellation height. -/
+theorem zeroHarmonic_isCarrierZero (z : ZeroHarmonic χ) : CarrierZero χ z.gamma :=
+  z.is_zero
+
+end CriticalLinePhasor.FiberHarmonic
+/-!
+## Tate completion: every Dirichlet `L`-function is complete
+
+Following Tate's thesis, rewrite the integer fiber phasor as a *multiplicative
+(Mellin) quasi-character*:
+```
+v_n(y) = χ(n)·n^(-1/2)·e^(-i y log n)
+       = χ(n)·n^(-(1/2 + i y))
+       = χ(n)·|n|^(-(1/2 + i y)).
+```
+So the fiber is the restriction to `n ∈ ℕ` of a Tate quasi-character
+`x ↦ χ(x)·|x|^(-(1/2 + i y))`, and the global object it lives inside is the **completed**
+Dirichlet `L`-function (the adelic zeta integral `Z(Φ,ω,s)` of Tate's thesis):
+```
+Λ(s,χ) = gammaFactor(χ,s) · L(s,χ),
+```
+where `gammaFactor(χ,s)` is the archimedean Gamma/conductor factor (`Gammaℝ s` if `χ` is
+even, `Gammaℝ (s+1)` if `χ` is odd).  Here `Gammaℝ s = π^(-s/2)·Γ(s/2)`.
+
+The key Tate point about completion is that the archimedean factor is **nonzero
+throughout the right half-plane `Re s > 0`** — in particular on the whole critical strip
+and the critical line `Re s = 1/2`.  Hence completing `L` to `Λ` (raw carrier `→`
+Tate-completed carrier) moves **no zeros**:
+```
+Λ(s,χ) = 0  ↔  L(s,χ) = 0      (for Re s > 0).
+```
+This is exactly the statement that *every* Dirichlet `L`-function is "complete" in the Tate
+sense: it has a completed form whose nontrivial zeros coincide with those of `L`.  The
+completed `L`-function additionally satisfies Tate's **functional equation**
+`Λ(1-s,χ) = N^(s-1/2)·rootNumber(χ)·Λ(s,χ⁻¹)` for primitive `χ`, recorded below.
+-/
+
+namespace CriticalLinePhasor.Tate
+
+open Complex DirichletCharacter
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-
+**The fiber phasor is a Tate / Mellin multiplicative character.**  Rewriting the phase
+`e^(-i y log n) = n^(-iy) = |n|^(-iy)` gives
+```
+χ(n)·n^(-(1/2 + i y)) = χ(n)·|n|^(-(1/2) - i y),
+```
+i.e. the integer fiber is the restriction to `n ∈ ℕ` of a Tate multiplicative quasi-character
+(here `|n| = (n : ℝ)` for `n : ℕ`).
+-/
+omit [NeZero q] in
+theorem fiberPhasor_eq_mellin_character (n : ℕ) (y : ℝ) :
+    χ (n : ZMod q) * (n : ℂ) ^ (-((1 / 2 : ℂ) + (y : ℂ) * Complex.I))
+      = χ (n : ZMod q) * ((n : ℝ) : ℂ) ^ (-(1 / 2 : ℂ) - (y : ℂ) * Complex.I) := by
+  convert rfl using 2 ; ring;
+  norm_num
+
+/-
+**The Tate Gamma/conductor factor is nonzero on the right half-plane `Re s > 0`.**
+This is the archimedean local factor of Tate's zeta integral; it has no zeros for
+`Re s > 0`, in particular on the whole critical strip and the critical line.
+-/
+omit [NeZero q] in
+theorem gammaFactor_ne_zero_of_re_pos {s : ℂ} (hs : 0 < s.re) :
+    gammaFactor χ s ≠ 0 := by
+  by_cases h_even : Even χ;
+  · rw [ h_even.gammaFactor_def ] ; exact Complex.Gammaℝ_ne_zero_of_re_pos hs |> fun h => by simp_all +decide [ Complex.Gammaℝ ] ;
+  · by_cases h_odd : Odd χ;
+    · convert Complex.Gammaℝ_ne_zero_of_re_pos ( show 0 < ( s + 1 |> Complex.re ) from by norm_num; linarith ) using 1;
+      convert h_odd.gammaFactor_def s using 1;
+    · exact False.elim <| h_odd <| by have := χ.even_or_odd; tauto;
+
+/-
+**The completed (Tate) carrier as the Gamma-factor times `L`.**  For `Re s > 0`,
+```
+Λ(s,χ) = gammaFactor(χ,s) · L(s,χ).
+```
+This is the completion of the raw phasor carrier `L(s,χ)` to the Tate-completed carrier
+`Λ(s,χ)` (the adelic zeta integral factored into its local pieces).
+-/
+theorem completedLFunction_eq_gammaFactor_mul {s : ℂ} (hs : 0 < s.re) :
+    completedLFunction χ s = gammaFactor χ s * LFunction χ s := by
+  have hs0 : s ≠ 0 := fun h => by simp [h] at hs
+  have hγ : gammaFactor χ s ≠ 0 := gammaFactor_ne_zero_of_re_pos χ hs
+  rw [DirichletCharacter.LFunction_eq_completed_div_gammaFactor χ s (Or.inl hs0)]
+  field_simp
+
+/-
+**Completion preserves zeros throughout `Re s > 0`.**  Since the Gamma/conductor factor
+is nonzero for `Re s > 0`, the completed Dirichlet `L`-function vanishes exactly where `L`
+vanishes:
+```
+Λ(s,χ) = 0  ↔  L(s,χ) = 0      (Re s > 0).
+```
+This is the statement that *every* Dirichlet `L`-function is complete in the Tate sense.
+-/
+theorem completedLFunction_eq_zero_iff {s : ℂ} (hs : 0 < s.re) :
+    completedLFunction χ s = 0 ↔ LFunction χ s = 0 := by
+  rw [ CriticalLinePhasor.Tate.completedLFunction_eq_gammaFactor_mul χ hs, mul_eq_zero, or_iff_right ( CriticalLinePhasor.Tate.gammaFactor_ne_zero_of_re_pos χ hs ) ]
+
+/-- **The Tate-completed carrier on the critical line**, `Λ(1/2 + i y, χ)`. -/
+noncomputable def completedCarrier (y : ℝ) : ℂ :=
+  completedLFunction χ ((1 / 2 : ℂ) + (y : ℂ) * Complex.I)
+
+/-
+**The completed carrier equals the Gamma factor times the raw carrier** on the critical
+line: `Λ(1/2 + i y, χ) = gammaFactor(χ, 1/2 + i y) · L(1/2 + i y, χ)`.
+-/
+theorem completedCarrier_eq (y : ℝ) :
+    completedCarrier χ y
+      = gammaFactor χ ((1 / 2 : ℂ) + (y : ℂ) * Complex.I)
+        * LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * Complex.I) := by
+  rw [ CriticalLinePhasor.Tate.completedCarrier, CriticalLinePhasor.Tate.completedLFunction_eq_gammaFactor_mul χ (by simp) ]
+
+/-
+**The Tate-completed carrier has exactly the critical-line zeros of `L`.**
+`Λ(1/2 + i y, χ) = 0 ↔ L(1/2 + i y, χ) = 0`.  Upgrading the raw phasor carrier to the
+Tate-completed carrier does not change the zeros on the critical line.
+-/
+theorem completedCarrier_eq_zero_iff (y : ℝ) :
+    completedCarrier χ y = 0 ↔ LFunction χ ((1 / 2 : ℂ) + (y : ℂ) * Complex.I) = 0 := by
+  rw [ CriticalLinePhasor.Tate.completedCarrier, CriticalLinePhasor.Tate.completedLFunction_eq_zero_iff χ (by simp) ]
+
+/-- **Tate's functional equation for primitive characters.**  The completed Dirichlet
+`L`-function satisfies
+```
+Λ(1 - s, χ) = N^(s - 1/2)·rootNumber(χ)·Λ(s, χ⁻¹),
+```
+the global functional equation coming from the adelic zeta integral.  (This is recorded from
+Mathlib's `DirichletCharacter.IsPrimitive.completedLFunction_one_sub`.) -/
+theorem completed_functional_equation (hχ : IsPrimitive χ) (s : ℂ) :
+    completedLFunction χ (1 - s)
+      = (q : ℂ) ^ (s - 1 / 2) * rootNumber χ * completedLFunction χ⁻¹ s :=
+  DirichletCharacter.IsPrimitive.completedLFunction_one_sub hχ s
+
+end CriticalLinePhasor.Tate
+
+/-!
+## Hilbert–Pólya correlation: zero-vanishing ↔ self-adjoint harmonic eigenvalue
+
+We now make precise, **unconditionally**, the Hilbert–Pólya *correlation* between a
+carrier zero and its spectral harmonic.  We use a bounded everywhere-defined symmetric
+("von Neumann / Hilbert", i.e. self-adjoint) operator on the one-dimensional fiber
+Hilbert space `ℂ`:
+```
+H_γ : ℂ → ℂ,   H_γ z = γ · z      (multiplication by the real height γ).
+```
+Being multiplication by a **real** scalar, `H_γ` is symmetric/self-adjoint, so its spectrum
+is real; and its unique eigenvalue is exactly `γ`.  The correlation theorem states that a
+critical-line zero ordinate `γ` of `L(·,χ)` is produced *at the same time* as a real
+eigenvalue of a self-adjoint operator:
+```
+L(1/2 + i γ, χ) = 0   ↔   (carrier vanishes  ∧  γ ∈ spec(H_γ), H_γ self-adjoint).
+```
+Equivalently, every zero ordinate is realized as the real eigenvalue of a self-adjoint
+operator (`zeroHarmonic_selfAdjoint_realization`), and the assignment
+`zero ordinate ↦ eigenvalue` is faithful (injective).
+
+**Scope / honesty.**  This is the *correlation*, not the open Hilbert–Pólya conjecture.
+The conjecture asks for a *single* canonical self-adjoint operator `H_χ` whose spectrum is
+*exactly the set of all* nontrivial zero ordinates — which, by self-adjointness forcing real
+spectrum, would imply the Riemann Hypothesis for `L(·,χ)`.  Here each `H_γ` is built from an
+already-supplied critical-line zero, so the construction certifies the per-zero
+spectral realization and the zero/eigenvalue correlation, but does **not** assert that all
+zeros lie on the line, and so does **not** prove RH.
+-/
+
+namespace CriticalLinePhasor.HilbertPolya
+
+open Complex DirichletCharacter CriticalLinePhasor.FiberHarmonic
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-- **The von Neumann / Hilbert operator** `H_γ z = γ · z`: multiplication by the real
+height `γ` on the one-dimensional fiber Hilbert space `ℂ`. -/
+noncomputable def vonNeumannOp (γ : ℝ) : Module.End ℂ ℂ := (γ : ℂ) • LinearMap.id
+
+/-
+Action of the operator: `H_γ z = γ · z`.
+-/
+theorem vonNeumannOp_apply (γ : ℝ) (z : ℂ) : vonNeumannOp γ z = (γ : ℂ) * z := by
+  simp [CriticalLinePhasor.HilbertPolya.vonNeumannOp]
+
+/-
+**`H_γ` is symmetric (self-adjoint).**  Multiplication by the *real* scalar `γ` is
+symmetric for the standard inner product on `ℂ`, so its spectrum is real.
+-/
+theorem vonNeumannOp_isSymmetric (γ : ℝ) : (vonNeumannOp γ).IsSymmetric := by
+  intro x y; simp [vonNeumannOp_apply, inner];
+  ring
+
+/-
+**`γ` is an eigenvalue of the self-adjoint operator `H_γ`** (every nonzero fiber value is
+an eigenvector).
+-/
+theorem vonNeumannOp_hasEigenvalue (γ : ℝ) :
+    Module.End.HasEigenvalue (vonNeumannOp γ) (γ : ℂ) := by
+  simp [vonNeumannOp]
+  rw [Module.End.HasUnifEigenvalue]
+  simp +decide [Submodule.ne_bot_iff]
+  exact ⟨1, one_ne_zero⟩
+
+/-
+**The spectrum of `H_γ` is exactly `{γ}`**: the only eigenvalue is the real height `γ`.
+-/
+theorem vonNeumannOp_hasEigenvalue_iff (γ : ℝ) (μ : ℂ) :
+    Module.End.HasEigenvalue (vonNeumannOp γ) μ ↔ μ = (γ : ℂ) := by
+  constructor;
+  · intro hμ
+    obtain ⟨x, hx_ne_zero, hx_eigen⟩ := Module.End.HasEigenvalue.exists_hasEigenvector hμ;
+    simp_all +decide [ CriticalLinePhasor.HilbertPolya.vonNeumannOp ];
+  · exact fun h => h.symm ▸ CriticalLinePhasor.HilbertPolya.vonNeumannOp_hasEigenvalue γ
+
+/-
+**Hilbert–Pólya correlation (per zero).**  A critical-line zero ordinate `γ` of `L(·,χ)`
+is produced *simultaneously* as (i) a carrier-vanishing height and (ii) the real eigenvalue
+of the self-adjoint operator `H_γ`:
+```
+CarrierZero χ γ  ↔  ( L(1/2 + i γ, χ) = 0  ∧  H_γ has eigenvalue γ ).
+```
+The eigenvalue clause holds for every `γ`, so the equivalence says the carrier vanishing and
+the self-adjoint spectral harmonic are realized together at the same height.
+-/
+theorem carrierZero_correlation (γ : ℝ) :
+    CarrierZero χ γ ↔
+      (LFunction χ ((1 / 2 : ℂ) + (γ : ℂ) * Complex.I) = 0
+        ∧ Module.End.HasEigenvalue (vonNeumannOp γ) (γ : ℂ)) := by
+  constructor;
+  · exact fun h => ⟨ h, vonNeumannOp_hasEigenvalue γ ⟩;
+  · exact fun h => h.1
+
+/-
+**Self-adjoint realization of a zero ordinate.**  Every supplied critical-line zero
+`z : ZeroHarmonic χ` yields a self-adjoint operator `H_{z.gamma}` whose (real) eigenvalue is
+exactly the zero ordinate, and `z.gamma` is a carrier-vanishing height — the zero and its
+spectral harmonic are produced at the same time.
+-/
+theorem zeroHarmonic_selfAdjoint_realization (z : ZeroHarmonic χ) :
+    (vonNeumannOp z.gamma).IsSymmetric
+      ∧ Module.End.HasEigenvalue (vonNeumannOp z.gamma) (z.gamma : ℂ)
+      ∧ CarrierZero χ z.gamma := by
+  exact ⟨ CriticalLinePhasor.HilbertPolya.vonNeumannOp_isSymmetric _, CriticalLinePhasor.HilbertPolya.vonNeumannOp_hasEigenvalue _, z.is_zero ⟩
+
+/-
+**Faithfulness of the spectral correlation.**  Distinct real heights give distinct
+eigenvalues (`H_γ` has eigenvalue `γ` only): the assignment `ordinate ↦ eigenvalue` is
+injective, so different zero ordinates are never conflated by the operator family.
+-/
+theorem vonNeumannOp_eigenvalue_injective :
+    Function.Injective (fun γ : ℝ => (γ : ℂ)) := by
+  exact Complex.ofReal_injective
+
+end CriticalLinePhasor.HilbertPolya
+/-!
+## Zero measure and resolvent trace (Cauchy transform of the carrier zeros)
+
+This section packages the carrier zeros into an **atomic spectral measure** and its
+**resolvent trace** (Cauchy transform), the "von Neumann move" that turns the produced
+zero/harmonic pairs into a spectral object:
+```
+μ_χ  = ∑_γ m_γ · δ_γ          (atomic zero measure)
+R_χ(z) = ∑_γ m_γ /(γ - z)      (resolvent trace = Cauchy transform of μ_χ)
+       = ∫ 1/(t - z) dμ_χ(t).
+```
+A `ZeroDatum` records a critical-line zero height `γ` of `L(·,χ)` (a carrier-cancellation
+point `G_χ(γ) = L(1/2 + iγ,χ) = 0`) together with its multiplicity `m_γ`.  The clean,
+unconditional bridge proved here is that the resolvent trace **is** the Cauchy transform of
+the zero measure (`integral_atomicMeasure_eq` for the finite case, and
+`resolventTrace_eq_integral` for the general summable case): this is exactly the trace of the
+resolvent `(H_χ - z)⁻¹` of the multiplication-by-height operator `H_χ f(t) = t·f(t)` on
+`L²(μ_χ)`.
+
+**Scope / honesty.**  The construction of the measure and the identification of the resolvent
+trace with its Cauchy transform are unconditional.  The further analytic identity equating
+this Cauchy transform with the logarithmic derivative of the completed `L`-function,
+```
+R_χ(z) = -d/dz log Λ(1/2 + iz, χ) + d/dz log E(z),
+```
+is the **Hadamard factorization / explicit formula** for the Dirichlet `L`-function; it is a
+deep analytic input that is *not* formalized here (it is the genuine content beyond the
+formal "von Neumann move").  No Riemann Hypothesis is assumed or claimed.
+-/
+
+namespace CriticalLinePhasor.Resolvent
+
+open Complex DirichletCharacter MeasureTheory CriticalLinePhasor.FiberHarmonic
+open scoped ENNReal
+
+variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
+
+/-- **A carrier-zero datum.**  A critical-line zero height `γ` of `L(·,χ)` (i.e. a carrier
+cancellation point `L(1/2 + iγ,χ) = 0`), together with its multiplicity `m_γ`. -/
+structure ZeroDatum where
+  /-- The zero height (carrier-cancellation ordinate). -/
+  gamma : ℝ
+  /-- The carrier vanishes at `gamma`. -/
+  vanishes : LFunction χ ((1 / 2 : ℂ) + (gamma : ℂ) * Complex.I) = 0
+  /-- The multiplicity (order of vanishing) attached to the zero. -/
+  multiplicity : ℕ
+
+/-- A `ZeroDatum` is a carrier-cancellation height in the sense of the fiber-harmonic
+section. -/
+theorem zeroDatum_carrierZero (z : ZeroDatum χ) : CarrierZero χ z.gamma :=
+  z.vanishes
+
+/-
+**The Cauchy transform of a finite atomic measure** (the engine lemma).  For a finite
+family of points `g i` with multiplicities `m i`,
+```
+∫ f(t) d(∑_i m_i · δ_{g_i}) = ∑_i m_i · f(g_i).
+```
+This is unconditional.
+-/
+theorem integral_atomicMeasure_eq {ι : Type*} (s : Finset ι) (g : ι → ℝ) (m : ι → ℕ)
+    (f : ℝ → ℂ) :
+    ∫ t, f t ∂(∑ i ∈ s, (m i : ℝ≥0∞) • Measure.dirac (g i))
+      = ∑ i ∈ s, (m i : ℂ) * f (g i) := by
+  rw [ MeasureTheory.integral_finsetSum_measure ];
+  · refine' Finset.sum_congr rfl fun i _ => _;
+    rw [ MeasureTheory.integral_smul_measure ] ; norm_num;
+  · intro i hi; by_cases hi' : m i = 0 <;> simp +decide [ hi', MeasureTheory.Integrable ] ;
+    simp +decide [ MeasureTheory.HasFiniteIntegral ];
+    simp +decide [ ENNReal.mul_lt_top ];
+    refine' MeasureTheory.AEStronglyMeasurable.congr _ _;
+    exact fun x => if x = g i then f ( g i ) else 0;
+    · exact Measurable.aestronglyMeasurable ( by exact Measurable.ite ( MeasurableSet.singleton _ ) measurable_const measurable_const );
+    · rw [ Filter.EventuallyEq, MeasureTheory.ae_iff ] ; aesop
+
+/-- **The atomic zero measure** `μ_χ = ∑_γ m_γ · δ_γ` over all carrier-zero data. -/
+noncomputable def zeroMeasure : Measure ℝ :=
+  Measure.sum (fun z : ZeroDatum χ => (z.multiplicity : ℝ≥0∞) • Measure.dirac z.gamma)
+
+/-- **The resolvent trace** `R_χ(z) = ∑_γ m_γ /(γ - z)` (Cauchy transform of `μ_χ`). -/
+noncomputable def resolventTrace (z : ℂ) : ℂ :=
+  ∑' γ : ZeroDatum χ, (γ.multiplicity : ℂ) / ((γ.gamma : ℂ) - z)
+
+/-- **The finite resolvent trace** over a finite collection of zero data. -/
+noncomputable def finiteResolventTrace (s : Finset (ZeroDatum χ)) (z : ℂ) : ℂ :=
+  ∑ γ ∈ s, (γ.multiplicity : ℂ) / ((γ.gamma : ℂ) - z)
+
+/-
+**The finite resolvent trace is the Cauchy transform of the finite zero measure**
+(unconditional von Neumann move):
+```
+R_χ^{fin}(z) = ∫ 1/(t - z) d(∑_{γ∈s} m_γ · δ_γ).
+```
+-/
+theorem finiteResolventTrace_eq_integral (s : Finset (ZeroDatum χ)) (z : ℂ) :
+    finiteResolventTrace χ s z
+      = ∫ t, (1 : ℂ) / ((t : ℂ) - z)
+          ∂(∑ γ ∈ s, (γ.multiplicity : ℝ≥0∞) • Measure.dirac γ.gamma) := by
+  convert ( integral_atomicMeasure_eq s ( fun γ => γ.gamma ) ( fun γ => γ.multiplicity ) ( fun t => ( 1 : ℂ ) / ( t - z ) ) ) |> Eq.symm using 1;
+  simp +decide [ div_eq_mul_inv, CriticalLinePhasor.Resolvent.finiteResolventTrace ]
+
+/-
+**The resolvent trace is the Cauchy transform of the atomic zero measure** (general case,
+under integrability of the Cauchy kernel against `μ_χ`):
+```
+R_χ(z) = ∫ 1/(t - z) dμ_χ(t).
+```
+This is the trace of the resolvent `(H_χ - z)⁻¹` of multiplication by height on `L²(μ_χ)`.
+-/
+theorem resolventTrace_eq_integral (z : ℂ)
+    (hint : Integrable (fun t : ℝ => (1 : ℂ) / ((t : ℂ) - z)) (zeroMeasure χ)) :
+    resolventTrace χ z
+      = ∫ t, (1 : ℂ) / ((t : ℂ) - z) ∂(zeroMeasure χ) := by
+  unfold CriticalLinePhasor.Resolvent.zeroMeasure
+  rw [MeasureTheory.integral_sum_measure (by simpa [CriticalLinePhasor.Resolvent.zeroMeasure] using hint)]
+  refine tsum_congr fun i => ?_
+  rw [MeasureTheory.integral_smul_measure]
+  norm_num
+  ring
+
+end CriticalLinePhasor.Resolvent

@@ -13,6 +13,12 @@ _L_-functions. It is a tool — it makes no claim about the Riemann Hypothesis.
   standard Mathlib axioms), with no construction-specific axiom.
   - Build: `lake exe cache get && lake build` (requires [`elan`](https://github.com/leanprover/elan);
     toolchain pinned in `lean-toolchain`, dependencies in `lake-manifest.json` — Mathlib v4.31.0).
+- **`FIBER_DYNAMICS.md`** — the fiber-dynamics research record: reverb (residues, the cluster
+  product law, arch geometry, validated to g = 8×10⁻⁵), the GUE resolution (bookkeeping without
+  a repulsion mechanism), the arithmetic medium (Satake spectroscopy to ±4%, CM combs, exact
+  silences, only-log clocks), exact phase quantization (π cells, quarter-cycle hinge,
+  deterministic zero counting in the fiber's own phase), and the session's Lean ledger
+  (`FinitePencil`, `ReverbResidue`, `GUEBridge`, `MellinDual`, `UnitMidpoint`).
 - **`focal_closure.py`** — exact harmonic cancellation at the zeros, demonstrated by the
   focal-closure growth locator: the finite 3-D bank (lanes P/M/U riding the carrier) locates its
   own vanishings as lane-balance events, with no L-function call in the loop (published reference

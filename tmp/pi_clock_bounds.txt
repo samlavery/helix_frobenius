@@ -1,0 +1,33 @@
+span 400  bin 0.01571  res 0.01571
+
+[ln7 reference]  peak om=1.94680  height=1.946e+06  local-median=14.62  h/lm=133109.3
+
+=== (1) Line search / upper bounds at candidate frequencies ===
+  (local-maximum enumeration; height relative to ln7 peak h7=1.946e+06)
+  ln8    tgt=2.07944  nearest-locmax om=2.08520 (d=0.0058) ht=14.1  locmed=131.5  ht/locmed=0.11
+           core-max/ln7 = 6.97e-06   locmed/ln7 = 6.75e-05   -> NO LINE (upper bound below)
+           UPPER BOUND on a line at ln8: height < 6.97e-06 x ln7  (i.e. < 13.56 abs, ~background)
+  2pi/3  tgt=2.09440  nearest-locmax om=2.08520 (d=0.0092) ht=14.1  locmed=131.5  ht/locmed=0.11
+           core-max/ln7 = 6.97e-06   locmed/ln7 = 6.75e-05   -> NO LINE (upper bound below)
+           UPPER BOUND on a line at 2pi/3: height < 6.97e-06 x ln7  (i.e. < 13.56 abs, ~background)
+
+  (context: a_8 = 0 exactly, so ln8 Euler content is ZERO by construction;
+   2pi/3 is not a log-integer, no Euler term exists there.)
+
+=== (2) ln7 vs ln13 strength (proper peak height over LOCAL median) ===
+  ln7  om=1.94680 (tgt 1.94591, d=0.0009)  height=1.9465e+06  locmed=14.623  h/locmed=133109.3
+  ln13 om=2.56316 (tgt 2.56495, d=0.0018)  height=1.3234e+07  locmed=131.17  h/locmed=100895.0
+
+  measured height ratio ln13/ln7 = 6.799
+  Satake amplitude^2 weight (lam_p^2 = a_p^2/p):  ln7 -> 1/7=0.1429, ln13 -> 25/13=1.9231
+  predicted power ratio ln13/ln7 ~ (25/13)/(1/7) = 13.46  (in the log-amp spectrum this maps
+   nonlinearly through log|..|, so exact ratio is not expected; SIGN of inequality is the test.)
+  => ln13 STRONGER than ln7 as predicted.
+
+=== Full local-maximum enumeration, omega in [0.6, 3.0], > 20x local median ===
+  om         height       x_locmed    label
+  1.38462    2.289e+07    483652.1    ln4
+  1.94680    1.946e+06    133109.3    ln7
+  2.56316    1.323e+07    104962.4    ln13
+  2.77298    1.244e+06    3273.8      ln16
+  2.94346    1.092e+07    86102.3     ln19

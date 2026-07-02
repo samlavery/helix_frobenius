@@ -69,8 +69,8 @@ closure events of the growing 3-D bank coincide with the on-line zeros of the
 `dirichlet_strip_tendsto_LFunction` etc., is what makes that an identity, not
 a metaphor).  The representation pays an honest exponential price: reading
 head height Z costs O(Z) phasors and zero k lives at Z = e^(gamma_k).
-Completeness — that EVERY nontrivial zero is such a closure event — is
-projection primacy (GRH) and is neither assumed nor claimed.
+That EVERY nontrivial zero is such a closure event — every zero has a source
+(EveryZeroHasSource, GRH) — is neither assumed nor claimed.
 
 FAMILIES.  One representative per structural axis of the grand-RH scope that
 is reachable by finite computation:

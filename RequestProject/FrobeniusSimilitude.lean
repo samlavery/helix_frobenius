@@ -340,14 +340,15 @@ theorem frobenius_local_spectral_mechanism
 
 /-! ## 7. No native off‑axis support — the admissible state space is the critical line
 
-The sharper, intrinsically geometric statement (weaker than RH, and defensible without it): the
+The intrinsically geometric statement, proved unconditionally: the
 carrier *admits* a scale‑balanced double‑ended Frobenius‑compatible state **only** on `Re s = ½`.
 The abscissa `½` is not chosen — it is the unique exponent compatible with the arclength area law
 (`Geometry.sigma_half_is_scale_critical`); off‑axis abscissae are *inadmissible* (not
 scale‑normalized to the carrier), and the functional‑equation reflection closes the double‑ended
-carrier exactly on the fixed line.  This is the carrier's internal state space; it makes **no** claim
-that every analytic zero must arise from an admissible state (that global question — equivalently
-RH/GRH — is left open). -/
+carrier exactly on the fixed line.  This is the carrier's internal state space.  Whether every
+analytic zero arises from an admissible state — whether every zero has a source
+(`EveryZeroHasSource`) — is equivalently RH/GRH, the explicit open hypothesis of the
+development; it is not assumed here. -/
 
 /-- A real abscissa `σ` is a **scale‑balanced (admissible) state** of the carrier `(p,r)` when the
 fiber amplitude `n^{-σ}` reciprocates the area‑law radius `carrierRadius ~ √n` to a *positive finite*

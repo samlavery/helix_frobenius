@@ -58,8 +58,8 @@ is just the absolutely-convergent `A`-channel readout), so the strip appears in 
 exclusively inside the final-verification bridge.
 
 Honest scope: the equivalences are per-height (`Z` fixed) and say nothing about *where* the
-zeros are; completeness of the closure events over all nontrivial zeros is projection primacy
-(GRH) and is neither assumed nor proved.  Mathlib-only; no `sorry`, no `axiom`.
+zeros are; that every nontrivial zero is such a closure event — every zero has a source
+(`EveryZeroHasSource`, GRH) — is neither assumed nor proved.  Mathlib-only; no `sorry`, no `axiom`.
 -/
 
 open Complex Filter Topology Matrix

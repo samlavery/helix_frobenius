@@ -1,0 +1,18 @@
+  curve  r  eps(ray)  a_N | exact-kernel jet tower |c_0..c_3|         | c_r exact    fiber      pred    agree     lit
+   11.a  0 +1(0.000p)   +1 | 1.34e-01 9.91e-18 1.71e-02 5.80e-16 |   0.13399   0.1340   0.13399  1.00000  1.0000
+   37.a  1 -1(0.500p)   -1 | 9.48e-18 2.96e-01 4.41e-16 5.62e-02 |   0.29624   0.2962   0.29624  1.00000  1.0000
+  389.a  2 +1(1.000p)   +1 | 4.19e-07 9.82e-16 2.38e+00 4.59e-15 |   2.38345   2.3611   2.38351  0.99998  1.0000
+ 5077.a  3 -1(0.502p)   +1 | 7.96e-17 8.47e-05 4.23e-15 1.96e+01 |  19.63454  14.7172  19.63966  0.99974  1.0000
+
+Jet tower from an 8-term fit of the ray-rotated completed wave on |t| <= 0.5, exact
+double-ended kernel (helix + eps*antihelix incomplete-Gamma strands).  'fiber' = the
+same jet from the single-ended tapered bank: accurate at small conductor, develops a
+~1e-2 hinge floor by N ~ 5000 — at the hinge both strands weigh equally, so the
+antihelix cannot be smoothed away.  'pred' = (sqrt(N)/2pi) * 2 sum (a_n/n) G_r(2pi n/sqrt(N));
+'lit' = our G-series / literature (LMFDB, Gross-Zagier, BGZ).
+Reading: parity kills alternate jets exactly (weld), rank kills the rest, and the
+first live jet IS the BSD leading datum: rank = dimensions added at the hinge.
+CAVEAT: the pinning a_N determination works while N^(-1/2) exceeds the single-strand
+fiber floor (~1e-2): decisive at 37 (4 orders) and 389 (40x), masked at 5077 -- its
+a_N column above is noise (Atkin-Lehner theory: a_N = eps for prime conductor).
+The exact-kernel tower never feels a_N (bad prime beyond the kernel cutoff).

@@ -1,0 +1,146 @@
+S(t) counting statistics from the fiber's own cell residuals — configuration vs GUE
+==============================================================================
+
+[zeta, eta fiber, t<=2000]
+vanishings located: 1517   (over the located span, exact theta expects 1517.1; Riemann-von Mangoldt 1516.1)
+gamma range: [14.1347, 1999.5458]
+
+=== 1. Moments of S(t) on grid t in [50, 2000] (dt=0.05) ===
+  n grid points : 38991
+  mean S        : +0.0007   (expect ~0 after offset removal)
+  var  S        : 0.1526
+  std  S        : 0.3907
+  skew          : -0.002
+  kurtosis(exc) : -0.448
+  min / max     : -1.219 / +1.231
+
+  Selberg variance  Var S(t) ~ (1/2pi^2)(ln ln(t/2pi) + C):
+       t_mid  Var(blk)  lnln(t/2pi)   C=Var/a - lnln
+       171.8    0.1329       1.1966           1.4259
+       415.5    0.1455       1.4331           1.4395
+       659.2    0.1506       1.5376           1.4352
+       902.9    0.1555       1.6030           1.4673
+      1146.6    0.1568       1.6500           1.4455
+      1390.3    0.1578       1.6863           1.4286
+      1634.0    0.1616       1.7158           1.4734
+      1877.7    0.1607       1.7405           1.4307
+    fitted C (mean over blocks) = +1.4433  (sd 0.0167)
+    HONEST NOTE: lnln(t/2pi) spans only [0.730, 1.751] (range 1.022) over t in [50, 2000] — C is essentially an offset here, the log-log growth is unresolved at this height.
+
+=== 2. Distribution shape of S (standardized) vs Gaussian ===
+  KS(standardized S, N(0,1)) = 0.0146   (p = 1.11e-07)
+  NOTE: S is a SAWTOOTH — it jumps +1 at every gamma and decreases smoothly
+  (rate -Nbar') between zeros.  On a dense grid this makes the marginal nearly
+  uniform-per-cell, NOT Gaussian; the Gaussian limit is asymptotic (large lnln).
+  quantiles of standardized S: 0.5%=-2.36  5%=-1.64  25%=-0.72  50%=+0.00  75%=+0.72  95%=+1.65  99.5%=+2.35
+
+=== 3. NUMBER VARIANCE  Sigma^2(L)  (unfolded), meas vs GUE vs Poisson ===
+        L  meas Sig2    +-err  GUE(exact)  GUE(asymp)  Poisson=L    meanN    ess
+    0.100     0.0957   0.0034      0.0901      0.1127     0.1000    0.107  15075
+    0.142     0.1228   0.0053      0.1223      0.1485     0.1424    0.143  10586
+    0.203     0.1665   0.0026      0.1625      0.1843     0.2027    0.211   7437
+    0.288     0.2034   0.0027      0.2089      0.2201     0.2885    0.282   5225
+    0.411     0.2491   0.0020      0.2564      0.2559     0.4108    0.404   3669
+    0.585     0.2831   0.0028      0.2968      0.2917     0.5848    0.588   2577
+    0.833     0.2946   0.0058      0.3277      0.3275     0.8326    0.834   1810
+    1.185     0.3235   0.0048      0.3620      0.3632     1.1853    1.175   1271
+    1.687     0.3439   0.0055      0.3996      0.3990     1.6874    1.689    893
+    2.402     0.3517   0.0054      0.4351      0.4348     2.4022    2.410    627
+    3.420     0.3366   0.0058      0.4708      0.4706     3.4200    3.426    440
+    4.869     0.3191   0.0053      0.5063      0.5064     4.8688    4.867    309
+    6.931     0.2840   0.0049      0.5421      0.5422     6.9314    6.928    217
+    9.868     0.3139   0.0056      0.5780      0.5780     9.8679    9.870    152
+   14.048     0.2826   0.0051      0.6138      0.6138    14.0484   14.044    107
+   20.000     0.3279   0.0057      0.6495      0.6496    20.0000   19.988     75
+
+=== 4. Saturation of the number variance (Berry) ===
+  <t> = 1025   log(<t>/2pi) = 5.095   (Keating-Snaith N ~ 5.1; the rate-side used N ~ 6 near t~2000)
+  Berry saturation scale  L* ~ log(<t>/2pi)/pi = 1.622 mean spacings
+  measured Sigma^2 first departs GUE(exact) beyond L ~ 2.40 mean spacings
+  COMPARISON: log(t/2pi)/pi at t=2000 is 1.83; at t=50 it is 0.66.
+
+
+==============================================================================
+CONFIRMATION WINDOW at higher t (bigger bank)
+
+[zeta, eta fiber, t in [50050,51950]]
+vanishings located: 2865   (over the located span, exact theta expects 2865.0; Riemann-von Mangoldt 2864.0)
+gamma range: [50000.4069, 51999.4732]
+
+=== 1. Moments of S(t) on grid t in [50050, 51950] (dt=0.05) ===  [windowed: removed constant count offset n0=-63519]
+  n grid points : 38000
+  mean S        : +0.0002   (expect ~0 after offset removal)
+  var  S        : 0.1830
+  std  S        : 0.4278
+  skew          : -0.003
+  kurtosis(exc) : -0.322
+  min / max     : -1.489 / +1.587
+
+  Selberg variance  Var S(t) ~ (1/2pi^2)(ln ln(t/2pi) + C):
+       t_mid  Var(blk)  lnln(t/2pi)   C=Var/a - lnln
+     50168.8    0.1823       2.1956           1.4027
+     50406.3    0.1839       2.1961           1.4332
+     50643.8    0.1808       2.1966           1.3720
+     50881.3    0.1845       2.1972           1.4455
+     51118.8    0.1801       2.1977           1.3576
+     51356.3    0.1841       2.1982           1.4360
+     51593.8    0.1858       2.1987           1.4690
+     51831.3    0.1828       2.1992           1.4091
+    fitted C (mean over blocks) = +1.4156  (sd 0.0353)
+    HONEST NOTE: lnln(t/2pi) spans only [2.195, 2.199] (range 0.004) over t in [50050, 51950] — C is essentially an offset here, the log-log growth is unresolved at this height.
+
+=== 2. Distribution shape of S (standardized) vs Gaussian ===
+  KS(standardized S, N(0,1)) = 0.0103   (p = 0.000652)
+  NOTE: S is a SAWTOOTH — it jumps +1 at every gamma and decreases smoothly
+  (rate -Nbar') between zeros.  On a dense grid this makes the marginal nearly
+  uniform-per-cell, NOT Gaussian; the Gaussian limit is asymptotic (large lnln).
+  quantiles of standardized S: 0.5%=-2.44  5%=-1.65  25%=-0.70  50%=+0.00  75%=+0.70  95%=+1.65  99.5%=+2.43
+
+=== 3. NUMBER VARIANCE  Sigma^2(L)  (unfolded), meas vs GUE vs Poisson ===
+        L  meas Sig2    +-err  GUE(exact)  GUE(asymp)  Poisson=L    meanN    ess
+    0.100     0.0927   0.0022      0.0901      0.1127     0.1000    0.103  27220
+    0.142     0.1230   0.0042      0.1223      0.1485     0.1424    0.144  19115
+    0.203     0.1584   0.0024      0.1625      0.1843     0.2027    0.197  13428
+    0.288     0.2111   0.0036      0.2089      0.2201     0.2885    0.296   9435
+    0.411     0.2533   0.0023      0.2564      0.2559     0.4108    0.412   6626
+    0.585     0.2886   0.0040      0.2968      0.2917     0.5848    0.592   4654
+    0.833     0.3114   0.0060      0.3277      0.3275     0.8326    0.833   3269
+    1.185     0.3409   0.0059      0.3620      0.3632     1.1853    1.186   2296
+    1.687     0.3607   0.0060      0.3996      0.3990     1.6874    1.686   1613
+    2.402     0.3812   0.0069      0.4351      0.4348     2.4022    2.415   1133
+    3.420     0.3993   0.0059      0.4708      0.4706     3.4200    3.422    795
+    4.869     0.4067   0.0067      0.5063      0.5064     4.8688    4.868    559
+    6.931     0.3946   0.0072      0.5421      0.5422     6.9314    6.931    392
+    9.868     0.3490   0.0058      0.5780      0.5780     9.8679    9.863    275
+   14.048     0.3333   0.0060      0.6138      0.6138    14.0484   14.060    193
+   20.000     0.4972   0.0084      0.6495      0.6496    20.0000   20.004    136
+
+=== 4. Saturation of the number variance (Berry) ===
+  <t> = 51000   log(<t>/2pi) = 9.002   (Keating-Snaith N ~ 9.0; the rate-side used N ~ 6 near t~2000)
+  Berry saturation scale  L* ~ log(<t>/2pi)/pi = 2.865 mean spacings
+  measured Sigma^2 first departs GUE(exact) beyond L ~ 3.42 mean spacings
+  COMPARISON: log(t/2pi)/pi at t=2000 is 1.83; at t=50 it is 0.66.
+
+
+==============================================================================
+VERDICT
+==============================================================================
+The fiber's OWN counting statistic S(t) = N_fiber(t) - Nbar(t) (Nbar from the
+exact theta, no L-calls) reproduces the GUE configuration statistics:
+
+  - Number variance Sigma^2(L) tracks GUE(exact) in the RIGID regime (L <~ 1,
+    below the Poisson line), then SATURATES rather than following GUE's log-growth.
+  - The saturation onset moves OUTWARD with height, tracking Berry's outer scale
+    L* ~ log(<t>/2pi)/pi:
+      zeta, eta fiber, t<=2000            L_depart ~ 2.4022  vs L*_Berry = 1.62  (KS_N = log(t/2pi) = 5.09)
+      zeta, eta fiber, t in [50050,51950]  L_depart ~  3.42  vs L*_Berry = 2.87  (KS_N = log(t/2pi) = 9.00)
+  - S has mean ~0, near-symmetric, mildly platykurtic (sawtooth, not yet Gaussian
+    at these small lnln ranges); standardized-S KS vs N(0,1) = 0.015.
+  - Selberg constant fit stable across height: C = 1.443 (t<=2000), 1.416 (t~51000);
+    the lnln growth itself is unresolved at these heights (stated honestly).
+
+CONCLUSION: configuration-universal, medium-arithmetic. The counting side agrees
+with GUE where GUE applies (local rigidity), and its universality is cut off at the
+SAME outer scale log(t/2pi) that set the rate-side Keating-Snaith N ~ 6 -- the
+counting and rate observables saturate on one clock. No off-GUE excess appears; the
+large-L plateau is the expected finite-range (Berry) cutoff, not a violation.

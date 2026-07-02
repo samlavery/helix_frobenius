@@ -186,7 +186,7 @@ def pencil_operator(A, B, mu=0.0 + 0.0j, lam=1.0 + 0.0j):
     instantiation living in carrier_fiber's validate mode, not here.
 
     Lean (RequestProject/HarmonicPencilCell.lean): harmonicPencil / harmonicPencil_det,
-    gramH_posSemidef, gramH_rank_drop_iff_L_zero, projection_primacy; the finite
+    gramH_posSemidef, gramH_rank_drop_iff_L_zero, gramH_rank_drop_iff_Bchan_zero; the finite
     crutch-free layer backing THIS function: harmonicGram_rank_drop_iff_channel_zero,
     finiteA_pos (admissibility by positivity), finite_gramH_rank_drop_iff_channel_zero,
     finite_gram_rank_drop_calibration_independent, finite_gramH_posSemidef.
@@ -338,7 +338,7 @@ def pencil_family(A, B, pairs=PENCIL_FAMILY):
 
     Lean (RequestProject/HarmonicPencilCell.lean): every member's Gram (H^H)*H is
     Hermitian positive semidefinite (gramH_posSemidef), the rank-drop event is governed
-    solely by the signed channel (projection_primacy: det G = 0 <-> B = 0), and it is
+    solely by the signed channel (gramH_rank_drop_iff_Bchan_zero: det G = 0 <-> B = 0), and it is
     CALIBRATION-INDEPENDENT (gram_rank_drop_calibration_independent) -- all admissible
     members drop simultaneously.  Mirrors carrier_fiber whole_fiber_pencil_stats
     aggregates (abs A, max |det H|, max det Gram).
@@ -433,7 +433,7 @@ def _selftest():
     # the pencil is a FAMILY of harmonic Gram interlaced operators: every member Hermitian
     # PSD, and the rank-drop is calibration-independent -- all admissible members drop
     # simultaneously at the marker, none off-zero (Lean: gramH_posSemidef,
-    # gram_rank_drop_calibration_independent, projection_primacy)
+    # gram_rank_drop_calibration_independent, gramH_rank_drop_iff_Bchan_zero)
     fam_pairs = ((0j, 1 + 0j), (1j, 2 - 1j), (-1 + 0j, 1 + 0j), (0.5 - 0.5j, 2j))
     fam_on = pencil_family(A1, B1, fam_pairs)
     fam_off = pencil_family(A_off, B_off, fam_pairs)

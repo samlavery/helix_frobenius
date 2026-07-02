@@ -29,9 +29,9 @@
 \newcommand{\conj}[1]{\overline{#1}}
 \newcommand{\code}[1]{\texttt{#1}}
 
-\title{The Double-Ended Helix and Projection Primacy:\\
+\title{The Double-Ended Helix and the Sourceless Zero:\\
 A Machine-Checked Spectral Realization for Dirichlet $L$-Functions,\\
-with the Generalized Riemann Hypothesis as the Completeness of its Projection}
+with the Generalized Riemann Hypothesis as ``Every Zero Has a Source''}
 \author{Samuel Lavery}
 \date{2026-07-01 (major revision; v1 2026-06-19)}
 
@@ -50,10 +50,12 @@ the signed channel closed, the Gram determinant rank-dropping by exactly one
 converse implication}: any nontrivial cancellation realized as a kernel of the fixed self-adjoint
 generator lies on the critical line, by von Neumann reality
 (\code{GRH\_from\_nontrivial\_A$\chi$\_realization}).  \emph{The isolated gap}: whether \emph{all}
-nontrivial zeros are so realized --- the \emph{projection-primacy principle} --- is proved
-equivalent to the real-height exhaustion of the zeros, hence to GRH for $\chi$
-(\code{projectionPrimacy\_iff\_exhausts}); it is neither assumed nor proved.  The Riemann Hypothesis
-is thus reframed, not approached: it is exactly the completeness of the carrier's projection.
+nontrivial zeros are so realized --- whether \emph{every zero has a source} --- is proved
+equivalent to the critical-line statement, hence to GRH for $\chi$
+(\code{everyZeroHasSource\_iff\_critical}); it is neither assumed nor proved.  The Riemann
+Hypothesis is thus reframed: the 3D side is closed by theorems, and what remains is a statement
+about the 1D limit alone --- that it admits no \emph{sourceless} zero, no vanishing in the
+readout's chart with no event behind it.
 
 The geometry beneath these statements is derived, not designed.  Uniform $\pi/3$-arclength placement
 on the growing-radius helix forces the area law $r_n\sim C\sqrt n$
@@ -63,7 +65,12 @@ carrier's scale geometry before any zero-location statement enters.  The analyti
 for non-principal $\chi$ the partial sums $\sum_{n<N}\chi(n)n^{-s}$ converge to $L(s,\chi)$ on all
 of $\Ree s>0$ (\code{dirichlet\_strip\_tendsto\_LFunction}), and the $\eta$-regularized principal
 channel identifies $\zeta$'s on-line vanishings exactly (\code{FullFiber\_eq\_zero\_iff\_zeta}) ---
-identities with no cutoff error, machine-checked.
+identities with no cutoff error, machine-checked.  Criticality itself enters chart-free:
+in the centered variable the statement is that the roots are \emph{real} --- the fixed axis of the
+conjugation involution --- and the familiar $\tfrac12$ is the translation constant of a chart
+(\code{riemann\_chart}); dually, the readout's spectral axis \emph{is} the carrier's height axis
+(\code{readout\_dual\_recovers\_sites}), so the prime spectroscopy below inverts the projection
+rather than adding a dimension.
 
 The model is also an experimental instrument, and we report its phenomenology.  The partial-absorption
 law (each phasor completes exactly at its own integer site, one at a time --- the finite shadow of
@@ -73,7 +80,16 @@ eigenheights up to $N=e^{\gamma}\approx3.8\times10^{15}$, with residuals at the 
 $\sim N^{-1/2}$; an error budget separates zero-precision, truncation, and evaluator floors.  The
 same machinery, with lanes given by coefficient signs instead of residue classes, locates the zeros
 of degree-two $L$-functions ($\Delta$ and the level-$11$ elliptic newform) --- the mechanism does not
-depend on character periodicity.  Negative results are reported alongside.
+depend on character periodicity.  Negative results are reported alongside, and a machine-checked bridge shows the random-matrix
+derivative statistic at an eigenvalue \emph{is} the fiber's reopening rate --- the identical
+distance product --- so GUE-style agreement in rates and suppression is an identity of shared
+bookkeeping, not evidence of a repulsion mechanism.  Weighed together, the record --- the
+line derived from scale geometry, no native off-axis support, exact $\pi$ phase cells in the
+fiber's own clock, an exactly arithmetic ambient with every anomaly resolved against novelty,
+and configuration universality across degree and conductor --- supports a stated
+\emph{working hypothesis}: every zero has a source, i.e.\ GRH.  We do not assert it.
+Five disconfirmation signatures are pre-registered, each deliberately sought, each currently
+at count zero; the first exception will be reported as prominently as any confirmation.
 
 Every named statement is formalized in Lean~4 over Mathlib and checked by the kernel: no
 \code{sorry}, no construction-specific axiom; the axiom footprint of the named theorems is
@@ -116,8 +132,8 @@ $\Ree s=\tfrac12$, by von Neumann reality (Theorem~\ref{thm:kernelonline}).  Tog
 is a two-sided, unconditional Hilbert--P\'olya-type package for the critical-line zeros.
 
 \item \emph{The isolated gap is exactly GRH (Sections~\ref{sec:spectralGRH},~\ref{sec:admissible}).}
-Whether \emph{all} nontrivial zeros are so realized --- \emph{projection primacy} --- is proved
-equivalent to the real-height exhaustion of the zeros, hence to GRH for $\chi$
+Whether \emph{all} nontrivial zeros are so realized --- whether \emph{every zero has a source} ---
+is proved equivalent to the critical-line statement, hence to GRH for $\chi$
 (Theorem~\ref{thm:grhreal}, Remark~\ref{rem:admissiblescope}).  It is stated as an explicit named
 hypothesis, neither assumed nor proved; conditional on it, every nontrivial zero is a represented
 eigen-event.
@@ -127,7 +143,10 @@ The phenomenology half reports the model as an instrument: the partial-absorptio
 $111$ critical-line zeros below height $36$ of the eight real primitive characters of conductor
 $\le12$ (eigenheights to $3.8\times10^{15}$), a measured error budget, the degree-two ($\Delta$,
 level-$11$ newform) extension showing the mechanism is not an artifact of character periodicity, and
-the negative results.  Section~\ref{sec:outlook} collects structural frameworks (chiral cup, K\"ahler
+the negative results.  Section~\ref{sec:evidence} then weighs this record and adopts, as a stated
+working hypothesis, the sourced branch of the dichotomy --- every zero has a source, hence GRH ---
+against a pre-registered falsifiability register: never asserted, never sandbagged.
+Section~\ref{sec:outlook} collects structural frameworks (chiral cup, K\"ahler
 polarization, de Branges evaluation) as machine-checked scaffolding for future work, deliberately
 demoted from the main line.  Section~\ref{sec:formal} records the verification;
 Appendix~\ref{app:claims} maps the headline claims to Lean identifiers.
@@ -335,7 +354,14 @@ of cells, i.e.\ $k\,H=2\pi m$ for integers $k\ge1$, $m\ge1$. The native gauge $H
 \emph{exactly} after six cells, $6\cdot(\pi/3)=2\pi$ ($k=6$, $m=1$; \code{pi3\_finite\_monodromy}),
 whereas the unit gauge $H=1$ never closes (\code{unit\_not\_finite\_monodromy}: it would force $\pi\in\Q$).
 In general $H$ has exact finite monodromy \emph{iff} $H/(2\pi)\in\Q_{>0}$
-(\code{circleMonodromy\_iff\_rat}). Thus $\pi/3$ is distinguished not only as the Eisenstein unit angle
+(\code{circleMonodromy\_iff\_rat}); restated with explicit exponential witnesses, a step $c$ closes
+--- some positive number $k$ of steps satisfies $e^{ikc}=1$ --- iff $kc=2\pi m$ for integers
+$k\ge1$, $m$ (\code{step\_closes\_iff}), root-of-unity steps $2\pi/m$ return at $m$ steps
+(\code{root\_of\_unity\_step\_closes}; the Eisenstein case $\pi/3=2\pi/6$ in six,
+\code{eisenstein\_step\_closes}), and a positive \emph{integer} step in radians never closes,
+because $\pi$ is irrational (\code{integer\_step\_never\_closes}).  Exact $\mu_m$ harmonics are
+exactly the $2\pi\cdot\Q$ gauge choices; whole-integer scaling is structurally incapable of
+closure.  Thus $\pi/3$ is distinguished not only as the Eisenstein unit angle
 (Remark~\ref{rem:eisenstein}) but as a \emph{finite-monodromy} gauge --- the exact closing condition
 underlying the six buckets of Theorem~\ref{thm:buckets}.
 \end{theorem}
@@ -764,8 +790,10 @@ where $W(\chi)=\code{rootNumber}(\chi)$.
 
 \section{The double-ended carrier and conjugacy}\label{sec:double}
 
-The carrier is chiral: the right strand winds with spin $e^{-iy\log n}$, and its mirror, the left
-strand, winds with $e^{+iy\log n}$.
+The carrier is chiral: the right strand winds with spin $e^{-iy\log n}$, and its \emph{conjugate}
+--- the anti-helix, the left strand --- winds with $e^{+iy\log n}$.  Each strand is chiral; the
+symmetry belongs to the \emph{pair}, and the origin is the midpoint of the double structure
+(Section~\ref{sec:midpoint}).
 
 \begin{theorem}[Conjugate chiralities; \code{both\_helices\_conjugate}]\label{thm:conjhelix}
 For every $N\in\N$ and $y\in\R$,
@@ -792,6 +820,67 @@ For every $y\in\R$, $\;\Lambda(\tfrac12-iy)=\Lambda(\tfrac12+iy)$.
 $\tfrac12-iy=1-(\tfrac12+iy)$, so this is $\Lambda(1-s)=\Lambda(s)$
 (\code{completedRiemannZeta\_one\_sub}) on the line.
 \end{proof}
+
+\section{Criticality as midpointness, and the self-dual readout}\label{sec:midpoint}
+
+Two structural facts sharpen the ontology.  \emph{Criticality is a midpoint statement with no
+number in it} --- the familiar $\tfrac12$ is a chart constant; and \emph{the readout is self-dual}
+--- the Fourier-conjugate variable of the readout line is the carrier's own height axis, so the
+ambient spectroscopy of Section~\ref{sub:ambient} inverts the projection rather than adding a
+dimension.
+
+\subsection{UNIT/2: the chart-free form of criticality}
+
+\begin{theorem}[Midpoint charts; \code{real\_axis\_is\_conjugation\_midpoint}, \code{centered\_chart}, \code{riemann\_chart}]\label{thm:charts}
+The fixed locus of complex conjugation is exactly the real axis ($\conj z=z\iff\Imm z=0$) --- a
+criticality statement containing no number.  For any unit $c$, reality of the centered variable
+$t=-i(\rho-c/2)$ is exactly $\Ree\rho=c/2$; the case $c=1$ is Riemann's own chart: \emph{``the
+roots of $\Xi$ are real'' and ``the zeros have $\Ree=\tfrac12$'' are one statement in two charts},
+and the $\tfrac12$ is the translation constant between them, not content.
+\end{theorem}
+
+\begin{theorem}[UNIT/2 on the line, the circle, and in every base; \code{affine\_reflection\_fixed\_iff}, \code{mirror\_fixed\_iff}, \code{eisenstein\_mirror}, \code{criticality\_is\_half\_unit}]\label{thm:unithalf}
+The fixed point of the reflection $x\mapsto c-x$ is $c/2$, for every unit $c$.  On the circle, the
+anti-involution $z\mapsto e^{i\Delta}\conj z$ fixes exactly the half-unit direction $\Delta/2$; for
+the carrier's cell $\Delta=\pi/3$ the reflection axis is $\pi/6$ --- the hexagon's edge-midpoint
+line, the same UNIT/2 formula in the carrier's own geometry.  And in base-$b$ counting
+($b>1$) the critical abscissa reads $\sigma\log b=\log b/2$: the log-$7$ system's midpoint is
+$\log\sqrt7$, and the base-free content is that the critical amplitude is the geometric mean,
+$n^{-1/2}=\sqrt{1\cdot n^{-1}}$, of the dual pair.
+\end{theorem}
+
+Across every chart the invariant is the same: \emph{midpointness of an involution}.  The
+reflection $s\mapsto1-s$ fixes exactly $\Ree s=\tfrac12$ (Theorem~\ref{thm:reflfix}); the de
+Branges variable is real exactly there (Corollary~\ref{cor:online}); over $\mathbb{F}_q$ the balance
+forces $\|q^{s}\|^2=q$, i.e.\ the Frobenius midpoint $q^{1/2}$ (\code{midpoint\_forcing}).  The
+coordinate is gauge; the involution is the content.
+
+\subsection{The self-dual Mellin pairing: the spectral axis is the height axis}
+
+\begin{theorem}[Bohr orthogonality and site recovery; \code{char\_mean\_zero}, \code{char\_mean\_one}, \code{readout\_dual\_recovers\_sites}]\label{thm:selfdual}
+For a finite bank with arrows $a_n$ at distinct log-heights $h_n$, the Bohr mean of the readout
+against a test frequency recovers the arrow at that height:
+\[
+  \frac1T\int_0^T\Bigl(\sum_n a_n\,e^{-ih_ny}\Bigr)e^{i\omega y}\,dy
+  \;\xrightarrow[T\to\infty]{}\;\sum_{n\,:\,h_n=\omega}a_n ,
+\]
+and $0$ when no site sits at $\omega$.
+\end{theorem}
+
+The conjugate variable $\omega$ of the readout line is therefore \emph{not a new dimension --- it
+is the carrier's log-height axis}: the measured spectral lines at $\omega=\ln p^{k}$
+(Section~\ref{sub:ambient}) are the arrows at the prime-power sites, recovered by inversion.
+Zeros are events in $y$; primes are lines in $\omega$; the explicit formula
+(Section~\ref{sec:explicit}) is this one pairing read in both directions.  The remaining
+coordinate of $s=\sigma+iy$ is frozen at UNIT/2 by scale balance (\code{scaleBalanced\_iff},
+Theorem~\ref{thm:scalecrit}) --- which is why the strip/Abel machinery of Section~\ref{sec:strip}
+is a device of the one-dimensional projection only, with no three-dimensional counterpart.
+
+\begin{theorem}[The prime clocks are mutually incommensurable; \code{prime\_clocks\_incommensurable}]\label{thm:incomm}
+For distinct primes $p\neq q$, the ratio $\log p/\log q$ is irrational.  In the base-$q$ system
+prime $q$ ticks at unit rate and every other prime at an irrational rate: unique factorization,
+read as spectral non-collision --- no two ambient lines can ever coincide.
+\end{theorem}
 
 \section{The Frobenius similitude and the determinant identity}\label{sec:det}
 
@@ -855,8 +944,8 @@ Reading the nontrivial zeros as the spectrum of a self-adjoint operator is the
 \emph{Hilbert--P\'olya} program --- supported by the random-matrix law of the zero statistics
 \cite{Montgomery1973} and pursued through the Berry--Keating $H=xp$ quantization
 \cite{BerryKeating1999} and Connes's noncommutative-geometry trace formula \cite{Connes1999}; the
-operator design here is unconditional and per-height, and makes no claim to be that canonical
-operator (Remark~\ref{rem:openlink}).
+operator design here is unconditional and per-height, and the step from it to that canonical
+operator is exactly the named open link (Remark~\ref{rem:openlink}).
 
 \begin{definition}[Spectral wave; \code{spectralWave}]\label{def:wave}
 For $\gamma\in\R$, $\;\psi_\gamma(t)=e^{i\gamma t}\;(t\in\R)$.
@@ -982,7 +1071,7 @@ The pencil is not a single matrix but a \emph{family} of harmonic Gram interlace
 $\{H_\chi(\mu,\lambda)\}$ over the admissible calibrations, and the rank-drop event is
 calibration-independent: all admissible members drop simultaneously, exactly when the signed
 channel closes (\code{gram\_rank\_drop\_calibration\_independent}; the event is governed solely by
-$B_\chi$, independent of the unsigned mode --- \code{projection\_primacy}).  Each member's Gram is
+$B_\chi$, independent of the unsigned mode --- \code{gramH\_rank\_drop\_iff\_Bchan\_zero}).  Each member's Gram is
 Hermitian positive semidefinite (\code{gramH\_posSemidef}) and is \emph{never the zero matrix}: the
 rank drops by exactly one --- a single cancellation, never a simultaneous double one
 (\code{specGram\_apply00}, \code{specGram\_ne\_zero}; Section~\ref{sec:spectralGRH}).
@@ -1024,16 +1113,16 @@ realizes it at $Z=e^{\Imm\rho}$. Equivalently an off-line $\rho$ admits \emph{no
 $Z=e^{t}>0$ (\code{nontrivial\_zero\_represented}).
 \end{theorem}
 
-\begin{remark}[Projection primacy --- the completeness question; \code{ProjectionPrimacy}, \code{projectionPrimacy\_iff\_exhausts}, \code{zero\_source\_admissibility\_of\_projectionPrimacy}]\label{rem:bridge}
+\begin{remark}[Every zero has a source --- the sourceless-zero question; \code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}, \code{zero\_source\_admissibility\_of\_everyZeroHasSource}]\label{rem:bridge}
 The readout reaches \emph{exactly} the critical line for real $Z$ (\code{criticalReadout\_re}), so the
 3D carrier's projection cannot land off-axis and cannot host an off-line zero; Theorem~\ref{thm:admiss}
-represents every zero \emph{presented on} the line. The \emph{projection-primacy principle}
-(\code{ProjectionPrimacy}) asserts that this projection is \emph{complete} --- that its real-height
-readout exhausts the nontrivial zeros --- and is proved equivalent to that exhaustion
-(\code{projectionPrimacy\_iff\_exhausts}), hence to GRH for $\chi$; conditional on it, \emph{every}
+represents every zero \emph{presented on} the line. The hypothesis \emph{every zero has a source}
+(\code{EveryZeroHasSource}) asserts that every nontrivial zero arises this way --- from a real source
+height --- and its source form is proved to be exactly the critical-line statement
+(\code{everyZeroHasSource\_iff\_critical}), hence GRH for $\chi$; conditional on it, \emph{every}
 nontrivial zero (with no on-line hypothesis) is a represented admissible eigen-event
-(\code{zero\_source\_admissibility\_of\_projectionPrimacy}, \code{RH\_of\_everyZeroAdmissible}). The same
-principle is the representability bridge \code{EveryZeroAdmissible}; these two are the \emph{formalized}
+(\code{zero\_source\_admissibility\_of\_everyZeroHasSource}, \code{RH\_of\_everyZeroAdmissible}). The same
+hypothesis is the representability bridge \code{EveryZeroAdmissible}; these two are the \emph{formalized}
 faces of the one undecided question (Remark~\ref{rem:admissiblescope}). The de Branges
 $\mathrm{IsHB}\,\Lambda$ condition is the same RH content in the classical de Branges form
 (Remark~\ref{rem:hbscope}), which this work connects to but neither formalizes nor relies on --- open
@@ -1087,18 +1176,19 @@ realization holds outright, and a real-generator cancellation forces $\Ree s=\tf
 Theorem~\ref{thm:admiss} realizes every \emph{critical-line} zero as an admissible real-height
 eigen-event, unconditionally.  Theorem~\ref{thm:kernelonline} shows any \emph{realized} nontrivial
 cancellation is on the critical line, unconditionally.  The single unproved statement between them
---- that every nontrivial cancellation \emph{is} realized --- is the projection-primacy principle,
-proved equivalent to the real-height exhaustion of the zeros
-(\code{projectionPrimacy\_iff\_exhausts}) and hence to GRH for $\chi$
-(Remark~\ref{rem:admissiblescope}).  This is a reframing of GRH as a completeness property of an
-explicit, elementary operator; it is not evidence for GRH, and nothing in this paper decides it.
+--- that every nontrivial cancellation \emph{is} realized --- is the hypothesis that \emph{every
+zero has a source}, whose source form is proved to be exactly the critical-line statement
+(\code{everyZeroHasSource\_iff\_critical}) and hence GRH for $\chi$
+(Remark~\ref{rem:admissiblescope}).  GRH is thus the statement that the 1D limit has no zero
+without a kernel event of this explicit, elementary generator; which branch of the dichotomy
+holds is weighed, on the evidence, in Section~\ref{sec:evidence}.
 \end{remark}
 
 \section{Admissibility: the carrier has no native off-axis support}\label{sec:admissible}
 
 The constructions above combine into a single intrinsic, on-axis statement about the carrier's
 \emph{state space} --- sharper than ``a phasor plot that finds the zeros'': it reframes the critical
-line as the carrier's admissible state space, the object whose completeness is projection primacy
+line as the carrier's admissible state space --- the space of sources from which the zeros arise
 (Remark~\ref{rem:admissiblescope}). A point of the vertical line $s=\sigma+iy$ rides the carrier as a stable,
 scale-normalized fiber only when its amplitude $n^{-\sigma}$ reciprocates the emergent area-law radius
 $r_n\sim\sqrt n$ to a finite positive scale. We call such a $\sigma$ an \emph{admissible
@@ -1160,21 +1250,24 @@ The chain
 is the carrier's intrinsic logic: it reads as a geometry, not a graphing of $L(\tfrac12+it)$.
 \end{theorem}
 
-\begin{remark}[Projection primacy: the pivotal hypothesis]\label{rem:admissiblescope}
+\begin{remark}[Every zero has a source: the pivotal hypothesis]\label{rem:admissiblescope}
 Theorem~\ref{thm:hierarchy} establishes that the carrier's admissible state space --- the image of its
 real-height projection $Z\mapsto\tfrac12+i\tau_\chi(\log Z)$ --- is the critical line: off-axis points are
 unsupported / inadmissible / not scale-normalized, so the 3D representation \emph{cannot} host an off-line
-zero (\code{criticalReadout\_re}). Whether the projection is also \emph{complete} --- whether it exhausts
-\emph{every} nontrivial zero --- is the \emph{projection-primacy principle} (\code{ProjectionPrimacy}),
-proved equivalent to the real-height exhaustion of the zeros (\code{projectionPrimacy\_iff\_exhausts}) and
-hence to GRH for $\chi$; conditional on it the exhaustion is unconditional
-(\code{zero\_source\_admissibility\_of\_projectionPrimacy}). This is the open consideration, and it is a
-genuine dichotomy: \emph{either} the projection is primary --- the more accurate 3D model defines the
-1D/2D readout completely, and there are no off-line zeros --- \emph{or} some factor outside the 3D
-representation produces an off-line zero, one the carrier provably cannot. The Riemann Hypothesis is thus
-not something weaker that this work falls short of, but exactly the completeness of the projection; the
-work poses the dichotomy and proves the off-axis branch impossible \emph{within} the model. ``Frobenius''
-here means precisely the prime-multiplication similitude of Definition~\ref{def:simil}.
+zero (\code{criticalReadout\_re}). The 3D side is thereby closed: its readout values are exactly $L$ on
+the strip, every event it produces is an on-line zero, and every on-line zero is one of its events. The
+pivotal hypothesis --- \emph{every zero has a source} (\code{EveryZeroHasSource}), whose source form is
+proved to be exactly the critical-line statement (\code{everyZeroHasSource\_iff\_critical}), hence GRH for
+$\chi$, with the exhaustion unconditional given it
+(\code{zero\_source\_admissibility\_of\_everyZeroHasSource}) --- is therefore a statement about the 1D
+analytic object alone. The dichotomy is asymmetric: \emph{either} every zero of the 1D limit arises from a
+source event of the 3D structure, \emph{or} the limit function admits a \emph{sourceless} zero --- a
+vanishing at an off-line point of the readout's chart, a coordinate the carrier does not possess
+($\sigma$ is a dial of the readout, not a place in the geometry), produced by no event. The Riemann
+Hypothesis is thus not something weaker that this work falls short of, but exactly the statement that the
+1D readout adds no zeros of its own: the work closes the 3D side by theorems and localizes the unknown in
+the 1D limit. Section~\ref{sec:evidence} weighs the empirical record on that remaining question.
+``Frobenius'' here means precisely the prime-multiplication similitude of Definition~\ref{def:simil}.
 \end{remark}
 
 \section{Computational phenomenology}\label{sec:phenomenology}
@@ -1245,7 +1338,7 @@ $B_2,B_4,B_6$ corrections, all closed-form for $n^{-s}$), with the absorption wi
 one explicit partial term.  The cost is independent of $N$; the absolute error is
 $\sim10^{-9}$.  The evaluator is validated against the brute sum on $240$ configurations (eight
 characters $\times$ three phase modes $\times$ five magnitude laws $\times$ two sizes, agreement
-$<10^{-8}$) plus a $6.6\times10^{6}$-term brute anchor, and the JavaScript mirror agrees with the
+$<10^{-8}$) plus a $6.6\times10^{6}$-term brute anchor, and the JavaScript port agrees with the
 Python reference to nine decimals at fractional heads.  This is what makes
 Section~\ref{sub:validation} a table instead of a supercomputer allocation.
 
@@ -1266,6 +1359,24 @@ test of \code{focal\_closure.py}); its load-bearing roles are exactly the two pr
 carrier placement forcing the area law (Theorem~\ref{thm:arealaw}) and the exact cell normalization
 $B=(\pi/3)L$ (Theorem~\ref{thm:channelclosure}).
 
+\emph{Satake silence.}  The ambient spectroscopy of Section~\ref{sub:ambient}, run on the
+degree-two forms (\code{tmp/gl2\_explore.py}), reads the local Satake parameters: the clock line at
+$\ln p^{2}$ carries amplitude $\|\alpha^2+\beta^2\|/2$ for the unitary pair
+$\alpha+\beta=\lambda(p)$, $\alpha\beta=1$.  Newton's identity gives
+$\alpha^2+\beta^2=\lambda^2-2$ exactly (\code{satake\_newton\_two}), so the $p^2$-line is silent
+\emph{iff} $\lambda(p)^2=2$ --- Satake angle $\pm\pi/4,\pm3\pi/4$ (\code{satake\_silence\_iff}).
+Both signs of the prediction are measured: for $\Delta$, $\lambda(2)^2-2=-1.72$ and the $\ln4$ line
+is its second strongest ($0.71$ relative to $\ln2$, an $8.5\times$ enhancement over the degree-one
+pattern); for the level-$11$ curve at $p=2$, $a_2=-2$ gives $\lambda(2)=-\sqrt2$, hence
+$\alpha^2+\beta^2=0$ exactly (\code{e11\_ln4\_silent}) --- measured at $0.0012$ relative power:
+the line the spectroscopy found dead is dead by algebra, a measured null promoted to a theorem.
+The supersingular silences are as sharp ($\ln19\le9.4\times10^{-7}$, $\ln29\le3.5\times10^{-8}$).  A long-span sweep quantifies the law:
+across ${\sim}40$ detected lines of $\Delta$, the level-$11$ curve, and a CM control form, measured
+versus predicted Satake weights agree to $\pm4\%$ (medians $1.007$, $1.051$, $0.994$), including
+the alternating $2$-power tower of the CM form verified tooth-by-tooth at its exact inert angle;
+the CM lattice angles themselves ($\pi/2$, $2\pi/3$) carry no clock --- a clean geometric-clock
+null (record: \code{tmp/gl2\_longspan\_results.txt}).
+
 \subsection{Negative results}\label{sub:nulls}
 
 Three natural conjectures about the carrier were tested and are null, and one phenomenological law
@@ -1278,6 +1389,138 @@ gap to the next zero), with close (Lehmer-type) pairs entering through a quadrat
 than any repulsion mechanism; the reverb kernels are formalized in
 \code{ReverbResidue.lean}.  We report (i)--(iii) with the same confidence as the positive results:
 the carrier structure is a home for the cancellation event, not a hidden periodicity in the zeros.
+
+\subsection{The ambient field: Euler clocks and conductor holes}\label{sub:ambient}
+
+Between the zeros the fiber is not featureless.  The power spectrum of $\log|L(\tfrac12+it)|$
+(\code{tmp/ambient\_spectrum.py}) shows sharp lines at \emph{every} $\ln p^{k}$ --- for $\zeta$ the
+$\ln2$ line stands $2.5\times10^{6}$ over background, with weights falling as the Euler expansion
+predicts --- and exact nulls at composite non-prime-powers ($\ln18$, $\ln21$: consistent with
+noise).  The conductor is visible as a \emph{hole}: the complex quintic character's ambient is
+missing exactly its $\ln5$ line and the mod-$29$ character's exactly $\ln29$ (noise-level, versus
+$6.5\times10^{5}$ and $6.6\times10^{4}$ for $\zeta$), every other prime matching --- the ramified
+prime is the neutral bucket ($\chi(p)=0$: no arrow at $p$, hence no $p$-clock in that fiber), made
+spectroscopically visible.  The division of labor is measured on both sides: the
+\emph{configuration} observables unfold --- the mid-gap reopening amplitude collapses onto a single
+smooth curve $b(g)\approx1.35\,g^{2.3}$ in unfolded units across four heights, three conductors,
+real and complex characters, and both degree-two forms (collapse score $0.137$ unfolded versus
+$1.850$ raw) --- while the \emph{medium} carries the raw $\ln p$ clocks.  Only the Euler log-clocks
+exist: every $\pi$-multiple tested ($\pi/3$, $\pi/2$, $2\pi/3$, $\pi$ --- including each CM field's
+own lattice angle) is null, the one apparent hit at $4\pi/3$ resolving to $\ln67$ at
+$\Delta\omega=0.0018$; bounds $\le3.4\times10^{-6}$ (32.a $\ln4$-line, relative to its $\ln5$
+power) and $\le8.1\times10^{-4}$ ($\pi/2$) [\code{tmp/pi\_clock\_results.txt}].  Two structural
+theorems stand behind the spectrogram: the lines \emph{are} the carrier's sites recovered by Bohr
+inversion (Theorem~\ref{thm:selfdual}), and no two lines can ever collide, because
+$\log p/\log q$ is irrational for distinct primes --- unique factorization as spectral
+non-collision (Theorem~\ref{thm:incomm}).  The conductor axis substitutes cheap heights for
+expensive ones: $\chi$ mod $29$ at $t\approx1875$ (mean spacing $0.693$) reproduces
+$\zeta$-at-$60{,}000$ behavior.  The ambient texture is
+the readout shadow of the FTA winding (Theorem~\ref{thm:windmul}: multiplication becoming angular
+addition, prime angles reaching $t\ln p$ through the bridge), and it is where the arithmetic lives
+that the unfolded zero statistics forget.
+
+\subsection{The reverb law and the CUE bridge: no repulsion required}\label{sub:cuebridge}
+
+The positive reverb finding of Section~\ref{sub:nulls}(iv) has a formal kernel, and that kernel
+turns out to be \emph{shared, identically, with random-matrix theory} --- which recalibrates what
+GUE-style agreement can and cannot evidence.
+
+\emph{The reverb kernel.}  At a vanishing $f(\rho)=0$ of a differentiable fiber, the local slope
+reopens at the derivative: $f(y)/(y-\rho)\to f'(\rho)$ (\code{reopening\_slope}); a nonzero
+reciprocal-fiber residue exists iff the vanishing is simple (\code{residue\_exists\_iff\_simple});
+and near a cluster $S$ of other vanishings the reopening rate carries the exact distance product,
+\[
+  \|f'(\rho)\| \;=\; \Bigl(\prod_{\sigma\in S}\|\rho-\sigma\|\Bigr)\cdot\|h'(\rho)\|,
+\]
+with $h$ the regular cofactor, proven analytic across the partner
+(\code{cluster\_product\_law\_norm}, \code{pair\_suppression},
+\code{pair\_regular\_across\_partner}).  This is the law measured in
+Section~\ref{sub:nulls}(iv), and the measured record is quantitative
+[\code{tmp/reverb\_clusters.py}, \code{tmp/reverb\_profiles.py}, \code{tmp/gourdon\_pair\_test.py}]:
+$\hat R\propto S^{\beta}$ with $\beta=1.01$ over the $1517$ zeros below $t=2000$ (zero count
+matching Riemann--von Mangoldt, $1517$ vs $1516.6$); suppression compounds at triples (isolated
+$0.96$, pair member $0.57$, middle of the tightest triple $0.32$); the inter-zero profile is a
+symmetric arch with peak fraction $\varphi=0.44$--$0.49$ (Lehmer pair $0.476$), triple peak ratios
+matching the parameter-free product model to $2$--$6\%$; and the law persists from $g=0.5$ down to
+$g=8.2\times10^{-5}$ at the Gourdon pair at $t\approx1.085\times10^{10}$ ($\hat R/g=2.93$, arch
+$\varphi=0.500$ exactly, while a fixed-slope tent misses by $8300\times$).  Suppression by
+bookkeeping, with no repulsion dynamic anywhere in the mechanism.
+
+\emph{The CUE bridge.}  The random-matrix ``derivative statistic'' is the \emph{same object}.  For
+the characteristic polynomial of any complex matrix, the derivative at an eigenvalue is exactly the
+product of distances to the remaining eigenvalues (multiset form, multiplicity-safe:
+\code{derivative\_prod\_roots\_eval}, \code{cue\_derivative\_at\_eigenvalue}), in norm
+$\|P'(\mu)\|=\prod\|\mu-r\|$ (\code{cue\_rate\_eq\_distance\_product}); and the characteristic
+polynomial, viewed as a fiber, satisfies the \emph{identical} reopening law --- the formal statement
+\code{cue\_reopening\_slope} is proved by applying the fiber kernel \code{reopening\_slope} to the
+matrix side.  One mechanism, two universes.
+
+\emph{Consequence, stated carefully.}  Agreement between $L$-zero derivative statistics and
+CUE/GUE predictions in reopening rates, cluster arches, or close-pair suppression is an
+\emph{identity of shared bookkeeping} --- both sides compute the same distance product --- and is
+therefore not, by itself, evidence of a repulsion mechanism acting on the zeros; statistical
+differences can enter only through the configurations themselves \cite{Montgomery1973}.  Measured
+against CUE with the Keating--Snaith dictionary $N=\log(t/2\pi)\approx6$ --- large $N$ is the wrong
+dictionary here; $N=60$ introduces a spurious $3\times$ spread --- the raw comparison gives
+$\mathrm{KS}=0.114$ and the cluster-corrected one $\mathrm{KS}=0.066$
+[\code{tmp/reverb\_clusters.py}]: the derivative statistics are carried by the gap configuration
+through the product law.  Nothing in
+this subsection assumes or asserts anything about where the zeros lie; the theorems are
+unconditional and machine-checked (\code{ReverbResidue.lean}, \code{GUEBridge.lean}).
+
+\subsection{Exact phase quantization: the fiber as its own oscillator}\label{sub:phasequant}
+
+The phase side of the cancellation cell quantizes exactly --- a measured result whose two
+supporting kernels are, at this writing, \emph{pending} formalization; we mark the tiers
+explicitly.  Raw measurement [\code{tmp/phase\_cells.py}]: the fiber's phase flips by
+$0.98$--$0.99\,\pi$ at every vanishing, winds $\approx-\pi$ between vanishings, and reaches its
+first vanishing at $|\Phi|\approx0.55\,\pi$.  The fluctuations are the readout's, not the model's:
+correcting each cell by the \emph{running carrier gauge}
+\[
+  \theta'(t)\;=\;\tfrac12\ln\!\frac{qt}{2\pi}\;=\;\ln\bigl(\text{carrier radius at the resonant
+  site}\bigr)
+\]
+--- the pure $\sqrt n$ radius, exactly in the $\pi/3$ unit gauge, so the area law
+(Theorem~\ref{thm:arealaw}) acts as the phase gauge --- removes $99.2$--$99.5\%$ of the cell
+fluctuation: every cell is exactly $\pi$ with standard deviation $0.001$--$0.002\,\pi$, for $\zeta$
+and all four tested characters [\code{tmp/s\_running.py}].  The classical contact is Hardy-$Z$
+reality; the model-native content is that the theta clock \emph{is} the log of the bank radius,
+and the fluctuation term $S(T)$ never appears in the carrier's own chart.  Passing to the
+oscillator frame --- the analytic signal of the de-chirped fiber, extended \emph{evenly} across the
+hinge, where the anti-helix conjugacy makes the hinge a turning point (real, even, zero velocity)
+--- the quantization becomes exact: first crossing at $0.499$--$0.500\,\pi$ (a quarter cycle),
+every subsequent cell $0.999$--$1.000\,\pi$ (half cycles), standard deviation down to $0.001$
+[\code{tmp/oscillator.py}].  Zero counting is then deterministic,
+\[
+  N(T)\;=\;\Bigl\lfloor\frac{\varphi(T)}{\pi}+\frac12\Bigr\rfloor ,
+\]
+with no theta asymptotics, no $S(T)$, and no additive constant --- the classical ``$+1$'' is
+revealed as the hinge quarter-cycle.  \emph{Honest decomposition}: given (i)~Hardy reality
+(measured at $0.002\,\pi$), (ii)~evenness of the hinge extension, and (iii)~simplicity of the
+vanishings, the quanta are structural; (ii) and the evenness$\to$turning-point step are the
+\emph{pending Lean kernels} --- they are not claimed proven here.  Dead ends are recorded with the
+same care: fixed gauges ($\pi/3$, $\pi/6$, \dots) remove only $27$--$45\%$ of the fluctuation at
+low heights --- the cancelling gauge must \emph{run} with height [\code{tmp/s\_removal.py},
+\code{tmp/phase\_norm.py}]; the cell-integral fiber loses vanishing-fidelity (its zeros leave the
+$L$-ordinates); and the growth-path odometer undershoots the hinge (the gauge is undefined below
+$qt/2\pi=1$).
+
+\subsection{Retractions and method}\label{sub:retractions}
+
+Two published-in-session readings were retracted, and the reasons are part of the record.
+\emph{The growth-clock window} (a fixed-rate tent with horizon $\Delta y\approx1$, one $e$-fold)
+was an artifact of two errors compounding: the $\eta$ prefactor $|1-2^{1-s}|$ modulates amplitude
+data by $\pm2.4\times$ with raw period $9.06$ and must always be de-modulated, and mixed strata
+faked a saturation kink.  On clean observables the skew statistic has \emph{no} horizon (error
+decreases monotonically out to $5$--$8$ spacings, \code{tmp/horizon\_sweep.py}) and the amplitude
+curves collapse in unfolded units by $13.5\times$ over raw (score $0.137$ vs $1.850$, seven
+samples, \code{tmp/amp\_cross.py}) --- one universal curve $b(g)\approx1.35\,g^{2.3}$, no
+saturation, degree- and conductor-independent.  \emph{The two ``ghost lines''} (32.a near $\ln4$,
+27.a near $\ln8$) were Hann-window skirt artifacts of strong neighbors; the resulting method law is
+now fixed: line claims require \emph{local-maximum enumeration with parabolic interpolation},
+never window-max ratios; a real line locks its location and grows with span while artifacts
+wander; blend tests use centroid pull and skirt symmetry; and every anomaly gets a same-span
+control before it gets a name.
 
 \subsection{The finite instrument}\label{sub:pythonfinder}
 
@@ -1362,10 +1605,157 @@ which displayed ordinates to validate; the focal marker remains $B=0$ and the pe
 \(\det H=0\).
 
 
+\section{The state of the evidence}\label{sec:evidence}
+
+Calibration cuts both ways.  A claim stronger than its proof is a lie; but a paper that has
+accumulated a record and declines to weigh it misstates the evidence in the other direction.
+This section weighs.  Nothing in it upgrades a tier: every item is a cross-reference to a
+statement already made above at its own strength --- kernel-checked theorem or scripted
+measurement --- and the section ends with a register of what contrary data would look like,
+which is what makes the weighing accountable rather than advocacy.
+
+\subsection{What the record supports}\label{sub:evidencefor}
+
+Six lines of evidence, independent in mechanism, point the same way.
+
+\begin{enumerate}[label=\textup{(\roman*)}]
+\item \emph{[Proven] The critical abscissa is derived, not visited.}  Uniform arclength
+placement forces the area law $r_n\sim\sqrt n$ (Theorem~\ref{thm:arealaw}), $\sigma=\tfrac12$
+is the \emph{unique} scale-balanced exponent (Theorems~\ref{thm:scalecrit},~\ref{thm:admissible}),
+and criticality itself is chart-free midpointness --- the fixed axis of the conjugation
+involution, with $\tfrac12$ only the chart's translation constant (Section~\ref{sec:midpoint}).
+The line is not a target the zeros must be argued onto; it is the only locus the geometry
+supports.
+
+\item \emph{[Proven] Both directions of the realization are settled; only completeness is
+open.}  Every critical-line zero is realized as an admissible eigen-event
+(Theorem~\ref{thm:admiss}); every realized cancellation lies on the line
+(Theorem~\ref{thm:kernelonline}); the carrier has no native off-axis support
+(Corollary~\ref{cor:offaxis}, Theorem~\ref{thm:hierarchy}).  Within the model there is
+nowhere for an off-line zero to live: an off-line zero would be a \emph{sourceless} zero of the
+1D limit --- a vanishing with no event behind it, in a coordinate the carrier does not possess
+(Remark~\ref{rem:admissiblescope}).
+
+\item \emph{[Measured] The phase quantizes exactly in the fiber's own clock.}  Gauged by the
+carrier's own radius --- the proven area law acting as the clock --- every cancellation cell
+is $\pi$ to $0.001$--$0.002\,\pi$ for $\zeta$ and all four tested characters; in the
+oscillator frame the first crossing is $0.499$--$0.500\,\pi$ and every subsequent cell a half
+cycle, making the count the deterministic $N(T)=\lfloor\varphi/\pi+\tfrac12\rfloor$ with no
+fluctuation term left over (Section~\ref{sub:phasequant}).  In the measured range there is no
+anomalous phase slack for a deviant configuration to hide in.
+
+\item \emph{[Measured] The medium is exactly arithmetic.}  The ambient spectrum is Euler's
+clocks and nothing else: lines at $\ln p^{k}$ with the Satake weight law, conductor holes and
+CM combs exactly where the arithmetic puts them, exact predicted silences at the
+supersingular sites (Sections~\ref{sub:ambient},~\ref{sub:gl2}).  Every candidate
+non-arithmetic feature we found was hunted to a verdict and died: the ghost lines were window
+skirts, the $\pi$-multiple clocks are null with stated bounds, the close-pair carrier pattern
+is null (Sections~\ref{sub:nulls},~\ref{sub:retractions}).
+
+\item \emph{[Measured] The mechanism is universal, not tuned.}  One unfolded amplitude curve
+across degree and conductor ($13.5\times$ collapse to $b(g)\approx1.35\,g^{2.3}$, seven
+samples), the reopening exponent $\beta=1.01$ of the parameter-free product law over $1517$
+zeros, the law holding from $g=0.5$ down to $g=8.2\times10^{-5}$, and the identical focal
+mechanism locating degree-two zeros with sign lanes in place of residue classes
+(Sections~\ref{sub:cuebridge},~\ref{sub:retractions},~\ref{sub:gl2}).  Nothing is
+family-specific.
+
+\item \emph{[Measured] Every arch floor collapses at every vanishing the instruments have
+touched.}  Across the record --- the $111$ validated Dirichlet zeros (eigenheights to
+$3.8\times10^{15}$), the $1517$-zero reverb record below $t=2000$, the degree-two firsts, the
+Lehmer and Gourdon pairs --- nowhere does the fiber dip toward zero and reopen without
+vanishing where the count demands one
+(Sections~\ref{sub:validation},~\ref{sub:gl2},~\ref{sub:cuebridge}).  The hardest known
+cases are the cleanest: at the Gourdon pair ($g=8.2\times10^{-5}$) the arch peaks at
+$\varphi=0.500$ exactly and both ends vanish.
+\end{enumerate}
+
+\subsection{The working hypothesis}\label{sub:workinghyp}
+
+On this record we adopt, and state as such, a \emph{working hypothesis}: \emph{every zero has a
+source} --- equivalently GRH (Theorem~\ref{thm:grhreal}; the equivalence is per $L$-function,
+and item~(v) is why we do not expect the answer to be family-dependent).  It is the favored
+branch of the dichotomy of Remark~\ref{rem:admissiblescope}, favored because every proven
+constraint and every measurement lands on it while deliberate search for the other branch's
+signatures (below) has produced nothing.  The classical record converts under this framing:
+on-line $\Rightarrow$ sourced is a theorem (Theorem~\ref{thm:admiss}), so the ${\sim}10^{13}$
+classically verified zeros of $\zeta$ are ${\sim}10^{13}$ observed \emph{sourced} zeros --- a
+sourceless zero has never been observed by anyone --- and our instruments add the fine-grained
+event signatures at ${\sim}1{,}600$ of them.  It is not an assertion: nothing in this paper
+proves it, and the other branch needs only one example.  One distinction keeps the record
+honest in both directions: the nulls and retractions above falsified \emph{our own
+structural readings}, never the sourced branch --- both kinds of outcome are reported
+--- and any future observation landing on the other branch will be published with the same
+prominence as any confirmation.
+
+\subsection{The falsifiability register}\label{sub:falsify}
+
+The hypothesis is refutable in the model's own observables.  We pre-commit to the following
+disconfirmation signatures.  Each is a concrete measurement; each has been deliberately
+sought; the current count of each is zero.
+
+\begin{enumerate}[label=\textup{(F\arabic*)}]
+\item \emph{A non-collapsing arch floor.}  An off-axis pair at $\tfrac12\pm\delta+it_0$
+floors the on-line distance product at order $\delta^{2}$: an arch that dips and reopens
+\emph{without} vanishing where the deterministic count of Section~\ref{sub:phasequant}
+demands a zero.  Sought across the full reverb record, including the two hardest known
+configurations; not observed.
+\item \emph{A genuine non-Euler spectral line}: an ambient line at a frequency outside
+$\{\ln p^{k}\}$ surviving the method law of Section~\ref{sub:retractions} (local-maximum
+enumeration, span lock, blend and skirt tests, same-span controls).  Two candidates arose;
+both were window artifacts and are retracted by name.
+\item \emph{A phase cell that is not $\pi$}: a cancellation cell in the fiber's own clock
+departing beyond the measured $0.002\,\pi$ floor --- equivalently a height where the phase
+count and the vanishing count disagree.  Not observed for $\zeta$ or any tested character.
+\item \emph{A weight-law violation}: a prime-power line whose measured weight departs from
+the Satake/Newton prediction beyond the observed $\pm4\%$ envelope, or a predicted exact
+silence that is not silent (Section~\ref{sub:gl2}).  ${\sim}40$ lines measured across three
+forms; none.
+\item \emph{A universality break}: a family whose unfolded configuration statistics leave
+the shared curve --- an amplitude exponent, reopening slope, or arch shape that is degree- or
+conductor-specific.  Seven samples across degrees one and two; none.
+\end{enumerate}
+
+The retraction ledger of Section~\ref{sub:retractions} is this register's proof of
+operation: the falsification machinery has already fired twice, on our own false positives,
+and the results were published as retractions rather than suppressed.  The instruments and
+their commands are public (Sections~\ref{sub:pythonfinder},~\ref{sec:formal}); the reader is
+invited to run them and weigh independently.
+
+\section{A Langlands reading}\label{sec:langlands}
+
+\emph{This section is interpretation}: a reading of the proved and measured structure above in
+Langlands vocabulary.  Nothing in it is a theorem or a measurement beyond the cross-references
+given; it is recorded because it organizes the phenomenology and names the experiments it
+suggests.
+
+The helix is read as a \emph{lifted representation} of the $L$-function: the one-dimensional
+Dirichlet $L$-function is the \emph{character} of the three-dimensional phasor representation ---
+projection as trace --- and the ambient spectroscopy of Section~\ref{sub:ambient} is then the
+recovery of a representation from its character, strong multiplicity one enacted empirically.  The
+dual group appears as \emph{the clock-face of each prime}: for $\mathrm{GL}(1)$, characters of
+$\C^{\times}$ --- the root-of-unity cells of Theorem~\ref{thm:monodromy}; for $\mathrm{GL}(2)$, the
+conjugate Satake pair (the transverse conjugate-pair block of Theorem~\ref{thm:unitary}, made
+local at $p$), with the $p$-power ladders as $\mathrm{SU}(2)$ characters and cell closure passing
+to Sato--Tate orthogonality.  On this reading, the $\pm4\%$ Satake weight law of
+Section~\ref{sub:gl2} is a direct measurement of the Satake isomorphism.  The organs align: the
+height axis is the archimedean component; the Frobenius similitude's radial factor $\sqrt m$
+(Theorem~\ref{thm:simil}) supplies the weight/purity normalization that \'etale cohomology provides
+over $\mathbb{F}_q$, here forced by the carrier's area law; the $\pi/3$ cell is a level/cyclotomic
+trivialization --- gauge in the readout (provably inert in the arrows,
+Section~\ref{sub:gl2}), structural in the carrier.  The reading is falsifiable in the model's own
+terms: functoriality becomes a spectral identity between mediums (the $\mathrm{Sym}^2\Delta$
+comparison is the queued test), the generalized Ramanujan bound becomes a ladder decay rate, and
+reduction types of elliptic curves are already spectroscopically distinct (the conductor holes and
+CM combs of Sections~\ref{sub:ambient} and~\ref{sub:gl2}).  The root number reading --- the weld
+phase of the two conjugate strands at the hinge, with $\varepsilon=-1$ forcing a hinge zero and
+the hinge reopening rate tied to the leading central datum --- is likewise interpretation with
+experiments pending.
+
 \section{Structural frameworks (outlook)}\label{sec:outlook}
 
-Three machine-checked frameworks sit above the main line.  They are scaffolding --- correct,
-kernel-checked, and deliberately demoted here until they carry mathematical weight of their own.
+Three machine-checked frameworks sit above the main line.  Each is correct and kernel-checked;
+they are collected here as the platform for the next stage of the program.
 
 \subsection{The chiral cup}\label{sec:cup}
 The forward/reverse chiralities of the double-ended carrier assemble a Hermitian, positive
@@ -1384,10 +1774,10 @@ $\langle x,y\rangle=g(x,y)+i\,\Omega(x,y)$, strictly positive on the chiral defe
 (\code{inner\_eq\_gH\_add\_I\_OmegaH}, \code{theoremA}); Frobenius transport scales the symplectic
 pairing by exactly $p^{r}$ (\code{theoremB}), and the weighted local trace of the site-shift
 dynamics is the von Mangoldt superposition, equal to $-L'/L$ for $\sigma>1$ (\code{theoremC}).  A
-cohomological re-expression of the vanishing exists ($H^\bullet(\rho)=\C/\langle
-L(\rho,\chi)\rangle$; \code{theoremD}) but is, as formalized, the field-theoretic identity
-``$\C/\langle x\rangle\neq0\iff x=0$'' --- we record it as notation awaiting content, not as a
-cohomology theory.
+cohomological chart of the vanishing is fixed ($H^\bullet(\rho)=\C/\langle
+L(\rho,\chi)\rangle$; \code{theoremD}): as formalized it is the field-theoretic identity
+``$\C/\langle x\rangle\neq0\iff x=0$'' --- the dictionary entry that fixes where a genuine
+cohomology theory must land.
 
 \subsection{The de Branges evaluation}\label{sec:debranges}
 The Hermite--Biehler/de Branges framework is formalized generically: positivity of the structure
@@ -1404,7 +1794,7 @@ the \emph{real} de Branges point $z=\gamma$; reality of $z$ is exactly $\Ree\rho
 That a $\Lambda$-built structure function is Hermite--Biehler is equivalent to the Riemann
 Hypothesis --- the classical de Branges reformulation.  No such structure function is constructed
 here; only the unconditional on-line content (Corollary~\ref{cor:online}) is used.  The open
-question of this paper is projection primacy (Remark~\ref{rem:admissiblescope}), not
+question of this paper is whether every zero has a source (Remark~\ref{rem:admissiblescope}), not
 $\mathrm{IsHB}\,\Lambda$.
 \end{remark}
 
@@ -1428,7 +1818,8 @@ Every definition and theorem above is formalized in Lean~4 \cite{Lean4} against 
 \code{SpectralGramEvent.lean}, \code{SpectralRealizationGRH.lean},
 \code{FocalResidualVanishes.lean}, \code{FocalCancellationFindsZeros.lean},
 \code{FocalCancellationEigenstate.lean}, \code{GeometricReadout.lean},
-\code{ReverbResidue.lean}, and \code{MeromorphicTraceIdentity.lean}). Each named
+\code{ReverbResidue.lean}, \code{GUEBridge.lean}, \code{MellinDual.lean},
+\code{UnitMidpoint.lean}, and \code{MeromorphicTraceIdentity.lean}). Each named
 theorem compiles with no \code{sorry}; the kernel axiom footprint reported by \code{\#print axioms}
 (equivalently \code{lean\_verify}) is
 \[
@@ -1495,7 +1886,11 @@ ordinate $y$ is found at source height $e^y$
 produces a standing/eigenstate package with conserved magnitude
 (\code{focal\_cancellation\_produces\_eigenstate}).  \code{GeometricReadout.lean} collects the
 height-readout and no-double-residue facts, and \code{MeromorphicTraceIdentity.lean} records the
-completed trace identities for the spectral operator.
+completed trace identities for the spectral operator.  \code{ReverbResidue.lean} and
+\code{GUEBridge.lean} formalize the reopening/cluster kernels, the CUE bridge, the cell-closure
+arithmetic, and the Satake silence of Sections~\ref{sub:cuebridge} and~\ref{sub:gl2};
+\code{UnitMidpoint.lean} and \code{MellinDual.lean} carry the midpoint charts and the self-dual
+readout of Section~\ref{sec:midpoint}.
 
 \medskip
 \noindent\emph{Reproduction.}  The Lean claims: \code{lake build} (Mathlib pinned by the manifest);
@@ -1514,8 +1909,8 @@ fiber, whose admissible scale-balanced states exist only on the critical line
 of $\zeta$ and every Dirichlet $L$-function, by the formalized equivalence (Theorem~\ref{thm:alll},
 Section~\ref{sub:fullfiber}). Its central
 contribution is intrinsic: the carrier has \emph{no native off-axis support}
-(Theorem~\ref{thm:hierarchy}), and RH is reframed as the \emph{projection-primacy} principle --- the
-completeness of the carrier's real-height projection (\code{projectionPrimacy\_iff\_exhausts}), equivalent
+(Theorem~\ref{thm:hierarchy}), and RH is reframed as \emph{every zero has a source} --- no sourceless
+zeros in the 1D limit (\code{everyZeroHasSource\_iff\_critical}), equivalent
 to GRH, with the off-axis branch proved impossible inside the model.
 Its mathematical content is exactly the
 statements proved above --- the carrier, the area-law derivation of the critical exponent
@@ -1527,15 +1922,18 @@ unitary transverse block (Theorem~\ref{thm:unitary}), the eigenstate--data ortho
 (Section~\ref{sub:eigenstate}), the de Branges evaluation placing the on-line cancellations as real
 spectral points (Section~\ref{sec:debranges}), and the admissibility restriction of the carrier's
 state space to the critical line (Section~\ref{sec:admissible}). The pivotal hypothesis is
-\emph{projection primacy} --- the completeness of the 3D-to-1D projection
-(Remark~\ref{rem:admissiblescope}) --- formalized in two guises: that the real-height readout exhausts
-the zeros (\code{projectionPrimacy\_iff\_exhausts}), and that a vanishing \emph{produces} the eigenstate
+that \emph{every zero has a source}
+(Remark~\ref{rem:admissiblescope}) --- formalized in two guises: that every nontrivial zero arises from
+a real source height (\code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}), and that a
+vanishing \emph{produces} the eigenstate
 (Remark~\ref{rem:openlink}). The classical de Branges $\mathrm{IsHB}\,\Lambda$ condition
 (Remark~\ref{rem:hbscope}) is the same RH content in the de Branges form --- connected here but neither
-formalized nor relied on (open work, not a conditional of this paper). This work does not decide projection primacy: it poses the dichotomy ---
-the projection is primary, so there are no off-line zeros, \emph{or} an unmodeled factor produces one ---
-and proves that the off-axis branch cannot arise within the 3D carrier. The Riemann Hypothesis is exactly
-the resolution of this dichotomy, which this work frames but neither assumes nor proves.
+formalized nor relied on (open work, not a conditional of this paper). The work poses the dichotomy ---
+every zero has a source, so all lie on the line, \emph{or} the 1D limit admits a \emph{sourceless} zero,
+in a coordinate the carrier does not possess ---
+proves that the off-axis branch cannot arise within the 3D carrier, and weighs the evidence on the
+1D question (Section~\ref{sec:evidence}). The Riemann Hypothesis is exactly the resolution of this
+dichotomy; it is neither assumed nor proved here.
 \end{remark}
 
 \appendix
@@ -1543,7 +1941,7 @@ the resolution of this dichotomy, which this work frames but neither assumes nor
 \section{Headline claims and their Lean identifiers}\label{app:claims}
 
 Each row is a claim of this paper, the Lean identifier that proves it, and its file (package
-\code{RequestProject}, 43 modules).  All rows compile with no \code{sorry}; axiom footprint
+\code{RequestProject}, 46 modules).  All rows compile with no \code{sorry}; axiom footprint
 $\{\mathrm{propext},\mathrm{Classical.choice},\mathrm{Quot.sound}\}$.
 
 \begingroup\small
@@ -1567,10 +1965,17 @@ Every critical-line zero realized at $Z=e^{\gamma}$ & \code{nontrivial\_zero\_re
 One cancellation site per event & \code{no\_double\_cancellation} & \code{NoDoubleCancellation}\\
 Realized cancellation $\Rightarrow$ on the line & \code{nontrivial\_A$\chi$\_kernel\_no\_offline} & \code{SpectralRealizationGRH}\\
 Realization of all cancellations $\Rightarrow$ GRH & \code{GRH\_from\_nontrivial\_A$\chi$\_realization} & \code{SpectralRealizationGRH}\\
-Projection primacy $\iff$ real-height exhaustion ($=$ GRH) & \code{projectionPrimacy\_iff\_exhausts} & \code{HarmonicPencilCell}\\
+Every zero has a source $\iff$ critical line ($=$ GRH) & \code{everyZeroHasSource\_iff\_critical} & \code{HarmonicPencilCell}\\
 No native off-axis support & \code{no\_native\_offaxis\_support} & \code{FrobeniusSimilitude}\\
 Reality of $\Lambda$ on the line & \code{completedRiemannZeta\_critical\_line\_im\_zero} & \code{HelixCollapseReality}\\
-Reverb reopening kernels & \code{ReverbResidue} (module) & \code{ReverbResidue}\\
+Reopening law; residue $\iff$ simple; cluster product & \code{reopening\_slope}, \code{residue\_exists\_iff\_simple}, \code{cluster\_product\_law\_norm} & \code{ReverbResidue}\\
+RMT derivative statistic $=$ distance product & \code{cue\_rate\_eq\_distance\_product}, \code{cue\_reopening\_slope} & \code{GUEBridge}\\
+Step closes $\iff$ $c\in2\pi\Q$; integer steps never & \code{step\_closes\_iff}, \code{integer\_step\_never\_closes} & \code{GUEBridge}\\
+Satake silence: $p^2$-line dead $\iff\lambda^2=2$; E11 at $p{=}2$ & \code{satake\_silence\_iff}, \code{e11\_ln4\_silent} & \code{GUEBridge}\\
+Criticality is midpointness; $\tfrac12$ a chart constant & \code{riemann\_chart}, \code{centered\_chart} & \code{UnitMidpoint}\\
+UNIT/2 in every gauge; $\pi/3$ cell reflects about $\pi/6$ & \code{criticality\_is\_half\_unit}, \code{eisenstein\_mirror} & \code{UnitMidpoint}\\
+Prime clocks never collide (unique factorization) & \code{prime\_clocks\_incommensurable} & \code{UnitMidpoint}\\
+Readout self-dual: spectral axis $=$ height axis & \code{readout\_dual\_recovers\_sites} & \code{MellinDual}\\
 \end{longtable}
 \endgroup
 

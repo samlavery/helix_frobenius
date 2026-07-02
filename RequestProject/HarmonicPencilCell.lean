@@ -312,20 +312,22 @@ theorem gramH_rank_drop_iff_L_zero (χ : DirichletCharacter ℂ q) (Z : ℝ)
   rw [GramH, gram_rank_drop_iff_det_cell_zero, LhMat,
     harmonic_pencil_det_zero_iff_L_zero χ Z μ lam hlam]
 
-/-- **Projection primacy.**  The harmonic Gram rank-drop event is governed *solely* by the
-signed projection `Bᶜχ(Z)` (the scalar L-projection): under admissibility `λ ≠ μ`,
-`det Gᶜχ,h(Z) = 0 ↔ Bᶜχ(Z) = 0`, independent of the unsigned mode `Aᶜχ(Z)`.  The primacy of
-this projection is what makes it the proof-grade detector. -/
-theorem projection_primacy (χ : DirichletCharacter ℂ q) (Z : ℝ) (μ lam : ℂ) (hlam : lam ≠ μ) :
+/-- **The signed channel alone drives the detector.**  The harmonic Gram rank-drop event is
+governed *solely* by the signed projection `Bᶜχ(Z)` (the scalar L-projection): under
+admissibility `λ ≠ μ`, `det Gᶜχ,h(Z) = 0 ↔ Bᶜχ(Z) = 0`, independent of the unsigned mode
+`Aᶜχ(Z)`.  This is what makes it the proof-grade detector. -/
+theorem gramH_rank_drop_iff_Bchan_zero (χ : DirichletCharacter ℂ q) (Z : ℝ) (μ lam : ℂ)
+    (hlam : lam ≠ μ) :
     (GramH χ Z μ lam).det = 0 ↔ Bchan χ Z = 0 := by
   rw [gramH_rank_drop_iff_L_zero χ Z μ lam hlam, ← Bchan_zero_iff_L_zero]
 
-/-- **Calibration independence (a corollary of projection primacy).**  The Gram rank-drop event
-does not depend on the choice of admissible diagonal calibration `(μ, λ)`. -/
+/-- **Calibration independence.**  The Gram rank-drop event does not depend on the choice of
+admissible diagonal calibration `(μ, λ)`: the signed channel alone drives it. -/
 theorem gram_rank_drop_calibration_independent (χ : DirichletCharacter ℂ q) (Z : ℝ)
     (μ₁ lam₁ μ₂ lam₂ : ℂ) (h₁ : lam₁ ≠ μ₁) (h₂ : lam₂ ≠ μ₂) :
     (GramH χ Z μ₁ lam₁).det = 0 ↔ (GramH χ Z μ₂ lam₂).det = 0 := by
-  rw [projection_primacy χ Z μ₁ lam₁ h₁, projection_primacy χ Z μ₂ lam₂ h₂]
+  rw [gramH_rank_drop_iff_Bchan_zero χ Z μ₁ lam₁ h₁,
+    gramH_rank_drop_iff_Bchan_zero χ Z μ₂ lam₂ h₂]
 
 /-! ## 7. Admissible real heights read on the critical line -/
 
@@ -415,52 +417,55 @@ theorem zero_source_admissibility (χ : DirichletCharacter ℂ q) (ρ : ℂ)
   · simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, hcrit]
   · simp [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]
 
-/-! ## 10. The projection-primacy principle and the conditional unconditional form
+/-! ## 10. Every zero has a source — the conditional unconditional form
 
 The `hcrit : ρ.re = 1/2` hypothesis of `zero_source_admissibility` is the only obstruction to a
-fully unconditional exhaustion.  Dropping it amounts to asserting that *every* nontrivial zero is
-realized by a real source height — equivalently, that every nontrivial zero lies on the critical
-line.  We isolate this as the explicit **projection-primacy principle** (the choice of the 3D
-L-function as the source function, whose real-height projection is taken to exhaust the zeros).
-We prove it is *equivalent* to the real-height exhaustion statement, and that, conditional on it,
-`zero_source_admissibility` upgrades to an unconditional form.  The principle is exactly GRH for
-`χ`; it is isolated as a hypothesis, neither assumed globally nor proved here. -/
+fully unconditional exhaustion.  The 3D side is closed: the readout of a real source height lands
+on the critical line and nowhere else, and every on-line zero is realized.  What remains is a
+statement about the 1D analytic object alone: that the limit function admits no **sourceless
+zero** — a vanishing at an off-line point of the 1D chart (a coordinate the carrier does not
+possess; `σ` is a dial of the readout, not a place in the geometry) with no event behind it.  We
+isolate this as the explicit hypothesis **every zero has a source**, prove that the source form
+is exactly the critical-line statement (GRH for `χ`), and show that, conditional on it,
+`zero_source_admissibility` upgrades to an unconditional form.  It is isolated as a hypothesis,
+neither assumed globally nor proved here. -/
 
-/-- **The projection-primacy principle** (with the 3D L-function as the source function): every
-nontrivial zero of `Lχ` lies on the critical line.  This is exactly GRH for `χ`; it is an
-explicit input, not a theorem. -/
-def ProjectionPrimacy (χ : DirichletCharacter ℂ q) : Prop :=
-  ∀ ρ : ℂ, NontrivialZeroChi χ ρ → ρ.re = 1 / 2
+/-- **Every zero has a source**: every nontrivial zero of `Lχ` arises from a real source height
+`Z > 0` through the projection `Z ↦ 1/2 + i·τχ(log Z)`.  The alternative is a *sourceless zero*
+— a vanishing of the 1D limit with no 3D event behind it.  The source form is exactly GRH for
+`χ` (`everyZeroHasSource_iff_critical`); it is an explicit input, not a theorem. -/
+def EveryZeroHasSource (χ : DirichletCharacter ℂ q) : Prop :=
+  ∀ ρ : ℂ, NontrivialZeroChi χ ρ →
+    ∃ Z : ℝ, 0 < Z ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I
 
-/-- **Projection primacy ⇔ real-height exhaustion.**  The projection-primacy principle holds iff
-the real source-height readout `Z ↦ 1/2 + i·τχ(log Z)` exhausts the nontrivial zeros.  This makes
-explicit that the principle is precisely the GRH-strength exhaustion statement. -/
-theorem projectionPrimacy_iff_exhausts (χ : DirichletCharacter ℂ q) :
-    ProjectionPrimacy χ ↔
-      ∀ ρ : ℂ, NontrivialZeroChi χ ρ →
-        ∃ Z : ℝ, 0 < Z ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I := by
+/-- **Sourced ⇔ critical.**  Every zero has a source iff every nontrivial zero lies on the
+critical line: a real height's readout has `re = 1/2`, and conversely `Z = exp (im ρ)` sources
+an on-line zero.  The hypothesis is GRH for `χ`, stated in source form. -/
+theorem everyZeroHasSource_iff_critical (χ : DirichletCharacter ℂ q) :
+    EveryZeroHasSource χ ↔ ∀ ρ : ℂ, NontrivialZeroChi χ ρ → ρ.re = 1 / 2 := by
   constructor
-  · intro hpp ρ hnt
+  · intro hsrc ρ hnt
+    obtain ⟨Z, _, hZ⟩ := hsrc ρ hnt
+    rw [hZ]
+    simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
+  · intro hcrit ρ hnt
     refine ⟨Real.exp ρ.im, Real.exp_pos _, ?_⟩
     rw [tauChi, Real.log_exp]
     apply Complex.ext
-    · simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, hpp ρ hnt]
+    · simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, hcrit ρ hnt]
     · simp [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]
-  · intro hex ρ hnt
-    obtain ⟨Z, _, hZ⟩ := hex ρ hnt
-    rw [hZ]
-    simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
 
-/-- **Conditional unconditional form.**  Conditional on the projection-primacy principle
-(`ProjectionPrimacy χ`, i.e. GRH for `χ`), every nontrivial zero `ρ` of `Lχ` — with no
-critical-line hypothesis — arises from an admissible real source height: `∃ Z > 0`, `Admissibleχ
-Z`, and `ρ = 1/2 + i·τχ(log Z)`.  The GRH-strength content is entirely carried by the explicit
-hypothesis `hpp`; nothing here proves GRH. -/
-theorem zero_source_admissibility_of_projectionPrimacy (χ : DirichletCharacter ℂ q)
-    (hpp : ProjectionPrimacy χ) (ρ : ℂ) (hnontriv : NontrivialZeroChi χ ρ) :
+/-- **Conditional unconditional form.**  Conditional on every zero having a source
+(`EveryZeroHasSource χ`, i.e. GRH for `χ`), every nontrivial zero `ρ` of `Lχ` — with no
+critical-line hypothesis — arises from an **admissible** real source height: `∃ Z > 0`,
+`Admissibleχ Z`, and `ρ = 1/2 + i·τχ(log Z)`.  The GRH-strength content is entirely carried by
+the explicit hypothesis `hsrc`; nothing here proves GRH. -/
+theorem zero_source_admissibility_of_everyZeroHasSource (χ : DirichletCharacter ℂ q)
+    (hsrc : EveryZeroHasSource χ) (ρ : ℂ) (hnontriv : NontrivialZeroChi χ ρ) :
     ∃ Z : ℝ, 0 < Z ∧ Admissible χ Z
       ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I :=
-  zero_source_admissibility χ ρ hnontriv (hpp ρ hnontriv)
+  zero_source_admissibility χ ρ hnontriv
+    ((everyZeroHasSource_iff_critical χ).mp hsrc ρ hnontriv)
 
 /-! ## 11. The channel-agnostic pencil layer and the finite (crutch-free) instantiation
 
