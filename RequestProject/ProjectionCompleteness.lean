@@ -7,10 +7,10 @@ Sam's correction, formalized: the "upper half-plane" has no meaning relative to 
 helix.  The half-plane, the strip, and the σ-coordinate belong to the 1D projection
 chart (`CLAUDE.md` ontology: the strip is a projection device with no 3D counterpart).
 The 3D object's domain is the HEIGHT AXIS: a vanishing of the double-ended helix is a
-closure event at a real height, and its image in the 1D chart lies on the mirror BY THE
-PROJECTION MAP — not by a theorem about analytic continuation.  So:
+closure event at a real height, and its image in the 1D chart lies on the conjugation
+axis BY THE PROJECTION MAP — not by a theorem about analytic continuation.  So:
 
-* **3D side, unconditional**: `helix_vanishing_projects_to_mirror` — every 3D vanishing
+* **3D side, unconditional**: `helix_vanishing_projects_to_conj_axis` — every 3D vanishing
   datum (a real height) projects to abscissa exactly `1/2`.  Together with the proven
   package — conjugate pairing (`vanishing_dual_pair`, `vanishing_conj_pair`), dimension
   symmetry (`dual_dimension_symmetry`), det-1 blocks (`dual_pair_det_one`), the carrier's
@@ -38,19 +38,19 @@ def arisesFromHelix (ρ : ℂ) : Prop :=
     ∧ completedRiemannZeta (1 / 2 + (γ : ℂ) * Complex.I) = 0
 
 /-- **The 3D statement, unconditional**: a 3D vanishing datum is a real height, and its
-projection into the 1D chart has abscissa exactly `1/2` — the helix has no off-mirror
+projection into the 1D chart has abscissa exactly `1/2` — the helix has no off-axis
 locus for a vanishing to occupy.  (The "upper half-plane" never appears: it is not a
 3D notion.) -/
-theorem helix_vanishing_projects_to_mirror (γ : ℝ) :
+theorem helix_vanishing_projects_to_conj_axis (γ : ℝ) :
     ((1 : ℂ) / 2 + (γ : ℂ) * Complex.I).re = 1 / 2 := by
   simp [Complex.add_re, Complex.mul_re]
 
-/-- Anything that arises from the helix is on the mirror — one direction of the bridge,
-free of any hypothesis. -/
-theorem arisesFromHelix_on_mirror {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re = 1 / 2 := by
+/-- Anything that arises from the helix is on the conjugation axis — one direction of
+the bridge, free of any hypothesis. -/
+theorem arisesFromHelix_on_conj_axis {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re = 1 / 2 := by
   obtain ⟨γ, hγ, -⟩ := h
   rw [hγ]
-  exact helix_vanishing_projects_to_mirror γ
+  exact helix_vanishing_projects_to_conj_axis γ
 
 /-- **The positioning claim as a theorem: RH ⟺ projection completeness.**  The classical
 Riemann Hypothesis for the completed zeta is EXACTLY the statement that every zero of the
@@ -61,23 +61,23 @@ theorem projection_complete_iff_RH :
       ↔ (∀ ρ : ℂ, completedRiemannZeta ρ = 0 → ρ.re = 1 / 2) := by
   constructor
   · intro h ρ hρ
-    exact arisesFromHelix_on_mirror (h ρ hρ)
+    exact arisesFromHelix_on_conj_axis (h ρ hρ)
   · intro h ρ hρ
     have hre := h ρ hρ
     have hρ' : (1 / 2 + (ρ.im : ℂ) * Complex.I) = ρ := by
       apply Complex.ext
-      · rw [helix_vanishing_projects_to_mirror ρ.im, hre]
+      · rw [helix_vanishing_projects_to_conj_axis ρ.im, hre]
       · simp [Complex.add_im, Complex.mul_im]
     exact ⟨ρ.im, hρ'.symm, by rw [hρ']; exact hρ⟩
 
 /-- **3D-helix RH, unconditional** — the named capstone: every zero that arises from the
-helix lies on the mirror.  No hypothesis: the 3D representation's vanishing data are
-real heights, and the projection map puts them at abscissa `1/2`.  The only conditional
-statement in the program is `projection_complete_iff_RH` — and it lives entirely in the
-1D chart, where it is EXACTLY classical RH.  (The upper half-plane, the strip, and the
-coherence hypothesis of `SummedFiberHB.coherence_implies_mirror` are all 1D-chart
-objects; the 3D representation never needs them.) -/
+helix lies on the conjugation axis.  No hypothesis: the 3D representation's vanishing
+data are real heights, and the projection map puts them at abscissa `1/2`.  The only
+conditional statement in the program is `projection_complete_iff_RH` — and it lives
+entirely in the 1D chart, where it is EXACTLY classical RH.  (The upper half-plane, the
+strip, and the coherence hypothesis of `SummedFiberHB.coherence_implies_conj_axis` are
+all 1D-chart objects; the 3D representation never needs them.) -/
 theorem helix3D_RH {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re = 1 / 2 :=
-  arisesFromHelix_on_mirror h
+  arisesFromHelix_on_conj_axis h
 
 end CriticalLinePhasor.ProjectionCompleteness

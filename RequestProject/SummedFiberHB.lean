@@ -27,9 +27,9 @@ that name exactly where it stands.  `Estar E z = conj (E (conj z))` throughout
   sides conspire); THAT failure mode is precisely the open wall.
 
 Consequence recorded honestly: the completion-membership question (WeilDuality
-`mirror_is_membership_boundary`) and the summed-fiber HB question are ONE wall — the
-membership dichotomy already has the exclusion shape (off-mirror ⇒ inside the Hilbert
-space ⇒ excluded by `von_neumann_reality`/`hb_no_zero_upper`; on-mirror ⇒ boundary ⇒
+`conj_axis_is_membership_boundary`) and the summed-fiber HB question are ONE wall — the
+membership dichotomy already has the exclusion shape (off-axis ⇒ inside the Hilbert
+space ⇒ excluded by `von_neumann_reality`/`hb_no_zero_upper`; on-axis ⇒ boundary ⇒
 permitted), and what remains in both formulations is the same coherence statement:
 the fiber's winding is one-handed enough to align the strands.  No `sorry`; standard
 axioms.
@@ -110,17 +110,17 @@ theorem aligned_strict_sum_HB {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
 theorem star'_eq_estar (E : ℂ → ℂ) (z : ℂ) :
     star' E z = CriticalLinePhasor.DeBranges.Estar E z := rfl
 
-/-- **The conditional master chain: winding coherence ⇒ the mirror.**  If at every
-point of the upper half-plane the bank is phase-aligned with margin — each term's helix
-strand beats its own antihelix strand in some common direction — then the summed fiber
-is Hermite–Biehler, and **every zero of its collapse wave `A = (E + E*)/2` is real**:
-3D-RH for the summed fiber, conditional on exactly ONE geometric hypothesis, the
+/-- **The conditional master chain: winding coherence ⇒ the conjugation axis.**  If at
+every point of the upper half-plane the bank is phase-aligned with margin — each term's
+helix strand beats its own antihelix strand in some common direction — then the summed
+fiber is Hermite–Biehler, and **every zero of its collapse wave `A = (E + E*)/2` is
+real**: 3D-RH for the summed fiber, conditional on exactly ONE geometric hypothesis, the
 carrier's winding coherence.  This is the whole remaining wall, welded into a single
 implication: `hcoh` is where de Branges spent decades, and everything after it is
 proven (`aligned_strict_sum_HB` + `DeBranges.Acomp_zero_im_eq_zero`).  The measurable
 face of `hcoh`: the per-term alignment margin across the bank at upper-half-plane
 sample points. -/
-theorem coherence_implies_mirror {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
+theorem coherence_implies_conj_axis {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
     (E : ι → ℂ → ℂ)
     (hcoh : ∀ z : ℂ, 0 < z.im → ∃ θ : ℝ, ∀ j ∈ s,
       ‖star' (E j) z‖ < (Complex.exp (Complex.I * θ) * E j z).re) :
@@ -132,5 +132,36 @@ theorem coherence_implies_mirror {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
     exact aligned_strict_sum_HB s hs E z θ hθ
   intro z hz
   exact CriticalLinePhasor.DeBranges.Acomp_zero_im_eq_zero hHB hz
+
+/-! ## No conspiracy on the double helix: the cup norm has no null space
+
+Owner's principle, after the Part II obstruction (the re-welded scalar companion failed
+strict HB in bands via phase cancellation): the "conspiracy" is a property of the 1D
+READOUT, not the helix.  The rank-one readout `ℓ(v) = Σ vₙ` has an enormous null space
+— that is where interference lives and where the bands were found.  The 3D object's own
+metric — the cup norm, proven NONDEGENERATE (`ChiralCup.cup_nullspace_safe`) — admits no
+interference at all: per-term strand dominance transfers to the summed cup norm
+immediately, because sums of squares carry no phases.  There is no kernel null space
+for a conspiracy to hide in.
+
+Consequence for the wall: the scalar Hermite–Biehler route asks whether the
+cup-dominant strand's SHADOW under `ℓ` can dip below the other strand's shadow — a
+question about the readout's kernel, i.e. a 1D-chart question, as doctrine requires.
+The 3D-native reformulation this suggests: the TWO-STRAND (ℂ²-valued) structure
+function, where the star swaps strands and scalar HB is replaced by matrix
+J-contractivity (de Branges–Rovnyak / Potapov, J = diag(1,−1)) — the det-1 strand
+pairing is then built into the object rather than projected away.  Proposed as the next
+formalization target; not claimed. -/
+
+/-- **No conspiracy in the cup norm**: strict per-term dominance transfers to the summed
+cup norm — sums of squares admit no interference, so no phase configuration can flip
+the comparison.  (Contrast: the scalar readout `‖Σ·‖` CAN flip it — measured, Part II.) -/
+theorem cup_dominance_no_conspiracy {ι : Type*} (s : Finset ι) (hs : s.Nonempty)
+    (f g : ι → ℂ) (h : ∀ j ∈ s, ‖f j‖ < ‖g j‖) :
+    ∑ j ∈ s, ‖f j‖ ^ 2 < ∑ j ∈ s, ‖g j‖ ^ 2 := by
+  refine Finset.sum_lt_sum_of_nonempty hs fun j hj => ?_
+  have hj2 := h j hj
+  have h0 : (0 : ℝ) ≤ ‖f j‖ := norm_nonneg _
+  nlinarith [norm_nonneg (g j)]
 
 end CriticalLinePhasor.SummedFiberHB

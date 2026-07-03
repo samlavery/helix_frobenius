@@ -14,17 +14,17 @@ and the zero locus obeys an exact law:
 
     E_{α,ℓ}(z) = 0   ⟹   Im z = −log‖α‖ / ℓ.
 
-**The displacement off the mirror equals the purity defect.**  Hence:
+**The displacement off the conjugation axis equals the purity defect.**  Hence:
 * `clock_zeros_real` — det-1/unitary clock face (`‖α‖ = 1`, the proven Frobenius
-  conjugate-pair structure) ⟹ ALL zeros of the clock are exactly on the mirror.
+  conjugate-pair structure) ⟹ ALL zeros of the clock are exactly on the conjugation axis.
   RH for the pure clock, unconditional.
 * `clock_zero_depth` — the general law: an impure clock face displaces its zeros by
-  exactly its purity defect.  Purity and mirror-location are THE SAME statement,
+  exactly its purity defect.  Purity and axis-location are THE SAME statement,
   pointwise at every clock.
 * `carrier_zeros_real` — the carrier is the FTA product of its prime clocks
   (`prime_clocks_incommensurable` keeps them from colliding); a finite product of
-  unitary clocks has all zeros on the mirror.  **3D-helix-RH for the multiplicative
-  carrier as defined: unconditional.**
+  unitary clocks has all zeros on the conjugation axis.  **3D-helix-RH for the
+  multiplicative carrier as defined: unconditional.**
 * `symClock_star` / `symClock_selfdual_modulus` — the unitary symmetrized clock obeys
   `E* = −ᾱ·E`, hence `‖E*‖ = ‖E‖` identically: it is a REAL de Branges function
   (an `A`-function), living exactly ON the Hermite–Biehler boundary — which is where
@@ -33,7 +33,7 @@ and the zero locus obeys an exact law:
 
 Honesty tier: this closes the MULTIPLICATIVE side (the carrier/medium — where the
 spectroscopy lives).  The additive interference (the fiber's closures, the L-vanishings)
-is the de Branges completion question (`mirror_is_membership_boundary`,
+is the de Branges completion question (`conj_axis_is_membership_boundary`,
 `DeBranges.hb_no_zero_upper`), still open and named.  Nothing here assumes or proves
 classical RH/GRH.
 -/
@@ -71,8 +71,8 @@ theorem symClock_zero_iff (α : ℂ) (ℓ : ℝ) (z : ℂ) :
     ring
 
 /-- **The purity-defect law**: a zero of the clock sits at depth
-`Im z = −log‖α‖ / ℓ` — the displacement off the mirror IS the purity defect of the
-clock face. -/
+`Im z = −log‖α‖ / ℓ` — the displacement off the conjugation axis IS the purity defect of
+the clock face. -/
 theorem clock_zero_depth {α : ℂ} {ℓ : ℝ} (hℓ : 0 < ℓ) {z : ℂ}
     (hz : symClock α ℓ z = 0) : z.im = -Real.log ‖α‖ / ℓ := by
   have h := (symClock_zero_iff α ℓ z).mp hz
@@ -88,7 +88,7 @@ theorem clock_zero_depth {α : ℂ} {ℓ : ℝ} (hℓ : 0 < ℓ) {z : ℂ}
 
 /-- **RH for the pure clock, unconditional**: a det-1/unitary clock face (`‖α‖ = 1` —
 the proven Frobenius conjugate-pair structure) puts EVERY zero of its clock exactly on
-the mirror. -/
+the conjugation axis. -/
 theorem clock_zeros_real {α : ℂ} (hα : ‖α‖ = 1) {ℓ : ℝ} (hℓ : 0 < ℓ) {z : ℂ}
     (hz : symClock α ℓ z = 0) : z.im = 0 := by
   rw [clock_zero_depth hℓ hz, hα, Real.log_one]
@@ -96,7 +96,7 @@ theorem clock_zeros_real {α : ℂ} (hα : ‖α‖ = 1) {ℓ : ℝ} (hℓ : 0 <
 
 /-- **3D-helix-RH for the multiplicative carrier as defined**: the carrier is the FTA
 product of its prime clocks; if every clock face is unitary (det 1), every zero of the
-product lies exactly on the mirror.  Unconditional. -/
+product lies exactly on the conjugation axis.  Unconditional. -/
 theorem carrier_zeros_real {ι : Type*} (s : Finset ι) (α : ι → ℂ) (ℓ : ι → ℝ)
     (hα : ∀ i ∈ s, ‖α i‖ = 1) (hℓ : ∀ i ∈ s, 0 < ℓ i) {z : ℂ}
     (hz : (∏ i ∈ s, symClock (α i) (ℓ i) z) = 0) : z.im = 0 := by

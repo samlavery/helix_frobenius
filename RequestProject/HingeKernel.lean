@@ -20,7 +20,7 @@ helix is the midpoint of the conjugation involution, and three structural facts 
 * `weld_pins_half_phase` — for complex (non-self-dual) characters the functional equation
   `Λ(s,χ) = ε·Λ(1−s,χ̄)` plus conjugation symmetry gives the anti-involution
   `Λ(½+it,χ) = e^{i·arg ε}·conj Λ(½+it,χ)` at EVERY `t`, so the completed phase is pinned
-  to the ray `arg(ε)/2` — `UnitMidpoint.mirror_fixed_iff` with `Δ = arg ε`.  The root
+  to the ray `arg(ε)/2` — `UnitMidpoint.conj_fixed_iff` with `Δ = arg ε`.  The root
   number is readable from the line phase (and from the hinge's first-cell offset).
   Measured exactly: χ₅ (order 4) `0.0881·π`, χ₇ (order 6) `0.1868·π`, conjugates mirrored,
   Gauss-sum ground truth matched to 4 decimals with zero circular spread
@@ -58,7 +58,7 @@ By `completedRiemannZeta_critical_line_im_zero` the real part IS the whole value
 noncomputable def collapseWave (t : ℝ) : ℝ :=
   (completedRiemannZeta (1 / 2 + (t : ℂ) * Complex.I)).re
 
-/-- The collapse wave is even: the hinge `t = 0` is the mirror of the double helix. -/
+/-- The collapse wave is even: the hinge `t = 0` is the conjugation axis of the double helix. -/
 theorem collapseWave_even (t : ℝ) : collapseWave (-t) = collapseWave t := by
   unfold collapseWave
   rw [completed_zeta_line_even]
@@ -94,7 +94,7 @@ for χ₅/χ₇ against Gauss sums (`tmp/root_hinge.py`). -/
 theorem weld_pins_half_phase (Δ : ℝ) (z : ℂ)
     (hweld : z = Complex.exp (Complex.I * Δ) * (starRingEnd ℂ) z) :
     (z * Complex.exp (-(Complex.I * ((Δ / 2 : ℝ) : ℂ)))).im = 0 :=
-  (CriticalLinePhasor.UnitMidpoint.mirror_fixed_iff Δ z).mp hweld.symm
+  (CriticalLinePhasor.UnitMidpoint.conj_fixed_iff Δ z).mp hweld.symm
 
 /-! ## Jet parity: the dimension parity at the hinge IS the weld parity
 

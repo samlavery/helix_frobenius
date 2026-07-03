@@ -1,0 +1,128 @@
+THE JET CENSUS — |Sha| from the LEADING CENTRAL JET at ranks 1, 2, 3
+============================================================================
+BSD full formula:  L^(r)(E,1)/r! = Omega * Reg * |Sha| * prod cp / T^2
+Solve for the local-global obstruction:
+  |Sha| = [L^(r)/r!] * T^2 / (Omega * Reg * prod cp)
+License: BSDClocks.lean leading_jet_extraction / first_jet_eq_deriv /
+         jet_measurement_sound (jet within 1/2 identifies the integer Sha).
+a_n point-counted (sha_hinge.bank_general); L-values = incomplete-Gamma readout;
+heights measured two ways; regulator = height-pairing determinant.
+
+############################################################################
+# ANCHOR GATES (all must pass before the census runs)
+############################################################################
+[GATE] incomplete-Gamma Taylor kernel
+    E1_series vs scipy.exp1, max|err| over x in [0.01,40] = 6.25e-17   [PASS]
+    I_0(y) vs e^(-y), max|err| = 0.00e+00   [PASS]
+    I_1(y) vs dense-Simpson quadrature, max|err| = 1.08e-12   [PASS]
+[GATE] L'(37a1,1)
+    L(37a1,1)   = 0.0000000000   (should be ~0, rank>=1)
+    L'(37a1,1)  = 0.3059997738   known 0.3059997738   |err|=3.44e-11   [PASS]
+[GATE] canonical height 37a1 generator (0,0)  [nmax=9, full precision]
+    ĥ naive-limit      = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    ĥ shifted h(2P)/4  = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    two-method agreement |naive - shifted| = 9.75e-15   [PASS]
+[GATE] regulators  [nmax=9, full precision]
+    Reg(37a1)  = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    Reg(389a1) = 0.1524593847   known 0.1524601779   |err|=7.93e-07
+    [PASS]
+
+  ALL GATES: PASS — census authorized
+
+############################################################################
+# THE CENSUS
+############################################################################
+
+=== 37a1  (conductor 37, ainvs [0, 0, 1, -1, 0], analytic rank r=1) ===
+  jets L^(k)/k!, k=0..1: 0.000000, 0.306000
+    functional-eq sign eps = - (rank parity 1)
+    lower jets vanish at center: max|L^(k)/k!, k<r| = 0.00e+00  (order of central vanishing = 1, self-consistent)
+  L^(1)(E,1)/1! = 0.3059997738   [incomplete-Gamma Taylor, own point-counted a_n]
+  Omega   = 5.9869172925   [AGM]
+  prod cp = 1   (c_37=1)   [Tate]
+  T       = 1   [group-law torsion; gcd bound 1]
+  canonical heights (generator: naive-limit  vs  shifted h(2P)/4  |diff|):
+    P=(0,0): h_hat = 0.0511034200  [cross-check 0.0511106493, |d|=7.23e-06]
+  Reg = det(Gram) = 0.0511034200
+  --- LANDING ---
+  |Sha| = [L^(1)/1!] * T^2 / (Omega * Reg * prod cp)
+        = 0.30599977 * 1 / (5.986917 * 0.05110342 * 1)
+        = 1.00015632
+        -> nearest integer 1  (margin 1.56e-04)  [LANDED]
+  [scoring vs known — readout verification only]
+    L^(1)/1! : measured 0.3059997738  known 0.3059997738  |d|=3.44e-11
+    Reg         : measured 0.0511034200  known 0.0511114082  |d|=7.99e-06
+    Omega       : measured 5.9869172925  known 5.9869172925  |d|=3.61e-11
+    |Sha|       : landed 1  known 1  MATCH
+
+=== 389a1  (conductor 389, ainvs [0, 1, 1, -2, 0], analytic rank r=2) ===
+  jets L^(k)/k!, k=0..2: -0.000000, 0.000000, 0.759317
+    functional-eq sign eps = + (rank parity 0)
+    lower jets vanish at center: max|L^(k)/k!, k<r| = 9.83e-16  (order of central vanishing = 2, self-consistent)
+  L^(2)(E,1)/2! = 0.7593165003   [incomplete-Gamma Taylor, own point-counted a_n]
+  Omega   = 4.9804251217   [AGM]
+  prod cp = 1   (c_389=1)   [Tate]
+  T       = 1   [group-law torsion; gcd bound 1]
+  canonical heights (generator: naive-limit  vs  shifted h(2P)/4  |diff|):
+    P=(-1,1): h_hat = 0.6866416960  [cross-check 0.6866625767, |d|=2.09e-05]
+    P=(0,0): h_hat = 0.3269747950  [cross-check 0.3269966535, |d|=2.19e-05]
+  height-pairing Gram matrix:
+      [+0.68664170  -0.26846104]
+      [-0.26846104  +0.32697479]
+  Reg = det(Gram) = 0.1524431959
+  --- LANDING ---
+  |Sha| = [L^(2)/2!] * T^2 / (Omega * Reg * prod cp)
+        = 0.75931650 * 1 / (4.980425 * 0.15244320 * 1)
+        = 1.00011140
+        -> nearest integer 1  (margin 1.11e-04)  [LANDED]
+  [scoring vs known — readout verification only]
+    L^(2)/2! : measured 0.7593165003  known 0.7593165003  |d|=1.10e-11
+    Reg         : measured 0.1524431959  known 0.1524601779  |d|=1.70e-05
+    Omega       : measured 4.9804251217  known 4.9804251217  |d|=1.01e-11
+    |Sha|       : landed 1  known 1  MATCH
+
+=== 5077a1  (conductor 5077, ainvs [0, 0, 1, -7, 6], analytic rank r=3) ===
+  jets L^(k)/k!, k=0..3: 0.000000, 0.000000, -0.000000, 1.731850
+    functional-eq sign eps = - (rank parity 1)
+    lower jets vanish at center: max|L^(k)/k!, k<r| = 8.30e-08  (order of central vanishing = 3, self-consistent)
+  L^(3)(E,1)/3! = 1.7318501164   [incomplete-Gamma Taylor, own point-counted a_n]
+  Omega   = 4.1516879831   [AGM]
+  prod cp = 1   (c_5077=1)   [Tate]
+  T       = 1   [group-law torsion; gcd bound 1]
+  canonical heights (generator: naive-limit  vs  shifted h(2P)/4  |diff|):
+    P=(-2,3): h_hat = 1.3685724990  [cross-check 1.3685724990, |d|=7.69e-12]
+    P=(-1,3): h_hat = 1.2050765473  [cross-check 1.2050806530, |d|=4.11e-06]
+    P=(0,2): h_hat = 0.9909010143  [cross-check 0.9909051223, |d|=4.11e-06]
+  height-pairing Gram matrix:
+      [+1.36857250  -0.69386298  -0.03984237]
+      [-0.69386298  +1.20507655  -0.71446963]
+      [-0.03984237  -0.71446963  +0.99090101]
+  Reg = det(Gram) = 0.4171360170
+  --- LANDING ---
+  |Sha| = [L^(3)/3!] * T^2 / (Omega * Reg * prod cp)
+        = 1.73185012 * 1 / (4.151688 * 0.41713602 * 1)
+        = 1.00001820
+        -> nearest integer 1  (margin 1.82e-05)  [LANDED]
+  [scoring vs known — readout verification only]
+    L^(3)/3! : measured 1.7318501164  known 1.7318499001  |d|=2.16e-07
+    Reg         : measured 0.4171360170  known 0.4171435706  |d|=7.55e-06
+    Omega       : measured 4.1516879831  known 4.1516879296  |d|=5.35e-08
+    |Sha|       : landed 1  known 1  MATCH
+
+############################################################################
+# SUMMARY — the first in-house full-BSD readings above rank 0
+############################################################################
+
+  curve     r     L^(r)/r!      Omega         Reg  cp  T   |Sha|raw  ->int    margin known
+  37a1      1    0.3059998   5.986917  0.05110342   1  1   1.000156      1   1.6e-04     1
+  389a1     2    0.7593165   4.980425  0.15244320   1  1   1.000111      1   1.1e-04     1
+  5077a1    3    1.7318501   4.151688  0.41713602   1  1   1.000018      1   1.8e-05     1
+
+  Sha landings correct within 1/2: 3/3
+  Max L^(r)/r! error vs known anchor: 2.16e-07
+  Max Reg error vs known anchor:      1.70e-05
+
+  The leading central jet, divided by (Omega * Reg * prod cp / T^2), lands the
+  Tate-Shafarevich order |Sha| as an integer at ranks 1, 2, 3 — the Gross-Zagier
+  face of the clock program (first jet = height; regulator = height-pairing
+  determinant = cup determinant made literal).  All three curves: |Sha| = 1.

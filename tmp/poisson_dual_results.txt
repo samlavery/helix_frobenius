@@ -1,0 +1,157 @@
+==============================================================================
+ANCHOR GATE — xi=0 dominance of the BARE orbital integrand (Altug I Thm 6.1)
+Altug I Thm 4.2 dualized elliptic sum; alpha=1/2; A=|disc|^{1/2}. [anchor tier]
+==============================================================================
+
+[anchor] AFE profile F (Mellin inverse of Ftilde=(1/z)Kz(2)/K0(2)):
+    residue-1 signature: F(small)->1, F(1)=0.5, F(large)->0
+      F(0.05) = +1.000000
+      F( 0.5) = +0.853242
+      F( 1.0) = +0.500000
+      F( 2.0) = +0.146758
+      F( 4.0) = +0.013434
+
+[anchor] dual Mellin-Barnes H_iota decay (Lemma 3.6: H(x) << (1/x)e^-2sqrt(x)):
+      x= 1.0: H0=-2.667e-02 H1=-6.387e-02  bound=1.353e-01  ok
+      x= 2.0: H0=+1.006e-02 H1=-4.207e-03  bound=2.955e-02  ok
+      x= 4.0: H0=-1.688e-04 H1=+8.827e-04  bound=4.579e-03  ok
+      x= 8.0: H0=+1.356e-06 H1=-3.044e-05  bound=4.367e-04  ok
+
+[anchor] Kloosterman Kl_{l,f}(xi,-+p^k) sanity (f=1 -> classical form):
+      Kl_{l=1,f=1}(xi=0, -4*2) = +4.0000+0.0000i  (xi=0 -> real)
+      Kl_{l=2,f=1}(xi=0, -4*2) = +4.0000+0.0000i  (xi=0 -> real)
+      Kl_{l=3,f=1}(xi=0, -4*2) = -4.0000+0.0000i  (xi=0 -> real)
+
+[anchor] BARE orbital dual profile r=0 (p=2, k=1, sign=- elliptic branch):
+      xi      |dual_xi|     frac
+     -10   7.371340e-18   0.0000
+      -9   1.660575e-18   0.0000
+      -8   7.576789e-03   0.0008
+      -7   8.464319e-18   0.0000
+      -6   4.632338e-18   0.0000
+      -5   2.000239e-17   0.0000
+      -4   2.375221e-02   0.0024
+      -3   5.741066e-17   0.0000
+      -2   6.745228e-17   0.0000
+      -1   1.112381e-16   0.0000
+       0   1.002154e+01   0.9938
+       1   1.112381e-16   0.0000
+       2   6.745228e-17   0.0000
+       3   5.741066e-17   0.0000
+       4   2.375221e-02   0.0024
+       5   2.000239e-17   0.0000
+       6   4.632338e-18   0.0000
+       7   8.464319e-18   0.0000
+       8   7.576789e-03   0.0008
+       9   1.660575e-18   0.0000
+      10   7.371340e-18   0.0000
+
+    xi=0 concentration = |dual_0|/sum|dual_xi| = 0.9938
+    dual tail mass     = sum_{xi!=0} = 6.265801e-02
+
+[anchor] r=1 (standard rep) control: xi=0 |dual_0| = 1.788e-17, conc = 0.0000
+    (EXPECTED ~0: U_1(x)=2x is ODD -> no DC pole; matches L(s,std) having no pole.
+     Altug's r=1 xi=0 term is the TRIVIAL-REP detector via zeta-ratios, not this.)
+
+[anchor] VERDICT (bare r=0): xi=0 DOMINATES (conc=0.994); tail decays.
+==============================================================================
+
+
+
+==============================================================================
+SWEEP — PRODUCTIVITY CURVES  concentration(r, X) and tail-mass(r, X)
+X = p^k height; r in {1,2,3,4}; sign=- elliptic branch. [measured tier]
+Q: does r=4 group with r=2 (DC-census even-look-alike) or r=3 (Poisson reality)?
+==============================================================================
+
+[measured] xi=0 CONCENTRATION  conc(r,X) = |dual_0| / sum_xi |dual_xi|:
+       X=p^k        r=0        r=1        r=2        r=3        r=4
+       2^1=2     0.9938     0.0000     0.8533     0.0000     0.9072
+       2^2=4     0.9959     0.0000     0.9618     0.0000     0.6638
+       3^1=3     0.9880     0.0000     0.9718     0.0000     0.7577
+       2^3=8     0.9976     0.0000     0.9976     0.0000     0.9059
+
+[measured] DUAL TAIL MASS  tail(r,X) = sum_{xi!=0} |dual_xi|:
+       X=p^k          r=0          r=1          r=2          r=3          r=4
+         2^1   6.2657e-02   4.9054e-01   7.0899e-01   5.5878e-01   8.4069e-02
+         2^2   7.1163e-02   4.9587e-02   2.7164e-01   1.6936e-01   6.9162e-01
+         3^1   1.4153e-01   2.4520e-01   1.3465e-01   2.1137e-01   2.9930e-01
+         2^3   6.5802e-02   2.6154e-01   2.4158e-02   3.4148e-01   2.2018e-01
+
+[measured] TAIL/DC RATIO  tail(r,X)/|dual_0(r,X)|  (productivity inverse):
+    (small => DC-productive; large/growing => moving floor swamps the pole)
+       X=p^k        r=0        r=1        r=2        r=3        r=4
+         2^1      0.006 1472787286397184.750      0.172 1677668026893950.250      0.102
+         2^2      0.004 86098720099763.000      0.040 321155944500334.812      0.506
+         3^1      0.012 1104288737525046.500      0.029 761535191610474.875      0.320
+         2^3      0.002 785243870575685.875      0.002        inf      0.104
+
+==============================================================================
+[measured] DECISIVE GROUPING — does r=4 track r=2 or r=3?
+==============================================================================
+    mean xi=0 concentration over the X-sweep:
+      r=0: conc = 0.9938
+      r=1: conc = 0.0000
+      r=2: conc = 0.9461
+      r=3: conc = 0.0000
+      r=4: conc = 0.8087
+    |conc(4)-conc(2)| = 0.1375   |conc(4)-conc(3)| = 0.8087
+    VERDICT: r=4 GROUPS WITH r=2 (even-look-alike): the DC-clock census survives the Poisson x-integral -> the wall is an EVEN/ODD split, NOT a Sym^3 wall. Publish: the boundary lives in the moving-tail SUMMABILITY, not the x-integral's DC detection.
+
+[control] random-control: scramble U_r(x) sign structure, re-measure conc(r).
+    (a real Sym^r DC signal must exceed the phase-scrambled baseline)
+      r   conc(real)  conc(scrambled)
+      0       0.9938           0.1197
+      1       0.0000           0.1712
+      2       0.8533           0.2337
+      3       0.0000           0.0074
+      4       0.9072           0.0946
+
+==============================================================================
+[measured] SUMMABILITY PROBE — the operative BE productivity criterion
+  (DC detection was even/odd; the wall must be in the dual-TAIL convergence)
+==============================================================================
+
+[measured] (A) xi-decay of archimedean Fourier integral |I(r,xi)| (p=2,k=3,f=l=1):
+    (faster decay in xi => more summable dual tail; U_r's r oscillations erode it.
+     ENVELOPE fit: |I| decays as xi^{-gamma}; we fit the UPPER envelope over a dense
+     xi-grid, robust to the Fourier zeros that a sparse fit would trip on.)
+      r   |I|@xi=2  |I|@xi=10  |I|@xi=30  gamma_env    tail_L1
+      0  1.645e-02  5.948e-04  1.781e-04      1.733  4.170e-02
+      1  2.313e-02  2.790e-03  1.793e-04      1.674  9.235e-02
+      2  5.822e-02  1.552e-03  5.376e-04      1.783  1.349e-01
+      3  2.101e-02  5.697e-03  3.364e-04      1.585  1.555e-01
+      4  1.143e-01  1.802e-03  9.065e-04      1.824  2.564e-01
+    -> a SMALLER gamma (slower xi-decay) / LARGER tail_L1 for larger r means the dual
+       tail is HARDER to sum: Poisson productivity erosion resolved BY r, not parity.
+
+[measured] (B) dual tail-mass vs l-truncation lmax (p=2,k=3,fmax=2,xi<=8):
+    (stabilizing => summable/productive; growing => moving floor un-summable)
+     lmax          r=0          r=1          r=2          r=3          r=4
+        1   3.3528e-02   1.6620e-01   5.9757e-02   3.2830e-01   1.1648e-01
+        2   5.9874e-02   1.1843e-01   1.5435e-01   3.1145e-01   1.7932e-01
+        3   6.5802e-02   2.6154e-01   2.4158e-02   3.4148e-01   2.2018e-01
+        4   6.4246e-02   2.4619e-01   2.5677e-02   3.1214e-01   2.4976e-01
+        5   5.2052e-02   2.7598e-01   1.7321e-01   1.0210e-01   2.0553e-01
+
+[measured] xi-decay gamma ordering (larger gamma = more summable = more productive):
+    r=4(1.82) > r=2(1.78) > r=0(1.73) > r=1(1.67) > r=3(1.58)
+    Sarnak boundary check (decay-rate): std/Sym2 gamma~1.73 vs Sym3/4 gamma~1.70  -> gamma is FLAT in r (NULL: the per-xi decay rate does NOT locate the wall).
+
+[interpretation] WHERE THE Sym^r EROSION LIVES (tiered, honest):
+    * DC (xi=0) detection = EVEN/ODD parity (control-verified): r even productive,
+      r odd zero.  r=4 groups with r=2.  This is NOT a Sym^3 wall.
+    * per-xi archimedean DECAY RATE gamma ~ 1.6-1.8, FLAT in r (NULL): the wall is
+      not a decay-rate collapse.
+    * dual-TAIL L1 MASS grows MONOTONICALLY with r (the operative signal): each higher
+      symmetric power dumps more mass into the moving floor (U_r's extra oscillations).
+      This is a GRADUAL degradation, not a sharp Sym^2|Sym^3 wall, at this truncation.
+    * FALSIFIABILITY: a sharp Sym^3 wall would show as a discontinuous tail-mass jump
+      at r=3 or a gamma-collapse for r>=3.  We see NEITHER at these heights -- the
+      erosion is smooth in r.  Whether the sharp wall emerges only in the archimedean
+      Mellin-Barnes uniform-decay-of-product obstruction (extraction sec6, NOT
+      implemented here) is the open next rung.
+
+==============================================================================
+SWEEP complete.
+==============================================================================

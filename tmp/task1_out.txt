@@ -1,0 +1,32 @@
+==============================================================================
+TASK 1  REPRODUCE from scratch  (q=5, cutoff=45.0, dps=40)
+==============================================================================
+  bank: 8 terms, n in [1, 2, 3, 4, 6, 7, 8, 9]
+
+  (1a) STAR IDENTITY  2*sumChiS1 == conj(E(conj z)) :
+     z=(3+0.7j):  |2SumS1 - conj(E(conj z))| = 0.0
+     z=(9.831+1j):  |2SumS1 - conj(E(conj z))| = 0.0
+     z=1.2j:  |2SumS1 - conj(E(conj z))| = 0.0
+
+  (1b) ON-AXIS (z real) boundary |E|==|E*|:
+     z=0.0:  |E|=0.94375144  |E*|=0.94375144  ratio=1.0
+     z=3.0:  |E|=0.74312958  |E*|=0.74312958  ratio=1.0
+     z=6.6485:  |E|=0.32959612  |E*|=0.32959612  ratio=1.0
+
+  (1c) A=(E+E*)/2  vs  genuine completed L  Lambda(1/2+iz):
+     z=0j: A=(0.943751 + 0.0j)  Lam_true=(0.943751 + 0.0j)  |A-Lam_true|=2.5e-35
+     z=(3+0j): A=(0.450762 + 0.0j)  Lam_true=(0.450762 - 9.2148e-42j)  |A-Lam_true|=2.5e-35
+     z=(2+0.9j): A=(0.70492 - 0.21109j)  Lam_true=(0.70492 - 0.21109j)  |A-Lam_true|=2.5e-35
+     z=(9.831+1j): A=(0.00126363 + 0.00108375j)  Lam_true=(0.00126363 + 0.00108375j)  |A-Lam_true|=2.49e-35
+
+  (1d) first zero of A=(E+E*)/2 on the axis (bisect Re):
+     zero at z = 6.6484533   (LMFDB gamma_1(chi_5) ~ 6.6485)
+
+  (1e) CLAIMED BAND POINTS  ratio=|E*|/|E|:
+     z=9.831+1.0i:  ratio=1.0128064  margin=-0.0128064  <-- ratio>1 (claimed band)
+     z=9.831+0.05i:  ratio=1.0007001  margin=-0.000700068  <-- ratio>1 (claimed band)
+     z=9.831+2.0i:  ratio=1.0079579  margin=-0.00795791  <-- ratio>1 (claimed band)
+     z=0.0+1.0i:  ratio=0.52396366  margin=0.476036
+     z=6.6485+1.0i:  ratio=0.90003032  margin=0.0999697
+     z=11.959+1.0i:  ratio=0.99497776  margin=0.00502224
+     z=25.0+1.0i:  ratio=1.0  margin=-3.84394e-8  <-- ratio>1 (claimed band)

@@ -1,0 +1,2612 @@
+                                                          Beyond Endoscopy via the trace formula - III
+                                                                 The standard representation
+
+                                                                                         S. Ali Altuğ
+
+
+
+
+arXiv:1512.09249v1 [math.NT] 31 Dec 2015
+                                                                                            Abstract
+                                               We finalize the analysis of the trace formula initiated in [Alt15a] and developed in [Alt15b], and
+                                           calculate the asymptotic expansion of the beyond endoscopic averages for the standard L-functions
+                                           attached to weight k ≥ 3 cusp forms on GL(2) (cf. Theorem 1.1). This, in particular, constitutes
+                                           the first example of beyond endoscopy executed via the Arthur-Selberg trace formula, as originally
+                                           proposed in [Lan04]. As an application we also give a new proof of the analytic continuation of the
+                                           L-function attached to Ramanujan’s ∆-function.
+
+
+                                           Contents
+                                           1 Introduction                                                                                              1
+                                             1.1 Several remarks and comments . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .          3
+                                             1.2 Outline of the paper . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .      5
+                                             1.3 Notation and conventions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        5
+
+                                           2 Proofs of Theorem 1.1 and Corollary 1.2                                                                   6
+
+                                           3 The trace fromula                                                                                         7
+                                             3.1 Contribution of the conjugacy class of the identity element . . . . . . . . . . . . . . . .           7
+                                             3.2 Contribution of the hyperbolic and unipotent conjugacy classes . . . . . . . . . . . . . .            7
+
+                                           4 Contribution of the elliptic conjugacy classes                                                            8
+                                             4.1 Approximate functional equation, Poisson summation, and the contribution of the dom-
+                                                 inant term . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    9
+                                                 4.1.1 Poisson summation . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        10
+                                                 4.1.2 Analysis of the term ξ = 0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .       10
+                                             4.2 Analysis of the terms ξ 6= 0 . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     13
+                                                 4.2.1 Preliminary estimates . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        13
+                                                 4.2.2 Estimating the critical range . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        19
+
+                                           5 Local analysis                                                                                     22
+                                             5.1 Archimedean analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 23
+                                             5.2 Non-Archimedean analysis . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . 24
+
+                                           References                                                                                                 27
+
+
+                                           1    Introduction
+                                           Let us begin by briefly recalling beyond endoscopy. Since our aim here is to put the current paper in
+                                           context rather than to give a comprehensive overview, rather than trying to make precise statements
+                                           we will simply introduce the main problem. For a more through overview we refer the reader to the
+                                           original article [Lan04] and the recent exposition in [Art15].
+                                               Let G be a reductive algebraic group defined over a global field F and let S be a finite set of places
+                                           of F containing all the archimedean places. The main aim of beyond endoscopy is to isolate those
+
+
+                                                                                                1
+       automorphic representations of G (unramified outside of S) that are functorial transfers from other
+       groups. The strategy proposed in [Lan04] is to use the partial automorphic L-functions, LS (s, π, ρ),
+       for various irreducible representations ρ : L G → GL(V ) to detect functorial transfers. It is based on
+       the expectation that if LS (s, π, ρ) has a pole in ℜ(s) ≥ 1 then π should be a functorial transfer, and
+       conversely if π is a functorial transfer then, by a theorem of Chevalley (cf. [Che68]), one can find a ρ
+       such that LS (s, π, ρ) has a pole in ℜ(s) ≥ 1.
+           To analyze the poles of
+                                                               ′
+                                                              X a (n)
+                                                  S               π,ρ
+                                                L (s, π, ρ) =      ns ,
+                                                                    n≥1
+
+       where the prime indicates that we are summing over n that are not divisible by any of the finite primes
+       in S, in the region ℜ(s) ≥ 1 one can study the asymptotic behavior, in the variable X, of the partial
+       averages
+                                                     ′
+                                                   X
+                                                       aπ,ρ (n),
+                                                         n<X
+
+       up to terms of size o(X). The strategy proposed in [Lan04] is to use the trace formula to study the
+                                                                     Q′
+       averages above. More precisely, let AS = v∈S Qv , AS = v /∈S Qv , and fS ∈ Cc∞ (G(AS )). Then, for
+                                                  Q
+       each n ≥ 1 that is relatively prime to every prime in S there exist a function f n,ρ ∈ Cc∞ (G(AS )) such
+       that                           X
+                                             tr(πS (fS ))aπ,ρ (n) = tr(Rdisc (fS f n,ρ )),
+                                    π∈L2disc (G)
+
+       where L2disc denotes the discrete part of the automorphic spectrum1 of G. Substituting this expression
+       into the partial averages of coefficients above, we can now state the problem of beyond endoscopy as
+       to study the asymptotic behavior of the averages,
+                                                    ′
+                                                   X
+                                                         tr(Rdisc (fS f n,ρ )),                                    (1)
+                                                   n<X
+
+       using he Arthur-Selberg trace formula. In [Alt15a] the study of the averages in (1) was initiated for
+       G = GL(2), S = {∞}, and ρ = Symr , the r’th symmetric power representation of L G = GL(2, C).
+       The geometric side of the trace formula consists of a sum over rational conjugacy classes of (weighted)
+       orbital integrals multiplied by certain arithmetic volume factors.
+           The critical part of these sums are the ones over elliptic conjugacy classes, those conjugacy classes
+       whose characteristic polynomials are irreducible over Q. In order to analyze the elliptic part, an
+       appropriate approximate functional equation was introduced in [Alt15a] (cf. (4’) of loc. cit.) and a
+       Poisson summation was applied on the so-called Steinberg-Hitchin base (i.e. the space of characteristic
+       polynomials in this case) to isolate the contribution of certain special representations (which, in general,
+       give non-zero contribution to the asymptotic expansion of (1), see (31) and (65) of [Lan04]) were
+       isolated. In the subsequent paper [Alt15b] the remaining terms after Poisson summation were analyzed
+       giving a firm control over the asymptotic behavior of various Fourier transforms that appear after
+       Poisson summation (cf. theorems A.14 and A.15 of [Alt15b]). We remark that both of the papers
+       cited above are concerned with a single trace formula, in other words they are not concerned with the
+       averages in (1) but rather prove results for an individual n.
+           The current paper puts all of the previous work together and executes the asymptotic analysis of
+       (1) for G = GL(2) over Q, S = {∞}, and ρ = Sym1 , the standard representation of GL(2, C), where
+       we specialize our test function to pick up holomorphic discrete series representation at the archimedean
+       place. This puts us in the framework of classical holomorphic modular forms of weight k and our main
+       theorem can be stated as follows:
+
+       Theorem 1.1. Let k ≥ 3 be an integer and for any n ≥ 1 let Tk (n) denote the n’th Hecke operator
+       (eigenvalues normalized so that the Ramanujan conjecture reads as tr(Tk (n)) = Ok,ǫ (nǫ ) for every
+   1
+     We are ignoring the issues about central characters, stability etc. since a thorough discussion of such would take us too
+far afield.
+
+
+
+                                                                2
+      ǫ > 0) acting on the space Sk of holomorphic cusp forms of weight k. Then, for every ǫ > 0
+                                                                   31
+                                           X
+                                              tr(Tk (n)) = Ok,ǫ (X 32 +ǫ ).
+                                             n<X
+
+          We will comment on the generality of the methods, the dependence on various assumptions, and
+      possible improvements on the exponent 31  32 below in the next section.
+          To end the introduction we also present an application of the above theorem and give a new proof
+      of the analytic continuation of the L-function attached to the Ramanujan ∆-function. Recall that ∆(z)
+      and τ (n) are defined by
+                                                   ∞
+                                                   Y                     ∞
+                                                                         X
+                                    ∆(z) := e(z)       (1 − e(nz))24 =         τ (n)e(nz).
+                                                   n=1                   n=1
+
+      It is well-known (cf. [Ser96] pg. 84) that ∆(z) is a weight 12 cusp form of full level. Attached to ∆ is
+      the L-function                                        ∞
+                                                               τ (n)
+                                                            X
+                                                 L(s, ∆) :=     ns .
+                                                                 n=1
+
+      It is not hard to see that L(s, ∆) is convergent for ℜ(s) > 7 (loc. cit. (39) on pg. 94). Theorem 1.1
+      then has the following immediate corollary
+      Corollary 1.2. L(s, ∆) extends to a holomorphic function in ℜ(s) > 11   31
+                                                                          2 + 32 .
+
+         Note that because of normalization issues (i.e. with the above definition of τ (n) the Ramanujan
+                                        11
+      conjecture would read as τ (n) = n 2 +ǫ for every ǫ > 0) the usual line ℜ(s) = 1 is shifted to ℜ(s) = 1+ 11
+                                                                                                               2 .
+      Let us also remark that the novelty of Corollary 1.2 not the result itself, which is well known and dates
+      back to the works of Hecke2 (cf. [Hec59]). It is rather the method of proof, which gives the analytic
+      continuation of an automorphic L-function using only the trace formula.
+
+      1.1     Several remarks and comments
+          • First, we would like to emphasize that the novelty of the paper is in the method rather than
+            the result. The fact that the standard L-functions for GL(2) have analytic continuation is well-
+            known (it goes back to Hecke in the setting of the current paper and is known in much greater
+            generality (cf. [GJ72])). It is the method by which we prove the analytic continuation that is new
+            and constitutes the first example of beyond endoscopy carried out via the Arthur-Selberg trace
+            formula, following the original proposal in [Lan04].
+          • Let us make a couple of remarks on the generality of the method and the various restrictions
+            we have in Theorem 1.1. As already mentioned, the specific choice of test functions at the
+            archimedean place puts us in the framework of the classical Selberg trace formula. It also avoids
+            the contribution of the continuous and the non-tempered spectrum (i.e. the trivial representation)
+            with the price that it picks up only holomorphic cusp forms (no Maass forms interfere).
+            The reason we chose this approach is that it avoids peripheral issues and go directly to the heart
+            of the matter which is the analysis of the averages in (1) over the elliptic part of the trace formula.
+            Our primary aim in this paper is to analyze the beyond endoscopic averages in (1) rather than
+            to give a proof of the analytic continuation of the standard L-functions for GL(2). The analytic
+            difficulties related to the elliptic part are already present in the Selberg trace formula, and this is
+            why we chose this approach rather than working in the generality of [Alt15a] and [Alt15b]. We
+            should also note the analysis carried out in these references are sufficient to carry out the analysis
+            without any restriction on the archimedean test function.
+            The assumption about S = {∞} (i.e. we are restricting to representations unramified at every
+            finite place, or classically, forms of full level), on the other hand, is harmless analytically and can
+            be removed without any trouble. It brings in congruence conditions in the sums (depending on
+            the allowed ramification) and does not effect the analysis in any serious way. It just brings extra
+            work on the algebra and would complicate (the already complicated) notation.
+   2
+     Hecke’s proof indeed gives the analytic continuation to the whole complex plane as well as the functional equation for
+the L-finction.
+
+
+                                                             3
+          • One can, without much effort, improve the exponent 31   32 of Theorem 1.1. (Our estimates, especially
+            in §4.2, are far from optimal.) Since our aim in this paper is to execute the beyond endoscopic
+            averages in (1), which is equivalent to getting an o(X) in Theorem 1.1, we did not, in any way,
+            aim for optimality in the exponent.
+          • We would also like to briefly mention the connection of the paper with the ρ-trace formula of
+            [Art15] (note that ρ is denoted by r in that article). Instead of repeating various definitions and
+            constructions of Arthur we simply refer the reader to [Art15] pages 8-14. The result of Theorem
+            1.1, in particular, proves the ρ-trace formula for G = GL(2) and ρ =standard representation. In
+            terms of Arthur’s notation (cf. (2.3) of loc. cit.) it can be stated as
+                                                            ρ
+                                                           Scusp (f ) = 0,
+
+            where f denotes our specific choice of archimedean test function.
+          • The last remark is on a peculiar phenomenon about the averages in (1). To describe the issue
+            let us first start with the expected result and work our way back. As in Theorem 1.1 let us fix
+            an integer k ≥ 3. If π is an cuspidal automorphic representation of GL(2) attached to a cusp
+            form of weight k of full level, then the standard L-function, L(s, π), is holomorphic in ℜ(s) ≥ 1.
+            Therefore, denoting the n’th Hecke operator acting on the space of weight k cusp forms of full
+            level, normalized as in Theorem 1.1, by Tk (n), we expect to have
+                                      X                            X
+                                          Ress=1 L(s, π) = lim X1      tr(Tk (n)) = 0.
+                                                               X→∞
+                                          π                             n<X
+
+             This indeed is implied by the main result of the paper, however one sees a surprising feature in
+             the calculation of this limit. Using the trace to calculate the above limit, one gets the limit of the
+             sum3 (cf. §3)                X                         X
+                                  lim X 1
+                                              tr(Tk (n)) = lim X1       {(in ) + (iin ) + (iiin )},
+                                    X→∞                      X→∞
+                                          n<X                         n<X
+
+             where (in ) is the contribution of the elliptic conjugacy classes, (iin ) is the contribution of the
+             hyperbolic and√ unipotent conjugacy classes (hyperbolic contribution  √ is the sum over all d | n that
+             satisfies d 6= n, and the unipotent contribution comes from d = n, which exists only if n is a
+             perfect square), and (iiin ) is the contribution of the identity conjugay class.
+             The remarkable point is that the limits of the averages of the individual contributions are non-zero.
+             More precisely, the proof of Theorem 1.1 shows that
+                               X                             X                             X
+                                              1                             1
+                        lim X1     (in ) = k−1  ,    lim X 1
+                                                                  (iin ) = 1−k ,   lim X1      (iiin ) = 0.     (2)
+                      X→∞                             X→∞                             X→∞
+                                n<X                            n<X                             n<X
+
+             So when we sum up the contributions of the terms the result is 0 however individually the elliptic
+             and hyperbolic contributions4 are both non-zero and cancel each other!
+             There is one more point we would like to highlight. It is not hard to see that in the sums in (2) if
+             one, instead of summing over all integers, sums only over primes then the limits of the individual
+             averages are 0. i.e.
+                          X                           X                             X
+                 lim X1          log(p)(ip ) = lim X1      log(p)(iip ) = lim X1          log(p)(iiip ) = 0. (3)
+                X→∞                             X→∞                            X→∞
+                           p<X                            p<X                              p<X
+                         p: prime                       p: prime                         p: prime
+
+             One therefore observes that there is a major contribution to the averages of both the hyperbolic
+             and elliptic parts of the trace formula coming from those conjugacy classes with determinant
+             (= n) divisible by prime powers, pl , with large l, and moreover, these contributions cancel with
+             each other.
+             An interesting question, also raised by Arthur (cf. Problem VI of [Art15]), is to understand if
+             there is a conceptual explanation for the averages to behave in this way. There is also a further
+   3
+     In what follows one should keep in mind that the contribution of the non-tempered spectrum (the trivial representation
+in this case), which was shown to contribute to (in ) (cf. Theorem 1 of [Alt15a]), is 0 in this setting, so we can ignore it. In
+general one needs to subtract it from (in ) to make sense of the below claims.
+   4
+     The proof of Proposition 3.2 shows that the non-zero contribution is indeed coming from the weighted orbital integrals
+over hyperbolic conjugacy classes rather than the unipotent ones.
+
+
+                                                               4
+            observation one can make on these matters. It was shown in [Alt15b] that the trivial representation
+            and the special representation, denoted by tr(ξ0 (f∞ )), which comes from the continuous spectrum
+            contributes to the term ξ = 0 after Poisson summation on the Steinberg-Hitchin basis. It turns
+            out that the extra contribution of the weighted orbital integrals of the hyperbolic conjugacy
+            classes also gets cancelled with a part of this term. Is there any connection? (This is, in a sense,
+            combining Problems V and VI of [Art15]). Although the questions are intriguing so far we have
+            no satisfactory explanation for this besides the calculations below.
+
+      1.2    Outline of the paper
+      The paper is organized as follows: In §2 we prove Theorem 1.1 and Corollary 1.2 assuming various
+      estimates on the averages of the geometric side of the trace formula. We hope that this motivates the
+      various estimates to follow in the subsequent sections.
+          In §3 we introduce the Selberg trace formula and prove the estimates on the identity (§3.1), hyper-
+      bolic, and unipotent contributions (§3.2).
+          §4 is the heart of the paper and constitutes the analysis of the elliptic part. Following [Alt15a] we
+      first rewrite the elliptic part and then introduce an approximate functional equation. Then in §4.1 we
+      apply Poisson summation on the Steinberg-Hitchin basis (Concretely, the conjugacy classes in GL(2)
+      are parametrized by their characteristic polynomials, and for fixed determinant the only variable is the
+      trace. We apply Poisson summation on this variable, denoted by the variable m in §4) and analyze
+      the term corresponding to ξ = 0. In Corollary 4.8 we show that the contribution of this term in the
+      elliptic part exactly cancels (as it should!) the contribution of the hyperbolic part. §4.2 forms the main
+      part of the analysis of the elliptic part. In this section we analyze the rest of the terms after Poisson
+      summation. Our strategy5 is to bring in the sum over n and to use Poisson summation. We do this in
+      two steps. In §4.2.1 we first strip off, for each fixed n, certain parts of the elliptic term that does not
+      give any contribution to the asymptotic expansion. Then in §4.2.2 we finally bring the n-sum in and
+      use Poisson summation.
+          In §5 we prove certain estimates on Fourier transforms and character sums that are used in the
+      analysis of §4.2.2.
+
+      1.3    Notation and conventions
+      Notation
+         • Z, R and C as usual will denote the sets of integers, real, and complex numbers respectively.
+           N = {0, 1, 2, · · · } will denote the set of natural numbers.          R∞
+           The Mellin transform of a function Φ is defined as usual, Φ̃(u) = 0 Φ(x)xu−1 dx.
+         • P
+         •    a mod × N will mean a Q   ∈ (Z/N Z)× . For an integer l, we denote its radical (i.e. the square-free
+           part of it) by rad(l) := p|l p.
+         • S(R) will denote the Schwartz space, S(R) = Φ ∈ C ∞ (R) | sup |xα Φ(β) (x)| < ∞ ∀α, β ∈ N .
+                                                                
+
+           We also remark that for functions Φ which are only defined on R+ , by abuse of notation, we will
+           use Φ ∈ S(R) to mean that Φ(x) and all of its derivatives decay faster than any polynomial for
+           x > 0.
+         • For a domain D ⊂ C, f = Oh (g) means that there exists a constant K, depending only on h,
+           such that |f (x)| ≤ K|g(x)| for every x ∈ D. Most of the times D will be clear from the context
+           and we will not be specified. f ≪h g means f = Oh (g).
+           √
+         • · denotes the branch of the square-root function that is positive on R+ , D· denotes the Kro-
+                                                                                              
+
+           necker symbol, and e(x) := e2πix .
+         • We also note a slight change of notation from [Alt15b] to the current paper. The function that
+                                                                 pos
+           we denote by θ∞ in this paper was denoted by θ∞,1         in [Alt15b]. We hope that this simplifies the
+           notation and does not cause any confusion.
+   5
+     We remark that applying Poisson summation on the n-sum works well for the standard representation and the symmetric
+square, however stops being productive for higher symmetric powers. This point was observed by Sarnak and we refer to
+[Sar01] for further discussion of this issue.
+
+
+
+
+                                                           5
+Conventions
+    • Throughout the paper, unless otherwise explicitly stated (cf. Corollary 1.2), we always normalize
+      the Hecke operators so that the Ramanujan conjecture is aπ (n) = O(nǫ ) for every ǫ > 0.
+    • There is an auxiliary function F that is introduced in the approximate functional equation (cf.
+      (9)). All of the estimates in §4 depend on the choice of this function. Since this function is fixed
+      once and for all, and does not depend on anything else we will suppress this dependence and not
+      mention it in any of the estimates.
+    • Since the function θ∞ depends only on the weight k (cf. Lemma 4.1), instead of Oθ∞ (·) we will
+      simply write Ok (·).
+
+
+2     Proofs of Theorem 1.1 and Corollary 1.2
+In this section we will give proofs of Theorem 1.1 and Corollary 1.2 using the results of the rest of the
+paper so that the reader can follow how each estimate is used.
+Proof of Theorem 1.1. First that if k is odd then the space of cusp forms of full level and weight
+k is empty so the theorem is trivially true. For the rest of the proof assume k is even. Then,by the
+Selberg trace formula
+                                  tr(Tk (n)) = (in ) + (iin ) + (iiin ).
+(For an explanation of the terms involved, and what they actually are, see §3.) Substituting this in the
+average gives
+                              X                X
+                                  tr(Tk (n)) =   {(in ) + (iin ) + (iiin )}.
+                               n<X                   n<X
+
+By Proposition 3.1,                        X
+                                                 (iiin ) = Ok (log(X)).                                    (4)
+                                           n<X
+
+By Proposition 3.2,                      X                         √
+                                                          X
+                                                (iin ) = 1−k + Ok ( X).                                    (5)
+                                         n<X
+
+To bound the average of (in ) we use corollaries 4.8, 4.10, 4.12, 4.14, and 4.16. For any κ, α > 0 such
+               1
+that 2κ + α < 12 , and every N > 0 these give
+    X                                   3+2κ                    3α                           11      11ǫ
+                   X
+          (in ) = k−1 + O(X 2−N κ + X     4    log2 (X) + X 1− 2 log(X) + X 1−κ log2 (X) + X 12 +κ+α+ 6 ),
+    n<X
+
+                                                                                  1
+where the implied constant above depends only on k, N, κ, α, and ǫ. Choosing κ = 32 − 2ǫ , α = 48
+                                                                                                1
+                                                                                                  − 3ǫ ,
+         2
+and N = κ then gives,
+                                                       31
+                                      X
+                                          (in ) = O(X 32 +ǫ ).                                     (6)
+                                               n<X
+
+The theorem follows from (4), (5), and (6).
+Proof of Corollary 1.2. The proof is a straightforward application of partial summation. For any
+N1 > N0 we get
+                             N1                     NX
+                                                     1 −1 
+                             X    τ (n)   τ (N1 )           1       1     
+                                   n s  =   N1s   −            −           B(n),                   (7)
+                                                            ns   (n − 1)s
+                            n=N0                    n=N0
+                Pn
+where B(n) := m=N0 τ (m). It is well-known that ∆(z) is a cuspidal Hecke eigenform of weight 12
+(cf. pg. 84 of [Ser96]), and that the space of cusp forms of weight 12 for the full modular group has
+dimension 1 (cf. pg. 96 of loc. cit.). Keeping in mind the normalization we have in Theorem 1.1 we
+                         11
+therefore have τ (n) = n 2 tr(T12 (n)) for every n ≥ 1. Hence, by Theorem 1.1 for every ǫ > 0 we have
+                                                               11    31
+                                          B(N0 , n) = O(n 2 + 32 +ǫ ).
+
+
+
+
+                                                           6
+Substituting these bounds in (7) then gives
+                                              N1
+                                              X  τ (n)                      1
+                                                        ns      ≪     s−( 11 + 31 +ǫ)
+                                                                                        .
+                                              n=N0                   N0 2 32
+
+Therefore, for ℜ(s) > 11   31
+                       2 + 32 the partial sums converge uniformly to L(s, ∆) and the corollary follows.
+
+
+
+
+3     The trace fromula
+Let k > 2 be an even integer. Recall (cf.[Sel56] or [AK06]) that the Selberg trace formula expresses
+the trace of the n’th Hecke operator acting on cusp forms of weight k and full level as the sum
+                                        X ρk−1 −ρ̄k−1        X            2      
+                                   1
+                   tr(Tk (n)) = − k−1           ρ−ρ̄                  hw m f−4n2                (in )
+                                    2n    2         √
+                                                  m< n                          f 2 |(4n−m2 )
+                                                                           m2 −4n
+                                                                            f2
+                                                                                  ≡0,1 mod 4
+                                                          √ k−1
+                                                       √d , n
+                                    X
+                             − 21         min            n d
+                                                                  .                                  (iin )
+                                    d|n
+                                k−1
+                                 √ δ (n)
+                             + 12 n
+                                                                                                    (iiin )
+
+where                                √                                                      √
+                                              2                                                 2
+                           ρ = m+ m
+                                  2
+                                    −4n
+                                                                     ,           ρ̄ = m− m
+                                                                                         2
+                                                                                           −4n
+                                                                                               ,       (8)
+and                                                         (
+                                                                1 if n is a square
+                                          δ (n) =                                 .
+                                                                0 otherwise
+The function hw (α) is defined as the class number of the order of discriminant α weighted by 1/2 or
+1/3 if α = −4 or α = −3 respectively.
+                                                                             k−1
+    Note that the classical Selberg trace formula, as stated in [Sel56], is n 2 times the one given above.
+This is, once again, due to the normalization of the eigenvalues of the Hecke operators. We normalize
+them so that the Ramanujan conjecture reads as |aπ (p)| ≤ 2.
+    We also remark that in the above expression, (iiin ) corresponds to the contribution of the conjugacy
+class of the identity element, (in ) corresponds to the contribution of conjugacy classes of elliptic ele-
+ments, and (iin ) is the contribution of the sum of the contribution of the hyperbolic conjugacy classes
+(terms for which n 6= d2 ) and unipotent conjugacy classes (appears only if δ (n) = 1, and is the term
+corresponding to d2 = n).
+
+3.1     Contribution of the conjugacy class of the identity element
+Proposition 3.1.                                   X δ (n)
+                                          k−1                
+                                           12
+                                                             √
+                                                                 n
+                                                                     = Ok (log(X)) .
+                                                   n<X
+
+Proof. Obvious.
+
+
+3.2     Contribution of the hyperbolic and unipotent conjugacy classes
+As explained in §1.1, quite interestingly, the hyperbolic conjugacy classes do contribute to the limit.
+Proposition 3.2.
+                                                               √ k−1             √
+                                                            √d , n
+                                  XX
+                                                                          X
+                           − 21                   min         n  d     = 1−k + Ok ( X).
+                                  n<X d|n
+
+
+
+
+                                                                     7
+                                                                                            √
+Proof. First note that for any d dividing n such that d 6=                                      n, d and nd give the same contribution to
+the inner sum. Therefore,
+                                                       √ k−1                      X              k−1
+                                                    √d , n
+                                  X
+                                          min                  =2                           √d              + δ (n).
+                                                      n  d                                    n
+                                  d|n                                                d|n
+                                                                                      √
+                                                                                    d< n
+
+Next, we trivially have                                       X                √
+                                                                    δ (n) = O( X).                                                                          (∗)
+                                                              n<X
+
+For the rest of the sum, first note that
+                     X X                  k−1           X              k−1           X            k−1            X                k−1
+                                     √d             =               a      2
+                                                                                =               a      2
+                                                                                                            +                    a      2
+                                                                                                                                             .              (∗∗)
+                                       n                            b                           b                                b
+                                                                                        √                        √
+                     n<X    d|n                         ab<X                         b≤ X                            X<b<X
+                             √                           a<b
+                           d< n                                                       a<b                            a< X
+                                                                                                                        b
+
+
+Then, by Euler-Maclaurin formula
+        X      k−1
+                     2         k+1                  k−1                             X       k−1
+                                                                                                   2                 X
+                                                                                                                          k+1
+                                                                                                                            2                X
+                                                                                                                                                  k−1
+                                                                                                                                                    2
+                                                                                                                                                       
+              a 2 = k+1 b 2 + Ok b 2                                and                     a 2 = k+1                b           + Ok        b          .
+        a<b                                                                          a< X
+                                                                                        b
+
+
+Therefore,
+         X            k−1               √                                              X                 k−1                      √
+                 a              X                                                                    a                2X
+                 b
+                        2
+                             = k+1 + Ok ( X)                      and                                b
+                                                                                                            2
+                                                                                                                 = (k+1)(k−1) + Ok ( X).
+          √                                                                         √
+        b≤ X                                                                            X<b<X
+         a<b                                                                            a< X
+                                                                                           b
+
+
+Substituting the above estimates in (∗∗) and combining the result with (∗) finishes the proof.
+
+
+
+4    Contribution of the elliptic conjugacy classes
+Following [Alt15a] we begin the analysis by rewriting the elliptic part so that it becomes more suitable
+form.
+Lemma 4.1. Let m, n ∈ N be fixed and ρ, ρ̄ be defined by (8). Then,
+                                                                   
+                                1  ρk−1 −ρ̄k−1
+                           − k−1      ρ−ρ̄     = √mπi      θ
+                                                      2 −4n ∞
+                                                                 m
+                                                                 √
+                                                                2 n
+                                                                      ,
+                                               2n   2
+
+
+where                             (                     √                 √
+                                       i
+                                                         x2 − 1)k−1 − (x − x2 − 1)k−1
+                                           
+                                      2π       (x +                                                                      |x| < 1
+                     θ∞ (x) :=                                                                                                     .
+                                      0                                                                                  otherwise
+Proof. Obvious.
+
+Lemma 4.2. Let m, n ∈ N be such that m2 − 4n < 0 and hw be defined as in §2. Then,
+                          X            2      √
+                                                        2
+                                    hw m f−4n
+                                           2   = 4n−mπ    L(1, m2 − 4n),
+                                  f 2 |(4n−m2 )
+                               m2 −4n
+                                f2
+                                      ≡0,1 mod 4
+
+
+where L(s, m2 − 4n) is the following weighted sum of quadratic Dirichlet L-functions
+                                                                 2
+                                                                   (m −4n)/f 2
+                                            X                                  
+                    L(s, m2 − 4n) :=                  f
+                                                         1
+                                                        2s−1 L  s,     ·          .
+                                                               f 2 |m2 −4n
+                                                          m2 −4n
+                                                           f2
+                                                                 ≡0,1 mod 4
+
+
+
+
+                                                                                8
+      Proof. Recall that for a fundamental discriminant D < 0 the class number formula states
+
+                                             L 1, D·    = 2πh(D)
+                                                            √ ,
+                                                     
+                                                                                  wD     |D|
+
+                                                     √
+      where wD is the number of roots of unity in Q( D) and h(D) is the class number of the same field.
+          Let m2 −4n√= D(m, n)s(m, n)2 , where D(m, n) is a fundamental discriminant (i.e. the discriminant
+      of the field Q( m2 − 4n)). Then for any f | s(m, n), by Theorem 7.24 of [Cox89] we have
+                              2                            Y                
+                           hw m f−4n
+                                  2    = s(m,n)
+                                            f
+                                                 2h(D(m,n))
+                                                  wD(m,n)          1 − D(m,n)
+                                                                           q
+                                                                                 1
+                                                                                 q .
+                                                                                  q| s(m,n)
+                                                                                       f
+
+
+                                                                                    2
+      Moreover the condition that f 2 | m2 − 4n such that m f−4n
+                                                               2  ≡ 0, 1 mod 4 is equivalent to f | s(m, n).
+      Therefore,
+                                  2                                     Y                 
+                                            = 2s(m,n)h(D(m,n))                  1 − D(m,n)
+                     X                                           X
+                                                                      1                        1
+                              hw m f−4n2          wD(m,n)             f                  q     q
+                     f 2 |m2 −4n                                                        f |s(m,n)   q| s(m,n)
+                                                                                                         f
+                  m2 −4n
+                   f2
+                         ≡0,1 mod 4
+                                                            √
+                                                                4n−m2
+                                                       =          π   L(1, m2 − 4n).
+
+
+      Corollary 4.3. The elliptic part of the trace formula can be expressed as
+                                          X            
+                                              θ∞ 2√  m
+                                                      n
+                                                          L(1, m2 − 4n),
+                                                    m∈Z
+
+      where θ∞ (x) and L(1, m2 − 4n) are defined as in lemmas 4.1 and 4.2 respectively.
+      Proof. Follows from Lemma 4.2.
+
+
+      4.1 Approximate functional equation, Poisson summation, and the contri-
+      bution of the dominant term
+      Next, let us recall the approximate functional equation introduced in [Alt15a]. Let6 F (x) be
+                                                            Z ∞       1
+                                                                  −y− y dy
+                                           F (x) = 2K10 (2)     e       y .                                              (9)
+                                                                              x
+
+      The only property of the above function that we will use (cf. [IK04] pg. 257-258) is the following:
+          The Mellin transform, F̃ (u), is holomorphic except for a simple pole at u = 0 with residue 1.
+                   √
+         Let m < 2 n. Then, by Corollary 3.5 of loc. cit., where we have taken A = 4n − m2 and ιδ = 1,
+      we have
+                                                           ∞    2       2
+                                                                           h                   2
+                                                                                                                i
+                                                             1 (m −4n)/f          lf 2                    lf 2
+                                         X                 X
+            L(1, m2 − 4n) =                            1
+                                                                             F         2   + √ lf   H          2    ,
+                                                       f     l     l            4n−m          4n−m2     4n−m
+                                      f 2 |m2 −4n          l=1
+                                   m2 −4n
+                                    f2
+                                          ≡0,1 mod 4
+
+
+      where                                                √
+                                                                 Z
+                                                                        Γ( 1+u
+                                                                            2 )
+                                             H(y) := 2πiπ               Γ( 2−u
+                                                                                   (πy)−u F̃ (u)du.                     (10)
+                                                                  (1)       2 )
+
+
+   6
+     We remark that the specific choice of this function is irrelevant to the rest of the argument. Only the pole of its Mellin
+transform is important.
+
+
+
+
+                                                                          9
+4.1.1    Poisson summation
+We begin with introducing a shorthand notation for the Fourier transform that will frequently appear
+throughout the text.
+                       Z 1                                             2                   √ 
+                                                                       lf (4n)−1/2
+                                 n  2       −1/2
+                                                      lf 2 (4n)−1/2
+                                                                                  o 
+        Il,f (ξ, n) :=     θ∞ (x) F lf √(4n)
+                                         1−x  2
+                                                    +    √
+                                                            1−x 2
+                                                                    H    √
+                                                                           1−x 2
+                                                                                     e  −xξ n
+                                                                                         2lf 2  dx.
+                             −1
+
+Lemma 4.4.
+                                                                           √            ∞                       X Kl
+                                                                                                                              l,f (ξ,n)
+                                                                     − 4n) = 2n
+                     X                                                                    X
+                                       m                         2                                       1
+                            θ∞         √
+                                      2 n
+                                                 L(1, m                                                      3
+                                                                                                                               √
+                                                                                                                                   l
+                                                                                                                                               Il,f (ξ, n)   (11)
+                                                                                                     (lf 2 ) 2
+                     m∈Z                                                                  f,l=1                   ξ∈Z
+
+Proof. This is just a restatement of theorem 4.2 of [Alt15a], where we take α = 12 .
+
+4.1.2    Analysis of the term ξ = 0
+Lemma 4.5. Let β, z ∈ C be such that z > 1 and β − z2 > 1. Then,
+                                 ∞                       ∞
+                                 X
+                                            1
+                                                         X
+                                                                       1         Kll,f (0,n)    ζ(2z)ζ (β+ 2 )ζ (β− 2 )   z                z
+                                           z                               1
+                                                                                     √       =4         ζ(z+1)
+                                       nβ− 2                     (lf 2 )z+ 2           l
+                                 n=1                 f,l=1
+
+Proof. By Corollary B.8 of [Alt15b] Kll,f (0, n) = O(log(lf 2 )l gcd(n, f 2 )), hence the left hand side is
+absolutely convergent. By Corollary 5.4 of [Alt15a] we have
+                                      ∞
+                                                                 Kll,f (0,n)      ζ(2z)                      1−p−z(vp (n)+1)
+                                      X                                                               Y
+                                                         1
+                                                          1
+                                                                     √
+                                                                       l
+                                                                             = 4 ζ(z+1)                         1−p−z        .
+                                                (lf 2 )z+ 2
+                                   f,l=1                                                              p|n
+
+Summing this over n gives
+                                 ∞                                                                                        ∞
+                                                                                                                                                       !
+                       ζ(2z)
+                                                         Y 1−p−z(vp (n)+1)                                                  1−p−z(m+1)
+                                                                                        = 4 ζ(2z)ζ(z)
+                                 X                                                                               Y        X
+                                            1
+                    4 ζ(z+1)                     z
+                                                                      1−p−z                  ζ(z+1)                                                z
+                                       nβ− 2                                                                                           pm(β− 2 )
+                                 n=1                     p|n                                                      p       m=0
+
+                                                                                               ζ(2z)ζ (β+ z2 )ζ (β− z2 )
+                                                                                        =4             ζ(z+1)            .
+
+
+Proposition 4.6. For k ≥ 3 we have,
+
+                    X√ X∞                                                      Z 1
+                                                                                                         lf 2 (4n)−1/2
+                                                                                                                          
+                1                                1           Kll,f (0,n)
+                2     n                          3
+                                                                 √
+                                                                   l
+                                                                                     θ∞ (x) F               √
+                                                                                                               1−x2
+                                                                                                                               dx
+                                         (lf 2 ) 2                              −1
+                    n<X          f,l=1
+                                                             Z                                                        Z
+                                            3                                           −1       5                         θ∞ (x)
+                                                                                                             −1
+                                                                                                                  
+                                  = 2X 2 ζ(2)                    θ∞ (x)dx + 2 2 X 4 F̃                        2                        1   dx + Ok (1).
+                                                                                                                          (1−x2 ) 4
+
+                                                                                           3
+We remark that the first term above, which is of size X 2 , is the contribution of the trivial representation,
+cf. lemma 6.2 of [Alt15a] (which, in fact, is 0 in our case. cf. corollary 4.8).
+Proof. The proof is a simple application of Mellin inversion and contour shifting. By Perron’s formula
+                                                                                         
+                Z         ∞         ∞                      Z 1          2       −1/2
+                      u
+                                                                                      
+                                               Kll,f (0,n)
+                                                               θ∞ (x) F lf √(4n)
+                          X         X
+             1      X         1           1
+            4πi      u        u− 1         2
+                                             3
+                                                   √
+                                                     l                       1−x2
+                                                                                        dx du.    (∗)
+                     (4)                 n           2               (lf ) 2                    −1
+                                  n=1                     f,l=1
+
+We note that the √
+P                        absolute convergence of the triple sum for ℜ(u) > 2 is guaranteed by the estimate
+  l,f · · · = O θ ∞ ,F (   n), which follows from theorem 6.1 of [Alt15a]. Next, we use Mellin inversion on
+F which gives
+                                                                                                        
+                   Z Z                     ∞          ∞                         Z 1
+                                u      w                                                      w
+                              X F̃ (w)2                            Kll,f (0,n)
+                                           X          X
+  (∗) = 2(2πi)1
+                 2                 u           u−
+                                                 1
+                                                  1+w
+                                                              1
+                                                             2 w+
+                                                                  3
+                                                                        √
+                                                                          l
+                                                                                    (1 − x2 ) 2 θ∞ (x) dx dwdu.
+                    (4)    (2)                                   n         2            (lf )        2
+                                                                                                                              −1
+                                                         n=1                    f,l=1
+
+
+
+                                                                                     10
+      We note that the same bound as above guarantees the absolute convergence of the triple sum since
+      ℜ(u − 1+w     5   3
+             2 ) = 2 > 2 . Using Lemma 4.5, with β = u and z = w + 1, in the inner sums gives
+                             Z         Z                                                    w+1
+                                                                                                                 Z 1                        
+                     2                           X u F̃ (w)2w        ζ(2(w+1))ζ (u+ w+1
+                                                                                     2 )ζ (u− 2 )                               2   w
+             (∗) = (2πi) 2                              u                        ζ(w+2)                                   (1 − x ) θ∞ (x) dx dwdu.
+                                                                                                                                    2
+
+                                 (4)       (2)                                                                       −1
+
+      The rest of the proof is contour shifting. We will shift the w-contour to right and the u-contour to left.
+      To shift the contours first note that the only pole of
+                                                                                             w+1
+                                                                     ζ(2(w+1))ζ (u+ w+1
+                                                                                     2 )ζ (u− 2 )
+                                                                                 ζ(w+2)
+
+      in the region ℜ(w) ≥ 2 is simple and is at w = 2u − 3 with residue −2ζ(4u − 4) and all the other terms
+      depending on w are holomorphic in ℜ(w) ≥ 2. Therefore, moving the w-contour to ℜ(w) = 6 gives7
+                       Z                               Z 1                        
+                    4     X u F̃ (2u−3)22u−3                      2 u− 32
+             (∗) = 2πi              u        ζ(4u − 4)      (1 − x )      θ∞ (x) dx du
+                           (4)                                                        −1
+                             Z         Z                                                                        Z 1                           
+                                                   u
+                                                 X F̃ (w)2  w        ζ(2(w+1))ζ (u+ w+1      w+1
+                                                                                     2 )ζ (u− 2 )
+                                                                                                                                    w
+                     2
+                 + (2πi) 2                            u                          ζ(w+2)                                   (1 − x2 ) 2 θ∞ (x) dx dwdu.
+                             (4)       (6)                                                                           −1
+
+
+      We first handle the second integral above. Since F ∈ Cc∞ (R+ ), F̃ (w) is rapidly decreasing on the line
+      ℜ(w) = 6. Moreover the ratio of ζ-functions is rapidly decreasing in vertical strips and hence we can
+      interchange the u and w integrals. Moreover the u-integrand is holomorphic in 4 ≥ ℜ(u) ≥ −1, except
+      with a simple pole at u = 0. Hence by interchanging the u and w integrals and moving the u-contour
+      to ℜ(u) = − 21 (which picks up the residue at u = 0) we get that the second integral is Ok (1).
+          For the first integral, we again move the u-contour to ℜ(u) = − 21 (Note that the x-integral still
+      converges since we are assuming that the weight, k, of the forms we are working with satisfies k ≥ 3
+      which implies θ∞ (x) vanishes to order at least 2 at x = ±1, hence (1 − x2 )−3/2 θ∞ (x) is integrable
+      around x = ±1.). This picks up the pole of ζ(4u − 4) at u = 45 with residue 14 , the pole of F̃ (2u − 3)
+      at u = 23 with residue 12 , and the pole of u1 at u = 0 with residue 1. Therefore,
+                                         Z                              Z
+                                    3                     −1  5            θ∞ (x)
+                         (∗) = 2X 2 ζ(2) θ∞ (x)dx + 2 2 X 4 F̃ −1
+                                                                      
+                                                                    2            1 dx + Ok (1).
+                                                                               2                                 (1−x ) 4
+
+      Combining the estimates above for the two integrals finishes the proof.
+
+      Proposition 4.7. For k ≥ 3 we have,
+
+                            ∞                                         Z 1
+                                                                                                 lf 2 (4n)−1/2
+                                                                                                                
+                                             √1 2 Kll,f√(0,n)                   θ (x)
+                          X X
+                      1                                                         √∞
+                      4                                      l                   1−x2
+                                                                                      H             √
+                                                                                                       1−x2
+                                                                                                                     dx
+                                                 lf                     −1
+                          n<X f,l=1
+                                                                                Z                                     Z
+                                                       −1        5                    θ∞ (x)                               θ (x)
+                                                                        1
+                                                                            
+                                                  = 2 2 X 4 F̃                              1    dx + πXζ(0)               √∞    dx + Ok (1).
+                                                                        2           (1−x2 ) 4                               1−x2
+
+
+      Proof. The proof of Proposition 4.6 goes verbatim. We give the details for completeness. By Perron’s
+      formula                                                                            
+                        Z        ∞       ∞                  Z 1         2       −1/2
+                             u
+                                                                                      
+                                                  Kl  (0,n)     θ (x)
+                                                                      H lf √(4n)
+                                 X      X
+                     1     X         1      √1 2 l,f√          √∞
+                    8πi     u        nu               l          1−x2        1−x2
+                                                                                        dx du.        (∗)
+                             (4)                                        lf                       −1
+                                                 n=1        f,l=1
+
+      Once again we note that the absolute P     convergence
+                                                          √ of the triple sum and the interchange of the integrals
+      is guaranteed by the estimate l,f · · · = Oθ∞ ,F ( n), which follows from theorem 6.1 of [Alt15a]. Next,
+      substituting (10) for the function H we get that (∗) is
+                                                                                                            
+           √
+                 Z Z                      1+w
+                                                 ∞        ∞                          Z 1
+                          X F̃ (w) 2 Γ( 2 ) 
+                           u        w                                                             w−1
+             π                                                           Kll,f (0,n)
+                                                 X       X
+         4(2πi)2                   π w Γ( 2−w
+                                                     1
+                                                       w
+                                                                   1
+                                                                       1
+                                                                             √           (1 − x2 ) 2 θ∞ (x)dx dwdu,
+                                           2 )
+                             u                     nu− 2     (lf 2 )w+ 2       l
+                  (4) (1)                                       n=1                   −1
+                                                                                    f,l=1
+
+7
+    We remark that since we are moving the contour from left to right the residue formula has an extra “ − ” sign.
+
+
+                                                                                        11
+      where the interchange of the integrals with the triple sum is justified by the same bound above using
+      ℜ(u − w2 ) = 3 > 32 . By lemma 4.5 with β = u and z = w we have
+
+                     √
+                                   Z        Z                         1+w
+                                                                                                                         Z 1                             
+                      π                             X u F̃ (w) 2 Γ( 2 )
+                                                                w
+                                                                                        ζ(2w)ζ (u+ w
+                                                                                                   2 )ζ (u− 2 )
+                                                                                                            w
+                                                                                                                                        2   w−1
+             (∗) = (2πi) 2                              u      π w Γ( 2−w )                     ζ(w+1)                           (1 − x )    2    θ∞ (x)dx dwdu
+                                      (4)    (1)                            2                                               −1
+
+      We now finish the proof by shifting contours. We will shift the w-contour to right and the u-contour
+      to left. To shift the contours first note that the only pole of
+                                                                       Γ( 1+w
+                                                                           2 ) ζ(2w)ζ (u+ 2 )ζ (u− 2 )
+                                                                                          w        w
+
+                                                                          2−w
+                                                                       Γ(     ) 2
+                                                                                       ζ(w+1)
+
+
+                                                           −2Γ(u− 12 )ζ(4u−4)
+      in the region ℜ(w) ≥ 1 is at w = 2u − 2 with residue      Γ(2−u)        and all the other terms depending
+      on w are holomorphic in ℜ(w) ≥ 1. Therefore, moving the w-contour to ℜ(w) = 6 gives8
+                    √
+                         Z                                                                     Z 1                             
+                                   X u F̃ (2u−2) 2
+                                                  2u−2
+                                                       Γ(u− 21 )                                                     3
+          (∗) = 22πiπ                     u      π 2u−2 Γ(2−u) ζ(4u − 4)                                 (1 − x2 )u− 2 θ∞ (x) dx du
+                             (4)                                                                    −1
+                            Z         Z                                                                                         Z 1                     
+                                             X F̃ (w) 2 Γ( 2 )                  ζ(2(w+1))ζ (u+ w+1
+                                                                                                2 )ζ (u− 2 )
+                                                u      w     1+w                                        w+1
+                                                                                                                                                  w
+                    2                                                                                                                         2
+                + (2πi) 2                      u      π w Γ( 2−w )                          ζ(w+2)                                     (1 − x ) θ∞ (x) dx dwdu
+                                                                                                                                                  2
+
+                                (4)    (6)                         2                                                              −1
+
+
+      As in Proposition 4.6 we can move the u-contour in the second integral to ℜ(u) = − 12 picking only the
+      residue of u1 , which implies that the second integral is Ok (1).
+           For the first line, we again move the u-contour to ℜ(u) = − 12 (Note, once again, that the x-integral
+      still converges since we are assuming k ≥ 3 which implies θ∞ (x) vanishes to order at least 2 at x = ±1,
+      hence (1 − x2 )−3/2 θ∞ (x) is integrable around x = ±1.). This picks up the pole of ζ(4u − 4) at u = 54
+      with residue 14 , the pole of F̃ (2u − 2) at u = 1 with residue 21 , and the pole of u1 at s = 0 with residue
+      1. Therefore,
+                                                  Z                       Z
+                                    −1   5           θ∞ (x)                  θ (x)
+                                              1
+                                                
+                             (∗) = 2 X F̃ 2
+                                     2   4
+                                                           1 dx + πXζ(0)
+                                                                             √∞    dx + Ok (1).
+                                                         2                    1−x2
+                                                                                (1−x ) 4
+
+      The lemma follows from substituting ζ(0) = −1/2.
+
+      Corollary 4.8. For k ≥ 3 we have
+                                                X√ X∞
+                                                                            1       Kll,f (0,n)                X
+                                                  n                             3
+                                                                                        √
+                                                                                          l
+                                                                                                Il,f (ξ, n) = k−1 + Ok (1).
+                                                                       (lf 2 ) 2
+                                                n<X            f,l=1
+
+      Proof. By propositions 4.6 and 4.7 the LHS is
+                     Z                                                      Z
+            3                                       −1     5                         θ∞ (x)
+                                                                  −1
+                                                                        
+         2X 2 ζ(2)          θ∞ (x)dx + 2 2 X 4 F̃                 2                            1   dx
+                                                                                    (1−x2 ) 4
+                                                                                                            Z                                 Z
+                                                                                    −1     5                     θ∞ (x)                            θ (x)
+                                                                                                    1
+                                                                                                        
+                                                                          + 2 2 X 4 F̃                                  1   dx + πζ(0)X            √∞    dx + Ok (1).
+                                                                                                    2           (1−x2 ) 4                           1−x2
+
+
+      By lemma 3.3 of [Alt15a] F̃ is an odd function hence the second and third terms cancel each other
+      (We remark that this is not a consequence of our particular choice of the function F . If, instead of
+      the current choicee, we had chosen an F so that F̃ is not odd, the function H that appear        in the
+      approximate functional equation would change and the third term above would have −F̃ −1       2   instead
+            1
+              
+      of F̃ 2 .).
+          As we already remarked in proposition 4.6 the first term is the contribution of the trivial represen-
+      tation. In general we would have to remove this term since we are only interested in the cuspidal part
+      of the spectrum. In the current case, the operator used in the Selberg trace formula is a projection
+      on a subset of the custpidal spectrum and since the trivial representation is orthogonal to the trivial
+8
+    As in Proposition 4.6 since we are moving the contour from left to right the residue formula has an extra “ − ” sign.
+
+
+                                                                                               12
+representation this contribution is 0. We will show this fact directly by showing that the integral
+vanishes.
+   By the definition of the function θ∞ (x) given in lemma 4.1
+                       Z                   Z 1n    p                 p          o
+                                       i
+                           θ∞ (x)dx = 2π       (x + x2 − 1)k−1 − (x − x2 − 1)k−1 dx
+                                            −1
+                                           Z π2
+                                       k
+                                     i
+                                   = 2π           (e−i(k−1)α − (−1)k−1 ei(k−1)α ) cos(α)dα.
+                                            −π
+                                             2
+
+
+Since k ≡ 0 mod 2, (−1)k−1 = −1 and we have
+                Z π2                                                                     Z π2
+                                                                                     k
+           ik
+           2π          (e−i(k−1)α − (−1)k−1 ei(k−1)α ) cos(α)dα = iπ                            cos((k − 1)α) cos(α)dα
+                 −π
+                  2                                                                       −π
+                                                                                           2
+
+                                                                                     k
+                                                                                                                     π2
+                                                                                  i
+                                                                                = 4π         sin(kα)
+                                                                                                k    + sin((k−2)α)
+                                                                                                           k−2
+                                                                                                                       −π
+                                                                                                                        2
+
+                                                                                = 0,
+
+where in the last line we used k ≡ 0 mod 2 again. Finally we will calculate the integral that appears
+in the fourth term. Proceeding as above,
+                        Z                Z 1    √              √
+                           θ (x)       i     (x+ x2 −1)k−1 −(x− x2 −1)k−1
+                           √∞    dx =                   √                 dx
+                            1−x2      2π                  1−x2
+                                                       −1
+                                                      Z π2
+                                                  k
+                                             i
+                                           = 2π              (e−i(k−1)α − (−1)k−1 ei(k−1)α )dα
+                                                       −π
+                                                        2
+                                                      Z π2
+                                                  k
+                                             i
+                                           = 2π                  cos((k − 1)α)dα
+                                                       −π
+                                                        2
+                                                2
+                                           = π(1−k) ,
+
+where in the last line we used k ≡ 0 mod 2. The corollary now follows from the fact that ζ(0) = −1/2.
+
+
+4.2     Analysis of the terms ξ 6= 0
+4.2.1    Preliminary estimates
+                                                                 2
+In this section we give estimates on (11) for lf√nξ running on certain ranges. We emphasize that these
+estimates are valid for every n. In other words, we are not yet bringing the n-sum of (1) in.
+    For any integer n ≥ 1 and κ, α > 0 let,
+                                                        Kll,f (ξ,n) Il,f (ξ,n)
+                                                 X
+                                 S0 (n, κ) :=               √
+                                                              l          2
+                                                                            3 ,                   (12)
+                                                                                         (lf ) 2
+                                                                     1
+                                                        lf 2 ξ≫n 2 +κ
+                                                                          Kll,f (ξ,n) Il,f (ξ,n)
+                                                                 X
+                                   S1 (n, κ, α) :=                            √
+                                                                                l              3 ,                          (13)
+                                                                                       (lf 2 ) 2
+                                                               1
+                                                        lf ξ≪n 2 +κ
+                                                             2
+                                                            1 +κ+α
+                                                        ξ≫n 6
+                                                                            Kll,f (ξ,n) Il,f (ξ,n)
+                                                                     X
+                                   S2 (n, κ, α) :=                                               3 .                        (14)
+                                                                                √
+                                                                                  l      (lf 2 ) 2
+                                                                     1
+                                                         lf 2 ≪n 4 −κ
+                                                                     1
+                                                        0<ξ≪n 6 +κ+α
+
+
+A heuristic discussion. To make the proofs easier to follow let us begin by giving a heuristic
+discussion of theorems 4.9, 4.11, and 4.13. There are certain structural points about these sums that
+we first would like to discuss, which clarifies the estimates a bit.
+   1. First of all, note that in all of the estimates below the parameters l and f appear as the product
+      lf 2 rather than individually. So it is the range for which lf 2 runs over that matters.
+
+                                                                     13
+         2. Next, by9 Corollary B.8 of [Alt15b], for a square-free l, and ξ and n such that gcd(f, n) = 1 and
+                                                    √                           Kl (ξ,n)
+            gcd(l, ξ) = 1, we have Kll,f (ξ, n) ≪ l. Therefore the quotient l,f√l , at least when the above
+            conditions are satisfied, is a complex number of absolute value 1, and for the heuristics we may
+            as well assume that this is the case disregarding the conditions.
+                                                                                                        √ N
+                                                                  pos
+         3. Finally, by Proposition 4.7 [Alt15b] (where their θ∞,1    is our θ∞ ) we have Il,f (ξ, n) ≪ lf 2nξ 1
+                                                                                                               ξ2
+            (cf. (16) below) for every N ≥ 0 and every l, f, n, ξ 6= 0, and by Proposition 4.9 of loc. cit. we
+                                √ − 32         2
+            have Il,f (ξ, n) ≪ ξlf 2n     for lf√nξ ≪ 1 (cf. (18) below).
+           We can now discuss the contents
+                                        √ of the theorems below. By the third remark above, Il,f (ξ, n)
+       decays very rapidly when lf 2 ξ ≫ n. Therefore we expect S0 to be very small and this is the content
+       of Theorem 4.9.                      √                       √
+                                                         I (ξ,n)           3
+           By the same remark, when lf 2 ξ ≪ n we have l,f 2 3 ≪ ( nξ)− 2 . Therefore, S1 is going to be
+                                                                                     (lf ) 2
+       comparable to the double integral
+                                                                                     1
+                                                         Z n 12              Z nξ2
+                                                  − 34                − 23                                1
+                                              n             1
+                                                                  ξ                      1 = O(n− 2 ).
+                                                          n6                    1
+
+       This is the content of Theorem 4.11.                               √
+                          1            1                             5
+          When lf 2 ≪ n 4 and ξ ≪ n 6 we necessarily have lf 2 ξ ≪ n 12 < n. Hence, again by the same
+                               I (ξ,n)    √    3                                      1
+       remark, in this region l,f 2 3 ≪ ( nξ)− 2 . Therefore, we expect S2 to be O(n− 2 ) and this is the
+                                  (lf ) 2
+       content of Theorem 4.13.
+
+
+       Theorem 4.9. Let n ∈ Z>0 . Then for every N > 0 and κ > 0,
+                                                                                         1
+                                                           S0 (n, κ) ≪ n 2 −N κ ,
+
+       where the implied constant depends only on k, N, and κ.
+       Proof. We recall two estimates from [Alt15b] that will be used throughout the proof. First, corollary
+       B.8 of [Alt15b] states,
+                                                                         s            
+                          Kll,f (ξ, n) ≪ δ(n; f ) log(lf ) l gcd(n, f 2 ) gcd √ ξ 2 , l ,
+                                               2        2
+                                                          p
+                                                                                                        (15)
+                                                                                                                    gcd(n,f )
+
+
+       where δ(n; f 2 ) is 1 if n is a square modulo f 2 and 0 otherwise. The second estimate, corollary 4.8 of
+       [Alt15b], is on the Fourier transform that appear in the sum. It states that for every N > 0
+                                                                                     √ N
+                                                                                        n          1
+                                                         Il,f (ξ, n) ≪               lf 2 ξ       ξ2 ,                          (16)
+
+       where the implied constant depends only on k and N . Using these we can now prove the proposition.
+       First, we will show that the triple sum of the proposition converges absolutely. Note that
+                                                    1
+                                                                                                     √
+                                                                                                       n       −κ
+                                       lf 2 ξ ≫ n 2 +κ                          ⇒                   lf 2 ξ ≪ n    .
+
+       Combining this bound and (16) we get that for every N > 0,
+                                                                  ∞
+                                                                                                           Kll,f (ξ,n) 1
+                                                                  X                           X
+                                    S0 (n, κ) ≪ n−N κ                            1
+                                                                                     3
+                                                                                                               √
+                                                                                                                 l     ξ2
+                                                                             (lf 2 ) 2
+                                                                f,l=1                              1
+                                                                                         lf 2 ξ≫n 2 +κ
+                                                                  ∞
+                                                                                                       Kll,f (ξ,n) 1
+                                                                  X                           X
+                                              ≪ n−N κ                            1
+                                                                                     3
+                                                                                                           √
+                                                                                                             l     ξ2 ,          (◦)
+                                                                             (lf 2 ) 2
+                                                                f,l=1                    ξ∈Z\{0}
+
+   9
+     There is an extra log(lf 2 ) factor in Corollary B.8 of [Alt15b] however for square-free l one can remove that factor. This,
+anyways, is not the main point of the heuristic discussion.
+
+
+                                                                               14
+where the implied constant depends only on k and N . Next, we trivially have
+                                                    s                  
+                                                                                             ξ
+                    gcd(n, f 2 ) ≤ n
+                                                                                                                p
+                                                   and                      gcd       √               ,l    ≤    ξ.
+                                                                                          gcd(n,f 2 )
+
+
+Substituting these two bounds in (15) gives
+                                                                  p
+                                         Kll,f (ξ, n) ≪ log(lf 2 ) nlξ.                                               (17)
+
+Using (17) in (◦) shows that
+                                                                ∞
+                                                   1                    log(lf 2 )           1
+                                                                X
+                                S0 (n, κ) ≪ n      2 −N κ                             ≪ n 2 −N κ .
+                                                                                  3
+                                                                        (lf 2 ξ) 2
+                                                              ξ,f,l=1
+
+
+
+
+Corollary 4.10. For every N, κ > 0,
+                                 X√
+                                    n S0 (n, κ) = O(X 2−N κ ),
+                                         n<X
+
+where the implied constant depends only on k, κ, and N .
+Proof. Follows from Theorem 4.9.
+Theorem 4.11. Let n ∈ Z>0 . Then for every κ, α > 0,
+                                                                                           1−2(κ+3α)      
+                                                                            log(n)
+                          S1 (n, κ, α) ≪ log(n)
+                                                                X
+                                                                                    n            4
+                                           3−2κ                               1/2 +            3/2          ,
+                                               n   4                         d0               d0
+                                                               d20 |n
+                                                                     1+2κ
+                                                             d0 ≪n     6
+
+
+
+where the implied constant depends only on k, κ, and α.
+Proof. To prove the theorem we will bound
+                                                                        Kll,f (ξ,n)
+                                                             X
+                                 S1 (n, κ, δ) :=                          l2 f 3    Il,f (ξ, n),
+                                                                 1
+                                                       lf 2 ξ≪n 2 +κ
+                                                            ξ≫nδ
+
+
+for any δ > κ (not to be confused with the function δ(n; f 2 ) of (19)) and then specialize to δ = 61 +κ+α.
+This on one hand avoids notational burden, and on the other hand proves that the exponent 61 is the
+best possible via this argument. Let us first estimate the integral. We claim that
+                         Z 1          2                   √           2  32
+                                              −1/2
+                                                    
+                             θ∞ (x)F lf √(4n)
+                                          1−x  2
+                                                    e  −xξ n
+                                                        2lf 2    dx ≪    lf
+                                                                         √
+                                                                           n
+                                                                                  1
+                                                                                ξ 3/2
+                                                                                      ,                  (⋆)
+                          −1
+                        Z 1                                          √ 
+                                             lf 2 (4n)−1/2
+                                                                                2
+                               θ (x)                                    n
+                               √∞
+                                1−x2
+                                     H          √
+                                                   1−x2
+                                                               e −xξ
+                                                                  2lf 2   dx ≪ √lfnξ ,                                (⋆⋆)
+                         −1
+
+where the implied constants depend only on k. These bounds, in fact, are the same bounds in propo-
+sition 4.9, lines (i) and (iii), of [Alt15b]. The only difference is that in loc. cit. the bounds are proved
+                 2                                 2                   1
+for the range lf√nξ ≪ 1, however our range is lf√nξ ≪ nκ and ξ ≫ n 6 +2κ . We claim that the bounds still
+hold for this range. This indeed follows from the proof of proposition 4.9 of loc.cit.. In order to give
+                                                                            2
+the details we first need to remind the reader how the assumption lf√nξ ≪ 1 was used in the proof of
+proposition 4.9. First, the proof itself depends
+                                               √
+                                                   on √
+                                                      the asymptotic expansion of theorem A.14 of loc.cit..
+                      2
+The assumption lf√nξ ≪ 1 implies that ξlf 2n = lf 2nξ ξ 2 ≫ 1 ,and substituting this for the parameter
+D in the asymptotic expansion of theorem A.14 implies that the first term dominates the asymptotic
+expansion,
+√
+             which is the result of proposition 4.9. In other words, the essential ingredient is the bound
+  nξ
+ lf 2 ≫ 1.
+
+
+
+                                                                15
+                                                                                                                       √             1 +δ
+   Coming back to our proof we have ξ ≫ nδ , which implies that ξlf 2n ≫ nlf2 2 ≫ nδ−κ ≫ 1, hence
+the conclusion of proposition 4.9 of [Alt15b] still holds. Note also that
+                                                        1                                                 lf 2     κ
+                                       lf 2 ξ ≪ n 2 +κ                            ⇒                       √
+                                                                                                            n
+                                                                                                               ≪ nξ .                                             (⋆ ⋆ ⋆S1 )
+
+Substituting (⋆ ⋆ ⋆S1 ) in (⋆⋆) then gives,
+                             Z 1                                                 √         2  12 κ
+                                                       lf 2 (4n)−1/2
+                                                                          
+                                      θ (x)                                         n
+                                      √∞
+                                       1−x2
+                                            H             √
+                                                             1−x2
+                                                                           e −xξ
+                                                                              2lf 2   dx ≪  lf
+                                                                                            √
+                                                                                              n
+                                                                                                   n2
+                                                                                                   ξ 3/2
+                                                                                                         .                                                               (⋆⋆S1 )
+                               −1
+
+Using (⋆) and (⋆⋆S1 ) we then get
+                                                                                             32     κ
+                                                                                      lf 2          n2
+                                                        Il,f (ξ, n) ≪                 √
+                                                                                        n           ξ 3/2
+                                                                                                          ,                                                                  (18)
+
+where the implied constants depend only k and κ. Next, we bound the character sums, Kll,f (ξ, n). By
+corollary B.8 of [Alt15b] we have,
+                                                            s                   √
+                        δ(n; f 2 ) log(lf 2 )pl gcd(n, f 2 ) gcd √ ξ
+                                                                                  l gcd(n,f 2 )
+                                                                             , l      rad(l)     |ξ
+         Kll,f (ξ, n) ≪                                                   2
+                                                                   gcd(n,f )                        , (19)
+                        
+                          0                                                        otherwise
+                        
+
+where δ(n; f 2 ) is 1 if n is a square modulo f 2 and 0 otherwise, and rad(l) = p|l p, where p denotes a
+                                                                                  Q
+
+prime. This, imn particular, implies that if gcd(n, f 2 ) is not a perfect square then Kll,f (ξ, n) vanishes.
+For l, f, ξ, n such that Kll,f (ξ, n) 6= 0 let,
+
+                 d20 := gcd(n, f 2 ),                        n = d20 n0 ,                           f = d0 f0 ,                     ξ = d0 ξ0 ,
+                                       d1 := gcd(l, ξ0 ),                              l = d1 l0 ,                       ξ0 = d1 ξ1 .
+
+Note also that l0 is square-free. Substituting these in (19) gives
+                                                                                                              p
+                                             Kll,f (ξ, n) ≪ log(d20 d1 l0 f02 )d0 d1                           l0 .                                                          (20)
+
+Combining (18) and (20) implies that,
+                                                                                                              log(d20 d1 l0 f02 )
+                                                                     X                   X
+                                                             1
+                                S1 (n, κ, δ) ≪            3−2κ                                                  √         3/2 .
+                                                         n 4                                                      d0 d1 ξ1
+                                                                     d20 |n d3 d2 l f 2 ξ ≪n 21 +κ
+                                                                                 0 1 0 0 1
+                                                                                   d0 d1 ξ1 ≫nδ
+
+                                  1                          1+2κ
+Note that d30 d21 l0 f02 ξ1 ≪ n 2 +κ ⇒ d0 ≪ n 6 . Therefore, in the summation range for S1 (n, κ), d0 runs
+                                               1+2κ
+through square divisors of n which are ≪ n 6 . Therefore,
+                                             X                                        
+                                                    T (d0 ,n,κ,δ)         U(d0 ,n,κ,δ)
+                                                                     X
+                                        1
+                        S1 (n, κ, δ) ≪ 3−2κ             √
+                                                           d
+                                                                  +          √
+                                                                                d
+                                                                                        ,             (21)
+                                            n    4                                       0                                          0
+                                                                 d20 |n                                       d20 |n
+                                                                    1+2κ                                          1+2κ
+                                                            d0 ≪n     6                                   d0 ≪n     6
+
+
+
+where
+                                                       log(d20 d1 l0 f02 )                                                                         log(d20 d1 l0 f02 )
+                                      X                                                                                         X
+     T (d0 , n, κ, δ) :=                                        3/2          ,        U (d0 , n, κ, δ) :=                                                   3/2          .
+                                                            d1 ξ1                                                                                      d1 ξ1
+                                                1                                                                                           1
+                           d30 d21 l0 f02 ξ1 ≪n 2 +κ                                                                   d30 d21 l0 f02 ξ1 ≪n 2 +κ
+                                              δ                                                                                           δ
+                                   d0 d1 ≫n                                                                                    d0 d1 ≪n
+                                                                                                                             d0 d1 ξ1 ≫nδ
+
+
+
+
+                                                                                 16
+   We now bound T (d0 , n, κ, δ) and U (d0 , n, κ, δ).
+                            X              X                                              X                                               X
+        T (d0 , n, κ, δ) =          1
+                                    d1                                                                   log(d20 d1 l0 f02 )                                1
+                                                                                                                                                           3/2
+                                                                                                                                                          ξ1
+                                           1                          1 +κ                      1 +κ                                          1 +κ
+                                d30 d21 ≪n 2 +κ          f02 ≪⌊ n 23 2 ⌋ l0 ≪⌊ n32 2 2 ⌋                                          ξ1 ≪⌊    n2
+                                                                                                                                                      ⌋
+                                                                     d0 d1                   d0 d1 f0                                     d3  2 2
+                                                                                                                                           0 d1 f0 l0
+                                  d0 d1 ≫nδ
+                                        X                          X                         X
+                           ≪                        1
+                                                    d1                                                   log(d20 d1 l0 f02 )
+                                           1                      1 +κ           1 +κ
+                                d30 d21 ≪n 2 +κ          f02 ≪⌊ n 23 2 ⌋ l0 ≪⌊ n32 2 2 ⌋
+                                                                 d0 d1        d0 d1 f0
+                                  d0 d1 ≫nδ
+                                        X                          X                                          1/2+κ
+                                                                                                                            1/2+κ 
+                           ≪                        1
+                                                    d1                                 log(d20 d1 f02 ) + 1 + nd3 d2 f 2 log nd0 d1
+                                                                                                                              0 1 0
+                                            1                             1 +κ
+                                d30 d21 ≪n 2 +κ          f02 ≪⌊ n 23 2 ⌋
+                                                                      d d
+                                  d0 d1 ≫nδ                            0 1
+
+                                                        log(d20 d1 )
+                                        X                                         1/2+κ
+                                                                                                     1/2+κ 
+                                                                                                        n
+                           ≪                                d1             + nd3 d3 log                  d0 d1
+                                                                                       0 1
+                                            1
+                                d30 d21 ≪n 2 +κ
+                                  d0 d1 ≫nδ
+                                                        1/2+κ−2δ
+                           ≪ log2 (n) + n                    d0           log(n).                                                                                  (◦)
+
+We remark that all of the implied constants depend only on κ and δ. Moving on to U (d0 , n, κ, δ) we
+have:
+                   X               X                 X          X
+U (d0 , n, κ, δ) =        1
+                          d1
+                                               1
+                                               3/2                     log(d20 d1 l0 f02 )
+                                                                             ξ1
+                           1               1 +κ                                                     1 +κ                    1 +κ
+                 d30 d21 ≪n 2 +κ        ⌊ n 23 2 ⌋≫ξ1 ≫⌊ dnd ⌋
+                                                                      δ
+                                                                                         f02 ≪⌊ n32 2         ⌋ l0 ≪⌊    n2
+                                                                                                                                   ⌋
+                                          d0 d1                     0 1                          d0 d1 ξ1               d3   2 2
+                                                                                                                         0 1 f0 ξ1
+                                                                                                                           d
+                   d0 d1 ≪nδ
+                      X                                 X                                       X                                           1/2+κ
+                                                                                                                                                            1/2+κ 
+             ≪                     1
+                                   d1
+                                                                                   1
+                                                                                   3/2                                log d20 d1 f02 + 1 + dn3 d2 f 2 ξ1 log nd0 d1 ξ1
+                                                                              ξ1                                                                          0 1 0
+                            1               1 +κ                                                       1 +κ
+                 d30 d21 ≪n 2 +κ                           δ
+                                        ⌊ n 23 2 ⌋≫ξ1 ≫⌊ dnd ⌋                           f02 ≪⌊ n32 2         ⌋
+                                           d0 d1          0 1                                     d0 d1 ξ1
+                   d0 d1 ≪nδ
+                                                                                                                                1/2+κ 
+                                                                  log(d20 d1 )                n1/2+κ
+                      X                     X
+                                   1                                                                          1                    n
+             ≪                     d1                                ξ 3/2
+                                                                               +                      5/2 + ξ 3/2           log    d0 d1 ξ1
+                                                                                             d30 d21 ξ1
+                            1                   δ
+                 d30 d21 ≪n 2 +κ        ξ1 ≫⌊ dnd ⌋
+                                               0 1
+                   d0 d1 ≪nδ
+                                   √                                                                   
+                                         d0 log(d20 d1 )   (1+2κ−3δ)/2
+                                                         +n     √ 3 3 log(n)
+                      X
+             ≪                                 √
+                                          nδ/2 d1                d0 d1
+                            1
+              d30 d21 ≪n 2 +κ
+                d0 d1 ≪nδ
+                      √        (1+2κ−3δ)/2
+                                            
+                         d0
+             ≪ 1 + nδ/2      + n 3/2          log(n).                                                                                                             (◦◦)
+                                   d            0
+
+
+Once again, all of the implied constants depend only on κ and δ.
+  Finally, substituting (◦) and (◦◦) into (21) gives,
+                                             X                                   
+                                                     log(n)   n(1+2κ−3δ)/2
+                      S1 (n, κ, δ) ≪ log(n)
+                                       3−2κ            1/2  +      3/2     +  1
+                                                                             nδ/2
+                                                                                   ,
+                                                    n    4                                 d0                     d0
+                                                                          d20 |n
+                                                                        1+2κ
+                                                                   d0 ≪n 6
+
+where the implied constant depends only on k, κ, and δ. The theorem then follows from substituting
+δ = 16 + κ + α.
+
+Corollary 4.12. For every κ, α > 0,
+                     X√                             3+2κ           3α
+                                                                       
+                           n S1 (n, κ, α) ≪ log2 (X)X 4 + log(X)X 1− 2 .
+                           n<X
+
+where the implied constant depends only on k, κ, and α.
+
+
+
+
+                                                                                   17
+Proof. By theorem 4.11 we get
+                       X√                               X log(n)                 X                log(n)
+                                                                                                                  1−2(κ+3α)   
+                                                                                                           n           4
+                                   n S1 (n, κ, α) ≪              1−2κ                                1/2 +           3/2
+                                                                n 4                                 d0              d0
+                      n<X                               n<X                       d20 |n
+                                                                                          1+2κ
+                                                                            d0 ≪n           6
+
+                                                        X log(n)                                                 1−2(κ+3α)   
+                                                                                                   log(n)
+                                                                                  X
+                                                                                                           n           4
+                                                    ≪            1−2κ                                1/2 +           3/2       .
+                                                                n 4                                 d0              d0
+                                                        n<X                       d20 |n
+                                                                                          1+2κ
+                                                                            d0 ≪n           6
+
+
+
+Bounding each term in the double sum separately we get,
+    X log2 (n)   X                X            X log2 (nd2 )
+                          1               1
+                         1/2 =
+                                                            0
+          1−2κ
+            n   4                  d0   d1−κ            1−2κ
+                                                            0                         n    4
+     n<X              d20 |n                d0 ≪X
+                                                    1+2κ
+                                                      6             n≪⌊ X2 ⌋
+                                                                        d
+                         1+2κ                                               0
+                    d0 ≪n 6
+                                                                                   3+2κ             2  1−2κ
+                                                           log2 (X)
+                                                                                    4                     4
+                                                                                                                                 3+2κ
+                                                                                                        d0
+                                               X
+                                        ≪                    d1−κ
+                                                                            X
+                                                                            d20
+                                                                                               +        X          + 1 ≪ log2 (X)X 4 ,
+                                                              0
+                                                    1+2κ
+                                            d0 ≪X     6
+
+                                                                                          log(nd20 )
+      X log(n)         X                       X                            X
+                                    1                           1
+            n3α/2                   3/2 =                   (3+6α)/2                        n3α/2
+                                   d0                      d0
+      n<X             d20 |n                d0 ≪X
+                                                    1+2κ
+                                                      6                 n≪⌊ X2 ⌋
+                                                                                  d
+                            1+2κ                                                      0
+                    d0 ≪n     6
+
+                                                                                    1− 3α             2  3α                  3α
+                                                            log(X)                         2                 d02
+                                               X
+                                        ≪                   (3+6α)/2
+                                                                                X
+                                                                                d20
+                                                                                                    +        X     + 1 ≪ log(X)X 1− 2 .
+                                                           d0
+                                                    1+2κ
+                                            d0 ≪X     6
+
+
+
+The corollary follows.
+
+                                                      1
+Theorem 4.13. Let n ∈ Z>0 . Then for every κ > 0 and 12 ≥ α > 0,
+                                                                                               1
+                                               S2 (n, κ, α) ≪ log2 (n)n− 2 −κ ,
+where the implied constant depends only on k, κ, and α.
+Proof. The proof follows the same argument as√in the proof of Theorem 4.11. First, note that since
+          1
+lf 2 ≪ n 4 −κ and ξ 6= 0 we necessarily have ξlf 2n ≫ 1. Therefore the first paragraph of the proof
+of Theorem 4.11 goes through verbatim and implies the same bounds as in (⋆) and (⋆⋆) of that
+                                                                        1              1
+theorem. Moreover, since S2 (n, κ, α) has the summation ranges lf 2 ≪ n 4 −κ and ξ ≪ n 6 +κ+α we have
+           5
+lf 2 ξ ≪ n 12 +α . Therefore,
+                                             lf 2       1
+                                             √
+                                               n
+                                                  ≪ n1/12−α ξ
+                                                                                             (⋆ ⋆ ⋆S2 )
+                                                1
+Substituting (⋆ ⋆ ⋆S2 ) into (⋆⋆) and using α ≤ 12 gives
+                               Z 1                                         √         2  12
+                                                   lf 2 (4n)−1/2
+                                                                    
+                                     θ (x)                                    n
+                                     √∞
+                                      1−x2
+                                           H          √
+                                                         1−x2
+                                                                     e −xξ
+                                                                        2lf 2   dx ≪  lf
+                                                                                      √
+                                                                                        n
+                                                                                                1
+                                                                                              ξ 3/2
+                                                                                                    .                                 (⋆⋆S2 )
+                                −1
+
+Finally, substituting (⋆) and (⋆⋆S2 ) in Il,f (ξ, n) we get
+                                                                                  32
+                                                                           lf 2             1
+                                                    Il,f (ξ, n) ≪          √
+                                                                             n            ξ 3/2
+                                                                                                .                                         (22)
+
+We also remark that the implied constant is independent of l, f, ξ and n. Moving on to the character
+sum, Kll,f (ξ, n), we once again have the bound in (19). Note that because of the presence of δ(n; f 2 )
+implies that the gcd(n, f 2 ) has to be a perfect square p    otherwerwise the sum vanishes. Moreover, when
+gcd(n, f 2 ) is a square, the sum stillpvanishes unless gcd(n, f 2 ) | ξ. This implies that whenever
+Kll,f (ξ, n) 6= 0 we have to have ξ = gcd(n, f 2 )ξ1 for some ξ1 , and we have the bound
+
+               Kll,f (ξ, n) = Kll,f (gcd(n, f 2 )ξ1 , n) ≪ log(lf 2 ) l gcd(n, f 2 )ξ1 = log(lf 2) lξ.
+                                                                     p                            p
+                                                                                                        (23)
+
+
+                                                                      18
+Substituting the bounds in (22) and (23) into S2 (n, κ) gives,
+                                                                                        √      3
+                                                                              log(lf 2 ) lξ lf 2 2 1                      1
+                                X                           X
+            S2 (n, κ, α) ≪                        1
+                                                    3
+                                                                                   √
+                                                                                     l
+                                                                                            √
+                                                                                              n     3       ≪ log2 (n)n− 2 −κ .
+                                            (lf 2 ) 2                                              ξ2
+                                    1                           1
+                             lf 2 ≪n 4 −κ               ξ≪n 6 +κ+α
+
+
+
+                                     1
+Corollary 4.14. For every κ > 0 and 12 ≥ α > 0,
+                              X√
+                                    n S2 (n, κ, α) ≪ log2 (X)X 1−κ ,
+                                        n<X
+
+where the implied constant depends only on k, κ and α.
+Proof. Follows from Theorem 4.13.
+
+4.2.2    Estimating the critical range
+                                                                                                            1                 1
+In this section we will estimate the critical range of summation where X 2 +κ ≫ lf 2 ≫ X 4 −κ . Let
+                             X√              X                 X
+                                                          1
+               S(X, κ, α) :=       n                    l2 f 3      Kll,f (ξ, n)Il,f (ξ, n).       (24)
+                                n<X               1                       1               ξ∈Z\{0}
+                                             X 2 +κ ≫lf 2 ≫X 4 −κ                                1
+                                                                                        lf 2 ξ≪X 2 +κ
+                                                                                            1
+                                                                                        ξ≪X 6 +κ+α
+
+The basic strategy for estimating this sum is to apply Poisson summation to the n-sum. The heuristic
+reason is pretty simple:
+     Using a smooth dyadic partition we can assume that n ∼ X. Moreover, in the region of summation
+Il,f (ξ, n) is roughly 1 (we have used all of its decay properties to get the estimates of the previous
+section). Therefore, bounding (24) reduces to bounding
+                                     √ X                                      X           Kllf (ξ, n)
+                                                            n
+                                                                
+                                      X  G                  X                                         .
+                                                                      1                 1
+                                                                                            l2 f 3
+                                             n∈Z
+                                                                    X 2 ≫lf 2 ≫X 4
+                                                                                    1
+                                                                      lf 2 ξ≪X 2
+                                                                              1
+                                                                          ξ≪X 6
+
+Now notice that Kll,f (ξ, n) is periodic in n modulo 4lf 2. Therefore Poisson summation on the above
+sum gives
+                                 3
+                                       X          1 X  Xν 
+                              X2                       Ĝ 4lf 2 ωlf (ξ, n),
+                                    1         1
+                                                l f5
+                                                 3
+                                                                              n∈Z
+                                        X 2 ≫lf 2 ≫X 4
+                                              2     1
+                                            lf ξ≪X 2
+                                                  1
+                                              ξ≪X 6
+                                                                                                   √
+where ωl,f (ξ, ν) is as in (33), and it is roughly of size lf (cf. Corollary 5.9). Since lf 2 ≪ X we deduce
+that as long as ν 6= 0 the decay of Ĝ will guarantee that the sum is very small in terms of the variable
+X. The only remaining point is to analyze the term corresponding to ν = 0. By a local analysis we
+can show that this term is 0 unless ν and ξ satisfy certain divisibility conditions and in our range of
+summation those conditions cannot be satisfied (see the proof of Theorem 4.15).
+    The only difficulty in executing this simple strategy is that the function G is not alone. It comes as
+                     n
+the product of G( X    )Il,f (ξ, n) so that one needs to get the decay properties of the Fourier transform of
+this product uniformly in all the variables, and this is done in Proposition 5.2 of §5.
+    We can now go on and execute the strategy described above. First of all, let G ∈ Cc∞ ([ 41 , 54 ]) be a
+smooth function. In Corollary 4.16 we will specialize this mollifier to a smooth approximation to the
+characteristic function of the interval of [ 21 , 1) to get back from the estimates on smoothed sums to
+estimating (24). Set,
+                               X
+                                       n
+                                         √         X
+                                                                  1
+                                                                        X
+           SG (X, κ, α) :=         G X      n                   l2 f 3          Kll,f (ξ, n)Il,f (ξ, n). (25)
+                             n∈Z                        1                       1             ξ∈Z\{0}
+                                                      X 2 +κ ≫lf 2 ≫X 4 −κ                              1
+                                                                                            lf 2 ξ≪X 2 +κ
+                                                                                                1
+                                                                                            ξ≪X 6 +κ+α
+
+
+
+                                                                          19
+Theorem 4.15. For every G ∈ Cc∞ ([ 41 , 54 ]), M ≥ 2, κ, α > 0 such that 12
+                                                                         1
+                                                                            > 2κ + α we have
+                                                               17                    1
+                          SG (X, κ, α) = O(kGkM,1 X 12 +2κ+α−M( 3 −κ−α) log(X)),
+
+where
+                                                               M
+                                                               X
+                                                   kGkM,1 =             kG(j) k1 ,
+                                                               j=0
+
+G denoting the j’th derivative of G (i.e. the Sobolev W M,1 -norm of G), and the implied constant
+ (j)
+
+depends only on k, κ, α, and M .
+Proof. Note that the character sum, Kll,f (ξ, n), is periodic in n modulo 4lf 2 . Using this we interchange
+the n-sum with the rest of the terms and break it up into arithmetic progressions mod 4lf 2 . This gives,
+                       X
+                                     1
+                                          X           X                    X         √       n
+                                                                                               
+  SG (X, κ, α) =                   l2 f 3                    Kll,f (ξ, b)              nG X      Il,f (ξ, n).
+                    1              1               ξ∈Z\{0}   b mod 4lf 2                         n∈Z
+                  X 2 +κ ≫lf 2 ≫X 4 −κ                1                                      n≡b mod 4lf 2
+                                              lf ξ≪X 2 +κ
+                                                   2
+                                                   1 +κ+α
+                                              ξ≪X 6
+
+We now apply Poisson summation to the n-sum and get
+                                                                                     Xω
+                                                                                            l,f (ξν)
+                                 X                X
+                                             1
+              SG (X, κ, α) =               l2 f 3                                            4lf 2     Jl,f (ξ, ν, X),    (26)
+                                      1             1                   ξ∈Z\{0}      ν∈Z
+                                    X 2 +κ ≫lf 2 ≫X 4 −κ                      1
+                                                                 lf 2 ξ≪X 2 +κ
+                                                                     1
+                                                                 ξ≪X 6 +κ+α
+
+where Jl,f (ξ, ν, X) is the Fourier transform defined in (32) and ωl,f (ξ, ν) is the character sum defined in
+(33). In order to bound Jl,f, (ξ, ν) and ωl,f (ξ, ν) we will use proposition 5.2 and corollary 5.9 respectively.
+For any M, N ≥ 0 and ν 6= 0, proposition 5.2 gives the following bound on Il,f (ξ, ν),
+                                                       N −M +3
+                                                                      M      
+                                                                      2
+                                                     X    2        lf         M
+                              Jl,f (ξ, ν) ≪ kGkM,1 ν M (lf 2 )N    √
+                                                                     X
+                                                                           +ξ     ,                         (•)
+
+where the implied constant depends only on k, G, M, and N . For ωl,f (ξ, ν) corollary 5.9 gives
+                            (
+                                                                   l
+                                                                        | ν, gcd(lf 2 , ν) | ξ
+                                        p
+                              log(lf )lf gcd(lf 2 , ν) gcd(l, ν) rad(l)
+              ωl,f (ξ, ν) ≪                                                                    ,                          (••)
+                              0                                  otherwise
+
+where the implied constant is absolute. Going back to (26) we break the analysis of the ν sum into
+two according to ν = 0 and ν 6= 0.
+   • ν = 0. In this case the character sum ωl,f (ξ, 0) does not vanish only if lf 2 | ξ. But the ranges in
+                                  1              1                           1
+     SG (X, κ, α) are lf 2 ≫ X 4 −κ and ξ ≪ X 6 +κ+α . Since 2κ + α < 12         these ranges don’t intersect,
+     hence for all l, f, ξ in the range for SG (X, κ, α) the term corresponding to ν = 0 vanishes.
+   • ν 6= 0. We will be using the bounds in (•) and (••). We will first need to separate the gcd-factors
+     from (••). Let gcd(l, ν) = d0 . Then,
+                                                           n l=d0 l0               o
+                                ωl,f (ξ, ν) 6= 0   ⇒         ν=d0 ν0 gcd(l0 ,ν0 )=1 .
+                                                                            ξ=d0 ξ0
+
+       Then (••) implies that,
+                                                                        p                                      √
+                  ωd0 l0 ,f (d0 ξ0 , d0 ν0 ) ≪ log(d0 l0 f )d20 l0 f     gcd(f 2 , ν0 ) ≤ log(d0 l0 f )d20 l0 f ν0 .      (••′ )
+
+       Now, taking N = 0 in (•) and using (••), we get the following bound valid for every M ≥ 2,
+                                                                                                M      
+                                 3−M                                                            2
+        ν6=0                                             log(d    l   f )
+                                            X                             X
+                                                                0   0              1      l   f         M
+       SG (X, κ, α) ≪ kGkM,1 X 2                          d0 (l0 f 2 )2          M− 1
+                                                                                          √ 0
+                                                                                              X
+                                                                                                     + ξ0 ,
+                                                                                                                 ν0   2
+                                               1                    1                       ξ0 ,ν0 ∈Z\{0}
+                                            X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ                                     1
+                                                                                         d20 l0 f 2 ξ0 ≪X 2 +κ
+                                                                                                    1
+                                                                                           d0 ξ0 ≪X 6 +κ+α
+
+
+
+                                                              20
+     where the implied constant is independent of X and G. Since the ν0 -sum converges absolutely
+                                                 1
+     (recall that M ≥ 2) and since d0 l0 f 2 ≪ X 2 +κ ⇒ log(d0 l0 f ) ≤ log(X), we have
+                                                                                               M       
+                                3−M                                                            2
+       ν6=0
+                                                      X                          X
+                                                                        1                  l√
+                                                                                            0f          M
+     SG     (X, κ, α) ≪ kGkM,1 X 2 log(X)                          d0 (l0 f 2 )2             X
+                                                                                                    + ξ0
+                                                                       1                            1                                 ξ0 ∈Z\{0}
+                                                                   X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ                                                    1
+                                                                                                                               d20 l0 f 2 ξ0 ≪X 2 +κ
+                                                                                                                                        1
+                                                                                                                               d0 ξ0 ≪X 6 +κ+α
+                                             3−M
+                                                                                              
+                                                               (1)               (2)
+                        = kGkM,1 X             2       log(X) Sν6=0 (X, κ, α) + Sν6=0 (X, κ, α) ,                                                                 (◦)
+
+     where
+                        ν6=0,(1)                               M                                               (l0 f 2 )M −2
+                                                                                       X                                                    X
+                      SG           (X, κ, α) : = X − 2                                                               d0                                  1,
+                                                                     1                  1                                              ξ0 ∈Z\{0}
+                                                                   X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ                                                        1
+                                                                                                                                 d20 l0 f 2 ξ0 ≪X 2 +κ
+                                                                                                                                           1
+                                                                                                                                  d0 ξ0 ≪X 6 +κ+α
+                        ν6=0,(2)
+                                                                           X                                                   X
+                      SG           (X, κ, α) : =                                                       1
+                                                                                                  d0 (l0 f 2 )2                             ξ0M .
+                                                           1                  1                                          ξ0 ∈Z\{0}
+                                                         X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ                                                      1
+                                                                                                                  d20 l0 f 2 ξ0 ≪X 2 +κ
+                                                                                                                            1
+                                                                                                                   d0 ξ0 ≪X 6 +κ+α
+
+                            ν6=0,(1)                               ν6=0,(2)
+     We now bound SG                   (X, κ, α) and SG                               (X, κ, α).
+                                                                                                                    n 1 +κ           1 +κ+α o
+                                                                                         (l0 f 2 )M −2
+                                            M
+                                                                                                         
+         ν6=0,(1)
+                                                              X
+       SG           (X, κ, α) ≪ X − 2                                                          d0            1 + min dX2 l20 f 2 , X 6 d0
+                                                                                                                                  0
+                                                   1                              1
+                                                 X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ
+                                            1                                             M
+                                                                                                     X                             n 1 +κ       1
+                                                                                                                                                       o
+                                 ≪ X − 2 +κ(M−1) log(X) + X − 2                                                    (l0 f 2 )M−2 min Xl02f 2 , X 6 +κ+α
+                                                                                                             1
+                                                                                                l0 f 2 ≪X 2 +κ
+                                            1
+                                 ≪ X − 2 +κ(M−1) log(X).                                                                                                          (i)
+                      ν6=0,(2)                                                                             1                                            1
+     To bound SG                 (X, κ, α) first note that since d0 ξ0 ≪ X 6 +κ+α we have d0 ≪ X 6 +κ+α . Then,
+                                                                                                       n 1 +κ M+1  1 +κ+α M+1 o
+          ν6=0,(2)
+                                                       X
+        SG           (X, κ, α) ≪                                                     1
+                                                                                d0 (l0 f 2 )2    1 + min dX2 l20 f 2 , X 6 d0
+                                                                                                                         0
+                                                         1
+                                                d0 ≪X 6 +κ+α
+                                        1                          1
+                                      X 2 +κ ≫d0 l0 f 2 ≫X 4 −κ
+                                                                                                          n         1         M+1  1 +κ+α M+1 o
+                                                                                                                  X 2 +κ
+                                                               X
+                                   ≪ log(X) +                                              1
+                                                                                      d0 (l0 f 2 )2 min           d20 l0 f 2
+                                                                                                                                   , X 6 d0
+                                                                   1
+                                                         d0 ≪X 6 +κ+α
+                                                                           1 −κ
+                                                        l0 f 2 ≫⌊ X 4d            ⌋
+                                                                            0
+                                                                                                    1                1
+                                                             ( 16 +κ+α)(M+1)
+                                   ≪ log(X) + X                                          (X κ− 4 + X α− 3 )
+                                         1                             1
+                                   ≤ X ( 6 +κ+α)(M+1)− 4 +κ .                                                                                                     (ii)
+                                                  1
+     Where, we used the assumption that 2κ + α < 12 therefore 41 − κ < 31 − α. Finally, substituting
+     (i) and (ii) into (◦) gives,
+              ν6=0                                       3−M                              1                                            1                      1
+             SG    (X, κ, α) ≪ kGkM,1 X                    2    log(X)(X − 2 +κ(M−1) log(X) + X ( 6 +κ+α)(M+1)− 4 +κ )
+                                                         17−4M
+                                                               +(M+1)(κ+α)+κ
+                                   ≪ kGkM,1 X              12                                      log(X).
+
+
+                                                 1
+Corollary 4.16. Let κ, α > 0 such that 2κ + α < 12 . Then for every ǫ > 0 we have
+                                                                    11      11ǫ 
+                                                   S(X, κ, α) = O X 12 +κ+α+ 6 ,
+
+where the implied constant depends only on k, κ, α, and ǫ.
+
+
+                                                                                  21
+Proof. We start with bounding each individual Tk (n). Although there are better bounds (in particular,
+the Ramanujan conjecture |Tk (n)| ≤ nκ is known in this case thanks to Deligne [Del74], and see [Sar04]
+for an excellent survey of bounds towards the Ramanujan conjecture in general) in order to keep the
+proof self contained, and use only the trace formula we will refer to Theorem 1.1 of [Alt15b] which,
+                                                                                  k
+translated to the setting of the current paper, tells us that tr(Tk (p)) = O(p 4 ) for any prime p. Then,
+by the recursion relations the Tk (pk )’s satisfy (cf. (73) on pg.102 of [Ser96]) it is straightforward to see
+                            1
+that tr(Tk (n)) = Oǫ (n 4 +ǫ ).
+    Using this it is now straightforward to prove the theorem        by choosing a specific mollifier G(x).
+Let φ ∈ Cc∞ ((−1, 1)) such that it is normalized by φ = 1, and let 1[ 12 ,1) be the characteristic
+                                                            R
+
+function of the interval [ 21 , 1). Let 1 ≥ δ ≥ 0 set φY δ (x) = Y 1−δ φ(xY 1−δ ). Using φY δ (x) define
+GY δ (x) := 1[ 12 ,1) ∗ φY δ (x), i.e.
+                                                          Z
+                                                    1−δ
+                                  GY δ (x) = Y                 1[ 21 ,1) (x − y)φ(yY 1−δ )dy.                                      (27)
+
+Then it is straightforward to see that
+                                      
+                                                          Y       δ               δ
+                              x    1                   2 +Y ≤ x≤ Y −Y
+                         GY δ       = O(1)                |x − Y2 | < Y δ or |x − Y | < Y δ ,                                      (28)
+                               Y      
+                                       0                  otherwise
+                                      
+
+and the
+                                           kGY δ (x)kM,1 = O(Y M(1−δ) ).                                                           (29)
+                                                              1
+Then, by (28) and the bound tr(Tk (n)) = O(n                  4 +ǫ   ) we get
+                         log(X)
+                          X          X         √                X
+                                                                                  1
+                                                                                              X
+          S(X, κ, α) =                          n                               l2 f 3                   Kll,f (ξ, n)Il,f (ξ, n)
+                          j=1 2j−1 ≤n<2j              1             1                      ξ∈Z\{0}
+                                                    X 2 +κ ≫lf 2 ≫X 4 −κ                          1
+                                                                                         lf 2 ξ≪X 2 +κ
+                                                                                             1
+                                                                                         ξ≪X 6 +κ+α
+                         log(X) n                                o
+                                                             1
+                          X
+                     ≪              SG2jδ (2j , κ, α) + 2jδ+ 4 +ǫ ,                                                                 (*)
+                          j=1
+
+where the implied constant depends only on k, δ and ǫ. By Theorem 4.15 for every M > 0, the
+sub-sums, SG2jδ (2j , κ, α), satisfy
+                                                                                17                1
+                         SG2jδ (2j , κ, α) = O(kG2jδ kM,1 j(2j ) 12 +2κ+α−M( 3 −κ−α) ),
+
+where the implied constant depends only on k, κ, α, and M . Substituting this bound in (*) and using
+(29) we get
+
+                                     log(X)
+                                        X                              17                 1                   1
+                                                                                                                  
+                    S(X, κ) = O                j2jM(1−δ) (2j ) 12 +2κ+α−M( 3 −κ−α) + 2jδ+ 4 +ǫ
+                                       j=1
+                                       2          17                     1
+                              = O X M( 3 +κ+α−δ)+ 12 +2κ+α log(X) + X δ+ 4 +ǫ ,
+                                                                             
+
+
+where the implied constant depends only on k, ǫ, M, and δ. Finally choosing δ = 23 + κ + δ + 5ǫ
+                                                                                             6 and
+M = 2ǫ the corollary follows.
+
+
+
+5    Local analysis
+In this section we will derive bounds on the Fourier transforms and character sums that appear after
+the Poisson summation on the n-sum.
+
+
+
+                                                                 22
+5.1    Archimedean analysis
+We begin with a technical lemma that will be useful for the rest of this section. For what follows let
+us fix two positive integers l and f, and let X denote an independent parameter as in the previous
+sections.
+Lemma 5.1. Let Φ ∈ S(R), ξ, α ∈ Z, and ν ∈ Z\{0}. Let,
+                                                                   √
+                                  Z                                      
+                                       y
+                                          α         2
+                                                               −(xξ 4y+yν)
+               Vl,f,α (ξ, ν, X) := G X    y 2 Φ √4ylf
+                                                   √
+                                                      1−x2
+                                                            e      4lf 2     dy.
+
+Then, for any G(x) ∈ Cc∞ ([ 41 , 54 ]) and M, N ∈ N we have
+                                                            M        √ √     N 
+                                                  1+ α
+                                                          lf 2        M     X 1−x2
+               Vl,f,α (ξ, ν, X) = O kGkM,1 XM M      2
+                                                          √
+                                                            X
+                                                                  + ξ        lf 2       ,
+                                                         ν   X 2
+
+where the implied constant depends only on Φ, α, M, and N .
+Proof. First using the change of variables y 7→ Xy and then applying integration by parts M -times
+(keeping in mind that G is compactly supported) gives,
+                                   M Z M n                               √    o         
+                          α   4lf 2                   α         lf√2       −xξ 4Xy      −Xyν
+  Vl,f,α (ξ, ν, X) = X 1+ 2 −2πiXν       d
+                                         dy M G (y) y 2 Φ   √
+                                                              4Xy 1−x2
+                                                                        e    4lf 2   e   4lf 2   dy.
+
+                                                                                                                                   (30)
+                                                                                                                                      
+                                                                                                                     α          lf√2
+The M ’th derivative above is a combination of derivatives (of orders ≤ M ) of G, y , Φ                              2       √
+                                                                                                                              4Xy 1−x2
+                                                                                                                                        ,
+and the exponential. Note that since G(y) is compactly supported away from y = 0 the negative powers
+of y that appear in the derivative are bounded uniformly depending only on M and cause no problem.
+The only point we need to pay attention is the derivatives of Φ. To that end, note that since Φ decays
+faster than any polynomial, for any β1 , β2 ∈ N we have
+                            2
+                                    β1                                                 √       √        N
+                            lf                            lf√2                                       1−x2
+                          √ √
+                           X 1−x2
+                                          Φ(β2 )       √
+                                                        4Xy 1−x2
+                                                                          ≪Φ,N1 ,β1 ,β2        X
+                                                                                                   lf 2          .
+
+Using this bound we then get
+                  n                  2
+                                               √     o   √ √     N      √ M 
+            dM             α
+                                                              X 1−x2
+           dy M    G (y) y 2 Φ √4Xylf√1−x2 e −xξ4lf4Xy
+                                                   2      ≪    lf 2      1 +  ξ X
+                                                                               lf 2   ,                                             (31)
+
+where the implied constant depends only on Φ, M, N, and kGkM,1 . Combining (30) with (31) finishes
+the proof.
+
+    For the next corollary let us introduce the following notation,
+                     √                                                                     √
+                  ZZ                  n                                        o              
+                                                2
+                                                             lf 2          lf 2        −(xξ 4y+yν)
+                            y
+                                θ∞ (x) F √4ylf
+                              
+Jl,f (ξ, ν, X) :=     yG X                    √
+                                                1−x 2
+                                                        + √ √
+                                                           4y 1−x 2
+                                                                    H   √ √
+                                                                         4y 1−x 2
+                                                                                    e      4lf 2     dxdy.
+                                                                                                                                    (32)
+Proposition 5.2. Let ξ, α ∈ Z, and ν ∈ Z\{0}.                  Then, for any G(x) ∈ Cc∞ ([ 41 , 54 ]) and M, N ∈ N we
+have
+                                                                   N +3
+                             Jl,f (ξ, 0, X) ≪ kGk1 (lfX   2
+                                                      2 )N ξ N +2 ,
+
+                                                                   N −M +3
+                                                                                       M       
+                                                                                  lf 2
+                             Jl,f (ξ, ν, X) ≪ kGkM,1 X     2
+                                                     ν M (lf 2 )N
+                                                                                  √
+                                                                                    X
+                                                                                              + ξM ,
+
+where the implied constant depends only on θ∞ , F, M, and N .
+Proof. We first remark that because G(y) is compactly supported away from y = 0 we always have
+y > 0.
+
+
+
+
+                                                               23
+   • ν = 0. By corollary 4.8. of [Alt15b], for any N ≥ 0 and y 6= 0, we have
+       Z        n          2
+                                            2
+                                                         2
+                                                                o       √            √ N
+          θ∞ (x) F √4Xylf√1−x2 + √4Xylf√1−x2 H √4Xylf√1−x2          e −xξ4lf4Xy
+                                                                            2     dx ≪     Xy
+                                                                                         lf 2 ξ
+                                                                                                1
+                                                                                                ξ2 .
+
+
+      Using the change of variables y 7→ Xy and using the above bound gives,
+                                              N +3
+                                                       Z                         N +3
+                                                              N +1
+                       Jl,f (ξ, 0, X) ≪ (lfX   2
+                                           2 )N ξ N +2   G(y)y 2 dy ≪ kGk1 (lfX   2
+                                                                              2 )N ξ N +2 ,
+
+
+
+     where the implied constants depend only on θ∞ , F, and N . This finishes the proof of the case
+     ν = 0.
+   • ν 6= 0. Let,
+                                                 1                2
+                               Jl,f (ξ, ν, X) = Jl,f (ξ, ν, X) + Jl,f (ξ, ν, X),
+      where
+                                                   √                             √
+                                       ZZ                                              
+                                                                    2
+                                             y                                −(xξ 4y+yν)
+                    1
+                   Jl,f (ξ, ν, X) :=      G X        yθ∞ (x)F √4ylf
+                                                                 √
+                                                                    1−x 2
+                                                                           e      4lf 2     dxdy,
+                                                                                            √
+                                          ZZ                                                       
+                                        2
+                                                                             lf 2
+                                                         θ∞ (x)
+                    2
+                   Jl,f (ξ, ν, X) := lf2     G      y
+                                                    X
+                                                         √
+                                                             1−x2
+                                                                  H       √ √
+                                                                           4y 1−x2
+                                                                                      e −(xξ4lf4y+yν)
+                                                                                                2       dxdy,
+
+      By lemma 4.5 of [Alt15b] both F and H are in S(R). Moreover recall that θ∞ (x) and G(y) are
+                                                                                  1                    2
+      both compactly supported. Therefore, the double integrals in Jl,f             (ξ, ν, X) and Jl,f    (ξ, ν, X) are
+      both absolutely convergent, and hence we can interchange the order of integration in both. Doing
+                                                                          1                                2
+      so and using lemma 5.1 in the y-integrals (take α = 1 in Jl,f          (ξ, ν, X) and α = 0 in Jl,f      (ξ, ν, X))
+      gives, for any M, N0 , N1 ∈ N,
+                                            N0 −M +3
+                                                             M        Z
+                                                                                                N
+                  1                                       lf 2         M                     2 20
+                 Jl,f (ξ, ν, X) ≪ kGkM,1 X      2
+                                         ν M (lf 2 )N0
+                                                          √
+                                                            X
+                                                                   + ξ         θ ∞ (x)(1 −  x )     dx,
+                                                N −M
+                                                                M        Z
+                                            1+ 1                                                   N1 −1
+                  2                                          lf 2        M                     2
+                 Jl,f (ξ, ν, X) ≪ kGkM,1 νX         2
+                                          M (lf 2 )N1 −1
+                                                            √
+                                                               X
+                                                                     + ξ         θ ∞ (x)(1 −  x  )   2   dx.
+
+      Finally choosing N0 = N and N1 = 1+N , which guarantees that the x-integrals converge, finishes
+      the proof.
+
+
+5.2     Non-Archimedean analysis
+Let us first introduce some notation that will be used throughout the calculations. Let p be a prime.
+For any integer A ∈ Z let vp (A) denote the p-adic valuation of A. In what follows we will denote the
+“p-part” and the “prime to p-part” of A respectively by A(p) and A(p) . They are defined by,
+
+                                A(p) := q vp (A)              and            A(p) := AA(p) .
+
+For an integer A ∈ Z\{0}, let rad(A) denote the radical of A. i.e.
+                                                    Y
+                                        rad(A) =           p.
+                                                                 p|A
+                                                               p−prime
+
+Finally, let us introduce the character sums that will be the focus of this section:
+                                               X                        
+                                                                    bν
+                                ωl,f (ξ, ν) :=       Kll,f (ξ, ν)e 4lf 2   .                                       (33)
+                                                    b mod 4lf 2
+
+Lemma 5.3. Let k1 , k2 ∈ N. Then,
+                                 Y                                                          
+                   ωl,f (ξ, ν) =   ωpvp (l) ,pvp (f ) ((4lf 2 )(p) )−1 ξ, ((4lf 2 )(p) )−1 ν
+                                        p
+
+
+
+                                                              24
+Proof. The proof follows from the Chinese remainder theorem. The details are exactly the same as in
+lemma B.1 of [Alt15b].
+
+   Lemma 5.3 reduces the calculation of ωl,f (ξ, ν) to ωpk1 ,pk2 (α, β), where α, β ∈ Z.
+Lemma 5.4. Let p be an odd prime, m ∈ N, and α, β ∈ Z. Then,
+                         
+                         pm                                                                                          β = 0, vp (α) ≥ m
+    X            2
+                       
+          e 2aα+a
+               pm
+                    β
+                       =   0                                                                                          β = 0, vp (α) < m ,
+                             m+min{m,vp (δ)}
+                                                                        −β(α0 β0−1 )2
+                                                           −vp (δ)                 
+                                             η(pm−vp (δ) ) pm−vp (δ)β e
+        m
+                         
+ a mod p                 p
+                                  2                                                                                  β 6= 0
+                                                                            m                        p
+                                                                          p
+
+where
+                             δ = gcd(α, β),                     α = δα0 ,                    β = δβ0 ,
+and for any n ∈ N                                                          n
+                                                        η̄(n) = 1+i
+                                                                 1+i
+(η̄(n) denoting the complex conjugate of η(n)). Finally, we emphasize
+                                                                     that if vp (β) > vp (gcd(α, β)) the
+                                                                                                  p−vp (δ) β
+right hand side is 0 because of the appearance of the Jacobi symbol,                              pm−vp (δ)
+                                                                                                                  .
+Proof. First, note that if β = 0 the sum is a complete character sum over a and is 0 unless vp (α) ≥ m,
+in which case it is pm . Also, the sum is trivially pm if vp (δ) ≥ m, so for the rest of the calculation we
+assume that β 6= 0 and vp (δ) < m.
+      Let δ = δ0 pvp (δ) and let a = a0 + a1 pm−vp (δ) , where a0 and a1 are running modulo pm−vp (δ) and
+  vp (δ)
+p        respectively. Then,
+                                                                        δ (2a0 α0 +a20 β0 )
+                          X             2
+                                                           X                              
+                                 e 2aα+a
+                                      pm
+                                           β
+                                               = pvp (δ)             e 0 pm−v     p (δ)
+                                                                                              .        (34)
+                     a mod pm                                   a0 mod pm−vp (δ)
+
+   • Claim: vp (β0 ) > 0 ⇒ (34) = 0.
+      Proof. Suppose vp (β0 ) > 0 and let a0 = a2 + a3 pm−vp (δ)−vp (β0 ) ., where a2 and a3 are running
+      modulo pm−vp (δ)−vp (β0 ) and pvp (β0 ) respectively. Then,
+                                                         δ (2a2 α0 +a22 β0 )
+                                       X                                     X                
+               (34) = pvp (δ)                        e 0 pm−v     p (d)
+                                                                                   e 2δp
+                                                                                         0 a3 α0
+                                                                                        vp (β0 )   .
+                                a2 mod pm−vp (δ)−vp (β0 )                                    a3 mod pvp (β0 )
+
+      Since gcd(α0 , β0 ) = 1, vp (β0 ) > 0 ⇒ vp (α0 ) = 0. We also have vp (2δ0 ) = 0 (recall that p 6= 2).
+      Therefore, the last sum over a3 vanishes.
+Furthermore, again by the claim above we can assume that vp (β0 ) = 0, otherwise (34) is 0. Then,
+                                                   δ β (2a0 α0 β0−1 +a20 )
+                                       X                                  
+                     (34) = pvp (δ)             e 0 0 pm−v    p (δ)
+
+                                          a0 mod pm−vp (δ)
+                                                                        δ0 β0 (a0 +α0 β0−1 )2 −(α0 β0−1 )2 )
+                                                   X                                                             
+                              = pvp (δ)                         e                   pm−vp (δ)
+                                          a0 mod pm−vp (δ)
+                                                −β(α0 β0−1 )2                                     δ0 β0 a20
+                                                                            X                              
+                              = pvp (δ) e           pm                                   e       pm−vp (δ)
+                                                                    a0 mod pm−vp (δ)
+                                   m+vp (δ)
+                                                                                   −β(α0 /β0 )2
+                                                                                             
+                                                                        δ0 β0
+                              =p     2        η(pm−vp (δ) )          pm−vp (δ)
+                                                                                e     pm          .
+
+Note that in the last line we used the explicit calculation of the Gauss sum (cf. theorem 3.4 of
+[IK04]).
+Lemma 5.5. Let p be an odd prime, m ∈ N, and α, β ∈ Z. Then,
+                               
+                               
+                                 φ(pm )                 vp (β) ≥ m, m ≡ 0 mod 2
+                               
+                                     m−1
+                                  −p                     vp (β) = m − 1, m ≡ 0 mod 2
+           X               
+                               
+                   b     bβ
+                  pm e pm =  p p
+                                   −v (β) 
+                                          β        m− 12
+        b mod pm                     p      η(p)p       vp (β) = m − 1, m ≡ 1 mod 2
+                               
+                               
+                                  0                      otherwise
+                               
+
+
+                                                                25
+Proof. Let b = b0 + b1 p. Then,
+                  X                                   X                                
+                                bβ
+                           b
+                          pm e pm =
+                                                                          b0
+                                                                          pm    e bp0mβ e pbm−1
+                                                                                             1β
+
+
+                 b mod pm                              b0 mod p
+                                                     b1 mod pm−1
+                                                                                  (
+                                                       X                    pm−1               vp (β) ≥ m − 1
+                                                                     b0      b0 β
+                                                 =                   pm    e pm                                   .
+                                                     b0 mod p
+                                                                                    0              otherwise
+
+A case by case calculation of the b0 -sum finishes the proof.
+
+Proposition 5.6. Let p be an odd prime, k1 , k2 ∈ N, and α, β ∈ Z. Then,
+                                  (
+                                    pk1 +2k2 φ(pk1 ) vp (α) ≥ k1 + 2k2 , k1 ≡ 0 mod 2
+               ωpk1 ,pk2 (α, 0) =                                                     ,
+                                    0                otherwise
+
+and for β 6= 0 we have,
+                                             
+                                             
+                                              φ(pk1 )                                  vp (β) ≥ k1 , k1 ≡ 0 mod 2
+                                             
+                                             −pk1 −1
+                                             
+                                                                                        vp (β) = k1 − 1, k1 ≡ 0 mod 2
+       ωpk1 ,pk2 (α, β) = τp (k1 , k2 , α, β)  −p−vp (β)β            1                                                             ,
+                                             
+                                                    p       η(p)pk1 − 2                vp (β) = k1 − 1, k1 ≡ 1 mod 2
+                                             
+                                             
+                                               0                                        otherwise
+                                             
+
+where α0 , β0 , and δ are as in lemma 5.4, and
+                                 k1 +2k2 +min{vp (β),k1 +2k2 }
+                                                                                                                   −β(α0 β0−1 )2
+                                                                                                                              
+                                                                                              p−vp (β) β
+        τp (k1 , k2 , α, β) :=                2                  η(pk1 +2k2 −vp (β) )       pk1 +2k2 −vp (β)
+                                                                                                                e    k
+                                                                                                                    p 1 +2k 2
+
+
+if vp (α) ≥ min{vp (β), k1 + 2k2 }, and is 0 otherwise.
+Proof. First note that since p is odd, the substitution a 7→ 2a does not change the sum and gives
+                                                       2
+                                                        (a −b)/p2k2
+                                             X                                 
+                       ωpk1 ,pk2 (α, β) =                   pk1
+                                                                     e p2aα+bβ
+                                                                         k1 +2k2   .
+                                                    a,b mod pk1 +2k2
+                                                     a2 ≡b mod p2k2
+
+For each a mod pk1 +2k2 the elements b mod pk1 +2k2 satisfying a2 ≡ 4b mod p2k2 can be parametrized
+by b = a2 + b0 p2k2 , where b0 is running mod pk1 . Note that with this parametrization a2 − b ≡
+−b0 p2k2 mod pk1 +2k2 . Using this observation we get,
+                                             X                           2
+                                                                                  
+                        ωpk1 ,pk2 (α, β) =             −b0
+                                                       pk1
+                                                            e pb0kβ1 e 2aα+a
+                                                                        pk1 +2k2
+                                                                                β
+                                                                                    .
+                                                   a mod pk1 +2k2
+                                                     b0 mod pk1
+
+The proposition now follows from lemmas 5.4 and 5.5 (One just needs to keep in mind that in lemma
+5.4 the sum vanishes unless vp (α) ≥ min{m, vp (β)}.).
+Corollary 5.7. Let p be an odd prime, k1 , k1 ∈ N, and α, β ∈ Z. Then,
+                          (        p
+                            pk1 +k2 gcd(pk1 +2k2 , β) gcd(pk1 , β) pk1 −1 | β, gcd(pk1 +2k2 , β) | α
+       ωpk1 ,pk2 (α, β) ≪                                                                            ,
+                            0                                      otherwise
+
+where the implied constant is absolute.
+Proof. First assume β 6= 0. Then, by the second statement of proposition 5.6 we know that ωpk1 ,pk2 (α, β)
+is the product of two terms (the first is τp (k1 , k2 , α, β), and the second is in the braces). The second
+                                                                        k1 p
+one of those terms is 0 unless pk1 −1 | β, in which case it is O(p 2 gcd(β, pk1 )), where the implied
+constant is absolute. On the other hand, the first term satisfies the following bound:
+                                   ( k1 +2k2 p
+                                    p 2       gcd(pk1 +2k2 , β) vp (α) ≥ min{vp (β), k1 + 2k2 }
+             τp (k1 , k2 , α, β) ≪                                                              .
+                                    0                            otherwise
+
+
+                                                                     26
+These two bounds imply the corollary in the case β 6= 0. For β = 0, the bound in the statement is
+O(p2k1 +2k2 ) if vp (α) ≥ k1 + 2k2 and 0 otherwise. A comparison of this bound with the first statement
+of proposition 5.6 finishes the proof.
+Lemma 5.8. Let k1 , k1 ∈ N and α, β ∈ Z. Then,
+                        (        p
+                          2k1 +k2 gcd(2k1 +2k2 , β) gcd(2k1 , β)    2k1 −1 | β, gcd(2k1 +2k2 , β) | α
+     ω2k1 ,2k2 (α, β) ≪                                                                               ,
+                          0                                         otherwise
+
+where the implied constant is absolute.
+Proof. The proof of this case follow the proofs of proposition 5.6 and corollary 5.7 verbatim. One just
+                                                2
+needs to take into account the extra condition ap2k
+                                                  −4b
+                                                   2
+                                                      ≡ 0, 1 mod 4 and recall that the Kronecker symbol
+ ·
+   
+ 2 is periodic mod 8. These do not bring any new ingredients to the proof but rather a delicate case
+by case analysis whose details we leave to the reader.
+Corollary 5.9. Let l, f ∈ Z>0 and ξ, ν ∈ Z. Then,
+                           (
+                                                                     l
+                                       p
+                             log(lf )lf gcd(lf 2 , ν) gcd(l, ν)    rad(l) | ν,   gcd(lf 2 , ν) | ξ
+             ωl,f (ξ, ν) ≪                                                                           ,
+                             0                                     otherwise
+
+where the implied constant is absolute.
+Proof. By lemma 5.3 it is enough to bound ωpk1 ,pk2 (αp , βp ), where αp = ((4lf 2 )(p) )−1 ξ and βp =
+(4lf 2 )(p) )−1 ν, and to bound p|lf 2 O(1). The bound on the character sums follow from corollary 5.7
+                               Q
+
+and lemma 5.8. Finally, by the prime number theorem we have p|lf 2 O(1) = O(log(lf 2 )) = O(lf ).
+                                                                  Q
+The corollary follows.
+
+
+References
+[AK06] C. Li A. Knightly. Traces of Hecke operators, volume 133 of Mathematical Surveys and Mono-
+        graphs. AMS, Providence, RI, 2006.
+[Alt15a] S. A. Altuğ. Beyond Endoscopy via the Trace Formula-I: Poisson Summation and Isolation
+        of Special Representations. Compositio Mathematica, 151(10):1791–1820, 2015.
+[Alt15b] S. A. Altuğ. Beyond Endoscopy via the Trace Formula-II: Asymptotic expansions of Fourier
+        transforms and bounds towards the Ramanujan conjecture. 2015.
+[Art15] J. Arthur. Problems beyond endoscopy. Preprint,
+        Available at: http://www.math.toronto.edu/arthur/pdf/Arthur.pdf, 2015.
+[Che68] C. Chevalley. Théorie Des Groupes De Lie, Groupes algébraiques, Théorèmes généraux sur
+        les algèbes de Lie, volume 8. Hermann, Paris, 1968.
+[Cox89] D. A. Cox. Primes of the form x2 + ny 2 . John Wiley and Sons, Inc, New York, Singapore,
+        Toronto, 1989.
+[Del74] P. Deligne. La conjecture de Weil I (French). Inst. Hautes Études Sci. Publ. Math., 43:273–307,
+        1974.
+[GJ72] R. Godement and H. Jacquet. Zeta functions of simple algebras, volume 260 of Lecture Notes
+        in Mathematics. Springer-Verlag, Berlin, New York, 1972.
+[Hec59] E. Hecke. Mathematische Werke. Göttingen, 1959.
+[IK04] H. Iwaniec and E. Kowalski. Analytic Number Theory, volume 53 of Colloquium Publications.
+        AMS, Providence, RI, 2004.
+[Lan04] R. P. Langlands. Beyond Endoscopy. In Contributions to Automorphic Forms, Geometry, and
+        Number Theory, chapter 22, pages 611–698. The Johns Hopkins University Press, Baltimore,
+        MD, 2004.
+[Sar01] P. Sarnak. Comments on Robert Langnlands’ Lecture: “Endoscopy and Beyond”.
+        Available at:
+        http:publications.ias.edu/sites/default/files/SarnakLectureNotes-1.pdf, 2001.
+[Sar04] P. Sarnak. Nonvanishing of l-functions on R(s) = 1. In Contributions to Automorphic Forms,
+        Geometry, and Number Theory, chapter 25, pages 719–733. The Johns Hopkins University
+        Press, Baltimore, MD, 2004.
+
+                                                    27
+[Sel56] A. Selberg. Harmonic analysis and discontinuous groups in weakly symmetric Riemannian
+        spaces with applications to Dirichlet series. J. Indian Math. Soc. (N.S.), 20:47–87, 1956.
+[Ser96] J-P. Serre. A Course in Arithmetic, volume 7 of GTM. Springer, New York, NY, 1996.
+
+
+
+
+                                               28
+

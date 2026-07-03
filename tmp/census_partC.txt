@@ -1,0 +1,32 @@
+=== TASK 3 ASYMPTOTICS: strand growth as y->+inf (Re s->-inf) ===
+  n=1, x=0:  a1=s/2 has Re->-inf (S1);  a2=(1-s)/2 has Re->+inf (S2)
+    y=0.5: |S1|=0.4294 |S2|=0.5865 |S1|/|S2|=0.73218
+    y=  1: |S1|=0.3744 |S2|=0.7001 |S1|/|S2|=0.53475
+    y=  2: |S1|=0.2937 |S2|=1.047 |S1|/|S2|=0.28038
+    y=  3: |S1|=0.2386 |S2|=1.685 |S1|/|S2|=0.14163
+    y=  5: |S1|=0.1705 |S2|=5.542 |S1|/|S2|=0.030763
+    y=  8: |S1|=0.1174 |S2|=59.57 |S1|/|S2|=0.0019708
+    y= 12: |S1|=0.0822 |S2|=3374.0 |S1|/|S2|=2.4361e-5
+  => as Re a2->+inf, Gamma(a2,x)->Gamma(a2) (factorial growth): S2 GROWS.
+  => as Re a1->-inf, Gamma(a1,x)~x^{a1-1}e^{-x}: |S1| power-DECAYS in |a1|.
+  So the (1-s)/2 strand (E=2SumChi S2) SHOULD dominate at large y: |E|>|E*|.
+  Measured full-bank |E*|/|E| at x=0:
+    y=0.5: |E*|/|E|=0.724722
+    y=1: |E*|/|E|=0.523964
+    y=2: |E*|/|E|=0.269425
+    y=3: |E*|/|E|=0.133701
+    y=5: |E*|/|E|=0.0282358
+    y=8: |E*|/|E|=0.00176509
+  -> at x=0 ratio DROPS with y (0.52->...): comports; bands are LOCAL near the zero.
+
+=== TASK 4 CONVENTION: de Branges side ===
+  Audited E=2SumChi S2. In a clean HB structure fn, |E*|<|E| throughout OPEN UHP.
+  We measured a UHP ZERO of E at 7.73+3.49i => E is NOT HB (a genuine HB E is
+  zero-free in the open UHP by definition). So neither strand choice is clean HB:
+    z=9.831+1.0i: |E*|/|E|=1.01281  |E|/|E*|=0.987356
+    z=0.0+1.0i: |E*|/|E|=0.523964  |E|/|E*|=1.90853
+    z=6.6485+1.0i: |E*|/|E|=0.90003  |E|/|E*|=1.11107
+  side-swap (measure audited E in LOWER half y<0):
+    z=9.831+-1.0i: |E*|/|E|=0.987356
+    z=0.0+-1.0i: |E*|/|E|=1.90853
+    z=7.7325+-3.492i: |E*|/|E|=0.000101644

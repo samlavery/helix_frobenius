@@ -8,9 +8,9 @@ Sam's reframing, formalized.  The Riemann Hypothesis in Riemann's own variable (
 complex conjugation, the midpoint of the fundamental involution.  The number `1/2` is only
 the **translation constant** between the arithmetic counting chart (where the unit is set by
 the normalization) and the centered symmetry chart.  In a base-`b` counting system the same
-locus reads `log b / 2`; in the π/3 helix cell the mirror sits at `π/6`; over `𝔽_q` it is
-`|Frobenius| = q^{1/2}` (the repo's `midpoint_forcing`).  The invariant is *midpointness of an
-involution*; the coordinate is gauge.
+locus reads `log b / 2`; in the π/3 helix cell the conjugation axis sits at `π/6`; over `𝔽_q`
+it is `|Frobenius| = q^{1/2}` (the repo's `midpoint_forcing`).  The invariant is *midpointness
+of an involution*; the coordinate is gauge.
 
 * `real_axis_is_conjugation_midpoint` — the fixed locus of conjugation is exactly `ℝ`
   (`im = 0`): the centered chart's statement, containing no number.
@@ -19,9 +19,9 @@ involution*; the coordinate is gauge.
   "Re = 1/2" is a change of chart, not new content.**
 * `affine_reflection_fixed_iff` — the fixed point of the involution `x ↦ c − x` is `c/2`:
   UNIT/2 for every unit.
-* `mirror_fixed_iff`, `eisenstein_mirror` — the unit-circle/hexagon form: the anti-involution
+* `conj_fixed_iff`, `eisenstein_conj_axis` — the unit-circle/hexagon form: the anti-involution
   `z ↦ e^{iΔ}·conj z` fixes exactly the half-unit direction `Δ/2`; for the Eisenstein cell
-  `Δ = π/3` the mirror is the `π/6` axis (the hexagon's edge-midpoint line).
+  `Δ = π/3` the conjugation axis is the `π/6` axis (the hexagon's edge-midpoint line).
 * `criticality_is_half_unit` — base covariance: `σ = 1/2` in unit-1 counting is
   `σ·log b = log b / 2` in base-`b` counting (the log-7 system's midpoint is `log 7 / 2 =
   log √7`; the base-free statement is that the critical amplitude `n^{-1/2}` is the geometric
@@ -67,10 +67,11 @@ for every unit.  (`c = 1` recovers the critical abscissa; the "1" is the reflect
 theorem affine_reflection_fixed_iff (c x : ℝ) : c - x = x ↔ x = c / 2 := by
   constructor <;> intro h <;> linarith
 
-/-- **The half-unit mirror on the circle**: the anti-involution `z ↦ e^{iΔ}·conj z` fixes
-`z` exactly when `z` lies on the `Δ/2` axis (i.e. `z·e^{−iΔ/2}` is real).  The unit circle's
-"midpoint formula": a rotation-unit `Δ` reflects about its half-unit direction. -/
-theorem mirror_fixed_iff (Δ : ℝ) (z : ℂ) :
+/-- **The half-unit conjugation axis on the circle**: the anti-involution
+`z ↦ e^{iΔ}·conj z` fixes `z` exactly when `z` lies on the `Δ/2` axis (i.e.
+`z·e^{−iΔ/2}` is real).  The unit circle's "midpoint formula": a rotation-unit `Δ`'s
+conjugation anti-involution is fixed about its half-unit direction. -/
+theorem conj_fixed_iff (Δ : ℝ) (z : ℂ) :
     Complex.exp (Complex.I * Δ) * (starRingEnd ℂ) z = z ↔
       (z * Complex.exp (-(Complex.I * ((Δ / 2 : ℝ) : ℂ)))).im = 0 := by
   set u := Complex.exp (Complex.I * ((Δ / 2 : ℝ) : ℂ)) with hu
@@ -100,13 +101,13 @@ theorem mirror_fixed_iff (Δ : ℝ) (z : ℂ) :
     calc u * u * (starRingEnd ℂ) z = (starRingEnd ℂ) z * u * u := by ring
       _ = z := h2
 
-/-- **The Eisenstein cell's mirror is at π/6** — the half of the π/3 cell unit: the hexagon's
-edge-midpoint axis.  The same UNIT/2 formula as the critical line, in the carrier's own
-geometry. -/
-theorem eisenstein_mirror (z : ℂ) :
+/-- **The Eisenstein cell's conjugation axis is at π/6** — the half of the π/3 cell unit:
+the hexagon's edge-midpoint axis.  The same UNIT/2 formula as the critical line, in the
+carrier's own geometry. -/
+theorem eisenstein_conj_axis (z : ℂ) :
     Complex.exp (Complex.I * (Real.pi / 3 : ℝ)) * (starRingEnd ℂ) z = z ↔
       (z * Complex.exp (-(Complex.I * ((Real.pi / 6 : ℝ) : ℂ)))).im = 0 := by
-  have h := mirror_fixed_iff (Real.pi / 3) z
+  have h := conj_fixed_iff (Real.pi / 3) z
   rw [show (Real.pi / 3) / 2 = Real.pi / 6 by ring] at h
   exact h
 

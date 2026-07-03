@@ -54,8 +54,11 @@ nontrivial zeros are so realized --- whether \emph{every zero has a source} --- 
 equivalent to the critical-line statement, hence to GRH for $\chi$
 (\code{everyZeroHasSource\_iff\_critical}); it is neither assumed nor proved.  The frame split is
 itself formalized: for the three-dimensional object \emph{as defined}, RH is unconditional ---
-every prime clock of the carrier obeys the exact purity-defect law (displacement off the mirror
-$=-\log\|\alpha\|/\ell$), so the unitary carrier has all zeros on the mirror
+every prime clock of the carrier obeys the exact purity-defect law (displacement off the
+conjugation axis --- the fixed locus of the conjugation anti-involution, the weld line where each
+chiral strand meets its conjugate; we avoid ``mirror,'' which would wrongly suggest reflection
+symmetry: the antihelix is the helix's conjugate, both strands share the same handedness ---
+$=-\log\|\alpha\|/\ell$), so the unitary carrier has all zeros on the conjugation axis
 (\code{carrier\_zeros\_real}); duality is a perfect determinant-one pairing on the vanishing set
 with $d(\rho)=d(1-\rho)$; and purity of every vanishing pair reduces to one named operator-growth
 inequality --- the helix Castelnuovo --- measured as an identity of the carrier metric.  Classical
@@ -83,7 +86,8 @@ The model is also an experimental instrument, and we report its phenomenology.  
 law (each phasor completes exactly at its own integer site, one at a time --- the finite shadow of
 \code{no\_double\_cancellation}) reproduces the focal cancellation at \emph{all 111 critical-line
 zeros below height 36} of the eight real primitive Dirichlet characters of conductor $\le 12$, at
-eigenheights up to $N=e^{\gamma}\approx3.8\times10^{15}$, with residuals at the truncation scale
+eigenheights up to the $\gamma<36$ exactness cap $N=e^{\gamma}\lesssim3.8\times10^{15}$ (deepest
+worked example $N\approx2.6\times10^{15}$), with residuals at the truncation scale
 $\sim N^{-1/2}$; an error budget separates zero-precision, truncation, and evaluator floors.  The
 same machinery, with lanes given by coefficient signs instead of residue classes, locates the zeros
 of degree-two $L$-functions ($\Delta$ and the level-$11$ elliptic newform) and, with the completed
@@ -166,7 +170,7 @@ completed $\zeta$ and, at every conductor, for primitive Dirichlet $L$ ---
 (\code{helix3D\_RH}); the 1D chart --- the chart with the extra dimension --- carries exactly two
 conditionals: the bridge, and the winding-coherence hypothesis, now welded into a single
 implication --- coherence $\Rightarrow$ every collapse-wave zero real
-(\code{coherence\_implies\_mirror}, Remark~\ref{rem:twowalls}).  The classical
+(\code{coherence\_implies\_conj\_axis}, Remark~\ref{rem:twowalls}).  The classical
 statement is the bridge and \emph{only} the bridge: RH $\iff$ every 1D zero arises from a 3D
 vanishing (\code{projection\_complete\_iff\_RH}); the 1D conditional --- projection completeness
 --- is never blurred into the 3D theorem, and the open additive-side link (Hermite--Biehler for
@@ -214,9 +218,9 @@ hypothesis, neither assumed nor proved; conditional on it, every nontrivial zero
 eigen-event.
 
 \item \emph{The frame split (Sections~\ref{sec:hinge},~\ref{sec:weil}).}  For the 3D object as
-defined, RH is unconditional: the purity-defect law makes displacement off the mirror equal the
-clock face's purity defect, so the unitary carrier has every zero on the mirror
-(Theorem~\ref{thm:clockrh}); duality is a perfect det-one pairing preserving the local dimension
+defined, RH is unconditional: the purity-defect law makes displacement off the conjugation axis
+equal the clock face's purity defect, so the unitary carrier has every zero on the conjugation
+axis (Theorem~\ref{thm:clockrh}); duality is a perfect det-one pairing preserving the local dimension
 (Theorem~\ref{thm:dualpair}); purity of every vanishing pair reduces to the single helix
 Castelnuovo growth inequality, measured as an identity (Theorem~\ref{thm:castelnuovo}); and the
 hinge kernels --- turning point, weld ray, jet parity --- are proven (Section~\ref{sec:hinge}).
@@ -927,10 +931,10 @@ roots of $\Xi$ are real'' and ``the zeros have $\Ree=\tfrac12$'' are one stateme
 and the $\tfrac12$ is the translation constant between them, not content.
 \end{theorem}
 
-\begin{theorem}[UNIT/2 on the line, the circle, and in every base; \code{affine\_reflection\_fixed\_iff}, \code{mirror\_fixed\_iff}, \code{eisenstein\_mirror}, \code{criticality\_is\_half\_unit}]\label{thm:unithalf}
+\begin{theorem}[UNIT/2 on the line, the circle, and in every base; \code{affine\_reflection\_fixed\_iff}, \code{conj\_fixed\_iff}, \code{eisenstein\_conj\_axis}, \code{criticality\_is\_half\_unit}]\label{thm:unithalf}
 The fixed point of the reflection $x\mapsto c-x$ is $c/2$, for every unit $c$.  On the circle, the
 anti-involution $z\mapsto e^{i\Delta}\conj z$ fixes exactly the half-unit direction $\Delta/2$; for
-the carrier's cell $\Delta=\pi/3$ the reflection axis is $\pi/6$ --- the hexagon's edge-midpoint
+the carrier's cell $\Delta=\pi/3$ the conjugation axis is $\pi/6$ --- the hexagon's edge-midpoint
 line, the same UNIT/2 formula in the carrier's own geometry.  And in base-$b$ counting
 ($b>1$) the critical abscissa reads $\sigma\log b=\log b/2$: the log-$7$ system's midpoint is
 $\log\sqrt7$, and the base-free content is that the critical amplitude is the geometric mean,
@@ -994,7 +998,7 @@ $0.499$--$0.500\,\pi$), every later cell a half cycle.
 \begin{theorem}[The weld pins the line phase to half the root number; \code{weld\_pins\_half\_phase}, \code{weld\_minus\_one\_forces\_zero}]\label{thm:weldray}
 A value satisfying the weld anti-involution $z=e^{i\Delta}\,\conj z$ --- as $\Lambda(\tfrac12+it,\chi)$
 does with $\Delta=\arg\varepsilon$ at \emph{every} $t$, by the functional equation plus conjugation
---- lies on the ray $\Delta/2$: this is \code{mirror\_fixed\_iff} (Theorem~\ref{thm:charts}ff.)
+--- lies on the ray $\Delta/2$: this is \code{conj\_fixed\_iff} (Theorem~\ref{thm:charts}ff.)
 applied at the weld, UNIT/2 on the circle.  The measurable face is
 $\arg\Lambda(\tfrac12+it,\chi)\equiv\arg(\varepsilon)/2 \pmod\pi$: the root number is read from the
 line phase (Section~\ref{sub:bsdladder}).  And if the weld phase is $-1$, a real value fixed by
@@ -1444,7 +1448,7 @@ vanishings are its ``cohomology'' --- the eigenvalue spectrum of a Frobenius act
 dictionary --- variety $\leftrightarrow$ carrier-plus-fiber; Frobenius eigenvalues on
 $H^i\leftrightarrow$ the vanishings; Poincar\'e duality $\alpha\leftrightarrow q^w/\alpha
 \leftrightarrow$ the helix/antihelix pairing; Lefschetz trace formula $\leftrightarrow$ the medium
-spectroscopy; purity $|\alpha|=q^{w/2}\leftrightarrow$ all vanishings on the mirror --- is carried
+spectroscopy; purity $|\alpha|=q^{w/2}\leftrightarrow$ all vanishings on the conjugation axis --- is carried
 at three explicitly separated tiers of honesty.  \emph{Literal}: at each prime, degree-two purity
 \emph{is} Deligne's theorem (Ramanujan--Petersson via Weil~II), and it appears in the model as
 reality of the clock angle --- verified for all $2262$ primes $\le20000$ of $\Delta$, whose helix
@@ -1504,19 +1508,21 @@ weight cancels the $m^{-1/2}$ amplitude exactly), not conjured at the vanishings
 mathematics is completion membership, not the growth bound.
 \end{theorem}
 
-\begin{theorem}[The mirror is the membership boundary; \code{mirror\_is\_membership\_boundary}, \code{carrier\_strand\_dominance}]\label{thm:membership}
+\begin{theorem}[The conjugation axis is the membership boundary; \code{conj\_axis\_is\_membership\_boundary}, \code{carrier\_strand\_dominance}]\label{thm:membership}
 The readout class at abscissa $\sigma$ is square-summable --- lies in the Hilbert space the cup
 form completes to (\code{hilbert\_completion\_exists}) --- iff $\sigma>\tfrac12$: the half-unit is
-the edge of the Hilbert space itself.  A hypothetical off-mirror vanishing class would live
+the edge of the Hilbert space itself.  A hypothetical off-axis vanishing class would live
 \emph{inside} the space, where the cup-symmetric flow has real spectrum and the Hermite--Biehler
 exclusion applies; the actual vanishing classes sit exactly \emph{on} the boundary, where
 resonance is permitted.  The 3D proof shape is therefore an exclusion --- membership plus
-self-adjointness forbids off-mirror vanishings --- and it never needs to place the on-mirror
+self-adjointness forbids off-axis vanishings --- and it never needs to place the on-axis
 classes inside.  The Hermite--Biehler mechanism itself has a geometric origin: per term the helix
-strand weight dominates the antihelix weight exactly off the mirror,
+strand weight dominates the antihelix weight exactly for $\sigma>1$,
 $r^{2-\sigma}<r^{\sigma}\iff\sigma>1$ for every carrier radius $r>1$
 (\code{carrier\_strand\_dominance}) --- the area law's growing radius \emph{is} the strict HB
-inequality, with equality precisely at the weld.
+inequality, with equality precisely at $\sigma=1$ (the fixed point of the strand-swap
+$\sigma\mapsto2-\sigma$; the conjugation axis $\sigma=\tfrac12$ enters through the completed weld,
+not this per-term bound).
 \end{theorem}
 
 \begin{theorem}[Clock-RH: the purity-defect law, unconditional; \code{ChiralityHB}]\label{thm:clockrh}
@@ -1528,11 +1534,11 @@ $E_{\alpha,\ell}(z)=e^{iz\ell/2}-\alpha\,e^{-iz\ell/2}$, with $\ell>0$ the windi
   \operatorname{Im}z\;=\;-\frac{\log\|\alpha\|}{\ell}
   \qquad(\code{clock\_zero\_depth}):
 \]
-\emph{the displacement off the mirror equals the purity defect of the clock face} --- purity and
-mirror-location are the same statement, pointwise at every clock.  Hence for the proven
-determinant-one (unitary) clock faces, every zero of every clock is exactly on the mirror
-(\code{clock\_zeros\_real}), and the carrier --- the FTA product of its prime clocks, which never
-collide (Theorem~\ref{thm:incomm}) --- has all zeros on the mirror:
+\emph{the displacement off the conjugation axis equals the purity defect of the clock face} ---
+purity and axis-location are the same statement, pointwise at every clock.  Hence for the proven
+determinant-one (unitary) clock faces, every zero of every clock is exactly on the conjugation
+axis (\code{clock\_zeros\_real}), and the carrier --- the FTA product of its prime clocks, which
+never collide (Theorem~\ref{thm:incomm}) --- has all zeros on the conjugation axis:
 \code{carrier\_zeros\_real}, \emph{RH for the multiplicative carrier as defined, unconditional}.
 The statement is quantified over \emph{arbitrary finite families} of unitary clock faces and
 winding rates --- every character and every Satake configuration at once: GRH-shaped generality
@@ -1552,14 +1558,14 @@ closure event --- defined by closure at a real height, no $\Ree\rho$ anywhere.  
 step later: \code{purity\_from\_castelnuovo} needs the class to be an eigenvector \emph{inside} a
 normed space, and Theorem~\ref{thm:membership} makes Hilbert membership of readout classes
 \emph{equivalent} to $\sigma>\tfrac12$ --- so ``prove the growth bound on vanishing classes in
-$H$'' would be RH-in-disguise for the on-mirror classes, which are boundary objects and never in
+$H$'' would be RH-in-disguise for the on-axis classes, which are boundary objects and never in
 $H$.  (The measured Castelnuovo of Theorem~\ref{thm:castelnuovo} --- an identity of the carrier
 metric, zeros indistinguishable from random heights --- had already hinted the content does not
 live in the growth bound.)  The resolution: the membership dichotomy \emph{is} the proof shape.
-A hypothetical off-mirror vanishing datum defines a class \emph{inside} the completion, where the
+A hypothetical off-axis vanishing datum defines a class \emph{inside} the completion, where the
 cup-symmetric flow has real spectrum (\code{von\_neumann\_reality}) and Hermite--Biehler excludes
-it (\code{hb\_no\_zero\_upper}); on-mirror classes live on the boundary, where resonance is
-permitted.  Nothing needs to be included --- off-mirror needs to be \emph{excluded}, and
+it (\code{hb\_no\_zero\_upper}); on-axis classes live on the boundary, where resonance is
+permitted.  Nothing needs to be included --- off-axis needs to be \emph{excluded}, and
 membership does that, given one hypothesis: that the summed fiber's structure function is
 Hermite--Biehler.  Completion membership and summed-fiber HB are therefore \emph{one wall}: the
 fiber's winding coherence.
@@ -1572,7 +1578,7 @@ closed); a common weld phase keeps a sum exactly on the boundary
 \emph{strict} HB inequality for the sum (\code{aligned\_strict\_sum\_HB} --- alignment defeats the
 triangle inequality, and the named failure mode, big strands cancelling while small strands
 conspire, is exactly what coherence must forbid).  The whole remaining wall is then welded into a
-single implication (\code{coherence\_implies\_mirror}): \emph{winding coherence $\Rightarrow$ the
+single implication (\code{coherence\_implies\_conj\_axis}): \emph{winding coherence $\Rightarrow$ the
 summed fiber is Hermite--Biehler $\Rightarrow$ every zero of its collapse wave is real}.  One
 geometric hypothesis --- where de Branges spent decades --- and everything after it proven.  Its
 measurable face, the per-term alignment margin across the bank, is pre-registered in
@@ -1584,7 +1590,7 @@ representation the walls are not even expressible.  The 3D package carries no hy
 (\code{helix3D\_RH}, Theorem~\ref{thm:framesplit}); the 1D chart --- the chart with the extra
 dimension --- carries exactly the two conditionals it was always going to carry: the bridge
 (\code{projection\_complete\_iff\_RH}, which \emph{is} classical RH) and the coherence hypothesis
-of \code{coherence\_implies\_mirror}.  Honesty check, per the house rules: HB-of-the-sum is
+of \code{coherence\_implies\_conj\_axis}.  Honesty check, per the house rules: HB-of-the-sum is
 GRH-strength but neither assumes GRH nor is circular --- it is a strand-dominance inequality about
 the function, with zeros-on-line as consequence, not premise.
 \end{remark}
@@ -1593,7 +1599,7 @@ the function, with zeros-on-line as consequence, not premise.
 The ``upper half-plane'' is not a 3D notion: the half-plane, the strip, and the $\sigma$-coordinate
 belong to the 1D projection chart.  A 3D vanishing datum is a \emph{real height} $\gamma$, and its
 image in the 1D chart has abscissa exactly $\tfrac12$ by the projection map
-(\code{helix\_vanishing\_projects\_to\_mirror}, \code{arisesFromHelix\_on\_mirror}; the named
+(\code{helix\_vanishing\_projects\_to\_conj\_axis}, \code{arisesFromHelix\_on\_conj\_axis}; the named
 capstone is \code{helix3D\_RH}) --- not by a
 theorem about analytic continuation.  And classical RH for the completed zeta is proved
 \emph{equivalent} to the statement that every zero of the 1D continuation arises from a 3D
@@ -1605,7 +1611,12 @@ vanishing:
   \qquad(\code{projection\_complete\_iff\_RH}).
 \]
 The positioning claim of this paper --- \emph{RH $\iff$ the projection is complete} --- is a
-theorem.
+theorem.  It is a \emph{reframing}: ``arises from the helix'' is \emph{defined} as ``is the
+projection of a real height at which $\Lambda$ vanishes,'' so the equivalence is obtained by
+unfolding the projection map, not by any analytic input, and no analytic content is smuggled in
+or out.  What it accomplishes is exactly the relocation of the open question --- all of the
+difficulty sits, undiminished, in the antecedent (\emph{is} the projection complete?), which is
+classical RH itself; the theorem asserts nothing about that antecedent.
 \end{theorem}
 
 \begin{remark}[The stance: a theorem in an expanded frame]\label{rem:framesplit}
@@ -1613,7 +1624,7 @@ The reading is exactly parallel to Weil and Deligne over $\mathbb{F}_q$: there, 
 unconditionally for a different, geometrically defined frame, and the classical statement remained
 a separate question.  Here: for the 3D frame \emph{as defined}, RH is unconditional and
 kernel-checked --- the carrier's clock-RH (Theorem~\ref{thm:clockrh}), the vanishing data
-projecting only to the mirror (Theorem~\ref{thm:framesplit}), the duality pairing with dimension
+projecting only to the conjugation axis (Theorem~\ref{thm:framesplit}), the duality pairing with dimension
 symmetry and det-one blocks (Theorem~\ref{thm:dualpair}), with purity of the vanishing pairs
 reduced to the single Castelnuovo growth inequality, measured as an identity
 (Theorem~\ref{thm:castelnuovo}).  What remains open is a statement about the 1D chart alone:
@@ -2300,7 +2311,7 @@ above the half-unit rate ($C_k>1$ for some $k$) --- the purity engine's single o
 failing where it is measurable (Theorem~\ref{thm:castelnuovo}).  Measured on $30$ vanishing
 classes and $30$ random heights, $k\le4$, two similitudes: $C_k\le1$ everywhere; none.
 \item \emph{An alignment-margin failure} (pre-registered; defined, not yet run).  The master
-chain \code{coherence\_implies\_mirror} makes the summed-fiber HB question measurable: sample
+chain \code{coherence\_implies\_conj\_axis} makes the summed-fiber HB question measurable: sample
 the bank at upper-half-plane points and record the per-term margin, $\|E_j^{*}(z)\|$ against
 $\mathrm{Re}\bigl(e^{i\theta}E_j(z)\bigr)$, across the bank.  Persistent anti-alignment ---
 the big-strand/small-strand conspiracy named in Remark~\ref{rem:twowalls} --- would be
@@ -2591,7 +2602,7 @@ RMT derivative statistic $=$ distance product & \code{cue\_rate\_eq\_distance\_p
 Step closes $\iff$ $c\in2\pi\Q$; integer steps never & \code{step\_closes\_iff}, \code{integer\_step\_never\_closes} & \code{GUEBridge}\\
 Satake silence: $p^2$-line dead $\iff\lambda^2=2$; E11 at $p{=}2$ & \code{satake\_silence\_iff}, \code{e11\_ln4\_silent} & \code{GUEBridge}\\
 Criticality is midpointness; $\tfrac12$ a chart constant & \code{riemann\_chart}, \code{centered\_chart} & \code{UnitMidpoint}\\
-UNIT/2 in every gauge; $\pi/3$ cell reflects about $\pi/6$ & \code{criticality\_is\_half\_unit}, \code{eisenstein\_mirror} & \code{UnitMidpoint}\\
+UNIT/2 in every gauge; $\pi/3$ cell reflects about $\pi/6$ & \code{criticality\_is\_half\_unit}, \code{eisenstein\_conj\_axis} & \code{UnitMidpoint}\\
 Prime clocks never collide (unique factorization) & \code{prime\_clocks\_incommensurable} & \code{UnitMidpoint}\\
 Readout self-dual: spectral axis $=$ height axis & \code{readout\_dual\_recovers\_sites} & \code{MellinDual}\\
 Hinge is a turning point (even collapse wave) & \code{collapseWave\_even}, \code{hinge\_turning\_point'} & \code{HingeKernel}\\
@@ -2602,13 +2613,13 @@ Antihelix window; det-1 strand weights; term-local weld & \code{gamma\_splits\_a
 Reference ladder positive; $G_1=$ reverb kernel & \code{Gr\_nonneg}, \code{Gr\_one\_eq} & \code{BSDLadder}\\
 Duality: perfect det-1 pairing, $d(\rho)=d(1{-}\rho)$ & \code{vanishing\_dual\_pair}, \code{dual\_dimension\_symmetry}, \code{dual\_pair\_det\_one} & \code{WeilDuality}\\
 Purity engine; Castelnuovo reduction & \code{tensor\_power\_purity}, \code{duality\_forces\_purity}, \code{purity\_from\_castelnuovo} & \code{WeilDuality}\\
-Mirror $=$ membership boundary of the completion & \code{mirror\_is\_membership\_boundary} & \code{WeilDuality}\\
+Conjugation axis $=$ membership boundary of the completion & \code{conj\_axis\_is\_membership\_boundary} & \code{WeilDuality}\\
 Purity-defect law; clock-RH unconditional & \code{clock\_zero\_depth}, \code{carrier\_zeros\_real} & \code{ChiralityHB}\\
 The clock is a real de Branges function (HB boundary) & \code{symClock\_star}, \code{symClock\_selfdual\_modulus} & \code{ChiralityHB}\\
 Frame split: RH $\iff$ projection complete; 3D capstone & \code{projection\_complete\_iff\_RH}, \code{helix3D\_RH} & \code{ProjectionCompleteness}\\
 Clock--dip dichotomy (position $=$ phase; locked adds, unlocked cancels) & \code{dip\_projection\_phase}, \code{locked\_dips\_add}, \code{unlocked\_dips\_cancel} & \code{ClockDipDuality}\\
 Duality at every conductor: pairing swaps $\chi$; $d_\chi(1{-}\rho)=d_{\chi^{-1}}(\rho)$ & \code{vanishing\_dual\_pair\_dirichlet}, \code{dual\_dimension\_symmetry\_dirichlet} & \code{DirichletDuality}\\
-Coherence kernels; master chain: coherence $\Rightarrow$ mirror & \code{aligned\_strict\_sum\_HB}, \code{coherence\_implies\_mirror} & \code{SummedFiberHB}\\
+Coherence kernels; master chain: coherence $\Rightarrow$ conjugation axis & \code{aligned\_strict\_sum\_HB}, \code{coherence\_implies\_conj\_axis} & \code{SummedFiberHB}\\
 \end{longtable}
 \endgroup
 

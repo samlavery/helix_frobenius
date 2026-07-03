@@ -1,0 +1,114 @@
+==============================================================================
+BSD RANK-RECALL AUDIT — smooth-entry DC census (rank_is_dc_residue, measured)
+primes to p <= 1e+05;  point-counted a_p from scratch
+==============================================================================
+
+[TIER: anchor-verified]  (1) BANK BUILD + ANCHOR GATE
+------------------------------------------------------------------------------
+  (known small a_p match, p<=50 brute agreement, Hasse on all good primes)
+  GATE: ALL PASS — proceeding
+
+[TIER: measured]  (2) THE CENSUS: sharp (clipping ancestor) vs smooth (house)
+------------------------------------------------------------------------------
+  Raw smooth census S_w(X) = sum_p a_p log p / p * exp(-p/X)  [layer 1]:
+         X       11a1       37a1      389a1     5077a1            ranks
+     1e+03     1.2660    -5.0867   -11.4001   -17.2818   (0,1,2,3)
+     3e+03     1.7898    -5.7544   -13.2111   -20.0393   (0,1,2,3)
+     1e+04     2.3413    -6.4539   -15.1744   -23.3314   (0,1,2,3)
+     3e+04     2.8860    -7.0582   -16.7691   -26.1333   (0,1,2,3)
+     1e+05     3.3947    -7.5654   -18.5151   -28.3308   (0,1,2,3)
+
+  Sharp Nagao-Mestre (hard cutoff at X) for contrast [layer 1]:
+         X       11a1       37a1      389a1     5077a1
+     1e+03     1.2633    -4.9440   -14.3033   -21.0737
+     3e+03     0.5497    -6.3761   -14.8452   -21.5616
+     1e+04     1.7727    -7.5851   -18.9398   -24.2636
+     3e+04     1.9073    -8.8728   -18.9738   -28.7132
+     1e+05     3.1062    -8.6105   -20.8376   -31.0233
+
+  CALIBRATION (empirical): fit S_w(X) = A(X) + B(X)*rank across the ladder.
+  Nearest Nagao normalization: S_w ~ -(r - 1/2)*c(window) (Nagao 1994 sign).
+  Leave-one-out read (calibrate on the OTHER three, invert the target):
+         X  window         11a1         37a1        389a1       5077a1     B(X)    R^2
+     1e+03     exp       -0.05*        1.01*        2.04*        2.93*   -6.196  1.000
+     3e+03     exp       -0.07*        1.02*        2.05*        2.91*   -7.294  0.999
+     1e+04     exp       -0.05*        1.01*        2.04*        2.93*   -8.574  1.000
+     3e+04     exp       -0.05*        1.02*        2.02*        2.95*   -9.677  1.000
+     1e+05     exp       -0.07*        1.02*        2.06*        2.90*  -10.613  0.999
+     1e+03  growth       -0.06*        1.06*        1.96*        3.02*   -6.302  0.999
+     3e+03  growth       -0.11*        1.04*        2.07*        2.87*   -7.394  0.999
+     1e+04  growth       -0.11*        1.01*        2.11*        2.83*   -8.395  0.998
+     3e+04  growth        0.04*        0.98*        1.98*        3.04*   -9.914  1.000
+     1e+05  growth       -0.13*        1.03*        2.10*        2.83*  -10.538  0.998
+
+  HEADLINE READ — calibrate the census constant on RANK 0 and RANK 1 ONLY
+  (A = S at rank 0 = 11a1, B = S(37a1) - S(11a1)); ranks 2,3 are then HELD OUT,
+  nothing from those curves used in fixing the affine map.  X = 1e5, w = exp:
+    A = 3.3947   B = -10.9601 per unit rank
+       curve true r        S_w   read r  margin     status
+        11a1      0     3.3947   -0.000   0.000      calib*
+        37a1      1    -7.5654    1.000   0.000      calib*
+       389a1      2   -18.5151    1.999   0.001   HELD-OUT*
+      5077a1      3   -28.3308    2.895   0.105   HELD-OUT*
+
+[TIER: measured]  (3) ATTRIBUTION at X = 1e5 (who funds the rank signal?)
+------------------------------------------------------------------------------
+     curve rank       S_w |     a_p<0    a_p=0(ss)     a_p>0 |   #ss   #good
+      11a1    0    3.3947 | -192.8202       0.0000  196.2149 |    41    9590
+      37a1    1   -7.5654 | -199.0820       0.0000  191.5166 |    31    9590
+     389a1    2  -18.5151 | -205.8924       0.0000  187.3773 |    28    9590
+    5077a1    3  -28.3308 | -211.7841       0.0000  183.4533 |    39    9590
+  READING: the supersingular (a_p=0) lane contributes EXACTLY zero to the DC
+  census by construction; the rank signal is the lane-balance TILT — the
+  negative (a_p<0) lane deepens and the positive lane shrinks monotonically as
+  rank climbs.  In house P/M vocabulary, P-M = S_w reads the imbalance:
+     curve rank     |neg|       pos   P-M=S_w  d(P-M)/drank
+      11a1    0  192.8202  196.2149    3.3947              
+      37a1    1  199.0820  191.5166   -7.5654      -10.9601
+     389a1    2  205.8924  187.3773  -18.5151      -10.9497
+    5077a1    3  211.7841  183.4533  -28.3308       -9.8157
+
+  Residue-class relay (contribution share by p mod m):
+     curve | mod3:      r=0      r=1      r=2 | mod4:      r=1      r=3
+      11a1 |         -0.366    3.894   -0.133 |          4.733   -1.338
+      37a1 |         -1.099   -0.971   -5.496 |         -1.427   -6.138
+     389a1 |         -0.732   -5.953  -11.829 |        -12.661   -5.854
+    5077a1 |         -1.099  -12.573  -14.659 |        -12.712  -15.619
+
+  k=2 (p^2) two-clock layer  S2_w = sum (a_p^2 - p) log p / p^2 * exp(-p/X):
+  (does adding the second clock sharpen or blur rank separation?)
+         X       11a1       37a1      389a1     5077a1
+     1e+03    -1.1395     0.0509     1.0871     2.4388
+     3e+03    -1.1737     0.0232     1.0707     2.4231
+     1e+04    -1.1917     0.0052     1.0594     2.3967
+     3e+04    -1.2002    -0.0034     1.0555     2.3837
+     1e+05    -1.2066    -0.0072     1.0550     2.3813
+
+  Combined layer-1 + layer-2 fit R^2 vs layer-1 alone (higher = sharper):
+    X=  1e+04:  R^2(layer1 only) = 0.9997   R^2(layer1+layer2) = 0.9999
+    X=  3e+04:  R^2(layer1 only) = 0.9998   R^2(layer1+layer2) = 0.9999
+    X=  1e+05:  R^2(layer1 only) = 0.9993   R^2(layer1+layer2) = 0.9999
+
+[TIER: measured/conditional]  (4) STRESS: rank-4 curve 234446a1
+------------------------------------------------------------------------------
+  Model+rank verified: y^2+xy = x^3-x^2-79x+289, conductor 234446, rank 4
+  (Cremona/LMFDB '234446a1'; smallest-conductor rank-4 curve — 2 search hits).
+  stress anchor gate (brute p<=50 + Hasse): PASS
+  Leave-one-out read of the rank-4 census (calibrate on the rank 0-3 ladder):
+         X        S_w   read rank   land
+     1e+03   -22.4764        3.82      *
+     3e+03   -27.1703        3.95      *
+     1e+04   -31.2604        3.90      *
+     3e+04   -35.0406        3.90      *
+     1e+05   -39.3116        4.00      *
+
+==============================================================================
+VERDICT (integer_landing discipline: rank claimed only within 1/2 with margin)
+------------------------------------------------------------------------------
+  11a1: true rank 0, census read -0.07  -> RECALLED (margin 0.07)
+  37a1: true rank 1, census read +1.02  -> RECALLED (margin 0.02)
+  389a1: true rank 2, census read +2.06  -> RECALLED (margin 0.06)
+  5077a1: true rank 3, census read +2.90  -> RECALLED (margin 0.10)
+  234446a1: true rank 4, census read +4.00  -> RECALLED (margin 0.00)
+
+  RANK RECALL: 5/5

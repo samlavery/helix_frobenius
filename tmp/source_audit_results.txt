@@ -1,0 +1,75 @@
+SOURCE AUDIT — EveryZeroHasSource falsifiability register
+Fresh windows ABOVE prior validation (DEMO_WINDOWS top out at t~14-15,
+and only ever check the FIRST 1-2 zeros/family). Here every in-window
+zero is audited. Feasibility ceiling N=e^t<~1e8 => t<~18.4 (the honest
+exponential price; t=400 would need e^400~5e173 phasors).
+mpmath dps=30; numpy 2.3.5
+
+========================================================================
+FAMILY (a) zeta/eta   window t in [13.9, 16.0]   (bank head N=int(e^t) up to 8,886,110)
+========================================================================
+(1) CENSUS [1D readout, measured]: 1 zero(s)
+      t = 14.134725142
+(2) SOURCES [3D locator, no-oracle, growth window]:
+      y = 14.134725142   Z=e^y=1.376e+06   depth=3.12e-12
+      (1 source event(s); scan 72.0s)
+(3) MATCH  (tol=0.015):
+      census t=14.134725142  <->  source y=14.134725142   |diff|=1.14e-12
+    RECALL    = 1/1   (no missed zeros)
+    PRECISION = 1/1   (no ghosts)
+    locator-vs-census residuals: min=1.14e-12  max=1.14e-12  median=1.14e-12
+
+[chi7c argument-principle box count in t in [9.5,16.0]: d=0.25 -> 3,  d=0.9 -> 3  (consistent, all on-line)]
+[chi7c located zeros: 3 vs winding 3]
+
+========================================================================
+FAMILY (b) chi7c (complex, mod 7 order 6)   window t in [9.5, 16.0]   (bank head N=int(e^t) up to 8,886,110)
+========================================================================
+(1) CENSUS [1D readout, measured]: 3 zero(s)
+      t = 9.979895902
+      t = 13.854542874
+      t = 15.746869408
+(2) SOURCES [3D locator, no-oracle, growth window]:
+      y = 9.979895794   Z=e^y=2.159e+04   depth=1.02e-07
+      y = 13.854542875   Z=e^y=1.040e+06   depth=1.07e-10
+      y = 15.746869408   Z=e^y=6.899e+06   depth=1.77e-12
+      (3 source event(s); scan 135.2s)
+(3) MATCH  (tol=0.015):
+      census t=9.979895902  <->  source y=9.979895794   |diff|=1.08e-07
+      census t=13.854542874  <->  source y=13.854542875   |diff|=3.57e-11
+      census t=15.746869408  <->  source y=15.746869408   |diff|=5.90e-13
+    RECALL    = 3/3   (no missed zeros)
+    PRECISION = 3/3   (no ghosts)
+    locator-vs-census residuals: min=5.90e-13  max=1.08e-07  median=3.57e-11
+
+########################################################################
+(4) BOUNDARY STRESS — highest feasible height (recall vs height)
+[zeta zero #2 t=21.022 would need e^21~1.3e9 phasors (~42 GB): INFEASIBLE — the honest exponential price. Highest feasible zero is
+ chi7c t=15.747, N=int(e^15.9)=8.0e6. Deep tight-window probe:]
+########################################################################
+[target: chi7c zero at t~15.747; bank head N=int(e^15.9)=8,040,485]
+
+========================================================================
+BOUNDARY chi7c (highest feasible)   window t in [15.55, 15.9]   (bank head N=int(e^t) up to 8,040,485)
+========================================================================
+(1) CENSUS [1D readout, measured]: 1 zero(s)
+      t = 15.746869408
+(2) SOURCES [3D locator, no-oracle, growth window]:
+      y = 15.746869408   Z=e^y=6.899e+06   depth=1.76e-12
+      (1 source event(s); scan 92.0s)
+(3) MATCH  (tol=0.02):
+      census t=15.746869408  <->  source y=15.746869408   |diff|=5.72e-13
+    RECALL    = 1/1   (no missed zeros)
+    PRECISION = 1/1   (no ghosts)
+    locator-vs-census residuals: min=5.72e-13  max=5.72e-13  median=5.72e-13
+
+========================================================================
+SUMMARY
+========================================================================
+  eta_13.9_16           recall 1/1   precision 1/1   resid_max=1.1e-12
+  chi7c_9.5_16          recall 3/3   precision 3/3   resid_max=1.1e-07
+  chi7c_stress_15.7     recall 1/1   precision 1/1   resid_max=5.7e-13
+  TOTAL recall=5/5  precision=5/5
+  residuals over all matches: min=5.72e-13  max=1.08e-07  median=1.14e-12
+  REGISTER HITS (sourceless zeros): NONE
+  GHOSTS (sourceless-free extra events): NONE

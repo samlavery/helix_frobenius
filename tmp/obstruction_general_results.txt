@@ -1,0 +1,143 @@
+OBSTRUCTION AT THE DISTINGUISHED POINT -- does it generalize beyond BSD?
+============================================================================
+Cassels analogy: |Sha| <-> class group, elliptic regulator <-> unit regulator,
+torsion <-> roots of unity.  We test whether the arithmetic obstruction is
+readable fiber-side at the completed object's distinguished point in the ROOT
+case (Dirichlet class-number formula, 1839) and the rank-1 BSD case, tying them
+to the rank-0 |Sha| squares already measured in tmp/sha_hinge.py.
+
+############################################################################
+# (A)  IMAGINARY QUADRATICS -- the rank-0 twin (obstruction = class number)
+############################################################################
+#   h = w * sqrt(|D|) * L(1, chi_{-D}) / (2 pi)   [Dirichlet 1839]
+#   L(1,chi) MEASURED from the Kronecker-character fiber (tapered readout).
+#   regulator = 1 (only roots of unity); torsion = w = #roots of unity.
+
+       D  w L(1,chi)fiber  |xcheck|  h=w sqrtD L/2pi landed       err known  ok
+      -3  6    0.60459979   4.3e-12       1.00000000      1  7.08e-12     1 YES
+      -4  4    0.78539816   9.3e-15       1.00000000      1  1.18e-14     1 YES
+      -7  2    1.18741041   6.6e-11       1.00000000      1  5.56e-11     1 YES
+      -8  2    1.11072073   7.7e-11       1.00000000      1  6.94e-11     1 YES
+     -11  2    0.94722583   3.3e-13       1.00000000      1  3.47e-13     1 YES
+     -15  2    1.62231147   1.2e-10       2.00000000      2  1.44e-10     2 YES
+     -20  2    1.40496295   1.1e-09       2.00000000      2  1.54e-09     2 YES
+     -23  2    1.96520206   1.7e-09       3.00000000      3  2.64e-09     3 YES
+     -24  2    1.28254983   4.7e-10       2.00000000      2  7.28e-10     2 YES
+     -31  2    1.69274010   3.3e-09       3.00000001      3  5.81e-09     3 YES
+     -47  2    2.29124193   6.2e-09       5.00000001      5  1.36e-08     5 YES
+     -71  2    2.60986916   1.6e-08       6.99999996      7  4.24e-08     7 YES
+     -84  2    1.37110341   2.7e-08       3.99999992      4  8.00e-08     4 YES
+     -95  2    2.57856488   4.0e-08       8.00000012      8  1.24e-07     8 YES
+    -104  2    1.84835096   7.0e-08       5.99999977      6  2.27e-07     6 YES
+    -163  2    0.24606831   2.2e-07       0.99999911      1  8.90e-07     1 YES
+    -479  2    3.58857403   1.8e-06      24.99998762     25  1.24e-05    25 YES
+
+  integer-landing: 17/17 discriminants land on the correct h.
+  (|xcheck| = |fiber L(1,chi) - Hurwitz-digamma closed form|: the two independent
+   evaluations agree, so the readout is not a truncation artifact.)
+
+############################################################################
+# (B)  REAL QUADRATICS -- the rank-1 twin (obstruction x REGULATOR)
+############################################################################
+#   h * log(eps) = sqrt(D) * L(1, chi_D) / 2     [Dirichlet]
+#   => h = sqrt(D)*L(1,chi)/(2 log eps).  eps = fundamental unit (cont. fractions).
+#   The REGULATOR log(eps) sits exactly where the elliptic regulator sits in
+#   rank-1 BSD: special value = obstruction x regulator (x period).
+
+     D   eps(fund.unit)    log eps L(1,chi)fiber  |xchk|  h=sqrtD L/2R landed       err known  ok
+     5       1.61803399   0.481212    0.43040900 6.2e-08    1.00000014      1  1.43e-07     1 YES
+     8       2.41421356   0.881374    0.62322539 1.5e-07    1.00000025      1  2.47e-07     1 YES
+    12       3.73205081   1.316958    0.76034630 3.1e-07    1.00000041      1  4.05e-07     1 YES
+    13       3.30277564   1.194763    0.66273570 3.1e-07    1.00000047      1  4.66e-07     1 YES
+    17       8.12310563   2.094713    1.01608545 6.2e-07    1.00000061      1  6.06e-07     1 YES
+    21       4.79128785   1.566799    0.68380786 6.2e-07    1.00000090      1  9.02e-07     1 YES
+    24       9.89897949   2.292432    0.93588224 9.3e-07    1.00000099      1  9.90e-07     1 YES
+    40       6.16227766   1.818446    1.15008868 2.2e-06    2.00000375      2  3.75e-06     2 YES
+    60       7.87298335   2.063437    1.06555804 3.7e-06    2.00000697      2  6.97e-06     2 YES
+    65      16.06225775   2.776472    1.37752095 4.9e-06    2.00000717      2  7.17e-06     2 YES
+    85       9.10977223   2.209348    0.95855515 5.5e-06    2.00001155      2  1.15e-05     2 YES
+
+  integer-landing: 11/11 discriminants land on the correct h.
+  Structural reading: real-quadratic = obstruction x REGULATOR, the exact
+  parallel of rank-1 BSD's |Sha| x Reg(E).
+
+############################################################################
+# (C)  RANK-1 BSD (37.a) -- obstruction x regulator ties A and B together
+############################################################################
+#   L'(1) = Omega * Reg * |Sha| * prod c_p / T^2 ,  Reg = hat-h(generator).
+#   Solve for |Sha| and demand it land on 1 (exact).  Everything fiber-side:
+#   Omega via AGM, c_p via Tate, T via torsion enumeration, Reg via height-
+#   doubling, L'(1) via the E1 (exponential-integral) series from point counts.
+
+  curve 37.a1  ainvs [0, 0, 1, -1, 0]  generator P = (0, 0)
+    L'(1)   = 0.3059997738   [2 Sum (a_n/n) E1(2 pi n/sqrt N), own point counts;
+                              Gross-Zagier 0.3059997738]
+    Omega   = 5.9869172925   [AGM of the real 2-division points]
+    Reg     = 0.0511114082   [hat-h(P) by canonical height-doubling; lit 0.0511114082]
+    prod cp = 1   (c_37=1)   [Tate]
+    T       = 1   [torsion; gcd bound 1]
+    |Sha| = L'(1) T^2 / (Omega Reg prod c_p) = 1.000000
+          -> nearest integer = 1   (err 1.68e-09)   [EXACT (=1)]
+
+  Reading: rank-1 BSD is 'period x regulator x obstruction / torsion' with the
+  regulator = canonical height -- the SAME slot the unit regulator log(eps) fills
+  in the real-quadratic class-number formula (B), and the class group h fills in
+  the imaginary one (A).
+
+############################################################################
+# SUMMARY OF INTEGER-LANDING (the falsifiable face)
+############################################################################
+  (A) imaginary quadratics : 17/17 land the class number h exactly
+  (B) real quadratics      : 11/11 land the class number h exactly
+  (C) rank-1 BSD 37.a      : 1/1 lands |Sha| = 1 exactly
+  (prior) rank-0 BSD       : 9/9 land |Sha| in {1,4,9} as exact squares (tmp/sha_hinge_results.txt)
+
+################################################################################
+# (D)  THE UNIFIED READING  (tiered: proved / measured / proposed)
+################################################################################
+
+MEASURED (this run + tmp/sha_hinge.py). Across three arithmetic families the same
+distinguished-point ratio returns the arithmetic obstruction as an exact number
+read off our own fibers: imaginary quadratics land the class number h from
+w*sqrt(|D|)*L(1,chi)/(2pi) (A), real quadratics land h from sqrt(D)*L(1,chi)/(2 log eps)
+with the unit regulator log(eps) in the denominator (B), and rank-1 BSD (37.a) lands
+|Sha|=1 from L'(1)*T^2/(Omega*Reg*prod c_p) with the elliptic regulator Reg=hat-h(P)
+in exactly the slot log(eps) occupies in (B) (C). The rank-0 BSD run already lands
+|Sha| in {1,4,9} as exact squares. L-values are the measurement (character/point-count
+fibers, tapered readout); classical tables only score the landing.
+
+PROVED / CLASSICAL (not by us). Each identity is a theorem: Dirichlet's analytic
+class number formula (1839) for (A)/(B); the BSD conjecture's known-rank cases plus
+Gross-Zagier/Kolyvagin for (C). The squareness of |Sha| is the Cassels-Tate pairing.
+Our contribution is not the formulas but the demonstration that the obstruction is
+*readable fiber-side at the distinguished point* -- assembled from characters and point
+counts with no L-library in the loop -- across the whole Cassels analogy
+(Sha <-> class group, elliptic regulator <-> unit regulator, torsion <-> roots of unity).
+
+THE ONE LAW (Bloch-Kato shape). All four instances are
+    special value  =  period  x  regulator  x  obstruction / torsion,
+evaluated at the completed object's distinguished point:
+   family            special value   period       regulator      obstruction   torsion
+   imag. quadratic   L(1,chi)        pi/sqrt|D|    1              h (class grp)  w
+   real quadratic    L(1,chi)        1/sqrt(D)     log eps        h (class grp)  1
+   rank-0 elliptic   L(1)            Omega         1              |Sha|          T^2
+   rank-1 elliptic   L'(1)           Omega         hat-h(P)       |Sha|          T^2
+This is the rank-0/1 face of the Bloch-Kato / Beilinson-Deligne conjecture on special
+values of motivic L-functions; the class-number formula (1839) is its root case and BSD
+its elliptic case. We *do not* claim to prove Bloch-Kato -- we measure that its
+distinguished-point reading holds, exactly, on every fiber we can build.
+
+PROPOSED NEXT INSTANCE (not run). The next rung is a weight-2 motive of higher
+Hodge type: Sym^2 Delta (the symmetric square of the weight-12 cusp form Delta). Its
+completed L-function has a distinguished edge value L(Sym^2 Delta, 12) whose Bloch-Kato/
+Beilinson prediction is
+    L(Sym^2 Delta, edge)  =  (explicit period)  x  <Delta,Delta>_Petersson  x  (obstruction),
+with the Petersson norm <Delta,Delta> playing the regulator role. A fiber-side test:
+build the Sym^2 Euler product from our already-point-counted tau(p) (tmp/gl2_* banks),
+evaluate the edge value by the same tapered/theta readout, compute <Delta,Delta> from the
+Rankin-Selberg unfolding of the SAME coefficients, and check the residual obstruction lands
+on a small rational with square denominator (the Sym^2 analogue of |Sha|). Confirmation
+would extend the law from GL(1)/GL(2)-abelian (A,B,C) to a genuinely GL(2)-symmetric-square
+motive; a non-landing residual would be a clean falsification of "obstruction readable at
+the distinguished point" beyond the abelian/elliptic cases. This is proposed, not run.
+

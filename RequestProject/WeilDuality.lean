@@ -16,7 +16,7 @@ Frobenius acting there.  The dictionary with Deligne's setting (`X/𝔽_q`, Frob
 | duality is a perfect pairing              | `dual_dimension_symmetry` (jets die together)   |
 | normalized dual pair has det 1            | `dual_pair_det_one` (this file), `strand_weights_det_one`, `frobenius_conjugate_det_one` |
 | Lefschetz trace formula                   | the medium spectroscopy (Euler clocks, ±4%)     |
-| purity `|α| = q^{w/2}` (**Deligne's theorem**) | all vanishings on the mirror (**open** = GRH/projection primacy) |
+| purity `|α| = q^{w/2}` (**Deligne's theorem**) | all vanishings on the conjugation axis (**open** = GRH: `EveryZeroHasSource`) |
 
 Three tiers of honesty about this analogy:
 * **Literal**: at each prime, GL(2) purity IS Deligne's theorem (Ramanujan–Petersson via
@@ -30,7 +30,7 @@ Three tiers of honesty about this analogy:
   the same det-1 conjugate block as the similitude (`frobenius_conjugate_det_one`) and the
   strand weights (`AntihelixWindow.strand_weights_det_one`), now on the vanishings.
 * **Open, named**: purity — that both eigenvalues of every dual pair have modulus one
-  (all vanishings on the mirror).  This is the step Deligne supplied geometrically
+  (all vanishings on the conjugation axis).  This is the step Deligne supplied geometrically
   (positivity via monodromy/Hodge index); its model-native candidate is a positivity of
   the cup pairing (`ChiralCup`/`CupIdentity`) on the vanishing classes.  Measured
   evidence: the off-axis census — 1517/1517 collapse, `δ ≤ 4.5×10⁻³` median
@@ -50,8 +50,8 @@ theorem vanishing_dual_pair (ρ : ℂ) :
     completedRiemannZeta ρ = 0 ↔ completedRiemannZeta (1 - ρ) = 0 := by
   rw [completedRiemannZeta_one_sub]
 
-/-- **The conjugation pairing** (the antihelix is the conjugate, not a mirror): `Λ`
-vanishes at `conj ρ` iff at `ρ`. -/
+/-- **The conjugation pairing** (the antihelix is the helix's conjugate, not its mirror
+image — both strands share the same handedness): `Λ` vanishes at `conj ρ` iff at `ρ`. -/
 theorem vanishing_conj_pair (ρ : ℂ) :
     completedRiemannZeta ((starRingEnd ℂ) ρ) = 0 ↔ completedRiemannZeta ρ = 0 := by
   rw [← HelixCollapse.completedRiemannZeta_conj ρ]
@@ -232,30 +232,33 @@ theorem purity_from_castelnuovo {E : Type*} [NormedAddCommGroup E] [NormedSpace 
     (cup_growth_gives_tensor_bound T hv0 hev hgrowα)
     (cup_growth_gives_tensor_bound T hw0 hew hgrowβ)
 
-/-- **The mirror is the membership boundary of the cup completion.**  The readout class at
-abscissa `σ` (coefficients `n^{−σ}`) is square-summable — lies in the Hilbert space the
-cup form completes to (`ChiralCup.hilbert_completion_exists`) — iff `σ > 1/2`.  So:
-a hypothetical OFF-mirror vanishing class (`σ > 1/2` side) lives INSIDE the space, where
-the cup-symmetric flow has real spectrum (`ChiralCup.von_neumann_reality`) and the
-Hermite–Biehler exclusion applies (`DeBranges.hb_no_zero_upper`,
-`norm_eq_imp_im_zero`) — while the actual vanishing classes sit EXACTLY ON the boundary
-(log-divergent, rigged/de Branges objects), which is where resonance is permitted.
-UNIT/2 one more time: the half-unit is the edge of the Hilbert space itself.  The 3D-RH
-proof shape is therefore an EXCLUSION: membership + self-adjointness forbids off-mirror
-vanishings; it never needs to place the on-mirror classes inside. -/
-theorem mirror_is_membership_boundary (σ : ℝ) :
+/-- **The conjugation axis is the membership boundary of the cup completion.**  The
+readout class at abscissa `σ` (coefficients `n^{−σ}`) is square-summable — lies in the
+Hilbert space the cup form completes to (`ChiralCup.hilbert_completion_exists`) — iff
+`σ > 1/2`.  So: a hypothetical OFF-axis vanishing class (`σ > 1/2` side) lives INSIDE
+the space, where the cup-symmetric flow has real spectrum
+(`ChiralCup.von_neumann_reality`) and the Hermite–Biehler exclusion applies
+(`DeBranges.hb_no_zero_upper`, `norm_eq_imp_im_zero`) — while the actual vanishing
+classes sit EXACTLY ON the boundary (log-divergent, rigged/de Branges objects), which is
+where resonance is permitted.  UNIT/2 one more time: the half-unit is the edge of the
+Hilbert space itself.  The 3D-RH proof shape is therefore an EXCLUSION: membership +
+self-adjointness forbids off-axis vanishings; it never needs to place the on-axis
+classes inside. -/
+theorem conj_axis_is_membership_boundary (σ : ℝ) :
     Summable (fun n : ℕ => 1 / (n : ℝ) ^ (2 * σ)) ↔ 1 / 2 < σ := by
   rw [Real.summable_one_div_nat_rpow]
   constructor <;> intro h <;> linarith
 
 /-- **Chirality is the Hermite–Biehler mechanism, and its origin is geometric** (Sam): the
 carrier is the structure function.  Per term, the helix strand weight `r^σ` strictly
-dominates the antihelix weight `r^{2−σ}` exactly off the mirror (`σ > 1`), for every
+dominates the antihelix weight `r^{2−σ}` exactly for `σ > 1`, for every
 carrier radius `r > 1` — the area law's growing radius IS the strict inequality
-`‖E*‖ < ‖E‖`, with equality precisely on the mirror (the weld, where
-`strand_weights_det_one` balances the pair).  What remains for the full `IsHB` of the
-summed fiber is phase alignment across terms — the carrier's winding coherence — but the
-mechanism and its origin are the carrier's geometry, not a hypothesis. -/
+`‖E*‖ < ‖E‖`, with equality precisely at `σ = 1` (the fixed point of the strand-swap
+`σ ↦ 2−σ`, where `strand_weights_det_one` balances the pair).  The conjugation axis
+`σ = 1/2` enters through the completed weld, not this per-term bound.  What remains for
+the full `IsHB` of the summed fiber is phase alignment across terms — the carrier's
+winding coherence — but the mechanism and its origin are the carrier's geometry, not a
+hypothesis. -/
 theorem carrier_strand_dominance {r : ℝ} (hr : 1 < r) (σ : ℝ) :
     r ^ (2 - σ) < r ^ σ ↔ 1 < σ := by
   rw [Real.rpow_lt_rpow_left_iff hr]
