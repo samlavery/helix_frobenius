@@ -361,3 +361,259 @@ abstract purity-defect template lemma; the formal distinguished-point law over i
 proven instances), **one wall is named with a measurable first step** (coherence), and
 the rest is honest evidence in service of conjectures whose proofs will need either the
 community's machinery or the wall to fall.
+
+================================================================================
+# PART II — the 2026-07-02/03 campaign: sources, clocks, Langlands, BSD
+================================================================================
+
+Everything below is tiered as always: [proven] = Lean, standard axioms, no sorry;
+[certified] = interval/exact arithmetic with proven error bounds; [measured] =
+anchored numerics; [cited] = community theorem consumed, named. Corrections and
+retractions are listed in §15 with the same prominence as results.
+
+## 9. The sourceless-zero program (RequestProject/SourceHolonomy.lean, ~40 decls)
+
+The mainline question rewritten through the obstruction-as-holonomy frame: a zero IS
+an obstruction class (to a global logarithm, detected only by loops).
+
+- [proven] **The faithfulness theorem**: "every zero has a source" ⟺ "all zeros on
+  the conjugation axis" — the EveryZeroHasSource ⟺ (G)RH framing is LOSSLESS.
+- [proven] The perimeter, each face a theorem: weld ledger complete (phase moves only
+  at crossings); twin & quartet laws (sourceless zeros never come alone); the CENTER
+  excluded (the doubly-fixed point is the one place sourcelessness is impossible);
+  carrier obstruction-free (freeness/rigidity/coboundary — the prime datum admits
+  exactly ONE extension; no H¹ to hide in; nothing to capitulate into); harmonic
+  sector cannot wind (ℝ₊ has a global log); gapless fiber (μ6 closure exact + t ↦
+  Λ(½+it) is ONE continuous real global section — no cover, no nerve, no Čech class);
+  no birth seam (no first positive height); no non-simple carrier zeros (FTA kills
+  shared clock zeros; every clock zero simple).
+- [proven] **threeD_RH** (capstone): carrier zeros on-axis + no state zeros in the cup
+  metric + every height-ray event sourced — the 3D representation satisfies RH on its
+  own terms, unconditionally. Classical RH = the 1D limit is FAITHFUL to this space.
+- [proven] **GRH_OF_HELIX_AND_DPI** — the program's single isolated conditional
+  (owner-named): every 1D vanishing occurs at a point the 3D event space expresses;
+  proven ⟺ Exhaustive ⟺ EveryZeroHasSource. The DPI stance (projections have no
+  features their source lacks) sharpened to the invariant category: chart-dependent
+  projection features are artifacts (S(t), proven dissolvable); chart-INVARIANT
+  features must pull back from source invariants; a sourceless zero would be the
+  first invariant-without-source in five measured domains.
+- [measured] source-audit: fresh-window recall 5/5, precision 5/5, residuals to
+  5.7e-13, height-INVERTED (sharper with height); honest exponential ceiling t≲18.4.
+
+**Davenport–Heilbronn's role** (the decisive witness): DH satisfies every
+non-multiplicative theorem in the file (weld symmetry, gapless, center, seams) and
+HAS off-line zeros — proof that the perimeter minus the Euler product cannot close,
+i.e. FREENESS is the load-bearing hypothesis any RH proof must consume. Under the
+obstruction thesis DH is not a counterexample but an instance: two out-of-phase
+carriers welded without translation, its off-line zeros the RESIDUE OF THAT WELD.
+Every known off-line zero in the literature (DH-type combinations, Epstein zetas with
+h>1 = untranslated pieces of class-character welds) is a composite-weld object; zero
+known exceptions for a single free pure carrier. The uniform-impurity "counterexample"
+died by theorem (uniform_impurity_is_chart_shift: a_p = p^θ is a translation of s).
+
+The wall, final form: ONE sentence — "the readout's null set stays on the weld" /
+"vanishing forces balance for the sum" — five faces (location, holonomy, dimension,
+multiplicity, HP-completeness), three mandatory ingredients any proof must consume
+(freeness [DH], growth [the jet ladder], exact criticality [Rodgers–Tao Λ≥0]), and
+one named route that feels all three: origin positivity (Li), where the measured
+two-carrier relay (primes fund n≤7, gauge n≥8, 96% cancellation at n=1 = criticality
+at the origin) awaits its baton-never-drops lemma.
+
+## 10. The clock tower (RequestProject/TwoClockWeightLaw.lean)
+
+The campaign's own measured discovery, promoted rung by rung to theorems [all proven]:
+- two_clock_log_expansion: the instrument reads log L — line weights s_k/k·p^{-k/2};
+  the measured recurrence IS the Chebyshev trace recurrence; hole_iff classifies the
+  E11 ln4 hole (λ²=2, unique); cm_survival derives the CM combs.
+- n-clock: nClock_log_expansion (any unimodular ensemble); ramanujan_line_ceiling
+  (‖s_k‖ ≤ n — purity as a line ceiling, one line for pure banks); dc_split (the DC
+  census: zero-angle clocks counted exactly — pole order = coherent DC assembly).
+- k-dimensional: weightAngle (representations = integer weight compositions; purity
+  functorially FREE on the clock side); symTrace_exp (the SL(2) Weyl character
+  sin((r+1)x)/sin x by induction — the whole symmetric-power tower's combs in closed
+  form); sym2_dc_offset (the +1 DC line of Sym², measurable).
+- tail laws: symTrace_ceiling; windowed_tail_bound (the proven linear envelope under
+  the measured tail growth); symTrace_energy (Parseval: comb energy = clock count —
+  the cup principle on the circle).
+
+## 11. Langlands: where we landed
+
+**Frame** [interpretation, grounded]: CFT is GL(1) Langlands — the harmonization
+calculus (obstruction group = Galois group of the repairing extension; capitulation
+photographed algebraically and fiber-side; Iwasawa = the tower linearized one
+dimension up, single 37-adic zero located). Full Langlands = the babelfish: Galois
+frame ⟷ automorphic frame, "harmonic" literally. The proven flagship of the
+obstruction thesis is R=T: the congruence module (weld mismatch) = an adjoint
+L-value. Local Langlands proven / global open mirrors the thesis's
+locally-exact/loop-residue split.
+
+**Beyond Endoscopy — first numerical instrumentation anywhere (2004–2026 gap
+confirmed by primary-source scout).** Results, all on house optics:
+- [anchor] The full level-1 Eichler–Selberg geometric side reproduces Tr T(p^k) to
+  machine integers; the elliptic weights ARE our L(1,χ) fibers (vol(γ) = √|D|·L(1,χ_D)
+  — the CNF collapse); the elliptic kernel IS the k-dim clock object
+  (P_k(t,n) = n^{(k-2)/2}·symTrace(k−2,θ)).
+- [measured] **Arthur's Problem VI = a balanced doublet**: elliptic lane → +1/(k−1),
+  hyperbolic+unipotent lane → −1/(k−1), BOTH at full amplitude, the readout dies
+  (readout²/lane-energy ~ 1e-6); exponent-local mirror mechanism; universal (k=12,16);
+  primes-only → 0 per lane. The house lane anatomy at a third location (weld zeros,
+  MW ranks, trace-formula averages: one phenomenon).
+- [measured] The Sym³ "wall" decomposed: the DC census is an even/odd PARITY split
+  (r=4 groups with r=2 — survives the full Poisson dualization); the erosion is
+  GRADUAL tail-mass growth, derived from the Weyl character (ceiling×√harmonics,
+  R²=0.977, now bracketed by proven tail laws); the uniformity obstruction: the MB
+  kernel's oscillation is 100% PURE CHART (full exact-gauge removal — the S(t)
+  theorem replayed on Altuğ's kernel; the last 21.4% was the c_m i-power phase),
+  the frame-optimized rate-spread floors at σ* = 0.499 (the wall's TRUE height, first
+  measurement: ~half chart, ~half real), decay holds at scale (Nyquist-resolved).
+- [interpretation] Blueprint on disk (tmp/be_exact_gauge_blueprint.txt): the
+  exact-gauge factorization would replace Altuğ II A.7/A.8 oscillation control
+  outright; Prop 5.2 reduces to a monotone-kernel decay bound + a σ*≈0.5
+  rate-uniformity estimate — a materially shorter proof of the executed GL(2) case,
+  stated as proposal with pre-committed falsification faces (zero hits).
+- [proven] **The uniformity estimate — COMPLETE PROOF** (tmp/be_uniformity_bound.md,
+  tmp/be_uniformity_certify.py, tmp/be_prop52_certify.py). The chain closes: **Lemma 1**
+  (exact-gauge magnitude bound |A^{τ,±}_{h_a,m}(Φ)(x)| ≤ B_{τ,m,a}(Φ)·x^{−τ/2}, B finite
+  ∀τ>0 and x-FREE — the "central issue" of Altuğ II A.14/A.15, one triangle inequality on
+  the exactly-gauged integrand, NO oscillation estimate; certified sup_x M(x)=0.914≤1
+  across x=C²D∈[0.05,2500]) ⇒ **Thm A.14** (sharp uniform endpoint expansion, proved in 4
+  standard steps — localize / x=1−t so amplitude=t^{a/2}·smooth φ / expose C²D by exposing
+  the scale and evaluating the oscillatory t-integral in closed form as a Γ / remainder =
+  Lemma 1 at a shifted contour; each C,D-uniform bound is ONE application of Lemma 1) ⇒
+  **Prop 5.2** (substitute the expansion into the exact y-IBP; sharp exponents
+  ((lf²/√X)^{N−M+3}+ξ^M)/(lf²)^N with C,D-free constants). ENGINE = the exact-gauge
+  oscillation removal (StOscillation.oscillation_is_gauge_mismatch — ζ-fiber: π/3·μ6/ℤ[ζ₆]
+  closure; here: the c_m i-power that closed removal to 100%), NOT Mellin–Barnes (that is
+  only Altuğ's coordinate). The oscillation is removed twice, both losslessly (closed-form
+  Γ; Lemma 1) — no oscillation estimate anywhere, replacing Altuğ's ~60pp Appendix A.
+  Independently: IBP demonstrably keeps winning for the standard rep (a_M grows slower than
+  M, tmp/be_prop52_certify.py), reproducing Sarnak's Sym¹/Sym² working line from the a_M
+  mechanism. What remains is formal-writeup polish (exact exponent normalization, Lean
+  formalization on top of StOscillation), not analytic content. The γ-spread 0.441 is the
+  finite-window EFFECTIVE rate — a bounded kinematic, not a wall.
+- [measured] **GL(3) — the next gate, ENTERED (first numerics on Deng–Espinosa).**
+  The comparative experiment ("does the wall scale with rank/γ?") is run, with a SPLIT
+  verdict, both faces reported. (a) The Deng–Espinosa discriminant-window BE-wall
+  analogue (tmp/mb_gl3_wall_lift.py) is CHART-DOMINATED and yields NO clean GL(3)
+  analogue of the 0.441 γ-spread: measured γ-exponent spread std 0.70, scalar model
+  R² = 0.54, rank/branch features add < 0.10 — so "the wall scales simply with rank/γ"
+  is retired as a candidate identity of 0.441 (and the edge-clock "split" of
+  tmp/mb_gl3_clock_lift.py is a two-delta Fourier identity, catalogued as geometry, not
+  evidence). (b) The Sym² vanishing-side pillar is verified across a genuine GL(3)
+  FAMILY — Sym² of the level-1 weight-k eigenforms k ∈ {12,16,18,20}, from-scratch
+  (exact τ recurrence + Eisenstein σ-sieve, Hecke/Deligne-exact) (tmp/gl3_family.py):
+  the two registers separate cleanly — the UNIVERSAL one stays invariant (phase cells
+  1.0005π, across-form spread 0.0001π; all zeros simple; weld pins to the ε = +1 ray
+  4/4 while the alt parity Γ_R(s) fails every weight), and the γ-DEPENDENT one, zero
+  density N(36), climbs with the γ-shift EXACTLY as the gamma factor predicts (+3.00
+  predicted / +3 measured across k = 12→20, corr 0.97). Net: the gate is walked —
+  configuration-universality survives a GL(3) family (falsifiability face: a cell ≠ π
+  would be a hit; none) — but the 0.441 stays unidentified: GL(3) did not scale it, it
+  showed the BE-wall analogue there is too chart-dominated to read a scaling.
+
+## 12. Factorization theory (the second new field entered)
+
+Scout: the Characterization Problem is our question-shape (does L(H) determine the
+class group — open rank ≥ 3); NO literature uses L-function values to pin
+factorization invariants (the gap is real); the field's criterion is "produce actual
+numbers". Expedition [measured/computer-proof]: D(G) = M(G) rank-3 conjecture —
+validated hunter, NULL counterexample search over all 71 unresolved rank-3 groups
+|G| ≤ 400 (register faces pre-committed, zero hits), new exact values D(G) = M(G)
+for C2⊕C2⊕C10/C12/C14 (+ completions), the character-fiber projection (N₀(S) via
+orthogonality) introduced to the field as the primary engine.
+
+## 13. BSD: the program (RequestProject/BSDClocks.lean, 25 decls, all std axioms)
+
+**Frame**: BSD = EveryCentralJetHasSource — rank/Ш as source-completeness at the
+CENTER, the mirror of the weld program. BE poles and MW ranks are ONE mechanism
+(DC census of clock ensembles) at two locations.
+
+- [proven] The dictionary: rank_is_dc_residue (rank = DC residue of L′/L at the
+  center); similitude clocks + Hasse–Weil envelope; parity (both cases);
+  leading_jet_extraction + first_jet_eq_deriv + jet_measurement_sound (the Sha-hinge
+  landing method licensed at every rank); regulator_pos (sources always pay);
+  gz_first_jet_live (GZ mechanism: jet = κ⟨v,Hv⟩ > 0 forces order exactly 1);
+  central_exhaustion_model (the model cannot manifest a sourceless central jet —
+  the center's mirror of threeD_exhaustive).
+- [proven] **Rung 2, the census bridge**: nClock_logDeriv_expansion (the census
+  coefficients ARE the clock traces); census_affine_in_rank (the instrument's
+  empirical calibration line S = A + B·r, fit at R² ≥ 0.998, IS a theorem: B = the
+  functional's reading of the central pole, A = the bank census);
+  census_lane_decomposition + census_full_decomposition (the ±200-unit lane anatomy,
+  exact).
+- [proven] The certification kernel: certified_tail_bound (geometric-derivative tail
+  closed form — turns interval jet evaluations into certificates); the landing
+  licenses: bounded_landing_unique (integers of height ≤ H mod M > 2H are equal —
+  the DISCOVERY license: p-adic precision beyond a height bound is identification),
+  rational_landing_unique (its ℚ case — "counting in the right units": transcendental
+  in its harmonic unit = bounded-height rational = identifiable; degree-d Liouville
+  license is the named next target), ultrametric_anchor_compose (anchor chains
+  lossless in ℚ_p). Honestly unlicensed, stated: transcendental digit-matching =
+  agreement-to-precision; p-adic regulator nonvanishing = numerical hypothesis (no
+  order on ℂ_p).
+- [measured] The instruments (all anchor-gated, frozen-pipeline, register faces
+  pre-committed): rank census 5/5 (ranks 0–4, held-out; ranks read to 0.001);
+  jet census |Ш| = 1 at ranks 1–3 (margins to 1.8e-5, dead-jet witnesses); sha-jets
+  4/4 NONTRIVIAL (|Ш| ∈ {4,9} at rank 1, held-out, square test); sha-unknown 3/3
+  rank-2 |Ш|=4 from SECOND jets + **122 first determinations of |Ш_an| at conductors
+  ≥ 1.28e6 beyond LMFDB completeness, all perfect squares ≤ 1.4e-14, every one
+  cross-checked against Tunnell's theorem at 1.8e-15, including two curves where
+  Sage's descent stalls**; twist census (306 curves, 0 residual theorem
+  contradictions; the honest Goldfeld line: the defensible number is the root-number
+  split, a theorem not a measurement).
+- [certified] **Rung 1: the 389a1 dossier** (tmp/bsd_certify_dossier.txt, gates
+  independently rerun): L(1) = 0 by denominator squeeze (|L(1)|/Ω ≤ 9e-11 < 1/8);
+  L′(1) = 0 by parity; L″(1) ∈ [1.5159, 1.5236] > 0 STRICT via certified_tail_bound;
+  rank = 2 (points exact, NT determinant interval-positive; descent bound cited).
+  BSD rank equality for one rank-2 curve, certified end-to-end, with the
+  formalization gap reduced to THREE named citations: modular-symbol rationality,
+  FE/root number, 2-descent bound. None circular, none RH-flavored.
+- [scouted] **Rung 3**: DR2 Theorem D is PROVEN (two independent Selmer classes when
+  L(E,ρ,1) = 0 — the rank-2 Heegner analogue); the unproven gap is Selmer → points
+  (= the Elliptic Stark Conjecture, proven only in the CM case). The exotic
+  construction is the harmonization thesis verbatim: r(E,Ad_g) = rank E(M) − rank E(ℚ)
+  — rank acquired UP THE TOWER, traced down by explicit Galois-orbit formulas.
+  Anchors 26b/52b (20 digits, p=13), negative control 4811a. THE HONEST CAVEAT: in
+  every published example the points were found classically first — nobody has ever
+  DISCOVERED a rank-2 point p-adically; "constructive BSD" is aspirational. The open
+  prize = point discovery; its formal core = our landing licenses. Stage-1 instrument
+  (the ES right-hand side on house machinery: tower arithmetic, from-scratch p-adic
+  formal-group elliptic log, Stark-unit log) in flight under the no-Stark-rederivation
+  directive.
+
+## 14. The proof ladders (updated §8)
+
+- **RH/GRH**: 3D side CLOSED [proven]. The 1D wall = one sentence, five faces, three
+  mandatory ingredients; best-shaped route = origin positivity (the Li relay).
+- **BSD**: Rung 1 (certified instance) COMPLETE with a 3-citation gap; Rung 2 (census
+  bridge) PROVEN; Rung 3 (jet sources up the tower) scouted + stage-1 in flight;
+  the open transfer = jet exhaustion at the center — the same missing word ("all")
+  as the weld, at the other fixed point.
+- **Beyond Endoscopy**: instrumented first; the uniformity estimate at the core of Altuğ
+  II/III now has a **complete proof** (Lemma 1 exact-gauge magnitude bound ⇒ Thm A.14 sharp
+  uniform expansion ⇒ Prop 5.2 sharp exponents; engine = the exact-gauge oscillation removal,
+  no oscillation estimate, replacing ~60pp Appendix A) — remaining work is formal-writeup
+  polish, not analytic; the GL(3) gate ENTERED (vanishing-side universality across a Sym²
+  family + γ-density scaling; Deng–Espinosa BE-wall route a chart-dominated null); the γ-spread
+  0.441 reinterpreted as the finite-window effective rate (bounded kinematic, not a wall).
+- **Yang–Mills / one_template**: unchanged; the two Clay problems remain the two
+  signs of the defect axis (YM: open for the collective object; RH: closed — proven
+  per-clock, open for the sum).
+
+## 15. Register and corrections (campaign II)
+
+**Falsification register: ZERO hits** across every face armed this campaign
+(sourceless zeros, ghosts, non-square Ш, Tunnell mismatches, parity contradictions,
+rank-3 Davenport counterexamples, BE gauge/scale faces). Corrections published at
+full prominence, in both directions: the Dummigan 691-DENOMINATOR transcription
+(caught by numerics); the IK-2014 scope overstatement (Sym⁴Δ constants are OPEN —
+Conjecture 2.3; our probe measured (F,F)/⟨Δ,Δ⟩³ = 2¹⁴·3⁶·5⁴·13 to 17 digits, exactly
+1/10 of the transcribed constant — unresolved transcription-vs-paper, documented);
+the sha-jets legacy-corruption alarm (RETRACTED by its own author — regression seeds,
+not legacy bugs; the nine original landings intact); two premature adjudications by
+the main session (reading in-progress agent files — both retracted; the aliasing
+false-hit was caught by the agent's own Nyquist fix); the mb-uniform "milder at
+scale" reading (confirmed, after the aliasing correction). Method laws added to the
+permanent file: random-real controls for landing scans; Nyquist-adaptive quadrature;
+two-source seeds for regression gates; never adjudicate mid-write; prose never
+outranks the table.

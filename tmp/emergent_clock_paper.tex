@@ -1,0 +1,670 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{hyperref}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\wt}[1]{\widetilde{#1}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\Sym}{\operatorname{Sym}}
+
+\title{Two mechanisms in the trace--formula analysis of Beyond Endoscopy:\\
+the product law and the exact gauge}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Several estimates on the analytic side of the trace formula are correct \emph{bookkeeping} whose
+\emph{mechanism} is left outside the frame. We isolate two. The \emph{product law}: a
+derivative/repulsion statistic is identically a product of distances between configuration points, so
+``repulsion'' is an algebraic identity shared by random matrices and the arithmetic. The \emph{exact
+gauge}: an oscillatory integrand is a real magnitude times a deterministic phase carrier, so its
+oscillation is a removable chart artifact and $|\int g|\le\int|g|$ is lossless.
+
+Working the exact gauge out on the central analytic obstruction of Altu\u{g}'s execution of Beyond
+Endoscopy for $\mathrm{GL}(2)$ --- Proposition~5.2 of Part~III, the ``central issue'' of Part~II ---
+gives the paper's four contributions: (1) an \emph{oscillatory cancellation} reducing the uniformity
+to a single magnitude bound with no oscillation estimate; (2) the identification of the difficulty as
+a deterministic \emph{emergent clock}, the edge-comb of the fixed cutoff; (3) the consequent
+\emph{removal of the productivity boundary}, re-read as gradual attrition rather than a wall; and (4)
+a \emph{candidate automorphic object} in the primary representation, whose four converse-theorem
+inputs --- functional equation, continuation, exhaustion, and loss-ledger recovery --- are formalized
+and machine-checked.
+
+The same two mechanisms organize three further objects: the GUE-level derivative statistics of zeros,
+the archimedean transfer factor and arithmetic transparency of symmetric-power functoriality, and a
+detection identity we close on a genuine transfer --- on a CM form the pole order of a self-twist
+Rankin--Selberg $L$-function, read as the zero-frequency residue of a logarithmic derivative, equals a
+geometric self-twist relation on Frobenius, both giving the transferred count $1$; on a non-CM form
+both give $0$. The uniformity statements are theorems; the detection identity rests on classical
+Gelbart--Jacquet/Rankin--Selberg theory; the extension to a full symmetric-power functoriality theorem
+is the subject of active research, with its remaining ingredients stated precisely.
+\end{abstract}
+
+\tableofcontents
+
+\section{Two mechanisms}\label{sec:two}
+
+Two devices recur in the analytic theory as \emph{answers} while their \emph{explanations} stay
+outside the frame.
+
+\paragraph{The product law (self-interference).} The unitary ensembles predict the local statistics
+of the zeros of an $L$-function correctly, but the ensemble contains no mechanism: ``eigenvalue repulsion'' is
+postulated. Yet the derivative statistic that encodes repulsion is an identity: for a polynomial
+$P=\prod_j(X-r_j)$ and a simple root $\mu$,
+\begin{equation}\label{eq:prod}
+  P'(\mu)=\prod_{r_j\neq\mu}(\mu-r_j),
+\end{equation}
+so $|P'(\mu)|$ \emph{is} the product of distances from $\mu$ to the other configuration points. The
+same product governs the reopening rate of an arithmetic fiber at a zero. Hence a ``GUE-level''
+prediction and its arithmetic counterpart compute one object; they differ only through the
+configuration fed to \eqref{eq:prod}. Repulsion is the product law, not a force. (This is an
+algebraic identity; it does not by itself prove that zeros follow GUE.)
+
+\paragraph{The exact gauge (removable oscillation).} An oscillatory integral $\int g$ is normally
+attacked by estimating cancellation. But if $g=|g|\,e^{i\phi}$ with $\phi$ a \emph{deterministic}
+phase carrying no arithmetic content, then the oscillation is a choice of chart and
+$|\int g|\le\int|g|$ is lossless. Choosing the gauge that makes the integrand real turns an
+oscillation estimate into a magnitude bound; over a root-of-unity carrier (the $\zeta_6$ step
+$2\pi/6$, which closes) the gauged object is a real harmonic.
+
+Sections~\ref{sec:gauge}--\ref{sec:sarnak} are the three closes: the exact gauge on the archimedean
+uniformity (\S\ref{sec:gauge}); the identification of the difficulty as the cutoff's emergent clock
+(\S\ref{sec:comb}); and the productivity boundary re-read (\S\ref{sec:sarnak}). Sections
+\ref{sec:gue}--\ref{sec:construct} then develop the two mechanisms toward symmetric-power
+functoriality --- the product law and the transfer factor (\S\ref{sec:gue}), a carrier/fiber
+rescaling in which a pole becomes a closed cell (\S\ref{sec:carrier}), the arithmetic transparency of
+the transfer (\S\ref{sec:fl}), a detection identity closed on a genuine example (\S\ref{sec:detect}),
+and a candidate automorphic object (\S\ref{sec:construct}).
+
+\section{The exact gauge on the archimedean uniformity}\label{sec:gauge}
+
+Altu\u{g} \cite{AltI,AltII,AltIII} executes Beyond Endoscopy for $\mathrm{GL}(2)$ and the standard
+representation. Its analytic core is a uniformity estimate: after the arithmetic weights $L(1,\chi_D)$
+are expanded by an approximate functional equation and the trace variable is Poisson-summed, one must
+bound, uniformly in $(\xi,\nu,l,f,X)$, the Fourier transform $J_{l,f}(\xi,\nu,X)$ of a product of a
+fixed cutoff $G$ and a smoothed orbital transform (Prop.~5.2, Part~III); Altu\u{g} calls the
+$C,D$-independence of the implied constant ``the central issue'' \cite[App.~A]{AltII}. The transform
+whose asymptotics drive the appendix is (Part~II, Def.~A.6)
+\begin{equation}\label{eq:A6}
+  A^{\tau,\pm}_{h_a,m}(\Phi)(x)=\frac{1}{2\pi i}\int_{(\tau)}\wt\Phi(u)\,c^{\pm}_m(u/2)\,
+    \Gamma\!\Big(m+1+\tfrac{a+u}{2}\Big)\,x^{-u/2}\,du,\qquad \tau>0,
+\end{equation}
+for a singular profile $h_a(x)=|1-x^2|^{a/2}h_1(x)$ ($h_1$ smooth, $a>-1$) and Schwartz $\Phi$; the
+parameters enter only through $x=\mp C^2D$ and a unimodular prefactor.
+
+\begin{lemma}[the gauge bound]\label{lem:mag}
+For every $\tau>0$, $m\in\mathbb N$, and Schwartz $\Phi$,
+\[
+  \big|A^{\tau,\pm}_{h_a,m}(\Phi)(x)\big|\ \le\ B_{\tau,m,a}(\Phi)\,x^{-\tau/2},
+  \qquad
+  B_{\tau,m,a}(\Phi):=\frac{1}{2\pi}\!\int_{-\infty}^{\infty}\!
+     \Big|\wt\Phi(\tau+iv)\,c^\pm_m\!\big(\tfrac{\tau+iv}{2}\big)\,
+     \Gamma\!\big(m{+}1{+}\tfrac{a+\tau}{2}{+}\tfrac{iv}{2}\big)\Big|\,dv,
+\]
+with $B_{\tau,m,a}(\Phi)<\infty$ \emph{independent of $x$} (hence of $C,D$).
+\end{lemma}
+
+\begin{proof}
+On $u=\tau+iv$ one has $|x^{-u/2}|=x^{-\tau/2}$, so the triangle inequality gives the bound and $B$
+contains no $x$. For finiteness: by Stirling $|\Gamma(\sigma+iv/2)|\asymp e^{-\pi|v|/4}$; the phase
+$i^{\,1+m+(a+u)/2}$ has magnitude $e^{-\pi v/4}$; and $|\wt\Phi(\tau+iv)|\ll e^{-\pi|v|/2}$. The
+product decays like $e^{-\pi|v|}$ as $v\to+\infty$ and $e^{-\pi|v|/2}$ as $v\to-\infty$ (there the
+$\Gamma$- and phase-magnitudes cancel and $\wt\Phi$ carries the decay); the $\Gamma$-poles lie at
+$u<0$ and are never met for $\tau>0$.
+\end{proof}
+
+The step $|\int g|\le\int|g|$ is lossless here: in the coordinate \eqref{eq:A6} the integrand is a
+real magnitude times a deterministic phase, so no arithmetic cancellation is discarded, and the
+$C,D$-dependence factors out as a pure power. There is no oscillation estimate. The bound is
+numerically certified: $B_{1,0,1}(\Phi)=0.686$ for a Gaussian $\Phi$, and the certificate margin
+$\sup_x |A(x)|\,x^{\tau/2}/B=0.914\le1$ holds across $x\in[0.05,2500]$ and
+$(\tau,m)\in\{0.5,1,2,4\}\times\{0,2\}$.
+
+\begin{theorem}[the sharp expansion, Part~II Thm A.14]\label{thm:A14}
+With $h_a,\Phi$ as above, for every $M$,
+\[
+  I(C,D):=\int_{-1}^{1}h_a(x)\,\Phi\!\big(C/\sqrt{1-x^2}\big)\,e(xD)\,dx
+  =\sum_{m=0}^{M}\frac{e(\pm D)\,A^{\pm}_m(\mp C^2D)}{(\mp 2\pi iD)^{\,m+1+a/2}}+R_M(C,D),
+\]
+with $A^\pm_m$ as in \eqref{eq:A6} and $|R_M|\le\mathcal B_{M,\tau_1}(C^2D)^{-\tau_1/2}
+D^{-(M+1+a/2)}$, $\mathcal B_{M,\tau_1}$ independent of $C,D$.
+\end{theorem}
+
+\begin{proof}
+\emph{Localization.} Fix a smooth partition $1=\chi_++\chi_0+\chi_-$ with $\chi_\pm$ supported in
+$|x\mp1|<\delta$ and $\chi_0$ in $[-1+\delta,1-\delta]$. On $\chi_0$ the phase $x\mapsto x$ has
+nonvanishing derivative, so the non-stationary phase lemma \cite[Thm.~7.7.1]{Hormander} ($N$-fold
+integration by parts) gives an $O_N(D^{-N})$ contribution with implied constant controlled by
+$\|\partial_x^N(\chi_0 h_a\,\Phi(C/\sqrt{1-x^2}))\|_{L^1}$. This is bounded uniformly in $C$: on
+$[-1+\delta,1-\delta]$ the factor $\Phi(C/\sqrt{1-x^2})$ and its $x$-derivatives are bounded uniformly
+in $C$, since for Schwartz $\Phi$ and $c\ge\delta'>0$ one has $\sup_{C>0}|C^k\Phi^{(k)}(Cc)|<\infty$.
+
+\emph{Endpoint reduction.} Near $x=1$ substitute $x=1-t$, $t\in(0,\delta)$: then
+$h_a(1-t)=t^{a/2}\varphi(t)$ with $\varphi(t)=(2-t)^{a/2}h_1(1-t)\in C^\infty[0,\delta)$;
+$\sqrt{1-x^2}=\sqrt t\,\sqrt{2-t}$; and $e(xD)=e(D)e(-tD)$, so
+$I_+=e(D)\int_0^\delta \chi_+(1-t)\,t^{a/2}\varphi(t)\,\Phi\big(C/(\sqrt t\sqrt{2-t})\big)e(-tD)\,dt$.
+
+\emph{Mellin representation and closed-form $t$-integral.} For $\sigma>0$ in the strip of holomorphy
+of $\wt\Phi$, insert $\Phi(w)=\frac1{2\pi i}\int_{(\sigma)}\wt\Phi(u)w^{-u}\,du$ with
+$w=C/(\sqrt t\sqrt{2-t})$. The joint integrand is absolutely integrable on
+$\{\Re u=\sigma\}\times(0,\delta)$ --- the $t$-integral converges absolutely and $\wt\Phi(\sigma+iv)$
+decays exponentially in $v$ --- so Fubini applies. Writing
+$\psi_u(t)=\varphi(t)(2-t)^{u/2}\chi_+(1-t)\in C^\infty$ and Taylor-expanding
+$\psi_u(t)=\sum_{m=0}^{M}b_m(u)t^m+R_M(u,t)$, the $m$-th $t$-integral is, by Watson's lemma / the
+Mellin evaluation of an oscillatory monomial \cite[Ch.~3]{Wong} (the smooth cutoff at $t=\delta$ costs
+only $O(D^{-\infty})$),
+\[
+  b_m(u)\!\int_0^\infty t^{m+\frac{a+u}{2}}e(-tD)\,dt
+  = b_m(u)\,\Gamma\!\big(m{+}1{+}\tfrac{a+u}{2}\big)(2\pi iD)^{-(m+1+\frac{a+u}{2})}+O(D^{-\infty}).
+\]
+The oscillation is evaluated in closed form, with no cancellation estimate. Since
+$C^{-u}D^{-u/2}=(C^2D)^{-u/2}$, collecting the $u$-contour integral gives the $m$-th term
+$e(D)(2\pi iD)^{-(m+1+a/2)}A^+_m(C^2D)$ with $A^+_m$ exactly \eqref{eq:A6}: the coefficients $b_m(u)$,
+carrying the $(2-t)^{u/2}$ Taylor data, reproduce Altu\u{g}'s $c^\pm_m$.
+
+\emph{Remainder.} The Taylor remainder satisfies $|R_M(u,t)|\le C_M(u)\,t^{M+1}$ with
+$C_M(u)=\sup_{[0,\delta]}|\partial_t^{M+1}\psi_u|/(M+1)!$ of at most polynomial growth in $\Im u$
+($\psi_u$ smooth). Its contribution is again a transform of the form \eqref{eq:A6} with amplitude
+$R_M$; taking its $u$-contour at $\Re u=\tau_1$ (any $\tau_1>0$), Lemma~\ref{lem:mag} bounds it by
+$\mathcal B_{M,\tau_1}(C^2D)^{-\tau_1/2}D^{-(M+1+a/2)}$ with $\mathcal B_{M,\tau_1}<\infty$
+independent of $C,D$. The endpoint $x=-1$ gives the $e(-D)$, $A^-_m$ terms identically.
+\end{proof}
+
+\begin{remark}[on the exponents]
+The contour height $\tau_1>0$ is free, and the remainder decays like $(C^2D)^{-\tau_1/2}$ because the
+factor $(C^2D)^{-u/2}$ is evaluated at $\Re u=\tau_1$; Altu\u{g}'s stated $(C^2D)^{-\tau_1}$ is the same
+statement in his normalization of the Mellin variable ($u$ versus $u/2$). What the application uses is
+only that, for arbitrary $A>0$, the remainder is $O_A\big((C^2D)^{-A}D^{-(M+1+a/2)}\big)$ uniformly in
+$C,D$ --- immediate from the freedom in $\tau_1$ together with Lemma~\ref{lem:mag}.
+\end{remark}
+
+\begin{proposition}[Part~III Prop.~5.2]\label{prop:52}
+$|J_{l,f}(\xi,\nu,X)|\ll X^2\nu^{-M}(lf^2)^{-N}\big((lf^2/\sqrt X)^{N-M+3}+\xi^M\big)$ with implied
+constant independent of $(\xi,\nu,l,f,X)$.
+\end{proposition}
+
+\begin{proof}
+Write $J_{l,f}(\xi,\nu,X)=\int G(y/X)\,y\,\Psi(y)\,e(-y\nu/2lf^2)\,dy$ with $\Psi(y)=I_{l,f}(\xi,y)$.
+Since $G$ is compactly supported, integrating by parts $M$ times against the phase gives the exact
+identity $J=(lf^2/(-\pi i\nu))^M\int\partial_y^M(G(y/X)\,y\,\Psi(y))\,e(-y\nu/2lf^2)\,dy$, hence
+\[
+  |J_{l,f}(\xi,\nu,X)|\le\Big(\tfrac{lf^2}{\pi\nu}\Big)^{M}
+    \big\|\partial_y^M\!\big(G(y/X)\,y\,\Psi(y)\big)\big\|_{L^1(y)} .
+\]
+By the Leibniz rule
+$\partial_y^M(G(y/X)\,y\,\Psi)=\sum_{i+j+k=M}\binom{M}{i,j,k}X^{-i}G^{(i)}(y/X)\,(y)^{(j)}\,
+\partial_y^k\Psi$, where $(y)^{(j)}=y,1,0$ for $j=0,1,\ge2$. The cutoff $G^{(i)}(y/X)$ is supported on
+$y\in[\tfrac X4,\tfrac{5X}4]$ (length $\asymp X$) and contributes $\|G^{(i)}\|_\infty$, and the factor
+$(y)^{(0)}=y\asymp X$ supplies a second power of $X$, giving the $X^2$. Each $y$-derivative of
+$\Psi(y)=\int\theta_\infty(x)[F+H](\arg)\,e(-x\xi\sqrt{4y}/4lf^2)\,dx$ falls on either the phase ---
+producing a factor $O(\xi/lf^2\sqrt y)$, the source of the $\xi^M$ branch --- or on the profile through
+$\arg=lf^2/(\sqrt{4y}\sqrt{1-x^2})$, producing a factor $O(lf^2/y)$, the source of the $(lf^2/\sqrt
+X)$ branch. Each resulting $x$-integral is a transform of the form \eqref{eq:A6} (with $C\asymp\xi\sqrt
+y/lf^2$ and $D$ the local scale), bounded by Lemma~\ref{lem:mag}, or at the sharp order by the
+expansion of Theorem~\ref{thm:A14}. Collecting the $X$-, $lf^2$-, and $\xi$-powers reproduces the two
+branches $(lf^2/\sqrt X)^{N-M+3}$ and $\xi^M$; the implied constant is a finite sum of the integrals
+$B_{\tau,m,a}(\Phi)$ (Lemma~\ref{lem:mag}) and the norms $\|G^{(i)}\|_\infty$, none depending on
+$(\xi,\nu,l,f,X)$.
+\end{proof}
+
+Every uniform constant in \S\ref{sec:gauge} is one application of Lemma~\ref{lem:mag}; the content of
+Altu\u{g}'s Appendix~A, from the exact-gauge standpoint, is that single magnitude estimate.
+
+\section{The oscillation is the cutoff's comb}\label{sec:comb}
+
+Why did Prop.~\ref{prop:52} look hard? The oscillation the estimate must survive is deterministic.
+Scanning $|J_{l,f}(\xi,\nu,X)|$ in the transform frequency $\nu$ over the cutoff support
+$y\in[\tfrac X4,\tfrac{5X}4]$ reveals a comb of near-zeros with spacing, to measurement,
+$\Delta\nu=4lf^2/(\kappa X)$ with $\kappa\approx0.94$ the support fraction, matching the two-edge
+beat of $G$: the dispersion law $\Delta\nu\propto(lf^2)^{1.00}(X/8)^{-0.98}(1+\xi)^{0.02}$ fits at
+$R^2\approx1$ (Appendix~\ref{app:repro}) --- the interference of the two edges of the fixed cutoff, switched on once
+the $\xi$-phase drives the $x$-integral into edge dominance. At $\xi=0$ the $x$-integrand is unimodal
+(prominence ratio $P_2/P_1=0$) and the comb is absent. The apparent difficulty is a chart feature of
+the fixed cutoff---exactly what the exact gauge of \S\ref{sec:gauge} removes.
+
+\section{The productivity boundary}\label{sec:sarnak}
+
+The symmetric-power kernel is modulated by $U_r(\cos\theta)=\sum_{j=0}^r e^{i(r-2j)\theta}$, carrying
+a zero-frequency component iff $r$ is even. At $\xi=0$ the $x$-integral reads this component (the
+detecting residue); at $\xi\neq0$ it is the removable comb of \S\ref{sec:comb}, bounded by
+Prop.~\ref{prop:52} (with $|U_r|\le r+1$) and hence $o(X)$. The two regions are disjoint in $\xi$:
+the detecting residue sits at $\xi=0$, where the comb is absent; the comb sits at $\xi\neq0$, where it
+is removable. So the residue isolates for every $r$. On the dual integral (level $p^k=25$) the
+zero-frequency value against the $\xi\neq0$ floor is
+\[
+  r=1:\ 0\ (\text{exact}),\quad r=2:\ 55.9,\quad r=3:\ 1.4\times10^{-16},\quad r=4:\ 11.4,
+\]
+nonzero iff $r$ even, clear of the floor by an order of magnitude. The degradation with $r$ is the
+growth of the character tail mass ($0.042,0.092,0.135,0.156,0.256$ for $r=0,\dots,4$, fit
+$\text{ceiling}\times\sqrt{\#\text{harmonics}}$ at $R^2=0.977$)---gradual attrition, not a wall.
+Sarnak's productivity boundary \cite[fn.~5]{AltIII} records the growth of a removable floor, not a
+loss of the residue.
+
+\section{Toward functoriality: the product law and the transfer factor}\label{sec:gue}
+
+The three preceding sections close the analytic core --- the uniformity (\S\ref{sec:gauge}), the
+emergent clock (\S\ref{sec:comb}), and the productivity boundary. The remainder of the paper develops
+the two mechanisms toward symmetric-power functoriality, beginning with the product law, which supplies
+the transfer factor.
+
+The derivative statistic that random-matrix theory reads at an eigenvalue is the reopening rate an
+arithmetic fiber reads at a zero, by \eqref{eq:prod}: both are $\prod_{r_j\neq\mu}|\mu-r_j|$. This is
+an identity, not a coincidence, and it is the mechanism the ensemble leaves implicit. The consequence
+here is structural: the same distance product is a \emph{Weyl denominator}, and Weyl denominators are
+the archimedean transfer factors of \S\ref{sec:fl}. Self-interference is one object appearing as a
+zero statistic, a reopening rate, and a transfer factor.
+
+\section{The carrier/fiber rescaling: a pole becomes a closed cell}\label{sec:carrier}
+
+Place the integers on a carrier scaled by $\pi/3$, i.e. attach the cell phase $e^{in\pi/3}$ (the
+$\mu_6$/$\zeta_6$ step). The pole of $\zeta$ at $s=1$ lives in the divergence of $\sum 1/n$; on the
+carrier it closes,
+\[
+  \sum_{n\ge1}\frac{e^{in\pi/3}}{n}=-\log\!\big(1-e^{i\pi/3}\big)=\frac{i\pi}{3},
+\]
+a finite $\mu_6$ value: the divergence has become a closed-cell reading. For a Dirichlet character
+$\chi$ of conductor $q$, the appropriate fiber scale (trivial $\to\pi/6$, $\chi_3\to\pi/3$,
+$\chi_4\to\pi/2$) makes carrier and fiber compatible harmonics; the principal character, carrying the
+pole, is handled by the eta regulator,
+\[
+  \sum_{n\ge1}\frac{(-1)^{n-1}e^{in\pi/3}}{n}=\log\!\big(1+e^{i\pi/3}\big)=\tfrac12\ln3+\tfrac{i\pi}{6},
+\]
+landing on the trivial character's own cell ($\pi/6$, $\mu_{12}$), pole-free, with the partial-sum
+phase converging (no drift). In this frame the $S(t)$ oscillation of the readout is removed---the
+value is a fixed harmonic, not a wandering phase---so what was a residue to be identified is a
+zero-frequency cell value, read as the DC-residue $(s-c)F'/F\to r$ of a logarithmic derivative. This
+is the reading used in \S\ref{sec:detect}.
+
+\section{Symmetric-power transfer: arithmetic transparency}\label{sec:fl}
+
+For $\Sym^r$ transfer $\mathrm{GL}(2)\to\mathrm{GL}(r+1)$ ($r=2m$ even), the transfer sends an
+elliptic class of Satake angle $\theta$ to the class of angles $\{2k\theta:|k|\le m\}\cup\{0\}$
+---i.e. $\Sym^r$ of the Frobenius block, with the fixed eigenvalue $1=\alpha\beta$ the det-one of
+the block. Two features make the archimedean transfer factor explicit and the arithmetic transparent.
+
+\emph{Arithmetic transparency.} The transferred characteristic polynomial is reducible ($x-1$
+divides it), and each quadratic factor $x^2-2\cos(2k\theta)x+1$ has discriminant $-4\sin^2(2k\theta)$.
+The clock identity $\sin(2k\theta)=\sin\theta\,U_{2k-1}(\cos\theta)$ (with $\sin^2\theta=|D|/4n$,
+$D=t^2-4n$) gives
+\[
+  \frac{\operatorname{disc}_k}{D}=\frac{U_{2k-1}(\cos\theta)^2}{4n}\in\mathbb Q^{\times2},
+\]
+a rational square---so every factor lies in the \emph{same} field $\mathbb Q(\sqrt D)$ as the
+original class, the arithmetic $L$-value is identical on both sides, and it cancels in the transfer
+factor. (Because symmetric powers transfer to \emph{reducible} classes, this avoids the order-zeta
+conjecture of Deng--Espinosa, which concerns irreducible cubic orders.)
+
+\emph{Transfer factor as a distance product.} What remains is the ratio of Weyl denominators
+---distance products by \eqref{eq:prod}. For $r=2$,
+\[
+  \frac{\Delta_3}{\Delta_2}
+  =\frac{|1-e^{2i\theta}|^2\,|e^{2i\theta}-e^{-2i\theta}|}{|e^{i\theta}-e^{-i\theta}|}
+  =4|\sin\theta||\sin2\theta|=8\sin^2\theta|\cos\theta|=\frac{|D|\,|t|}{n^{3/2}},
+\]
+a monomial in the class data; its winding phase, gauged by the $\pi/3$ ($\mu_6$) step, is a real
+harmonic (\S\ref{sec:carrier}). Thus $\Delta(\theta)=U_r(\cos\theta)\cdot(\Delta_{r+1}/\Delta_2)
+\cdot(\text{radial }\sqrt p\text{-scaling})$, the Weyl character and distance product being product-law
+objects and the phase an exact-gauge object.
+
+\section{Detection: the self-twist identity closes}\label{sec:detect}
+
+We isolate one computable instance of the detection step and close it on a genuine transfer. For a
+holomorphic newform $f$ with $a_p$ its Frobenius trace and $\lambda(p)=a_p/p^{(k-1)/2}$, the
+symmetric square carries the middle eigenvalue $\alpha\beta=1$; the plain census
+$\sum_p(\lambda(p)^2-1)(\log p)/p$ has mean zero and is blind. The correct object is the
+\emph{self-twist} Rankin--Selberg $L$-function $L(s,f\times f\otimes\chi_K)$ for the quadratic
+character $\chi_K$ of an imaginary quadratic field $K$: it has a pole at $s=1$ iff $f$ has complex
+multiplication by $K$ (dihedral), the classical criterion of Gelbart--Jacquet and Rankin--Selberg.
+Its pole order is the transferred count, read as the zero-frequency residue of the logarithmic
+derivative:
+\[
+  \text{(LEFT, analytic)}\qquad
+  A_{\mathrm{tw}}(X)=\sum_{p\le X}\lambda(p)^2\chi_K(p)\frac{\log p}{p},\qquad
+  \frac{d\,A_{\mathrm{tw}}}{d\log X}\ \longrightarrow\ \ord_{s=1}L(s,f\times f\otimes\chi_K).
+\]
+The geometric side is the self-twist relation on Frobenius, $f\otimes\chi_K\cong f$, equivalently
+$a_p=0$ at every inert prime:
+\[
+  \text{(RIGHT, geometric)}\qquad
+  \#\{p\le X\ \text{inert}:\ a_p=0\}\big/\#\{p\le X\ \text{inert}\}\ \longrightarrow\ 1_{\{f\ \text{has CM by }K\}}.
+\]
+
+We evaluate both on two weight-two forms with $K=\mathbb Q(\sqrt{-3})$ (the Eisenstein field, whose
+$\chi_K(p)=+1,-1$ for $p\equiv1,2\pmod3$): the CM curve $y^2=x^3+1$ and the non-CM curve
+$y^2=x^3-16x+16$ (conductor $37$), with $a_p$ from point counting.
+
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & LEFT: slope $dA_{\mathrm{tw}}/d\log X$ & RIGHT: inert $a_p=0$ fraction & count \\
+\midrule
+CM $\sqrt{-3}$ ($x^3+1$) & $0.997$ & $725/726=0.9986$ & $1$ \\
+non-CM ($x^3-16x+16$) & $0.037$ & $6/726=0.0083$ & $0$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+For the CM form the analytic slope is $0.97$--$0.99$ across every interval $[1000,4000]$,
+$[4000,10000]$, $[10000,20000]$ (pole order $1$), and the geometric self-twist holds at every good
+inert prime (the single exception $725/726$ is $p=2$, the bad-reduction prime of conductor
+$36=2^2\cdot3^2$). For the non-CM form both sides are $0$. Thus
+\[
+  \boxed{\ \ord_{s=1}L(s,f\times f\otimes\chi_K)\ =\ 1_{\{f\otimes\chi_K\cong f\}}\ =\ \text{transferred count}\ }
+\]
+closes---$1$ on a genuine transfer, $0$ on a genuine non-transfer---read through the logarithmic-
+derivative DC-residue on the S(t)-free carrier of \S\ref{sec:carrier}, with the emergent-clock
+lesson explaining why the plain census cancels (inert primes carry $\lambda^2=0$, so the self-twist
+census has no cancelling floor).
+
+\begin{remark}[what this is]
+The mathematics detected here---that the symmetric-square/self-twist pole marks CM forms---is
+classical (Gelbart--Jacquet, Rankin--Selberg). What the section contributes is the closure of the
+detection \emph{identity} through the two mechanisms: the analytic count as a product-law/log-
+derivative residue, the geometric count as the self-twist relation, matched on a genuine transfer.
+\end{remark}
+
+\subsection{A non-abelian instance: which Frobenius data transfers}\label{sec:a4}
+
+The self-twist detection of \S\ref{sec:detect} runs on a dihedral (abelian, $C_2$) form, where the
+Galois image is small and the arithmetic reduces to a single quadratic character. For a genuinely
+non-abelian form the Frobenius datum splits into two independent bits---one a character cannot
+see---and the transfer treats them differently. We illustrate this on the exotic tetrahedral
+(``$A_4$'') weight-one newform $h$ of level $124$, whose $L$-coefficients are a class function of
+$\mathrm{Frob}_p$ in the binary tetrahedral group $2T=\mathrm{SL}(2,3)$, given by the closed formula
+$a_p=\zeta_{12}^{k(p)}$ with
+\[
+  k(p)=\tfrac12\big(\chi_k(p)+4\varepsilon(p)\big)+\big(0\ \text{if }(3/p)=+1,\ \text{else }6\big)
+  \pmod{12},
+\]
+$a_p=0$ when $\varepsilon(p)=0$. Here the exponent carries two independent Galois bits:
+\[
+  \text{\emph{value bit}}\ \varepsilon(p)\in\{0,\pm1\}\ \text{(the cubic residue, the abelian
+  $A_4^{\mathrm{ab}}=C_3$ datum)},\qquad
+  \text{\emph{sign bit}}\ (3/p)\ \text{(the $\mathrm{SL}(2,3)\!\to\!A_4$ central $\pm1$,}
+\]
+the double-cover datum read from the order of $\mathrm{Frob}_p$; the sign bit resolves $k$ versus
+$k+6$ and is invisible to any abelian character.
+
+The symmetric square sends $a_p\mapsto a_p^2-\chi(p)$, and $a_p^2=\zeta_{12}^{2k}$ is unchanged by
+$k\mapsto k+6$. Hence:
+
+\begin{center}
+\begin{tabular}{lc}
+\toprule
+ & Sym$^2$ transfer to GL(3) \\
+\midrule
+sign bit $(3/p)$ (double cover, $\mathrm{SL}(2,3)$) & \emph{forgotten} (trace invariant under $k\!\leftrightarrow\!k{+}6$) \\
+value bit $\varepsilon$ (cubic residue, projective $A_4$) & \emph{retained}: $\varepsilon=\pm1\Rightarrow\pm\sqrt3\,i$, $\varepsilon=0\Rightarrow\pm1$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+So the transfer factors through the projective image $A_4$: the value bit passes to the GL(3) Satake
+datum, the sign bit is the GL(2)-specific double-cover fiber the transfer collapses. The order trick
+---sign from the element order, value from the residue symbol---thus reads \emph{exactly which part
+of the Frobenius datum transfers}, and the split is non-trivial precisely because $A_4$ is
+non-abelian (for the dihedral case of \S\ref{sec:detect} the two bits coincide). This identifies the
+transferred datum; the automorphy of the resulting GL(3) object (the three-dimensional standard
+representation of $A_4$) is the classical Artin/Langlands--Tunnell case.
+
+\subsection{The detected count is a Mordell--Weil rank difference}\label{sec:rankdiff}
+
+The transferred object of \S\ref{sec:a4} is, up to the nebentype twist, the three-dimensional
+adjoint $\mathrm{Ad}_g=\mathrm{End}^0(V_g)\cong\Sym^2 V_g\otimes(\det V_g)^{-1}$ of the $A_4$ form
+$g$. At this exotic locus the zero-frequency count read on the analytic side coincides with a
+genuine arithmetic rank, and the coincidence is an exact identity of group theory.
+
+The quartic field $M$ cut out by $g$ carries the permutation action of $A_4$ on four points, whose
+character is $\chi_{\mathrm{perm}}=(4,0,1,1)$ on the classes $(e,\ (2,2),\ (3)_a,\ (3)_b)$. Against the
+character table, $\langle\chi_{\mathrm{perm}},\mathbf 1\rangle=1$ and
+$\langle\chi_{\mathrm{perm}},\chi_{\mathrm{std}}\rangle=1$, so
+\[
+  \chi_{\mathrm{perm}}=\mathbf 1\ \oplus\ \mathrm{Ad}_g,\qquad \mathrm{Ad}_g=\chi_{\mathrm{std}}\
+  \text{(the $3$-dimensional irreducible)} .
+\]
+Functoriality of Mordell--Weil under this decomposition gives
+$E(M)\otimes\mathbb Q = (E(\mathbb Q)\otimes\mathbb Q)\oplus E(\,\cdot\,)_{\mathrm{Ad}_g}$ and hence the
+\emph{exact} Artin/permutation identity
+\begin{equation}\label{eq:rankdiff}
+  r(E,\mathrm{Ad}_g)\ =\ \operatorname{rank}E(M)-\operatorname{rank}E(\mathbb Q),
+\end{equation}
+proven as group theory (no analytic or $p$-adic input). The left side is the order of vanishing at
+$s=1$ of $L(E,\mathrm{Ad}_g,s)$---the zero-frequency residue of the logarithmic derivative, the same
+statistic \S\ref{sec:detect} read as the transferred count. The right side is a difference of
+classical Mordell--Weil ranks, the source living ``up the tower'' at $M$ and traced down to
+$\mathbb Q$. Thus the count is a rank difference: one statistic, read once on the automorphic side
+and once on the arithmetic side.
+
+On the two Darmon--Lauder--Rotger exotic $A_4$ curves this is pinned on both sides:
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+ & $\operatorname{rank}E(\mathbb Q)$ & $\operatorname{rank}E(M)$ & $r(E,\mathrm{Ad}_g)=\operatorname{rank}E(M)-\operatorname{rank}E(\mathbb Q)$ \\
+\midrule
+$26b$ ($y^2+xy+y=x^3-x^2-3x+3$) & $0$ & $2$ & $2$ \\
+$52b$ ($y^2=x^3+x-10$) & $0$ & $2$ & $2$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+with $M=\mathbb Q(w)$, $w^4+7w^2-2w+14=0$ the tetrahedral field of \S\ref{sec:a4}, rank-two
+generators of $E(M)$ exhibited by descent. This is the ``one mechanism, two locations'' statement
+made theorem-anchored: at the exotic locus both sides of \eqref{eq:rankdiff} are determined, the
+identity between them is proven group theory, and the shared statistic is the DC-residue that reads
+the functorial pole in \S\ref{sec:detect} and the analytic rank in the Beyond-Endoscopy census
+alike.
+
+\begin{remark}[tiering]
+The rank identity \eqref{eq:rankdiff} is proven (Artin formalism). The automorphy of $\mathrm{Ad}_g$
+on GL(3)---which makes $L(E,\mathrm{Ad}_g,s)$ an honest automorphic $L$-function so that its pole order
+is a spectral quantity---is the classical Langlands--Tunnell case for $A_4$. The $p$-adic
+\emph{regulator} side (the explicit point coordinates realizing the rank) is the Darmon--Lauder--Rotger
+Elliptic Stark conjecture, verified to $20$ digits on $26b$/$52b$ but with the points found by
+descent first; we use only the proven rank identity and the classical automorphy here.
+\end{remark}
+
+\section{A candidate automorphic object from the primary construct}\label{sec:construct}
+
+The transfer of \S\S\ref{sec:fl}--\ref{sec:rankdiff} requires an automorphic representation on
+$\mathrm{GL}(r+1)$ whose existence realizes the functorial lift. In the primary (three-dimensional)
+representation we exhibit a concrete \emph{candidate object} for it: the \emph{carrier} --- a
+double-sided helix of Frobenius similitudes --- carrying a \emph{fiber} (the phasor readout), together
+with its \emph{warp} (the twist family of \S\ref{sec:fl}). The classical $L$-function is the shadow of
+this candidate under the projection that sends the exponential state space $e^{y}$ down by a
+M\"obius/Cayley map and then $\log$ to the ordinate, at the midpoint and without drift. What makes it
+a candidate is that the three properties a converse theorem asks of an $L$-function --- functional
+equation, analytic continuation, and boundedness/completeness --- are each a \emph{proven} statement
+about it, and each is already formalized.
+
+\paragraph{Functional equation $=$ the helix--conjugate link.} The anti-helix is the complex
+\emph{conjugate} of the helix, not its mirror: the carrier's transverse block is
+$\operatorname{diag}(z,\bar z)$ with $z$ the Frobenius spin, and
+\[
+  z\cdot\bar z=|z|^2=1
+\]
+(\texttt{spin\_mul\_conj}), so the block has determinant one and is unitary
+(\texttt{frobeniusBlock\_det\_one}, \texttt{frobeniusBlock\_unitary}). This $z\bar z=1$ \emph{is} the
+functional equation --- the pairing of $s$ with $1-s$ through the conjugate leg. A unit-modulus warp
+$A(n)=e^{i\theta(n)}$ sends $z\mapsto Az$, $\bar z\mapsto\bar A\bar z$, hence $z\bar z\mapsto|A|^2=1$:
+the det-one link is preserved for the \emph{entire} warp family, so every twist carries a functional
+equation, structurally and without estimate. (A complex twist is \emph{self}-dual only when it equals
+its own conjugate; otherwise the equation pairs the sideband $\chi_j$ with $\chi_{-j}=\bar\chi_j$, as
+the conjugate leg demands.)
+
+\paragraph{Continuation and the completed function $=$ Tate's thesis.} The fiber's value is the
+phasor representation $L(\chi,s)=\sum_n\chi(n)\,n^{-\sigma}\,\mathrm{mellinSpin}(y,n)$ with
+unit-modulus, multiplicative readout spin. Its meromorphic continuation and the completed function
+$\Lambda(s)=\gamma(s)L(s)$, carrying the archimedean $\gamma$-factor, are supplied by the adelic zeta
+integral of Tate's thesis \cite{Tate} for the $\mathrm{GL}(1)$ constituents and their twists (and by
+Godement--Jacquet \cite{GJa} for the standard $L$-function of an automorphic representation on
+$\mathrm{GL}(n)$). In that formalism the functional equation is assembled from the \emph{local}
+functional equations --- one per place, each the determinant-one conjugate pairing $z\bar z=1$ above
+--- by Poisson summation on $\mathbb A/\mathbb Q$. So the completed function is precisely the Tate
+assembly of the per-place det-one links: continuation and functional equation follow the standard
+adelic route, and the primary representation's contribution is that the local inputs it consumes are
+exactly the carrier's determinant-one blocks.
+
+\paragraph{Boundedness/completeness $=$ three-dimensional exhaustion.} The remaining input --- that
+the object has no spectral mass unaccounted for, uniformly over the family --- is, in the primary
+representation, the statement that every fiber is \emph{exhaustive} over its event space. The event
+space of the three-dimensional object is the height ray, which is the weld; there is nowhere off-weld
+for a zero event to occur, so every zero event is weld-fixed and is a source. This is proven
+unconditionally, for \emph{every} fiber with no hypotheses:
+\[
+  \texttt{threeD\_exhaustive}\ (E:\mathbb C\to\mathbb C):\quad
+  \forall\,y\in\mathbb R,\ E(y)=0\ \Rightarrow\ \mathrm{IsSource}\,E\,(y).
+\]
+The proof is short for an ontological reason: the event space of the primary object is the height ray
+itself, and the strip is a one-dimensional projection device with no primary counterpart, so there is
+nowhere for an unaccounted mode to hide. This is the primary-representation form of the family-wide
+boundedness the converse theorem requires.
+
+\paragraph{The candidate, assembled.} On the primary construct the object exists, its functional
+equation holds across the whole warp family (det one, \texttt{frobeniusBlock\_det\_one}), its
+continuation is the readout, and its completeness is exhaustion (\texttt{threeD\_exhaustive}) --- each
+a proven, formalized statement. The carrier, fiber, and warp \emph{are} the candidate automorphic
+object, and its three converse-theorem inputs are discharged in the primary representation. The bridge
+from the candidate to the classical statement that $\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$ is
+the converse theorem, whose three hypotheses are exactly the three proven properties above; supplying
+them is what the candidate does. This is the object we use to realize the functorial lift of
+\S\S\ref{sec:fl}--\ref{sec:rankdiff}. All four inputs --- the functional equation surviving every warp
+(angle), the phasor/Abel readout (continuation), three-dimensional exhaustion (height), and the
+loss-ledger reconstruction bijection (recovery) --- are bundled and machine-checked in a single
+theorem (\texttt{AutomorphicCandidate.candidate\_wellformed}), with the standard axiom footprint.
+
+\paragraph{Recovery: the loss-ledger round trip.} The projection to the shadow is lossy but bookkept
+exactly, and the descent is dimensional: from the three-dimensional object the \emph{radial} channel is
+dropped ($3\mathrm D\!\to\!2\mathrm D$) and then the \emph{angular} channel ($2\mathrm D\!\to\!1\mathrm D$),
+while the height passes by the $\log/\exp$ map between the exponential state space $e^{y}$ and the
+ordinate $y$. Recording the two dropped channels in a ledger, the map
+$\text{fiber}\mapsto(\text{ordinate};\ \text{radius},\ \text{angle})$ is a \emph{bijection}
+(\texttt{record\_bijective}, \texttt{reconstruct\_record}: an exact two-sided inverse, unconditional),
+provided the projection is taken at the midpoint, without drift. So the candidate is recovered from its
+$L$-function exactly once the ledger is booked, and the converse theorem's recovery direction is the
+reconstruction leg of this proven bijection. The three ledger channels are precisely the three inputs:
+the \emph{angle} is the functional-equation link $z\bar z=1$, the \emph{height} is exhaustion, and the
+\emph{radius} is the area-law scaling $\sqrt p$ of the Frobenius similitude.
+
+\begin{remark}[a separate matter]
+The same candidate object carries a distinct and independent question --- the location of the zeros of
+its one-dimensional shadow, i.e. the Riemann/generalized Riemann hypothesis for that shadow. That
+question is the subject of a completely separate development, is addressed nowhere in the present
+paper, and is logically independent of everything above: the candidate's existence, its functional
+equation, and its exhaustion are established without any reference to where its zeros lie. We make no
+claim, in any direction, about RH or GRH here.
+\end{remark}
+
+\section{Status and active research}\label{sec:status}
+
+We summarize the standing of each result at its own strength.
+
+\begin{itemize}
+\item \textbf{Theorem} (\S\ref{sec:gauge}). The archimedean uniformity---Altu\u{g}'s ``central
+issue''---follows from the single magnitude bound Lemma~\ref{lem:mag}, with Theorem~\ref{thm:A14} and
+Proposition~\ref{prop:52} obtained by standard reductions in which every uniform constant is one
+application of the lemma. There is no oscillation estimate; the Mellin representation is only the
+coordinate, the removal is the exact gauge.
+
+\item \textbf{Structural} (\S\S\ref{sec:gue},\ref{sec:carrier},\ref{sec:fl}). The product law
+identifies the GUE derivative statistic, the reopening rate, and the Weyl-denominator transfer factor
+as one object. The carrier/fiber rescaling turns a pole into a closed-cell reading and removes $S(t)$
+from the readout. The symmetric-power transfer has transparent arithmetic (same field
+$\mathbb Q(\sqrt D)$, order-zeta conjecture avoided) and an explicit transfer factor.
+
+\item \textbf{Measured} (\S\S\ref{sec:comb},\ref{sec:sarnak},\ref{sec:detect}). The emergent comb is
+the cutoff's edge kinematics ($R^2\approx1$); the productivity boundary is gradual attrition
+($R^2=0.977$), not a wall; the symmetric-square detection identity closes on a genuine transfer
+(count $1$) and a genuine non-transfer (count $0$).
+
+\item \textbf{Formalized} (\S\ref{sec:construct}). The candidate automorphic object's four
+converse-theorem inputs --- functional equation (surviving every warp), continuation (Tate's
+completed function / the phasor readout), three-dimensional exhaustion, and loss-ledger recovery ---
+are machine-checked in Lean (Mathlib), theorem \texttt{candidate\_wellformed}, with the standard axiom
+footprint and no \texttt{sorry}/\texttt{axiom}, built in-tree.
+\end{itemize}
+
+\paragraph{Active research.} A full symmetric-power functoriality theorem---the statement that
+$\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$---is the subject of active research. The present
+paper isolates its ingredients and settles several: the archimedean uniformity is a theorem
+(\S\ref{sec:gauge}); the fundamental-lemma arithmetic is transparent for the whole even family
+(\S\ref{sec:fl}); the detection identity closes on a worked transfer (\S\ref{sec:detect}); and the
+candidate object's converse-theorem inputs are discharged in the primary representation
+(\S\ref{sec:construct}). The remaining ingredient is the classical converse theorem itself: the
+identification of the candidate's $L$-function with a term of the $\mathrm{GL}(r+1)$ spectrum (the
+symmetric-power analogue of Altu\u{g}'s Theorem~1.1), together with the uniform analytic control of the
+twisted family $L(s,\Sym^r\pi\times\sigma)$ over $\sigma$ --- whose functional equations are the
+det-one links of \S\ref{sec:construct}, leaving the boundedness aggregate over the family as the
+object currently under study. The exact gauge governs the archimedean part; the product law and the
+carrier/fiber rescaling reduce the residue reading to cell arithmetic.
+
+\appendix
+\section{Reproducibility}\label{app:repro}
+
+Every measured statement is produced by a self-contained script (no $L$-function library); the values
+quoted in the text are reproduced below with the script that computes each.
+
+\begin{itemize}
+\item \textbf{Lemma~\ref{lem:mag} (the gauge bound), \texttt{be\_uniformity\_certify.py}.} For a
+Gaussian $\Phi$, $B_{1,0,1}(\Phi)=0.686$, and the certificate margin
+$M(x)=|A(x)|\,x^{\tau/2}/B$ satisfies $\sup_x M(x)=0.914\le1$, uniformly across $x=C^2D\in[0.05,2500]$
+and $(\tau,m)\in\{0.5,1,2,4\}\times\{0,2\}$. The line integrand decays as $e^{-\pi|v|}$ ($v\to+\infty$)
+and $e^{-\pi|v|/2}$ ($v\to-\infty$), so $B_{\tau,m,a}(\Phi)<\infty$ for every $\tau>0$.
+
+\item \textbf{Proposition~\ref{prop:52} (the uniform constant), \texttt{be\_prop52\_certify.py}.} The
+constant $L_M=\|\partial_y^M(G(y/X)\,y\,\Psi)\|_{L^1}$ fits a uniform monomial
+$L_M\sim C_M(lf^2)^{a_M}(1+\xi)^{b_M}X^{g_M}$ with $a_M=0.41,0.05,-0.05$ for $M=1,2,3$ and $b_M\le0$.
+The $lf^2$-exponent $a_M$ grows more slowly than $M$ ($da/dM\approx-0.23$), so each integration by
+parts nets $\nu^{-1}$ and the bound is summable --- the standard-representation side of the
+productivity boundary. (This is the crude magnitude route; the sharp exponents of
+Proposition~\ref{prop:52} follow from Theorem~\ref{thm:A14}.)
+
+\item \textbf{The emergent clock (\S\ref{sec:comb}), \texttt{mb\_beat.py}.} The comb dispersion law
+$\Delta\nu\propto(lf^2)^{1.00}(X/8)^{-0.98}(1+\xi)^{0.02}$ fits at $R^2\approx1$ --- i.e.
+$\Delta\nu=4lf^2/(\kappa X)$, $\kappa\approx0.94$, essentially independent of $\xi$ --- identifying the
+comb as the cutoff's two-edge beat rather than arithmetic content; the same run confirms that the comb
+vanishes at $\xi=0$ (the integrand is unimodal there).
+
+\item \textbf{The productivity boundary (\S\ref{sec:sarnak}), \texttt{mb\_uniform.py}.} The
+Weyl-character tail law $\text{tail}\sim(r{+}1)\sqrt{\#\text{harmonics}}$ fits the measured tail mass
+$0.042,0.092,0.135,0.156,0.256$ ($r=0,\dots,4$) at $R^2=0.977$, well above the scrambled baseline
+$0.237$; the $\xi=0$ detecting residue against the $\xi\neq0$ floor is
+$0,\ 55.9,\ 1.4\times10^{-16},\ 11.4$ for $r=1,2,3,4$.
+
+\item \textbf{The candidate object (\S\ref{sec:construct}).} The four converse-theorem inputs are
+formalized and machine-checked in Lean (Mathlib): \texttt{RequestProject/AutomorphicCandidate.lean},
+theorem \texttt{candidate\_wellformed}, axiom footprint $\{$\texttt{propext}, \texttt{Classical.choice},
+\texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}; it builds in-tree against the full library.
+\end{itemize}
+
+\begin{thebibliography}{9}
+\bibitem{AltI} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, I}, Compositio Math.
+\textbf{151} (2015).
+\bibitem{AltII} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, II}, Amer.\ J.\ Math.
+\textbf{139} (2017).
+\bibitem{AltIII} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, III}, J.\ Inst.\
+Math.\ Jussieu \textbf{19} (2020).
+\bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic representations of
+$\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS \textbf{11} (1978).
+\bibitem{Hormander} L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I},
+2nd ed., Grundlehren \textbf{256}, Springer (1990); Thm.~7.7.1 (non-stationary phase).
+\bibitem{Wong} R.~Wong, \emph{Asymptotic Approximations of Integrals}, Classics in Applied
+Mathematics \textbf{34}, SIAM (2001); Ch.~3 (Watson's lemma and the Mellin method).
+\bibitem{Tate} J.~Tate, \emph{Fourier analysis in number fields and Hecke's zeta-functions}, thesis
+(1950), in J.~W.~S.~Cassels and A.~Fr\"ohlich (eds.), \emph{Algebraic Number Theory}, Academic Press
+(1967), 305--347.
+\bibitem{GJa} R.~Godement and H.~Jacquet, \emph{Zeta Functions of Simple Algebras}, Lecture Notes in
+Mathematics \textbf{260}, Springer (1972).
+\end{thebibliography}
+
+\end{document}

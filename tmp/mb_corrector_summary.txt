@@ -1,0 +1,22 @@
+MB CORRECTOR SYNTHESIS — SUMMARY (detail in mb_corrector_results.txt)
+
+Anchor gate: PASS (mb_iterfold gate; raw 1.257 / gauged 1.150 baselines;
+K=12 fold sequence reproduced; tensor engine == direct integral to 1e-9).
+
+Compression curves (spread vs J; baseline 1.257; fold floor 0.441+-0.058,
+BREAK < 0.325):
+   logprime: 1.257 0.885 0.885 0.885 0.885 0.885 0.885 0.885 0.837
+    winharm: 1.257 1.059 0.715 0.714 0.714 0.714 0.714 0.714 0.714
+     weylnu: 1.257 1.007 0.996 0.994 0.980 0.960 0.960 0.960 0.960
+       free: 1.257 0.751 0.751 0.751 0.751
+
+VERDICT [measured]: (b) NO COMPRESSION.
+Best admissible corrector: 'winharm' J=3 spread 0.714; frequencies w=1.5, w=1.0, w=4.0.
+Best 0.714 does not even reach the fold floor 0.441: the shared pure-harmonic class is WEAKER than the
+fold's 18 per-cell widths; the plateau survives its adversarial verifier.
+Controls: scrambled compresses comparably (generic fit — corroborates a null, voids any (a)/(c) claim) (ratio real 0.57 vs scr 0.51); transport R=0.15 FAIL (train 1.17->0.69, test 1.33->1.25); admissibility entry PASS, m in [+0.07,+2.06]; Nyquist PASS.
+
+Flags: shared single corrector (vs the fold's 18 per-cell widths); greedy+NM
+is heuristic — reported spreads are upper bounds on the class optimum, so a
+no-compression outcome is 'not compressible by this synthesis at this budget';
+gamma = envelope fit over nu<=24; FREE grid resolution 0.05.

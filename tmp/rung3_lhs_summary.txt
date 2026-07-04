@@ -1,0 +1,56 @@
+RUNG 3 STAGE 2 — LEFT-HAND SIDE (p-adic iterated integral): FROZEN DELIVERY (validated,
+one input open).  Files: rung3_lhs.py (engine + a_p readers), rung3_krylov.py (sparse Φ +
+finite-matrix e_ord), rung3_pipeline.py (driver), rung3_lhs_results.txt, rung3_dimension_lift.py.
+
+GOAL: close the DLR Elliptic Stark loop in-house — LHS iterated integral γ̆(e_{g_α*} e_ord(F̆·h̆))
+vs the Stage-1 RHS.  Reuses Stage-1 Unramified/Qpf arithmetic wholesale.
+
+================================================================================
+VALIDATED AND GATED
+================================================================================
+q-EXPANSION LAYER [p-adic certified]: QExp ring over Z_p; Serre d^{-1} (overconvergent
+  primitive, p-depletes); U_p (Atkin) — GATE PASS: U_13 f = a_13·f = −f to full precision on
+  the 26b weight-2 f; fast O(p) Legendre weight-2 a_p (q^9000 in 2.5s); sparse Φ = phi_coeff —
+  GATE PASS: matches the direct Cauchy product at every index.  Found+fixed a real bug (the
+  vectorized weight-2 a_p mishandled p=2 ⇒ a_2=−1; corrected to +1).
+
+a_p(h) ENGINE — CLOSED, FOUR-ROUTE CERTIFIED [exact].  h = weight-1 exotic A4 form (level 124,
+  coeffs in Q(ζ12)); a_p = ζ12^{k(p)}.  The two non-abelian bits split by data type:
+    • ε bit (which ζ3) = EXPLICIT FROBENIUS in the cyclic cubic K3 (team-lead spec): Galois-
+      action polynomial g(x)=203/4−(5/8)x−(7/8)x²; per prime, r^p vs g(r) vs g(g(r)) in F_{p³}. [exact]
+    • sign bit (k vs k+6) = ELEMENT ORDER 3 vs 6 in the SL(2,3) double cover, read from the
+      degree-24 2T-field factorization shape (8×deg3 ⇒ order 3 ⇒ +; 4×deg6 ⇒ order 6 ⇒ −). [exact]
+  Cross-checks: cubic-residue symbol (ε), mod-13 pin (a_p≡7^k mod13), Ramanujan (a_p²=χ(p)ζ3^ε).
+  GATES PASS: printed a_p reproduced EXACTLY (a_3,a_7,a_11,a_13; a_5 abstains = ramified in the
+  2T model, pin covers it); pin-vs-readers 0 mismatches over 296 primes to p≤2000; Hecke mult
+  (a_10=a_2·a_5=−ζ³+ζ).  Footprint [exact]: a_17=ζ^10, a_19=ζ^7, a_37=ζ^4, a_41=ζ^8, a_43=ζ^7,
+  a_53=ζ^8, a_59=ζ^1, a_61=0.  Cost ~7ms/prime — a LOOP, scales to any footprint.  Module fns:
+  a_p_h_exponent, a_p_h_exponent_galois, sign_bit_from_order, eps_bit_explicit_frobenius,
+  eps_bit_from_cubic_residue.
+
+PRE-P-ADIC HARMONIZATION GATE — PASS 4/4 (rung3_dimension_lift.py): r(E,Ad_g) >= 2
+  [exact, in-house] (two independent points over M via the Stage-1 certified-nonzero regulator);
+  EQUALITY = 2 [ANCHOR-CITED: rank upper bounds — DLR eq 78 / Cremona rank-0].  Dimension-lift
+  reading: the rank is BORN one dimension up at M and reads 0 at Q ('source one dimension up');
+  the three ES ascents are the conjugate-chart move (BSDClocks conjugate_lift_commutes), and
+  ES = faithfulness-of-descent at the BSD frontier — caption, subordinate to the gate.
+
+e_ord MACHINERY: spectral projector on a finite U_p-matrix VALIDATED (diag(unit,slope)→
+  diag(1,0), idempotent); e_ord(Φ)≠0 confirmed (v_13(U_p^k Φ)_n bounded).
+
+================================================================================
+THE ONE OPEN INPUT: e_ord(Φ) — ordinary projection of the OVERCONVERGENT Φ
+================================================================================
+The integral needs e_ord(Φ), Φ=d^{-1}(f)·h overconvergent.  MEASURED (real reader-certified
+a_p, sparse Φ, precisions 13^3..13^12): the U_p-Krylov module of Φ does NOT close at ≤3 at ANY
+precision — dim ≥ 5, with a precision-contamination signature (the non-ordinary part supplies
+~N/slope apparent dimensions before decaying).  So d=3 (the finite-matrix realization's
+assumption) is a small-window artifact; and Φ is NOT in the span of even 6 ordinary eigenforms
+at good indices (its non-ordinary part is unit-size there).  A static / finite-depth
+q-computation cannot separate ordinary from non-ordinary; removing Φ's non-ordinary part is the
+open step (the ordinary-projection-on-overconvergent-forms problem — Lauder's Katz basis is the
+standard tool).  Everything upstream (readers, q-layer, sparse Φ) and downstream (spectral
+projector, g_α* line, γ̆, p=13 gate vs the Stage-1 RHS, p=37) is built and gated; the numerical
+close proceeds the moment e_ord(Φ) is obtained.
+
+STAGE-1 RHS (accepted): 4/4 anchors to 20 digits + the p=37 FIRST-DETERMINATION headline — intact.

@@ -1,0 +1,171 @@
+==============================================================================
+STEP 0 — CAUCHY ANCHOR GATE (engine anchors, swap-order anchor, Cauchy
+         invariance, profile certification, baselines; GATE FAIL = STOP)
+==============================================================================
+
+[anchor] admissibility strip: poles u=0 (Ftilde; K entire) and u=-1,-3,..
+    (H-side Gamma). Budget sum|a_j| <= 0.9: sigma_H in [0.10,1.90],
+    sigma_F in [0.30,2.10]; endpoint-pinned by the house bump taper at |t|=45
+    where |Ftilde| ~ 4.6e-31.  omega in (0.02, 2.0).
+
+[anchor] (i) kernel engine:
+      K-engine vs house _FT_GRID_F/_H (rel-to-max): 2.12e-16 / 2.02e-16
+      K-engine vs mp.besselk (5 strip points, |t|<=8): max rel 2.22e-14
+      GR1 (loggamma) vs house _GRATIO_H1: 2.64e-14
+
+[anchor] building meshes + shift-node tables (80x80 house mesh, nu*=8):
+      [4s]
+      interp tables == direct wavy evaluation (3 cells): rel-to-max 6.11e-10
+
+[anchor] (ii) swap-order anchor |V_straight| == J_house(nu*=8), 18 cells:
+      max rel deviation over 18 cells: 6.13e-10  (tol 1e-9)
+
+[anchor] (iii) CAUCHY INVARIANCE — 3 random admissible waves (seed 20260703):
+      wave 1 (sum|a|=0.57): max_cell |V_wavy-V_straight|/|V| = 2.48e-09
+      wave 2 (sum|a|=0.37): max_cell |V_wavy-V_straight|/|V| = 4.05e-10
+      wave 3 (sum|a|=0.35): max_cell |V_wavy-V_straight|/|V| = 1.84e-09
+      -> integral VALUE contour-invariant at quadrature precision: PASS
+
+[anchor] (iv) profile certification (reading (i) is a function of F/H values):
+      mesh argument range: a in [0.112, 31.6] (200 log-spaced probes)
+      max |F_wavy - F_house| = 1.22e-15; max |aH1_wavy - aH1_house| = 1.39e-16
+      max |Im| (must be quadrature-zero): 8.48e-16   (tol 1e-9)
+      -> gamma-surface deviation bounded < ~1e-6 gamma units for EVERY mesh: CERTIFIED
+
+[anchor] (v) reading-(i) baselines (IF Nyquist combos, published numbers):
+      raw gamma spread 1.257 (recorded 1.257; tol 0.02); gauged 1.150 (recorded 1.150; tol 0.02)   [66s]
+
+[measured] reading-(ii) STRAIGHT baseline (ln C per cell, nu*=8):
+      cell (xi,l,f,X) -> ln C:
+            (0, 1, 1, 8.0):   1.309   (C =       3.7)
+           (0, 1, 1, 16.0):   1.784   (C =       6.0)
+            (0, 2, 1, 8.0):   0.469   (C =       1.6)
+           (0, 2, 1, 16.0):   0.922   (C =       2.5)
+            (0, 1, 2, 8.0):   0.191   (C =       1.2)
+           (0, 1, 2, 16.0):   0.257   (C =       1.3)
+            (2, 1, 1, 8.0):   0.639   (C =       1.9)
+           (2, 1, 1, 16.0):   0.598   (C =       1.8)
+            (2, 2, 1, 8.0):   0.362   (C =       1.4)
+           (2, 2, 1, 16.0):   1.197   (C =       3.3)
+            (2, 1, 2, 8.0):   0.725   (C =       2.1)
+           (2, 1, 2, 16.0):   0.126   (C =       1.1)
+            (6, 1, 1, 8.0):   0.752   (C =       2.1)
+           (6, 1, 1, 16.0):   0.938   (C =       2.6)
+            (6, 2, 1, 8.0):   0.292   (C =       1.3)
+           (6, 2, 1, 16.0):   0.248   (C =       1.3)
+            (6, 1, 2, 8.0):   0.720   (C =       2.1)
+           (6, 1, 2, 16.0):   0.714   (C =       2.0)
+      baseline surface: mean ln C 0.680  std 0.424  median C 2.0
+
+[anchor] GATE VERDICT: PASS  (kernel True, interp True, swap True, Cauchy True, profiles True, baselines True)
+==============================================================================
+
+
+==============================================================================
+STEP 2 — OPTIMIZE THE WAVY CONTOUR (reading (ii): cancellation cost; the value
+side is Cauchy-frozen — reading (i) is certified, not optimized)
+==============================================================================
+
+[measured] s1 SHARED wave — minimize std_cells(ln C), greedy J=1..4:
+        J=1: obj 0.3652
+        J=2: obj 0.3414
+        J=3: obj 0.3396
+        J=4: obj 0.3394
+      spread-vs-J: 0.424 0.365 0.341 0.340 0.339   (baseline std 0.424)
+      mean ln C: 0.680 -> 0.757
+      winner tones (a, omega, phi): (-0.464,0.180,+0.55); (-0.231,2.000,+2.35); (+0.150,0.868,-0.00); (+0.043,2.000,+0.52)
+      budget used: sum|a| = 0.887 of 0.9   [122s]
+
+[measured] s2 PER-CELL waves — minimize ln C_cell (J=2, 6 seeds each):
+      cell (xi,l,f,X):  ln C straight -> ln C wavy-min   (drop)
+            (0, 1, 1, 8.0):   1.309 ->   0.245   (+1.064)
+           (0, 1, 1, 16.0):   1.784 ->   0.334   (+1.449)
+            (0, 2, 1, 8.0):   0.469 ->   0.085   (+0.384)
+           (0, 2, 1, 16.0):   0.922 ->   0.173   (+0.749)
+            (0, 1, 2, 8.0):   0.191 ->   0.063   (+0.128)
+           (0, 1, 2, 16.0):   0.257 ->   0.058   (+0.199)
+            (2, 1, 1, 8.0):   0.639 ->   0.266   (+0.373)
+           (2, 1, 1, 16.0):   0.598 ->   0.191   (+0.407)
+            (2, 2, 1, 8.0):   0.362 ->   0.110   (+0.252)
+           (2, 2, 1, 16.0):   1.197 ->   0.762   (+0.435)
+            (2, 1, 2, 8.0):   0.725 ->   0.558   (+0.166)
+           (2, 1, 2, 16.0):   0.126 ->   0.072   (+0.054)
+            (6, 1, 1, 8.0):   0.752 ->   0.246   (+0.506)
+           (6, 1, 1, 16.0):   0.938 ->   0.687   (+0.251)
+            (6, 2, 1, 8.0):   0.292 ->   0.132   (+0.160)
+           (6, 2, 1, 16.0):   0.248 ->   0.154   (+0.094)
+            (6, 1, 2, 8.0):   0.720 ->   0.438   (+0.282)
+           (6, 1, 2, 16.0):   0.714 ->   0.387   (+0.326)
+      minimized surface: mean 0.276 std 0.208; median ln C 0.676 -> 0.218  => rho = 0.677   [59s]
+
+[measured] reading (i) recheck at the Nyquist mesh under the s1 winner wave
+    (combo (2,1,8.0); F/H recomputed on the wavy contour, house gamma pipeline):
+      max |F_wavy-F| = 5.11e-14, max |argH1_wavy-argH1| = 5.73e-15 on the mesh
+      max |gamma_wavy - gamma_straight| over 3 cells = 2.87e-12  (tol 1e-3)
+      -> reading (i) spread-vs-J: FLAT at baseline BY CAUCHY, certified PASS
+==============================================================================
+
+
+==============================================================================
+STEP 3 (ident.) — STEEPEST-DESCENT ALIGNMENT (magnitude-valley proxy: the
+minimal-mass path threads the |g| valleys; pre-registered RMS < 0.15 = ALIGNED)
+==============================================================================
+    cell (2, 1, 1, 8.0): valley mass-mean shift -0.484; RMS(shared winner - valley) 0.408; RMS(per-cell winner - valley) 0.143
+    cell (6, 2, 1, 16.0): valley mass-mean shift +0.102; RMS(shared winner - valley) 0.493; RMS(per-cell winner - valley) 0.273
+    cell (2, 1, 2, 16.0): valley mass-mean shift -0.068; RMS(shared winner - valley) 0.429; RMS(per-cell winner - valley) 0.191
+
+[measured] per-cell winners do NOT align with the magnitude-valley (steepest-descent proxy) at RMS < 0.15
+==============================================================================
+
+
+==============================================================================
+STEP 4 — CONTROLS
+==============================================================================
+
+[measured] (i) TRANSPORT — parity split 9/9, shared wave refit (J=2) on train:
+      train std ln C: 0.367 -> 0.305 (17%); test: 0.452 -> 0.372 (18%)  -> R = 1.06 (pass >= 0.5)
+      -> transport PASS
+
+[measured] (ii) SCRAMBLED control (house recipe, seed 20260703) — same synthesis:
+      real curve (J=0..2):      0.424 0.365 0.341
+      scrambled curve (J=0..2): 0.428 0.421 0.407   (scrambled baseline std 0.428)
+      compression ratio real 0.806 vs scrambled 0.952 (margin 0.15)   [73s]
+      -> scrambled control FAIL: compresses comparably — reading-(ii) compression is generic-fit-level (demotes compression claims; corroborates any null)
+
+[measured] (iii) quadrature doubling on the s1 winner (t-grid x2, Bessel s-grid x2):
+      max |Delta ln C| baseline 0.0000, winner 0.0000  (tol 0.02)   [15s]
+      -> doubling PASS
+
+[measured] (iv) mesh 120x120 spot-check (class (1,1,8), 3 cells):
+      cell: lnC80(straight/winner) vs lnC120(straight/winner)
+            (0, 1, 1, 8.0): 1.309/1.051  vs  1.309/1.051
+            (2, 1, 1, 8.0): 0.639/0.560  vs  0.659/0.567
+            (6, 1, 1, 8.0): 0.752/1.138  vs  0.652/1.005
+      max baseline drift 0.100 (reported; the COST is a property of the
+      discretized representation — drift means mesh-dependence of C, flagged if > 0.1)
+==============================================================================
+
+
+==============================================================================
+VERDICT (pre-registered reading)
+==============================================================================
+[measured] READING (i) — the gamma surface / the 0.441 invariant:
+    contour-invariant BY CAUCHY (theorem); certified numerically: profile
+    deviation < 1e-9 (gate iv), mesh-level |Delta gamma| = 2.9e-12
+    under the winner wave.  Spread-vs-J: FLAT at 1.257 (raw) for all
+    admissible J.  Verdict: (b) NO IMPROVEMENT — third certification of the
+    invariant, and the strongest: contour-robust by mathematics.
+    ((a) BREAK is theorem-blocked; it could fire only via a Cauchy-gate
+    failure, which stops the run.)
+
+[measured] READING (ii) — the cancellation-cost wall (contour-dependent):
+    straight baseline: mean ln C 0.680, std 0.424, median C 2.0
+    s1 shared-wave spread: 0.424 0.365 0.341 0.340 0.339
+    s2 per-cell floors: median ln C 0.676 -> 0.218  (rho = 0.677)
+    sub-verdict: PARTIAL (c) — new floor reported
+    steepest-descent alignment: NOT aligned — the optimal wavy contour is not the steepest-descent path
+
+[controls] transport R=1.06 (PASS); scrambled FAIL (generic-fit level) (ratios 0.81/0.95); doubling PASS; mesh drift 0.100
+[measured] amplitude budget used (s1 winner): sum|a| = 0.887 of 0.9
+[budget] total wall time 380s
+==============================================================================

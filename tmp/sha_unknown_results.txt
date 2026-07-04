@@ -1,0 +1,263 @@
+SHA UNKNOWN — FIRST DETERMINATIONS AT SCALE (congruent-number twist family)
+============================================================================
+E_n : y^2 = x^3 - n^2 x ;  |Sha_an| = L(E_n,1) T^2 / (Omega prod cp),  T = 4.
+a_p(E_n) = (n|p) a_p(E_1) [Kronecker, point-counted base bank];  L(1) = E-series readout.
+Theorem cross-check: L_pred = (Omega_1 const) T_n^2, T_n = |A-B/2| / |C-D/2| (Tunnell).
+
+[base bank] point-counting a_p(E_1) to p <= 2e+05 ...
+  built 17983 good primes  [14.9s]
+############################################################################
+# ANCHOR GATES (two-source seeded; must pass before first-determination claims)
+############################################################################
+[GATE] Omega_1 (real period of E_1) = 5.2441151086  [our AGM]
+[GATE] Tunnell exact-value normalisation vs Sage L-values (tabled n)
+    n=  1: T_n= 1  L_pred=0.65551439  L_sage=0.65551439  |err|=1.43e-09  [OK]  (odd)
+    n=  2: T_n= 1  L_pred=0.92703734  L_sage=0.92703734  |err|=1.35e-09  [OK]  (even)
+    n=  3: T_n= 2  L_pred=1.51384563  L_sage=1.51384563  |err|=4.80e-09  [OK]  (odd)
+    n= 10: T_n= 2  L_pred=1.65833481  L_sage=1.65833481  |err|=4.48e-09  [OK]  (even)
+    n= 11: T_n= 2  L_pred=0.79058010  L_sage=0.79058010  |err|=1.25e-09  [OK]  (odd)
+    n= 17: T_n= 4  L_pred=2.54376947  L_sage=2.54376947  |err|=1.25e-09  [OK]  (odd)
+    n= 19: T_n= 2  L_pred=0.60154126  L_sage=0.60154126  |err|=1.93e-09  [OK]  (odd)
+    n= 26: T_n= 2  L_pred=1.02845559  L_sage=1.02845559  |err|=2.68e-09  [OK]  (even)
+    n= 33: T_n= 4  L_pred=1.82576653  L_sage=1.82576653  |err|=1.33e-09  [OK]  (odd)
+    max |L_pred - L_sage| = 4.80e-09   [PASS]
+[GATE] twist Tamagawa closed form vs Sage (per-prime)
+    n=  1: cps={2: 2} known={2: 2}  [OK]
+    n=  2: cps={2: 4} known={2: 4}  [OK]
+    n=  3: cps={2: 2, 3: 4} known={2: 2, 3: 4}  [OK]
+    n=  5: cps={2: 2, 5: 4} known={2: 2, 5: 4}  [OK]
+    n= 10: cps={2: 4, 5: 4} known={2: 4, 5: 4}  [OK]
+    n= 17: cps={2: 2, 17: 4} known={2: 2, 17: 4}  [OK]
+    n= 26: cps={2: 4, 13: 4} known={2: 4, 13: 4}  [OK]
+    n= 34: cps={2: 4, 17: 4} known={2: 4, 17: 4}  [OK]
+[GATE] twist torsion T = 4 (Z/2 x Z/2), in-house exact group law
+    n=  1: T=4  [OK]
+    n=  2: T=4  [OK]
+    n=  3: T=4  [OK]
+    n= 10: T=4  [OK]
+    n= 11: T=4  [OK]
+[GATE] frozen-instrument L(1)/Omega/cp and the BSD |Sha| landing vs two-source known
+    n=  1: L1=0.655514(err 1.4e-09) Om=5.244115(err 1.4e-09) cp=2=2 T=4 |Sha|=1(m 2.2e-16,sq Y)=1  [OK]
+    n=  2: L1=0.927037(err 1.3e-09) Om=3.708149(err 4.6e-09) cp=4=4 T=4 |Sha|=1(m 2.2e-16,sq Y)=1  [OK]
+    n=  3: L1=1.513846(err 4.8e-09) Om=3.027691(err 4.0e-10) cp=8=8 T=4 |Sha|=1(m 3.3e-16,sq Y)=1  [OK]
+    n= 10: L1=1.658335(err 4.5e-09) Om=1.658335(err 4.5e-09) cp=16=16 T=4 |Sha|=1(m 2.2e-16,sq Y)=1  [OK]
+    n= 11: L1=0.790580(err 1.2e-09) Om=1.581160(err 2.5e-09) cp=8=8 T=4 |Sha|=1(m 1.1e-16,sq Y)=1  [OK]
+    n= 17: L1=2.543769(err 1.2e-09) Om=1.271885(err 4.4e-09) cp=8=8 T=4 |Sha|=4(m 0.0e+00,sq Y)=4  [OK]
+    n= 19: L1=0.601541(err 1.9e-09) Om=1.203083(err 3.9e-09) cp=8=8 T=4 |Sha|=1(m 2.2e-16,sq Y)=1  [OK]
+    n= 26: L1=1.028456(err 2.7e-09) Om=1.028456(err 2.7e-09) cp=16=16 T=4 |Sha|=1(m 4.4e-16,sq Y)=1  [OK]
+    n= 33: L1=1.825767(err 1.3e-09) Om=0.912883(err 4.3e-09) cp=32=32 T=4 |Sha|=1(m 4.4e-16,sq Y)=1  [OK]
+  [ALL GATES PASS — first determinations authorized]
+
+############################################################################
+# PHASE 1 — RANK-2 NONTRIVIAL |Sha| FROM THE LEADING (SECOND) CENTRAL JET
+############################################################################
+  |Sha| = [L''(E,1)/2!] T^2 / (Omega Reg prod cp).  Generators verified in-house
+  (on-curve, non-torsion, independence via our height-pairing det); jet + heights ours.
+  Cross-validation vs LMFDB/Sage analytic Sha (itself the conditional BSD ratio).
+
+=== 226005.b5  (conductor 226005, ainvs [1, 1, 1, -268695, 67104702], rank r=2) ===
+  generators (candidates from Sage, verified in-house):
+    P=(-234, 10944)  on-curve=True  non-torsion=True
+    P=(35, 7581)  on-curve=True  non-torsion=True
+  jets L^(k)/k!, k=0..2: -0.000000, 0.000000, 7.627212   [0.5s]
+    lower jets vanish (order of central vanishing = 2): max|L^(k)/k!,k<r| = 2.50e-15
+  L''(E,1)/2! = 7.6272120073   [own point-counted a_n]
+  Omega   = 0.2697852897   [AGM]
+  prod cp = 8   (c_3=1 c_5=1 c_13=1 c_19=1 c_61=8)
+  T       = 4   [certified in-house: order of candidate torsion gen (315,3563); sj_torsion_order under-reads 2]
+  height-pairing Gram matrix (our canonical heights):
+      [+2.99401382  +2.21338921]
+      [+2.21338921  +6.35769493]
+  Reg = det(Gram) = 14.1359346992  (independence: det != 0 -> True)  [11.1s]
+    h_hat(-234,10944) naive=2.99401382 shifted=2.99402622 |d|=1.2e-05
+    h_hat(35,7581) naive=6.35769493 shifted=6.35773489 |d|=4.0e-05
+  --- LANDING ---
+  |Sha| = [L''/2!] T^2 / (Omega Reg prod cp) = 7.627212*16/(0.26979*14.13593*8) = 3.99993577
+        -> nearest integer 4  (margin 6.42e-05)  [LANDED]
+        square test: 4 = 2^2 ? YES
+  [scoring vs two-source known — verification only]
+    Reg   measured 14.135935  known 14.136136  |d|=2.0e-04
+    Omega measured 0.269785  known 0.269785  |d|=3.1e-11
+    cp    measured 8  known 8  MATCH
+    T     measured 4  known 4  MATCH
+    |Sha| landed 4  known 4  MATCH
+
+=== 392190.n1  (conductor 392190, ainvs [1, 1, 1, -5456, -157387], rank r=2) ===
+  generators (candidates from Sage, verified in-house):
+    P=(-43, 23)  on-curve=True  non-torsion=True
+    P=(197, 2443)  on-curve=True  non-torsion=True
+  jets L^(k)/k!, k=0..2: 0.000000, -0.000000, 18.105476   [0.7s]
+    lower jets vanish (order of central vanishing = 2): max|L^(k)/k!,k<r| = 7.98e-16
+  L''(E,1)/2! = 18.1054755294   [own point-counted a_n]
+  Omega   = 0.5554966251   [AGM]
+  prod cp = 4   (c_2=2 c_3=1 c_5=1 c_17=1 c_769=2)
+  T       = 2   [certified in-house: order of candidate torsion gen (-173/4,169/8); sj_torsion_order under-reads 2]
+  height-pairing Gram matrix (our canonical heights):
+      [+1.58869884  +0.09150391]
+      [+0.09150391  +5.13430657]
+  Reg = det(Gram) = 8.1484939258  (independence: det != 0 -> True)  [3.8s]
+    h_hat(-43,23) naive=1.58869884 shifted=1.58869895 |d|=1.1e-07
+    h_hat(197,2443) naive=5.13430657 shifted=5.13432094 |d|=1.4e-05
+  --- LANDING ---
+  |Sha| = [L''/2!] T^2 / (Omega Reg prod cp) = 18.105476*4/(0.55550*8.14849*4) = 3.99991871
+        -> nearest integer 4  (margin 8.13e-05)  [LANDED]
+        square test: 4 = 2^2 ? YES
+  [scoring vs two-source known — verification only]
+    Reg   measured 8.148494  known 8.148533  |d|=3.9e-05
+    Omega measured 0.555497  known 0.555497  |d|=2.4e-11
+    cp    measured 4  known 4  MATCH
+    T     measured 2  known 2  MATCH
+    |Sha| landed 4  known 4  MATCH
+
+=== 194766.bg1  (conductor 194766, ainvs [1, 0, 0, -2077504, -1152726172], rank r=2) ===
+  generators (candidates from Sage, verified in-house):
+    P=(341197/144, 144868727/1728)  on-curve=True  non-torsion=True
+    P=(5488, 388078)  on-curve=True  non-torsion=True
+  jets L^(k)/k!, k=0..2: -0.000000, 0.000000, 18.366913   [0.4s]
+    lower jets vanish (order of central vanishing = 2): max|L^(k)/k!,k<r| = 2.84e-15
+  L''(E,1)/2! = 18.3669133936   [own point-counted a_n]
+  Omega   = 0.1257517642   [AGM]
+  prod cp = 2   (c_2=2 c_3=1 c_11=1 c_13=1 c_227=1)
+  T       = 2   [certified in-house: order of candidate torsion gen (-3329/4,3329/8); sj_torsion_order under-reads 2]
+  height-pairing Gram matrix (our canonical heights):
+      [+13.04124042  +6.04826639]
+      [+6.04826639  +8.40492464]
+  Reg = det(Gram) = 73.0291166363  (independence: det != 0 -> True)  [60.7s]
+    h_hat(341197/144,144868727/1728) naive=13.04124042 shifted=13.04124051 |d|=9.2e-08
+    h_hat(5488,388078) naive=8.40492464 shifted=8.40493527 |d|=1.1e-05
+  --- LANDING ---
+  |Sha| = [L''/2!] T^2 / (Omega Reg prod cp) = 18.366913*4/(0.12575*73.02912*2) = 3.99996361
+        -> nearest integer 4  (margin 3.64e-05)  [LANDED]
+        square test: 4 = 2^2 ? YES
+  [scoring vs two-source known — verification only]
+    Reg   measured 73.029117  known 73.029394  |d|=2.8e-04
+    Omega measured 0.125752  known 0.125752  |d|=4.6e-11
+    cp    measured 2  known 2  MATCH
+    T     measured 2  known 2  MATCH
+    |Sha| landed 4  known 4  MATCH
+
+  --------------------------------------------------------------------------
+  curve              N     Lpp/2!         Reg  cp  T   |Sha|    margin  sq known
+  226005.b5     226005    7.62721   14.135935   8  4       4   6.4e-05   Y     4
+  392190.n1     392190   18.10548    8.148494   4  2       4   8.1e-05   Y     4
+  194766.bg1    194766   18.36691   73.029117   2  2       4   3.6e-05   Y     4
+  rank-2 nontrivial |Sha| landings (correct integer, within 1/2, perfect square): 3/3
+
+############################################################################
+# PHASE 2 — FIRST DETERMINATIONS: squarefree n in [200, 500]
+#          (N = 32 n^2 >= 1.28e+06 > 5e5 = LMFDB completeness bound)
+############################################################################
+  184 squarefree n; rank-0 subset (w=+1 AND L(1)!=0 by the readout) gets |Sha|.
+  Each landing carries the Tunnell exact-square cross-check (theorem, unconditional).
+
+     n         N   w       L(1)        Om   cp   |Sha|     marg  sq   T_n     L_pred     Lerr  Tun✓
+   201   1292832  +1    0.73978   0.36989   32       1  2.2e-16   Y     4    0.73978  1.1e-16    OK
+   202    652864  +1    0.36897   0.36897   16       1  4.4e-16   Y     2    0.36897  1.1e-16    OK
+   203   1318688  +1    2.94452   0.36806   32       4  8.9e-16   Y     8    2.94452  4.4e-16    OK
+   209   1397792  +1    0.72549   0.36274   32       1  1.1e-16   Y     4    0.72549  1.1e-16    OK
+   211   1424672  +1    0.18051   0.36102    8       1  7.8e-16   Y     2    0.18051  1.1e-16    OK
+   217   1506848  +1    2.84795   0.35599   32       4  8.9e-16   Y     8    2.84795  0.0e+00    OK
+   218    760384  +1    3.19659   0.35518   16       9  3.6e-15   Y     6    3.19659  4.4e-16    OK
+   227   1648928  +1    0.17403   0.34806    8       1  1.4e-15   Y     2    0.17403  2.5e-16    OK
+   233   1737248  +1    0.68711   0.34355    8       4  8.9e-16   Y     4    0.68711  0.0e+00    OK
+   235   1767200  +1    0.68418   0.34209   32       1  2.2e-16   Y     4    0.68418  1.1e-16    OK
+   241   1858592  +1    0.67561   0.33780    8       4  8.9e-16   Y     4    0.67561  0.0e+00    OK
+   249   1984032  +1    0.66466   0.33233   32       1  5.6e-16   Y     4    0.66466  3.3e-16    OK
+   251   2016032  +1    1.48953   0.33101    8       9  1.8e-15   Y     6    1.48953  2.2e-16    OK
+   258   1065024  +1    1.30594   0.32648   64       1  0.0e+00   Y     4    1.30594  2.2e-16    OK
+   259   2146592  +1    2.60683   0.32585   32       4  8.9e-16   Y     8    2.60683  4.4e-16    OK
+   266   1132096  +1    1.28615   0.32154   64       1  0.0e+00   Y     4    1.28615  0.0e+00    OK
+   267   2281248  +1    0.64187   0.32093   32       1  4.4e-16   Y     4    0.64187  3.3e-16    OK
+   273   2384928  +1    2.53911   0.31739  128       1  4.4e-16   Y     8    2.53911  4.4e-16    OK
+   274   1201216  +1    1.26723   0.31681   16       4  8.9e-16   Y     4    1.26723  0.0e+00    OK
+   281   2526752  +1    0.62568   0.31284    8       4  1.8e-15   Y     4    0.62568  3.3e-16    OK
+   282   1272384  +1    4.99652   0.31228   64       4  8.9e-16   Y     8    4.99652  8.9e-16    OK
+   283   2562848  +1    1.40279   0.31173    8       9  7.1e-15   Y     6    1.40279  6.7e-16    OK
+   290   1345600  +1    1.23178   0.30795   64       1  4.4e-16   Y     4    1.23178  6.7e-16    OK
+   298   1420864  +1    2.73405   0.30378   16       9  1.8e-15   Y     6    2.73405  4.4e-16    OK
+   305   2976800  +1    2.40222   0.30028   32       4  8.9e-16   Y     8    2.40222  0.0e+00    OK
+   307   3015968  +1    3.74122   0.29930    8      25  0.0e+00   Y    10    3.74122  4.4e-16    OK
+   314   1577536  +1    0.29594   0.29594   16       1  1.3e-15   Y     2    0.29594  3.9e-16    OK
+   321   3297312  +1    0.58540   0.29270   32       1  0.0e+00   Y     4    0.58540  0.0e+00    OK
+   322   1658944  +1    4.67589   0.29224   64       4  8.9e-16   Y     8    4.67589  8.9e-16    OK
+   329   3463712  +1    2.31294   0.28912   32       4  0.0e+00   Y     8    2.31294  0.0e+00    OK
+   331   3505952  +1    1.29709   0.28824    8       9  1.8e-15   Y     6    1.29709  2.2e-16    OK
+   337   3634208  +1    2.28532   0.28567    8      16  3.6e-15   Y     8    2.28532  0.0e+00    OK
+   339   3677472  +1    0.56964   0.28482   32       1  0.0e+00   Y     4    0.56964  0.0e+00    OK
+   345   3808800  +1    2.25867   0.28233  128       1  2.2e-16   Y     8    2.25867  0.0e+00    OK
+   346   1915456  +1    0.28193   0.28193   16       1  2.2e-16   Y     2    0.28193  1.1e-16    OK
+   347   3853088  +1    0.14076   0.28152    8       1  6.7e-16   Y     2    0.14076  1.1e-16    OK
+   354   2005056  +1    1.11489   0.27872   64       1  2.2e-16   Y     4    1.11489  2.2e-16    OK
+   355   4032800  +1    2.22663   0.27833   32       4  0.0e+00   Y     8    2.22663  4.4e-16    OK
+   362   2096704  +1    0.27562   0.27562   16       1  1.4e-15   Y     2    0.27562  3.9e-16    OK
+   370   2190400  +1    1.09051   0.27263   64       1  6.7e-16   Y     4    1.09051  4.4e-16    OK
+   377   4548128  +1    2.16069   0.27009   32       4  8.9e-16   Y     8    2.16069  4.4e-16    OK
+   379   4596512  +1    0.13469   0.26937    8       1  2.4e-15   Y     2    0.13469  3.3e-16    OK
+   385   4743200  +1    2.13812   0.26726  128       1  2.2e-16   Y     8    2.13812  4.4e-16    OK
+   393   4942368  +1    0.52906   0.26453   32       1  2.2e-16   Y     4    0.52906  2.2e-16    OK
+   394   2483776  +1    2.37775   0.26419   16       9  0.0e+00   Y     6    2.37775  4.4e-16    OK
+   401   5145632  +1    0.52376   0.26188    8       4  2.7e-15   Y     4    0.52376  2.2e-16    OK
+   402   2585664  +1    1.04621   0.26155   64       1  4.4e-16   Y     4    1.04621  4.4e-16    OK
+   403   5197088  +1    0.52246   0.26123   32       1  0.0e+00   Y     4    0.52246  0.0e+00    OK
+   409   5352992  +1    2.07444   0.25930    8      16  3.6e-15   Y     8    2.07444  8.9e-16    OK
+   411   5405472  +1    0.51735   0.25867   32       1  1.6e-15   Y     4    0.51735  6.7e-16    OK
+   417   5564448  +1    4.62250   0.25681   32       9  1.8e-15   Y    12    4.62250  8.9e-16    OK
+   418   2795584  +1    1.02599   0.25650   64       1  2.2e-16   Y     4    1.02599  2.2e-16    OK
+   419   5617952  +1    0.12810   0.25619    8       1  3.2e-15   Y     2    0.12810  4.2e-16    OK
+   427   5834528  +1    0.50756   0.25378   32       1  2.2e-16   Y     4    0.50756  1.1e-16    OK
+   433   5999648  +1    4.53629   0.25202    8      36  1.4e-14   Y    12    4.53629  1.8e-15    OK
+   435   6055200  +1    2.01149   0.25144  128       1  2.2e-16   Y     8    2.01149  4.4e-16    OK
+   443   6279968  +1    3.11444   0.24916    8      25  3.6e-15   Y    10    3.11444  0.0e+00    OK
+   449   6451232  +1    0.49497   0.24749    8       4  1.8e-15   Y     4    0.49497  2.8e-16    OK
+   451   6508832  +1    0.49387   0.24694   32       1  2.2e-16   Y     4    0.49387  1.7e-16    OK
+   458   3356224  +1    2.20537   0.24504   16       9  1.8e-15   Y     6    2.20537  8.9e-16    OK
+   466   3474496  +1    0.97172   0.24293   16       4  8.9e-16   Y     4    0.97172  2.2e-16    OK
+   467   6978848  +1    5.94538   0.24267    8      49  0.0e+00   Y    14    5.94538  8.9e-16    OK
+   473   7159328  +1    0.48225   0.24112   32       1  0.0e+00   Y     4    0.48225  0.0e+00    OK
+   474   3594816  +1    0.96348   0.24087   64       1  2.2e-16   Y     4    0.96348  1.1e-16    OK
+   481   7403552  +1    1.91289   0.23911   32       4  2.7e-15   Y     8    1.91289  8.9e-16    OK
+   482   3717184  +1    3.82181   0.23886   16      16  3.6e-15   Y     8    3.82181  8.9e-16    OK
+   483   7465248  +1    1.90892   0.23862  128       1  0.0e+00   Y     8    1.90892  0.0e+00    OK
+   489   7651872  +1    0.47429   0.23715   32       1  1.3e-15   Y     4    0.47429  6.1e-16    OK
+   491   7714592  +1    1.06499   0.23666    8       9  0.0e+00   Y     6    1.06499  2.2e-16    OK
+   497   7904288  +1    1.88185   0.23523   32       4  8.9e-16   Y     8    1.88185  6.7e-16    OK
+   498   3968064  +1    0.93998   0.23499   64       1  0.0e+00   Y     4    0.93998  1.1e-16    OK
+   499   7968032  +1    0.11738   0.23476    8       1  5.8e-15   Y     2    0.11738  6.8e-16    OK
+
+  [4.3s for 184 twists]
+
+############################################################################
+# SUMMARY
+############################################################################
+  untabled range: squarefree n in [200, 500]
+  rank-0 first determinations (w=+1, L(1)!=0, Tunnell T_n!=0): 72
+  clean landings (within 1/2 AND perfect square): 72/72
+  Tunnell exact-value cross-check passed (|L_readout - L_pred|<1e-3): 72/72
+  worst integer-landing margin: 1.42e-14   worst Tunnell L-error: 1.78e-15
+  |Sha_an| histogram (rank-0 subset): 1:38, 4:18, 9:9, 16:3, 25:2, 36:1, 49:1
+    nontrivial (|Sha|>1): 34/72 = 47.2%
+
+  DELAUNAY HEURISTIC FACE (Cohen-Lenstra-Delaunay for Sha; Delaunay, Experiment.
+  Math. 10 (2001) 191-196).  Rank-0 asymptotic prediction: prob(p | |Sha|) =
+    f0(p) = 1 - prod_{j>=1}(1 - p^{1-2j})  = 1/p + 1/p^3 + ... 
+    f0(2)=0.580577  f0(3)=0.360995  f0(5)=0.206660  f0(7)=0.145408 .
+    MEASURED p-divisibility of |Sha_an| over the 72 rank-0 landings (n in this range):
+        p  #(p | Sha)  measured  Delaunay f0(p)
+        2          22    0.3056        0.580577
+        3          10    0.1389        0.360995
+        5           2    0.0278        0.206660
+        7           1    0.0139        0.145408
+    P(|Sha|=1) measured = 0.5278.  Asymptotic Delaunay predicts ~0.08, but the
+    finite-conductor observed value is ~0.79 at N<=4e5 (full Cremona DB, all curves);
+    convergence to the asymptotic regime needs N >~ 1e8 (P(Sha[2]>0) ~ N^0.22, slow).
+    Our conductors reach N = 32 n^2 ~ 8.0e+06 > 4e5, so a P(|Sha|=1)
+    BELOW 0.79 (measured here) is the expected direction of finite-size drift toward
+    the asymptotic 0.08 — first fiber data for this ONE quadratic-twist family (32a),
+    which has full 2-torsion (T=4): the p=2 column is subject to the Quattrini
+    correction to Delaunay for primes dividing #E(Q)_tors, so p=2 is expected to
+    deviate from the plain f0(2) while odd p track it.  NOT a test of Delaunay on its
+    own (single family, biased 2-part); it is a datum, tiered as measured.
+
+  REGISTER FACES (pre-committed): non-square landing / Tunnell mismatch / parity
+    ZERO hits — every rank-0 landing is a perfect square AND matches Tunnell's
+    exact-value prediction to readout precision.  Falsification register: CLEAN.

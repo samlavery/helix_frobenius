@@ -1,0 +1,1679 @@
+        GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS
+          ATTACHED TO MODULAR FORMS OF WEIGHT ONE
+
+                      HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+                                    To Glenn Stevens on his 60th birthday
+
+
+        Abstract. This article can be read as a companion and sequel to [DLR], which proposes a
+        conjectural expression for the so-called p-adic iterated integrals attached to a triple (f, g, h)
+        of classical eigenforms of weights (2, 1, 1). When f is a cusp form, this expression involves
+        the p-adic logarithms of so-called Stark points: distinguished points on the modular abelian
+        variety attached to f , defined over the number field cut out by the Artin representations
+        attached to g and h. The goal of this paper is to formulate an analogous conjecture when f
+        is a weight two Eisenstein series rather than a cusp form. The resulting formula involves the
+        p-adic logarithms of units and p-units in suitable number fields, and can be seen as a new
+        variant of Gross’s p-adic analogue of Stark’s conjecture on Artin L-series at s = 0.
+
+
+
+
+                                                 Contents
+  Introduction                                                                                               1
+  1. The conjecture                                                                                          2
+  2. Group-theoretic preliminaries                                                                           6
+  3. Circular units and Eisenstein series of weight one                                                     10
+  4. Elliptic units and theta series of imaginary quadratic fields                                          16
+  5. Gross-Stark units and theta series of real quadratic fields                                            21
+  6. Exotic forms                                                                                           24
+  References                                                                                                26
+
+
+
+                                              Introduction
+   This article can (and probably should) be read as a companion and sequel to [DLR], which
+describes an arithmetic formula for the so-called p-adic iterated integrals attached to a triple
+(f, g, h) of classical modular eigenforms of weights (2, 1, 1). In the setting considered in [DLR],
+where f is assumed to be a cusp form, this formula involves the p-adic formal group logarithms
+of global points on the modular abelian variety Af attached to f by the Eichler-Shimura
+construction. The points that arise are defined over the number field cut out by the tensor
+product %g ⊗ %h of the two Artin representations associated to g and h. The p-adic iterated
+integral of [DLR] can be understood as a p-adic avatar of the second derivative of the Hasse-
+Weil-Artin L-series L(Af , %g ⊗ %h , s) at its central point s = 1, and the main conjecture of
+loc.cit. can therefore be viewed as an analogue (in the p-adic setting) of Stark’s conjecture
+on units [Sta], with unit groups replaced by Mordell-Weil groups of elliptic curves or more
+general modular abelian varieties.
+   The goal of the present work is to bring the analogy with Stark’s conjecture into sharper
+focus by studying the iterated integrals of [DLR] when f is an Eisenstein series of weight 2.
+The main conjecture of Section 1 below transposes the “Elliptic Stark conjecture” of loc.cit.
+to this setting, essentially by replacing points on elliptic curves with units or p-units in number
+fields having similar Galois-theoretic properties. When g and h are Eisenstein series or theta
+                                                       1
+2                         HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+series attached to a common imaginary quadratic field in which the prime p splits, Sections 3
+and 4 explain how the p-adic Stark conjecture can frequently be reduced to classical relations
+between the Kubota-Leopoldt or Katz p-adic L-functions and p-adic logarithms of circular
+or elliptic units. To make up for the lack of theoretical evidence in other settings, several
+numerical verifications of the remaining cases are described in Sections 5 and 6.
+   This article owes a lot to the vision and insights of Glenn Stevens, who in several works
+(notably, [Ste1], [Ste2], and [Ste3]) exploits the rich interplay between the arithmetic prop-
+erties of cusp forms and Eisenstein series via their connection with irreducible and reducible
+two-dimensional Galois representations. Around thirteen years ago, Glenn encouraged the
+first author to revisit his construction of Stark-Heegner points attached to “real quadratic
+cycles on Hp × H” [Dar] by replacing the cusp form that arises in it with an Eisenstein se-
+ries. This led to a refinement [DD] of the p-adic Gross-Stark units in ring class fields of real
+quadratic fields1. (These p-units appear in a new guise in Section 5, where they play the
+same role as the Stark-Heegner points of [Dar] in Section 4 of [DLR].) Likewise, but in a
+purely archimedean setting, the construction [DL] of Stark-Heegner points attached to ATR
+cycles on Hilbert modular varieties gives rise to the geometric construction [CD] of Stark
+units in abelian extensions of ATR extensions of a totally real field from periods of Hilbert
+modular Eisenstein series. To the extent that the present work bears the same relation to
+[DLR] as do [DD] and [CD] to [Dar] and [DL] respectively, Glenn’s suggestion continues to
+resonate through the years. In the reverse direction, the strategy of substituting elliptic cusp
+forms for the weight two Eisenstein series that arise in the seminal work of Kato on the Birch
+and Swinnerton-Dyer conjecture has inspired the general program of studying the arithmetic
+of elliptic curves based on replacing Beilinson elements attached to a pair of modular units
+with Beilinson-Flach elements [BDR1], [BDR2] and generalised Gross-Schoen diagonal cycles
+[DR1], [DR2]. (See [BCDDPR] for an overview of this circle of ideas.) With profound grat-
+itude for the influence he has exerted on the authors’ mathematical outlook, it is a great
+pleasure to dedicate this article to Glenn Stevens on the occasion of his 60th birthday.
+Acknowledgements. The first author was supported by an NSERC Discovery grant, and the third
+by Grant MTM2012-34611.
+
+
+
+                                           1. The conjecture
+   Following the notations of [DLR] which will be adopted throughout, let Mk (N, χ)L and
+Sk (N, χ)L denote the spaces of modular forms and cusp forms respectively of weight k, level
+N , and character χ with Fourier coefficients in a field L. When L = C, it shall be suppressed
+from the notation.
+   Let
+                            g ∈ M1 (Ng , χg ),     h ∈ M1 (Nh , χh )
+be classical eigenforms of weight one. A crucial self-duality assumption made in [DLR] required
+the even Dirichlet character χgh := χg χh to be trivial, and thus the tensor product
+                                                %gh := %g ⊗ %h
+of the Artin representations attached to g and h to be isomorphic to its contragredient.
+   One of the novelties of the Eisenstein series setting is that this self-duality assumption is not
+necessary anymore, and can therefore be relaxed: the character χgh can now be an arbitrary
+
+    1As another illustration of Glenn’s influence, let us mention the decisive impact, described in [DP], of his
+theory of overconvergent modular symbols for the efficient polynomial time calculation of the Stark-Heegner
+points of [Dar].
+                     GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                              3
+
+Dirichlet character, of conductor dividing Ngh := lcm(Ng , Nh ). Fix a prime p - Ngh and let
+                        X 2 − ap (g)X + χg (p) = (X − αg )(X − βg ),
+                        X 2 − ap (h)X + χh (p) = (X − αh )(X − βh )
+be the p-th Hecke polynomials of g and h in C[X].
+   It will be convenient to fix a finite extension L ⊂ C of Q over which the representations
+%g and %h (and hence also %gh ) can be realised. Such an L contains the field generated by
+the traces of these representations, and can always be chosen to be contained in a cyclotomic
+field. By enlarging L if necessary, we also assume it contains the roots of unity αg , βg , αh
+and βh .
+   Let gα (z) = g(z) − βg g(pz) and gβ (z) = g(z) − αg g(pz) ∈ S1 (Ng p, χg )L denote the p-
+stabilizations of g on which the Hecke operator Up acts with eigenvalue αg (resp. βg ).
+   Let
+                                f := E2 (1, χ−1                −1
+                                             gh ) ∈ M2 (Ngh , χgh )
+be the weight two Eisenstein series with fourier expansion given by
+                                                              
+                                            X∞    X
+                              f (q) := c0 +         χ−1        n
+                                                       gh (d)d q .
+                                              n=1    d|n
+
+The product of the three nebentypus characters attached to the triple (f, g, h) of modular
+forms of weights (2, 1, 1) is trivial, and one can define the p-adic iterated integral attached to
+this triple by letting
+                                                    [p]
+                                      F := d−1 f = E0 (χ−1
+                                                         gh , 1)
+be the overconvergent Eisenstein series of weight zero attached to the pair (χ−1
+                                                                              gh , 1) of Dirichlet
+characters, with Fourier expansion given by
+                                                             
+                                     X X
+                            F (q) :=          χ−1
+                                                 gh (n/d)d
+                                                           −1  n
+                                                                q ,
+                                        p-n    d|n
+
+and considering the modular form
+                                     Ξ(gα , h) = egα∗ eord (F h),
+where
+                            eord : M1oc (Ngh , χ−1    oc        −1
+                                                g )−→M1 (Ngh , χg )
+denotes Hida’s ordinary projection on the space M1 (Ngh , χ−1
+                                                           g ) of overconvergent modular
+forms of weight one, and
+                          egα∗ : M1oc (Ngh , χ−1    oc        −1    ∗
+                                              g )−→M1 (Ngh , χg )[[gα ]]
+denotes the Hecke-equivariant projection to the generalised eigenspace attached to the system
+of Hecke eigenvalues for the dual form gα∗ of gα . The modular form Ξ(gα , h) is overconvergent
+and ordinary, but need not be classical, since the conclusion of Coleman’s classicality theorem
+fails in general in weight one. For this reason, it is convenient to assume that Hypothesis
+C of [DLR], referred to there as the “classicality property”, holds for gα . This hypothesis
+stipulates that the natural inclusion
+                                                    oc,ord
+                          M1 (N p, χ−1      ∗
+                                    g )Cp [gα ] ,→ M1      (N, χ−1    ∗
+                                                                g )[[gα ]]
+of the eigenspace attached to gα (consisting entirely of classical forms) into the associated
+generalised eigenspace in the space of p-adic modular forms, maps M1 (N p, χ−1             ∗
+                                                                                   g )Cp [gα ] into
+the generalized eigenspace S1oc,ord (N, χ−1     ∗
+                                         g )[[gα ]] of p-adic cusp forms and gives rise to an iso-
+morphism
+                                             ∗       oc,ord
+                         M1 (N p, χ−1g )Cp [gα ] ≃ S1       (N, χ−1    ∗
+                                                                 g )[[gα ]]
+4                       HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+between these two Cp -vector spaces.
+   When g is cuspidal, it shall be assumed throughout that αg 6= βg , i.e., that g is regular at
+p, and that g is not a theta series of a real quadratic field in which the prime p is split. As
+explained in [DLR, Proposition 1.2], the main result of [BeDi] then implies the classicality
+property for gα .
+   On the other hand, when g = E1 (χ+ , χ− ) is the Eisenstein series associated to a pair of
+                                                                  ∗                 oc,ord
+Dirichlet characters χ+ and χ− , the space M1 (N p, χ−1   g )Cp [gα ] maps into S1         (N, χ−1    ∗
+                                                                                                g )[[gα ]]
+                 +        −
+if and only if χ (p) = χ (p), that is to say, if and only if g is not regular at p (cf. [DLR,
+Proposition 1.3]), and non-regularity is therefore a necessary condition for the classicality
+property to be satisfied.
+   Given an element γ in the L-linear dual space M1 (Ngh , χ−1               ∗ ∨
+                                                                      g )L [gα ] , the p-adic iterated
+integral attached to the pair (γ, h) is defined to be
+                           Z
+(1)                           f · h := γ(egα∗ eord (F h)) = γ(Ξ(gα , h)).
+                               γ
+  Our goal is to study this p-adic iterated integral: more precisely, to understand when
+the classical modular form Ξ(gα , h) with Cp coefficients is non-trivial, and, when it is, give
+an arithmetic interpretation for its position in M1 (Ngh , χ−1       ∗
+                                                             g )Cp [gα ] relative to the natural
+L-rational structure on this Cp -vector space given by M1 (Ngh , χ−1      ∗
+                                                                  g )L [gα ].
+  As in [DLR], the four-dimensional tensor product representation
+                                            %gh := %g ⊗ %h
+plays a key role in this arithmetic interpretation. Let H be the smallest number field through
+which %gh factors, and set
+                                     ×            (p)
+                         Ugh := L ⊗ OH ,        Ugh := L ⊗ (OH [1/p]× /pZ ),
+viewed as finite-dimensional L-linear representations of GQ .
+Lemma 1.1. Let s denote the multiplicity of the trivial representation in %gh . Set
+                                                         (p)                         (p)
+               dgh := dimL homGQ (%gh , Ugh ),          dgh := dimL homGQ (%gh , Ugh ).
+Then
+   (1) dgh = 2 − s,
+        (p)
+   (2) dgh = 2 + dimL (%gh )GQp − 2s.
+Proof. This follows from Herbrand’s Galois-equivariant strengthening of Dirichlet’s S-unit
+theorem, combined with Frobenius reciprocity. See for instance [Ta, Ch.I, §3, §4] or [Das,
+Prop. 3.2.2].                                                                           
+                                                                                                       (p)
+    In particular, when s = 0, Lemma 1.1 shows that dgh = 2 and that the same is true for dgh
+                                                                                           (p)
+when %gh admits no GQp -invariants. Furthermore, it is not hard to see that dgh ≥ 2 when
+at least one of g or h is a cusp form. This is in marked contrast with the setting explored in
+                          (p)
+[DLR] where Ugh and Ugh were replaced by the Mordell-Weil group E(H) of an elliptic curve
+E, tensored with L: in this case no simple elementary formula was available for the analogues
+             (p)
+of dgh and dgh , and these quantities appear to be 0 quite often. This is why the necessity of
+the “vanishing hypothesis” (Hypothesis B) arose in [DLR], whereas here it is unecessary.
+                                                                              (p)
+   Fix an embedding of H into Cp . This equips H, and hence also Ugh and Ugh , with natural
+actions of GQp . Since p is assumed to be prime to Ngh , the action of GQp on H is unramified;
+let Frp denote the arithmetic Frobenius operator, inducing the automorphism x 7→ xp on the
+residue fields.
+                        GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                 5
+
+   The galois element Frp acts on %g (resp. on %h ) with eigenvalues αg and βg (resp. αh and
+βh ). Write
+                              %g := %αg ⊕ %βg ,  %h := %αh ⊕ %βh
+for the decomposition of %g and %h into one-dimensional frobenius eigenspaces, when these
+are defined, i.e., when Frp acts with distinct eigenvalues.
+   When g is cuspidal, so that αg 6= βg by our running assumption, we attach to gα a two-
+dimensional subspace of the representation %gh = %g ⊗ %h by setting
+(2)                                         %gh,α := %βg ⊗ %h .
+   When g is Eisenstein, we have αg = βg and we simply define
+(3)                                         %gh,α := W ⊗ %h ,
+where W is any line in %g which is not stable under GQ .
+         (p)
+  When dgh = 2, it is possible to associate to the pair (gα , h) a p-adic regulator by choosing
+                                           (p)
+an L-basis (Φ1 , Φ2 ) for homGQ (%gh , Ugh ) and an L-basis (v1 , v2 ) for %gh,α and setting
+                                                                         
+                                          logp (Φ1 (v1 )) logp (Φ1 (v2 ))
+(4)                       Rgα (%gh ) :=                                     .
+                                          logp (Φ2 (v1 )) logp (Φ2 (v2 ))
+This matrix is well-defined up to left and right multiplication by invertible matrices with
+entries in L, and hence its determinant is well-defined modulo L× . This determinant belongs
+                                                                 βg
+to Qu-r
+     p ⊗ L, and Frp acts on it with the eigenvalue βg αh βg βh = αg · χgh (p).
+                                                                         (p)
+   Recall the unit ugα in Ugh (when g is a cusp form) or in Ugh (when g is an Eisenstein series)
+attached to the p-stabilised eigenform gα in [DLR, §1.2]. It belongs to the Ad0 (g)-isotypic
+                         (p)
+part of Ugh (resp. of Ugh ), and is an eigenvector for2 Frp with eigenvalue βg /αg .
+   Finally, if χ is a Dirichlet character of conductor m, let
+                                                 m
+                                                 X
+                                       g(χ) :=         χ−1 (a)e2πia/m
+                                                 a=1
+
+be the usual Gauss sum, on which GQ acts through χ and thus Frp acts with eigenvalue χ(p).
+Our main conjecture is:
+                           (p)
+Conjecture 1.2. If dgh > 2, then the modular form Ξ(gα , h) is 0. Otherwise,
+                             Ξ(gα , h) belongs to Ωgh · M1 (Ngh , χ−1   ∗
+                                                                   g )[gα ]L ,
+
+where the period Ωgh is given by the formula
+                                                  det(Rgα (%gh ))
+                                       Ωgh :=                        .
+                                                 g(χgh ) logp (ugα )
+   As discussed in the introduction, this conjecture is directly inspired by the “elliptic Stark
+conjectures” of [DLR] which apply to the setting where f is replaced with a weight two cusp
+form attached to an elliptic curve. Conjecture 1.2 is closer in spirit to the p-adic Gross-Stark
+conjectures, since its regulator term involved units and p-units of number fields rather than
+global points on elliptic curves, but it does not appear to follow from any of the variants of
+Stark’s conjecture previously available in the literature.
+   The remainder of this paper shall be devoted to providing both theoretical and experimental
+support for Conjecture 1.2.
+   2This is indeed the same unit as in [DLR], where we rather employed the geometric frobenius σ with acts
+                                                                                                p
+on the unit with eigenvalue αg /βg .
+6                        HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+                               2. Group-theoretic preliminaries
+   This section collects some general representation-theoretic results concerning the structure
+of the representation %gh = %g ⊗ %h appearing in Conjecture 1.2. We refer to [DS] and [Se] for
+generalities on Artin representations and their connection to modular forms of weight one.
+   Let Vg and Vh denote two-dimensional L-vector spaces which realise %g and %h respectively,
+and denote by Vgh = Vg ⊗L Vh the L-vector space realising %gh .
+   The image of %g is a finite subgroup G ⊂ GL2 (C). The well-known classification of such
+groups implies that the natural image Γ of G in PGL2 (C) is isomorphic to
+    (1) a cyclic group, if g is an Eisenstein series;
+    (2) a dihedral group, if g is the theta series attached to a finite order character of a (real
+        or imaginary) quadratic field;
+    (3) the group A4 , S4 or A5 . In this last case, the form g is said to be exotic.
+   The group G is then isomorphic to
+(5)                                      G = (Z × Γ̃)/h±1i,
+where Z = G ∩ C× is the center of G, and Γ̃ = G ∩ SL2 (C) is the universal central extension
+of Γ. It is a non-split central extension of Γ by the group h±1i ⊂ Z, and is called the binary
+tetrahedral, octahedral, or icosahedral group (of order 24, 48, and 120) when Γ = A4 , S4 and
+A5 respectively. The irreducible representations of G are obtained in a simple way from those
+of Γ̃: more precisely, if %1 , . . . %t is a complete list of the irreducible representations of Γ̃, the
+irreducible representations of G are simply of the form χZ ⊗ %j , where χZ is a character of Z
+satisfying χZ (−1) = %j (−1).
+   When %g has cyclic projective image, it decomposes as a direct sum of two one-dimensional
+representations attached to Dirichlet characters χ1 and χ2 , and g = E1 (χ1 , χ2 ) is the weight
+one Eisenstein series attached to this pair of characters.
+   When %g (or %h ) has dihedral projective image, it is induced from a one-dimensional charac-
+ter ψg : GK −→C× of a quadratic field K, and g is the theta series attached to this character.
+The representation
+                                     Vψg := IndQK (ψg ) : GQ −→GL2 (C)
+becomes reducible when restricted to K, where it is isomorphic to L(ψg )⊕L(ψg0 ), where ψg0 de-
+notes the character obtained by composing ψg with the automorphism of K/Q. Furthermore,
+Vψg is odd if and only if either
+   (a) K is an imaginary quadratic field, or
+   (b) K is a real quadratic field, and ψg is of mixed signature, i.e., it is even at one of the
+        archimedean places of K, and odd at the other.
+Note that Vψg is irreducible (and hence, g is a cusp form) precisely when ψg 6= ψg0 .
+  The most basic invariant of the tensor product Vgh is its decomposition
+                                         Vgh = V1 ⊕ · · · ⊕ Vt
+into irreducible representations. Write d := (d1 , . . . , dt ) for the dimensions of the Vj that
+arise in this decomposition, arranged by convention in non-increasing order. There are five
+possibilities for d, corresponding to the possible partitions of 4.
+   If g and h are both reducible, i.e., correspond to Eisenstein series, then clearly d = (1, 1, 1, 1).
+Assume from now on that at least one of g or h is a cusp form, hence is associated to an
+irreducible two-dimensional representation.
+Lemma 2.1. The representation Vgh contains a subrepresentation of dimension 1 if and only
+if h is a twist of ḡ, i.e., Vh = Vg∨ (ι), for some Dirichlet character ι. In that case,
+      (1) d = (3, 1) if and only if g is exotic;
+                     GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                            7
+
+   (2) d = (2, 1, 1) if and only if g is dihedral and ψg− := ψg /ψg0 is not a quadratic (genus)
+       character;
+   (3) d = (1, 1, 1, 1) if and only if g is dihedral and ψg− is a genus character.
+
+Proof. The one-dimensional subrepresentation of Vgh is isomorphic to L(ι) for some Dirichlet
+character ι (viewed as a Galois character). This implies that
+                                Vgh ⊗ L(ι−1 ) = hom(Vg∨ (ι), Vh )
+has a GQ -invariant vector. Since at least one of Vg or Vh is irreducible, Schur’s Lemma implies
+that Vh is isomorphic to Vg∨ (ι). It follows that
+
+                        Vgh = W ⊕ L(ι),          where W := Ad0 (Vg )(ι)
+is the twist by ι of the adjoint representation attached to Vg . Lemma 2.1 now follows by
+noting that:
+    (i) if %g has projective image isomorphic to Γ = A4 , S4 or A5 , then Ad0 (Vg ) factors
+        through Γ and is a three-dimensional irreducible representation of this group, as can
+        be seen, for instance, by consulting the character tables of Γ and Γ̃;
+   (ii) if %g has dihedral projective image, and thus is induced from a character ψg of a
+        quadratic field K, then
+                                   Ad0 (Vg ) = L(χK ) ⊕ Vψg− ,
+
+       where χK is the quadratic Dirichlet character attached to K.
+                                                                                               
+
+  The next lemma takes up the case where d = (2, 2).
+Lemma 2.2. The representation Vgh decomposes as a sum of two irreducible representations
+of dimension two if and only if:
+   (1) Exactly one of g or h is a weight one Eisenstein series, say h = E1 (χ1 , χ2 ), in which
+       case
+                                    Vgh = Vg (χ1 ) ⊕ Vg (χ2 ).
+   (2) Both g and h are theta series attached to characters ψg and ψh of the same quadratic
+       field K for which neither of the characters
+                                 ψ1 := ψg ψh ,      ψ2 := ψg ψh0
+       is equal to its conjugate over K. In this case,
+                                       Vgh = Vψ1 ⊕ Vψ2 .
+       The representations Vψ1 and Vψ2 are non-isomorphic, and if K is real quadratic, they
+       are of opposite (pure) signatures.
+Proof. It is clear that d = (2, 2) when exactly one of g or h is an Eisenstein series. Assume for
+the rest of the proof that both g and h are cuspidal. Let Hg /Q and Hh /Q be the extensions of
+Q cut out by the representations %g and %h , let H := Hg ∩ Hh , and let Hgh be the compositum
+of the extensions Hg and Hh , which are linearly disjoint over H. Write
+             Ggh := Gal (Hgh /Q),       Gg := Gal (Hg /Q),         Gh := Gal (Hh /Q),
+
+               Ag := Gal (Hg /H),     Ah := Gal (Hh /H).           G0 = Gal (H/Q).
+8                     HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+The resulting field diagram is described below
+                                                     Hhg
+                                           Ah                   Ag
+
+
+                                      Hg                             Hh
+                                                Ag         Ah
+
+
+                                                     H
+                                      Gg                             Gh
+                                                 G0
+
+                                                     Q
+By hypothesis, the group Gg (resp. Gh ) acts faithfully on Vg (resp. Vh ).
+   Observe first that the groups Ag and Ah are necessarily abelian. For if Ag (say) were non-
+abelian, the two-dimensional vector space Vg on which Ag acts faithfully would be irreducible
+as an Ag -module. Since Ag acts trivially on Vh , the irreducible Ag -submodules of Vgh would
+have to all be of the form Vg ⊗ Lh for some one-dimensional L-vector subspace Lh ⊂ Vh . This
+would force any two-dimensional irreducible sub-representation of Vgh to also be of this form.
+But Vh contains no Gh -stable lines and the vector space Vg ⊗ Lh therefore cannot be stable
+under the full action of Ggh .
+   One can now distinguish two cases:
+Case A: At least one of Gg or Gh has a projective image isomorphic to A4 , S4 or A5 . Assume
+without loss of generality that this is the case for Gg . The only abelian normal subgroups of
+Γ̃g are contained in its center, and hence, the same is true for the abelian normal subgroups
+of Gg . It follows that Ag acts on Vg as scalar multiplications, and that G0 has a quotient
+isomorphic to Γ. Hence the same assertions hold for Gh : in other words, both Gg and Gh are
+central extensions of a common Γ ⊂ PGL2 (C) which arises as a quotient of G0 . A study of
+the character table of Γ̃ reveals that the tensor products of two irreducible two-dimensional
+representations of this group never decomposes as a sum of two-dimensional representations.
+This rules out the scenario where d = (2, 2) in Case A.
+Case B: The groups Gg and Gh have dihedral projective image. The representation %g is
+then induced from a character ψg of a quadratic field K, which satisfies ψg 6= ψg0 , since Vg is
+irreducible. Hence Vg is isomorphic to L(ψg ) ⊕ L(ψg0 ) as a GK -module, and any element of
+GQ − GK interchanges L(ψg ) and L(ψg0 ). In particular, the representation Vgh is isomorphic
+to Vh (ψg ) ⊕ Vh (ψg0 ) as a GK -module, and the following cases arise:
+      • Vh is reducible as a GK -module, and hence %h is induced from a character of K.
+      • Vh remains irreducible as a GK -module. The reducibility of Vgh then forces
+(6)          Vh (ψg ) ≃ Vh (ψg0 ),   hence      Vh ≃ Vh (ψg /ψg0 )        as GK − modules.
+       For otherwise, the only non-trivial GK -stable subspaces of Vgh would be Vh (ψg ) and
+       Vh (ψg0 ), which are not preserved by elements of GQ −GK . Taking determinants on both
+       sides of (6) reveals that ψg /ψg0 is a quadratic (and hence a genus) character of K, whose
+       induced representation is a direct sum χ1 ⊕ χ2 of two quadratic Dirichlet characters
+       attached to quadratic extensions K1 and K2 respectively, satisfying χ1 χ2 = χK , where
+       χK is the quadratic character attached to K. Inducing (6) from K to Q shows that
+                     Vh ⊕ Vh (χK ) ≃ Vh (χ1 ) ⊕ Vh (χ2 )              as GQ -modules.
+       Since Vh and Vh (χK ) are assumed to be non-isomorphic, it may be assumed, after
+       eventually interchanging χ1 and χ2 , that Vh is isomorphic to Vh (χ1 ), and therefore,
+       that Vh is induced from a character of K1 . But the same is also true of Vg , which is a
+                     GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                            9
+
+        twist of a representation of the dihedral group of order 8, and as such is simultaneously
+        induced from characters of all three of the quadratic fields K, K1 and K2 .
+After replacing K by K1 in the second scenario, it follows that Vg and Vh are induced from
+characters of the same quadratic field K. Writing ψh for the character of K satisfying Vh =
+Vψh , the representation Vgh breaks up as
+                       Vgh = Vψ1 ⊕ Vψ2 ,       ψ1 := ψg ψh ,   ψ2 := ψg ψh0 .
+It follows from this that ψ1 and ψ2 have the same central character, and that d = (2, 2)
+precisely when ψ1 6= ψ10 and ψ2 6= ψ20 . (Recall that the central character of a character ψ
+of GK is the Dirichlet characters arising from the restriction to the idéles of Q of the Hecke
+character of K associated by class field theory to ψ.) To see that Vψ1 and Vψ2 are never
+isomorphic, note that the irreducibility of Vh implies that ψh 6= ψh0 , and hence that ψ1 6= ψ2 ;
+and that likewise, the irreducibility of Vg implies that ψ1 6= ψ20 . When K is real quadratic, it
+is readily checked that, since ψg and ψh are both of mixed signature, the ring class characters
+ψ1 = ψg ψh and ψ2 = ψg ψh0 are of opposite pure signatures. The lemma follows.                 
+   The “generic” case where d = (4) encompasses all scenarios where the representations %g
+and %h cut out linearly disjoint extensions of Q. When it is irreducible, the Artin represen-
+                                                 ×
+tation Vgh occurs with mutiplicity two in L ⊗ OH   and is undistinguished enough to probably
+never have garnered explicit attention in connection with the Stark or Gross-Stark conjec-
+tures. Nonetheless the special cases described in Lemmas 2.3 and 2.4 below are worth singling
+out.
+   Suppose that
+                               %h : Gal (Hh /Q)−→Γ̃ ⊂ GL2 (C)
+has projective image Γ = Γ̃/Z ≃ S4 , and that %g is the (non-faithful) two-dimensional rep-
+resentation of Gal (Hh /Q) obtained from %h by composing it with the natural sequence of
+homomorphisms Γ̃−→S4 −→S3 ⊂ GL2 (C). Then %gh can be described concretely in terms of
+the induced representation of a quadratic character of the quartic subfield K of Hh fixed by
+S3 ⊂ S4 . More precisely, the natural exact sequence
+                               1−→Z−→Gal (Hh /K)−→S3 −→1
+splits. Since Z is a cyclic group of even cardinality, it follows that Gal (Hh /K) has three
+distinct surjective homomorphisms to ±1, of which only one is trivial on Z. Let η be a
+quadratic character of Gal (Hh /K) which is non-trivial on Z, and let M be the octic extension
+of Q cut out by η, as summarised in the following field diagram:
+                                      Hh
+                                                    Z
+
+
+                             S3 ×Z     M                 H̄h
+                                               S3
+                                     ±1                    Z/2Z×Z/2Z
+
+                                       K            S4
+                                                         Hg
+                                      4
+                                                    S3
+                                       Q
+Lemma 2.3. For %g and %h as above,
+                                           %gh = IndQ
+                                                    K η.
+In particular,
+                                              ×          ×
+                               hom(Vgh , C ⊗ OH ) = C ⊗ OM,1 ,
+10                     HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+       ×
+where OM,1 denotes the group of units of M whose norm to K is equal to 1.
+
+Proof. The first assertion follows from a direct calculation using the character table of S̃4 ,
+and the second from Frobenius reciprocity.                                                  
+   Another simple, concrete instance of an irreducible Vgh arises when K is a non-totally real
+quintic extension of Q whose Galois closure K̃ has Galois group A5 over Q. There are exactly
+two conjugacy classes of embeddings of Gal (K̃/Q) = A5 into PGL2 (C); choosing one gives
+rise to a projective representation
+                             %̄g : GQ  Gal (K̃/Q) ≃ A5 ⊂ PGL2 (C).
+Tate’s lifting theorem produces a linear lift %g : GQ −→GL2 (C) of %̄g , which is odd since K is
+not totally real, and hence corresponds to a modular form g. It can further be assumed that
+the field H cut out by %g is a cyclic extension of K̃ of 2-power degree, so that %g (Gal(H/K̃))
+consists of scalar matrices whose diagonal entries are 2-power roots of unity. Let σ be an
+automorphism
+       √        √of C which agrees with complex conjugation on the 2-power roots of unity and
+sends 5 to − 5, and let h be the modular form obtained by applying σ to g.
+Lemma 2.4. For %g and %h as above,
+(7)                                    Vgh ⊕ C      =     V5 ,
+where V5 is the natural permutation representation of A5 acting on 5 letters. In particular,
+                      ×          ×
+       hom(Vgh , C ⊗ OH ) = C ⊗ OK ,       hom(Vgh , C ⊗ OH [1/p]× ) = C ⊗ (OK [1/p]× /pZ ).
+Proof. See for instance the proof of Thm. 6.9 of [DR2].                                        
+
+                 3. Circular units and Eisenstein series of weight one
+     In this section we begin by considering the simplest case where
+                                            −                      −
+                              g = E1 (χ+
+                                       g , χg ),     h = E1 (χ+
+                                                              h , χh )
+
+are both Eisenstein series attached to pairs of Dirichlet characters. It is assumed that χ+ g is
+           −                            +       −
+even and χg is odd, and likewise for χh and χh . The nebentype characters of g and h are
+                   −              + −
+equal to χg := χ+
+                g χg and χh := χh χh respectively.
+  Fix a prime p not dividing the conductors of χg and χh , and recall we assume the classicality
+hypothesis on g, which in particular implies that χ+         −
+                                                    g (p) = χg (p).
+  The representation %gh decomposes as a direct sum of four one-dimensional characters
+                     % = χ++ ⊕ χ-- ⊕ χ+- ⊕ χ-+ := χ ⊕ χ ⊕ χ ⊕ χ ,
+                        gh     gh     gh    gh     gh      1     2       3    4
+
+where
+           χ++     + +
+            gh := χg χh ,      χ--     − −
+                                gh := χg χh ,      χ+ -    + −
+                                                    gh := χg χh ,        χ-gh
+                                                                            +
+                                                                              := χ−  +
+                                                                                  g χh .
+
+Note that the characters χ++         --                                 +-      -+
+                             gh and χgh are even, while the characters χgh and χgh are odd (and
+in particular, non-trivial).
+   Given an even character χ factoring through a finite abelian extension Hχ of Q and taking
+                                         ×
+values in L, denote by u(χ) ∈ L ⊗ (OH      χ
+                                             ) the fundamental unit in the χ-eigenspace for the
+natural GQ -action. Given an odd character χ for which χ(p) = 1, let up (χ) ∈ L ⊗ (OHχ [1/p])×
+denote the fundamental p-unit in the χ-eigenspace for the Galois action.
+   In light of Lemma 1.1, the form taken on by Conjecture 1.2 depends on the number of even
+characters among the χj which are non-trivial, and hence it is convenient to break up our
+discussion into three cases:
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                       11
+
+Case 1: The even characters χ++               --
+                                   gh and χgh are both non-trivial. In that case, Conjecture 1.2
+predicts that Ξ(gα , h) = 0 if χj (p) = 1 for some 1 ≤ j ≤ 4, and that otherwise
+                                                              logp (u(χ++               --
+                                                                       gh )) logp (u(χgh ))
+(8)    Ξ(gα , h) ∈ Ωgh · M1 (Ngh , χ−1
+                                     g )[g ∗
+                                          α L]   where Ω gh =                               .
+                                                                    g(χgh ) logp (ugα )
+
+Case 2: Exactly one of the even characters χ++               --
+                                                   gh and χgh is trivial. Our running assumption
+that χ+          −                   -+              ++                    +-             --
+       g (p) = χg (p) implies that χgh (p) = 1 if χgh = 1 and that χgh (p) = 1 if χgh = 1. Con-
+jecture 1.2 predicts that Ξ(gα , h) = 0 if χj (p) = 1 for at least two non-trivial characters among
+the χj . Assuming that this is not the case, let χ+    gh denote the unique non-trivial character
+           --            −
+in {χgh , χgh } and let χgh denote the unique character in {χ+
+      ++                                                              - -+                   −
+                                                                     gh , χgh } satisfying χgh (p) = 1.
+Conjecture 1.2 then predicts that
+                                                                                            −
+                                                                  logp (u(χ+
+                                                                           gh )) logp (up (χgh ))
+(9)    Ξ(gα , h) ∈ Ωgh · M1 (Ngh , χ−1   ∗
+                                    g )[gα ]L    where    Ωgh =                                     .
+                                                                        g(χgh ) logp (ugα )
+                                          +                              −       −
+A notable special case arises when χ+
+                                    g = χh = 1 and the odd characters χg and χh are both
+                              −                                            −
+quadratic, with χ−g (p) = −χh (p) = 1. In that scenario, the p-units up (χgh ) and ugα that
+occur in the numerator and denominator of (9) cancel out, and the conjectural formula for
+the period simplifies to
+                                           logp (u(χ--
+                                                    gh ))
+(10)                                Ωgh =                 .
+                                              g(χgh )
+One obtains an appealing expression for the p-adic logarithm of the fundamental unit of a real
+quadratic field in terms of p-adic iterated integrals. This leads to a (somewhat) new method for
+solving Pell’s equation, albeit one which is hardly an improvement over the classical method
+of continued fractions!
+Case 3: Both of the even characters χ++ and χ-- are trivial. This implies that
+                                           gh        gh
+
+                                 χ+     + −1
+                                  h = (χg ) ,         χ−     − −1
+                                                       h = (χg ) ,
+so that, after setting χ±     +   −      ∓     −   +
+                        g := χg /χg and χg := χg /χg ,
+
+                                      %gh = 1 ⊕ 1 ⊕ χ±    ∓
+                                                     g ⊕ χg .
+Both of the odd characters that arise in this decomposition are trivial at p. Conjecture 1.2
+therefore predicts that Ξ(gα , h) 6= 0 and that
+                                                                    logp (up (χ±               ∓
+                                                                               g )) logp (up (χg ))
+(11)    Ξ(gα , h) ∈ Ωgh · M1 (Ngh , χ−1   ∗
+                                     g )[gα ]L   where    Ωgh =                                         .
+                                                                   logp (up (χ±                 ∓
+                                                                              g )) + logp (up (χg ))
+
+A notable special case arises when the odd character χ±                                    ∓
+                                                       g is quadratic, and hence equal to χg .
+                                                          ×
+The expression in (11) then simplifies to yield (modulo L , as always)
+(12)                                    Ωgh = logp (up (χ±
+                                                         g )).
+
+One thus obtains, somewhat like in (10), an appealing expression for the p-adic logarithm of
+the fundamental p-unit of an imaginary quadratic field in terms of p-adic iterated integrals of
+Eisenstein series.
+   The main result of this section is the unconditional proof of certain special cases of Con-
+jecture 1.2 when g and h are both Eisenstein series:
+Theorem 3.1. Assume that g and h are Eisenstein series, and that χ+                 −
+                                                                          g and χg are both
+quadratic characters of relatively prime conductors. Then Conjecture 1.2 holds, i.e., equations
+(8), (9) and (11) hold in cases 1, 2 and 3 respectively.
+12                           HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+Proof. Recall that the classicality hypothesis imposed on g implies that
+                                                                −
+(13)                                                  χ+
+                                                       g (p) = χg (p).
+
+The pair (χ+      −
+             g , χg ) corresponds to a genus character ψg of the imaginary quadratic field K cut
+out by the odd Dirichlet character χg := χ+        −
+                                                g χg . Condition (13) implies that χg (p) = 1, and
+hence that the prime p =: p p̄ splits in K/Q. The weight one Eisenstein series g = E1 (χ+              −
+                                                                                                  g , χg )
+is equal to the theta series θK (ψg ) attached to ψg , and the modular form g admits three natural
+ordinary deformations, arising from the fact that E1 (χ+          −          −    +
+                                                             g , χg ) = E1 (χg , χg ) = θK (ψg ):
+       • The Hida families E(χ+        −          −    +
+                                  g , χg ) and E(χg , χg ) of Eisenstein series, whose weight k
+         specialisations are described by
+                            ∞
+                                   (p)                       (p)
+                            X                                                      X
+        E k (χ1 , χ2 ) :=         σk−1,χ1 ,χ2 (n)q n ,      σk−1,χ1 ,χ2 (n) :=              χ1 (n/d)χ2 (d)dk−1 ;
+                            n=1                                                  d|n, p-d
+
+       • The cuspidal family θ(ψg ) of ordinary theta series whose weight k specialisation is
+         given by
+                                                X
+                      θk (ψg ) = θ(ψg ψpk−1 ) =       ψg (a)ψpk−1 (a)q aā .
+                                                            a⊂OK , p̄-a
+                                                                          ×
+        In this equation, the character ψp : I(K)−→Q̄p on the group I(K) of fractional ideals
+        of K is obtained from a canonical Hecke character ψ∞ : I(K)−→C× in the sense of
+        Gross and Rohrlich, sending a principal ideal (α) to ±ᾱ for all α which are relatively
+        prime to the conductor of ψ∞ . The character ψ∞ has infinity type (0, 1) and takes its
+        values in a finite extension L of K, and ψp is obtained by composing it with a p-adic
+        embedding of L sending K to its completion at p.
+   Let θ3+2t (ψg ) denote the weight 3 + 2t specialisation of the Hida family of theta-series
+arising from the genus character ψg . The classicality assumption on θ1 (ψg ) implies that θ(ψg )
+is the unique cuspidal Hida family specialising to θ1 (ψg ).
+                                                                                               −
+   Because of this, the p-adic iterated integral (1) attached to the pair (θK (ψg ), E1 (χ+
+                                                                                          h , χh ))
+agrees, up to non-zero algebraic factors, with the p-adic limit of the algebraic numbers (de-
+pending on t ≥ 0)
+                                                         [p]
+                             [p]       hθ3+2t (ψg ), dt E2 (1, χ−1          +    −
+                                                                gh ) × E1 (χh , χh )i
+                            Ωgh (t) :=
+                                                 hθ3+2t (ψg ), θ3+2t (ψg )i
+as t tends to −1 in weight space. (Note that this ratio does not depend on any choice of
+normalisation for the Petersson scalar product.) Applying Cor. 4.13 of [DR1] after making
+the substitutions
+        (k, `, m) ← (3 + 2t, 2, 1),          fk ← θ3+2t (ψg ),     g ← E2 (1, χ−1
+                                                                               gh ),         h ← E1 (χ+    −
+                                                                                                      h , χh ),
+
+one obtains
+                                                [p]       Egh (t)
+                                              Ωgh (t) =           × Ωgh (t),
+                                                          Eg (t)
+where
+              Egh (t) := (1 − ψp (p̄)2+2t χ+
+                                           h (p)p
+                                                 −2−t
+                                                      ) × (1 − ψp (p̄)2+2t χ−
+                                                                            h (p)p
+                                                                                   −2−t
+                                                                                        )
+                              ×(1 − ψp (p̄)2+2t χ̄−
+                                                  h (p)p
+                                                        −1−t
+                                                             ) × (1 − ψp (p̄)2+2t χ̄+
+                                                                                    h (p)p
+                                                                                          −1−t
+                                                                                               ),
+               Eg (t) := (1 − ψp (p̄)4+4t p−3−2t ),
+                                  hθ3+2t (ψg ), dt E2 (1, χ−1          +    −
+                                                           gh ) × E1 (χh , χh )i
+             Ωgh (t) :=                                                            .
+                                            hθ3+2t (ψg ), θ3+2t (ψg )i
+                       GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                13
+
+                                      [p]
+It will be convenient to express Ωgh (t) as a ratio
+
+                                              [p]      Ωnum
+                                                        gh (t)
+                                             Ωgh (t) := den
+                                                       Ωg (t)
+of two quantities that can (as will be shown) be individually interpolated p-adically, namely
+                                                                      −1               −
+                             Egh (t) × Ω4+4t                 t                    +
+                                        K,p × hθ3+2t (ψg ), d E2 (1, χgh ) × E1 (χh , χh )i
+             Ωnum
+              gh (t) :=                                                                        ,
+                                                            Ω4+4t
+                                                             K
+                             Eg (t) × Ω4+4t
+                                       K,p × hθ3+2t (ψg ), θ3+2t (ψg )i
+             Ωden
+              g (t) :=                                                     ,
+                                                  Ω4+4t
+                                                   K
+where ΩK ∈ C× is Shimura’s canonical period attached to the imaginary quadratic field K
+and ΩK,p ∈ C×  p is the corresponding p-adic period which appears in the interpolation formula
+for the Katz p-adic L-function. The strategy of proof is to show that both of these functions
+of t ∈ Z≥0 , viewed as taking values in Cp , extend to an analytic function on weight space by
+relating them to the Katz p-adic L-function, and then to evaluate them at the point t = −1
+by invoking Katz’s p-adic analogue of the Kronecker limit formula.
+   We begin with the expression Ωnum gh (t). To evaluate it, we invoke formula (18) of [BD2],
+after making the substitutions
+                                                                                             −
+            (k, `, m) ← (3 + 2t, 1, 2),     c ← 2 + t,     f ← θ3+2t (ψg ),    g ← E1 (χ+
+                                                                                        h , χh ),
+to obtain
+     hθ3+2t (ψg ), dt E2 (1, χ−1          +    −                                  +    −
+                              gh ) × E1 (χh , χh )i = C(t) × L(θ3+2t (ψg ) ⊗ E1 (χh , χh ), 2 + t),
+where
+                                                  (1 + t)!2 × Ω4+4t
+                                                               K,p
+                           C(t) :=                                               .
+                                 (−1)t−1 22+2t (2π)4+2t (−iN )−2 g(χgh )
+Formula (19) of loc.cit. implies that
+                                            L(θ3+2t (ψg ), χ+
+                                                            h , 2 + t)   L(θ3+2t (ψg ), χ−
+                                                                                         h , 2 + t)
+         Ωnum
+          gh (t) = C(t)Egh (t) ×                      2+2t             ×           2+2t
+                                                     ΩK                           ΩK
+                                                     −1
+                                            L(ψg χ+
+                                                  h ψt , 0)   L(ψg χ−  −1
+                                                                    h ψt , 0)
+                      = C(t)Egh (t) ×                       ×                 ,
+                                                Ω2+2t
+                                                  K               Ω2+2t
+                                                                    K
+where the L-functions in the second line are those attached to Hecke characters of K, and ψt
+is the Hecke character
+                                              (ψp0 )2+t
+                                       ψt :=            .
+                                                ψpt
+   In view of our definition of ψ∞ , the character ψt has infinity type (2 + t, −t) and therefore
+lies in the range of classical interpolation for the Katz p-adic L-function precisely when t ≥ 0.
+   Let LKatz
+          p   denote the two-variable Katz p-adic L-function attached to Hecke characters of
+K, and ΩK,p denote the p-adic counterpart of the complex period ΩK that appears in the
+interpolation property of LKatz
+                              p    .
+   The interpolation formula for the Katz p-adic L-function, as it is described for instance in
+[DLR, §3, (45)], shows that
+                     Ωnum
+                      gh (t) ∼t g(χgh )
+                                       −1
+                                          × LKatz
+                                             p    (ψg χ̄+         Katz
+                                                        h ψt ) × Lp    (ψg χ̄−
+                                                                             h ψt ),
+where the symbol ∼t denotes an equality up to an elementary fudge factor which (as a function
+of the variable t) extends to an analytic function on weight space and takes L-rational, non-
+zero values at t = −1.
+14                      HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+     Evaluating this relation at t = −1, one finds
+                     Ωnum
+                      gh (−1) ∼ g(χgh )
+                                       −1
+                                          × LKatz
+                                             p    (ψg χ̄+    Katz
+                                                        h N)Lp    (ψg χ̄−
+                                                                        h N),
+where N denotes the norm character (of infinity type (1, 1)) and we have (in many of the
+                                                                  −
+equations above) identified the Dirichlet characters χ+  h and χh with their restrictions to GK ,
+viewed as (finite order) Hecke characters of K. Note that the smallest extension H of K cut
+                                        −
+out by the characters ψg χ+  h and ψg χh is Galois and abelian over Q as well.
+                                                                                         ×
+   If ψ is any non-trivial character of Gal (H/K), denote by uK (ψ) any element of L⊗OH    which
+generates the ψ-eigenspace for the action of Gal (H/K), and when χ is trivial, write uK (1)
+for the fundamental p-unit of the imaginary quadratic field K. Katz’s p-adic analogue of the
+Kronecker limit formula (Cf. for instance [Katz1, §10.4, 10.5], [Gro, p. 90], [deS, Ch. II,§5.2])
+shows that
+                                                       if ψg χ+           +
+                                 
+(14)          LKatz (ψ  χ̄+
+                            N) =
+                                    0                         h 6= 1, ψg χh (p) = 1;
+                p      g h                        +
+                                    logp (uK (ψg χh )) otherwise.
+Because the character ψg χ+
+                          h arises from the restriction of a character of Q and ψg is the genus
+character attached to the pair (χ+    −
+                                 g , χg ) of quadratic Dirichlet characters, it can be seen that:
+
+                                             u(χ++     if ψg χ+
+                                                              h 6= 1;
+                                          
+                                   +             gh )
+                          uK (ψg χh ) =           - +         +
+                                             up (χgh ) if ψg χh = 1.
+Therefore, it follows that
+                                                                    +         +       −
+                                                  if χ++
+                                                      gh 6= 1, and χh (p) = χg (p) = χg (p);
+                              
+                               0
+                                                                   +
+(15)       LKatz
+            p    (ψg χ̄+                  ++
+                       h N) ∼  logp (u(χgh ))   if χ++                      +
+                                                     gh 6= 1, and χh (p) 6= χg (p);
+                                           - +        ++
+                                logp (up (χgh )) if χgh = 1.
+Similar considerations applied to the character ψg χ−h show that
+                                                 --
+                                              if χgh 6= 1, and χ−         +       −
+                             0                                 h (p) = χg (p) = χg (p);
+(16)     LKatz
+           p   (ψg χ̄−                 --
+                     h N) ∼  logp (u(χgh )) if χ--            −         −
+                                                 gh 6= 1, and χh (p) 6= χg (p);
+                                        +-        --
+                              log (u (χ )) if χ = 1.
+                                   p     p    gh          gh
+It follows that
+                                  
+                                    logp (χ++          --
+                                           gh ) logp (χgh )
+                                  
+                                  
+                                          g(χgh )                           in case 1;
+                     Ωnum
+                                                              −
+                                    logp (u(χ+
+(17)                  gh (−1) ∼              gh )) logp (up (χgh ))
+                                                                    ,        in case 2;
+                                  
+                                              g(χgh )
+                                    logp (up (χg )) logp (up (χ∓
+                                                 ±
+                                  
+                                                                      g ))   in case 3.
+  In addition, it follows from [DLR, Lemma 3.8], where t = k − 2, that Ωden
+                                                                        g (t) likewise
+extends to a p-adic analytic function of t, and
+(18)                                   Ωden
+                                        g (−1) ∼ logp (up (χg ))
+by [DLR, Theorem 3.9 (54)].
+  The theorem follows directly from equations (17) and (18) in light of the fact that
+                                                     Ωnum
+                                                      gh (−1)
+                                             Ωgh ∼               .
+                                                     Ωden
+                                                      g (−1)
+                                                                                               
+Remark 3.2. The analogue of Theorem 3.1 in the setting explored in [DLR, §7], where the
+weight two Eisenstein series E2 (1, χ−1
+                                     gh ) is replaced by a cusp form f attached to an elliptic
+curve E over Q, poses significant difficulties and remains unproved. This analogue would
+                                                                                           +-
+involve points on E defined over the cyclotomic fields cut out by the characters χ++ gh , χgh ,
+  - +      --
+χgh , and χgh , and no appropriate variant of the Heegner construction leading to such points
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                 15
+
+is available, at least when the characters involved are non quadratic. Such a variant would
+occupy the same position vis-à-vis Heegner points as circular units vis-à-vis elliptic units.
+
+Numerical examples.
+Example 3.3. The following experiments illustrate Theorem 3.1 in the special case where
+                                  −                 −
+g = E1 (1, χ−                                −
+            g ) and h = E1 (1, χh ), where χg and χh are odd quadratic Dirichlet characters
+                     −
+satisfying (χ−
+             g (p), χh (p)) = (1, −1). This corresponds to the special case of Conjecture 1.2
+described in equation (10) of Case 2 treated above, involving the p-adic logarithm of the
+fundamental unit of the real quadratic field cut out by the even character χ--
+                                                                             gh .
+                                                    −
+3.3a. For this experiment, let χ−            g and χh be the odd quadratic Dirichlet characters of
+conductors 3 and 11 respectively, and choose p := 7. The 7-stabilised eigenform gα :=
+  (7)
+E1 (1, χ−   g ) (of level 3·7) has two distinct 11-stabilisations, denoted g1 and g−1 , of level 3·7·11,
+with U11 -eigenvalues 1 and −1, respectively. Denote by γ1 and γ−1 the linear functionals on
+S1 (3 · 7 · 11)[gα ] = Cp g1 ⊕ Cp g−1 sending (g1 , g−1 ) to (1, 0) and (0, 1) respectively. A computer
+calculation using the algorithms based on [La] shows that
+                 E (1, χ--               −
+                                               = −9955228630224805563482516 (mod 730 )
+             R
+             Rγ1 2        gh ) · E1 (1, χh )
+                           --             −                 30
+               γ−1 E2 (1, χgh ) · E1 (1, χh ) = 0 (mod 7 ).
+
+A careful examination of the non-vanishing 7-adic iterated integral above suggests that
+                                                           √
+                                                       2 ·   33 · log7 (u(χ--
+                                                                           gh ))
+                    Z
+                        E2 (1, χ--             −
+                                gh ) · E1 (1, χh ) = −
+                     γ1                                             7
+to 30 digits of 7-adic precision, where u(χ--gh ) is the fundamental unit in the real quadratic
+                                     --
+field cut out by the even character χgh , satisfying the polynomial x2 − 46x + 1.
+
+3.3b. We place ourselves in exactly the same settting as in 3.3a, but taking this time χ−
+                                                                                        h to
+be the odd quadratic character of conductor 23 rather than 11. Adopting the same notations
+as for the previous example, we find:
+              E (1, χ--               −
+                                           = 10649075716435865817575346 (mod 730 )
+          R
+          Rγ1 2        gh ) · E1 (1, χh )
+                        --             −              30
+            γ−1 E2 (1, χgh ) · E1 (1, χh ) = 0 (mod 7 )
+
+and                                                              √
+                                                            3·       69 · log7 (u(χ--
+                                                                                   gh ))
+                       Z
+                             E2 (1, χ--             −
+                                     gh ) · E1 (1, χh ) = −
+                        γ1                                                 7
+to 30 digits of 7-adic precision.
+                                                                                  −
+3.3c. In the third experiment of this kind, we take χ− g to have conductor 7 and χh to have
+conductor 3, with p := 11. Then
+           E (1, χ--               −
+                                        = −11038147038719013039751993 (mod 1125 )
+        R
+        Rγ1 2       gh ) · E1 (1, χh )
+                     --             −               25
+         γ−1 E2 (1, χgh ) · E1 (1, χh ) = 0 (mod 11 )
+
+and we find again that
+                                                             √
+                                                               21 · log11 (u(χ--
+                                                                              gh ))
+                     Z
+                                      --             −
+                              E2 (1, χgh ) · E1 (1, χh ) = −
+                           γ1                                          11
+to 25 digits of 11-adic precision.
+16                     HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+Example 3.4. Let χ3 and χ4 be the odd quadratic characters of conductors 3 and 4, respec-
+tively, and let χ5 be the even quadratic character of conductor 5. Let g := E1 (1, χ3 ) and
+h := E1 (χ5 , χ4 ). We have found experimentally that the 7-adic iterated integrals attached to
+g and h, for all the stabilisations of g in level 3 · 7 · 4 · 5, are all zero, except for
+        Z
+          E2 (1, χ3 · χ4 · χ5 ) · E1 (χ5 , χ4 ) = −1510481263266793866295817 (mod 730 ),
+          γ
+where γ is the unique element of the dual space of S1 (7 · 60, χ3 )[gα ] sending the stabilisation
+of g with U2 and U5 eigenvalues 1 and −1, respectively to 1, and all other stabilisations to 0.
+Experimentally, one finds
+                                                           √
+                                                       24 · 60 · log7 (u(χ5 )) · log7 (u(χ12 ))
+           Z
+               E2 (1, χ3 · χ4 · χ5 ) · E1 (χ5 , χ4 ) =
+             γ                                                 3 · 7 · log7 (u7 (χ3 ))
+to 30-digits of 7-adic precision, in perfect agreement with the most “generic” instance of
+Conjecture 1.2 treated in Case 1 above.
+
+           4. Elliptic units and theta series of imaginary quadratic fields
+4.1. Theoretical evidence. Let K be an imaginary quadratic field of discriminant −DK
+and let χK denote the quadratic Dirichlet character associated to it. The aim of this chapter
+is to study Conjecture 1.2 in the case where both g and h are theta series associated to K.
+   Fix two arbitrary finite order characters ψg , ψh of K of conductors cg , ch . Let χg , χh denote
+the central characters of ψg and ψh . Let
+                    g := θψg ∈ M1 (Ng , χK χg ),       h := θψh ∈ M1 (Nh , χK χh )
+be the theta series associated to them. Here Ng = DK · NK/Q (cg ) and Nh = DK · NK/Q (ch ).
+   Define ψ1 = ψg ψh and ψ2 = ψg ψh0 where, for any character ψ of GK , we denote ψ 0 the
+character given by the rule ψ 0 (σ) = ψ(σ0 σσ0−1 ) for any choice of σ0 ∈ GQ − GK . Unlike in
+[DLR, §3], here we are not imposing the restriction χg = χ−1   h , and thus ψ1 and ψ2 are not
+necessarily ring class characters.
+                                     Q
+   Let Vg = IndQK (ψg ) and Vh = IndK (ψh ) denote the two-dimensional induced representations
+of ψg and ψh from GK to GQ , with coefficients in a finite extension L of Q which we may
+take to contain the fourier coefficients of g and h and the Gauss sum g(χgh ). By Lemma 2.2,
+there is a decomposition of Artin representations
+(19)                              Vgh = Vψg ⊗ Vψh ≃ Vψ1 ⊕ Vψ2 ,
+where for i = 1, 2, Vψi is irreducible if and only if ψi 6= ψi0 . If ψi = ψi0 , let χi denote the
+central character of ψi . Then Vψi ≃ χi ⊕ χK χi decomposes as the sum of an odd and even
+Dirichlet character. The odd one can never be trivial, while the even one is trivial precisely
+when ψi = 1.
+  Let N = gcd(Ng , Nh ) and let p - N be a prime that splits in K. By Lemma 1.1, it follows
+that
+                           (p)
+(20)                      dgh = 2     if and only if    ψg 6= ψh−1 , (ψh0 )−1 ,
+                                                                                            (p)
+which we assume for the remainder of this chapter. In that case we in fact have dgh = dgh = 2
+and, more precisely,
+                            dimL (Vψi , Ugh ) = 1 for i = 1, 2.
+            ψi
+     Write Ugh for the image of Vψi in Ugh . The theory of elliptic units allows us to pin down
+                                      ψi
+distinguished choices of elements in Ugh as follows.
+   Let Hg /K and Hh /K denote the abelian extensions cut out by the characters ψg and ψh ,
+respectively, and let Hgh = Hg Hh denote their composition. Since p splits in K, the frobenius
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                               17
+
+element Frp belongs to Gal (Hgh /K), and the choice of a prime ℘ of K above p is sufficient
+to determine Frp as an element of this group, satisfying ψ(℘) = ψ(Frp ) for all characters ψ of
+Gal (Hgh /K).
+   The choices of αg , βg , αh and βh can then be made so that
+                αg = ψg (℘),      βg = ψg ( ¯
+                                           ℘),      αh = ψh (℘),        βh = ψh ( ¯
+                                                                                 ℘).
+  Let Kf denote the smallest ray class field containing Hgh and let u ∈ Kf× be an elliptic unit
+constructed as in [deS, §2.6]. For any character ψ of G = Gal (Kf /K), define
+                                           X
+(21)                                 uψ =      ψ −1 (σ)uσ .
+                                             σ∈G
+
+                               ψ −1 (σ) · σ belongs to the augmentation ideal of L[G] and [deS,
+                           P
+   If ψ 6= 1, the element
+                                 ×
+§2.6] shows that uψ lies in L ⊗ OK f
+                                     . Since, by (20), the characters ψi , i = 1, 2, are not trivial,
+                                                                                             ψ1
+the four units uψ1 , uψ10 , uψ2 , uψ20 lie in Ugh . In fact, by construction uψ1 belongs to Ugh and
+                                                                                         ψ1
+Frp acts on it with eigenvalue ψ1 (Frp ) = αg αh . Analogous properties hold for uψ10 ∈ Ugh and
+              ψ2
+uψ2 , uψ20 ∈ Ugh .
+  Both when g is cuspidal or Eisenstein, the matrix in (4) is
+                                                                  
+                                         logp (uψ20 ) 0
+                          Rgα (%gh ) =                               .
+                                         0            logp (uψ10 )
+  In addition to the above units, let us introduce also a canonical choice for the unit ugα
+entering in Conjecture 1.2.
+  If g is cuspidal, let ψad := ψg0 /ψg denote the character associated to the adjoint of g and
+                                                                                   ×
+define ugα = uψad . Since ψg 6= ψg0 , it follows as above that ugα belongs to L ⊗ OH g
+                                                                                       and that
+Frp acts on it with eigenvalue βg /αg .
+  If g is Eisenstein, i.e. ψg = ψg0 , define
+(22)                               ugα := u℘ ∈ L ⊗ OHg [1/p]×
+to be any element such that ℘hK = (u℘ ), where hK denotes the class number of K.
+   Conjecture 1.2 then predicts that
+                                                                    logp (uψ10 ) logp (uψ20 )
+(23)       Ξ(gα , h) ∈ Ωgh · M1 (Ngh , χ−1   ∗
+                                        g )[gα ]L   where   Ωgh =                               .
+                                                                     g(χgh ) logp (ugα )
+  The main result of this section is:
+Theorem 4.1. Conjecture 1.2 holds in the setting described above, i.e., (23) holds true.
+   The remainder of this section is devoted to the proof of Theorem 4.1. Similarly as in the
+proof of the theorem of the previous section, fix a Hecke character λ of infinity type (0, 1) and
+conductor ¯ ℘, with values in a number field E. Write O for the ring of integers of the p-adic
+closure of E in Q̄p and decompose its group of units as O× = µ × W , where µ is finite and
+W is free over Zp . Let h·i : O× → W denote the natural projection.
+                                     (p)
+   For every integer k ≥ 1 define ψg,k−1 = ψg hλik−1 and let ψg,k−1 be the Hecke character of
+infinity type (k − 1, 0) given by
+                                      ( (p)
+                                         ψg,k−1 (q)           if q 6= ℘¯
+(24)                     ψg,k−1 (q) =           k−1 (p)
+                                         χg (p)p /ψg,k−1 (℘) if q = ¯ ℘.
+  Let gk = θ(ψg,k−1 ) denote the theta series associated to ψg,k−1 , an eigenform of weight k.
+These modular forms vary p-adically, in the sense that there is a Hida family g of tame level
+Ng and character χg over an open subset Ug ⊂ 1 + pZp of weight space such that its classical
+18                     HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+specializations are the ordinary p-stabilizations of gk . Note that ψg,1 = ψg and thus g = g1 ;
+the specialization of g in weight one is gα .
+   For the
+        P remainderdof this section, we replace the Hida family g with a Λ-adic modular form
+ğ(q) = d| N λd g(q ) of tame level N satisfying that all its classical specializations are not
+            Ng
+only eigenvectors for the Hecke operators T` for ` - N p but also for the operators Uq for all
+q | N p. Likewise, replace h with an oldform h̆ ∈ M1 (N, χh ) that is an eigenvector for all good
+and bad Hecke operators.
+   Together with (24), define also the Hecke characters
+                                        k+1                                          k+1
+                       −1
+(25)        Ψgh (k) = ψg,k−1 · ψh−1 · N 2     and                −1
+                                                     Ψgh0 (k) = ψg,k−1 · (ψh0 )−1 · N 2 ,
+where N is the Hecke character induced by the norm from K to Q.
+  It follows immediately from the definitions that, for all k ≥ 1, the Rankin-Selberg L-
+function L(ğk , h̆, s) factors as the product of the two L-series associated to the (inverse of the)
+Hecke characters appearing in (25), that is to say:
+                                       
+                                    k+1
+(26)                    L ğk , h̆,       = f0 (k) · L(Ψ−1              −1
+                                                        gh (k), 0) · L(Ψgh0 (k), 0).
+                                     2
+   Here f0 (k) is a fudge factor which is a rational function on q k as q ranges over the divisors
+of N , with coefficients in L. Moreover, f0 (k) ∈ L× for all k ∈ Z≥1 . In the terminology coined
+in [DLR, Definition 4.3], functions satisfying these properties are called L-admissible, and we
+identify them with their unique analytic extension to Ug .
+   The factorisation formula (26) admits a p-adic analogue, of which Theorem 4.1 is a con-
+sequence, as we show later. Since the reader may find it of independent interest, we state it
+below as a separate result. For every k ≥ 1, define the Hecke character
+                                                 −2
+                                      Ψg (k) := ψg,k−1 χg Nk .
+
+  Let Lp (ğ, h̆) denote Hida’s p-adic Rankin L-function on Ug associated to the pair (ğ, h̆).
+We refer e.g. to [BDR1] for its precise definition, and we shall use the normalizations adopted
+therein.
+  As in the previous chapter, let also LKatzp     denote Katz’s p-adic L-function, defined and
+normalized as in [DLR].
+Theorem 4.2. There is an L-admissible function f such that the following factorisation of
+analytic functions on Ug is valid:
+
+(27)         Lp (ğ, h̆)(k) · LKatz
+                               p    (Ψg (k)) = f(k) · LKatz
+                                                       p    (Ψgh (k)) · LKatz
+                                                                         p    (Ψgh0 (k)).
+
+Proof. It suffices to show that (27) holds true for all k ∈ Ug := Ug ∩ Z≥2 , as this is a dense
+subset of Ug for the p-adic topology. Since points in Ug belong to the region of interpolation
+of the four p-adic L-functions appearing in (27), their values are non-zero multiples of critical
+classical L-values. Namely, there are explicit functions Ωi (k), i = 1, . . . , 4, such that
+                                                 
+        Lp (ğ, h̆)(k) = Ω1 (k) · L ğk , h̆, k+1
+                                               2    , LKatz
+                                                       p    (Ψg (k)) = Ω2 (k) · L(Ψ−1
+                                                                                    g (k), 0),
+       LKatz
+        p    (Ψgh (k)) = Ω3 (k) · L(Ψ−1           Katz (Ψ 0 (k)) = Ω (k) · L(Ψ−1 (k), 0).
+                                     gh (k), 0), Lp      gh         4         gh0
+
+   Functions Ωi (k) involve powers of suitable complex and p-adic periods and products of
+Euler-like factors at primes dividing pN . The reader may find completely explicit formulas
+for them in [BDR1, §2] and [DLR, §3.2], respectively. In particular, it is apparent from
+these expressions that each Ωi (k) individually does not interpolate p-adically to a continuous
+function on Ug , thus a fortiori they are not L-admissible at all. However, [DLR, Lemma 3.8]
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                           19
+
+together with a rather tedious but elementary computation show that the ratio
+                                          Ω1 (k)Ω2 (k)
+                                f(k) :=                · L(Ψ−1
+                                                            g (k), 0)
+                                          Ω3 (k)Ω4 (k)
+does vary p-adically continuously, and gives rise to an L-admissible function. We omit the
+details, since the proof of this fact proceeds along similar lines as in [DLR, Theorem 3.9],
+although the calculations are much simpler than in loc. cit. because here we avoid the subtleties
+arising in [DLR] from the choice of test vectors for Garrett’s triple-product L-function.
+   The theorem now follows from (27).                                                          
+  In order to prove Theorem 4.1, we proceed by relating the values at k = 1 of the functions
+appearing in (27) to a p-adic iterated integral and the p-adic logarithm of suitable units. Note
+that
+                                                                                      ψg0
+     Ψgh (1) = ψg−1 · ψh−1 · N, Ψgh0 (1) = ψg−1 · (ψh0 )−1 · N, Ψg (1) = ψg−2 χg N =      N.
+                                                                                      ψg
+  Since for any finite order character ψ of GK , Katz’s p-adic L-function satisfies the functional
+equation
+                                 LKatz
+                                  p    (ψ) = LKatz
+                                              p    ((ψ 0 )−1 NK ),
+Theorem 4.2 specializes to the following formula at k = 1:
+                                              ψg0
+(28)               Lp (ğ, h̆)(k) · LKatz
+                                     p    (       ) = f(1) · LKatz
+                                                              p    (ψ20 ) · LKatz
+                                                                             p    (ψ10 ).
+                                              ψg
+Lemma 4.3. Let gα∗ = gα ⊗ χ−1  g denote the twist of gα under the inverse of its nebentypus.
+There exists a linear functional
+                                  γ̆α : M1 (Ngh p, χ−1     ∗
+                                                    g )L [gα ] −→ L
+
+such that
+                                                                Z
+(29)                            g(χgh ) × Lp (ğ, h̆)(1) =             f · h̆.
+                                                                 γ̆α
+
+Proof. Since the p-adic L-function Lp (ğ, h̆) of [BDR1, §2.2.2] is constructed using the method
+of [DR1], the proof of this statement follows verbatim as in [DLR, Proposition 2.6].           
+   In addition to the above lemma, recall Katz’s p-adic analogue of Kronecker’s limit formula,
+which asserts that for any finite order character ψ of GK , the following equality holds up to
+scalars in L× :
+                                          (
+                                Katz        logp (uψ ) if ψ 6= 1
+(30)                          Lp (ψ) =
+                                            logp (u℘ ) if ψ = 1,
+where uψ and u℘ are as in (21) and (22) respectively.
+  Since f is L-admissible, f(1) is a non-zero scalar in L. Theorem 4.1 follows, as the combi-
+nation of (28), (4.3) and (30) show the sought-after equality
+                                                      logp (uψ10 ) logp (uψ20 )
+                             γ̆α (Ξ(gα , h)) = λ ·
+                                                        g(χgh ) logp (ugα )
+up to some λ ∈ L× .
+Example 4.4. We revisit the setting treated in [DLR, Example 4.3]. Let χ5 and χ31 denote
+the (even and odd, respectively) quadratic Dirichlet characters of conductor 5 and
+                                                                                √ 31, and let
+χ := χ5 · χ31 be the quadratic character attached to the quadratic field K := Q( −155). The
+20                       HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+class group of K is cyclic of order 4, and the two-dimensional representation induced from a
+quartic character ψ of this class group is attached to the weight one cuspidal eigenform
+                   g = θψ = q + q 4 − q 5 − q 9 + q 16 − 2q 19 − · · · ∈ S1 (155, χ).
+The Galois representation %g attached to g has image the dihedral group D4 of order 8, and
+projective
+      √ image isomorphic
+                   √          to the Klein 4-group. It is also induced from quadratic characters
+of Q( 5) and Q( −31) (ramified at a prime above 31 and 5, respectively). In particular,
+the classicality hypothesis for g is satisfied for the prime p precisely when χ5 (p) = −1. Set
+                             (p)
+h := g = g ∗ and let f := E2 (1, 1) be the Eisenstein series of weight 2 and level p attached
+to the trivial character.
+   Although g = h = θψ is cuspidal, the tensor product %gh decomposes as a direct sum
+                                    %gh = 1 ⊕ χ5 ⊕ χ31 ⊕ χ155 ,
+while
+                                   Ad(%g ) = χ5 ⊕ χ31 ⊕ χ155 .
+The period Ωgh of Conjecture
+                           √ 1.2 involves the p-adic logarithms of the fundamental unit u(χ5 )
+of the quadratic field Q( 5) in both its numerator and denominator. This quantity cancels
+out in the conjecture, which then predicts that the iterated integrals attached to (f, g, g)
+should agree
+         √    with the logarithm of the fundamental
+                                             √         p-unit of the imaginary quadratic field
+K = Q( −155), if χ155 (p) = 1 (resp. of Q( −31), if χ31 (p) = 1). The running assumption
+that χ5 (p) = −1 ensures that one is always in precisely one of these two scenarios.
+   The prime p := 7 is inert in K/Q, and the frobenius eigenvalues αg and βg are equal to 1
+and −1 respectively. Letting γ1 and γ−1 denote the associated elements in the dual space of
+S1 (155, χ), we calculate:
+                Z
+                       (7)
+                     E2 (1, 1) · θψ = 4365724287399866821223816 (mod 730 ),
+                  γ±1
+and check to 30 digits of 7-adic precision that
+                             Z
+                                   (7)              log (u7 (χ31 ))
+                                  E2 (1, 1) · θψ = − 7              .
+                              γ±1                         7
+The prime p := 13 splits in K/Q, and the associated frobenius eigenvalues are i and −i. A
+numerical calculation reveals that
+                   Z
+                         (13)
+                       E2 (1, 1) · θψ = 11525893437665284 (mod 1315 ).
+                        γ±i
+One observes, to 15 digits of 13-adic precision, that
+                                                  3 · log13 (u13 (χ155 ))
+                         Z
+                                (13)
+                              E2 (1, 1) · θψ = −                          ,
+                          γ±i                                13
+as predicted by Conjecture 1.2.
+
+           5. Gross-Stark units and theta series of real quadratic fields
+     The setting in which
+(31)                                   g := θψg ,        h := θψh
+are induced from characters ψg and ψh of (the same) mixed signature of a common real
+quadratic field K is of special interest, since in that case %gh factors through the Galois
+group of an abelian extension of K. For instance, when (31) holds, the representation Vgh
+decomposes as a direct sum
+                         Vgh = Vψ+ ⊕ Vψ− ,          ψ + := ψg ψh ,   ψ − := ψg ψh0
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                 21
+
+of two induced representations by characters ψ + and ψ − of K which are totally even and
+totally odd respectively.
+   If Vψ+ is irreducible, it occurs with multiplicity two in the unit group, and hence dgh = 2.
+If p is any prime satisfying the regularity hypothesis for g, then necessarily p is inert in K and
+therefore αg = −βg , and likewise for αh and βh . The period Ωgh of Conjecture 1.2 is predicted
+to be non-zero precisely when βg αh 6= ±1 and βg βh 6= ±1. This period then involves, in its
+numerator, a p-adic regulator formed from genuine units in the ψ + and (ψ + )0 components of
+the unit group of an appropriate abelian extension of K. The unit ugα which appears in the
+denominator in the definition of Ωgh is just the p-adic logarithm of a fundamental unit uK of
+K, in light of the regularity hypothesis which implies that the prime p is inert in K. (Cf. case
+(b) in the proof of Lemma 1.5 in Sec. 1.2 of [DLR].) We have not tested any instance of this
+general conjecture numerically, and it might be interesting to do so.
+   In the special case where ψh = ψg−1 , the character ψ + is trivial and ψ − = ψg /ψg0 is a ring
+class character of K. The abelian extension H of K cut out by ψ − is Galois over Q and
+Gal (H/Q) is a generalised dihedral group. The regularity hypothesis for p, which forces p
+to be inert in K/Q, implies that the frobenius element at p acts on Vψ− with eigenvalues
+1 and −1, and hence the Artin representation Vψ− occurs with multiplicity 1 in the space
+C ⊗ OH [1/p]× . The p-units in this abelian extension are precisely the Gross-Stark units
+studied in [DD], and the regulator of Conjecture 1.2 involves the p-adic logarithms of such
+units. There is also the p-adic logarithm of a fundamental unit of K, which is in the minus
+eigenspace for the action of the frobenius automorphism at p, and which appears in both
+the numerator and the denominator and thus cancels out. The transcendental part of the
+period Ωgh therefore involves only the p-adic logarithms of a p-unit u+       −
+                                                                          p (ψ ), which is in the
+Vψ− -component of OH [1/p]× and is fixed by the frobenius element at p. The next example
+illustrates this special instance of Conjecture 1.2:
+                                √
+Example 5.1. Let K = Q( 5) be the real quadratic field attached to the even Dirichlet
+character χ5 of conductor 5, and let ψ be a quartic character of K whose conductor is one of
+the primes of K above 29. The central character χ29 of ψ is an odd quartic Dirichlet character
+of conductor 29. Let χ := χ5 χ29 , and let
+       g := θψ = q − iq 4 + iq 5 − iq 9 + (i − 1)q 11 − q 16 + (i − 1)q 19 + · · · ∈ S1 (5 · 29, χ)
+be the weight one modular form considered in [DLR, Example 4.1], whose Galois representa-
+tion agrees with the induced representation Vψ . After setting h := g ∗ = θψ−1 , we have
+                                      Vgh = 1 ⊕ χ5 ⊕ Vψ− ,
+                                                         √
+where ψ − = ψ/ψ 0 is a quartic ring class character of Q( 5). The induced representation Vψ−
+has image the dihedral group D4 of order 8, and is notable in that it cannot be obtained as
+the induced representation of the character of any imaginary quadratic field.
+   Set p := 13 and choose the embedding of Q(i) into Q13 sending i to the unique 4th root
+of −1 which is congruent to 5 modulo 13. One finds that χ(13) = 1 and (αg , βg ) = (i, −i).
+               (13)
+Letting f := E2 (1, 1) , one computes
+              Z
+                     (13)
+                    E2 (1, 1) · θψ−1 = −7724370085026350688358 (mod 1320 ).
+                γ±i
+
+Let
+        H := Q(a) where a8 − 2a7 + 4a6 − 26a5 + 94a4 − 212a3 + 761a2 − 700a + 980.
+This is the quartic subfield of the ring class field of K of conductor 29, which is cut out by
+ψ − . Let
+      b := (−27a7 + 116a6 − 196a5 + 738a4 − 3602a3 + 11256a2 − 22295a + 53310)/5160,
+22                        HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+denote the 13-unit of H satisfying the quartic polynomial x4 −11x3 +20x2 +89x+169. Writing
+Gal (H/K) = hσi, and defining u+         −        σ2
+                                    13 (ψ ) := b/b , we have verified that
+                       Z
+                               (13)                  3                   −
+                             E2 (1, 1) · θψ−1 =           · log13 (u+
+                                                                    13 (ψ )),
+                         γ±i                       2 · 13
+to 20-digits of 13-adic precision.
+     The setting in which
+(32)                                g := θψg ,      h := E1 (1, χ−1
+                                                                 g )
+
+is also of great relevance for explicit class field theory for K, since in that case
+                                    Vgh = Vψg ⊕ Vψg−1 = Vg ⊕ Vg∗ .
+                                                                         ×
+Let u(ψg ), u(ψg0 ), u(ψg−1 ), and u(ψg0 ) denote the generators in L ⊗ OH g
+                                                                             for the relevant
+eigencomponent relative to the action of Gal (Hg /K). Since the prime p is inert in K, these
+four units can be chosen in such a way that
+                            Frp u(ψg ) = u(ψg0 ),     Frp u(ψg−1 ) = u(ψg0−1 ).
+Example 5.2. Let g be the cusp form in level 145 from Example 5.1 but now take
+                            h := E1 (1, χ) = (i + 1) + q + · · · + 2q 13 + · · ·
+to be the Eisenstein series of weight 1 attached to the pair of characters (1, χ). The Artin
+representation %gh is then given by
+                                    Vgh = Vψg ⊕ Vψg−1 = Vg ⊕ Vg∗ .
+
+The smallest abelian extension Hg of K cut out by the representation Vg (and/or Vg∗ ) is larger
+than the ring class field H of degree 8 over Q that arose in Example 5.1: it is the ray class
+field of K of conductor
+                                      √             √
+                         (29) = (29, 2 5 + 17)(29, 2 5 + 10) =: Q1 Q2 ,
+and has degree 32 over Q. The field Hg = Hg∗ is the compositum of the ray class fields H1
+and H2 of K of conductors Q1 and Q2 , these ray class fields being the abelian extensions of
+K cut out by the characters ψg and ψg0 respectively.
+  A calculation with Magma reveals that Hg can be described as the splitting field of the
+polynomial
+                 x8 − x7 − 3x6 + 3x5 + 3x4 − 6x3 − 2x2 + 3x + 1 = P1 (x)P2 (x),
+where                       √                         √
+                      4  (− 5 − 1) 3       2       (− 5 + 3)
+            P1 (x) = x +            x −x +x+                   ,    P2 (x) = τ P1 (x),
+                              2                         2
+and τ denotes the generator of Gal (K/Q). The ray class fields H1 and H2 are just the
+splitting fields over K of the irreducible quartic factors P1 (x) and P2 (x) above with cyclic
+Galois group. Hence, H1 = K(u1 ) and H2 = K(u2 ), where u1 and u2 are roots of P1 (x) and
+P2 (x) respectively. We define
+                             1 √                        1 √      
+                       v1 :=    − 5 − 1 u21 ,      v2 :=       5 − 1 u22 .
+                             2                            2
+Letting σ1 denote a generator of Gal (H1 /K), we have
+                             v1 = (σ12 (v1 ))−1 ,     σ1 (v1 ) = (σ13 (v1 ))−1 ,
+                        GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                      23
+
+and the unit v1 and its Gal (H1 /K)-translates σ1 v1 , σ12 v1 , σ13 v1 generates the compositum of
+                                                   ×
+the ψg and ψg−1 -isotypic parts in the unit group OH 1
+                                                       . More precisely, using additive notation
+         ×
+in L ⊗ OHg , the elements
+                            v(ψg ) := v1 + i ⊗ v1σ1 ,      v(ψg0 ) := v2 + i ⊗ v2σ2
+generate the ψg and ψg0 eigenspaces respectively for the action of Gal (Hg /K), while the
+elements
+                  v(ψg−1 ) := v1 − i ⊗ v1σ1 , v((ψg0 )−1 ) := v2 − i ⊗ v2σ2
+generate the ψg−1 and (ψg0 )−1 -eigenspaces for this action.
+  Assume that p is inert in K and that αg = −βg = i. After fixing v1 and v2 in such a way
+that Frp (v1 ) = v2 , a direct calculation reveals that the regulator matrix Rgi (%gh ) is a diagonal
+matrix of the form
+                         logp (v(ψg )) − i logp (v(ψg0 ))
+                                                                                                 
+                                                                            0
+       Rgi (%gh ) =                                                                                 ,
+                                        0                 logp (v(ψg−1 )) − i logp (v((ψg0 )−1 ))
+while
+                            logp (v(ψg )) + i logp (v(ψg0 ))
+                                                                                                    
+                                                                             0
+        Rg−i (%gh ) =                                                                                    .
+                                           0                 logp (v(ψg )) + i logp (v((ψg0 )−1 ))
+                                                                      −1
+
+   Let p := 13 and embed Q(i) into Qp so that i ≡ 5 mod p. A numerical calculation of the
+p-adic iterated integrals reveals that
+            R      (13)                                                     20
+              γ+i E2 (1, 1) · E1 (1, χ) = −8501755713365462060121 (mod 13 )
+            R      (13)                                                  20
+              γ−i E2 (1, 1) · E1 (1, χ) = 4274893846350140558653 (mod 13 ).
+
+  After further embedding H1 and H2 into Qp4 in such a way that σp (v1 ) = v2 , one finds that
+                                          (7i + 6)2 · det Rgi (%gh )
+                     Z
+                          (13)
+                         E2 (1, 1) · h =
+                      γi                  3 · 8 · 7 · 13 · log13 (uK )
+                                          (−7i + 6)2 · det Rg−i (%gh )
+                    Z
+                          (13)
+                         E2 (1, 1) · h =                                 ,
+                     γ−i                    3 · 8 · 7 · 13 · log13 (uK )
+to 20-digits of 13-adic precision.
+   The analogous setting to that in Example 5.2 with Mordell-Weil groups replacing groups of
+units was discussed in [DLR, Section 6]. However, this case of the “Elliptic Stark Conjecture”
+was difficult to check experimentally because of the apparent scarcity of elliptic curves E
+for which r(E, %g ) > 0, and no evidence was given in [DLR] (beyond the case when g = g ∗ ).
+Example 5.2 can be seen as providing some indirect evidence for the main conjecture of [DLR],
+albeit with unit groups replacing Mordell-Weil groups.
+
+                                             6. Exotic forms
+   Cases where g and/or h are exotic forms often correspond to settings that have been little
+studied previously from the point of view of either the classical or the p-adic Stark conjectures.
+   One of the simplest settings occurs when g is exotic and h = g ∗ is the dual form. The
+Artin representation %gh then factors through the extension H cut out by the projective
+representation attached to g, and it decomposes as
+                                             Vgh = 1 ⊕ Ad0 (Vg ).
+                                                                                 ×
+The adjoint representation Ad0 (Vg ) always occurs with multiplicity one in C ⊗ OH , and with
+                                          ×
+multiplicity at least two in C ⊗ OH [1/p] , since 1 always arises as an eigenvalue for any
+linear transformation on the adjoint. More precisely, the frobenius automorphism Frp acts
+24                      HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+on Ad0 (Vg ) with eigenvalues 1, αg /βg and βg /αg . When Ad0 (Vg ) is regular at p, there are
+therefore (unique up to scaling) elements
+                                                              ×
+(33)                                    u1 , ugα , ugβ ∈ L ⊗ OH
+                                       ×
+generating a subrepresentation of L ⊗ OH which is isomorphic to Ad0 (Vg ), and such that
+             Frp u1 = u1 ,      Frp ugα = (βg /αg ) ⊗ ugα ,       Frp ugβ = (αg /βg ) ⊗ ugβ .
+Likewise, the choice of a Galois-equivariant homomorphism v : Vgh −→L ⊗ (OH [1/p])× whose
+                                 ×
+image is not contained in L ⊗ OH   produces three independent p-units
+(34)                                v1 , vgα , vgβ ∈ L ⊗ (OH [1/p])×
+satisfying
+              Frp v1 = v1 ,     Frp vgα = (βg /αg ) ⊗ vgα ,      Frp vgβ = (αg /βg ) ⊗ vgβ .
+These units are the counterparts of the Stark points considered in [DLR, Example 5.3].
+  A simple calculation reveals that
+                                                            
+                                           logp u1 logp ugα
+                            Rgα (%gh ) =                       ,
+                                           logp v1 logp vgα
+and therefore that the period Ωgh of Conjecture 1.2 can be described in this case by
+                                      logp u1 logp vgα − logp ugα logp v1
+(35)                          Ωgh =                                       .
+                                                    logp ugα
+Example 6.1. This example examines this special case of Conjecture 1.2 when g is Tate’s
+tetrahedral form in level 133. Recall the following from [DLR, Example 5.3]: Let χ be a
+Dirichlet character of level 133 = 7 · 19 of order 2 at 7 and order 3 at 19. Denote by ζ a
+primitive 12-th root of unity and define ζ3 := ζ −4 . Then S1 (133, χ) is defined over Q(ζ3 ) and
+has dimension two. It contains two eigenforms defined over Q(ζ), namely
+h = q + (ζ 2 − 1)q 2 − ζq 3 + ζq 5 + (−ζ 3 + ζ)q 6 + ζ 3 q 7 − q 8 + (ζ 3 − ζ)q 10 + (−ζ 3 + ζ)q 13 − · · ·
+and its Galois conjugate obtained by replacing ζ by −ζ. Let g = h∗ , the twist of h by χ−1 .
+The extension H of Q cut out by the projective representation attached to g is the normal
+closure of the quartic field
+                              M := Q(w),         w4 + 3w2 − 7w + 4 = 0,
+which has discriminant 1332 and Galois group A4 over Q.
+  As in [DLR, Example 5.3], with p := 13 we find the two 13-stabilisations gα and gβ of g
+have Up -eigenvalues αg = ζ −1 and βg = ζ 3 , and choose the embedding of Q(ζ) into Q13 which
+sends ζ to the 12th root of unity which is congruent to 6 modulo 13.
+                   (13)
+  Letting f := E2 (1, 1) be the Eisenstein series of weight 2 and level 13, and letting γα be
+the element of the dual space of S2 (133 · p, χ)[gα ] sending gα to 1, (and likewise for γβ , with
+gα replaced by gβ ), we find
+                      (13)
+                    E (1, 1) · g = 7956424094204877500900 (mod 1320 )
+               R
+               Rγα 2(13)                                                       20
+                 γβ E2 (1, 1) · g = −5574982888910767132405 (mod 13 ).
+     Define the unit and 13-unit
+                                           ×
+                            u := −b + 1 ∈ OM
+                            v := 6b + 3b + 22b − 21 ∈ OM [1/p]× ,
+                                   3    2
+
+respectively. One may choose an embedding of H into Q133 so that u1 := u and v1 := v lie in
+Q13 and so are fixed by σ13 . Let
+                                  × Adg                             × Adg
+                                                                    
+                     ugα , ugβ ∈ OH   L
+                                        ,   vg α , vg β
+                                                        ∈ O H [1/p]    L
+                     GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                25
+
+be the units and p-units described in terms of u and v in (33) and (34). The unit uαg (resp. uβg )
+lies in the βg /αg = ζ3−1 eigenspace (resp. the αg /βg = ζ3 eigenspace) for Frp , and likewise for
+the p-units vαg and vβg .
+   To 20-digits of 13-adic precision we have found
+                                          logp (u1 ) logp (vgα ) − logp (v1 ) logp (ugα )
+                 Z
+                       (13)
+                     E2 (1, χ−1 ) · g = −
+                  γα                                     13 · logp (ugα )
+and likewise replacing α by β throughout.
+   This example is of a similar flavour to [DLR, Example 5.4, curves 26b, 52a]. Indeed, it
+pre-dates the rank 2 examples in [DLR] and was the experiment which led to the first serious
+evidence for (and correct formulation of) the “Elliptic Stark conjecture” of [DLR] in the more
+striking, but harder to test scenarios of “genuine rank two”.
+   Our final example involves a scenario where Vgh is an irreducible 4-dimensional represen-
+tation, occuring with multiplicity two in the group of p-units. It is worth noting that no
+instances of this sort were ever successfuly tested numerically in the elliptic curve setting con-
+sidered in [DLR], owing to the apparent scarcity of irreducible Vgh of manageable size occuring
+with multiplicity two in the Mordell-Weil groups of elliptic curves of reasonable conductor.
+In the setting of units, such examples abound, since any irreducible Vgh has multiplicity two
+in the unit group. The experiment below can thus also be viewed as providing some indirect
+support for the elliptic Stark conjecture of [DLR] in the numerically less accessible setting
+where %gh is irreducible.
+Example 6.2. Let χ be the quadratic Dirichlet character of level 283. The space S1 (283, χ)
+is 3-dimensional and spanned by the eigenforms
+  g = q + q√4 − q 7 + √
+                      q 9 − q 11 − q 13 + 16
+                                        √q −   q 23 + · · ·      √
+ h± = q ± −2q ∓ −2q − q ∓ −2q + 2q 6 − q 7 − q 9 + 2q 10 + q 11 ± −2q 12 + · · · .
+                 2           3     4         5
+
+The pair h± are exotic forms whose associated projective representations have image S4 ,
+and g is the dihedral form who representation
+                                 √             %g is induced from an unramified character of
+the imaginary quadratic field Q( −283) (which has class number 3). The representation %g
+is obtained by composing the projective representation attached to %h with the exceptional
+homomorphism S4 −→S3 . This is precisely the set-up of Lemma 2.3, which asserts that %gh is
+irreducible and induced from a suitable quadratic character η of a quartic extension K of Q.
+The quartic field K occuring in this lemma, whose Galois closure H̄h is the S4 -extension cut
+out by the projective representation attached to the exotic forms h± , is equal in this case to
+                                 K = Q(a),           a4 − a − 1 = 0.
+The quadratic extension M of K cut out by η is given by
+                          M := K(b) where b2 = −6a3 + a2 − 3a + 5.
+The elements
+                    u := 12 (−a3 + a2 − a + 1)b + 21 (−4a3 + 3a2 − 2a + 4)
+
+                    v := 12 (a3 − 2a)b + 12 (a2 + 2a − 3)
+are relative units in M/K, and hence their Galois translates generate the %gh -isotypic com-
+ponents of the unit group of Hh . In additive notation let
+                                                    7
+                                        ζ8±1                      j
+                                                    X
+                                       u       :=         ζ8± juFrp
+                                                    j=0
+                                                                              √
+and likewise for v ±ζ8 . Here ζ8 is a primitive 8th root of unity such that       −2 = ζ83 + ζ8 .
+26                      HENRI DARMON, ALAN LAUDER AND VICTOR ROTGER
+
+                                                                              (5)
+  Let p := 5, so that χ(5) = −1 and αg = −βg = 1. Taking f = E2 (1, 1), one computes
+                                                                               √ 
+ Z
+       (5)
+     E2 (1, 1) · h± = 1365364418900524107116682 ± 982832041040545110371696 −2 /5
+     γ+1
+
+to 35-digits of 5-adic precision (and likewise for the −1-stabilisation, replacing ± on the right-
+hand side by ∓), after choosing an embedding of Q(ζ8 ) and H into Qp . A direct calculation
+shows that in this example,
+                                                          −1             −1
+                    det Rgα (%gh ) = logp (uζ8 ) logp (v ζ8 ) − logp (uζ8 ) logp (v ζ8 ).
+   As for the Stark unit ugα occuring in the denominator
+                                                  √            of the period Ωgh of Conjecture 1.2
+when βg /αg = −1, the Hilbert class field of Q( −283) is generated by an algebraic number w
+satisfying the relation w3 − 16w2 − 8w − 1 = 0. The unit ugα is then described, using additive
+notation, by the formula
+                                                          2
+                                         ugα := wFrp − wFrp
+where an embedding of the Hilbert class field into Qp2 has been fixed so that w is defined over
+Qp . It has been verified experimentally that
+                                                                      −1            −1
+                            19ζ83 + 34ζ82 − 19ζ8 log5 (uζ8 ) log5 (v ζ8 ) − log5 (uζ8 ) log5 (v ζ8 )
+     Z
+            (5)
+          E2 (1, 1) · h− =                       ·
+      γ+1                         25 · 32 · 5                         log5 (ugα )
+to 35 digits of 5-adic precision, in excellent agreement with Conjecture 1.2.
+
+                                              References
+[BCDDPR] M. Bertolini, F. Castella, H. Darmon, S. Dasgupta, K. Prasanna and V. Rotger. p-adic L-functions
+         and Euler systems: a tale in two trilogies, Proceedings of the 2011 Durham symposium on Au-
+         tomorphic forms and Galois representations, London Math. Society Lecture Notes 414, (2014)
+         52–101.
+[BD2]    M. Bertolini and H. Darmon, Kato’s Euler system and rational points on elliptic curves I: A p-adic
+         Beilinson formula. Israel J. Math. 199 (2014), 163–188.
+[BDR1]   M. Bertolini, H. Darmon and V. Rotger, Beilinson-Flach elements and Euler Systems I: syntomic
+         regulators and p-adic Rankin L-series, J. Algebraic Geometry 24 (2015), 355–378.
+[BDR2]   M. Bertolini, H. Darmon and V. Rotger, Beilinson-Flach elements and Euler systems II: The Birch
+         and Swinnerton-Dyer conjecture for Hasse-Weil-Artin L-series, J. Algebraic Geometry 24 (2015),
+         569–604.
+[BeDi]   J. Bellaı̈che and M. Dimitrov, On the eigencurve at classical weight one points, accepted to Duke
+         Math. J.
+[CD]     P. Charollois and H. Darmon. Arguments des unités de Stark et périodes de séries d’Eisenstein.
+         Algebra and Number Theory 2 (2008) no. 6, 655–688.
+[Dar]    H. Darmon, Integration on Hp × H and arithmetic applications. Annals of Math. (2) 154 (2001),
+         no. 3, 589–639.
+[DD]     H. Darmon and S. Dasgupta, Elliptic units for real quadratic fields, Annals of Math. (2) 163
+         (2006), no. 1, 301–346.
+[deS]    E. de Shalit, Iwasawa theory of elliptic curves with complex multiplication. p-adic L-functions.
+         Perspectives in Mathematics 3, Academic Press, Inc., Boston, MA, 1987.
+[DL]     H. Darmon and A. Logan. Periods of Hilbert modular forms and rational points on elliptic curves,
+         International Math. Res. Not. 40 (2003), 2153–2180.
+[DLR]    H. Darmon, A. Lauder and V. Rotger, Stark points and p-adic iterated integrals attached to modular
+         forms of weight one, submitted.
+[DP]     H. Darmon and R. Pollack, Efficient calculation of Stark-Heegner points via overconvergent modular
+         symbols, Israel J. Math. 153:1 (2006), 319–354.
+[DR1]    H. Darmon and V. Rotger, Diagonal cycles and Euler systems I: A p-adic Gross-Zagier formula,
+         Annales Sc. Ecole Norm. Supérieure, 47 no. 4 (2014) 779–832.
+[DR2]    H. Darmon and V. Rotger, Diagonal cycles and Euler systems II: the Birch and Swinnerton-Dyer
+         conjecture for Hasse-Weil-Artin L-series, submitted.
+[Das]    S. Dasgupta, Stark’s conjectures, Senior Master Thesis, Harvard University 1999.
+[DS]     P. Deligne, J.-P. Serre, Formes modulaires de poids 1, Ann. Sc. École N. Sup. 7 (1974), 507–530.
+                      GROSS-STARK UNITS AND p-ADIC ITERATED INTEGRALS                                     27
+
+[Gro]      B. Gross, On the factorization of p-adic L-series, Invent. Math. 57, No. 1, 83–95 (1980).
+[Katz1]    N. M. Katz, p-adic interpolation of real analytic Eisenstein series, Annals of Math. 104, no. 3
+           (1976), 459-571.
+[La]       A. Lauder. Efficient computation of Rankin p-adic L-functions, in “Computations with Modular
+           Forms”, G. Böckle and G. Wiese (eds), Springer, 2014, 181-200.
+[Se]       J.-P. Serre. Modular forms of weight one and Galois representations, in “Algebraic number fields:
+           L-functions and Galois properties”. (Proc. Sympos., Univ. Durham, Durham, 1975) pp. 193–286.
+           Academic Press, London, 1977.
+[Sta]      H.M. Stark, L-functions at s = 1. II. Artin L-functions with Rational Characters, Advances Math.
+           17 (1975), 60–92.
+[Ste1]     G.H. Stevens, The cuspidal group and special values of L-functions, Transactions Amer. Math.
+           Soc. 291 (1985), no. 2., 519–550.
+[Ste2]     G.H. Stevens, The Eisenstein measure and real quadratic fields, Théorie des nombres (Quebec,
+           1987), 887–927, de Gruyter, Berlin, 1989.
+[Ste3]     G.H. Stevens, K-theory and Eisenstein series, preprint, 2007.
+[Ta]       J. Tate. Les conjectures de Stark sur les Fonctions L d’Artin en s = 0. Progress in Math. Vol. 47,
+           Birkhäuser, 1984.
+
+   H. D.: McGill University, Montreal, Canada
+   E-mail address: darmon@math.mcgill.ca
+
+   A. L.: University of Oxford, U. K.
+   E-mail address: lauder@maths.ox.ac.uk
+
+   V. R.: Universitat Politècnica de Catalunya, Barcelona, Spain
+   E-mail address: victor.rotger@upc.edu
+

@@ -1,0 +1,24 @@
+MB WAVY-CONTOUR — SUMMARY (detail in mb_contour_results.txt)
+
+Cauchy gate: PASS. Kernel engine == house grids (2e-16) and mp.besselk;
+swap-order |V|==J_house(nu*=8) on 18 cells; value invariance under 3 random
+admissible waves at quadrature zero; F/H profile invariance < 1e-9 over the
+full mesh argument range; baselines 1.257/1.150 reproduced.
+
+READING (i) [measured]: the gamma surface is contour-invariant BY CAUCHY —
+certified (winner-wave mesh recheck |dgamma| = 3e-12). Spread
+stays 1.257 for every admissible wavy contour: verdict (b) NO IMPROVEMENT.
+Third and exact certification: the 0.441 invariant is contour-robust; sigma*
+is NOT a straight-line artifact. ((a) was theorem-blocked from the start —
+the wall lives in the window/cost, not the contour value.)
+
+READING (ii) [measured]: cancellation cost ln C baseline mean 0.68 std 0.42;
+shared-wave spread 0.424 -> 0.339 (J=4); per-cell median ln C 0.68 -> 0.22 (rho=0.68):
+PARTIAL (c): a genuine new floor, reported per cell in results.
+Steepest-descent alignment: NOT aligned.
+Controls: transport R=1.06 PASS; scrambled FAIL (generic); doubling PASS; mesh drift 0.100.
+
+Flags: reading (ii) is defined at nu*=8 on the 80x80 published mesh (C is a
+property of the discretized representation); optimizer results are upper
+bounds; amplitude budget 0.9 (pole margins 0.10/0.30) — larger waves would
+exit the pole-free strip and are NOT Cauchy-legal.

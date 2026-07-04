@@ -1,0 +1,351 @@
+carrier_lockin.py -- lock-in source attribution instrument   [2026-07-03 19:15:17]
+canonical model: /Users/samuellavery/work/helix_frobenius/phasor_explorer/model.py
+
+GATE 0: canonical model self-test (untouched) ...
+GATE 0: PASS
+
+sieving Omega(n) to N = 1,376,047 ...
+GATE 1: Jacobi-Anger identity on the canonical bank's angles (chi3 g1, N=3102)
+  k=1 phi=0.00: per-phasor max |warp - Bessel(M=10)| = 2.24e-16   bank-level |F_warp - F_JA| = 1.06e-15
+  k=1 phi=0.70: per-phasor max |warp - Bessel(M=10)| = 3.33e-16   bank-level |F_warp - F_JA| = 1.13e-15
+  k=2 phi=0.00: per-phasor max |warp - Bessel(M=10)| = 2.24e-16   bank-level |F_warp - F_JA| = 2.99e-16
+  k=2 phi=0.70: per-phasor max |warp - Bessel(M=10)| = 3.33e-16   bank-level |F_warp - F_JA| = 5.33e-16
+GATE 1: PASS (the warped canonical bank IS a Bessel-weighted twist family)
+GATE 2a: exact reuse -- bank(1/2+i*gamma) == model focal channel B (grow window)
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5   |F - B_model| = 6.94e-16
+  chi5    g1 gamma=   6.6485 N=     772 tau=96.5   |F - B_model| = 4.49e-16
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75   |F - B_model| = 1.07e-15
+  chi4    g2 gamma=  10.2438 N=   28107 tau=400   |F - B_model| = 4.36e-15
+  chi3    g2 gamma=  11.2492 N=   76819 tau=400   |F - B_model| = 1.06e-15
+  trivial g1 gamma=  14.1347 N= 1376047 tau=400   |F - B_model| = 1.33e-12
+GATE 2a: PASS
+GATE 2b: unwarped roots sit at the model's predicted zeros (truncation residual only)
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5   root = +0.500101+6.020778i   |root - (1/2+i*gamma_model)| = 1.99e-04
+  chi5    g1 gamma=   6.6485 N=     772 tau=96.5   root = +0.499804+6.648372i   |root - (1/2+i*gamma_model)| = 2.12e-04
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75   root = +0.500009+8.039732i   |root - (1/2+i*gamma_model)| = 1.06e-05
+  chi4    g2 gamma=  10.2438 N=   28107 tau=400   root = +0.499999+10.243770i   |root - (1/2+i*gamma_model)| = 6.06e-07
+  chi3    g2 gamma=  11.2492 N=   76819 tau=400   root = +0.500000+11.249204i   |root - (1/2+i*gamma_model)| = 1.83e-06
+  trivial g1 gamma=  14.1347 N= 1376047 tau=400   root = +0.500000+14.134725i   |root - (1/2+i*gamma_model)| = 1.16e-09
+GATE 2b: PASS
+GATE 3 (Part C): isometry -- pure phase warps leave every state magnitude and all
+  diagonal state norms (l2 energy, model A channel, P/M lane masses) invariant
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75   state-l1 mass vs model A channel: rel diff = 0.00e+00
+    k=1 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=2 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=3 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=3 phi=1.57   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    scrambled      per-state 2.2e-16  l2 0.0e+00  A 0.0e+00  P 2.0e-16  M 0.0e+00
+  trivial g1 gamma=  14.1347 N= 1376047 tau=400   state-l1 mass vs model A channel: rel diff = 0.00e+00
+    k=1 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=2 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=3 phi=0.00   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+    k=3 phi=1.57   per-state 0.0e+00  l2 0.0e+00  A 0.0e+00  P 0.0e+00  M 0.0e+00
+GATE 3: PASS (worst deviation 2.2e-16; scrambled warp is ALSO isometric)
+
+====================================================================================================
+PART A: LOCK-IN SOURCE ATTRIBUTION -- measured response vs first-order sideband prediction
+  droot: root shift (complex, s-plane); dval: readout change at the unwarped root
+  tracked (pre-registered): rel err <= 2.5*eps; (k=3,phi=0) = exact-null harmonic (abs test)
+  verdicts split: VALUE law (the lock-in observable) vs SHIFT law (root tracking)
+====================================================================================================
+
+FEATURE chi4    g1 gamma=   6.0209 N=     412 tau=51.5   |F'(root)| = 1.3099
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   +0.0003208588+0.0068774841i +0.0004358897+0.0069373972i   0.0187   9.02e-03/9.11e-03   0.0101  shift:ok val:ok
+   1  0.00  0.05   +0.0003556019+0.0169493630i +0.0010897244+0.0173434929i   0.0479   2.22e-02/2.28e-02   0.0254  shift:ok val:ok
+   2  0.00  0.02   +0.0140831169+0.0482230526i +0.0088153713+0.0505272385i   0.1121   6.71e-02/6.72e-02   0.0014  shift:MISS val:ok
+   2  0.00  0.05   +0.0477166075+0.1070895394i +0.0220384283+0.1263180962i   0.2502   1.67e-01/1.68e-01   0.0037  shift:MISS val:ok
+   3  0.00  0.02   +0.0000000000-0.0000000000i +0.0000000000+0.0000000000i       --   2.67e-17/2.84e-17       --  NULL-exact
+   3  0.00  0.05   +0.0000000000-0.0000000000i +0.0000000000+0.0000000000i       --   6.68e-17/7.11e-17       --  NULL-exact
+   3  1.57  0.02   -0.0166030509-0.1011046542i -0.0369000803-0.0900545614i   0.2256   1.27e-01/1.27e-01   0.0001  shift:MISS val:ok
+   3  1.57  0.05   +0.0240672882-0.2262852665i -0.0922502006-0.2251364035i   0.4781   3.19e-01/3.19e-01   0.0004  shift:MISS val:ok
+
+FEATURE chi5    g1 gamma=   6.6485 N=     772 tau=96.5   |F'(root)| = 1.6329
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   +0.0000560036+0.0106919785i +0.0001612544+0.0109558072i   0.0259   1.78e-02/1.79e-02   0.0094  shift:ok val:ok
+   1  0.00  0.05   -0.0002740503+0.0258207907i +0.0004031359+0.0273895180i   0.0624   4.42e-02/4.47e-02   0.0236  shift:ok val:ok
+   2  0.00  0.02   -0.0075896267+0.0259709391i -0.0095798223+0.0246322970i   0.0886   4.31e-02/4.32e-02   0.0039  shift:MISS val:ok
+   2  0.00  0.05   -0.0097931542+0.0669459010i -0.0239495557+0.0615807426i   0.2238   1.08e-01/1.08e-01   0.0098  shift:MISS val:ok
+   3  0.00  0.02   +0.0000000000+0.0000000000i -0.0000000000+0.0000000000i       --   1.03e-17/1.22e-17       --  NULL-exact
+   3  0.00  0.05   +0.0000000000+0.0000000000i -0.0000000000+0.0000000000i       --   2.58e-17/3.04e-17       --  NULL-exact
+   3  1.57  0.02   +0.0143191124-0.0369206809i +0.0120098357-0.0394263944i   0.0827   6.73e-02/6.73e-02   0.0001  shift:MISS val:ok
+   3  1.57  0.05   +0.0399742892-0.0831546875i +0.0300245892-0.0985659861i   0.1780   1.68e-01/1.68e-01   0.0004  shift:MISS val:ok
+
+FEATURE chi3    g1 gamma=   8.0397 N=    3102 tau=387.75   |F'(root)| = 1.1672
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   -0.0001315418+0.0055066411i -0.0001099996+0.0053305796i   0.0322   6.45e-03/6.22e-03   0.0406  shift:ok val:ok
+   1  0.00  0.05   -0.0004034448+0.0143620338i -0.0002749991+0.0133264491i   0.0726   1.70e-02/1.56e-02   0.0963  shift:ok val:ok
+   2  0.00  0.02   +0.0116148505+0.0715665235i -0.0019698919+0.0833944389i   0.2159   9.76e-02/9.74e-02   0.0026  shift:MISS val:ok
+   2  0.00  0.05   +0.0418909119+0.1416737138i -0.0049247299+0.2084860973i   0.3912   2.45e-01/2.43e-01   0.0064  shift:MISS val:ok
+   3  0.00  0.02   +0.0000000000-0.0000000000i -0.0000000000-0.0000000000i       --   5.16e-17/5.40e-17       --  NULL-exact
+   3  0.00  0.05   +0.0000000000-0.0000000000i -0.0000000000-0.0000000000i       --   1.29e-16/1.35e-16       --  NULL-exact
+   3  1.57  0.02   +0.0844690942-0.0697494742i +0.0916874694-0.1088281713i   0.2793   1.66e-01/1.66e-01   0.0001  shift:MISS val:ok
+   3  1.57  0.05   +0.1732861060-0.1233609219i +0.2292186736-0.2720704284i   0.4466   4.15e-01/4.15e-01   0.0004  shift:MISS val:ok
+
+FEATURE chi4    g2 gamma=  10.2438 N=   28107 tau=400   |F'(root)| = 1.8129
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   -0.0001777390+0.0046158122i +0.0000293069+0.0046675188i   0.0457   8.44e-03/8.46e-03   0.0158  shift:ok val:ok
+   1  0.00  0.05   -0.0011969977+0.0113145578i +0.0000732672+0.0116687970i   0.1130   2.10e-02/2.12e-02   0.0396  shift:ok val:ok
+   2  0.00  0.02   -0.0039908095+0.0390156284i -0.0109261927+0.0375876962i   0.1805   7.10e-02/7.10e-02   0.0019  shift:MISS val:ok
+   2  0.00  0.05   +0.0099105017+0.0878931326i -0.0273154818+0.0939692405i   0.3854   1.77e-01/1.77e-01   0.0047  shift:MISS val:ok
+   3  0.00  0.02   -0.0000000000-0.0000000000i -0.0000000000+0.0000000000i       --   1.12e-17/1.11e-17       --  NULL-exact
+   3  0.00  0.05   -0.0000000000-0.0000000000i -0.0000000000+0.0000000000i       --   2.81e-17/2.78e-17       --  NULL-exact
+   3  1.57  0.02   +0.0168935713-0.0461432386i +0.0102574619-0.0510727527i   0.1587   9.44e-02/9.44e-02   0.0001  shift:MISS val:ok
+   3  1.57  0.05   +0.0503385667-0.0958325087i +0.0256436547-0.1276818817i   0.3095   2.36e-01/2.36e-01   0.0004  shift:MISS val:ok
+
+FEATURE chi3    g2 gamma=  11.2492 N=   76819 tau=400   |F'(root)| = 1.6407
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   -0.0035047872+0.0049371395i -0.0030287846+0.0048836762i   0.0791   9.52e-03/9.43e-03   0.0194  shift:MISS val:ok
+   1  0.00  0.05   -0.0108882156+0.0123443064i -0.0075719615+0.0122091906i   0.2016   2.42e-02/2.36e-02   0.0476  shift:MISS val:ok
+   2  0.00  0.02   +0.0370761955+0.0181824267i +0.0411755031+0.0259767340i   0.1809   7.97e-02/7.99e-02   0.0024  shift:MISS val:ok
+   2  0.00  0.05   +0.0799934400+0.0317087051i +0.1029387578+0.0649418351i   0.3318   1.99e-01/2.00e-01   0.0060  shift:MISS val:ok
+   3  0.00  0.02   -0.0000000000-0.0000000000i +0.0000000000+0.0000000000i       --   2.03e-17/1.78e-17       --  NULL-exact
+   3  0.00  0.05   -0.0000000000-0.0000000000i +0.0000000000+0.0000000000i       --   5.07e-17/4.44e-17       --  NULL-exact
+   3  1.57  0.02   -0.0495606735-0.0655296105i -0.0523267357-0.0390121745i   0.3245   1.07e-01/1.07e-01   0.0001  shift:MISS val:ok
+   3  1.57  0.05   -0.0295664299-0.1689361015i -0.1308168393-0.0975304362i   0.7224   2.68e-01/2.68e-01   0.0004  shift:MISS val:ok
+
+FEATURE trivial g1 gamma=  14.1347 N= 1376047 tau=400   |F'(root)| = 1.8827
+   k   phi   eps               droot meas             droot pred  rel err          |dval| m/p  rel err  verdict
+   1  0.00  0.02   +0.0668922766+0.0527146932i +0.0536831010+0.1982256418i   0.7115   3.87e-01/3.87e-01   0.0008  shift:MISS val:ok
+   1  0.00  0.05   +0.1072815332+0.0662448103i +0.1342077525+0.4955641044i   0.8378   9.67e-01/9.67e-01   0.0019  shift:MISS val:ok
+   2  0.00  0.02   +0.0108381760+0.0359237277i +0.0100775510+0.0363546108i   0.0232   7.11e-02/7.10e-02   0.0042  shift:ok val:ok
+   2  0.00  0.05   +0.0404253437+0.0837313493i +0.0251938776+0.0908865269i   0.1784   1.78e-01/1.78e-01   0.0106  shift:MISS val:ok
+   3  0.00  0.02   -0.0000000000-0.0000000000i -0.0000000000-0.0000000000i       --   5.05e-16/5.22e-16       --  NULL-exact
+   3  0.00  0.05   -0.0000000000-0.0000000000i -0.0000000000-0.0000000000i       --   1.26e-15/1.31e-15       --  NULL-exact
+   3  1.57  0.02   +0.1006860465+0.0018584409i +0.1947673659+0.0136747639i   0.4856   3.68e-01/3.68e-01   0.0001  shift:MISS val:ok
+   3  1.57  0.05   +0.1711796945-0.0015306703i +0.4869184147+0.0341869098i   0.6510   9.19e-01/9.19e-01   0.0004  shift:MISS val:ok
+
+PART A headline (pre-registered eps in [0.02, 0.05]):
+  VALUE law (lock-in observable): 36/36 tracked
+  SHIFT law (root tracking)     : 9/36 tracked  (13 (feature,k,phi) combos -> halving diagnostic below)
+  exact-null harmonic rows      : 12/12 exact
+P3 halving check at the pre-registered pair (err(0.02)/err(0.05); first-order predicts ~0.4):
+  chi4g1       k=1 phi=0.00: 0.0187/0.0479 = 0.389
+  chi4g1       k=2 phi=0.00: 0.1121/0.2502 = 0.448
+  chi4g1       k=3 phi=1.57: 0.2256/0.4781 = 0.472
+  chi5g1       k=1 phi=0.00: 0.0259/0.0624 = 0.416
+  chi5g1       k=2 phi=0.00: 0.0886/0.2238 = 0.396
+  chi5g1       k=3 phi=1.57: 0.0827/0.1780 = 0.464
+  chi3g1       k=1 phi=0.00: 0.0322/0.0726 = 0.443
+  chi3g1       k=2 phi=0.00: 0.2159/0.3912 = 0.552
+  chi3g1       k=3 phi=1.57: 0.2793/0.4466 = 0.625
+  chi4g2       k=1 phi=0.00: 0.0457/0.1130 = 0.405
+  chi4g2       k=2 phi=0.00: 0.1805/0.3854 = 0.468
+  chi4g2       k=3 phi=1.57: 0.1587/0.3095 = 0.513
+  chi3g2       k=1 phi=0.00: 0.0791/0.2016 = 0.392
+  chi3g2       k=2 phi=0.00: 0.1809/0.3318 = 0.545
+  chi3g2       k=3 phi=1.57: 0.3245/0.7224 = 0.449
+  trivialg1    k=1 phi=0.00: 0.7115/0.8378 = 0.849
+  trivialg1    k=2 phi=0.00: 0.0232/0.1784 = 0.130
+  trivialg1    k=3 phi=1.57: 0.4856/0.6510 = 0.746
+  median ratio = 0.457 (expect ~0.4 if error is genuinely 2nd-order)
+
+====================================================================================================
+HALVING DIAGNOSTIC (pre-registered) for every shift-law miss: eps -> eps/2 ladder
+====================================================================================================
+  chi4g1  k=2 phi=0.00: e(0.02000)=0.1121  e(0.01000)=0.0573  e(0.00500)=0.0289
+      halving ratios ['0.51', '0.50'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi4g1  k=3 phi=1.57: e(0.02000)=0.2256  e(0.01000)=0.1126  e(0.00500)=0.0557  e(0.00250)=0.0277
+      halving ratios ['0.50', '0.49', '0.50'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi5g1  k=2 phi=0.00: e(0.02000)=0.0886  e(0.01000)=0.0439
+      halving ratios ['0.50'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi5g1  k=3 phi=1.57: e(0.02000)=0.0827  e(0.01000)=0.0433
+      halving ratios ['0.52'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi3g1  k=2 phi=0.00: e(0.02000)=0.2159  e(0.01000)=0.1212  e(0.00500)=0.0639  e(0.00250)=0.0327
+      halving ratios ['0.56', '0.53', '0.51'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi3g1  k=3 phi=1.57: e(0.02000)=0.2793  e(0.01000)=0.1723  e(0.00500)=0.0972  e(0.00250)=0.0517  e(0.00125)=0.0267
+      halving ratios ['0.62', '0.56', '0.53', '0.52'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi4g2  k=2 phi=0.00: e(0.02000)=0.1805  e(0.01000)=0.0904  e(0.00500)=0.0450
+      halving ratios ['0.50', '0.50'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi4g2  k=3 phi=1.57: e(0.02000)=0.1587  e(0.01000)=0.0853  e(0.00500)=0.0439
+      halving ratios ['0.54', '0.51'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi3g2  k=1 phi=0.00: e(0.02000)=0.0791  e(0.01000)=0.0394
+      halving ratios ['0.50'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi3g2  k=2 phi=0.00: e(0.02000)=0.1809  e(0.01000)=0.1032  e(0.00500)=0.0555  e(0.00250)=0.0288
+      halving ratios ['0.57', '0.54', '0.52'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  chi3g2  k=3 phi=1.57: e(0.02000)=0.3245  e(0.01000)=0.1495  e(0.00500)=0.0710  e(0.00250)=0.0346
+      halving ratios ['0.46', '0.47', '0.49'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  trivialg1  k=1 phi=0.00: e(0.02000)=0.7115  e(0.01000)=0.5767  e(0.00500)=0.4186  e(0.00250)=0.2660  e(0.00125)=0.1505  e(0.00063)=0.0795  e(0.00031)=0.0407
+      halving ratios ['0.81', '0.73', '0.64', '0.57', '0.53', '0.51'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+  trivialg1  k=3 phi=1.57: e(0.02000)=0.4856  e(0.01000)=0.3521  e(0.00500)=0.2318  e(0.00250)=0.1393  e(0.00125)=0.0778  e(0.00063)=0.0414
+      halving ratios ['0.73', '0.66', '0.60', '0.56', '0.53'] (expect ~0.5)   -> LAW CONFIRMED as eps->0 (gain saturation, instrument-side; not sourceless)
+
+====================================================================================================
+LINEARITY RANGE (k=1, phi=0): largest eps with first-order rel err <= 5%
+====================================================================================================
+  gain g = |F+ - F-|/(2|F'|)  (droot ~ g*eps); usable |droot| at 5% = g*eps_5%
+  feature                                         0.00025 0.00050 0.00100 0.00200 0.00500 0.01000 0.02000 0.05000 0.08000 0.12000 0.16000 0.22000 0.30000 0.40000     eps_5%   gain  droot5%
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5   0.0002  0.0005  0.0009  0.0018  0.0046  0.0092  0.0187  0.0479  0.0788  0.1226  0.1693  0.2450  0.3550  0.4970    0.05000   0.35  0.01738
+  chi5    g1 gamma=   6.6485 N=     772 tau=96.5   0.0003  0.0007  0.0013  0.0027  0.0066  0.0131  0.0259  0.0624  0.0964  0.1387  0.1784  0.2345  0.3057  0.3941    0.02000   0.55  0.01096
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75   0.0004  0.0009  0.0017  0.0034  0.0085  0.0167  0.0322  0.0726  0.1048  0.1370  0.1587  0.1753  0.1742  0.1462    0.02000   0.27  0.00533
+  chi4    g2 gamma=  10.2438 N=   28107 tau=400    0.0006  0.0012  0.0023  0.0046  0.0115  0.0230  0.0457  0.1130  0.1793  0.2667  0.3538  0.4836  0.6475  0.8104    0.02000   0.23  0.00467
+  chi3    g2 gamma=  11.2492 N=   76819 tau=400    0.0010  0.0020  0.0039  0.0078  0.0196  0.0394  0.0791  0.2016  0.3319  0.5256  0.7359  1.0161  1.3009  1.3030    0.01000   0.29  0.00287
+  trivial g1 gamma=  14.1347 N= 1376047 tau=400    0.0327  0.0642  0.1232  0.2238  0.4186  0.5767  0.7115  0.8378  0.8817  0.9104  0.9266  0.9411  0.9525  0.9612    0.00025  10.27  0.00257
+  eps_5% spans 0.00025..0.05000 (200x) but root excursion g*eps_5% only 0.0026..0.0174 (7x):
+  the usable budget is the ROOT EXCURSION, not eps itself; gain is feature-dependent
+
+====================================================================================================
+CONTROL: scrambled warp exp(i*eps*sin(psi_n)), psi_n ~ U(0,2pi) (matched amplitude, seed 20260703)
+  pre-registered: must NOT follow the structured k=1 sideband prediction (rel err O(1));
+  its own shift must stay ~linear in eps (ratio ~2 under eps doubling) -> mismatch is structural
+====================================================================================================
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75 eps=0.050: droot_scr = -0.03432017-0.06340371i  vs structured pred -0.00027500+0.01332645i  rel err = 6.298
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75 eps=0.025: droot_scr = -0.02338158-0.02715739i  vs structured pred -0.00013750+0.00666322i  rel err = 6.158
+    scrambled-shift linearity |droot(0.05)|/|droot(0.025)| = 2.012 (expect ~2)
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5 eps=0.050: droot_scr = -0.07788473-0.10202398i  vs structured pred +0.00108972+0.01734349i  rel err = 8.236
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5 eps=0.025: droot_scr = -0.04219373-0.03887871i  vs structured pred +0.00054486+0.00867175i  rel err = 7.358
+    scrambled-shift linearity |droot(0.05)|/|droot(0.025)| = 2.237 (expect ~2)
+  CONTROL verdict: min rel err vs structured law = 6.158 -> does NOT track (as pre-registered)
+
+====================================================================================================
+PART B: WARP AS ACTUATOR (closed loop) on dip #3 = chi3    g1 gamma=   8.0397 N=    3102 tau=387.75
+  command a root shift delta; solve A(n)=exp(i*eps*sin(k*Theta+phi)) (k=1) via the
+  first-order law; apply; measure.  Refinement: same-k warps compose by w1+w2.
+====================================================================================================
+  COMMAND height +0.010 (up)       delta=+0.0000+0.0100i   solved warp eps=0.0396 phi=-0.0480 rad
+    iter 1: eps=0.0396 phi=-0.0480  achieved +0.000051+0.010675i  miss   6.764%   (one-shot)
+    iter 2: eps=0.0370 phi=-0.0415  achieved +0.000001+0.010003i  miss   0.029%
+  COMMAND height -0.005 (down)     delta=-0.0000-0.0050i   solved warp eps=0.0198 phi=+3.0936 rad
+    iter 1: eps=0.0198 phi=+3.0936  achieved +0.000016-0.004814i  miss   3.730%   (one-shot)
+    iter 2: eps=0.0209 phi=+3.0821  achieved +0.000001-0.004999i  miss   0.017%
+  COMMAND sigma +0.008 (sideways)  delta=+0.0080+0.0000i   solved warp eps=0.1082 phi=-0.7485 rad
+    iter 1: eps=0.1082 phi=-0.7485  achieved +0.017696+0.005230i  miss 137.706%   (one-shot)
+    iter 2: eps=0.0647 phi=-0.7640  achieved +0.008779+0.001178i  miss  17.654%
+    iter 3: eps=0.0592 phi=-0.8005  achieved +0.008011+0.000019i  miss   0.277%
+
+====================================================================================================
+PART C: STATE-EXPANDED SPACE -- the warp measured upstairs, per-state, before the sum
+====================================================================================================
+C1 ISOMETRY (pre-registered: exact): max deviation over all 8 warp configs per feature
+  feature                                         per-state  l2 energy  A channel     P mass     M mass
+  chi4    g1 gamma=   6.0209 N=     412 tau=51.5    1.1e-16   3.7e-16   0.0e+00   1.8e-16   1.9e-16
+  chi5    g1 gamma=   6.6485 N=     772 tau=96.5    1.1e-16   4.4e-16   3.4e-16   1.7e-16   1.7e-16
+  chi3    g1 gamma=   8.0397 N=    3102 tau=387.75    1.1e-16   5.9e-16   0.0e+00   2.0e-16   0.0e+00
+  chi4    g2 gamma=  10.2438 N=   28107 tau=400     1.1e-16   4.6e-16   3.4e-16   3.4e-16   1.7e-16
+  chi3    g2 gamma=  11.2492 N=   76819 tau=400     1.1e-16   4.3e-16   0.0e+00   0.0e+00   0.0e+00
+  trivial g1 gamma=  14.1347 N= 1376047 tau=400     1.1e-16   3.6e-16   1.9e-16   1.9e-16   3.9e-16
+  C1 verdict: EXACT to machine precision (worst 5.9e-16).  Note: every canonical
+  state-level norm in model.py (per-state a_n, P/M/U lane masses, A channel, l2) is
+  DIAGONAL -- no cross-term state metric exists to test (recorded, not forced).
+
+C2+C3 LANES AND TRANSPORT: warped lane responses computed EXACTLY upstairs (diagonal
+  action, no first-order step); rebalance height (P_w = M_w, found via newton_lane on the
+  lane split) vs Part A's readout dip; transport residual |dF_state_projected - dF_readout|
+  localized at the projection.  Lane 1st-order sideband law shown for reference (O(eps)).
+
+FEATURE chi4    g1 gamma=   6.0209 N=     412 tau=51.5
+  lane balance at unwarped root (house P = M claim): |P - M| = 3.79e-15   (|P| = 0.1940, |M| = 0.1940)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.011374  0.0091     0.002425  0.0272      6.66e-16      1.12e-15  4.1e-15
+   1  0.00  0.05     0.028211  0.0230     0.006217  0.0663      3.30e-15      9.34e-16  1.4e-15
+   2  0.00  0.02     0.033192  0.0032     0.033942  0.0020      9.99e-16      1.10e-15  4.0e-15
+   2  0.00  0.05     0.082679  0.0081     0.084755  0.0050      1.11e-16      9.76e-16  1.4e-15
+   3  1.57  0.02     0.074613  0.0005     0.052901  0.0008      5.55e-17      1.22e-15  3.2e-15
+   3  1.57  0.05     0.186604  0.0009     0.132066  0.0022      2.22e-16      8.13e-16  8.5e-16
+
+FEATURE chi5    g1 gamma=   6.6485 N=     772 tau=96.5
+  lane balance at unwarped root (house P = M claim): |P - M| = 3.95e-15   (|P| = 1.6181, |M| = 1.6181)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.013784  0.0138     0.010947  0.0207      3.03e-15      2.26e-15  4.1e-15
+   1  0.00  0.05     0.034634  0.0342     0.026929  0.0519      9.49e-16      9.32e-16  6.8e-16
+   2  0.00  0.02     0.015415  0.0123     0.027796  0.0082      1.55e-15      2.23e-15  4.1e-15
+   2  0.00  0.05     0.039197  0.0300     0.068751  0.0207      1.44e-15      8.08e-16  5.9e-16
+   3  1.57  0.02     0.036278  0.0089     0.031713  0.0101      1.05e-15      7.61e-16  9.0e-16
+   3  1.57  0.05     0.089467  0.0225     0.080346  0.0248      8.88e-16      1.66e-15  7.9e-16
+
+FEATURE chi3    g1 gamma=   8.0397 N=    3102 tau=387.75
+  lane balance at unwarped root (house P = M claim): |P - M| = 3.69e-15   (|P| = 3.0851, |M| = 3.0851)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.020411  0.0205     0.026011  0.0072      3.53e-15      2.03e-15  2.2e-15
+   1  0.00  0.05     0.050838  0.0513     0.065139  0.0180      1.99e-15      2.06e-15  8.9e-16
+   2  0.00  0.02     0.048280  0.0087     0.049320  0.0038      1.86e-15      1.94e-15  2.1e-15
+   2  0.00  0.05     0.121660  0.0214     0.123079  0.0096      2.44e-15      2.36e-15  1.0e-15
+   3  1.57  0.02     0.087132  0.0071     0.078957  0.0078      1.81e-15      7.54e-16  5.3e-16
+   3  1.57  0.05     0.218184  0.0176     0.196921  0.0196      7.77e-16      6.28e-16  1.8e-16
+
+FEATURE chi4    g2 gamma=  10.2438 N=   28107 tau=400
+  lane balance at unwarped root (house P = M claim): |P - M| = 2.85e-14   (|P| = 3.5353, |M| = 3.5353)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.033665  0.0143     0.025408  0.0138      7.16e-15      2.50e-15  1.2e-15
+   1  0.00  0.05     0.083923  0.0358     0.063337  0.0346      3.66e-15      8.87e-15  1.6e-15
+   2  0.00  0.02     0.022492  0.0214     0.049343  0.0071      7.69e-15      2.43e-15  1.1e-15
+   2  0.00  0.05     0.055765  0.0534     0.123331  0.0178      5.18e-15      8.42e-15  1.5e-15
+   3  1.57  0.02     0.053446  0.0132     0.041288  0.0171      1.22e-14      1.94e-14  5.8e-15
+   3  1.57  0.05     0.134424  0.0327     0.102800  0.0428      1.86e-15      2.56e-14  3.1e-15
+
+FEATURE chi3    g2 gamma=  11.2492 N=   76819 tau=400
+  lane balance at unwarped root (house P = M claim): |P - M| = 1.70e-14   (|P| = 8.2731, |M| = 8.2731)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.017401  0.0403     0.026712  0.0331      2.04e-14      9.28e-15  2.0e-15
+   1  0.00  0.05     0.043927  0.0997     0.067700  0.0815      1.74e-14      5.78e-15  5.1e-16
+   2  0.00  0.02     0.039109  0.0179     0.045028  0.0193      6.68e-15      9.18e-15  2.0e-15
+   2  0.00  0.05     0.099699  0.0437     0.109251  0.0484      5.73e-15      3.56e-15  3.1e-16
+   3  1.57  0.02     0.059704  0.0271     0.048390  0.0341      1.14e-14      1.67e-14  2.3e-15
+   3  1.57  0.05     0.144185  0.0681     0.126799  0.0812      7.22e-15      1.48e-14  8.0e-16
+
+FEATURE trivial g1 gamma=  14.1347 N= 1376047 tau=400
+  lane balance at unwarped root (house P = M claim): |P - M| = 1.62e-13   (|P| = 41.4664, |M| = 41.4664)
+   k   phi   eps   |dP| exact  rel1st   |dM| exact  rel1st  rebal-vs-dip transport res      rel
+   1  0.00  0.02     0.183461  0.0218     0.203328  0.0182      9.26e-14      1.60e-12  5.9e-14
+   1  0.00  0.05     0.459710  0.0545     0.508337  0.0456      2.66e-14      1.53e-12  2.2e-14
+   2  0.00  0.02     0.032417  0.1236     0.055585  0.0667      2.32e-13      1.60e-12  5.9e-14
+   2  0.00  0.05     0.093196  0.2685     0.145312  0.1594      1.69e-13      1.54e-12  2.3e-14
+   3  1.57  0.02     0.293344  0.0280     0.448946  0.0184      4.29e-14      1.15e-12  2.4e-14
+   3  1.57  0.05     0.720609  0.0700     1.137753  0.0454      1.52e-14      9.61e-13  8.2e-15
+
+  C2 verdict: lane rebalance == readout dip, max |s*_lane - s*_readout| = 2.32e-13 (Newton tol)
+  lane 1st-order reference: worst rel err 0.2685 at trivialg1 k=2 (small-response row); its halving ratio err(0.02)/err(0.05) = 0.460 (~0.4-0.5 = genuinely 2nd-order, not an anomaly)
+  C3 verdict: transport residual at the projection, max abs = 1.60e-12, max rel to
+  per-state response mass = 5.86e-14 -- ZERO to summation precision, as pre-registered
+
+C4 SCRAMBLED CONTROL, STATE SIDE: isometry must HOLD (unit modulus), lane sideband
+  structure must BREAK (no additive angle) -- the separating signature
+  chi3g1 eps=0.050: isometry dev 2.2e-16 (HOLDS)   lane vs structured k=1 law: relP = 0.542, relM = 1.243 (BREAKS)
+  chi3g1 eps=0.025: isometry dev 2.9e-16 (HOLDS)   lane vs structured k=1 law: relP = 0.552, relM = 1.249 (BREAKS)
+  chi4g1 eps=0.050: isometry dev 2.2e-16 (HOLDS)   lane vs structured k=1 law: relP = 1.384, relM = 1.005 (BREAKS)
+  chi4g1 eps=0.025: isometry dev 2.2e-16 (HOLDS)   lane vs structured k=1 law: relP = 1.385, relM = 1.005 (BREAKS)
+  C4 verdict: energy conservation is warp-agnostic (dev <= 2.9e-16) while harmonic
+  structure needs the additive angle (min lane-law rel err 1.24 = O(1) break)
+
+====================================================================================================
+TIERED SUMMARY
+====================================================================================================
+TIER 1 (measured, finite validated instances; no RH/GRH assumed or proved):
+  * VALUE law (lock-in observable): 36/36 tracked at pre-registered eps.
+  * SHIFT law: 9/36 tracked at pre-registered eps -- P1 AS WRITTEN
+    PARTIALLY MISSED (full prominence).  Every miss ran the pre-registered halving
+    diagnostic: 13/13 confirmed the law as eps->0 (errors halve with eps; miss = gain
+    saturation |droot| ~ g*eps too large for the linearization, instrument-side);
+    unresolved (sourceless-feature candidates): 0 -- NONE.
+  * exact-null harmonic rows: 12/12 exact (k=3, phi=0: 3*Theta = pi*Omega).
+  * P3 halving median at (0.02, 0.05): 0.457 (~0.4 expected).
+  * linearity/calibration: eps_5% = ['0.05', '0.02', '0.02', '0.02', '0.01', '0.00025'], gain g = ['0.35', '0.55', '0.27', '0.23', '0.29', '10.27'];
+    usable ROOT EXCURSION g*eps_5% = ['0.0174', '0.0110', '0.0053', '0.0047', '0.0029', '0.0026'] -- the
+    instrument budget is the root excursion, not eps itself.
+  * actuator: one-shot misses ['6.76%', '3.73%', '137.71%'], closed-loop final ['0.029%', '0.017%', '0.277%']
+    in [2, 2, 3] iterations (solved eps: ['0.040', '0.020', '0.108']).
+  * scrambled control rel errs vs structured law: ['6.30', '6.16', '8.24', '7.36'] (O(1) = does not
+    track, as pre-registered; its own shift stays ~linear in eps -> mismatch is structural).
+  * PART C (state space): isometry EXACT (worst dev 5.9e-16; every canonical state
+    norm diagonal, no cross terms exist); lane rebalance == readout dip to 2.3e-13;
+    transport residual at the projection: max 1.6e-12 abs, 5.9e-14 of the
+    per-state response mass -- the readout response is ENTIRELY projection/interference
+    re-arrangement (state energy conserved to 1e-16 while readout moves by O(0.1));
+    scrambled warp: isometry HOLDS (2.9e-16) while lane structure BREAKS
+    (rel err >= 1.24) -- energy conservation vs harmonic structure separated.
+TIER 2 (state of the evidence): on the canonical bank every cancellation feature is
+  bank-funded -- each responds to a controlled carrier wave as the Bessel-sideband theory
+  dictates (value law directly; shift law in its measured linear range), and the same law
+  inverts into a working closed-loop actuator.  This is the lock-in-amplifier
+  operationalization of 'every readout feature has a source'.  New instrument law:
+  sideband gain g is FEATURE-DEPENDENT (0.23..10.27 here; the eta/zeta feature ~10 is far
+  hotter than the quadratic-character features), so warp amplitude must be budgeted in
+  root excursion g*eps, not in eps.
+FALSIFIABILITY: P1-P5 and C1-C4 pre-registered in the module docstring, outcomes annotated
+  above; P1 partial miss reported at full prominence and resolved instrument-side by the
+  pre-registered discriminator; a feature whose error did NOT halve would have been a
+  sourceless-feature candidate -- count after this run: zero.
+  A transport residual above summation precision would have been an anomaly AT THE
+  PROJECTION -- count after this run: zero.
+
+total runtime 11.9s

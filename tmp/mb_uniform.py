@@ -615,7 +615,7 @@ def run_D(worst_cell=None, verbose=True):
         worst = None
         G = make_window("altug")
         for (xi, l, f, X) in cand:
-            g, _ = decay_exponent(xi, X, l, f, r=0, G=G)
+            g, _ = decay_exponent(xi, X, l, f, r=0, G=G, nus=np.array([2, 4, 8, 16, 24]), ny=80, nx=80)
             if worst is None or g < worst[0]:
                 worst = (g, (xi, l, f, X))
         gamma_w, worst_cell = worst

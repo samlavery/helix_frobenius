@@ -1,0 +1,33 @@
+MB ITERATED-FOLD — SUMMARY (full detail + K=24 addendum in mb_iterfold_results.txt)
+
+Anchor gate: PASS. poisson_dual signatures, the full published 18-cell gamma table
+(max dev 5e-4; std 1.072), one-shot co-evolve 0.813, gauge hierarchy G1 78.55% /
+G3 100.00%, engine == house to 1e-13.
+
+De-gauge baseline [measured]: the published spread was NOT removable phase.
+De-aliasing (Nyquist ppc=8 in y AND x) RAISES the raw spread 1.072 -> 1.257; the
+FULL exact gauge (fiber-phase peeled, y-carrier kept) removes only 8.5% of it
+(1.257 -> 1.150). The gauge does collapse the mean rate (4.08 -> 2.35) and guts
+high-xi cells (gamma 5.66 -> 0.44 at (6,1,1,8)): the fast raw decay at xi != 0 is
+largely phase-ASSISTED cancellation. Gauged min gamma 0.386 > 0 — decay never fails.
+
+Fold loop (law frame, K=12 pre-registered, ETA=0.7, frozen sensitivity):
+std_k = 1.257 0.640 0.522 0.478 0.475 0.427 0.451 0.440 0.409 0.419 0.416 0.403 0.541
+K=12 pre-registered read: AMBIGUOUS (band-wander broke the 5% flatness criterion).
+Labeled K=24 extension (identical operator): PLATEAU (noisy band) 0.441 +- 0.058;
+the per-cell fold lands in the SAME band (0.467 +- 0.067), so the plateau is not a
+law-expressiveness ceiling. Verdict (b): the plateau IS the invariant.
+
+Identification: (ii) CONSISTENT with be_exact_gauge sigma* 0.50-0.54 (indicative;
+sigma* was measured pre-Nyquist). (i) Weyl-character r-scaling NOT matched
+(normalized plateaus 1.00/1.80/1.27 vs law 1/2/4.24; non-monotone) — NEGATIVE
+result: the plateau is not identified as Weyl spectral content by this test.
+
+Controls: scrambled kernel behaves differently (frame response 11x weaker,
+one-step clamp saturation, no harmonization) — the fold is not trivially
+contracting. Quadrature convergence PASS (|dgamma| <= 0.004 under doubling).
+Hold-out cell (4,3,1,12): the learned law OVERFITS off-grid (flagged) — the
+plateau VALUE is robust, the law formula is not transportable.
+
+Flags: gamma = envelope fit over nu <= 24; plateau is relative to the declared
+never-clip bump family; the r-test is 3 points.

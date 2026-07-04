@@ -1,0 +1,176 @@
+==============================================================================
+STEP 0 — LANE-SPLIT ANCHOR GATE (lane-sum must equal the recorded mb_contour
+         totals; house-path J anchor; extended-mesh engine identity)
+==============================================================================
+
+[anchor] (i) lane-sum total == mb_contour recorded baseline (80x80 mesh):
+      spot cells max |lnC_T - recorded| = 0.0004  (tol 0.01, 3-dec records)
+      surface mean 0.680 std 0.424  (recorded 0.68/0.424)
+
+[anchor] (ii) |V_F + V_H| == J_house (BEG._F_vec path), 3 spot cells:
+          (0, 1, 1, 8.0): rel dev vs J_house 6.66e-15; lane-linearity 0.00e+00
+         (2, 2, 1, 16.0): rel dev vs J_house 1.38e-12; lane-linearity 4.21e-16
+         (6, 1, 2, 16.0): rel dev vs J_house 7.08e-14; lane-linearity 1.28e-16
+
+[anchor] (iii) extended mesh (0.05,1.45), ny=112: engine == direct evaluator:
+      max |Delta lnC| over lanes/cells = 3.77e-10  (tol 1e-7)   [build 8s]
+
+[measured] extended-mesh straight baseline (the delta reference):
+      lnC_T mean 0.679 std 0.422  (80x80 was 0.680/0.424 — mesh dependence, flagged in mb_contour)
+
+[anchor] GATE VERDICT: PASS  (recorded True, J-anchor True, engine True)
+==============================================================================
+
+
+==============================================================================
+STEP 1 — LANE DECOMPOSITION (extended mesh, straight contour, nu*=8)
+==============================================================================
+    cell (xi,l,f,X):   lnC_F   lnC_H   lnC_T    M_F/M_H   |V_F|/|V_H|
+          (0, 1, 1, 8.0):   1.486   0.189   1.309    19.723       5.390
+         (0, 1, 1, 16.0):   1.951   0.198   1.772    30.551       5.294
+          (0, 2, 1, 8.0):   0.532   1.499   0.469     7.606      20.006
+         (0, 2, 1, 16.0):   1.074   0.384   0.922    13.012       6.526
+          (0, 1, 2, 8.0):   0.152   1.456   0.191     3.895      14.353
+         (0, 1, 2, 16.0):   0.257   2.616   0.257     5.018      53.089
+          (2, 1, 1, 8.0):   0.758   1.098   0.639     6.686       9.395
+         (2, 1, 1, 16.0):   0.686   0.945   0.590     6.515       8.441
+          (2, 2, 1, 8.0):   0.395   1.486   0.362     4.770      14.202
+         (2, 2, 1, 16.0):   1.098   0.401   1.197     4.579       2.281
+          (2, 1, 2, 8.0):   0.804   1.317   0.725     2.793       4.667
+         (2, 1, 2, 16.0):   0.061   1.469   0.126     2.686      10.976
+          (6, 1, 1, 8.0):   0.425   1.479   0.751     1.329       3.812
+         (6, 1, 1, 16.0):   0.653   1.245   0.929     1.694       3.060
+          (6, 2, 1, 8.0):   0.072   1.493   0.292     1.393       5.767
+         (6, 2, 1, 16.0):   0.090   1.197   0.248     1.949       5.896
+          (6, 1, 2, 8.0):   0.310   1.282   0.720     1.157       3.059
+         (6, 1, 2, 16.0):   0.343   1.217   0.714     1.328       3.183
+
+[measured] lane means: lnC_F 0.619, lnC_H 1.165, lnC_T 0.679; median mass ratio M_F/M_H = 4.237
+==============================================================================
+
+
+==============================================================================
+STEP 2 — TEST A: ELASTIC CONSERVATION (d cost_F vs d cost_H under the
+recorded campaign moves; trade rho = corr(d_F, -d_H); pinning P)
+==============================================================================
+
+[measured] wavy shared winner refit (J=2): spread 0.422 -> 0.340   [36s]
+
+[measured] per-move lane deltas (means over 18 cells):
+                    move    <d_F>    <d_H>    <d_T>  corr(dF,-dH)
+        f1 fold-endpoint   -0.015   -0.170   -0.044         0.265
+        f2 fold-midpoint   -0.122    0.035   -0.118         0.583
+            f3 width-0.8    0.001   -0.112   -0.031         0.017
+     c1 corrector-winner    0.031   -0.126    0.031        -0.460
+          w1 random-wave    0.167   -0.245    0.133        -0.669
+          w2 random-wave    0.007   -0.018    0.005        -0.577
+          w3 random-wave    0.052   -0.074    0.035        -0.667
+          w4 wavy-winner   -0.027    0.474    0.089        -0.602
+
+[measured] POOLED (8 moves x 18 cells = 144 pairs):
+      trade correlation rho = corr(d_F, -d_H) = +0.112
+      pinning index P = med|d_T| / med(|d_F|+|d_H|) = 0.284
+            fold family: rho +0.276, P 0.313
+       corrector family: rho -0.460, P 0.278
+         contour family: rho +0.208, P 0.342
+
+[measured] TEST A VERDICT: (b) DIAGNOSIS WRONG — shares do not trade / total not pinned
+==============================================================================
+
+
+==============================================================================
+STEP 3 — TEST B: BALANCE LOCUS (does the floor sit where |F| ~ |H|?)
+==============================================================================
+
+[measured] (sigma) per cell: floor shift s* vs mass-balance shift s_bal:
+          (0, 1, 1, 8.0): s*=-0.850   s_bal=none in range
+         (0, 1, 1, 16.0): s*=-0.900   s_bal=none in range
+          (0, 2, 1, 8.0): s*=-0.550   s_bal=-0.850
+         (0, 2, 1, 16.0): s*=-0.750   s_bal=none in range
+          (0, 1, 2, 8.0): s*=-0.250   s_bal=-0.723
+         (0, 1, 2, 16.0): s*=-0.300   s_bal=-0.715
+          (2, 1, 1, 8.0): s*=-0.450   s_bal=-0.589
+         (2, 1, 1, 16.0): s*=-0.550   s_bal=-0.696
+          (2, 2, 1, 8.0): s*=-0.500   s_bal=-0.796
+         (2, 2, 1, 16.0): s*=-0.400   s_bal=-0.590
+          (2, 1, 2, 8.0): s*=-0.200   s_bal=-0.385
+         (2, 1, 2, 16.0): s*=-0.100   s_bal=-0.485
+          (6, 1, 1, 8.0): s*=+0.350   s_bal=-0.169
+         (6, 1, 1, 16.0): s*=+0.050   s_bal=-0.260
+          (6, 2, 1, 8.0): s*=+0.300   s_bal=-0.158
+         (6, 2, 1, 16.0): s*=+0.050   s_bal=-0.249
+          (6, 1, 2, 8.0): s*=+0.300   s_bal=-0.099
+         (6, 1, 2, 16.0): s*=+0.300   s_bal=-0.189
+      correlation (n=15): r = +0.937
+
+[measured] (nu) lane balance vs cost floor over nu in {2,4,8,16,24}:
+          (0, 1, 1, 8.0): nu*=  4.0   nu_bal=no crossing   lnR(nu) = +3.02 +2.86 +2.98 +3.00 +2.96
+         (0, 1, 1, 16.0): nu*=  2.0   nu_bal=no crossing   lnR(nu) = +3.28 +3.40 +3.42 +3.39 +3.29
+          (0, 2, 1, 8.0): nu*=  8.0   nu_bal=no crossing   lnR(nu) = +2.04 +2.19 +2.03 +2.15 +2.08
+         (0, 2, 1, 16.0): nu*=  4.0   nu_bal=no crossing   lnR(nu) = +2.61 +2.44 +2.57 +2.59 +2.55
+          (0, 1, 2, 8.0): nu*=  2.0   nu_bal=no crossing   lnR(nu) = +1.10 +1.21 +1.36 +1.20 +1.33
+         (0, 1, 2, 16.0): nu*=  8.0   nu_bal=no crossing   lnR(nu) = +1.63 +1.78 +1.61 +1.73 +1.66
+          (2, 1, 1, 8.0): nu*=  2.0   nu_bal=no crossing   lnR(nu) = +1.66 +1.62 +1.90 +2.00 +1.79
+         (2, 1, 1, 16.0): nu*= 24.0   nu_bal=no crossing   lnR(nu) = +1.57 +1.82 +1.87 +1.97 +1.55
+          (2, 2, 1, 8.0): nu*= 24.0   nu_bal=no crossing   lnR(nu) = +1.52 +1.75 +1.56 +1.62 +1.57
+         (2, 2, 1, 16.0): nu*=  4.0   nu_bal=no crossing   lnR(nu) = +1.50 +1.42 +1.52 +1.53 +1.49
+          (2, 1, 2, 8.0): nu*=  2.0   nu_bal=no crossing   lnR(nu) = +1.23 +1.22 +1.03 +1.38 +1.16
+         (2, 1, 2, 16.0): nu*=  8.0   nu_bal=no crossing   lnR(nu) = +1.13 +1.13 +0.99 +1.12 +0.98
+          (6, 1, 1, 8.0): nu*= 24.0   nu_bal=no crossing   lnR(nu) = +0.85 +0.66 +0.28 +0.85 +0.76
+         (6, 1, 1, 16.0): nu*=  4.0   nu_bal=no crossing   lnR(nu) = +0.92 +0.79 +0.53 +0.91 +0.80
+          (6, 2, 1, 8.0): nu*=  8.0   nu_bal=no crossing   lnR(nu) = +0.46 +0.31 +0.33 +0.40 +0.40
+         (6, 2, 1, 16.0): nu*=  8.0   nu_bal=no crossing   lnR(nu) = +0.68 +0.54 +0.67 +0.73 +0.63
+          (6, 1, 2, 8.0): nu*=  2.0   nu_bal= 10.03   lnR(nu) = +0.20 +0.08 +0.15 -0.30 +0.12
+         (6, 1, 2, 16.0): nu*=  2.0   nu_bal=no crossing   lnR(nu) = +0.31 +0.19 +0.28 +0.08 +0.18
+      balance crossings in nu-range: 1/18 — mostly censored
+==============================================================================
+
+
+==============================================================================
+STEP 4 — TEST C: UNCERTAINTY SCALING + BONUS: THE ELASTIC CONSTANT
+==============================================================================
+
+[measured] spreads across the 18-cell grid:
+      std                lnC_F = 0.501
+      std                lnC_H = 0.572
+      std          ln(C_F*C_H) = 0.353
+      std     C_F+C_H (linear) = 2.355
+      std   lnC_T (true total) = 0.422
+      joint ratio std(lnC_T)/min(lanes) = 0.841  (joint verdict if < 0.5)
+      -> NOT flatter: the total is not a joint smoothing of the lanes
+
+[measured] BONUS — elastic-constant fit: lnC_T ~ [1, ln lf^2, ln(X/8), ln(1+xi)]:
+      beta = [const +0.992, ln lf^2 -0.392, ln(X/8) +0.208, ln(1+xi) -0.113];  R^2 = 0.350
+      R^2 < 0.8: NO clean elastic-constant law from these features alone.
+      [interpretation] a GL(3) prediction requires the GL(3) gamma factors in
+      the kernels (different Ftilde/GR pair); out of scope for this instrument.
+==============================================================================
+
+
+==============================================================================
+STEP 5 — CONTROLS
+==============================================================================
+
+[measured] (i) quadrature doubling (t x2, Bessel s x2), baseline + wave w1:
+      max |Delta lnC_lane|: baseline 0.0000, wave 0.0000  (tol 0.02)
+      -> PASS
+
+[measured] (ii) SCRAMBLED lane check (house recipe, seed 20260703):
+      trade correlation on the subset: real +0.044 vs scrambled -0.063
+      -> trade SURVIVES scrambling: kernel-structural (sigma-seesaw of the
+         Mellin pair), NOT specific to the coherent kernel — reported at
+         full prominence; weakens the 'FE-weld' reading of Test A
+==============================================================================
+
+
+==============================================================================
+ELASTIC-PAIR VERDICT (pre-registered readings)
+==============================================================================
+[measured] TEST A (elastic conservation): (b) DIAGNOSIS WRONG — shares do not trade / total not pinned
+    pooled rho = +0.112, pinning P = 0.284  (thresholds: (a) rho>=0.6 & P<=0.3; (b) rho<0.3 | P>0.7)
+[measured] TEST B (balance locus): sigma-correlation r = +0.937; nu: 1/18 cells have a balance crossing (Spearman r = +nan where defined)
+[measured] TEST C (uncertainty scaling): std lnC_F 0.501, lnC_H 0.572, total 0.422 -> joint ratio 0.841 (not joint-flatter)
+[measured] BONUS: lnC_T ~ structural features R^2 = 0.350 — no clean law
+[controls] doubling PASS; scrambled trade: real +0.04 vs scr -0.06 -> survives (kernel-structural)
+[budget] total wall time 104s
+==============================================================================

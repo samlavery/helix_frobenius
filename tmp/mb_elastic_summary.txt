@@ -1,0 +1,20 @@
+MB ELASTIC-PAIR — SUMMARY (detail in mb_elastic_results.txt)
+
+Gate: PASS — lane-sum total reproduces mb_contour's recorded baseline
+(80x80 spots + mean/std); |V_F+V_H| == J_house to 1e-9; engine == direct.
+Analysis on the extended mesh (0.05,1.45) so the fold's 1.35-wide windows
+stay never-clip legal; deltas are within-mesh.
+
+TEST A [measured]: (b) DIAGNOSIS WRONG — shares do not trade / total not pinned
+pooled trade rho = +0.11, pinning P = 0.28 over 8
+recorded campaign moves (fold endpoint/midpoint/width, corrector winner,
+3 seeded waves + refit wavy winner) x 18 cells.
+TEST B [measured]: floor-vs-balance correlation r_sigma = +0.94; nu-balance crossings 1/18 (Spearman +nan where defined).
+TEST C [measured]: lane spreads F 0.50 / H 0.57; true total 0.42; joint ratio 0.84 -> not joint-flatter.
+BONUS: structural fit R^2 = 0.35 — no clean law.
+Controls: doubling PASS; scrambled trade survives (kernel-structural) (real +0.04 vs scr -0.06).
+
+Flags: lane costs live at nu*=8 on the extended mesh (mesh-dependence of C
+~0.1 flagged in mb_contour); fold moves use recorded endpoint widths, not a
+re-run fold; GL(3) extrapolation is [interpretation]-only (needs GL(3)
+gamma factors).

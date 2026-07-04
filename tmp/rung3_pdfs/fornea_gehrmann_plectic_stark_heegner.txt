@@ -1,0 +1,1951 @@
+                                                                   Plectic Stark–Heegner points
+
+
+
+
+arXiv:2104.12575v1 [math.NT] 26 Apr 2021
+                                                                    Michele Fornea and Lennart Gehrmann
+
+                                                                                          Abstract
+                                                We propose a conjectural construction of global points on modular elliptic curves over
+                                                arbitrary number fields, generalizing both the p-adic construction of Heegner points via
+                                                Čerednik–Drinfeld uniformization and the definition of classical Stark–Heegner points.
+                                                In alignment with Nekovář and Scholl’s plectic conjectures, we expect the non-triviality
+                                                of these plectic Stark–Heegner points to control the Mordell–Weil group of higher rank
+                                                elliptic curves. We provide some indirect evidence for our conjectures by showing that
+                                                higher order derivatives of anticyclotomic p-adic L-functions compute plectic invariants.
+
+                                                                                          Contents
+                                                1 Introduction                                                                            2
+                                                  1.1 Elliptic curves of higher rank . . . . . . . . . . . . . . . . . . . . . . . .      3
+                                                  1.2 Plectic p-adic invariants . . . . . . . . . . . . . . . . . . . . . . . . . . .     4
+                                                  1.3 Plectic Stark–Heegner points . . . . . . . . . . . . . . . . . . . . . . . .        6
+                                                  1.4 Conjectures . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .     7
+                                                  1.5 Derivatives of anticyclotomic p-adic L-functions . . . . . . . . . . . . . .        8
+                                                2 Notations and setup                                                                     9
+                                                3 A cohomology class valued in harmonic cochains                                         11
+                                                  3.1 Cohomology of arithmetic groups . . . . . . . . . . . . . . . . . . . . . .        11
+                                                  3.2 The Steinberg representation and harmonic cochains . . . . . . . . . . .           12
+                                                  3.3 Cohomology of S-arithmetic groups . . . . . . . . . . . . . . . . . . . . .        14
+                                                4 Local points on modular elliptic curves                                                16
+                                                  4.1 p-adic integration . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .   16
+                                                  4.2 Plectic p-adic invariants . . . . . . . . . . . . . . . . . . . . . . . . . . .    18
+                                                  4.3 Breuil’s extensions . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    19
+                                                  4.4 Plectic Stark–Heegner points . . . . . . . . . . . . . . . . . . . . . . . .       21
+                                                  4.5 Lifting the cohomology class . . . . . . . . . . . . . . . . . . . . . . . . .     21
+                                                5 Anticyclotomic p-adic L-functions                                                      24
+                                                  5.1 Homogeneous spaces and homomorphisms . . . . . . . . . . . . . . . . .             24
+                                                  5.2 Characters of the torus . . . . . . . . . . . . . . . . . . . . . . . . . . . .    25
+                                                  5.3 Construction of the p-adic L-function . . . . . . . . . . . . . . . . . . . .      27
+                                                  5.4 Special value formulas . . . . . . . . . . . . . . . . . . . . . . . . . . . .     27
+                                                  5.5 The p-adic Gross–Zagier formula . . . . . . . . . . . . . . . . . . . . . .        28
+                                                References                                                                               29
+
+
+
+
+                                           2010 Mathematics Subject Classification 11F41, 11F67, 11G05, 11G40.
+                          Michele Fornea and Lennart Gehrmann
+
+                                         1. Introduction
+
+When F is a totally real number field and A/F is a modular elliptic curve of conductor fA , there
+is a Hilbert cuspform fA of parallel weight 2 whose L-function coincide with that of the elliptic
+curve. This equality provides analytic continuation and functional equation for the Hasse–Weil
+L-function of A/F . Experience has shown that it is easier to study the Taylor series of L(A/F, s)
+at the center s = 1 by additionally considering a quadratic CM extension E/F . If the conductor
+fA is unramified in E, then the sign of the functional equation of L(A/E, s) is computed by
+                                      ε(A/E) = (−1)|Σ(A/E)| ,
+where Σ(A/E) is a certain set of places of F containing all the Archimedean places of F (given
+that E/F is a CM extension). There are two key formulas describing the first non-trivially-zero
+term of the Taylor series of L(A/E, s):
+   •   when ε(A/E) = +1, i.e. when the set Σ(A/E) has even cardinality, Waldspurger formula
+       expresses the special L-value L(A/E, 1) in terms of CM points on the zero dimensional
+       Shimura variety associated to the totally definite quaternion algebra with ramification set
+       Σ(A/E) ([Wal85], [YZZ13]);
+   •   when ε(A/E) = −1, i.e. when Σ(A/E) has odd cardinality, the Gross–Zagier–Zhang formula
+       expresses the value of the first derivative L′ (A/E, 1) in terms of CM points points on a
+       one dimensional Shimura variety associated to the quaternion algebra of ramification set
+       Σ(A/E) \ {τ } for some Archimedean place τ ([GZ86], [YZZ13]).
+The optimist might guess a pattern emerging from this data and hope that analogous relations
+hold in general: is it really possible for CM points on r-dimensional quaternionic Hilbert varieties
+to control the value of r-th derivatives of L-functions of elliptic curves?
+After some reflection, one notes at least two apparent obstacles to this expectation:
+ (i) Shimura varieties are defined over reflex fields which might be disjoint from F in general;
+(ii) the Chow group of zero cycles CH0 (X) of an r-dimensional quaternionic Hilbert variety X
+     should not carry information about modular elliptic curves as soon as r ⩾ 2. Indeed, the
+     Beilinson–Bloch–Kato conjecture ([Liu16], Section 1.2.1) predicts that the rank of CH0 (X)
+     is essentially controlled by H2r−1
+                                   ét  (XQ , Qp (r)), while the fA -isotypic component of the coho-
+     mology of X is concentrated in degree r.
+These obstacles may appear to be insurmountable and thus good reasons to reject the optimistic
+expectation. However, Nekovář and Scholl conjecture the existence of a “plectic” enhancement of
+the étale cohomology of quaternionic Hilbert varieties that should resolve the issues, and provide
+generalizations of Siegel units and Heegner points ([NS16], [Nek16]).
+In this article we explore the consequences of the optimistic expectation in a pragmatic way:
+inspired by Nekovář and Scholl’s insights we directly propose a conjectural construction of global
+points on modular elliptic curves via p-adic integration. Ours is a common generalization of
+both the construction of Heegner points via Čerednik–Drinfeld uniformization ([BD98]) and
+the cohomological definition of Stark–Heegner points ([Dar01], [Gre09], [GMS15], [GMM20]).
+In particular, we consider elliptic curves with mulitplicative reduction at a collection of p-adic
+primes. We expect the non-triviality of these plectic Stark–Heegner points to control the Mordell–
+Weil group of higher rank elliptic curves, and we provide some indirect evidence by showing
+that higher order derivatives of anticyclotomic p-adic L-functions compute plectic invariants.
+Furthermore, we note that our approach works uniformly over arbitrary base number fields F
+
+
+                                                 2
+                                Plectic Stark–Heegner points
+
+and without a priori restrictions on the type of quadratic extension E/F , suggesting that plectic
+ideas may have wider scope than previously expected.
+    We refer to [FGM21] for some direct numerical evidence, and a somewhat simplified exposition
+of the construction of plectic invariants in the case of E/F not a CM extension and both number
+fields having narrow class number one. Finally, we invite the adventurous reader to have a look
+at [FG21], where we develop the speculative framework of plectic Jacobians, which recasts the
+construction of plectic Stark–Heegner points for CM extensions in more geometric terms. The
+rest of the introduction is devoted to describing our conjectural construction of global points,
+and to exploring the relation between plectic invariants and higher derivatives of anticyclotomic
+p-adic L-functions.
+
+1.1 Elliptic curves of higher rank
+Let F be a number field, A/F a modular elliptic curve of conductor fA , and E/F a quadratic
+extension where fA is unramified. A long-standing open problem in the arithmetic of elliptic
+curves consists in discovering a modular construction of an element P ∈ ∧r A(E) such that P is
+non-torsion exactly when the algebraic rank ralg (A/E) equals r. During the last decade, Nekovář
+and Scholl have been promoting the idea that a plectic enhancement of the Abel-Jacobi map of
+quaternionic Hilbert varieties would produce the image of P ∈ ∧r A(E) under the Kummer map
+                               ∧r K : ∧r A(E) −! ⊗rQp H1f (E, Vp (A)).
+While their plectic conjectures seem to be out of reach at present, the results of this paper may be
+interpreted as a direct p-adic construction of a localization of Nekovář and Scholl’s cohomology
+class. To justify our claim, let us fix a rational prime p unramified in F and suppose there is a set
+S = {p1 , . . . , pr } of r distinct p-adic OF -prime ideals inert in E. The local Kummer map induces
+                       b p ) ⊗Zp Qp −!  ∼                            b p ) denotes the p-adic completion
+an isomorphism A(E                          H1f (Ep , Vp (A)), where A(E
+of the local points. Then, by fixing embeddings ιp : E ֒! Ep for primes p ∈ S, we can consider
+the composition
+                                               det
+
+                                                                        *               
+                              ∧r K                          locS
+                ∧r A(E)               / ⊗r H1 (E, Vp (A))          / ⊗p∈S b
+                                                                          A(Ep ) ⊗Zp Qp
+                                         Qp f
+
+given by
+                                                                          
+                                                ιp1 (P1 ) . . . ιpr (P1 )
+                     det P1 ∧ · · · ∧ Pr = det            ...             .
+                                                 ιp1 (Pr ) . . . ιpr (Pr )
+The main contribution of this paper is the conjectural construction of elements in the image
+det(∧r A(E)) under further assumptions on the conductor of the elliptic curve presented below.
+Remark 1.1. Unfortunately, the localization process loses information when global classes are
+annihilated. For instance, if the elliptic curve A/F can be defined over Q and r ⩾ 2, the map
+det = locS ◦ (∧r K)
+                                                                          
+                    ∧r A(Q) −! ∧r b   A(Qp ) ⊗Zp Qp ֒! ⊗p∈S bA(Qp ) ⊗Zp Qp
+                    b p ) has Zp -rank one.
+equals zero because A(Q
+                                Q
+From now on, suppose that pS = p∈S p exactly divides the conductor fA . We can then write
+                                          f A = p S · n+ · n− ,
+
+
+                                                     3
+                           Michele Fornea and Lennart Gehrmann
+
+where n+ is the product of all prime divisors of fA that split in E. Let ∞1 , . . . , ∞t denote the
+real places of F ordered such that the first n are precisely those that split in E. Assuming that
+the ideal n− is square-free and denoting its number of prime factors by ω(n− ), the root number
+of A/E is conjecturally computed by
+                                                             −
+                                    ε(A/E) = (−1)r+ω(n )+(t−n) .
+Therefore, the parity conjecture suggests us to impose the following congruence condition
+                                     ω(n− ) ≡ (t − n) (mod 2).
+This last assumption ensures the existence of a quaternion algebra B/F ramified precisely at
+{q | n− } ∪ {∞n+1 , . . . , ∞t } and admitting an embedding ψ : E ֒! B. This data plays a key role
+in the construction of plectic Stark–Heegner points. We denote by T = E × /F × and G = B × /F ×
+the associated F -algebraic groups, and by ψ : T ֒! G the induced embedding. Further, we let π be
+the automorphic representation of G associated to A/F by modularity and the Jacquet–Langlands
+correspondence. The choice of the quaternion algebra B might appear unjustified. However, the
+relation between plectic points and anticyclotomic p-adic L-functions – more precisely the local
+constraints on linear periods appearing in Waldspurger formula – suggests that the choice of B
+made above is the only interesting one for our purposes.
+    While developing the necessary machinery, it is natural to consider other invariants associated
+to the elliptic curve A/F and the quadratic extension E/F . These are called plectic p-adic invari-
+ants and have the advantage of being much easier to define while already encoding interesting
+information.
+
+1.2 Plectic p-adic invariants
+We set q to be the number of archimedean places at which B is split, i.e. q is the sum of n and
+the number of complex places of F . By our assumptions, any arithmetic subgroup of T (F ) has
+rank q. The construction of plectic p-adic invariants comprises three main steps:
+   •   the definition of a measure-valued cohomology class cSA,ǫ associated to the triple (A/F , ǫ, S)
+       consisting of the modular elliptic curve A/F , a character ǫ : π0 (G∞ ) ! {±1}, and S;
+   •   the definition of an integrand function arising from the embedding ψ : T ֒! G;
+   •   the cap product with a homology class ϑχ associated to the non-split torus T and a ring
+       class character χ.
+
+  1.2.1 Measure-valued cohomology class. Let p ∈ S and fix an isomorphism Gp ∼
+                                                                             = PGL2 (Fp ).
+We consider the character χ±
+                           p : Gp ! {±1} given by the formula
+
+                                χ±
+                                 p (g) = (±1)
+                                             ordp (det(g))
+                                                                 ∀ g ∈ Gp .
+The ±-Steinberg representation St±p (Z) of Gp is the space of locally constant Z-valued functions
+    1
+on P (Fp ) modulo constant functions, with action given by
+                              (g · f )(·) = χ±           −1
+                                             p (g) · f (g ·)       ∀ g ∈ Gp .
+We write S as a disjoint union S = S + ∪ S − where S ± = {p ∈ S | πp = St±
+                                                                         p (C)}, and put
+                                       O               O
+                            StS (Z) :=      St+
+                                              p (Z) ⊗Z    St−p (Z).
+                                          p∈S +                p∈S −
+
+
+
+                                                    4
+                               Plectic Stark–Heegner points
+
+By a Z-valued
+            Q measure     on P1 (FS ) we mean a finitely additive function defined on compact open
+                    1
+subsets of p∈S P (Fp ). Then, the Z-linear dual HomZ (StS (Z), Z) of the S-Steinberg represen-
+tation is naturally identified with a submodule of Z-valued measures on P1 (FS ).
+To simplify the notation in the introduction, we will ignore all kinds of class number issues.
+Theorem 3.6 shows that there is an S-arithmetic subgroup ΓS ⩽ G(F ) such that, for every char-
+acter ǫ : π0 (G∞ ) ! {±1}, the [π, ǫ]-isotypic component of Hq (ΓS , HomZ (StS (Z), Z)) is finitely
+generated of rank one. Therefore, it is natural to define the measure-valued cohomology class
+cSA,ǫ associated to the triple (A/F , ǫ, S) as a generator of its free part, i.e.
+                                                                    ǫ
+                                  cSA,ǫ ∈ Hq ΓS , HomZ (StS (Z), Z) π ,
+which is unique up to sign.
+
+   1.2.2 The integrand function. Recall that any p ∈ S is inert in the quadratic extension E/F .
+Hence, the completion of E at p is the unramified quadratic extension of Fp and we can consider
+                                    Hp (Ep ) = P1 (Ep ) \ P1 (Fp )
+onto which the group Gp acts via Möbius transformations. The embedding ψ : T ֒! G induces
+an action of Tp on Hp (Ep ) with two fixed points τψ,p and τ̄ψ,p , which are interchanged by the
+Galois group Gal(Ep /Fp ) = hσp i. We choose τψ,p ∈ Hp (Ep ) such that the action of Tp on the
+tangent space of τψ,p is given by the homomorphism
+                                     Tp −! Ep× ,         t 7! t1−σp .
+
+Denote by Ebp× the torsion-free part of the p-adic completion of Ep× and consider the tensor
+        b× := ⊗p∈S E
+product E            bp× of Zp -modules. The TS -equivariant map
+         S,⊗
+                                                         
+                            (Ψ⋄S )∗ : HomZp StS (Zp ), Zp −! Eb×                         (1)
+                                                               S,⊗
+
+is defined using multiplicative integrals
+                                     Z       O  tp − τψ,p 
+                           ⋄ ∗
+                       (ΨS ) (µ) := ×                                      b× .
+                                                                   dµ(t) ∈ ES,⊗
+                                      P1 (FS ) p∈S   tp − τ̄ψ,p
+
+For a subgroup of T (F ), the notions of being arithmetic and being S-arithmetic agree since TS
+is compact. Thus, the preimage ΓT = ψ −1 (ΓS ) under the embedding ψ : T (F ) ֒! G(F ) is an
+arithmetic subgroup of T (F ). Restriction followed by the map induced in cohomology by (1)
+yields a class
+                                                             
+                                                          b× .
+                                   (Ψ⋄ )∗ (cS ) ∈ Hq ΓT , E
+                                      S     A,ǫ                   S,⊗
+As the abelian group ΓT is a finitely generated of rank q, there exists a fundamental class
+ϑΓT ∈ Hq (ΓT , Q) whose cap product gives an element
+                                                          b× ⊗Z Q.
+                                 (Ψ⋄S )∗ (cSA,ǫ ) ∩ ϑΓT ∈ E                                    (2)
+                                                           S,⊗
+
+
+   1.2.3 Plectic p-adic invariants. Let Ec /E be the narrow ring class field of E of conductor c
+prime to fA , i.e. the Galois extension of E such that the Artin map induces an isomorphism
+                                                              ∼
+                           recE : T (F )+ \T (A∞ )/U (c) −
+                                                         −! Gal(Ec /E).
+                                                                          ×
+Set Gc := Gal(Ec /E) and consider a finite order character χ : Gc ! Q of conductor c and χ∞ = ǫ.
+The plectic p-adic invariant attached to the pair (A/F , χ) is given by a sum of cap products as
+
+
+                                                     5
+                         Michele Fornea and Lennart Gehrmann
+
+in (2) for different embeddings ψ weighted by the character χ. More precisely, in Section 4.2 we
+explain how to construct an adelic and twisted variant ϑχ of the fundamental class, as well as an
+adelic variant of the map (Ψ⋄S )∗ . Then, the plectic p-adic invariant for the pair (A/F , χ) is given
+by the cap product
+                             Qχ := (Ψ⋄S )∗ (cSA,ǫ ) ∩ ϑχ ∈ E
+                                A
+                                                            b× ⊗Z Q.
+                                                                S,⊗
+Now, the elliptic curve A/F has multiplicative reduction at all p ∈ S. Therefore, it admits Tate
+uniformizations Ep× ! A(Ep ) and correspondingly maps E   bp× ! bA(Ep ) between the torsion-free
+parts of the p-adic completions. We denote the tensor product of these maps by
+                                            b× −! A(E
+                                    φTate : E        b S)
+                                                    S,⊗
+                 N
+      b S ) :=
+where A(E               b
+                    p∈S A(Ep ) is a tensor product of Zp -modules. Thus, we can consider the point
+                                                
+                                    φTate QχA          b S ) ⊗Z Q.
+                                                     ∈ A(E
+whose conjectural properties are discussed and supported by numerical experiments in [FGM21].
+Remark 1.2. The elements QχA are not the most refined invariants considered in this paper, but
+they are already very interesting. They are defined unconditionally for arbitrary base number field
+F and for any quadratic extension E. Moreover, they appear as the value of higher derivatives
+of anticyclotomic p-adic L-functions, and Tate’s uniformization conjecturally maps them to the
+p-adic image of global points.
+
+1.3 Plectic Stark–Heegner points
+We are now ready to address the construction of the more refined invariants. In the definition of
+plectic p-adic invariants, we used an integrand function
+                                                     O  tp − τψ,p 
+                              1          b ×
+                             P (FS ) −! ES,⊗ , t 7!
+                                                         tp − τ̄ψ,p
+                                                          p∈S
+
+that had neither zeros nor poles. Ideally, however, one would want to integrate the function
+t 7! ⊗p∈S (tp − τψ,p ) despite it having poles at infinity. It turns out that the latter function
+naturally lives in a controlled extension ES of the S-Steinberg representation (Definition 4.8)
+which allows us to define a TS -equivariant map
+                                                                                      
+          (ΨS )∗ : HomZp ES , bA(ES ) ! b A(ES ),     (ΨS )∗ (µ) := µ ⊗p∈S (tp − τψ,p ) .     (3)
+For this section and the next, we assume the equality of arithmetic and automorphic L-invariants
+of modular elliptic curves over F . We note that when F is totally real the equality has recently
+been established by Rosso and the second named author [GR20], and independently by Spieß
+                                                                                 b × with b
+[Spi20]. Under this assumption, the key result is that, at the cost of replacing E         A(ES ),
+                                                                                  S,⊗
+                                          S
+the measure-valued cohomology class cA,ǫ lifts – uniquely up to finite torsion – to a class
+                                                                 
+                                                             b S) ǫ .
+                                cbSA,ǫ ∈ Hq ΓS , HomZp (ES , A(E   π
+
+As before, restriction followed by the map induced in cohomology by (3) yields a class
+                                                           
+                                                       b S) .
+                                  (ΨS )∗ cbS ∈ Hq ΓT , A(E
+                                           A,ǫ
+                                          ×
+Given a finite order character χ : Gc ! Q of conductor c with χ∞ = ǫ, the plectic Stark–Heegner
+point attached to the pair (A/F , χ) is given by the cap product
+                             PχA := (ΨS )∗ (b              b S ) ⊗Z Q
+                                            cSA,ǫ ) ∩ ϑχ ∈ A(E
+
+
+                                                      6
+                                Plectic Stark–Heegner points
+
+of adelic objects as in Section 1.2.3. The point PχA does not depend on the choice of the lift cbSA,ǫ .
+Interestingly, we can write down an explicit relation between plectic p-adic invariants and plectic
+Stark–Heegner points. Recall the “partial Frobenius” element σp , i.e. the non-trivial element of
+Gal(Ep /Fp ). Since σp acts on b
+                               A(ES ) through the p-th component, the relation
+                           Y              Y           
+                                                                        
+                                       ∗
+                                 (1 − σp )    (1 + σp ) PχA = φTate QχA
+                                                     ∗
+
+                             p∈S +            p∈S −
+
+   b S ) ⊗Z Q is a direct consequence of the definitions.
+in A(E
+
+1.4 Conjectures
+We continue our introduction by stating conjectures that describe the algebraicity of plectic
+Stark–Heegner points, a version of Shimura’s reciprocity law they are expected to satisfy, and
+a precise relation to the global arithmetic of elliptic curves. Recall we fixed a rational prime p,
+and S a set of r distinct prime ideals of OF above p, inert in E. We also supposed that
+                           f A = p S · n+ · n−         &       ω(n− ) ≡2 (t − n),
+so that the conjecture on the root number of A/E and the parity conjecture imply the congruence
+ralg (A/E) ≡2 r. Let Ec /E be the narrow ring class field of E of conductor c prime to fA . Under
+our assumptions, the OE -prime ideals generated by the primes in S split completely in Ec+ .
+Therefore, we can fix an embedding ιp : Ec ֒! Ep for each p ∈ S and consider the homomorphism
+                                                         b S)
+                                      det : ∧r A(Ec ) −! A(E
+given by
+                                                                                         
+                                                         ιp1 (P1 ) . . .       ιpr (P1 )
+                        det P1 ∧ · · · ∧ Pr       = det            ...                   .
+                                                          ιp1 (Pr ) . . .       ιpr (Pr )
+                                                                            ×
+Under the assumption (c, fA ) = 1, for any character χ : Gc ! Q the L-functions L(A/E, χ, s) and
+L(A/E, s) share the same root number ε(A/E, χ) = ε(A/E). Thus, if we denote by ralg (A/E, χ)
+the dimension of A(Ec )χ , the χ-isotypic component of A(Ec ), we can expect the congruence
+ralg (A/E, χ) ≡2 r to hold as well.
+
+Conjecture 1.3. (Algebraicity + Shimura reciprocity) If ralg (A/E, χ) ⩾ r, then there exists
+            χ
+an element wA ∈ ∧r A(Ec )χ such that
+                                                χ
+                                     PχA = det wA .
+
+Remark 1.4. One could interpret the conjecture as claiming that the values L(j) (A/E, χ, 1), for
+0 ⩽ j < r, measure the obstruction for the algebraicity of the plectic point PχA .
+
+Conjecture 1.3 alone does not pin down precisely the relevance of plectic points for the arithmetic
+of elliptic curves of higher rank. To clarify it, we state the following Kolyvagin–type conjecture.
+
+Conjecture 1.5. Suppose that ralg (A/E, χ) ⩾ r, then
+                                PχA 6= 0          =⇒       ralg (A/E, χ) = r.
+If the L-function L(A/F, s) is primitive, then the converse implication also holds.
+
+
+                                                        7
+                         Michele Fornea and Lennart Gehrmann
+
+The assumption on the primitivity of the L-function – i.e. that L(A/F, s) does not factor as
+a product of automorphic L-functions – is likely too restrictive. Nevertheless, it is concise and
+takes care of incovenient phenomena (Remark 1.1).
+Remark 1.6. When ralg (A/E, χ) < r we expect the plectic point PχA to be non-trivial. However,
+we cannot guess whether the quantity contains any specific arithmetic information.
+
+1.5 Derivatives of anticyclotomic p-adic L-functions
+We conclude the introduction by presenting a relation between plectic p-adic invariants and
+higher derivatives of p-adic L-functions. Note then that we do not need to assume the equality
+of arithmetic and automorphic L-invariants in this section.
+Let c be a non-zero ideal of F coprime to fA . If we denote by Ec,S /E the union of the narrow
+ring class fields of E of conductor c · pnS for n ⩾ 0, then the Artin map induces an isomorphism
+                                        +                  ∼             
+                           recE : T (F ) \T (A∞ )/U (c)S −−! Gal Ec,S /E
+             +                                                                          
+where T (F ) is the closure of T (F )+ in T (A∞ )/U (c)S . We define Gc,S := Gal Ec,S /E .
+The anticyclotomic p-adic L-function attached to the tuple (A/E , ǫ, c, S) depends on a choice of
+base-point x ∈ P1 (FS ) (Remark 5.8) and it is an element of the completed group ring
+                                      LSǫ (A/E)c ∈ Zp JGc,S K.
+Such function was constructed in the generality considered here in ([Ber17], [BG18]), building on
+Waldspurger formula [YZZ13] and the work of File-Martin-Pitale [FMP17] on test-vectors. The
+anticyclotomic p-adic L-function LSǫ (A/E)c interpolates central L-values of twists by finite order
+                       ×
+characters χ : Gc,S ! Q ramified at every prime in S, and it vanishes at all the other characters
+(Theorem 5.10). Moreover, LSǫ (A/E)c vanishes to order at least r = |S| at any character of Gc
+([BG18], Theorem 5.5), i.e.
+                                           LSǫ (A/E)c ∈ I r
+                                    
+where I = ker Zp JGc,+S K ! Zp [Gc ] is the relative augmentation ideal. It is then natural to try to
+compute the values of the r-th derivative at those characters.
+
+   1.5.1 p-adic Gross–Zagier formula. Inspired by the work of Bertolini and Darmon [BD98],
+we prove that the values of the r-th derivative of LSǫ (A/E)c compute plectic p-adic invariants.
+                                                   ×
+Definition 1.7. For any character χ : Gc ! Q with χ∞ = ǫ we set
+                                 
+                  χ ∂ r LSǫ (A/E)c := LSǫ (A/E)c ⊗ 1 in I r /I r+1 ⊗χ Q,
+
+where we consider I r /I r+1 as a Z[Gc ]-module.
+
+Note that the χ-component of the r-th derivative is independent of the choice of base-point
+x ∈ P1 (FS ) made in constructing the p-adic L-function (Remark 5.12). Now, as for every p ∈ S
+the image of the local Artin map from Tp to Gc is trivial, the function
+                                b× ! I/I 2 ,
+                       d recp : E                  t 7! recp (t) − 1 (mod I 2 )
+                                 p
+
+                                                                        b × ! I r /I r+1 , which
+is a group homomorphism. Taking tensor products yields the map d recS : ES,⊗
+                                                 b × ⊗χ Q ! I r /I r+1 ⊗χ Q. Then, our p-adic
+extends to a Z[Gc ]-linear homomorphism d recS : ES,⊗
+Gross–Zagier formula takes the following form.
+
+
+                                                   8
+                              Plectic Stark–Heegner points
+                                                                 ×
+Theorem A. (Theorem 5.13) For any character χ : Gc ! Q with χ∞ = ǫ the equality
+                                           
+                         2 · χ ∂ LS (A/E)c = d recS (QχA )
+                           r     r  ǫ
+
+
+holds in I r /I r+1 ⊗χ Q.
+
+
+Acknowledgements
+We would like to express our deep gratitute to Xavier Guitart and Marc Masdeu for sharing the
+exploration of the plectic world, and to Matteo Tamiozzo for explaining Nekovář and Scholl’s
+conjectures to us. Moreover, we thank Felix Bergunde, Dante Bonolis, Henri Darmon, David
+Lilienfeldt, Jan Nekovář, Kartik Prasanna, Tony Scholl, Nicolas Simard, Ari Shnidman, Christo-
+pher Skinner and Jan Vonk for their support and for many enriching conversations. While working
+on this article the first named author was a Simons Junior Fellow, and the second named author
+was visiting McGill University, supported by Deutsche Forschungsgemeinschaft.
+
+
+                                   2. Notations and setup
+All rings are commutative and unital. The group of invertible elements of a ring R will be
+denoted by R× . For a group H, we write R[H] for the group algebra of H with coefficients in R.
+If H = limn Hn is a pro-finite group, we let
+         −
+                                      Zp JHK = lim Zp [Hn ]
+                                                 −
+                                                      n
+be the completed group algebra of H with coefficients in Zp . Given a group homomorphism
+χ : H ! R× , we let R(χ) denote the representation of H whose underlying R-module is R itself
+and on which H acts via the character χ. If N is another R[H]-module, we put N (χ) = N ⊗R R(χ).
+Given topological spaces X, Y , we will write C(X, Y ) for the set of continuous functions from
+X to Y , and Cc (X, Y ) ⊆ C(X, Y ) for the subset of continuous functions with compact support.
+For a set X and a subset U ⊆ X the characteristic function 1U : X ! {0, 1} is defined by
+                                               (
+                                                 1 if x ∈ U,
+                                     1U (x) =
+                                                 0 else.
+A number field. Throughout the article we fix a number field F with ring of integers OF .
+We denote the set of archimedean places of F by Σ∞ . For a non-zero ideal a ⊆ OF we set
+N (a) = |OF /a|. If v is a place of F , we denote by Fv the completion of F at v. If p is a finite
+place, we let Op denote the valuation ring of Fp and write ordp for the normalized valuation.
+For a finite set Σ of places of F we define the ”Σ-truncated adeles” AΣ as the restricted product
+of the completions Fv over all places v which are not in Σ. We often write AΣ,∞ instead of
+AΣ∪Σ∞Q  . If H is an algebraic group over F and v is a place of F , we write Hv = H(Fv ) and put
+HΣ = v∈Σ Hv . Similarly as before, we abbreviate H∞ = HΣ∞ .
+
+A set and an elliptic curve. We fix a rational prime p and a set of distinct primes
+                                        S = {p1 , . . . , pr }                                (4)
+of F lying over p. Moreover, we consider an elliptic curve A over F of conductor fA ⊆ OF
+such that p divides fA exactly once for every p ∈ S or, equivalently, that A/F has multiplicative
+reduction for all primes p ∈ S. We assume that A is modular, meaning that there exists a cuspidal
+
+
+                                                  9
+                            Michele Fornea and Lennart Gehrmann
+
+automorphic representations ΠA of PGL2 (A) attached to A, which is cohomological with respect
+to the trivial coefficient system and has conductor fA . In particular, for every p ∈ S the local
+component ΠA,p is an unramified twist of the Steinberg representation.
+
+A quadratic extension. We fix a quadratic extension E/F such that
+   •   every prime dividing the conductor fA is unramified in E, and
+   •   the primes in S are inert.
+For p ∈ S the non-trivial element of Gal(Ep /Fp ) will be denoted by σp . We may decompose
+                                             f A = p S · n+ · n− ,
+where n+ and n− are coprime, and such that a prime divisor of fA divides n+ if and only if it split
+in E. Let ∞1 , . . . , ∞t denote the real places of F ordered such that the first n are precisely those
+that split in E. We suppose that the ideal n− is square-free and denote by ω(n− ) the number of
+its prime factors, then the set
+                                                         
+                              Σ(A/E) = S ∪ q | n− ∪ ∞n+1 , . . . , ∞t
+controls the root number of A/E which is conjecturally equal to
+                                                              −
+                                      ε(A/E) = (−1)r+ω(n )+(t−n) .
+We assume that ω(n− ) ≡ (t − n) (mod 2).
+
+Algebraic groups. Under our assumptions, there exists a quaternion algebra B/F with
+   •   disc(B) = n− , and
+   •   B is ramified at infinity only at the real places ∞n+1 , . . . , ∞t .
+Note that B is split at all primes in S. We denote by G = B × /F × the associated F -algebraic
+group of units modulo center. The automorphic representation ΠA admits a Jacquet-Langlands
+transfer π to G. The local component πq of π is one-dimensional for every prime q | disc(B).
+Furthermore, there exists an embedding of E into B that induces an embedding ψ of the F -
+algebraic torus T = E × /F × into G. Let q be the number of archimedean places of F at which B
+is split. By Dirichlet’s unit theorem, the rank of every arithmetic subgroup of T (F ) is equal to q.
+For every prime q ∤ disc(B) we fix an isomorphism of Bq with the algebra M2 (Fq ) of two-by-two
+matrices over Fq obtaining isomorphisms
+                                    Gq ∼
+                                       = PGL2 (Fq )         ∀ q ∤ disc(B).                         (5)
+We write G+
+          ∞ ⊆ G∞ for the connected component of the identity, i.e. the subgroup of elements
+whose reduced norm is positive for every real place of F . If H is any subgroup of G∞ we set
+                                             H + := H ∩ G+
+                                                         ∞.
+
+
+Congruence subgroups. Let n ⊆ OF be a non-zero ideal coprime to disc(B). For every prime
+q of F not dividing the discriminant of B we define the compact open subgroup Kq (n) ⊆ Gq as
+the image under (5) of the subgroup
+                             {g ∈ PGL2 (Oq ) | g upper triangular mod n} .
+For q | disc(B) we let Kq (n) be the image in Gp of the group of units of the maximal order in
+
+
+                                                      10
+                                Plectic Stark–Heegner points
+
+Bq . If Σ is a finite set of primes of F we define
+                                             Y
+                                   K(n)Σ :=      Kq (n) ⊆ G(AΣ,∞ ).
+                                           q/
+                                            ∈Σ
+
+If Σ is the empty set, we drop it from the notation. Further, we set
+                                         f = fA / disc(B).
+Then, if π ∞ denotes the finite part of π, Casselman’s result on newforms gives ([Cas73])
+                                        dimC (π ∞ )K(f) = 1.
+For a finite place q of F all Oq -orders in Eq are of the form Oq + qm OE,q for some m ⩾ 0 and
+                                                 (m)
+OE,q the maximal Oq -order in Eq . We write Uq for the image of (Oq + qm OE,q )× in Tq , and
+given a non-zero ideal m ⊆ OF , a finite set Σ of places of F , we define
+                                                Y (ord (m))
+                                     U (m)Σ :=      Uq q     .
+                                                 q/
+                                                  ∈Σ
+
+The preimage of K(f)S under ψ is of the form U (c)S for a non-zero ideal c ⊆ OF that is coprime
+to disc(B) and all primes in S. In addition, we assume that c is even coprime to fA = disc(B)f.
+
+
+                     3. A cohomology class valued in harmonic cochains
+3.1 Cohomology of arithmetic groups
+Let n ⊆ OF be a non-zero ideal that is coprime to disc(B) and N an abelian group. The Z-module
+of (continuous) functions C G(A∞ )/K(n), N carries a natural G(F )-action given by
+                                      (γ · Φ)(g) = Φ(γ −1 g).
+As the double quotient G(F )+ \G(A∞ )/K(n) is finite by Borel’s theorem ([Bor63], Theorem
+5.1), we can fix a system of representatives h1 , . . . , hℓ and put Γi = G(F )+ ∩ hi K(n)h−1
+                                                                                           i . Then,
+Shapiro’s lemma yields natural isomorphisms
+                                                                  ℓ
+                                                                  M
+                                                           ∼
+                                                             =
+                           d     +        ∞
+                         H G(F ) , C G(A )/K(n), N           −
+                                                             −!         Hd (Γi , N )            (6)
+                                                                  i=1
+for every d ⩾ 0. Thus, if N is a Q-vector space or if the
+                                                       arithmetic groups Γi are torsion-free, the
+cohomology groups Hd G(F )+ , C G(A∞ )/K(n), N are naturally isomorphic to the singular
+cohomology with coefficients in N of the locally symmetric space of level K(n) associated to G.
+We believe it justifies the following notation
+                                                                       
+                        Hd XG (n), N := Hd G(F )+ , C G(A∞ )/K(n), N .                          (7)
+Since arithmetic groups are of type (VFL) ([BS73], Section 11.1) one deduces the following two
+statements ([Ser72], p.101):
+   •   for N a finitely generated module over a Noetherian ring R, the R-module
+                                                          
+                                             Hd XG (n), N
+       is finitely generated;
+   •   if N is a flat Z-module, then the canonical map
+                                                     ∼
+                                                      =              
+                                  Hd XG (n), Z ⊗Z N −−! Hd XG (n), N                            (8)
+
+
+                                                 11
+                          Michele Fornea and Lennart Gehrmann
+
+     is an isomorphism.
+These cohomology groups carry a natural action of the finite, abelian, 2-torsion group
+                               G(F )/G(F )+ = G∞ /G+
+                                                   ∞ = π0 (G∞ ).
+
+Given a character ǫ : π0 (G∞ ) ! {±1} and a π0 (G∞ )-module M we denote by M ǫ the ǫ-isotypic
+component of M . Let Σ be a finite set of primes containing all primes dividing disc(B). The
+cohomology groups Hd XG (n), N carry an action of the Hecke algebra
+                                                                 
+                              TΣ := Cc K(n)Σ \G(AΣ,∞ )/K(n)Σ , Z
+which commutes with the action of π0 (G∞ ). Let λπ : TΣ ! Z be the character of associated to
+π by the following rule
+                          t.v = λπ (t) · v    ∀ t ∈ TΣ ,    ∀ v ∈ (π ∞ )K(f) .
+Given a TΣ -module M we put
+                              
+                          Mπ = m ∈ M | t.m = λA (t) · m              ∀t ∈ TΣ .
+Proposition 3.1. For any flat Z-algebra R and any character ǫ : π0 (G∞ ) ! {±1} we have
+                                                (
+                                            ǫ    1 for d = q
+                           rkR Hd XG (f), R π =
+                                                  0 for d < q.
+Furthermore, for every proper divisor n of f and every d ⩾ 0 we have
+                                                       ǫ
+                                      rkR Hd XG (n), R π = 0.
+                                  ǫ
+Proof. The groups Hd XG (f), Z π are finitely generated, and by the flat base-change (8), to prove
+the first claim it suffices to show that
+                                                      (
+                                                  ǫ    1 for d = q
+                                dimC Hd XG (f), C π =               .
+                                                        0 for d < q
+This last statement is a direct consequence of Matsushima’s formula, strong multiplicity one and
+standard calculations in (g, K∞ )-cohomology. The proof of the second claim is similar.
+Remark 3.2. Let TΣ      Σ
+                  Q = T ⊗ Q be the rational Hecke algebra. The kernel mπ of the homomor-
+            Σ
+phism λπ : TQ ! Q is a maximal ideal. Since π is cuspidal one can prove that
+                                                           
+                            Hd XG (n), Q π = Hd XG (n), Q mπ ,
+where the subscript mπ means localization. We implicitly use this equality throughout the article.
+
+3.2 The Steinberg representation and harmonic cochains
+We recall the relation between the Steinberg representation and harmonic cochains on the
+Bruhat–Tits tree Tp of Gp . Let p be a prime in S and M an abelian group. We remind ourselves
+that the ±-Steinberg representation St± p (M ) of Gp is the space of locally constant M -valued
+functions on P1 (Fp ) modulo constant functions, with action given by
+                     (g.f )(x) = χ±           −1
+                                  p (g) · f (g x)        ∀ g ∈ Gp , x ∈ P1 (Fp ).
+where χ±
+       p : Gp ! {±1} is the character given by
+                                                   ordp (det(g))
+                                      χ±
+                                       p (g) = (±1)              .
+
+
+                                                  12
+                                Plectic Stark–Heegner points
+
+The Bruhat–Tits tree Tp is a homogeneous oriented tree whose set of vertices Vp consists of
+homothety classes of Op -lattices in Fp ⊕ Fp . Two vertices v1 , v2 ∈ Vp are connected by an oriented
+edge e ∈ Ep with source s(e) = v1 and target t(e) = v2 if there are representatives Λi of vi for
+i = 1, 2 such that
+                                           pΛ2 ( Λ1 ( Λ2 .
+Given and oriented edge e ∈ Ep we denote by e be the same edge as e but with opposite
+orientation. The natural action of Gp on oriented edges Ep (resp. on the vertices Vp ) is transitive.
+We denote by Kp1 (resp. Kp0 ) the stabilizer of the edge e◦ , from the vertex v◦ corresponding to
+Op ⊕ Op to the the vertex vb◦ corresponding to pOp ⊕ Op (resp. of the vertex v◦ ). Thus we have
+natural identifications
+                               Vp ∼= Gp /K 0 and Ep ∼
+                                              p         = Gp /K 1 .  p
+Consider the natural GL2 (Fp )-equivariant projection
+                           pr : Fp2 \ {0} −! P1 (Fp ),    (x, y) 7−! [x : y].
+Given an edge e = (s, t) ∈ Ep , choose lattices Λs , Λt of Fp ⊕ Fp representing s,t, such that
+                                            pΛt ( Λs ( Λt .
+If we set Λ′ = Λ \ pΛ for any lattice Λ of Fp ⊕ Fp , then Ue = pr(Λ′s ∩ Λ′t ) is a compact open subset
+of P1 (Fp ) depending only on the edge e ∈ Ep . It is easy to see that
+                                          Ue = P1 (Fp ) \ Ue .                                    (9)
+Moreover, the collection {Ue }e∈Ep forms a basis of the p-adic topology of P1 (Fp ).
+Remark 3.3. For any γ ∈ Gp and any e = (s, t) ∈ Ep we have
+                                                           
+                   Uγ.e = pr γ(Λ′s ∩ γΛ′t ) = γ(pr Λ′s ∩ Λ′t ) = γ(Ue ).
+
+   3.2.1 Harmonic cochains.      For any edge e ∈ Ep we denote by δe ∈ Cc (Ep , Z) the function
+                                                 (
+                                                  1 if e′ = e
+                                      δe (e′ ) =
+                                                  0 if e′ 6= e.
+We consider the surjective Gp -equivariant map
+                            Ev±                                 p (ge ) · 1Ue
+                                                  ±
+                              p : Cc (Ep , Z) ! Stp ,    δe 7! χ±
+where ge ∈ Gp satisfies ge .e◦ = e. The map e 7! e induces an involution Wp on Cc (Ep , Z), and by
+(9) we have 1Ue = −1Ue in St±                        ±
+                                p . Hence, the map Evp factors through the quotient
+
+                            Cc (Ep , Z)± := Cc (Ep , Z)/(1 ± Wp )Cc (Ep , Z).
+Furthermore, the Gp -equivariant map
+                            Cc (Vp , Z) ! Cc (Ep , Z),   f 7! [e 7! f (s(e))]
+fits in a short exact sequence ([Spi14], Section 3.4)
+                                                              Ev±
+                         0 −! Cc (Vp , Z) −! Cc (Ep , Z)± −−−! St±
+                                                                p
+                                                                 p −! 0.                         (10)
+Recall that for every discrete set ∆ and any abelian group N there is a canonical isomorphism
+                             ∼
+                             =
+                                                                X
+                  C(∆, N ) −−! HomZ (Cc (∆, Z), N ), f 7! [g 7!     f (d)g(d)].           (11)
+                                                                         d∈∆
+
+
+
+                                                   13
+                            Michele Fornea and Lennart Gehrmann
+
+Therefore, the exact sequence (10) induces a dual short exact sequence of Gp -modules
+                                     (Ev±
+                                         p )
+                                            ∗
+                0 −! HomZ St±   p ,Z −−−−−! C(Ep , Z)Wp =∓1 −! C(Vp , Z) −! 0,               (12)
+                                    h     P          i
+where the last map is given by f 7! v 7! s(v)=e f (e) , giving the standard identification of the
+dual of the Steinberg representation with harmonic cochains on the tree.
+
+3.3 Cohomology of S-arithmetic groups
+Let Σ a finite set of primes of F and n ⊆ OF a non-zero ideal, both coprime to disc(B). Further,
+fix a ring R, an R-module N and an R[GΣ ]-module M . There is a natural G(F )-action on the
+R-module C(G(AΣ,∞ )/K(n)Σ , HomR (M, N )) given by
+                                      (γ · Φ)(g)(m) = Φ(γ −1 g)(γ −1 m),
+where G(F ) acts on M via the diagonal embedding G(F ) ֒! GΣ . In accordance with (7) we set
+               HdR (XG
+                     Σ
+                       (n), M, N ) := Hd (G(F )+ , C(G(AΣ,∞ )/K(n)Σ , HomR (M, N ))).
+Note that for all q ∈ Σ we have
+                                  HdR (XG
+                                        Σ
+                                          (n), M, N ) = HdR (XG
+                                                              Σ
+                                                                (qn), M, N )
+As in (6), by choosing representatives h1 , . . . , hℓΣ of the double quotient G(F )+ \G(AΣ,∞ )/K(n)Σ
+and putting ΓΣ           +          Σ −1
+               i = G(F ) ∩ hi K(n) hi , Shapiro’s lemma yields natural isomorphisms
+                                              ℓΣ
+                                              M
+                                           ∼
+                                            =                        
+                          HdR XG
+                               Σ
+                                 (n), M, N −
+                                           −!    Hd ΓΣ
+                                                     i , HomR (M, N ) .                         (13)
+                                                      i=1
+
+Remark 3.4. Let q be a prime in Σ. Suppose that the R[GΣ ]-module M is of the form
+                                       M = Cc (Gq /Kq (n), R) ⊗R M q
+for some R[GΣ\{q} ]-module M q . Then, using (11), one deduces a canonical isomorphism
+          C(G(AΣ,∞ )/K(n)Σ , HomR (M, N )) ∼
+                                           = C(G(AΣ\{p},∞ )/K(n)Σ\{p} , HomR (M, N )),
+which in turns induces isomorphisms for every d ⩾ 0
+                                                            Σ\{q}
+                                HdR (XG
+                                      Σ
+                                        (n), M, N ) ∼
+                                                    = HdR (XG     (n), M q , N ).
+
+Let χ : GΣ ! {±1} be a continuous character. Since Σ-arithmetic groups are of type (VFL)
+(cf. [BS76]) one deduces the following two statements as in the arithmetic case:
+   •   if N is a finitely generated module over a Noetherian ring R, the R-module
+                                               HdR (XG
+                                                     Σ
+                                                       (n), R(χ), N )
+       is finitely generated;
+   •   if N is a flat R-module then the canonical map
+                                                             ∼
+                                                             =
+                            HdR (XG
+                                  Σ
+                                                       −! HdR (XG
+                                    (n), R(χ), R) ⊗R N −        Σ
+                                                                  (n), R(χ), N )
+       is an isomorphism.
+Definition 3.5. Any subset Σ ⊆ S can be written as a disjoint union Σ = Σ+ ∪ Σ− where
+                                   
+                             Σ± = p ∈ Σ | πA,p = St± p (C) .
+
+
+
+                                                       14
+                               Plectic Stark–Heegner points
+
+Then, for any abelian group M we define
+                                      O              O
+                          StΣ (M ) :=   St+
+                                          p (M ) ⊗ Z   St−
+                                                         p (M ).
+                                        p∈Σ+                 p∈Σ−
+
+When M = Z we simply write StΣ for StΣ (Z). Further, we put
+                                      Y          Y
+                               χΣ :=       χ+p ×      χ−
+                                                       p.
+                                              p∈Σ+        p∈Σ−
+
+By induction on the size of Σ′ ⊆ Σ ⊆ S, using the long exact sequence in cohomology coming
+from the short exact sequence (12), and the general results about the cohomology of Σ-arithmetic
+groups mentioned above, we deduce that:
+                                d X Σ (n), St ′ (χ
+                                                            
+   • the cohomology groups H         G         Σ   Σ\Σ′ ), Z are finitely generated Z-modules;
+                                Z
+   • the canonical homomorphism
+                                                     ∼
+                                                      =                                     
+                 HdZ XGΣ
+                         (n), StΣ′ (χΣ\Σ′ , Z ⊗Z N − −! HdR XG   Σ
+                                                                   (n), StΣ′ (R)(χΣ\Σ′ ), N    (14)
+     is an isomorphism for every flat Z-algebra R and any flat R-module N .
+Proposition 3.6. Let R be a Noetherian Z-flat algebra. Let Σ′ ⊆ Σ be subsets of S and
+ǫ : π0 (G∞ ) ! {±1} a character, then
+                                                        (
+                      d   Σ
+                                                   ǫ    1 for d = q + |Σ \ Σ′ |
+                 rkR HR XG (f), StΣ′ (R)(χΣ\Σ′ ), R π =
+                                                         0 for d < q + |Σ \ Σ′ |.
+Proof. We begin with the case Σ′ = Σ which is a variant of ([Spi14], Proposition 5.8). For the
+convenience of the reader we include a sketch of the proof: by flat base-change it suffices to prove
+                                                          (
+                                                      ǫ    1 for d = q
+                        dimQ HdQ XG Σ
+                                      (f), StΣ (Q), Q π =
+                                                            0 for d < q.
+The proof is by induction on the size of Σ, the base case Σ = ∅ being the first claim of Proposition
+3.1. Suppose Σ 6= ∅ and choose p ∈ Σ. The short exact sequence (10) for p induces the following
+long exact sequence:
+                                                                                W =∓1
+            · · · −!HdQ XGΣ
+                            (f), StΣ (Q), Q −! HdQ X Σ\{p} (f), StΣ\{p} (Q), Q p
+                                                                                 
+                  −!HdQ X Σ\{p} (p−1 f), StΣ\{p} (Q), Q −! Hd+1
+                                                            Q     XGΣ
+                                                                      (f), StΣ , Q −! · · ·
+Thus, it is enough to prove that for all d ⩾ 0
+                                    Σ\{p}                          ǫ
+                             HdQ XG         (p−1 f), StΣ\{p} (Q), Q π = 0.                     (15)
+Using the long exact sequence induced by (10) for the remaining q ∈ Σ we may compute the left
+hand side of (15) in terms of cohomology groups of the form H∗ (XG (n), Q)ǫπ with levels n that
+are strict divisors of f. But these groups vanish by the second claim of Proposition 3.1.
+The general case Σ′ ⊂ Σ is a variant of ([Spi14], Lemma 6.2 (b)). Again we just give a sketch of
+the proof: it is by induction on |Σ \ Σ′ |, the case |Σ \ Σ′ | = 0 being proven above. Assume the
+claim for some Σ′ . For p ∈ Σ′ there exists a short exact sequence of Gp -modules
+                                 0 −! Stp −! Ep,sm −! Z −! 0                                   (16)
+with the Z[Gp ]-module Ep,sm having a resolution of the form
+                          0 −! Cc (Vp , Z) −! Cc (Vp , Z) −! Ep,sm −! 0                        (17)
+
+
+
+                                                     15
+                         Michele Fornea and Lennart Gehrmann
+
+(see [Spi14], Equation (17)). By analyzing the long exact sequence in cohomology induced by
+(16) we see that it is enough to show that
+                                                              
+                          HdZ XGΣ
+                                  (f), StΣ′ \{p} (χΣ\(Σ′ \{p}) ⊗Z Ep,sm , Z)ǫπ
+is torsion for all d ⩾ 0. This can be deduced from (17) and the last claim of Proposition 3.1.
+
+The same ideas as those in the proof of Proposition 3.6 prove the following useful lemma.
+
+Lemma 3.7. Let Σ1 ⊆ Σ2 ⊆ Σ be subsets of S. The map
+                                               ǫ          Σ\Σ                         ǫ
+          Ev∗Σ1 : HdZ XGΣ
+                          (f), StΣ2 (χΣ\Σ2 ), Z π −! HdZ XG 1 (f), StΣ2 \Σ1 (χΣ\Σ2 ), Z π ,
+                   N
+induced by EvΣ1 :     p∈Σ1 Cc (Ep , Z) −! StΣ1 has finite kernel and cokernel for all d ⩾ 0.
+
+Definition 3.8. Let Σ ⊆ S be a subset. We define cΣ      A,ǫ to be any generator of the free part of
+  q
+H (XG (f), StΣ , Z)π , which is unique up to sign. For convenience, we also write cΣ
+      Σ            ǫ
+                                                                                   A,ǫ for the image
+of the generator under the natural map
+                                                                            
+                          HqZ XG Σ
+                                   (f), StΣ , Z −! HqZp XG
+                                                         Σ
+                                                           (f), StΣ (Zp ), Zp .
+
+
+                        4. Local points on modular elliptic curves
+
+From here on, we only work with Zp -modules and in level f. Thus, we shorten the notation to
+                               Hq (XG
+                                    Σ
+                                      , M, N ) = HqZp (XG
+                                                        Σ
+                                                          (f), M, N )
+for every Zp -module N and every Zp [GΣ ]-module M .
+
+4.1 p-adic integration
+Let p be an element in S and M a finitely generated Zp -module. The M -valued continuous
+±-Steinberg representation St± p (M )
+                                     ct of G is the space of continuous M -valued functions on
+                                            p
+P1 (Fp ) modulo constant functions, with action given by
+                      (g.f )(x) = χ±           −1
+                                   p (g) · f (g x)     ∀ g ∈ Gp , x ∈ P1 (Fp ).
+It is equipped with a canonical Gp -equivariant injection St±           ±     ct
+                                                            p (M ) ֒! Stp (M ) .
+
+Definition 4.1. For the fixed quadratic extension E/F we define
+                                   O                  O
+                      Stct  b×
+                        Σ (E ) :=       St+  b× ct
+                                          p (Ep ) ⊗Zp     St−   b × ct
+                                                            p (Ep )
+                                      p∈Σ+                 p∈Σ−
+
+      bp× denotes the torsion-free part of the p-adic completion of Ep× . Moreover, we denote by
+where E
+        N
+b × :=        b×
+EΣ,⊗      p∈Σ Ep the tensor product over Zp and write
+
+                                         b× ) := StΣ ⊗Z E
+                                    StΣ (E              b× .
+                                                         Σ,⊗
+
+Lemma 4.2. Let N be a p-adically separated and complete Zp -module. Then, for any subset
+Σ ⊆ S the restriction map
+                                                               
+                       HomZp Stct b×                     b×
+                               Σ (E ), N −! HomZp StΣ (E ), N
+
+is an isomorphism.
+
+
+                                                16
+                                 Plectic Stark–Heegner points
+
+Proof. Any continuous function in C(P1 (Fp ), E    bp× ) is a p-adic limit of locally constant function
+                bp× ). Therefore, the Zp -tensor product of spaces of locally constant functions is
+in LC(P1 (Fp ), E
+p-adically dense in the Zp -tensor product of spaces of continuous functions
+                             O                          O
+                                              bp× ) ֒!
+                                 LC(P1 (Fp ), E                         bp× ).
+                                                            C(P1 (Fp ), E
+                              p∈Σ                      p∈Σ
+
+As any Zp -linear homomorphism is continuous for the p-adic topology and N is p-adically sepa-
+rated and complete, we deduce that the induced map
+                      O                                 O                        
+              HomZp                  b× ), N −! HomZp
+                         C(P1 (Fp ), E                                    b× ), N
+                                                             LC(P1 (Fp ), E
+                                      p                                    p
+                        p∈Σ                                       p∈Σ
+
+is an isomorphism.
+
+Given a p-adically separated and complete Zp -module N , Lemma 4.2 yields an integration map
+                 Z
+                                                                          
+                  × : HomZp StΣ (Zp ), N −! HomZp Stct     b×         b×
+                                                        Σ (E ), N ⊗Zp EΣ,⊗               (18)
+                                                      
+that takes an N -valued measure µ ∈ HomZp StΣ (Zp ), N and maps it to the linear functional
+                       Z
+                                                                  
+                        ×    (−)dµ ∈ HomZp Stct    b×        b×
+                                               Σ (E ), N ⊗Zp EΣ,⊗ .
+                          P1 (FΣ )
+
+
+   4.1.1 The p-adic upper half plane. We recall that any p ∈ S is inert in the quadratic ex-
+tension E/F . Hence, we can consider the Gp -space Hp (Ep ) = P1 (Ep ) \ P1 (Fp ) where the group
+Gp acts via Möbius transformations. We denote by Div±   0 (Hp (Ep )) the Gp -module obtained by
+twisting the action on degree zero divisors by the character χ±
+                                                              p.
+We consider the Gp -equivariant homomorphism
+                                        ±
+                                                                
+                                                           ± b × ct
+                               Φ±
+                                p : Div 0 Hp (Ep ) −! Stp Ep
+                            P                                                    Q
+mapping a degree 0 divisor ki=1 ni [zi ] to the class of functions represented by ki=1 (x − zi )ni .
+The embedding ψ : T ֒! G induces an action of Tp on Hp (Ep ) with two fixed points τψ,p and τ̄ψ,p
+which are interchanged by the Galois group Gal(Ep /Fp ) = hσp i. We choose τψ,p ∈ Hp (Ep ) such
+that the action of Tp on the tangent space of τψ,p is given by the homomorphism
+                                      Tp −! Ep× ,      t 7! t1−σp .
+Since the character χ±
+                     p is trivial on Tp , the are Tp -equivariant maps
+
+                         Ψ⋄p : Zp −! St±  b× ct        1 7! Φ±
+                                       p (Ep ) ,             p ([τψ,p ] − [τ̄ψ,p ])
+
+that can be combined into a TS -equivariant homomorphism
+                                                 O                       
+                    Ψ⋄S : Zp −! StctS E
+                                       b × , 1 7!   Φ±p [τψ,p ] − [τ̄ψ,p ] .
+                                                         p∈S
+
+The composition of Ψ⋄S with (18), yields the TS -equivariant map
+                                                            
+                                                                b× ,
+                               (Ψ⋄S )∗ : HomZp StS (Zp ), Zp −! E                                   (19)
+                                                                 S,⊗
+                                                                                                     
+                           b× . Concretely, a Zp -valued measure µ ∈ HomZp
+where TS acts trivially on E                                                           StS (Zp ), Zp is
+                            S,⊗
+
+
+
+                                                  17
+                          Michele Fornea and Lennart Gehrmann
+
+mapped to the integral
+                                       Z        O  tp − τψ,p 
+                         (Ψ⋄S )∗ (µ) = ×                                        b× .
+                                                                        dµ(t) ∈ ES,⊗
+                                        P1 (FS ) p∈S       tp − τ̄ψ,p
+
+4.2 Plectic p-adic invariants
+For any non-zero ideal m ⊆ OF , any abelian group N , and ? ∈ {∅, c} we can consider the space
+of functions C? (m, N ) := C? (T (A∞ )/U (m), N ), and set
+   Hd (XT (m), N ) := Hd (T (F )+ , C(m, N ))          &          Hd (XT (m), N ) := Hd (T (F )+ , Cc (m, N )).
+By Dirichlet’s unit theorem, the abelian group U + = T (F )+ ∩ U (OF ) is finitely generated of
+rank q. Thus, the homology group Hq (U + , Z) is a finitely generated abelian group of rank one.
+We fix an element η ∈ Hq (U + , Z) generating the free part of that group. Further, by fixing a
+fundamental domain F for the action of T (F )+ /U + on T (A∞ )/U (OF ), Shapiro’s lemma gives
+                                                       ∼
+                                                       =
+                                Hq (U + , C(F, Z)) −
+                                                   −! Hq (XT (OF ), Z).
+
+Definition 4.3. The fundamental class ϑ ∈ Hq (XT (OF ), Z) is defined as the image of the cap
+product of η ∈ Hq (U + , Z) with the characteristic function 1F ∈ H0 (U + , C(F, Z)) under the above
+isomorphism.
+
+    4.2.1 Twisted fundamental classes. Remember that the preimage K(f)S under ψ is of the
+form U (c)S for a non-zero ideal c ⊆ OF coprime to disc(B) · f. Let Ec /E be the narrow ring
+class field of E of conductor c, i.e. the Galois extension of E such that the Artin map induces an
+isomorphism
+                                                               ∼
+                         recE : T (F )+ \T (A∞ )/U (c) −
+                                                       −! Gal(Ec /E) =: Gc .
+Let R be a ring and χ : Gc ! R× a group homomorphism, then we are allowed to view χ as an
+element in H0 (XT (c), R). Note that multiplication of functions
+                       C(c, R) × Cc (OF , Z) −! Cc (c, R),                 (f, g) 7! f · g
+induces the cap product pairing
+                      ∩ : H0 (XT (c), R) × Hq (XT (OF ), Z) −! Hq (XT (c), R).
+
+Definition 4.4. The χ-twisted fundamental class is defined as
+                                      ϑχ := χ ∩ ϑ ∈ Hq (XT (c), R).
+                                                              ×                                                   ×
+Remark 4.5. We may view a character χ : Gc ! Q as a locally constant character T (A) ! Q
+via the Artin reciprocity map. The infinity component χ∞ : T∞ ! {±1} of χ factors through
+the quotient T∞ ! π0 (T∞ ). The inclusion T (F ) ֒! T∞ induces an isomorphism T (F )/T (F )+ ∼=
+π0 (T∞ ). Therefore, we may view χ∞ as a character on T (F )/T (F )+ . The group T (F )/T (F )+
+naturally acts on Hq (XT (c), Q) and it is easy to see that
+                                           ϑχ ∈ Hq (XT (c), Q)χ∞ ,
+where the subscript denotes the χ∞ -isotypic component of the T (F )/T (F )+ -action. The inclusion
+                                                                      ∼
+T∞ ֒! G∞ induces an isomorphism of component groups π0 (T∞ ) −        ! π0 (G∞ ) and we always
+identify the two.
+
+
+                                                       18
+                                 Plectic Stark–Heegner points
+
+   4.2.2 Plectic invariants.   For any ring R and abelian group N the canonical pairing
+                                                                X
+               C(c, N ) × Cc (c, R) −! N ⊗Z R,      (f, g) 7!        f (t) ⊗ g(t)
+                                                                      t∈T (A∞ )/U (c)
+
+induces a cap product pairing ∩ : Hq (XT (c), N ) × Hq (XT (c), R) −! N ⊗Z R.
+Since every p ∈ S is inert in E, and c is coprime to every p ∈ Σ we may identify
+                             C(T (AS,∞ )/U (c)S , N ) = C(T (A∞ )/U (c), N )
+for every abelian group N . Suppose we are given a Zp -module N , a Zp [GS ]-module MG – viewed
+as a TS -module via ψ – and a TS -equivariant map f : Zp ! MG . Then, the inclusion ψ and the
+pullback along f induce the map
+                  C(G(AS,∞ )/K(f)S , HomZp (MG , N )) −! C(T (A∞ )/U (c), N ),
+which in turn induces the homomorphism in cohomology
+                               f ∗ : Hd (XG
+                                          S
+                                            , MG , N ) −! Hd (XT (c), N ).
+Applying this construction to (19) yields the homomorphism
+                        (Ψ⋄S )∗ : Hq (XG
+                                       S                                  b× ).
+                                         , StS (Zp ), Zp ) −! Hq (XT (c), ES,⊗
+                                     ×
+Definition 4.6. Let χ : Gc ! Q           be a character with χ∞ = ǫ. The plectic p-adic invariant
+attached to the pair (A/F , χ) is
+                                QχA := (Ψ⋄S )∗ (cSA,ǫ ) ∩ ϑχ ∈ E
+                                                               b× ⊗Z Q.
+                                                                S,⊗
+It is uniquely defined up to sign.
+Note that if χ∞ 6= ǫ, then by the orthogonality of characters and Remark 4.5 we have
+                                         (Ψ⋄S )∗ (cSA,ǫ ) ∩ ϑχ = 0.
+
+   4.2.3 Tate uniformization. The elliptic curve A has multiplicative reduction at every p ∈ S.
+                                                                                         b p)
+                                                                                  bp× ! A(E
+Therefore, it admits a Tate uniformization Ep× ! A(Ep ) and correspondingly a map E
+between the torsion-free parts of the p-adic completions. We form the map
+                                             b× −! b
+                                     φTate : E       A(ES )
+                                                      S,⊗
+      b S ) :=   N       b
+where A(E            p∈S A(Ep ) is a tensor product of Zp -modules. Then, we can consider
+                                                  
+                                      φTate QχA          b S ) ⊗Z Q.
+                                                       ∈ A(E
+The goal of the next sections is to refine the construction to obtain plectic Stark–Heegner points
+PχA ∈ b
+      A(ES ) ⊗Z Q.
+
+4.3 Breuil’s extensions
+We recall the extensions of Steinberg representations constructed by Breuil ([Bre04], Section
+2.1) and Spieß ([Spi14], Section 3.7) together with their connection to divisors on the p-adic
+upper half plane following ([BG18], Section 6.3). Let M a free Zp -module of finite rank. Given
+a continuous group homomorphism ℓ : Fp× ! M , one defines E       e p (ℓ) as the collection of pairs
+(Φ, r) ∈ C(GL2 (Fp ), M ) × Zp satisfying
+                                            
+                                        t1 u
+                               Φ g·              = Φ(g) + r · ℓ(t1 )
+                                         0 t2
+
+
+                                                        19
+                          Michele Fornea and Lennart Gehrmann
+
+                                                                              e p (ℓ) by
+for all t1 , t2 ∈ Fp× , u ∈ Fp and g ∈ GL2 (Fp ). The group GL2 (Fp ) acts on E
+                                      g.(Φ(·), r) = (Φ(g−1 ·), r).
+The subspace E e p (ℓ)0 of tuples of the form (Φ, 0) with Φ a constant function is GL2 (Fp )-stable.
+We deduce that the quotient Ep (ℓ) = E             e p (ℓ)0 admits an induced Gp ∼
+                                           e p (ℓ)/E                             = PGL2 (Fp )-action.
+                          1
+Let pr : PGL2 (Fp ) ! P (Fp ), g 7! g(∞) be the canonical projection. The sequence
+                                             (pr∗ ,0)              (0,idZp )
+                          0 −! Stct
+                                 p (M ) −−−−! Ep (ℓ) −
+                                                     −−−−! Zp −! 0.
+                                                                                            
+of Gp -modules is exact (see [Spi14], Lemma 3.11). We denote by bℓ,p ∈ H1 Gp , Stct   p (M ) the
+class of the extension of Zp [Gp ]-modules. The next lemma explains the relation between Breuil’s
+extensions and the extension of divisors on the p-adic upper half plane
+                                                                               deg
+                     0 −! Div0 (Hp (Ep )) −! Div(Hp (Ep )) −−! Z −! 0,
+                                                          
+whose class we denote by bDiv,p ∈ H1 Gp , Div 0 (Hp (Ep )) .
+                         bp× be the homomorphism induced by the inclusion Fp× ֒! Ep× . Then
+Lemma 4.7. Let ι : Fp× ! E
+                                          bι,p = (Φp )∗ (bDiv,p )
+                          
+holds in H1 Gp , Stct b×
+                   p (Ep ) .
+Proof. This is ([BG18], Lemma 6.8). To prove the claim we need to construct a Gp -equivariant
+homomorphism Φ   e p : Div(Hp (Ep )) ! Ep (ι) that is compatible with Φp . For z ∈ Hp (Ep ) we define
+                                                           
+                                               b ×      a b
+                           fz : GL2 (Fp ) −! Ep ,             7−! cz − a.
+                                                        c d
+     e p is given by
+Then Φ
+                                                !                                   !
+                                     X                       Y             X
+                                ep
+                                Φ         nz [z]    =             fznz ,       nz       .
+                                      z                      z             z
+
+
+
+We put Ep = Ep (ι) and we let τψ,p be the chosen fixed point of the Tp -action on Hp (Ep ). The
+proof of Lemma 4.7 provides a Tp -equivariant map
+                                 Ψp : Zp −! Ep ,              e p ([τψ,p ], 1).
+                                                         1 7! Φ
+The choice of the other fixed point amounts to acting on E    bp× by the non-trivial element σp of
+Gal(Ep /Fp ). Directly from the definitions we see that the following equation holds in Ep
+                                          Ψp − σp∗ ◦ Ψp = Ψ⋄p .                                 (20)
+Definition 4.8. We set E±        ±
+                        p = Ep (χp ) and for any subset Σ ⊆ S we define
+                                             O                     O
+                                     EΣ =           E+
+                                                     p ⊗Zp                 E−
+                                                                            p.
+                                            p∈Σ+                  p∈Σ−
+
+Then, we can form the TS -equivariant map
+                                                               O                     
+                               ΨS : Zp −! ES ,          1 7!           e p [τψ,p ], 1 ,
+                                                                       Φ
+                                                                 p∈S
+
+inducing a TS -equivariant homomorphism
+                                                        
+                                                   b S ) −! A(E
+                               (ΨS )∗ : HomZp ES , A(E      b S ).                              (21)
+
+
+                                                        20
+                                       Plectic Stark–Heegner points
+
+4.4 Plectic Stark–Heegner points
+For this section and the next, we assume the equality of arithmetic and automorphic L-invariants
+of modular elliptic curves over F . We note that when F is totally real, the equality is known
+([GR20], [Spi20]). This equality is a crucial ingredient (see the proof of Theorem 4.12 for a precise
+statement) in lifting the image of cSA,ǫ under the composition
+                                                                                                     
+             Hq XG
+                 S , St , Z
+                       S    p
+                                                        b× ), E
+                                       / Hq X S , Stct (E     b×                            b× ), b
+                                                                           / Hq X S , Stct (E    A(ES ) ,
+                                                G    S           S,⊗             G     S
+
+with respect to the map induced in cohomology by the inclusion Stct    b×
+                                                                    S (E ) ֒! ES
+                                                                       
+                      Hq XGS        b S ) −! Hq X S , Stct (E
+                             , ES , A(E                     b× ), A(E
+                                                                  b S) .
+                                                  G     S
+
+Theorem 4.9. There exists a multiple of cSA,ǫ that can be lifted to a class
+                                                          
+                              cbSA,ǫ ∈ Hq XG S        b S) ǫ .
+                                               , ES , A(E   π
+Moreover, the kernel of
+                                             ǫ                            ǫ
+                           Hq XG
+                               S
+                                 , ES , b
+                                       A(ES ) π −! Hq XG
+                                                       S
+                                                         , Stct b× b
+                                                             S (E ), A(ES ) π
+
+is finite.
+
+As the proof of Theorem 4.9 is rather technical, we postpone it until the next section. Let us just
+say that the proof proceeds by induction on the size of Σ ⊆ S, and that the base case follows
+directly from the equality of L-invariants. Moreover, the second claim of Theorem 4.9 is a special
+case of Lemma 4.11 below.
+Momentarily assuming the existence of the lift, we can proceed as in the definition of plectic
+invariants since the restriction map together with (21) yields a homomorphism
+                                                                        
+                        (ΨS )∗ : Hq XG
+                                     S        b S ) −! Hq XT (c), A(E
+                                       , ES , A(E                  b S) .
+                                            ×
+Definition 4.10. Let χ : Gc ! Q be a character with χ∞ = ǫ. The plectic Stark–Heegner point
+attached to the pair (A/F , χ) is
+
+                                     PχA := (ΨS )∗ (b
+                                                    cSA,ǫ ) ∩ θχ ∈ b
+                                                                   A(ES ) ⊗Z Q.
+It does not depend on the choice of the lift cbSA,ǫ .
+
+A direct consequence of (20), and the Galois equivariance of the Tate uniformization is
+                         Y              Y           
+                                                                     
+                                     ∗
+                               (1 − σp )    (1 + σp ) PχA = φTate QχA ,
+                                                  ∗
+
+                                    p∈S +           p∈S −
+
+the equality in b
+                A(ES ) ⊗Z Q.
+
+4.5 Lifting the cohomology class
+To lighten the exposition, in this section we assume that the elliptic curve A/F has split multi-
+plicative reduction at all primes in S. This way the character χΣ is trivial for any subset Σ ⊆ S.
+The following notations will be convenient in the proofs. Given a subset Σ ⊆ S, and a collection
+M = (Mp )p∈Σ of free Zp -modules of finite rank, we put
+                               O                                  O
+                   StΣ (M ) :=      Stp (M )   &      Stct
+                                                        Σ (M ) :=    Stp (M )ct .
+                                       p∈Σ                                    p∈Σ
+
+
+
+                                                            21
+                         Michele Fornea and Lennart Gehrmann
+
+We write Zp for the constant collection (Zp )p∈Σ . Moreover, Lemma 4.2 extends to this context,
+i.e. the map induced by the inclusion StΣ (M ) ֒! Stct
+                                                    Σ (M )
+                                               ∼                           
+                 HomZp Stct              ′
+                           Σ (M ) ⊗Zp N , N −! HomZp StΣ (M ) ⊗Zp N , N
+                                                                        ′
+
+is an isomorphism for a p-adically separated and complete Zp -module N and a Zp -module N ′ .
+We begin with a lemma establishing the uniquess, up to finite torsion, of the lift, if it exists.
+Lemma 4.11. Let Σ1 ⊆ Σ2 ⊆ Σ be subsets of S and N a finitely generated Zp -module. For any
+collection M = (Mp )p∈Σ2 of finite free Zp -modules with Mp = E bp× for all p ∈ Σ1 , the kernel of
+the Zp -module homomorphism
+                                                   ǫ     q+|Σ\Σ2 |  Σ
+                                                                                     ǫ
+           Hq+|Σ\Σ2 | XG
+                       Σ
+                         , EΣ1 ⊗Zp Stct
+                                     Σ2 \Σ1 (M ), N π −! H          XG , Stct
+                                                                           Σ2 (M ), N π ,
+                                   
+induced by the inclusion Stct   b × ֒! EΣ , is finite.
+                             Σ1 E           1
+
+Proof. We prove the following slightly more general statement: let Σ0 ⊆ Σ1 ⊆ Σ2 ⊆ Σ be subsets
+of S, the kernel of the Zp -module homomorphism
+                                                 ǫ      q+|Σ\Σ2 |    Σ
+                                                                                                  ǫ
+    Hq+|Σ\Σ2 | XG  Σ
+                     , EΣ1 ⊗Zp Stct
+                                 Σ2 \Σ1 (M ), N π −! H             XG   , EΣ0 ⊗Zp Stct
+                                                                                    Σ2 \Σ0 (M ), N π ,
+                                         
+induced by the inclusion Stct         b × ֒! EΣ \Σ , is finite. Clearly, it is enough to consider the
+                              Σ1 \Σ0 E              1 0
+case Σ0 = Σ1 \ {p} for some p ∈ Σ1 .
+By analyzing the long exact sequence induced by the short exact sequence defining Ep , we deduce
+that it suffices to prove that
+                                                                           ǫ
+                              Hq+|Σ\Σ2 | XG  Σ
+                                               ; EΣ0 ⊗Zp Stct
+                                                           Σ2 \Σ1 (M ), N π
+is finite. Moreover, the long exact sequences induced by the short exact sequences defining Eq
+for every q ∈ Σ0 , implies that it is enough to prove that
+                                                                      ǫ
+                               Hq+|Σ\Σ2 | XGΣ
+                                              ; St(Σ2 \Σ1 )∪Σ′ (M ), N π
+is finite for every subset Σ′ of Σ0 . This last claim follows from flat base change and Proposition
+3.6 because (Σ2 \ Σ1 ) ∪ Σ′ is a proper subset of Σ2 .
+Next, we deal with the existence of the lift. The following theorem relies on the equality of
+arithmetic and automorphic L-invariants.
+Theorem 4.12. Suppose Σ = {p} and consider the boundary map
+                                                                      
+                 ∂p : Hq XG
+                          Σ
+                            , Stct b× b
+                                p (Ep ), A(Ep ) −! H
+                                                    q+1  Σ
+                                                        XG , Zp , b
+                                                                 A(Ep )
+                                                                         {p} 
+obtained from the short exact sequence defining Ep . Then, the class ∂p cA,ǫ is torsion.
+Proof. By the equality of automorphic and arithmetic    L-invariants ([GR20], Theorem 4.1 &
+                                        Σ , St (Z ), Z ǫ under
+[Spi20], Theorem 3.7) the image of Hq XG      p  p    p π
+                                    ct b × b ×
+                                                                       
+                             q  Σ
+                       ∂p : H X , St (E ), E −! Hq+1 X Σ , Zp , E   b×
+                                    G   p   p    p                G       p
+
+is commensurable with the image of the natural map
+                                                                      
+                        Hq+1 XGΣ
+                                 , Zp , Zp qpTate ! Hq+1 XG
+                                                          Σ        bp×
+                                                            , Zp , E
+where qpTate is Tate’s period for A at p. Therefore, the cokernel of
+                                                 ǫ                       
+                          Hq XG Σ
+                                  , Stp (Zp ), Zp π −! Hq+1 XG
+                                                             Σ        b p)
+                                                               , Zp , A(E
+is torsion and the claim follows.
+
+
+                                                 22
+                              Plectic Stark–Heegner points
+
+Remark 4.13. When B is totally definite, the equality of automorphic and arithmetic L-
+invariants can be deduced from Manin and Drinfeld’s uniformization of Jacobians of Mumford
+curves (cf. [BG18], Theorem 6.9).
+
+The following lemma follows directly from Lemma 3.7 analyzing the long exact sequence induced
+by the short exact sequence defining the representations Ep .
+Lemma 4.14. Let Σ1 ⊆ Σ2 ⊆ Σ be subsets of S, M = (Mp )p a collection of finite free Zp -modules
+such that Mp = Zp for all p ∈ Σ1 , and N a finitely generated Zp -module. For all d ⩾ 0, kernel
+and cokernel of the Zp -module homomorphism
+                                               ǫ              Σ\Σ                       ǫ
+    (EvΣ1 )∗ : Hd XG
+                   Σ
+                     , EΣ\Σ2 ⊗Zp StΣ2 (M ), N π −! Hd XG 1 , EΣ\Σ2 ⊗Zp StΣ2 \Σ1 (M ), N π ,
+                   N
+induced by EvΣ1 :     p∈Σ1 Cc (Ep , Zp )+ ! StΣ1 (Zp ), are finite.
+
+Let Σ′ ⊂ Σ be non-empty subsets of S. For the rest of the section we write
+                             Stct b×         ct b ×        ct
+                               Σ (EΣ′ ) := StΣ′ (E ) ⊗Zp StΣ\Σ′ (Zp ).
+
+Moreover, we consider the image of cΣA,ǫ under the composition
+                                                                                 
+          Hq XGΣ
+                 , StΣ (Zp ), Zp −! Hq XG Σ
+                                            , Stct b×       q  Σ    ct b ×   b
+                                                Σ (Ep ) −! H XG , StΣ (Ep ), A(Ep ) .
+
+Lemma 4.15. Let Σ ⊆ S be a non-empty subset and p ∈ Σ. The image of cΣ  A,ǫ under the boundary
+                                                                             
+             ∂p : Hq XG
+                      Σ
+                        , Stct b× b             q+1  Σ
+                                                       , Stct           b
+                            Σ (Ep ), A(Ep ) −! H    XG     Σ\{p} (Zp ), A(Ep ) ,
+
+obtained from the short exact sequence defining Ep , is torsion.
+Proof. Consider the commutative diagram
+                                                                  ∂p
+     Σ , Stct (Z ), Z ǫ
+ Hq XG                                                 b p) ǫ
+                                                bp× ), A(E
+                               / Hq X Σ , Stct (E                         / Hq+1 (X Σ , Stct           b      ǫ
+           Σ    p    p π              G    Σ                    π                   G     Σ\{p} (Zp ), A(Ep ))π
+
+
+                                                                                           
+                       ǫ                                               ∂p                           
+Hq
+      {p}
+     XG , Stct                / Hq X {p} , Stct (E       b p) ǫ
+                                                   b× ), A(E                                      b p) ǫ
+                                                                              / Hq+1 X {p} , Zp , A(E
+            p (Zp ), Zp π            G      p                   π                       G                π
+                                                       N
+where the vertical arrows are induced by EvΣ\{p} : p∈Σ\{p} Cc (Ep , Zp )+ ! StΣ\{p} (Zp ) and have
+finite kernel and cokernel by Lemma 4.14. Moreover, the leftmost vertical arrow maps cΣ    A,ǫ to a
+                      {p}
+non-zero multiple of cA,ǫ . Hence, the claim follows from Theorem 4.12.
+Let Σ1 ⊂ Σ2 ⊆ Σ be subsets of S with Σ2 = Σ1 ∪ {p} for some p 6∈ Σ1 . Thanks to Lemma 4.15
+we can assume by inductive hypothesis that we can lift cΣ
+                                                        A,ǫ to a class in
+                                                                    ǫ
+                       cbΣ      q  Σ            ct           b
+                         A,ǫ ∈ H XG , EΣ1 ⊗Zp StΣ\Σ1 (Zp ), A(EΣ1 ) π .
+                           1
+
+
+
+Then, we consider the image of cbΣ
+                                 A,ǫ under the composition
+                                   1
+
+
+                                                                                                            
+  Hq XG
+      Σ, E         ct          b
+          Σ1 ⊗Zp StΣ\Σ1 (Zp ), A(EΣ1 )
+                                                 / Hq X Σ , EΣ ⊗Z Stct (E       b Σ ) ⊗Zp E
+                                                                         bp× ), A(E       bp×
+                                                       G      1  p  Σ\Σ1            1
+
+
+
+                                                             ,                             
+                                                       Hq XG
+                                                           Σ, E   ⊗      ct    b× b
+                                                               Σ1   Zp StΣ\Σ1 (Ep ), A(EΣ2 ) .
+
+We complete the inductive step in the next lemma.
+
+
+                                                  23
+                         Michele Fornea and Lennart Gehrmann
+
+Lemma 4.16. Let Σ1 ⊂ Σ2 ⊆ Σ be subsets of S such that Σ2 = Σ1 ∪ {p} for some p 6∈ Σ1 , then
+there exists a non-zero multiple of cbΣ A,ǫ that can be lifted with respect to
+                                         1
+
+
+                                               ǫ                                       ǫ
+      Hq XG  Σ
+               , EΣ2 ⊗Zp Stct          b                q    Σ            ct   b× b
+                           Σ\Σ2 (Zp ), A(EΣ2 ) π −! H XG , EΣ1 ⊗Zp StΣ\Σ1 (Ep ), A(EΣ2 ) π .
+
+Proof. As in the proof of Lemma 4.15, we use Lemma 4.14 to reduce to the case Σ = Σ2 . We
+consider the commutative diagram
+
+            Hq (XG
+                 Σ, E         ct       b       ǫ
+                     Σ1 ⊗Zp Stp (Zp ), A(EΣ1 ))π
+                                                                           b × ), b
+                                                         / Hq (X Σ , Stct (E     A(EΣ ))ǫ      π
+                                                                 G       Σ            Σ1   1
+
+
+
+                                                                           
+              q Σ, E
+            H (XG            ct b ×   b      ǫ
+                    Σ1 ⊗Zp Stp (Ep ), A(EΣ ))π
+                                                                            b × ), A(E
+                                                          / Hq (X Σ , Stct (E      b Σ ))ǫ     π
+                                                                 G       Σ
+
+                                  ∂p                                                  ∂p
+                                                                                 
+                  Hq+1 (XG       b Σ ))ǫπ
+                         Σ , E , A(E
+                              Σ1
+                                                                             b× ), A(E
+                                                         / Hq+1 (X Σ , Stct (E     b Σ ))ǫ         π
+                                                                     G       Σ1
+
+where the horizontal maps are induced by the inclusion Stct    b×
+                                                           Σ1 (E ) ֒! EΣ1 . By inductive hypoth-
+esis, the top horizontal map sends cbΣ                    Σ       q   Σ    ct b ×    b       ǫ
+                                     A,ǫ to the image of cA,ǫ in H (XG , StΣ (EΣ1 ), A(EΣ1 ))π . As
+                                       1
+
+the horizontal maps have finite kernel by Lemma 4.11, the claim follows from Lemma 4.15.
+
+                           5. Anticyclotomic p-adic L-functions
+
+Following ([Ber17], [BG18]) we attach an anticyclotomic p-adic L-functions to the elliptic curve
+A/F and the quadratic extension E/F . The main result of this section is a p-adic Gross–Zagier
+formula (Theorem 5.13) relating higher derivatives of these p-adic L-functions to plectic p-adic
+invariants.
+
+5.1 Homogeneous spaces and homomorphisms
+Let H be a topological group and X a homogeneous H-space, i.e. a topological space X with a
+transitive continuous H-action H × X −! X such that for every x ∈ X the map
+                                       H −! X,        h 7! h.x
+induces a homeomorphism H/Hx −! X where Hx is the stabilizer of x. For any abelian topo-
+logical group N endowed with the trivial H-action, the short exact sequence of H-modules
+                          0 −! N −! C(X, N ) −! C(X, N )/N −! 0
+induces the boundary map
+                                         H
+                        ∂ : C(X, N )/N        −! H1 (H, N ) = Hom(H, N ).
+Explicitly, the map ∂ is given as follows: given an element f¯ ∈ (C(X, N )/N )H we let f ∈ C(X, N )
+be an arbitrary lift of it. For every h ∈ H and x ∈ X the element ϕf¯(h) := f (h.x) − f (x) ∈ N is
+independent of x and the chosen lift. Then we have
+                                         ∂(f¯)(h) = ϕf¯(h).
+In particular, we deduce that ∂ takes values in the group Homct (H, N ) of continuous homomor-
+phism from H to N . Moreover, ∂(f¯) is trivial on the stabilizer Hx .
+
+
+
+                                                 24
+                                Plectic Stark–Heegner points
+
+Lemma 5.1. The map ∂ induces an isomorphism
+                           H ∼ 
+            ∂ : C(X, N )/N    −! ϕ ∈ Homct (H, N ) | ϕ(h) = 0 ∀ h ∈ Hx .
+                              −
+Proof. Since H acts transitively on X, the natural inclusion N H ! C(X, N )H is an isomorphism.
+Hence, the homomorphism ∂ is injective. Now, suppose ϕ : H ! N is a continuous homomor-
+phism that is trivial on Hx for one (and thus for all) x ∈ X. Then ϕ descends to a continuous
+function fϕ : X ! N whose image in C(X, N )/N is H-invariant and the lemma follows.
+
+   5.1.1 Torus action. The local embedding ψ : Ep ֒! Bp ∼     = M2 (Fp ), provides a structure of a
+one-dimensional Ep -vector space on Fp . The torus Tp acts simply transitively on P1 (Fp ) because
+                                      2
+
+Ep× acts simply transitively on Ep \ {0}. Moreover, P1 (Fp ) is a principal homogeneous Tp -space
+because both P1 (Fp ) and Tp are compact. We are interested in the Tp -invariant function
+                          fψ,p := Φp ([τψ,p ] − [τ̄ψ,p ]) ∈ C(P1 (Fp ), Ep× )/Ep× .
+Lemma 5.2. For all t ∈ Tp we have
+                                           ∂(fψ,p )(t) = t1−σp .
+Proof. To compute ∂(fψ,p ) we are allowed to replace the principal homogeneous Tp -space P1 (Fp )
+by an isomorphic one. The principal homogeneous Tp -space structure on P1 (Fp ) depends on the
+embedding ψ and the fixed isomorphism ι : Bp ∼    = M2 (Fp ), thus our strategy is to find another
+embedding Bp ֒! M2 (Ep ) giving a simple expression for the function fψ,p and the Tp -action.
+For convenience we identify Ep with its image under ψ, then we can choose an element u ∈ Bp
+such that u2 = 1, Bp = Ep ⊕ Ep u, and u anticommutes with the elements of Ep , i.e. u · z = z σp · u
+for all z ∈ Ep . Therefore, Bp is a rank two Ep -module on which Bp acts by multiplication on the
+right. If we write elements of Bp as a + bu with a, b ∈ Ep , we obtain a local embedding
+                                                                      
+                             ′                                 a    b
+                            ι : Bp ֒! M2 (Ep ),   a + bu 7! σp           .
+                                                              b    aσp
+By Skolem-Noether theorem, there exists A ∈ GL2 (Ep ) such that ι′ (·) = A−1 ι(·)A. The action of
+                                                                 ∼
+A ∈ GL2 (Ep ) gives a Tp -equivariant isomorphism α : P1 (Ep ) ! P1 (Ep ) if we endow the domain
+with Tp -action given by ι′ ◦ ψ and the target with the Tp -action given by ι ◦ ψ. The isomorphism
+maps 0 to τψ,p and ∞ to τ̄ψ,p . Moreover, if we set X := A−1 (P1 (Fp )), then fψ,p
+                                                                               ′   = fψ,p ◦ α satisfies
+                                ′
+                               fψ,p ∈ C(X, Ep× )/Ep× ,           ′
+                                                                fψ,p (x) = x.
+Finally, as any t ∈ Tp acts on X through multiplication by t1−σp , the claim follows.
+Remark 5.3. The endomorphism of the torus Tp given by
+                                        t 7! t1−σp        (mod Fp× )
+equals the squaring map t 7! t2 .
+
+5.2 Characters of the torus
+Let Ec,S denote the union of the narrow ring class fields of E of conductor c · pnS for n ⩾ 0. Then,
+the Artin map induces an isomorphism
+                                  +                 ∼               
+                     recE : T (F ) \T (A∞ )/U (c)S −
+                                                   −! Gal Ec,S /E := Gc,S
+            +
+where T (F ) represents the closure of T (F )+ in T (A∞ )/U (c)S .
+
+
+                                                     25
+                          Michele Fornea and Lennart Gehrmann
+
+For N a T (F )+ -module and ? ∈ {∅, c}, we let T (F )+ act on the space of continuous functions
+C? T (A∞ )/U S (c), N ) via (t · f )(x) = t · f (t−1 x). Generalizing slightly previous notation, we set
+                                                                               
+                         Hd (XT (c), N ) := Hd T (F )+ , Cc T (A∞ )/U (c), N
+and
+                                                                      
+                        Hd XT (c), N := Hd T (F )+ , C(T (A∞ )/U (c), N ;
+i.e. we allow non-trivial coefficients.
+                                                  ×
+Let R be a profinite ZQp -algebra and χ : Gc,S ! R a continuous
+                                                            ×
+                                                                   group homomorphism. By writing
+χ as a product χ = q χq of local characters χq : Tq ! R for all primes q of F , we may view χ
+as a T (F )+ -invariant element of
+                                                                     
+                                 C T (AS,∞ )/U (c)S , ⊗p∈S C(Tp , R) ,
+where the tensor product is taken over R. For any topological abelian group N , we define
+Cm (TS , N ) to be the quotient of C(TS , N ) by the subspace of all functions which are constant
+with respect to some variable, i.e.
+                                                          X
+                              Cm (TS , N ) := C(TS , N )/   C(TΣ , N )
+                                                         Σ(S
+
+Definition 5.4. Similarly to Definition 4.4, we define a homology class associated to χ by
+                                                                 
+                          Θχ := χ ∩ ϑ ∈ Hq XT (c), ⊗p∈S C(Tp , R) ,
+and denote by e
+              Θχ its image under the map in homology induced by ⊗p∈S C(Tp , R) ! Cm (TS , R).
+
+Fix a closed ideal I ⊆ R and for any R-module N put N := N/IN . Under some assumptions,
+we aim at relating Θχ to the class θχ ∈ Hq (XT (c), R) associated to χ := χ (mod I) as in Section
+4.2.1. Suppose that for every p ∈ S
+                                           χp ≡ 1 (mod I).
+Then, the functions dχp : Tp ! I, given by t 7! χp (t) − 1 (mod I 2 ), are group homomorphisms
+and can be viewed as cohomology classes as in Lemma 5.1
+                                                            
+                                  dχp ∈ H0 Tp , C(Tp , I)/I .                             (22)
+By further assuming that I r+1 = 0, multiplication induces a TS -equivariant and R-linear map
+⊗p∈S C(Tp , I) ! C(TS , I r ), in turn giving a homomorphism
+                                      O
+                                   µ:     C(Tp , I)/I −! Cm (TS , I r ).                  (23)
+                                     p∈S
+
+Unravelling the definitions one easily deduces the following lemma.
+                                                           
+Lemma 5.5. In the homology group Hq XTS (c), Cm (TS , R) , the following equality holds
+                                                          
+                               e χ = µ∗ dχp ∪ . . . ∪ dχpr ∩ ϑχ .
+                               Θ            1
+
+               e χ = 0 if the r-th power I r equals zero.
+In particular, Θ
+
+Remark 5.6. For locally constant characters, Lemma 5.5 is a special case of ([BG18], Proposition
+3.6). One can easily generalize the full statement of ([BG18], Proposition 3.6) to the profinite
+setting using arguments as in ([DS18], Section 3).
+
+
+                                                  26
+                                Plectic Stark–Heegner points
+
+5.3 Construction of the p-adic L-function
+We keep the same notations as in the previous section and further define
+                                                                   
+                        Mm (TS ) := HomZp ⊗p∈S C(Tp , Zp )/Zp , Zp .
+With similar arguments as in the proof of Lemma 4.2, one proves that there exists an R-linear
+and TS -equivariant integration pairing
+                                Z
+                                    : Mm (TS ) × Cm (TS , R) −! R.                       (24)
+                                   TS
+
+As P1 (FS ) is principal homogeneous TS -space, the choice of a base-point x ∈ P1 (FS ) induces
+                                                            ∼
+                                          ιx : P1 (FS ) −
+                                                        ! TS ,
+and any other such identification is obtained translating by an element of TS . We obtain an iso-
+                                     ∼
+                                   −! Stct
+morphism ι∗x : ⊗p∈S C(Tp , Zp )/Zp −       S (Zp ), which together with restriction along ψ, produces
+                                                                           
+                       ι∗x : Hq XGS
+                                    ; StS (Zp ), Zp −! Hq XT (c), Mm (TS ) .
+Definition 5.7. Consider the completed group algebra Zp JGc,S K and the universal character
+χc : Gc,S ! Zp JGc,S K× . The anticyclotomic p-adic L-function attached to the tuple (A/E , ǫ, c, S) is
+                                                           e χc ∈ Zp JGc,S K
+                              LSǫ (A/E)c := ι∗x (cSA,ǫ ) ∩ Θ
+where the cap-product is induced by the integration pairing (24).
+Remark 5.8. The p-adic L-function LSǫ (A/E)c is independent on the choice of base-point up to
+multiplication by a group-like element of Zp JGc,S K in the image of TS . Indeed, the identification
+              ∼
+ιx : P1 (FS ) −
+              ! TS is unique up to translation by an element of TS , and the homology class Θχc
+actually takes values in Homgr (TS , R× ) ⊆ C(TS , R) for R = Zp JGc,S K.
+
+5.4 Special value formulas
+We recall a special value formula for Rankin-Selberg L-functions due to Waldspurger. We consider
+an idele class character χ : A×      ×       ×
+                                E /E ! C such that χ|A×        ≡ 1, and let ΠA = ⊗v Πv denote the
+                                                             F
+cuspidal automorphic representation of PGL2 (AF ) associated to A/F by modularity. We write
+L(s, ΠA , χ) for the Rankin-Selberg L-function associated to ΠA and χ, normalized to have the
+center at s = 1/2. Denoting by η : A×        ×      ×
+                                         F /F ! C the quadratic character associated to E/F by
+class field theory, the set
+                                         n     1                     o
+                            Σ(A, χ) = v ǫ , Πv , χv 6= χv · ηv (−1)
+                                                2
+of places of F is finite, and it is related to the global root number by the formula
+                                       1        
+                                      ǫ , ΠA , χ = (−1)|Σ(A,χ)| .
+                                         2
+Recall that the fixed quaternion algebra B/F was chosen to have ramification set equal to
+                                                     
+                                Σ(B) := q | n− ∪ ∞n+1 , . . . , ∞t .
+and such that ΠA admits a Jacquet-Langlands transfer π to it. Further, B admits an embedding
+ψ : E ֒! B determining a non-split torus T = E × /F × in the algebraic group G = B × /F × . Then,
+we can consider the period integral ℓ(·, χ) : π ! C given by
+                                             Z
+                                ℓ(ξ, χ) :=          ξ(t) · χ(t) dt
+                                                [T (AF )]
+
+
+
+                                                   27
+                          Michele Fornea and Lennart Gehrmann
+
+where dt denotes the Haar measure on [T (AF )] := T (AF )/T (F ) of total volume 1.
+
+Remark 5.9. If Σ(A, χ) 6= Σ(B), then ℓ(·, χ) : π ! C is the zero functional. Indeed, ℓ(·, χ)
+factors as a product of local linear functionals
+                                                and there exists a place v for which the space of
+linear functionals HomEv× πv ⊗ χv , C is zero by work of Tunnell [Tun83] and Saito [Sai93].
+
+Let h·, ·iPet denote the Petersson inner product for automorphic forms on the quotient space
+(B ⊗ AF )× /A×     ×
+               F B with respect to the chosen Haar measure Q          dt, and choose non-trivial hermitian
+forms h·, ·iv on πv satisfying the product formula h·, ·iPet = v h·, ·iv . Then, for any place v of F
+we can define the local linear functional α(·, χv ) : πv ! C by
+                                                        
+                               L 1, ηv · L 1, Πv , ad Z
+                 α(ξv , χv ) =                           ·         πv (t)ξv , ξv v · χv (t) dt.
+                                ζFv (2) · L 21 , Πv , χv     T (Fv )
+
+
+Suppose Σ(A, χ) = Σ(B), then for a non-zero decomposable vector ξ ∈ π we have α(ξv , χv ) = 1
+for all but finitely many places v of F , and Waldspurger formula holds
+                                                               
+                                                     1
+                               2
+                                       ζ F (2) · L   2 , ΠA , χ      Y
+                        ℓ(ξ, χ) =              2                ·   α(ξv , χv ).
+                                   8 · L 1, η · L 1, ΠA , ad         v
+
+In the form we presented here, this formula can be found in ([YZZ13], Theorem 1.4). It justifies
+our choice of anticyclotomic p-adic L-function.
+                                     ×
+Theorem 5.10. Let χ : Gc,S ! Q be a finite order character. On the one hand, if χ does not
+ramify at every prime in S or χ∞ 6= ǫ, then
+                                                     
+                                      χ LSǫ (A/E)c = 0.
+                                         Q
+On the other hand, if χ has conductor c · ri=1 pni i with ni ⩾ 1 for every i, and χ∞ = ǫ, then
+                                                          1        
+                     χ LSǫ (A/E)c 6= 0        ⇐⇒          L , ΠA , χ 6= 0.
+                                                             2
+Proof. This is a special case of ([BG18], Theorem 5.8). For the convenience of the reader, we
+sketch the idea of the proof. First, if χ∞ 6= ǫ, then the p-adic L-function clearly vanishes. Thus, it
+is more interesting to consider
+                               a finite order character χ with χ∞ = ǫ. In this case it is possible to
+compare χ LSǫ (A/E)c with a value of the period integral ℓ(·, χ). When χ is ramified at primes
+dividing c – which is coprime to fA – and at primes in a subset Σ ⊆ S, one can compute that
+                                                         
+                          Σ(A, χ) = S \ Σ ∪ q | n− ∪ ∞n+1 , . . . , ∞t .
+Therefore, if Σ 6= S, then Σ(A, χ) 6= Σ(B) and the period integral ℓ(·, χ) vanishes for local
+reasons (Remark 5.9). While when Σ = S, one can conclude by invoking Waldspurger’s formula
+and the explicit computations of [FMP17].
+
+5.5 The p-adic Gross–Zagier formula
+The vanishing of the anticyclotomic p-adic L-function to order at least r = |S| at any character
+of Gc is proved in ([Ber17] & [BG18], Theorem 5.5) and it is a direct consequence of Lemma 5.5.
+Concretely, it means that
+                                            LSǫ (A/E)c ∈ I r
+
+
+                                                   28
+                                Plectic Stark–Heegner points
+                                     
+where I = ker Zp JGc,+S K ! Zp [Gc+ ] is the relative augmentation ideal. Inspired by the work
+of Bertolini and Darmon [BD98], we prove that the values of the r-th derivative of LSǫ (A/E)c
+compute plectic p-adic invariants.
+                                                       ×
+Definition 5.11. For any character χ : Gc ! Q with χ∞ = ǫ we set
+                                 
+                  χ ∂ r LSǫ (A/E)c := LSǫ (A/E)c ⊗ 1 in I r /I r+1 ⊗χ Q,
+
+where we consider I r /I r+1 as a Z[Gc ]-module.
+Remark 5.12. As every p ∈ S is inert in E/F , the     image of the Artin map from TS to Gc is
+trivial. It follows that the element χ ∂ r LSǫ (A/E)c is independent of the choice of base-point
+x ∈ P1 (FS ) made in the definition of the p-adic L-function (Remark 5.8).
+
+Since the image of the local Artin map from Tp to Gc is trivial, the function
+                                 bp× ! I/I 2 ,
+                        d recp : E                 t 7! recp (t) − 1   (mod I 2 )
+is a group homomorphism. Taking tensor products over all p ∈ S yields the homomorphism
+                                               b× −! I r /I r+1
+                                      d recS : ES,⊗
+
+which extends to a Zp [Gc ]-linear homomorphism
+                                         b× ⊗Zp Zp [Gc ] −! I r /I r+1 .
+                                d recS : ES,⊗
+
+Then, our p-adic Gross–Zagier formula takes the following form.
+                                                   ×
+Theorem 5.13. For any character χ : Gc ! Q with χ∞ = ǫ the equality
+                                               
+                           2r · χ ∂ r LSǫ (A/E)c = d recS (QχA )
+
+holds in I r /I r+1 ⊗χ Q.
+Proof. Let ∂ r LSǫ (A/E)c denote the image of LSǫ (A/E)c in I r /I r+1 , and consider the reduction
+modulo I r+1 of the universal character
+                                                               ×
+                                  χr : Gc,+S ! Zp JGc,S K/I r+1 .
+
+Directly from the definitions, we can write ∂ r LSǫ (A/E)c = ι∗x (cSA,ǫ ) ∩ e
+                                                                            Θχr . Moreover, Lemma 5.5
+applies to our setting with R = Zp JGc,S K/I r+1 giving
+                                                             
+                             e
+                             Θχr = µ∗ dχr,p1 ∪ · · · ∪ dχr,pr ∩ Θχr .
+By Lemma 5.2 and Remark 5.3, the following equality holds in Hq (XT (c), I r /I r+1 )
+                                                                                      
+              ι∗x (cSA,ǫ ) ∪ µ∗ 2dχr,p1 ∪ · · · ∪ 2dχr,pr = (d recS )∗ (Ψ⋄S )∗ (cSA,ǫ ) .
+                                                               ×
+Then, the claim follows because any character χ : Gc ! Q factors through χr .
+
+
+References
+BD98     M. Bertolini and H. Darmon. Heegner points, p-adic L-functions, and the Cerednik-Drinfeld
+         uniformization. Invent. Math., 131(3):453–491, 1998.
+Ber17    F. Bergunde. On leading terms of quaternionic Stickelberger elements over number fields. PhD
+         thesis, Universität Bielefeld, 2017.
+
+
+
+                                                   29
+                         Michele Fornea and Lennart Gehrmann
+
+BG18  F. Bergunde and L. Gehrmann. Leading terms of anticyclotomic Stickelberger elements and
+      p-adic periods. Trans. Amer. Math. Soc., 370(9):6297–6329, 2018.
+Bor63 A. Borel. Some finiteness properties of adele groups over number fields. Inst. Hautes Études
+      Sci. Publ. Math., 16:5–30, 1963.
+Bre04 C. Breuil. Invariant L et série spéciale p-adique. Ann. Sci. de l’Ecole Norm. Superieure,
+      37(4):559–610, 2004.
+BS73  A. Borel and J-P. Serre. Corners and arithmetic groups. Comment. Math. Helv., 48(1):436–491,
+      1973.
+BS76  A. Borel and J-P. Serre. Cohomologie d’immeubles et de groupes S-arithmétiques. Topology,
+      15(3):211 – 232, 1976.
+Cas73 W. Casselman. On some results of Atkin and Lehner. Math, Ann., 201(4):301–314, 1973.
+Dar01 H. Darmon. Integration on Hp × H and arithmetic applications. Ann. of Math. (2), 154(3):589–
+      639, 2001.
+DS18  S. Dasgupta and M. Spieß. Partial zeta values, Gross’s tower of fields conjecture, and Gross-
+      Stark units. J. Eur. Math. Soc. (JEMS), 20(11):2643–2683, 2018.
+FG21  M. Fornea and L. Gehrmann. The arithmetic of plectic Jacobians. In preparation, 2021.
+FGM21 M. Fornea, X. Guitart, and M. Masdeu. Plectic p-adic invariants. preprint, 2021.
+FMP17 D. File, K. Martin, and A. Pitale. Test vectors and central L-values for GL(2). Algebra Number
+      Theory, 11(2):253–318, 2017.
+GMM20 X. Guitart, M. Masdeu, and S. Molina. An automorphic approach to Darmon points. Indiana
+      Univ. Math. J., 69(4):1251–1274, 2020.
+GMS15 X. Guitart, M. Masdeu, and M. H. Sengun. Darmon points on elliptic curves over number fields
+      of arbitrary signature. Proc. London Math. Soc., 11(2):484–518, 2015.
+GR20  L. Gehrmann and G. Rosso. Big principal series, p-adic families and L-invariants. preprint,
+      2020.
+Gre09 M. Greenberg. Stark-Heegner points and the cohomology of quaternionic Shimura varieties.
+      Duke Math. J., 147(3):541–575, 2009.
+GZ86  B. H. Gross and D. B. Zagier. Heegner points and derivatives of L-series. Invent. Math.,
+      84(2):225–320, 1986.
+Liu16 Y. Liu. Hirzebruch-Zagier cycles and twisted triple product Selmer groups. Invent. Math.,
+      205(3):693–780, 2016.
+Nek16 J. Nekovár. Some remarks on the BSD conjecture. Rubinfest’s talk at Harvard, 2016.
+NS16  J. Nekovář and A. J. Scholl. Introduction to plectic cohomology. In Advances in the theory
+      of automorphic forms and their L-functions, volume 664 of Contemp. Math., pages 321–337.
+      Amer. Math. Soc., Providence, RI, 2016.
+Sai93 H. Saito. On Tunnell’s formula for characters of GL(2). Compos, Math., 85(1):99–108, 1993.
+Ser72 J.-P. Serre. Cohomologie des groupes discrets. In Séminaire Bourbaki vol. 1970/71 Exposés
+      382–399, volume 244 of Lecture Notes in Mathematics, pages 337–350. Springer Berlin Heidel-
+      berg, 1972.
+Spi14 M. Spieß. On special zeros of p-adic L-functions of Hilbert modular forms. Invent. Math.,
+      196(1):69–138, 2014.
+Spi20 M. Spieß. On L-invariants associated to Hilbert modular forms. preprint, 2020.
+Tun83 J. Tunnell. Local ǫ-factors and characters of GL(2). Amer. J. Math., 105(6):1277–1307, 1983.
+Wal85 J.-L. Waldspurger. Sur les valeurs des certaines fonctions l automorphes en leur centre de
+      symetrie. Compos. Math., 1985.
+YZZ13 X. Yuan, S.-W. Zhang, and W. Zhang. The Gross-Zagier formula on Shimura curves, volume
+      184 of Annals of Mathematics Studies. Princeton University Press, Princeton, NJ, 2013.
+
+
+
+                                                30
+                          Plectic Stark–Heegner points
+
+Michele Fornea mfornea@math.columbia.edu
+Columbia University, New York, USA.
+
+Lennart Gehrmann lennart.gehrmann@uni-due.de
+Universität Duisburg-Essen, Essen, Germany.
+
+
+
+
+                                           31
+

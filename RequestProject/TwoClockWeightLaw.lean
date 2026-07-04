@@ -33,7 +33,7 @@ This file DERIVES the law's formula — the measured discovery, promoted to theo
 What remains measured (stated, not claimed): the INSTRUMENT identification — that the
 phase-recurrence spectrum of the fiber on the line reads the smooth part of `log L`,
 with the zero contributions forming the broadband floor (the clock–dip duality).  The
-formula itself is no longer phenomenology.  No `sorry`; standard axioms.
+formula itself is no longer phenomenology.  No proof placeholders; standard axioms.
 -/
 
 open Complex
@@ -357,5 +357,289 @@ theorem symTrace_exp (m : ℕ) (x : ℝ) :
         Complex.exp_ne_zero _
       field_simp
       ring
+
+/-! ## The tail laws (owner: "go go", 2026-07-03)
+
+The BE instruments measured tail-mass growth 0.042→0.256 across Sym^0..Sym^4 and
+fit it at R² = 0.977 by ceiling × √(harmonic count) — both quantities read off the
+Weyl character.  The provable core, proven here:
+
+* `symTrace_ceiling` — `‖U_r‖_∞ ≤ r+1`: the comb's height is its clock count.
+* `windowed_tail_bound` — **the tail-mass ceiling law**: any windowed tail of the
+  Sym^m comb is ≤ (m+1) × (the window's own tail mass).  The measured growth sits
+  under this proven linear envelope; the √harmonics refinement (how much of the
+  envelope the comb actually fills) is the measured half.
+* `symTrace_energy` — **energy = clock count** (Parseval): the mean-square of the
+  Sym^m trace over a full period is exactly `2π(m+1)` — the comb's total power is its
+  dimension.  Distinct clock frequencies are orthogonal; nothing interferes in the
+  energy norm (the cup principle, on the circle). -/
+
+/-- **The comb ceiling**: `‖symTrace m x‖ ≤ m + 1` — the Sym^m comb's height is its
+clock count. -/
+theorem symTrace_ceiling (m : ℕ) (x : ℝ) : ‖symTrace m x‖ ≤ m + 1 := by
+  unfold symTrace
+  calc ‖∑ j ∈ Finset.range (m + 1),
+        Complex.exp (((m : ℂ) - 2 * (j : ℂ)) * ((x : ℂ) * I))‖
+      ≤ ∑ j ∈ Finset.range (m + 1),
+        ‖Complex.exp (((m : ℂ) - 2 * (j : ℂ)) * ((x : ℂ) * I))‖ := norm_sum_le _ _
+    _ = ∑ _j ∈ Finset.range (m + 1), (1 : ℝ) := by
+        refine Finset.sum_congr rfl fun j _ => ?_
+        rw [Complex.norm_exp]
+        have h : ((((m : ℂ) - 2 * (j : ℂ)) * ((x : ℂ) * I)).re) = 0 := by
+          simp [Complex.mul_re, Complex.mul_im, Complex.sub_re, Complex.sub_im]
+        rw [h, Real.exp_zero]
+    _ = m + 1 := by simp
+    
+/-- **The tail-mass ceiling law**: any windowed tail of the Sym^m comb is bounded by
+`(m+1) ×` (the window's own tail mass) — the proven linear envelope under which the
+measured tail growth sits. -/
+theorem windowed_tail_bound (m : ℕ) (θ : ℕ → ℝ) (w : ℕ → ℝ) (hw : ∀ k, 0 ≤ w k)
+    (S : Finset ℕ) :
+    ‖∑ k ∈ S, (w k : ℂ) * symTrace m (θ k)‖ ≤ (m + 1) * ∑ k ∈ S, w k := by
+  calc ‖∑ k ∈ S, (w k : ℂ) * symTrace m (θ k)‖
+      ≤ ∑ k ∈ S, ‖(w k : ℂ) * symTrace m (θ k)‖ := norm_sum_le _ _
+    _ ≤ ∑ k ∈ S, w k * (m + 1) := by
+        refine Finset.sum_le_sum fun k _ => ?_
+        rw [norm_mul, Complex.norm_real, Real.norm_eq_abs, abs_of_nonneg (hw k)]
+        exact mul_le_mul_of_nonneg_left (symTrace_ceiling m (θ k)) (hw k)
+    _ = (m + 1) * ∑ k ∈ S, w k := by
+        rw [← Finset.sum_mul, mul_comm]
+
+/-- **Circle orthogonality**: a nonzero integer frequency integrates to zero over a
+full period. -/
+theorem circle_orthogonality {d : ℤ} (hd : d ≠ 0) :
+    ∫ x in (0 : ℝ)..(2 * Real.pi), Complex.exp (((d : ℂ) * I) * x) = 0 := by
+  have hc : ((d : ℂ) * I) ≠ 0 :=
+    mul_ne_zero (Int.cast_ne_zero.mpr hd) Complex.I_ne_zero
+  rw [integral_exp_mul_complex hc]
+  have h1 : (d : ℂ) * I * ((2 * Real.pi : ℝ) : ℂ) = (d : ℂ) * (2 * Real.pi * I) := by
+    push_cast
+    ring
+  have h2 : (d : ℂ) * I * ((0 : ℝ) : ℂ) = 0 := by
+    push_cast
+    ring
+  rw [h1, h2, Complex.exp_int_mul_two_pi_mul_I, Complex.exp_zero, sub_self, zero_div]
+
+/-- **Energy = clock count** (Parseval for the Sym^m comb): the mean-square over a
+full period is exactly `2π(m+1)` — the comb's total power is its dimension.  Distinct
+clock frequencies are orthogonal: nothing interferes in the energy norm (the cup
+principle, on the circle). -/
+theorem symTrace_energy (m : ℕ) :
+    ∫ x in (0 : ℝ)..(2 * Real.pi),
+        symTrace m x * (starRingEnd ℂ) (symTrace m x)
+      = ((2 * Real.pi * (m + 1) : ℝ) : ℂ) := by
+  have key : ∀ x : ℝ, symTrace m x * (starRingEnd ℂ) (symTrace m x)
+      = ∑ j ∈ Finset.range (m + 1), ∑ k ∈ Finset.range (m + 1),
+          Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x) := by
+    intro x
+    unfold symTrace
+    rw [map_sum, Finset.sum_mul_sum]
+    refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+    rw [← Complex.exp_conj, ← Complex.exp_add]
+    congr 1
+    simp only [map_mul, map_sub, Complex.conj_ofReal, Complex.conj_I,
+      Complex.conj_natCast, map_ofNat]
+    push_cast
+    ring
+  have hint : ∀ (f : ℝ → ℂ), Continuous f →
+      IntervalIntegrable f MeasureTheory.volume 0 (2 * Real.pi) :=
+    fun f hf => hf.intervalIntegrable _ _
+  calc ∫ x in (0 : ℝ)..(2 * Real.pi),
+          symTrace m x * (starRingEnd ℂ) (symTrace m x)
+      = ∫ x in (0 : ℝ)..(2 * Real.pi), ∑ j ∈ Finset.range (m + 1),
+          ∑ k ∈ Finset.range (m + 1),
+            Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x) := by
+        refine intervalIntegral.integral_congr fun x _ => key x
+    _ = ∑ j ∈ Finset.range (m + 1), ∫ x in (0 : ℝ)..(2 * Real.pi),
+          ∑ k ∈ Finset.range (m + 1),
+            Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x) := by
+        have hcont : ∀ j : ℕ, Continuous fun x : ℝ =>
+            ∑ k ∈ Finset.range (m + 1),
+              Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x) := by
+          intro j
+          exact continuous_finsetSum _ fun k _ => by fun_prop
+        exact intervalIntegral.integral_finsetSum
+          fun j _ => ((hcont j).intervalIntegrable _ _)
+    _ = ∑ j ∈ Finset.range (m + 1), ∑ k ∈ Finset.range (m + 1),
+          ∫ x in (0 : ℝ)..(2 * Real.pi),
+            Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x) := by
+        refine Finset.sum_congr rfl fun j _ => ?_
+        exact intervalIntegral.integral_finsetSum
+          fun k _ => ((by fun_prop : Continuous fun x : ℝ =>
+            Complex.exp ((((2 * ((k : ℤ) - (j : ℤ)) : ℤ) : ℂ) * I) * x)).intervalIntegrable _ _)
+    _ = ∑ j ∈ Finset.range (m + 1), ∑ k ∈ Finset.range (m + 1),
+          (if k = j then ((2 * Real.pi : ℝ) : ℂ) else 0) := by
+        refine Finset.sum_congr rfl fun j _ => Finset.sum_congr rfl fun k _ => ?_
+        by_cases hjk : k = j
+        · subst hjk
+          rw [if_pos rfl]
+          have harg : ∀ x : ℝ,
+              Complex.exp ((((2 * ((k : ℤ) - (k : ℤ)) : ℤ) : ℂ) * I) * x) = 1 := by
+            intro x
+            rw [show (((2 * ((k : ℤ) - (k : ℤ)) : ℤ) : ℂ) * I) * x = 0 by push_cast; ring,
+              Complex.exp_zero]
+          rw [intervalIntegral.integral_congr fun x _ => harg x,
+            intervalIntegral.integral_const]
+          rw [sub_zero, Complex.real_smul, mul_one]
+        · rw [if_neg hjk]
+          refine circle_orthogonality ?_
+          intro h
+          apply hjk
+          omega
+    _ = ((2 * Real.pi * (m + 1) : ℝ) : ℂ) := by
+        have hrow : ∀ j ∈ Finset.range (m + 1),
+            (∑ k ∈ Finset.range (m + 1),
+              if k = j then ((2 * Real.pi : ℝ) : ℂ) else 0)
+              = ((2 * Real.pi : ℝ) : ℂ) := by
+          intro j hj
+          rw [Finset.sum_ite_eq' (Finset.range (m + 1)) j
+            fun _ => ((2 * Real.pi : ℝ) : ℂ)]
+          exact if_pos hj
+        rw [Finset.sum_congr rfl hrow, Finset.sum_const, Finset.card_range,
+          nsmul_eq_mul]
+        push_cast
+        ring
+
+/-! ## The window-edge clock (MB emergent K, 2026-07-03)
+
+The MB beat gate (`tmp/mb_beat.py`, `tmp/mb_beat_results.txt`) found that the comb
+spacing is the chart's own edge clock.  The Lean core is just the phase bookkeeping:
+for a phase kernel with denominator `4 * lf2`, the number of edge-to-edge turns across
+a window span `S` at frequency spacing `ν` is `ν * S / (4 * lf2)`.  One full turn
+therefore selects `ν = 4 * lf2 / S`.  The measured effective MB span is `(47/50) * X`,
+so the exact model readout is
+
+`4 * lf2 / ((47/50) * X) = (25/47) * lf2 * (X/8)⁻¹`.
+
+The switch variable records whether the second edge component is audible; it does not
+enter the spacing once the edge clock is on. -/
+
+/-- Edge-to-edge phase turns across a window span `span` at spacing `ν`, in the MB
+normalization with phase denominator `4 * lf2`. -/
+noncomputable def edgePhaseTurns (lf2 span ν : ℝ) : ℝ := ν * span / (4 * lf2)
+
+/-- The edge-clock spacing selected by one full edge-to-edge turn. -/
+noncomputable def edgeBeatSpacing (lf2 span : ℝ) : ℝ := 4 * lf2 / span
+
+/-- The MB window-edge clock with effective span `κ * X`. -/
+noncomputable def windowEdgeClock (lf2 X κ : ℝ) : ℝ := edgeBeatSpacing lf2 (κ * X)
+
+/-- The edge-clock spacing makes exactly one edge-to-edge phase turn. -/
+theorem edgeBeatSpacing_phase_turns {lf2 span : ℝ} (hlf2 : lf2 ≠ 0)
+    (hspan : span ≠ 0) :
+    edgePhaseTurns lf2 span (edgeBeatSpacing lf2 span) = 1 := by
+  unfold edgePhaseTurns edgeBeatSpacing
+  field_simp [hlf2, hspan]
+
+/-- The one-turn condition determines the edge-clock spacing uniquely. -/
+theorem edgeBeatSpacing_unique {lf2 span ν : ℝ} (hlf2 : lf2 ≠ 0)
+    (hspan : span ≠ 0) (hν : edgePhaseTurns lf2 span ν = 1) :
+    ν = edgeBeatSpacing lf2 span := by
+  unfold edgePhaseTurns at hν
+  unfold edgeBeatSpacing
+  field_simp [hlf2, hspan] at hν ⊢
+  linarith
+
+/-- Rewriting an endpoint span as an effective `κ * X` span gives the window-edge
+clock. -/
+theorem edgeBeatSpacing_of_effective_window {lf2 left right X κ : ℝ}
+    (hspan : right - left = κ * X) :
+    edgeBeatSpacing lf2 (right - left) = windowEdgeClock lf2 X κ := by
+  simp [windowEdgeClock, hspan]
+
+/-- The measured MB span coefficient is `0.94 = 47/50`. -/
+theorem windowEdgeClock_measured_span (lf2 X : ℝ) :
+    windowEdgeClock lf2 X (47 / 50) = 4 * lf2 / ((47 / 50) * X) := rfl
+
+/-- The measured MB edge clock in dispersion-law coordinates:
+`Dν = (25/47) * lf2 * (X/8)⁻¹`. -/
+theorem windowEdgeClock_measured_dispersion {lf2 X : ℝ} (hX : X ≠ 0) :
+    windowEdgeClock lf2 X (47 / 50) = (25 / 47) * lf2 * (X / 8)⁻¹ := by
+  unfold windowEdgeClock edgeBeatSpacing
+  field_simp [hX]
+  ring
+
+/-- Positivity of the edge clock under positive scale and positive span. -/
+theorem windowEdgeClock_pos {lf2 X κ : ℝ} (hlf2 : 0 < lf2) (hX : 0 < X)
+    (hκ : 0 < κ) : 0 < windowEdgeClock lf2 X κ := by
+  unfold windowEdgeClock edgeBeatSpacing
+  positivity
+
+/-- A minimal switch predicate: positive second-component prominence means the
+window-edge beat is audible. -/
+def BimodalSwitch (prominence : ℝ) : Prop := 0 < prominence
+
+/-- The MB window-edge readout: once the switch is on, the spacing is the window-edge
+clock.  The switch is kept separate from the spacing formula. -/
+def WindowEdgeClockReadout (lf2 X κ prominence spacing : ℝ) : Prop :=
+  BimodalSwitch prominence ∧ spacing = windowEdgeClock lf2 X κ
+
+/-- Any readout carries the edge-clock spacing. -/
+theorem WindowEdgeClockReadout.spacing {lf2 X κ prominence spacing : ℝ}
+    (h : WindowEdgeClockReadout lf2 X κ prominence spacing) :
+    spacing = windowEdgeClock lf2 X κ :=
+  h.2
+
+/-- A zero-prominence profile has no audible second edge component in this model. -/
+theorem no_WindowEdgeClockReadout_of_zero_prominence {lf2 X κ spacing : ℝ} :
+    ¬ WindowEdgeClockReadout lf2 X κ 0 spacing := by
+  intro h
+  exact (lt_irrefl (0 : ℝ)) h.1
+
+/-- The measured dispersion law is independent of the switch parameter: the exponent
+of `(1 + ξ)` is zero. -/
+theorem windowEdgeClock_measured_dispersion_with_switch {lf2 X ξ : ℝ} (hX : X ≠ 0) :
+    windowEdgeClock lf2 X (47 / 50)
+      = (25 / 47) * lf2 * (X / 8)⁻¹ * (1 + ξ) ^ 0 := by
+  rw [windowEdgeClock_measured_dispersion hX]
+  ring
+
+/-! ## The gamma-spread bound from the clock readout
+
+The measured invariant is the clock-readout band `0.441 +- 0.058`.  The theorem below
+records the exact proof shape used by the campaign: once the gamma spread is identified
+with the emergent clock readout, a certified band around `0.441` gives the upper bound
+`0.499` by interval arithmetic. -/
+
+/-- A readout value is in the measured gamma-spread clock band `0.441 +- 0.058`. -/
+def CertifiedGammaSpreadBand (value : ℝ) : Prop :=
+  |value - 441 / 1000| ≤ 58 / 1000
+
+/-- The gamma spread is read by the emergent window-edge clock. -/
+def GammaSpreadClockReadout (lf2 X κ prominence gammaSpread : ℝ) : Prop :=
+  WindowEdgeClockReadout lf2 X κ prominence gammaSpread
+
+/-- Any scalar certified in the `0.441 +- 0.058` band is bounded by `0.499`. -/
+theorem gammaSpread_le_of_certified_band {gammaSpread : ℝ}
+    (hband : CertifiedGammaSpreadBand gammaSpread) :
+    gammaSpread ≤ 499 / 1000 := by
+  unfold CertifiedGammaSpreadBand at hband
+  rw [abs_sub_le_iff] at hband
+  linarith
+
+/-- **Gamma-spread bound from the emergent clock law.**  If the gamma spread is the
+window-edge clock readout and that clock is certified in the measured band, then the
+gamma spread is bounded by `0.499`. -/
+theorem gammaSpread_bound_from_windowEdgeClock {lf2 X κ prominence gammaSpread : ℝ}
+    (hread : GammaSpreadClockReadout lf2 X κ prominence gammaSpread)
+    (hband : CertifiedGammaSpreadBand (windowEdgeClock lf2 X κ)) :
+    gammaSpread ≤ 499 / 1000 := by
+  unfold GammaSpreadClockReadout at hread
+  rw [WindowEdgeClockReadout.spacing hread]
+  exact gammaSpread_le_of_certified_band hband
+
+/-- A finite family whose entries all lie within `radius` of the same clock center has
+pairwise spread at most `2 * radius`.  This is the finite-grid version of the same
+clock-band argument. -/
+theorem pairwise_spread_bound_of_clock_band {ι : Type*} (s : Finset ι) (gamma : ι → ℝ)
+    {center radius : ℝ} (hband : ∀ i ∈ s, |gamma i - center| ≤ radius) :
+    ∀ i ∈ s, ∀ j ∈ s, |gamma i - gamma j| ≤ 2 * radius := by
+  intro i hi j hj
+  calc
+    |gamma i - gamma j| = |(gamma i - center) + (center - gamma j)| := by ring_nf
+    _ ≤ |gamma i - center| + |center - gamma j| := abs_add_le _ _
+    _ = |gamma i - center| + |gamma j - center| := by rw [abs_sub_comm center (gamma j)]
+    _ ≤ radius + radius := add_le_add (hband i hi) (hband j hj)
+    _ = 2 * radius := by ring
 
 end CriticalLinePhasor.TwoClockWeightLaw
