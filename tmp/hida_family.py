@@ -47,7 +47,10 @@ def chi_exp(n):
     e = 0
     if n % 4 == 3:
         e += 6
-    e += 4 * (_IND31[n % 31] % 3)
+    # match the CERTIFIED engine nebentype CHI=(1,8): coefficient 8 on ind31 (not 4).
+    # 8*ind31 mod 12 == 8*(ind31 mod 3) mod 12 since 8*3 = 24 ≡ 0.  The earlier 4* was the
+    # CONJUGATE nebentype (chi(3)=zeta^10); DLR pins chi(3)=zeta^2 (katz_engine gate1 PASS).
+    e += 8 * (_IND31[n % 31] % 3)
     return e % 12
 
 

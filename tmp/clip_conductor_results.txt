@@ -1,0 +1,44 @@
+==============================================================================
+(A) CLIP <-> CONDUCTOR : geometric clip observables vs N
+==============================================================================
+         N    sqrt(N)  n_eff(1%)  n_eff/sqrtN     arclen  arclen/sqrtN
+        10       3.16      2.318      0.73294      0.148       0.04694
+        30       5.48      4.014      0.73294      0.666       0.12161
+       100      10.00      7.329      0.73294      2.427       0.24270
+       300      17.32     12.695      0.73294      6.560       0.37876
+      1000      31.62     23.177      0.73294     17.250       0.54549
+      3000      54.77     40.145      0.73294     38.742       0.70732
+     10000     100.00     73.294      0.73294     89.080       0.89080
+     30000     173.21    126.948      0.73294    183.851       1.06146
+    100000     316.23    231.775      0.73294    395.437       1.25048
+   1000000    1000.00    732.936      0.73294   1614.792       1.61479
+  10000000    3162.28   2317.746      0.73294   6263.132       1.98058
+ 100000000   10000.00   7329.356      0.73294  23468.280       2.34683
+
+FIT  n_eff(1%)  ~  0.7329 * N^0.5000      (pure sqrt(N): exponent 0.5)
+FIT  arclength  ~  0.0825 * N^0.7141     (sqrt(N)*log correction: >0.5)
+
+n_eff/sqrt(N) is CONSTANT  =>  live-phasor count clip is EXACTLY sqrt(N)-scaled.
+arclength carries a slow log factor: arclen ~ (sqrt(N)/pi)*ln(sqrt(N)/2pi) = 
+  (sqrt(N)/2pi)*ln N + O(sqrt N).  Leading power still 1/2, log-modulated.
+
+closed-form arclength check (geometric-series identity):
+  N=     10000: measured    89.0804  closed    89.0804  asymp (sqrt(N)/2pi)lnN =   146.5871
+  N=   1000000: measured  1614.7918  closed  1614.7918  asymp (sqrt(N)/2pi)lnN =  2198.8068
+  N= 100000000: measured 23468.2795  closed 23468.2795  asymp (sqrt(N)/2pi)lnN = 29317.4240
+
+==============================================================================
+real conductors on the same clip law (n_eff at 1% window, x_cut = 4.605):
+==============================================================================
+       curve      N   sqrt(N)  n_eff(1%)  x_n=45 cut n_max  n_eff/sqrtN
+  37a  rank1     37     6.083      4.458             43.56      0.73294
+  389a rank2    389    19.723     14.456            141.26      0.73294
+ 49a  CM rk0     49     7.000      5.131             50.13      0.73294
+   5077a rk3   5077    71.253     52.224            510.31      0.73294
+  11a  rank0     11     3.317      2.431             23.75      0.73294
+
+VERDICT: the conductor clips the fiber to a finite phasor bank whose live count is
+   n_eff = (x_cut/2pi) * sqrt(N),  linear in sqrt(N)  (NOT log N, NOT N).
+The two legs (helix strand n^s-side, antihelix n^{2-s}-side) each end at the SAME
+phasor index n_max ~ (x_cut/2pi) sqrt(N) where the incomplete-Gamma window closes;
+they meet at the weld (x_n->0 <=> the center).  clip-length = f(N) = c*sqrt(N).

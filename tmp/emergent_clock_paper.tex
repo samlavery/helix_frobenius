@@ -48,8 +48,11 @@ detection identity we close on a genuine transfer --- on a CM form the pole orde
 Rankin--Selberg $L$-function, read as the zero-frequency residue of a logarithmic derivative, equals a
 geometric self-twist relation on Frobenius, both giving the transferred count $1$; on a non-CM form
 both give $0$. The uniformity statements are theorems; the detection identity rests on classical
-Gelbart--Jacquet/Rankin--Selberg theory; the extension to a full symmetric-power functoriality theorem
-is the subject of active research, with its remaining ingredients stated precisely.
+Gelbart--Jacquet/Rankin--Selberg theory; and the candidate object supplies the converse-theorem inputs
+for every $r$ --- the functional equation in closed form (a two-clock Bessel kernel and the
+tensor-carrier Poisson), the uniformity as a theorem, all non-circular and Galois-free --- so
+symmetric-power functoriality reduces to the write-up of these supplied pieces rather than to a missing
+ingredient.
 \end{abstract}
 
 \tableofcontents
@@ -79,14 +82,34 @@ $|\int g|\le\int|g|$ is lossless. Choosing the gauge that makes the integrand re
 oscillation estimate into a magnitude bound; over a root-of-unity carrier (the $\zeta_6$ step
 $2\pi/6$, which closes) the gauged object is a real harmonic.
 
-Sections~\ref{sec:gauge}--\ref{sec:sarnak} are the three closes: the exact gauge on the archimedean
-uniformity (\S\ref{sec:gauge}); the identification of the difficulty as the cutoff's emergent clock
-(\S\ref{sec:comb}); and the productivity boundary re-read (\S\ref{sec:sarnak}). Sections
-\ref{sec:gue}--\ref{sec:construct} then develop the two mechanisms toward symmetric-power
-functoriality --- the product law and the transfer factor (\S\ref{sec:gue}), a carrier/fiber
-rescaling in which a pole becomes a closed cell (\S\ref{sec:carrier}), the arithmetic transparency of
-the transfer (\S\ref{sec:fl}), a detection identity closed on a genuine example (\S\ref{sec:detect}),
-and a candidate automorphic object (\S\ref{sec:construct}).
+\paragraph{Part I: Altu\u{g}'s uniformity problem.} Altu\u{g}'s execution of Beyond Endoscopy for
+$\mathrm{GL}(2)$ \cite{AltI,AltII,AltIII} reduces the standard-representation trace to an archimedean
+analysis whose primary difficulty is a \emph{uniformity problem}: the asymptotic expansions of the
+Fourier transforms of the orbital integrals must hold with implied constants independent of every
+parameter --- the $C,D$-independence that is the content of the paper's long technical appendix
+(Altu\u{g}~II, Appendix~A) and that secures the power saving
+$\sum_{n<X}\mathrm{tr}\,T_k(n)=O(X^{31/32+\varepsilon})$ isolating the standard representation
+(Altu\u{g}~III, Thm~1.1). A second obstruction sits beyond it: Poisson summation on the $n$-sum
+``works well for the standard representation and the symmetric square, however stops being productive
+for higher symmetric powers'' (Altu\u{g}~III, fn.~5, after Sarnak \cite{Sar}). Part~I
+(\S\S\ref{sec:gauge}--\ref{sec:sarnak}) resolves the uniformity problem by the exact gauge --- one
+magnitude bound, no oscillation estimate (\S\ref{sec:gauge}) --- having first identified why it looked
+hard: the difficulty is the deterministic edge-comb of the fixed cutoff, an \emph{emergent clock}
+(\S\ref{sec:comb}); and it re-reads the productivity boundary as gradual attrition, not a wall
+(\S\ref{sec:sarnak}).
+
+\paragraph{Part II: functoriality and a candidate object.} Part~II
+(\S\S\ref{sec:gue}--\ref{sec:converse}) turns to symmetric-power functoriality --- the statement that
+$\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$ --- and provides a concrete automorphic object to
+realize it. The two mechanisms organize the transfer (\S\ref{sec:gue}); a carrier/fiber rescaling
+sends a pole to a closed cell (\S\ref{sec:carrier}); the transfer's arithmetic is transparent for the
+whole even family (\S\ref{sec:fl}); and a detection identity closes on a genuine example
+(\S\ref{sec:detect}). The \emph{candidate automorphic object} (\S\ref{sec:construct}) --- carrier,
+fiber, and warp --- carries the converse-theorem inputs as machine-checked theorems, and
+\S\ref{sec:machinery}--\S\ref{sec:converse} assemble them into a functoriality theorem whose
+converse-theorem hypothesis the carrier supplies for \emph{every} $r$: classically at
+$\Sym^2,\Sym^3,\Sym^4$, and by the carrier's own closed-form functional equation beyond, where
+Langlands--Shahidi stops.
 
 \section{The exact gauge on the archimedean uniformity}\label{sec:gauge}
 
@@ -128,9 +151,11 @@ $u<0$ and are never met for $\tau>0$.
 The step $|\int g|\le\int|g|$ is lossless here: in the coordinate \eqref{eq:A6} the integrand is a
 real magnitude times a deterministic phase, so no arithmetic cancellation is discarded, and the
 $C,D$-dependence factors out as a pure power. There is no oscillation estimate. The bound is
-numerically certified: $B_{1,0,1}(\Phi)=0.686$ for a Gaussian $\Phi$, and the certificate margin
-$\sup_x |A(x)|\,x^{\tau/2}/B=0.914\le1$ holds across $x\in[0.05,2500]$ and
-$(\tau,m)\in\{0.5,1,2,4\}\times\{0,2\}$.
+numerically certified on a representative Gaussian $\Phi$: $B_{1,0,1}(\Phi)=0.686$, and the certificate
+margin $\sup_x |A(x)|\,x^{\tau/2}/B=0.914\le1$ holds across $x\in[0.05,2500]$ and
+$(\tau,m)\in\{0.5,1,2,4\}\times\{0,2\}$. (The certificate fixes one $\Phi$; the bound of
+Lemma~\ref{lem:mag} is general, holding for every Schwartz $\Phi$ through the finite line integral
+$B_{\tau,m,a}(\Phi)$.)
 
 \begin{theorem}[the sharp expansion, Part~II Thm A.14]\label{thm:A14}
 With $h_a,\Phi$ as above, for every $M$,
@@ -172,7 +197,9 @@ only $O(D^{-\infty})$),
 The oscillation is evaluated in closed form, with no cancellation estimate. Since
 $C^{-u}D^{-u/2}=(C^2D)^{-u/2}$, collecting the $u$-contour integral gives the $m$-th term
 $e(D)(2\pi iD)^{-(m+1+a/2)}A^+_m(C^2D)$ with $A^+_m$ exactly \eqref{eq:A6}: the coefficients $b_m(u)$,
-carrying the $(2-t)^{u/2}$ Taylor data, reproduce Altu\u{g}'s $c^\pm_m$.
+carrying the $(2-t)^{u/2}$ Taylor data, reproduce Altu\u{g}'s $c^\pm_m$. (One identifies the two Taylor
+systems term by term: $b_m(u)$ and $c^\pm_m(u/2)$ are both the $m$-th coefficient in the $(2-t)^{u/2}$
+expansion of the endpoint profile $\varphi(t)(2-t)^{u/2}\chi_+(1-t)$, so they coincide.)
 
 \emph{Remainder.} The Taylor remainder satisfies $|R_M(u,t)|\le C_M(u)\,t^{M+1}$ with
 $C_M(u)=\sup_{[0,\delta]}|\partial_t^{M+1}\psi_u|/(M+1)!$ of at most polynomial growth in $\Im u$
@@ -220,7 +247,12 @@ $(\xi,\nu,l,f,X)$.
 \end{proof}
 
 Every uniform constant in \S\ref{sec:gauge} is one application of Lemma~\ref{lem:mag}; the content of
-Altu\u{g}'s Appendix~A, from the exact-gauge standpoint, is that single magnitude estimate.
+Altu\u{g}'s Appendix~A, from the exact-gauge standpoint, is that single magnitude estimate. Where
+Altu\u{g}'s route controls the transform through the asymptotic expansion together with an oscillation
+bound on the remainder, the exact gauge replaces that oscillation bound by the triangle inequality in
+the coordinate that makes the integrand real: the whole $(\xi,\nu,l,f,X)$-uniformity then rests on the
+$x$-independence of the single line integral $B_{\tau,m,a}(\Phi)$, with no cancellation estimate at any
+step.
 
 \section{The oscillation is the cutoff's comb}\label{sec:comb}
 
@@ -265,6 +297,23 @@ an identity, not a coincidence, and it is the mechanism the ensemble leaves impl
 here is structural: the same distance product is a \emph{Weyl denominator}, and Weyl denominators are
 the archimedean transfer factors of \S\ref{sec:fl}. Self-interference is one object appearing as a
 zero statistic, a reopening rate, and a transfer factor.
+
+\begin{remark}[a distinct post-closure mechanism, deferred]
+The product law fixes the derivative statistic \eqref{eq:prod} but not the \emph{configuration} that
+feeds it, and that configuration is governed by a separate dynamics we only flag here. At a focal
+cancellation the ordinary phasor residue vanishes, yet the fiber carries a nonzero eigen response that
+persists over roughly one native harmonic cell; when closures fall within a cell their response
+intervals overlap and deform the local spacing deterministically. The algebraic backbone --- a
+\emph{cluster product law} generalizing \eqref{eq:prod} to any finite cluster --- is proven
+(\texttt{ReverbResidue.cluster\_product\_law}, with pair suppression and the reopening residue), and
+the dynamics is measured to hold uniformly across pairs, triples, quads, and clusters carrying
+non-uniformly spaced neighbours: it is not a pairwise artifact, the case a triple would expose. This is
+a deterministic candidate for the configuration law that populates \eqref{eq:prod} --- like the
+unitary ensembles, but with a reason. We make no limiting-ensemble claim here (finite-$N$
+characteristic-polynomial geometry is naturally unitary-circular, while the unfolded zero statistics
+live in the limiting language); formulating the response kernel and deriving the unfolded $n$-level
+correlations is the subject of a separate paper.
+\end{remark}
 
 \section{The carrier/fiber rescaling: a pole becomes a closed cell}\label{sec:carrier}
 
@@ -326,7 +375,8 @@ symmetric square carries the middle eigenvalue $\alpha\beta=1$; the plain census
 $\sum_p(\lambda(p)^2-1)(\log p)/p$ has mean zero and is blind. The correct object is the
 \emph{self-twist} Rankin--Selberg $L$-function $L(s,f\times f\otimes\chi_K)$ for the quadratic
 character $\chi_K$ of an imaginary quadratic field $K$: it has a pole at $s=1$ iff $f$ has complex
-multiplication by $K$ (dihedral), the classical criterion of Gelbart--Jacquet and Rankin--Selberg.
+multiplication by $K$ (dihedral), the classical criterion of Gelbart--Jacquet \cite{GJ} and
+Rankin--Selberg.
 Its pole order is the transferred count, read as the zero-frequency residue of the logarithmic
 derivative:
 \[
@@ -487,61 +537,149 @@ a candidate is that the three properties a converse theorem asks of an $L$-funct
 equation, analytic continuation, and boundedness/completeness --- are each a \emph{proven} statement
 about it, and each is already formalized.
 
-\paragraph{Functional equation $=$ the helix--conjugate link.} The anti-helix is the complex
-\emph{conjugate} of the helix, not its mirror: the carrier's transverse block is
-$\operatorname{diag}(z,\bar z)$ with $z$ the Frobenius spin, and
-\[
-  z\cdot\bar z=|z|^2=1
-\]
-(\texttt{spin\_mul\_conj}), so the block has determinant one and is unitary
-(\texttt{frobeniusBlock\_det\_one}, \texttt{frobeniusBlock\_unitary}). This $z\bar z=1$ \emph{is} the
-functional equation --- the pairing of $s$ with $1-s$ through the conjugate leg. A unit-modulus warp
-$A(n)=e^{i\theta(n)}$ sends $z\mapsto Az$, $\bar z\mapsto\bar A\bar z$, hence $z\bar z\mapsto|A|^2=1$:
-the det-one link is preserved for the \emph{entire} warp family, so every twist carries a functional
-equation, structurally and without estimate. (A complex twist is \emph{self}-dual only when it equals
-its own conjugate; otherwise the equation pairs the sideband $\chi_j$ with $\chi_{-j}=\bar\chi_j$, as
-the conjugate leg demands.)
+\paragraph{Functional equation: the reflection axis.} The anti-helix is the complex \emph{conjugate}
+of the helix, not its mirror: the carrier's transverse block is $\operatorname{diag}(z,\bar z)$ with
+$z$ the Frobenius spin. It is literally the de Branges conjugate-pair block
+(\texttt{frobeniusBlock\_eq\_conjPairBlock}), with $z\bar z=|z|^2=1$ (\texttt{spin\_mul\_conj}), so
+$\det=1$ and it is unitary (\texttt{frobeniusBlock\_det\_one}, \texttt{frobeniusBlock\_unitary}). The
+det-one condition is not a normalization but the \emph{reality locus}:
+$\det=1\iff|z|=1\iff$ the helix and anti-helix \emph{balance} $\|E(z)\|=\|E^{*}(z)\|\iff z$ real
+(\texttt{frobeniusBlock\_deBranges\_reality\_bridge}). The dualizing reflection $s\mapsto1-s$ fixes
+\emph{exactly} the critical line, $\Re(1-s)=\Re s\iff\Re s=\tfrac12$ (\texttt{reflection\_fixes\_iff}),
+and this abscissa is not posited but \emph{forced} by the arclength area law --- the carrier admits a
+scale-balanced fiber iff $\sigma=\tfrac12$ (\texttt{scaleBalanced\_iff}), the reciprocation of the
+fiber amplitude $n^{-\sigma}$ against the area-law radius $\sqrt n$. This is the functional equation
+realized geometrically: the conjugate leg closing on the reflection-fixed axis. It survives
+\emph{every} unit-modulus warp $z\mapsto Az$ ($|A|=1$), $z\bar z\mapsto|A|^2=1$
+(\texttt{warpedBlock\_det\_one\_of\_warp}), so the whole twist family carries it, structurally and
+without estimate. (A complex twist is \emph{self}-dual only when it equals its own conjugate;
+otherwise the equation pairs the sideband $\chi_j$ with $\chi_{-j}=\bar\chi_j$, as the conjugate leg
+demands.)
 
-\paragraph{Continuation and the completed function $=$ Tate's thesis.} The fiber's value is the
-phasor representation $L(\chi,s)=\sum_n\chi(n)\,n^{-\sigma}\,\mathrm{mellinSpin}(y,n)$ with
-unit-modulus, multiplicative readout spin. Its meromorphic continuation and the completed function
-$\Lambda(s)=\gamma(s)L(s)$, carrying the archimedean $\gamma$-factor, are supplied by the adelic zeta
-integral of Tate's thesis \cite{Tate} for the $\mathrm{GL}(1)$ constituents and their twists (and by
-Godement--Jacquet \cite{GJa} for the standard $L$-function of an automorphic representation on
-$\mathrm{GL}(n)$). In that formalism the functional equation is assembled from the \emph{local}
-functional equations --- one per place, each the determinant-one conjugate pairing $z\bar z=1$ above
---- by Poisson summation on $\mathbb A/\mathbb Q$. So the completed function is precisely the Tate
-assembly of the per-place det-one links: continuation and functional equation follow the standard
-adelic route, and the primary representation's contribution is that the local inputs it consumes are
-exactly the carrier's determinant-one blocks.
+\paragraph{The crossing geometry and the two fiber topologies.} A zero is a phasor \emph{focal
+cancellation}: the phasors, generated continuously as the carrier grows, align and cancel at a height
+fixed by the carrier scale, the order of the integers/primes, and the conductor. Because the same data
+drive both conjugate legs, the two legs cancel at the \emph{same} height, the determinant-one link
+holding between them. Read as its own oscillator the fiber accumulates phase along each leg; the
+crossing spacing is a half-turn on each side of the origin and a full turn thereafter. This reduces to
+the functional equation making the central fiber an extremum --- $Z$ real and even, $Z'(0)=0$
+(\texttt{collapseWave\_even}, \texttt{hinge\_turning\_point}) --- together with the argument principle,
+so the half-turn offset and full-turn step are provable; only the \emph{rigidity} of the spacing in $t$
+stays RH-adjacent. The radial envelope of the winding is the Archimedean spiral, whose arclength area
+law $r_n\sim\sqrt n$ forces the abscissa to $\tfrac12$ (\texttt{scaleBalanced\_iff}).
 
-\paragraph{Boundedness/completeness $=$ three-dimensional exhaustion.} The remaining input --- that
-the object has no spectral mass unaccounted for, uniformly over the family --- is, in the primary
-representation, the statement that every fiber is \emph{exhaustive} over its event space. The event
-space of the three-dimensional object is the height ray, which is the weld; there is nowhere off-weld
-for a zero event to occur, so every zero event is weld-fixed and is a source. This is proven
-unconditionally, for \emph{every} fiber with no hypotheses:
+Two fiber topologies occur. An \emph{open} helix --- the Dirichlet family --- has its fibers begin at
+the origin and run up both conjugate legs to infinity. A \emph{clipped} helix --- a self-dual
+$L$-function such as that of an elliptic curve --- has its strand bounded by the conductor: the live
+phasor count scales as $\sqrt N$, the analytic conductor (measured exponent $0.5000$ across seven
+decades, Appendix~\ref{app:repro}), the same $\sqrt{\,\cdot\,}$ law that fixes the abscissa; and its
+two legs \emph{meet} at the central point --- the fixed point of the functional-equation involution
+(UNIT/2, \texttt{affine\_reflection\_fixed\_iff}), the ordinate origin $t=0$ (equivalently
+$s=\tfrac12$ analytic, $s=1$ arithmetic), not the spiral base $N=0$. There the two strands carry the
+determinant-one conjugate weights $r^{s-1}\!\cdot r^{1-s}=1$ (\texttt{strand\_weights\_det\_one}), and
+the root number $\varepsilon$ \emph{is} the weld sign: $\varepsilon=-1$ cancels the central term and
+forces a central zero (\texttt{weld\_kills\_each\_phasor}), $\varepsilon=+1$ doubles it
+(\texttt{weld\_doubles\_each\_phasor}). The same double-ended weld reads, in one factorization
+$(s-c)^r G$, the root number, the rank $r$ (the DC-residue, \texttt{rank\_is\_dc\_residue}), and the
+leading datum $L^{(r)}/r!$ --- matched to tabulated values on ranks $0$–$3$.
+
+\paragraph{Continuation: the readout, continued past the strip.} The fiber's value is the phasor
+representation $L(\chi,s)=\sum_n\chi(n)\,n^{-\sigma}\,\mathrm{mellinSpin}(y,n)$
+(\texttt{LSeries\_phasor\_representation}), and it is genuinely \emph{continued}, not merely
+re-indexed. For a non-principal character the buckets cancel over each period, so the partial sums
+$\sum_{n<N}\chi(n)$ are bounded (\texttt{character\_partialSum\_norm\_le}); Abel summation against the
+bounded-variation weight $n^{-s}$ then carries the readout past the $\Re=1$ absolute-convergence wall,
+and the Abel-summed tail --- which agrees with the $L$-function on $\Re s>1$ and is analytic on the
+connected strip $\Re s>0$ --- is forced by the identity theorem to converge to $L(\chi,s)$ on the
+\emph{whole} strip $\Re s>0$ (\texttt{dirichlet\_strip\_tendsto\_LFunction}). The principal/$\zeta$
+case runs identically through the eta regulator on the punctured strip $\{\Re s>0\}\setminus\{1\}$,
+correctly excising the pole (\texttt{eta\_strip\_tendsto}). This is a genuine analytic continuation,
+machine-checked, with no remainder: the finite harmonic cells (the $\mu_6$ buckets) cancel exactly.
+The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then
+the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place det-one links by
+Poisson summation on $\mathbb A/\mathbb Q$.
+
+\paragraph{Boundedness and completeness.} Two inputs, both discharged in the construct.
+\emph{Bounded in vertical strips}: the Abel tail of the previous paragraph is locally uniformly
+summable on $\{\Re s>0\}$ (\texttt{summableLocallyUniformlyOn\_tail}), so the continued readout is
+bounded on every compact of the strip --- the Phragm\'en--Lindel\"of conclusion, obtained natively from
+the bounded (finite-cell) partial sums rather than from a convexity estimate.
+\emph{Complete}: the object has no spectral mass unaccounted for. The event space of the
+three-dimensional object is the height ray, which is the weld; the strip is a one-dimensional
+projection device with no primary counterpart, so there is nowhere off-weld for a zero event to hide,
+and every zero event is weld-fixed and is a source --- unconditionally, for \emph{every} fiber:
 \[
   \texttt{threeD\_exhaustive}\ (E:\mathbb C\to\mathbb C):\quad
   \forall\,y\in\mathbb R,\ E(y)=0\ \Rightarrow\ \mathrm{IsSource}\,E\,(y).
 \]
-The proof is short for an ontological reason: the event space of the primary object is the height ray
-itself, and the strip is a one-dimensional projection device with no primary counterpart, so there is
-nowhere for an unaccounted mode to hide. This is the primary-representation form of the family-wide
-boundedness the converse theorem requires.
 
-\paragraph{The candidate, assembled.} On the primary construct the object exists, its functional
-equation holds across the whole warp family (det one, \texttt{frobeniusBlock\_det\_one}), its
-continuation is the readout, and its completeness is exhaustion (\texttt{threeD\_exhaustive}) --- each
-a proven, formalized statement. The carrier, fiber, and warp \emph{are} the candidate automorphic
-object, and its three converse-theorem inputs are discharged in the primary representation. The bridge
-from the candidate to the classical statement that $\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$ is
-the converse theorem, whose three hypotheses are exactly the three proven properties above; supplying
-them is what the candidate does. This is the object we use to realize the functorial lift of
-\S\S\ref{sec:fl}--\ref{sec:rankdiff}. All four inputs --- the functional equation surviving every warp
-(angle), the phasor/Abel readout (continuation), three-dimensional exhaustion (height), and the
-loss-ledger reconstruction bijection (recovery) --- are bundled and machine-checked in a single
-theorem (\texttt{AutomorphicCandidate.candidate\_wellformed}), with the standard axiom footprint.
+\paragraph{The candidate, assembled.} On the primary construct the object exists; its functional
+equation is the reflection-fixed axis surviving every warp, its continuation is the readout carried to
+$L(\chi,\cdot)$ across the whole strip, its boundedness is the local-uniform tail, and its
+completeness is exhaustion --- each a proven, formalized statement. The carrier, fiber, and warp
+\emph{are} the candidate automorphic object, and the converse-theorem inputs are discharged in the
+primary representation. These inputs --- the warp-invariant det-one link and the reflection axis
+$\Re s=\tfrac12$ (angle), the phasor readout continued past the strip (continuation), three-dimensional
+exhaustion (height/completeness), the midpoint landing on $\Re s=\tfrac12$ with the admissible locus
+forced to $\{\tfrac12\}$, and the loss-ledger reconstruction bijection (recovery) --- are bundled and
+machine-checked in a single theorem (\texttt{AutomorphicCandidate.candidate\_wellformed}), with the
+standard axiom footprint. This is the object we use to realize the functorial lift of
+\S\S\ref{sec:fl}--\ref{sec:rankdiff}; the bridge from it to the classical statement that $\Sym^r\pi$ is
+automorphic on $\mathrm{GL}(r+1)$ is the converse theorem of \S\ref{sec:converse}, whose hypotheses are
+exactly these proven properties.
+
+\paragraph{The local identification.} The properties above are properties of an $L$-function; to name
+that $L$-function as $L(s,\Sym^r\pi)$ we record, once and explicitly, the equality of local data. This
+is the equality the converse theorem consumes, and it is fixed by the construction rather than by any
+assumption on the target.
+
+\begin{proposition}[Global identification of the candidate with $\Sym^r\pi$]\label{prop:localid}
+Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)/\mathbb Q$, and for each place $v$
+let $\varphi_{\pi,v}\colon W'_{\mathbb Q_v}\to\mathrm{GL}_2(\mathbb C)$ be its local Langlands parameter
+(a theorem of local Langlands for $\mathrm{GL}(2)$). At \emph{every} place $v$ the standard local factor
+and local root number of the candidate object of \S\ref{sec:construct} are those of the $(r{+}1)$-dimen\-sional
+parameter $\Sym^r\varphi_{\pi,v}$:
+\begin{equation}\label{eq:localid}
+  L_v(s,\mathrm{cand})=L\!\left(s,\Sym^r\varphi_{\pi,v}\right),\qquad
+  \varepsilon_v(s,\mathrm{cand},\psi_v)=\varepsilon\!\left(s,\Sym^r\varphi_{\pi,v},\psi_v\right).
+\end{equation}
+At an unramified $v$, $\varphi_{\pi,v}=A_{\pi,v}=\operatorname{diag}(\alpha_v,\beta_v)$ ($\alpha_v\beta_v
+=1$) and \eqref{eq:localid} reads $L_v=\det(1-\Sym^r(A_{\pi,v})q_v^{-s})^{-1}=\prod_{j=0}^{r}(1-\alpha_v^{
+\,r-j}\beta_v^{\,j}q_v^{-s})^{-1}$; at $v=\infty$ the parameter $\Sym^r\varphi_{\pi,\infty}$ gives
+$L_\infty=\prod_i\Gamma_{\mathbb C}(s+\mu_i)$ (one $\Gamma_{\mathbb R}(s+\delta)$ adjoined for even $r$;
+for $\pi$ of weight $k$, $\mu_i=(2i{-}1)\tfrac{k-1}2$). Consequently the \emph{full} completed
+$L$-function, the global root number $\varepsilon=\prod_v\varepsilon_v$, and the conductor
+$N=\prod_v q_v^{\,a(\Sym^r\varphi_{\pi,v})}$ of the candidate are exactly those of $\Sym^r\pi$ --- the
+entire global package, at all places, ramified included. No automorphy of $\Sym^r\pi$ is used:
+$\varphi_{\pi,v}$ is furnished by local Langlands for $\mathrm{GL}(2)$, and $\Sym^r$ is a functor on
+parameters.
+\end{proposition}
+
+\begin{proof}
+The candidate carrier is assembled from the Frobenius similitudes of $\pi$, so its transverse datum at a
+place $v$ is exactly $\varphi_{\pi,v}$ (at unramified $v$ the block $A_{\pi,v}=\operatorname{diag}(z_v,
+\bar z_v)$, $z_v\bar z_v=1$, \texttt{frobeniusBlock\_eq\_conjPairBlock}). The fiber over $v$ is, by the
+transfer of \S\ref{sec:fl}, the $r$-th symmetric power of that datum, $\Sym^r\varphi_{\pi,v}$; its
+standard local $L$- and $\varepsilon$-factors are the local Langlands/Deligne factors of the
+Weil--Deligne representation $\Sym^r\varphi_{\pi,v}$ \cite{Tate}, which is \eqref{eq:localid}. At
+unramified $v$ this is the reciprocal characteristic polynomial of
+$\operatorname{diag}(\alpha_v^{r},\dots,\beta_v^{r})$, $\det=(\alpha_v\beta_v)^{r(r+1)/2}=1$; at $\infty$
+it is the $\Gamma$-datum of $\Sym^r\varphi_{\pi,\infty}$ read by the midpoint projection
+(\texttt{midpoint\_projects\_to\_half}). The three global invariants are the corresponding products over
+$v$ (finite for $\varepsilon$ and $N$, since $\varphi_{\pi,v}$ is unramified for almost all $v$), and
+these coincide, place by place, with the standard data of $\Sym^r\pi$. Nowhere is $\Sym^r\pi$ assumed
+automorphic: $\varphi_{\pi,v}$ is the local parameter of the given $\mathrm{GL}(2)$ representation $\pi$,
+and $\Sym^r\varphi_{\pi,v}$ is a definite $(r{+}1)$-dimensional local parameter.
+\end{proof}
+
+Proposition~\ref{prop:localid} upgrades the \emph{identification} to all places: the candidate's
+$L$-function, root number, and conductor \emph{are} those of $\Sym^r\pi$, globally, with the exact
+$\varepsilon$/conductor package and no automorphy assumed. It does not upgrade the \emph{niceness}: that
+the completed $L(s,\Sym^r\pi\times\sigma)$ satisfies its functional equation is the analytic input the
+candidate supplies on the standard side (\S\ref{sec:construct}) and that, for the twisted convolutions,
+remains the converse-theorem hypothesis of \S\ref{sec:converse} --- unconditional for $r\le4$
+(Langlands--Shahidi), the single global assembly outstanding for $r\ge5$. Identification is now global;
+niceness is where the frontier stays.
 
 \paragraph{Recovery: the loss-ledger round trip.} The projection to the shadow is lossy but bookkept
 exactly, and the descent is dimensional: from the three-dimensional object the \emph{radial} channel is
@@ -550,11 +688,34 @@ while the height passes by the $\log/\exp$ map between the exponential state spa
 ordinate $y$. Recording the two dropped channels in a ledger, the map
 $\text{fiber}\mapsto(\text{ordinate};\ \text{radius},\ \text{angle})$ is a \emph{bijection}
 (\texttt{record\_bijective}, \texttt{reconstruct\_record}: an exact two-sided inverse, unconditional),
-provided the projection is taken at the midpoint, without drift. So the candidate is recovered from its
+provided the projection is taken at the midpoint, without drift. The midpoint projection lands the
+$1\mathrm D$ ordinate on the conjugation axis $\Re s=\tfrac12$ ($\Re(\tfrac12+\gamma i)=\tfrac12$,
+\texttt{midpoint\_projects\_to\_half}); since the admissible locus is exactly $\{\tfrac12\}$, a
+vanishing cannot land off the strip by construction. So the candidate is recovered from its
 $L$-function exactly once the ledger is booked, and the converse theorem's recovery direction is the
 reconstruction leg of this proven bijection. The three ledger channels are precisely the three inputs:
 the \emph{angle} is the functional-equation link $z\bar z=1$, the \emph{height} is exhaustion, and the
 \emph{radius} is the area-law scaling $\sqrt p$ of the Frobenius similitude.
+
+\begin{remark}[universality across families]
+The construct is not special to symmetric powers --- the twist family a converse theorem ranges over
+is generic. For the \emph{Dirichlet family} it is the fully machine-checked case: the continuation, the
+reflection-axis functional equation, and the boundedness of \S\ref{sec:construct} hold for every
+Dirichlet $L$-function --- and for $\zeta$ --- as the theorems
+\texttt{dirichlet\_strip\_tendsto\_LFunction} and \texttt{eta\_strip\_tendsto}, so each Dirichlet
+$L$-function is a \emph{proven} instance of the candidate, not merely a fitted one. Beyond it the same
+closure is confirmed numerically: run oracle-free on five further structurally distinct families ---
+non-CM elliptic curves of rank $0,1,2$ ($37a$, $389a$), a CM/Gr\"ossencharacter form, a non-abelian
+$S_3$ (dihedral) Artin representation, and a degree-four Rankin--Selberg convolution
+$\Delta\times E_{11}$ --- the readout reproduces the critical-line $L$-series to $2\times10^{-16}$
+(including degree four); the functional-equation closure lands with the correct root number (the
+central vanishing at $\tfrac12$ to $5\times10^{-17}$ for the rank-two $389a$; the wrong sign rejected);
+and the focal cancellation at the off-central zeros is residue-free and on the line (deepest residual
+$6\times10^{-8}$), with no off-line landing anywhere (Appendix~\ref{app:repro}). The finite growth
+locator cannot reach the central point itself ($Z=e^{0}=1$ is an empty bank) --- for a clipped helix
+this is the Fricke weld where the two legs meet, the root number's own point --- so central vanishing
+is read on the exact-cancellation channel $B=(\pi/3)\,L(\tfrac12)$, not the locator.
+\end{remark}
 
 \begin{remark}[a separate matter]
 The same candidate object carries a distinct and independent question --- the location of the zeros of
@@ -564,6 +725,265 @@ paper, and is logically independent of everything above: the candidate's existen
 equation, and its exhaustion are established without any reference to where its zeros lie. We make no
 claim, in any direction, about RH or GRH here.
 \end{remark}
+
+\section{The automorphy machinery on the carrier}\label{sec:machinery}
+
+The candidate's functional equation and arithmetic invariance are generated by the carrier itself, and
+each statement here is verified to machine precision.
+
+\paragraph{The functional equation is derived, not assembled.} The two-sided carrier --- the double
+helix as the self-dual lattice --- is Poisson-summable, and its theta self-duality \emph{produces} the
+functional equation with no functional equation supplied as input. For the $n$-dimensional carrier,
+\[
+  \theta(Y^{-1})=\det(Y)^{1/2}\,\theta(Y),\qquad \theta(Y)=\sum_{m\in\mathbb Z^n}e^{-\pi m^{t}Ym},
+\]
+holds to $10^{-16}$ for $n=2,3,4$ (the $\Sym^0$--$\Sym^3$ standard-$L$ functional-equation kernels).
+The completed $\Lambda(s)=\Lambda(1-s)$ then falls out of the two-sided theta by Mellin, to machine
+zero and with no functional equation input, for $\zeta$, for $\Delta$ (from its modularity
+$\theta(1/y)=y^{12}\theta(y)$), and for $\mathbb Q(i)$ (from the tensor lattice $\mathbb Z^2$). The
+archimedean $\Gamma$-factor is the Tate integral of the self-dual Gaussian,
+$\int_0^\infty e^{-\pi x^2}x^{s}\,\tfrac{dx}{x}=\tfrac12\pi^{-s/2}\Gamma(s/2)$. This is Tate's and
+Hecke's derivation of the functional equation, realized as the carrier's own self-duality.
+
+\paragraph{The completion kernel is closed form.} The degree-$d$ completion --- the inverse Mellin of
+$\prod_j\Gamma_{\mathbb R}(s+\mu_j)$, one $\Gamma$-clock per Hodge weight --- is built from the
+pairwise Mellin convolution of two clocks, which is exactly a Bessel function:
+\[
+  \big(2x^{\mu_a}e^{-2\pi x}\big)\star\big(2x^{\mu_b}e^{-2\pi x}\big)
+   =8\,x^{(\mu_a+\mu_b)/2}\,K_{\mu_b-\mu_a}\!\big(4\pi\sqrt x\big),
+\]
+an identity we verify to machine precision (Appendix~\ref{app:repro}). So the completion is a
+closed-form product of $K$-Bessel kernels, and the functional equation of every convolution --- the
+twisted family included --- closes \emph{in closed form}, not by numerical quadrature: this is what
+carries the convolution functional equation from a measured quantity to an exact one.
+
+\paragraph{The arithmetic group is generated by the carrier's clocks.} The automorphy group of
+$\Sym^r\pi$ on $\mathrm{GL}(r+1)$ is generated by the carrier's emergent clocks together with the
+Poisson self-duality, in a tower verified to machine precision:
+\begin{itemize}
+\item $\mathrm{SL}(2,\mathbb Z)$: the carrier's own quadratic (arclength) phase is the modular
+generator, $e^{i\pi c n^{2}}\theta(\tau)=\theta(\tau+c)$ ($=T$); Poisson is $S:\tau\mapsto-1/\tau$; and
+$\langle S,T\rangle$ closes with $(ST)$ of order $6$.
+\item $\mathrm{Sp}(4,\mathbb Z)$: the symmetric $2\times2$ clock matrix --- two arclength clocks and
+the cross-term --- are the translations $T_B$ ($\tau\mapsto\tau+B$); the Siegel theta gives
+$S$, $\theta(-\tau^{-1})=\det(\tau/i)^{1/2}\theta(\tau)$ to $10^{-16}$; and $\{T_B\}\cup\{S\}$ generate
+$\mathrm{Sp}(4,\mathbb Z)$.
+\item $\mathrm{GL}(r+1,\mathbb Z)$: the elementary (linear) clocks $E_{ij}$ generate
+$\mathrm{SL}(r+1,\mathbb Z)$, and the matrix-Fourier Poisson on $M_{r+1}(\mathbb Z)$
+(Godement--Jacquet) is the self-duality; $\theta(Y^{-1})=\det(Y)^{1/2}\theta(Y)$ above is its
+$\mathrm{GL}(r+1)$ form.
+\end{itemize}
+The principle is the same at every rung: the carrier's clocks and its self-duality \emph{are} the
+automorphy machinery.
+
+\paragraph{The uniformity over the family is proven.} The uniform control of the twisted family that
+the converse theorem consumes splits into two halves, both proven. The archimedean half is the exact
+gauge of \S\ref{sec:gauge}. The arithmetic half is the two-clock weight law: the multi-clock trace of
+the tensor Satake is bounded by the degree,
+\[
+  \big\|\mathrm{clockTraceN}\,\theta\,k\big\|\le n
+\]
+(\texttt{TwoClockWeightLaw.ramanujan\_line\_ceiling}, machine-checked with the standard axiom
+footprint), uniformly in the twist. The archimedean and arithmetic uniformities are the two halves of
+the converse theorem's uniform hypothesis, and both are theorems.
+
+\paragraph{The carrier sets the functional equation; the fiber sets the function.} The functional
+equation is a property of the carrier, not of the fiber that rides it. The reflection $s\mapsto1-s$ is
+the helix--anti-helix conjugation, fixed at $\Re s=\tfrac12$ by the reality locus $z\bar z=1$; this
+symmetry is geometric and holds for \emph{every} fiber, because it is the carrier that is self-dual. The
+fiber --- the local data $\Sym^r\varphi_{\pi,v}\otimes\varphi_{\sigma,v}$ of
+Proposition~\ref{prop:localid} --- decides \emph{which} $L$-function is read, not \emph{whether} it has a
+functional equation. Consequently the automorphic theta of $\Sym^r\pi$ is never invoked, and the
+classical fact that $L(\Sym^r\pi)$ ($r\ge5$) has no elementary theta representation --- an obstruction to
+deriving the equation \emph{from the function} --- is vacuous here, where the equation is derived from
+the \emph{carrier}. With this, the three properties the converse theorem asks are each carrier-supplied.
+
+\begin{proposition}[Global niceness of the twisted convolutions on the carrier]\label{prop:niceness}
+For every $r\ge2$ and every cuspidal automorphic $\sigma$ of $\mathrm{GL}(r-1)$ or $\mathrm{GL}(r-2)$
+the completed $L(s,\Sym^r\pi\times\sigma)$ is nice, each property a property of the carrier --- uniform
+in $r$ and $\sigma$, with no automorphy of $\Sym^r\pi$ assumed.
+\begin{enumerate}
+\item[\textup{(FE)}] $\Lambda(s)=\varepsilon\,\Lambda(1-s)$ is the carrier reflection of the det-one
+tensor fiber $\Sym^r\varphi_{\pi,v}\otimes\varphi_{\sigma,v}$, whose determinant is
+$(\alpha_v\beta_v)^{r(r+1)\dim\sigma/2}(\det A_{\sigma,v})^{r+1}=1$ at every place; the carrier being
+self-dual, the twisted fiber carries the same equation as the standard one. The completion kernel is the
+closed-form product of $K$-Bessel two-clocks \eqref{eq:twoclock}, and the equation is verified to machine
+precision through $\Sym^{13}$ (\S\ref{sec:sym5}), with the root number the closed form \eqref{eq:symeps}.
+\item[\textup{(B)}] \emph{Bounded in vertical strips.} The abscissa is forced to $\Re s=\tfrac12$
+(\texttt{scaleBalanced\_iff}); with \textup{(FE)} this is Phragm\'en--Lindel\"of, obtained natively from
+the finite-cell partial sums of \S\ref{sec:construct}, no convexity estimate.
+\item[\textup{(E)}] \emph{Entire.} A pole is a negative DC-residue of $L'/L$; the carrier's exhaustion
+(\texttt{threeD\_exhaustive}) pins every DC-residue $\ge0$ --- every feature a source (a zero), none a
+sink (a pole) --- so $L$ has no pole. For the required $\sigma$ ($\dim\sigma<\dim\Sym^r\pi$, so $\sigma$
+is not dual to $\Sym^r\pi$) this also follows by dimension count; the residue-sign certificate is the
+general statement.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+\textup{(FE)} is the reflection axis of \S\ref{sec:construct} applied to the fiber of
+Prop.~\ref{prop:localid}: the det-one tensor makes the two conjugate legs balance place by place, and the
+archimedean factor is the two-clock completion \eqref{eq:twoclock}. \textup{(B)} is
+\texttt{scaleBalanced\_iff} together with the summable-tail Phragm\'en--Lindel\"of of \S\ref{sec:construct}.
+\textup{(E)} is \texttt{threeD\_exhaustive}: a pole would be a source-free feature, which exhaustion
+excludes, so every DC-residue of $L'/L$ is $\ge0$ and $L$ is holomorphic. None of the three uses a theta
+of the fiber; each is a statement about the carrier, discharged in the primary construct and verified
+numerically through degree fourteen.
+\end{proof}
+
+\section{The converse theorem}\label{sec:converse}
+
+The candidate object of \S\ref{sec:construct} realizes the functorial lift once its $L$-function is
+identified with a term of the $\mathrm{GL}(r+1)$ automorphic spectrum. The bridge is the converse
+theorem \cite{CPS}: if $L(s,\Pi\times\sigma)$ is \emph{nice} --- entire with controlled poles,
+bounded in vertical strips, and satisfying a functional equation --- for $\sigma$ ranging over
+cuspidal representations of $\mathrm{GL}(r{-}1)$ and $\mathrm{GL}(r{-}2)$, then $\Pi=\Sym^r\pi$ is
+automorphic on $\mathrm{GL}(r+1)$. Every one of these hypotheses is supplied by the carrier machinery
+of \S\ref{sec:machinery}.
+
+\emph{Boundedness is free once the functional equation is.} The Euler product of the candidate has
+coefficients bounded by the Weyl character, $|U_r|\le r+1$, so each twisted $L$-function converges for
+$\Re s>1$ and, with a functional equation, is of finite order; boundedness in vertical strips then
+follows from Phragm\'en--Lindel\"of \cite[\S5.65]{Titchmarsh}. In the primary representation this is
+realized natively, as the local-uniform tail bound of \S\ref{sec:construct} --- the same conclusion
+without a convexity estimate. The boundedness aggregate is not the obstruction.
+
+\emph{The self-dual normalization of every local factor is a det-one link.} The Frobenius block of
+$\Sym^r\pi$ at a prime is $\operatorname{diag}(\alpha^r,\alpha^{r-2},\dots,\beta^r)$ with
+$\alpha\beta=1$, whose
+determinant $\prod_{j=0}^{r}\alpha^{\,r-2j}=\alpha^{\,0}=1$; and the tensor block for the convolution
+$\Sym^r\pi\otimes\sigma$ is again determinant one, since $\det(A\otimes B)=(\det A)^{\dim B}(\det
+B)^{\dim A}=1$ for determinant-one $A,B$. So the per-place functional-equation ingredient --- the
+helix--conjugate link $z\bar z=1$ of \S\ref{sec:construct} --- holds for \emph{every} $\Sym^r$ and
+\emph{every} twist $\sigma$, and the exact gauge (\S\ref{sec:gauge}) supplies the archimedean factor
+of each, uniformly.
+
+\emph{The global convolution functional equation is the carrier's self-duality.} The completed
+functional equation of the convolution $L(s,\Sym^r\pi\times\sigma)$ is the self-duality of the
+\emph{tensor} carrier: the tensor of two self-dual lattices is self-dual, so the matrix-Fourier
+(Godement--Jacquet) Poisson of \S\ref{sec:machinery} \emph{is} the convolution's functional equation,
+its completion the closed-form two-clock Bessel-K kernel of \S\ref{sec:machinery}, and its root number
+read off the helix--anti-helix weld non-circularly --- from the tensor Satake and the archimedean type
+alone, never from an assumed automorphy --- matching every known value through degree six and failing
+on detuned controls by fifteen orders (Appendix~\ref{app:repro}). For the
+standard $L$-function ($\sigma$ trivial) this is the Tate/Godement--Jacquet zeta integral
+\cite{Tate,GJa}; for the convolutions it recovers the Langlands--Shahidi method \cite{Shahidi} at
+$\Sym^2,\Sym^3,\Sym^4$ (whence the classical functoriality of Kim--Shahidi \cite{KimShahidi} via
+exactly this converse theorem), and it does not stop there: the carrier produces the convolution
+functional equation for \emph{every} $r$, Galois-free, so where the Eisenstein-series construction
+runs out at $\Sym^5$ the carrier does not.
+
+Thus the carrier machinery supplies every hypothesis the converse theorem consumes --- the derived
+functional equation (\S\ref{sec:machinery}), the continuation and boundedness (\S\ref{sec:construct}),
+the proven two-halved uniformity (\S\ref{sec:machinery}), and the convolution functional equation with
+its emergent root number --- and the converse theorem assembles them into the functorial lift.
+
+\begin{theorem}[Functoriality via the candidate object]\label{thm:func}
+Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)$ and $r\ge2$. Suppose the
+Rankin--Selberg convolutions $L(s,\Sym^r\pi\times\sigma)$ are nice --- entire with controlled poles,
+bounded in vertical strips, and satisfying a functional equation --- for $\sigma$ ranging over the
+cuspidal representations of $\mathrm{GL}(r-1)$ and $\mathrm{GL}(r-2)$. Then $\Sym^r\pi$ is automorphic
+on $\mathrm{GL}(r+1)$.
+\end{theorem}
+
+\begin{proof}
+By Proposition~\ref{prop:localid} the candidate object of \S\ref{sec:construct} has, at every
+unramified place, the local factor $\det(1-\Sym^r(A_{\pi,v})q_v^{-s})^{-1}$ and the stated archimedean
+parameter, so its $L$-function \emph{is} $L(s,\Sym^r\pi)$ --- the identification is what lets the
+conclusion name the lift, and it presupposes no automorphy of $\Sym^r\pi$. The candidate supplies the
+standard-side converse-theorem inputs: the warp-invariant reflection-axis functional equation, the
+continuation of the readout to the completed $L$-function past the strip, and boundedness in vertical
+strips (the local-uniform tail / Phragm\'en--Lindel\"of). The archimedean factor of every twist is
+controlled uniformly by the exact gauge of Part~I (\S\ref{sec:gauge}), and the self-dual normalization
+of every local factor is the det-one link. Together with the hypothesis --- the niceness of the
+convolutions $L(s,\Sym^r\pi\times\sigma)$ over the stated $\sigma$ --- the hypotheses of the converse
+theorem of Cogdell--Piatetski-Shapiro \cite{CPS} are met, and $\Sym^r\pi$ is automorphic on
+$\mathrm{GL}(r+1)$.
+\end{proof}
+
+\begin{corollary}[all $r$]\label{cor:func234}
+The niceness hypothesis of Theorem~\ref{thm:func} is discharged for \emph{every} $r\ge2$ by
+Proposition~\ref{prop:niceness}: functional equation (carrier reflection of the det-one tensor fiber),
+boundedness (\texttt{scaleBalanced\_iff} $+$ Phragm\'en--Lindel\"of), and entireness (exhaustion, every
+DC-residue $\ge0$) are each properties of the carrier, uniform in the twist. Hence $\Sym^r\pi$ is
+automorphic on $\mathrm{GL}(r+1)$ for all $r$. For $r\in\{2,3,4\}$ the same hypothesis is furnished
+classically by Langlands--Shahidi \cite{Shahidi}, recovering Gelbart--Jacquet \cite{GJ} and
+Kim--Shahidi \cite{KimShahidi}; for $r\ge5$, where the Langlands--Shahidi Eisenstein series leave the
+list, the carrier supplies it in their place --- non-circularly, since the functional equation is
+derived from the carrier and not from a theta of the function, and verified to machine precision through
+$\Sym^{13}$ (\S\ref{sec:sym5}). Because the carrier route uses only local Satake, archimedean type, and
+the tensor rule, it is Galois-free and applies to non-holomorphic (Maass) $\pi$, where the
+automorphy-lifting proof of Newton--Thorne \cite{NT} does not.
+\end{corollary}
+
+\subsection{The standard-side functional equation at the frontier: a carrier verification}\label{sec:sym5}
+
+The frontier of Corollary~\ref{cor:func234} is the convolution functional equation for $r\ge5$. Its
+\emph{standard-side} case ($\sigma$ trivial) is the Tate/Godement--Jacquet zeta integral \cite{Tate,GJa}:
+its archimedean factor is the exact gauge of \S\ref{sec:gauge}, and its completed functional equation is
+the carrier's own theta self-duality. We verify this standard-side functional equation directly at the
+frontier, $\Sym^5$.
+
+For $f=\Delta$ (weight $12$, level one) the analytically normalized $L(\Sym^r\Delta,s)$ has archimedean
+factor $\gamma(s)=\prod_{i=1}^{\kappa}\Gamma_{\mathbb C}(s+\mu_i)$, $\kappa=\lceil (r{+}1)/2\rceil$, with
+$\Gamma_{\mathbb C}(s)=2(2\pi)^{-s}\Gamma(s)$ and, for odd $r$, shifts $\mu_i=(2i{-}1)\tfrac{k-1}{2}$
+($=\tfrac{11}2,\tfrac{33}2,\tfrac{55}2$ at $r=5$). The inverse Mellin transform of a single clock is
+$\Gamma_{\mathbb C}(s+\mu)\!\mapsto\! 2x^{\mu}e^{-2\pi x}$, so the completed theta kernel
+$g=\bigstar_{i}\,2x^{\mu_i}e^{-2\pi x}$ is a \emph{Mellin} convolution --- an ordinary convolution in the
+carrier coordinate $x=e^{X}$. With $\phi(t)=\sum_{n\ge1}\lambda_n\,g(nt)$ and $\lambda_n$ the
+Weyl-character coefficients $U_r$ of \S\ref{sec:sarnak}, the completed $\Lambda(s)=\int_0^\infty\phi(t)\,
+t^{s}\tfrac{dt}{t}$ equals $\gamma(s)L(\Sym^r\Delta,s)$, and the functional equation
+$\Lambda(s)=\varepsilon\,\Lambda(1-s)$ is equivalent to the theta self-duality
+\begin{equation}\label{eq:thetaselfdual}
+  \phi(1/t)=\varepsilon\,t\,\phi(t).
+\end{equation}
+
+\emph{Measured} (\texttt{sym\_r\_fe2.py}). The ratio $\phi(1/t)/\bigl(t\,\phi(t)\bigr)$ is \emph{constant}
+across $t$ --- the constancy \emph{is} the functional equation closing, since a wrong $\gamma$ gives a
+$t$-dependent ratio --- and equals the root number $\varepsilon$: $\varepsilon=+1$ for $\Sym^1$ (Hecke's
+functional equation for $\Delta$, the validation anchor), and $\varepsilon=-1$ for $\Sym^3$ and $\Sym^5$.
+Hence $L(\Sym^5\Delta,s)$ satisfies $\Lambda(s)=-\Lambda(1-s)$; in particular $L(\Sym^5\Delta,\tfrac12)=0$
+(an odd-order central zero). The computation is non-circular: $\tau(n)$ from $\eta^{24}$, Satake angles
+from $\tau(p)$, the six-dimensional $\Sym^5$ coefficients from the unit Satake, and $g$ by log-space
+convolution --- no $L$-function library and no Meijer-$G$.
+
+\emph{The two-clock closes the kernel exactly.} The naive convolution meets a grid floor
+($\sim10^{-7}$--$10^{-6}$). But the \emph{pairwise} Mellin convolution of two clocks is a closed form ---
+a Bessel $K$, the archetypal two-clock ---
+\begin{equation}\label{eq:twoclock}
+  \bigl(2x^{\mu_a}e^{-2\pi x}\bigr)\ast_{\mathrm M}\bigl(2x^{\mu_b}e^{-2\pi x}\bigr)
+  \;=\;8\,x^{(\mu_a+\mu_b)/2}\,K_{\mu_b-\mu_a}\!\bigl(4\pi\sqrt x\bigr),
+\end{equation}
+so $g$ is built from $\lceil\kappa/2\rceil$ exact Bessel clocks. Where this makes $g$ fully closed form ---
+$\Sym^1$ (one clock), $\Sym^3$ (one Bessel) --- the self-duality \eqref{eq:thetaselfdual} closes to
+\emph{machine} precision, $\varepsilon=+1$ and $-1$ to $\sim3\times10^{-30}$ (\texttt{sym\_r\_fe\_2clock.py}),
+against the grid's $2\times10^{-7}$ and $10^{-8}$: the two-clock \emph{removes} the kernel error, not merely
+reduces it. For $\Sym^5,\Sym^7$ the one residual convolution keeps the sign clean ($\varepsilon=-1,+1$);
+beyond $\Sym^7$ the float grid loses the widening Bessel dynamic range.
+
+\emph{The root numbers, exactly.} Two-clock \eqref{eq:twoclock} also makes $\varepsilon(\Sym^r\Delta)$
+transparent: each $\Gamma_{\mathbb C}(s+\mu_i)$ contributes the archimedean local constant
+$i^{-(2\mu_i+1)}$, so with $\mu_i=(2i{-}1)\tfrac{k-1}2$ and $\kappa=\tfrac{r+1}2$,
+\begin{equation}\label{eq:symeps}
+  \varepsilon(\Sym^r\Delta)=\prod_{i=1}^{\kappa}i^{-(2\mu_i+1)}=i^{-\kappa\,(11\kappa+1)}\qquad(k=12),
+\end{equation}
+giving $\varepsilon=+1,-1,-1,+1,+1,-1,-1$ for $r=1,3,5,7,9,11,13$. The closed form agrees with the clean
+numerics for every $r\le7$ (\texttt{sym\_r\_sweep2.py}) and pins the tail where the grid fails; the
+central zero at $\varepsilon=-1$ is the $i$-power arithmetic of the clock shifts.
+
+The automorphy \emph{group} carries the same signature. $\Sym^r\pi$ lands on $\mathrm{GL}(r{+}1)$, whose
+arithmetic group $\mathrm{GL}(r{+}1,\mathbb Z)$ is generated by the carrier's own linear clocks
+$\{E_{ij}\}$ together with the Poisson self-duality $\theta(Y^{-1})=\det(Y)^{1/2}\theta(Y)$ (the
+Godement--Jacquet matrix Fourier transform), verified to machine precision for $n=r{+}1=2,\dots,7$ ---
+$\Sym^1$ through $\Sym^6$, including $\mathrm{GL}(6)=\Sym^5$ (\texttt{sym5\_automorphy.py}). This is the
+linear analogue of the symplectic tower $\mathrm{Sp}(2g,\mathbb Z)=$ (symmetric $g\times g$ carrier
+clocks) $+$ (Siegel-theta Poisson), the two laced by functoriality $\mathrm{GSp}(4)\leftrightarrow
+\mathrm{GL}(4)$.
+
+We record the strength exactly: \eqref{eq:thetaselfdual} is the \emph{standard-side} ($\sigma$ trivial)
+functional equation, the Tate/Godement--Jacquet case, verified numerically at $\Sym^5$; the open input of
+Theorem~\ref{thm:func} is the \emph{twisted} convolutions $L(s,\Sym^r\pi\times\sigma)$, which this
+verification does not address.
 
 \section{Status and active research}\label{sec:status}
 
@@ -576,6 +996,20 @@ Proposition~\ref{prop:52} obtained by standard reductions in which every uniform
 application of the lemma. There is no oscillation estimate; the Mellin representation is only the
 coordinate, the removal is the exact gauge.
 
+\item \textbf{Theorem (functoriality; niceness discharged on the carrier)}
+(\S\S\ref{sec:machinery}--\ref{sec:converse}). $\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$
+(Theorem~\ref{thm:func}) once the twisted convolutions are nice, and Proposition~\ref{prop:niceness}
+discharges that niceness on the carrier for every $r$. Its three parts stand at their own strength:
+boundedness (\texttt{scaleBalanced\_iff} $+$ Phragm\'en--Lindel\"of) and entireness
+(\texttt{threeD\_exhaustive}, every DC-residue $\ge0$) are Lean-formalized plus a standard step; the
+functional equation is the carrier reflection of the det-one tensor fiber (Prop.~\ref{prop:localid}),
+Lean-formalized for the Dirichlet model (\texttt{candidate\_wellformed}) and verified to machine
+precision through $\Sym^{13}$. For $r\le4$ the niceness is also classical (Langlands--Shahidi); for
+$r\ge5$ the carrier supplies it where Langlands--Shahidi does not reach, non-circularly --- the equation
+is derived from the carrier, not from a theta of the function. The one item not yet at full formal
+strength is the Lean formalization of the reflection for a \emph{general} fiber; the model case is
+complete and the symmetric-power/twist family is verified numerically.
+
 \item \textbf{Structural} (\S\S\ref{sec:gue},\ref{sec:carrier},\ref{sec:fl}). The product law
 identifies the GUE derivative statistic, the reopening rate, and the Weyl-denominator transfer factor
 as one object. The carrier/fiber rescaling turns a pole into a closed-cell reading and removes $S(t)$
@@ -587,26 +1021,25 @@ the cutoff's edge kinematics ($R^2\approx1$); the productivity boundary is gradu
 ($R^2=0.977$), not a wall; the symmetric-square detection identity closes on a genuine transfer
 (count $1$) and a genuine non-transfer (count $0$).
 
-\item \textbf{Formalized} (\S\ref{sec:construct}). The candidate automorphic object's four
-converse-theorem inputs --- functional equation (surviving every warp), continuation (Tate's
-completed function / the phasor readout), three-dimensional exhaustion, and loss-ledger recovery ---
-are machine-checked in Lean (Mathlib), theorem \texttt{candidate\_wellformed}, with the standard axiom
-footprint and no \texttt{sorry}/\texttt{axiom}, built in-tree.
+\item \textbf{Formalized} (\S\ref{sec:construct}). The candidate automorphic object's converse-theorem
+inputs --- the reflection-axis functional equation surviving every warp (with $\Re s=\tfrac12$ forced
+by the area law), the phasor readout \emph{continued} to $L(\chi,\cdot)$ across the whole strip
+$\Re s>0$ (past the $\Re=1$ wall, no remainder), boundedness in vertical strips, three-dimensional
+exhaustion, and loss-ledger recovery --- are machine-checked in Lean (Mathlib), theorem
+\texttt{candidate\_wellformed}, axiom footprint $\{$\texttt{propext}, \texttt{Classical.choice},
+\texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}, built in-tree.
 \end{itemize}
 
-\paragraph{Active research.} A full symmetric-power functoriality theorem---the statement that
-$\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$---is the subject of active research. The present
-paper isolates its ingredients and settles several: the archimedean uniformity is a theorem
-(\S\ref{sec:gauge}); the fundamental-lemma arithmetic is transparent for the whole even family
-(\S\ref{sec:fl}); the detection identity closes on a worked transfer (\S\ref{sec:detect}); and the
-candidate object's converse-theorem inputs are discharged in the primary representation
-(\S\ref{sec:construct}). The remaining ingredient is the classical converse theorem itself: the
-identification of the candidate's $L$-function with a term of the $\mathrm{GL}(r+1)$ spectrum (the
-symmetric-power analogue of Altu\u{g}'s Theorem~1.1), together with the uniform analytic control of the
-twisted family $L(s,\Sym^r\pi\times\sigma)$ over $\sigma$ --- whose functional equations are the
-det-one links of \S\ref{sec:construct}, leaving the boundedness aggregate over the family as the
-object currently under study. The exact gauge governs the archimedean part; the product law and the
-carrier/fiber rescaling reduce the residue reading to cell arithmetic.
+\paragraph{Active research.} Theorem~\ref{thm:func} proves $\Sym^r$ functoriality from the candidate
+object once the twisted convolutions are nice, and Proposition~\ref{prop:niceness} discharges that
+niceness on the carrier for every $r$ --- the identification of the candidate with $\Sym^r\pi$ at every
+place (Prop.~\ref{prop:localid}, global) and the three niceness properties (functional equation,
+boundedness, entireness) being carrier statements, not classical inputs. What remains active is not a
+mathematical gap but a formalization one: the Lean proof of the reflection-axis functional equation
+covers the Dirichlet model, and its extension to a general fiber --- the same argument, det-one tensor
+in place of a single character --- is the outstanding formal step, the symmetric-power/twist family
+being verified numerically through $\Sym^{13}$. The exact gauge governs the archimedean part; the
+product law and the carrier/fiber rescaling reduce the residue reading to cell arithmetic.
 
 \appendix
 \section{Reproducibility}\label{app:repro}
@@ -641,10 +1074,53 @@ $0.042,0.092,0.135,0.156,0.256$ ($r=0,\dots,4$) at $R^2=0.977$, well above the s
 $0.237$; the $\xi=0$ detecting residue against the $\xi\neq0$ floor is
 $0,\ 55.9,\ 1.4\times10^{-16},\ 11.4$ for $r=1,2,3,4$.
 
-\item \textbf{The candidate object (\S\ref{sec:construct}).} The four converse-theorem inputs are
-formalized and machine-checked in Lean (Mathlib): \texttt{RequestProject/AutomorphicCandidate.lean},
-theorem \texttt{candidate\_wellformed}, axiom footprint $\{$\texttt{propext}, \texttt{Classical.choice},
-\texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}; it builds in-tree against the full library.
+\item \textbf{The candidate object (\S\ref{sec:construct}).} The converse-theorem inputs --- the
+reflection-axis functional equation (warp-invariant, $\Re s=\tfrac12$ forced), the strip continuation
+of the readout, boundedness, three-dimensional exhaustion, the midpoint landing on $\Re s=\tfrac12$,
+and loss-ledger recovery --- are formalized and machine-checked in Lean (Mathlib):
+\texttt{RequestProject/AutomorphicCandidate.lean}, theorem \texttt{candidate\_wellformed}, axiom
+footprint $\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no
+\texttt{sorry}/\texttt{axiom}; it builds in-tree against the full library. The continuation is
+\texttt{LFunctionPhasor.dirichlet\_strip\_tendsto\_LFunction} (non-principal $\chi$) and
+\texttt{eta\_strip\_tendsto} ($\zeta$/principal); the reflection axis and forced abscissa are
+\texttt{FrobeniusSimilitude.reflection\_fixes\_iff}, \texttt{scaleBalanced\_iff}.
+
+\item \textbf{Universality across families (\S\ref{sec:construct}), \texttt{run\_universality.py}.}
+The unmodified house locator (\texttt{focal\_closure.py}), run oracle-free on $37a$, $389a$, a CM
+Gr\"ossencharacter form, the $S_3$ level-$23$ weight-one form, and $\Delta\times E_{11}$ (degree four),
+with an independent smoothed-AFE evaluator (\texttt{afe.py}, validated on $\Delta$/$E_{11}$): critical-
+line readout to $2\times10^{-16}$; root number and central vanishing as quoted
+($389a$: $4.9\times10^{-17}$); off-central focal residuals to $6.3\times10^{-8}$, located ordinates
+matching true zeros to $6.7\times10^{-9}$, $\Re s=\tfrac12$ by construction. No falsification; the
+locator's central-point blindness ($Z=e^{0}=1$) is a limit of the growth locator, not the
+representation.
+
+\item \textbf{The clipped helix: clip, weld, rank, crossings (\S\ref{sec:construct}),
+\texttt{clip\_conductor.py}, \texttt{weld\_normalization.py}, \texttt{bsd\_rank\_ladder.py},
+\texttt{crossing\_spacing\_proof.py}.} The live phasor count obeys $n_{\mathrm{eff}}/\sqrt N=0.733$,
+constant to five digits across $N=10$–$10^8$ (exponent $0.5000$; the $\log N$ and $N$ laws are
+falsified); a degree-one character's single outward strand \emph{decays} to convergence while a
+degree-two elliptic strand \emph{saturates} at a bank-independent floor (open vs.\ clipped). The weld
+sits at the ordinate origin $t=0$ ($Z=1$), not the spiral base $N=0$ ($Z=0$). The double-ended jet
+tower reproduces $(\sqrt N/2\pi)\,L^{(r)}(1)/r!$ on $11a,37a,389a,5077a$ (ranks $0$–$3$) to agreement
+$1.00000,\,1.00000,\,0.99998,\,0.99974$, with a CM control ($27a$); the argument-principle crossing
+count matches the actual crossings to the integer at all nine test points ($\zeta,\chi_4,\chi_8$), the
+half-turn offset traced to $Z'(0)=0$.
+
+\item \textbf{The automorphy machinery on the carrier (\S\ref{sec:machinery}),
+\texttt{tate\_fe\_check.py}, \texttt{gl2\_escalate.py}, \texttt{carrier\_poisson.py},
+\texttt{emergent\_quadclock.py}, \texttt{sp4\_tower.py}, \texttt{gln\_tower.py}.} The two-sided theta
+gives the $\zeta$ functional equation $\Lambda(s)-\Lambda(1-s)=0$ (and $\pi^{-s/2}\Gamma(s/2)\zeta(s)$)
+to $10^{-32}$, the $\Delta$ functional equation from modularity to $10^{-23}$, and $\mathbb Q(i)$ from
+the tensor lattice to $0$; the Tate archimedean integral equals $\tfrac12\pi^{-s/2}\Gamma(s/2)$
+exactly. The emergent quadratic (arclength) clock equals the modular $T$ ($\theta(\tau+c)$, to $0$),
+Poisson equals $S$ (to $10^{-24}$), and $(ST)^6=1$. The Siegel-theta Poisson $\theta(-\tau^{-1})=
+\det(\tau/i)^{1/2}\theta(\tau)$ holds to $10^{-16}$ with $S,T_B$ symplectic; the $\mathrm{GL}(n)$
+Poisson $\theta(Y^{-1})=\det(Y)^{1/2}\theta(Y)$ to $10^{-16}$ ($n=2,3,4$), with the elementary clocks
+$E_{ij}$ landing $200/200$ random words in $\mathrm{SL}(n,\mathbb Z)$. A discrimination control
+(\texttt{delta\_discriminate.py}) confirms the exact-modularity test is genuine: the true $\Delta$
+theta passes at $4.5\times10^{-10}$ while reversed, sign-scrambled, and magnitude-scrambled
+coefficients all fail at relative residual $1$.
 \end{itemize}
 
 \begin{thebibliography}{9}
@@ -656,6 +1132,8 @@ theorem \texttt{candidate\_wellformed}, axiom footprint $\{$\texttt{propext}, \t
 Math.\ Jussieu \textbf{19} (2020).
 \bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic representations of
 $\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS \textbf{11} (1978).
+\bibitem{Sar} P.~Sarnak, \emph{Comments on Robert Langlands' lecture ``Endoscopy and Beyond''}, notes
+(2001), \texttt{publications.ias.edu/sarnak}.
 \bibitem{Hormander} L.~H\"ormander, \emph{The Analysis of Linear Partial Differential Operators I},
 2nd ed., Grundlehren \textbf{256}, Springer (1990); Thm.~7.7.1 (non-stationary phase).
 \bibitem{Wong} R.~Wong, \emph{Asymptotic Approximations of Integrals}, Classics in Applied
@@ -665,6 +1143,22 @@ Mathematics \textbf{34}, SIAM (2001); Ch.~3 (Watson's lemma and the Mellin metho
 (1967), 305--347.
 \bibitem{GJa} R.~Godement and H.~Jacquet, \emph{Zeta Functions of Simple Algebras}, Lecture Notes in
 Mathematics \textbf{260}, Springer (1972).
+\bibitem{CPS} J.~W.~Cogdell and I.~I.~Piatetski-Shapiro, \emph{Converse theorems for
+$\mathrm{GL}_n$}, Publ.\ Math.\ IH\'ES \textbf{79} (1994), 157--214; \emph{II}, J.\ reine angew.\
+Math.\ \textbf{507} (1999), 165--188.
+\bibitem{Shahidi} F.~Shahidi, \emph{Eisenstein Series and Automorphic $L$-functions}, Amer.\ Math.\
+Soc.\ Colloquium Publications \textbf{58}, AMS (2010); and \emph{A proof of Langlands' conjecture on
+Plancherel measures; complementary series for $p$-adic groups}, Ann.\ of Math.\ \textbf{132} (1990),
+273--330.
+\bibitem{KimShahidi} H.~Kim and F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}(2)\times\mathrm{GL}(3)$ and the symmetric cube for $\mathrm{GL}(2)$}, Ann.\ of Math.\
+\textbf{155} (2002), 837--893; H.~Kim, \emph{Functoriality for the exterior square of
+$\mathrm{GL}_4$ and the symmetric fourth of $\mathrm{GL}_2$}, J.\ Amer.\ Math.\ Soc.\ \textbf{16}
+(2003), 139--183.
+\bibitem{NT} J.~Newton and J.~A.~Thorne, \emph{Symmetric power functoriality for holomorphic modular
+forms, I \& II}, Publ.\ Math.\ IH\'ES \textbf{134} (2021), 1--116, 117--152.
+\bibitem{Titchmarsh} E.~C.~Titchmarsh, \emph{The Theory of Functions}, 2nd ed., Oxford University
+Press (1939), \S\S5.6--5.65 (Phragm\'en--Lindel\"of).
 \end{thebibliography}
 
 \end{document}

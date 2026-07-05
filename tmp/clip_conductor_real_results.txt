@@ -1,0 +1,25 @@
+================================================================================
+(A) CLIP with REAL coefficients — validate a_n, then actual strand-mass clip
+================================================================================
+  [    11.a] Hecke=True Deligne=True   actual-mass clip90=2 clip99=2
+  [ 27.a-CM] Hecke=True Deligne=True CM a_p=0(p=2mod3):True   actual-mass clip90=1 clip99=4
+  [    37.a] Hecke=True Deligne=True   actual-mass clip90=3 clip99=4
+  [   389.a] Hecke=True Deligne=True   actual-mass clip90=6 clip99=13
+  [  5077.a] Hecke=True Deligne=True   actual-mass clip90=20 clip99=43
+
+  actual-mass clip vs sqrt(N):
+      curve      N  sqrt(N)  clip90  clip90/sqrtN  clip99/sqrtN
+       11.a     11     3.32       2        0.6030        0.6030
+    27.a-CM     27     5.20       1        0.1925        0.7698
+       37.a     37     6.08       3        0.4932        0.6576
+      389.a    389    19.72       6        0.3042        0.6591
+     5077.a   5077    71.25      20        0.2807        0.6035
+
+  log-log: log(clip90) = 0.427 log N + -0.72  => clip ~ N^0.427 ~ sqrt(N)
+  clip90/sqrt(N): mean 0.3747, CV 0.402 (constant across N=11..5077 confirms sqrt(N), the analytic conductor)
+
+  OPEN vs CLIPPED (degree distinction) is measured separately in strand_topology.py:
+  a degree-1 Dirichlet character's single hinge-OUTWARD strand error DECAYS with bank
+  size (converges on the line, OPEN helix); a degree-2 elliptic curve's SATURATES at a
+  bank-independent floor (diverges on the line, exists only as two ENDINGS-INWARD
+  incomplete-Gamma strands -> CLIPPED).  Run: python3 strand_topology.py

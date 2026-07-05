@@ -1,0 +1,61 @@
+import math, numpy as np
+from scipy.special import loggamma
+# Sym^2 control: E11 (weight 2, cond 11) -> Sym^2 on GL(3), cond 11^2=121, degree 3.
+# Does the completed Lambda(Sym^2, 1/2+it) ray-pin (FE holds, eps emerges) via the degree-3 completion?
+NB = 20000
+A2,A4,A6 = -1,-10,-20
+def sieve(n):
+    s=np.ones(n+1,bool); s[:2]=False
+    for i in range(2,int(n**0.5)+1):
+        if s[i]: s[i*i::i]=False
+    return np.nonzero(s)[0]
+def ap(p):
+    if p==2:
+        return 2+1-(sum(1 for x in range(2) for y in range(2) if (y*y+y-(x**3+A2*x*x+A4*x+A6))%2==0)+1)
+    x=np.arange(p,dtype=np.int64); z=(4*(x**3%p)+4*A2%p*(x*x%p)+4*A4%p*x+(4*A6+1))%p
+    isq=np.zeros(p,bool); isq[(x*x)%p]=True
+    return int(-np.where(z==0,0,np.where(isq[z],1,-1)).sum())
+primes=sieve(NB); spf=np.zeros(NB+1,np.int64)
+for p in primes[::-1]: spf[p::p]=p
+CT=11
+# Sym^2 local coeffs c_{p^k}=h_k of {e^{2i th},1,e^{-2i th}}: power sums p_m=1+2cos(2 m th)
+def sym2_loc(th,kmax):
+    pm=[1+2*math.cos(2*m*th) for m in range(1,kmax+1)]; h=[1.0]
+    for k in range(1,kmax+1): h.append(sum(pm[m-1]*h[k-m] for m in range(1,k+1))/k)
+    return h
+a11=ap(CT)
+loc={}
+for p in primes:
+    p=int(p); kmax=int(math.log(NB)/math.log(p))+1
+    if p==CT:
+        al=a11/math.sqrt(CT); loc[p]=[al**(2*k) for k in range(kmax+1)]   # Steinberg Sym^2
+    else:
+        th=math.acos(max(-1,min(1,ap(p)/(2*math.sqrt(p))))); loc[p]=sym2_loc(th,kmax)
+b=np.zeros(NB+1); b[1]=1.0
+for n in range(2,NB+1):
+    p=int(spf[n]); m,k=n,0
+    while m%p==0: m//=p; k+=1
+    b[n]=b[m]*b[n//m] if m>1 else loc[p][k]
+print("  Sym^2 E11 coeffs b_2,b_3,b_5 =",b[2],b[3],b[5])
+# completed Lambda(1/2+it)=pref(t)*sum tapered; degree-3 completion, scan conductor scale L + check ray flat.
+n=np.arange(1,NB+1,float); u=n/NB
+w=np.where(u<1,np.exp(1-1/np.clip(1-u*u,1e-300,None)),0.0); ln=np.log(n)
+ts=np.linspace(-3,3,61)
+# Sym^2 (motivic wt 2) degree-3 gamma: Gamma_R(s+1)Gamma_C(s+1) -> on line shifts approx {1, 1, 2}; scan works if ray flattens
+def rayspread(L,shifts):
+    amp=b[1:]*w*n**(-0.5)
+    F=np.array([np.sum(amp*np.exp(-1j*t*ln)) for t in ts])
+    pref=np.exp(1j*ts*L+sum(loggamma(sh+1j*ts) for sh in shifts))
+    ph=np.angle(pref*F); phm=np.mod(ph,math.pi)
+    zz=np.exp(2j*phm); zz=zz*np.conj(np.mean(zz))
+    return float(np.std(np.angle(zz))), float(np.median(phm))/math.pi
+best=None
+for shifts in [(0.5,1.0,1.5),(1.0,1.0,2.0),(0.5,1.0,1.0),(0.75,1.0,1.25)]:
+    for L in np.linspace(-3,6,181):
+        sp,ray=rayspread(L,shifts)
+        if best is None or sp<best[0]: best=(sp,ray,L,shifts)
+sp,ray,L,shifts=best
+eps=-1 if abs(ray-0.5)<0.25 else +1
+print(f"  best: shifts={shifts} L={L:.3f} ray={ray:.4f}pi spread={sp:.3e} => eps={eps:+d}")
+print("  VERDICT:", "PINS -> Sym^2 FE reproduced, eps emerges (framework reproduces known GJ lift)" if sp<3e-2
+      else ("partial (spread %.2e)"%sp if sp<1.5e-1 else "no clean pin at this resolution (spread %.2e)"%sp))
