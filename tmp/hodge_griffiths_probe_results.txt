@@ -1,0 +1,27 @@
+QUICK PROBE (reframed): induce the deeper cycle to appear at the right tower level.
+======================================================================================
+CHECK 1 -- value channel fires for every homologically-trivial cycle (regulator != 0):
+        37a1: order 1, Reg = 0.051103 -> FIRES
+       389a1: order 2, Reg = 0.152443 -> FIRES
+      5077a1: order 3, Reg = 0.417136 -> FIRES
+    positive-order cycles: 3, fired 3/3, regulator-trivial (silent): 0
+
+CHECK 2 -- induction is level-dependent: a cycle flat at level 1 APPEARS at level >= 2.
+    (DC-residue slope of L(Sym^r f x Sym^r f), r = 1..4; the deeper cycle tower.)
+           37a  (non-CM): slope ['0.90', '0.90', '0.82', '0.81']  ratio ['1.00', '1.00', '1.00', '1.00']  flat  (no deeper cycle)
+       x^3-x   (CM Q(i)): slope ['0.75', '1.50', '1.35', '2.01']  ratio ['0.83', '1.67', '1.65', '2.48']  CLIMBS (cycle induced at r>=2)
+       x^3+1 (CM Q(v-3)): slope ['0.77', '1.51', '1.36', '2.03']  ratio ['0.86', '1.68', '1.66', '2.51']  CLIMBS (cycle induced at r>=2)
+
+VERDICT (initial):
+    AFFIRMED (initial).  No layer is invisible; each is INDUCED
+    at its tower level.  Level 1 value channel: |Sha| (Check-1 regulators all fire, 0 silent).
+    Level >= 2 tower: algebraic/CM cycles appear where level 1 is flat (Check 2).
+    Tensor-cube tower: the transcendental Ceresa/Griffiths class is induced as the
+    triple-product central L-derivative = the Gross-Schoen height (Zhang; Yuan-Zhang-Zhang
+    is the THEOREM that makes 'invisible' false).  The only escape --- a cycle whose
+    regulator vanishes at EVERY tower level --- is a Bloch-Beilinson failure, ZERO known.
+
+    DEFERRED to companion paper: from-scratch triple-product central derivative landing the
+    Ceresa height nonzero on a non-hyperelliptic genus-3 curve (Klein quartic) and zero on a
+    hyperelliptic one; the general ledger <-> Bloch-Beilinson-graded bijection; the exact
+    coupling that induces each higher Griffiths layer.  This probe only calibrates the route.

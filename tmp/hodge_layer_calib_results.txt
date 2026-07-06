@@ -1,0 +1,43 @@
+HODGE-LAYER CALIBRATION: distinct retained coordinate per cycle-filtration layer?
+====================================================================================
+     curve | order r |  Reg (AJ height pairing) | |Sha| (obstruction)
+  ------------------------------------------------------------------------------
+      11a1 |   0     |               1.00000000 |   1
+      14a1 |   0     |               1.00000000 |   1
+     571a1 |   0     |               1.00000000 |   4
+     960d1 |   0     |               1.00000000 |   4
+     681b1 |   0     |               1.00000000 |   9
+    2849a1 |   0     |               1.00000000 |   9
+      37a1 |   1     |               0.05110342 |   1
+     389a1 |   2     |               0.15244320 |   1
+    5077a1 |   3     |               0.41713602 |   1
+
+INDEPENDENCE (each layer a DISTINCT coordinate iff the pair varies independently):
+  order vs Sha  : same-order/diff-Sha: ('11a1', '571a1')  |  same-Sha/diff-order: ('11a1', '37a1')   => INDEPENDENT
+  order vs Reg  : same-order/diff-Reg: NONE  |  same-Reg/diff-order: NONE   => not shown
+    Reg vs Sha  : same-Reg/diff-Sha: ('11a1', '571a1')  |  same-Sha/diff-Reg: ('11a1', '37a1')   => INDEPENDENT
+
+  => order r (filtration depth), Reg (Abel-Jacobi image), |Sha| (obstruction) are
+     THREE independently-resolved retained coordinates of the leading central jet.
+     e.g. order=0 with |Sha| in {1,4,9} (Sha not determined by order);
+          |Sha|=1 with order in {1,2,3} and Reg in {0.051,0.152,0.417} (all distinct).
+
+LAYER -> CARRIER-COORDINATE MAP  (what we HAVE):
+  Hodge-visible (p,p) / Tate classes      -> RS pole order (algebraic DC-residue)
+  filtration depth (rank / BB length)     -> central jet ORDER r          [distinct]
+  homologically-trivial cycles (AJ image) -> Reg = height pairing det     [distinct]
+  arithmetic local-global obstruction     -> |Sha| in leading value       [distinct]
+
+CEILING  (what we must PROVE for a full 'structurally yes'):
+  1. |Sha| is the ARITHMETIC (Selmer/Cassels-Tate) shadow, NOT the geometric
+     Abel-Jacobi kernel.  The transcendental GRIFFITHS GROUP (cycles hom.-triv. with
+     trivial AJ but nonzero in CH; Ceresa/Clemens) is conjecturally L-INVISIBLE.
+     TEST NEEDED: does the radius/angle ledger carry a coordinate that fires where the
+     height/L channel is zero?  (A genuine non-L retained component.)
+  2. Full BB-graded bijection: the order r reads TOTAL depth; proving the carrier
+     separates EACH graded piece gr^j (not just the coarse A/B/C split) is open.
+  3. Formalize loss-ledger (height; radius, angle) <-> filtration layers as a map.
+
+VERDICT: three cycle-filtration layers get three distinct retained coordinates
+(machine-precision landings).  This is significant and OUT OF SCOPE for the present
+paper -> preliminary here, new paper on the ledger<->filtration correspondence.
