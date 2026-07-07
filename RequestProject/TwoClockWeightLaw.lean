@@ -628,6 +628,79 @@ theorem gammaSpread_bound_from_windowEdgeClock {lf2 X κ prominence gammaSpread 
   rw [WindowEdgeClockReadout.spacing hread]
   exact gammaSpread_le_of_certified_band hband
 
+/-! ## GL(4) trace-window vector clock
+
+The GL(4) audit uses the same phase bookkeeping as the MB edge clock, but with three
+independent trace spans.  The theorem below is the formal core: if one full phase turn
+is required across each span, the coordinate periods are forced to be `Q / Sᵢ`, and the
+locked diagonal is forced to be `Q / (Sₐ + S_b + S_c)`.  A scalar period can replace the
+vector period only when the corresponding spans are equal.
+-/
+
+/-- One coordinate phase turn across span `S` for lattice scale `Q`. -/
+noncomputable def tracePhaseTurns (Q S Δ : ℝ) : ℝ := Δ * S / Q
+
+/-- The trace-coordinate vector-clock spacing selected by one full turn. -/
+noncomputable def traceCoordinateClock (Q S : ℝ) : ℝ := Q / S
+
+/-- The coordinate clock makes exactly one phase turn. -/
+theorem traceCoordinateClock_phase_turns {Q S : ℝ} (hQ : Q ≠ 0) (hS : S ≠ 0) :
+    tracePhaseTurns Q S (traceCoordinateClock Q S) = 1 := by
+  unfold tracePhaseTurns traceCoordinateClock
+  field_simp [hQ, hS]
+
+/-- The one-turn condition determines the coordinate clock uniquely. -/
+theorem traceCoordinateClock_unique {Q S Δ : ℝ} (hQ : Q ≠ 0) (hS : S ≠ 0)
+    (hΔ : tracePhaseTurns Q S Δ = 1) :
+    Δ = traceCoordinateClock Q S := by
+  unfold tracePhaseTurns at hΔ
+  unfold traceCoordinateClock
+  field_simp [hQ, hS] at hΔ ⊢
+  linarith
+
+/-- A GL(4) trace window carries three coordinate clocks and the locked diagonal clock. -/
+def GL4TraceWindowVectorClock
+    (Q Sa Sb Sc Δa Δb Δc Δdiag : ℝ) : Prop :=
+  Δa = traceCoordinateClock Q Sa ∧
+  Δb = traceCoordinateClock Q Sb ∧
+  Δc = traceCoordinateClock Q Sc ∧
+  Δdiag = traceCoordinateClock Q (Sa + Sb + Sc)
+
+/-- **GL(4) vector-clock theorem.**  Three independent trace spans force three coordinate
+periods, and the locked diagonal readout forces the period for the summed span. -/
+theorem gl4_trace_window_vector_clock {Q Sa Sb Sc Δa Δb Δc Δdiag : ℝ}
+    (hQ : Q ≠ 0) (hSa : Sa ≠ 0) (hSb : Sb ≠ 0) (hSc : Sc ≠ 0)
+    (hSum : Sa + Sb + Sc ≠ 0)
+    (ha : tracePhaseTurns Q Sa Δa = 1)
+    (hb : tracePhaseTurns Q Sb Δb = 1)
+    (hc : tracePhaseTurns Q Sc Δc = 1)
+    (hd : tracePhaseTurns Q (Sa + Sb + Sc) Δdiag = 1) :
+    GL4TraceWindowVectorClock Q Sa Sb Sc Δa Δb Δc Δdiag := by
+  exact ⟨traceCoordinateClock_unique hQ hSa ha,
+    traceCoordinateClock_unique hQ hSb hb,
+    traceCoordinateClock_unique hQ hSc hc,
+    traceCoordinateClock_unique hQ hSum hd⟩
+
+/-- If two trace-coordinate clocks have the same nonzero lattice scale, scalar collapse
+is exact only when the spans agree. -/
+theorem traceCoordinateClock_eq_iff_span_eq {Q Sa Sb : ℝ}
+    (hQ : Q ≠ 0) (hSa : Sa ≠ 0) (hSb : Sb ≠ 0) :
+    traceCoordinateClock Q Sa = traceCoordinateClock Q Sb ↔ Sa = Sb := by
+  constructor
+  · intro h
+    unfold traceCoordinateClock at h
+    field_simp [hQ, hSa, hSb] at h
+    exact h.symm
+  · intro h
+    rw [h]
+
+/-- A scalar clock cannot uniformly replace distinct trace-coordinate clocks. -/
+theorem gl4_scalar_collapse_not_uniform {Q Sa Sb : ℝ}
+    (hQ : Q ≠ 0) (hSa : Sa ≠ 0) (hSb : Sb ≠ 0) (hneq : Sa ≠ Sb) :
+    traceCoordinateClock Q Sa ≠ traceCoordinateClock Q Sb := by
+  intro h
+  exact hneq ((traceCoordinateClock_eq_iff_span_eq hQ hSa hSb).mp h)
+
 /-- A finite family whose entries all lie within `radius` of the same clock center has
 pairwise spread at most `2 * radius`.  This is the finite-grid version of the same
 clock-band argument. -/
