@@ -286,13 +286,33 @@ step.
 \section{The oscillation is the cutoff's comb}\label{sec:comb}
 
 Why did Prop.~\ref{prop:52} look hard? The oscillation the estimate must survive is deterministic.
-Scanning $|J_{l,f}(\xi,\nu,X)|$ in the transform frequency $\nu$ over the cutoff support
-$y\in[\tfrac X4,\tfrac{5X}4]$ reveals a comb of near-zeros with spacing, to measurement,
-$\Delta\nu=4lf^2/(\kappa X)$ with $\kappa\approx0.94$ the support fraction, matching the two-edge
-beat of $G$: the dispersion law $\Delta\nu\propto(lf^2)^{1.00}(X/8)^{-0.98}(1+\xi)^{0.02}$ fits at
-$R^2\approx1$ (Appendix~\ref{app:repro}) --- the interference of the two edges of the fixed cutoff, switched on once
-the $\xi$-phase drives the $x$-integral into edge dominance. At $\xi=0$ the $x$-integrand is unimodal
-(prominence ratio $P_2/P_1=0$) and the comb is absent. The apparent difficulty is a chart feature of
+The numerical scan is made in the clock coordinate
+\[
+  \nu_{\mathrm{clock}}:=2\nu_J,\qquad
+  e(-y\nu_J/2lf^2)=e(-y\nu_{\mathrm{clock}}/4lf^2),
+\]
+where $\nu_J$ is the transform frequency in Prop.~\ref{prop:52}. The measured clock is extracted from the
+full complex profile $V(\nu_{\mathrm{clock}})$ by fitting the log-power modulation
+$\log |V(\nu_{\mathrm{clock}})|^2$ to a smooth envelope plus the first two harmonics sharing one
+fundamental, not by averaging dip gaps. Over the cutoff support $y\in[\tfrac X4,\tfrac{5X}4]$ this gives
+\[
+  \Delta\nu_{\mathrm{clock}}
+   =0.524\,(lf^2)^{1.03}(X/8)^{-1.04}(1+\xi)^{0.00},\qquad R^2=1.000,
+\]
+equivalently half that spacing in the $\nu_J$ coordinate. In the one-parameter window-span normalization
+$\kappa_{\mathrm{eff}}:=4lf^2/(X\Delta\nu_{\mathrm{clock}})$ the cells give
+$\kappa_{\mathrm{eff}}=0.943\pm0.025$ (range $0.895$--$0.971$), while the harmonic-truncation audit has
+median period shift $2.4\times10^{-4}$, so the residual spread is not a dip-localization artifact. With the
+same Chebyshev multiplier $U_r(x)$ used for the symmetric-power rank, the event-bearing $\xi\ne0$ cells keep
+the same law through the tested range $0\le r\le13$ after separating the continuous clock from deep-event
+visibility: every rank has $R^2=1.000$, $lf^2$-exponent $1.03$--$1.04$, and $X$-exponent
+$-1.04$--$-1.03$ on the cells passing the clock-quality gate. Thus the older scalar
+$\kappa\approx0.94$ is the mean of a slightly drifting clock, and the observed high-rank loss is productivity
+decay: deep-event cells thin from $10/12$ at $r=0$ to $3/9$ and $3/8$ at $r=11,12$, while the surviving
+clock cells still obey the same law. This is
+the interference of the two edges of the fixed cutoff, switched on once the $\xi$-phase drives the $x$-integral
+into edge dominance. At $\xi=0$ the $x$-integrand is unimodal (prominence ratio $P_2/P_1=0$) and the deep-dip
+comb is absent. The apparent difficulty is a chart feature of
 the fixed cutoff---exactly what the exact gauge of \S\ref{sec:gauge} removes.
 
 \section{The productivity boundary}\label{sec:sarnak}
@@ -1686,11 +1706,26 @@ parts nets $\nu^{-1}$ and the bound is summable --- the standard-representation 
 productivity boundary. (This is the crude magnitude route; the sharp exponents of
 Proposition~\ref{prop:52} follow from Theorem~\ref{thm:A14}.)
 
-\item \textbf{The emergent clock (\S\ref{sec:comb}), \texttt{mb\_beat.py}.} The comb dispersion law
-$\Delta\nu\propto(lf^2)^{1.00}(X/8)^{-0.98}(1+\xi)^{0.02}$ fits at $R^2\approx1$ --- i.e.
-$\Delta\nu=4lf^2/(\kappa X)$, $\kappa\approx0.94$, essentially independent of $\xi$ --- identifying the
-comb as the cutoff's two-edge beat rather than arithmetic content; the same run confirms that the comb
-vanishes at $\xi=0$ (the integrand is unimodal there).
+\item \textbf{The emergent clock (\S\ref{sec:comb}), \texttt{mb\_beat.py}.} The script scans the clock
+coordinate $\nu_{\mathrm{clock}}=2\nu_J$, so its profile is
+$e(-y\nu_{\mathrm{clock}}/4lf^2)$ while the analytic $J$ of Prop.~\ref{prop:52} uses
+$e(-y\nu_J/2lf^2)$. The current estimator fits the continuous log-power profile
+$\log|V(\nu_{\mathrm{clock}})|^2$ with a degree-$7$ envelope plus the first two harmonics sharing one
+fundamental; the error audit compares one, two, and three harmonics. In that coordinate the fitted
+clock law is
+$\Delta\nu_{\mathrm{clock}}=0.524(lf^2)^{1.03}(X/8)^{-1.04}(1+\xi)^{0.00}$ with $R^2=1.000$; equivalently
+$\Delta\nu_J=\tfrac12\Delta\nu_{\mathrm{clock}}$. Per-cell
+$\kappa_{\mathrm{eff}}=4lf^2/(X\Delta\nu_{\mathrm{clock}})$ has mean $0.943$, standard deviation $0.025$,
+and range $0.895$--$0.971$; the harmonic-truncation median period shift is $2.4\times10^{-4}$ (largest
+$6.7\times10^{-3}$ on the weakest long-period cell). The legacy deep-dip estimator gave
+$0.533(lf^2)^{1.00}(X/8)^{-0.98}(1+\xi)^{0.02}$ at $R^2=0.996$. The rank sweep
+\texttt{mb\_beat.py ranks 13} applies the same $U_r(x)$ multiplier for $0\le r\le13$ and separates two masks:
+continuous clock cells and deep-event cells. On clock cells every rank has $R^2=1.000$, $lf^2$-exponent
+$1.03$--$1.04$, and $X$-exponent $-1.04$--$-1.03$. The continuous clock is present in all $12$ nonzero-$\xi$
+cells through $r=9$, then in $10,9,8,8$ cells for $r=10,11,12,13$; deep productivity drops faster, from
+$10/12$ at $r=0$ to $3/9$ and $3/8$ at $r=11,12$. Thus the high-rank degradation is event visibility, not a
+breakdown of the edge-clock law. The same run confirms that the deep-dip comb vanishes at $\xi=0$ for $r=0$
+(the integrand is unimodal there).
 
 \item \textbf{The productivity boundary (\S\ref{sec:sarnak}), \texttt{mb\_uniform.py}.} The
 Weyl-character tail law $\text{tail}\sim(r{+}1)\sqrt{\#\text{harmonics}}$ fits the measured tail mass
