@@ -992,9 +992,11 @@ inverse-warp readout commutes with the Abel limit, that the warped series equals
 $\Re s>1$, and that the warp composes under $W_1\otimes W_2$; machine-checked for the character warp of the
 Dirichlet family, the general warp verified numerically.
 
-The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then
-the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place det-one links by
-Poisson summation on $\mathbb A/\mathbb Q$.
+The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then,
+\emph{classically}, the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place
+det-one links by Poisson summation on $\mathbb A/\mathbb Q$ --- the route available for the Dirichlet model;
+on the carrier the same equation is the axis-reality reflection of Lemma~\ref{lem:bankreflection}, which
+consumes no Poisson summation.
 
 \paragraph{Boundedness and completeness.} Two inputs, both discharged in the construct.
 \emph{Bounded in vertical strips}: this is the vertical-growth companion of the warped-Abel continuation,
@@ -1281,8 +1283,10 @@ vanishing \textup{(E4)}, the bounded warped primitive $A^{\mathrm{car}}_W=O(1)$,
 vertical bound --- \emph{proved in Lean} (\texttt{CellClosure.harmonic\_bank\_primitive\_bounded}: each
 root-of-unity weight channel cancels over its cell), the Dirichlet family included. For the cuspidal twists a
 converse theorem consumes, the residual vanishing \textup{(E4)} is instead the \emph{unconditional} focal
-cancellation of Lemma~\ref{lem:rankgap}, and continuation and the vertical bound come not from a bounded primitive --- a
-cusp form's warped primitive grows like $N^{1/2}$, not $O(1)$ --- but from the entire reflected carrier theta
+cancellation of Lemma~\ref{lem:rankgap}; continuation to the axis neighbourhood comes from the \emph{adapted}
+bounded primitive of the forcible closure (Lemma~\ref{lem:forcible}: the raw cusp-form primitive grows like
+$N^{1/2}$, the per-cell forcibly-closed one is cell-bounded, native cells $30/30$), feeding the axis-reality
+functional equation (Lemma~\ref{lem:bankreflection}); and full entireness then comes from the entire reflected carrier theta
 (\textup{(E1)--(E3),(E5)} with $R_{r,\tau}=0$) together with Phragm\'en--Lindel\"of across the functional
 equation \textup{(E1)}. Machine-checked at the general finite
 duality-stable interface (\S\ref{sec:converse}) are the local reflection algebra and the
@@ -1444,10 +1448,14 @@ cancels over its native cell by the geometric series $\sum_{k<P}\zeta^k=0$
 $R_{r,\tau}=0$ (\texttt{cell\_closure\_dc\_mode\_zero}). The Dirichlet characters of any conductor ---
 the $\chi_3$ archetype of \S\ref{sec:carrier} included --- are the classical instances
 (\texttt{dirichlet\_cell\_closure}, recovering \texttt{character\_partialSum\_norm\_le}). A cuspidal fiber,
-whose Satake angles are not roots of unity, is not in this harmonic class, and its bounded-primitive route is
-unavailable --- the primitive grows like $N^{1/2}$. But the \emph{entireness} it needs does not ride on that
-route: for the cuspidal twists a converse theorem consumes, the residual mode vanishes by the focal
-cancellation of Lemma~\ref{lem:rankgap}, unconditionally, and continuation follows from the entire reflected carrier theta.
+whose Satake angles are not roots of unity, is not in this harmonic class, and its \emph{raw} bounded-primitive
+route is unavailable --- the fixed-warp primitive grows like $N^{1/2}$. Its \emph{adapted} route is available:
+the forcible per-cell closure (Lemma~\ref{lem:forcible}, native cells, $30/30$ at the float64 floor) bounds the
+adapted warped primitive, supplying the warped-Abel continuation to the axis neighbourhood that the axis-reality
+reflection (Lemma~\ref{lem:bankreflection}) consumes; the residual mode vanishes by the focal
+cancellation of Lemma~\ref{lem:rankgap}, unconditionally; and full-plane entireness then follows from the entire
+reflected carrier theta, downstream of the functional equation --- the dependency order of
+Lemma~\ref{lem:bankreflection}, no step feeding on its successor.
 What is exhibited per instance is then only the finer warp dynamics --- the post-closure resistance below ---
 never the entireness. There is no fiber-independent cancellation for the carrier to prove, because the
 carrier never faces a function without its fiber.
@@ -1456,7 +1464,8 @@ carrier never faces a function without its fiber.
 For a cuspidal fiber the adapted warp that closes a cell need not be found by luck, and the two independent
 correction directions need \emph{not} occur at every native cell. The readout-preserving warp carries a few
 \emph{coherent} generators --- the winding $\Omega(n)$, the distinct-prime count $\omega(n)$, the vertical shift
-$\log n$ (arithmetic functions, not arbitrary per-term phases) --- whose real weights drive the cell residual
+$\log n$, and the fiber's own local periods $\Theta(n)=\sum_{p^k\|n}k\,\theta_p$ (arithmetic functions and the
+fiber's finite local data, not arbitrary per-term phases) --- whose real weights drive the cell residual
 $D_C=\sum_{n\in C}a_n\,\omega_W(n)$. The controllability core is exact and machine-checked: two
 $\mathbb R$-linearly-independent warp correction-directions $u,v$ span the residual plane $\mathbb C$, so
 \emph{every} residual $D$ is forcible to zero by real weights, $D+(s\!\cdot\! u+t\!\cdot\! v)=0$
@@ -1465,18 +1474,22 @@ $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt
 not demanded cell by cell. By \texttt{CarrierReachability.reachable\_independent\_stage}, every nontrivial
 admissible fiber (continuous non-constant lane phase $\phi$) admits a reachable carrier \emph{stage} --- a height
 $y$ with $\sin(2\phi(y))\neq0$ --- at which the two dual lanes $e^{\pm i\phi(y)}$ are $\mathbb R$-linearly
-independent. The native cell reaches that stage by the information-preserving transport along the carrier height:
-the reparametrisation $x\mapsto kx+c$ is a bijection of $\mathbb R$ with an explicit two-sided inverse
-(\texttt{ConeProjection.affineCoord\_bijective}, \texttt{affineCoordEquiv}), so moving between carrier stages
-neither loses nor gains information, and \texttt{ConeProjection.reconstruct\_record} certifies that the fiber's
-projection-and-ledger round-trip is exact ($\texttt{reconstruct}(\texttt{record}\,f)=f$) --- no channel is
-destroyed in transit. Applying \texttt{residual\_forcible} at the independent stage kills the residual exactly,
-and the \emph{inverse} stage transport --- being information-preserving --- returns the corrected state to the
-originating cell without reintroducing the residual. Thus per-cell closure follows from \emph{global} carrier
-reachability composed with the faithful stage round-trip, \emph{not} from cell-by-cell linear independence ---
-every leg machine-checked (footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
-\texttt{sorry}). The constructive rate is what the numerics exhibit: three coherent generators drive $|D_C|$ to
-$4\times10^{-15}$ on $\Sym^5\Delta$ and $\Sym^{13}\Delta$ with weights $|x|<1.5$ (\texttt{forcible\_closure.py}).
+independent. No transport of the cell is involved: the residual $D_C$ is a fixed scalar, and the stage supplies
+the correction pair $u=e^{i\phi(y)}$, $v=e^{-i\phi(y)}$; \texttt{residual\_forcible} applied to that pair gives
+real weights $s,t$ with $D_C+s\,u+t\,v=0$, exactly. Thus per-cell closure follows from \emph{global} carrier
+reachability supplying one independent pair, \emph{not} from cell-by-cell linear independence. The two
+machine-checked inputs are \texttt{reachable\_independent\_stage} and \texttt{residual\_forcible} (footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}); their composition is
+the direct application of the second to the pair the first supplies, in prose here, not a further Lean theorem.
+The constructive rate is what the numerics exhibit, \emph{in the carrier's own chart}: on native growth
+cells --- uniform in $y=\log Z$, every phasor entering at zero magnitude through the canonical $C^{\infty}$
+growth window, no clipped edge --- exact Gauss--Newton closes $|D_C|$ to the float64 floor (median
+$5\times10^{-15}$--$1.4\times10^{-14}$) on \emph{every} cell of all three fibers, $30/30$ each, with weights
+$|x|\le3.1$, once the generator suite includes the fiber's own local periods $\Theta(n)$; the three arithmetic
+generators alone already close $30/30$ on $\Delta$ and $\Sym^5\Delta$, leaving one rank-deficient
+$\Sym^{13}$ cell that $\Theta$ closes --- the resisting cell naming its adapter. A sharp-window (clipped)
+variant manufactures $1$--$3$ resistant cells per fiber with exploding weights; it is retained in the script
+as the clip control --- the never-clip method law made measurable (\texttt{forcible\_closure.py}).
 \end{lemma}
 
 \noindent This realizes the residual extinction of Lemma~\ref{lem:rankgap} \emph{constructively} for the cuspidal
@@ -1489,13 +1502,14 @@ machine-checked in Lean for arbitrary channels
 (\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}, axiom footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$) and instantiated end-to-end for the
 Dirichlet model; it reads only the fiber's own P/M channels, so it holds \emph{verbatim} for every det-one
-symmetric-power/twist fiber, Maass included. The finer \emph{constructive} reachability --- that the readout-preserving warp supplies two \emph{bounded} independent directions at a reachable carrier stage (not at every cell) --- governs the closure \emph{dynamics}, not the vanishing of the residual mode, and it too is settled rather than left to numerics. The required two correction directions are not obtained by a genericity argument. For the dual carrier they are the two \emph{lanes} $e^{\pm i\phi(y)}$ of the helix, and a complex number and its conjugate are $\mathbb R$-linearly independent at a carrier height $y$ exactly when $\sin(2\phi(y))\neq0$ (independent iff off the axes, not merely $\phi\neq0$ --- at $\phi=\pi/2$ the two lanes coincide up to sign). The complete dual helix runs continuously $0\to\infty$ on both lanes, so a clock with $\sin(2\phi)\equiv0$ would map the connected line into the discrete set $\tfrac{\pi}{2}\mathbb Z$ and hence be constant --- the DC/trivial lock. A \emph{nontrivial} (non-constant) admissible clock therefore attains some height with $\sin(2\phi)\neq0$: \texttt{CarrierReachability.reachable\_independent\_stage} proves that every nontrivial source fiber in the stated structural class (continuous non-constant $\phi$) admits a carrier stage with two $\mathbb R$-linearly-independent lane directions, and \texttt{ForcibleClosure.residual\_forcible} then yields the exact correction. Both are machine-checked (footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}): completeness supplies the continuous $0\to\infty$ carrier, admissibility the structured non-random clock, and nontriviality excludes the constant lock. So reachability is unconditional on the nontrivial admissible source class, not a numerical input; the numerics ($\Sym^5$--$\Sym^{13}$, the twisted family) are calibration. \emph{Boundedness likewise does not ride on the forcing.} The vertical-strip bound is structural,
+symmetric-power/twist fiber, Maass included. The finer \emph{constructive} reachability --- that the dual carrier admits a reachable stage whose two lane directions are $\mathbb R$-linearly independent, demanded once rather than at every cell --- governs the closure \emph{dynamics}, not the vanishing of the residual mode, and it too is settled rather than left to numerics. The required two correction directions are not obtained by a genericity argument. For the dual carrier they are the two \emph{lanes} $e^{\pm i\phi(y)}$ of the helix, and a complex number and its conjugate are $\mathbb R$-linearly independent at a carrier height $y$ exactly when $\sin(2\phi(y))\neq0$ (independent iff off the axes, not merely $\phi\neq0$ --- at $\phi=\pi/2$ the two lanes coincide up to sign). The complete dual helix runs continuously $0\to\infty$ on both lanes, so a clock with $\sin(2\phi)\equiv0$ would map the connected line into the discrete set $\tfrac{\pi}{2}\mathbb Z$ and hence be constant --- the DC/trivial lock. A \emph{nontrivial} (non-constant) admissible clock therefore attains some height with $\sin(2\phi)\neq0$: \texttt{CarrierReachability.reachable\_independent\_stage} proves that every nontrivial source fiber in the stated structural class (continuous non-constant $\phi$) admits a carrier stage with two $\mathbb R$-linearly-independent lane directions, and \texttt{ForcibleClosure.residual\_forcible} then yields the exact correction. Both are machine-checked (footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}): completeness supplies the continuous $0\to\infty$ carrier, admissibility the structured non-random clock, and nontriviality excludes the constant lock. So reachability is unconditional on the nontrivial admissible source class, not a numerical input; the numerics ($\Sym^5$--$\Sym^{13}$, the twisted family) are calibration. \emph{Boundedness likewise does not ride on the forcing.} The vertical-strip bound is structural,
 from the \emph{Euler factor}: on its convergence domain the full helix is the convergent product of local factors
 $\det(1-A_{p}q_p^{-s})^{-1}$, each a bounded rational function with $|A_p|$ polynomially bounded (Kim--Sarnak for $\pi$, Jacquet--Shalika/LRS for $\tau$),
 so the readout is finite order there; the functional equation extends that bound across the strip
 (Lemma~\ref{lem:bounded}), given entireness --- \emph{independent} of the forcing chart. Hence the per-cell
-forcing weights need \emph{not} be bounded for $L$ to be finite order (they stay $O(1)$ for $\Sym^5$ but grow
-with height for $\Sym^{13}$, a cosmetic feature of the constructive route, not a bound on $L$). Forcible closure
+forcing weights need \emph{not} be bounded for $L$ to be finite order (in the native growth chart the measured
+closing weights are in fact $O(1)$--$O(3)$; only the clipped control chart inflates them --- either way a
+feature of the constructive route, not a bound on $L$). Forcible closure
 thus makes Lemma~\ref{lem:rankgap}'s extinction \emph{constructive}; entireness rests on the channel-agnostic
 rank-drop, boundedness on the Euler factor, and reachability on the completeness--admissibility argument above ---
 so no leg of niceness rests on numerics; the tested families confirm the mechanism rather than carry it.
@@ -1516,7 +1530,9 @@ induction the pole is dimensionally clean, $\Sym^r\otimes\tau$ carrying no trivi
 $\dim\tau<\dim\Sym^r$ (\texttt{TrivialChannel}); and the carrier builds the readout as the Mellin of an
 \emph{entire} theta, not a quotient of $L$-functions, so the classical strip-pole obstruction of block extraction
 does not arise. The closure is a finite carrier event: the constant mode $R=\lim_N A^{\mathrm{car}}(N)/N$ of the transported
-cuspidal fiber, extinguished by the forcible cell closure above (machine zero on the open $\Sym^5,\Sym^{13}$). Its
+cuspidal fiber, extinguished by the forcible cell closure above (native-cell closure $30/30$ at the float64
+floor on the open $\Sym^5,\Sym^{13}$, Lemma~\ref{lem:forcible}; the global warped DC
+$|A^{\mathrm{car}}|/N$ is $3\times10^{-4}$ and falling at $N=2\times10^{5}$). Its
 $1$D shadow --- the mean of the readout coefficients, equivalently the $s{=}1$ residue --- vanishes, and the
 tensor structure exhibits why without leaving the carrier: the Clebsch--Gordan factorization
 $L(\pi\times\Sym^{r-1}\pi)=L(\Sym^r\pi)\,L(\Sym^{r-2}\pi)$ holds at the coefficient level (verified to $10^{-14}$,
@@ -1723,37 +1739,70 @@ $W$ rides one lane while $W^\vee$ rides the anti-lane, so a non-self-dual CPS tw
 \emph{pair} $(W,W^\vee)$ and the reflection identifies their readouts at $s\leftrightarrow1-s$. What
 Lemma~\ref{lem:selfdual} certifies is \emph{carrier-dual compatibility} of the pair, not $W\simeq W^\vee$.
 
-\begin{lemma}[Bank reflection: the summed-bank theta identity]\label{lem:bankreflection}
+\begin{lemma}[Bank reflection: axis reality and continuation]\label{lem:bankreflection}
 Let $K_{r,\tau}(x)=\sum_{n\ge1}\lambda_n g(nx)$ be the completed carrier theta of the configured pair, $g$ the
 completion kernel ($G=\mathcal M g$ entire, of rapid decay). Assume \emph{(i)} the per-place weld
 $E_v^{*}(\bar z)=-\bar\alpha_v E_v(z)$ with the det-one ledger (\texttt{ChiralityHB.symClock\_star},
 \texttt{FiniteWeightFiber.fiber\_det\_one}); \emph{(ii)} the archimedean self-duality
 $\gamma(s)=\varepsilon_{\mathrm{arch}}\gamma(\kappa-s)$
-(\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}); \emph{(iii)} $\lambda_n=O(n^{A})$, so
-$\sum_n\lambda_n g(nx)$ converges absolutely and locally uniformly for $x>0$; and \emph{(iv)} the summed-bank
-self-duality $K_{r,\tau}(1/x)=\varepsilon_{r,\tau}\,x^{\kappa}K_{r,\tau^\vee}(x)$ --- Poisson summation over the
-carrier lattice. Then
-$\Lambda(s,\Sym^r\pi\times\tau)=\varepsilon_{r,\tau}\,\Lambda(\kappa-s,\Sym^r\pi\times\tau^\vee)$,
-$|\varepsilon_{r,\tau}|=1$.
+(\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}); and \emph{(iii)} $\lambda_n=O(n^{A})$, so
+$\sum_n\lambda_n g(nx)$ converges absolutely and locally uniformly for $x>0$. Then
+\[
+  \Lambda(s,\Sym^r\pi\times\tau)=\varepsilon_{r,\tau}\,\Lambda(\kappa-s,\Sym^r\pi\times\tau^\vee),
+  \qquad|\varepsilon_{r,\tau}|=1,
+\]
+with \emph{no Poisson summation and no lattice input}: the height-inversion leg of the reflection is consumed
+only on the weld axis, where it coincides with conjugation, and the carrier's continuation carries it off-axis.
 \end{lemma}
 \begin{proof}
-In 3D the reflection is not an analytic assembly but a \emph{geometric symmetry}. Hypothesis (iv) is the
-carrier's own involution $J$ --- the helix$\leftrightarrow$anti-helix exchange (Theorem~\ref{thm:carrierreflection})
---- acting \emph{termwise} on the bank: each phasor maps to its conjugate, and the fiber is $J$-invariant precisely
-because its channel multiset is closed under negation, the per-place reflection $L_v(s)=\varepsilon_v
-L_v(\kappa-s)$ (\texttt{localPoly\_reciprocal}) with $\varepsilon_{r,\tau}=\prod_v\varepsilon_v$ the ledger unit
-(i)--(ii). Because $J$ acts phasor by phasor, the interchange of $\sum_n$ with the reflection is immediate, and
-$K_{r,\tau}(1/x)=\varepsilon_{r,\tau}x^\kappa K_{r,\tau^\vee}(x)$; its Mellin (iii) is the stated equation. The one
-place this looks like work is in the \emph{$1$D readout}: multiplying the local reciprocities reconstructs the
-reflection only on $\{\Re s>\sigma_0\}\cap\{\Re s<\kappa-\sigma_0\}$, empty when $\sigma_0>\kappa/2$. That empty
-region is a \emph{projection artifact}, not a gap --- it records that the scalar Dirichlet series cannot reassemble
-from local data a symmetry the bank carries geometrically. The carrier does not build $\Lambda$ as an Euler
-quotient with a convergence edge but as the Mellin of the \emph{entire} theta, on which $J$ is defined at every
-height. This self-duality is Lean-complete for the Dirichlet model and verified machine-zero for the Siegel
-($\mathrm{Sp}(2g,\mathbb Z)$) and Godement--Jacquet ($\mathrm{GL}(r{+}1,\mathbb Z)$) carrier lattices
-(\S\ref{sec:machinery}); on the twisted family the bank's channel multiset is exactly negation-closed
-(\S\ref{sec:sym5}). So ``multiplicative over the bank'' names the carrier involution $J$: a geometric symmetry read
-termwise, at the carrier's own tier, not a $1$D continuation to be supplied.
+The reflection has two legs --- the duality/conjugation leg ($\tau\leftrightarrow\tau^\vee$, the unit
+$\varepsilon$) and the height-inversion leg ($s\mapsto\kappa-s$) --- and the carrier supplies them at
+different places.
+
+\emph{Step 1: on the weld axis, inversion IS conjugation.} On $\Re s=\kappa/2$ one has $\kappa-s=\bar s$
+exactly, so the height-inversion leg degenerates there to conjugation --- the one symmetry the involution $J$
+implements phasor by phasor (Theorem~\ref{thm:carrierreflection}). (As an identity of the $1$D analytic
+readouts this is consumed only after Step~2 supplies their axis values; on the carrier itself it is chart-free
+--- the standing wave is read directly at the weld.) With the unitary dual coefficients
+$\lambda_n^{\vee}=\bar\lambda_n$ and the real completion kernel,
+$\Lambda(\kappa-s;\tau^\vee)=\overline{\Lambda(s;\tau)}$ on the axis, so the claimed equation restricted to
+the axis is exactly $\varepsilon_{r,\tau}^{-1/2}\Lambda(\tfrac\kappa2+it;\tau)\in\mathbb R$ --- the
+\emph{standing wave}: the two-lane balance $\|E(z)\|=\|E^{*}(z)\|$ at the reality locus, $J$ exchanging the
+lanes with the det-one ledger \textup{(i)} and the self-dual completion clock \textup{(ii)}
+(\texttt{frobeniusBlock\_deBranges\_reality\_bridge} per block; \texttt{collapseWave\_even},
+\texttt{hinge\_turning\_point} at the weld; the ledger unit $\varepsilon_{r,\tau}=\prod_v\varepsilon_v$,
+$|\varepsilon_{r,\tau}|=1$ from \texttt{localPoly\_reciprocal}). The reflection is read where the carrier
+itself reads it --- at the weld --- not reassembled from local data at a convergence edge.
+
+\emph{Step 2: continuation carries the axis identity everywhere.} Both completed readouts continue
+analytically to a connected neighbourhood of the axis by the \emph{warped-Abel} route --- the adapted warp's
+bounded primitive and inverse-warp readout (\S\ref{sec:construct}; Lemma~\ref{lem:residual} for the harmonic
+and Dirichlet classes, the forcible closure of Lemma~\ref{lem:forcible} for the cuspidal fibers) --- which is
+reflection-free: no step here consumes the theta identity or the functional equation. On that neighbourhood
+the two sides of the claimed equation are analytic and agree on the axis, a set with accumulation points; by
+the identity theorem they agree identically. The dependency order is
+continuation~$\to$~axis reality~$\to$~functional equation~$\to$~theta identity: with the residual extinct
+(Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) Mellin inversion \emph{returns} the summed-bank self-duality
+$K_{r,\tau}(1/x)=\varepsilon_{r,\tau}x^{\kappa}K_{r,\tau^\vee}(x)$ as an \emph{output}, which is what the
+Riemann--Hecke split of Prop.~\ref{prop:niceness}\,(E) and the direct strip bound of Lemma~\ref{lem:bounded}
+then consume --- no step feeds on its successor.
+
+\emph{Why no Poisson --- and why not termwise.} Off the axis, $x\mapsto1/x$ mixes distinct phasors: the
+reciprocal-height identity is a resummation across the bank, and per-phasor symmetry alone cannot supply it.
+This is \emph{measured}: a completely multiplicative sign system carries the identical per-term reflection
+algebra (same self-dual kernel, unit channels, negation-closed), yet its summed identity fails by up to two
+orders of magnitude while the self-dual lattice anchor holds at machine zero
+(\texttt{random\_euler\_control.py}; the scrambled-coefficient controls of \texttt{delta\_discriminate.py}
+agree). Classically that resummation is Poisson/modularity --- unavailable at $r\ge5$. The route above never
+performs it: the inversion leg is used only on the axis, where it is conjugation, and continuation --- a
+carrier property, not the fiber's automorphy --- carries it off. The $1$D co-convergence gap
+($\{\Re s>\sigma_0\}\cap\{\Re s<\kappa-\sigma_0\}$ empty for $\sigma_0>\kappa/2$) is the scalar chart's record
+of the same fact: the half-plane series cannot reach the axis, so the classical frame must resummate; the
+carrier readout, continued to the axis by cell closure, need not. Axis reality is per-block Lean, whole-bank
+geometric ($J$ with the balanced ledger), and machine-zero across the measured suite --- Dirichlet
+Lean-complete, the Siegel ($\mathrm{Sp}(2g,\mathbb Z)$) and Godement--Jacquet
+($\mathrm{GL}(r{+}1,\mathbb Z)$) carrier lattices, the twisted family through $\Sym^{13}$ and
+$L(\Sym^5\Delta\times E_{11})$ (\S\ref{sec:machinery}, \S\ref{sec:sym5}).
 \end{proof}
 
 \begin{proposition}[Completed twisted functional equation]\label{prop:completedFE}
@@ -1787,7 +1836,7 @@ itself give the global functional equation.}
 
 \emph{(2) Carrier reflection.} By Theorem~\ref{thm:carrierreflection} the carrier's double helix maps to its
 conjugate anti-helix: $E^{*}(\bar z)=\varepsilon\,E(z)$, the global strand exchange fixed at $\Re s=\tfrac12$
---- the self-dual clock weld, multiplicative over the bank (Lemma~\ref{lem:bankreflection}: the carrier involution $J$ acting termwise on the bank; the $1$D co-convergence gap when $\sigma_0>\kappa/2$ is a projection artifact, not a missing input).
+--- the self-dual clock weld read at the weld axis (Lemma~\ref{lem:bankreflection}: on $\Re s=\kappa/2$ the height inversion coincides with conjugation, which $J$ supplies phasor by phasor; the warped-Abel continuation then carries the axis identity off-axis --- no Poisson summation and no termwise-interchange claim, the $1$D co-convergence gap being the scalar chart's record of why the classical frame must instead resummate).
 
 \emph{(3) The readout carries the reflection ($s\mapsto1-s$).} Reading the carrier along the vertical line
 --- the Mellin/projection $\mathcal M$ of \S\ref{sec:construct}, which sends $z\mapsto\bar z$ to $s\mapsto1-s$
@@ -2069,11 +2118,17 @@ census resolves \emph{independently} (\texttt{hodge\_layer\_calib.py}, App.~\ref
 $r$ (vanishing multiplicity), the regulator $\mathrm{Reg}$ (the height/Abel--Jacobi datum),
 and $|\Sha|$ (the local--global obstruction) --- e.g. order $0$ with $|\Sha|\in\{1,4,9\}$ and
 $|\Sha|=1$ with order $\in\{1,2,3\}$ at distinct $\mathrm{Reg}$. So three filtration layers do get three
-distinct coordinates. The deeper layers are not invisible but \emph{induced at the appropriate tower
-level}: $|\Sha|$ appears in the leading value at level one; algebraic/CM cycles appear in the recursive
-$\Sym$-tower pole orders (above); and the \emph{transcendental} Ceresa/Griffiths class --- the image of the
-Gross--Schoen modified diagonal in $\mathrm{CH}^2(C^3)_0$ --- is induced at the \emph{tensor-cube} level,
-where its Beilinson--Bloch height lives at the tensor-cube tower level. The carrier's value channel reaches it at level three exactly as it reaches $|\Sha|$ at level one, and \emph{initial results appear to affirm} the reading that every layer is induced at some tower level (the regulator/value channel fires across the census, no silent cycle; \texttt{hodge\_griffiths\_probe.py}). The triple-product derivation landing the Ceresa height and the ledger$\,\leftrightarrow\,$Bloch--Beilinson correspondence are developed in \S\ref{sec:status} and the companion paper.
+distinct coordinates. The semisimple carrier tower is now \emph{jointly faithful}: on a finite
+duality-stable weight fiber, distinct clock frequencies make the moment tower
+$T_d(c)=\sum_i c_i\lambda_i^{\,d}$ Vandermonde, so every nonzero amplitude state is detected at finite
+depth (\S\ref{sec:status}, proved unconditionally). The deeper \emph{extension} layers motivate the
+corresponding derivative/height tower: $|\Sha|$ enters the leading value at level one, algebraic/CM cycles
+the recursive $\Sym$-tower pole orders (above), and the \emph{transcendental} Ceresa/Gross--Schoen class
+--- the modified diagonal in $\mathrm{CH}^2(C^3)_0$ --- is the tensor-cube \emph{test case}, where
+theorem-anchored arithmetic height formulas relate its Beilinson--Bloch height to a triple-product central
+derivative in the cited settings. The computations place the signal at level three (no silent cycle in the
+census, \texttt{hodge\_griffiths\_probe.py}); the exact carrier-to-height landing and joint faithfulness of
+the extension tower remain companion-paper targets (\S\ref{sec:status}).
 
 \paragraph{The reflection is carrier geometry; the FE clock adapts it.} The functional equation is not an
 analytic hypothesis on the fiber but a property of the \emph{carrier geometry}: the helix--anti-helix
@@ -2456,8 +2511,9 @@ functorial transport.} Version~1 asks only existence plus a computable rule, not
 evidence is the capitulation prototype, the constructive $\operatorname{Synth}$ operator, and the finite depth
 index of the tower; and the \emph{termination} half is no longer wholly open --- it is characterized below by a
 local--global principle at the signature's depth (Proposition~\ref{prop:terminating}), unconditional at depths
-$1$ and $2$, with the transcendental ceiling the sharp non-terminating boundary. What remains is the local--global
-principle at higher depth and the synthesis rule off the two settled regimes.
+$1$ and $2$, the non-terminating boundary being the stably essential classes (not removable by finite
+enlargement). What remains is the local--global principle at higher depth and the synthesis rule off the two
+settled regimes.
 
 \paragraph{Killability boundary, and what would falsify it.} The claim is guarded, and pre-commits to its failure
 modes. \emph{(1) Visibility does not imply killability}: not every detected class is removable by a finite
@@ -2491,14 +2547,16 @@ theorem: the vanishing of the summed local invariants (reciprocity) forces a fin
 (\texttt{brauer\_zero\_trap.py}, \texttt{BrauerZeroTrap.lean}).
 \end{proposition}
 \noindent The boundary is equally sharp: termination \emph{fails} exactly where the local--global principle fails
-at depth $d$ --- for a \emph{stably essential} class, one nonzero under restriction to \emph{every} finite carrier
-extension. These are the non-terminating signatures, and the carrier already names their arithmetic incarnation:
-the \emph{transcendental} Griffiths class, $L$-invisible, the ceiling of the loss-ledger$\,\leftrightarrow\,$%
-cycle-filtration tower (\S\ref{sec:status}) --- visible to the ledger at its tower depth yet killed by no finite
-extension, because no local datum detects it. So the operator's reach is \emph{precisely} the local--global
-regime: below the ceiling a signature is visible \emph{and} killable and the constructive synthesis of
-$\mathfrak E$ terminates; at the ceiling it is visible but not killable. Which side a given $\alpha$ falls on is
-read from whether its depth-$d$ obstruction is locally trivial --- decided by the signature, not left to chance.
+at depth $d$ --- for a \emph{stably essential} class, one nonzero under restriction to \emph{every} finite
+admissible carrier enlargement and therefore not removable by finite enlargement. The boundary beyond the
+terminating local--global regimes is \emph{not} identified here with the transcendental Griffiths group.
+Detection is a separate question from removal: finite-tower \emph{visibility} of Griffiths/Ceresa extension data
+depends on the joint faithfulness of the derivative/height tower and is treated in \S\ref{sec:status}. So the
+operator's reach is \emph{precisely} the local--global regime: below the boundary a signature is locally trivial
+at depth $d$ and the constructive synthesis of $\mathfrak E$ terminates; a stably essential signature is not
+killable by finite enlargement. Thus ``not removable'' does not mean ``invisible,'' and no transcendental
+Griffiths ceiling is asserted here. Which side a given $\alpha$ falls on is read from whether its depth-$d$
+obstruction is locally trivial --- decided by the signature, not left to chance.
 
 \paragraph{The control-system reading.} Equivalently $\mathfrak E$ is a closed-loop controller for representation
 mismatch: detect the residual mode, retune the participating clocks $\tau_j\mapsto\tau_j^\#$, enlarge the common
@@ -2784,14 +2842,16 @@ instances, and the Maass fiber is the same finite algebra.  Axiom footprint
 $\{$\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}.
 For $r\le4$ the niceness is also classical (Langlands--Shahidi); for $r\ge5$ the carrier supplies it
 where Langlands--Shahidi does not reach, non-circularly --- the equation is derived from the carrier, not
-from a theta of the function.  The completed twisted reflection is theorem-level and \emph{general}: the
-completed carrier readout $\Lambda=\gamma\,L$ of the whole $\Sym^r\pi\times\sigma$ family satisfies
-$\Lambda(s)=\varepsilon\,\Lambda^\vee(1-s)$ as the carrier involution $J$, machine-checked with \emph{no}
-Dirichlet hypothesis (\texttt{CompletedReflectionFiber.symTensorCompleted\_FE}, any $r$ and any duality-stable
-twist, assembling the general per-place reflection \texttt{localPoly\_reciprocal} and the general completion
-self-duality \texttt{clockCompletion\_selfdual}; footprint
-$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$), together with the residue-free entireness
-of Lemma~\ref{lem:rankgap}.  The exact identification of this completed carrier readout with the classical global
+from a theta of the function.  The completed-reflection \emph{assembly} is machine-checked with \emph{no} Dirichlet hypothesis
+(\texttt{CompletedReflectionFiber.symTensorCompleted\_FE}, any $r$ and any duality-stable twist, assembling the
+general per-place reflection \texttt{localPoly\_reciprocal} and the general completion self-duality
+\texttt{clockCompletion\_selfdual}; footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$): it certifies the completed \emph{local}
+object's reflection $\Lambda(s)=\varepsilon\,\Lambda^\vee(1-s)$ for the whole family, not the global twisted FE
+by itself. The \emph{global} strand exchange it consumes --- step (2) of Prop.~\ref{prop:completedFE}, the
+carrier involution $J$ of Theorem~\ref{thm:carrierreflection} --- is proved in the manuscript and Lean-covered
+componentwise, not in that file (App.~\ref{app:repro}); with it, and with the residue-free entireness of
+Lemma~\ref{lem:rankgap}, the family's completed twisted functional equation follows.  The exact identification of this completed carrier readout with the classical global
 $\Lambda(s,\Sym^r\pi\times\sigma)$ is unconditional and proved in Proposition~\ref{prop:localid} together with the
 unfolding identity \textup{(E5)}: the carrier and classical constructions have the same local factors at every
 place --- archimedean factors, conductor, and root number included (Prop.~\ref{prop:localid}) --- so their
@@ -2841,8 +2901,9 @@ carrier reflection (ledger \texttt{fiber\_det\_one}, per-place functional equati
 \texttt{warpFiber}), with $\Sym^r$ (\texttt{symFiber}) and Rankin--Selberg (\texttt{tensorFiber}) as
 instances and the standard axiom footprint (App.~\ref{app:repro}).  So the functional-equation input of
 Proposition~\ref{prop:niceness} is machine-checked at the general interface it actually consumes, not
-only for the Dirichlet model --- and the completed twisted reflection itself is theorem-level for the whole
-family (\texttt{symTensorCompleted\_FE}, above).  The remaining limitation is formalization scope only: the
+only for the Dirichlet model --- and the completed-reflection assembly is machine-checked family-generally
+(\texttt{symTensorCompleted\_FE}, above; the global strand-exchange input, step (2) of
+Prop.~\ref{prop:completedFE}, remains manuscript-level).  The remaining limitation is formalization scope only: the
 Dirichlet model is instantiated end-to-end in Lean, while the general tensor family --- classical-$L$
 identification included (Prop.~\ref{prop:localid} with \textup{(E5)}) --- is proved in the manuscript but not yet
 formalized end-to-end.  The numerical experiments retained serve only as calibration and independent reproduction
@@ -2877,15 +2938,16 @@ and its leading central jet factors, by BSD/Gross--Zagier, into three invariants
 height/Abel--Jacobi datum), and $|\Sha|$ (the local--global obstruction). So each of three
 cycle-filtration layers ordinarily invisible to Hodge projection carries a \emph{distinct} retained
 coordinate --- a genuinely different phenomenon from the Hodge-visible detection, and the reason those
-results are marked preliminary. The organising principle is that no layer is invisible: each is
-\emph{induced} at the appropriate tower level. Beyond $|\Sha|$, the \emph{transcendental} Ceresa/Griffiths
-class --- the image of the Gross--Schoen modified diagonal in $\mathrm{CH}^2(C^3)_0$, homologically
-trivial --- is induced at the \emph{tensor-cube} level, where its Beilinson--Bloch height is related, in
-the relevant theorem-anchored triple-product settings, to a central $L$-derivative of $H^1(C)^{\otimes3}$
-(Zhang \cite{ZhangGS}; Yuan--Zhang--Zhang \cite{YZZ}); the classical hyperelliptic control vanishes, while
-known nontrivial Ceresa/Gross--Schoen examples provide positive level-three controls. So the value channel
-reaches it at level three exactly as it reaches $|\Sha|$ at level
-one --- not invisible, but the wrong readout at level one. \emph{Initial results appear to affirm} this
+results are marked preliminary. The organising principle is that no layer should remain
+invisible. This is \emph{theorem-level} for semisimple carrier states, where the moment tower is jointly
+faithful (\S\ref{sec:status}), and is the \emph{target} for extension classes. Beyond $|\Sha|$, the
+\emph{transcendental} Ceresa/Gross--Schoen class --- the modified diagonal in $\mathrm{CH}^2(C^3)_0$,
+homologically trivial --- is the tensor-cube \emph{test case} for the derivative/height tower, where its
+Beilinson--Bloch height is related, in the relevant theorem-anchored triple-product settings, to a central
+$L$-derivative of $H^1(C)^{\otimes3}$ (Zhang \cite{ZhangGS}; Yuan--Zhang--Zhang \cite{YZZ}); the classical
+hyperelliptic control vanishes, while known nontrivial Ceresa/Gross--Schoen examples provide positive
+level-three controls. Its exact carrier landing and extension-tower faithfulness are developed in the
+companion paper --- not proved here. \emph{Initial results appear to affirm} this
 (\texttt{hodge\_griffiths\_probe.py}, App.~\ref{app:repro}): the regulator/value channel fires for every
 homologically-trivial cycle in the census (no silent cycle), and the recursive tower already shows cycles
 absent at level one appearing at level $\ge2$. The companion paper carries out the full correspondence: a
@@ -2894,15 +2956,92 @@ each higher Griffiths layer, and the ledger$\,\leftrightarrow\,$Bloch--Beilinson
 further probe against a deeper cycle-filtration example produced the expected \emph{delayed tower
 signature} $0,\dots,0,\neq0$: a class silent at depth $1$ first fires at depth $2$, recomputed from
 point-counting, its first nonzero slot matching the expected tower level of the class
-(\texttt{tower\_exhaustion\_test.py}, App.~\ref{app:repro}). The proposed correspondence
+(\texttt{tower\_exhaustion\_test.py}, App.~\ref{app:repro}). Define the \emph{carrier filtration} by
+vanishing of the tower readouts $T_j$,
 \[
-  \boxed{\ \text{first nonzero carrier tower depth}\ =\ \text{Bloch--Beilinson filtration depth}\ }
+  F_{\mathrm{car}}^{\,d}\ :=\ \{\,z:\ T_0(z)=\dots=T_{d-1}(z)=0\,\},
 \]
---- a structured strengthening of the Beilinson--Bloch prediction (regulator
-nondegeneracy plus tower completeness); each landing used here is theorem-anchored --- Tate and
-Gross--Zagier--Kolyvagin at depth one, and the Gross--Schoen/Ceresa triple-product bridge at tensor depth
-three (\cite{ZhangGS,YZZ}) --- is the
-spine of the companion paper and is developed there, not here.
+with \emph{no} reference to any Bloch--Beilinson depth (non-circular by construction). On this
+definition the depth correspondence is a \emph{theorem}, machine-checked in Lean
+(\texttt{RequestProject/HodgeLedgerFiltration.lean}, footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}):
+$F_{\mathrm{car}}$ is an antitone filtration with $F_{\mathrm{car}}^{\,0}$ everything
+(\texttt{carrierFiltration\_antitone}); the level-$d$ ledger coordinate is faithful, its kernel on
+$F_{\mathrm{car}}^{\,d}$ being \emph{exactly} $F_{\mathrm{car}}^{\,d+1}$ (\texttt{ledger\_kernel},
+\texttt{mem\_carrierFiltration\_succ}); no lower level falsely fires (\texttt{no\_early\_detection},
+direction B) and a genuine grade-$d$ class does fire at level $d$ (\texttt{grade\_visibility},
+direction A); whence
+\[
+  \boxed{\ \text{first nonzero carrier tower depth}\ =\ F_{\mathrm{car}}\text{-filtration depth}\ }
+\]
+(\texttt{firstVisibleDepth\_eq\_grade}), the depth unique (\texttt{isFirstVisible\_unique}) and
+preserved by any faithful carrier transport (\texttt{isFirstVisible\_map\_iff}). We price these statements
+exactly: since $F_{\mathrm{car}}$ is \emph{defined} by vanishing of the tower readouts, the depth
+correspondence is definitional bookkeeping, exact by construction --- their value is that
+transport-invariance and the conditional identification below attach to a non-circular, machine-fixed
+object, not that the correspondence is itself deep. Moreover
+$F_{\mathrm{car}}$ is the \emph{unique} filtration whose graded pieces are cut out by the tower
+(\texttt{carrierFiltration\_unique}); \emph{consequently, whenever} a Bloch--Beilinson filtration
+exists with those universal properties on the source class, it coincides with $F_{\mathrm{car}}$
+(\texttt{blochBeilinson\_coincides}) --- a conditional corollary that assumes no general existence of
+the (conjectural) Bloch--Beilinson filtration, which is stronger and cleaner than positing that
+existence. Two inputs are \emph{not} carried here for the full extension/cycle class --- the semisimple half
+being unconditional (below) --- and are the spine of the companion paper: joint faithfulness of the
+derivative/height tower, equivalently the no-silent-layer statement $z\ne0\Rightarrow\exists d,\ T_d(z)\ne0$
+on extension data (\texttt{Exhaustive}; supported numerically by \texttt{hodge\_griffiths\_probe.py} and
+\texttt{tower\_exhaustion\_test.py}, \emph{not} proved on extension data), and the from-scratch triple-product
+central-derivative identity landing the Ceresa/Gross--Schoen height at level three (whose
+derivative-to-height step consumes Zhang \cite{ZhangGS} / Yuan--Zhang--Zhang \cite{YZZ}). Each
+arithmetic landing invoked is theorem-anchored --- Tate and Gross--Zagier--Kolyvagin at depth one,
+the Gross--Schoen/Ceresa triple-product bridge at tensor depth three (\cite{ZhangGS,YZZ}). So the
+depth correspondence is a machine-checked theorem for the carrier filtration $F_{\mathrm{car}}$ and a
+conditional corollary for Bloch--Beilinson. The no-silent-layer input is precisely triviality of the
+\emph{carrier radical} $R:=\bigcap_d\ker T_d$ (\texttt{exhaustive\_of\_radical\_trivial}), which
+reduces gradewise to a nondegeneracy obligation --- a faithful regulator into an anisotropic height
+pairing (\texttt{grade\_visible\_of\_nondegenerate}), discharged by N\'eron--Tate positivity at depth
+one.
+
+\emph{The structural half is unconditional.} On the \emph{semisimple} carrier state --- the finite
+duality-stable weight fiber, an amplitude state $c$ over distinct clock frequencies $\{\lambda_i\}$ ---
+the symmetric-power/moment tower $T_d(c)=\sum_i c_i\lambda_i^{\,d}$ is a \emph{jointly faithful}
+coordinate system: distinct frequencies make the moment matrix Vandermonde, so $\bigcap_d\ker T_d=0$
+and every nonzero state fires at some finite level (\texttt{CarrierTowerSeparation.momentTower\_%
+exhaustive}, from \texttt{momentTower\_detects} $\to$ \texttt{momentTower\_radical\_trivial} $\to$
+\texttt{exhaustive\_of\_radical\_trivial}; Lean, footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}).
+This is the finite-structural route --- faithful carrier state $\to$ complete moment record $\to$ tower
+decomposition --- carried out where it closes, discharging no-silent-layer \emph{unconditionally} on the
+semisimple source class with \emph{no} Bloch--Beilinson input. The scope is exactly that: the Vandermonde
+separation is a theorem about the weight-fiber amplitude state. A homologically-trivial cycle contributes,
+in the relevant Abel--Jacobi/motivic realization, \emph{extension} data rather than merely a semisimple
+weight-fiber amplitude state --- \emph{outside} the reach of this theorem; whether the derivative/height
+tower is a jointly faithful coordinate system on that extension data --- and hence whether $R=0$ extends
+from the semisimple state to cycles --- is the remaining problem, not settled here.
+
+We do \emph{not} place the transcendental (Abel--Jacobi-trivial) Griffiths class in $R$: that
+would require every $T_d$ to \emph{factor through} the conventional Abel--Jacobi realization
+(\texttt{radical\_of\_factorsThrough}). Since the global Gross--Schoen height carries
+\emph{non-archimedean} arithmetic data (Zhang's admissible/metrized-graph local terms \cite{ZhangGS})
+absent from that single-archimedean realization, factorization through $AJ_{\mathbb C}$ \emph{cannot be
+assumed}, and ruling it out is itself a separate non-factorization theorem, not established here.
+Absent one, homological- and Abel--Jacobi-triviality is an \emph{adversarial} no-silent-layer
+benchmark (\texttt{not\_mem\_radical\_of\_detectedPast}), \emph{not} a proven ceiling. One rung of this
+is \emph{unconditional}: for the Fermat quartic the Ceresa class $[C]-[C^-]$ is homologically trivial
+yet is detected by a nonzero \emph{harmonic volume}, Harris's Abel--Jacobi-type invariant (Harris
+\cite{Harris}; Ceresa \cite{Ceresa} for the generic curve), so
+$\ker(\mathrm{cl})\not\subseteq\ker(AJ_{\mathbb C})$ --- a class closed in the homology readout fires at
+the next retained coordinate, no conjecture. This establishes exactly the
+\emph{first} rung (past $\mathrm{cl}$); it does \emph{not} show the $AJ_{\mathbb C}$-kernel itself is
+penetrated by $T_3$. For that deeper rung the explicit evidence currently cuts the other way: in the
+explicit bielliptic Picard family with a closed-form height, the Beilinson--Bloch height of the
+Ceresa cycle is \emph{proportional to the N\'eron--Tate height of its Abel--Jacobi point}, vanishing
+exactly when that point is torsion (Laga--Shnidman \cite{LagaShnidman}) --- the Beilinson--Bloch height is
+controlled by the associated N\'eron--Tate coordinate there, so it does not penetrate $\ker AJ_{\mathbb C}$. The genuine deeper target
+is therefore a class with $AJ_{\mathbb C}(z)$ zero or torsion yet a nonzero \emph{arithmetic}
+level-three invariant --- necessarily one where the \emph{non-archimedean} local height dominates
+(Zhang's metrized-graph terms) or where the finer $\ell$-adic/Galois Ceresa class, not the archimedean
+height, is the retained coordinate; that, with the from-scratch Ceresa landing, is the companion
+paper's target.
 
 \appendix
 \section{Reproducibility}\label{app:repro}
@@ -3029,9 +3168,11 @@ normalized residual an exact nonzero multiple of the readout and hence no indepe
 formally proven in Lean at the channel-agnostic (general-fiber) level (\texttt{FocalResidualGeneral}, next
 entry). The completed twisted functional equation is assembled by \texttt{completed\_FE} from three inputs:
 fiber admissibility (\texttt{localPoly\_reciprocal}, general Lean), the completion self-duality (the self-dual
-clock, general Lean), and the \emph{carrier reflection} of Theorem~\ref{thm:carrierreflection} --- the global
-helix-to-anti-helix strand exchange, the self-dual clock weld \texttt{ChiralityHB.symClock\_star} per-clock
-(general Lean) and multiplicative over the bank, specialising to the classical theta functional equation for
+clock, general Lean), and the \emph{carrier reflection} of Theorem~\ref{thm:carrierreflection} --- read at the
+weld axis, where height inversion coincides with conjugation, the self-dual clock weld
+\texttt{ChiralityHB.symClock\_star} per-clock (general Lean) supplying the conjugation leg and the warped-Abel
+continuation carrying the axis identity off-axis (Lemma~\ref{lem:bankreflection}, no termwise bank interchange
+claimed) --- specialising to the classical theta functional equation for
 the Dirichlet model; for the general family that specialisation is proved in the manuscript
 (Prop.~\ref{prop:localid} with \textup{(E5)}) and reproduced numerically through $\Sym^{13}$, not yet formalized
 end-to-end in Lean. \texttt{fiberCompleted}
@@ -3168,9 +3309,10 @@ $\mathrm{Reg}=0.0511,0.1524,0.4171$ and $|\Sha|=1$ (machine precision, known-val
 not exhausted here; the present probe tests the induction route on homologically-trivial and delayed-depth
 controls: \texttt{hodge\_griffiths\_probe.py} records the route
 --- the value channel fires for every homologically-trivial cycle in the census ($3/3$ positive-order
-curves, $0$ regulator-silent), and the Ceresa/Griffiths class is induced at the tensor-cube level as the
-triple-product central $L$-derivative (Gross--Schoen height, Zhang \cite{ZhangGS}/Yuan--Zhang--Zhang
-\cite{YZZ}) --- with the from-scratch landing deferred to the companion paper.
+curves, $0$ regulator-silent), and the Ceresa/Griffiths class is the tensor-cube \emph{test case}, its
+Beilinson--Bloch height related to the triple-product central $L$-derivative in the theorem-anchored
+settings (Gross--Schoen height, Zhang \cite{ZhangGS}/Yuan--Zhang--Zhang \cite{YZZ}) --- with the
+from-scratch carrier landing and extension-tower faithfulness deferred to the companion paper.
 
 \item \textbf{Delayed tower signature (\S\ref{sec:status}), \texttt{tower\_exhaustion\_test.py}}
 (from point-counting, oracle-free). The excess pole order of $L(\Sym^r f\times\Sym^r f)$ of the CM
@@ -3179,6 +3321,15 @@ $r=2,3,4$ (fires), identically for $y^2=x^3+1$ --- the $0,\neq0,\dots$ signature
 at depth $2$, matching the tensor level $\Sym^2$ that hosts the CM self-correspondence. Every concrete
 class tested fires at a finite first depth (Tate/Mordell--Weil/$|\Sha|$ at $1$, CM at $2$, Ceresa at $3$);
 none silent-forever.
+
+\item \textbf{The inversion leg is not termwise (Lemma~\ref{lem:bankreflection}),
+\texttt{random\_euler\_control.py}.} The discriminating control for the axis-reality architecture: the
+self-dual lattice anchor obeys $\theta(1/x)=\sqrt x\,\theta(x)$ at machine zero ($\le2.2\times10^{-16}$,
+Poisson), while completely multiplicative sign systems carrying the \emph{identical} per-term reflection
+algebra --- Liouville $\lambda(n)$ and random-sign Euler systems --- fail the summed identity by up to
+$1.1\times10^{2}$ at small $x$ (where $\sim x^{-1/2}$ coefficients genuinely participate). The
+reciprocal-height identity is coefficient-sensitive --- a resummation across the bank --- so the carrier
+supplies it via axis reality plus continuation, never by a termwise interchange.
 
 \item \textbf{Twisted CPS instances (\S\ref{sec:sym5}), \texttt{twisted\_cps\_instance.py}.} The objects
 Theorem~\ref{thm:cps} actually consumes, tested directly. \emph{Factorizing control:} the degree-$12$ twisted
@@ -3200,7 +3351,7 @@ cross-checked against Sage's quaternion-algebra/Hilbert-symbol oracle; the remov
 
 \item \textbf{Genuine non-self-dual $\mathrm{GL}(3)$ (\S\ref{sec:pipeline}, table row), \texttt{f21\_gl3\_multirail.py} (data via Sage \texttt{idealfrobenius}) and \texttt{RequestProject/F21NonSelfDual.lean}.} The degree-three complex Artin representation of $F_{21}=C_7\rtimes C_3$ (field $x^7-14x^5+56x^3-56x+22$). Order-seven Satake $\{\zeta_7,\zeta_7^2,\zeta_7^4\}$ (Gauss period $\eta$) or its conjugate ($\eta'$); classes at $p=13,41$ (both $\equiv6\bmod7$) genuinely split $\eta'/\eta$. Multi-rail cell closure of the non-DC rails tracks precision, $1.5\times10^{-30}$ (30 digits) to $4.3\times10^{-62}$ (60), $\prod\text{rails}=\zeta_7^{1+2+4}=1$. Lean: exact cell closure of both classes, $\eta+\eta'=-1$, $\eta\eta'=2$, $\eta\ne\eta'$, and $\mathrm{Re}\,\eta=\mathrm{Re}\,\eta'$ with $\eta\ne\eta'$ (the scalar obstruction). Footprint $\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}.
 
-\item \textbf{Forcible cell closure (Lemma~\ref{lem:forcible}), \texttt{forcible\_closure.py} and \texttt{RequestProject/ForcibleClosure.lean}.} Three coherent generators $(\Omega(n),\omega(n),\log n)$ drive $|D_C|\to4\times10^{-15}$ on $\Sym^5\Delta$ and $\Sym^{13}\Delta$ with weights $|x|<1.5$; forcing one cell leaves the next at its $O(\sqrt{|C|})$ scale. Lean \texttt{residual\_forcible}: two $\mathbb R$-independent directions span $\mathbb C$, so any residual is forcible to zero. Footprint $\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}.
+\item \textbf{Forcible cell closure (Lemma~\ref{lem:forcible}), \texttt{forcible\_closure.py} and \texttt{RequestProject/ForcibleClosure.lean}.} On \emph{native} growth cells --- uniform in $y=\log Z$, each phasor entering at zero magnitude through the canonical $C^{\infty}$ window \texttt{focal\_closure.growth\_window}, no clipped edge --- exact Gauss--Newton over the coherent generators closes the nonlinear cell residual to the float64 floor on \emph{every} cell: with $(\Omega,\omega,\log n,\Theta)$, $\Theta(n)=\sum_{p^k\|n}k\,\theta_p$ the fiber's own local periods, $30/30$ cells close on each of $\Delta$, $\Sym^5\Delta$, $\Sym^{13}\Delta$ --- median $|D_C|=4.9\times10^{-15},1.4\times10^{-14},7.8\times10^{-15}$, max relative residual $\le3.6\times10^{-14}$, weights $|x|\le1.28,3.07,2.27$ (integer-generator phases mod $2\pi$). Three generators alone close $30/30$ on $\Delta,\Sym^5\Delta$ and $29/30$ on $\Sym^{13}\Delta$; the one rank-deficient cell is closed by adjoining $\Theta$ --- the resisting cell naming its adapter. One cell's weights leave the next cell's residual at its own scale ($10$--$38\%$ of that cell's mass) --- cross-cell independence. The sharp-window clip control (retained in the script) manufactures $1$--$3$ resistant cells per fiber with exploding weights: the never-clip method law made measurable. Lean \texttt{residual\_forcible}: two $\mathbb R$-independent directions span $\mathbb C$, so any residual is forcible to zero; \texttt{CarrierReachability.reachable\_independent\_stage}: a continuous non-constant lane phase attains $\sin(2\phi)\neq0$ (a connected image cannot lie in the discrete lock $\tfrac{\pi}{2}\mathbb Z$), supplying the pair --- the two are composed by direct application, no further Lean theorem claimed. Footprint $\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}.
 
 \item \textbf{Carrier-transport functoriality (\S\ref{sec:general}), \texttt{RequestProject/CarrierFunctoriality.lean} and \texttt{composition\_test.py}.} \texttt{faithful\_comp} (the composite of closure-preserving transports preserves closure, \emph{no} axioms) with associativity, two-sided identity, and base change $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$; the script verifies exact plethysm splitting $\Sym^2\!\circ\Sym^2=\Sym^4\oplus\Sym^0$, $\Sym^3\!\circ\Sym^3=\Sym^9\oplus\Sym^5\oplus\Sym^3$.
 
@@ -3260,6 +3411,14 @@ Press (1939), \S\S5.6--5.65 (Phragm\'en--Lindel\"of).
 \bibitem{YZZ} X.~Yuan, S.~Zhang, and W.~Zhang, \emph{Triple product $L$-series and Gross--Schoen
 cycles}, book manuscript; the central derivative of the triple-product $L$-function as a
 Gross--Schoen/Ceresa height.
+\bibitem{Ceresa} G.~Ceresa, \emph{$C$ is not algebraically equivalent to $C^-$ in its Jacobian},
+Ann.\ of Math.\ (2) \textbf{117} (1983), 285--291.
+\bibitem{Harris} B.~Harris, \emph{Harmonic volumes}, Acta Math.\ \textbf{150} (1983), 91--123, and
+\emph{Homological versus algebraic equivalence in a Jacobian}, Proc.\ Natl.\ Acad.\ Sci.\ USA
+\textbf{80} (1983), 1157--1158 --- the Fermat-quartic Ceresa cycle detected by a nonzero harmonic volume.
+\bibitem{LagaShnidman} J.~Laga and A.~Shnidman, \emph{Ceresa cycles of bielliptic Picard curves},
+arXiv:2312.12965 (2024); the Beilinson--Bloch height proportional to the N\'eron--Tate height of an
+explicit elliptic point.
 \end{thebibliography}
 
 \end{document}
