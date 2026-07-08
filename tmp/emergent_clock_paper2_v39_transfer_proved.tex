@@ -3,39 +3,6 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{hyperref}
-\usepackage{lineno}
-
-\usepackage[status=draft,author=]{fixme}
-
-
-\FXRegisterAuthor{sam}{asam}{Sam}
-
-\newcommand{\nativeok}[1]{%
-
-  \samnote{NATIVE-OK: #1}%
-
-}
-
-\newcommand{\foreign}[1]{%
-
-  \samwarning{FOREIGN-ONTOLOGY: #1}%
-
-}
-
-\newcommand{\bullshit}[1]{%
-
-  \samerror{MODEL-CONTAMINATION: #1}%
-
-}
-
-\newcommand{\provenance}[1]{%
-  \samnote{PROVENANCE-CHECK: #1}%
-}
-
-\newcommand{\frameloss}[1]{%
-  \samnote{FRAME-LOSS: #1}%
-}
-
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -50,8 +17,8 @@
 \newcommand{\Sym}{\operatorname{Sym}}
 \newcommand{\Sha}{\mathrm{Sha}}
 
-\title{Carrier, Fiber, Adapters, Functoriality:
-A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Universality }
+\title{Carrier, Fiber, and Clock:\\
+A Harmonic Transport Framework for Beyond Endoscopy and Functoriality}
 \author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
 \date{}
 
@@ -1822,91 +1789,7 @@ poles lying on $\Re s\le0$ ($\Gamma_{\mathbb C}(s+\mu_i)$ with $\mu_i>0$; Maass 
 with poles on $\Re s\le 0$), and $S_W\subset(0,\kappa)$. The axis $\Re s=\kappa/2$ lies in $S_W$ iff
 $\theta_W<\kappa/2$. \textup{(iii)} is immediate: $S_W$ is the connected open neighbourhood of the axis that
 Step~2 consumes.
-The core of \textup{(i)} is \emph{machine-checked}: \texttt{TransferContinuation.transfer\_tendsto}
-(Lean) proves convergence of the partial sums at every $s$ with $\Re s>\theta$, from the primitive
-bound alone, via the formalized mean-value kernel \texttt{cpow\_sub\_bound}; the dual-exponent
-identity and the strip arithmetic are \texttt{dual\_primitive\_norm} and
-\texttt{strip\_contains\_axis} (footprint
-$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}). The
-local-uniformity upgrade from pointwise convergence to analyticity is the classical two-line step
-above, manuscript-level.
 \end{proof}
-
-\begin{lemma}[The grown transfer: the sharp barrier is a clip artifact]\label{lem:growntransfer}
-Let $A^{\mathrm e}_W(x)=\sum_{n\ge1}\lambda_n e^{-n/x}$ be the \emph{grown} primitive --- every phasor
-entering continuously, the carrier-native object, against the clipped $A_W$ --- and
-$\theta^{\mathrm e}_W:=\inf\{\theta:\ A^{\mathrm e}_W(x)\ll x^{\theta}\}$.
-\textup{(i)} $\int_0^\infty A^{\mathrm e}_W(x)\,x^{-s-1}\,dx=\Gamma(s)\,L(s,W)$ for
-$\Re s>\max(\sigma_{\mathrm{abs}},0)$, the $x\to0$ end contributing an entire function
-($A^{\mathrm e}_W(x)\ll e^{-1/2x}$); hence if $\theta^{\mathrm e}_W<\kappa/2$ then $\Gamma\cdot L$ ---
-and $L$ itself, $\Gamma$ being zero-free --- is analytic on $\Re s>\theta^{\mathrm e}_W$, and both completed
-readouts are analytic on the strip $\{\theta^{\mathrm e}_W<\Re s<\kappa-\theta^{\mathrm e}_W\}\ni$ axis,
-exactly as in Lemma~\ref{lem:transfer}.
-\textup{(ii)} \emph{Calibration.} Automorphy overshoots this input massively: for $L$ entire with
-polynomial vertical growth, shifting the Mellin inversion of \textup{(i)} across the $\Gamma$-pole at $s=0$
-gives $A^{\mathrm e}_W(x)=L(0,W)+O(x^{-1/2})$ --- $\theta^{\mathrm e}_W\le0$, the grown primitive
-\emph{converges to the special value} $L(0,W)$. The classical $\ge\tfrac12$ coefficient-sum obstruction at
-degree $\ge4$ (Chandrasekharan--Narasimhan) binds only the \emph{clipped} primitive, whose edge the grown
-object never has: the barrier is a clip artifact, the same method law as \S\ref{sec:pipeline}.
-\textup{(iii)} Smoothing manufactures no cancellation: a random multiplicative fiber keeps
-$\theta^{\mathrm e}=\tfrac12$ (measured $0.58$, App.~\ref{app:repro}), so the gate still bites.
-\end{lemma}
-\begin{proof}
-\textup{(i)} For $\Re s>\max(\sigma_{\mathrm{abs}},0)$, Fubini
-($\sum_n|\lambda_n|\int_0^\infty e^{-n/x}x^{-\Re s-1}dx<\infty$) and the substitution $u=n/x$ give termwise
-$\int_0^\infty e^{-n/x}x^{-s-1}dx=\Gamma(s)\,n^{-s}$, whence the identity. For $x\le1$,
-$e^{-n/x}\le e^{-1/2x}e^{-n/2}$, so $\int_0^1$ is entire in $s$; with $A^{\mathrm e}_W(x)\ll x^{\theta}$ at
-infinity, $\int_1^\infty$ converges locally uniformly on $\Re s>\theta$, so the Mellin transform is analytic
-there and, by the identity theorem, continues $\Gamma L$; dividing by the zero-free $\Gamma$ continues $L$.
-The unitary dual has conjugate grown primitive, hence the same exponent, and the strip statement follows as
-in Lemma~\ref{lem:transfer}.
-\textup{(ii)} Mellin inversion of \textup{(i)}: $A^{\mathrm e}_W(x)=\frac1{2\pi i}\int_{(\sigma_0)}
-\Gamma(s)L(s,W)\,x^{s}\,ds$. With $L$ entire and of polynomial growth on vertical lines, $\Gamma$'s decay
-$e^{-\pi|t|/2}$ dominates; shifting to $\Re s=-\tfrac12$ crosses only the simple $\Gamma$-pole at $s=0$,
-residue $L(0,W)$, remainder $O(x^{-1/2})$.
-\textup{(iii)} is the measured control.
-\end{proof}
-
-\begin{remark}[The degree reading of the transfer exponent is a chart statement]\label{rem:chartdegree}
-Nothing in the \emph{carrier} is harder at $r\ge5$. Both gates, stated in the $3$D chart, are rank-uniform:
-the per-rail conjugate-pair reality and det-one ledger are the same finite-multiset algebra at every rank
-(\texttt{fiber\_det\_one}, \texttt{localPoly\_reciprocal} --- Lean, for \emph{any} finite duality-stable
-multiset), and native-cell closure is the same geometric identity at every rank, measured to $10^{-p}$
-through $\mathrm{GL}(14)$ (\S\ref{sec:pipeline}). What the $1$D chart books as degree-hardness --- the
-Chandrasekharan--Narasimhan exponents, the $(d-1)/2d$ law, the smeared scalar reopening at $\Sym^{13}$
-($k=0.44$, repaired only partially in-chart by the delay adapter, fully by the channel-resolved readout,
-\S\ref{sec:pipeline}) --- is the \emph{same rank-agnostic projection} carrying more channels with a wider
-spread of spin rates: attrition of the shadow's bookkeeping, never a wall of the object. The transfer
-exponents inherit this. Measured window-drift of the grown slope (App.~\ref{app:repro}): $\Delta$ plateaus
-($0.040\to0.000$, the proved $A^{\mathrm e}\to L(0)$); $\Sym^5\Delta$ equilibrates ($0.25\to0.05$ in the
-late windows --- the global $0.29$ is a finite-window transient of channel windings not yet averaged);
-$\Sym^{13}\Delta$'s fastest channels have not yet equilibrated at $N=2\times10^{5}$ (late windows
-oscillatory, no steady growth); the random control fluctuates about $\tfrac12$ in \emph{every} window and
-never equilibrates. Pre-committed to the falsifiability register: the $\Sym^{13}$ late-window slope falls
-with $N$ as its channels equilibrate; its persistence at ${\approx}0.46$ alongside exact $3$D closure would
-be a measured chart/carrier divergence, and would be published as such.
-\end{remark}
-
-\begin{remark}[The open inputs live where the ledger is discarded]\label{rem:ledgertoll}
-The descent $3\mathrm D\to2\mathrm D\to1\mathrm D$ is not lossy: it is the midpoint/Cayley projection
-carrying the loss ledger, and the ledgered map $\text{fiber}\mapsto(\text{ordinate};\,\text{radius},
-\text{angle})$ is a \emph{proven bijection} (\texttt{RoundTrip.record\_bijective},
-\texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every remaining open input of
-the niceness chain is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
-classical converse theorem consumes after the radius and angle channels are discarded. The transfer
-exponent asks whether the bare ordinate coordinate can reach the axis unaided (``continuation'' is the
-$1$D chart's name for information the ledgered descent preserves trivially: the bank state exists at every
-height); axis reality asks whether the bare \emph{single-lane} readout keeps the phase lock the ledgered
-two-lane object has termwise. The latter is now split in Lean at exactly that seam
-(\texttt{RequestProject/AxisPairing.lean}): the paired two-lane bank is real \emph{termwise} on the axis
-(\texttt{pairedBank\_real} --- free, any fiber, no arithmetic); the classical readout decomposes as
-$(\text{paired}+\text{odd})/2$ (\texttt{readout\_decomposition}); and the axis functional equation is
-\emph{precisely} extinction of the odd lane-mode (\texttt{fe\_iff\_oddMode\_eq\_zero}) --- the same genre as
-the residual extinction $R=0$, where the carrier's machinery (\texttt{FocalResidualGeneral},
-Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) is strongest. The frontier is thus not hard analysis at high
-degree: it is two reach/extinction statements about a projection that provably discards nothing when its
-ledger is kept, imposed only because the classical category reads the unledgered coordinate.
-\end{remark}
 
 \begin{remark}[The two inputs are independent, each with its own counterexample class]\label{rem:twogates}
 The exponent condition presupposes \emph{neither} the functional equation nor automorphy: it is a pure
@@ -1920,10 +1803,7 @@ fails: standing-wave-killed. The automorphic fiber alone passes both gates. Meas
 classical square-root-cancellation law $(d-1)/2d$ through degree $14$ ($0.268/0.352/0.462$ against
 $0.25/0.417/0.464$ for $\Delta,\Sym^5\Delta,\Sym^{13}\Delta$; App.~\ref{app:repro}); its
 $d\to\infty$ approach to $\tfrac12$ is Part~I's productivity attrition in exponent form --- thinning margin,
-never a wall. The \emph{grown} exponents of Lemma~\ref{lem:growntransfer} widen every margin
-($\theta^{\mathrm e}=0.00/0.29/0.40$, the automorphic anchor plateauing at $|L(0)|$; random $0.58$,
-App.~\ref{app:repro}), and the operative form of the input is henceforth the grown
-$\theta^{\mathrm e}_W<\kappa/2$.
+never a wall.
 \end{remark}
 
 \begin{lemma}[Bank reflection: axis reality and continuation]\label{lem:bankreflection}
@@ -1965,9 +1845,8 @@ itself reads it --- at the weld --- not reassembled from local data at a converg
 open strip $S_W\ni$ axis by the sub-random-walk continuation of Lemma~\ref{lem:transfer}, under the single
 exponent input $\theta_W<\kappa/2$ --- proved for the character classes ($\theta=0$,
 Lemma~\ref{lem:residual}), classical for holomorphic $\mathrm{GL}(2)$ ($\theta\le\tfrac13$, Wilton--Walfisz),
-measured $0.27$--$0.46$ against the random-walk $0.54$ on the open ranks, and in the operative \emph{grown}
-form $\theta^{\mathrm e}_W<\kappa/2$ (Lemma~\ref{lem:growntransfer}) measured $0.00$--$0.40$ against $0.58$
-(\texttt{transfer\_exponent.py}, \texttt{grown\_transfer.py}; Remark~\ref{rem:twogates}) --- and the route is
+measured $0.27$--$0.46$ against the random-walk $0.54$ on the open ranks (\texttt{transfer\_exponent.py};
+Remark~\ref{rem:twogates}) --- and the route is
 reflection-free: no step here consumes the theta identity or the functional equation. On that neighbourhood
 the two sides of the claimed equation are analytic and agree on the axis, a set with accumulation points; by
 the identity theorem they agree identically. The dependency order is
@@ -3536,41 +3415,6 @@ $\hat\theta=0.263$ (a finite Euler-factor modification preserves continuation) y
 reality (the finite cocycle, Remark~\ref{rem:twogates}); the random-angle fiber sits at $\hat\theta=0.542$,
 the law-of-the-iterated-logarithm wall, and is transfer-killed. The two gates of the chain are thereby
 separated by dedicated counterexample classes.
-
-\item \textbf{Axis pairing: the free and the open part of the standing wave
-(Remark~\ref{rem:ledgertoll}), \texttt{RequestProject/AxisPairing.lean}.} The two-lane split of gate 2 at
-the ledger seam: \texttt{pairedBank\_real} (the paired bank $\sum_n(K_n+\bar K_n)$ is real termwise on the
-axis --- every finite bank, every fiber, no arithmetic), \texttt{readout\_decomposition} (classical readout
-$=(\text{paired}+\text{odd})/2$), \texttt{fe\_iff\_oddMode\_eq\_zero} (the axis functional equation
-$\Leftrightarrow$ odd lane-mode $\equiv0$ --- gate 2 restated as an extinction statement). Footprint
-$\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}, builds in-tree.
-
-\item \textbf{The transfer, machine-checked (Lemma~\ref{lem:transfer}),
-\texttt{RequestProject/TransferContinuation.lean}.} \texttt{transfer\_tendsto}: a polynomially
-bounded primitive $\|\sum_{k<n}a_k\|\le C\,n^{\theta}$ forces convergence of the partial sums of
-$\sum a_n(n{+}1)^{-s}$ at every $s$ with $\Re s>\theta\ge0$ --- the sharp transfer of
-Lemma~\ref{lem:transfer}(i), proved by formalized summation by parts
-(\texttt{Finset.sum\_range\_by\_parts}) against the mean-value kernel \texttt{cpow\_sub\_bound}
-($\|(k{+}1)^{-s}-k^{-s}\|\le\|s\|k^{-\Re s-1}$) and the $p$-series tail; with
-\texttt{dual\_primitive\_norm} (the unitary dual carries the same exponent) and
-\texttt{strip\_contains\_axis} ($\theta<\kappa/2$ places the weld axis in the common strip).
-No automorphy, functional equation, or Poisson input appears in the file. Footprint
-$\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry},
-builds in-tree.
-
-\item \textbf{The grown transfer exponent (Lemma~\ref{lem:growntransfer}), \texttt{grown\_transfer.py}.}
-The native primitive $A^{\mathrm e}_W(x)=\sum\lambda_n e^{-n/x}$ (no clipped edge), $x\in[10,N/40]$,
-$N=2\times10^{5}$: $\hat\theta^{\mathrm e}=0.002$ for $\Delta$ --- \emph{bounded}, plateau $0.73$, the
-automorphy-forced convergence $A^{\mathrm e}\to L(0)$ of Lemma~\ref{lem:growntransfer}(ii) observed directly
---- $0.290$ for $\Sym^5\Delta$ and $0.403$ for $\Sym^{13}\Delta$ (every sharp margin widened), detuned
-$0.065$ (finite Euler modification: still essentially bounded), random $0.581$ (smoothing manufactures no
-cancellation; the gate bites). The sharp-cutoff Chandrasekharan--Narasimhan barrier at degree $\ge4$ binds
-the clipped primitive only: measured, the clip was the barrier. Window-drift of the grown slope
-(\texttt{grown\_transfer.py --median}, $4$ log-windows): $\Delta$ $0.040/0.008/0.002/0.000$ (plateau);
-$\Sym^5$ late windows $0.252/0.050$ (equilibrating --- the global $0.29$ is a finite-window transient);
-$\Sym^{13}$ oscillatory, not yet equilibrated at $N=2\times10^{5}$ (fastest channels $e^{\pm13i\theta}$);
-random $0.43/0.58/0.76/0.49$ --- about $\tfrac12$ in every window, never equilibrating
-(Remark~\ref{rem:chartdegree}).
 
 \item \textbf{Adapted closure is arithmetic-blind (Lemma~\ref{lem:bankreflection} Step 2,
 \S\ref{sec:converse}), \texttt{detuned\_closure\_control.py}.} The register entry that localizes the

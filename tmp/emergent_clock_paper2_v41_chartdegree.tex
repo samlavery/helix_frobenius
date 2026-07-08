@@ -3,39 +3,6 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{hyperref}
-\usepackage{lineno}
-
-\usepackage[status=draft,author=]{fixme}
-
-
-\FXRegisterAuthor{sam}{asam}{Sam}
-
-\newcommand{\nativeok}[1]{%
-
-  \samnote{NATIVE-OK: #1}%
-
-}
-
-\newcommand{\foreign}[1]{%
-
-  \samwarning{FOREIGN-ONTOLOGY: #1}%
-
-}
-
-\newcommand{\bullshit}[1]{%
-
-  \samerror{MODEL-CONTAMINATION: #1}%
-
-}
-
-\newcommand{\provenance}[1]{%
-  \samnote{PROVENANCE-CHECK: #1}%
-}
-
-\newcommand{\frameloss}[1]{%
-  \samnote{FRAME-LOSS: #1}%
-}
-
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -50,8 +17,8 @@
 \newcommand{\Sym}{\operatorname{Sym}}
 \newcommand{\Sha}{\mathrm{Sha}}
 
-\title{Carrier, Fiber, Adapters, Functoriality:
-A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Universality }
+\title{Carrier, Fiber, and Clock:\\
+A Harmonic Transport Framework for Beyond Endoscopy and Functoriality}
 \author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
 \date{}
 
@@ -1887,27 +1854,6 @@ with $N$ as its channels equilibrate; its persistence at ${\approx}0.46$ alongsi
 be a measured chart/carrier divergence, and would be published as such.
 \end{remark}
 
-\begin{remark}[The open inputs live where the ledger is discarded]\label{rem:ledgertoll}
-The descent $3\mathrm D\to2\mathrm D\to1\mathrm D$ is not lossy: it is the midpoint/Cayley projection
-carrying the loss ledger, and the ledgered map $\text{fiber}\mapsto(\text{ordinate};\,\text{radius},
-\text{angle})$ is a \emph{proven bijection} (\texttt{RoundTrip.record\_bijective},
-\texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every remaining open input of
-the niceness chain is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
-classical converse theorem consumes after the radius and angle channels are discarded. The transfer
-exponent asks whether the bare ordinate coordinate can reach the axis unaided (``continuation'' is the
-$1$D chart's name for information the ledgered descent preserves trivially: the bank state exists at every
-height); axis reality asks whether the bare \emph{single-lane} readout keeps the phase lock the ledgered
-two-lane object has termwise. The latter is now split in Lean at exactly that seam
-(\texttt{RequestProject/AxisPairing.lean}): the paired two-lane bank is real \emph{termwise} on the axis
-(\texttt{pairedBank\_real} --- free, any fiber, no arithmetic); the classical readout decomposes as
-$(\text{paired}+\text{odd})/2$ (\texttt{readout\_decomposition}); and the axis functional equation is
-\emph{precisely} extinction of the odd lane-mode (\texttt{fe\_iff\_oddMode\_eq\_zero}) --- the same genre as
-the residual extinction $R=0$, where the carrier's machinery (\texttt{FocalResidualGeneral},
-Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) is strongest. The frontier is thus not hard analysis at high
-degree: it is two reach/extinction statements about a projection that provably discards nothing when its
-ledger is kept, imposed only because the classical category reads the unledgered coordinate.
-\end{remark}
-
 \begin{remark}[The two inputs are independent, each with its own counterexample class]\label{rem:twogates}
 The exponent condition presupposes \emph{neither} the functional equation nor automorphy: it is a pure
 cancellation statement, strictly weaker than automorphy. The controls separate the two gates exactly. A
@@ -3536,14 +3482,6 @@ $\hat\theta=0.263$ (a finite Euler-factor modification preserves continuation) y
 reality (the finite cocycle, Remark~\ref{rem:twogates}); the random-angle fiber sits at $\hat\theta=0.542$,
 the law-of-the-iterated-logarithm wall, and is transfer-killed. The two gates of the chain are thereby
 separated by dedicated counterexample classes.
-
-\item \textbf{Axis pairing: the free and the open part of the standing wave
-(Remark~\ref{rem:ledgertoll}), \texttt{RequestProject/AxisPairing.lean}.} The two-lane split of gate 2 at
-the ledger seam: \texttt{pairedBank\_real} (the paired bank $\sum_n(K_n+\bar K_n)$ is real termwise on the
-axis --- every finite bank, every fiber, no arithmetic), \texttt{readout\_decomposition} (classical readout
-$=(\text{paired}+\text{odd})/2$), \texttt{fe\_iff\_oddMode\_eq\_zero} (the axis functional equation
-$\Leftrightarrow$ odd lane-mode $\equiv0$ --- gate 2 restated as an extinction statement). Footprint
-$\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}, builds in-tree.
 
 \item \textbf{The transfer, machine-checked (Lemma~\ref{lem:transfer}),
 \texttt{RequestProject/TransferContinuation.lean}.} \texttt{transfer\_tendsto}: a polynomially

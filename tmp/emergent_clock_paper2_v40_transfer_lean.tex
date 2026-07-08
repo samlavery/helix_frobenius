@@ -3,39 +3,6 @@
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
 \usepackage{hyperref}
-\usepackage{lineno}
-
-\usepackage[status=draft,author=]{fixme}
-
-
-\FXRegisterAuthor{sam}{asam}{Sam}
-
-\newcommand{\nativeok}[1]{%
-
-  \samnote{NATIVE-OK: #1}%
-
-}
-
-\newcommand{\foreign}[1]{%
-
-  \samwarning{FOREIGN-ONTOLOGY: #1}%
-
-}
-
-\newcommand{\bullshit}[1]{%
-
-  \samerror{MODEL-CONTAMINATION: #1}%
-
-}
-
-\newcommand{\provenance}[1]{%
-  \samnote{PROVENANCE-CHECK: #1}%
-}
-
-\newcommand{\frameloss}[1]{%
-  \samnote{FRAME-LOSS: #1}%
-}
-
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -50,8 +17,8 @@
 \newcommand{\Sym}{\operatorname{Sym}}
 \newcommand{\Sha}{\mathrm{Sha}}
 
-\title{Carrier, Fiber, Adapters, Functoriality:
-A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Universality }
+\title{Carrier, Fiber, and Clock:\\
+A Harmonic Transport Framework for Beyond Endoscopy and Functoriality}
 \author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
 \date{}
 
@@ -1867,47 +1834,6 @@ residue $L(0,W)$, remainder $O(x^{-1/2})$.
 \textup{(iii)} is the measured control.
 \end{proof}
 
-\begin{remark}[The degree reading of the transfer exponent is a chart statement]\label{rem:chartdegree}
-Nothing in the \emph{carrier} is harder at $r\ge5$. Both gates, stated in the $3$D chart, are rank-uniform:
-the per-rail conjugate-pair reality and det-one ledger are the same finite-multiset algebra at every rank
-(\texttt{fiber\_det\_one}, \texttt{localPoly\_reciprocal} --- Lean, for \emph{any} finite duality-stable
-multiset), and native-cell closure is the same geometric identity at every rank, measured to $10^{-p}$
-through $\mathrm{GL}(14)$ (\S\ref{sec:pipeline}). What the $1$D chart books as degree-hardness --- the
-Chandrasekharan--Narasimhan exponents, the $(d-1)/2d$ law, the smeared scalar reopening at $\Sym^{13}$
-($k=0.44$, repaired only partially in-chart by the delay adapter, fully by the channel-resolved readout,
-\S\ref{sec:pipeline}) --- is the \emph{same rank-agnostic projection} carrying more channels with a wider
-spread of spin rates: attrition of the shadow's bookkeeping, never a wall of the object. The transfer
-exponents inherit this. Measured window-drift of the grown slope (App.~\ref{app:repro}): $\Delta$ plateaus
-($0.040\to0.000$, the proved $A^{\mathrm e}\to L(0)$); $\Sym^5\Delta$ equilibrates ($0.25\to0.05$ in the
-late windows --- the global $0.29$ is a finite-window transient of channel windings not yet averaged);
-$\Sym^{13}\Delta$'s fastest channels have not yet equilibrated at $N=2\times10^{5}$ (late windows
-oscillatory, no steady growth); the random control fluctuates about $\tfrac12$ in \emph{every} window and
-never equilibrates. Pre-committed to the falsifiability register: the $\Sym^{13}$ late-window slope falls
-with $N$ as its channels equilibrate; its persistence at ${\approx}0.46$ alongside exact $3$D closure would
-be a measured chart/carrier divergence, and would be published as such.
-\end{remark}
-
-\begin{remark}[The open inputs live where the ledger is discarded]\label{rem:ledgertoll}
-The descent $3\mathrm D\to2\mathrm D\to1\mathrm D$ is not lossy: it is the midpoint/Cayley projection
-carrying the loss ledger, and the ledgered map $\text{fiber}\mapsto(\text{ordinate};\,\text{radius},
-\text{angle})$ is a \emph{proven bijection} (\texttt{RoundTrip.record\_bijective},
-\texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every remaining open input of
-the niceness chain is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
-classical converse theorem consumes after the radius and angle channels are discarded. The transfer
-exponent asks whether the bare ordinate coordinate can reach the axis unaided (``continuation'' is the
-$1$D chart's name for information the ledgered descent preserves trivially: the bank state exists at every
-height); axis reality asks whether the bare \emph{single-lane} readout keeps the phase lock the ledgered
-two-lane object has termwise. The latter is now split in Lean at exactly that seam
-(\texttt{RequestProject/AxisPairing.lean}): the paired two-lane bank is real \emph{termwise} on the axis
-(\texttt{pairedBank\_real} --- free, any fiber, no arithmetic); the classical readout decomposes as
-$(\text{paired}+\text{odd})/2$ (\texttt{readout\_decomposition}); and the axis functional equation is
-\emph{precisely} extinction of the odd lane-mode (\texttt{fe\_iff\_oddMode\_eq\_zero}) --- the same genre as
-the residual extinction $R=0$, where the carrier's machinery (\texttt{FocalResidualGeneral},
-Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) is strongest. The frontier is thus not hard analysis at high
-degree: it is two reach/extinction statements about a projection that provably discards nothing when its
-ledger is kept, imposed only because the classical category reads the unledgered coordinate.
-\end{remark}
-
 \begin{remark}[The two inputs are independent, each with its own counterexample class]\label{rem:twogates}
 The exponent condition presupposes \emph{neither} the functional equation nor automorphy: it is a pure
 cancellation statement, strictly weaker than automorphy. The controls separate the two gates exactly. A
@@ -3537,14 +3463,6 @@ reality (the finite cocycle, Remark~\ref{rem:twogates}); the random-angle fiber 
 the law-of-the-iterated-logarithm wall, and is transfer-killed. The two gates of the chain are thereby
 separated by dedicated counterexample classes.
 
-\item \textbf{Axis pairing: the free and the open part of the standing wave
-(Remark~\ref{rem:ledgertoll}), \texttt{RequestProject/AxisPairing.lean}.} The two-lane split of gate 2 at
-the ledger seam: \texttt{pairedBank\_real} (the paired bank $\sum_n(K_n+\bar K_n)$ is real termwise on the
-axis --- every finite bank, every fiber, no arithmetic), \texttt{readout\_decomposition} (classical readout
-$=(\text{paired}+\text{odd})/2$), \texttt{fe\_iff\_oddMode\_eq\_zero} (the axis functional equation
-$\Leftrightarrow$ odd lane-mode $\equiv0$ --- gate 2 restated as an extinction statement). Footprint
-$\{$\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}$\}$, no \texttt{sorry}, builds in-tree.
-
 \item \textbf{The transfer, machine-checked (Lemma~\ref{lem:transfer}),
 \texttt{RequestProject/TransferContinuation.lean}.} \texttt{transfer\_tendsto}: a polynomially
 bounded primitive $\|\sum_{k<n}a_k\|\le C\,n^{\theta}$ forces convergence of the partial sums of
@@ -3565,12 +3483,7 @@ automorphy-forced convergence $A^{\mathrm e}\to L(0)$ of Lemma~\ref{lem:growntra
 --- $0.290$ for $\Sym^5\Delta$ and $0.403$ for $\Sym^{13}\Delta$ (every sharp margin widened), detuned
 $0.065$ (finite Euler modification: still essentially bounded), random $0.581$ (smoothing manufactures no
 cancellation; the gate bites). The sharp-cutoff Chandrasekharan--Narasimhan barrier at degree $\ge4$ binds
-the clipped primitive only: measured, the clip was the barrier. Window-drift of the grown slope
-(\texttt{grown\_transfer.py --median}, $4$ log-windows): $\Delta$ $0.040/0.008/0.002/0.000$ (plateau);
-$\Sym^5$ late windows $0.252/0.050$ (equilibrating --- the global $0.29$ is a finite-window transient);
-$\Sym^{13}$ oscillatory, not yet equilibrated at $N=2\times10^{5}$ (fastest channels $e^{\pm13i\theta}$);
-random $0.43/0.58/0.76/0.49$ --- about $\tfrac12$ in every window, never equilibrating
-(Remark~\ref{rem:chartdegree}).
+the clipped primitive only: measured, the clip was the barrier.
 
 \item \textbf{Adapted closure is arithmetic-blind (Lemma~\ref{lem:bankreflection} Step 2,
 \S\ref{sec:converse}), \texttt{detuned\_closure\_control.py}.} The register entry that localizes the
