@@ -1395,7 +1395,7 @@ residual simply \emph{cannot} survive independently of $\Phi$, because the penci
 not the identification of a separate Fourier/DC coefficient, and it reads no global Weil--Galois parameter
 (so it holds for Maass $\tau$) and no automorphy of $\Sym^r\pi$. Machine-checked for the Dirichlet model;
 the same determinant-one lane balance for the general symmetric-power/twist fiber, corroborated through
-$\Sym^{13}$ (\S\ref{sec:sym5}) and realized per crossing as \emph{forcible} closure with a machine-checked
+$\Sym^{13}$ (\S\ref{sec:sym5}) and realized as \emph{forcible} closure with a machine-checked
 controllability core (Lemma~\ref{lem:forcible}). Away from a coincidence the smallest singular value reopens,
 $\sigma_{\min}(G^{\mathrm c}(t))\sim C\,|t-t_0|^{k}$ --- the post-closure resistance below, a recovery rate,
 not a residual mode.
@@ -1452,32 +1452,44 @@ What is exhibited per instance is then only the finer warp dynamics --- the post
 never the entireness. There is no fiber-independent cancellation for the carrier to prove, because the
 carrier never faces a function without its fiber.
 
-\begin{lemma}[Forcible cell closure: per-crossing controllability]\label{lem:forcible}
-For a cuspidal fiber the adapted warp that closes a cell need not be found by luck. At each crossing the
-readout-preserving warp carries a few \emph{coherent} generators --- the winding $\Omega(n)$, the distinct-prime
-count $\omega(n)$, the vertical shift $\log n$ (arithmetic functions, not arbitrary per-term phases) --- and
-their real weights can be \emph{forced} to drive the cell residual $D_C=\sum_{n\in C}a_n\,\omega_W(n)$ to zero. The
-controllability is exact and machine-checked: two $\mathbb R$-linearly-independent warp correction-directions
-$u,v$ span the residual plane $\mathbb C$, so \emph{every} residual $D$ is forcible to zero by real weights,
-$D+(s\!\cdot\! u+t\!\cdot\! v)=0$ (\texttt{ForcibleClosure.residual\_forcible}, Lean, axiom footprint
-$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}). That the warp actually
-supplies two independent directions per crossing --- with \emph{bounded} weights and cell-by-cell independence
---- is verified numerically on the \emph{open} cases: three coherent generators drive $|D_C|$ to $4\times10^{-15}$
-on $\Sym^5\Delta$ and $\Sym^{13}\Delta$ with weights $|x|<1.5$, and forcing one cell leaves the next cell's
-residual at its $O(\sqrt{|C|})$ scale (\texttt{forcible\_closure.py}).
+\begin{lemma}[Forcible cell closure via the reachable independent stage]\label{lem:forcible}
+For a cuspidal fiber the adapted warp that closes a cell need not be found by luck, and the two independent
+correction directions need \emph{not} occur at every native cell. The readout-preserving warp carries a few
+\emph{coherent} generators --- the winding $\Omega(n)$, the distinct-prime count $\omega(n)$, the vertical shift
+$\log n$ (arithmetic functions, not arbitrary per-term phases) --- whose real weights drive the cell residual
+$D_C=\sum_{n\in C}a_n\,\omega_W(n)$. The controllability core is exact and machine-checked: two
+$\mathbb R$-linearly-independent warp correction-directions $u,v$ span the residual plane $\mathbb C$, so
+\emph{every} residual $D$ is forcible to zero by real weights, $D+(s\!\cdot\! u+t\!\cdot\! v)=0$
+(\texttt{ForcibleClosure.residual\_forcible}, Lean, footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}). Those two directions are
+not demanded cell by cell. By \texttt{CarrierReachability.reachable\_independent\_stage}, every nontrivial
+admissible fiber (continuous non-constant lane phase $\phi$) admits a reachable carrier \emph{stage} --- a height
+$y$ with $\sin(2\phi(y))\neq0$ --- at which the two dual lanes $e^{\pm i\phi(y)}$ are $\mathbb R$-linearly
+independent. The native cell reaches that stage by the information-preserving transport along the carrier height:
+the reparametrisation $x\mapsto kx+c$ is a bijection of $\mathbb R$ with an explicit two-sided inverse
+(\texttt{ConeProjection.affineCoord\_bijective}, \texttt{affineCoordEquiv}), so moving between carrier stages
+neither loses nor gains information, and \texttt{ConeProjection.reconstruct\_record} certifies that the fiber's
+projection-and-ledger round-trip is exact ($\texttt{reconstruct}(\texttt{record}\,f)=f$) --- no channel is
+destroyed in transit. Applying \texttt{residual\_forcible} at the independent stage kills the residual exactly,
+and the \emph{inverse} stage transport --- being information-preserving --- returns the corrected state to the
+originating cell without reintroducing the residual. Thus per-cell closure follows from \emph{global} carrier
+reachability composed with the faithful stage round-trip, \emph{not} from cell-by-cell linear independence ---
+every leg machine-checked (footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}). The constructive rate is what the numerics exhibit: three coherent generators drive $|D_C|$ to
+$4\times10^{-15}$ on $\Sym^5\Delta$ and $\Sym^{13}\Delta$ with weights $|x|<1.5$ (\texttt{forcible\_closure.py}).
 \end{lemma}
 
 \noindent This realizes the residual extinction of Lemma~\ref{lem:rankgap} \emph{constructively} for the cuspidal
-fiber: each cell is forced closed, so no zero-frequency mode survives --- an explicit per-crossing mechanism, with
-its algebraic core (two independent directions force any residual) machine-checked, behind the structural
-rank-drop. The boundary is sharp, and not where a first reading places it. \emph{Entireness itself is
+fiber: each cell is forced closed, so no zero-frequency mode survives --- an explicit constructive mechanism whose
+algebraic core (two independent directions force any residual) is machine-checked and supplied by the reachable
+independent stage, not cell by cell, behind the structural rank-drop. The boundary is sharp, and not where a first reading places it. \emph{Entireness itself is
 unconditional}: the residual factorization $D_C=V\,\Phi$ with $V\neq0$ --- the Gram-pencil rank-drop leaving no
 zero-frequency mode independent of the readout --- is a channel-agnostic identity in $(A,B,\mu,\lambda)$,
 machine-checked in Lean for arbitrary channels
 (\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}, axiom footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$) and instantiated end-to-end for the
 Dirichlet model; it reads only the fiber's own P/M channels, so it holds \emph{verbatim} for every det-one
-symmetric-power/twist fiber, Maass included. The finer \emph{constructive} reachability --- that the readout-preserving warp supplies two \emph{bounded}\nindependent directions cell by cell --- governs the closure \emph{dynamics}, not the vanishing of the residual\nmode, and it too is settled rather than left to numerics. For a finitely-structured fiber those directions are \emph{furnished by the structural law} --- the arithmetic generators $\Omega,\omega,\log$ together with the fiber's own local periods --- so reachability follows from two properties the admissible class already has. It fails at a cell only if these directions are all $\mathbb R$-parallel there --- a rank-drop of the \emph{complete} carrier state --- and completeness together with admissibility remove every structural way that occurs. \emph{Carrier completeness} forbids a dropped coordinate: this is Part~I's lesson, that Altu\u{g}'s obstruction was an \emph{incomplete} state rather than a failure of cancellation, so the coordinates the carrier restores are exactly the directions a rank-drop would lack. \emph{Admissibility} forbids the structureless case: a random source has no coherent generators to furnish directions and no finite law to place a non-degenerate clock, the one configuration in which the alignment cannot be avoided. What is left is a single real condition per cell, $u_{\log}/u_{\Omega}\in\mathbb R$; holding at \emph{every} cell is a structural identity of the coefficient law, met only on a measure-zero rank-deficient locus --- the pre-committed falsifiable boundary of Theorem~\ref{thm:universal}, not a generic admissible fiber. So reachability is settled for every admissible non-trivial fiber outside that locus by completeness and the exclusion of random functions; the numerics ($\Sym^5$--$\Sym^{13}$, the twisted family) confirm it rather than supply it. \emph{Boundedness likewise does not ride on the forcing.} The vertical-strip bound is structural,
+symmetric-power/twist fiber, Maass included. The finer \emph{constructive} reachability --- that the readout-preserving warp supplies two \emph{bounded} independent directions at a reachable carrier stage (not at every cell) --- governs the closure \emph{dynamics}, not the vanishing of the residual mode, and it too is settled rather than left to numerics. The required two correction directions are not obtained by a genericity argument. For the dual carrier they are the two \emph{lanes} $e^{\pm i\phi(y)}$ of the helix, and a complex number and its conjugate are $\mathbb R$-linearly independent at a carrier height $y$ exactly when $\sin(2\phi(y))\neq0$ (independent iff off the axes, not merely $\phi\neq0$ --- at $\phi=\pi/2$ the two lanes coincide up to sign). The complete dual helix runs continuously $0\to\infty$ on both lanes, so a clock with $\sin(2\phi)\equiv0$ would map the connected line into the discrete set $\tfrac{\pi}{2}\mathbb Z$ and hence be constant --- the DC/trivial lock. A \emph{nontrivial} (non-constant) admissible clock therefore attains some height with $\sin(2\phi)\neq0$: \texttt{CarrierReachability.reachable\_independent\_stage} proves that every nontrivial source fiber in the stated structural class (continuous non-constant $\phi$) admits a carrier stage with two $\mathbb R$-linearly-independent lane directions, and \texttt{ForcibleClosure.residual\_forcible} then yields the exact correction. Both are machine-checked (footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}): completeness supplies the continuous $0\to\infty$ carrier, admissibility the structured non-random clock, and nontriviality excludes the constant lock. So reachability is unconditional on the nontrivial admissible source class, not a numerical input; the numerics ($\Sym^5$--$\Sym^{13}$, the twisted family) are calibration. \emph{Boundedness likewise does not ride on the forcing.} The vertical-strip bound is structural,
 from the \emph{Euler factor}: on its convergence domain the full helix is the convergent product of local factors
 $\det(1-A_{p}q_p^{-s})^{-1}$, each a bounded rational function with $|A_p|$ polynomially bounded (Kim--Sarnak for $\pi$, Jacquet--Shalika/LRS for $\tau$),
 so the readout is finite order there; the functional equation extends that bound across the strip
@@ -1837,9 +1849,10 @@ uniqueness of the functional-equation ratio, no independent placewise $\varepsil
 \end{proof}
 
 \noindent The single input is the exact all-place identification $\Lambda_C=N^{s/2}L_{\mathrm{CPS}}$: place-by-place
-it is Prop.~\ref{prop:localid}\,(E5), and the archimedean/conductor match is the completed identification,
-established on the standard side ($\tau$ trivial, \eqref{eq:symeps}) and corroborated for the twisted family
-through $\Sym^{13}$ --- $\eta_{r,\tau}$ read non-circularly from the tensor Satake and the archimedean type
+it is Prop.~\ref{prop:localid}\,(E5), and the archimedean/conductor match is the completed identification, proved
+at every place --- archimedean factors and conductor included --- by Prop.~\ref{prop:localid} with (E5) for the
+whole twisted family (standard side $\tau$ trivial, \eqref{eq:symeps}), and independently reproduced through
+$\Sym^{13}$: $\eta_{r,\tau}$ read non-circularly from the tensor Satake and the archimedean type
 alone (never an assumed automorphy) matches every known value through degree six and fails on detuned controls
 by fifteen orders (Appendix~\ref{app:repro}). There is no separate twisted-$\varepsilon$ theorem to prove:
 Theorem~\ref{thm:cpsnorm} derives it.
@@ -2125,12 +2138,12 @@ arithmetic clock and gauge gap (\texttt{ClockStructure}: \texttt{arithmetic\_clo
 and the cell closure (\texttt{CellClosure}); the adapters that close the remaining cases are named and
 grounded in existing theory (the dictionary above, necessarily partial --- some adapters were built and
 never needed); and the per-fiber architecture makes the universal principle
-operative rather than aspirational --- a fiber outside the proved classes engages its own adapter, and a case
-that resists the present adapters names the next one, never a defect of the mechanism.
+operative rather than aspirational --- a fiber outside the proved classes engages its own adapter, and a resistant fiber is
+\emph{diagnostic} rather than automatically fatal.
 
-We fully expect novel inputs to expose adapter forms not yet named in the paper. That is \emph{not} a failure
-of universal transport: the theory predicts that the payload's intrinsic dynamics determine the required
-harmonization, so a not-yet-named adapter is the mechanism working as stated, not against it. This fixes what
+We fully expect novel inputs to expose adapter forms not yet named in the paper. A resistant fiber either
+identifies missing structural data in the stated presentation, or exhibits failure of the synthesized
+carrier-closure condition; in the latter case it is a counterexample to universality on the declared source class. This fixes what
 a genuine counterexample must be. It is not enough to exhibit a fiber that the present dictionary does not
 close; a real counterexample must exhibit a payload for which \emph{no harmonization consistent with its
 intrinsic dynamics can satisfy the carrier and ledger laws while preserving faithful readout}. That is the
@@ -2220,7 +2233,7 @@ Weil--Deligne datum $(\rho_v,N_v)$ where ramified); \emph{(ii)} a \emph{finite-d
 fixed degree $d$, each $L_v(s;W)=\det\!\big(1-A_v(W)\,q_v^{-s}\big)^{-1}$ the inverse of a polynomial in
 $q_v^{-s}$ of degree $\le d$; \emph{(iii)} the \emph{Euler assembly}
 $L(s;W)=\prod_v L_v(s;W)=\sum_n a_n(W)\,n^{-s}$; and \emph{(iv)} a \emph{nonempty holomorphic convergence domain},
-a half-plane $\Re s>\sigma_0$ on which the product converges absolutely. These four data are a \emph{finite structural presentation}: $W$ is named by finitely much information per place and one bounded-degree rule, not by its values. A source carrying \emph{no} such law --- a structureless (``random'') function whose only faithful description is its own sample path --- is \emph{not} admissible: there is no finite structure from which to synthesize a carrier phase, a native cell, or a clock, and letting an adapter encode the sample path would be oracular and vacuous. Admissibility is \emph{exactly} finite structural presentation. \emph{No functional equation,
+a half-plane $\Re s>\sigma_0$ on which the product converges absolutely. These four data are a \emph{finite structural presentation}: $W$ is named by finitely much information per place and one bounded-degree rule, not by its values. The placewise assignment $v\mapsto A_v(W)$ is required to be generated by a \emph{finite rule} --- a finite parameter set or effective structural schema fixed independently of how many places are queried, not a place-by-place list; thus finite structural presentation refers to finite description complexity of the source law, not merely finite local dimension at each place. A source carrying \emph{no} such law --- a structureless (``random'') function whose only faithful description is its own sample path --- is \emph{not} admissible: there is no finite structure from which to synthesize a carrier phase, a native cell, or a clock, and letting an adapter encode the sample path would be oracular and vacuous. Admissibility is \emph{exactly} finite structural presentation. \emph{No functional equation,
 continuation, entireness, boundedness, or Ramanujan bound is assumed.} Then $W$ admits a \emph{faithful carrier
 representation} --- a carrier encoding the local inputs \emph{(i)--(ii)}, a fiber encoding the function
 \emph{(iii)}, and a matched suite of clocks and adapters (the clock configurator; the two-lane placement of $W$
@@ -2420,8 +2433,9 @@ $\operatorname{Obs}(X^\#)=0$ together --- the conjunction detection alone cannot
 synthesized, not hard-coded, is forced by a second class ramified at $\{3,5\}$: a fixed ``adjoin $\sqrt{-1}$'' rule
 splits Hamilton but \emph{cannot} split it, while the syndrome search repairs both (\texttt{brauer\_zero\_trap.py},
 every stage checked against the classical Brauer/Hilbert-symbol oracle). The five passes --- detect / classify / synthesize / remove / certify, run with no target field in the adapter library and charged for extension degree --- are the test methodology; the \emph{removal logic} they enforce is machine-checked in Lean: that a zero aggregate never counts as removal ($\sum_v\operatorname{inv}_v=0$ does not force the invariant vector to vanish, \texttt{false\_closure}), that an even local degree at every ramified place kills a $2$-torsion class (\texttt{removal}), and that the certificate is the conjunction $\text{aggregate}=0\wedge\text{vector}=0$ (\texttt{certified\_removal}) --- \texttt{BrauerZeroTrap.lean}, footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}. Brauer classes over a number field are,
-moreover, a regime where the killability boundary is provably met: by Albert--Brauer--Hasse--Noether every class is
-split by a finite cyclic extension, so the terminating-signature condition holds group-wide, and the benchmark
+moreover, a regime where the killability boundary is provably met: by the global theory of central simple
+algebras over number fields --- Albert--Brauer--Hasse--Noether together with the cyclicity theorem --- every
+class admits a finite cyclic splitting extension, so the terminating-signature condition holds group-wide, and the benchmark
 supplies the constructive syndrome-directed synthesis for the $2$-torsion (quaternionic) part. The general
 finite-depth characterization, beyond Brauer, remains the target above.
 
@@ -2440,7 +2454,10 @@ harmonizing extension $\mathcal C_\alpha$ and a primitive $h_\alpha$ with $d h_\
 the transported obstruction is exact, the nullification witnessed by complete focal closure and preserved under
 functorial transport.} Version~1 asks only existence plus a computable rule, not canonicity. The supporting
 evidence is the capitulation prototype, the constructive $\operatorname{Synth}$ operator, and the finite depth
-index of the tower; the content still to prove is the synthesis rule and its termination.
+index of the tower; and the \emph{termination} half is no longer wholly open --- it is characterized below by a
+local--global principle at the signature's depth (Proposition~\ref{prop:terminating}), unconditional at depths
+$1$ and $2$, with the transcendental ceiling the sharp non-terminating boundary. What remains is the local--global
+principle at higher depth and the synthesis rule off the two settled regimes.
 
 \paragraph{Killability boundary, and what would falsify it.} The claim is guarded, and pre-commits to its failure
 modes. \emph{(1) Visibility does not imply killability}: not every detected class is removable by a finite
@@ -2455,6 +2472,33 @@ witness does not count. \emph{(4) Finite depth}: the extension is built at the t
 so a terminating synthesis is finite. A disconfirmation --- a finitely-presented, finite-depth signature that its
 own named frame extension provably cannot make exact --- would falsify the target, and would be published as
 prominently as a confirmation; none is known.
+
+\paragraph{The reach of the operator: a local--global characterization.} Which signatures terminate is not
+left open in the mass; it is organized by one principle. A finite-depth signature $\alpha$ is removable by a
+finite carrier extension exactly when a \emph{local--global principle} holds for it at its detection depth $d$:
+$\alpha$ capitulates in a finite cover precisely when it is \emph{locally trivial} --- killed under restriction to
+every completion of the carrier. Capitulation and the Brauer splitting are then not two coincidences but the
+depth-$1$ and depth-$2$ instances of one mechanism, and both are unconditional.
+\begin{proposition}[Terminating signatures: two unconditional regimes]\label{prop:terminating}
+Let $G$ be the carrier's structure group and $M$ finite coefficients.
+\textup{(a)} \emph{Every} depth-$1$ signature terminates. A continuous class $\alpha\in H^1(G,M)$ is inflated from
+a finite quotient $G/U$, so by inflation--restriction $\operatorname{res}_U\alpha=\operatorname{res}_U
+\operatorname{inf}\bar\alpha=0$: $\alpha$ dies in the finite cover $\mathcal C_U$. This is capitulation --- for
+ideal classes, Furtw\"angler's Principal Ideal Theorem.
+\textup{(b)} \emph{Every} Brauer ($H^2$) signature over a global carrier terminates, by the global theory of
+central simple algebras over number fields --- Albert--Brauer--Hasse--Noether together with the cyclicity
+theorem: the vanishing of the summed local invariants (reciprocity) forces a finite cyclic splitting extension. The constructive synthesis for the $2$-torsion part is the Brauer-zero trap
+(\texttt{brauer\_zero\_trap.py}, \texttt{BrauerZeroTrap.lean}).
+\end{proposition}
+\noindent The boundary is equally sharp: termination \emph{fails} exactly where the local--global principle fails
+at depth $d$ --- for a \emph{stably essential} class, one nonzero under restriction to \emph{every} finite carrier
+extension. These are the non-terminating signatures, and the carrier already names their arithmetic incarnation:
+the \emph{transcendental} Griffiths class, $L$-invisible, the ceiling of the loss-ledger$\,\leftrightarrow\,$%
+cycle-filtration tower (\S\ref{sec:status}) --- visible to the ledger at its tower depth yet killed by no finite
+extension, because no local datum detects it. So the operator's reach is \emph{precisely} the local--global
+regime: below the ceiling a signature is visible \emph{and} killable and the constructive synthesis of
+$\mathfrak E$ terminates; at the ceiling it is visible but not killable. Which side a given $\alpha$ falls on is
+read from whether its depth-$d$ obstruction is locally trivial --- decided by the signature, not left to chance.
 
 \paragraph{The control-system reading.} Equivalently $\mathfrak E$ is a closed-loop controller for representation
 mismatch: detect the residual mode, retune the participating clocks $\tau_j\mapsto\tau_j^\#$, enlarge the common
@@ -2724,7 +2768,7 @@ continuation on the carrier theta (the completed carrier transform is entire aft
 subtraction, focal cancellation killing the residual modes) --- Mathlib-complete for the Dirichlet model,
 with the entireness mechanism (focal cancellation $\to$ harmonic Gram-pencil rank-drop $\to$ residue-free
 residual, no independent mode) now formally proven in Lean at the general channel-agnostic level
-(\texttt{FocalResidualGeneral}) and the completion assembly verified numerically through $\Sym^{13}$, the
+(\texttt{FocalResidualGeneral}) and the proved completion assembly independently reproduced numerically through $\Sym^{13}$, the
 two-parameter Rankin--Selberg $L(\Delta\times E_{11})$, the genuine twisted convolution $L(\Sym^5\Delta\times E_{11})$ (degree $12$, two independent angles, the exact object the converse theorem consumes past $r\le4$), and the real Maass $\Sym^2$ (channel-resolved closure to
 precision, \S\ref{sec:pipeline}) --- the general family the universality capstone
 (Thms.~\ref{thm:transport},~\ref{thm:universal}) cites here; the
@@ -2740,12 +2784,23 @@ instances, and the Maass fiber is the same finite algebra.  Axiom footprint
 $\{$\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}.
 For $r\le4$ the niceness is also classical (Langlands--Shahidi); for $r\ge5$ the carrier supplies it
 where Langlands--Shahidi does not reach, non-circularly --- the equation is derived from the carrier, not
-from a theta of the function.  The completed global assembly and continuation are \emph{proved in this paper}
-for the general fiber (the $3$D--$2$D--$1$D intertwiner, Theorem~\ref{thm:carrierreflection}, and the
-residue-free entireness, Lemma~\ref{lem:rankgap}); they are Lean-formalized for the Dirichlet model, and the
-exact archimedean shifts and root numbers of the symmetric-power/twist family are corroborated numerically
-through $\Sym^{13}$ --- the general tensor family is not \emph{yet} Lean-formalized, and the numerics are
-corroboration, not the proof.
+from a theta of the function.  The completed twisted reflection is theorem-level and \emph{general}: the
+completed carrier readout $\Lambda=\gamma\,L$ of the whole $\Sym^r\pi\times\sigma$ family satisfies
+$\Lambda(s)=\varepsilon\,\Lambda^\vee(1-s)$ as the carrier involution $J$, machine-checked with \emph{no}
+Dirichlet hypothesis (\texttt{CompletedReflectionFiber.symTensorCompleted\_FE}, any $r$ and any duality-stable
+twist, assembling the general per-place reflection \texttt{localPoly\_reciprocal} and the general completion
+self-duality \texttt{clockCompletion\_selfdual}; footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$), together with the residue-free entireness
+of Lemma~\ref{lem:rankgap}.  The exact identification of this completed carrier readout with the classical global
+$\Lambda(s,\Sym^r\pi\times\sigma)$ is unconditional and proved in Proposition~\ref{prop:localid} together with the
+unfolding identity \textup{(E5)}: the carrier and classical constructions have the same local factors at every
+place --- archimedean factors, conductor, and root number included (Prop.~\ref{prop:localid}) --- so their
+completed readouts agree on the convergence half-plane $\Re s>1$, whence the identity theorem gives the global
+equality $\mathcal M K_{r,\sigma}(s)=\Lambda(s,\Sym^r\pi\times\sigma)$ (the $3$D--$2$D--$1$D intertwiner,
+Theorem~\ref{thm:carrierreflection}). No automorphy of $\Sym^r\pi$ is used. What remains is formalization scope
+only: the Dirichlet model is instantiated end-to-end in Lean, whereas the general tensor family is proved in the
+manuscript but not yet formalized end-to-end. The computations through $\Sym^{13}$ are calibration and independent
+reproduction of this already-proved identification, not its proof.
 
 \item \textbf{Structural} (\S\S\ref{sec:gue},\ref{sec:carrier},\ref{sec:fl}). The product law
 identifies the GUE derivative statistic, the reopening rate, and the Weyl-denominator transfer factor
@@ -2779,16 +2834,21 @@ niceness on the carrier for every $r$ --- the identification of the candidate wi
 place (Prop.~\ref{prop:localid}, global) and the three niceness properties (functional equation,
 boundedness, entireness) being carrier statements, not classical inputs. Three directions remain active.
 
-\emph{Formalization.} The reflection for a \emph{general} fiber --- once the outstanding formal step ---
-is now Lean-proved: \texttt{FiniteWeightFiber} formalizes the finite duality-stable weight fiber and its
+\emph{Formalization.} The reflection for a \emph{general} fiber is Lean-proved: \texttt{FiniteWeightFiber}
+formalizes the finite duality-stable weight fiber and its
 carrier reflection (ledger \texttt{fiber\_det\_one}, per-place functional equation
 \texttt{localPoly\_reciprocal}, axis \texttt{fiber\_reflection\_axis}, warp-invariance
 \texttt{warpFiber}), with $\Sym^r$ (\texttt{symFiber}) and Rankin--Selberg (\texttt{tensorFiber}) as
 instances and the standard axiom footprint (App.~\ref{app:repro}).  So the functional-equation input of
 Proposition~\ref{prop:niceness} is machine-checked at the general interface it actually consumes, not
-only for the Dirichlet model.  What remains numerical is the completed global assembly (the archimedean
-two-clock and the Poisson completion), governed by the exact gauge; the product law and the
-carrier/fiber rescaling reduce the residue reading to cell arithmetic.
+only for the Dirichlet model --- and the completed twisted reflection itself is theorem-level for the whole
+family (\texttt{symTensorCompleted\_FE}, above).  The remaining limitation is formalization scope only: the
+Dirichlet model is instantiated end-to-end in Lean, while the general tensor family --- classical-$L$
+identification included (Prop.~\ref{prop:localid} with \textup{(E5)}) --- is proved in the manuscript but not yet
+formalized end-to-end.  The numerical experiments retained serve only as calibration and independent reproduction
+of the \emph{already-proved} classical-$L$ identification and its exact archimedean normalization (the archimedean
+two-clock and Poisson completion tied to the exact global $L$-values), governed by the exact gauge; the product law
+and the carrier/fiber rescaling reduce the residue reading to cell arithmetic.
 
 \emph{Sato--Tate for Maass forms} (Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
 the Sato--Tate law: automorphy of \emph{every} $\Sym^r\pi$ first forces temperedness --- the normalized
@@ -2972,7 +3032,9 @@ fiber admissibility (\texttt{localPoly\_reciprocal}, general Lean), the completi
 clock, general Lean), and the \emph{carrier reflection} of Theorem~\ref{thm:carrierreflection} --- the global
 helix-to-anti-helix strand exchange, the self-dual clock weld \texttt{ChiralityHB.symClock\_star} per-clock
 (general Lean) and multiplicative over the bank, specialising to the classical theta functional equation for
-the Dirichlet model and corroborated numerically through $\Sym^{13}$ for the family. \texttt{fiberCompleted}
+the Dirichlet model; for the general family that specialisation is proved in the manuscript
+(Prop.~\ref{prop:localid} with \textup{(E5)}) and reproduced numerically through $\Sym^{13}$, not yet formalized
+end-to-end in Lean. \texttt{fiberCompleted}
 certifies the fiber's admissible \emph{local} reflection algebra; it is not the global carrier reflection.
 
 \item \textbf{The channel-agnostic focal residual (\S\ref{sec:converse}),
