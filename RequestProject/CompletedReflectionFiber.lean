@@ -102,4 +102,20 @@ noncomputable def symTensorCompleted (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1)
     (β : ℂ) (ℓ : ℝ) : CompletedReflection :=
   fiberCompleted (tensorFiber (symFiber r α hα) Wσ) c hc β ℓ
 
+/-- **The `Sym^r π × σ` completed twisted reflection FE.**  The completed carrier readout of the
+symmetric-power/twist fiber satisfies `Λ(s) = (εfin·εarch)(s)·Λ^∨(1-s)` — the carrier involution `J`,
+**unconditional** for the whole converse-theorem twist family (any `r`, any duality-stable twist `Wσ`,
+any conductor base `c ≠ 0` and clock `β, ℓ`), with **no** Dirichlet hypothesis.  This is the general-fiber
+completed reflection of `prop:completedFE`; it reflects the completed carrier object `Λ = γ·localPoly`.
+The identification of this carrier readout with the classical global `L(s, Sym^r π × σ)` is the separate,
+Dirichlet-instantiated / numerically-calibrated step. -/
+theorem symTensorCompleted_FE (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1)
+    {κ : Type*} [Fintype κ] (Wσ : FiniteWeightFiber κ) (c : ℂ) (hc : c ≠ 0)
+    (β : ℂ) (ℓ : ℝ) (s : ℂ) :
+    (symTensorCompleted r α hα Wσ c hc β ℓ).Λ s
+      = ((symTensorCompleted r α hα Wσ c hc β ℓ).εfin s
+          * (symTensorCompleted r α hα Wσ c hc β ℓ).εarch s)
+        * (symTensorCompleted r α hα Wσ c hc β ℓ).Λdual (1 - s) :=
+  CompletedReflection.completed_FE _ s
+
 end CriticalLinePhasor.FiniteWeightFiber

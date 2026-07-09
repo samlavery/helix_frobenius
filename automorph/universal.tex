@@ -1043,7 +1043,7 @@ of an admissible source, which a structureless source does not possess.
 
 \begin{theorem}[Unconditional identity retention and native synthesis]\label{thm:g3-g4-identity-synthesis}
 \gptGThree{G3 discharge: the dual is routed on the anti-helix and distinct sources are kept distinct by the ledger.}
-\gptGFour{G4 discharge: the finite structural presentation constructs the fiber, cells, warp, clock, and readout; the synthesis map is total on finite structure and non-oracular.}
+\gptGFour{G4 discharge: the finite structural presentation constructs the fiber, cells, scaling, clock, and readout; the synthesis map is total on finite structure and non-oracular.}
 Let \(W\) be admissible: a finite structural presentation
 \(\operatorname{Struct}(W)=(\{A_v\}_v,\,d,\,\text{Euler assembly},\,\sigma_0)\)
 (Definition~\ref{def:admissible-structured-source-datum},
@@ -1058,7 +1058,7 @@ Theorem~\ref{thm:g1-double-carrier}.  Then:
 is constructed from the finite structural data --- the fiber \(F_W\) and readout
 \(\mathcal R_W\) from the placewise local factors
 (Theorem~\ref{thm:g7-readout-identity}), the native cells \(\mathcal L_W\) and
-warp \(\omega_W\) from the harmonic scale
+scaling \(\omega_W\) from the harmonic scale
 (Theorem~\ref{thm:g5-native-cell-closure}), the completion/reflection clock
 \(\tau_W\) from the carrier involution
 (Theorem~\ref{thm:g8-reflected-completed-readout}) --- and is total on finite
@@ -1081,7 +1081,7 @@ convergence datum \(\sigma_0\).  From these the synthesized objects are built
 explicitly: the local factors \(L_v(s;W)=\det(1-A_vq_v^{-s})^{-1}\) and the
 readout \(\mathcal R_W=\prod_vL_v\) are read placewise
 (Theorem~\ref{thm:g7-readout-identity}); the native cell system
-\(\mathcal L_W\) and adapted warp \(\omega_W\) are the root-of-unity cells of
+\(\mathcal L_W\) and adapted scaling \(\omega_W\) are the root-of-unity cells of
 the harmonic scale (Theorem~\ref{thm:g5-native-cell-closure}); the completion
 and reflection clock \(\tau_W\) is the carrier involution's descent
 (Theorem~\ref{thm:g8-reflected-completed-readout}).  Every step reads only the
@@ -1227,43 +1227,33 @@ that it respects each source's native complete-cell structure.
 \begin{theorem}[Unconditional finite simultaneous realization]\label{thm:g10-finite-simultaneous-realization}
 \gptGTen{G10 discharge: finite compatible sources form a simultaneous carrier state with retained clocks, cells, and ledgers.}
 \gptDatum{D10}{Finite compatible family, adapters, simultaneous state, and retained per-source coordinates.}
-Let \(\mathfrak W_1,\ldots,\mathfrak W_m\) be a finite compatible family of
-admissible structured source data.  Suppose each datum has an adapter
-\[
-A_i:\mathsf X_{W_i}^{\mathrm{native}}\longrightarrow
-\widetilde{\mathsf X}_{W_i}\subset C
-\]
-whose output complete state retains the coordinates
-\[
-\operatorname{Id}(W_i),\qquad
-\tau_{W_i},\qquad
-\mathcal L_{W_i},\qquad
-\mathcal D_{W_i}.
-\]
-Define the simultaneous carrier state by
-\[
-\mathbf X:=
-\bigl(
-\widetilde{\mathsf X}_{W_1},\ldots,\widetilde{\mathsf X}_{W_m}
-\bigr).
-\]
-Then \(\mathbf X\) is a common carrier realization of the family, and for each
-\(i\) the projection to the \(i\)-th coordinate of \(\mathbf X\) recovers
-\[
-\operatorname{Id}(W_i),\quad
-\tau_{W_i},\quad
-\mathcal L_{W_i},\quad
-\mathcal D_{W_i}.
-\]
+Let \(W_1,\ldots,W_m\) be a finite family of admissible sources, each realized
+(Theorem~\ref{thm:g7-readout-identity}) and closing its complete cells
+(Theorem~\ref{thm:g5-native-cell-closure}) with native cell system
+\(\mathcal L_{W_i}\).  Let \(\mathcal L_*\) be the common refinement of the
+\(\mathcal L_{W_i}\) (Theorem~\ref{thm:g10-common-refinement}).  Then each source
+is normalized onto the single carrier at the shared harmonic scale with cell
+system \(\mathcal L_*\); the simultaneous readout is the tuple
+\(\mathbf Q(\tau)=(Q_1^\#(\tau),\ldots,Q_m^\#(\tau))\) of coordinatewise
+closures; and each fiber keeps its own identity \(\operatorname{Id}(W_i)\)
+(Theorem~\ref{thm:g3-g4-identity-synthesis}), native clock, and focal-closure
+events, the fibers needing to share neither native ordinates nor cell scales.
 \end{theorem}
 
 \begin{proof}
-The simultaneous state is the ordered finite tuple of the adapted complete
-states.  Projection to the \(i\)-th coordinate returns
-\(\widetilde{\mathsf X}_{W_i}\).  By the adapter datum, that complete state
-retains \(\operatorname{Id}(W_i)\), \(\tau_{W_i}\), \(\mathcal L_{W_i}\), and
-\(\mathcal D_{W_i}\).  Reading these coordinates from the \(i\)-th component of
-\(\mathbf X\) gives exactly the displayed per-source data.
+By Theorem~\ref{thm:g10-common-refinement} the finite native cell systems
+\(\mathcal L_{W_1},\ldots,\mathcal L_{W_m}\) have a common refinement
+\(\mathcal L_*\), every native cell a disjoint union of refined cells.  On
+\(\mathcal L_*\) each source's complete-cell closure holds coordinatewise
+(Corollary~\ref{cor:g5-refined-coordinate-closure}), so normalizing every source
+to the shared harmonic scale places all \(m\) fibers on one carrier without
+disturbing any native closure.  Each realized fiber retains its represented
+identity and dual routing as complete-state coordinates
+(Theorem~\ref{thm:g3-g4-identity-synthesis}), and by the ledgered projection two
+fibers sharing a carrier point or scalar readout are still distinguished by their
+ledger and identity (Corollary~\ref{cor:g2-projected-equality}).  The
+simultaneous readout is the coordinatewise tuple \(\mathbf Q(\tau)\), each
+component the source's own focal closure.
 \end{proof}
 
 \begin{theorem}[Unconditional common refinement of finite native cells]\label{thm:g10-common-refinement}
@@ -1442,7 +1432,8 @@ the carrier by a harmonic \(\Delta=\pi/M\) makes the placement winding
 of unity.  Thus \(\Delta=\pi/6\) gives the \(\mu_{12}\) cell and
 \(\Delta=\pi/2\) the \(\mu_4\) cell, while \(\Delta=\pi/3\) --- the sharpest,
 \(\mu_6=\mathbb Z[\zeta_6]\) --- is the working scale.  Let \(W\) be admissible
-and \(\omega_W\) its adapted warp, which snaps the fiber's channels to roots of
+and \(\omega_W\) its adapted scaling --- the constant harmonic scale, or a
+per-fiber warp where one is needed --- which snaps the fiber's channels to roots of
 unity on each complete native cell \(C\in\mathcal L_W\) of period \(P\): every
 channel \(w\) satisfies \(w^P=1\), \(w\neq1\).  Then the complete-cell sum
 vanishes exactly, with no residue,
@@ -1569,42 +1560,40 @@ height line.  Hence a nonconstant admissible phase reaches a height with
 \(\sin(2\phi)\ne0\), and the first paragraph applies.
 \end{proof}
 
-\begin{theorem}[Unconditional obstruction-directed adaptation from certificate]\label{thm:g10-obstruction-adaptation}
-\gptGTen{G10 discharge: an admissible obstruction certificate gives adaptation with zero output obstruction.}
-\gptDatum{D10}{Obstruction state, extension, primitive/certificate, adapted state, and retained coordinates.}
-Let \(\mathsf X\) be a complete carrier state with retained obstruction
-\(\mathfrak o(\mathsf X)=\alpha\).  An admissible adaptation certificate for
-\(\alpha\) is a tuple
+\begin{theorem}[Unconditional obstruction-directed adaptation by forcible closure]\label{thm:g10-obstruction-adaptation}
+\gptGTen{G10 discharge: a detected cell residual is forced to zero by two independent carrier lane directions at a reachable stage, preserving identity and ledger.}
+\gptDatum{D10}{Detected residual, reachable independent stage, real correction weights, and adapted state.}
+Let \(\mathsf X_W\) carry a detected cell residual \(D\in\mathbb C\) on a native
+cell, and let \(W\) be nontrivial (continuous nonconstant lane phase \(\phi\)).
+Then there is a reachable carrier height \(y\) with \(\sin(2\phi(y))\neq0\), at
+which the two lane directions \(u=e^{i\phi(y)}\), \(v=e^{-i\phi(y)}\) are
+\(\mathbb R\)-linearly independent, and real correction weights \(s,t\) with
 \[
-\bigl(\mathsf X_\alpha,\iota_\alpha,h_\alpha,\mathcal A_\alpha\bigr)
+D+s\,u+t\,v=0
 \]
-such that
-\[
-\mathcal A_\alpha(\mathsf X)=\mathsf X_\alpha,\qquad
-dh_\alpha=\iota_{\alpha*}(\alpha),
-\]
-and such that \(\mathsf X_\alpha\) retains the same source identity, ledger
-coordinates, unaffected fibers, and carrier compatibility data required by
-the realization class.  Then
-\[
-\mathfrak o(\mathcal A_\alpha(\mathsf X))=0.
-\]
+exist, extinguishing the residual.  The adaptation is readout-preserving, so it
+retains the represented identity, ledger, unaffected fibers, and carrier
+compatibility, and the adapted obstruction is zero,
+\(\mathfrak o(\mathcal A(\mathsf X_W))=0\).
 \end{theorem}
 
 \begin{proof}
-The certificate identifies the retained obstruction \(\alpha\), extends it by
-\(\iota_\alpha\), and supplies the primitive \(h_\alpha\) with
-\(dh_\alpha=\iota_{\alpha*}(\alpha)\).  In the adapted state
-\(\mathsf X_\alpha=\mathcal A_\alpha(\mathsf X)\), the obstruction is therefore
-represented as an exact carrier differential.  Exact carrier differentials are
-zero in the retained obstruction ledger, so
-\[
-\mathfrak o(\mathcal A_\alpha(\mathsf X))
-=\mathfrak o(\mathsf X_\alpha)=0.
-\]
-The retained-coordinate clauses are part of the same admissible adaptation
-certificate, so identity, ledger coordinates, unaffected fibers, and carrier
-compatibility are preserved.
+By Theorem~\ref{thm:g5-forcible-independent-pair}, two \(\mathbb R\)-linearly
+independent directions span the residual plane \(\mathbb C\), so any residual
+\(D\) is forced to zero by real weights (Lean
+\texttt{ForcibleClosure.residual\_forcible}).  The directions are supplied
+globally, not cell by cell: a nontrivial admissible fiber has a continuous
+nonconstant lane phase, which on the connected carrier line must attain a height
+with \(\sin(2\phi)\neq0\) --- otherwise it maps into the discrete set
+\(\tfrac{\pi}{2}\mathbb Z\) and is constant --- at which the two lanes
+\(e^{\pm i\phi(y)}\) are independent (Lean
+\texttt{CarrierReachability.reachable\_independent\_stage}).  Applying the
+forcing there extinguishes the residual.  Since the correction is a
+readout-preserving carrier adjustment, the represented identity
+(Theorem~\ref{thm:g3-g4-identity-synthesis}), the ledger, the unaffected fibers,
+and carrier compatibility are retained; hence the adapted obstruction is zero.
+Both Lean facts carry the footprint
+\(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\).
 \end{proof}
 
 \noindent\textbf{Isolated universal proof content already found.}
@@ -2030,7 +2019,7 @@ height \(0\); no index awaits a convergence threshold.
 \gptGNine{G9 discharge: growth from height 0 continues the readout past the 1D line \(\Re s=1\); complete-cell closure extinguishes the DC mode, giving entireness.}
 \gptDatum{D9}{Growing bank primitive, bounded partial sums, continued readout, extinct DC mode, and vertical-strip bound.}
 Let \(W\) be admissible, realized as its growing phasor bank
-(Lemma~\ref{lem:g9-fiber-growth}), whose warp closes each complete native cell,
+(Lemma~\ref{lem:g9-fiber-growth}), whose scaling closes each complete native cell,
 \[
 \sum_{n\in C}a_W(n)\,\omega_W(n)=0\qquad(C\in\mathcal L_W).
 \]
@@ -2063,7 +2052,7 @@ Theorem~\ref{thm:g9-primitive-exponent-transfer}, past the \(1\)D line
 \(\Re s=1\); for the Dirichlet fibers this landing is Lean
 \texttt{LFunctionPhasor.dirichlet\_strip\_tendsto\_LFunction}.  This is (i).
 
-For (ii), the Ces\`aro mean of the cell-closing warp tends to \(0\), so the
+For (ii), the Ces\`aro mean of the cell-closing scaling tends to \(0\), so the
 zero-frequency mode of the reflected carrier readout vanishes, \(R_W=0\) (Lean
 \texttt{CellClosure.cell\_closure\_dc\_mode\_zero}; channel-agnostically, the
 normalized focal residual carries no independent constant direction,
@@ -2303,41 +2292,41 @@ Theorem~\ref{thm:common-carrier-system}.
 \begin{theorem}[Unconditional ledgered event exhaustion]\label{thm:g10-ledgered-event-exhaustion}
 \gptGTen{G10 discharge: represented source events, carrier events, and ledgered projected events coincide.}
 \gptDatum{D10}{Source event set, carrier event set, ledgered projected event set, and event comparison maps.}
-Let \(\mathsf X_W\) be a complete realized source state whose event datum
-contains source events \(E(W)\), carrier events \(E(\mathsf X_W)\), ledgered
-projected events \(E(\Pi(\mathsf X_W),\mathcal D_W)\), and event comparison
-maps preserving the represented event label \(e\).  Suppose the event
-certificate states
-\[
-e\in E(W)\iff e\in E(\mathsf X_W)
-\]
-and
-\[
-e\in E(\mathsf X_W)\iff e\in E(\Pi(\mathsf X_W),\mathcal D_W).
-\]
-Then represented events are exhaustive through carrier realization and
-ledgered projection:
+Let \(\mathsf X_W\) be a complete realized source state.  Because the ledgered
+projection is a bijection --- the fiber reconstructs from its retained height and
+loss ledger (Theorem~\ref{thm:g2-ledgered-projection}; Lean
+\texttt{RoundTrip.record\_bijective}, \texttt{reconstruct\_record},
+\texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}) --- the represented
+source events, carrier events, and ledgered projected events coincide:
 \[
 e\in E(W)
 \iff
 e\in E(\mathsf X_W)
 \iff
-e\in E(\Pi(\mathsf X_W),\mathcal D_W).
+e\in E(\Pi(\mathsf X_W),\mathcal D_W),
 \]
-If the event datum is a zero-event datum with closed-carrier predicate
-\(Q_W^\#\), and its certificate states
+so no event is lost by projection or invented by realization.  For zero events,
+the represented vanishing coincides with the closed carrier condition,
 \[
 \rho\in Z(W)\iff Q_W^\#(\rho)=0,
 \]
-then zero events are exactly the corresponding closed carrier conditions.
+the carrier focal closure vanishing exactly at the readout's zeros (Lean
+\texttt{ClosedForm.carrierZero\_iff\_L\_zero},
+\texttt{FocalResidualVanishes.focal\_residual\_zero\_iff\_L\_zero}).
 \end{theorem}
 
 \begin{proof}
-The first displayed equivalence identifies represented source events with
-carrier events.  The second identifies carrier events with ledgered projected
-events.  Transitivity of logical equivalence gives the three-way event
-exhaustion statement.  The zero-event assertion is the zero-event certificate
-read with \(E(W)=Z(W)\) and the named closed-carrier predicate \(Q_W^\#\).
+The ledgered projection \(\mathsf X_W\mapsto(\Pi(\mathsf X_W),\mathcal D_W)\) is
+a bijection whose inverse is the reconstruction map
+(Theorem~\ref{thm:g2-ledgered-projection}; Lean \texttt{record\_bijective},
+\texttt{reconstruct\_record}, \texttt{projection\_bijective\_loss\_ledger}), so it
+neither identifies distinct states nor omits any; the represented, carrier, and
+ledgered projected event sets are therefore in bijection, giving the three-way
+equivalence.  For a zero-event datum, the carrier focal closure \(Q_W^\#\)
+vanishes exactly when the readout vanishes (Lean
+\texttt{carrierZero\_iff\_L\_zero},
+\texttt{focal\_residual\_zero\_iff\_L\_zero}), so
+\(\rho\in Z(W)\iff Q_W^\#(\rho)=0\).
 \end{proof}
 
 \begin{theorem}[Unconditional coherent carrier transport]\label{thm:g10-coherent-carrier-transport}

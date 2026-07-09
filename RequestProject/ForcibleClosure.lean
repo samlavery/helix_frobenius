@@ -7,9 +7,13 @@ import Mathlib
 `D_C = ∑_{n ∈ C} a_n · ω(n)` can be driven to machine zero by a *readout-preserving* warp with a
 few coherent generators (the winding `Ω(n)`, the distinct-prime count `ω(n)`, the vertical shift
 `log n`):
-* `Sym⁵ Δ` (open, r ≥ 5): `|D_C| → 4.0e-15`, warp params `|x| < 1.5`;
-* `Sym¹³ Δ` (open):        `|D_C| → 3.6e-15`, warp params `|x| < 1.2`;
-* cells independent (one cell's forcing warp leaves another cell's residual at `O(√cell)`).
+Measured (native growth cells, uniform in `y = log Z`, canonical growth window — no clip;
+four generators including the fiber's local periods `Θ(n)`):
+* `30/30` cells close at the float64 floor on each of `Δ`, `Sym⁵ Δ`, `Sym¹³ Δ`
+  (medians `4.9e-15 / 1.4e-14 / 7.8e-15`, weights `|x| ≤ 1.28 / 3.07 / 2.27`);
+* cross-cell independence: one cell's weights leave the next at its own scale;
+* the closure is *arithmetic-neutral* (detuned and random fibers close identically,
+  `tmp/detuned_closure_control.py`) — transport infrastructure, not niceness evidence.
 
 So per-crossing cell closure is *forcible* by a small legitimate warp family. The **algebraic
 core** of why this succeeds is a controllability statement: two independent warp
