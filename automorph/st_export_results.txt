@@ -1,0 +1,126 @@
+S(t)-REMOVAL EXPORT TEST: spectral counting fluctuations as chart artifacts
+==============================================================================
+Testing whether the L-function 'self-gauge removes S(t)' result exports to a
+non-arithmetic quantum-chaotic spectrum (quarter Bunimovich stadium), against an
+integrable control (rectangle).  All figures [measured]; readings [interpretation].
+
+=== SOLVER VALIDATION (before any statistics) ===
+  square [0,pi]^2: 16 exact levels, all matched, max err 8.5e-04, mean err 2.8e-04
+  quarter-stadium level count vs Weyl (completeness check):
+    k in [2.5,12.0]: found  15, Weyl expects  15.4  (rel 2.3%)
+    k in [2.5,18.0]: found  38, Weyl expects  38.3  (rel 0.7%)
+  VALIDATION: square exact match PASS; stadium completeness PASS
+
+==============================================================================
+STAGE 1: spectra and standard level statistics
+==============================================================================
+Computing quarter-stadium spectrum up to k = 95.0 (this is the expensive step) ...
+  stadium: 1085 levels in [2.5, 95.0]  (217.6s)
+  rectangle 1.0 x 1.8385: 1281 levels in [2.5, 95.0] (exact)
+
+Nearest-neighbour spacing statistics (community benchmark):
+  [stadium (expect GOE)] 1084 spacings, <s>=1.000
+    <s^2> = 1.216   (GOE Wigner 1.273, GUE 1.178, Poisson 2.000)
+    P(s<0.3): meas 0.023   GOE 0.068   Poisson 0.259
+    P(s<0.5): meas 0.149   GOE 0.178   Poisson 0.393
+    P(s<1.0): meas 0.542   GOE 0.544   Poisson 0.632
+    P(s<2.0): meas 0.970   GOE 0.957   Poisson 0.865
+    KS to GOE = 0.052   KS to Poisson = 0.264   -> GOE-like (chaotic)
+  [rectangle (expect Poisson)] 1278 spacings, <s>=1.000
+    <s^2> = 1.843   (GOE Wigner 1.273, GUE 1.178, Poisson 2.000)
+    P(s<0.3): meas 0.225   GOE 0.068   Poisson 0.259
+    P(s<0.5): meas 0.359   GOE 0.178   Poisson 0.393
+    P(s<1.0): meas 0.627   GOE 0.544   Poisson 0.632
+    P(s<2.0): meas 0.868   GOE 0.957   Poisson 0.865
+    KS to GOE = 0.188   KS to Poisson = 0.043   -> Poisson-like (integrable)
+
+==============================================================================
+STAGE 2: fixed-chart fluctuation vs self-gauge removal (THE EXPERIMENT)
+==============================================================================
+Fixed chart: per-cell counting phase against a CONSTANT reference density d0.
+Self-gauge:  same, but with the running local Weyl density Nbar'(k) (self-scaling).
+Removal fraction = share of the fixed-chart cell fluctuation that is the smooth
+density drift (chart artifact), vs the genuine level-spacing fluctuation (real).
+
+CALIBRATION (arithmetic-exact analogue: unfolded spacings == 1, stadium geometry):
+  [exact-unfolded (L-function analogue)]  N levels = 1085   Weyl const C = -3.500   density range Nbar'(k): 1.66...24.88
+    counting residual S = N - Nbar:  sd = 0.000  range [-0.00,+0.00]
+    FIXED-CHART per-cell phase drift (constant d0):  sd = 0.9282 pi
+    SELF-GAUGE per-cell phase drift (running Nbar'):  sd = 0.0000 pi   median residual -0.0000 pi
+    -> fraction of fixed-chart cell fluctuation removed by self-gauge: 100.0%
+    (L-function figure for reference: 99.2-99.5% removed; the residual there is ~0
+     because arithmetic zeros are exactly one-per-pi in the running clock.)
+
+  [stadium (chaotic)]  N levels = 1085   Weyl const C = -46.499   density range Nbar'(k): 0.59...26.55
+    counting residual S = N - Nbar:  sd = 44.796  range [-108.57,+48.35]
+    FIXED-CHART per-cell phase drift (constant d0):  sd = 1.5604 pi
+    SELF-GAUGE per-cell phase drift (running Nbar'):  sd = 0.5313 pi   median residual -0.0876 pi
+    -> fraction of fixed-chart cell fluctuation removed by self-gauge: 88.4%
+    (L-function figure for reference: 99.2-99.5% removed; the residual there is ~0
+     because arithmetic zeros are exactly one-per-pi in the running clock.)
+
+  [rectangle (integrable control)]  N levels = 1281   Weyl const C = +0.739   density range Nbar'(k): 0.59...27.34
+    counting residual S = N - Nbar:  sd = 1.480  range [-5.48,+4.38]
+    FIXED-CHART per-cell phase drift (constant d0):  sd = 1.8576 pi
+    SELF-GAUGE per-cell phase drift (running Nbar'):  sd = 0.9174 pi   median residual +0.2991 pi
+    -> fraction of fixed-chart cell fluctuation removed by self-gauge: 75.6%
+    (L-function figure for reference: 99.2-99.5% removed; the residual there is ~0
+     because arithmetic zeros are exactly one-per-pi in the running clock.)
+
+Scale dependence of the removal (why the % is range-bound but the residual sd is not):
+    kmax  stadium rem%  stad resid sd   rect rem%  rect resid sd
+      48         83.7%         0.5231       66.8%         0.8871
+      71         86.7%         0.5298       72.7%         0.9038
+      95         88.4%         0.5313       75.6%         0.9174
+  (removal % rises with kmax as the smooth density drift grows; the residual sd is
+   scale-invariant -- it is the irreducible GOE/Poisson spacing fluctuation.)
+
+==============================================================================
+STAGE 2b: residual structure -- periodic-orbit content
+==============================================================================
+The L-function residual is the ARITHMETIC MEDIUM (Euler log-clocks at ln p^k).
+The billiard analogue (Gutzwiller trace formula): the oscillatory counting residual
+has peaks at classical PERIODIC-ORBIT LENGTHS.  We Fourier-analyse the residual in
+the length variable and compare with the shortest orbits.
+
+  [stadium (chaotic)] residual power spectrum (conjugate variable = orbit length):
+    top peaks at lengths L = 0.726, 2.002, 1.540, 1.025, 1.851, 2.486, 4.850, 6.465
+    shortest classical periodic-orbit lengths (predicted): 2.000 (bouncing-ball (vert)), 4.000 (horizontal diameter), 4.472 (bow-tie / short diag), 5.142 (whispering (arc)), 6.000 (full straight run)
+    orbit-length matches (predicted -> nearest measured peak):
+      bouncing-ball (vert)   L_pred=2.000   nearest peak 2.002   (Delta=0.002)
+      horizontal diameter    L_pred=4.000   nearest peak 3.996   (Delta=0.004)
+      bow-tie / short diag   L_pred=4.472   nearest peak 4.432   (Delta=0.040)
+      whispering (arc)       L_pred=5.142   nearest peak 5.332   (Delta=0.190)
+      full straight run      L_pred=6.000   nearest peak 6.465   (Delta=0.465)
+
+  [rectangle (integrable)] residual power spectrum (conjugate variable = orbit length):
+    top peaks at lengths L = 1.996, 4.189, 5.432, 3.687, 7.035, 3.992, 7.614, 12.556
+    shortest classical periodic-orbit lengths (predicted): 2.000 (torus (1,0)), 3.677 (torus (0,1)), 4.000 (torus (2,0)), 4.186 (torus (1,1)), 5.433 (torus (2,1)), 7.354 (torus (0,2))
+    orbit-length matches (predicted -> nearest measured peak):
+      torus (1,0)            L_pred=2.000   nearest peak 1.996   (Delta=0.004)
+      torus (0,1)            L_pred=3.677   nearest peak 3.687   (Delta=0.010)
+      torus (2,0)            L_pred=4.000   nearest peak 3.992   (Delta=0.008)
+      torus (1,1)            L_pred=4.186   nearest peak 4.189   (Delta=0.003)
+      torus (2,1)            L_pred=5.433   nearest peak 5.432   (Delta=0.001)
+      torus (0,2)            L_pred=7.354   nearest peak 7.614   (Delta=0.260)
+
+==============================================================================
+VERDICT
+==============================================================================
+  calibration (exact-unfolded, L-analogue): self-gauge removes 100.0%, residual sd 0.0000 pi
+     -> the method reproduces the L-function ~100% limit on the SAME billiard
+        geometry when the spectrum is arithmetically rigid; the transport is faithful.
+  chaotic stadium (GOE):  self-gauge removes 88.4% of the fixed-chart cell fluctuation;
+                          residual cell sd = 0.5313 pi (fixed-chart sd 1.5604 pi).
+  integrable rect (Poisson): self-gauge removes 75.6%;  residual cell sd = 0.9174 pi (fixed 1.8576 pi).
+  L-function ref: 99.2-99.5% removed; residual ~0 (arithmetic zeros exactly one-per-pi).
+
+  [interpretation] The self-gauge removes the SMOOTH-density-drift part of the
+  counting fluctuation on the non-arithmetic spectrum too -- that part IS a chart
+  artifact of the self-scaling (Weyl) density, exported successfully.  What it does
+  NOT remove is the genuine level-spacing fluctuation (GOE rigidity / Poisson
+  randomness), which has no analogue in the L-function's exact one-per-pi rigidity.
+  The residual carries periodic-orbit structure (Stage 2b) -- the Gutzwiller analogue
+  of the arithmetic Euler clocks.
+
+  total runtime 225s, 1085 stadium + 1281 rectangle levels.

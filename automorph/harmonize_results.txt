@@ -1,0 +1,155 @@
+HARMONIZATION PHOTOGRAPH  --  capitulation as frame-enlargement of a class obstruction
+============================================================================
+Thesis: a class-group obstruction is an untranslated frame mismatch; enlarging the
+carrier to the Hilbert class field TRANSLATES it away (capitulation / Principal Ideal
+Theorem).  We photograph the dissolution algebraically AND fiber-side, exactly.
+
+############################################################################
+# (1) ALGEBRAIC PHOTOGRAPH  --  K = Q(sqrt-5),  h(K) = 2
+############################################################################
+
+(1a) [proven-classical] a = (2, 1+sqrt-5) is NON-PRINCIPAL in O_K = Z[sqrt-5].
+     norm form N(x+y sqrt-5)=x^2+5y^2 ; solutions of =2 : []
+     no element of norm 2 exists, yet N(a)=2  =>  a is not principal.  [ok=True]
+     structure: (1+sqrt-5)(1-sqrt-5) = 6 = 2*3,  a^2 = (2)  (2 ramifies, 2 | disc_K = -20).
+
+(1b) [proven-classical, explicitly certified] capitulation in H = Q(sqrt-5, i):
+     CLAIM:  a * O_H = (1+i) * O_H   (the obstruction dissolves; generator g = 1+i).
+
+     forward  a*O_H subset (g):  quotients of the two generators of a by g are O_H-integers
+                 2 / (1+i) = 1 - I   alg.integer? True   minpoly x**2 - 2*x + 2
+        (1+sqrt-5) / (1+i) = (1 - I)*(1 + sqrt(5)*I)/2   alg.integer? True   minpoly x**4 - 2*x**3 + 2*x**2 - 6*x + 9
+
+     reverse  (g) subset a*O_H:  explicit O_H-integers u, v with 2u + (1+sqrt-5)v = 1+i
+       v = -sqrt(5) - 1 - I      (O_H-integer? True)
+       u = 1 + sqrt(5)*I/2 + 7*I/2      (O_H-integer? True)
+       2u + (1+sqrt-5)v = 1 + I   (target 1+i)   [ok=True]
+
+     norm check:  N_{H/Q}(1+i) = 4 ;  N_{H/Q}(a O_H) = N_K(a)^[H:K] = 2^2 = 4
+     ==> a*O_H = (1+i)*O_H  certified (both containments + equal norm).  [ok=True]
+
+     THESIS-FACE [thesis-interpretation]: the non-principal a -- the welded, out-of-
+     phase carrier of K -- acquires a genuine generator the moment the carrier is
+     enlarged to H.  g = 1+i lives in the NEW clock Q(i) that H adds; the obstruction
+     did not vanish, it was TRANSLATED into an honest phase of the larger frame.
+
+############################################################################
+# (1c) SIDE PANEL  --  K = Q(sqrt-23),  h(K) = 3
+############################################################################
+
+[proven-classical] O_K = Z[omega], omega=(1+sqrt-23)/2, N(a+b omega)=a^2+ab+6b^2.
+     norm form solutions of =2 : []  (none) => primes above 2 are non-principal.
+     -23 = 1 mod 8  =>  2 SPLITS: (2) = p2 * p2bar, each of norm 2, each of order 3 in
+     the cyclic Cl(K) = Z/3 (a class of order 3 has no norm-2 principal representative).
+
+[proven-classical] H = splitting field of x^3 - x - 1.  disc(x^3-x-1) = -23 = disc_K.
+     x^3-x-1 is irreducible with non-square discriminant, so Gal(H/Q) = S_3 and
+     [H:Q] = 6.  The unique index-2 subgroup A_3 = Z/3 fixes K = Q(sqrt-23), hence
+     Gal(H/K) = A_3 = Z/3 and [H:K] = 3 = h(K): H is the (unramified, cyclic) Hilbert
+     class field of Q(sqrt-23).
+
+     x^3-x-1 irreducible over Q: True;  disc -23 non-square (sqrt(23) irrational: True)  =>  Gal = S_3, [H:K] = 3.
+
+     EXPLICITLY CONSTRUCTED: [H:K] = 3 = h(K); the Galois/degree structure and that 2
+     splits into non-principal order-3 primes.  NOT explicitly constructed here: a
+     closed-form capitulation generator of p2*O_H (it exists by the Principal Ideal
+     Theorem; exhibiting it needs the degree-6 ring of integers, heavier than sympy's
+     minimal_polynomial certificate handles cleanly -- deferred, stated honestly).
+
+############################################################################
+# (2) FIBER-SIDE PHOTOGRAPH  --  character / ideal-count fibers, no L-library
+############################################################################
+
+(2a) [measured] K = Q(sqrt-5): h landed from the chi_{-20} Kronecker fiber
+     L(1,chi_{-20}) fiber = 1.40496295 ;  h = w sqrt|D| L/2pi = 2.00000000  -> 2  (known 2)  [ok=True]
+
+(2b) [measured, exact] zeta_H = zeta * L(chi-4) * L(chi5) * L(chi-20)   (H=Q(i,sqrt5)).
+     Verified by matching the 4-character Dirichlet convolution a_H(n) against the
+     multiplicative prime-splitting ideal count of O_H, for all norms n <= Nmax.
+     max |convolution - prime-splitting count| over n<=300 : 0.000e+00
+     all a_H(n) are nonnegative integers (genuine ideal counts): True
+     first 24 a_H(n): [1, 0, 0, 1, 2, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0]
+
+     numerical factorization check zeta_H(s) =?= zeta(s) L(s,chi-4) L(s,chi5) L(s,chi-20)
+     (both sides truncated at Nmax; residual is partial-sum tail, ~Nmax^{1-s}, not a
+      discrepancy -- it shrinks as s grows and would vanish as Nmax->inf):
+       s=2:  ideal-sum(zeta_H) = 1.1987213190   char-product = 1.1978362961   |diff| = 8.85e-04
+       s=3:  ideal-sum(zeta_H) = 1.0354438565   char-product = 1.0354415840   |diff| = 2.27e-06
+       s=4:  ideal-sum(zeta_H) = 1.0074568430   char-product = 1.0074568369   |diff| = 6.08e-09
+
+(2c) [measured] THESIS-FACE: K's h=2 obstruction reappears as NEW CLOCKS of H.
+     H's zeta adds exactly two characters on top of K's chi_{-20}: chi_{-4} (the clock
+     of Q(i)) and chi_5 (the clock of Q(sqrt5)).  Each is an honest quadratic field; each
+     lands its own class number:
+       Q(i)      disc -4  : h -> 1.000000  (known 1)   [new clock chi_{-4}]
+       Q(sqrt5)  disc  5  : h -> 1.000000  (known 1)   [new clock chi_5], eps=(1+sqrt5)/2
+       Q(sqrt-5) disc -20 : h -> 2.000000  (known 2)   [original clock chi_{-20}]
+     Gal(H/K) = Z/2 = the class of K, realized as the chi_{-4}-vs-chi_5 splitting: the
+     order-2 obstruction of K became the order-2 GALOIS GROUP of the enlarged carrier.
+
+     [measured] Kuroda/analytic class-number relation for the imaginary biquadratic H:
+       residue zeta_H = L(1,-4)L(1,5)L(1,-20) = 0.47493710
+       Dedekind:  res = (2pi)^2 h_H Reg_H /(w_H sqrt|disc_H|),  w_H=4, |disc_H|=400
+       => h_H Reg_H = 0.96242379 ;  Reg_H = 2 log eps5 = 0.96242365  (Kuroda unit index)
+       => h_H = 1.00000014  ->  1   (known 1)   [ok=True]
+
+############################################################################
+# (3) CAVEAT CHECK  --  is the tower already trivial, and where does it end?
+############################################################################
+
+[measured] h(H) = 1 for H = Q(sqrt-5, i): the class-field tower of Q(sqrt-5)
+     TERMINATES at the first step -- H is its own Hilbert class field, every ideal of H
+     is already principal.  So here 'enlarge to the frame the obstruction names' is a
+     complete cure in one move.
+
+[proven-classical] This is NOT automatic.  Golod-Safarevic (1964): there exist fields
+     whose class-field TOWER is INFINITE -- no finite extension makes every ideal
+     principal simultaneously with the tower closing.  The first explicit example is
+     Q(sqrt(-4849845)) (= sqrt(-3*5*7*11*13*17*19)), whose 2-class-field tower never
+     terminates.  Harmonization is therefore PER-OBSTRUCTION (each ideal capitulates in
+     ITS Hilbert class field, Principal Ideal Theorem, Furtwaengler 1930), not a promise
+     that one finite carrier dissolves an entire tower.  We report this boundary honestly.
+
+############################################################################
+# VERDICT
+############################################################################
+  (1)  Q(sqrt-5) capitulation a*O_H=(1+i)*O_H certified exactly : PASS
+  (1c) Q(sqrt-23) [H:K]=3=h, disc=-23 structure verified        : PASS
+  (2)  fiber factorization + all h-landings (incl h(H)=1)       : PASS
+  (3)  caveat (tower trivial here; Golod-Safarevic noted)       : PASS
+  OVERALL: the obstruction dissolved under frame enlargement, algebraically AND in the
+           fiber readouts, exactly as the harmonization corollary predicts.  [ALL PASS]
+
+################################################################################
+# SUMMARY  --  did the obstruction dissolve under frame enlargement?  YES, twice.
+################################################################################
+
+ALGEBRAIC PHOTOGRAPH [proven-classical, exactly certified].  In K = Q(sqrt-5) the ideal
+a = (2, 1+sqrt-5) is non-principal: the norm form x^2+5y^2 = 2 has no solution, so no
+element realizes N(a)=2.  Enlarge the carrier to the Hilbert class field H = Q(sqrt-5, i).
+The obstruction dissolves EXACTLY: a*O_H = (1+i)*O_H.  Certified by both containments with
+explicit O_H-integer multipliers -- 2/(1+i) and (1+sqrt-5)/(1+i) are O_H-integers (forward),
+and 2u+(1+sqrt-5)v = 1+i for explicit O_H-integers u,v (reverse) -- plus the matching field
+norm N_{H/Q} = 4 on both sides.  The generator g = 1+i is residue-free.  Side panel: for
+K = Q(sqrt-23) (h=3) we certify [H:K] = 3 = h with H the splitting field of x^3-x-1
+(disc -23, Gal(H/K)=Z/3); the explicit degree-6 capitulation generator is stated to exist
+(Principal Ideal Theorem) but not constructed here.
+
+FIBER PHOTOGRAPH [measured].  The same dissolution reads off our character fibers with no
+L-library.  K's obstruction lands h(K)=2 from the chi_{-20} fiber.  H's Dedekind zeta
+factors zeta_H = zeta * L(chi-4) * L(chi5) * L(chi-20), verified EXACTLY: the 4-character
+Dirichlet convolution equals the multiplicative prime-splitting ideal count of O_H for every
+norm n <= 300 (max diff 0, all coefficients nonnegative integers), and the factorization
+matches numerically at s = 2,3,4.  h(H)=1 lands from the Kuroda/Dedekind analytic relation
+(h_H Reg_H = 2 log eps5, Reg_H = 2 log eps5).
+
+THESIS-FACE [thesis-interpretation].  K's order-2 class-group obstruction did not vanish --
+it was REDISTRIBUTED into explicit new clocks of the enlarged carrier: the two quadratic
+characters chi_{-4} (Q(i)) and chi_5 (Q(sqrt5)) that H adds on top of chi_{-20}, and the
+Galois group Gal(H/K)=Z/2 that IS the former class.  The out-of-phase weld became an honest
+phase of the larger frame, exactly as the harmonization corollary predicts.
+
+CAVEAT [proven-classical].  Here the tower terminates (h(H)=1).  Golod-Safarevic (1964):
+class-field towers can be infinite (e.g. Q(sqrt-4849845)), so harmonization is per-obstruction
+(Principal Ideal Theorem), not a single-carrier cure for an entire tower.
+

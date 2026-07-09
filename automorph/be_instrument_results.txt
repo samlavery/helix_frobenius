@@ -1,0 +1,505 @@
+==============================================================================
+PHASE 1 — BUILD + ANCHOR  [anchor tier]
+Eichler-Selberg level-1 trace formula; elliptic kernel = TWO-CLOCK object
+(RequestProject/TwoClockWeightLaw.lean); L(1,chi) = HOUSE character fiber
+(tmp/obstruction_general.py).
+==============================================================================
+
+[anchor] L(1,chi_D) HOUSE character-fiber landings (obstruction_general.py):
+    imaginary: h = w sqrt|D| L1_chi_fiber/(2pi);  real: h = sqrt(D) L1/(2 log eps)
+    imaginary quadratics: 17/17 land the exact class number (digamma cross-check agrees)
+    real quadratics:      11/11 land the exact class number (regulator log eps in the BSD slot)
+  HOUSE class-number micro-anchor: 28/28  PASS
+
+[anchor] hw(D) via house L(1,chi) fiber  ==  hw(D) via reduced-form count:
+    hw(   -3): L1-fiber=0.33333  form-count=0.33333  ok
+    hw(   -4): L1-fiber=0.50000  form-count=0.50000  ok
+    hw(   -7): L1-fiber=1.00000  form-count=1.00000  ok
+    hw(   -8): L1-fiber=1.00000  form-count=1.00000  ok
+    hw(  -15): L1-fiber=2.00000  form-count=2.00000  ok
+    hw(  -20): L1-fiber=2.00000  form-count=2.00000  ok
+    hw(  -23): L1-fiber=3.00000  form-count=3.00000  ok
+    hw(  -24): L1-fiber=2.00000  form-count=2.00000  ok
+    hw(  -47): L1-fiber=5.00000  form-count=5.00000  ok
+    hw(  -71): L1-fiber=7.00000  form-count=7.00000  ok
+  hw via house L(1,chi): PASS
+
+[anchor] elliptic kernel = TWO-CLOCK character  P_k(t,n) = n^{(k-2)/2} U_{k-2}(cos th):
+    t=  1 n= 2 k=12: P_k=         23.0000  n^((k-2)/2)*symTrace(k-2, th=1.2094)=         23.0000  ok
+    t=  3 n= 5 k=12: P_k=        979.0000  n^((k-2)/2)*symTrace(k-2, th=0.8355)=        979.0000  ok
+    t=  0 n= 7 k=16: P_k=    -823543.0000  n^((k-2)/2)*symTrace(k-2, th=1.5708)=    -823543.0000  ok
+    t=  2 n= 9 k=20: P_k= -404736821.0000  n^((k-2)/2)*symTrace(k-2, th=1.2310)= -404736821.0000  ok
+    t= -3 n=11 k=12: P_k=     -78539.0000  n^((k-2)/2)*symTrace(k-2, th=2.0401)=     -78539.0000  ok
+  two-clock kernel identity: PASS
+
+[anchor] Tr T(n) on S_k(SL2(Z))  vs  known Hecke eigenvalues:
+      k   p       computed       expected  status
+     12   2            -24            -24  ok
+     12   3            252            252  ok
+     12   5           4830           4830  ok
+     12   7         -16744         -16744  ok
+     12  11         534612         534612  ok
+     12  13        -577738        -577738  ok
+     16   2            216            216  ok
+     16   3          -3348          -3348  ok
+     16   5          52110          52110  ok
+     18   2           -528           -528  ok
+     18   3          -4284          -4284  ok
+     18   5       -1025850       -1025850  ok
+     20   2            456            456  ok
+     20   3          50652          50652  ok
+     20   5       -2377410       -2377410  ok
+     22   2           -288           -288  ok
+     22   3        -128844        -128844  ok
+     22   5       21640950       21640950  ok
+     26   2            -48            -48  ok
+     26   3        -195804        -195804  ok
+     26   5     -741989850     -741989850  ok
+
+[anchor] Tr T(p^r), weight 12 (Hecke recursion tau(p^r)):
+    T(p^r): p=2 r=2  n=    4  got=           -1472  exp=           -1472  ok
+    T(p^r): p=2 r=3  n=    8  got=           84480  exp=           84480  ok
+    T(p^r): p=3 r=2  n=    9  got=         -113643  exp=         -113643  ok
+    T(p^r): p=3 r=3  n=   27  got=       -73279080  exp=       -73279080  ok
+    T(p^r): p=5 r=2  n=   25  got=       -25499225  exp=       -25499225  ok
+    T(p^r): p=5 r=3  n=  125  got=   -359001100500  exp=   -359001100500  ok
+
+[anchor] cross-check elliptic term: exact-Hurwitz == HOUSE-L(1,chi)-fiber route:
+    k=12 n=2:  Hurwitz=46.0000   L1-fiber=46.0000   rel=1.0e-10  ok
+    k=12 n=5:  Hurwitz=-9662.0000   L1-fiber=-9662.0000   rel=1.2e-09  ok
+    k=16 n=3:  Hurwitz=6694.0000   L1-fiber=6694.0000   rel=5.4e-11  ok
+    k=12 n=7:  Hurwitz=33486.0000   L1-fiber=33486.0000   rel=1.2e-09  ok
+
+[anchor] internal Hecke-multiplicativity certification (table-independent):
+    k= 12: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+    k= 16: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+    k= 18: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+    k= 20: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+    k= 22: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+    k= 26: a4==a2^2-2^(k-1): True   a6==a2*a3: True
+  Hecke-multiplicativity certification: PASS
+
+[anchor] Tr T(1) == dim S_k(SL2(Z)):
+    k= 12: Tr T(1)=1  dim=1  ok
+    k= 16: Tr T(1)=1  dim=1  ok
+    k= 18: Tr T(1)=1  dim=1  ok
+    k= 20: Tr T(1)=1  dim=1  ok
+    k= 22: Tr T(1)=1  dim=1  ok
+    k= 24: Tr T(1)=2  dim=2  ok
+    k= 26: Tr T(1)=1  dim=1  ok
+    k= 28: Tr T(1)=2  dim=2  ok
+
+==============================================================================
+PHASE 1 ANCHOR: *** PASS ***
+==============================================================================
+
+
+
+==============================================================================
+PHASE 2 — PROBLEM-VI CANCELLATION as a TWO-LANE BALANCE   (weight k=12)
+Lanes (house optic, tmp/lane_balance.py): E=elliptic carrier, H=hyperbolic+unip;
+readout = E+H(+id).  Q: does a lane vanish, or do full-amplitude lanes cancel in the
+readout only (balanced doublet, as at the zeta zero)?
+Predicted (Altug III eq.(2)):  E -> 1/(k-1),  H -> 1/(1-k),  id -> 0
+  1/(k-1) = +0.090909   1/(1-k) = -0.090909
+==============================================================================
+
+[measured] computing per-n contributions for n<16000 (weight 12)...
+
+[measured] (a) averages (1/X) sum_{n<X} of each contribution vs X:
+          X      avg_ell   avg_hyp+un     avg_id          SUM    ell_err    hyp_err
+        500     0.086899    -0.093600   0.006766     6.60e-05   -0.00401   -0.00269
+       1000     0.090270    -0.092950   0.003692     1.01e-03   -0.00064   -0.00204
+       2000     0.089844    -0.091857   0.002004    -8.78e-06   -0.00106   -0.00095
+       4000     0.090317    -0.091320   0.001084     8.04e-05   -0.00059   -0.00041
+       8000     0.090781    -0.091150   0.000581     2.12e-04   -0.00013   -0.00024
+      16000     0.090964    -0.091112   0.000310     1.62e-04    0.00005   -0.00020
+    predicted:          0.090909    -0.090909   0.000000
+
+[measured] convergence rate |avg-pred| ~ X^(-beta):
+    elliptic:      beta = 1.109
+    hyp+unip:      beta = 0.831
+    SUM (cancel):  |SUM| ~ X^(--0.083)  (should ->0 fastest)
+
+[measured] hyp vs unip split (Altug fn.4: the 1/(1-k) is HYPERBOLIC, unip ->0):
+          X   avg_hyp_only  avg_unip_only
+        500      -0.071600      -0.022000
+       1000      -0.077450      -0.015500
+       2000      -0.080857      -0.011000
+       4000      -0.083445      -0.007875
+       8000      -0.085588      -0.005562
+      16000      -0.087175      -0.003938
+
+[measured] (a') PRIMES-ONLY control: (1/X) sum_{p<X} log(p)*(contribution):
+            (Altug eq.(3): each individual limit is separately 0 over primes)
+          X    prime_ell    prime_hyp   prime_id
+        500     0.024544    -0.000036   0.000000
+       1000     0.020862    -0.000018   0.000000
+       2000     0.032991    -0.000009   0.000000
+       4000     0.010236    -0.000005   0.000000
+       8000     0.003131    -0.000002   0.000000
+      16000     0.002304    -0.000001   0.000000
+    -> all three should tend to 0 (contrast: over ALL n they are +-1/(k-1)).
+
+[control] random-control: scramble the SIGN structure, re-measure |SUM| decay.
+    real   |SUM| at Xmax = 1.617e-04  (decay X^--0.08)
+    surrog |SUM| at Xmax = 9.061e-02  (decay X^--0.07)
+    -> real cancellation is STRUCTURAL.
+
+==============================================================================
+[measured] TWO-LANE BALANCE VERDICT — lane magnitudes vs the dying readout
+==============================================================================
+    at X = 16000, weight k = 12:
+      LANE E (elliptic)     avg = +0.090964   |E| = 0.090964   (full amplitude 0.090909)
+      LANE H (hyp+unip)     avg = -0.091112   |H| = 0.091112   (full amplitude 0.090909)
+      identity              avg = +0.000310
+      READOUT  E+H(+id)     avg = +1.617e-04   |readout| = 1.617e-04
+      lane energy |E|^2+|H|^2 = 0.016576    readout^2 = 2.616e-08
+    VERDICT: BALANCED DOUBLET — both lanes at FULL amplitude 1/(k-1); NEITHER vanishes; the cancellation lives in the READOUT only.
+    (Same shape as the zeta-zero lane balance in tmp/lane_balance.py: a nonzero
+     balanced doublet whose READOUT is the eigenstate, not a vanishing lane.)
+
+==============================================================================
+[measured] (b) ATTRIBUTION — decompose the elliptic average by |m| (trace slot)
+    and by discriminant-family, to see WHICH conjugacy classes fund 1/(k-1).
+==============================================================================
+
+[measured] elliptic average by |t|-slot (weight k=12, X=16000):
+    total elliptic average = 0.090964   (predicted 1/(k-1) = 0.090909)
+      |t|    avg_contrib    cumfrac
+        0       0.519678     5.7130
+        1       1.031857    17.0566
+        2       1.013694    28.2006
+        3       0.988083    39.0630
+        4       0.956631    49.5796
+        5       0.920431    59.6983
+        6       0.880387    69.3767
+        7       0.837227    78.5807
+        8       0.791542    87.2824
+        9       0.743728    95.4585
+       10       0.694389   103.0922
+       11       0.643796   110.1697
+       12       0.592340   116.6816
+       13       0.540257   122.6208
+       14       0.487966   127.9853
+       15       0.435544   132.7734
+       16       0.383349   136.9877
+       17       0.331451   140.6315
+       18       0.280118   143.7109
+       19       0.229575   146.2347
+       20       0.179805   148.2114
+       21       0.131070   149.6523
+       22       0.083495   150.5702
+       23       0.037074   150.9777
+       24      -0.007932   150.8905
+    ...  small-|t| slots dominate; t=0 (m=0, pure-imaginary eigenvalue) contributes 0.519678
+
+[measured] elliptic average by discriminant type of D=t^2-4n (X=16000):
+    fundamental-D classes:     avg = 0.008530   (9.4% of total)
+    non-fundamental-D (orders): avg = 0.082433   (90.6% of total)
+
+[measured] RELAY structure: average contribution by max prime-power exponent in n:
+    (Altug: the non-zero limits are FUNDED by n with a large prime-power factor p^l)
+     maxexp    count      ell_avg      hyp_avg      sum_avg |sum|/|ell|
+          0        1     0.000036    -0.000031     0.000005      0.1429
+          1     9727     0.026642    -0.025759     0.000883      0.0331
+          2     3582     0.026342    -0.027530    -0.001188      0.0451
+          3     1474     0.016857    -0.016760     0.000097      0.0058
+          4      648     0.009995    -0.010101    -0.000106      0.0106
+          5      296     0.005145    -0.005026     0.000119      0.0231
+          6      140     0.002986    -0.002902     0.000084      0.0282
+          7       68     0.001739    -0.001650     0.000088      0.0507
+          8       33     0.000627    -0.000777    -0.000151      0.2401
+          9       16     0.000258    -0.000308    -0.000051      0.1965
+         10        8     0.000318    -0.000177     0.000141      0.4433
+         11        4     0.000034    -0.000044    -0.000010      0.2893
+         12        2    -0.000054    -0.000044    -0.000098      1.8191
+         13        1     0.000039    -0.000001     0.000037      0.9644
+    -> KEY: within EACH max-exponent class the elliptic and hyperbolic averages are
+       near-mirror-images (sum_avg << |ell_avg|); the cancellation is EXPONENT-LOCAL,
+       not a global accident. |sum|/|ell| per class is the mechanism signature.
+
+[measured] prime-power-resolved probe: contribution AT n=p^l (weight k=12):
+         n=p^l       ell(n)       hyp(n)      ell+hyp  |s|/|ell|
+         2^1=2    -0.508233    -0.022097    -0.530330     1.0435
+         2^2=4    -0.676595    -0.500488    -1.177083     1.7397
+         2^3=8     0.933613    -0.022108     0.911505     0.9763
+        2^4=16     0.506673    -0.500489     0.006185     0.0122
+        2^5=32    -1.014211    -0.022108    -1.036319     1.0218
+        2^6=64     0.700145    -0.500489     0.199656     0.2852
+       2^7=128     0.891776    -0.022108     0.869668     0.9752
+       2^8=256    -0.332254    -0.500489    -0.832742     2.5063
+         3^1=3     0.601110    -0.002376     0.598734     0.9960
+         3^2=9    -0.447068    -0.500006    -0.947074     2.1184
+        3^3=27    -0.980456    -0.002376    -0.982832     1.0024
+        3^4=81     0.451217    -0.500006    -0.048788     0.1081
+       3^5=243     1.016979    -0.002376     1.014603     0.9977
+       3^6=729     1.020468    -0.500006     0.520463     0.5100
+      3^7=2187    -0.680281    -0.002376    -0.682657     1.0035
+      3^8=6561    -0.474454    -0.500006    -0.974460     2.0539
+         5^1=5     0.691356    -0.000143     0.691213     0.9998
+        5^2=25    -0.205557    -0.500000    -0.705557     3.4324
+       5^3=125    -1.052039    -0.000143    -1.052182     1.0001
+       5^4=625     0.258276    -0.500000    -0.241724     0.9359
+      5^5=3125     0.910586    -0.000143     0.910443     0.9998
+     5^6=15625     1.327035    -0.500000     0.827035     0.6232
+         7^1=7    -0.376525    -0.000022    -0.376548     1.0001
+        7^2=49    -0.489164    -0.500000    -0.989164     2.0222
+       7^3=343     0.699728    -0.000022     0.699705     1.0000
+      7^4=2401     1.076032    -0.500000     0.576032     0.5353
+    -> if |s|/|ell| stays O(1) individually but the AVERAGE cancels, the mechanism
+       is statistical (relay across n), not term-by-term.
+
+==============================================================================
+PHASE 2 complete.
+==============================================================================
+
+
+
+[measured] Phase 2 also at weight k=16 (limit 1/(k-1)=1/15) — universality control:
+
+==============================================================================
+PHASE 2 — PROBLEM-VI CANCELLATION as a TWO-LANE BALANCE   (weight k=16)
+Lanes (house optic, tmp/lane_balance.py): E=elliptic carrier, H=hyperbolic+unip;
+readout = E+H(+id).  Q: does a lane vanish, or do full-amplitude lanes cancel in the
+readout only (balanced doublet, as at the zeta zero)?
+Predicted (Altug III eq.(2)):  E -> 1/(k-1),  H -> 1/(1-k),  id -> 0
+  1/(k-1) = +0.066667   1/(1-k) = -0.066667
+==============================================================================
+
+[measured] computing per-n contributions for n<8000 (weight 16)...
+
+[measured] (a) averages (1/X) sum_{n<X} of each contribution vs X:
+          X      avg_ell   avg_hyp+un     avg_id          SUM    ell_err    hyp_err
+        500     0.064544    -0.070218   0.009227     3.55e-03   -0.00212   -0.00355
+       1000     0.065501    -0.069132   0.005034     1.40e-03   -0.00117   -0.00246
+       2000     0.064372    -0.067871   0.002733    -7.66e-04   -0.00229   -0.00120
+       4000     0.065749    -0.067245   0.001478    -1.87e-05   -0.00092   -0.00058
+       8000     0.066513    -0.066977   0.000792     3.28e-04   -0.00015   -0.00031
+    predicted:          0.066667    -0.066667   0.000000
+
+[measured] convergence rate |avg-pred| ~ X^(-beta):
+    elliptic:      beta = 0.792
+    hyp+unip:      beta = 0.913
+    SUM (cancel):  |SUM| ~ X^(-1.310)  (should ->0 fastest)
+
+[measured] hyp vs unip split (Altug fn.4: the 1/(1-k) is HYPERBOLIC, unip ->0):
+          X   avg_hyp_only  avg_unip_only
+        500      -0.048218      -0.022000
+       1000      -0.053632      -0.015500
+       2000      -0.056871      -0.011000
+       4000      -0.059370      -0.007875
+       8000      -0.061414      -0.005562
+
+[measured] (a') PRIMES-ONLY control: (1/X) sum_{p<X} log(p)*(contribution):
+            (Altug eq.(3): each individual limit is separately 0 over primes)
+          X    prime_ell    prime_hyp   prime_id
+        500     0.026990    -0.000008   0.000000
+       1000     0.042328    -0.000004   0.000000
+       2000     0.010408    -0.000002   0.000000
+       4000     0.015142    -0.000001   0.000000
+       8000     0.015361    -0.000001   0.000000
+    -> all three should tend to 0 (contrast: over ALL n they are +-1/(k-1)).
+
+[control] random-control: scramble the SIGN structure, re-measure |SUM| decay.
+    real   |SUM| at Xmax = 3.284e-04  (decay X^-1.31)
+    surrog |SUM| at Xmax = 6.357e-02  (decay X^--0.10)
+    -> real cancellation is STRUCTURAL.
+
+==============================================================================
+[measured] TWO-LANE BALANCE VERDICT — lane magnitudes vs the dying readout
+==============================================================================
+    at X = 8000, weight k = 16:
+      LANE E (elliptic)     avg = +0.066513   |E| = 0.066513   (full amplitude 0.066667)
+      LANE H (hyp+unip)     avg = -0.066977   |H| = 0.066977   (full amplitude 0.066667)
+      identity              avg = +0.000792
+      READOUT  E+H(+id)     avg = +3.284e-04   |readout| = 3.284e-04
+      lane energy |E|^2+|H|^2 = 0.008910    readout^2 = 1.079e-07
+    VERDICT: BALANCED DOUBLET — both lanes at FULL amplitude 1/(k-1); NEITHER vanishes; the cancellation lives in the READOUT only.
+    (Same shape as the zeta-zero lane balance in tmp/lane_balance.py: a nonzero
+     balanced doublet whose READOUT is the eigenstate, not a vanishing lane.)
+
+==============================================================================
+[measured] (b) ATTRIBUTION — decompose the elliptic average by |m| (trace slot)
+    and by discriminant-family, to see WHICH conjugacy classes fund 1/(k-1).
+==============================================================================
+
+[measured] elliptic average by |t|-slot (weight k=16, X=8000):
+    total elliptic average = 0.066513   (predicted 1/(k-1) = 0.066667)
+      |t|    avg_contrib    cumfrac
+        0       0.518118     7.7898
+        1       1.012470    23.0120
+        2       0.959058    37.4311
+        3       0.887336    50.7720
+        4       0.803237    62.8484
+        5       0.711030    73.5386
+        6       0.613694    82.7653
+        7       0.513769    90.4897
+        8       0.413084    96.7003
+        9       0.313439   101.4127
+       10       0.215766   104.6567
+       11       0.121587   106.4848
+       12       0.031687   106.9612
+       13      -0.053382   106.1586
+       14      -0.132829   104.1615
+       15      -0.206170   101.0618
+       16      -0.273169    96.9548
+       17      -0.333488    91.9409
+       18      -0.386940    86.1234
+       19      -0.433477    79.6062
+       20      -0.473025    72.4944
+       21      -0.505690    64.8914
+       22      -0.531480    56.9008
+       23      -0.550663    48.6217
+       24      -0.563365    40.1517
+    ...  small-|t| slots dominate; t=0 (m=0, pure-imaginary eigenvalue) contributes 0.518118
+
+[measured] elliptic average by discriminant type of D=t^2-4n (X=8000):
+    fundamental-D classes:     avg = 0.013956   (21.0% of total)
+    non-fundamental-D (orders): avg = 0.052557   (79.0% of total)
+
+[measured] RELAY structure: average contribution by max prime-power exponent in n:
+    (Altug: the non-zero limits are FUNDED by n with a large prime-power factor p^l)
+     maxexp    count      ell_avg      hyp_avg      sum_avg |sum|/|ell|
+          0        1     0.000031    -0.000063    -0.000031      1.0000
+          1     4864     0.021132    -0.018973     0.002159      0.1021
+          2     1790     0.018322    -0.020693    -0.002372      0.1294
+          3      738     0.012017    -0.011180     0.000837      0.0696
+          4      324     0.006811    -0.008159    -0.001348      0.1979
+          5      148     0.003215    -0.003407    -0.000192      0.0598
+          6       70     0.003194    -0.002690     0.000504      0.1577
+          7       33     0.001027    -0.000911     0.000116      0.1131
+          8       17     0.000712    -0.000572     0.000141      0.1974
+          9        8     0.000169    -0.000157     0.000012      0.0711
+         10        4    -0.000097    -0.000103    -0.000200      2.0538
+         11        2    -0.000011    -0.000007    -0.000018      1.6105
+         12        1    -0.000009    -0.000063    -0.000071      8.2445
+    -> KEY: within EACH max-exponent class the elliptic and hyperbolic averages are
+       near-mirror-images (sum_avg << |ell_avg|); the cancellation is EXPONENT-LOCAL,
+       not a global accident. |sum|/|ell| per class is the mechanism signature.
+
+[measured] prime-power-resolved probe: contribution AT n=p^l (weight k=16):
+         n=p^l       ell(n)       hyp(n)      ell+hyp  |s|/|ell|
+         2^1=2     1.198767    -0.005524     1.193243     0.9954
+         2^2=4     0.298859    -0.500031    -0.201172     0.6731
+         2^3=8    -0.681988    -0.005524    -0.687513     1.0081
+        2^4=16    -1.056667    -0.500031    -1.556698     1.4732
+        2^5=32    -0.791593    -0.005524    -0.797117     1.0070
+        2^6=64     0.636824    -0.500031     0.136794     0.2148
+       2^7=128     1.152314    -0.005524     1.146789     0.9952
+       2^8=256     1.497260    -0.500031     0.997229     0.6660
+         3^1=3    -0.883581    -0.000264    -0.883845     1.0003
+         3^2=9    -0.135485    -0.500000    -0.635485     4.6904
+        3^3=27     1.077510    -0.000264     1.077246     0.9998
+        3^4=81    -0.372189    -0.500000    -0.872189     2.3434
+       3^5=243    -0.428859    -0.000264    -0.429123     1.0006
+       3^6=729     1.566282    -0.500000     1.066282     0.6808
+      3^7=2187    -0.553960    -0.000264    -0.554224     1.0005
+      3^8=6561    -0.138162    -0.500000    -0.638162     4.6189
+         5^1=5     0.298301    -0.000006     0.298295     1.0000
+        5^2=25    -0.661020    -0.500000    -1.161020     1.7564
+       5^3=125    -0.570042    -0.000006    -0.570048     1.0000
+       5^4=625     1.190978    -0.500000     0.690978     0.5802
+      5^5=3125     0.791083    -0.000006     0.791078     1.0000
+         7^1=7     1.295365    -0.000000     1.295364     1.0000
+        7^2=49     0.999397    -0.500000     0.499397     0.4997
+       7^3=343    -0.417148    -0.000000    -0.417148     1.0000
+      7^4=2401    -0.743837    -0.500000    -1.243837     1.6722
+    -> if |s|/|ell| stays O(1) individually but the AVERAGE cancels, the mechanism
+       is statistical (relay across n), not term-by-term.
+
+==============================================================================
+PHASE 2 complete.
+==============================================================================
+
+
+
+==============================================================================
+PHASE 3 — SYM^r PRODUCTIVITY BOUNDARY as DC-CLOCK DETECTION (house optic)
+dc_split / sym2_dc_offset (TwoClockWeightLaw.lean): pole = coherent zero-angle clock
+assembly across primes; pole detection = zero-frequency-line detection in log-spectrum.
+Test eigenform: Delta (weight 12), analytic normalization, Satake angle th_p.
+==============================================================================
+
+[measured] 2262 primes up to 19997; Satake angles th_p from exact tau(p).
+
+[measured] (0) DC-clock census of the Sym^r ensemble (dc_split zero-angle card):
+    Sym^r Satake clocks = {(r-2j) th : j=0..r}; a DC clock (angle 0) exists iff r even.
+      r  #clocks #DC(zero-angle)                         note
+      1        2               0         std: entire, no pole
+      2        3               1 sym2_dc_offset +1 (Rankin pole)
+      3        4               0                   no DC line
+      4        5               1              DC line present
+
+[measured] (1) DC line vs moving mass, k=1 log-spectrum (mean over 2262 primes):
+      r    DC_mean    MOV_rms  DC/(DC+MOV)  productive?
+      1     0.0000     0.9926       0.0000           no
+      2     1.0000     1.4210       0.4130          YES
+      3     0.0000     0.9858       0.0000           no
+      4     1.0000     1.3977       0.4171          YES
+
+[measured] (2) coherent DC assembly A_r(X) = sum_{p<=X} lam_Sym^r(p) (log p)/p :
+    (a pole => A_r grows like (pole order) log X; no pole => A_r bounded/oscillating.
+     Sym^2 has the Rankin-Selberg-type DC line, higher odd/even Sym do NOT at k=1.)
+          X     A_Sym1     A_Sym2     A_Sym3     A_Sym4
+        500     0.5471    -1.3551    -0.4343    -0.3559
+       2000     0.5997    -1.4001    -0.4473    -0.3780
+       8000     0.5921    -1.4097    -0.4785    -0.3859
+      19997     0.6059    -1.4202    -0.4821    -0.3711
+    (For comparison: sum_{p<=X} (log p)/p ~ log X; the r=0 'trivial' DC assembly
+     would grow like log X — that is the pole. Watch which Sym^r tracks growth vs cancels.)
+
+[control] random-control: replace th_p by uniform-random angles (Sato-Tate-free),
+    re-measure the moving RMS and DC assembly — a genuine arithmetic DC signal must
+    stand above the equidistributed-angle baseline.
+      r MOV_rms(real) MOV_rms(rand) A_r(real,end) A_r(rand,end)
+      1        0.9926        1.4126        0.6059        1.3115
+      2        1.4210        1.4146       -1.4202        8.2801
+      3        0.9858        1.9987       -0.4821        1.0534
+      4        1.3977        2.0091       -0.3711        7.1631
+
+[interpretation] the productivity boundary in DC-clock language:
+    MEASURED, clean: the Sym^2 DC clock is REAL and present (sym2_dc_offset +1,
+      DC/(DC+MOV) = 0.413); Sym^1 and Sym^3 carry NO
+      k=1 DC clock (DC/(DC+MOV) = 0). This matches Sarnak's 'std & Sym^2 productive'
+      on the productive side, and puts Sym^3 on the no-direct-DC side.
+    MEASURED, and a HONEST COMPLICATION (falsifiability register): the zero-angle
+      clock recurs for ALL EVEN r (Sym^4 also shows DC=1). So the k=1 DC census alone
+      gives an EVEN/ODD split, NOT a clean 'wall at Sym^3'. The Sarnak boundary is
+      therefore NOT reducible to 'has a DC clock' — it must involve the n-sum Poisson
+      step's ability to ISOLATE that clock against the moving floor, which the census
+      does not capture. We report this rather than force the Sym^3 reading.
+    MEASURED signal in the assembly A_r: the real (arithmetic) Sym^2/Sym^4 DC
+      assemblies are SUPPRESSED vs the equidistributed-angle control (real A_Sym2
+      bounded ~ -1.42 vs random ~ +8.3): the cusp form's Sato-Tate structure DAMPS
+      the DC assembly rather than amplifying it — a concrete, control-verified
+      measurement of how the DC line sits in the moving floor. Whether the precise
+      Sym^3 wall emerges only after the full n-sum Poisson dualization (not just the
+      prime comb) is the open next step; the k=1 census is a necessary, not
+      sufficient, diagnostic.
+
+==============================================================================
+PHASE 3 complete.
+==============================================================================
+
+================================================================================
+[HALT MARKER — 2026-07-02, owner-requested stand-down]
+================================================================================
+Stopping on owner instruction (repeated interrupts). Status of THIS file at halt:
+
+  PHASE 1 (anchor)  [anchor]   COMPLETE, PASS — Tr T(p^k) exact; house L(1,chi) 28/28;
+                                two-clock kernel identity verified; above in full.
+  PHASE 2 (Prob-VI) [measured] COMPLETE — BALANCED DOUBLET verdict (k=12 and k=16
+                                universality control); exponent-local cancellation;
+                                primes-only control = 0 per lane; random control structural.
+  PHASE 3 (Sym^r)   [measured/interp] present above from the completed run, BUT per the
+                                stand-down it is NOT being re-run or extended. Treat the
+                                Phase-3 section as [partial]: the k=1 DC-clock census is a
+                                NECESSARY-not-sufficient diagnostic (DC clock recurs for all
+                                even r -> even/odd split, NOT a clean Sym^3 wall). The full
+                                n-sum Poisson dualization that would settle the Sym^3 boundary
+                                was NOT run. Do not read Phase 3 as a settled boundary result.
+
+No further actions taken. Instrument (be_instrument.py) and summary (be_instrument_summary.md)
+are on disk unchanged.
+================================================================================

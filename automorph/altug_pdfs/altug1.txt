@@ -1,0 +1,2462 @@
+                                                        Beyond Endoscopy via the Trace Formula - I
+                                              Poisson Summation and Contributions of Special Representations
+
+                                                                                         Salim Ali Altuğ
+
+
+
+
+arXiv:1506.02218v1 [math.NT] 7 Jun 2015
+                                                                                             Abstract
+                                                   With analytic applications in mind, in particular Beyond Endoscopy ([13]), we initiate the study
+                                               of the elliptic part of the trace formula. Incorporating the approximate functional equation to the
+                                               elliptic part we control the analytic behavior of the volumes of tori that appear in the elliptic part.
+                                               Furthermore by carefully choosing the truncation parameter in the approximate functional equation
+                                               we smooth-out the singularities of orbital integrals. Finally by an application of Poisson summation
+                                               we rewrite the elliptic part so that it is ready to be used in analytic applications, and in particular
+                                               in Beyond Endoscopy. As a by product we also isolate the contributions of special representations as
+                                               pointed out in [13].
+
+
+
+                                          1    Introduction
+
+                                          The Arthur-Selberg trace formula is (arguably) the most general tool in the theory of automorphic forms
+                                          up to current date. Its development into the current form has taken over half a century and in the mean
+                                          time it has given rise to many spectacular results on the functoriality conjectures (see for example [3]
+                                          §25,26 and [4]). Almost all of these results go through a comparison of trace formulae on different groups
+                                          coupled with local harmonic analysis. Although these results being very successful, they only coover a
+                                          limited number of special cases of the functoriality conjectures, and in general the conjectures are wide
+                                          open.
+                                          Relatively recently (in [13]) a new strategy, which is now known as “Beyond Endoscopy”, was introduced to
+                                          attack the general functoriality conjectures. Very roughly it can be described as a two step process: First
+                                          step is to isolate, by means of the trace formula, the (packets of) cuspidal automorphic representations
+                                          whose L-functions (for a representation of the dual group) have the same order of pole at s = 1. The
+                                          second step involves a comparison of this data for two different groups and aims at determining functorial
+                                          transfers. The method, in particular, proposes a new and non-comparative use of the trace formula. In
+                                          this paper we will only be concerned with the first of the two steps. The central problem of the first step
+                                          is to understand the asymptotic behavior of certain averages of trace formulae on a single group with
+                                          varying test functions (cf. (••)).
+                                          In [13] the study of these averages was initiated for the group GL(2) and symmetric power representations
+                                          (cf. §1.1). At the heart of these averages are the terms coming from the so-called “elliptic part” of the
+                                          trace formula (cf. equation (4)). The elliptic part involves averages of orbital integrals weighed by certain
+                                          arithmetic data (eg. volumes of tori) varying in families. The highly irregular behavior of these quantities
+                                          on top of the singularities of orbital integrals make the analysis troublesome. We also note that in [13]
+                                          the elliptic part, although numerically analyzed, was not treated.
+                                          This paper lays the foundations of a method to study the elliptic part of the trace formula in analytic
+                                          problems. We introduce the approximate functional equation to the elliptic part in order to resolve
+                                          the problems of arithmetic and analytic nature at once. We then go on and isolate the contribution of
+
+
+                                                                                                 1
+special representations in the elliptic part (cf. §1.2). Finally we end up with an expression for the elliptic
+part that is ready to use in analytic applications, particularly in Beyond Endoscopy. The results of this
+paper will then be used in the subsequent papers ([1] and [2]) where we execute the first non-trivial
+case of Beyond Endoscopy via the trace formula, and prove bounds1 towards the Ramanujan conjectures
+respectively.
+In order to state our results more precisely and to put them into context, in the next few paragraphs
+we will briefly go over the idea in [13]. We will then state the main results of this paper in Theorem
+1.1.
+
+
+1.1    A Brief Overview of Beyond Endoscopy
+
+In order to simplify notation and to keep the analogy with [13], we will be only working over the field Q.
+Let us begin by describing the general idea of Beyond Endoscopy.
+Let S be a finite set of primes including the archimedean place and π be a cuspidal automorphic repre-
+sentation of G unramified outside of S. For p ∈    / S, let A(πp ) ∈ L G be the local parameter of πp . Finally
+let ρ be a finite dimensional representation of G. Recall that to this data one can attach the incomplete2
+                                                 L
+
+automorphic L-function (cf. [5] for details) defined by
+                                                 Y                            −1
+                                LS (s, π, ρ) : =     det 1 − ρ (A(πp )) · p−s
+                                                        p/
+                                                         ∈S
+                                                                       aπ,ρ (n)
+                                                              X
+                                                  :=                     ns                                                 (•)
+                                                             n
+                                                        gcd(n,S)=1
+
+
+Taking negative of the logarithmic derivative of LS (s, π, ρ) we see that the asymptotic expansion of the
+partial averages3
+                                                  X
+                                     Sπ,ρ (X) : =      log(p)aπ,ρ (p)
+                                                                 p<X
+                                                                 p/
+                                                                  ∈S
+
+
+in terms of powers X β , ℜ(β) ≥ 1, give us the location and multiplicity of the poles of LS (s, π, ρ) on and
+to the right of ℜ(s) = 1. Moreover for certain test functions fvp,ρ ∈ C ∞ (G(Qv )) at v ∈
+                                                                                        / S (cf.
+                                                                                             Q §2.2.2 or [13]
+                          4      ∞
+pg.19), and for arbitrary fv ∈ Cc (Qv ), we can express the average of aπ (p) weighted by v∈S tr(πv (fv ))
+as the trace of the operator     p,ρ
+                    p,ρ
+                          Q R(f Q) (seep,ρ[3] pg.7 for the definition of R(f )) on the cuspidal part of the
+spectrum, where f := v∈S fv v /∈S fv . i.e.
+                                      X               Y
+                                           aπ,ρ (p)         tr(πv (fv )) = tr(Rcusp (f p,ρ ))
+                                       π              v∈S
+
+In the above expression we have denoted the orthogonal projection of R(f p,ρ ) to the cuspidal spectrum
+   1
+     More precisely we will reprove the classical 14 -bound of Kuznetsov via the trace formula.
+   2
+     The missing factors for the primes in S are expected to not to effect the analytic behavior of the automorphic L-functions.
+   3
+     Note that Sπ (X) depends on the chosen finite set of primes S. For our purposes we will chose S once and for all,
+therefore we dropped it from the notation. If the need to emphasize the choice of S arises we will write Sπ,ρ (X, S) instead
+of Sπ,ρ (X).
+   4
+     We can also allow functions which are not necessarily compactly supported however this is not the main issue here.
+
+
+
+
+                                                                   2
+by Rcusp(f p,ρ ). The idea in [13] is to study the asymptotic behavior of
+                                            XX                     Y
+                                Sρ (X) : =          log(p)aπ,ρ (p)   tr(πv (fv ))
+                                                   π p<X                     v∈S
+                                                     p/
+                                                      ∈S
+                                                   X
+                                               =         log(p) tr(Rcusp (f p,ρ ))                                          (••)
+                                                   p<X
+                                                   p/
+                                                    ∈S
+
+by using the trace formula to re-express tr(Rcusp (f p,ρ )). At this moment let us pause momentarily to
+make some comments.
+Firstly, we would like to note that for a π which satisfies the Ramanujan conjectures ([16]) LS (s, π, ρ) is
+holomorphic in the region ℜ(s) > 1, and it is expected that the only possible poles appear at the point
+s = 1. Therefore for π of the this type, the leading term of the asymptotic expansion of Sπ,ρ (X) will only
+have terms of size X. On the other hand one expects that the π that violate the Ramanujan conjectures
+to be functorial transfers from smaller groups and thus can be understood inductively. Therefore one can
+focus the attention on representations satisfying Ramanujan conjectures (which are called “Ramanujan
+type” in [13]) and study the coefficient of the term X in the asymptotic expansion of Sπ,ρ (X). This was
+the approach taken in [13].
+Secondly, we would like to make a brief historical remark. Right after the idea of Beyond Endoscopy
+came out Sarnak, in his letter to Langlands ([15]), suggested studying a variant of Sπ,ρ (X) (for the group
+GL(2) and ρ = Symk , the symmetric k’th power representation) where the sum over p is replaced by
+a sum that runs over integers, and to use the Petersson-Kuznetsov formula ([9] §16.4), a relative trace
+formula, to analyze the resulting expressions. For k ≤ 2 these modifications conveniently allowed the
+asymptotic expansions of (the modified) SSymk (X) to be studied (see [20] for a treatment of k = 1, 2 and
+[8] for related results). For higher k serious analytic problems arise and an analysis has not been carried
+yet, for more details on this we refer the reader to [15].
+After this detour, we now go back to Sρ (X) and [13]. Since in this paper we will only be considering
+GL(2) and symmetric power representations, for what follows let us fix an integer k > 0 and use the
+notation: ρ = ρk = Symk , Sρ (X) = Sk (X), f p,ρ = f p,k . As we have already noted in the first part of the
+introduction, a detailed study of Sρ (X), for G = GL(2) and ρ = Symk , was initiated in [13] (pg.17-34).
+There the contribution to (••) of all of the terms but the elliptic ones had been analyzed.
+
+
+1.2      Obstacles in the study of the elliptic part
+
+We have indicated in the introduction that the main difficulties that make the analysis of the elliptic
+terms not straightforward are the appearance of class numbers of quadratic extensions in various families
+(cf. equation (2)) and the singularities of orbital integrals (§2.2.3).
+Additional complications are caused by contributions of certain special representations. More precisely,
+as we have remarked in the previous paragraphs, the most fundamental part of the asymptotic expansion
+of Sk (X) is expected to be the term of order X, which corresponds to the contribution of those forms of
+Ramanujan type. However the trace formula5 expresses the trace of the operator R(f p,ρ ) on the discrete
+part of the spectrum as a sum of geometric and spectral terms ([10] pg.271-272). Thus in order to study
+the asymptotic behavior of Sk (X) one needs to isolate in the geometric side the contribution of those
+representations that are not of Ramanujan type. An important example (which is the only example in the
+setting considered in [13]) of this is the trivial representation, which we denote by 1. Its trace, tr(1(f p,k )),
+has to be isolated in the geometric side (this contribution occurs in the elliptic part, cf. Theorem 1.1) of
+  5
+      In [13] Langlands uses the trace formula in [10] rather than Arthur’s trace formula and we will follow this choice.
+
+
+                                                                 3
+the trace formula before one can use it to study Sk (X). Furthermore we would like to isolate this in such
+a way that the resulting expression is in a form that is suitable for further analysis of Sk (X).
+We would like to note that the contribution of tr(1(f p,k )) was previously studied in [13] and [7]. In [13]
+the contribution was approximated and numerical experiments were done for the resulting expression for
+Sk (X). In the more recent paper [7] the contribution of tr(1(f )), for a general class of functions f , was
+isolated for a general group6 G that is semi-simple, simply connected and satisfs G = Gder , where Gder
+denotes the derived group of G. In that paper the authors perform Poisson summation on what they call
+the ”Hitchin-Steinberg basis” and identify the contribution of tr(1(f )) as the main term on the dual sum.
+However their approach, so far, has not allowed a further study of the resulting expression after removing
+tr(1(f )). Our method in this paper is similar to the one in [7] that we also use Poisson summation. The
+main difference, which allows us to go further and get an expression that is suitable for analysis, is that
+we use the approximate functional equation (equation (11)) in treating the class numbers (i.e. volumes
+of tori in [7]), which amounts to an additive truncation rather than the multiplicative truncation that is
+used in [7].
+Returning back to our discussion, we would finally like to note that in [13] (pg. 25) the contribution to
+                                                                       p
+(••) of the residues of Eisenstein series7 (denoted in [13] by tr(ξ0 (fm )), which in our notation will be
+denoted by tr(ξ0 (f p,k ))) was analyzed and shown to contribute αk X + o(X) to Sk (X), where αk ∈ C is
+given in equations (31) and (32) of [13]. It was stated there that one expects this contribution to appear
+in the elliptic part, however this was not shown up to current date. This contribution is also isolated in
+Theorem 1.1.
+
+
+1.3      Results of this paper
+
+In this paper we analyze the elliptic part of the trace formula, isolate the contributions of the special
+representations that were mentioned in the previous paragraph, and rewrite it in a form that is suitable
+for analytic applications, in particular for Beyond Endoscopy. In order to state the result we will need to
+introduce some notation which is explained in detail in §2.
+Let G := GL(2) and AQ denote the ring of adèles of Q. To keep the analogy with [13] and to avoid notional
+complications we will be considering automoprhic representations of G over Q which are unramified at
+every finite place and whose central characters are trivial on R×                    ×
+                                                                            >0 ֒→ AQ . Let p ∈ Z>0 be a prime
+and k ∈ Z>0 be Q    an integer. Let us denote the scalar matrices with positive real entries by Z+ . Let
+  p,k          p,k          p,k                   ∞                       p,k
+f     = f∞ · fp       q6=p fq , where f∞ ∈ C (Z+ \G(R)) and fq                are as in §2.2.2. We note that for
+a cuspidal automorphic representation, π with central character as above, this choice of test functions
+satisfy tr(π(f∞ )) · aπ,ρk (p) = tr(π(f p,k )), where aπ,ρk (p) is still defined by (•).
+Let G(Q)# denote the set of conjugacy classes in G(Q), and γ(4y,x) ∈ G(Q)# denote the conjugacy
+class of elements having trace x and determinant y. We define the functions θ∞       ∓ ∈ C (R) by θ ∓ (x) :=
+                                                                                          c         ∞
+    2
+2|x ± 1| · Orb(f∞ ; γ(∓1,x) ), where the orbital integral, Orb(f∞ ; γ(∓1,x) ), is as defined in §2.2.1. Let
+F, H0 , H1 ∈ C ∞ (R) be as in equations (7), (H0 ) and (H1 ) of §3.2 respectively. Finally let us denote the
+elliptic part of the trace formula for the test function f p,k by tr(R(f p,k ))ell .
+Then we have the following:
+Theorem 1.1. Let 1 > α > 0, and υ > 0 be any number such that ζ(u + 1) does not have any zeros
+for |u| < υ. Let Cυ = { (0, it) | t ∈ (−∞, −υ) ∪ (υ, ∞)} ∪ Cυ , and Cυ denotes the left-half of the circle of
+radius υ around 0. Then,
+  6
+      These properties exclude G = GL(n), however their argument can easily be extended to cover this case too.
+  7
+      This is the contribution to the trace formula of term (vi) of [10].
+
+
+
+
+                                                             4
+                                                                                                    XZ                     ∓
+ tr(R(f    p,k
+                 ))ell = tr(1(f   p,k
+                                        )) − tr(ξ0 (f         p,k
+                                                                    )) − Σ() − k+1
+                                                                                 2
+                                                                                                                      √θ∞2(x) dx
+                                                                                                            x2 ±1>0        |x ±1|
+                                                                                                     ∓
+                                (                         "
+                               X Z                                    Z                                  −u
+                                                                                              (4pk )−α          ζ(2u+2) (1−p           )
+                                                                                                                               −(u+1)(k+1)
+                         k/2
+                                                                                          
+                      + p2                    ∓
+                                             θ∞ (x)           2
+                                                              πi                 F̃ (u)       |x2 ±1|α          ζ(u+2)                   du
+                                                                          (−1)                                            (1−p−(u+1) )
+                               ∓
+                                                                             ι         +u
+                                                                                                                                      
+                                                                                (x2 ±1)
+                                         √                    Z             Γ                              −u  ζ(2u) (1−p
+                                                                                                                          −u(k+1)
+                                                                                                                                  ) 
+                                               −k/2                                 2
+                                                                                                  k )α−1
+                                                                                                                                         
+                                    + √πp2          1
+                                                                     F̃ (u)  ι(x2 ±1) +1−u  π(4p
+                                                                                                 2    1−α                   −u     du  dx
+                                             |x ±1| πi            Cυ       Γ
+                                                                                               |x ±1|         ζ(u+1)   (1−p )             
+                                                                                    2
+
+                                ∞                 ∞
+                         k/2
+                      + p2
+                               XX                 X           X
+                                             1
+                                             f3
+                                                         1
+                                                         l2
+                                                                      Kll,f (ξ, ∓pk )
+                               ∓ f =1             l=1         ξ∈Z
+                                                              ξ6=0
+                                                  Z                                                        2 k α−1            
+                                                                               lf 2 (4pk )−α
+                                                                                                   2 p−k/2
+                                                           ∓                                     lf
+                                                                                                  √           lf (4p )      −xξpk/2
+                                             ×            θ∞ (x)            F    |x2 ±1|α
+                                                                                               +       2
+                                                                                                            H |x2 ±1|1−α e   2lf 2
+                                                                                                                                     dx
+                                                                                                            2    |x ±1|
+
+
+Where8 ,
+
+
+                                                                                                          (a2 ±4pk )/f 2
+                                                                                                                                 
+                                                                                                                               aξ
+                                                                                    X
+                                    Kll,f (ξ, ∓pk ) : =                                                         l           e 4lf 2
+
+                                                                               a mod 4lf 2
+                                                                           a2 ±4pk ≡0 mod f 2
+                                                                           a2 ±4pk
+                                                                                   ≡0,1 mod 4
+                                                                              f2
+                                                         (
+                                                          0 if x2 ± 1 > 0
+                                              ιx2 ±1 : =
+                                                          1 if x2 ± 1 < 0
+                                     2 k α−1                       2 k α−1 
+                                   H lf|x2(4p  )
+                                           ±1|1−α
+                                                       = H ι(x2 ±1)
+                                                                     lf (4p )
+                                                                      |x2 ±1|1−α
+
+H0 , H1 being defined in Corollary 3.5, and
+                                                                  ′               ∞
+                                                                                   2 k 2
+                                                                                     (m ±4p )/f
+                 X       X                                    X                   X
+                                    ∓          m                             1            1
+  Σ() :=                          θ∞        2pk/2                           f            l           l
+                  ∓      m∈Z                             f 2 |m2 ±4pk             l=1
+                      m2 ±4pk =
+                                                                                                                           2
+                                                                                                                                                                   
+                                                                                                          lf 2                                           lf 2
+                                                                                                  × F |m2 ±4p  k |α   + √ lf2             k
+                                                                                                                                            H       |m2 ±4pk |1−α
+                                                                                                                                    |m ±4p |
+
+
+Where the ′ on top of the summation sign means the sum is running over f | (m2 ± 4pk ) such that
+m2 ±4pk
+  fk
+        ≡ 0, 1 mod 4.
+Since it is easy to lose track in the somehow overwhelming notation above, we would like to clarify the
+following:
+    • The function f p,k are the test functions that are used in the trace formula to arrive at (••).
+    • f∞ ∈ Z+ \GL2 (R) is an arbitrary smooth function. The property f∞ that its orbital integrals are
+      compactly supported is to ensure some generality that may be useful for applications9 . For all
+      practical purposes of the paper one can take f∞ as compactly supported itself.
+   8
+     For q 6= p a prime, Klq,1 (ξ, pk ) with gcd(ξ, q) = 1 is the classical Kloosterman sum S(2̄ξ, 2ξpk ; q) (cf. [15] equation (70)),
+hence the notation.
+   9
+     For instance one may wish to take f∞ to be a matrix coefficient of some discrete series representation.
+
+
+                                                                                              5
+         • F is the test function that we choose for the approximate functional equation, and H0 , H1 are
+           transforms of F that appear in the approximate functional equation (cf. §3.2). The explicit choice
+           made in (7) is for conveniently realizing the Mellin transform, F̃ , and its analytic properties (cf.
+           Lemma 3.3). The arguments go through with an arbitrary choice of a Schwarz class function F .
+We would also like note that although Theorem 1.1 is stated for the automorphic representations with
+the ramification and central character restrictions given above, the methods are robust and they easily
+generalize to cover the most general case.
+
+
+Acknowledgements
+
+We would like to thank professors Robert Langlands and Peter Sarnak for introducing the author to the
+subject and for very many invaluable conversations throughout the evolution of this work. We would also
+like to thank Prof. Matthew Young for pointing out the functional equation in equation (6), and to Ngô
+Bao Châu, Eddie Herman, Arul Shankar and Jacob Tsimerman for many discussions.
+
+
+2         Preliminaries and the Trace Formula
+
+In this section we will review the setup of [13] in more detail. We will first describe the set of automorphic
+representations that will be of interest to us. We will then fix measure normalizations and review the
+appropriate choice of test functions to arrive at (••). Then we will recall their their orbital integrals as
+well as the volume factors that appear in the trace formula. Finally we will review the singularities of
+(archimedean) orbital integrals which will be central to the analysis.
+Throughout the paper, unless otherwise explicitly stated, e(x) will denote e2πix , D· will denote the
+                                                                                             
+                         √
+Kronecker symbol and · will mean the positive branch of the square-root function.
+
+
+2.1         The relevant sets of automorphic representations
+
+Let G := GL(2) and A = AQ be the ring of adèles of Q. We will be interested in automorphic repre-
+sentations π of G(A) where πp is unramified for every finite prime p, and whose central characters are
+trivial on R×        ×
+            >0 ֒→ A . Let us denote those matrices in the center of G(R) having positive entries by Z+ .
+Then we can, and will, identify R×>0 with Z+ . We remark that since we are insisting πp to be unramified
+at every finite place and the central character to be trivial on Z+ , by strong approximation, the central
+character of the representation π is necessarily trivial (as observed in [13]).
+
+
+2.2         The Trace Formula
+
+2.2.1        Elliptic part of the trace formula and measure normalizations
+
+An element, γ ∈ G(Q), will be called10 elliptic if its characteristic polynomial is irreducible over Q. For
+γ ∈ G(Q) let Gγ denote the centralizer of γ in G. We also let G(Q)# to denote the set of Q-conjugacy
+    10
+    The notion of an elliptic element depends on the choice of the field. However since we have fixed the base field to be Q
+we drop this from notation and simply say elliptic instead of elliptic over Q. When the time arises to distinguish a field K
+we will use the notation “elliptic over K”.
+
+
+
+
+                                                             6
+classes in G, and G(Q)#,ell denote the set of elliptic conjugacy classes. The elliptic part of the trace
+formula is the sum                    X                Y
+                                              vol(γ) ·    Orb(fq ; γ)
+                                           γ∈G(Q)#,ell            q
+
+Where,
+                                                       Z
+                                     Orb(fq ; γ) : =                      fq (g−1 γg)dḡq
+                                                         G (Qq )\G(Qq )
+                                                       Z γ
+                                          vol(γ) : =                          dg
+                                                         Z+ Gγ (Q)\Gγ (A)
+
+and the product over q runs through all the primes including ∞.
+Measures in the above integrals are normalized as follows11 : On G, at a non-archmedean prime p we
+choose the Haar measure on G(Qp ) giving measure 1 to G(Zp ), and at ∞ we choose any Haar measure
+(the explicit choice is not important for our purposes here). On Gγ we normalize the measures in a similar
+manner:
+    • At a non-archimedean prime p we choose the Haar measure giving measure 1 to Gγ (Zp ).
+    • At ∞, any δ ∈ G(R) can   be decomposed     as δ = zδ δ̄uδ , where zδ ∈ Z+ is the central matrix with
+                               sign(det(γ))
+             p
+      entries | det(δ)|, uδ =               1
+                                               , and δ̄ ∈ SL2 (R).
+
+         – If γ ∈ G(Q) that is elliptic over R (i.e. has two non-real eigenvalues), and let the eigenvalues
+           of δ̄ ∈ Gγ (R) be eiθ , e−iθ . We take the measure to be dθ.
+         – If γ ∈ G(Q) that is split over R (i.e. has two distinct real eigenvalues), and let the eigenvalues
+           of δ̄ ∈ Gγ (R) be λ, λ−1 . We take the measure to be dλλ .
+
+
+2.2.2    Test functions, orbital integrals and volumes of tori
+
+In this subsection we quickly go over the relevant choices of test functions to reach (••). The details of the
+calculations of orbital integrals and volumes of tori can be found in pg.19-21 of [13]. Let p be a prime and
+k > 0 be an integer. Let ρ = Symk be the symmetry k’th power representation of L G = GL(2, C).
+                                                                          (r)
+For a finite prime q and an integer r ≥ 0 let us first define fq ∈ Cc (Qq ) to be the characteristic function
+of the set
+                                    X ∈ M at2×2 (Zq ) | | det(X)|q = q −r
+                                  
+
+Where M at2×2 (Zq ) denote the set of two-by-two matrices with coefficients in Zq and | · |q denotes the
+q-adic absolute value on Q. Now let fqp,k ∈ Cc∞ (Qq ) be defined by
+                                                                  (0)
+    • If q is finite prime such that q 6= p, then fqp,k := fq .
+                              (k)
+    • At p: fpp,k := p−k/2 fp .
+    • At ∞: f∞ ∈ C ∞ (Z+ \G(R)) is such that its orbital integrals are compactly supported, and other
+      than this condition it is arbitrary.
+Finally define f p,k by                                                Y
+                                               f p,k := f∞ · fpp,k ·          fqp,k
+                                                                       q6=p
+
+  11
+     We note here that the only reason to choose this normalization is to keep the analogy with [13]. There are more natural
+choices of measures on both G and the tori (for example see [7]).
+
+
+                                                              7
+Let γ ∈ G(Q) be elliptic and let us denote (4 det(γ), tr(γ)) by (Nγ , mγ ). Let m2γ − Nγ = s2γ Dγ , where Dγ
+                                                      q          
+is the discriminant of the quadratic number field Q       m2γ − Nγ . Normalizing the measures as above,
+the computations12 on pg.17-18 of [13] gives
+                                                      (
+                                                       2h(γ)R(γ)             if Dγ > 0
+                                           vol(γ) =        2πh(γ)                                                                (1)
+                                                             ωγ              if Dγ < 0
+                                                                                                                       q              
+Where ωγ , h(γ), R(γ) are the number of roots of unity, the class number and the regulator of Q                             m2γ − Nγ
+respectively. Then following Lemma 1 of [13] we see that if det(γ) = ±pk then
+                                                                                         
+                                                                      X Y            
+                                                                                 D
+                      Y
+             vol(γ) ·   Orb(fqp,k ; γ) = p−k/2 vol(γ) · Orb(f∞ ; γ) ·   f    1 − qγ q −1                                         (2)
+                      q
+                                                                                         
+                                                                                      f |sγ      q|f
+
+and the left hand side is 0 otherwise (cf. equation (60) of [13]). Recall that by Dirichlet’s class number
+formula we have,
+                                       2h(γ)R(γ)
+                                                  
+                                                      √        if Dγ > 0
+                                         Dγ             Dγ
+                                 L 1, ·        =     2πh(γ)
+                                                   √          if Dγ < 0
+                                                                ωγ   |Dγ |
+
+Combining this with (1) we get                             q           
+                                                                         D
+                                              vol(γ) =         |Dγ |L 1, ·γ
+
+Substituting this into (2) gives
+                                                                                         
+                                                         q         X Y           
+                                                                    D            D
+                   Y
+        vol(γ) ·       Orb(fqp,k ; γ) = p−k/2 Orb(f∞ ; γ) |Dγ |L 1, ·γ   f   1 − qγ q −1
+                   q
+                                                                                         
+                                                                                                f |sγ   q|f
+
+                                                       s
+Finally by using the change of variables f 7→ fγ and rearranging the terms we get
+                              Y                                      2
+                                                              |m −Nγ |       1/2   X              2
+                                                                                                    (mγ −Nγ )/f 2
+                                                                                                                  
+                   vol(γ) ·       Orb(fqp,k ; γ) = Orb(f∞ ; γ) γ pk/2                      1
+                                                                                           fL    1,      ·                       (3)
+                              q                                                    f |sγ
+
+
+when det γ = ±pk and the left hand side vanishes otherwise.
+
+
+2.2.3    Archimedan orbital integrals and their singularities
+
+We will recall the asymptotic behavior of archimedean orbital integrals13 in our context. For a more
+detailed introduction see [11], [12] and [17] and references therein.
+Let f∞ ∈ Cc∞ (Z+ \G(R)) be as above and γ ∈ G(Q) be a regular semisimple element (i.e. centralizer has
+minimal dimension). We are interested in the behavior of Orb(f ; γ) as γ approaches a central element
+z ∈ G(Q). As is described in [13] (page 21 equation (26)) and14 [17] (equation (1)), around z ∈ Z(R):
+  12
+                                  p                √           √
+     In [13] it is assumed that Q( m2γ − Nγ ) 6= Q( −2) or Q( −3) however the calculations easily generalize to cover those
+cases.
+  13
+     The non-archimedean orbital integrals have exactly the same type of singularities however since we will only be considering
+representations that are unramified at every finite place the archimedean case will be sufficient for our purposes.
+  14
+     A quick look shows that our measure normalizations on the tori are the same as the ones given in [17] up to a constant.
+
+
+
+
+                                                                8
+There exists a Weyl group invariant neighborhood, Nz , of z and smooth functions g1 , g2 ∈ Cc∞ (Nz )
+(depending on the function f∞ and the point z) such that
+                                                                                  1
+                                          Orb(f∞ ; γ) = g1 (γ) + |γ1 γ2 |         2
+                                                                 |γ1 −γ2 | g2 (γ)                                               (⋆)
+
+where γ1 , γ2 are the eigenvalues of γ. Furthermore g1 is supported only on the elliptic torus. We also
+remark that as γ approaches a central element the orbital integral, Orb(f∞ ; γ), has a singularity of the
+                           1/2
+prescribed form, |γ|γ11γ−γ
+                        2|
+                            2|
+                               , and that (γ1γ−γ
+                                              1 γ2
+                                                 2)
+                                                   2 is the discriminant function of G.
+
+
+We will now re-express (⋆) in terms of the (Nγ , mγ ) coordinates as in the previous section. Recall that
+mγ = tr(γ), and Nγ = 4 det(γ). The discriminant then becomes
+                                                         2
+                                         (γ1 −γ2 )2      mγ
+                                                               
+                                           γ1 γ2    = 4  Nγ − 1
+
+Then in the (N, m) coordinates the asymptotic expansion of the orbital integral can be re-expressed
+as
+                                                                          m2γ    −1/2
+                               Orb(f∞ ; γ) = g1 (mγ , Nγ ) + 21           Nγ − 1      g2 (Nγ , mγ )
+Where g1 , g2 , by abuse of notation, denotes the corresponding functions in the (N, m) coordinates.
+Also recall that f∞ is assumed to be invariant under Z+ , therefore we have f∞ (zγ) = f∞ (g) for any
+z∈Z                                           2                                 +
+    p+ . This in particular implies that gi (a N,mam) = gi (N, m) for any a ∈ R and i = 1, 2. By taking
+a = |N | g1 and g2 depend only on the ratio √       and the sign of N . Therefore the orbital integrals can
+                                                          |N |
+be expressed as
+                                                                               −1/2
+                                                                                                                
+                                    sign(Nγ )                          m2            sign(Nγ )
+                     Orb(f∞ ; γ) = g1               √mγ           + 21 Nγγ − 1      g2                    √mγ                  (⋆⋆)
+                                                      |Nγ |                                                |Nγ |
+
+where gi∓1 (x) := gi (∓1, x). We also remark that by the note following (⋆), when sign(Nγ ) < 0, the torus
+Gγ is split at ∞, and g1 vanishes.
+
+
+2.2.4   Final form of the elliptic part
+
+Recall that the elliptic part of the trace formula is the sum
+                                          X               Y
+                                                 vol(γ) ·   Orb(fq ; γ)
+                                           γ∈G(Q)#,ell                    q
+
+By (3) this is
+                                                      |m2γ −Nγ |1/2 X 1
+                                                                                    2
+                                                                                      (mγ −Nγ )/f 2
+                                X                                                                   
+                                        Orb(f∞ ; γ)        pk/2           fL       1,      ·
+                          γ∈G(Q)#,ell                               f |sγ
+                          det(γ)=±pk
+
+Also recall that only                                   k
+                   √ the γ for which Nγ = 4 det(γ) = ±4p give a non-zero contribution to the sum above.
+                      |Nγ |
+Therefore pk/2 =       2 . Hence by (⋆⋆),
+
+                               |m2γ −Nγ |1/2                 m2γ     1/2
+                 Orb(f∞ ; γ)        p k/2    = 2Orb(f ∞ ; γ) N γ
+                                                                 − 1
+                                                       1/2
+                                                                                                                        
+                                                m2γ         sign(Nγ )                             sign(Nγ )
+                                          =2    Nγ − 1     g1                     √mγ          + g2               √mγ
+                                                                                   |Nγ |                           |Nγ |
+                                                                         
+                                             sign(Nγ )
+                                          = θ∞                √mγ
+                                                                  |Nγ |
+
+
+
+                                                                  9
+Where,
+                                        ∓
+                                       θ∞ (x) := 2|x2 ± 1|1/2 g1∓ (x) + g2∓ (x)                                   (⋆ ⋆ ⋆)
+
+Finally, recall that the conjugacy classes in GL(2) are parametrized by their determinant and trace, and
+a conjugacy class corresponding to determinant n and trace m is elliptic if and only if m2 − 4n 6=  ∈ Q.
+Since with our choice of test functions the only contribution to the elliptic part is from γ with det(γ) = ±pk ,
+the elliptic part can be written as
+                                                                              ′
+                                                                                                 2 k 2 
+                                                                                                  1, (m ±4p )/f
+                          X        X                                      X
+                                               ∓         m                               1
+                                              θ∞       2pk/2                             fL               ·          (4)
+                            ∓      m∈Z                              f 2 |m2 ±4pk
+                                m2 ±4pk 6=
+
+Where the ′ on top of the summation sign indicates that the sum over f is over the square divisors of
+                    2     k                          2     k
+m2 ± 4pk such that m f±4p
+                       2    is a discriminant, i.e. m f±4p
+                                                        2    ≡ 0, 1 mod 4.
+
+
+3     Approximate Functional Equation
+
+This section is dedicated to the derivation of an approximate functional equation for the weighted sum
+of the L-values that appear in (4). We will first review the functional equation that the sum over f of
+the L-values satisfy. The point to pay attention is that the weights (i.e. the f -sum) in (4) are arranged
+so that the f -sum as a whole satisfies a convenient functional equation. Once we have the functional
+equation we will derive an approximate functional equation in a routine manner. For most of the material
+on the approximate functional equation we will follow §10.4 of [9].
+
+
+3.1   A Functional Equation
+
+Let δ ∈ Z\{0} be a discriminant, i.e. δ ≡ 0, 1 mod 4, and let δ· denote the Kronecker symbol. As usual
+                                                                
+
+let L z, δ· denote the Dirichlet L-function associated to the character δ· . i.e.
+                                                                         
+
+                                                                                  ∞
+                                                                                  X
+                                                               δ                        1    δ
+                                                                                               
+                                                   L z,        ·          =             lz   l
+                                                                                  l=1
+
+Let L(z, δ) be defined by
+                                                               ′
+                                                                                    2 
+                                                                                   z, δ/f·
+                                                           X
+                                                                          1
+                                         L(z, δ) :=                      f 2z−1
+                                                                                L                                    (5)
+                                                           f 2 |δ
+
+Where the ′ on top of the summation sign, once again, means that the sum is running over f such that
+δ/f 2 ≡ 0, 1 mod 4. Let Λ(z, δ) be the completed L-function, i.e.
+                                                                        z
+                                                                   |δ|    2         z+ιδ
+                                                                                             
+                                         Λ(z, δ) :=                 π         Γ      2           L(z, δ)
+
+Where eδ is defined by                                        (
+                                                               0 δ>0
+                                                         ιδ =                                                       (#)
+                                                               1 δ<0
+Then the completed L-function satisfies the following functional equation:
+
+
+
+
+                                                                         10
+Proposition 3.1.
+                                              Λ(z, δ) = Λ(1 − z, δ)                                         (6)
+In particular we have
+                                                        1 −z Γ 1−z+ιδ 
+                                                  |δ|    2
+                                  L(z, δ) =        π
+                                                                   2 
+                                                                   z+ιδ        L(1 − z, δ)                 (6′ )
+                                                                 Γ  2
+
+
+
+Proof. This is the content of Lemma 2.1 of [18]. We only note that in the indicated reference it is implicitly
+assumed that δ/f 2 is a discriminant. It turns out that this functional equation was also observed earlier
+by several other authors in related contexts (see for instance Bykovskii, [6], and Zagier, [21]). We refer
+the reader to the proof of Lemma 2.1 of [18] and the references in §2 of the same reference for more on
+the history.
+
+
+
+
+3.2   Approximate Functional Equation
+
+In what follows we will derive an approximate functional equation for L(z, δ). Everything in this section
+is standard and we include this section to keep the treatment self contained. We will take almost all of
+this material from Chapter 10, §10.4 of [9].
+Let F ∈ C ∞ (R+ ) be                                             Z ∞        1
+                                                                        −y− y dy
+                                        F (x) = 2K10 (2)               e      y                             (7)
+                                                                   x
+Where Ks (z) denotes the s’th modified Bessel function of the second kind. Then,
+
+Lemma 3.2. For every x > 0 we have
+                                                                       −x
+                                               0 < F (x) < 2Ke 0 (2)                                        (8)
+
+and
+                                                                               1
+                                                                           −
+                                                            e x
+                                           0 < 1 − F (x) < 2K 0 (2)
+                                                                                                            (9)
+
+Proof. [9] pg. 257.
+
+Let F̃ (z) denote the Mellin transform of F . i.e.
+                                                             Z ∞
+                                           F̃ (z) =                F (u)uz du
+                                                                            u                              (10)
+                                                             0
+
+We have the following lemma about the analytic behavior of F̃ :
+
+Lemma 3.3. Explicitly; F̃ (z) = 1z K z (2)
+                                   K0 (2) . It is holomorphic except for a simple pole at z = 0 with residue
+                                                                                                       π
+1. Furthermore, F̃ (z) is odd, and for z = σ + it ∈ C we have the uniform bound F̃ (z) ≪ |z||σ|−1 e− 2 |t|
+
+Proof. [9] pg. 257-258.
+
+
+
+
+                                                              11
+Proposition 3.4 (Approximate functional equation). Let δ ∈ Z be a discriminant (i.e. δ ≡ 0, 1 mod 4)
+and L(z, δ) be defined by (5). Then for any z ∈ C we have,
+
+                          ′                ∞                                                                   ′                       ∞
+                                                                                                         1 −z X
+                                                           δ/f 2                                                                                           δ/f 2
+                                                                                                                                                                                    
+                                                                               lf 2               |δ|                                                                              lf 2 A
+                       X                   X                                                                2
+                                                                                                                                       X
+                                    1              1                                                                               1              1
+           L(z, δ) =              f 2z−1          lz         l         F        A         +        π                          f 1−2z          l1−z           l         Hδ,z          |δ|
+                        f 2 |δ             l=1                                                                       f 2 |δ             l=1
+
+Where,                                                                                          
+                                                                           Z            1+u−z+ιδ
+                                                                   z− 1              Γ
+                                           Hιδ ,z (y) := π2πi         2
+                                                                                          2
+                                                                                                 (πy)−u F̃ (u) du
+                                                                                         z−u+ιδ
+                                                                               ℜ(u)=1 Γ    2
+
+
+
+Proof. Let F̃ be as in (10). For an arbitrary parameter A > 0 consider
+                                         Z
+                                      1
+                                     2πi        L(z + u, δ)F̃ (u)Au du
+                                                                       ℜ(u)=σ
+
+Where σ is such that σ + ℜ(z) > 1, and therefore the integral and the sum defining the L-function are
+absolutely convergent. Interchanging the integral and the sum and using the Mellin inversion formula
+gives
+                           ′                ∞                                                           Z
+                                                           δ/f 2
+                                                                                   
+                                                                               lf 2
+                        X                   X
+                                     1
+                                  f 2z−1
+                                                  1
+                                                  lz         l         F        A
+                                                                                             1
+                                                                                          = 2πi                              L (z + u, δ) Au F̃ (u) du
+                                                                                                            ℜ(u)=σ
+                        f 2 |δ              l=1
+                                                                                                        Z
+                                                                                             1
+                                                                                          = 2πi                               L(z + u, δ)Au F̃ (u) du
+                                                                                                            ℜF̃ (u)=σ
+
+
+Then shifting the contour to ℜ(u) = σ ′ < 0 picks up the pole of F̃ (u) at u = 0 and gives
+                 Z                                            Z
+              1
+             2πi
+                                   u                       1
+                       L(z + u, δ)A F̃ (u) du = L(z, δ) + 2πi           L(z + u, δ)Au F̃ (u) du
+                       ℜ(u)=σ                                                                                                ℜ(u)=σ′
+
+
+Using the change of variables u 7→ −u and using the oddness of F̃ transforms the σ ′ -integral to
+                   Z                                        Z
+                                        u
+                1
+               2πi         L(z +  u, δ)A  F̃ (u) du = −  1
+                                                        2πi      L(z − u, δ)A−u F̃ (u) du
+                               ℜ(u)=σ′                                                                          ℜ(u)=σ′
+
+Finally using the functional equation (6′ ) gives
+       Z                                                                   Z                                1 +u−z Γ 1+u−z+ιδ 
+                                         −u                                                           |δ|       2
+  1
+ 2πi             L(z − u, δ)A                              1
+                                              F̃ (u) du = 2πi                                          π
+                                                                                                                                    2
+                                                                                                                                   z−u+ιδ
+                                                                                                                                                     L(1 − z + u, δ)A−u F̃ (u) du
+       ℜ(u)=σ′                                                                 ℜ(u)=−σ′                                         Γ    2
+
+
+Therefore we get,
+
+                              ′             ∞                                                                         ′                ∞
+                                                               δ/f 2                                                                                      δ/f 2
+                                                                                                    1
+                                                                                                                                                                                         
+                                                                                   lf 2                                                                                            lf 2 A
+                         X                  X                                                                       X                  X
+                                     1             1                                                      −z                   1              1
+           L (z, δ) =             f 2z−1           mz            l         F        A         + |δ|     2
+                                                                                                                             f 1−2z          l1−z           l         Hιδ ,z        |δ|
+                         f 2 |δ             l=1                                                                     f 2 |δ             l=1
+
+We note that in the statement of the proposition we took σ ′ = 1 for convenience.
+
+
+
+
+                                                                                              12
+Corollary 3.5. Let δ ∈ Z be a discriminant (i.e. δ ≡ 0, 1 mod 4) and L(1, δ) be defined by (5). Then,
+                                        ′          ∞           2          2 
+                                                     1 δ/f 2
+                                                       
+                                                                 lf  lf 2
+                                                                          Hιδ lf|δ|A
+                                      X            X
+                                               1                     √
+                         L (1, δ) =            f     l   l     F A +                                                   (11)
+                                                                                                 |δ|
+                                      f 2 |δ        l=1
+
+Where ιδ is as defined in (#), and
+
+                                  H0 (y) : = H0,1 (y)
+                                             √ Z
+                                                                          Γ( u
+                                                                             2)
+                                           = 2πiπ                        Γ( 1−u
+                                                                                   (πy)−u F̃ (u) du                    (H0 )
+                                                             ℜ(u)=1          2 )
+
+                                  H1 (y) : = H1,1 (y)
+                                             √ Z
+                                                                         Γ( 1+u
+                                                                             2 )
+                                           = 2πiπ                        Γ( 2−u
+                                                                                   (πy)−u F̃ (u) du                    (H1 )
+                                                             ℜ(u)=1          2 )
+
+
+
+
+3.3   Estimates on Hιδ
+
+We have the following bound on Hιδ :
+
+Lemma 3.6. For any ℜ(x) ≥ 1 we have
+                                                                                  √
+                                                           Hιδ (x) ≪ x1 e−2 x                                          (12)
+
+Where the implied constant is absolute.
+
+Proof. The only difference between H0 and H1 is the difference in the Γ-factors, so we start with bounding
+those. Recall Stirling’s approximation (cf. pg.326 of [19]):
+                                            √
+                                                                 
+                                                 u u            1
+                                   Γ(u) = 2π √ u 1 + O √        ue                         |u|
+
+Using this we get
+                                                                                               
+                          Γ( u
+                             2)
+                                            1
+                                        u u− 2
+                                                                   u
+                                  =                        1
+                                                           u −1
+                                                                    2
+                                                                             1+O        √1
+                         Γ( 1−u
+                             2 )
+                                        2e                                                 |u|
+                           1+u
+                               
+                                            1                   u                 u−1
+                                                                                                                
+                        Γ
+                          2  =        u u− 2                            2                                √1
+                           2−u          2e                 1 + u1 2       u −1
+                                                                                      2          1+O
+                        Γ                                                                                   |u|
+                             2
+
+Note that the map u 7→ u1 − 1 maps the line ℜ(u) = 1 to the circle centered at −1/2 on the real line,
+with radius 1/2, and therefore we have | u1 − 1| ≤ 1. Similarly we get |1 + u1 | ≤ 2 and | u2 − 1| ≤ 1. These
+inequalities then imply that for ℜ(u) = 1,
+
+                                                           1+u
+                                                              
+                                                   Γ( u Γ                 u− 1
+                                                      2)
+                                                                   
+                                                            2         u       2
+                                               Γ( 1−u
+                                                      ,    2−u   ≪   √                                                  (†)
+                                                   2 ) Γ
+                                                              
+                                                                       2e
+                                                            2
+Where the implied constant is absolute. Substituting (†) into the definitions for Hιδ (x), and using the
+bound on F̃ (x) given in Lemma 3.3 we get
+                                                                       π|ℑ(u)|
+                                   Z
+                                                1
+                                        u ℜ(u)− 2
+                         Hιδ (x) ≪   | √2πe |     |x|−ℜ(u) |u|ℜ(u)−1 e− 2 du
+                                            (1)
+                                                                                        π|ℑ(u)|
+                                        Z
+                                                               3
+                                   ≪               |u|2ℜ(u)− 2 |e2 x|−ℜ(u) e−              2    du
+                                            (1)
+
+
+
+                                                                        13
+                                                            p√
+Shifting the contour to ℜ(u) = max{1,                             2πx} then gives
+                                                                                  √√
+                                                                           1    −    2πx
+                                                                Hιδ (x) ≪ x3/4 e
+                                                                               √
+                                                                       ≪ x1 e−2 x
+
+Where the implied constant is absolute.
+
+
+4     Poisson Summation
+
+With the notation of (5) the elliptic part of the trace formula (i.e. equation (4)) is
+                                 X X                       
+                                                ∓
+                                               θ∞    2p
+                                                       m
+                                                        k/2   L(1, m2 ± 4pk )
+                                                   ∓      m∈Z
+                                                       m2 ±4pk 6=
+
+
+Our aim is to apply Poisson summation to the m-sum above. This, however, is not straightforward due
+to the problems caused by the singularities of θ∞  ∓ and by the conditional convergence of the Dirichlet
+
+series defining the value of the L-functions. In the following paragraphs we will first review the problems
+and then state the simple but important observation, Proposition 4.1, that will allow us to resolve these
+issues and apply Poisson summation.
+
+
+4.1    Remarks on Poisson Summation
+
+As we said there are a few points to be resolved before Poisson summation can be applied.
+    1. The m-sum is not running over the complete lattice (it is missing the values             2     k
+                                                                                  for
+                                                                                      which
+                                                                                        2   k
+                                                                                              m
+                                                                                               ±4p = )
+       and adding these values manually is problematic since the L-functions, L s, m ±4p  ·      , have poles
+       at s = 1 when m2 ± 4pk = .
+    2. The sums that define the values of the L-functions do not converge absolutely, hence the interchange
+       of summations are problematic.
+    3. The functions θ∞ ∓ are not smooth. They have singularities of the prescribed type that we have
+
+       discussed in §2.2.3.
+The first two of these problems are easily resolved by the introductionof the approximate
+                                                                                           functional
+                                                                             m2 ±4pk
+equation which replaces the conditionally convergent series defining L 1,       ·       with absolutely
+(and rapidly) converging sums. Substituting (11) in (4) results in
+                                                  ′             ∞                    2                                       
+                                                                  1 (m2 ±4pk )/f 2
+                                                                                                             
+                                                                                                   2                  lf 2 A
+                                                                                     F lfA + √ lf2
+      X      X                                  X               X
+                         ∓         m                        1
+                        θ∞       2pk/2                      f     l       l                                 H       |m2 ±4pk |
+                                                                                                                                      (4′ )
+                                                                                                |m ±4pk |
+      ∓      m∈Z                             f 2 |m2 ±4pk       l=1
+          m2 ±4pk 6=
+
+Where in order to not to complicate the notation we denoted Hιm2 ±4pk by H keeping the dependence on
+m and p implicit.
+
+
+
+
+                                                                          14
+4.2   Smoothing and Poisson Summation
+
+Although introducing the approximate functional equation resolves the first two problems it does not
+immediately resolve the third. The crucial observation, stated in the next proposition, is that by choos-
+ing the parameter A appropriately we can smooth out the function θ∞         ∓ which allows us to use Poisson
+
+summation without trouble.
+Proposition 4.1. Let α > 0 and Φ(x) ∈ S(R) be a Scwartz class function. Then the functions
+ ∓ (x)Φ(|1 − x2 |−α ) and |1 − x2 |−1/2 θ ∓ (x)Φ(|1 − x2 |−α ) are both smooth.
+θ∞                                       ∞
+
+Proof. By (⋆ ⋆ ⋆) we see that the only problematic points are x = ±1. Without loss of generality we can
+take x = 1 since the argument is the same for both points. Furthermore the argument is verbatim for
+both functions so without loss of generality we will treat the first function. We will show that both the left
+and right derivatives of the functions at x = 1 are 0, which will show that the function is differentiable.
+It will then be clear from the proof that the same argument shows that left and right derivatives of all
+orders exit and are 0.
+We begin with the left derivative. Consider the difference quotient,
+                                 ∓                               ∓
+                                θ∞ (1−h)Φ((1−(1−h)2 )−α )       θ∞ (1−h)Φ((2h−h2 )−α )
+                            lim            h              = lim           h
+                           h→0+                            h→0+
+
+
+Since Φ is Schwarz class, for any M > 0 we have
+
+                                                  Φ(x) = OM (x−M )
+
+Therefore as h → 0+
+                                        Φ (2h − h2 )−α = OM (2h − h2 )M α
+                                                                         
+
+
+Therefore,
+                                  ∓
+                                    (1−h)Φ((2h−h2 )−α )
+                                 θ∞
+                                                                     ∓                                
+                                                                       θ∞ (1−h)
+                                           h            = OM               h    (2h − h2 )M α
+
+         ∓ is bounded and hence we see that the limit is 0. Now note that the same argument applies
+By (⋆⋆) θ∞
+verbatim to the right derivative hence proves differentiability. Since M was arbitrary the same argument
+proves that all the derivatives exists.
+
+
+
+Recall that in (11) the constant A > 0 is yet to be chosen. By Proposition 4.1 and estimates in Lemma
+3.6, for any 1 > α > 0 if we choose A = |m2 ± 4pk |α then both
+                                                                 
+                                         ∓     m           lf 2
+                                       θ∞    2pk/2
+                                                    F    2
+                                                       |m ±4p | k α
+
+
+and                                                                                             
+                                                                                        lf 2
+                                      |m2 ± 4pk |−1/2 θ∞
+                                                       ∓         m
+                                                               2p1/2
+                                                                           H       |m2 ±4pk |1−α
+
+are smooth functions of the variable m, and hence Poisson summation can be applied.
+Theorem 4.2. Let 1 > α > 0 and set A = |m2 ± 4pk |α in (11). Then
+                         ∞            ∞
+                  k/2
+  (4) + Σ() = p 2
+                        XX            X
+                                 1           1
+                                 f3         l2
+                        ∓ f =1        l=1
+         X Z                                           2 k α−1             
+                            lf 2 (4pk )−α
+                                                2 p−k/2                     k/2
+                                              lf          lf (4p )      −xξp
+                   ∓
+                  θ∞ (x) F    |x2 ±1|α
+                                            + √ 2 H |x2 ±1|1−α       e   2lf 2
+                                                                                  dx · Kll,f (ξ, ∓pk ) (13)
+                                                 2   |x ±1|
+         ξ∈Z
+
+
+
+                                                               15
+Where15 ,
+
+
+                                                                                                        (a2 ±4pk )/f 2
+                                                                                                                               
+                                                                                                                             aξ
+                                                                                     X
+                                         Kll,f (ξ, ∓pk ) : =                                                  l           e 4lf 2
+
+                                                                                a mod 4lf 2
+                                                                            a2 ±4pk ≡0 mod f 2
+                                                                            a2 ±4pk
+                                                                                    ≡0,1 mod 4
+                                                                               f2
+                                                                              2 k α−1 
+                                                                            H0 lf 2(4p 1−α
+                                                                                         )
+                                                                                                            if x2 ± 1 > 0
+                                                lf 2 (4pk )α−1
+                                                                   
+                                                                                 |x  ±1|
+                                        H           |x2 ±1|1−α            =     2 k α−1 
+                                                                            H1 lf 2(4p 1−α
+                                                                                         )
+                                                                                                            if x2 ± 1 < 0
+                                                                                 |x ±1|
+
+H0,1 being defined in Corollary 3.5, and
+                                                                      ′            ∞                    2                                                           
+                                                                                     1 (m2 ±4pk )/f 2
+                                                                                                                                                    
+                                                                                                                      2                                      lf 2 A
+                                                                                                        F lfA + √ lf2
+              X             X                                      X               X
+                                         ∓            m                        1
+    Σ() :=                             θ∞          2pk/2                      f     l       l                                                    H        |m2 ±4pk |
+                                                                                                                                      |m ±4pk |
+                  ∓      m∈Z                                    f 2 |m2 ±4pk       l=1
+                      m2 ±4pk =
+
+
+Proof. Since the l-sums in (4′ ) converge absolutely we can add and subtract the values of m ∈ Z for which
+m2 ± 4pk =  to (4′ ). Therefore (4) can be written as
+                                                ′               ∞                    2                                                           
+                                                                  1 (m2 ±4pk )/f 2
+                                                                                                                                 
+                                                                                                   2                                      lf 2 A
+                                                                                     F lfA + √ lf2
+      XX                                     X                  X
+                   ∓          m                             1
+                  θ∞        2pk/2                           f     l       l                                                   k
+                                                                                                                                H       |m2 ±4pk |
+                                                                                                                                                          − Σ()
+                                                                                                                    |m ±4p |
+       ∓ m∈Z                            f 2 |m2 ±4pk            l=1
+
+The sum Σ() is the second term on the left iof (13) and will
+                                                            not   be analyzed     any further. So from now
+                                                              (m2 ±4pk )/f 2
+                                                                             
+on we focus on the first sum. Note the Kronecker symbol             l          as well as the condition that
+m2 ±4pk
+  f2
+        ≡ 0, 1 mod 4 are periodic (in m) mod 4lf 2 . Therefore by interchanging the f and l-sums with the
+m-sum (which we can do because the l-sum converges absolutely and the f -sum is finite), and breaking
+the m-sum into arithmetic progressions mod4lf 2 we can rewrite the first sum as follows:
+     ∞            ∞
+                                                             (m2 ±4pk )/f 2
+    XX            X                 X                                         
+              1         1
+              f         l                                          l
+     ∓ f =1       l=1           a mod 4lf 2
+                            a2 ±4pk ≡0 mod f 2
+                            a2 ±4pk
+                                    ≡0,1 mod 4
+                               f2
+                                                                                                                        2
+                                                                                                                                                                       
+                                                                                                         lf 2                                             lf 2
+                                                                                                                     + √ lf2
+                                                                   X
+                                                                                ∓          m
+                                                                               θ∞        2pk/2
+                                                                                                   F |m2 ±4p  k |α                          H        |m2 ±4pk |1−α
+                                                                                                                               |m ±4pk |
+                                                               m∈Z
+                                                            m≡a mod 4lf 2
+
+
+Applying Poisson summation to the m-sum (which we can by Proposition 4.1, i.e. see the argument prior
+to the statement of the theorem) proves the theorem.
+
+
+
+
+5     An Auxiliary Dirichlet Series
+
+For any n ∈ Z and z ∈ C, let D(z; n) be defined by
+  15
+     For q 6= p a prime, Klq,1 (ξ, pk ) with gcd(ξ, q) = 1 is the classical Kloosterman sum S(2̄ξ, 2ξpk ; q) (cf. [15] equation (70)),
+hence the notation.
+
+
+                                                                                         16
+                                                   ∞               ∞
+                                                                     Kl     l,f (0,n)
+                                                   X               X
+                                                            1
+                                     D(z; n) :=           f 2z+1            lz+1
+                                                                                                      (14)
+                                                   f =1            l=1
+
+
+In order to analyze the ξ = 0 term of the sum in Theorem 4.2 we will need the analytic properties of
+D(z; n).
+Lemma 5.1.                                        Y
+                                        D(z; n) =   Dp (z; n)
+                                                            p
+
+Where for each prime p, Dp (z; n) is defined by
+                                                  ∞                ∞
+                                                                     Kl v u (0,n)
+                                                  X                X
+                                                           1                p ,p
+                                   Dp (z; n) :=         pu(2z+1)            pv(z+1)
+                                                  u=0              v=0
+
+Proof. Chinese remainder theorem.
+
+
+Lemma 5.2. Let p ∤ n be an prime. Then,
+                                                        1
+                                                         
+                                                    1− z+1
+                                                      p
+                                                                         if p is odd
+                                                  
+                                                  
+                                                   1 
+                                                  
+                                                  1− 2z
+                                   Dp (z; n) =    p
+                                                        1
+                                                          
+                                                   1− z+1
+                                                      2
+                                               
+                                               4  1 
+                                               
+                                                                        if p = 2
+                                                    1− 2z
+                                                       2
+
+Proof. Let us first assume that p ≡ 1 mod 2.              In order to compute Dp (z; n) we need to compute
+Klpv ,pu (0, n) for various values of u and v.
+   • v = u = 0.
+     In this case the Kl1,1 (0, n) is obviously 1.
+   • v > 0, u = 0.
+                                                          X         2       
+                                                                    a −4n
+                                   Klpv ,1 (0, n) =                   pv
+                                                      a mod pv
+                                                         X  a2 −4n                 X
+                                                  =                  0
+                                                                     pv                        1
+                                                      a0 mod p                   a1 mod pv−1
+                                                                 X  a2 −4n 
+                                                  = pv−1                     0
+                                                                                pv                     (i)
+                                                               a0 mod p
+
+     This last sum depends on the parity of v.
+        – v ≡ 0 mod 2.
+          In this case
+
+
+                                                                   X
+                                               (i) = pv−1                   1
+                                                                a0 mod p
+                                                                 a20 6=4n
+                                                                    
+                                                     = pv − pv−1 1 + np                               (ii)
+
+
+                                                          17
+       – v ≡ 1 mod 2.
+          In this case
+                                                                   (i) = −pv−1                                            (iii)
+          Where we used Lemma 2 of Appendix A of [13].
+   • v = 0, u > 0.
+     Since p 6= 2,
+                                                                               X
+                                                Kl1,pu (0, n) =                              1
+                                                                            a mod p2u
+                                                                        a2 ≡4n mod p2u
+                                                                               
+                                                                                  n
+                                                                    =1+           p                                       (iv)
+
+
+   • v, u > 0. First of all the sum is clearly 0 unless n is a square modp. If n is a square modp, since
+     p 6= 2, then there are two exactly square-roots of 4n modulo p2u . Let us denote them by n1 , n2 .
+     Then,
+                                                         2
+                                                         (a −4n)/p2u
+                                               X                     
+                           Klpv ,pu (0, n) =                  p v
+
+                                                     a mod pv+2u
+                                                    a2 ≡4n mod p2u
+                                                                                  (a20 −4n)/p2u
+                                                                   X                                
+                                               = pv−1                                   pv
+                                                            a0 mod p1+2u
+                                                           a20 ≡4n mod p2u
+                                                                                  (a20 −4n)/p2u
+                                                                   X                                
+                                               = pv−1                                   pv
+                                                            a0 mod p1+2u
+                                                           a0 ≡nj mod p2u
+                                                               X a n 
+                                               = pv−1                    2 j
+                                                                         pv
+                                                           a2 mod p
+                                                             j=1,2
+                                                           (
+                                                               0            if v ≡ 1 mod 2
+                                               = pv−1                                                                     (v)
+                                                               (p − 1) 1 + np  if v ≡ 0 mod 2
+
+
+We can now compute Dp (z; n).
+                             ∞                ∞
+                                                Kl v u (0,n)
+                             X                X
+                                      1               p ,p
+               Dp (z; n) =         pu(2z+1)           pv(z+1)
+                             u=0              v=0
+                                   ∞                       ∞                          ∞                  ∞
+                                     Kl v (0,n)              Kl     1,pu (0,n)                             Kl v u (0,n)
+                                   X                       X                          X                  X
+                                           p ,1                                                  1             p ,p
+                         =1+              pv(z+1)
+                                                       +           pu(2z+1)
+                                                                                  +         pu(2z+1)           pv(z+1)
+                                   v=1                     u=1                        u=1                v=1
+
+
+
+
+                                                                   18
+Using (i) to (v), we then get:
+                       ∞                     ∞                       ∞                  ∞
+                         Kl v (0,n)            Kl   1,pu (0,n)                            Kl v u (0,n)
+                       X                     X                       X                  X
+                               p ,1                                              1                 p ,p
+     Dp (z; n) = 1 +          pv(z+1)
+                                         +         pu(2z+1)
+                                                                 +         pu(2z+1)                pv(z+1)
+                       v=1                   u=1                     u=1                v=1
+                       ∞                      ∞                            ∞                           ∞                ∞
+                       X Kl 2v (0,n)
+                               p ,1
+                                              X    Klp2v+1 ,1 (0,n)        X Kl       1,pu (0,n)
+                                                                                                       X
+                                                                                                                1
+                                                                                                                        X Kl 2v u (0,n)
+                                                                                                                              p   ,p
+               =1+            p2v(z+1)
+                                         +          p(2v+1)(z+1)
+                                                                       +             pu(2z+1)
+                                                                                                   +         pu(2z+1)         p2v(z+1)
+                       v=1                   v=0                           u=1                         u=1              v=1
+                              ∞
+                            X             ∞                      ∞
+                                                                   X
+                                    p2v            p2v+1
+                                              X
+                      1    n                1                     n         1
+               =1+ 1− p 1+ p      p2v(z+1)
+                                           −p   p(2v+1)(z+1)
+                                                             + 1+ p     pu(2z+1)
+                                               v=1                         v=0                                          u=1
+                               ∞
+                               X          ∞
+                                                 p2v
+                                             X
+                        1     n         1
+                   + 1− p 1+ p      pu(2z+1)   p2v(z+1)
+                                              u=1                v=1
+                              ∞
+                            X          ∞
+                                           X                  ∞
+                                                            X
+                      1    n       1     1       1         n         1
+               =1+ 1− p 1+ p      p2vz − p   p(2v+1)z
+                                                      + 1+ p     pu(2z+1)
+                                               v=1                   v=0                                      u=1
+                               ∞
+                               X          ∞
+                                             X
+                        1     n         1       1
+                   + 1− p 1+ p      pu(2z+1)   p2vz
+                                              u=1                v=1
+                         1            ∞          ∞                 ∞          ∞
+                   1− z+1         X          X             X          X
+                      p           n         1       1     1    n         1       1
+               =    1− 2z1   + 1+ p     pu(2z+1)   p2vz
+                                                        − p 1+ p     pu(2z+1)   p2vz
+                       p
+                                             u=1             v=0                                       u=0              v=1
+                       1
+                   1− z+1
+               = 1−p 1
+                      p2z
+
+
+
+This finishes the proof of the lemma when p ≡ 1 mod 2. The
+                                                          computation for p = 2 follows the same
+argument using the properties of the Kronecker symbol 2· . The only difference is that we need to do
+a case by case calculation depending on the congruence class of n mod 8. We leave the details to the
+reader.
+Lemma 5.3. Let p | n be a prime, and let vp (n) denote the p-adic valuation of n. Then,
+                                                                   
+                                                   1                1
+                                       1−    z(vp (n)+1)
+                                                             1− z+1
+                                           p                    p
+                                                                          if p is odd
+                                     
+                                                              1
+                                                            
+                                                     1
+                                     
+                                               1− 2z      1− pz
+                         Dp (z; n) =              p
+                                                     1
+                                                           
+                                                                     1
+                                                                        
+                                         1− z(vp (n)+1)      1− z+1
+                                                                  2
+                                     4                                   if p = 2
+                                     
+                                             2
+                                                               1
+                                                               
+                                                1− 1       1−              2z
+                                                              22z
+
+
+Proof. As in the proof of Lemma 5.2 we first assume that p ≡ 1 mod 2. The computation depends on the
+parity of the p-adic valuation of n. Let r = vp (n) throughout the proof. As in the proof of Lemma 5.2
+we need to compute the values of Klpv ,pu (0, n) first.
+   • r ≡ 1 mod 2. We divide the computation into cases depending on the values of v and u.
+        – v = u = 0.
+           In this case Klpv ,pu (0, n) is obviously 1.
+        – v > 0, u = 0.
+           Since p | n,
+
+
+
+
+                                                                 19
+                                                      X         2      
+                                                                a −4n
+                                 Klpv ,1 (0, n) =                 pv
+                                                    a mod pv
+                                                      X         2
+                                                                a
+                                                =               pv
+                                                    a mod pv
+
+                                                = pv − pv−1                                  (i)
+
+– 2u > r.
+  In this case we use the assumption that r ≡ 1 mod 2 and that p 6= 2. Note that in this
+  case the sum runs over a mod p2u such that a2 ≡ 4n mod p2u . If a mod p2u is such that
+                                                r+1                        r+1
+  a2 ≡ 4n mod p2u then we need to have a = p 2 a0 for some a0 mod p2u− 2 . But in this case
+  a2 = pr+1 a20 ≡ 0 mod pr+1 , therefore we cannot have a2 ≡ 4n mod p2u . Hence in this case the
+  sum is 0.
+– r > 2u > 0, v > 0.
+  In this case n ≡ 0 mod p2u and hence in order to have a2 ≡ a mod p2u we necessarily have
+  a ≡ 0 mod pu . Then the sum is,
+                                                      2
+                                                       (a −4n)/p2u
+                                             X                     
+                           Klpv ,pu (0, n) =               p v
+
+                                              a mod pv+2u
+                                             a2 ≡4n mod p2u
+                                                           2
+                                                               a0
+                                                 X
+                                         =                     pv                            (⋆)
+                                             a0 mod pv+u
+                                              u+v      u+v−1
+                                         =p         −p                                      (ii)
+
+  Where in passing to (⋆) we used the assumption that r ≡ 1 mod 2 so that a/p2u ≡ 0 mod p.
+– r > 2u > 0, v = 0.
+  In this case,
+
+
+                                                          X
+                                  Kl1,pu (0, n) =                     1
+                                                        a mod p2u
+                                                     a2 ≡4n mod p2u
+                                                      u
+                                                 =p                                        (iii)
+
+
+
+
+                                           20
+  Using (i), (ii), (iii) and the argument above we see that,
+                                   ∞                          ∞                       ∞                ∞
+                                     Kl v (0,n)                 Kl   1,pu (0,n)                          Kl v u (0,n)
+                                   X                          X                       X                X
+                                            p ,1                                               1                 p ,p
+            Dp (z; n) = 1 +                pv(z+1)
+                                                         +          pu(2z+1)
+                                                                                  +         pu(2z+1)             pv(z+1)
+                                   v=1                        u=1                     u=1              v=1
+                                                                    r−1                                    r−1
+                                   ∞                              22
+                                                                     X          ∞
+                                         pv           pu                   pu        pv
+                                    X            X                               X
+                                                                   1
+                      = 1 + 1 − 1p     pv(z+1)
+                                               +   pu(2z+1)
+                                                            +  1 − p    pu(2z+1)   pv(z+1)
+                                                v=1                 u=1                                u=1             v=1
+                                          r−1                        r−1
+                              X      ∞
+                                       X   2   X                      2
+                                          1
+                      = 1 − p1     1
+                                  p2uz   pvz +
+                                                   1
+                                                 p2uz
+                                         u=0            v=1          u=0
+                                         r−1
+                              1           2
+                          1− z+1 X
+                               p                 1
+                      =   1− p1z               p2uz
+                                      u=0
+                                                  
+                                   1             1
+                              1− z+1     1− z(r+1)
+                                 p           p
+                      =                         
+                                 1− p1z        1
+                                           1− 2z
+                                                 p
+
+  Which finishes the proof in the case of r ≡ 1 mod 2.
+• r ≡ 0 mod 2.
+  Let r = 2r0 . We proceed as before and first compute Klpv ,pu (0, n). The computation once again
+  depends on the values of v and u.
+    – v = u = 0.
+       Once again Kl1,1 (0, n) = 1.
+    – v > 0, u = 0.
+       In this case the result of (i) is still valid.
+    – r0 ≥ u > 0, v = 0.
+       In this case (iii) is still valid.
+    – u > r0 , v = 0.
+       In this case we need to compute,
+
+                                                                                      X
+                                                        Kl1,pu (0, n) =                            1
+                                                                                a mod p2u
+                                                                             a2 ≡4n mod p2u
+                                                                                     
+                                                                                 n0
+       Let n = p2r0 n0 . Then the sum vanishes unless                            p = 1. If this is the case then we have,
+                                                                                  X
+                                                      Kl1,pu (0, n) =                   1
+                                                                              a mod p2u
+                                                                           a2 ≡4n mod p2u
+                                                                                      X
+                                                                      =                                1
+                                                                               a0 mod p2u−r0
+                                                                           a20 ≡4n0 mod p2u−2r0
+
+                                                                      = 2pr0
+       Therefore in this case,                                            
+                                                       Kl1,pu (0, n) = 1 + np0 p r0                                          (iv)
+
+
+                                                                    21
+– r0 > u > 0, v > 0.
+  In this case (ii) is still valid.
+– u = r0 , v > 0.
+  In this case we have,
+                                                               (a2 −4n)/p2u
+                                               X                              
+                     Klpv ,pu (0, n) =                              pv
+                                           a mod pv+2u
+                                          a2 ≡4n mod p2u
+                                                         2          
+                                                           a0 −4n0
+                                             X
+                                      =                       pv
+                                          a0 mod pv+u
+                                          ( v+u−1
+                                           −p                            if v ≡ 1 mod 2
+                                      =                            
+                                            pv+u − pv+u−1           1 + np0 if v ≡ 0 mod 2
+
+  Where we used Lemma 2 of Appendix A of [13] in the first line.
+– u > r0 , v > 0.
+  In this case we need to compute,
+
+                                                                               (a2 −4n)/p2u
+                                                               X                             
+                                Klpv ,pu (0, n) =                                   pv
+                                                       a mod pv+2u
+                                                      a2 ≡4n mod p2u
+
+  Let n = p2r0 n0 , 
+                    where                                                    2
+                        vp (n0 ) = 0. Then, since p 6= 2, in order to have a ≡ 4n mod p
+                                                                                         2u
+
+                        n0
+  we need to have       p    = 1, i.e. n0 is a square modulo p. This, by Hensel’s lemma, implies
+  that n0 is a square modulo p2u−2r0 +1 . Let us assume that this is the case and denote the
+  square-roots (which there are exactly two since p 6= 2) of n0 modulo p2u−2r0 +1 by u1 , u2 , i.e.
+  u2j ≡ n0 mod p2u−2r0 +1 . Then Klpv ,pu (0, n) can be written as,
+
+                                                                   (a2 −4n)/p2u
+                                                   X                                
+                       Klpv ,pu (0, n) =                                pv
+                                             a mod pv+2u
+                                            a2 ≡4n mod p2u
+                                                                          (a20 −4n)/p2u
+                                                         X                               
+                                          = pv−1                                pv
+                                                    a0 mod p1+2u
+                                                   a20 ≡4n mod p2u
+                                                                                   (a21 −4n0 )/p2(u−r0 )
+                                                               X                                          
+                                          = pv−1                                            pv
+                                                      a1 mod p1+2u−r0
+                                                   a21 ≡4n0 mod p2(u−r0 )
+                                                         X         X a u 
+                                          = pv+r0 −1                            3 j
+                                                                                pv
+                                                        j=1,2 a3 mod p
+                                                         (
+                                                             0           if v ≡ 1 mod 2
+                                          = pv+r0 −1 2
+                                                             p−1         if v ≡ 0 mod 2
+
+  We therefore get,
+                                                              (
+                                                         0 if v ≡ 1 mod 2
+                                          v+r0       1     n0
+                    Klpv ,pu (0, n) = p           1− p 1+ p                                                    (v)
+                                                               1 if v ≡ 0 mod 2
+
+
+                                                    22
+     We can now compute Dp (z; n). By using (i) to (v) we get,
+
+
+                                       ∞                             r 0                             ∞
+                                             Klpv ,1 (0,n)                     Kl1,pu (0,n)                   Kl1,pu (0,n)
+                                       X                             X                               X
+               Dp (z; n) = 1 +                pv(z+1)
+                                                           +                    pu(2z+1)
+                                                                                            +                  pu(2z+1)
+                                       v=1                           u=1                        u=r0 +1
+                                             r0 −1                   ∞                                          ∞
+                                             X
+                                                           1
+                                                                     X        Klpv ,pu (0,n)        1
+                                                                                                                X Kl v r0 (0,n)
+                                                                                                                           p ,p
+                                       +             pu(2z+1)                   pv(z+1)
+                                                                                             + pr0 (2z+1)                  pv(z+1)
+                                             u=1                     v=1                                        v=1
+                                                               ∞                      ∞
+                                                                                        Kl v u (0,n)
+                                                               X                      X
+                                                                              1                p ,p
+                                                     +                    pu(2z+1)             pv(z+1)
+                                                           u=r0 +1                    v=1
+                                     ∞
+                                     X       r0
+                                              X                       ∞
+                                                                    X
+                                                          r0       n0
+                        = 1 + 1 − p1     1
+                                        pvz +     1
+                                                 p2uz
+                                                      + p     1 +  p
+                                                                                                                                       1
+                                                                                                                                   pu(2z+1)
+                                                     v=1                  u=1                                            u=r0 +1
+                                 r0 −1       ∞                                    ∞
+                                                                                  X
+                                                           p r0
+                                   X           X
+                                                                                 n0
+                        + 1 − 1p         p
+                                            1
+                                           2uz   p
+                                                  1
+                                                   vz + pr0 (2z+1)
+                                                                     1 − 1
+                                                                         p  1 +  p
+                                                                                         1
+                                                                                        p2vz
+                                              u=1                  v=1                                                             v=1
+                                   r0 −1
+                                             ∞                                   ∞                                                 ∞
+                        − prp0 (2z+1)
+                                             X                                         X                                                 X
+                                                         1        r0      1        n0                                              1            1
+                                                     p(2v+1)z
+                                                              + p     1 − p   1 +  p                                         pu(2z+1)          p2vz
+                                             v=0                                                                 u=r0 +1                 v=1
+
+
+
+
+                                        ∞
+                                        X                     r0
+                                                               X                     rX
+                                                                                        0 −1      ∞
+                                                                                                  X
+                                                                                   1                 1
+                  =1+         1 − p1               1
+                                                  pvz +
+                                                                          1
+                                                                         p2uz
+                                                                              + 1− p           1
+                                                                                             p2uz   pvz
+                                           v=1                 u=1                              u=1            v=1
+                                                                 ∞                               ∞
+                                                      r0                             r0 −1
+                                           + pr0p(2z+1)                        − prp0 (2z+1)
+                                                                X                               X
+                                                                           1                               1
+                                                                          p2vz                         p(2v+1)z
+                                                                   v=1                           v=0
+                                         r0 −1                ∞                r 0
+                                                                                                       
+                                                                                                            1
+                                                                                                                     
+                                         X                    X                X                          pz
+                                                                                                              − p1
+                  =1+         1 − p1     p2uz
+                                                      1
+                                                                 p2uz
+                                                                      1
+                                                                       + (2r +1)z  1 
+                                                                     pvz +
+                                                                                       1
+                                                                            p 0        1− 2z
+                                    u=0         v=1          u=1                         p
+                                                       
+                      1− 2(r 1+1)z        1− p1    1− 2r1 z
+                                                                                 
+                            0                         p 0
+                                                                           1
+                                                                          pz
+                                                                             − p1
+                  =    p           +                     +                     
+                        1− 2z1
+                                        pz 1− 2z 1
+                                                      1− p1z      p(2r0 +1)z 1− 2z  1
+                               p                               p                                       p
+                          rX
+                           0 −1              ∞
+                                             X                 r0
+                                                               X                      rX
+                                                                                       0 −1          ∞
+                                                                                                     X
+                                      1             1                     1     1               1           1               1
+                  =1+               p2uz           pvz +                 p2uz − p             p2uz         pvz − p(2r0 +1)z+1 1− 1
+                                                                                                                                   
+                          u=0                v=1               u=1                    u=0            v=1                                 p2z
+                                                                                      
+                                 1− 2r1 z               1− (2r 1+1)z
+                                    p 0                         0
+                  =1+                         −      p            
+                                              1                        1
+                         p2z 1− p1z     1− 2z       pz+1 1− p1z   1− 2z
+                                            p                        p
+                                              
+                                              1
+                      1− (2r 1+1)z     1− z+1
+                            0              p
+                  =     p               
+                                         1
+                          1− p1z    1− 2z
+                                              p
+
+
+     This finishes the proof of the lemma for the case p ≡ 1 mod 2. The calculations for p = 2 follow the
+     same lines and as in the proof of Lemma 5.2 we leave this case to the reader.
+
+
+Corollary 5.4. Let n ∈ Z. Then,
+
+                                                          ζ(2z)
+                                                                                Y (1−p−z(vp (n)+1) )
+                                             D(z; n) = 4 ζ(z+1)                             (1−p−z )
+                                                                                p|n
+
+
+
+                                                                               23
+Proof. Follows from lemmas 5.2 and 5.3.
+
+
+
+
+6     Isolation of the Contribution of Special Representations
+
+In this section we will isolate the special representations as promised in the introduction and finish the
+proof of Theorem 1.1. We will identify the contribution of the trivial representation and the residues
+of Eisenstein series (denoted by ξ0 in §1.2) to the trace formula in the dominant term, (13)ξ=0 , of (13).
+Where we define (13)ξ=0 by
+                       ∞              ∞                         Z                                                  2 k α−1  
+                                                           k)
+                                                                                        lf 2 (4pk )−α
+                k/2
+                                                                                                            2 p−k/2
+                                        Kl     l,f (0,∓p
+    (13)ξ=0 := p 2                                                                                      + √ 2 H lf|x2(4p
+                                                                                                          lf               )
+                      XX              X
+                                 1                                    ∓
+                                 f3                l2
+                                                                     θ∞ (x)          F    |x2 ±1|α                      ±1|1−α
+                                                                                                                                 dx
+                                                                                                             2   |x ±1|
+                        ∓ f =1        l=1
+
+Theorem 6.1. Let 1 > α > 0, and υ > 0 be any number such that ζ(u + 1) does not have any zeros for
+|u| < υ (Such an υ exists since ζ(u + 1) is non-zero at u = 0 and the zeta function is meropmorphic.). Let
+Cυ = { (0, it) | t ∈ (−∞, −υ) ∪ (υ, ∞)} ∪ Cυ , and Cυ denotes the left-half of the circle of radius υ around
+0. Then,
+                                   Z                     XZ
+                    (1−p−(k+1) ) X    ∓
+                                                                      ∓
+                                                                    √θ∞2(x) dx
+  (13)ξ=0 = 2pk/2 (1−p−1 )           θ∞ (x) dx − (k + 1)
+                                                                                              x2 ±1>0   |x ±1|
+                                       ∓                                                ∓
+                                       "
+                    XZ                             Z                                −u
+                                                                         (4pk )−α             ζ(2u+2) (1−p
+                                                                                                          −(u+1)(k+1)
+                                                                                                                     )
+              k/2
+                                                                     
+           + p2              ∓
+                            θ∞ (x)            1
+                                           4 2πi           F̃ (u)        |x2 ±1|α
+                                                                                                                       du
+                                                   (−1)
+                                                                                               ζ(u+2)   (1−p−(u+1) )
+                    ∓
+                                                                          ι       +u
+                                                                                                                                 
+                                                                               2
+                                    √            Z                       Γ (x ±1)                     −u
+                                                                                               k  α−1      ζ(2u) ( 1−p −u(k+1)
+                                                                                                                               ) 
+                                                                                        
+                                   2√πp−k/2 1                                    2
+                                 +                                F̃ (u)  ι 2 +1−u  π(4p       )
+                                                                                          |x2 ±1|1−α                (1−p−u )
+                                                                                                                                du dx
+                                      |x2 ±1| 2πi C                     Γ   (x ±1)                        ζ(u+1)
+                                                                υ                2
+
+
+
+
+Where ι(x2 ±1) = 0, 1 depending on x2 ± 1 > 0 or < 0 respectively (as already defined in (#)).
+
+Proof. The ξ = 0 term in (13) is
+            ∞     ∞     Z                                       2 k α−1  
+                                     lf 2 (4pk )−α
+                                                         2 p−k/2
+    pk/2
+                                                     + √ 2 H lf|x2(4p
+                                                       lf               )
+         XX      X
+                             ∓
+     2
+               1
+              f3
+                      1
+                     l2
+                           θ∞ (x) F    |x2 ±1|α                      ±1|1−α
+                                                                              dx · Kll,f (0, ∓pk )                                 (◦)
+                                                                                    2       |x ±1|
+          ∓ f =1      l=1
+
+Where H = H0 if x2 ± 1 > 0 and H = H1 if x2 ± 1 < 0 (cf. Theorem 4.2). Let F̃ denote the Mellin
+transform of F . By Lemma 3.3, F̃ (z) is holomorphic for ℜ(z) > 0. Therefore by Mellin inversion we have
+                                                    Z
+                                                 1
+                                        F (y) = 2πi    F̃ (u)y −u du
+                                                                              (1)
+
+Also recall that
+                                                       √ Z
+                                                                 Γ( u
+                                                                    2)
+                                              H0 (y) = 2πiπ     Γ( 1−u
+                                                                         (πy)−u F̃ (u) du
+                                                            (1)     2  )
+                                                       √ Z
+                                                         π      Γ( 1+u
+                                                                    2 )
+                                              H1 (y) = 2πi      Γ( 2−u
+                                                                         (πy)−u F̃ (u) du
+                                                            (1)     2 )
+
+
+We will need to distinguish into cases according to x2 ± 1 < 0 or not. In the first case we have H = H1
+and in the second H = H0 . We also note that when the sign in the first sum in (◦) is − we necessarily
+have x2 + 1 > 0.
+
+                                                                             24
+• x2 ± 1 < 0.
+  As we have noted above, in this case we necessarily have the sign + in the first sum of (◦). Therefore
+  we have,
+
+
+           ∞           ∞
+                                           k)
+    pk/2                 Kl     l,f (0,p
+           X           X
+                  1
+     2            f3               l2
+           f =1        l=1
+         (Z                                                                                                                                                 )
+                                                                                            √
+                                      Z                                         −u                                                        −u 
+                                                                  lf 2 (4pk )−α                     2 −k/2 Γ 1+u
+                                                                                                           (       )       πlf 2 (4pk )α−1
+                                                                                                                       
+                        +      1                                                                πlf
+                                                                                                 √ p          2
+                       θ∞ (x) 2πi                F̃ (u)             (1−x2 )α
+                                                                                        +       2 1−x2 Γ 2−u                   (1−x2 )1−α
+                                                                                                                                                     dudx       (◦1 )
+            |x|<1                          (1)                                                             (  2    )
+
+  Note that the integrand in the u-integral is holomorphic for ℜ(u) > 0 therefore we can move the
+  u contour to right without changing the value of the integral. Then, by moving the contour to
+  ℜ(u) = c > 1 and using the trivial bound |Kll,f (0, n)| < 4lf 2 we can ensure that the l and f -sums
+  and the integrals converge absolutely and bring the sums into the integrals and get
+                                "
+           Z                               Z                                 −u
+                                                                  (4pk )−α
+                                                              
+    pk/2                +
+     2                 θ∞ (x)        1
+                                    2πi              F̃ (u)       (1−x2 )α
+                                                                                   D(u + 1; pk )du
+            |x|<1                              (c)
+                                                                                                                                                            #
+                                                                       √ −k/2
+                                                                                                         π(4pk )α−1 −u
+                                                                                   Z
+                                                                                               Γ( 1+u
+                                                                                                   2 )
+                                                                                                                   
+                                                                         πp     1
+                                                                      + 2 1−x2 2πi
+                                                                         √              F̃ (u) Γ 2−u         2  1−α    D(u; pk )du                              dx
+                                                                                    (c)         ( 2 ) (1−x )
+
+  Where D(u; pk ) is as in (14). Using Corollary 5.4 we see that this is equal to
+                                "
+           Z                                Z                                  −u
+                                                                    (4pk )−α         ζ(2u+2) (1−p           )
+                                                                                                      −(u+1)(k+1)
+                                                                
+    pk/2                +            1
+     2                 θ∞ (x)     4 2πi                F̃ (u)       (1−x2 )α
+                                                                                                              du
+            |x|<1                                (c)
+                                                                                     ζ(u+2)    (1−p−(u+1) )
+                                                                                                                                                            #
+                                                       √
+                                                                                        π(4pk )α−1 −u ζ(2u) (1−p
+                                                                  Z
+                                                                              Γ( 1+u
+                                                                                  2 )
+                                                                                                                 −u(k+1)
+                                                                                                                         )
+                                                                                                   
+                                                      2 √πp−k/2 1
+                                                     + 1−x2 2πi        F̃ (u) Γ 2−u          2  1−α   ζ(u+1)       −u )    du                                   dx
+                                                                   (c)         (  2 )
+                                                                                        (1−x   )              (1−p
+
+
+  Now note the following:
+       Γ( 1+u )ζ(2u) (1−p−u(k+1) )                                           −(k+1)/2
+    – Γ 2−u2 ζ(u+1) (1−p−u ) has a simple pole at u = 12 with residue 2ζ1−p
+                                                                          3             and is holomor-
+       ( 2 )                                                            ( 2 )(1−p−1/2 )
+      phic on and to the right of the line ℜ(u) = 0.
+    – By Lemma 3.3, F̃ (u) has a simple pole at u = 0 with residue 1 and is holomorphic otherwise.
+                                                 Γ( 1+u
+                                                     2 ) ζ(2u) (
+                                                                 1−p−u(k+1) )
+      Note that in this case we also have limu→0 Γ 2−u            (1−p−u )
+                                                                              = 0.
+                                                  ( 2 ) ζ(u+1)
+
+         ζ(2u+2)(1−p−(u+1)(k+1) )                                                         1−p                                  −(k+1)/2
+    –          ζ(u+2)(1−p−(u+1) )
+                                                 has a simple pole at u = −1
+                                                                          2 with residue 2ζ( 3 )(1−p−1/2 ) and is holomorphic
+                                                                                                                           2
+         on and to the right of the line ℜ(u) = −1.
+    – The rest of the functions (of the variable u) in the first integral are holomorphic everywhere
+      on and to the right of the line ℜ(u) = −1, and in the second integral on and to the right of
+      the line ℜ(u) = 0.
+
+
+
+
+                                                                                   25
+      Therefore by shifting the u-contour of the first integral to ℜ(u) = −1 and the second to Cυ we get,
+                        1−α                            Z                                               Z
+                  (4pk ) 2 F̃ ( 12 )(1−p−(k+1)/2 )                θ∞+
+                                                                      (x)            k/2 (1−p
+                                                                                              −(k+1)
+                                                                                                     )           +
+          (◦1 ) =         2ζ ( 32 )(1−p−1/2 )                   (1−x2 )α/2
+                                                                           dx + 2p         (1−p−1 )
+                                                                                                               θ∞  (x) dx
+                                                         |x|<1                                           |x|<1
+                        1−α                             Z
+                  (4pk ) 2 F̃ ( −1  2 )
+                                       (1−p−(k+1)/2 )                +
+                                                                    θ∞ (x)
+                +               3
+                           2ζ ( 2 )(1−p  −1/2 )                  (1−x2 )α/2
+                                                                             dx
+                                                          |x|<1
+                                           "
+                        Z                           Z                k −α −u
+                  p k/2
+                                     +           1                    (4p )         ζ(2u+2) (1−p
+                                                                                                   −(u+1)(k+1)
+                                                                                                               )
+                + 2                θ∞ (x) 4 2πi             F̃ (u) (1−x    2 )α                                  du
+                          |x|<1                       (−1)
+                                                                                     ζ(u+2)     ( 1−p −(u+1)
+                                                                                                             )
+                                            √ −k/2
+                                                                                                                               
+                                                                                   π(4pk )α−1 −u ζ(2u) (1−p
+                                                            Z
+                                                                        Γ( 1+u
+                                                                             2 )
+                                                                                                                  −u(k+1)
+                                                                                                                          )
+                                                                                             
+                                        + 2 √πp 1−x2 2πi
+                                                        1
+                                                                 F̃ (u) Γ( 2−u     (1−x2 )1−α                  (1−p−u )
+                                                                                                                            du   dx
+                                                                             2 )
+                                                                                                    ζ(u+1)
+                                                             Cυ
+
+      Finally recall that by Lemma 3.3 F̃ is odd16 , and therefore the first and the third terms above cancel
+      and we get
+                                       Z
+                     k/2 (1−p
+                              −(k+1)
+                                     )          +
+          (◦1 ) = 2p        (1−p−1 )           θ∞  (x) dx
+                                         |x|<1
+                                        "
+                       Z                       Z               k −α −u
+                  pk/2          +            1                  (4p )         ζ(2u+2) (1−p
+                                                                                            −(u+1)(k+1)
+                                                                                                        )
+                + 2            θ∞ (x) 4 2πi           F̃ (u) (1−x    2 )α     ζ(u+2)       1−p−(u+1) )
+                                                                                                          du
+                         |x|<1                   (−1)                                    (
+                                        √             Z                                 −u                          
+                                       2 √πp−k/2 1                Γ( 1+u
+                                                                       2 )   π(4pk )α−1       ζ(2u) (1−p
+                                                                                                           −u(k+1)
+                                                                                                                   )
+                                                                           
+                                     + 1−x2 2πi            F̃ (u) Γ 2−u (1−x2 )1−α                      (1−p−u ) du dx
+                                                       Cυ          ( 2 )                     ζ(u+1)
+
+
+
+    • x2 ± 1 > 0.
+      In this case we have,
+                 ∞            ∞
+                                                    (Z                        "
+                                               k)
+                                                                                        Z                                      −u
+                                                                                                               lf 2 (4pk )−α
+                                                                                                           
+         pk/2                   Kl  l,f (0,p
+                XX            X
+                         1                                           ∓             1
+          2              f3            l2
+                                                                    θ∞ (x)        2πi             F̃ (u)         (x2 ±1)α
+                                                                                                                                     du
+                ∓ f =1        l=1                       x2 ±1>0                             (1)
+                                                                                                                                                   #      )
+                                                                √                       Z                                                   −u
+                                                                                                           Γ( u
+                                                                                                              2)          πlf 2 (4pk )α−1
+                                                                                                                      
+                                                                    πlf 2 p−k/2    1
+                                                            +        √
+                                                                                  2πi             F̃ (u) Γ 1−u             (x2 ±1)1−α             du dx       (◦2 )
+                                                                    2 x2 ±1
+                                                                                         (1)              ( 2 )
+
+      We proceed as above. Shifting the contour right to ℜ(u) = c > 1, then interchanging the l and
+      f -sums with the integrals and using Corollary 5.4 results in
+
+
+                                        "
+                XZ                                  Z                              −u
+                                                                        (4pk )−α            ζ(2u+2) (1−p           )
+                                                                                                                 −(u+1)(k+1)
+                                                                    
+         pk/2                   ∓              1
+          2                    θ∞ (x)       4 2πi          F̃ (u)       (x2 ±1)α
+                                                                                                                     du
+                     x2 ±1>0                         (c)
+                                                                                             ζ(u+2)   (1−p−(u+1) )
+                ∓
+                                                                                                                                                          #
+                                                  √ −k/2
+                                                                                  π(4pk )α−1 −u ζ(2u) (1−p
+                                                             Z
+                                                                          Γ( u
+                                                                             2)
+                                                                                                           −u(k+1)
+                                                                                                                   )
+                                                                                             
+                                               + 2 √πp
+                                                     2
+                                                    x ±1
+                                                          1
+                                                         2πi      F̃ (u)   1−u
+                                                                         Γ( 2 )   (x 2 ±1)1−α   ζ(u+1)  (1−p −u )    du                                       dx
+                                                              (c)
+
+      For what follows we will need to
+      Now note that:
+            Γ( u )ζ(2u) (1−p−u(k+1) )                                             −(k+1)/2
+        – Γ 1−u2 ζ(u+1) (1−p−u ) has a simple pole at u = 12 with residue 2ζ1−p              and is holomor-
+           ( 2 )                                                            ( 32 )(1−p−1/2 )
+          phic on and to the right of the line ℜ(u) = 0.
+  16
+     We note that the oddness of F̃ is completely peripheral for the argument. The whole argument is valid for an arbitrary
+choice of F and F̃ . If F̃ is not odd, then we would get −F̃ (−u) in the dual part of the approximate functional equation.
+
+
+                                                                            26
+        – By Lemma 3.3, F̃ (u) has a simple    pole at u = 0 with residue 1 and is holomorphic other-
+                                         u
+                                           
+          wise. On the other hand Γ 2 has a simple pole with residue 2 at u = 0. Finally we see that
+                                                                                        u
+           ζ(2u) (1−p
+                      −u(k+1)
+                              )                   2 ) around u = 0. Therefore F̃ (u) Γ( 2 ) ζ(2u) (1−p
+                                                                                                       −u(k+1)
+                                                                                                               )
+          ζ(u+1)        −u
+                   (1−p )       = uζ(2u)(k+1)+O(u                                     1−u
+                                                                                    Γ( 2 ) ζ(u+1)   (1−p−u )
+          has a simple pole at u = 0 with residue − k+1√ .
+                                                        π
+
+            ζ(2u+2)(1−p−(u+1)(k+1) )                                                1−p                        −(k+1)/2
+        –      ζ(u+2)(1−p−(u+1) )
+                                           has a simple pole at u = −1
+                                                                    2 with residue 2ζ( 3 )(1−p−1/2 ) and is holomorphic
+                                                                                                           2
+            on and to the right of the line ℜ(u) = −1.
+        – The rest of the functions (of the variable u) in the first integral are holomorphic on and to the
+          right of the line ℜ(u) = −1, and in the second integral are holomorphic on and to the right of
+          the line ℜ(u) = 0.
+      Therefore shifting the first contour to ℜ(u) = −1 and the second to Cυ we get,
+                          1−α                            Z                                                             Z
+                 (4pk )      ( 21 )(1−p−(k+1)/2 ) X
+                           2 F̃                                           θ∞∓
+                                                                              (x)              k/2 (1−p
+                                                                                                        −(k+1) X
+                                                                                                                )                  ∓
+        (◦2 ) =       2ζ ( 32 )(1−p−1/2 )                                 2      α/2 dx + 2p         (1−p−1 )
+                                                                                                                                  θ∞ (x) dx
+                                                           x 2 ±1>0 (x ±1)                                               x 2 ±1>0
+                                                      ∓                                                            ∓
+                        XZ                                          1−α                                 Z
+                                             θ ∓
+                                               ∞ (x)         (4pk ) 2 F̃ ( −1   2  )(1−p−(k+1)/2 ) X                  θ∞∓
+                                                                                                                          (x)
+              − (k + 1)                      √        dx +                  3                                         2 ±1)α/2 dx
+                                   x 2 ±1>0    x 2 ±1                  2ζ ( 2 )(1−p   −1/2 )
+                                                                                                          x 2 ±1>0 (x
+                          ∓                                                                         ∓
+                                                   "
+                                                                               (4pk )−α −u ζ(2u+2) (1−p
+                          Z                              Z                                                    −(u+1)(k+1)
+                                                                                                                           )
+                 k/2 X
+                                                                                        
+              + p2                        ∓
+                                         θ∞  (x) 4 2πi 1
+                                                                   F̃ (u) (x      2 ±1)α       ζ(u+2)       1−p−(u+1) )
+                                                                                                                             du
+                               2
+                             x ±1>0                         (−1)                                          (
+                     ∓
+                                          √
+                                                                                                                                  
+                                                                                      π(4pk )α−1 −u ζ(2u) (1−p
+                                                         Z
+                                                                         Γ( u2)
+                                                                                                                    −u(k+1)
+                                                                                                                              )
+                                                                                                
+                                         2 √πp−k/2 1
+                                       + x2 ±1 2πi             F̃ (u) Γ 1−u (x2 ±1)1−α                            (1−p−u )
+                                                                                                                                du dx
+                                                          Cυ             ( 2 )                         ζ(u+1)
+
+
+
+      The first and fourth terms in the above sum cancel because F̃ is odd (Once again this is not essential
+      to the argument. See the footnote above.), and we get
+
+
+                         (1−p      )
+                                  −(k+1)    XZ                                                 XZ               ∓
+                                                                                                               θ∞ (x)
+            (◦2 ) = 2pk/2 (1−p−1 )                           ∓
+                                                            θ∞ (x) dx − (k + 1)                                √
+                                                                                                                 x2 ±1
+                                                                                                                       dx
+                                             ∓    x2 ±1>0                                      ∓     x2 ±1>0
+                                                    "
+                            XZ                              Z                                  −u
+                                                                                    (4pk )−α         ζ(2u+2) (1−p           )
+                                                                                                                   −(u+1)(k+1)
+                      k/2
+                                                                                
+                 + p2                        ∓
+                                            θ∞        1
+                                               (x) 4 2πi               F̃ (u)       (x2 ±1)α
+                                                                                                                              du
+                                  x2 ±1>0                       (−1)
+                                                                                                     ζ(u+2)    (1−p−(u+1) )
+                             ∓
+                                          √          Z                                −u                                          
+                                                                 Γ( u
+                                                                    2)     π(4pk )α−1      ζ(2u) (1−p
+                                                                                                      −u(k+1)
+                                                                                                              )
+                                                                         
+                                         2 √πp−k/2 1
+                                        + x2 ±1 2πi      F̃ (u) Γ 1−u        2    1−α              (1−p−u )
+                                                                                                                du                     dx
+                                                      Cυ         (  2  )   (x ±1)         ζ(u+1)
+
+
+
+Summing (◦1 ) and (◦2 ) finishes the proof.
+
+
+
+Finally we have the following auxiliary lemma that identifies the contribution of the special representations
+in the sum in Theorem 6.1.
+Lemma 6.2. Let tr(1(f p,k )) is the contribution of the trivial representation, and tr(ξ0 (f p,k )) is the con-
+tribution to the trace formula by the residues of the Eisenstein series as explained on pg.25 of [13]. Then,
+
+
+
+
+                                                                       27
+                                                             (1−p      )
+                                                                    −(k+1)    XZ
+                                             p,k                                        ∓
+                                    tr(1(f         )) = 2pk/2 (1−p−1 )                 θ∞ (x) dx
+                                                                                  ∓
+                                                             XZ                   ∓
+                                    tr(ξ0 (f p,k )) = k+1
+                                                       2
+                                                                              √θ∞2(x) dx
+                                                                    x2 ±1>0       |x ±1|
+                                                              ∓
+
+
+
+
+Proof. We start with the trivial representation. Recall (⋆ ⋆ ⋆) that θ∞∓ (x) = 2|x2 ± |1/2 g ∓ (x) + g ∓ (x),
+                                                                                                1     2
+where γ(∓1,x) is as in (⋆⋆). Then,
+                            Z                                  Z
+          k/2 (1−p       )
+                   −(k+1) X
+                                             k/2 (1−p       )
+                                                      −(k+1) X
+       2p       (1−p−1 )
+                               ∓
+                              θ∞ (x) dx = 2p       (1−p−1 )      (2|x2 ± 1|1/2 g1∓ (x) + g2∓ (x))dx
+                              ∓                                               ∓
+                                                                                  Z 
+                                                          k/2 (1−p       )
+                                                                   −(k+1) X
+                                                                                                  g ∓ (x)
+                                                                                                          
+                                                   = 4p       (1−p−1 )
+                                                                                     g1∓ (x) + 2|x22±1|1/2 |x2 ± 1|1/2 dx   (∗)
+                                                                              ∓
+
+
+Now a quick comparison of (∗) with equation17 (65) of [13] (using equation (26) of the same reference)
+shows that (∗) = tr(1(f p,k )).
+For the second equality we only need to note that the integer we denote by k is denoted by m in [13], and
+                                                   ∓
+equation (31) of [13] is equal to k+1            √θ∞2(x) dx.
+                                      P R
+                                   2   ∓ x2 ±1>0                  |x ±1|
+
+
+
+
+Finally Theorem 6.1 combined with Lemma 6.2 finishes the proof of Theorem 1.1.
+
+
+References
+
+ [1] S. A. Altuğ, Beyond Endoscopy via the Trace Formula - II The Standard Representation, In prepa-
+     ration.
+ [2] S. A. Altuğ, A New look at the bounds towards Ramanujan conjecture via the trace formula, In
+     preparation.
+ [3] J. Arthur, An introduction to the trace formula, in Harmonic analysis, the trace formula and Shimura
+     varieties, pp. 1-265, Clay Mathematics Institute Proceedings, Cambridge, MA, 2005.
+ [4] J.    Arthur,   The    Endoscopic   Classification  of     Representations,                               Available    at:
+     http://www.claymath.org/cw/arthur/pdf/arthur-endoscopic-tifr.pdf
+ [5] A. Borel, H, Jacquet, Automorphic forms and automorphic representations, in Automorphic forms,
+     representations and L-functions, pp. 189-202, Proceedings of Symposia in Pure Mathematics, vol. 33
+     part I, American Mathematical Society, Corvallis, OR, 1979.
+ [6] V. A. Bykovskii, Density theorems and the mean value of arithmetic functions on short intervals.
+     (Russian) Zap. Nauchn. Sem. S.-Peterburg. Otdel. Mat. Inst. Steklov. (POMI) 212 (1994), Anal.
+     Teor. Chisel i Teor. Funktsii. 12, 5670, 196; translation in J. Math. Sci. (New York) 83 (1997), no.
+     6, 720730.
+ 17
+      There is a misprint in equation (65) of [13], the exponent m should be m + 1.
+
+
+
+                                                                  28
+ [7] E. Frenkel, R. P. Langlands, B. C. Ngô, La formule des traces et la functorialité. Le debut dun
+     Programme. Ann. Sci. Math. Québec 34 (2010), 199-243.
+ [8] P. E. Herman, Quadratic base change and the analytic continuation of the Asai L-function: A new
+     trace formula approach, Available at arXiv:1008.3921v2.
+ [9] H. Iwaniec, E. Kowalski, Analytic number theory, AMS Colloquium Publications, vol. 53, 2004.
+[10] H. Jacquet, R. P. Langlands, Automorphic forms on GL(2), Lecture Notes in Mathematics 114,
+     Springer Verlag, 1970.
+[11] A. Knapp, Representation theory of semi simple groups: An overview based on examples, Princeton
+     University Press, Princeton, NJ, 1986.
+[12] J-P. Labesse, Introduction to endoscopy, Notes for Snowbird lectures 2006, Available at:
+     http://www.institut.math.jussieu.fr/projets/fa/bpFiles/Labesse.pdf.
+[13] R. P. Langlands, Beyond Endoscopy, in Contributions to automorphic forms, geometry and number
+     theory, pp. 611-697, Johns Hopkins University Press, Baltimore, MD, 2004.
+[14] Langlands, Singularités et Transfert. Available at:
+     http://publications.ias.edu/sites/default/files/transfert 1.pdf.
+[15] P. Sarnak, Comments on Langlands’ Lecture “Endoscopy and Beyond”. Available at:
+     http://publications.ias.edu/sites/default/files/SarnakLectureNotes-1.pdf.
+[16] P. Sarnak, Notes on the Generalized Ramanujan Conjectures. In Harmonic Analysis, The Trace
+     Formula and Shimura Varieties, pp. 659-687. Clay Mathematics Proceedings vol. 4, Cambridge,
+     MA, 2005.
+[17] D. Shealsted, Orbital integrals for GL2 (R), in Automorphic forms, representations and L-functions,
+     pp. 189-202, Proceedings of Symposia in Pure Mathematics, vol. 33 part I, American Mathematical
+     Society, Corvallis, OR, 1979.
+[18] K. Soundararajan, M. Young, The prime geodesic theorem, Available at: arXiv:1011.5486v1.
+[19] R. Shakarchi, E. Stein, Complex analysis, Princeton Lectures in Analysis II, Princeton University
+     Press, Princeton, NJ, 2003.
+[20] A. Venkatesh, Beyond endoscopy and special forms on GL(2). Journal für die reine und angewandte
+     Mathematik (Crelles Journal) 577 (2004), 23-80.
+[21] D. Zagier, Modular forms whose Fourier coefficients involve zeta-functions of quadratic fields. Modular
+     functions of one variable, VI (Proc. Second Internat. Conf., Univ. Bonn, Bonn, 1976), pp. 105169,
+     Lecture Notes in Mathematics, Vol. 627, Springer Verlag, Berlin, 1977.
+
+
+
+Salim Ali Altuğ   altug@math.columbia.edu
+Mathematics Department, Columbia University, 2990 Broadway, New York, NY, USA 10027
+
+
+
+
+                                                     29
+

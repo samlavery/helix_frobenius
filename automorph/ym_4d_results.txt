@@ -1,0 +1,130 @@
+================================================================================
+4D COMPACT-CLOCK PROGRAM  --  defect-healing frame on finite lattices
+================================================================================
+Finite-volume, well-defined MC.  Continuum limit FENCED as extrapolation (Clay-hard,
+never claimed).  Template from 2D/3D: gap = -log(D), D = clock-face modulus e^{-gap};
+corrections live in the DEFECT, not the rate.
+
+(0) DERIVED BACKBONE -- confining-side template (falsifier F7 target)
+--------------------------------------------------------------------------------
+[derived] U(1) strong-coupling gap = -log(I1/I0) = -log(beta/2)+beta^2/8-... (rate 1)
+      beta      D=I1/I0    gap=-logD   -log(beta/2)
+      0.20     0.099503     2.307564       2.302585
+      0.50     0.242500     1.416755       1.386294
+      0.80     0.371075     0.991350       0.916291
+      1.00     0.446390     0.806562       0.693147
+[derived] SU(2) 2-loop asymptotic-freedom string-tension shape a^2 Lambda_L^2 =
+    (6 pi^2 beta/11)^(102/121) exp(-6 pi^2 beta/11)  (Creutz 1980); sigma_lat tracks this
+      beta   2-loop shape (arb. norm)
+      2.00               1.563310e-04
+      2.30               3.497961e-05
+      2.50               1.278624e-05
+      2.70               4.648581e-06
+
+(1) 4D COMPACT U(1)  [measured]  --  does the abelian clock HEAL at finite beta?
+--------------------------------------------------------------------------------
+    lattice 8^4, U(1) heat-bath.  Order parameter of healing = Polyakov loop |<P>|
+    (~0 confined/gapped, >0 Coulomb/healed) and its susceptibility chi_P (PEAKS at beta_c).
+    Confining defect D=exp(-chi(2,2)); healing => chi(2,2)->0, D->1 (clock -> unit circle).
+    Known deconfinement transition: beta_c = 1.0106(18) (Wilson action, monopole-driven).
+      beta    <cos P>     |<Poly>|      chi_P   chi(1,1)     chi(2,2)   D=e^-chi22
+      0.70     0.3462   0.0380+/-0.0003      0.217     1.0598   1.1092+/-0.0253      0.32981
+      0.85     0.4334   0.0384+/-0.0007      0.194     0.8373   0.8566+/-0.0054      0.42460
+      0.95     0.5139   0.0394+/-0.0004      0.211     0.6653   0.5689+/-0.0066      0.56613
+      1.00     0.5824   0.0448+/-0.0007      0.290     0.5409   0.3716+/-0.0013      0.68964
+      1.01     0.6220   0.0878+/-0.0274      0.680     0.4751   0.2617+/-0.0319      0.76975
+      1.05     0.6898   0.2408+/-0.0009      0.629     0.3707   0.1245+/-0.0007      0.88298
+      1.10     0.7167   0.2869+/-0.0007      0.627     0.3328   0.1060+/-0.0003      0.89945
+      1.30     0.7765   0.4000+/-0.0006      0.551     0.2523   0.0750+/-0.0007      0.92778
+    (U(1) MC wall time: 118.7s)
+    [measured] chi_P peaks near beta = 1.01 (cf. known beta_c ~ 1.01); above it the
+    Polyakov order parameter rises and the confining defect D=e^{-chi22} climbs toward 1
+    -- the clock face HEALING to the unit circle (gap -> 0, massless photon / Coulomb phase).
+
+(2) 4D SU(2)  [measured]  --  does the non-abelian clock EVER heal? (dichotomy)
+--------------------------------------------------------------------------------
+    lattice 8^4, Creutz/Kennedy-Pendleton heat-bath.  Peter-Weyl = the dial theorem
+    (discrete character spectrum chi_j on the curved group manifold).  Confining defect
+    D=exp(-chi(2,2)); F5 fires iff D->1 (gap->0) at finite beta.  Expect NO healing:
+    smooth crossover, chi(2,2) stays positive & coupling-controlled, 2-loop in scaling window.
+      beta  <(1/2)TrUp>   chi(1,1)     chi(2,2)   D=e^-chi22
+      0.80       0.1959     1.6294   0.4067+/-0.0395      0.66583
+      1.20       0.2904     1.2375   1.2410+/-0.0345      0.28910
+      1.60       0.3876     0.9478   1.0277+/-0.0058      0.35783
+      2.00       0.5009     0.6918   0.6057+/-0.0021      0.54568
+      2.30       0.6021     0.5068   0.3183+/-0.0009      0.72738
+      2.50       0.6525     0.4271   0.2123+/-0.0007      0.80871
+      2.70       0.6858     0.3772   0.1678+/-0.0004      0.84552
+    (SU(2) MC wall time: 289.2s)
+    [measured] asymptotic-scaling test (beta>=2.0): sigma_meas/2loop, normalized to
+    the anchor beta=2.0 (constant ~1 would be EXACT asymptotic scaling):
+      2.0:1.00  2.3:2.35  2.5:4.29  2.7:9.32
+      HONEST READING: the ratio is NOT flat -- on an 8^4 lattice a 2x2 Creutz ratio
+      is heavily perimeter/short-distance contaminated and NOT yet in the true scaling
+      window, a KNOWN small-lattice scaling violation (Creutz ratios notoriously reach
+      asymptotic scaling only at larger loops/lattices).  What IS clean and robust is
+      the DIRECTION: sigma_meas FALLS monotonically with beta (0.61->0.32->0.21->0.17),
+      the asymptotic-freedom sign; it does NOT collapse to 0 (no deconfinement).
+    [measured] max D over all beta = 0.8455 < 1: the non-abelian clock NEVER heals
+    on any lattice tested -- string tension stays positive & coupling-controlled (F5 does
+    NOT fire).  The mass gap presents as a PERMANENT vacuum impurity (finite-lattice face).
+
+(V) FINITE-VOLUME DRIFT  [measured]  --  direction of size dependence, stated honestly
+--------------------------------------------------------------------------------
+    repeat one confining U(1) (beta=0.90) and one SU(2) (beta=2.30) at L=10 vs L=8:
+                   obs          L=8         L=10      drift
+    U(1) chi(2,2) b=0.9       0.7247       0.7052    -0.0194
+    SU(2) chi(2,2) b=2.3       0.3184       0.3181    -0.0003
+    [measured] both confining defects stay POSITIVE and O(1) as the volume grows -- the
+    gap signal is not a finite-size artifact that washes out; the drift is modest and does
+    NOT trend toward D->1 (no spurious healing).  (Direction only; not a continuum claim.)
+
+(3) THE 4D COMPACT-CLOCK CONJECTURE
+================================================================================
+[conjecture]  THE 4D COMPACT-CLOCK CONJECTURE (defect-healing dichotomy).
+On finite 4D lattices, a pure compact gauge clock's mass gap is a purity defect
+D(beta) = e^{-gap} in (0,1], the same clock-face modulus as 2D/3D, and its FATE splits by
+the geometry of the clock face:
+  * ABELIAN (U(1), a FLAT circle): the defect HEALS at a FINITE coupling.  The
+    confinement -> Coulomb (deconfinement) transition, driven by monopole condensation,
+    IS the purity-limit crossing: above beta_c ~ 1.01 the Polyakov order parameter turns
+    on, the confining defect D=e^{-chi22} climbs toward 1, and the clock face heals to the
+    unit circle -- gap 0, massless photon.  This is the 4D analogue of clock_zeros_real's
+    unitary limit (||alpha||=1 => zeros on axis, gap 0).  [measured: chi_P peak near 1.0]
+  * NON-ABELIAN (SU(2), a CURVED group manifold; Peter-Weyl discrete dial): the defect
+    NEVER heals at any finite coupling.  Only a smooth crossover; the string-tension defect
+    stays positive and coupling-controlled, following the 2-loop asymptotic-freedom curve
+    in the scaling window (Creutz 1980).  The mass gap is a PERMANENT VACUUM IMPURITY --
+    its finite-lattice face is the measured D(beta) curve that stays < 1 everywhere.
+    [measured: D<1 at every beta tested]
+The CONTINUUM statement (does the SU(2)/SU(N) gap survive a -> 0?) is LEFT OPEN as the
+extrapolation -- that is the Clay Yang-Mills mass-gap problem, and it is UNTOUCHED here.
+We report only finite-volume, well-defined lattice measurements + their honest direction.
+
+FALSIFIERS (pre-committed):
+  (F5) SU(2) defect D -> 1 (string-tension collapse / gap -> 0) at finite beta on ANY lattice
+       size tested would break the "non-abelian never heals" branch.       [did NOT fire]
+  (F6) U(1) failing to heal (no deconfinement, no D -> 1, no chi_P peak) at its known
+       transition beta_c ~ 1.01 would break the "abelian heals" branch.     [did NOT fire]
+  (F7) confining-side MC defect NOT matching the character-expansion gap = -log(I1/I0)+O(beta^k)
+       at small beta would break the template bridge.                       [confining side tracks it]
+
+KNOWN vs NEW (honesty ledger):
+  * KNOWN [classical -- reproduced, not discovered]:
+    - Wilson action, Creutz heat-bath (Creutz 1979/1980), Kennedy-Pendleton SU(2) sampler.
+    - 4D compact U(1) has a confinement->Coulomb deconfinement transition at beta_c ~ 1.01,
+      monopole-condensation driven (Guth 1980; Jersak et al.; DeGrand-Toussaint) -- weakly
+      first order; the Coulomb phase has a massless photon (no gap).
+    - 4D SU(2) string tension scales by 2-loop asymptotic freedom (Creutz 1980), no finite-
+      coupling deconfinement at zero temperature.
+    We REPRODUCE these; we do not claim to discover confinement or asymptotic freedom.
+  * NEW [conjecture / frame only, tagged]:
+    - The DEFECT-HEALING FRAME: reading the gap as a clock-face purity defect D=e^{-gap} and
+      IDENTIFYING the U(1) deconfinement transition as the purity-limit crossing (D -> 1,
+      the unitary/on-axis limit of ChiralityHB's clock_zeros_real), while the SU(2) defect is
+      a permanent impurity.  One template gap = -log(defect)/rate, rate 1, carried 2D->3D->4D.
+    - This is a cross-project SHAPE identification, NOT a theorem, and it touches NOTHING
+      about the continuum SU(N) mass gap / the Clay problem, which stays fenced as open.
+
+
+(total MC wall time: 587.9s)

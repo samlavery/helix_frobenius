@@ -1,0 +1,111 @@
+================================================================================
+HIDA WEIGHT-LIFT -- PIECE 2 : the classical weight-k companion G_k  (DLR ES LHS route)
+   g = tetrahedral (A4) weight-1 newform, level 124, nebentype chi, coeffs Q(zeta12), p=13
+   Engine: Sage modular symbols (ambient geometry + Hecke).  Residual target = IN-HOUSE
+           (hida_family / rung3_lhs.a_p_h_exponent -- certified, non-circular; no G_k pulled
+           from any table or L-value).
+   Tiers:  [MEASURED] Sage/in-house numbers ; [DERIVED] standard theory ; [OPEN] not nailed.
+================================================================================
+
+--------------------------------------------------------------------------------
+0. TARGET (PIECE 1, reused)  +  the invariant that guides the search
+--------------------------------------------------------------------------------
+[MEASURED] a_ell(g) mod 13 (zeta12->7): a_2=5 a_3=7 a_5=3 a_7=6 a_11=11 a_13=10 a_17=4 a_19=6
+           a_37=9 a_41=3 a_43=6 a_53=3 a_59=7.   Self-check: the Sage-built chi reduces
+           (zeta12->7) EXACTLY to hida_family.chi_mod_p  ->  PASS.
+[MEASURED] Twist-invariant signature s_ell := a_ell(g)^2/chi(ell) == 1 for EVERY good ell
+           (a_ell(g)^2 = chi(ell), the A4 relation with the certified coeff-8 chi).  s_ell is
+           invariant under twisting, so every twist of g shares s_ell == 1.
+
+--------------------------------------------------------------------------------
+1. WHERE THE COMPANION MUST LIVE  (correcting the level-124 framing)  [DERIVED]
+--------------------------------------------------------------------------------
+* A weight-k form congruent to weight-1 g CANNOT share g's nebentype chi unless k == 1 (mod 12)
+  [Serre weight relation].  So for k in {3,5,7,9,11} the nebentype is chi*omega^{k-1} (omega =
+  Teichmuller char at 13), RAMIFIED at 13.  Hence G_k is a 13-NEW newform of level 1612=124*13.
+  ==> the task's "M_k(Gamma_1(124),...)" and dim_Sk_gamma0_chi(124,..) describe the WRONG space.
+* CONTINUOUS TATE TWIST.  Congruent-to-g weight-k forms are Tate twists G = g (x) omega^t
+  (twisting by a character preserves the A4 projective image, so g(x)omega^t is projectively
+  == g for all t):   a_ell(G) = a_ell(g)*ell^t (mod 13),  nebentype = chi*omega^{2t-2}.
+  The six t=0..5 exhaust the SIX even 13-parts chi*omega^{-2,0,2,4,6,8} -- i.e. EVERY odd
+  nebentype with tame part chi.  Natural half-twist: t=(k-1)/2 (=1 at k=3).
+* [MEASURED] dim S_3(Gamma_0(1612), chi*omega^{2t-2}) = 444 (cusp) / 452 (full, 8 Eisenstein),
+  over Q(zeta6); all six classes.  Sturm ~ 3*2688/12 = 672.  (Task's level-124 number 34 is a
+  different, wrong object.)
+
+--------------------------------------------------------------------------------
+2. METHOD + POSITIVE CONTROL  (does the instrument find 13-NEW forms?)
+--------------------------------------------------------------------------------
+Method: T_ell (ell in {3,5,7,11,17,19,23,29,37,41,43}, coprime to 1612) over Q(zeta6), reduced
+at each prime above 13 (zeta12 -> r in {2,6,7,11}); reduction EXACT for eigenvalues (13-integral
+matrices => charpoly reduces).  Companion = common eigenvector of all T_ell at the g-target.
+
+[MEASURED, PASS]  POSITIVE CONTROL (control26.py): in S_2(Gamma_0(26)) (13 | 26), the method
+  recovers BOTH 13-NEW newforms 26a and 26b as clean dim-1 common eigenspaces from their a_ell.
+  => the instrument reliably detects 13-new forms modulo 13; a null here is a real absence, NOT
+     a p-new reduction artifact.  (One caveat: the U_13 read-off on a captured eigenspace was
+     off by a normalization in the control -- 26a gave U_13=2 vs a_13=1 -- so any future GATE-3
+     U_13 residue needs a corrected restriction; immaterial here since nothing was captured.)
+
+--------------------------------------------------------------------------------
+3. GATES
+--------------------------------------------------------------------------------
+GATE 1 (dimension): [MEASURED] 444 cusp / 452 full over Q(zeta6) for every class (Sage
+  Cohen-Oesterle).  The task's 34 is rejected as the wrong (level-124) object.
+
+GATE 2 (locate G_k with residual == g):  [MEASURED]
+     t : nebentype       target         g(x)omega^t common eigenspace dim (all 4 primes|13)
+     0 : chi*omega^-2    a_ell(g)                0
+     1 : chi             a_ell(g)*ell            0
+     2 : chi*omega^2     a_ell(g)*ell^2          0     [= task's nebentype chi*omega^{k-1}]
+     3 : chi*omega^4     a_ell(g)*ell^3          0
+     4 : chi*omega^6     a_ell(g)*ell^4          0
+     5 : chi*omega^8     a_ell(g)*ell^5          0
+  Individual target eigenvalues a_ell ARE each present per prime (ker dims 2-8); low-prime
+  "matches" on {3,5,7,11} collapse to 0 by ell=17 (coincidences, not eigensystems).
+  => GATE 2 : FAIL.  No weight-3 capture in ANY nebentype class (all six even 13-parts).  By
+     complex conjugation the same holds for tame part chi^{-1} (the conjugate form h').
+
+GATE 3 (U_13 unit residue / "off unit=1" crux):  NOT REACHED (no capture).  Recorded context:
+  weight-1 13-roots are {1, zeta3} == {1, 9} mod 13; the lift is meant to move U_13 OFF the
+  exact alpha_g = 1 Eisenstein degeneracy (a genuine root-of-unity phase, never the unit-1 scale).
+
+GATE 4 (cuspidal):  search ran inside the cuspidal subspace throughout (vacuously OK).
+
+--------------------------------------------------------------------------------
+4. THE FINDING  (tiered, honest)
+--------------------------------------------------------------------------------
+[MEASURED]  With a VALIDATED instrument (finds 13-new 26a/26b), the g-eigensystem -- as any
+            Tate twist g(x)omega^t, i.e. under EVERY odd nebentype with tame part chi -- is
+            GENUINELY ABSENT from weight 3, level 1612, across all four primes above 13.
+
+[OPEN / TENSION]  Hida's control theorem (g is 13-ordinary: 13-roots 1, zeta3 are units, and
+            alpha_g=1 != beta_g=zeta3 is REGULAR, so g_alpha is a smooth eigencurve point)
+            predicts a classical weight-3 companion.  The measured absence is in tension with
+            this.  Two live explanations, NOT resolved here:
+              (a) the alpha_g = 1 ("unit=1") degeneracy -- the very obstruction that kills the
+                  weight-1 overconvergent computation -- may push the first classical companion
+                  ABOVE weight 3 (escalate: k=5, dim 892; k=7,9,11);  OR
+              (b) a residual g-SPECIFIC setup issue.  The instrument mechanics are validated
+                  (26a/26b), but the g-specific setup (exotic chi/omega/target at level 1612)
+                  was NOT positively validated against a KNOWN g-companion: the natural check --
+                  g's provable 13-OLD companion at weight 13 (k==1 mod 12, level 124) -- CRASHED
+                  (SIGILL in FFLAS on this Sage build).  Until that runs on a stable build, a
+                  hidden setup bug specific to g cannot be fully excluded.
+
+--------------------------------------------------------------------------------
+5. SCOPE / HONESTY
+--------------------------------------------------------------------------------
+* MEASURED (Sage modular symbols) + IN-HOUSE residual target (non-circular).
+* NOT achieved: capturing G_k in an ordinary space (GATE 2 FAIL at weight 3), the U_13 residue
+  (GATE 3), and certainly not the full ES LHS value (specializing the family back to weight 1 =
+  DR2's triple-product-in-a-family step; out of scope regardless).
+* Achieved: (i) correct object identification -- 13-NEW, level 1612, nebentype chi*omega^{k-1},
+  = continuous Tate twist g(x)omega^t of g -- correcting the task's level-124 framing;
+  (ii) exact dimension/field (444 / Q(zeta6)); (iii) a VALIDATED instrument (13-new positive
+  control); (iv) a robust measured NULL for the weight-3 capture across ALL six nebentype
+  classes and all primes above 13; (v) the clean twist-invariant signature s_ell(g) == 1.
+* NEXT: run the weight-13 setup-validation on a stable Sage build (must find g's 13-old
+  companion -> validates or refutes the g-specific setup), then escalate k=5..11 for the
+  13-new companion.
+================================================================================

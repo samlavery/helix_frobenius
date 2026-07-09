@@ -1,0 +1,144 @@
+==============================================================================
+TASK 1  REPRODUCE from scratch  (q=5, cutoff=45.0, dps=40)
+==============================================================================
+  bank: 8 terms, n in [1, 2, 3, 4, 6, 7, 8, 9]
+
+  (1a) STAR IDENTITY  2*sumChiS1 == conj(E(conj z)) :
+     z=(3+0.7j):  |2SumS1 - conj(E(conj z))| = 0.0
+     z=(9.831+1j):  |2SumS1 - conj(E(conj z))| = 0.0
+     z=1.2j:  |2SumS1 - conj(E(conj z))| = 0.0
+
+  (1b) ON-AXIS (z real) boundary |E|==|E*|:
+     z=0.0:  |E|=0.94375144  |E*|=0.94375144  ratio=1.0
+     z=3.0:  |E|=0.74312958  |E*|=0.74312958  ratio=1.0
+     z=6.6485:  |E|=0.32959612  |E*|=0.32959612  ratio=1.0
+
+  (1c) A=(E+E*)/2  vs  genuine completed L  Lambda(1/2+iz):
+     z=0j: A=(0.943751 + 0.0j)  Lam_true=(0.943751 + 0.0j)  |A-Lam_true|=2.5e-35
+     z=(3+0j): A=(0.450762 + 0.0j)  Lam_true=(0.450762 - 9.2148e-42j)  |A-Lam_true|=2.5e-35
+     z=(2+0.9j): A=(0.70492 - 0.21109j)  Lam_true=(0.70492 - 0.21109j)  |A-Lam_true|=2.5e-35
+     z=(9.831+1j): A=(0.00126363 + 0.00108375j)  Lam_true=(0.00126363 + 0.00108375j)  |A-Lam_true|=2.49e-35
+
+  (1d) first zero of A=(E+E*)/2 on the axis (bisect Re):
+     zero at z = 6.6484533   (LMFDB gamma_1(chi_5) ~ 6.6485)
+
+  (1e) CLAIMED BAND POINTS  ratio=|E*|/|E|:
+     z=9.831+1.0i:  ratio=1.0128064  margin=-0.0128064  <-- ratio>1 (claimed band)
+     z=9.831+0.05i:  ratio=1.0007001  margin=-0.000700068  <-- ratio>1 (claimed band)
+     z=9.831+2.0i:  ratio=1.0079579  margin=-0.00795791  <-- ratio>1 (claimed band)
+     z=0.0+1.0i:  ratio=0.52396366  margin=0.476036
+     z=6.6485+1.0i:  ratio=0.90003032  margin=0.0999697
+     z=11.959+1.0i:  ratio=0.99497776  margin=0.00502224
+     z=25.0+1.0i:  ratio=1.0  margin=-3.84394e-8  <-- ratio>1 (claimed band)
+=== E ZERO CENSUS over z-UHP (q=5) dps=25 ===
+  [0,25]x[0.05,4] E-winding npts=150: 1.0
+  [0,25]x[0.05,4] E-winding npts=300: 1.0
+  tiles (npts=200):
+    [  0,  7]x[0.05,2.0]: -5.432e-26
+    [  0,  7]x[2.0,4.0]: 5.316e-26
+    [  7,  9]x[0.05,2.0]: -4.564e-27
+    [  7,  9]x[2.0,4.0]: 1.0  <== ZERO
+    [  9, 11]x[0.05,2.0]: 3.057e-27
+    [  9, 11]x[2.0,4.0]: 2.028e-27
+    [ 11, 13]x[0.05,2.0]: -1.858e-27
+    [ 11, 13]x[2.0,4.0]: 6.239e-27
+    [ 13, 25]x[0.05,2.0]: -1.824e-27
+    [ 13, 25]x[2.0,4.0]: 4.902e-28
+=== LOCALIZE E zero in tile [7,9]x[2,4] ===
+  E ZERO at z = (7.7325477854425 + 3.4920744472199j)   |E|=2.34e-32
+     Re s = 1/2 - Im z = -2.9920744   (off critical line by 3.49207 in z)
+     |E*|/|E| exactly AT the E-zero -> 9.46817e+30  (blows up: E->0)
+
+=== FAR FIELD E zeros [25,60]x[0.05,4] ===
+  [25,40]x[0.05,4]: winding=-1.1878e-32
+  [40,60]x[0.05,4]: winding=-1.5012e-32
+
+=== CONTROL: Lambda (=A) zeros in [0,25]x[0.05,4] (RH=>0) ===
+  Lambda winding = -1.66551e-30  (expect ~0)
+
+=== does the E-zero explain the y=1 band? ===
+  zero at x~7.7325. band at y=1 spans x~[7.6,10.4] (from scan).
+  ratio |E*|/|E| along y=1 near band center vs zero x-position:
+    x=7.5: |E*|/|E|=0.9998606
+    x=8.0: |E*|/|E|=1.032974
+    x=8.34: |E*|/|E|=1.042009
+    x=9.0: |E*|/|E|=1.036156
+    x=9.83: |E*|/|E|=1.012833
+    x=10.4: |E*|/|E|=1.000455
+=== TASK 3 ASYMPTOTICS: strand growth as y->+inf (Re s->-inf) ===
+  n=1, x=0:  a1=s/2 has Re->-inf (S1);  a2=(1-s)/2 has Re->+inf (S2)
+    y=0.5: |S1|=0.4294 |S2|=0.5865 |S1|/|S2|=0.73218
+    y=  1: |S1|=0.3744 |S2|=0.7001 |S1|/|S2|=0.53475
+    y=  2: |S1|=0.2937 |S2|=1.047 |S1|/|S2|=0.28038
+    y=  3: |S1|=0.2386 |S2|=1.685 |S1|/|S2|=0.14163
+    y=  5: |S1|=0.1705 |S2|=5.542 |S1|/|S2|=0.030763
+    y=  8: |S1|=0.1174 |S2|=59.57 |S1|/|S2|=0.0019708
+    y= 12: |S1|=0.0822 |S2|=3374.0 |S1|/|S2|=2.4361e-5
+  => as Re a2->+inf, Gamma(a2,x)->Gamma(a2) (factorial growth): S2 GROWS.
+  => as Re a1->-inf, Gamma(a1,x)~x^{a1-1}e^{-x}: |S1| power-DECAYS in |a1|.
+  So the (1-s)/2 strand (E=2SumChi S2) SHOULD dominate at large y: |E|>|E*|.
+  Measured full-bank |E*|/|E| at x=0:
+    y=0.5: |E*|/|E|=0.724722
+    y=1: |E*|/|E|=0.523964
+    y=2: |E*|/|E|=0.269425
+    y=3: |E*|/|E|=0.133701
+    y=5: |E*|/|E|=0.0282358
+    y=8: |E*|/|E|=0.00176509
+  -> at x=0 ratio DROPS with y (0.52->...): comports; bands are LOCAL near the zero.
+
+=== TASK 4 CONVENTION: de Branges side ===
+  Audited E=2SumChi S2. In a clean HB structure fn, |E*|<|E| throughout OPEN UHP.
+  We measured a UHP ZERO of E at 7.73+3.49i => E is NOT HB (a genuine HB E is
+  zero-free in the open UHP by definition). So neither strand choice is clean HB:
+    z=9.831+1.0i: |E*|/|E|=1.01281  |E|/|E*|=0.987356
+    z=0.0+1.0i: |E*|/|E|=0.523964  |E|/|E*|=1.90853
+    z=6.6485+1.0i: |E*|/|E|=0.90003  |E|/|E*|=1.11107
+  side-swap (measure audited E in LOWER half y<0):
+    z=9.831+-1.0i: |E*|/|E|=0.987356
+    z=0.0+-1.0i: |E*|/|E|=1.90853
+    z=7.7325+-3.492i: |E*|/|E|=0.000101644
+
+=== MACHINERY VALIDATION (winding correctness) ===
+  box enclosing localized E-zero (0.6x0.6 around 7.7325+3.4921i): winding = 1.0
+  box shifted +0.8 in x to EXCLUDE the zero:                       winding = 0.0
+  E winding in [0,25]x[4,8] (ABOVE the audit box):                 winding = 2.0  (TWO more E zeros higher up)
+  E winding in [0,25]x[0.001,0.05] (near-axis band strip):         winding = 0.0  (bands there are far-field of higher zeros, not a local zero)
+
+==============================================================================
+VERDICT: (B)  bands are REAL ratio-excursions CAUSED by UHP zeros of E that the
+              original agent missed (local search only).
+==============================================================================
+  * Reproduction EXACT: star identity |2SumChiS1 - conj(E(conj z))| = 0;
+    on-axis |E|=|E*|; A=(E+E*)/2 = genuine completed L to 2.5e-35; gamma_1=6.64845;
+    ratio at z=9.831+1i = 1.0128064 (margin -0.0128) reproduced to all digits.
+  * E is NOT zero-free in the z-UHP.  Confirmed by argument principle
+    (phase-winding, validated: 1 around the zero, 0 excluding it, 0 for RH-clean Lambda):
+      - exactly ONE E-zero in [0,25]x[0.05,4], at z = 7.73255 + 3.49207 i
+        (Re s = -2.992; a genuine off-critical-line zero of the COMPANION E, not of L).
+      - TWO further E-zeros in [0,25]x[4,8]; far field [25,60] is zero-free.
+      - Lambda(=A) has ZERO UHP zeros (obeys RH for chi_5) -> census calibrated.
+  * Max-modulus reconciliation: |E*/E|<=1 in the UHP requires E zero-free there.
+    E HAS UHP zeros, so |E*/E|>1 near them is not only allowed but FORCED. The
+    y=1 band x in [7.6,10.4] sits directly under the zero x=7.73 (ratio peaks 1.042
+    at x=8.34, right below it). The band persisting down to y=0.01 is the standard
+    far-field lift of that zero (and the two higher ones), not evidence of no zero.
+  * Asymptotics COMPORT: S2 (the (1-s)/2 strand, = E) grows factorially as
+    Re s->-inf while S1 (=E*) power-decays; globally |E*|/|E|->0 as y grows at x=0.
+    The bands are LOCAL neighborhoods of the off-axis E-zeros, not a global effect.
+  * Convention: neither 2SumChiS2 nor 2SumChiS1 is a clean de Branges structure
+    function -- a genuine HB E is zero-free in the OPEN UHP by definition, and this
+    E has three UHP zeros. Side-swap confirms E* carries the conjugate (LHP) zeros.
+
+  MEANING:
+  - Register hit (route level): NOT a max-modulus / HB obstruction. The 'wall'
+    is the ordinary near+far field of the companion E's OWN off-critical-line
+    zeros. The inequality |E*|<|E| simply fails in a neighborhood of each E-zero,
+    as it must for any function with interior zeros. No route-level anomaly.
+  - Owner's no-conspiracy claim: SUPPORTED. Nothing conspiratorial or fabricated
+    -- the numbers reproduce exactly; the original agent simply drew the wrong
+    conclusion from a LOCAL zero search that missed the (higher-y) E-zeros. Honest
+    error, not manipulation.
+  - Weighted-weld Part III search: NOT worth running as a wall/obstruction hunt.
+    E is not an HB structure function on this chart, so 'strand dominance |E*|<|E|'
+    cannot be a clean 1D wall -- it is broken by E's own companion zeros wherever
+    they sit. Any Part III built on that premise inherits the same artifact.

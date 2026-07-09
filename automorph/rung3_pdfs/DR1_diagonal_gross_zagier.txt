@@ -1,0 +1,2731 @@
+               DIAGONAL CYCLES AND EULER SYSTEMS I:
+                   A p-ADIC GROSS-ZAGIER FORMULA
+
+                            HENRI DARMON AND VICTOR ROTGER
+
+
+    Abstract. This article is the first in a series devoted to studying generalised Gross-Kudla-
+    Schoen diagonal cycles in the product of three Kuga-Sato varieties and the Euler system
+    properties of the associated Selmer classes, with special emphasis on their application to
+    the Birch–Swinnerton-Dyer conjecture and the theory of Stark-Heegner points. The basis
+    for the entire study is a p-adic formula of Gross-Zagier type which relates the images of
+    these diagonal cycles under the p-adic Abel-Jacobi map to special values of certain p-adic L-
+    functions attached to the Garrett-Rankin triple convolution of three Hida families of modular
+    forms. The main goal of this article is to describe and prove this formula.
+
+    Cet article est le premier d’une série consacrée aux cycles de Gross-Kudla-Schoen généralisés
+    appartenant aux groupes de Chow de produits de trois variétés de Kuga-Sato, et aux systèmes
+    d’Euler qui leur sont associés. La série au complet repose sur une variante p-adique de la
+    formule de Gross-Zagier qui relie l’image des cycles de Gross-Kudla-Schoen par l’application
+    d’Abel-Jacobi p-adique aux valeurs spéciales de certaines fonctions L p-adiques attachées à
+    la convolution de Garrett-Rankin de trois familles de Hida de formes modulaires cuspidales.
+    L’objectif principal de cet article est de décrire et de démontrer cette variante.
+
+    MSC: 11F12, 11G05, 11G35, 11G40.
+
+    Keywords: Gross-Kudla-Schoen cycle, Garrett-Rankin p-adic L-function, p-adic Abel-Jacobi
+    map, Chow group, Coleman integration.
+
+
+
+
+                                              Contents
+1. Introduction                                                                                           2
+2. Cohomology and modular forms                                                                           7
+2.1. The de Rham cohomology of curves over p-adic rings                                                   7
+2.2. p-adic modular forms                                                                                10
+2.3. Nearly holomorphic modular forms and the Shimura-Maass derivative                                   14
+2.4. Nearly overconvergent modular forms and the d operator                                              16
+2.5. Periods of modular forms                                                                            20
+2.6. Hida families                                                                                       22
+3. Diagonal cycles and p-adic Abel-Jacobi maps                                                           26
+3.1. Generalised Gross-Kudla-Schoen cycles                                                               26
+3.2. A formula for AJp (∆k,`,m ) in terms of Coleman integration                                         28
+3.3. Proof of the formula: Besser’s finite polynomial cohomology                                         31
+3.4. A formula for AJp (∆k,`,m ) in terms of p-adic modular forms                                        34
+4. Garrett-Rankin triple product L-functions                                                             39
+4.1. Classical L-functions                                                                               39
+4.2. p-adic L-functions                                                                                  40
+5. The p-adic Gross-Zagier formula                                                                       45
+References                                                                                               46
+                                                    1
+2                             HENRI DARMON AND VICTOR ROTGER
+
+                                       1. Introduction
+   This article is the first in a series devoted to studying generalised diagonal cycles in the
+product of three Kuga-Sato varieties and the Euler system properties of the associated Selmer
+classes, with special emphasis on their application to the Birch–Swinnerton-Dyer conjecture
+and the theory of Stark-Heegner points. The basis for the entire study is a p-adic Gross-Zagier
+formula relating
+      • the image under the p-adic Abel-Jacobi map of certain generalised Gross-Kudla-Schoen
+         cycles in the product of three Kuga-Sato varieties, to
+      • the special value of the p-adic L-function of [HaTi] attached to the Garrett-Rankin
+         triple convolution of three Hida families of modular forms, at a point lying outside its
+         region of interpolation.
+   In order to precisely state the main result, let
+                                       X
+                                  f=      an (f )q n ∈ Sk (Nf , χf ),
+                                       X
+                                  g=       an (g)q n ∈ S` (Ng , χg ),
+                                       X
+                                  h=      an (h)q n ∈ Sm (Nh , χh )
+be three normalized primitive cuspidal eigenforms of weights k, `, m ≥ 2, levels N f , Ng , Nh ≥ 1,
+and Nebentypus characters χf , χg , and χh , respectively. Let N := lcm(Nf , Ng , Nh ) and
+assume that
+                                          χf · χg · χh = 1,
+so that in particular k + ` + m is even.
+   The triple (k, `, m) is said to be balanced if the largest weight is strictly smaller than the
+sum of the other two. A triple of weights which is not balanced will be called unbalanced, and
+the largest weight in an unbalanced triple will be referred to as the dominant weight.
+   Section 4.1 recalls the definition of the Garrett-Rankin L-function L(f, g, h; s) attached to
+the triple tensor product
+                              Vp (f, g, h) := Vp (f ) ⊗ Vp (g) ⊗ Vp (h)
+of the (compatible systems of) p-adic Galois representations V p (f ), Vp (g) and Vp (h) attached
+to f , g and h respectively. This L-function satisfies a functional equation relating its values
+at s and k + ` + m − 2 − s. In particular, the parity of the order of vanishing of L(f, g, h; s) at
+the central critical point c := k+`+m−2
+                                    2                            Q ε ∈ {±1} in this functional
+                                          is controlled by the sign
+equation, a quantity that can be expressed as a product ε = v|N ∞ εv , εv ∈ {±1}, of local
+root numbers indexed by the places dividing N ∞. The following hypothesis is assumed
+throughout:
+         H:   The local root numbers εv at all the finite primes v|N are equal to +1.
+This assumption holds in a broad collection of settings of arithmetic interest. For instance, it
+is satisfied in either of the following two cases:
+      • gcd(Nf , Ng , Nh ) = 1, or,
+      • N = Nf = Ng = Nh is square-free and av (f )av (g)av (h) = −1 for all primes v | N .
+Assumption H implies that ε = ε∞ depends only on the local sign at ∞, which in turn
+depends only on whether the weights of (f, g, h) are balanced or not:
+                                      
+                                        −1 if (k, `, m) is balanced;
+                           ε = ε∞ =
+                                          1 if (k, `, m) is unbalanced.
+In particular, the L-function L(f, g, h, s) necessarily vanishes (to odd order) at its central
+point c when (k, `, m) is balanced.
+                   A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                             3
+
+  Let E denote the universal generalised elliptic curve fibered over X = X 1 (N ). For any
+n ≥ 0, let E n be the n-th Kuga-Sato variety over X 1 (N ). It is an n + 1-dimensional variety
+obtained by desingularising the n-fold fiber product of E over X 1 (N ). (Cf. [Sc] for a more
+detailed account of its construction.) The p-adic Galois representation V p (f, g, h) occurs in
+the middle cohomology of the triple product
+(1)                                W := E k−2 × E `−2 × E m−2 .
+When (k, `, m) is balanced and assumption H is satisfied, the conjectures of Bloch-Kato and
+Beilinson-Bloch predict (because of the vanishing of L(f, g, h, c)) that there should then exist
+a non-trivial cycle in the Chow group Q ⊗ CH c (W )0 of rational equivalence classes of null-
+homologous cycles of codimension c on the variety W of (1). Section 3.1 introduces cycles
+∆f,g,h ∈ Q ⊗ CHc (W )0 which are natural candidates to fulfill these expectations, and whose
+construction we now briefly summarize.
+  Set r = k+`+m−6
+               2     . As explained in §3.1, there exists an essentially unique, natural way of
+embedding the Kuga-Sato variety E r in the variety W . Its image gives rise to an element in
+the Chow group CHr+2 (W ) which, suitably modified, becomes homologically trivial. In this
+way, we obtain a cycle
+                                                              cl
+                                                            2r+4
+                 ∆k,`,m ∈ CHr+2 (W )0 := ker(CHr+2 (W ) −→ HdR   (W/C)).
+In the special case where k = ` = m = 2, the cycle ∆ 2,2,2 is just the modified diagonal
+considered by Gross–Kudla [GrKu] and Gross–Schoen [GrSc].
+   The cycles ∆f,g,h alluded to above are defined as the (f, g, h)-isotypical component of the
+null-homologous cycle ∆k,`,m with respect to the action of the Hecke operators.
+   It is natural to conjecture that the heights of these cycles in the sense of Beilinson and
+Bloch are well-defined (cf. [GrKu] and [GrSc] for more details on the necessary definitions),
+and can be directly related to the first derivative of the triple product L-function L(f, g, h, s)
+at the central point:
+                              ?
+(2)                h(∆f,g,h ) = (Explicit non-zero factor) × L0 (f, g, h, r + 2).
+When (k, `, m) = (2, 2, 2), this was predicted in [GrKu] and has recently been proved by X.
+Yuan, S. Zhang and W. Zhang in [YZZ].
+Remark 1.1. It would be natural to relax assumption H to the weaker condition
+(3)        Heven : The set of primes v|N for which εv = −1 is of even cardinality.
+This is sufficient to guarantee that ε = ε ∞ , and can be dealt with at the cost of replacing
+Kuga-Sato varieties with more general objects arising from the self-fold products of certain
+families of abelian surfaces (or genus two curves) fibered over Shimura curves rather than
+classical modular curves. Hypothesis H may thus be regarded as analogous to the classical
+Heegner or Gross-Zagier hypothesis imposed in the study of the Rankin-Selberg L-function
+L(f ⊗ θK , s) attached to a single eigenform f and the weight one theta series of an imaginary
+quadratic field K. Both are meant to avoid having to deal with Shimura curves associated
+with a quaternion division algebra, and make it possible to confine one’s attention to classical
+modular curves. Much of our study extends to the setting of H even by appealing to the work
+of P. Kassaei [Kas99] and R. Brasca [Br]; in our exposition we have tried to present our results
+in a way that suggests the modifications necessary to deal with arbitrary Shimura curves.
+   In this work we do not focus on (2), but rather on a p-adic analogue. Our main result
+relates the image of ∆f,g,h under the p-adic Abel-Jacobi map
+                                                         2r+3
+(4)                   AJp : CHr+2 (W )0 (Qp ) −→ Filr+2 HdR   (W/Qp )∨
+to the special value of a triple product p-adic L-function attached to three Hida families of
+modular forms, which we now describe in more detail.
+4                                HENRI DARMON AND VICTOR ROTGER
+
+    Fix an odd prime number p - N at which f , g and h are ordinary. Let
+                   f : Ωf −→ Cp [[q]],        g : Ωg −→ Cp [[q]],   h : Ωh −→ Cp [[q]]
+denote the Hida families of overconvergent p-adic modular forms passing though f , g and h,
+respectively, as constructed in [Hi86a] and [Hi86b], and briefly reviewed in §2.6 below. The
+spaces Ωf , Ωg and Ωh are finite rigid analytic coverings of suitable subsets of the weight space
+                                         Ω := Homcts (Z×    ×
+                                                       p , Cp ),
+
+which contains the integers Z as a dense subset via the natural inclusion k 7→ (x 7→ x k ). A
+point x ∈ Ωf is said to be classical if its image in Ω, denoted κ(x), belongs to Z ≥2 , and the
+set of classical points in Ωf is denoted by Ωf,cl . Part of the requirement that f be a Hida
+                                     (p)
+family is that the formal q-series f x := f (x) should correspond to a normalised eigenform of
+weight κ(x) on Γ1 (N ) ∩ Γ0 (p), for almost all x ∈ Ωf,cl . For all but finitely many such x, the
+       (p)
+form fx is the ordinary p-stabilisation of a normalised eigenform on Γ 1 (N ), denoted fx .
+   The natural domain of definition of the triple product p-adic L-functions is the p-adic
+analytic space
+                                        Σ := Ωf × Ωg × Ωh .
+Let Σcl := Ωf,cl × Ωg,cl × Ωh,cl ⊂ Σ denote its subset of “classical points”. This set is naturally
+partitioned into four disjoint subsets:
+             Σf     =    {(x, y, z) ∈ Σcl ,    such that κ(x) ≥ κ(y) + κ(z)};
+             Σg     =    {(x, y, z) ∈ Σcl ,    such that κ(y) ≥ κ(x) + κ(z)};
+             Σh     =    {(x, y, z) ∈ Σcl ,    such that κ(z) ≥ κ(x) + κ(y)};
+            Σbal    =    {(x, y, z) ∈ Σcl ,    such that (κ(x), κ(y), κ(z)) is balanced.}.
+Section 4 exploits the strategy pioneered by Hida [Hi88b] and subsequently extended by Harris
+and Tilouine [HaTi] to construct three a priori distinct p-adic L-functions of three variables,
+denoted
+                         Lp f (f , g, h), Lp g (f , g, h), Lp h (f , g, h) : Σ −→ Cp ,
+which interpolate the square-roots of the central critical values of the classical L-function
+L(fx , gy , hz , s), as (x, y, z) ranges over Σf , Σg , and Σh respectively. The precise interpolation
+property defining the three p-adic L-functions is spelled out in Theorem 4.7 of Section 4.2.
+   Given (x, y, z) ∈ Σbal , the Heegner assumption H can be used to show that the classical
+L-function L(fx , gy , hz , s) vanishes at its central point for reasons of sign. The central critical
+derivative L0 (fx , gy , hz , κ(x)+κ(y)+κ(z)−2
+                                       2       ) is then a natural object of arithmetic interest. In the
+p-adic realm, the three distinct p-adic avatars of the classical L-function, namely, L p f (f , g, h),
+Lp g (f , g, h), and Lp h (f , g, h), need not vanish at the balanced point (x, y, z), since this point
+lies outside the region of classical interpolation. The corresponding p-adic special values can
+be viewed as different p-adic avatars of the complex leading term, and one might expect them
+to encode similar information related to the motive of V fx ⊗ Vgy ⊗ Vhz .
+Remark 1.2. One can also envisage a fourth p-adic L-function
+                         Lbal
+                          p (f , g, h)(x, y, z, s) : Ωf × Ωg × Ωh × Ω −→ Cp
+involving a further “cyclotomic” variable s and interpolating the classical special values of
+L(fx , gy , hz , s)–but not their square roots–in the critical range
+                        (x, y, z) ∈ Σbal ,      1 ≤ s ≤ κ(x) + κ(y) + κ(z) − 3.
+The construction of such an L-function is described in [BoPa] (see also the references therein).
+Under hypothesis H, the function Lbal
+                                   p (f , g, h) should vanish identically on the “central critical
+hyperplane” 2s = κ(x) + κ(y) + κ(z) − 2, and the presence of the cyclotomic variable is
+                    A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                   5
+
+therefore key to ensuring its non-triviality. This “balanced” p-adic L-function plays no role
+in this article.
+   In stating our main result, it will be convenient to assume for simplicity that N f = Ng = Nh ,
+i.e., that the three eigenforms f , g and h are new of the same level N . (This assumption,
+which is too restrictive for most interesting arithmetic applications, will be relaxed in the
+body of the text.) To any classical newform φ of weight r + 2 on Γ 1 (N ) which is ordinary at
+p, there corresponds a cohomology class
+                                       r+1 r                r+1 r
+                          ωφ ∈ Filr+1 HdR (E /Q̄) ⊂ Filr+1 HdR (E /Cp ),
+where the inclusion is induced from our fixed embedding Q̄ ⊂ Cp . The φ-isotypic component
+      r+1 r
+of HdR   (E /Cp ) is two-dimensional over Cp and (because φ is ordinary) it admits a one-
+                                              r+1 r
+dimensional unit root subspace, denoted H dR       (E /Cp )u-r , on which the Frobenius endomor-
+phism acts as multiplication by a p-adic unit. This unit root subspace is complementary to the
+                                                                                    r+1 r
+middle step in the Hodge filtration, and hence, there is a unique element η φu-r ∈ HdR (E /Cp )u-r
+satisfying
+                                         hωφ , ηφu-r i = 1,
+                                                                 r+1 r
+where h , i denotes the non-degenerate Poincaré pairing on H dR    (E /Cp ). One thus obtains a
+                                                            r+1 r
+natural basis (ωφ , ηφu-r ) of the φ-isotypic component of HdR (E /Cp ), for any ordinary classical
+newform φ ∈ Sr+2 (Γ1 (N )).
+   If (f, g, h) is a triple of newforms of level N and balanced weights (k, `, m) = (r 1 + 2, r2 +
+2, r3 + 2), then
+                                  r1 +1 r1              r2 +1 r2               r3 +1 r3
+(5)        ηfu-r ⊗ ωg ⊗ ωh    ∈ HdR    (E ) ⊗ Filr2 +1 HdR   (E ) ⊗ Filr3 +1 HdR    (E )
+                                                                                  
+                                          r1 +1 r1       r2 +1 r2      r3 +1 r3
+                              ⊂ Filr+2 HdR     (E ) ⊗ HdR     (E ) ⊗ HdR     (E )
+                                        2r+3
+                              ⊂ Filr+2 HdR   (W/Q̄p ),
+where the last inclusion arises from the Künneth decomposition. In particular, the class
+ηfu-r ⊗ ωg ⊗ ωh lies in the domain of AJp (∆) when (k, `, m) is balanced.
+    For any f ∈ Sk (N, χ), we shall always write
+        (x2 − ap (f )x + χf (p)pk−1 ) = (x − αf )(x − βf ),             with ordp (αf ) ≤ ordp (βf ),
+so that in particular αf is a p-adic unit when f is ordinary.
+   The main result of this article is
+Theorem 1.3. Given (x, y, z) ∈ Σbal , let
+                 (f, g, h) := (fx , gy , hz ),            (k, `, m) := (κ(x), κ(y), κ(z)),
+              c := (k + ` + m − 2)/2,                   k = ` + m − 2 − 2t      (with t ≥ 0),
+and let ∆ := ∆k,`,m be the generalised diagonal cycle in E k−2 × E `−2 × E m−2 . Then
+                                                     E(f, g, h)
+             Lp f (f , g, h)(x, y, z) = (−1)t                        × AJp (∆)(ηfu-r ⊗ ωg ⊗ ωh ),
+                                                 t! · E0 (f )E1 (f )
+where
+                                          1 − βf αg αh p−c × 1 − βf αg βh p−c
+                                                                             
+(6)                 E(f, g, h) :=
+                                         × 1 − βf βg αh p−c × 1 − βf βg βh p−c ,
+                                                                               
+
+(7)                      E0 (f ) := (1 − βf2 χ−1
+                                              f (p)p
+                                                     1−k
+                                                         ),
+(8)                      E1 (f ) := (1 − βf2 χ−1    −k
+                                              f (p)p ).
+6                               HENRI DARMON AND VICTOR ROTGER
+
+   See Theorem 5.1 for a more general statement involving newforms of possibly different
+levels. Theorem 1.3 can be viewed as a p-adic analogue of the archimedean formula suggested
+in (2), and in fact the Euler factor E(f, g, h) that arises in the formula fits within the general
+conjectural description of the p-adic L-function of an arbitrary motive given by Panciskin in
+[Pan, p. 285].
+   One could also envisage a more direct p-adic analogue, relating the cyclotomic p-adic
+height of ∆fx ,gy ,hz to the derivative in the cyclotomic direction of the p-adic L-function
+Lbal
+  p (f , g, h)(x, y, z, s) alluded to in Remark 1.2. Such a formula, which is currently unavailable
+in the literature, would be closer in spirit to the archimedean formulae conjectured in [GrKu]
+and proved in [YZZ], and to the p-adic analogues of the Gross-Zager formula proved in [PR]
+and [Ne1], while Theorem 1.3 is better adapted to the arithmetic applications that the authors
+wish to pursue by exploiting the Euler system properties of p-adic families of diagonal cycles
+and associated explicit reciprocity laws in the spirit of Coates–Wiles and Kato–Perrin-Riou.
+Let us close this introduction by describing some of these applications.
+
+I. The Euler system of diagonal cycles. Theorem 1.3 is available when f is replaced by g
+or h if the latter two forms are also assumed to be ordinary. The Abel-Jacobi image AJ p (∆)
+therefore encodes the values of the three distinct p-adic L-functions L p f (f , g, h), Lp g (f , g, h)
+and Lp h (f , g, h) at (x, y, z) ∈ Σbal . This suggests that these L-functions should be viewed
+as the different projections of a common Euler system obtained by p-adically interpolating
+the diagonal cycles themselves as (x, y, z) ranges over Σ bal . (More precisely: their images
+κ(fx , gy , hz ) ∈ H 1 (Q, Vfx ,gy ,hz ) under the p-adic étale Abel-Jacobi map, where V fx ,gy ,hz de-
+notes the self-dual Tate twist of the triple tensor product V fx ⊗ Vgy ⊗ Vhz of the Deligne
+representations attached to the eigenforms f x , gy and hz .) The sequel [DR] to this paper
+pieces these global classes together into an element
+
+                                     κ(f , g, h) ∈ H 1 (Q, Vf ,g,h ),
+
+where Vf ,g,h is a twist of the tensor product Vf ⊗ Vg ⊗ Vh of Hida’s Λ-adic representations
+attached to f , g, and h respectively, interpolating the representations V fx ,gy ,hz . The three
+Garrett-Rankin p-adic L-functions are then obtained from the image of κ(f , g, h) under a
+homomorphism interpolating the Bloch-Kato logarithms attached to the specialisations V fx ⊗
+Vgy ⊗Vhz in the range (x, y, z) ∈ Σbal . The resulting construction of the Garrett-Rankin p-adic
+L-functions in terms of diagonal cycles is directly analogous to the construction of the Kubota-
+Leopoldt (resp. Katz) p-adic L-function from the p-adic logarithms of circular (resp. elliptic)
+units. An application of this point of view to the Birch-Swinnerton-Dyer conjecture, obtained
+by considering weight one specialisations of g and h, is the implication
+
+                   L(E, ρ1 ⊗ ρ2 , 1) 6= 0 =⇒ HomGQ (ρ1 ⊗ ρ2 , E(Q̄) ⊗ C) = 0,
+
+where E is an elliptic curve over Q and ρ 1 and ρ2 are odd irreducible two-dimensional Artin
+representations for which ρ1 ⊗ ρ2 has determinant one.
+
+II. Beilinson-Flach elements. The methods of the present article, transposed to the setting
+where h is a Hida family of Eisenstein series, lead to a proof [BDR] of a p-adic Beilinson
+formula relating the p-adic regulators of certain Flach elements in the Higher Chow group
+CH2 (X0 (N ) × X0 (N ), 1) to values of Hida’s three-variable p-adic L-function attached to the
+Rankin convolution of two Hida families f and g of cusp forms. A notable application of this
+result (when made to vary in p-adic families, as in the previous paragraph) is the implication
+
+(9)                       L(E, ρ, 1) 6= 0 =⇒ HomGQ (ρ, E(Q̄) ⊗ C) = 0,
+
+where ρ is an odd, irreducible two-dimensional Artin representation.
+                    A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                7
+
+III. Beilinson elements and Kato’s Euler system. The point of view sketched in the
+two previous Remarks is also consistent with the Kato-Perrin-Riou approach to the Mazur-
+Swinnerton-Dyer p-adic L-function attached to a cusp form of weight 2, which one recovers
+when both g and h are taken to be Hida families of Eisenstein series, the role of the diagonal
+cycles being played by Beilinson elements in the K 2 of modular curves, or in the higher Chow
+group CH2 (X0 (N ), 2). Guided by this analogy and relying crucially on the techniques of
+the present work, the article [BD] gives a new proof of the p-adic Beilinson formula relating
+the p-adic regulators of the Beilinson elements to the special values at s = 2 of the Mazur-
+Swinnerton-Dyer p-adic L-functions. The authors’ study of diagonal cycles and Flach elements
+is thus a direct generalisation of the approach of Kato which underlies the proof of (9) when
+ρ is replaced by a Dirichlet character.
+IV. The Euler system of Heegner points, revisited. In part, the authors were led to
+Theorem 1.3 by the analogy with the main result of [BDP], in which the images of Heegner
+points (or more general Heegner cycles) under p-adic Abel-Jacobi maps are related to the
+values of certain anticyclotomic p-adic L-functions at classical points lying outside the range
+of p-adic interpolation defining them. In his forthcoming PhD thesis, F. Castella uses this
+to construct these anticyclotomic p-adic L-functions in terms of p-adic logarithms of Heegner
+points, leading to a treatment of the Heegner point Euler system entirely parallel to the other
+examples alluded to above (namely, circular units, elliptic units, Beilinson-Kato elements,
+Flach elements, and diagonal cycles.)
+V. p-adic calculations of Chow-Heegner points. The article [La2] and the forthcom-
+ing Ph. D thesis of M. Daub [Da] combine Theorem 1.3 with Alan Lauder’s fast algorithm
+[La1] for calculating ordinary projections to calculate the “Chow-Heegner points” attached to
+Gross-Schoen diagonal cycles (as described in [YZZ] and studied in [DRS]) by p-adic analytic
+methods, thus supplying the p-adic counterpart of the complex calculations carried out in
+[DDLR].
+Notations: Throughout the article, given a power q = p d of a prime p, the symbols Fq , Zq ,
+and Qq are reserved for the finite field with q elements, its ring of Witt vectors, and the
+finite unramified extension of Qp of degree d respectively. For any field extension F/Q, we
+will write GF = Gal (F̄ /F ) for the absolute Galois group of an algebraic closure of F , and
+if X is any variety over F , we let X̄ := X ×Spec(F ) Spec(F̄ ) denote the base change of X
+to the algebraic closure. We adopt the usual conventions regarding motives and their Tate
+twists: for any integer j we write Z(j) = H 2 (P1 )⊗−j , so that a geometric frobenius element
+at ` 6= p (resp. at ` = p) acts on its p-adic étale (resp. cristalline) realisation as multiplication
+by `−j . If M is a motive over Q, we let M (j) := M ⊗ Z(j) denote its j-th Tate twist, so that
+L(M (j), s) = L(M, s + j), where L(M, s) is the L-function attached to M .
+Acknowledgements: The authors thank Ignacio Sols and Dipendra Prasad for many stimulat-
+ing exchanges about the geometric aspects of diagonal cycles and the analytic properties of
+triple product L-functions, respectively. The work on this article began during the summer
+of 2010 at the special number theory semester organised by the CRM in Barcelona, and the
+authors also gratefully acknowledge the role of this institute in facilitating their collaboration.
+The first author was funded by an NSERC Discovery grant, and the second author received
+financial support from DGICYT Grant MTM2009-13060-C02-01 and from 2009 SGR 1220.
+
+                            2. Cohomology and modular forms
+2.1. The de Rham cohomology of curves over p-adic rings. Let X be an arbitrary
+smooth proper curve over Spec(Zp ) and write X̃ and X for its special and generic fiber,
+respectively. Let {P1 , . . . , Ps } ⊂ X̃(F̄p ) be a non-empty GFp -stable collection of closed points
+in its special fiber. Since X̃ is smooth, these points admit lifts P̃1 , . . . , P̃s ∈ X (OCp ) to
+8                                 HENRI DARMON AND VICTOR ROTGER
+
+characteristic zero. It will be convenient (albeit not indispensable) to fix a choice of such lifts
+which is stable under the natural action of G Qp . This determines the affine scheme
+                                           X 0 = X − {P̃1 , . . . , P̃s }
+over Spec(Zp ), whose special and generic fiber are denoted X̃ 0 and X 0 respectively. Because
+X is proper over Spec(Zp ), there is a natural identification X(C p ) = X (OCp ) and a resulting
+reduction map
+                                    red : X(Cp ) −→ X̃(F̄p ).
+The standard affinoid in X(Cp ) attached to X 0 is defined to be
+                                              A := red−1 (X̃ 0 (F̄p )).
+It is a connected affinoid region obtained by deleting from X(C p ) a collection of s disjoint
+residue discs.
+   For each j = 1, . . . , s, choose a local coordinate λ j at P̃j , i.e., a rigid analytic isomorphism
+from the residue disc of P̃j in X(Cp ) to the open unit disc in Cp , sending P̃j to the origin.
+These local parameters give rise to a family of wide open neighborhoods of A, indexed by a
+real parameter  > 0 and defined by
+                                      [s
+                         W := A ∪       {x ∈ red−1 (Pj ) with ordp λj (x) < }.
+                                        j=1
+
+The region W is obtained by adjoining open annuli V 1 , . . . , Vs of “width ” to A around the
+boundaries of each of the deleted residue discs. Note the obvious inclusions
+                          A ⊂ W ⊂ X 0 (Cp ),              W1 ⊂ W2 if 1 < 2 .
+   One of the main reasons for working with the wide open neighborhoods W  rather than
+with the affinoid A itself is that their cohomology is better behaved and a more faithful
+reflection of algebraic de Rham cohomology over C p . More precisely, let O and Ω1 denote
+the structure sheaf and the sheaf of differentials on X. The restrictions of these sheaves to
+A and to W , viewed as rigid analytic sheaves, are denoted by the same symbols by a slight
+abuse of notation. If K is any complete subfield of C p we will denote by Ω1 (W /K) the rigid
+differentials on W that are defined over K. Set
+                                         1                   Ω1 (W /K)
+                                        Hrig (W /K) :=                 .
+                                                              dOW /K
+                                                                          1    0
+                                           1 (X 0 /K) = Ω (X /K) . The natural restriction map
+Note that, because X 0 is affine, we have HdR             dOX 0
+Ω1 (X 0 /K) −→ Ω1 (W /K) sends exact forms to exact forms and therefore induces a map
+                                          1
+                                 comp : HdR (X 0 /K) −→ Hrig
+                                                          1
+                                                              (W /K).
+For each annulus V1 , . . . , Vs appearing in the definition of W , let
+                                        resVj : Ω1 (W /K) −→ K(−1)
+denote the p-adic annular residue, as it is described in [Cole94, Ch. 7] for example.
+   The annular residue vanishes on dOW , and is therefore well-defined on cohomology. It is
+related to the usual residue of algebraic differential forms through the following commutative
+diagram:
+                                         ⊕j resP̃
+                      1 (X 0 /K)                    j
+                                                        / K(−1)s    Σ
+(10)                 HdR                                                      / K(−1)   /0
+
+                                comp
+                                        ⊕j resVj
+                      1 (W /K)                          / K(−1)s    Σ
+                     Hrig                                                    / K(−1)   / 0.
+                   A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                            9
+
+Proposition 2.1. For any  > 0, the map comp  is an isomorphism of K-vector spaces.
+Proof. This follows as in [Cole94] from the long exact Mayer-Vietoris sequence (cf. A.2. of
+loc.cit. for instance) associated to the admissible covering of X by wide open subsets consisting
+of W together with the p-adic residue discs in the complement of A.                            
+
+   Thanks to this proposition, the de Rham cohomology H dR     1 (X ) of the base change of
+                                                                   K
+X to K can be identified with the space of classes of rigid analytic forms on W  over K
+                                                                                     1 (X )
+with vanishing annular residues (cf. e.g. [BDP, Prop. 4.11]). This description of H dR   K
+is the basis for a concrete description of the action of the Frobenius operator on de Rham
+cohomology. Let σ ∈ Gal (K̄/Qp ) be a Frobenius automorphism and let
+                                            Φ : A −→ A
+be any characteristic zero lift of the Frobenius morphism on the special fiber X̃ 0 . This rigid
+analytic morphism extends to a morphism Φ : W  −→ W0 , for suitable 0 <  < 0 , and
+induces linear maps
+              Φ : O(W0 /K) −→ O(W /K),               Φ : Ω1 (W0 /K) −→ Ω1 (W /K).
+Although the operator Φ need not preserve any of the spaces Ω 1 (W /K) for a given fixed ,
+                                          1 (X 0 /K), which shall also be denoted Φ by abuse
+it does give rise to an endomorphism on H dR
+of notation. This Frobenius morphism is thus the unique endomorphism of H dR  1 (X 0 /K) that
+
+completes the top row in the following commutative diagram:
+                                 1 (X 0 /K)        Φ     / H 1 (X 0 /K)
+(11)                            HdR                          dR
+
+                                        comp0                     comp
+
+                                1 (W 0 /K)         Φ    / H 1 (W /K).
+                               Hrig                         rig
+
+The endomorphism Φ, which is compatible with the annular residue in the obvious sense,
+preserves the subspace HdR 1 (X ).
+                                K
+   The K-vector subspace of HdR 1 (X ) (resp. of H 1 (X 0 /K)) spanned by the vectors on which
+                                    K              dR
+Φ acts via multiplication by a p-adic unit is called the unit root subspace and is denoted by
+  1 (X )u-r (resp. by H 1 (X 0 /K)u-r ). More generally, the subspaces spanned by vectors on
+HdR     K                 dR
+which Φ acts with slope t ∈ Q (i.e., as multiplication by a scalar λ ∈ C ×p with ordp λ = t) is
+                                 1 (X ) and is denoted H 1 (X )Φ,t .
+called the slope t subspace of HdR   K                     dR   K
+   The de Rham cohomology HdR   1 (X ) is equipped with the usual alternating Poincaré duality
+                                     K
+                             1           1            2
+                    h , i : HdR (XK ) × HdR (XK ) −→ HdR (XK ) = K(−1),
+which in terms of representatives ω 1 , ω2 ∈ Ω1rig (W ) for cohomology classes ξ1 and ξ2 is de-
+scribed by the formula
+                                            s
+                                            X
+                               hξ1 , ξ2 i =    resVj (Fω(j)
+                                                          1
+                                                            · ω2 ),
+                                             j=1
+                                                       (j)
+where resVj is the p-adic annular residue and Fω1 denotes a local analytic primitive of ω 1 on
+the annulus Vj .
+  Poincaré duality is compatible with the Frobenius endomorphism in the sense that
+                               hΦξ1 , Φξ2 i = Φhξ1 , ξ2 i = phξ1 , ξ2 i.
+In particular, Poincaré duality descends to a well-defined non-degenerate pairing
+                                 1
+(12)                    h , i : HdR (XK )u-r × HdR
+                                                1
+                                                   (XK )Φ,1 −→ K(−1).
+10                             HENRI DARMON AND VICTOR ROTGER
+
+                                                    (p)
+2.2. p-adic modular forms. Denote by S k (N ) the space of p-adic modular forms of weight
+k and tame level N (as defined in [Se] or [Kat73] for example) and let S koc (N ) denote its sub-
+space of overconvergent forms. These spaces are equipped with two non-commuting operators
+U and V , defined on q-expansions by the rule
+                                       ∞
+                                       X                                     ∞
+                                                                             X
+(13)                     (U f )(q) =         apn q n ,        (V f )(q) =          an q pn .
+                                       n=1                                   n=1
+These operators satisfy
+                                                                   ∞
+                                                                   X
+                              U V f = f,            V U f (q) =           anp q np ,
+                                                                   n=1
+so that
+                                                                   X
+(14)                             f [p] := (1 − V U )f (q) =               an q n
+                                                                    p-n
+
+has fourier coefficients supported on the integers prime to p. Note that the operators U and V
+do not commute–although, as we will explain later, the operators induced on the cohomology
+of modular curves (with coefficients in the relevant local systems) do commute, and are inverse
+to each other.
+   The operator U on the p-adic Banach space of overconvergent modular forms is completely
+continuous and gives rise to a slope decomposition on this infinite-dimensional vector space.
+A p-adic modular form which belongs to the slope 0 subspace for U is said to be ordinary,
+and the space of all such p-adic modular forms is denoted by S kord (N ). The ordinary subspace
+(like all the finite slope subspaces) is finite-dimensional over C p . More precisely, Coleman’s
+classicality theorem (cf. [Cole95]) asserts that any ordinary overconvergent modular form of
+weight k ≥ 2 is (the p-stabilisation of) a classical modular form of weight k on Γ 1 (N ). In
+particular, Skord (N ) is naturally contained in the space S k (Γ1 (N ) ∩ Γ0 (p)) of classical modular
+forms (with fourier coefficients in C p ). Hida’s ordinary projector
+(15)                                           eord := lim U n!
+                                                          n
+
+gives a Hecke-equivariant projection from S koc (N ) to Skord (N ).
+   Let X1 (N ) denote the modular curve over Spec(Z[1/N ]) classifying
+                                                                     generalised elliptic
+curves equipped with an embedding of the finite flat group scheme µ N of N -th roots of
+unity. (See [Kas99] for a more general scenario.)
+  Recalling that the prime p does not divide N , set
+                       X := X1 (N ) ×Spec Z[1/N ] Zp ,           X = X × Spec(Qp )
+for the smooth curve over Zp (resp. over Qp ) obtained by change of base.
+   Let P1 , . . . , Ps ∈ X̃(Fp2 ) denote the supersingular points of the special fiber of X . These
+points are the zeroes of a distinguished mod p modular form of weight (p − 1)—the so-called
+Hasse invariant. As in the previous section, we may choose lifts P̃1 , . . . , P̃s ∈ X (Zp2 ) of
+the supersingular points to characteristic zero. For example, when p ≥ 5, one may do this
+by taking the zeroes of the Eisenstein series E p−1 , which is the customary lift of the Hasse
+invariant to characteristic 0. We continue to write
+                                        X 0 = X − {P̃1 , . . . , P̃s }
+for the resulting affine scheme over Spec(Z p ), whose special and generic fiber are denoted X̃ 0
+and X 0 respectively. The connected affinoid region obtained by deleting from X(C p ) the s
+disjoint supersingular residue discs:
+                                    A = Aord := red−1 (X̃ 0 (F̄p ))
+                   A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                            11
+
+is called the ordinary locus, or Hasse domain, in X(C p ). Note that
+(16)                       A = {x ∈ X(Cp ) with ordp Ep−1 (x) = 0},
+where
+                              ordp Ep−1 (x) := ordp Ep−1 (Ax , ωx ),
+and
+    (1) Ax is the generalised elliptic curve with Γ 1 (N )-structure attached to x by the moduli
+         interpretation of X;
+    (2) ωx ∈ Ω1 (Ax /Cp ) is a regular differential on Ax , chosen so that it extends to a regular
+         differential over OCp if Ax has good reduction at p, or corresponds to the canonical
+         differential on the Tate curve if x lies in the residue disc of a cusp.
+    (3) The notation Ep−1 (Ax , ωx ) follows Katz’s geometric definition of modular forms as
+         functions on such pairs, as described in [Kat73, Ch. 1], for example.
+While Ep−1 (Ax , ωx ) genuinely depends on the choice of ω x , its p-adic valuation is independent
+of it since any two such choices differ by multiplication by an element of O C×p .
+   Define a system of wide open neighborhoods of A by choosing a real parameter  > 0 and
+setting
+                            W := {x ∈ X(Cp ) with ordp Ep−1 (x) < }.
+When 0 <  < 1, the region W does not depend on the choice of lift of the Hasse invariant
+to characteristic zero. As suggested by (16), the quantity ord p Ep−1 (x) is (at least, when it is
+not too large) a sensible measure of the “degree of supersingularity” of the elliptic curve A x
+                                     p
+associated to x. If ordp Ep− (x) < p+1 , Katz has shown that the elliptic curve A x , although
+supersingular at p, continues to admit a canonical subgroup Z x , a connected subgroup scheme
+of Ax of order p generalising the canonical subgroup on an ordinary elliptic curve. This makes
+it possible to choose a canonical lift to characteristic zero of the Frobenius morphism, by
+                                   p
+setting, for all x ∈ W with  < p+1 ,
+(17)                        Φ(x) = Point corresponding to A x /Zx .
+The affinoid A and the wide opens W play a key role in Katz’s geometric description of p-adic
+and overconvergent modular forms, which we will now briefly recall.
+Modular forms of weight two. We begin with the somewhat simpler case of forms of
+weight k = 2, which can be treated by specialising the discussion of Section 2.1 to the case
+where X = X1 (N ) with p - N , so that X has good reduction at p. For any complete subfield
+K of Cp we have
+                 (p)
+                                                             [
+(18)           S2 (N ; K) = Ω1rig (A/K),      S2oc (N ; K) =   Ω1rig (W /K),
+                                                                >0
+
+that is to say, the space of rigid sections of Ω 1 (W /K) is identified with the p-adic Banach
+space of overconvergent modular forms of weight two with “annuli of convergence of width
+”, and fourier coefficients in K. Under this identification, a weight two modular form f with
+q-expansion f (q) = n an (f )q n corresponds to the differential
+                     P
+
+                                                  ∞
+                                                                !
+                                           dq    X
+                                                              n   dq
+                                ωf = f (q)    =      an (f )q        .
+                                            q    n=1
+                                                                   q
+By definition of the operators U and V ,
+                                              d                          X an (f )
+(19)         f [p](q) = (1 − V U )f (q) = q      F,   where    F (q) =               qn.
+                                              dq                               n
+                                                                         p-n
+12                             HENRI DARMON AND VICTOR ROTGER
+
+The modular form F (q) is an overconvergent modular form of weight 0 and level N , i.e., an
+element of OW for a suitable  > 0. It corresponds to the rigid analytic primitive of ω f [p]
+which vanishes at the cusp ∞, i.e., it is determined by the properties
+                                                dq
+                                  dF = f [p](q) ,       F (∞) = 0.
+                                                 q
+   Define S2oc (N ; K)0 to be the subspace of S2oc (N ; K) consisting of overconvergent modular
+forms with coefficients in K and vanishing residues at the supersingular annuli. Set also
+S2ord (N ; K)0 = S2oc (N ; K)0 ∩ S2ord (N ; K) and write φord := eord φ for the ordinary projection
+of an overconvergent modular form.
+Lemma 2.2. If φ is an overconvergent p-adic modular form of weight two on Γ 1 (N ), then
+                            1 (W )Φ,1 . Furthermore, the assignment φ 7→ [ω ] induces iso-
+the class of ωφ belongs to Hrig                                           φ
+morphisms
+                           ∼                                             ∼
+             S2ord (N ; K) −→ Hrig
+                               1
+                                   (W /K)Φ,1 ,       S2ord (N ; K)0 −→ HdR
+                                                                         1
+                                                                            (XK )Φ,1 .
+Proof. The Frobenius morphism Φ : Ω1 (W ) −→ Ω1 (W/p ) is related to the operator V on
+overconvergent modular forms of weight two by Φ(ω f ) = pωV f . The relation between the
+operators U and Φ on cohomology (relative to the identifications described above between
+differentials and weight two modular forms) is therefore given by
+                                         Φ = pV = pU −1 .
+Hence, if φ belongs to the slope zero subspace for the action of U , the class of the rigid
+                                                  1 (W )Φ,1 for the action of Φ. The first
+differential ωφ lies in the slope one subspace Hrig     
+statement follows. The second is a well-known result of Coleman: cf. the cases k = 0 of
+Cor. 6.3.1. and Prop. 6.6 of [Cole95] for the injectivity and surjectivity respectively of the
+maps induced by restriction.                                                                
+Proposition 2.3. For any class η ∈ HdR      1 (X )u-r and any overconvergent modular form
+                                                 K
+     oc
+φ ∈ S2 (N ; K)0 , we have
+                                     hη, ωφ i = hη, ωφord i,
+and Poincaré duality induces a well-defined non-degenerate pairing
+                                    1
+                           h , i : HdR (XK )u-r × S2ord (N ; K)0 −→ K.
+Proof. This follows directly from Lemma 2.2 in light of (12).                                    
+
+Modular forms of higher weight. Turning now to the case of forms of general weight k ≥ 2,
+let E −→ Y denote the universal elliptic curve over the affine modular curve Y = Y 1 (N )/Q.
+Let ω := π∗ Ω1E/Y denote the line bundle of relative differentials on E over Y . It extends to a
+sheaf over X = X1 (N ), also denoted by ω, by setting
+                                H 0 (Spec Q[[q]], ω) = Q[[q]] · ωcan ,
+where ωcan := dtt is the canonical differential on the Tate curve G m /q Z .
+   Let Ω1X (log cusps) be the sheaf of differentials 1-forms on X with logarithmic poles at the
+cusps, for which
+                                                                      dq
+                          H 0 (Spec Q[[q]], Ω1 (log cusps)) = Q[[q]] · .
+                                                                       q
+   A modular form φ on X of weight k = r + 2 with fourier coefficients in a field K (viewed
+as a function on “test objects” (E, ω E ), following the point of view adopted in [Kat73, Ch. 1]
+for example) corresponds to a global section of the sheaf ω r+2 over XK , by sending φ to the
+                          r+2
+global section φ(E, ωE )ωE    , and hence we can define
+                                 Sk (N ; K) = H 0 (X1 (N )K , ω k ).
+                      A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                       13
+
+Let
+                                               L := R1 π∗ Ω•E/Y
+be the relative de Rham cohomology sheaf on Y . It is equipped with a filtration
+(20)                                  0 −→ ω −→ L −→ ω −1 −→ 0
+arising from the Hodge filtration on the fibers. The sheaf L and its r-th symmetric power
+                                                Lr := symr L
+are vector bundles over Y (of rank 2 and r+1 respectively) endowed with a canonical integrable
+connection:
+                                ∇ : Lr −→ Lr ⊗ Ω1X (log cusps),
+the so-called Gauss-Manin connection. The sheaf L r extends to a sheaf on X by setting
+(21)            H 0 (Spec Q[[q]], Lr ) = Q[[q]]ηcan
+                                                r            r−1
+                                                    + Q[[q]]ηcan                       r
+                                                                 ωcan + · · · + Q[[q]]ωcan ,
+                   d                                                1 (E/Z[[q]]), and similarly
+where ηcan := ∇(q dq )(ωcan ) is a complementary vector to ωcan in HdR
+at the other cusps of X. The connection ∇ extends by setting
+                                              dq
+(22)                            ∇ωcan = ηcan ⊗ ,      ∇ηcan = 0.
+                                               q
+  The filtration (20) gives rise to an (r+1)-step decreasing filtration on L r , with successive
+quotients
+(23)          Lr /Fil1 Lr ≃ ω −r , · · · , Filr−j Lr /Filr−j+1 Lr ≃ ω r−2j , · · · , Filr Lr ≃ ω r .
+  The connection ∇ obeys Griffiths transversality:
+                               ∇Filr−j Lr ⊂ Filr−j−1 Lr ⊗ Ω1X (log cusps).
+Furthermore, it induces an isomorphism of O X -modules:
+                              Filr−j Lr    Filr−j−1 Lr
+(24)                        ∇:           ≃             ⊗ Ω1X (log cusps),
+                             Filr−j+1 Lr    Filr−j Lr
+which gives rise (by setting r = 1 and j = 0 for example) to the Kodaira-Spencer isomorphism
+                                                    ∼
+                                       KS : ω ⊗2 −→ Ω1X (log cusps).
+It follows that a modular form φ of weight r + 2 can be interpreted, via this isomorphism, as a
+global section of ω r ⊗ Ω1X (log cusps), while a cusp form can be interpreted as a global section
+of ω r ⊗ Ω1X , i.e.,
+                                  Sk (N ; K) = H 0 (XK , ω r ⊗ Ω1X ).
+At a geometric point of X attached to an elliptic curve E with Γ 1 (N )-level structure, the
+section ωφ is given by
+                                                     r        2
+                                     ωφ = φ(E, ωE )ωE  KS(ωE    ).
+At the test object (Gm /q Z , ωcan ) corresponding to the Tate curve with its canonical differential,
+this leads to the formula for ωφ in terms of the q-expansion of φ:
+                                                          
+                                                     r    dq
+                                       ωφ (q) = φ(q)ωcan       .
+                                                           q
+Let (Lr ⊗ Ω1X )par denote the subsheaf of Lr ⊗ Ω1 (log cusps) defined in the neighborhood of
+the cusps by
+      H 0 (Spec Q[[q]], (Lr ⊗ Ω1X )par ) = ∇H 0 (Spec Q[[q]], Lr )
+                                                    r            r−1                        r          dq
+                                          = (Q[[q]]ηcan + Q[[q]]ηcan ωcan + · · · + qQ[[q]]ωcan )         .
+                                                                                                        q
+14                             HENRI DARMON AND VICTOR ROTGER
+
+Note that for r = 0 we have (Lr ⊗ Ω1X )par = Ω1X . A standard inductive argument using (24)
+shows that the natural inclusion ω r −→ Lr induces an isomorphism
+                                                   H 0 (XK , (Lr ⊗ Ω1X )par )
+(25)                     H 0 (XK , ω r ⊗ Ω1X ) ≃                              .
+                                                        ∇H 0 (XK , Lr )
+We write
+                    j                                 ∇
+                  HdR  (XK , Lr , ∇) := Hj (0 → Lr −→ Lr ⊗ Ω1X (log cusps) → 0)
+for the j-th hypercohomology of the complex of sheaves on X over K associated to ∇, and
+  j
+Hpar (XK , Lr , ∇) for the parabolic cohomology:
+                     j                                    ∇
+                    Hpar (XK , Lr , ∇) := Hj (0 → Lr −→ (Lr ⊗ Ω1X )par → 0).
+(Cf. also Chapter 2.1 of [BDP] for example.) These algebraic de Rham cohomology groups are
+finite-dimensional K-vector spaces. The group H par   1 (X , L , ∇) is equipped with a two-step
+                                                            K   r
+Hodge filtration given by
+                                          1
+                                          Hpar (XK , Lr , ∇)     if j ≤ 0;
+(26)           Filj Hpar
+                     1
+                         (XK , Lr , ∇) =   H 0 (XK , ω r ⊗ Ω1X ) if 1 ≤ j ≤ r + 1;
+                                           0                      if j ≥ r + 2,
+                                         
+
+giving rise to the exact sequence
+(27)       0 −→ H 0 (XK , ω r ⊗ Ω1X ) −→ Hpar
+                                          1
+                                              (XK , Lr , ∇) −→ H 1 (XK , ω −r ) −→ 0.
+We note the Poincaré duality pairing
+                           1                    1
+(28)              h , i : Hpar (XK , Lr , ∇) × Hpar (XK , Lr , ∇) −→ K(−1 − r).
+Since H 0 (XK , ω r ⊗ Ω1X ) is its own orthogonal complement under (28), Poincaré duality de-
+scends to a perfect pairing
+(29)               h , i : H 1 (XK , ω −r ) × H 0 (XK , ω r ⊗ Ω1X ) −→ K(−1 − r),
+which is denoted by the same symbol by a slight abuse of notation.
+   In the sequel, if L is a local system on a variety V , endowed with an integrable connection
+∇ that is clear from the context, we shall write H ? (V, L) instead of H ? (V, L, ∇), and likewise
+for similar cohomology groups.
+2.3. Nearly holomorphic modular forms and the Shimura-Maass derivative. Sup-
+pose now that K = C. Hodge theory gives a canonical (real-analytic, but non-holomorphic)
+splitting
+                                  Splhdg : L −→ ω
+of the exact sequence (20) over the affine modular curve Y . This map can be viewed as
+a homomorphism of OY (C)an –modules, where OY (C)an is the structure sheaf of real analytic
+functions on Y (C). We will also denote by the same symbol the associated map L k −→ ω k ,
+as well as the resulting map
+(30)               Splhdg : H 0 (XC , (Lr ⊗ Ω1X )par ) −→ H 0 (Y (C)an , ω r ⊗ Ω1X )
+restricted to regular (i.e., holomorphic) sections over X of the sheaf (L r ⊗ Ω1X )par .
+Definition 2.4. The image of Splhdg is called the space of nearly holomorphic cusp forms of
+weight k = r + 2 on Γ1 (N ).
+   Nearly holomorphic cusp forms were introduced in [Sh86]; see also [Hi93, Ch. 10] for a more
+elementary description. The space of nearly holomorphic cusp forms on Γ 1 (N ) is denoted
+by Sknh (N ; C). It is contained in the space of real analytic functions on the upper half plane
+which satisfy the same transformation property under Γ 1 (N ) as (holomorphic) modular forms
+                     A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                         15
+
+of weight k. The following basic facts about nearly holomorphic modular forms, which we
+recall without proof, will be useful in the sequel:
+       (i) The map Splhdg of (30) is injective, and hence induces an isomorphism of finite-
+           dimensional complex vector spaces:
+                                                                   ∼
+                           Splhdg : H 0 (XC , (Lr ⊗ Ω1X )par ) −→ Sknh (N ; C).
+         (Cf. equation (5a) in §10.1 of [Hi93].)
+    (ii) If K is any subfield of C, the image of H 0 (XK , (Lr ⊗ Ω1X )par ) under Splhdg yields a
+         natural K-structure on Sknh (N ; C), and is denoted by Sknh (N ; K).
+   (iii) If φ = Splhdg (ωφ ) belongs to Sknh (N ; K), then equation (25) allows us to write
+
+                                             ΠN (φ) ∈ H 0 (XK , ω r ⊗ Ω1X ) = Sk (N ; K),
+                                          hol
+                  hol
+(31)       ωφ = ΠN (φ) + ∇s, with
+                                             s ∈ H 0 (XK , Lr ).
+        The modular form ΠholN (φ) is called the holomorphic projection of the nearly holomor-
+        phic modular form φ. (Cf. equation (8a) in §10.1 of [Hi93]; the fact that Π hol
+                                                                                      N , which
+        is denoted by H in loc. cit., preserves K-rational structures is stated in (8b).)
+   (iv) The inverse of the Kodaira-Spencer isomorphism followed by the Gauss-Manin con-
+        nection gives a well-defined map
+(32)                 ˜ : H 0 (XK , (Lr ⊗ Ω1 )par ) −→ H 0 (XK , (Lr+2 ⊗ Ω1 )par ).
+                     ∇                    X                              X
+
+          This map corresponds (under the identification Spl hdg ) to the weight k Shimura-Maass
+                                    1     d    k
+          derivative operator δk = 2πi ( dz + z−z̄ ), i.e., the following diagram commutes:
+                                                          Splhdg
+                          H 0 (XK , (Lr ⊗ Ω1X )par )                    / S nh (N ; K)
+                                                                          k
+
+                                    ˜
+                                    ∇                                              δk
+                                                         Splhdg               
+                        H 0 (XK , (Lr+2 ⊗ Ω1X )par )                   / S nh (N ; K).
+                                                                         k+2
+
+This follows from a direct calculation based on the identities (in terms of the standard complex
+coordinates τ ∈ H and z ∈ C/h1, τ i)
+                                 ¯ 
+                            dz − dz
+         ∇(2πidz) = 2πi               ⊗ dτ,      ∇d̄z = 0,      KS((2πidz)⊗2 ) = 2πidτ.
+                             τ − τ̄
+   Since nearly holomorphic modular forms are closed under taking products and under ap-
+plying the Shimura-Maass derivative, it follows that, if g ∈ S ` (N ; K) and h ∈ Sm (N ; K) are
+classical cusp forms with fourier coefficients in K, then for all t ≥ 0, the product δ `t g × h
+             nh
+belongs to S`+m+2t (N ; K). More precisely, let
+
+(33)                        ˜
+                            ∇t ωg ⊗ ω̃h ∈ H 0 (XK , (L`+m+2t−2 ⊗ Ω1X )par )
+be the global section obtained by tensoring the sections
+            ˜ t ωg ∈ H 0 (XK , (L`+2t−2 ⊗ Ω1X )par ) and ω̃h := KS−1 (ωh ) ∈ H 0 (XK , Lm ).
+            ∇
+Then
+(34)                                                    ˜ t ωg ⊗ ω̃h ).
+                                    δ`t g × h = Splhdg (∇
+
+  Hodge theory gives a canonical splitting of the exact sequence (27):
+                       1
+                      Hpar (XC , Lr ) = H 0 (XC , ω r ⊗ Ω1X ) ⊕ H 0 (XC , ω r ⊗ Ω1X ).
+16                                 HENRI DARMON AND VICTOR ROTGER
+
+  The Petersson scalar product ( , )N of level N on Sknh (N ; C) is defined by the familiar rule
+                                                                                             dxdy
+                                                                Z
+               nh           nh
+(35) ( , )N : Sk (N ; C) × Sk (N ; C) −→ C,       (f1 , f2 )N =             f1 (z) f2 (z) y k 2 ,
+                                                                  Γ1 (N )\H                   y
+where the integration is performed relative to the variable z = x + iy on any fundamental
+domain in the upper-half plane H under the action of Γ 1 (N ). Note that this pairing is
+Hermitian-linear in the first argument and C-linear in the second, in contrast with the more
+customary conventions.
+                                                  nh (N ; C),
+Lemma 2.5. For all η ∈ Sr+2 (N ; C), and all φ ∈ Sr+2
+                                        (η, φ)N = (η, Πhol
+                                                       N (φ))N .
+
+   The equation of Lemma 2.5 gives an independent definition of the holomorphic projection,
+since the Petersson product is a perfect pairing on the space S k (N ; C) of cusp forms.
+2.4. Nearly overconvergent modular forms and the d operator. Recall the ordinary
+locus A and its system of wide open neighborhoods W  ⊃ A that were introduced in Section
+2.2. We define
+                            1                H 0 (W , (Lr ⊗ Ω1X )par )
+(36)                      Hrig (W , Lr ) :=                            ,
+                                                  ∇H 0 (W , Lr )
+where H 0 (W , −) designates a space of rigid sections. The quotient on the right of (36) is
+related to overconvergent cusp forms of weight k = r + 2 by noting that any rigid section
+η ∈ H 0 (W , (Lr ⊗ Ω1X )par ) can be written as
+(37)           η = η0 + ∇s,           with η0 ∈ H 0 (W , ω r ⊗ Ω1X ),      s ∈ H 0 (W , Lr ).
+This fact follows from an inductive argument based on (24).
+  Similarly as in (18), the spaces of overconvergent modular (cusp) forms of weight k are
+                        [                                                  [
+(38)     Skoc (N ; K) =    H 0 (W /K, ω r ⊗ Ω1rig ) ⊆ Mkoc (Γ1 (N ), K) =   H 0 (W /K, ω k ).
+                         >0                                                      >0
+
+  It is also known (cf. [Cole95]) that any overconvergent modular form of weight −r, viewed
+as a section s ∈ H 0 (W , ω −r ), admits a unique lift s̃ under the projection H 0 (W , Lr ) −→
+H 0 (W , ω −r ) induced by (23) satisfying
+                                        ∇s̃ ∈ H 0 (W , ω r ⊗ Ω1X ),
+                                                                                  d
+and that ∇s̃ corresponds to the overconvergent modular form d r+1 s, where d := q dq is Serre’s
+operator sending p-adic modular forms of weight m to p-adic modular forms of weight m + 2.
+(Note that the operator d does not preserve overconvergence in general, even though d r+1
+       oc (N ) to S oc (N ).) Thanks to (37), equation (36) can be re-written as
+maps S−r           r+2
+                                                                                oc (N )
+                1                         H 0 (W , ω r ⊗ Ω1X )                Sr+2
+(39)           Hrig (W , Lr ) =                                           =       oc (N ) .
+                                   ∇H 0 (W , Lr ) ∩ H 0 (W , ω r ⊗ Ω1X )   dr+1 S−r
+     Just as when r = 0, there is a canonical isomorphism
+                                      1                    1
+(40)                                 Hpar (XC0 p , Lr ) = Hrig (W , Lr )
+between the algebraic (parabolic) de Rham cohomology over C p and the rigid de Rham coho-
+mology. As explained in [BDP, § 4.5], for each supersingular annulus V j , j = 1, ..., s, there is
+a residue map
+                1
+                    (W , Lr ) −→ (H 0 (Vj , Lr )∇=0 )∨ ≃ Lr (Pj ) ≃ Symr HdR
+                                                                           1
+                                                                                   
+(41)     res : Hrig                                                           (Ej ) (−1),
+where Ej /Cp stands for the supersingular elliptic curve corresponding to the point P̃j .
+                   A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                17
+
+   By [BDP, Prop. 4.11], the image of Hpar  1 (X , L ) in H 1 (X 0 , L ) under the restriction
+                                                  Cp     r        par   Cp r
+map consists of those classes represented by L r -valued differential forms ω on W whose
+residues at the supersingular annuli V j , j = 1, ..., s, are all zero.
+   Over A, the slope decomposition arising from the action of Frobenius gives a canonical
+splitting
+(42)                                        Splu-r : L −→ ω
+of the exact sequence (20). This map can be viewed as a homomorphism of O A -modules,
+where OA is the structure sheaf of rigid analytic functions on A. We will also denote by the
+same symbol the associated map Lr −→ ω r , as well as the resulting map
+                            [
+(43)               Splu-r :   H 0 (W , (Lr ⊗ Ω1X )par ) −→ H 0 (A, ω r ⊗ Ω1X )
+                             >0
+
+on overconvergent sections. The image of Splu-r is contained in the space of p-adic modular
+forms of weight k = r + 2, and contains the space of overconvergent modular forms, but is not
+equal to it in general, because the splitting (42) does not extend to a rigid analytic splitting
+over any of the wide opens W . The following definition arises naturally from our parallel
+discussion of the complex-analytic setting.
+Definition 2.6. The image of the map Spl u-r in (43), denoted Skn-oc (N ; Cp ), is called the
+space of nearly overconvergent modular forms of weight k on Γ 1 (N ).
+   We refer the reader to the forthcoming work [Ur] of Urban, where this notion has also been
+introduced independently.
+   Note that the weight of a nearly overconvergent modular form always belongs to Z ≥2 , by
+definition. The following basic facts about nearly overconvergent modular forms are analogous
+to those that were observed in the complex setting:
+    (i) The map Splu-r of (43) is injective, and induces an isomorphism of p-adic Fréchet
+         spaces:
+                                                             ∼
+                               [
+                      Splu-r :   H 0 (W , (Lr ⊗ Ω1X )par ) −→ Skn-oc (N ; Cp ).
+                              >0
+        This is a consequence of the main theorem of [CGJ], which asserts that the p-adic
+        modular form E2 is transcendental over the  S ring of overconvergent modular forms.
+   (ii) If K is any subfield of Cp , the image of >0 H 0 (W /K, (Lr ⊗ Ω1X )par ) under Splu-r
+        yields a natural K-vector space Skn-oc (N ; K) ⊂ Skn-oc (N ; Cp ).
+  (iii) Let φ = Splu-r (ωφ ) be an element of Skn-oc (N ; Cp ), where ωφ is a global section of
+        (Lr ⊗ Ω1X )par over some W . Equation (37) then allows us to write
+
+                                               Πoc        0       r   1     oc
+                                           
+          ωφ = Πoc                               N (φ) ∈ H (W , ω ⊗ Ω ) = Sk (N ; K),
+(44)            N (φ) + ∇s,         with             0
+                                               s ∈ H (W , Lr ).
+        The overconvergent modular form Πoc   N (φ) of weight k and level N is called the over-
+        convergent projection of the nearly overconvergent modular form φ. Note that Π oc N (φ)
+        is only well-defined modulo dr+1 (S−r
+                                            oc (N )), by (39).
+
+   (iv) If K is a field equipped with simultaneous embeddings into C and C p , then there are
+        natural identifications
+                              Splhdg                                Splu-r
+                 Sknh (N ; K) o        H 0 (XK , (Lr ⊗ Ω1X )par )            / S n-oc (N ; K).
+                                                                               k
+
+       It follows directly from the definitions that the holomorphic and overconvergent pro-
+       jections, restricted to Sknh (N ; K) and Skn-oc (N ; K) respectively, take values in S k (N ; K)
+       and are equal (under the above identification of S knh (N ; K) and Skn-oc (N ; K)).
+18                                HENRI DARMON AND VICTOR ROTGER
+
+     (v) The map ˜  ∇ of (32) corresponds (under the identification Spl u-r ) to the operator d =
+           d
+         q dq on p-adic modular forms, i.e., the following diagram commutes:
+                                                              Splu-r
+                                0             1                         / S n-oc (N ; Cp )
+                       S
+                           >0 H (W , (Lr ⊗ ΩX )par )                     k
+
+                                     ˜
+                                     ∇                                          d
+                                                              Splu-r
+                                                                                  
+                               0               1                        / S n-oc (N ; Cp ).
+                      S
+                          >0 H (W , (Lr+2 ⊗ ΩX )par )                   k+2
+
+A nearly overconvergent modular form admits a q-expansion, and hence Hida’s ordinary pro-
+jector eord of (15) extends formally to the space S kn-oc (N ; Cp ). The following lemma relates
+this ordinary projection to the overconvergent projection Π oc  N.
+
+Lemma 2.7. Let φ be a nearly overconvergent modular form on Γ 1 (N ). Its image under
+Hida’s ordinary projector is overconvergent, and thus classical on Γ 1 (N ) ∩ Γ0 (p). More pre-
+cisely,
+(45)                                         eord φ = eord Πoc
+                                                            N (φ).
+
+Proof. If s is any overconvergent section of L r , then a direct calculation using the relations
+(22) shows that
+                                                                  r    dq
+                      Splu-r (∇s) belongs to d(Cp ⊗ OCp [[q]]) · ωcan ⊗ .
+                                                                        q
+But eord annihilates the image under d of any q-series with bounded denominators, so
+(46)                                         eord (Splu-r (∇s)) = 0.
+Now write φ = Splu-r (ωφ ), with ωφ a rigid section of (Lr ⊗Ω1X )par over some W . By definition
+of the overconvergent projection,
+              ωφ = φ0 + ∇s         with φ0 ∈ H 0 (W , ω r ⊗ Ω1X ) and s ∈ H 0 (W , Lr ).
+  Applying the operator Splu-r to this last identity gives φ = Πoc
+                                                                N (φ) + Splu-r (∇s). The result
+now follows by applying eord and invoking (46).                                              
+  Let g ∈ S` (N ; K) and h ∈ Sm (N ; K) be classical cusp forms defined over K, and fix
+embeddings of K into C and Cp . The forms g and h can then be regarded simultaneously as
+complex and overconvergent modular forms.
+Proposition 2.8. For all t ≥ 0, the modular form d t g × h belongs to S`+m+2t
+                                                                       n-oc   (N ; K) and
+                                   eord (dt g × h) = eord Πhol t
+                                                           N (δ` g × h).
+
+                                 ˜ t ωg ⊗ ω̃h ∈ H 0 (XK , (L`+m+2t−2 ⊗ Ω1 )par ) that was intro-
+Proof. Recall the global section ∇                                      X
+duced in (33). Since
+                                     ˜ t ωg ⊗ ω̃h ),
+                  dt g × h = Splu-r (∇                                        ˜ t ωg ⊗ ω̃h ),
+                                                          δ`t g × h = Splhdg (∇
+it follows that
+                                     Πoc  t          hol t
+                                      N (d g × h) = ΠN (δ` g × h).
+The proposition follows by applying the projector e ord to this identity and invoking (45).          
+   We next turn to the case where the exponent appearing in Proposition 2.8 is strictly nega-
+tive. After replacing g by its p-depletion g [p] ∈ Skoc (N ; Cp ), the form d−1−t g [p] × h (with t ≥ 0)
+is still a p-adic modular form of weight k := ` + m − 2t − 2. (Cf. for instance Théorème 5 of §2
+of [Se].) The following proposition shows that it is nearly overconvergent, at least in certain
+cases where k ≥ 2.
+                     A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                 19
+
+Proposition 2.9. Assume that 0 ≤ t ≤ min(` − 2, m − 2), so that k := ` + m − 2t − 2 ≥ 2.
+Then the p-adic modular form d−1−t g [p] × h belongs to Skn-oc (N ; Cp ), and in particular
+                   eord (d−1−t g [p] × h) ∈ Skord (N ; Cp ) ⊂ Sk (Γ1 (N ) ∩ Γ0 (p); Cp ).
+Proof. Set r2 = ` − 2 and r3 = m − 2. Since 1 − V U annihilates Hrig   1 (W , L ), it follows that
+                                                                              r2
+the overconvergent section ωg[p] of ω r2 ⊗ Ω1X is ∇-exact, i.e., there exists G[p] ∈ H 0 (W , Lr2 )
+satisfying ωg[p] = ∇G[p] . The q-expansion of the section G[p] can be written down explicitly
+in terms of the differentials ωcan and ηcan on the Tate curve. Using (22), one checks that it is
+equal to
+                                   r2          
+                          [p]
+                                   X
+                                          j    r2 −j−1 [p]       r2 −j j
+(47)                    G (q) =       (−1) j!     d     g (q)ωcan     ηcan .
+                                               j
+                                     j=0
+
+Set r = r2 + r3 − t, and let L(1) , . . . , L(r) denote r copies of the sheaf L1 over X, numbered
+consecutively. If S = {i1 , . . . , is } with i1 < i2 < . . . < is is any subset of {1, . . . , r}, we set
+                                       LS := L(i1 ) ⊗ · · · ⊗ L(is ) .
+              1 P                                                                                S
+   Let S := a!    σ∈Σs sgn(σ)σ denote the symmetrisation projector and write L S := S L ,
+viewed as a subsheaf of LS in the obvious way.
+   Choose now two subsets B and C of {1, . . . , r} of cardinalities r 2 and r3 respectively, whose
+union is equal to {1, . . . , r}. Such a choice is possible, since r = r 2 + r3 − t ≤ r2 + r3 . Put
+A0 = B ∩ C and A = {1, . . . , r} \ A0 .
+   Poincaré duality on the fibers of E gives rise to a duality L 1 × L1 −→ OX (−1) of sheaves.
+Since the cardinality of A0 is t, this in turn induces a map of sheaves
+(48)                                    LB ⊗ LC −→ LA (−t).
+   The natural inclusions Lr2 ⊂ Lr2 ≃ LB and Lr3 ⊂ Lr3 ≃ LC allow us to build certain rigid
+sections of LB and (LC ⊗ Ω1X )par out of G[p] and ωh respectively, denoted
+                  G[p] (B) ∈ H 0 (W , LB ),       ωh (C) ∈ H 0 (W , (LC ⊗ Ω1X )par ).
+Taking the tensor product of these two sections and applying (48) gives an overconvergent
+section G[p] (B) ⊗ ωh (C) ∈ H 0 (W , (LA ⊗ Ω1X )par ), whose symmetrisation can be viewed as
+an element A (G[p] (B) ⊗ ωh (C)) ∈ H 0 (W , (Lr−t ⊗ Ω1X )par ). A direct calculation using (47)
+reveals that
+                                                                            
+                            [p]                      t   −1−t [p]       r1   dq
+(49)           Splu-r (A (G (B) ⊗ ωh (C))) = (−1) t!(d      g × h)ωcan           ,
+                                                                              q
+which implies that d−1−t g [p] × h belongs to Skn-oc (N ; Cp ), as desired.                            
+  The sheaf Lr equipped with the Gauss-Manin connection is an overconvergent F -crystal in
+the sense of [Cole94, Sec. 10], i.e., the action of Frobenius on the relative de Rham cohomology
+Lr induces a horizontal morphism
+                                  ΦLr ,,0 : Φ∗ (Lr )|W −→ (Lr )|W0 ,
+for suitable , 0 > 0. These give rise to the Frobenius endomorphism
+                                Φr := comp−1              ∗
+                                          0 ◦ΦLr ,, ◦ Φ ◦ comp
+                                                      0
+
+     1 (X, L ), which is equal to Φ when r = 0. By abuse of notation, we will continue to
+of HdR       r
+write Φ instead of Φr , since the context will make it clear which Frobenius endomorphism is
+being referred to.
+20                              HENRI DARMON AND VICTOR ROTGER
+
+  The action of Φ on HdR1 (X , L ) induces a decomposition of its f -isotypic part, for all
+                             Cp  r
+ordinary modular forms f of weight k = r + 2:
+                   1
+                  HdR (XCp , Lr , ∇)f = H 0 (XCp , ω r ⊗ Ω1X )f ⊕ HdR
+                                                                   1
+                                                                      (XCp , Lr )f,u-r ,
+where the superscript u-r denotes the unit-root subspace, i.e., the part of the cohomology
+on which the Frobenius endomorphism acts with slope zero. This decomposition plays a role
+somewhat analogous to that of the Hodge decomposition in the complex setting.
+  The following lemma generalizes Lemma 2.2 to higher weight.
+Lemma 2.10. If φ = Splu-r (ωφ ) ∈ Skn-oc (N )0 is an ordinary overconvergent p-adic modular
+                                                                           1 (X , L )Φ,k−1 .
+form of weight k = r + 2 > 2 on Γ1 (N ), then the class of ωφ belongs to HdR    K   r
+Furthermore, the assignment φ 7→ [ωφ ] induces an isomorphism
+                                              ∼
+                                  Skord (N ) −→ HdR
+                                                 1
+                                                    (XK , Lr )Φ,k−1 .
+Proof. The Frobenius morphism Φ is related to the operator V on overconvergent modular
+forms of weight k by
+                                  Φ(ωf ) = pk−1 ωV f ,
+as can be seen from a computation on the Tate object (G m /q Z , dtt ) after noting that Φ( dtt ) =
+p dtt . The relation between the operators U and Φ on cohomology (relative to the identifications
+described above between differentials and weight two modular forms) is therefore given by
+                                       Φ = pk−1 V = pk−1 U −1 .
+If φ belongs to the slope zero subspace for the action of U , the class of the rigid differential
+                                        1 (W , L )Φ,k−1 for the action of Φ. Since Φ acts with
+ωφ lies in the slope k − 1 subspace of Hrig    r
+slope k/2 on the target of the residue map, the class ω φ automatically has vanishing residues
+at the supersingular annuli when k > 2, and the class of ω φ can therefore be viewed as an
+element of HdR1 (X , L ). The injectivity and surjectivity assertions in the second statement
+                    K   r
+follow from Cor. 6.3.1. and Prop. 6.6 of [Cole95], just as in the proof of Lemma 2.2.          
+     We also record the generalisation of Prop. 2.3 for k ≥ 2.
+Proposition 2.11. Let η be any class in H dR   1 (X , L )u-r , and let φ be a nearly overconvergent
+                                                   K   r
+modular form of weight k > 2 on Γ1 (N ) with vanishing residues at the supersingular annuli.
+Then
+                        hη, ωφ i = hη, ωφord i,     where φord := eord φ.
+In other words the expression hη, ωφ i depends only on the ordinary projection of φ, and
+Poincaré duality induces a well-defined pairing
+                                   1
+                          h , i : HdR (XCp , Lr )u-r × eord Skn-oc (N ) −→ Cp .
+Proof. The Poincaré pairing of (28) is compatible with the Frobenius endomorphism Φ and
+hence gives rise to a well-defined pairing
+                            1
+(50)               h , i : HdR (XK , Lr )u-r × HdR
+                                                1
+                                                   (XK , Lr )Φ,k−1 −→ Cp (−1 − r).
+The proposition therefore follows from Lemma 2.10.                                               
+2.5. Periods of modular forms. The newform f ∈ S k (Nf , χf ; Kf ) ⊂ Sk (Nf ; Kf ) generates
+an automorphic representation of GL 2 (AQ ), denoted πf . For any multiple N of Nf and any
+field K ⊃ Kf , let Sk (N ; K)[πf ] denote the f -isotypic subspace of S k (N ; K), attached to
+the automorphic representation πf . The space Sk (N ; K)[πf ] is a finite-dimensional K-vector
+space of dimension σ0 (N/Nf ), where σ0 (m) denotes as usual the number of divisors of m, and
+a basis for Sk (N ; K)[πf ] is given by
+(51)                                   {f (dz) = f (q d )}d|(N/Nf ) .
+                       A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                            21
+
+Similar remarks and notations apply to the modular forms g and h.
+  Fix from now on a field K ⊃ Kf , endowed with a complex embedding K ⊂ C.
+Lemma 2.12. For all f˘ ∈ Sk (N ; K)[πf ] and all φ ∈ Sk (N ; K), the Petersson scalar product
+ ˘ φ)N is a K-rational multiple of the period (f, f ) N .
+(f,
+Proof. Let TN be the Hecke algebra of level N generated over Q by the “good” Hecke operators
+Tn with gcd(n, N ) = 1. The eigenform f corresponds to an idempotent e f ∈ TN ⊗ Kf which
+induces a projection of Sk (N ; K) onto Sk (N ; K)[πf ]. The vector f˘ is orthogonal to the kernel
+of ef and therefore (f˘, φ)N = (f˘, ef φ)N depends only on the projection of φ to S k (N ; K)[πf ].
+By the remark preceeding equation (51), it is thererefore enough to show that, for all divisors
+d1 and d2 of N/Nf ,
+                  (f (d1 z), f (d2 z))N = %(f, d1 , d2 ) · (f, f )N , with %(f, d1 , d2 ) ∈ Kf .
+If d1 d2 = 1, this is clear. Otherwise, let q be a prime dividing d 1 d2 . The compatibility beween
+the weight k slash operator and the Petersson scalar product shows that
+(52)           (f (d1 z), f (d2 z))N = q −k (f (d1 /qz), f (d2 /qz))N ,           if q|d1 and q|d2 .
+Otherwise, assume without loss of generality that q divides d 1 but not d2 . We then have
+                               q1−k a (f )
+                                       q
+                              
+                                   q+1        (f (d1 /qz), f (d2 z))N                         if q||d1 ,
+                                q 1−k a   (f )
+(53)  (f (d1 z), f (d2 z))N =           q
+                                               (f (d1 /qz), f (d2 z))N
+                                    q
+                                                   − χf (q)q −k−1 (f (d1 /q 2 z), f (d2 z))N , if q 2 |d1 .
+                              
+
+These relations imply that
+(54)                −k
+                    q 1−k%(f, d1 /q, d2 /q)
+                                                                                         if q|d1 and q|d2 ;
+                     q     aq (f )
+  %(f, d1 , d2 ) =       q+1       %(f, d1 /q, d2 )                                       if q||d1 and q - d2 ;
+                       1−k
+                    q aq (f )
+                                   %(f, d1 /q, d2 ) − χf (q)q −1−k %(f, d1 /q 2 , d2 ),   if q 2 |d1 and q - d2 .
+                   
+                          q
+Equation (54), together with the fact that %(f, 1, 1) = 1 and %(f, d 1 , d2 ) = %̄(f, d2 , d1 ) make it
+clear (by induction on d1 d2 ) that %(f, d1 , d2 ) belongs to Kf for all d1 , d2 dividing N/Nf . 
+   The above proposition allows us to associate to any (not necessarily new) eigenform f˘ ∈
+Sk (N ; Kf ), and to any modular form φ ∈ Sk (N ; K), a K-rational period
+                                                         (f˘, φ)N
+                                           J(f˘, φ) :=            ∈ K.
+                                                         (f, f )N
+Let
+(55)                             ηfa-h  0       r   1      1
+                                   ˘ ∈ H (XC , ω ⊗ ΩX ) ⊂ HdR (XC , Lr )
+
+denote the class of the anti-holomorphic form hω ˘1,ω ˘i · ωf˘, and let ηf˘ denote its natural image
+                                                            f   f
+in H 1 (XC , ω −r ) under the projection in (27).
+Corollary 2.13. The class ηf˘ belongs to H 1 (XKf , ω −r ).
+Proof. By Lemma 2.12, for any ωφ ∈ H 0 (XKf , ω r ⊗ Ω1X ) associated to a cusp form φ ∈
+Sk (N ; Kf ) with Kf -rational fourier coefficients, we have
+                                                           ˘ φ)N
+                                                          (f,
+(56)                         hηf˘, ωφ i = hηfa-h
+                                             ˘ , ωφ i =            belongs to Kf .
+                                                          (f, f )N
+(Where the first occurence of h , i designates the pairing of (29) induced from Poincaré
+duality, with K = C.) But H 1 (XKf , ω −r ) can be characterized as the set of η ∈ H 1 (XC , ω −r )
+satisfying (56) for all φ ∈ Sk (N ; Kf ). Corollary 2.13 follows.                               
+22                                HENRI DARMON AND VICTOR ROTGER
+
+2.6. Hida families. Fix a rational prime p > 2 and assume that the field K ⊃ K f of the
+previous section is furnished with a p-adic embedding K ,→ C p . Let O denote the ring of
+integers of the p-adic closure of K in C p .
+   For every p - N write the characteristic polynomial of a Frobenius element at p acting on
+the two-dimensional Galois representation over K f ⊗ Qp associated by Deligne to f as
+
+(57)            L(p) (f ; T ) = (1 − ap (f )T + χf (p)pk−1 T ) = (1 − αf,p T )(1 − βf,p T ),
+where χ is the nebentype character of f and α f,p and βf,p ∈ Q̄ are the reciprocal roots of the
+polynomial L(p) (f ; T ).
+   The modular form f is said to be ordinary at p if the two reciprocal roots of (57) can be
+labelled in such a way that αf,p is a p-adic unit, i.e., belongs to O × . The modular form given
+by
+                                   f (p) (q) := f (q) − βf,p f (q p )
+is called the ordinary p-stabilization of f ; it has level pN , although it is only new at the primes
+dividing N , and it is again an eigenform for all the Hecke operators. To be precise,
+                      f (p) |T` = a` (f )f (p) ,   ∀` 6= p,            f (p) |Up = αf,p f (p) .
+Set Γ = 1 + pN Zp and let Λ = O[[Γ]] be the completed group ring of Γ. The weight space is
+defined to be
+                            Ω = Spf(Λ)(O) = HomO−alg (Λ, O),
+which may naturally be identified with the space Hom cts (Γ, O × ) of continuous characters of
+Γ. The subset of classical characters of Ω is defined to be
+                             Ωcl = {χk := (γ 7→ γ k ),               with k ∈ Z≥2 }.
+     Given any finite flat extension Λf of Λ, let
+                                   Ωf := Spf(Λf )(O) = Hom(Λf , O).
+This space is endowed with a natural p-adic topology and is equipped with a natural projection
+                                                   κ : Ωf → Ω
+to weight space induced by the inclusion Λ ⊆ Λ f of O-algebras. A point x ∈ Ωf for which
+κ(x) belongs to Ωcl will be referred to as a classical point of Ω f , and the set of all such classical
+points will be denoted Ωf,cl .
+   We will mostly work with the following definition of a Hida family of p-adic modular forms,
+which is slightly more restrictive than what can sometimes be found in the literature.
+Definition 2.14. Let Nf ≥ 1 be an integer and let p be a prime not dividing N f . A Hida
+family of tame level Nf is a quadruple (Λf , Ωf , Ωf,cl , f ), where
+       (i) Λf is a finite flat extension of Λ;
+      (ii) Ωf is a non-empty open subset of Xf := Hom(Λf , Cp ) and Ωf,cl is a p-adically dense
+           subsetPof Ωf whose image under κ lies in Ωcl ;
+     (iii) f :=     an q n ∈ Λf [[q]] is a formal q-series with coefficients in Λ f such that, for all
+           x ∈ Ωf,cl , the power series
+                                                         ∞
+                                                         X
+                                              fx(p) :=         an (x)q n
+                                                         n=1
+
+          is the q-expansion of the ordinary p-stabilization of a normalised newform (denoted
+          fx ) of weight κ(x) on Γ1 (Nf ).
+                    A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                               23
+
+   The collection of {fx }x∈Ωf,cl arising from Hida theory can be thought of as a p-adically
+coherent collection of eigenforms on Γ 1 (Nf ) of varying weights. In particular, the fourier
+coefficients an (fx ) are analytic functions of x when p - n, (but not when p|n, in general). The
+following theorem of Hida reveals the ubiquity of Hida families in the above sense.
+Theorem 2.15 (Hida). [Hi86b] Let f be an ordinary newform in S k (Nf ; Kf ). There exists
+a Hida family (Λf , Ωf , Ωf,cl , f ) of tame level Nf and a classical point x0 ∈ Ωf satisfying
+                                      κ(x0 ) = k,         fx0 = f.
+   By shrinking Ωf if necessary, we can and will assume that κ(x) = k (mod p − 1) for all
+x ∈ Ωf ; in particular the integers κ(x) and k have the same parity for all classical x ∈ Ω f .
+   It will be also convenient, for later purposes, to dispose of a somewhat more flexible no-
+tion of p-adic families of modular forms, interpolating classical modular forms which are not
+necessarily new, or even Hecke eigenvectors; as well, it will be convenient to allow the fourier
+coefficients to belong to more general coefficients rings which are not necessarily finite over
+Λ. This leads to the following definition:
+Definition 2.16. A Λ-adic modular form of tame level N is a quadruple (R, Ω φ , Ωφ,cl , φ),
+where
+    (i) R is a complete, finitely generated (but not necessarily finite), flat extension of Λ;
+   (ii) Ωφ is an
+              P open     subset of Hom(R, Cp ) and Ωφ,cl is a dense subset of Ωφ ;
+   (ii) φ :=           n
+                   an q ∈ R[[q]] is a formal q-series with coefficients in R such that, for all
+        x ∈ Ωφ,cl , the power series
+                                           ∞
+                                           X
+                                   φ(p)
+                                    x :=         an (x)q n ∈ Cp [[q]]
+                                           n=1
+        is the q-expansion of a classical ordinary cusp form in S κ(x) (Γ1 (N ) ∩ Γ0 (p); Cp ) :=
+        Sκ(x) (Γ1 (N ) ∩ Γ0 (p); Q) ⊗ Cp .
+  The following examples of Λ-adic families of modular forms are of importance in our dis-
+cussion.
+1. Families of old forms. Let f ∈ Sk (Nf ; Kf ) be a newform of level Nf and let N be some
+multiple of Nf with p - N . Let f˘ ∈ Sk (N ; Kf )[πf ] be an element of the old class of level N
+associated to f . By the remark preceding equation (51), there are (unique) scalars λ d ∈ K
+indexed by the divisors of N/Nf and satisfying
+                                    f˘ =
+                                          X
+                                                  λd · f (q d ).
+                                           d|(N/Nf )
+
+The p-stabilisation of the modular form f (q d ) is the weight k specialisation of the formal
+q-series                                        X
+                                    f (q d ) :=   an q dn ,
+                                                    n
+where (Λf , Ωf , Ωf,cl , f ) is the Hida family of tame level N f attached to f via Theorem 2.15.
+We can then set
+                                                  X
+(58)                                    f̆ (q) :=      λd f (q d ).
+                                              d|(N/Nf )
+
+The triple (Λf , Ωf , Ωf,cl , f̆ ) is a Λ-adic modular form whose classical specialisations are eigen-
+vectors for the good Hecke operators T n with gcd(n, N ) = 1, and for the U operator, but they
+are not new at the primes dividing N/N f and specialise to the old-form f˘ at the weight k
+point x0 ∈ Ωf,cl alluded to in Theorem 2.15.
+24                             HENRI DARMON AND VICTOR ROTGER
+
+2. Products of modular forms. Let (Λ g , Ωg , g) and (Λh , Ωh , h) be Λ-adic modular forms
+of tame level N (for example, Hida families of eigenforms arising from Theorem 2.15 or
+families of oldforms constructed as in the previous paragraph). Let Λ gh := Λg ⊗O Λh be the
+finitely generated (but not finite) Λ-algebra equipped with the natural diagonal embedding
+Λ −→ Λg ⊗ Λh sending the group-like element [a] ∈ Λ to [a] ⊗ [a]. Set
+                           Ωgh := Ωg × Ωh ,          Ωgh,cl := Ωg,cl × Ωh,cl .
+Then the quadruple (Λgh , Ωgh , Ωgh,cl , eord (g × h)), where the power series g × h is viewed as
+an element of Λgh [[q]] in the natural way, and eord is Hida’s ordinary projection operator, is
+an example of a Λ-adic family of modular forms with Fourier coefficients in Λ gh .
+3. Derivatives of modular forms. Recall the operators U , V defined in (13), and the differential
+                  d
+operator d := q dq  , which induces a map from p-adic modular forms of weight k to p-adic
+modular forms of weight k + 2. Recall that
+                      Ω := Spf(Λ)(O) = HomO−alg (Λ, O) = Hom(Γ, O × )
+and notice that for any n ∈ Z such that p - n, the group-like element [n] gives rise to a function
+                                            [n] : Ω −→ O
+whose value at a character k ∈ Ω represented by γ 7→ γ k , is simply [n](k) = nk .
+  Let g and h be Λ-adic families of eigenforms of tame level N (but not necessarily new of
+that level). Assume that p is a prime that does not divide N , and let a p (g) ∈ Λg , ap (h) ∈ Λh
+denote the Hecke eigenvalues associated to the Hecke operator T p . Let
+                                                                     X
+                g[p] := (1 − V U )g = (1 − ap (g)V + [p]p−1 V 2 )g =   an (g)q n
+                                                                           p-n
+                                                                                         [p]
+be the Λ-adic counterpart of the modular form defined in (14). The specialisation g y of g[p]
+at a classical point y ∈ Ωg,cl can either be viewed as a p-adic modular form of tame level N
+as in (14), or as a classical modular form of level N p 2 . Note that g[p] is not ordinary; in fact
+it lies in the kernel of the U operator. But the fact that g [p] has fourier coefficients supported
+on the integers prime to p allows the formal q-series
+                                                X
+(59)                                 d• g[p] :=   [n]an (g)q n
+                                                   p-n
+
+to be viewed as an element of Λ ⊗O Λg [[q]]. The specialization of this q-series at a classical
+point (t, y) ∈ Ωcl × Ωg,cl is simply
+                                        (d• g[p] )(t,y) = dt gy[p] .
+   Define Rgh := Λ ⊗O Λg ⊗O Λh , regarded as a Λ-algebra by mapping the group-like element
+[a] ∈ Γ to [a2 ] ⊗ [a] ⊗ [a], so that the map from Hom(R gh , Cp ) = Ω × Ωg × Ωh to the weight
+space sends the classical point (t, y, z) ∈ Z ≥0 × Ωg,cl × Ωh,cl to κ(y) + κ(z) + 2t.
+   Let d• g[p] × h denote the product of d• g[p] and h, viewed as a formal series with coefficients
+in Rgh . Let eord (d• g × h) denote its image under the ordinary projection operator. The
+specialisation of eord (d• g[p] × h) at (t, y, z) is equal to
+(60)              eord (d• g[p] × h)t,y,z = eord (dt gy[p] × h(p)          t [p]
+                                                              z ) = eord (d gy × hz ),
+where the last equality is a consequence of the following simple but extremely useful lemma:
+Lemma 2.17. If g and h are p-adic modular forms of tame level N , then g [p] × (V h) is in
+the kernel of the U operator, and in particular
+                                        eord (g [p] × V h) = 0.
+                       A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                               25
+
+Proof. This follows from the fact that a n (g [p] × (V h)) = 0 whenever p|n.                           
+  The above discussion is summarised in the following proposition, which plays a key role in
+the construction of the triple Garrett-Rankin p-adic L-function described in Chapter 4.
+Proposition 2.18. Let
+                Ωgh,cl := {(t, y, z) ∈ Z × Ωg,cl × Ωh,cl ,             t > − min(κ(y), κ(z)).}
+The quadruple
+                    eord (d• g[p] × h) := (Rgh , Ω × Ωg × Ωh , Ωgh,cl , eord (d• g[p] × h))
+is an ordinary Λ-adic modular form of tame level N . For all (t, y, z) ∈ Ω gh,cl , the specialisation
+of this family at (t, y, z) is the classical modular form (with coefficients in C p )
+                                  eord (dt gy[p] × hz ) ∈ Sk (Γ1 (N ) ∩ Γ0 (p); Cp ).
+This specialisation has algebraic fourier coefficients (lying in K = K gy Khz ) when t ≥ 0.
+   We conclude this section by describing the Λ-adic interpolation of the periods that arise in
+Lemma 2.12. Write Sord (N ; R) for the space of Λ-adic modular forms with coefficients in the
+Λ-algebra R. A Hida family (Λf , Ωf , f ) of eigenforms in the sense of definition 2.14 gives rise
+to a subspace
+                           n                                                                o
+     Sord (N ; Λf )[πf ] := f̆ ∈ Sord (N ; Λf ) such that Tn f̆ = an f̆, for all (n, N ) = 1 .
+
+Letting Λ0f denote the fraction field of the integral domain Λ f , the vector space Sord (N ; Λ0f )[πf ]
+is finite-dimensional over Λ0f and has for basis the set {f (q d )}d|(N/Nf ) of Λ-adic forms. Let
+f ∈ Sord (Nf , Λf ) be a Hida family of ordinary eigenforms, and let f̆ ∈ Sord (N, Λf )[πf ] be an
+associated test vector of tame level N .
+   Let φ = (R, Ωφ , Ωφ,cl , φ) ∈ Sord (N ; R) be a Λ-adic modular form, and let (x, y) ∈ Ω f,cl ×
+                                                                     (p)
+Ωφ,cl be a pair of points with κ(x) = κ(y). The specialisation φ y of φ at y ∈ Ωφ,cl need not
+                                                                               (p)
+be the p-stabilisation of a classical modular form, but its projection e fx φy to the fx -isotypic
+component is the p-stabilisation of a classical modular form, which shall be denoted φ x,y .
+   If R is any flat Λ-algebra with associated analytic space Ω R = Hom(R, O), the elements of
+the ring Λ0f ⊗Λ R can be viewed as “rational functions” on the fiber product Ω f ×Ω ΩR with
+poles at finitely many x ∈ Ωf . Given J ∈ Λ0f ⊗Λ R and (x, y) ∈ Ωf ×Ω ΩR , we write J(x, y) for
+the value of J at (x, y), when it is defined. Let ( , ) N,p denote the Petersson scalar product
+on modular forms attached to the group Γ 1 (N ) ∩ Γ0 (p).
+Lemma 2.19. For all f̆ ∈ Sord (N ; Λf )[πf ] and all φ = (R, Ωφ , Ωφ,cl , φ) ∈ Sord (N ; R), there
+exists (a unique) J(f̆ , φ) ∈ Λ0f ⊗Λ R such that, for all classical points (x, y) ∈ Ω f,cl ×Ωcl Ωφ,cl ,
+                                              (p)   (p)
+                                           (f˘x , φx,y )N,p       (f˘x , φx,y )N
+(61)                  J(f̆ , φ)(x, y) =       (p)   (p)
+                                                              =                  = hηfx , φx,y i,
+                                           (fx , fx )N,p           (fx , fx )N
+where the last pairing is the Poincaré duality between H 1 (XCp , ω −r ) and H 0 (XCp , ω r ⊗ Ω1X ).
+Proof. Let TN be the Λ-adic Hecke algebra of tame level N generated by the Hecke operators
+Tn with gcd(n, N p) = 1 and U acting on Sord (N ; Λ). The Hida family f corresponds to an
+idempotent ef ∈ TN ⊗Λ Λ0f which induces a projection of Sord (N ; Λ) to Sord (N ; Λ0f )[πf ]. Hence
+ef φ is a (Λ0f ⊗Λ R)-linear combination of the forms f (q d ) with d|N/Nf , while the same is of
+course true for f̆. It is therefore enough to show that, for all divisors d 1 and d2 of N/Nf ,
+              (p)           (p)
+           (fx (q d1 ), fx (q d2 ))N,p
+                      (p)   (p)
+                                            = %(f , d1 , d2 )(x), for some %(f , d1 , d2 ) ∈ Λf ⊗ Q.
+                    (fx , fx )N,p
+26                             HENRI DARMON AND VICTOR ROTGER
+
+                                                               (p)
+But the proof of Lemma 2.12 with f replaced by f x and Γ1 (N ) by Γ1 (N ) ∩ Γ0 (p) shows
+            (p)
+that %(fx , d1 , d2 ) (defined in the obvious way) is a polynomial involving the expressions
+q κ(x) , aq (fx ), 1q and q+1
+                            1
+                               as q ranges over the divisors of d1 d2 . Since the primes q that arise
+are different from p, these expressions all belong to Λ f ⊗ Q and hence the same is true of
+%(f , d1 , d2 ). It follows that the expression J( f̆ , φ) defined by
+                                                         (p)     (p)
+                                                       (f˘x , φy )N,p
+                                  J(f̆ , φ)(x, y) :=     (p)     (p)
+                                                       (fx , fx )N,p
+belongs to Λ0f ⊗Λ R, and the first equality in (61) follows. The second equality follows from a
+direct calculation, and the third from the definition of η fx and the familiar expression for the
+Poincaré pairing in terms of the Petersson scalar product. Lemma 2.19 follows.                
+
+                   3. Diagonal cycles and p-adic Abel-Jacobi maps
+3.1. Generalised Gross-Kudla-Schoen cycles. The main aim of this section is to intro-
+duce, for each triplet (k, `, m) of balanced weights, a distinguished algebraic cycle ∆ k,`,m on
+the product of three Kuga-Sato varieties fibered over the modular curve X = X 1 (N ). When
+the triplet is (k, `, m) = (2, 2, 2), the cycle ∆ 2,2,2 is the one introduced by Gross and Kudla in
+[GrKu] and studied in detail by Gross and Schoen in [GrSc].
+   Let E denote the universal elliptic curve fibered over X, as constructed in [Sc]. It is a
+projective smooth algebraic surface defined over Q equipped with a proper regular (but not
+smooth) fibration
+                                               π : E −→ X,
+whose fiber Ex at a point x ∈ Y outside the finite set of cusps is the elliptic curve corresponding
+to x under the moduli interpretation.
+   Fix a base point o ∈ X(Q), say the cusp at infinity. Write u for the unique automorphism
+on E extending the involution −1 on the fibers with respect to the zero section σ 0 of π.
+   For any r ≥ 0, write E r = E1 ×X ... ×X Er for the r-th fibered product of E over X. A
+generic point in E r is (x; P1 , ..., Pr ) where x ∈ X and Pi are points in the fiber Ex . Let
+                                          1 X
+                               sym =           sgn(σ)σ ∈ Corr(E r ) ⊗ Q
+                                          r!
+                                        σ∈Σr
+denote the projector in which a permutation σ acts on E r by permuting the factors in the
+fibration π : E r −→ X. Let also
+                                                      
+                               1 − u1             1 − ur
+                     inv :=            ⊗ ··· ⊗            ∈ Corr(E r ) ⊗ Q
+                                  2                 2
+denote the idempotent in the ring of correspondences from E r to itself, in which uj denotes
+the involution on the j-th factor in the fibration E r −→ X. Write
+(62)                              r = sym · inv ∈ Corr(E r ) ⊗ Q
+for the composition of the two idempotents.
+   Put (k, `, m) = (r1 + 2, r2 + 2, r3 + 2) with r3 ≥ r2 ≥ r1 ≥ 0 and set
+                                            r1 + r 2 + r 3
+                                       r=                  ≥ 0.
+                                                 2
+Let us now define a generalized Gross-Kudla-Schoen cycle ∆ k,`,m of codimension r + 2 in the
+(2r + 3)-dimensional variety
+                                       W = E r1 × E r2 × E r3
+introduced in (1) of the introduction. We shall regard it as an element in the group
+                                                        r+2
+                          CHr+2 (W ) := Z r+2 (W ) ⊗ Q/Zrat (W ) ⊗ Q
+                        A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                     27
+
+of rational equivalence classes of cycles of codimension r + 2 with coefficients in Q.
+   We treat the three cases (k, `, m) = (2, 2, 2), (2, `, `) with ` > 2, and k, `, m > 2 separately.
+Definition 3.1. Assume (k, `, m) = (2, 2, 2). For any non-empty subset I ⊆ {1, 2, 3}, let
+       XI := {(P1 , P2 , P3 ) ∈ X × X × X : Pi = Pj for all {i, j} ⊂ I, Pj = o for all j 6∈ I}.
+Then the Gross-Kudla-Schoen diagonal cycle is defined to be
+           ∆2,2,2 = X123 − X12 − X13 − X23 + X1 + X2 + X3 ∈ CH2 (X1 × X2 × X3 ).
+  To treat the remaining cases, choose three subsets
+(63)                A = {a1 , . . . , ar1 },   B = {b1 , . . . , br2 },     C = {c1 , . . . , cr3 }
+of {1, . . . , r} of cardinalities r1 , r2 and r3 respectively, such that A ∩ B ∩ C = ∅. If some
+of the ri is 0, we take the corresponding subset to be the empty set. One readily checks
+that such subsets exist, and that they satisfy A = B ∪ C \ B ∩ C, B = C ∪ A \ C ∩ A and
+C = A ∪ B \ A ∩ B. The choice of the triplet (A, B, C) is unique up to permutations in S r .
+Since the union of any two of the sets A, B, C is equal to {1, ..., r}, the maps
+          ϕABC : E r −→ E r1 × E r2 × E r3 ,        (x; P1 , ..., Pr ) 7→ ((x; Pai ), (x; Pbi ), (x; Pci ))
+(64)
+                and       ϕBC : E r −→ E r2 × E r3 ,     (x; P1 , ..., Pr ) 7→ ((x; Pbi ), (x; Pci ))
+are closed embeddings of E r into W (and likewise for the analogous maps ϕ AB and ϕAC ).
+Definition 3.2. If (k, `, m) = (2, `, `) for some ` = r + 2 > 2, the generalised Gross-Kudla-
+Schoen cycle is defined by
+           ∆2,`,` = (Id, r2 , r3 )(ϕABC (E r ) − {o} × ϕBC (E r )) ∈ CHr+2 (X × E r × E r ).
+Definition 3.3. If k, `, m > 2, the generalised Gross-Kudla-Schoen cycle is defined by
+                               ∆k,`,m = (r1 , r2 , r3 )ϕABC (E r ) ∈ CHr+2 (W ).
+   By examining the image of these cycles by the cycle class map in each of the Künneth
+                                                              2r+4
+components of the complex de Rham cohomology group H dR            (W/C) of the variety W , it
+follows from [BDP, Lemma 2.2] that the cycles ∆ k,`,m we defined for each triple of balanced
+weights (k, `, m) are null-homologous, that is to say:
+                                                                    2r+4
+                  ∆k,`,m ∈ CHr+2 (W )0 := ker cl : CHr+2 (W ) → HdR
+                                                                             
+                                                                         (W ) .
+  Fix a prime p - N and
+                                                                2r+3
+(65)                               AJp : CHr+2 (W )0 −→ Filr+2 HdR   (W )∨
+denote the p-adic Abel-Jacobi map, as introduced e.g. in [Ne2, (1.2)], [Bes00].
+                                                                         2r+3
+   There are several equivalent definitions of (65). Given that Fil r+2 HdR   (W )∨ is naturally
+                                       2r+3
+isomorphic to the group Ext1 (Qp , HdR      (W )) of isomorphism classes of extensions of the
+                                             2r+3
+trivial filtered frobenius module Q p by HdR      (W ), the map AJp sends ∆ to the extension
+class given by
+(66)            0          / H 2r+3 (W )               / V∆                     / Qp             /0
+                              dR
+
+                                                                                        cldR
+                                                                                   
+                0          / H 2r+3 (W )       / H 2r+3 (W \ |∆|)         / H 2r+4 (W )          / 0,
+                              dR                 dR                           |∆|
+
+where the lower row is the short excision exact sequence associated with the pair (W, ∆) and
+the upper row is obtained from the lower by pull-back under the cycle class map cl dR in de
+Rham cohomology.
+28                              HENRI DARMON AND VICTOR ROTGER
+
+3.2. A formula for AJp (∆k,`,m ) in terms of Coleman integration. The goal of this
+section is to give a p-adic analytic description of (a piece of) the functional AJ p (∆k,`,m ),
+involving p-adic integration of differential forms, à la Coleman.
+   Let (k, `, m) = (r1 + 2, r2 + 2, r3 + 2) with r3 ≥ r2 ≥ r1 ≥ 0 be a triplet of balanced weights
+and recall that we set r = r1 +r22 +r3 .
+                                                                                  1 (X , L ) that
+   Our description of AJp (∆k,`,m ) rests on the p-adic analytic description of H dR   Cp   r
+was given in Sections 2.1 and 2.2. In order to keep track of the factors it will be convenient
+to write X 2 = X2 × X3 and likewise write (X 0 )2 = X20 × X30 , where X 0 denotes the affine
+subvariety of X fixed in Section 2.1. By Proposition 2.1 and equation (40) we have
+                 1
+                HdR (X 0 , Lr2 ) ⊗ HdR
+                                    1
+                                       (X 0 , Lr3 ) ≃ Hrig
+                                                       1                  1
+                                                           (W , Lr2 ) ⊗ Hrig (W , Lr3 ).
+   We fix a choice of lift of Frobenius to W  × W by setting Φ := Φ2 × Φ3 , where Φ2 and
+Φ3 denote the canonical lift of the Frobenius endomorphism on W  described in (17), viewed
+as acting on the first and second factors of X 2 × X3 respectively. This choice yields a linear
+transformation
+       Φ := Φ2 ⊗ Φ3 : Ω1rig (W , Lr2 ) ⊗ Ω1rig (W , Lr3 ) −→ Ω1rig (W , Lr2 ) ⊗ Ω1rig (W , Lr3 )
+and induces an endomorphism of Hrig 1 (W , L )⊗H 1 (W , L ) which we denote with the same
+                                           r2   rig    r3
+letter. View Lr2 ⊗ Lr3 as a sheaf on X × X. The Gauss-Manin connection on L r1 and on Lr2
+gives rise to a connection
+                               ∇ : Lr2 ⊗ Lr2 −→ Lr2 ⊗ Lr3 ⊗ Ω1X×X
+on sheaves on X × X, denoted again by ∇ by abuse of notation, and defined on sections by
+the rule
+                         ∇(s2 ⊗ s3 ) = ∇(s2 ) ⊗ s3 + s2 ⊗ ∇(s3 ).
+  Given a class
+           ω2 ⊗ ω 3   ∈ H 0 (X, Ω1X ⊗ ω r2 ) ⊗ H 0 (X, Ω1X ⊗ ω r3 )
+                      = Filr2 +r3 +2 (HdR
+                                       1               1
+                                          (X, Lr2 ) ⊗ HdR (X, Lr3 ))
+                         1                  1                  2
+                      ⊂ Hrig (W , Lr2 ) ⊗ Hrig (W , Lr3 ) ⊂ Hrig (W × W , Lr2 ⊗ Lr3 ),
+choose a polynomial P ∈ Cp [x] satisfying
+                                                                2 (W × W , L ⊗ L ).
+    (i) P (Φ) = P (Φ2 Φ3 ) annihilates the class of ω2 ⊗ ω3 in Hrig          r2    r3
+   (ii) For each supersingular annulus V j , j = 1, ..., s, P (Φ) annihilates the target of the
+        residue map (41), namely (Symr HdR   1 (E ))(−1).
+                                                  j
+                                                                            r2 +r3 +1
+    (iii) None of the roots of P (x) are of complex absolute value p 2 .
+   The existence of such a polynomial follows from the fact that the eigenvalues of the geo-
+metric Frobenius Φ acting on HdR     1 (X , L ) (resp. on (Symr H 1 (E ))(−1)) are algebraic
+                                          Cp   r                     dR    j
+                                           r+1         r+2
+numbers with complex absolute value p 2 (resp. p 2 ), and hence a polynomial P satisfying
+                                                                                        r2 +r3 +2
+(i) and (ii) can be chosen so that all its roots have complex absolute value either p 2           or
+  r+2
+p 2 ; such a choice of P automatically satisfies (iii) because the triplet of weights is assumed
+throughout to be balanced.
+   See the discussion right after Proposition 3.7 below for a justification of the need of condi-
+tions (ii) and (iii). As for (i), note that a direct consequence of it is the existence of a rigid
+analytic primitive of P (Φ)(ω2 ∧ ω3 ), as we quote in the following statement.
+Lemma 3.4. There exists a real  > 0 and an L r2 ⊗ Lr3 -valued rigid one-form ρ(P, ω2 , ω3 )
+on W × W satisfying
+(67)                              ∇ρ(P, ω2 , ω3 ) = P (Φ)(ω2 ∧ ω3 ).
+This one-form is well-defined up to rigid ∇-closed one-forms on W  × W .
+                    A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                          29
+
+  Recall the base point o ∈ X that was chosen to define the cycle ∆ 2,2,2 . This choice of base
+point determines the horizontal and vertical inclusions
+(68)             ι2 : X = X × {o} ,→ X × X,                   ι3 : X = {o} × X ,→ X × X.
+Let
+(69)                                         ι23 : X ,→ X × X
+denote the diagonal morphism. By abuse of notation, we will denote by the same symbols
+the resulting maps
+                   ι2 , ι3 , ι23 : X 0 ,→ X 0 × X 0 ,        ι2 , ι3 , ι23 : W ,→ W × W .
+Finally write
+                         ϕ∗23 := ι∗23 − ι∗2 − ι∗3 : Ω1rig (W × W ) −→ Ω1 (W )
+for the maps obtained by combining the pullbacks of these three morphisms.
+                    1 (W × W ) −→ H 1 (W ) induced by ϕ∗ is the zero map.
+Lemma 3.5. The map Hrig          rig                23
+
+Proof. This is a direct consequence of the following two facts:
+   (1) The map
+                          ϕ∗23 : HdR
+                                  1
+                                     (X20 × X30 /Qp ) −→ HdR
+                                                          1
+                                                             (X 0 /Qp )
+          is 0. This can be checked by choosing a complex embedding of Q p and noting that
+          the map ϕ23 : H1 (X 0 /C) −→ H1 (X20 × X30 /C) vanishes, using topological methods.
+      (2) There is a commutative diagram
+                                                           ϕ∗23
+                                1 (X 0 × X 0 /Q )
+                               HdR             p
+                                                                  / H 1 (X 0 /Qp )
+                                    2     3                          dR
+
+                                             comp                         comp
+
+                                1 (W × W /Q )              ϕ∗23
+                               Hrig      p                      / H 1 (W /Qp ).
+                                                                    rig
+
+                                                                                               
+  To formulate the counterpart of Lemma 3.5 for general weights (k, `, m), recall the subsets
+A, B and C of {1, . . . , r} of cardinalities r 1 , r2 and r3 ≥ 0 that were chosen in §3.1, and
+denote by A0 , B 0 and C 0 their respective complements. Note that
+                        A0 = B ∩ C,         B0 = A ∩ C            and     C 0 = A ∩ B.
+Recall also the diagonal inclusions
+                  ϕABC : E r −→ E r1 × E r2 × E r3 and ϕBC : E r −→ E r2 × E r3
+introduced in (64). As in (48), the map ϕ BC together with Poincaré duality on the fibers of
+the projection E r → E r1 induced by A, give rise to a pullback operation on sheaves
+(70)                                       Lr2 ⊗ Lr3 −→ LA (−t)
+where t := |A0 | = r − r1 satisfies k = ` + m − 2 − 2t. We hence obtain a map
+                    ϕ∗A,BC : Ω1rig (W × W , Lr2 ⊗ Lr3 ) −→ Ω1rig (W , LA (−t)).
+Set
+                                       (
+                                           ϕ∗23          if (k, `, m) = (2, 2, 2),
+(71)                           ϕ∗ :=
+                                           ϕ∗A,BC       otherwise.
+
+Corollary 3.6. If σ ∈ Ω1 (W × W , Lr2 ⊗ Lr3 ) is ∇-closed, then ϕ∗ (σ) is ∇-exact on W .
+30                              HENRI DARMON AND VICTOR ROTGER
+
+Proof. If (r1 , r2 , r3 ) = (0, 0, 0), this is just Lemma 3.5. If r 3 , r2 > 0, by the Künneth decom-
+position we have
+              1
+             HdR (X 0 × X 0 , Lr2 ⊗ Lr3 ) ≃ HdR
+                                             1
+                                                (X 0 , Lr2 ) ⊗ HdR
+                                                                0
+                                                                   (X 0 , Lr3 )
+                                                         0
+                                                      ⊕ HdR (X 0 , Lr2 ) ⊗ HdR
+                                                                            1
+                                                                               (X 0 , Lr3 ),
+and these modules vanish because the sheaves L r2 and Lr3 have no global horizontal sections
+(cf. [BDP, Lemma 2.1]). In light of (40) we deduce that in fact σ is already exact, and a
+fortiori so is ϕ∗ (σ).                                                                    
+Proposition 3.7. The element
+                   ξ(P, ω2 , ω3 ) := class of ϕ∗ ρ(P, ω2 , ω3 ) in H1rig (W , LA (−t))
+does not depend on the choice of rigid differential ρ(P, ω 2 , ω3 ) satisfying (67) of Lemma 3.4
+and has vanishing annular residues. In particular, ξ(P, ω 2 , ω3 ) belongs to HdR1 (X, L (−t)).
+                                                                                         A
+
+Proof. The first assertion is a direct consequence of Corollary 3.6. In light of (41) and the
+discussion following it, the second assertion follows the condition (ii) satisfied by P .  
+
+   The Frobenius endomorphism Φ acts on H dR   1 (X, L (−t)) with eigenvalues of complex ab-
+                                                       A
+              √ 1+r2 +r3
+solute value p           . Therefore, since the roots of P have absolute value either p r+1 or
+√ 2+r2 +r3                                                1 (X, L (−t)). In particular, for all
+  p        , the endomorphism P (Φ) acts invertibly on H dR      A
+      1                               −1
+η ∈ HdR (X, LA (−t)), the class P (Φ) η is well-defined. Furthermore, the class
+(72)                  ξ(ω2 , ω3 ) := P (Φ)−1 ξ(P, ω2 , ω3 ) ∈ Hrig
+                                                               1
+                                                                   (W , LA (−t))
+does not depend on the choice of polynomial P . More precisely, replacing P by a polynomial
+P Q satisfying the conditions before the statement of Lemma 3.4, one sees that
+           ρ(P Q, ω2 , ω3 ) = Q(Φ)ρ(P, ω2 , ω3 ),       ξ(P Q, ω2 , ω3 ) = Q(Φ)ξ(P, ω2 , ω3 ).
+  We will now describe (part of) the image of the generalized Gross-Kudla-Schoen cycle
+∆k,`,m under the p-adic Abel-Jacobi map. More precisely, we will describe the restriction of
+the functional AJp (∆k,`,m ) to the summand
+                                                                             2r+3
+(73)           1
+              HdR (X, Lr1 ) ⊗ H 0 (X, ω r2 ⊗ Ω1X ) ⊗ H 0 (X, ω r3 ⊗ Ω1X ) ⊆ HdR   (W ),
+where the inclusion arises from the Künneth decomposition as in (5).
+  Let ιA : E A −→ E r1 denote the natural isomorphism between the varieties E A := Ea1 ×X
+×... ×X Ear1 and E r1 , giving rise to an isomorphism of sheaves between L r1 and LA .
+Theorem 3.8. Let η ⊗ ω2 ⊗ ω3 be any class in (73). Then
+(74)                       AJp (∆k,`,m )(η ⊗ ω2 ⊗ ω3 ) = hι∗A η, ξ(ω2 , ω3 )i,
+where
+                              1              1
+                     h , i : HdR (X, LA ) × HdR (X, LA (−t)) −→ Cp (−1 − r)
+arises from Poincaré duality.
+Remark 3.9. The reader mainly interested in the case (k, `, m) = (2, 2, 2) will notice that
+Theorem 3.8 asserts that the image of the Gross-Kudla-Schoen cycle ∆ 2,2,2 in X 3 under the
+p-adic Abel-Jacobi map satisfies
+(75)                        AJp (∆2,2,2 )(η ⊗ ω2 ⊗ ω3 ) = hη, ξ(ω2 , ω3 )i,
+                                                        1 (X).
+where h , i is the usual Poincaré duality pairing on H dR
+                   A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                    31
+
+3.3. Proof of the formula: Besser’s finite polynomial cohomology. The goal of this
+section is proving Theorem 3.8, and to do that we first set some notation. Let V be a smooth,
+proper, irreducible variety of dimension d over Q p which admits a smooth proper, flat model
+V over Zp . There are syntomic and finite polynomial cohomology groups
+                                        i             i
+                                       Hsyn (V, n) ⊆ Hfp (V, n)
+for every i, n ≥ 0 (cf. e.g. [Bes00] and the references therein). These groups are related to the
+p-adic de Rham cohomology of V by the following diagram (cf. [Bes00, Prop. 2.5 (1-2)]):
+                                                  isyn                  psyn
+(76)      0      / H i−1 (V )/Filn H i−1 (V )            / H i (V, n)          / Filn H i (V )
+                    dR              dR                      syn                        dR
+
+
+
+                                                   ifp
+                                                                        pfp
+          0      / H i−1 (V )/Filn H i−1 (V )            / H i (V, n)          / Filn H i (V )   / 0,
+                    dR              dR                      fp                         dR
+
+in which the rows are exact. In addition there are compatible cycle class maps
+                                                     clfp
+
+
+                                       clsyn
+                                                                        '
+                                i
+                            CH (V)             / H 2i (V, i)          / H 2i (V, i)
+                                                  syn                     fp
+                                                           NNN
+                                                              NNpNsyn
+                                                                  NNN           pfp
+                                                                     NN&     
+                                                      cldR
+                            CHi (V )                                / Fili H 2i (V )
+                                                                            dR
+
+which give rise (by the formalism of e.g. [Ne2, (1.2)]) to the p-adic Abel-Jacobi maps
+                                        2i−1             2i−1                   2d−2i+1
+(77)   AJp : CHi (V )0 −→ ker(psyn ) = HdR   (V )/Fili (HdR   (V )) ≃ Fild−i+1 HdR      (V )∨
+that we already introduced in (65). Besides the definition of AJ p given in (66), Besser proved
+in [Bes00, Theorem 1,2] that the p-adic Abel-Jacobi map may be expressed purely in terms
+of Coleman integration.
+                        aj ∆j be a representative of a class in CHi (V)0 , with aj ∈ Q and
+                     P
+   Namely, let ∆ =
+∆j irreducible, smooth proper subschemes of V over Z p . Besser showed that AJp sends the
+null-homological cycle ∆ to the functional
+                                                          Z        X
+                          d−i+1 2d−2i+1
+(78)        AJp (∆) : Fil      HdR      (V ) −→ Qp , ω 7→     ω :=     aj tr(ι∗j (ω̃)),
+                                                           ∆
+            2d−2i+1
+where ω̃ ∈ Hfp      (V, d−i+1) is a lift of ω under the map p fp appearing in (76), ιj : ∆j ,→ V
+is the natural inclusion and
+                                      2d−2i+1                           ∼
+                                tr : Hfp      (∆j , d − i + 1) −→ Qp
+is the canonical trace isomorphism ([Bes00, Prop. 2.5 (4)]).
+   It is Besser’s formula (78) which we shall apply in order to prove Theorem 3.8. As a final
+piece of notation, let
+                                    i            2d+1−i
+(79)                     h , ifp : Hfp (V, n) × Hfp     (V, d + 1 − n) −→ Qp
+denote the cup product in finite polynomial cohomology described in [Bes00, Prop. 2.5 (4)].
+  We first focus in the particular case (k, `, m) = (2, 2, 2). Set
+                                                         1 (X) −→ Fil1 H 3 (X 2 ),
+                ϕdR,∗ := ι23,dR,∗ − ι2,dR,∗ − ι3,dR,∗ : HdR             dR
+
+                                                            1 (X , 0) −→ H 3 (X 2 , 1)
+                   ϕfp,∗ := ι23,fp ∗ − ι2,fp ∗ − ι3,fp ∗ : Hfp            fp
+to be the maps induced by push-forward by the three embeddings ι 2 , ι3 , ι23 introduced in
+(68) and (69) on de Rham and finite polynomial cohomology, respectively.
+32                                          HENRI DARMON AND VICTOR ROTGER
+
+     By [Bes00, Proposition 2.5 (1) and Lemma 5.1], there is a commutative diagram
+                                                      i1                                p1
+(80)                                    0                   / H 1 (X , 0)                        / H 1 (X)        /0
+                                                                  fp                                dR
+
+                                                                ϕfp,∗                           ϕdR,∗
+                                                                                                      
+                                     2 (X 2 )
+                                   HdR                i2                                p2
+                    0        /                             / H 3 (X 2 , 1)                    / Fil1 H 3 (X 2 )   /0
+                                    1 2
+                                 Fil HdR (X 2 )                   fp                                    dR
+
+with exact rows arising from (76).
+             1 (X , 0) be a preimage of η under p and ω̃ , ω̃ ∈ H 1 (X , 1) be preimages of ω
+  Let η̃ ∈ Hfp                                    1       2   3       fp                         2
+                                                         2 (X 2 , 2) of ω ⊗ ω ∈ Fil2 H 2 (X 2 ).
+and ω3 respectively, so that ω̃2 ⊗ ω̃3 is a preimage in Hfp              2   3        dR
+
+Lemma 3.10. The following equality holds in Q p :
+                            hclfp (∆2,2,2 ), η̃ ⊗ ω̃2 ⊗ ω̃3 ifp = hϕfp ∗ (η̃), ω̃2 ⊗ ω̃3 ifp .
+Proof. The class of the cycle X123 − X12 − X13 − X23 + X1 + X2 + X3 is an integral, smooth
+proper model of ∆2,2,2 in CH2 (X 3 )0 . Hence
+                                                       X
+               hclfp (∆2,2,2 ), η̃ ⊗ ω̃2 ⊗ ω̃3 ifp = −   (−1)|I| trX (ι∗I (η̃ ⊗ ω̃2 ⊗ ω̃3 ))
+                                                                            I
+                                                                            3 (X , 2) −→ Q                              ∼
+where I ranges through the seven non-empty subsets of {1, 2, 3} and tr X : Hfp             p
+is Besser’s trace isomorphism. For I = 123, 12 and 13, it follows from the very definitions
+that the above traces may be recast as the cup-products
+                                  trX (ι∗123 (η̃ ⊗ ω̃2 ⊗ ω̃3 )) = hη̃, (ω̃2 ⊗ ω̃3 )|X23 ifp
+                                   trX (ι∗12 (η̃ ⊗ ω̃2 ⊗ ω̃3 )) = hη̃, (ω̃2 ⊗ ω̃3 )|X2 ifp
+                                   trX (ι∗13 (η̃ ⊗ ω̃2 ⊗ ω̃3 )) = hη̃, (ω̃2 ⊗ ω̃3 )|X3 ifp
+on X , while trX (ι∗I (η̃ ⊗ ω̃2 ⊗ ω̃3 )) vanishes for the remaining four choices of I.
+  On the other hand, the push-forward map ϕ fp ∗ is dual under cup-product (79) to the
+pull-back homomorphism ϕ∗fp = ι∗23,fp − ι∗2,fp − ι∗3,fp : Hfp2 (X 2 , 2) → H 2 (X , 2), and hence
+                                                                            fp
+
+       hϕfp ∗ (η̃), ω̃2 ⊗ ω̃3 ifp = hη̃, (ω̃2 ⊗ ω̃3 )|X23 ifp − hη̃, (ω̃2 ⊗ ω̃3 )|X2 ifp − hη̃, (ω̃2 ⊗ ω̃3 )|X3 ifp .
+This proves the lemma.                                                                                                      
+     Lemma 3.10 combined with (78) yields
+(81)                             AJp (∆2,2,2 )(η ⊗ ω2 ⊗ ω3 ) = hϕfp ∗ (η̃), ω̃2 ⊗ ω̃3 ifp .
+     By the functoriality of [Bes00, (8)], there is another commutative diagram with exact rows
+                                                  i                                 p
+(82)               0        / H 1 (X 2 )              / H 2 (X 2 , 2)                        / Fil2 H 2 (X 2 )     /0
+                                  dR                       fp                                       dR
+
+                                 ϕ∗dR                      ϕ∗fp                                  ϕ∗dR
+                                                                                                 
+                                                  i                             p
+                   0         / H 1 (X)                 / H 2 (X , 2)                    / Fil2 H 2 (X) = 0.
+                                   dR                      fp                                     dR
+
+In light of [Bes00, Def. 2.2 and eq. (6)], a pair
+                        (α, β) ∈ Ω1rig (W2 ) ⊕ Fil2 HdR
+                                                      2
+                                                         (X 2 ) = Ω1rig (W2 ) ⊕ Ω2 (X 2 )
+                                                     2 (X 2 , 2). Since the map p of the upper row
+satisfying dα = P (Φ)(β) gives rise to a class in H fp
+                                                                                       2 (X 2 , 2) may
+of (82) is the projection [α, β] 7→ [β] to the second factor, the class ω̃ 2 ⊗ ω̃3 in Hfp
+be represented by the pair
+                                            (ρ, ω2 ⊗ ω3 ) ∈ Ω1rig (W2 ) ⊕ Ω2 (X 2 ),
+                      A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                    33
+
+where ρ := ρ(P, ω2 , ω3 ) is as in Lemma 3.4. Since Fil 2 HdR
+                                                           2 (X) = 0, the class ϕ∗ (ω̃ ⊗ ω̃ ) has
+                                                                                 fp 2      3
+a preimage in HdR   1 (X) under the map i of the lower row of (82). Such preimage is the class
+                        1 (X), as
+of ξ := ξ(ω2 , ω3 ) ∈ HdR
+(83)                 i(ξ) := [P (Φ)ξ, 0] = [ϕ∗ ρ, 0] = ϕ∗fp (ω̃2 ⊗ ω̃3 ) ∈ Hfp
+                                                                            2
+                                                                               (X , 2).
+  From this we find, as desired, that
+                  hϕfp ∗ (η̃), ω̃2 ⊗ ω̃3 ifp = hη̃, ϕ∗fp (ω̃2 ⊗ ω̃3 )ifp = hη̃, i(ξ)ifp = hη, ξi,
+where the first equality follows from the functoriality of the cup product, the second is (83)
+and the third is a direct consequence of [Bes00, (14)].
+
+   This concludes the proof of Theorem 3.8 in the case where all three weights are equal to 2.
+We turn now to show how a similar approach yields Theorem 3.8 in the remaining cases, that
+is to say, when either (r1 , r2 , r3 ) = (0, r, r) with r > 0 or (r1 , r2 , r3 ) with r3 ≥ r2 ≥ r1 > 0 and
+r3 ≤ r 1 + r 2 .
+   By a slight abuse of notation, let us still denote W the base change of the triple product
+E r1 × E r2 × E r3 to Qp , which recall has dimension r1 + r2 + r3 + 3 = 2r + 3.
+   Let η ∈ HdR   1 (X, L ) ⊂ H r1 +1 (E r1 ) and
+                        r1       dR
+                                      r2 +1 r2                                                   r3 +1 r3
+      1
+ω2 ∈ HdR (X, ω r2 ⊗ Ω1X ) ⊂ Filr2 +1 HdR   (E ),                 1
+                                                           ω3 ∈ HdR (X, ω r3 ⊗ Ω1X ) ⊂ Filr3 +1 HdR   (E )
+be classes as in (73), which we may interchangeably regard either as L ri -valued 1-forms on X
+or as (ri + 1)-forms on E ri . We thus have
+                                                                                   2r+3
+           η ⊗ ω2 ⊗ ω3 ∈ Filr2 +r3 +2 HdR
+                                       3
+                                          (X 3 , Lr1 ⊗ Lr2 ⊗ Lr3 ) ⊂ Filr2 +r3 +2 HdR   (W ).
+  Denote Er the canonical integral, smooth and proper model of E r over Zp . Let
+                 r1 +1 r1              r2 +1 r2                     r3 +1
+           η̃ ∈ Hfp   (E , −t), ω̃2 ∈ Hfp   (E , r2 + 1) and ω̃3 ∈ Hfp    (Er3 , r3 + 1)
+be, respectively, lifts of η, ω2 and ω3 in finite polynomial cohomology, and write η̃ ⊗ ω̃ 2 ⊗ ω̃3 ∈
+  2r+3
+Hfp    (W, r + 2) for their tensor product.
+  Similarly as for ϕBC and ϕABC , write ϕA : E r −→ E r1 , (x; P1 , ..., Pr ) 7→ (x; Pa1 , ..., Par1 ) for
+the natural projection induced by the choice of the subset A of {1, ..., r}.
+Lemma 3.11. We have
+(84)              AJp (∆k,`,m )(η ⊗ ω2 ⊗ ω3 ) = hϕ∗A,fp (η̃), ϕ∗BC,fp (ω̃2 ⊗ ω̃3 )iEr ,fp .
+                                                   P
+Proof. Cycle ∆k,`,m is a linear combination j aj ∆j , where aj ∈ Q and ∆j are irreducible
+subvarieties of W , all of which are the image of E r under a closed embedding ιj : E r ,→ W ;
+see Definitions 3.2 and 3.3
+                          P for more     details. These embeddings lift in a natural way to proper
+maps ιj : Er ,→ W, and       aj ιj (Er ) is thus a representative of ∆k,`,m in CHr+2 (W)0 .
+   By Besser’s formula (78),
+                                                                          X
+(85) AJp (∆k,`,m )(η ⊗ ω2 ⊗ ω3 ) = hclfp (∆k,`,m ), η̃ ⊗ ω̃2 ⊗ ω̃3 ifp =      aj trEr (ι∗j (η̃ ⊗ ω̃2 ⊗ ω̃3 )).
+                                                                                 j
+
+  If k = 2 (and thus ` = m ≥ 3), according to Definition 3.2 then half of the terms in the above
+sum correspond to the image of {o} × ϕ BC (E r ) under some automorphism of E r1 × E r2 × E r3
+that acts as the identity on the copy of E r1 . Here o is some choice of a base point in E r1 .
+For such embeddings, it follows that ι ∗j (η̃ ⊗ ω̃2 ⊗ ω̃3 )) vanishes, and hence those terms do not
+contribute to the sum in (85).
+  In view of this and Definition 3.3, for any balanced triple (k, `, m) 6= (2, 2, 2) we conclude
+that AJp (∆k,`,m )(η ⊗ ω2 ⊗ ω3 ) is equal to a linear combination of the form
+                    X
+(86)                    aα1 ,α2 ,α3 trEr (ϕ∗ABC ◦ (α1 ⊗ α2 ⊗ α3 )∗ (η̃ ⊗ ω̃2 ⊗ ω̃3 ))
+34                                  HENRI DARMON AND VICTOR ROTGER
+
+where αi are automorphisms of Eri for i = 1, 2, 3 and the scalars aα1 ,α2 ,α3 are each equal to
+± 21n for some n ≥ 0. We refer to §3.1 for the explicit description of the automorphisms α i
+                                                                   ri +1 ri
+that intervene here; all them satisfy α ∗i (ω̃) = ±ω̃ ∈ Hfp             (E , ·) for the classes in play, so
+            ∗                         ∗                                 ∗
+that trEr (ϕABC ◦ (α1 ⊗ α2 ⊗ α3 ) (η̃ ⊗ ω̃2 ⊗ ω̃3 )) = ±trEr (ϕABC (η̃ ⊗ ω̃2 ⊗ ω̃3 )). It is a simple
+combinatorial exercise to check that the terms in (86) sum up to tr Er (ϕ∗ABC,fp (η̃ ⊗ ω̃2 ⊗ ω̃3 )).
+   By Besser’s definitions of trace and cup-product in finite polynomial cohomology, it directly
+follows that trEr (ϕ∗ABC,fp (η̃ ⊗ ω̃2 ⊗ ω̃3 )) = hϕ∗A,fp (η̃), ϕ∗BC,fp (ω̃2 ⊗ ω̃3 )iEr ,fp .             
+                                                                                         r2 +r3 +2 r
+     The class ϕ∗BC,dR (ω2 ⊗ω3 ) in de Rham cohomology vanishes, because it lies in  r HdR       (E )
+                                          j
+and the idempotent r annihilates HdR        (E r ) for all j 6= r +1; note that indeed r2 +r2 +2 6= r +1
+because the triplet (k, `, m) is balanced. Hence the pair (ϕ ∗BC (ρ(P, ω2 , ω3 )), 0) is a represen-
+tative of ϕ∗BC,fp (ω̃2 ⊗ ω̃3 ) in finite polynomial cohomology.
+    It follows exactly as in (83) that P (Φ) −1 ϕ∗BC (ρ(P, ω2 , ω3 )) is a preimage of the class
+  ∗
+ϕBC,fp (ω̃2 ⊗ ω̃3 ) under Besser’s map
+                 r2 +r3 +1 r                  r2 +r3 +1 r        r2 +r3 +2 r
+            i : HdR       (E )/Filr2 +r3 +2 (HdR       (E )) −→ Hfp       (E , r2 + r3 + 2).
+It thus again follows that
+(87)       hϕ∗A,fp (η̃), ϕ∗BC,fp (ω̃2 ⊗ ω̃3 )iE r ,fp = hϕ∗A,dR (η), P (Φ)−1 ϕ∗BC (ρ(P, ω2 , ω3 ))iE r ,dR .
+   Pulling-back under the natural immersion E r1 ,→ E r induced by A, we obtain that the
+right-hand side of (87) equals
+                        hι∗A η, P (Φ)−1 ξ(P, ω2 , ω3 )iE r1 ,dR = hι∗A η, ξ(ω2 , ω3 )iE r1 ,dR .
+Theorem 3.8 follows.
+
+3.4. A formula for AJp (∆k,`,m ) in terms of p-adic modular forms. Let g and h denote
+modular forms of weights ` = r2 + 2 and m = r3 + 2, respectively, on Γ1 (N ). For the
+calculations of this section, it is only necessary to assume that g and h are eigenvectors for
+the Hecke operator Tp ; in particular it will not be assumed that they are new of level N . Let
+αg and βg be the roots of the Hasse polynomial x 2 − ap (g)x + χg (p)p`−1 for g at p, ordered in
+such a way that ordp (αg ) ≤ ordp (βg ), and let
+(88)                                 gα = g − βg V g,           gβ = g − αg V g
+denote the respective p-stabilisations, on which the U p operator acts with eigenvalue αg and
+βg respectively. Similar notational conventions are adopted for h. Note that with these
+conventions, when g is ordinary then g α is the ordinary p-stabilisation of g that was previously
+denoted g (p) , but that no ordinariness assumption on g or h are made in this section.
+   Let f denote a modular form of weight k = r 1 + 2 on Γ1 (N ) which is an eigenvector for
+all the good Hecke operators, and is ordinary at p (but is not necessarily new of level N ) and
+              1 (X , L )u-r be the unique lift to the unit root subspace of the cohomology
+let ηfu-r ∈ Hpar    Cp    r1
+class in H 1 (XKf , ω −r1 ) attached to f as in Corollary 2.13. Recall that e ord denotes Hida’s
+ordinary projector. Let ef ∗ denote the commuting idempotent in the Hecke algebra giving
+the projection onto the f ∗ -isotypic part, where f ∗ is the modular form which is dual to f ,
+obtained by applying complex conjugation to the Fourier coefficients of f , and set
+                                                 ef ∗ ,ord = ef ∗ eord .
+     The goal of the next two theorems is to give an explicit expression for the class ξ(ω g , ωh ) ∈
+ 1 (X, L ) that appears in Theorem 3.8, or rather, its image under e ∗
+HdR     r1                                                          f ,ord .
+   Theorem 3.12 below treats the setting where k = ` = m = 2, in which the cycle ∆ 2,2,2
+is simply the Gross-Kudla-Schoen modified diagonal on X 1 (N )3 . This setting is notationally
+                     A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                      35
+
+simpler and therefore easier to follow, but already brings out the key ideas needed to handle
+the general case, which will then be treated in Theorem 3.13.
+
+Theorem 3.12. Suppose that k = ` = m = 2, so that ξ(ω g , ωh ) can be viewed as an overcon-
+vergent modular form of weight 2. The ordinary projection e f ∗ ,ord (ξ(ωg , ωh )) is equal to the
+classical modular form
+                                                       E1 (f )
+                        ef ∗ ,ord (ξ(ωg , ωh )) = −              ef ∗ ,ord (d−1 g [p] × h),
+                                                      E(f, g, h)
+where E1 (f ) and E(f, g, h) are defined as in Theorem 1.3 of the introduction.
+
+Proof. Let
+
+             Pg (x) = 1 − ap (g)p−1 x + χg (p)p−1 x2 = (1 − αg p−1 x)(1 − βg p−1 x),
+             Ph (x) = 1 − ap (h)p−1 x + χh (p)p−1 x2 = (1 − αh p−1 x)(1 − βh p−1 x),
+
+denote the Hasse polynomials attached to the forms g and h, and set
+
+         Pgh (x) = (1 − αg αh p−2 x)(1 − αg βh p−2 x)(1 − βg αh p−2 x)(1 − βg βh p−2 x),
+         Pαα (x) = (1 − αg αh p−2 x)−1 Pgh (x),                    Pαβ (x) = (1 − αg βh p−2 x)−1 Pgh (x),
+         Pβα (x) = (1 − βg αh p−2 x)−1 Pgh (x),                   Pββ (x) = (1 − βg βh p−2 x)−1 Pgh (x).
+
+Recall that Φ2 and Φ3 denote the canonical lift Φ of frobenius operating on the Hasse domains,
+viewed as contained in the second and third factors respectively of the three-fold of X 1 (N )3 .
+The operator Φ is related to the V operator on (nearly) overconvergent p-adic modular forms
+of weight two by the rule Φ = pV . After writing Φ 2 = pV2 and Φ3 = pV3 , the operator
+Φ := Φ2 Φ3 = p2 V2 V3 corresponds to the the canonical lift of Frobenius acting on Ω 2rig (W ×W ).
+   The operators Pg (Φ2 ) and Ph (Φ3 ) annihilate the classes of ωg and ωh in Hrig 1 (W ). More
+                                                                                           
+precisely, as in (19),
+
+(89)            Pg (Φ2 )ωg = (1 − ap (g)V2 + χg (p)pV22 )g(q) = g [p] (q) = dG[p] ,
+                Ph (Φ3 )ωh = (1 − ap (h)V3 + χh (p)pV32 )h(q) = h[p] (q) = dH [p] ,
+
+where G[p] and H [p] ∈ OW are given by
+                                      X an (g)                                        X an (h)
+             G[p] (q) = d−1 g [p] =              qn ,        H [p] (q) = d−1 h[p] =               qn.
+                                            n                                                 n
+                                      p-n                                              p-n
+
+These primitives are overconvergent modular forms of level N and weight 0. Note that they
+have been normalized so that they vanish at the cusp ∞.
+   Equation (89) indicates that Pgh (Φ2 Φ3 ) annihilates the class of the rigid differential ω g ωh
+     2 (X (N )2 ) . Hence, there is a rigid one-form ρ(P , ω , ω ) satisfying
+in HdR    1                                              gh   g  h
+
+(90)                              dρ(Pgh , ωg , ωh ) = Pgh (Φ2 Φ3 )ωg ωh .
+
+To describe ρ(Pgh , ωg , ωh ) more explicitly, we exploit the identities
+
+              g = (αg − βg )−1 (αg gα − βg gβ ),             h = (αh − βh )−1 (αh hα − βh hβ )
+
+expressing g and h as linear combinations of the stabilisations appearing in (88). This leads
+to an expression for the right-hand side of (90) as a sum of four contributions:
+
+                             Pgh (Φ2 Φ3 )ωg ωh = θαα − θαβ − θβα + θββ ,
+36                                   HENRI DARMON AND VICTOR ROTGER
+
+where θαα is the rigid two-form on W × W (for a suitable  > 0 given by
+                                      αg αh Pgh (Φ2 Φ3 )(gα ⊗ hα )
+                         θαα =
+                                         (αg − βg )(αh − βh )
+                                      αg αh Pαα (Φ2 Φ3 )(1 − αg αh V2 V3 )(gα ⊗ hα )
+(91)                             =                                                   ,
+                                                  (αg − βg )(αh − βh )
+and θαβ (resp. θβα and θββ ) are defined in the identical way, after replacing (α g , αh ) by
+(αg , βh ) (resp. (βg , αh ), (βg , βh ).) We next observe that
+                                         1                                                    
+ (1 − αg αh V2 V3 )(gα ⊗ hα ) =             (1 − αg V2 )(1 + αh V3 ) + (1 + αg V2 )(1 − αh V3 ) gα ⊗ hα
+                                         2
+                                         1  [p]                                         
+(92)                               =        g ⊗ (1 + αh V3 )hα + (1 + αg V2 )gα ⊗ h[p] .
+                                         2
+It follows from (91) and (92), together with the fact that dΦ = Φd, that
+(93)                                                θαα = dραα ,
+where
+                    αg αh Pαα (Φ2 Φ3 ) G[p] ⊗ (1 + αh V3 )hα − (1 + αg V2 )gα ⊗ H [p]
+                                                                                      
+(94)        ραα = −                                                                     .
+                                          2(αg − βg )(αh − βh )
+The rigid one-forms ραβ , ρβα , and ρββ are defined similarly, after replacing (α g , αh ) as before
+by (αg , βh ), (βg , αh ), and (βg , βh ) respectively, and the differential one-form ρ(P gh , ωg , ωh ) of
+(90) can be chosen to be
+                                 ρ(Pgh , ωg , ωh ) = ραα − ραβ − ρβα + ρββ .
+Let ξαα , ξαβ , ξβα , and ξββ denote the pullbacks to the modified diagonal of the one-forms ρ αα ,
+ραβ , ρβα , and ρββ , so that for example
+                          αg αh Pαα (Φ) G[p] × (1 + αh V )hα − (1 + αg V )gα × H [p]
+                                                                                     
+(95)            ξαα = −                                                                .
+                                             2(αg − βg )(αh − βh )
+                                             1 (W )) with eigenvalue pα−1 = β , and hence, by
+The frobenius operator Φ acts on ef ∗ ,ord (Hrig                           f∗        f
+Lemma 2.17,
+                                                     
+                                  [p]
+              ef ,ord Pαα (Φ)(G (1 + αh V )hα )
+                 ∗                                      = Pαα (βf )ef ∗ ,ord (G[p] h),
+                                                     
+              ef ∗ ,ord Pαα (Φ)((1 + αg V )gα H [p] )   = Pαα (βf )ef ∗ ,ord (gH [p] ).
+Invoking Lemma 2.17 once again, we find
+             ef ∗ ,ord (gH [p] ) = ef ∗ ,ord (g [p] H [p] ) = −ef ∗ ,ord (G[p] h[p] ) = −ef ∗ ,ord (G[p] h),
+where the second equality follows by noting that g [p] H [p] + G[p] h[p] = d(G[p] H [p] ) is exact and
+invoking the fact that exact rigid differentials are in the kernel of the ordinary projection.
+Hence applying the projector ef ∗ ,ord to (95) gives
+                                                    αg αh Pαα (βf )
+(96)                      ef ∗ ,ord (ξαα ) = −                        ef ∗ ,ord (G[p] h).
+                                                 (αg − βg )(αh − βh )
+The definition of ξ(ωg , ωh ) given in (72) therefore implies that
+                                                          0     0     0     0
+(97)                           ef ∗ ,ord (ξ(ωg , ωh )) = ξαα − ξαβ − ξβα + ξββ ,
+where
+                                               αg αh
+                     0
+                    ξαα =−                                              ef ∗ ,ord (G[p] h),
+                                (αg − βg )(αh − βh )(1 − αg αh βf p−2 )
+                       A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                           37
+
+and likewise for the other three contributions to e f ∗ ,ord (ξ(ωg , ωh )). A direct calculation reveals
+that
+                                                  αg
+          0
+         ξαα      0
+              − ξαβ   = −                                                      ef ∗ ,ord (G[p] h),
+                            (αg − βg )(1 − αg αh βf p−2 )(1 − αg βh βf p−2 )
+          0       0                               βg
+         ξβα  − ξββ   = −                                                      ef ∗ ,ord (G[p] h).
+                            (αg − βg )(1 − βg αh βf p−2 )(1 − βg βh βf p−2 )
+Subtracting these two equations and invoking (97) gives
+                                                    (1 − χf (p)−1 βf2 p−2 )
+                 e   f ∗ ,ord   (ξ(ωg , ωh )) = −                             ef ∗ ,ord (d−1 g [p] × h),
+                                                          E(f, g, h)
+as was to be shown.                                                                                                
+   We now turn to the case of general weights (k, `, m). Before stating the result, recall that
+the triple of weights (k, `, m) is still assumed to be balanced, and that, following notations
+similar to those in the proof of Proposition 2.9, we have set
+                k = ` + m − 2 − 2t,                with t ≥ 0,            c = (k + ` + m − 2)/2,
+                                               1 (X, L (−t)).
+so that ξ(ωg , ωh ) corresponds to a class in HdR     r1
+
+Theorem 3.13. The projection ef ∗ ,ord (ξ(ωg , ωh )) is represented by the classical modular form
+                                                     (−1)t · t! · E1 (f )
+                  ef ∗ ,ord (ξ(ωg , ωh )) = −                             ef ∗ ,ord (d−1−t g [p] × h),
+                                                        E(f, g, h)
+where E1 (f ) and E(f, g, h) are defined as in Theorem 1.3 of the introduction.
+Proof. Let ωg and ωh be the global sections of ω r2 ⊗ Ω1X and of ω r3 ⊗ Ω1X over X = X1 (N )
+attached to g and h respectively. Since these sections are algebraic, they can also be viewed
+as Lr2 and Lr3 -valued rigid differentials on W /Cp for any  > 0. Modifying slightly the
+definitions of the weight two setting, we define
+  Pg (x) = (1 − αg p−r2 −1 x)(1 − βg p−r2 −1 x),                  Ph (x) = (1 − αh p−r3 −1 x)(1 − βh p−r3 −1 x).
+                                                                            1 (W , L ) and
+The operators Pg (Φ2 ) and Ph (Φ3 ) annihilate the classes of ωg and ωh in Hrig    r2
+ 1
+Hrig (W , Lr3 ) respectively, and in terms of q-expansions,
+
+                                 Pg (Φ2 )(ωg ) = (1 − αg V2 )(1 − βg V2 )g = g [p] ,
+                                 Ph (Φ3 )(ωh ) = (1 − αh V3 )(1 − βh V3 )g = h[p] .
+Let G[p] and H [p] denote the overconvergent sections of L r2 and Lr3 satisfying
+                                        ∇G[p] = ωg[p] ,           ∇H [p] = ωh[p] .
+The q-expansions of these sections are given in equation (47) of Section 2.4, i.e.,
+                                   r2           
+                      [p]
+                                 X
+                                          j     r2 −1−j [p]    r2 −j j
+(98)                 G (q) =          (−1) j!      d    g (q)ωcan    ηcan ,
+                                                j
+                                  j=0
+                                   r3           
+                                 X              r3 −1−j [p]
+(99)                H [p] (q) =       (−1)j j!     d            r3 −j j
+                                                        h (q)ωcan    ηcan .
+                                                j
+                                             j=0
+
+As in the weight two setting, we let
+        Pgh (x) = (1 − αg αh p−r2 −r3 −2 x)(1 − αg βh p−r2 −r3 −2 x)(1 − βg αh p−r2 −r3 −2 x)
+                                 ×(1 − βg βh p−r2 −r3 −2 x).
+38                               HENRI DARMON AND VICTOR ROTGER
+
+Just as before, the operator Pgh (Φ2 Φ3 ) annihilates the class of ωg ⊗ωh in the hypercohomology
+group HdR2 (X (N )2 , L ⊗ L ), so there is a rigid L ⊗ L -valued one-form ρ(P , ω , ω ) on
+              1        r2    r3                        r2    r3                      gh  g h
+W × W satisfying
+(100)                            ∇ρ(Pgh , ωg , ωh ) = Pgh (Φ2 Φ3 )ωg ωh .
+  The same manipulations as in the weight two case allow us to express ρ(P gh , ωg , ωh ) as a
+sum of four contributions:
+                              ρ(Pgh , ωg , ωh ) = ραα − ραβ − ρβα + ρββ ,
+where for instance
+                   αg αh Pαα (Φ2 Φ3 ) G[p] ⊗ (1 + αh V3 )ωhα − (1 + αg V2 )ωgα ⊗ H [p]
+                                                                                       
+           ραα = −                                                                       ,
+                                           2(αg − βg )(αh − βh )
+just as in equations (93) and (94). Let ξ αα , ξαβ , ξβα , and ξββ denote the pullbacks to the
+generalised diagonal cycle E r of the one-forms ραα , ραβ , ρβα , and ρββ via the map ϕBC , viewed
+as overconvergent sections of LA (−t) ⊗ Ω1 on W . Write
+                              n-oc                            oc
+                             ξαα   = Splu-r (ξαα ),          ξαα = Πoc  n-oc
+                                                                    N (ξαα ),
+for the nearly overconvergent and overconvergent modular forms attached to ξ αα . By equation
+(44) defining Πoc                         oc
+                N , the elements ξαα and ξαα have the same image in cohomology, and therefore
+the following equality holds in HdR1 (X, L (−t)):
+                                          r1
+                                                    oc    oc    oc    oc
+                               ξ(Pgh , ωg , ωh ) = ξαα − ξαβ − ξβα + ξββ .
+Applying ef ∗ ,ord to this equation and invoking Lemma 2.7 gives
+                                                              n-oc    n-oc    n-oc    n-oc
+                  ef ∗ ,ord (ξ(Pgh , ωg , ωh )) = ef ∗ ,ord (ξαα   − ξαβ   − ξβα   + ξββ   ),
+and the same argument as in the proof of Proposition 2.9 (cf. in particular equation (49))
+shows that
+                   αg αh Pαα (Φ) d−1−t g [p] × (1 + αh V )hα − (1 + αg V )gα × d−1−t h[p]
+                                                                                          
+            n-oc
+(101)      ξαα = −                                                                          .
+                                             2(αg − βg )(αh − βh )
+By exactly the same reasoning used to obtain (96) in the weight two case, and using the fact
+                           1 (X, L (−t))) with eigenvalue pr1 +1+t α−1 = β pt , we find after
+that Φ acts on ef ∗ ,ord (HdR       r1                              f∗    f
+applying the projector ef ∗ ,ord to (101) that
+                           n-oc       (−1)t · t! · αg αh Pαα (βf pt )
+(102)          ef ∗ ,ord (ξαα   )=−                                   ef ∗ ,ord (d−1−t g [p] × h).
+                                        (αg − βg )(αh − βh )
+It now follows from (72) that
+                                                       0     0     0     0
+(103)                       ef ∗ ,ord (ξ(ωg , ωh )) = ξαα − ξαβ − ξβα + ξββ ,
+where
+                                   (−1)t t!αg αh
+               0
+              ξαα =−                                          ef ∗ ,ord (d−1−t g [p] × h),
+                      (αg − βg )(αh − βh )(1 − αg αh βf p−c )
+and likewise for the other three contributions to e f ∗ ,ord (ξ(ωg , ωh )). The result now follows
+from a simple direct calculation, as in the conclusion of the proof of Theorem 3.12.            
+  We can now conclude this section with a (partial) formula for the image of the generalised
+Gross-Kudla Schoen cycle ∆k,`,m under the p-adic Abel-Jacobi map.
+Theorem 3.14. With notations as in the statement of Theorems 3.12 and 3.13,
+                                                  t! · E1 (f ) u-r −1−t [p]
+            AJp (∆k,`,m )(ηfu-r ωg ωh ) = (−1)t+1             hη , d   g × hi,
+                                                  E(f, g, h) f
+                 1 (X, L )u-r [π ∗ ].
+for all ηfu-r ∈ HdR     r1      f
+                    A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                              39
+
+Proof. Assume first that (k, `, m) = (2, 2, 2). By Proposition 2.3, the class η fu-r is orthogonal
+to the kernel of ef ∗ ,ord , and hence
+                            hηfu-r , ξ(ωg , ωh )i = hηfu-r , ef ∗ ,ord ξ(ωg , ωh )i.
+Theorem 3.14 therefore follows from Theorem 3.12. The case of general weights (k, `, m)
+follows from an identical argument using Theorem 3.13 instead of Theorem 3.12.        
+
+                    4. Garrett-Rankin triple product L-functions
+4.1. Classical L-functions. As in the introduction, let
+                      f ∈ Sk (Nf , χf ),     g ∈ S` (Ng , χg ),       h ∈ Sm (Nh , χh )
+be a triplet of normalized primitive cuspidal eigenforms such that χ f · χg · χh = 1, and let
+                      Qf,g,h = Qf · Qg · Qh = Q({an (f ), an (g), an (h)}n≥1 )
+denote the field generated by the fourier coefficients of f , g and h. Write also N = lcm(N f , Ng , Nh ).
+  The Garrett-Rankin triple product L-function L(f, g, h; s) is defined by an Euler product
+                                             Y
+                             L(f, g, h; s) =     L(p) (f, g, h; p−s )−1 ,
+                                                   p
+
+where, for p - N the local factor L(p) (f, g, h; T ) is the degree 8 polynomial
+(104)           L(p) (f, g, h; T ) = (1 − αf,p αg,p αh,p T ) × (1 − αf,p αg,p βh,p T )
+                                     ×(1 − αf,p βg,p αh,p T ) × (1 − αf,p βg,p βh,p T )
+                                     ×(1 − βf,p αg,p αh,p T ) × (1 − βf,p αg,p βh,p T )
+                                     ×(1 − βf,p βg,p αh,p T ) × (1 − βf,p βg,p βh,p T ).
+Piatetski-Shapiro and Rallis have given a precise recipe [PSR] for the local Euler factors
+L(p) (f, g, h; s) at the bad primes p | N and have shown that there exists an archimedean
+factor L(∞) (f, g, h; s) for which the completed L-function
+                            Λ(f, g, h; s) = L(f, g, h; s) · L(∞) (f, g, h; s)
+satisfies the functional equation
+(105)                 Λ(f, g, h; s) = ε(f, g, h)Λ(f, g, h; k + ` + m − 2 − s),
+where ε(f, g, h) ∈ {±1}. The sign in this functional equation determines the parity of the
+order of vanishing of L(f, g, h, s) at the center of symmetry
+                                                  k+`+m−2
+(106)                               c = cf,g,h =                  ,
+                                                        2
+at which there is no pole (cf. [PSR, Theorem 5.2]). The sign ε(f, g, h) can be expressed as a
+product                                           Y
+                                     ε(f, g, h) =    εq (f, g, h)
+                                                        q
+of local root numbers εq (f, g, h) ∈ {±1} indexed by the places q ≤ ∞ of Q. As already
+anticipated in the introduction, we assume throughout that ε q (f, g, h) = +1 for all finite
+primes. According to e. g. [Pr90] and the references therein, we then have
+                                            (
+                                              −1 if (k, `, m) are balanced.
+(107)           ε(f, g, h) = ε∞ (f, g, h) =
+                                              +1 if (k, `, m) are unbalanced.
+  We now recall a fundamental result which relates the central critical value of L(f, g, h, s)
+to certain trilinear period integrals. For this, assume that (k, `, m) is unbalanced, namely
+(without loss of generality, by eventually permuting f , g and h), that k = ` + m + 2t with
+40                                 HENRI DARMON AND VICTOR ROTGER
+
+t ≥ 0. Recall also the Shimura-Maass operators δ ` defined in §2.3 and the space Sk (N )[πf ]
+introduced in §2.5.
+   For any eigenform φ ∈ Sk (N ) with character χ (not necessarily new at N ), we write φ ∗ for
+the dual form obtained by twisting φ by the character χ −1 . The eigenform φ∗ has nebentype
+character χ−1 , and its Hecke eigenvalues are complex conjugate to the Hecke eigenvalues
+attached to φ.
+Definition 4.1. Assume that k = ` + m + 2t with t ≥ 0. The trilinear period attached to
+                    (f˘, ğ, h̆) ∈ Sk (N )[πf ] × S` (N )[πg ] × Sm (N )[πh ]
+is the expression
+                                           ˘ ğ, h̆) := (f˘∗ , δ t ğ × h̆)N .
+                                         I(f,                   `
+
+   One of the main results of M. Harris and S. Kudla [HaKu], conjectured by H. Jacquet and
+refined recently by A. Ichino [I] and T. C. Watson [Wa] is:
+Theorem 4.2. Let (f, g, h) be a triple of modular forms of unbalanced weights (k, `, m) with
+k = ` + m + 2t and t ≥ 0. Then there exist
+      • holomorphic modular forms f˘ ∈ Sk (N )[πf ], ğ ∈ S` (N )[πg ], and h̆ ∈ Sm (N )[πh ],
+      • for each prime q | N ∞, a constant Cq ∈ Qf,g,h which depends only on the local
+        components at q of the vectors f,˘ ğ and h̆ in the admissible representations of GL 2 (Qq )
+        associated to πf , πg and πh ;
+such that
+                             Q
+                               q|N ∞ Cq
+(108)                                    · L(f, g, h, c) = |I(f˘, ğ, h̆)|2 .
+                                 π 2k
+Furthermore, there is a choice of (f˘, ğ, h̆) for which the constants Cq are all non-zero.
+Remark 4.3. If Nf = Ng = Nh = N , then the space Sk (N )[πf ] is one-dimensional, and
+likewise for g and h. In that case there is only one choice (up to scaling) for the vectors
+ ˘ ğ and h̆. Otherwise, the triplet (f˘, ğ, h̆) has to be chosen more carefully: see [GrPr] and
+f,
+[DiNy] for explicit recipes when at least one of π f , πg or πh is not supercuspidal at the primes
+q | gcd(Nf , Ng , Nh ). It could be tempting to choose f,    ˘ ğ and h̆ to be the new vectors in
+Sk (Nf ), S` (Ng ) and Sm (Nh ) attached to f , g and h respectively, but such a choice may not
+always be suitable. For example, if there is a prime q dividing N f but not Ng or Nh , then
+Cq = 0 for this choice of test vectors.
+4.2. p-adic L-functions. Let Q̄ denote the algebraic closure of Q in C and fix throughout
+an odd prime p - N , an algebraic closure Q̄p of Qp and an embedding ιp : Q̄ ,→ Q̄p . Let
+ordp : Q̄×
+         p → Q be the valuation on Q̄p normalized so that ordp (p) = 1.
+   Fix a triple (f, g, h) of newforms and keep the notations of the previous section. As before
+we assume that χf χg χh = 1, εq (f, g, h) = +1 for all finite primes q | N , and the triple (k, `, m)
+of weights is unbalanced.
+   Let f˘ ∈ Sk (N ; Kf )[πf ], ğ ∈ S` (N ; Kg )[πg ] and h̆ ∈ Sm (N ; Kh )[πh ] be test vectors for
+which the local constants Cq of Theorem 4.2 are non-zero and the central critical value of
+L(πf , πg , πh , s) is (up to elementary non-zero fudge factors) equal to the square of I( f˘, ğ, h̆).
+   Assume in addition that f , g and h are ordinary with respect to ι p and let
+             f̆ = (Λf , Ωf , Ωf,cl , f̆ ),   ğ = (Λg , Ωg , Ωg,cl , ğ),    h̆ = (Λh , Ωh , Ωh,cl , h̆)
+                                                                              ˘ ğ and h̆ in weights
+be the Hida families of (not necessarily new) forms on Γ 1 (N ) interpolating f,
+k, ` and m respectively, as described in (58). Adapting the notations of the introduction, we
+write
+                             Σ := {(x, y, z) ∈ Ωf,cl × Ωg,cl × Ωh,cl },
+                     A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                  41
+
+and set
+              Σf = {(x, y, z) ∈ Σ,               such that 2t := κ(x) − κ(y) − κ(z) ≥ 0},
+             Σbal = {(x, y, z) ∈ Σ,              such that (κ(x), κ(y), κ(z)) is balanced.}.
+  For each (x, y, z) ∈ Σf , we may consider the algebraic number
+                                                       I(f˘x , ğy , h̆z )
+                                    J(f˘x , ğy , h̆z ) :=                 ∈ Q̄,
+                                                        (fx∗ , fx∗ )N
+which we view in Cp via ιp . In light of the discussion in the previous section, our approach
+to defining the p-adic L-function attached to π f ⊗ πg ⊗ πh will be to interpolate (suitable
+multiples of) the ratios J(f˘x , ğy , h̆z ) as (x, y, z) ranges over Σf . In order to do this, we let
+φ := eord (d• ğ[p] × h̆) be the ordinary family of modular forms attached to ğ and h̆ following
+the recipe in Proposition 2.18.
+   Furthermore, define the Hida family f̆ ∗ = f̆ ⊗ χ−1                           ˘∗ ˘ ∗
+                                                           f ; note that (f )x = (fx ) for all x ∈ Ωf,cl .
+Recall that according to the notations settled in §2.6, a classical point corresponds to a
+character of the form γ 7→ γ k for some k ∈ Z≥2 . We warn the reader that the equality
+(f˘∗ )x = (f˘x )∗ does not hold true for arithmetic points corresponding to characters γ 7→ ψ(γ)γ k
+for some Dirichlet character ψ of non-trivial p-power conductor.
+Definition 4.4. The Garrett-Rankin triple product p-adic L-function attached to the triple
+(f̆ , ğ, h̆) of Λ-adic modular forms is the element
+                  Lp f (f̆ , ğ, h̆) := J(f̆ ∗ , eord (d• ğ[p] × h̆)) ∈ Λ0f ⊗Λ (Λg ⊗ Λh ⊗ Λ)
+attached to the families f̆ and φ = eord (d• ğ[p] × h̆) following the notations of Lemma 2.19.
+Remark 4.5. The definition of Lp f (f̆ , ğ, h̆) depends not just on the p-adic families of automor-
+phic representations interpolating π f , πg , and πh , but also on the choice of a triple (f˘, ğ, h̆)
+of test vectors in these automorphic representations. Note also that while
+                                        Lp f (f̆ , ğ, h̆) = Lp f (f̆ , h̆, ğ),
+the Λ-adic family f̆ plays an essentially different role from the other two in the definition of
+Lp f (f̆ , ğ, h̆). There are thus three a priori distinct p-adic L-functions attached to ( f̆ , ğ, h̆),
+namely, Lp f (f̆ , ğ, h̆), Lp g (f̆ , ğ, h̆) := Lp g (ğ, f̆ , h̆), and Lp h (f̆ , ğ, h̆).
+  Any element L ∈ Λ0f ⊗Λ (Λg ⊗ Λh ⊗ Λ) as in Definition 4.4 has poles at (x, y, z) for
+only finitely many x ∈ Ωf , and hence is completely determined by its values at the points of
+Ωf,cl ×Ω (Ωg,cl ×Ωh,cl ×Ω) where it is defined. Furthermore, it is always defined at (x, y, z) when
+x belongs to Ωf,cl . By definition, for all (x, y, z) ∈ Σf , after setting κ(x) = κ(y) + κ(z) + 2t,
+                                                             ∗(p)                      [p]
+                                                         (f˘x       , eord (dt ğy × h̆z ))N,p
+(109)                    Lp f (f̆ , ğ, h̆)(x, y, z) =                   ∗(p)      ∗(p)
+                                                                                                    .
+                                                                    (fx         , fx         )N,p
+In particular, the special value Lp f (f̆ , ğ, h̆)(x, y, z) is algebraic and belongs to the field K
+generated by αfx and by the fourier coefficients of f˘x , ğy and h̆z .
+  The following proposition supplements (109) with a formula for the p-adic special value
+Lp f (f̆ , ğ, h̆) at a point (x, y, z) ∈ Σbal .
+Proposition 4.6. For all (x, y, z) ∈ Σ bal , let (f, g, h) := (fx , gy , hz ) and define (k, `, m, t) by
+setting
+                 (k, `, m) = (κ(x), κ(y), κ(z)),               k = ` + m − 2 − 2t.
+Then
+                Lp f (f̆ , ğ, h̆)(x, y, z) = E0 (f )−1 hηfu-r
+                                                           ˘ , eord (d
+                                                                       −1−t [p]
+                                                                           ğy × h̆z )i,
+                                                                     x
+42                                    HENRI DARMON AND VICTOR ROTGER
+
+where
+        • E0 (f ) is the local factor given in (7);
+        • ηfu-r      1            u-r is the unique lift to the unit root subspace of the cohomology
+            ˘x ∈ Hpar (XCp , Lr )
+          class in H 1 (XK , ω −r ) attached to f˘∗ as in Corollary 2.13.
+                             fx                    x
+                                            t  [p]
+        • the classical modular form eord (d ğy × h̆z ) on Γ1 (N ) ∩ Γ0 (p) is viewed as a class in
+          H 0 (W , Lr ⊗ Ω1X ) ⊂ Hpar
+                                  1 (X , L );
+                                      Cp    r
+                                                     1 (X , L ).
+        • h , iX denotes the Poincaré duality on Hpar     Cp   r
+
+Proof. Let efx∗ denote the idempotent attached to the eigenform f x∗ , set
+
+                                           φ(p)                t [p]
+                                            xyz := efx∗ ,ord (d gy × hz ),
+
+and let φxyz ∈ Sk (N ; Cp )[πfx∗ ] be the classical modular form whose p-ordinary stabilisation is
+             (p)
+equal to φxyz . The definition of Lp f (f̆ , ğ, h̆), in view of the last equality in equation (61) of
+Lemma 2.19, implies that, for all (x, y, z) ∈ Σ f ∪ Σbal ,
+
+(110)                                  Lp f (f̆ , ğ, h̆)(x, y, z) = hηf˘x , φxyz i.
+
+Since φxyz belongs to Filr+1 Hpar1 (X , L ), we can also express this identity in terms of the
+                                       Cp   r
+                      1                                                 1 (X , L ) under the unit
+Poincaré pairing on Hpar (XCp , Lr ) by replacing ηf˘x by its lift to Hpar Cp  r
+root splitting:
+(111)                                  Lp f (f̆ , ğ, h̆)(x, y, z) = hηfu-r
+                                                                        ˘ , φxyz i.
+                                                                                x
+
+By Proposition 2.11, we then have
+(112)                                Lp f (f̆ , ğ, h̆)(x, y, z) = hηfu-r
+                                                                      ˘ , eord φxyz i.
+                                                                          x
+
+                                                                                               (p)
+On the other hand, applying the ordinary projector to the identity φ xyz = φxyz − βfx∗ V φxyz
+shows that
+                                  βfx∗                  βf
+(113)              φ(p)
+                    xyz = (1 −         )eord φxyz = (1 − x )eord φxyz = E0 (fx )eord φxyz ,
+                                  αfx∗                  α fx
+and therefore
+        Lp f (f̆ , ğ, h̆)(x, y, z) = E0 (fx )−1 hηfu-r  (p)             −1 u-r              t [p]
+                                                    ˘ , φxyz i = E0 (fx ) hηf˘ , efx∗ ,ord (d ğy × h̆z )i
+                                                          x                              x
+                                                  −1
+                                     = E0 (fx )        hηfu-r         t [p]
+                                                          ˘x , eord (d ğy × h̆z )i.
+
+The proposition follows.                                                                                              
+
+  The next theorem evaluates Lp f (f̆ , ğ, h̆) at points (x, y, z) ∈ Σf and relates these values to
+the complex periods I(f˘x , ğy , h̆z ).
+Theorem 4.7. Let (x, y, z) be a point of Σ f and set
+
+     (f, g, h) := (fx , gy , hz ),        (f˘, ğ, h̆) := (f˘x , ğy , h̆z ),       (k, `, m) = (κ(x), κ(y), κ(z)).
+Then
+                                                                E(f, g, h)    I(f˘, ğ, h̆)
+(114)                       Lp f (f̆ , ğ, h̆)(x, y, z) =                    × ∗ ∗ ,
+                                                               E0 (f )E1 (f ) (f , f )N
+where E(f, g, h), E0 (f ) and E1 (f ) are given in equations (6), (7) and (8) of Theorem 1.3.
+                     A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                           43
+
+
+Remark 4.8. Theorems 4.2 and 4.7 above justify the designation of L p f (f̆ , ğ, h̆) as a p-adic
+Garrett-Rankin triple product L-function in that it interpolates the square-roots of the central
+critical values of the complex L-series L(f x , gy , hz ; s) for (x, y, z) ∈ Σf . Indeed, assume that
+                                             L(f, g, h; c) 6= 0,
+so that Theorems 4.2 and 4.7 ensure that L p f (f̆ , ğ, h̆) is non-zero in Lf ⊗ Λg ⊗ Λh . By
+the Weierstrass preparation theorem, L p f (f̆ , ğ, h̆) vanishes at a finite number of points and
+therefore hf˘x , ğy · δ n (h̆z )i2N 6= 0 for all but finitely many (x, y, z) ∈ Σ f . In addition, Jacquet’s
+conjecture as formulated and proved in [HaKu], imply that the hypothesis ε q (fx , gy , hz ) = +1
+for all finite primes q still holds true for all such (x, y, z). Hence Theorem 4.2 can again be
+applied for the triple (fx , gy , hz ), which implies that (114) expresses L p f (f̆ , ğ, h̆)(x, y, z) as a
+non-zero multiple of the square-root of L(f x , gx , hx ; cfx ,gy ,hz ). 2
+   We now turn to the proof of Theorem 4.7. As before, p is a prime which does not divide
+N , and Skn-oc (N ; Cp ) denotes the space of nearly overconvergent P       p-adic modular forms of level
+N , as described in Section 2.4. Given a classical newform f = n an q n of some level Nf |N ,
+recall that
+                               ef ∗ : Skord (N ; Cp ) −→ Skord (N ; Cp )[πf ∗ ]
+                     ef ∗ ,ord = ef ∗ eord : Skn-oc (N ; Cp ) −→ Skord (N ; Cp )[πf ∗ ]
+denote the associated projectors to the f ∗ -isotypic component of the ordinary subspace in
+the space of overconvergent p-adic modular forms. The operators U and V whose action on
+q-expansions is given in (13) also act on the spaces of nearly overconvergent modular forms
+of a given level.
+Lemma 4.9. Let g ∈ S`n-oc (N ; C) and h ∈ Sm           n-oc (N ; C) be nearly overconvergent modular
+
+forms of weights `, m ≥ 2 which are eigenvectors for all the good Hecke operators T q with
+q - N . (They are not assumed to be new or to be eigenvectors for the operators T q with q|N .)
+Let
+                 φf gh := ef ∗ ,ord (gh) ∈ Skord (N ; C)[πf ∗ ],    (with k = ` + m).
+For each r ≥ 0, the modular form
+                                 ef ∗ ,ord ((V r g) × h) ∈ Skord (N ; C)[πf ∗ ]
+is a multiple of φf gh .
+Proof. By Lemma 2.17,
+(115) 0 = eord (g [p] × V h) = eord (g × V h) − ap (g)eord (V g × V h) + χg (p)p`−1 eord (V 2 g × V h).
+But since
+                            eord V = U −1 eord ,        ef ∗ ,ord V = α−1
+                                                                       f ∗ ef ∗ ,ord ,
+it follows after applying the projector e f ∗ to (115) that
+(116)           ef ∗ ,ord (g × V h) + χg (p)p`−1 α−1                               −1
+                                                  f ∗ ef ∗ ,ord (V g × h) = ap (g)αf ∗ φf gh .
+The same argument with the roles of g and h interchanged shows that
+(117)           χh (p)pm−1 α−1                                                 −1
+                            f ∗ ef ,ord (g × V h) + ef ,ord (V g × h) = ap (h)αf ∗ φf gh .
+                                  ∗                   ∗
+
+
+The case r = 1 of the proposition is obtained by simultaneously solving equations (116) and
+(117) above. The case of general r > 1 can then be treated by induction on r using the
+identity
+(118)   ef ∗ ,ord (V r g × h) = α−1
+                                 f ∗ ap (g)ef ∗ ,ord (V
+                                                        r−1
+                                                            g × h) − α−2
+                                                                      f ∗ χh (p)p
+                                                                                  m−1
+                                                                                      ef ∗ ,ord (V r−1 g × h),
+which follows from Lemma 2.17, more precisely from the fact that e ord (V r g × h[p] ) = 0.                      
+44                                  HENRI DARMON AND VICTOR ROTGER
+
+Lemma 4.10. The following identities, as well as their counterparts with (α g , αh ) replaced
+by (αg , βh ), (βg , αh , and (βg , βh ), are satisfied:
+     (1) ef ∗ ,ord ((V gα ) × (V hα )) = α−1f ∗ ef ∗ ,ord (gα hα );
+                                        −1
+     (2) ef ∗ ,ord (gα × V hα ) = αg αf ∗ ef ∗ ,ord (gα hα );
+     (3) ef ∗ ,ord (V gα × hα ) = αh α−1f ∗ ef ,ord (gα hα );
+                                               ∗
+
+     (4) ef ∗ ,ord (g × h) = ef ∗ ,ord (g × h[p] ) = (1 − αg αh α−1
+                     [p]
+                                                                    f ∗ )ef ∗ ,ord (gα hα ).
+
+Proof. To prove the first assertion, note that
+                                  eord ((V gα ) × (V hα )) = eord ◦ V (gα hα ),
+and that
+                              eord ◦ V = lim Upn! ◦ V = lim Upn!−1 = Up−1 eord .
+The first assertion now follows from the fact that U p operates via multiplication by αf ∗ on
+Skord (N ; Cp )[πf∗ ]. For the second assertion, we invoke Lemma 2.17 to assert that
+
+                                 (g [p] × (V hα )) = (g − ap (g)V g) × (V hα )
+is in the kernel of the ordinary projection to conclude that
+                               eord (g × V hα ) = ap (g)ef ∗ ,ord ((V g) × (V h)),
+and the second assertion now follows directly from the first. The third assertion follows from
+the identical argument with the roles of g and h interchanged. The last identity then follows
+from the previous ones by a direct calculation using the fact that g [p] = gα − αg V gα .    
+Proposition 4.11. Let f ∈ Sk (N ) be a holomorphic form of weight k and let g ∈ S `n-oc (N )
+and h ∈ Sm  n-oc (N ) be nearly holomorphic modular forms, with k = ` + m. Assume that f , g
+
+and h are eigenvectors for the good Hecke operators of level N (but are not necessarily new of
+this level.) Then for all primes p - N ,
+                                                            E(f, g, h)
+(119)                               ef ∗ ,ord (g [p] h) =              ef ∗ ,ord (gh),
+                                                             E1 (f )
+where E(f, g, h) is as in equation (6) of Theorem 1.3 (with c = k − 1).
+Proof. The last identity of Lemma 4.10 shows, after setting φ f g[p] h := ef ∗ ,ord (g p] h), that
+(120)                          ef ∗ ,ord (gα hα ) = (1 − αg αh α−1   −1
+                                                                f ∗ ) φf g [p] h ;
+(121)                          ef ∗ ,ord (gα hβ ) = (1 − αg βh α−1   −1
+                                                                f ∗ ) φf g [p] h ;
+(122)                          ef ∗ ,ord (gβ hα ) = (1 − βg αh α−1   −1
+                                                                f ∗ ) φf g [p] h ;
+(123)                           ef ∗ ,ord (gβ hβ ) = (1 − βg βh α−1   −1
+                                                                 f ∗ ) φf g [p] h .
+
+Combining (120) and (121) with the identity
+                                       h = (αh − βh )−1 (αh hα − βh hβ ),
+and similarly with (122) and (123), we obtain
+                                                                       −1 −1
+(124)                 ef ∗ ,ord (gα h) = ((1 − αg αh α−1
+                                                      f ∗ )(1 − αg βh αf ∗ )) φf g [p] h ;
+(125)                 ef ∗ ,ord (gβ h) = ((1 − βg αh α−1             −1 −1
+                                                      f )(1 − βg βh αf ∗ )) φf g [p] h .
+
+The result now follows from these two equations by a direct calculation using the fact that
+                                       g = (αg − βg )−1 (αg gα − βg gβ ).
+                                                                                                     
+                           A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                                           45
+
+Remark 4.12. A formula similar to Proposition 4.11 can be found in Proposition 2.2.2. of
+[HaTi]. The approach followed there is conceptually sound but more complicated than the
+one followed above; possibly for this reason, an error seems to have crept into the roughly five
+pages of elementary but tedious calculations in the proof of Prop. 2.2.2. of loc.cit, and the
+factor denoted there by EP (f, g, h) does not agree with the factor E(f, g, h) of Proposition
+4.11. We note that the factor E(f, g, h) occuring in Proposition 4.11 is consistent with the
+conjectural recipe for the “correction term at p” arising in the theory of p-adic L-functions,
+as described in e. g. in [Pan, p. 285].
+Corollary 4.13. Let f ∈ Sk (N ), g ∈ S` (N ) and h ∈ Sm (N ) be holomorphic forms, and
+assume that k = ` + m + 2t with t ∈ Z≥0 . Assume that f , g and h are eigenvectors for the
+good Hecke operators in level N (but are not necessarily new in this level.) Then for all primes
+p - N,
+                                                   E(f, g, h)
+                        ef ∗ ,ord (dt g [p] × h) =            ef ∗ ,ord (dt g × h).
+                                                    E1 (f )
+Proof. This follows from Proposition 4.11 with (f, g, h) replaced by
+                                       (f, dt g, h) ∈ Sk (N ) × S`+2t
+                                                                 n-oc
+                                                                      (N ) × Sm (N ),
+in light of the fact that dt (g [p] ) = (dt g)[p] , αdt g = pt αg and βdt g = pt βg .                                                  
+
+Proof of Theorem 4.7. By (109), the value of L p f (f̆ , ğ, h̆) at (x, y, z) ∈ Σf is
+                                                                ∗(p)                        [p]
+                      f                                      (f˘x      , efx∗ ,ord (dt ğy × h̆z ))N,p
+(126)          Lp (f̆ , ğ, h̆)(x, y, z) =                                  ∗(p)       ∗(p)
+                                                                        (fx   , fx )N,p
+                                                                                 ∗(p)
+                                                             E(fx , gy , hz ) (f˘x , efx∗ ,ord (dt ğy × h̆z ))N,p
+(127)                                                  =                                ∗(p)    ∗(p)
+                                                                                                                   ,
+                                                               E1 (fx )               (fx , fx )N,p
+where the second equality follows from Corollary 4.13. But then by Proposition 2.8,
+                       ∗(p)                                                 ∗(p)
+                    (f˘x      , efx∗ ,ord (dt ğy × h̆z ))N,p            (f˘x      , efx∗ ,ord Πhol t
+                                                                                                N (δ ğy × h̆z ))N,p
+(128)                             ∗(p)       ∗(p)
+                                                                    =                        ∗(p)      ∗(p)
+                                                                                                                                   .
+                               (fx       , fx       )N,p                               (fx          , fx      )N,p
+On the other hand, by equation (113),
+                ∗(p)                                                               ∗(p)
+             (f˘x      , efx∗ ,ord Πhol t
+                                    N (δ` ğy × h̆z ))N,p                       (f˘x      , (efx∗ Πhol t             (p)
+                                                                                                   N (δ` ğy × h̆z )) )N,p
+                               ∗(p)      ∗(p)
+                                                                        =                                  ∗(p)      ∗(p)
+                           (fx        , fx      )N,p                                      E0 (fx )(fx             , fx      )N,p
+                                                                                (f˘x∗ , efx∗ Πhol    t
+                                                                                               N (δ` ğy × h̆z ))N
+(129)                                                                   =
+                                                                                         E0 (fx )(fx∗ , fx∗ )N
+                                                                                (f˘∗ , δ t ğy × h̆z )N
+                                                                                   x    `
+(130)                                                                   =
+                                                                                E0 (fx )(fx∗ , fx∗ )N
+                                                                                 I(f˘x , ğy , h̆z )
+(131)                                                                   =                                   .
+                                                                                E0 (fx )(fx∗ , fx∗ )N
+Theorem 4.7 follows.
+
+                                      5. The p-adic Gross-Zagier formula
+   Recall the class ηf˘ ∈ H 1 (XKf , ω −r ) attached to the test vector f˘ ∈ Sk (N ; Kf )[πf ] following
+the discussion after (55). Thanks to the chosen embedding of K f into Cp , the class ηf˘ can be
+viewed as belonging to H 1 (XCp , ω −r )[πf ]. Let
+                                                           ηfu-r  1
+                                                             ˘ ∈ HdR (XCp , Lr )
+46                                 HENRI DARMON AND VICTOR ROTGER
+
+denote its unique lift to the unit root subspace. We can now state and prove the p-adic Gross-
+Zagier formula of this paper, relating the image of the generalised diagonal cycles under the
+p-adic Abel-Jacobi map to the value of the Garrett-Rankin triple product p-adic L-function
+at points corresponding to balanced triples of classical modular forms.
+Theorem 5.1. Given (x, y, z) ∈ Σbal , set
+    (f, g, h) = (fx , gy , hz ), (f˘, ğ, h̆) = (f˘x , ğy , h̆z ),    (k, `, m) = (κ(x), κ(y), κ(z)),
+and let ∆ := ∆k,`,m ⊂ W be the generalised diagonal cycle attached to the weights (k, `, m).
+Then after writing k = ` + m − 2 − 2t with t ≥ 0,
+                                                   E(f, g, h)
+           Lp f (f̆ , ğ, h̆)(x, y, z) = (−1)t                     × AJp (∆)(ηfu-r
+                                                                               ˘ ⊗ ωğ ⊗ ωh̆ ).
+                                               t! · E0 (f )E1 (f )
+Proof. This follows directly from Theorem 3.14 and Proposition 4.6.                                           
+
+                                                 References
+[BD] M. Bertolini, H. Darmon, Kato’s Euler system and rational points on elliptic curves I: A p-adic Beilinson
+     formula, Israel J. of Math., to appear.
+[BDP] M. Bertolini, H. Darmon, K. Prasanna, Generalised Heegner cycles and p-adic Rankin L-series, Duke
+     Math Journal, Vol. 162, No. 6, pp. 1033-1148.
+[BDR] M. Bertolini, H. Darmon and V. Rotger, Beilinson-Flach elements and Euler Systems I: syntomic
+     regulators and p-adic Rankin L-series, submitted.
+[Bes00] A. Besser, A generalization of Coleman’s p-adic integration theory, Invent. Math. 142 (2000), 397–434.
+[BoPa] S. Böcherer, A. A. Panciskin, Admissible p-adic measures attached to triple products of elliptic cusp
+     forms, Documenta Math., Extra volume: John H.Coates’ Sixtieth Birthday (2006), 77–132.
+[Br] R. Brasca, p-adic modular forms of non-integral weight over Shimura curves, arXiv:1106.2712v1.
+[Ca86] H. Carayol, Sur les représentations `-adiques associées aux formes modulaires de Hilbert, Ann. Sci.
+     École Norm. Sup. (4) 19 (1986), 409–468.
+[CGJ] R. F. Coleman, F. Q. Gouvêa, N. Jochnowitz, E2 , Θ, and overconvergence, Internat. Math. Res. Notices
+     1 (1995), 23–41.
+[Coa88] J. Coates, p-adic L-functions, Sém. Bourbaki (1988), exp. 701, Astérisque 177–178 (1989), 33–59.
+[Cole94] R. F. Coleman, A p-adic Shimura isomorphism and p-adic periods of modular forms, in p-adic mon-
+     odromy and the Birch and Swinnerton-Dyer conjecture (Boston, MA, 1991), 21–51, Contemp. Math. 165,
+     Amer. Math. Soc., Providence, RI, 1994.
+[Cole95] R. F. Coleman, Classical and overconvergent modular forms. Les Dix-huitièmes Journées
+     Arithmétiques (Bordeaux, 1993). J. Théor. Nombres Bordeaux 7:1 (1995), 333–365.
+[Colz00] P. Colmez, Sém. Bourbaki 1998-99, exp. 851, Astérisque 266 (2000), 21–58.
+[DR] H. Darmon and V. Rotger, Diagonal cycles and Euler systems II: The Birch and Swinnerton-Dyer con-
+     jecture for Hasse-Weil-Artin L-functions, submitted for publication.
+[DRS] H. Darmon, V. Rotger, I. Sols, Iterated integrals, diagonal cycles, and rational points on elliptic curves,
+     Publications Mathématiques de Besançon, vol.2, 2012, pp. 19-46.
+[Da] M. Daub, Berkeley Ph. D thesis, in progress.
+[DDLR] H. Darmon, M. Daub, S. Lichtenstein, and V. Rotger (with an appendix by W. Stein) Algorithms for
+     Chow-Heegner points via iterated integrals. Submitted.
+[DiNy] M. Dimitrov, L. Nyssen, Test vectors for trilinear forms when at least one representation is not super-
+     cuspidal, Manuscripta Math. 133: 3-4 (2010), 479–504.
+[Gar] P. Garrett, Decomposition of Eisenstein series: Rankin triple products, Ann. Math. 125 (1987), 209-235.
+[GrKu] B. Gross, S. Kudla, Heights and the central critical values of triple product L-functions, Compositio
+     Math. 81 (1992), no. 2, 143–209.
+[GrPr] B. Gross and D. Prasad, Test vectors for linear forms, Math. Annalen 291 (1991), 343–355.
+[GrSc] B. Gross, C. Schoen, The modified diagonal cycle on the triple product of a pointed curve, Ann. Inst.
+     Fourier (Grenoble) 45 (1995), no. 3, 649–679.
+[HaKu] M. Harris, S. Kudla, The central critical value of a triple product L-function, Ann. Math. (2) 133
+     (1991), 605–672.
+[HaTi] M. Harris and J. Tilouine, p-adic measures and square roots of special values of triple product L-
+     functions, Math. Annalen 320 (2001), 127–147.
+[Hi86a] H. Hida, Iwasawa modules attached to congruences of cusp forms, Ann. Sci. École Norm. Sup. (4) 9
+     (1986), 231–273.
+                      A p-ADIC GROSS-ZAGIER FORMULA FOR DIAGONAL CYCLES                                     47
+
+[Hi86b] H. Hida, Galois representations into GL2 (Zp [[X]]) attached to ordinary cuspforms, Invent. Math. 85
+     (1986), 545–613.
+[Hi88] H. Hida, On p-adic Hecke algebras for GL 2 over totally real fields, Ann. Math. 128 (1988), 295–384.
+[Hi88b] H. Hida, A p-adic measure attached to the zeta functions associated with two elliptic modular forms
+     II, Ann. Inst. Fourier (Grenoble) 38 (1988) 1–83.
+[Hi93] H. Hida, Elementary theory of L-functions and Eisenstein series, London Math. Soc. St. Texts 26, 1993.
+[I] A. Ichino, Trilinear forms and the central values of triple product L-functions, Duke Math. J. 145 (2008),
+     no. 2, 281–307.
+[Ja] U. Jannsen, Continuous étale cohomology, Math. Ann. 280 (1988), 207–245.
+[Kas99] P. Kassaei, p-adic modular forms over Shimura curves over Q, M.I.T. Ph.D thesis, 1999.
+[Kat73] N. M. Katz, p-adic properties of modular schemes and modular forms, in Modular functions of one
+     variable, III, Lecture Notes Math. 350 (1973), 69–190.
+[Kat78] N. M. Katz, p-adic L-functions for CM fields, Invent. Math. 49 (1978), 199–297.
+[Ki] K. Kitagawa, On standard p-adic L-functions of families of elliptic cusp forms, in p-adic monodromy
+     and the Birch and Swinnerton-Dyer conjecture (Boston, MA, 1991), 81–110, Contemp. Math. 165, Amer.
+     Math. Soc., Providence, RI, 1994.
+[La1] A.G.B. Lauder, Computations with classical and p-adic modular forms, LMS J. Comput. Math. 14 (2011)
+     214–231.
+[La2] A.G.B. Lauder, Efficient computation of p-adic Rankin L-functions, in Boeckle, G. and Wiese, G. (eds.)
+     Computation with Modular Forms, Springer Verlag, to appear.
+[Ne1] J. Nekovář, On the p-adic height of Heegner cycles. Math. Ann. 302 (1995), no. 4, 609–686.
+[Ne2] J. Nekovář, p-adic Abel-Jacobi maps and p-adic heights, in The Arithmetic and Geometry of Algebraic
+     Cycles (Banff, Canada, 1998), CRM Proc. Lect. Notes 24 (2000), 367–379.
+[Pan] A. A. Panciskin, Admissible non-archimedean standard zeta functions associated with Siegel modular
+     forms, in J.-P. Serre, S. L. Kleiman, U. Jannsen, Motives, AMS Proc. Symp. Pure Math. 55: II, 1994.
+[Pau] A. Paulin, Local to Global Compatibility on the Eigencurve, to appear in the Proc. London Math. Soc.
+[PR] B. Perrin-Riou. Points de Heegner et dérivées de fonctions L p-adiques. Invent. Math. 89 (1987), no. 3,
+     455–510.
+[PSR] I. I. Piatetski-Shapiro, S. Rallis, Rankin triple L-functions, Compositio Math. 64 (1987), 31-115.
+[Pr90] D. Prasad, Trilinear forms for representations of GL(2) and local epsilon factors, Compositio Math. 75
+     (1990), 1–46.
+[Pr07] D. Prasad, Relating invariant linear form and local epsilon factors via global methods, with an appendix
+     by H. Saito, Duke J. Math. 138:2 (2007), 233–261.
+[Sc] A. J. Scholl, Motives for modular forms, Invent. Math. 100 (1990), 419–430.
+[Se] J.-P. Serre, Formes modulaires et fonctions zêta p-adiques, Lecture Notes Math. 350 (1973), 191–268.
+[Sh86] G. Shimura, On a class of nearly holomorphic automorphic forms, Ann. Math. 123 (1986), 347–406.
+[Ur] E. Urban, Nearly overconvergent modular forms, to appear.
+[YZZ] X. Yuan, S. Zhang, W. Zhang, Triple product L-series and Gross–Schoen cycles I: split case, preprint.
+[Wa] T. C. Watson, Rankin triple products and quantum chaos, to appear in Ann. Math.
+
+  H. D.: McGill University, Montreal, Canada
+  E-mail address: darmon@math.mcgill.ca
+
+  V. R.: Universitat Politècnica de Catalunya, Barcelona, Spain
+  E-mail address: victor.rotger@upc.edu
+

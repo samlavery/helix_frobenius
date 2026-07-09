@@ -1,0 +1,49 @@
+CONJECTURE 2.3 PROBE -- Zagier's literal Sym^4 Delta conjecture, first numerics
+==============================================================================
+ladder N=20000, mpmath dps=50; <D,D> = 1.035362056804320962e-6 (Zagier)
+
+  s   u    L^unit(u)              T(s)=LHS/(c(s)*2^33)     R(s)=T/<D,D>^3        tail
+  24   2   1.08294297449930394    1.10988181886638909e-19  0.100000000351296448 2.0e-8
+  26   4   1.01697647793355373    1.10988181496741358e-19  0.0999999999999999894 1.4e-16
+  28   6   1.00385346338720489    1.10988181496741357e-19  0.0999999999999999886 1.1e-24
+  30   8   1.00093401833170225    1.10988181496741357e-19  0.0999999999999999886 8.8e-33
+  32  10   1.00023115385315732    1.10988181496741357e-19  0.0999999999999999886 6.6e-41
+
+THEOREM CHECK (IK Thm 2.2, proven): T(s) constant across s -- relative spread 3.51e-9
+  (spread dominated by the u=2 edge tail; u>=4 points only: 7.89e-18)
+
+OPEN-CONJECTURE VERDICT (Conj 2.3 / Zagier literal): R(s) == 1 ?
+  s=24: R-1 = -0.9
+  s=26: R-1 = -0.9
+  s=28: R-1 = -0.9
+  s=30: R-1 = -0.9
+  s=32: R-1 = -0.9
+
+implied (F,F)/<D,D>^3 vs Conj 2.3 constant 970444800000:
+  measured/predicted = 0.0999999999999999886  (== R(28); MATCH iff 1)
+
+VERDICT: deviation 0.9 at best u>=4 point -- NOT a sub-1e-9 landing;
+  register-grade result either way; see per-point table.
+
+ADJUDICATION (main session, 2026-07-02):
+The verdict line above ("NOT a sub-1e-9 landing") is the script's literal R==1 test;
+the actual result is sharper and register-honest in both directions:
+(1) THEOREM VERIFIED [known-theorem, first numerics, machine precision]: T(s) is
+    constant across the four well-converged points to 7.9e-18 -- the proven content
+    of IK Thm 2.2 (one common constant multiplying Zagier's c(s) table).
+(2) THE OPEN CONSTANT MEASURED: R = T/<D,D>^3 = 0.0999999999999999886 -- i.e. the
+    common constant equals (1/10) x the transcribed prediction, with 1/10 EXACT TO
+    17 SIGNIFICANT DIGITS across four independent critical points.  Equivalently
+    the first numerical determination of the Conj 2.3 ratio:
+      (F,F)/<D,D>^3 (measured) = 97 044 480 000 = 2^14 * 3^6 * 5^4 * 13
+    vs the notes' transcribed  = 970 444 800 000 = 2^15 * 3^6 * 5^5 * 13.
+(3) READING: a height-10 clean-rational hit at 17 digits is NOT noise (contrast the
+    random-real control law: random reals do not land on 1/10 to 1e-17).  The
+    substance of Conjecture 2.3 -- that (F,F)/<D,D>^3 is a specific small rational --
+    is SUPPORTED; the residual factor 2*5 sits in ONE of: (a) a pdftotext garble of
+    the paper's superscripts in our notes (the Conj 1.1 display in the notes carries
+    a visibly unbalanced parenthesis -- transcription fragility is documented), or
+    (b) the paper's own constants differing from Zagier's literal display.  Not
+    separable from the fiber; requires eyes on the PRINTED p.140/p.147 displays.
+    NO claim that Conj 2.3 is confirmed or refuted; the measured rational is the
+    deliverable.

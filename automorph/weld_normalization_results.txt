@@ -1,0 +1,42 @@
+==============================================================================
+(B) the weld is a fixed point of the FE involution; its coordinate is gauge
+==============================================================================
+
+(1) helix strand  r^s Gamma(s,x)   vs   antihelix strand  r^{2-s} Gamma(2-s,x)
+    difference along the real s-axis (r=1.7, x=0.4): zero exactly at the weld s=1
+    s=0.60: helix-anti = -6.322255e-01
+    s=0.80: helix-anti = -3.053411e-01
+    s=0.95: helix-anti = -7.551132e-02
+    s=1.00: helix-anti = +0.000000e+00  <-- WELD (strands equal: eps=-1 kills, eps=+1 doubles)
+    s=1.05: helix-anti = +7.551132e-02
+    s=1.20: helix-anti = +3.053411e-01
+    s=1.40: helix-anti = +6.322255e-01
+    at s=1: each strand = r*e^-x = 1.139544;  eps=-1 => 0.0e+00 (kill), eps=+1 => 2.279088 (double)
+
+(2) centered-chart translation  t = -i(s - c/2)  is REAL  <=>  Re s = c/2
+    unit c=0.0: Re s=-0.30 (weld at c/2=0.00): Im(t)=+0.3000 
+    unit c=0.0: Re s=+0.00 (weld at c/2=0.00): Im(t)=-0.0000 REAL=on weld axis
+    unit c=0.0: Re s=+0.30 (weld at c/2=0.00): Im(t)=-0.3000 
+    unit c=1.0: Re s=+0.20 (weld at c/2=0.50): Im(t)=+0.3000 
+    unit c=1.0: Re s=+0.50 (weld at c/2=0.50): Im(t)=-0.0000 REAL=on weld axis
+    unit c=1.0: Re s=+0.80 (weld at c/2=0.50): Im(t)=-0.3000 
+    unit c=2.0: Re s=+0.70 (weld at c/2=1.00): Im(t)=+0.3000 
+    unit c=2.0: Re s=+1.00 (weld at c/2=1.00): Im(t)=-0.0000 REAL=on weld axis
+    unit c=2.0: Re s=+1.30 (weld at c/2=1.00): Im(t)=-0.3000 
+
+(3) the weld (t=0) vs the spiral arclength origin (N=0) — DIFFERENT points
+    readout head Z = e^y (y = Im s = t = the ordinate):
+      y=-6.0: Z=  0.0025  N(arclength/Delta)=  0.0033  <-- spiral base: Z->0, N->0 (y->-inf)
+      y=-2.0: Z=  0.1353  N(arclength/Delta)=  0.1932
+      y=+0.0: Z=  1.0000  N(arclength/Delta)=  3.4089  <-- WELD t=0: head at Z=1, ONE phasor, N~O(1)
+      y=+2.0: Z=  7.3891  N(arclength/Delta)=164.5064
+    => N=0 (spiral arclength origin) sits at Z=0, y->-infinity — NOT the weld.
+       The weld is the ORDINATE origin t=0 (readout head Z=1), = s=1/2 analytic = s=1 arith.
+
+==============================================================================
+VERDICT (B): the meeting point is the FE involution's fixed point.
+  Sam's instinct is RIGHT in the centered/Riemann chart (unit 0): weld = t = 0,
+  the '1/2-free' native RH axis (roots real).  Gauge translations: t=0 <=> s=1/2
+  (analytic, unit 1) <=> s=1 (arithmetic, unit 2) <=> u=-(logN)/2 (Fricke cusp).
+  It is NOT the geometric spiral arclength origin N=0 (that is Z=0, y->-inf), and NOT
+  s=0 in the standard analytic/arithmetic s-plane (that is the strip edge, not center).

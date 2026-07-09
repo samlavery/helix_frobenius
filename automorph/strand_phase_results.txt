@@ -1,0 +1,113 @@
+STRAND-RESOLVED PHASE SPECTROSCOPY
+Line phases of the COMPLEX spectrum of s(t)=log|F|+i argF read the
+oriented arithmetic datum arg chi(p^k) (GL1) / sign lambda_p (GL2).
+Convention CALIBRATED on zeta (all phases 0), then frozen.
+Bank sizes: zeta/char 430*sqrt(q t_max/2pi); Delta N=2e5; E11 N=1.3e6
+(E11 conductor 11 needs the full bank -- N=2e5 leaves 32% error at t=400).
+
+=== zeta (de-mod eta) CALIBRATION  (span 1000, res 0.0063 rad, N-samples 100001) ===
+  convention: s = log|F| + i*argF_unwrapped ; shat = mean_t w(t) s(t) e^{+i w t} / mean_t w
+      line    w_hat     |amp|  amp_pred     phase      pred  circ_err
+       ln2   0.6932   0.71137    0.7071   -0.001pi  +0.000pi    0.0019
+       ln3   1.0986   0.57695    0.5774   -0.006pi  +0.000pi    0.0178
+       ln4   1.3864   0.24452    0.2500   +0.004pi  +0.000pi    0.0130
+       ln5   1.6094   0.44521    0.4472   -0.004pi  +0.000pi    0.0116
+       ln7   1.9459   0.37105    0.3780   -0.004pi  +0.000pi    0.0135
+       ln9   2.1973   0.16064    0.1667   +0.009pi  +0.000pi    0.0276
+      ln11   2.3979   0.29629    0.3015   -0.005pi  +0.000pi    0.0171
+      ln13   2.5649   0.27327    0.2774   -0.003pi  +0.000pi    0.0087
+       ln8   2.0794   0.11184    0.1179   -0.010pi  +0.000pi    0.0322
+  poly-vs-gauge de-trend phase drift: max 0.0000 rad, median 0.0000 rad
+
+  -- span-lock test (zeta): phase (in pi) at each line vs span --
+        span         ln2         ln3         ln4         ln5         ln7         ln9        ln11        ln13         ln8
+         300     -0.0006     +0.0005     -0.0000     -0.0030     +0.0027     -0.0023     -0.0036     +0.0017     +0.0066
+         600     +0.0081     -0.0065     +0.0096     -0.0040     +0.0002     -0.0034     -0.0003     -0.0052     -0.0093
+        1000     -0.0006     -0.0057     +0.0042     -0.0037     -0.0043     +0.0088     -0.0055     -0.0028     -0.0102
+
+=== chi8 real control (chi3=chi5=-1)  (span 1000, res 0.0063 rad, N-samples 100001) ===
+  convention: s = log|F| + i*argF_unwrapped ; shat = mean_t w(t) s(t) e^{+i w t} / mean_t w
+      line    w_hat     |amp|  amp_pred     phase      pred  circ_err
+       ln3   1.0986   0.56603    0.5774   +0.988pi  +1.000pi    0.0362
+       ln5   1.6095   0.43410    0.4472   +0.998pi  +1.000pi    0.0070
+       ln7   1.9458   0.35848    0.3780   -0.021pi  +0.000pi    0.0651
+      ln11   2.3978   0.28279    0.3015   +0.980pi  +1.000pi    0.0627
+      ln13   2.5650   0.26818    0.2774   -0.988pi  +1.000pi    0.0386
+       ln9   2.1973   0.15701    0.1667   +0.007pi  +0.000pi    0.0232
+      ln2*   0.6854   0.06278         -   +0.445pi    (hole)       nan
+  poly-vs-gauge de-trend phase drift: max 0.0006 rad, median 0.0000 rad
+
+  -- span-lock test (chi8): phase (in pi) at each line vs span --
+        span         ln3         ln5         ln7        ln11        ln13         ln9        ln2*
+         300     -0.9892     -0.9969     +0.0232     -0.9795     +0.9910     +0.0239     -0.1732
+         600     +0.9998     -0.9759     -0.0142     +0.9670     -0.9867     -0.0244     +0.0493
+        1000     +0.9885     +0.9978     -0.0207     +0.9800     -0.9877     +0.0074     +0.4453
+
+=== chi5 order 4 (chi(2)=i)  (span 1000, res 0.0063 rad, N-samples 100001) ===
+  convention: s = log|F| + i*argF_unwrapped ; shat = mean_t w(t) s(t) e^{+i w t} / mean_t w
+      line    w_hat     |amp|  amp_pred     phase      pred  circ_err
+       ln2   0.6931   0.75752    0.7071   +0.491pi  +0.500pi    0.0280
+       ln3   1.0984   0.53476    0.5774   -0.539pi  -0.500pi    0.1217
+       ln7   1.9460   0.34894    0.3780   +0.506pi  +0.500pi    0.0185
+      ln11   2.3977   0.28116    0.3015   -0.043pi  +0.000pi    0.1348
+      ln13   2.5651   0.25356    0.2774   -0.458pi  -0.500pi    0.1317
+       ln4   1.3861   0.20730    0.2500   +0.935pi  +1.000pi    0.2042
+       ln9   2.1973   0.14100    0.1667   -0.977pi  +1.000pi    0.0732
+      ln5*   1.6664   0.04257         -   -0.035pi    (hole)       nan
+  poly-vs-gauge de-trend phase drift: max 0.0001 rad, median 0.0000 rad
+
+  -- span-lock test (chi5): phase (in pi) at each line vs span --
+        span         ln2         ln3         ln7        ln11        ln13         ln4         ln9        ln5*
+         300     +0.5017     -0.5095     +0.4581     -0.1036     -0.5465     +0.7420     +0.8830     -0.8670
+         600     +0.5461     -0.4449     +0.5366     +0.0924     -0.4965     -0.8157     -0.9692     +0.4890
+        1000     +0.4911     -0.5387     +0.5059     -0.0429     -0.4581     +0.9350     -0.9767     -0.0349
+
+=== Delta GL(2) sign readout  (span 300, res 0.0209 rad, N-samples 30001) ===
+  convention: s = log|F| + i*argF_unwrapped ; shat = mean_t w(t) s(t) e^{+i w t} / mean_t w
+      line    w_hat     |amp|  amp_pred     phase      pred  circ_err
+       ln2   0.6932   0.37184    0.3750   -0.993pi  +1.000pi    0.0232
+       ln3   1.0988   0.34427    0.3457   +0.011pi  +0.000pi    0.0348
+       ln5   1.6096   0.30899    0.3091   +0.009pi  +0.000pi    0.0272
+       ln7   1.9462   0.14243    0.1423   -0.977pi  +1.000pi    0.0719
+      ln11   2.3979   0.30216    0.3018   -0.000pi  +0.000pi    0.0006
+      ln13   2.5646   0.11987    0.1197   +0.974pi  +1.000pi    0.0803
+       ln4   1.3864   0.42782    0.4297   -0.994pi  +1.000pi    0.0175
+       ln9   2.1973   0.27367    0.2736   -0.997pi  +1.000pi    0.0099
+  poly-vs-gauge de-trend phase drift: max 0.0006 rad, median 0.0000 rad
+
+  -- span-lock test (delta): phase (in pi) at each line vs span --
+        span         ln2         ln3         ln5         ln7        ln11        ln13         ln4         ln9
+         100     -0.9924     +0.0044     -0.0349     +0.9572     +0.0246     +0.7292     -0.9971     -0.8708
+         200     -0.9991     +0.0011     -0.0011     -0.9900     +0.0007     +0.9933     -0.9978     +0.9991
+         300     -0.9926     +0.0111     +0.0087     -0.9771     -0.0002     +0.9745     -0.9944     -0.9969
+
+=== E11 GL(2) sign readout (control)  (span 300, res 0.0209 rad, N-samples 30001) ===
+  convention: s = log|F| + i*argF_unwrapped ; shat = mean_t w(t) s(t) e^{+i w t} / mean_t w
+      line    w_hat     |amp|  amp_pred     phase      pred  circ_err
+       ln2   0.6931   0.99208    1.0000   -1.000pi  +1.000pi    0.0015
+       ln3   1.0980   0.37033    0.3333   +0.959pi  +1.000pi    0.1293
+       ln5   1.6100   0.18911    0.2000   +0.047pi  +0.000pi    0.1469
+       ln7   1.9454   0.28423    0.2857   +0.967pi  +1.000pi    0.1024
+      ln11   2.3988   0.09634    0.0909   +0.048pi  +0.000pi    0.1522
+      ln13   2.5653   0.31493    0.3077   +0.027pi  +0.000pi    0.0841
+       ln4   1.3859   0.03109         -   -0.979pi    (hole)       nan
+       ln9   2.1982   0.26577    0.2778   -0.938pi  +1.000pi    0.1949
+  poly-vs-gauge de-trend phase drift: max 0.0175 rad, median 0.0001 rad
+
+  -- span-lock test (e11): phase (in pi) at each line vs span --
+        span         ln2         ln3         ln5         ln7        ln11        ln13         ln4         ln9
+         150     +0.9993     -0.9986     +0.0123     -0.9967     -0.0019     +0.0113     -0.8306     +0.9997
+         300     -0.9995     +0.9589     +0.0468     +0.9674     +0.0485     +0.0268     -0.9793     -0.9380
+
+=== VERDICT: circular error per case (predicted lines only) ===
+    case  lines  median_err(rad)   max_err(rad)
+    zeta      9           0.0135         0.0322
+    chi8      6           0.0374         0.0651
+    chi5      7           0.1217         0.2042
+   delta      8           0.0252         0.0803
+     e11      7           0.1293         0.1949
+
+  Every predicted line lands in its correct phase quadrant and LOCKS as
+  the span grows.  Ramified/silent lines (chi8 ln2, chi5 ln5, E11 ln4)
+  sit at the noise floor and their phase WANDERS -- correctly no line.
+  The medium is strand-aware: line phase = arg chi(p^k) / sign lambda_p.

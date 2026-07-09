@@ -1,0 +1,931 @@
+                                                                Efficient computation of
+
+
+
+
+arXiv:1310.4421v1 [math.NT] 16 Oct 2013
+                                                               Rankin p-adic L-functions
+                                                                  Alan G.B. Lauder∗
+                                           Accepted for publication in “Computation with Modular Forms”
+                                                 Boeckle, G. and Wiese, G. (eds.), Springer Verlag.
+                                                                              June 27, 2018
+
+
+                                                                                  Abstract
+                                                    We present an efficient algorithm for computing certain special values
+                                                of Rankin triple product p-adic L-functions and give an application of this
+                                                to the explicit construction of rational points on elliptic curves.
+
+
+                                          1     Introduction
+                                          The purpose of this paper is to describe an efficient algorithm for computing
+                                          certain special values of Rankin triple product p-adic L-functions. These special
+                                          values are p-adic numbers and our algorithm computes them in polynomial-time
+                                          in the desired precision. This improves on existing algorithms which require ex-
+                                          ponential time in the desired precision. Our method has the pleasant feature of
+                                          also being applicable to Rankin double product p-adic L-functions, and working
+                                          equally well in weight one as compared to higher weights (Sections 2.2.5 and
+                                          2.3.3). We hope it will usefully complement the powerful methods based upon
+                                          overconvergent modular symbols for computing p-adic L-functions [17], which
+                                          the author understands are less readily adaptable to higher product p-adic L-
+                                          functions.
+                                              We describe an application of our algorithm to the efficient construction of
+                                          rational points on elliptic curves over Q. The curves we consider all have rank
+                                          one and relatively small conductor, and so this application does not yield any
+                                          “new” points. However, the constructions give experimental verification both
+                                          of the correctness of the implementation of our algorithm, and various sophis-
+                                          ticated and new conjectural constructions of rational points on elliptic curves.
+                                          Even in the rank one setting these constructions are of interest; for instance,
+                                          they allow one to carry out by p-adic means the complex analytic calculations
+                                          in [4] (see Example 3.1), and in fact p-adically interpolate points found using
+                                             ∗ Mathematical Institute, 24-29 St Giles, Oxford, United Kingdom. This work is supported
+
+                                          in part by a grant from the European Research Council (204083).
+
+
+                                                                                      1
+much older but not well-understood methods. A different and enticing applica-
+tion of our algorithm is to the experimental study of conjectural constructions
+of “new” points on elliptic curves over certain number fields using weight one
+modular forms [5]. In this paper though we shall not address experimentally the
+calculation of these (Stark-Heegner) points attached to weight one forms or the
+p-adic interpolation of points. We plan to return to these questions in future
+joint work.
+     All of the applications of our algorithm are based upon ideas of Darmon
+and Rotger [7, 8]. In particular, Darmon encouraged the author to try to ap-
+ply the method for computing with overconvergent modular forms in [16] to
+Rankin p-adic L-functions, and gave him invaluable help during the implemen-
+tation of the algorithm and preparation of this paper. Much of the work behind
+this paper was in making the methods in [16] sufficiently fast in practice to
+turn a theoretical algorithm (for higher level) into one useful for experimental
+mathematics.
+     In writing this paper the author had the choice between trying to give a
+comprehensive background to the theory necessary to define Rankin p-adic L-
+functions and present the work of Darmon and Rotger, or distilling just enough
+to describe his contribution. He chose the latter, since the long introduction to
+[8] is already very clear but incompressible. This introduction should be read in
+parallel to our brief (and simplified) description below by anyone wishing to get
+a deeper understanding of the significance of the algorithm in our paper. The
+reader should also refer to that source for definitions of any unfamiliar terms
+below. (All the definitions we shall really need are gathered in Sections 2.1 and
+2.3.1.)
+     Let f, g, h be newforms of weights k, l, m ≥ 2, primitive characters χf , χg , χh
+with χf χg χh = 1, and level N . Assume that the Heegner Hypothesis H [8, Sec-
+tion 1] is satisfied. Let p be a prime not dividing the level N , and fix an
+embedding of Q̄ into Cp , the completion of an algebraic closure of the field
+of p-adic numbers Qp . Assume f, g and h are ordinary at p. Let f , g and h
+be the (unique) Hida families of (overconvergent) p-adic modular forms pass-
+ing through f, g and h. The Rankin p-adic L-function Lfp (f , g, h) associates
+to each triple of weights (x, y, z) in (a suitable subset of) Z3≥2 a p-adic num-
+ber Lfp (f , g, h)(x, y, z) ∈ Cp . It has a defining interpolation property over a
+certain set Σf of unbalanced weights, relating it to the special value of the
+classical (Garrett-)Rankin triple product L-function at its central critical point.
+(Weights (x, y, z) are balanced if the largest is strictly smaller than the sum of
+the other two, and otherwise unbalanced.) The theorem of Darmon and Rotger
+[8, Theorem 1.3] equates its value at the balanced weights to an explicit alge-
+braic number times the p-adic Abel-Jacobi map of a certain cycle on a product
+of Kuga-Sato varieties evaluated at a particular differential form. At balanced
+weights (x, y, z) for reasons of sign the classical Rankin triple product L-function
+vanishes at its central critical point, and so the special value Lfp (f , g, h)(x, y, z)
+is thought of as some kind of first derivative. (Darmon and Rotger actually con-
+struct in addition Lgp (f , g, h)(x, y, z) and Lhp (f , g, h)(x, y, z) but we only consider
+
+
+                                            2
+Lfp (f , g, h)(x, y, z) and shall omit from here-on the superscript f .)
+     In this paper we present an algorithm for computing Lp (f , g, h)(x, y, z) ∈ Cp
+for balanced weights (x, y, z) to a given p-adic precision in polynomial-time in
+the precision, provided p ≥ 5 and under the following assumption on the weights.
+Let us specialise the Hida families back to the original weights (k, l, m) to recover
+the newforms f , g and h, and assume that (k, l, m) is a balanced triple. (This is
+only a notational simplification — we are after all really interested in our original
+newforms, the Hida families being introduced just to define the interpolation
+properties of the L-function.) Our algorithm requires that k = l − m + 2. This is
+enough for all our present and immediately envisaged arithmetic applications.
+     The problem which makes finding special values of Rankin triple product p-
+adic L-functions challenging is that of computing ordinary projections of p-adic
+modular forms. That is, in the definition of Lp (f , g, h)(k, l, m) one encounters a
+p-adic modular form “d−(1+t) (g [p] ) × h” which is not classical, and then has to
+compute its ordinary projection to some precision. Since this form is not classical
+any straightforward approach to this has exponential-time in the desired p-adic
+precision; for example, by iterating the Atkin operator on q-expansions or on
+some suitable space of classical modular forms (as the latter necessarily has
+exponential dimension in the required precision, by consideration of weights cf.
+[12, Proposition I.2.12 ii.]).
+     Our solution lies in the fact that “d−(1+t) (g [p] ) × h” is nearly overconvergent
+[8, Section 2.5]. More precisely, our assumption (k = l − m+ 2) on the weights is
+exactly that which ensures it is overconvergent, and so the methods we developed
+for computing with such forms in [16] can be applied. We expect that our
+methods can be generalised to handle nearly overconvergent modular forms
+(using their explicit description in [3]) and thus compute Rankin triple product
+p-adic L-functions at any balanced point (x, y, z), but we have not carried out
+any detailed work in this direction. The main result of our paper is really
+the algorithm (and its refinements) in Section 2.2 for computing the ordinary
+projection of certain overconvergent modular forms and in addition the ordinary
+subspace. (We give a full and rigorous analysis of this algorithm, but not of two
+aspects of our overall algorithm for computing Rankin triple product p-adic L-
+functions. These are of minor practical importance, see Note 2.3 (1) and (3),
+but difficult to analyse.)
+     Regarding arithmetic applications, the most immediate is the following one
+deduced by Darmon from [8, Theorem 1.3] and [10, Lemma 2.4], in a personal
+communication. Assume that f and g are newforms of weight 2 and trivial
+character, and that f has rational Fourier coefficients. Let Ef denote the elliptic
+curve over Q associated to f , and logEf : Ef (Qp ) → Qp be the formal p-adic
+logarithm map. Then there exists a point Pg ∈ Ef (Q) and a computable positive
+integer dg such that
+                                      E0 (g)E1 (g)
+                  logEf (Pg ) = 2dg                Lp (g, f , g)(2, 2, 2).         (1)
+                                       E(g, f, g)
+Here E(g, f, g)/E0 (g)E1 (g) is the explicit non-zero algebraic (in fact quadratic)
+number which occurs in the Darmon-Rotger formula [8, Theorem 1.3] — it de-
+
+                                            3
+pends only upon the pth coefficients in the q-expansions of f and g. Thus if
+Lp (g, f , g)(2, 2, 2) is non-vanishing one can recover a point of infinite order on
+Ef (Q). (The integer dg is that which appears, in different notation “dT ” for
+“T := Tg ”, in [4, Remark 3.1.3].) The point Pg is closely related to classically
+constructed points (“Zhang points”). We give an example of this application
+(Example 3.1), and understand it will be worked out in detail in the forthcom-
+ing Ph.D. thesis of Michael Daub [11]. In addition, we also present a number
+of variations of this application which suggest generalisations of the different
+underlying theoretical constructions and also illustrate our algorithm (Section
+3).
+    The paper is organised in a simple manner, Section 2 containing the theo-
+retical background and algorithms, and Section 3 our illustrative computations.
+
+   Acknowledgements: This paper would have been neither started nor finished
+without the constant help and encouragement of Henri Darmon. It is a pleasure
+to thank him for this, and to thank also David Loeffler, Victor Rotger and
+Andrew Wiles for enlightening discussions, and the anonymous referee for many
+useful comments.
+
+
+2       The Algorithm
+In this section we present our algorithm for computing the ordinary projection
+of overconvergent modular forms and certain special values of Rankin triple
+product p-adic L-functions.
+
+2.1      Theoretical background
+We first gather some background material on overconvergent modular forms and
+the ordinary subspace.
+
+2.1.1     Katz expansions of overconvergent modular forms
+Let N be a positive integer, and p ≥ 5 be a prime not dividing N . Let χ :
+(Z/N Z)∗ → Z∗p be a Dirichlet character with image in Z∗p . The condition that χ
+has image in Z∗p is partly for notational convenience, but see also Note 2.2 (4).
+    For each integer k let Mk (N, χ, Zp ) denote the space of classical modular
+forms for Γ1 (N ) with character χ whose q-expansions at infinity have coeffi-
+cients in Zp . This is a free Zp -module of finite rank. Let Ep−1 be the classical
+Eisenstein series of weight p − 1 and level 1 normalised to have constant term
+1. For each integer i > 0, one may choose a free Zp -module Wi (N, χ, Zp ) of
+Mk+i(p−1) (N, χ, Zp ) such that
+
+      Mk+i(p−1) (N, χ, Zp ) = Ep−1 · Mk+(i−1)(p−1) (N, χ, Zp ) ⊕ Wi (N, χ, Zp ).
+
+(This choice is not canonical cf. [14, Page 105].) Define W0 (N, χ, Zp ) :=
+Mk (N, χ, Zp ). Let K be a finite extension of Qp with ring of integers B. Define
+
+
+                                          4
+Wi (N, χ, B) := Wi (N, χ, Zp ) ⊗Zp B. For r ∈ B the space Mk (N, χ, B; r) of
+r-overconvergent modular forms is by (our) definition the space of all “Katz
+expansions” of the form
+                    ∞
+                    X           bi
+               f=         ri    i   ,    bi ∈ Wi (N, χ, B),         lim bi = 0
+                    i=0
+                               Ep−1                                i→∞
+
+
+where bi → 0 as i → ∞ means the q-expansions of bi are more and more divisible
+by p as i goes to infinity, see [14, Proposition 2.6.2]. We define Mk (N, χ, K; r) :=
+Mk (N, χ, B; r) ⊗B K, a p-adic Banach space.
+   The element r ∈ B plays a purely auxiliary role, determining the inner
+radius p−ordp (r) of the annuli of overconvergence into the supersingular locus.
+(Here ordp (·) is the p-adic valuation normalised with ordp (p) = 1.) From a
+computational point of view it is more convenient for each rational number
+α > 0 to consider series of the form
+                           ∞
+                           X              bi
+                    f=           p⌊αi⌋    i
+                                              ,       bi ∈ Wi (N, χ, Zp ).
+                           i=0
+                                         Ep−1
+
+We just write Mk (N, χ, Zp , α) for the space of all such elements and call it
+again the space of α-overconvergent modular forms as no confusion is likely to
+arise. The space of overconvergent modular forms Mk (N, χ, Zp ) is the union
+∪α>0 Mk (N, χ, Zp , α). In everything just defined we may also just forget the
+character χ and consider the space Mk (N, Zp ) of overconvergent modular forms
+for Γ1 (N ) itself.
+
+2.1.2   The ordinary subspace
+Any overconvergent modular form f ∈ Mk (N, Zp ) is also a p-adic modular form
+[18, Section 1.4(b)] and has a q-expansion, and we define the ordinary projection
+                                           n!
+in the usual way as eord (f )P:= limn→∞ UP p (f ), where Up is the Atkin operator
+on q-expansions, i.e., Up : n an q 7→ n anp q n . When k ≥ 2 the image of
+                                     n
+
+eord on p-adic modular forms of level N over Zp is equal to its image on the
+space of classical modular forms Mk (Γ1 (N ) ∩ Γ0 (p), Zp ) of level N p with trivial
+character at p, see e.g. [2, Theorem 6.1] or for a precise statement (when k ≥ 3)
+[12, Theorem II.4.3 ii]. We have for each ν ≥ 1 an embedding
+
+                     Mk (Γ1 (N ) ∩ Γ0 (pν ), B) ֒→ Mk (N, B; r)                  (2)
+
+for any r ∈ B with ordp (r) < 1/pν−2 (p + 1), see (at least for N ≥ 3) [12,
+Corollary II.2.8], and also [3, Page 25]. Thus taking ν = 1 here, one observes
+for k ≥ 2 that the image of eord on p-adic modular forms of level N over Zp is
+equal (after base change to B) to its image on Mk (N, B; r) for any r ∈ B with
+ordp (r) < p/(p+1). We shall define the p-adic ordinary subspace over Zp in level
+                                                                             1
+N , character χ and weight k to be the image under eord of Mk (N, χ, Zp , p+1  ).
+(We make this definition since this is precisely the space computed by Algorithm
+2.1. For weight k ≥ 2 this is equivalent to the usual definition as the image of
+
+                                                  5
+p-adic modular forms under eord , by our preceding observation. The definition
+should also be equivalent for general weight (certainly over K) since the ordinary
+subspace over K can be described as the space of overconvergent (generalised)
+eigenforms of slope zero [12, Page 59], and (generalised) eigenforms of finite
+slope are r-overconvergent for any r with ordp (r) < p/(p + 1) [3, Page 25].)
+
+2.2     Projection of overconvergent forms
+Underlying our algorithm for computing Rankin p-adic L-functions is an algo-
+rithm for computing ordinary projections of overconvergent modular forms and
+also a basis for the ordinary subspace. It is an extension of [16, Algorithm 2.1].
+
+2.2.1   The basic algorithm
+We first present the basic algorithm, before discussing the steps in more detail
+and giving some practical refinements. Here the notation and assumptions are
+as in Section 2.1.1. (We apologise that the notation “m” for the p-adic precision
+gives a clash with that used for a weight in the introduction and later, but we
+wished to follow closely that in [16].)
+                                                        1
+Algorithm 2.1 Given an element H ∈ Mk (N, χ, Zp , p+1      ) where 0 ≤ k < p − 1
+and integer m ≥ 1, this algorithm computes the image in R := Z[[q]]/(pm , q s(m,p) )
+of the ordinary projection eord (H) and in addition the image in R of an eche-
+lonised basis for the ordinary subspace. (Here s(m, p) is some explicit function
+of m and p defined during the algorithm.)
+
+(1) [Dimensions] Write k0 := k. Compute n := ⌊ p+1p−1 (m+1)⌋. For i = 0, 1, . . . , n
+    compute di , the dimension of the space of classical modular forms of level
+    N character χ and weight k0 + i(p − 1). Compute mi := di − di−1 , for
+    i ≥ 1, m0 := d0 , and ℓ := m0 + m1 + · · · + mn = dn . Compute working
+                           n
+    precision m′ := m + ⌈ p+1 ⌉. Compute ℓ′ ≥ ℓ, the Sturm bound for the space
+    of classical modular forms of level N , character χ and weight k0 + (p − 1)n.
+(2) [Complementary spaces] For each 0 ≤ i ≤ n compute a row-reduced basis
+                                    ′     ′
+    Wi of q-expansions in Z[[q]]/(pm , q ℓ p ) for some choice of the complementary
+    space Wi (N, χ, Zp ).
+                                                                   ′   ′
+(3) [Katz expansions] Compute the q-expansion in Z[[q]]/(pm , q ℓ p ) of the Eisen-
+    stein series Ep−1 (q). For each 0 ≤ i ≤ n, let bi,1 , . . . , bi,mi denote the ele-
+                                                                         i
+    ments in Wi . Compute the “Katz basis” elements ei,s := p⌊ p+1 ⌋ Ep−1    −i
+                                                                                 bi,s in
+               ′   ′
+             m    ℓp
+    Z[[q]]/(p , q ).
+(4) [Atkin operator] For each 0 ≤ i ≤ n and 1 ≤ s ≤ mi compute ti,s := Up (ui,s )
+                   ′   ′
+    in Z[[q]]/(pm , q ℓ ), where Up is the Atkin operator on q-expansions and
+    ui,s := ei,s .
+
+
+
+
+                                           6
+                                                                     ′
+(5) [Atkin matrix] Compute T , the ℓ × ℓ′ matrix over Z/(pm ) whose entries
+                                                          ′
+    are the coefficients in the q-expansions modulo q ℓ of the ℓ elements ti,s .
+                                              ′
+    Compute E, the ℓ × ℓ′ matrix over Z/(pm ) whose entries are the coefficients
+                                  ′
+    in the q-expansions modulo q ℓ of the ℓ elements ei,s . Use linear algebra over
+           ′                                         ′
+    Z/(pm ) to compute the matrix A′ over Z/(pm ) such that T = A′ E. Let
+    A be the “Atkin matrix” over Z/(pm ) obtained by reducing entries in A′
+    modulo pm .
+                                                                    ′        ′
+(6) [Two-stage projection] Compute the image H ∈ Z[[q]]/(pm , q ℓ p ).
+                                                                         ′       ′
+     (a) [Improve overconvergence] Compute Up (H) ∈ Z[[q]]/(pm , q ℓ ) and find
+                                                                                   ′
+         coefficients αi,s ∈ Z/(pm ) such that Up (H) ≡ i,s αi,s ei,s mod (pm , q ℓ ).
+                                                       P
+
+     (b) [Projection via Katz expansion] Compute a positive integer f such
+         that all the unit roots of the reverse characteristic polynomial of A
+         lie in some extension of Zp with residue class field of degree f over
+         Fp . Compute Ar−1 for r := (pf − 1)pm using fast exponentiation.
+         Compute γ := αAr−1 where α is the row vector (αi,sP     ). Write γ =
+         (γi,s ) and return the ordinary projection eord(H) =      i,s γi,s ei,s ∈
+                   m s(m,p)                     ′
+         Z[[q]]/(p , q      ) where s(m, p) := ℓ p.
+(7) [Ordinary subspace] Compute Ar = Ar−1 A and let {(Bi,s )}Pbe the set of
+    non-zero rows in the echelon form B of the matrix Ar . Return i,s Bi,s ei,s ∈
+    Z[[q]]/(pm , q s(m,p) ) for each non-zero row (Bi,s ), the image of a basis for the
+    ordinary subspace.
+
+
+   In this algorithm we assume that the q-expansion of the input modular form
+H can be computed in polynomial-time in N, p and any desired p-adic and q-
+adic precisions. Regarding the complexity of the whole algorithm, we just refer
+the reader to the analysis of Steps 1-5 in [16, Sections 3.2.2, 3.3.1], and observe
+that Steps 6 and 7 can be carried out using standard methods in linear algebra.
+In particular, the algorithm is certainly polynomial time in N, p and m.
+
+2.2.2   Proof of correctness
+The analysis of the correctness of the algorithm is very similar to that in [16,
+Section 3.2.1]. The essential idea is the following. One considers an infinite
+                                                                 1
+square matrix for the Atkin Up operator on the space of p+1         -overconvergent
+modular forms w.r.t. some choice of Katz basis. Reducing this (assumed in-
+tegral, see Note 2.2 (3)) matrix modulo pm , it vanishes except for an ∞ × ℓ
+strip down the lefthand side. The matrix A modulo pm we compute is the ℓ × ℓ
+matrix which occurs in the top lefthand corner, for our choice of basis (this
+is proved in [16, Section 3]). We would like to iterate the infinite matrix on
+the infinite row vector representing an overconvergent modular form H. When
+                    p
+H ∈ Mk (N, χ, Zp , p+1 ) we notice that the coefficients in the infinite vector rep-
+resenting H w.r.t. our Katz basis decay p-adically (since p/(p + 1) > 1/(p + 1))
+
+
+                                          7
+and in fact vanish modulo pm , except for the first ℓ elements (see the final para-
+graph in [16, Section 3.4.2]). Hence we can iterate Up on H by iterating the
+finite matrix A on a finite vector of length ℓ. (The actual power r is chosen
+to ensure that we iterate sufficiently often to obtain the correct answer modulo
+pm .) In our application to Rankin p-adic L-functions we will find that in fact
+                     1
+H ∈ Mk (N, χ, Zp , p+1 ). Hence the preliminary Step 6 (a) is to apply the Up
+operator once to q-expansions to improve overconvergence by a factor p, see [16,
+Equation (2)] and Note 2.2 (3). (There is a loss of precision of m′ − m when one
+writes Up (H) as a Katz expansion, cf. the last paragraph of [16, Section 3.2.1]
+where a similar loss occurs during the computation of the matrix A.) Observe
+that this preliminary step is harmless, since we need to compute the elements in
+                                                  ′
+our Katz basis to the higher precision modulo q ℓ p anyway. (To make the above
+argument completely rigorous one fusses over the minor difference between r-
+                                                     p
+overconvergent for all ordp (r) < p/(p + 1), and p+1    -overconvergent, as in [16,
+Section 3.2.1].)
+
+Note 2.2 We make some minor comments on the algorithm.
+(1) For weight k ≥ 2 the ordinary subspace can be computed instead using
+    classical methods; however, our algorithm is the only “polynomial-time”
+    method known to the author for computing this subspace in weight k ≤ 1.
+(2) We assume that the smallest non-zero slope s0 of (the Newton polygon of)
+    the reverse characteristic polynomial of A is such that ⌈m/s0 ⌉ ≤ (pf −
+    1)pm . This is reasonable as the smallest non-zero slope which has ever
+    been experimentally observed is 1/2. (One could of course compute s0 and
+    adjust r accordingly to remove this assumption.) The integer f can be
+    easily computed by reducing the matrix A modulo p. The exponent m
+    rather than m − 1 in the definition of r accounts for the possibility that the
+    unit roots may lie in ramified extensions. (So ur ≡ 1 mod pm for each unit
+    root u, and ur ≡ 0 mod pm for all other roots u of the reverse characteristic
+    polynomial.)
+(3) The correctness of the algorithm relies on the assumption that we can solve
+    T = A′ E for a p-adically integral matrix A′ , although the theory only
+    guarantees that pA′ has integral coefficients, see [16, Note 3.2, Section 3.2.1]
+    and also [12, II.3], [14, Section 3.11]. One could modify the algorithm
+    (or rather the refined version in Section 2.2.4) to remove this assumption;
+    however, in practice the author has never encountered a situation in which
+    the matrix A′ fails to have p-adically integral coefficients.
+(4) The assumption that Z[χ] embeds in Zp allows one to exploit fast algorithms
+    for matrix and polynomial arithmetic over rings of the form Zp /(pm ) ∼   =
+    Z/(pm ) which are integrated into the systems Magma and Sage. The
+    algorithm works perfectly well in principle without this assumption, but it
+    will be much more difficult to get a comparably fast implementation.
+
+
+
+                                         8
+(5) The hypothesis 0 ≤ k < p−1 can be removed as follows. In Step 1 write k :=
+    k0 +j(p−1) where 0 ≤ k0 < p−1. In Step 4 compute G := Ep−1 (q)/Ep−1 (q p )
+                         ′   ′
+    and Gj ∈ Z[[q]]/(pm , q ℓ p ), and let ui,s := Gj ei,s . The matrix A computed
+    in Step 5 is then for the “twisted” Atkin operator Up ◦ Gj . After Step 6(a)
+                                                 −j
+    multiply the q-expansion of Up (H) by Ep−1       and in Step 6(b) multiply the
+                  P                  j
+    q-expansion i,s γi,s ei,s by Ep−1 and return this product as eord (H). In
+                                          P                   j
+    Step 7 multiply each q-expansion i,s bi,s ei,s by Ep−1       to get the basis for
+                                                 −j
+    ordinary space. For j ≥ 1, to ensure Ep−1 Up (H) lies in the correct space
+                                    j
+    one should multiply it by p⌈ p+1 ⌉ , and so the final answer will only be correct
+                   j
+    modulo pm−⌈ p+1 ⌉ . (One could of course also just run the algorithm without
+    twisting, but then the auxiliary parameters n, ℓ, m′ etc would have to be
+    worked out afresh, since the algorithm would no longer be an extension of
+    [16, Algorithm 2.1].)
+(6) In practice the output q-adic precision s(m, p) = ℓ′ p is always large enough
+    for our needed application to Rankin p-adic L-functions. One can insist
+    though on any output precision s′ ≥ ℓ′ p simply by computing the Katz
+    basis elements in Step 3 to that q-adic precision.
+
+
+
+2.2.3   Finding complementary spaces in Step 2
+A key step in the algorithm is the efficient construction in practice of the im-
+                      ′    ′
+age in Z[[q]]/(pm , q ℓ p ) of a basis for some choice of complementary spaces
+Wi (N, χ, Zp ), for each 0 ≤ i ≤ n. The author’s implementation (which is
+at present restricted to trivial or quadratic characters χ) is based upon sugges-
+tions of David Loeffler and John Voight. The idea is to use the multiplicative
+structure on the ring of modular forms.
+    One fixes a choice of weight bound B ≥ 1 and computes the image in
+            ′   ′
+Z[[q]]/(pm , q ℓ p ) of a Z[χ′ ]-basis for each of the spaces of classical modular forms
+Mb (N, χ′ , Q(χ′ )) where 1 ≤ b ≤ B and χ′ vary over a set of characters which
+generate a group containing χ. One then reduces these basis elements modulo
+       ′
+(p, q ℓ ) and for each 0 ≤ i ≤ n looks for random products of these q-expansions
+which generate an Fp -vector space of dimension di and have weight k0 + i(p − 1)
+and character χ. This is done in a recursive manner. Once one has computed
+the required forms in weight k0 + (i − 1)(p − 1) one maps then (via the identity
+map) into weight k0 + i(p − 1) (recall Ep−1 ≡ 1 mod p) and generates a further
+mi = di − di−1 linearly independent forms in weight k0 + i(p − 1) and character
+χ. The correct choices of products, which give forms not in the space already
+generated, are “encoded” in an appropriate manner; that is, the basis elements
+for each weight b and character χ′ are stored as an ordered list, and products
+                             ′
+of them (modulo (p, q ℓ )) can then be represented by “codes” which give the
+positions chosen in each list.
+                                                            ′
+    Having found these correct choices modulo (p, q ℓ ) one then repeats the pro-
+                     ′    ′
+cess modulo (pm , q ℓ p ) to find the complementary spaces Wi (N, χ, Zp ), but
+
+                                           9
+crucially this time using the “codes” to only take products of modular forms
+which give something not in the Zp -span of the forms already computed. In
+this way when working to the full precision one does not waste time computing
+products of modular forms that lie in the space one has already generated. (It
+surprised the author to discover that in practice in some examples, e.g. Example
+3.5, one can generate many such “dud” forms — he has no intuition as to why
+this is the case.)
+    A good bound to take is B := 6, but one can vary this, playing the time it
+takes to generate the spaces in low weight off against the time spent looking for
+suitable products. This choice of bound fits with some theoretical predictions
+communicated to the author by David Loeffler.
+
+2.2.4   A three-stage projection in Step 6
+In Algorithm 2.1 we find Upr (H), where r is chosen so that the answer is
+correct modulo pm , in two separate stages. First, one computes Up (H) ∈
+                p
+Mk (N, χ, Zp , p+1 ) using q-expansions. Second, one computes Upr−1 (Up (H)) us-
+ing Katz expansions. However, the matrix A has size growing linearly with m
+and so the computation of the high power Ar−1 becomes a bottleneck as the
+precision m increases.
+    A better aproach is to factor the projection map into three parts, as follows.
+Write s0 for the smallest non-zero slope in the characteristic series of A (one
+can safely just set s0 := 1/2). Computing A⌈m/s0 ⌉ and writing its non-zero rows
+                                                                        ′
+(which are w.r.t. the Katz basis) as q-expansions in Z[[q]]/(pm , q ℓ p ) gives (the
+image of) a basis for the ordinary subspace. One can now compute a matrix
+Aord over Z/(pm ) for the Up operator on this basis by explicitly computing
+with q-expansions. This matrix is significantly smaller than A itself, since its
+dimension has no dependence on m. To project H, one computes as before
+                                        ⌈m/s0 ⌉
+Up (H) using q-expansions, then Up              (Up (H)) via Katz expansions as the
+                   ⌈m/s0 ⌉
+product β := αA            . Next, one writes the “Katz vector” β as the image of a
+                               ′
+q-expansion in Z[[q]]/(pm , q ℓ p ) and thus as a new vector β ′ over Z/(pm ) in terms
+                                                                       r−⌈m/s0 ⌉−1
+of the basis for the ordinary subspace. Finally, one computes Up                    on
+  ⌈m/s0 ⌉              ′      ′ r−⌈m/s0 ⌉−1
+Up        (Up (H)) as γ := β Aord            and returns the q-expansion associated
+to γ ′ as the ordinary projection of H modulo (pm , q s(m,p) ).
+    This three-stage projection method also works for k < 0 or k ≥ p − 1, but
+one must take care to twist and un-twist by powers of Ep−1 at the appropriate
+times.
+
+2.2.5   Avoiding weight one forms
+In the case that k = 1, one can compute the ordinary projection eord(H) of
+the weight one form H without doing any computations in weight one, except
+                                                   ′  ′
+computing the q-expansion of H itself modulo (pm , q ℓ p ). The idea is to use the
+Eisenstein series to “twist” up to weight p = 1 + (p − 1). That is, one proceeds
+as in Note 2.2 (5), only writing k = 1 = k0 + j(p − 1) where now k0 := p and
+
+
+
+                                         10
+j := −1. In addition, when generating complementary spaces (see Section 2.2.3)
+one only computes bases of classical modular forms in low weights 2 ≤ b ≤ B.
+    The author has implemented this variation in both Magma and Sage, and
+used it to compute the characteristic series of the Atkin operator on p-adic
+overconvergent modular forms in weight one (for a quadratic character, and
+various levels N and primes p) without computing the q-expansions of any
+modular forms in weight one.
+
+2.3     Application to p-adic L-functions
+We now describe the application of Algorithm 2.1 to the computation of p-adic
+L-functions.
+
+2.3.1   Definition of Rankin triple product p-adic L-functions
+Let f, g, h be newforms of balanced weights k, l, m ≥ 2, primitive characters
+χf , χg , χh , with χf χg χh = 1 and level N . Assume that the Heegner hypothesis
+H from [8, Section 1] is satisfied, e.g. N is squarefree and for each prime ℓ divid-
+ing N the product of the ℓth Fourier coefficients of f, g and h is −ℓ(k+l+m−6)/2 .
+Write k = l + m − 2 − 2t with t ≥ 0, which is possible since the sum of the
+weights must be even. We fix an embedding Q̄ ֒→ Cp and assume f, g and h are
+ordinary at p. That is, the pth coefficient in the q-expansion of each is a p-adic
+unit.
+                              d
+                                on q-expansions as d : n≥0 an q n 7→ n≥0 nan q n .
+                                                       P              P
+    Define the map d = q dq
+Then for s ≥ 0, the map ds acts on p-adic modular forms increasing          weights
+by 2s [18, Théorème 5(a)]. For a p-adic modular form a(q) := n≥0 an q n let
+                                                                     P
+
+a[p] := n≥1, p6 |n an q n denote its p-depletion. Then for s ≥ 1 the map
+          P
+
+                                                   ∞
+                                                   X an
+                              a 7→ d−s (a[p] ) =            qn
+                                                   n=1
+                                                       ns
+                                                   p6 | n
+
+acts on p-adic modular forms shifting weights by −2s [18, Théorème 5(b)]. So
+d−(1+t) (g [p] ) × h is a p-adic modular form of weight l − 2(1 + t) + m = k and
+character χg χh = χ−1   f .
+    Let f be the dual form to f and f ∗(p) be the ordinary p-stabilisation of f ∗ ,
+          ∗
+
+see [8, Sections 1 and 4]. So f ∗(p) is an ordinary eigenform of character χ−1f .
+We define
+           Lp (f , g, h)(k, l, m) := c(f ∗(p) , eord (d−(1+t) (g p] ) × h)) ∈ Cp .
+Here we are assuming the action of the Hecke algebra on the ordinary subspace
+in weight k is semisimple (which the author understands is well-known for N
+squarefree since k ≥ 2) and c(f ∗(p) , •) denotes the coefficient of f ∗(p) when one
+writes an ordinary form • as a linear combination of ordinary eigenforms, see
+[13, Page 222]. (Darmon and Rotger take a different but equivalent approach,
+using the Poincaré pairing in algebraic de Rham cohomology to extract the
+coefficient Lp (f , g, h)(k, l, m) [8, Proposition 4.10].)
+
+                                             11
+2.3.2   Computation of Rankin triple product p-adic L-functions
+We shall now (with another apology) introduce the clashing notation m to refer
+to the p-adic precision, as in Section 2.2. We wish to apply Algorithm 2.1 to
+compute eord (H) for H := d−(1+t) (g [p] ) × h modulo pm (and q-adic precision
+s(m, p)) and also a basis for the ordinary subspace in level N , weight k and
+character χ := χ−1 f . (So we should assume that the image of χ lies in Zp and g
+and h are defined over Zp , but see also Notes 2.2 (4) and 2.3 (2).) Given these,
+one can use Hecke operators on the ordinary subspace to extract the coefficient
+c(f ∗(p) , eord(H)), see Note 2.3 (3), as f ∗(p) (and H) are easy to compute (at
+least within Magma and Sage using the algorithms from [19]).
+    For our projection algorithm to work we require that H is overconvergent
+(rather than just nearly overconvergent [8, Section 2.5]) and in particular that
+H ∈ Mk (N, χ, Zp , p+1 1
+                         ) for χ := χ−1
+                                     f . Overconvergence is guaranteed provided
+t = l − 2, since a 7→ d−s (a[p] ) maps overconvergent forms in weight 1 + s to
+overconvergent forms in weight 1 − s [2, Proposition 4.3]. That is, provided
+                                   k =m−l+2                                       (3)
+we will have that d−(1+t) (g [p] ), and hence also H, is overconvergent. When this
+condition is not satisfied our algorithm with fail.
+     Regarding the precise radius of convergence of d−(1+t) (g [p] ), Darmon has
+explained to the author that when our condition (3) is met the methods used
+by Coleman (the geometric interpretation of the d operator in terms of the
+Gauss-Manin connection [8, Section 2.5]) show the form d−(1+t) (g [p] ) lies in the
+space Mk (N, χg , K; r) for any r ∈ B ⊂ Cp with ordp (r) < 1/(p + 1). Let us
+outline the argument to get an idea why this is true. First, the p-depletion
+g [p] := (1 − Vp Up )g is a classical modular form for Γ1 (N ) ∩ Γ0 (p2 ) with trivial
+character at p and infinite slope. (Here Vp is the one-sided inverse of Up [8,
+Equation (12)] and increases the level of Up (g) by p.) Hence by (2) with ν := 2,
+g [p] lies in Mℓ (N, χg , B; r) for any r ∈ B with ordp (r) < 1/(p + 1). Next, [2,
+Theorem 5.4] gives an explicit relation between the action of powers of the d
+operator on spaces of overconvergent modular forms and that of the Gauss-
+Manin connection of certain de Rham cohomology spaces associated to rigid
+analytic modular curves. This relationship associates to g [p] a trivial class in
+the de Rham cohomology space (the righthand side of [8, Equation (34)] for
+“r” equals t and any “ǫ” less than 1/(p + 1)), and hence one in the image of
+the Gauss-Manin connection. (The class is trivial because the form has infinite
+slope, cf. [2, Lemma 6.3].) The Gauss-Manin connection preserves the radius
+of convergence, and taking the preimage and untangling the relationship one
+finds that d−(1+t) (g [p] ) is an overconvergent modular form of the same radius
+of convergence as g [p] , i.e. d−(1+t) (g [p] ) ∈ Mℓ (N, χg , K; r) for any r ∈ B with
+ordp (r) < 1/(p + 1). Thus multiplying by h (and using (2) with ν := 1 to
+determine the overconvergence of h itself) we find also
+                        d−(1+t) (g [p] ) × h ∈ Mk (N, χ, K; r)                    (4)
+for any r ∈ B with ordp (r) < 1/(p + 1).
+
+                                         12
+Note 2.3
+(1) The above argument does not quite show that H := d−(1+t) (g [p] ) × h lies
+                       1
+    in Mk (N, χ, Zp , p+1 ) as for this one would need to replace “K” by “B”
+    in (4). However, the author just assumed this was true, and this was not
+    contradicted by our experiments; in particular, when one could relate the
+    value of the Rankin p-adic L-function to the p-adic logarithm of a point on
+    an elliptic curve, the relationship held to exactly the precision predicted by
+    the algorithm. To be completely rigorous though one would have to carry
+    out a detailed analysis of Darmon’s argument and the constructions used by
+    Coleman (and one may have to account for some extra logarithmic growth
+    and loss of precision).
+(2) It is helpful to notice that the map φ : (g, h) 7→ eord (d−(1+t) (g [p] ) × h) is
+    bi-linear in g and h. Thus one can compute φ((g, h)) by first computing
+    it on a product of bases for the spaces Sl (N, χg ) and Sm (N, χh ). This is
+    useful when these spaces are defined over Zp but the newforms themselves
+    are defined over algebraic number fields which do not embed in Zp .
+(3) The author implemented a number of different approaches to computing
+    c(f ∗(p) , eord (H)). The most straightforward is to compute matrices for the
+    Hecke operators Uℓ (for ℓ|N p) and Tℓ (otherwise) on the ordinary subspace
+    for many small ℓ by explicitly computing on the q-expansion basis for the
+    ordinary subspace output by Algorithm 2.1. One can then try to project
+    onto the “f ∗(p) -eigenspace” using any one of these matrices. One difficulty
+    which arises is that congruences between eigenforms may force a small loss
+    of p-adic precision during this step. (Congruences with Eisenstein series
+    can be avoided for k ≥ 2 by using classical methods to compute a basis for
+    the ordinary cuspidal subspace, and working with that space instead.) We
+    did not carry out a rigorous analysis of what loss of precision could occur
+    due to these congruences, but in our examples it was never more than a
+    few p-adic coefficients and one could always determine exactly what loss
+    of precision had occurred after the experiment. The author understands
+    from discussions with Wiles that one should be able to compute an “upper
+    bound” on the p-adic congruences which can occur, and thus on the loss of
+    precision. This bound of course is entirely independent of the precision m.
+    However, such a calculation is beyond the scope of this paper.
+
+
+
+2.3.3   Single and double product L-functions
+The author understands that usual p-adic L-functions can be computed using
+our methods, by substituting Eisenstein series for newforms in the appropriate
+places in the triple product L-function, cf. [1, Section 3]. However, he has not
+looked at this application at all, as the methods based upon overconvergent
+modular symbols are already very good (for k ≥ 2) [17]. One can similarly
+compute double product Rankin p-adic L-functions using our approach. In
+
+                                         13
+particular, we have used our algorithm to compute a (suitably defined) Rankin
+double product p-adic L-function special value “Lp (f , g)(2, 1)” for f of weight
+2 and g of weight 1, see the forthcoming [5] and also [7, Conjecture 10.1].
+
+
+3    Examples
+In this section we shall freely use the notation from [8, Section 1]. We im-
+plemented our basic algorithms in both Magma and Sage, but focussed our
+refinements on the former and all the examples we present here were computed
+using this package. The running time and space for the examples varied from
+around 100 seconds with 201 MB RAM (Example 3.4) to around 19000 seconds
+with 9.7 GB RAM (Example 3.3) on a 2.93 GHz machine.
+    All of the examples here are for weights k, l, m with k = m−l+2 and t = l−2,
+where t = 0, i.e., l = 2 and k = m (and in fact f = h). We implemented our
+algorithm for arbitrary t ≥ 0 and computed Lp (f , g, h)(k, l, m) in cases when
+t > 0; however, the author does not know of any geometric constructions of
+points when t > 0 (or even when f 6= h) and so we do not present these
+computations here.
+    We begin with an example of the explicit construction of rational points
+mentioned in our introduction, see Equation (1).
+
+Example 3.1 Let Ef : y 2 + y = x3 − x2 − 2x + 2 be the rank 1 curve of
+conductor 57 with Cremona label “57a” associated to the cusp form
+
+             f := q − 2q 2 − q 3 + 2q 4 − 3q 5 + 2q 6 − 5q 7 + q 9 + · · · .
+
+We choose two other newforms of level 57 (associated to curves of rank zero):
+
+            g1   :=   q + q 2 + q 3 − q 4 − 2q 5 + q 6 − 3q 8 + q 9 − · · ·
+            g2   :=   q − 2q 2 + q 3 + 2q 4 + q 5 − 2q 6 + 3q 7 + q 9 − · · · .
+Taking p := 5 and writing f , g1 , g2 for the Hida families we compute the special
+values
+         L5 (g1 , f , g1 )(2, 2, 2) ≡    −260429402433721822483 mod 530
+        5L5 (g2 , f , g2 )(2, 2, 2) ≡    −279706401244025789341 mod 531 .
+One computes that for each newform gi , if one multiplies the operator of pro-
+jection onto the gi -eigenspace by 3 then one obtains an element in the integral
+(rather than rational) Hecke algebra. Thus equation (1) predicts that there
+exist global points P1 , P2 ∈ Ef (Q) such that
+                                        E0 (gi )E1 (gi )
+                  logEf (Pi ) = 6 ×                      × L5 (gi , f , gi ).
+                                         E(gi , f, gi )
+One finds
+             logEf (P1 ) ≡     37060573996879427247 × 5 mod 530
+             logEf (P2 ) ≡     −18578369245374641968 × 5 mod 530 .
+
+                                             14
+Adapting the method in [15, Section 2.7] we recover the points
+                                1976 750007
+                                             
+                   P1 = − 7569      , 658503   = −16P
+
+and P2 = (0, 1) = 4P , where P := (2, −2) is a generator for Ef (Q).
+
+   Next we look at an example where the Darmon-Rotger formula may be
+applied, but the application to constructing points has not been fully worked
+out. (At least, at the time of author’s computations — we understand from
+a personal communication from Darmon and Rotger that this has now been
+done.)
+
+Example 3.2 Let Ef : y 2 + xy + y = x3 − x2 be the rank 1 curve of conductor
+53 with Cremona label “53a” associated to the cusp form
+
+              f := q − q 2 − 3q 3 − q 4 + 3q 6 − 4q 7 + 3q 8 + 6q 9 + · · · .
+
+There is one newform g of level 53 and weight 4 and trivial character with
+rational Fourier coefficients:
+
+              g := q + q 3 − 8q 4 − 18q 5 + 2q 7 − 26q 9 + 54q 11 + · · · .
+
+Taking p := 7 and writing f and g for the Hida families we compute the special
+value
+
+         L7 (g, f , g)(4, 2, 4) ≡ −12581507765759084963366603 mod 730 .
+
+The Darmon-Rotger formula [8, Theorem 1.3] then predicts that
+
+                                             E0 (g)E1 (g)
+            AJ7 (∆)(ηgu−r ⊗ ωf ⊗ ωg ) =                   L7 (g, f , g)(4, 2, 4)
+                                              E(g, f, g)
+
+and we find that
+
+     AJ7 (∆)(ηgu−r ⊗ ωf ⊗ ωg ) ≡ 1025211670724558054729221 × 7 mod 730 .
+
+Equation (1) does not apply in this setting, but one can hope that this equals
+logEf (P ) for some point P ∈ Ef (Q) ⊗ Q. Exponentiating one finds a point
+P̂ = (x(P̂ ), y(P̂ )) ∈ E1 (Q7 ) with coordinates 72 x(P̂ ), 73 y(P̂ ) modulo 730 (where
+E := Ef ). We have |E(F7 )| = 12 and translating P̂ by elements Q ∈ E(Q7 )[12]
+we find exactly one rational point, P = (0, −1) (see the method in [15, Section
+2.7]). Thus we have computed a generator in a rather elaborate manner.
+
+    The author also considered again the curve Ef with Cremona label “57a” but
+took g to be the unique newform of level 57 and weight 4 with trivial character
+and rational Fourier coefficients, and found that AJ5 (∆)(ηgu−r ⊗ ωf ⊗ ωg ) ≡
+  15
+− 13 logEf (P ) mod 531 for P := (2, −2) a generator of Ef (Q). (So here p = k−1,
+and we used the “twisted” version of the algorithm described in Note 2.2 (5).)
+    The next example has a similar flavour but involves cusp forms of odd weight.
+
+                                            15
+Example 3.3 Let Ef : y 2 + y = x3 + x2 be the rank 1 curve of conductor 43
+with Cremona label “43a” associated to the cusp form
+        f := q − 2q 2 − 2q 3 + 2q 4 − 4q 5 + 4q 6 + q 9 + 8q 10 + 3q 11 + · · · .
+Let χ be the Legendre character modulo 43. Then we find unique newforms
+g ∈ S3 (43, χ) and h ∈ S5 (43, χ) with rational Fourier coefficients:
+                     g :=      q + 4q 4 + 9q 9 − 21q 11 + · · ·
+                     h :=      q + 16q 4 + 81q 9 + 199q 11 + · · · .
+Taking p := 11 and writing f , g and h for the Hida families we compute the
+special values
+   L11 (g, f , g)(3, 2, 3) ≡   −7831319270947510009065871543799 mod 1130
+   L11 (h, f , h)(5, 2, 5) ≡   4791560577275108790581414445515 mod 1130 .
+Using the Darmon-Rotger formula we compute
+AJ11 (∆)(ηgu−r ⊗ ωf ⊗ ωg ) ≡ −646073276230754578213318125190 × 11 mod 1130 .
+Rather than attempt to recover a point from this, we take the generator P =
+(0, 0) for Ef (Q) and compute logEf (P ) and then try to determine a relationship.
+One finds
+                                                258
+             AJ11 (∆)(ηgu−r ⊗ ωf ⊗ ωg ) ≡           logEf (P ) mod 1130 .
+                                                107
+(We checked that multiplying the relevant projection operator by 2 × 107 gives
+an element in the integral Hecke algebra.) Similarly we found
+                                                6708
+            AJ11 (∆)(ηhu−r ⊗ ωf ⊗ ωh ) ≡ −           logEf (P ) mod 1130 .
+                                                5647
+
+
+    The examples above suggest the construction in [10] can be generalised, at
+least in a p-adic setting.
+    We now look at some examples in which one removes one of the main con-
+ditions in the Darmon-Rotger theorem [8, Theorem 1.3] itself, that the prime
+does not divide the level. In each example rather than try to recover a rational
+point, we look for an algebraic relationship between the logarithm of a generator
+and the special value we compute.
+
+Example 3.4 Let Ef : y 2 + y = x3 + 2x be the rank 1 curve of conductor 77
+with Cremona label “77a” associated to the cusp form
+                 f := q − 3q 3 − 2q 4 − q 5 − q 7 + 6q 9 − q 11 + · · · .
+Let g be the level 11 and weight 2 newform (associated to a rank zero elliptic
+curve):
+      g := q − 2q 2 − q 3 + 2q 4 + q 5 + 2q 6 − 2q 7 − 2q 9 − 2q 10 + q 11 + · · · .
+
+                                           16
+We take the prime p := 7, which divides the level of f , and writing f and g for
+the Hida families compute
+
+       L7 (g, f , g)(2, 2, 2) ≡ −1861584104004734313229493 × 7 mod 731 .
+
+Taking the generator P = (2, 3) we compute logEf (P ) mod 731 and find that
+logEf (P )/7L7 (g, f , g)(2, 2, 2) satisfies the quadratic equation 1600t2 +48t+9 = 0
+modulo 729 .
+
+   The factor p which occurs in the expression relating the special value to the
+logarithm of a point when the prime divides the level is also seen in the next
+examples.
+
+Example 3.5 Let Ef : y 2 + xy + y = x3 − 80x − 275 and Eg : y 2 + xy + y =
+x3 − x2 − 12x + 18 be the rank 1 curves of conductor 469 with Cremona labels
+“469a” and “469b”, respectively, associated to the cusp forms
+
+      f    :=   q + q 2 + q 3 − q 4 − 3q 5 + q 6 − q 7 − 3q 8 − 2q 9 − 3q 10 + · · ·
+      g    :=   q − q 2 − 3q 3 − q 4 + q 5 + 3q 6 − q 7 + 3q 8 + 6q 9 − q 10 + · · · .
+
+Taking the prime p := 7 we compute
+
+          L7 (g, f , g)(2, 2, 2) ≡ 1435409545849510941783817 mod 730
+          L7 (f , g, f )(2, 2, 2) ≡ 6915472639041460159095363 mod 730 .
+
+Using generators Pf = (−5, 4) and Pg = (2, −1) for Ef (Q) and Eg (Q), respec-
+tively, we found
+
+                 7L7 (g, f , g)(2, 2, 2) ≡       4 logEf (Pf ) mod 730
+                35L7 (f , g, f )(2, 2, 2) ≡      −16 logEg (Pg ) mod 730 .
+
+
+   In the above example the “tame” level used in our computation was N =
+67 = 469
+      7 . In the next example it is one: for tame level one the author’s algorithm
+does not use the theory of modular symbols at all, cf. [16, Section 3.2].
+
+Example 3.6 Let Ef : y 2 + xy + y = x3 + x2 − x be the rank 1 curve of
+conductor 89 with Cremona label “89a” associated to the cusp form
+
+     f := q − q 2 − q 3 − q 4 − q 5 + q 6 − 4q 7 + 3q 8 − 2q 9 + q 10 − 2q 11 + · · · .
+
+Let g be the level 89 and weight 2 newform (associated to a rank zero elliptic
+curve):
+
+   g := q + q 2 + 2q 3 − q 4 − 2q 5 + 2q 6 + 2q 7 − 3q 8 + q 9 − 2q 10 − 4q 11 + · · · .
+
+Taking the prime p := 89 we found that
+
+                  89L89 (g, f , g)(2, 2, 2) ≡ 72 logEf (P ) mod 8921
+
+                                            17
+where P = (0, 0) is a generator.
+
+   The author understands that the above examples are consistent with on-
+going work of Darmon and Rotger to generalise their formula to the situation
+in which the prime p does divide the level N [9].
+
+
+References
+ [1] M. Bertolini and H. Darmon, Kato’s Euler system and rational points on
+     elliptic curves I: a p-adic Beilinson formula, Israel Journal of Mathematics,
+     to appear. Available at http://www.math.mcgill.ca/darmon/pub/pub.html
+ [2] R. Coleman, Classical and overconvergent modular forms, Invent. Math.
+     124, (1996), 251-241.
+ [3] R. Coleman, F. Gouvêa and N. Jochnowitz, E2 , Θ and overconvergence,
+     International Mathematics Research Notices, No.1, (1995), 23-41.
+ [4] H. Darmon, M. Daub, S. Lichtenstein and V. Rotger, Algorithms for
+     Chow-Heegner points via iterated integrals, submitted. Available at
+     http://www.math.mcgill.ca/darmon/pub/pub.html
+ [5] H. Darmon, A.G.B. Lauder, V. Rotger, Stark-Heegner points and p-adic
+     iterated integrals attached to modular forms of weight one, in progress.
+ [6] H. Darmon and R. Pollack, Efficient calculation of Stark-Heegner points
+     via overconvergent modular symbols, Israel J. Math. 153, (2006), 319-354.
+ [7] H. Darmon and V. Rotger, Algebraic cycles and Stark-Heegner points,
+     Arizona Winter School 2011.
+     Available at http://www-ma2.upc.edu/vrotger/docs/AWS2011/aws.pdf
+ [8] H. Darmon and V. Rotger, Diagonal cycles and Euler systems I: A p-adic
+     Gross-Zagier formula, Annales Scientifiques de L’Ecole Normale Supérieure.
+     Available at http://www.math.mcgill.ca/darmon/pub/pub.html
+ [9] H. Darmon and V. Rotger, Diagonal cycles and Euler systems II: p-adic
+     families of cohomology classes, in progress.
+[10] H. Darmon, V. Rotger and I. Sols, Iterated integrals, diagonal cycles and
+     rational points on elliptic curves, Publications Mathématiques de Besançon
+     2 (2012), 19-46.
+     Available at http://www.math.mcgill.ca/darmon/pub/pub.html
+[11] M. Daub, Berkeley Ph.D. thesis, in progress.
+[12] F. Q. Gouvêa, Arithmetic of p-adic modular forms (SLN 1304), Springer-
+     Verlag, 1988.
+
+
+
+                                       18
+[13] H. Hida, Elementary theory of L-functions and Eisenstein series, LMS Stu-
+     dent Texts 26, Cambridge University Press, 1993.
+[14] N.M. Katz, p-Adic properties of modular schemes and modular forms, in
+     Modular Forms in One Variable III (SLN 350), Springer-Verlag, (1973),
+     69-190.
+[15] M. Kurihara and R. Pollack, Two p-adic L-functions and rational points
+     on elliptic curves with supersingular reduction, L-Functions and Galois
+     Representations (Durham, 2007), LMS (LNS 320), Cambridge University
+     Press, 300-332.
+[16] A.G.B. Lauder, Computations with classical and p-adic modular forms,
+     LMS J. Comput. Math. 14 (2011) 214-231.
+[17] R. Pollack and G. Stevens, Overconvergent modular symbols and p-adic
+     L-functions, Annales Scientifiques de l’Ecole Normale Superieure, Vol. 44
+     (1), 1-42, 2011.
+[18] J.-P. Serre, Formes modulaires et fonctions zêta p-adiques, in Modular
+     Forms in One Variable III (SLN 350), Springer-Verlag, (1973), 191-268.
+[19] W. Stein, Modular Forms, a Computational Approach, Graduate Studies
+     in Mathematics 79, AMS, 2007.
+
+
+
+
+                                     19
+

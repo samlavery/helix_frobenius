@@ -1,0 +1,19 @@
+derived adapters: b=-1/x0^2=-0.0495 (x0=4.494); reverb c=-g*(r+1)/x0^3, g universal
+============================================================================
+  r                     config  #cross   k mean
+  8                 dwell only       7     0.59
+  8      +adjuster (derived b)       4     0.63
+  8             +reverb g=0.02       3     0.20
+  8             +reverb g=0.05       3     0.55
+  8             +reverb g=0.10       8     0.21
+  8             +reverb g=0.20      12     0.07
+
+ 13                 dwell only       5     0.48
+ 13      +adjuster (derived b)       3     0.61
+ 13             +reverb g=0.02       5     0.43
+ 13             +reverb g=0.05       8     0.10
+ 13             +reverb g=0.10      14     0.09
+ 13             +reverb g=0.20       9     0.18
+
+[read] derived adjuster should match the swept -0.05 result (k~0.68); if the derived
+       reverb term (odd, degree-scaled) pushes k further toward 1, the 2nd adapter is real.

@@ -1,0 +1,80 @@
+==============================================================================
+STEP 0 — ANCHOR GATE (census reproduction; J-tie; ACF detector)
+==============================================================================
+
+[anchor] scan meshes + cores rebuilt (46s; Nyquist ppc=8 at nu_max=40, as mb_identify)
+
+[anchor] (i) census reproduces recorded mb_identify mean gaps (tol 2e-3):
+          (2, 1, 1, 8.0): mean gap 0.5280 (recorded 0.528)
+         (6, 1, 1, 16.0): mean gap 0.3094 (recorded 0.309)
+          (6, 2, 1, 8.0): mean gap 1.0879 (recorded 1.088)
+          (6, 1, 2, 8.0): mean gap 2.2611 (recorded 2.261)
+
+[anchor] (ii) A(8) == J_house on the scan mesh (1 cell):
+      rel dev 2.70e-13  (tol 1e-9)
+
+[anchor] (iii) ACF detector on synthetic two-impulse content:
+      known separation 5.30, ACF lag 5.293 (prom 0.48; tol 0.05)
+
+[anchor] GATE VERDICT: PASS  (census True, J True, ACF True)
+==============================================================================
+
+
+==============================================================================
+RANK SWEEP — clock survival under Chebyshev U_r x-weight
+==============================================================================
+    clock-law excludes xi=0 and uses cells passing the continuous clock-quality gate.
+    deep counts cells with >=4 deep dips; productivity = deep / clock.
+    stat = local curvature error; model = max period shift among H=1,2,3 fits.
+    clock gate: R2>=0.10, relerr<=0.02, kappa in [0.85,1.05].
+
+     r  deep clock   prod      D0   lf2      X     xi    R2   kmean    kstd    kmin    kmax     stat    model   sum_r  sumrat
+     0    10    12   0.83   0.522  1.03  -1.04   0.00 1.000  0.9417  0.0228  0.8954  0.9706  2.0e-04  2.4e-04   0.967   1.478
+     1     9    12   0.75   0.519  1.04  -1.03   0.01 1.000  0.9405  0.0237  0.8963  0.9702  2.3e-04  9.2e-05   0.948   1.661
+     2     8    12   0.67   0.523  1.03  -1.04   0.00 1.000  0.9411  0.0235  0.8929  0.9705  1.8e-04  3.0e-04   0.948   1.598
+     3     8    12   0.67   0.523  1.03  -1.03   0.00 1.000  0.9419  0.0220  0.9037  0.9706  2.1e-04  1.2e-04   0.954   1.696
+     4     7    12   0.58   0.525  1.03  -1.03   0.00 1.000  0.9415  0.0215  0.9031  0.9690  2.1e-04  1.4e-04   0.960   1.722
+     5     6    12   0.50   0.523  1.03  -1.03   0.00 1.000  0.9416  0.0229  0.9023  0.9709  1.9e-04  1.2e-04   0.873   1.573
+     6     7    12   0.58   0.526  1.03  -1.03  -0.00 1.000  0.9427  0.0212  0.9016  0.9712  2.0e-04  1.0e-04   0.888   1.721
+     7     7    12   0.58   0.526  1.03  -1.03  -0.00 1.000  0.9420  0.0222  0.9007  0.9699  2.0e-04  2.2e-04   0.836   1.860
+     8     7    12   0.58   0.527  1.03  -1.03  -0.00 1.000  0.9414  0.0226  0.9001  0.9698  1.7e-04  7.2e-05   0.779   1.697
+     9     5    12   0.42   0.528  1.03  -1.04  -0.00 1.000  0.9424  0.0226  0.8999  0.9708  1.6e-04  1.9e-04   0.805   1.327
+    10     5    10   0.50   0.527  1.04  -1.03  -0.00 1.000  0.9446  0.0248  0.8992  0.9710  1.5e-04  1.6e-04   0.809   1.285
+    11     3     9   0.33   0.531  1.04  -1.03  -0.01 1.000  0.9423  0.0276  0.8946  0.9699  1.7e-04  2.3e-04   0.763   1.264
+    12     3     8   0.38   0.524  1.04  -1.04   0.00 1.000  0.9473  0.0248  0.8971  0.9710  1.1e-04  8.3e-05   0.759   1.164
+    13     5     8   0.62   0.530  1.04  -1.03  -0.01 1.000  0.9482  0.0235  0.9007  0.9712  9.8e-05  2.5e-04   0.770   1.178
+
+[measured] per-rank event census including xi=0:
+      r=0: xi=0 0/6, xi=2 4/6, xi=6 6/6
+      r=1: xi=0 5/6, xi=2 3/6, xi=6 6/6
+      r=2: xi=0 0/6, xi=2 3/6, xi=6 5/6
+      r=3: xi=0 4/6, xi=2 3/6, xi=6 5/6
+      r=4: xi=0 0/6, xi=2 2/6, xi=6 5/6
+      r=5: xi=0 5/6, xi=2 2/6, xi=6 4/6
+      r=6: xi=0 0/6, xi=2 2/6, xi=6 5/6
+      r=7: xi=0 6/6, xi=2 2/6, xi=6 5/6
+      r=8: xi=0 0/6, xi=2 2/6, xi=6 5/6
+      r=9: xi=0 5/6, xi=2 1/6, xi=6 4/6
+      r=10: xi=0 0/6, xi=2 1/6, xi=6 4/6
+      r=11: xi=0 5/6, xi=2 0/6, xi=6 3/6
+      r=12: xi=0 0/6, xi=2 1/6, xi=6 2/6
+      r=13: xi=0 6/6, xi=2 1/6, xi=6 4/6
+
+[measured] per-rank continuous clock census on xi!=0 cells:
+      r=0: xi=2 6/6, xi=6 6/6, deep/clock 10/12
+      r=1: xi=2 6/6, xi=6 6/6, deep/clock 9/12
+      r=2: xi=2 6/6, xi=6 6/6, deep/clock 8/12
+      r=3: xi=2 6/6, xi=6 6/6, deep/clock 8/12
+      r=4: xi=2 6/6, xi=6 6/6, deep/clock 7/12
+      r=5: xi=2 6/6, xi=6 6/6, deep/clock 6/12
+      r=6: xi=2 6/6, xi=6 6/6, deep/clock 7/12
+      r=7: xi=2 6/6, xi=6 6/6, deep/clock 7/12
+      r=8: xi=2 6/6, xi=6 6/6, deep/clock 7/12
+      r=9: xi=2 6/6, xi=6 6/6, deep/clock 5/12
+      r=10: xi=2 4/6, xi=6 6/6, deep/clock 5/10
+      r=11: xi=2 3/6, xi=6 6/6, deep/clock 3/9
+      r=12: xi=2 2/6, xi=6 6/6, deep/clock 3/8
+      r=13: xi=2 3/6, xi=6 5/6, deep/clock 5/8
+==============================================================================
+
+[budget] rank sweep wall time 313s

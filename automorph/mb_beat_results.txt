@@ -1,0 +1,93 @@
+==============================================================================
+STEP 0 — ANCHOR GATE (census reproduction; J-tie; ACF detector)
+==============================================================================
+
+[anchor] scan meshes + cores rebuilt (42s; Nyquist ppc=8 at nu_max=40, as mb_identify)
+
+[anchor] (i) census reproduces recorded mb_identify mean gaps (tol 2e-3):
+          (2, 1, 1, 8.0): mean gap 0.5280 (recorded 0.528)
+         (6, 1, 1, 16.0): mean gap 0.3094 (recorded 0.309)
+          (6, 2, 1, 8.0): mean gap 1.0879 (recorded 1.088)
+          (6, 1, 2, 8.0): mean gap 2.2611 (recorded 2.261)
+
+[anchor] (ii) A(8) == J_house on the scan mesh (1 cell):
+      rel dev 2.70e-13  (tol 1e-9)
+
+[anchor] (iii) ACF detector on synthetic two-impulse content:
+      known separation 5.30, ACF lag 5.293 (prom 0.48; tol 0.05)
+
+[anchor] GATE VERDICT: PASS  (census True, J True, ACF True)
+==============================================================================
+
+
+==============================================================================
+STEPS 1-4 — MEASURED COMB vs PREDICTED CLOCKS
+==============================================================================
+
+[measured] cells with >= 4 deep dips: 10/18 (all xi=0 cells have 0 — census as recorded)
+
+[measured] per-cell table (clock-fit and legacy spacings in nu units):
+                  cell      fit     stat    model   kappa     R2 edge     dip     diff     sum     ACF     dphi
+        (2, 1, 1, 8.0)  0.52243  9.3e-05  2.3e-04  0.9571  0.371 False   0.528     0.89   0.346   1.887 -4.44e-02
+       (2, 1, 1, 16.0)  0.25756  3.8e-05  4.4e-05  0.9706  0.260 False   0.279     2.92   0.124   1.248 -1.04e-01
+       (2, 2, 1, 16.0)  0.52373  9.3e-05  2.5e-04  0.9547  0.389 False   0.530     2.18   0.329   1.439 -5.53e-02
+        (2, 1, 2, 8.0)  2.20552  5.7e-04  1.7e-04  0.9068  0.708 False   2.288     3.48   1.516   3.613 1.21e-02
+        (6, 1, 1, 8.0)  0.52521  1.4e-04  3.5e-05  0.9520  0.216 False   0.537     4.33   0.276   4.911 -6.51e-02
+       (6, 1, 1, 16.0)  0.25853  4.9e-05  7.0e-06  0.9670  0.154 False   0.309     1.37   0.142   3.442 -7.49e-02
+        (6, 2, 1, 8.0)  1.07251  3.3e-04  1.2e-03  0.9324  0.407 False   1.088     5.35   0.727   5.271 -3.76e-02
+       (6, 2, 1, 16.0)  0.52287  1.0e-04  3.7e-04  0.9563  0.333 False   0.528     3.47   0.354   3.591 -7.25e-02
+        (6, 1, 2, 8.0)  2.23360  9.9e-04  6.7e-03  0.8954  0.573 False   2.261    42.82   1.621   6.060 -2.60e-02
+       (6, 1, 2, 16.0)  1.06894  3.1e-04  1.6e-03  0.9355  0.453 False   1.088    60.11   0.724   3.909 -5.37e-02
+
+[measured] candidate scores (raw ln-r; unfolded ln-r; median ratio m/p):
+              (i) F-H difference: r_raw +0.622  r_unfolded +0.127  ratio 0.170  (n=10)
+                    (ii) F+H sum: r_raw +0.995  r_unfolded +0.785  ratio 1.493  (n=10)
+        (iii) content bimodality: r_raw +0.681  r_unfolded -0.474  ratio 0.217  (n=9)
+                (iv) content ACF: r_raw +0.597  r_unfolded -0.630  ratio 0.240  (n=10)
+
+[measured] PAIRWISE-BEAT VERDICT: (c) K is NOT the pairwise F-H beat
+
+[measured] empirical dispersion law from continuous power-fit clock:
+      Dnu = 0.524 (lf^2)^1.03 (X/8)^-1.04 (1+xi)^0.00   R^2 = 1.000
+      [reference: pure window-span clock 4 lf^2 / (0.94 X) = 0.532 (lf^2)^1 (X/8)^-1 (1+xi)^0]
+      kappa_eff per-cell: mean 0.94278, std 0.02511, min 0.89542, max 0.97064
+      clock uncertainty audit: median stat 1.22e-04, median harmonic-model 2.43e-04, max harmonic-model 6.73e-03
+      residual demod phase: |slope| median 5.45e-02, |curve| median 1.76e-02
+      legacy deep-dip law: Dnu = 0.533 (lf^2)^1.00 (X/8)^-0.98 (1+xi)^0.02   R^2 = 0.996
+
+[measured] XI-SWITCH TEST at xi = 0 (why no events):
+          (0, 1, 1, 8.0): |w_F-w_H|=0.4436 -> diff period 14.2 (scan window 39); power-fit 0.522 (R2 0.410); P2/P1 0.000, ACF prom 0.581
+         (0, 2, 1, 16.0): |w_F-w_H|=0.4357 -> diff period 14.4 (scan window 39); power-fit 0.522 (R2 0.404); P2/P1 0.000, ACF prom 0.577
+          (0, 1, 2, 8.0): |w_F-w_H|=0.0863 -> diff period 72.8 (scan window 39); power-fit 2.213 (R2 0.650); P2/P1 0.000, ACF prom 0.554
+      xi=6 reference: P2/P1 med 0.885, ACF prom med 0.808
+==============================================================================
+
+
+==============================================================================
+CONTROL — scrambled kernel comb vs the predicted dispersion
+==============================================================================
+
+[measured] scrambled comb census: 13/18 cells with >= 4 deep dips
+              (i) F-H difference: scrambled r_raw +0.451 (n=13)   [real +0.622]
+                    (ii) F+H sum: scrambled r_raw +0.549 (n=13)   [real +0.995]
+        (iii) content bimodality: scrambled r_raw +0.537 (n=9)   [real +0.681]
+                (iv) content ACF: scrambled r_raw +0.452 (n=13)   [real +0.597]
+      [interpretation] a clock whose match survives scrambling is
+      kinematic/content-generic; one that dies with scrambling is tied to
+      the coherent kernel.
+==============================================================================
+
+
+==============================================================================
+EMERGENT-K VERDICT (pre-registered)
+==============================================================================
+[measured] (c) K is NOT the pairwise F-H beat
+            (i) F-H difference: r +0.622 / unfolded +0.127 / ratio 0.170
+                  (ii) F+H sum: r +0.995 / unfolded +0.785 / ratio 1.493
+      (iii) content bimodality: r +0.681 / unfolded -0.474 / ratio 0.217
+              (iv) content ACF: r +0.597 / unfolded -0.630 / ratio 0.240
+[measured] dispersion law: Dnu = 0.524 (lf^2)^1.03 (X/8)^-1.04 (1+xi)^0.00  R^2 1.000
+[measured] kappa_eff mean 0.94278, std 0.02511; residual phase |slope| med 5.45e-02, |curve| med 1.76e-02
+[measured] clock error audit: median stat 1.22e-04, median harmonic-model 2.43e-04, max harmonic-model 6.73e-03
+[budget] total wall time 89s
+==============================================================================

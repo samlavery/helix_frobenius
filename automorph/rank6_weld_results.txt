@@ -1,0 +1,47 @@
+[validate A] Gauss-Laguerre vs mpmath per-term over the actual split (x > XSMALL=0.5, n > 5732): worst |diff| = 4.34e-14, worst rel = 3.60e-14
+[validate B] rank-5 regression on the exact code path (target |c5| = 21036.8420)...
+             |c5| = 21036.8420  predicted = 21036.8422  agree = 1.00000   [standing regression]
+
+[rank 6] curve [1,1,0,-2582,48720], N = 5187563742
+         disc = 31125382452 = {2: 2, 3: 2, 2777: 1, 311341: 1}
+         N    = 5187563742 = {2: 1, 3: 1, 2777: 1, 311341: 1}
+         |disc|/N = 6 (Elkies-Watkins I-column: 6) OK
+         bad primes [2, 3, 2777, 311341]: multiplicative [2, 3, 2777, 311341] (a_p=+-1), additive [] (a_p=0)
+         building good-prime bank to n = 435598 (point counting ~37k primes)...
+         point counting done in 90.5s. a_5=-4, a_7=-4, a_11=-6 (spot Deligne):
+         Deligne |a_p| <= 2sqrt(p) holds at p in {101,1009,10007,100003}: a_101=-7, a_1009=2, a_10007=52, a_100003=69
+
+         forced-zero search: rank 6, eps=+1 => L(1)=L''(1)/2=L^(4)(1)/4!=0.
+         Sextic scale for reference: |L^(6)(1)/6!| sets the yardstick.
+
+         top sign vectors by max|forced zero|/|L6-scale| (want << 1e-5):
+           signs {2: -1, 3: -1, 2777: 1, 311341: -1}: |L0|=4.698e-08 |L2/2|=1.654e-07 |L4/4!|=1.482e-06  ratio=4.62e-09   L6/6!=320.781172
+           signs {2: -1, 3: -1, 2777: 1, 311341: 1}: |L0|=4.698e-08 |L2/2|=1.654e-07 |L4/4!|=1.482e-06  ratio=4.62e-09   L6/6!=320.781172
+           signs {2: -1, 3: -1, 2777: -1, 311341: -1}: |L0|=1.170e-04 |L2/2|=9.463e-04 |L4/4!|=4.171e-04  ratio=2.95e-06   L6/6!=320.781086
+           signs {2: -1, 3: -1, 2777: -1, 311341: 1}: |L0|=1.170e-04 |L2/2|=9.463e-04 |L4/4!|=4.171e-04  ratio=2.95e-06   L6/6!=320.781086
+
+         SELECTED bad-prime signs: {2: -1, 3: -1, 2777: 1, 311341: 1}   (triple-zero ratio 4.62e-09)
+         forced zeros: L(1)=-4.698e-08, L''(1)/2=1.654e-07, L^(4)(1)/4!=1.482e-06
+         BSD leading datum: L^(6)(1)/6! = 320.781172
+
+         jet fit: window |t|<=0.18, deg 19, 61 pts; truncation (theta'*hw)^(deg+1)/(deg+1)! = 1.36e-14
+         jet_window (exact kernel, 435598 terms) done in 136.3s
+
+rank-6 hinge jet tower (exact double-ended kernel, EVEN strand, eps=+1):
+  c0=1.15e-10  c1=3.40e-10  c2=3.01e-07  c3=5.00e-07  c4=3.34e-04  c5=2.25e-04  c6=3.68e+06
+  leading jet |c_6| = 3677144.7562   predicted (sqrt(N)/2pi)*G6 = 3677144.7318   agree = 1.00000
+  d(0) = 6: odd jets c1/c3/c5 dead by the weld (even wave), c0/c2/c4 dead by rank, sextic alive.
+
+  dead-layer depths (|c_k| vs |c_6|):
+    c0: 1.154e-10  (3.14e-17 of leading)
+    c1: 3.396e-10  (9.24e-17 of leading)
+    c2: 3.008e-07  (8.18e-14 of leading)
+    c3: 5.003e-07  (1.36e-13 of leading)
+    c4: 3.342e-04  (9.09e-11 of leading)
+    c5: 2.249e-04  (6.12e-11 of leading)
+
+  robustness (|c_6| and agreement across fit settings; real jet is stable):
+    hw=0.18 deg=19 npt=61: |c6|=3677144.7562  agree=1.00000  (c4/c6=9.1e-11)
+    hw=0.15 deg=17 npt=61: |c6|=3677144.7001  agree=1.00000  (c4/c6=2.7e-11)
+    hw=0.2 deg=21 npt=81: |c6|=3677144.5352  agree=1.00000  (c4/c6=8.2e-11)
+    hw=0.16 deg=15 npt=51: |c6|=3677144.5650  agree=1.00000  (c4/c6=7.8e-11)

@@ -1,0 +1,27 @@
+CARRIER LOCK-IN SOURCE ATTRIBUTION + STATE-SPACE LOCK-IN -- summary (2026-07-03;
+tmp/carrier_lockin.py; full record tmp/carrier_lockin_results.txt; ~12s; finite
+instances, no RH/GRH; phasor_explorer/model.py reused verbatim)
+
+Warp A(n) = exp(i*eps*sin(k*Theta+phi)), Theta = (pi/3)*Omega(n); 6 features, 4 chars,
+N = 412..1.4e6. Gates: model selftest PASS; Jacobi-Anger 3.3e-16; bank == model B to
+1.3e-12; state-l1 == model A channel exactly; roots at model zeros (<= 2.1e-4).
+
+PART A/B (readout space): VALUE law 36/36; SHIFT law 9/36 at pre-registered eps (P1
+partial miss, full prominence) -- halving diagnostic 13/13 confirms law as eps->0;
+sourceless candidates ZERO. k=3,phi=0 exactly null (3Theta = pi*Omega) 12/12. Gain
+feature-dependent (0.23..0.55 quadratic; 10.27 eta/zeta): budget = root excursion
+g*eps (5% at 0.003..0.017), not eps. Actuator: 3 commands land 0.029%/0.017%/0.277%
+in 2-3 closed-loop iterations. Scrambled control: no tracking (rel err 6.2..8.2),
+shift linear -> structural.
+
+PART C (state space): C1 isometry EXACT -- every diagonal state norm (per-state a_n,
+P/M lane masses, model A channel, l2 energy) invariant, worst 5.9e-16; no cross-term
+metric exists in the canonical model. C2 lanes balance at every root (|P-M| <=
+1.6e-13); warped lane responses exact; rebalance height == readout dip to 2.3e-13.
+C3 transport split: residual at the projection max 1.6e-12 abs = 5.9e-14 of state
+response mass -- readout response is ENTIRELY interference re-arrangement (energy
+conserved per state). C4: scrambled warp isometry HOLDS (2.9e-16) while lane structure
+BREAKS (rel err >= 1.24) -- energy conservation vs harmonic structure separated.
+
+Flag: lane 1st-order reference worst 0.27 (trivial k=2, small response), halving
+ratio 0.46 = second-order, not anomalous.

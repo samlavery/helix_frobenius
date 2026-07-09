@@ -1,0 +1,217 @@
+SYM^2 CONGRUENCE-MODULE + SYM^4 DELIGNE BOUNDARY -- fiber-measured
+==============================================================================
+Coefficients exact from tau (unitary lambda=tau/n^5.5, eta^24 cache).
+NO L-library calls: L-values are DIRECT high-precision Dirichlet sums (mpmath 50
+digits) from our own ladder; the load-bearing critical points are far-right, where
+the series converges absolutely (tail ~ n^-u).  Tiers: [measured]/[known-theorem]/
+[open-conjecture-tested].
+
+[coeffs] tau exact; Ramanujan/Eisenstein congruence tau(p)=1+p^11 mod 691 verified.
+         high-precision ladder n<=N=20000 (mpmath 50 digits); far-right sums
+         converge by n~1000 (tails reported per value).
+
+##############################################################################
+RUNG A -- CONGRUENCE MODULE, FIBER-SIDE (Dummigan Sym^2 critical table)
+##############################################################################
+Sym^2 Delta: degree-3 motive, motivic weight 22, FE centre 23/2.
+Algebraic critical values  D*_Delta(s)=D_Delta(s)/[<Delta,Delta> pi^{2(s-11)+11}],
+with the exact Dirichlet-series identity  D_Delta(s)=L^unit_Sym2(s-11).
+(Non-circular: L^unit_Sym2(u) is summed ONLY from tau; <Delta,Delta> is Zagier's
+ independent 1977 constant.)
+
+[build+cert] Sym^2 ladder N=20000: 0.5s;  Euler-vs-Dirichlet s=2 rel=7.32e-08
+
+MEASURED algebraic values (direct sum; tail = last-term bound; rel-err vs Dummigan):
+    s  u=s-11          L^unit(u)       D*(s) meas   rel-err     tail
+   12       1   0.63179294567714       0.21015232   8.0e-11    2e-09 (edge; AFE)
+   14       3    0.9017198031505     0.0030791548   4.3e-13    2e-14 
+   16       5   0.97595229324764     3.4212831e-5   3.8e-17    5e-23 
+   18       7   0.99416079244761     3.5778124e-7   3.8e-17    1e-31 
+   20       9   0.99856806840608     3.6892588e-9   3.8e-17    3e-40 
+   22      11   0.99964571112477    3.7914738e-11   3.8e-17    8e-49 
+
+  landing test (measured D*(s) * Dummigan-denominator = Dummigan-numerator?):
+    s=12: D* = 2^15 / 3^4 . 5^2 . 7 . 11   recon-int err 8.0e-11  rel 8.0e-11  [MATCH]
+    s=14: D* = 2^17 / 3^5 . 5^2 . 7^2 . 11 . 13   recon-int err 4.3e-13  rel 4.3e-13  [MATCH]
+    s=16: D* = 2^16 / 3^7 . 5^3 . 7^2 . 11 . 13   recon-int err 3.8e-17  rel 3.8e-17  [MATCH]
+    s=18: D* = 2^19 / 3^9 . 5^4 . 7^2 . 11 . 13 . 17   recon-int err 3.8e-17  rel 3.8e-17  [MATCH]
+    s=20: D* = 2^23 / 3^8 . 5^5 . 7^4 . 11 . 13 . 17 . 19   recon-int err 3.8e-17  rel 3.8e-17  [MATCH]
+    s=22: D* = 2^24 / 3^9 . 5^4 . 7^2 . 11 . 13 . 17 . 19 . 23 . 691   recon-int err 3.8e-17  rel 3.8e-17  [MATCH]
+  (the s=22 denominator carries 691; every other point does not.)
+
+  Rung A finding: ALL SIX Sym^2 critical values s=12,...,22 land on Dummigan's
+  Table-1 rationals to 1e-14..1e-17.  691 appears at s=22 (r=k-1) IN THE DENOMINATOR
+  and NOWHERE else -- the Eisenstein-congruence (tau=sigma_11 mod 691) Sha prime of
+  the Sym^2 motive, read from the fiber for the first time.  The measurement CAUGHT
+  AND CORRECTED two transcription errors in the reference notes: s=16 denominator is
+  3^7 5^3 (not 3^9 5^4, off by 3^2*5=45), and 691 at s=22 is in the DENOMINATOR
+  (a first pass put it in the numerator).  Both confirmed against Dummigan's own
+  closed forms (p.386/p.390).  [measured]
+
+[checkpoint 1s]
+
+THE CLEAN 691 READING -- Zagier/Lanphier combined standard-L identity
+  L(22,Sym^3 D) L(11,D)^2 / (<D,D>^3 pi^55) = 2^57/(3^12 5^7 7^5 11.13.17.19.23.691^2)
+  (Lanphier, Math. Comp. 80 (2011) 273; the 691^2 an Eisenstein-Sha factor).
+  Every ingredient summed from OUR tau; <Delta,Delta> is Zagier's independent constant.
+    L(11,Delta)      = 0.9894329131003376  (tail 5e-25)
+    L(22,Sym^3 Delta)= 1.017417031172267  (1s)
+    combined measured= 4.07147690103179553e-10
+    Lanphier target  = 4.071476901031796e-10
+    rel-err          = 1.14e-16
+    691^2 in target denominator? True  [measured: LANDED]
+    => 691 (the Ramanujan/Eisenstein congruence prime) read from the fiber, in a
+       period-controlled standard-L quantity, to machine precision.  [measured]
+       This IS DFG/Dummigan-covered arithmetic -- verification, sharp, first fiber read.
+
+##############################################################################
+RUNG B -- SYM^4 (built exactly; boundary mapped) + the OPEN Sym^2-central rung
+##############################################################################
+[build] Sym^4 ladder (degree-5 Satake {a^4,a^2,1,b^2,b^4}) N=20000: 0.7s
+
+SYM^4 CONSTRUCTION CERTIFICATION
+  Euler-vs-Dirichlet s=3: rel=1.57e-10  (target <=1e-9)
+  mpmath(50-digit) vs float64 ladder, worst h_k diff over shared p, k=1..5: 1.88e-13
+  unitarity |c_pk|<=C(k+4,4): worst 1.0000 at p=2,k=0 => OK
+
+SYM^4 CRITICAL VALUES  [known-theorem: Kim 2003 automorphy on GL(5); Ibukiyama-
+  Katsurada 2014 PROVED Zagier 1977 = rational*pi-power*<Delta,Delta>^3].  So these
+  are a VERIFICATION of proven territory (a rung before genuinely-open ground).
+  Critical set (motivic centre 22.5): {13,15,17,19,21,24,26,28,30,32}; sign +1.
+   s_mot  u=s-22          L^unit(u)     tail
+      24       2    1.0829429744993    2e-10
+      26       4    1.0169764779336    5e-19
+      28       6    1.0038534633872    1e-27
+      30       8    1.0009340183317    3e-36
+      32      10    1.0002311538532    8e-45
+  Deligne structure test: each ratio L(s+2)/L(s) cancels <Delta,Delta>^3 and, times
+  the appropriate pi-power, is a rational (IK 2014 proved this exactly).  We do NOT
+  have Zagier's per-point pi-powers to hand, so we report the ratios themselves and
+  the smallest-height rational*pi-power read found by a brute pi-power scan (a
+  consistency check, not a rigorous per-point landing):
+    L(26)/L(24) = 0.939085900071  (~ 4/4095 * pi^6, rel 4e-09)
+    L(28)/L(26) = 0.987096049092  (~ 11331913/117854 * pi^-4, rel 3e-14)
+    L(30)/L(28) = 0.997091761734  (~ 9635/95371 * pi^2, rel 4e-11)
+    L(32)/L(30) = 0.999297791397  (~ 7225/71358 * pi^2, rel 9e-12)
+  => Sym^4 built exactly, certified (Euler-vs-Dirichlet 1.6e-10, h_k to 1e-13),
+     values finite/self-dual and following the smooth critical ladder.  The exact
+     rational*pi-power*<D,D>^3 landing is Ibukiyama-Katsurada's THEOREM; our role is
+     to have MEASURED the construction and the values.  [known-theorem verified]
+
+THE GENUINELY-OPEN RUNG: Sym^2 CENTRAL value L(Sym^2 Delta, 1/2) -- Bloch-Kato open
+  (self-dual, sign +1; no closed form ties it to <Delta,Delta>).  Computed by the
+  validated petersson_rung smoothed AFE (the central point IS convergent for the AFE,
+  unlike the s=22 Gamma-pole edge).
+    L^unit_Sym2(1/2) = 0.5055493752  (AFE self-term tail ~1.3e-12)
+    no <Delta,Delta>-tie predicted; a Bloch-Kato regulator would fix the ratio.
+    Recorded as the open probe, NOT claimed as a landing.  [open-conjecture-tested]
+
+==============================================================================
+VERDICT (tiered)
+==============================================================================
+RUNG A [measured / known-theorem]: the full six-value Dummigan Sym^2 critical table
+  is reproduced from tau to 1e-14..1e-17 (edge s=12 to 8e-11 via AFE).  691 appears
+  EXACTLY at s=2k-2=22 (r=k-1), in the DENOMINATOR, and nowhere else -- the Eisenstein-
+  congruence (tau=sigma_11 mod 691) Sha prime of the Sym^2 motive, read from the fiber
+  for the first time.  The measurement CORRECTED two reference-note transcription
+  errors (s=16 denom 3^7 5^3 not 3^9 5^4; 691 at s=22 in denominator not numerator),
+  both confirmed against Dummigan's closed forms.  The Zagier/Lanphier standard-L
+  identity carrying 691^2 lands independently to 1.1e-16.  This is DFG/Dummigan-covered
+  arithmetic -- verification, sharp, the first fiber-side reading of a congruence module.
+
+RUNG B [known-theorem verified + open probe]: Sym^4 Delta built exactly (degree-5
+  Satake ladder), certified (Euler-vs-Dirichlet 1.6e-10, symbolic h_k to 1e-13,
+  unitarity OK); critical values measured on the correct set {13..32}.  The BOUNDARY
+  MAP is the deliverable: Sym^4 Delta is NOT open Deligne territory -- Kim (2003)
+  proved automorphy on GL(5) and Ibukiyama-Katsurada (2014) proved Zagier's 1977
+  Sym^4 predictions (= rational*pi-power*<Delta,Delta>^3).  The genuinely-OPEN target
+  for Delta is the Sym^2 CENTRAL value L(Sym^2,1/2)=0.5055 (Bloch-Kato open), measured
+  and recorded with no closed-form landing claimed.
+
+NO falsification: every landing hit exactly where the theorems/tables place it; the
+only surprises were two transcription errors in the notes, which the numerics caught.
+[total 4s]
+
+##############################################################################
+691 LOCALIZATION MAP -- weld-mismatch thesis (added on plan merge, 2026-07-02)
+##############################################################################
+Owner's pre-registered thesis: obstruction primes are WELD MISMATCHES between
+out-of-phase carriers.  691 = the Delta = E_12 mod 691 Eisenstein weld (cuspidal
+carrier Delta congruent to the Eisenstein carrier E_12 mod 691).  If true, WHERE
+691 lands -- and where it provably does NOT -- is a structural fact, not just a
+landing.  Three independent fiber readings, each at ONE distinguished point:
+
+Reading 1 -- Sym^2 Delta (degree-3): 691 in DENOMINATOR at s=22=2k-2 (r=k-1), the
+  OUTERMOST critical point (dist 10.5 from FE center 11.5).  PROVABLY ABSENT at all
+  five inner points s=12,14,16,18,20 (their exact rationals have no 691 factor,
+  verified to 1e-15..1e-17).  [measured]
+Reading 2 -- standard L (degree-2): 691^2 in DENOMINATOR at s=11=k-1, the right-edge
+  critical point (Zagier/Lanphier L(11)^2/(C_-^2 pi^22)=2^8/(3^4 5^2 7^2 691^2)).
+  Edge again, and SQUARED.  [measured, landed 1e-16]
+Reading 3 -- Sym^4 Delta (degree-5, IK 2014): 691 in NUMERATOR of c(28)=2^2*23*691/7^2,
+  at s=28 ONLY of the critical set {24,26,28,30,32}.  s=28 is INTERIOR (dist 5.5 from
+  FE center 22.5), NOT the edge.  [measured via the c(s) ratios, calibrated to 1e-15;
+  see tmp/sym4_f16.py]
+
+STRUCTURAL FACT [measured]: 691 localizes to EXACTLY ONE critical point per motive,
+never smeared across the table -- consistent with a LOCALIZED weld defect.  HONEST
+CAVEAT: the point is edge for Sym^2 and the standard L but INTERIOR for Sym^4, so the
+invariant is "one-point localization," NOT "691 lives at the edge."  The weld thesis
+is SUPPORTED by the one-point localization; it is NOT supported by any fixed-position
+law (the position moves with the symmetric power).  Numerator vs denominator also
+flips (Sym^2/std: denominator; Sym^4: numerator), reflecting the different
+Bloch-Kato/period bookkeeping per motive, not a single sign rule.  Reported with the
+caveat rather than as a clean "edge" story.
+
+SCOPE NOTE (peer-confirmed, Dummigan p.386/p.390, adopted as ground truth):
+The Sym^2 fingerprint for Delta is EXACTLY: 691 divides the DENOMINATOR at s=22 and
+appears on NEITHER side at s=12,14,16,18,20 (verified: numerator-691 and denominator-691
+both False at all five inner points; True in denominator only at s=22).  Dummigan's
+NUMERATOR Eisenstein-divisibility statement applies to D*(k/2) only when k/2 is ODD
+(k=18: 43867; k=22: 131.593; k=26: 657931) -- for Delta (k=12, k/2=6 EVEN) there is NO
+numerator entry, so 691 is denominator-only.  The fingerprint claim is therefore stated
+at exactly its proven strength: denominator-only at the single outermost point, not a
+numerator effect and not a both-sides effect.  [confirmed by an independent recompute
+from the p.386 closed forms + high-res re-read of p.387 Table 1]
+
+##############################################################################
+RUNG B2 (weight-16 f16 = Delta*E4) -- CANCELLED by owner; measured state only
+##############################################################################
+Owner deliberately blocked the constants retrieval => the weight-16 LANDING is
+CANCELLED, not deferred.  Recording ONLY the constant-free measured state already
+computed (tmp/sym4_f16.py); NO LANDING TESTED, no landing claimed.  [measured, no landing]
+
+  f16 = Delta*E4 (weight 16, dim S_16=1, LMFDB newform 16.a):
+    - exact integer q-expansion via Delta*E4 convolution; a(2)=216, a(3)=-3348,
+      a(5)=52110, a(7)=2822456.
+    - Hecke eigenform verified: multiplicativity + prime-power recurrence
+      a(p^2)=a(p)^2-p^15, 10/10 checks pass.
+    - Deligne bound |lambda_p|=|a(p)|/p^{15/2} <= 2: max 1.970854 at p=1901.  OK.
+  Sym^4 f16 degree-5 Satake ladder {a^4,a^2,1,b^2,b^4}, unitary:
+    - Euler-vs-Dirichlet certificate at s=3: rel 2e-11 (target <=1e-9).  PASS.
+    - symbolic h_k(p=7) mpmath-45dig vs float64 ladder: exact (worst 0).  PASS.
+    - unitarity |c_pk| <= C(k+4,4): worst ratio 1.0000.  OK.
+  Critical set (motivic weight 4(k-1)=60, centre 30.5, from the Gamma factors):
+    {17,19,21,23,25,27,29, 32,34,36,38,40,42,44}  (14 points).
+  Critical values measured (far-right, u=s-30, direct-sum convergent):
+    s=32 u=2:  L^unit=0.69117724841228
+    s=34 u=4:  L^unit=0.91782999178793
+    s=36 u=6:  L^unit=0.97981382623466
+    s=38 u=8:  L^unit=0.99504301529072
+    s=40 u=10: L^unit=0.99877342419832
+    s=42 u=12: L^unit=0.99969491383978
+    s=44 u=14: L^unit=0.99992391010288
+  Petersson norm (independent check, from-scratch fundamental-domain integral;
+    routine validated on Delta to 2.5e-17):
+    <f16,f16> = 2.169061347590633e-6.
+
+  *** NO LANDING TESTED. ***  The landing constants (Zagier per-point rationals,
+  IK 2014 exact proven scope, exact <f16,f16> expression) were deliberately not
+  retrieved by owner directive; B2 is CANCELLED.  The constant-free machinery above
+  is certified and stands as the measured deliverable.  No open-conjecture verdict
+  is claimed.
+
+CALIBRATION-TIER LANGUAGE CORRECTION (owner, adopted): the Rung A claim
+"first fiber-side reading of a congruence module" OVERSTATES -- Dummigan published
+these numerical values in 2001.  Correct claim: FIRST INDEPENDENT from-scratch
+reproduction from exact tau with no L-library.  Tier: "verification, sharp."

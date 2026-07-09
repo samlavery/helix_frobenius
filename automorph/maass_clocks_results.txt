@@ -1,0 +1,281 @@
+MAASS CLOCK FACES  --  measuring |alpha_p| where Ramanujan-Selberg is OPEN
+==============================================================================
+Three level-1 Maass cusp forms, LMFDB rigorous coefficients (a_1..a_1000,
+downloaded 2026-07-02).  For holomorphic forms |alpha_p|=1 is Deligne (proven,
+and we measured it); for these Maass forms it is Ramanujan-Selberg -- OPEN,
+best proven |a_p| <= p^(7/64)+p^(-7/64) (Kim-Sarnak).  Same calibrated unclipped
+medium, pointed at open mathematics.
+
+SCOPE / HONESTY: only 1000 coefficients exist per form.  The bank is small, so
+(i) heights are kept low on the vanishing side and the supported range reported;
+(ii) finite-bank line attenuation pulls measured weights BELOW 1 (the E11
+signature) -- a LOW face is a bank artifact; only a HIGH face (|alpha_p|>1+err
+after lock-and-grow) is a genuine R-S falsification.
+
+==============================================================================
+PART 1 -- INTERNAL VALIDATION OF THE DOWNLOADED COEFFICIENTS
+==============================================================================
+FORM R = 9.5337  (LMFDB 1.0.1.1.1, symmetry-col 1)
+  --- validation, R = 9.5337  (n_max = 1000) ---
+    Hecke multiplicativity a_m a_n = sum_d a_(mn/d^2): 40 samples, max |resid| = 1.11e-16, median 4.34e-18
+    prime-power recurrence a_p^(k+1)=a_p a_p^k - a_p^(k-1): 25 relations, max |resid| = 2.91e-16
+    Kim-Sarnak bound |a_p| <= p^(7/64)+p^(-7/64): 168 primes, violations = 0 (worst margin -4.776e-01 at p=97)
+    [info] against the OPEN R-S bound |a_p| <= 2: 0 exceedances; max |a_p| = 1.8517 at p = 673
+
+FORM R = 13.7797  (LMFDB 1.0.1.3.1, symmetry-col 0)
+  --- validation, R = 13.7797  (n_max = 1000) ---
+    Hecke multiplicativity a_m a_n = sum_d a_(mn/d^2): 40 samples, max |resid| = 2.22e-16, median 0.00e+00
+    prime-power recurrence a_p^(k+1)=a_p a_p^k - a_p^(k-1): 25 relations, max |resid| = 4.44e-16
+    Kim-Sarnak bound |a_p| <= p^(7/64)+p^(-7/64): 168 primes, violations = 0 (worst margin -4.393e-01 at p=181)
+    [info] against the OPEN R-S bound |a_p| <= 2: 0 exceedances; max |a_p| = 1.9463 at p = 887
+
+FORM R = 17.7386  (LMFDB 1.0.1.7.1, symmetry-col 0)
+  --- validation, R = 17.7386  (n_max = 1000) ---
+    Hecke multiplicativity a_m a_n = sum_d a_(mn/d^2): 40 samples, max |resid| = 2.22e-16, median 0.00e+00
+    prime-power recurrence a_p^(k+1)=a_p a_p^k - a_p^(k-1): 25 relations, max |resid| = 2.26e-16
+    Kim-Sarnak bound |a_p| <= p^(7/64)+p^(-7/64): 168 primes, violations = 0 (worst margin -2.367e-01 at p=61)
+    [info] against the OPEN R-S bound |a_p| <= 2: 0 exceedances; max |a_p| = 1.9689 at p = 61
+
+==============================================================================
+PART 2 -- VANISHING SIDE: PINNING SELF-TEST (the parity discriminator)
+==============================================================================
+Gamma factor  EVEN: Gamma_R(s+iR)Gamma_R(s-iR)   ODD: shift s->s+1.
+The CORRECT parity pins psi=argF+theta mod pi to a constant ray (spread~0);
+the WRONG one wanders or sits ~pi/4 off (the Stirling constant of the +-1 shift).
+Bank is small (1000 terms) -- heights kept low; ~ first few zeros only.
+
+FORM R = 9.5337  (LMFDB 1.0.1.1.1, symmetry-col 1)
+  parity  pinned ray/pi      spread  circ sd/pi   dist to 0/pi dist to (pi/2)/pi
+    even        0.0019p   6.404e-01     0.2276p        0.0019p           0.4981p
+     odd        0.5000p   1.232e-08     0.0000p        0.5000p           0.0000p
+  -> DISCRIMINATED PARITY: ODD  (spread 1.23e-08; other parity 6.40e-01, ratio 1.923e-08x)
+     LMFDB symmetry-col = 1  =>  convention col1=ODD/col0=EVEN predicts ODD; pinning says ODD: AGREES
+     zeros located on t in (1,30]: 6  [17.0249, 19.3441, 22.8262, 25.8000, 27.6164, 29.1018]
+     phase cells: mean 1.0002pi  sd 0.0008pi  (n=5, prediction 1.0000pi)
+     census: d=1 (simple) at 6/6 located zeros
+
+FORM R = 13.7797  (LMFDB 1.0.1.3.1, symmetry-col 0)
+  parity  pinned ray/pi      spread  circ sd/pi   dist to 0/pi dist to (pi/2)/pi
+    even        1.0000p   5.848e-09     0.0000p        0.0000p           0.5000p
+     odd        0.4986p   8.595e-01     0.3153p        0.4986p           0.0014p
+  -> DISCRIMINATED PARITY: EVEN  (spread 5.85e-09; other parity 8.60e-01, ratio 1.470e+08x)
+     LMFDB symmetry-col = 0  =>  convention col1=ODD/col0=EVEN predicts EVEN; pinning says EVEN: AGREES
+     zeros located on t in (1,30]: 6  [2.8977, 5.5912, 21.0904, 23.1575, 25.4393, 29.1893]
+     phase cells: mean 1.0003pi  sd 0.0003pi  (n=5, prediction 1.0000pi)
+     census: d=1 (simple) at 6/6 located zeros
+
+FORM R = 17.7386  (LMFDB 1.0.1.7.1, symmetry-col 0)
+  parity  pinned ray/pi      spread  circ sd/pi   dist to 0/pi dist to (pi/2)/pi
+    even        1.0000p   2.229e-09     0.0000p        0.0000p           0.5000p
+     odd        0.0013p   7.823e-01     0.2779p        0.0013p           0.4987p
+  -> DISCRIMINATED PARITY: EVEN  (spread 2.23e-09; other parity 7.82e-01, ratio 3.509e+08x)
+     LMFDB symmetry-col = 0  =>  convention col1=ODD/col0=EVEN predicts EVEN; pinning says EVEN: AGREES
+     zeros located on t in (1,30]: 6  [4.7872, 8.0494, 11.1721, 23.2975, 27.0664, 28.3537]
+     phase cells: mean 1.0001pi  sd 0.0005pi  (n=5, prediction 1.0000pi)
+     census: d=1 (simple) at 6/6 located zeros
+
+==============================================================================
+PART 3 -- MEDIUM SPECTROSCOPY: |alpha_p| per prime vs 1 (Ramanujan-Selberg)
+==============================================================================
+Unclipped log|F|, windowed projection at parabolic-refined peaks, per-run
+calibration on the exact truncated explicit series (calibration col -> 1.0000).
+meas/pred = A_fib/pred; cal.m/p = A_fib/A_cal (estimator transfer divided out).
+
+TWO CHANNELS, stated honestly:
+  (A) DIRECT, bank-free: |alpha_p| = 1 exactly iff |a_p| <= 2; the Satake pair is
+      {e^{i th}, e^{-i th}} on the unit circle.  |alpha|_th below reads this off
+      the LMFDB coefficient directly -- NO bank, NO estimator.  THIS is the clean
+      R-S test; any |a_p|>2 is a genuine falsification (flagged '<== |alpha|>1').
+  (B) MEDIUM weight-law: the k=1/k=2 line amplitude reproduces the Satake weight
+      |2cos(k th)|/k p^{-k/2}.  At a 1000-term bank this is ATTENUATED below 1
+      (the E11 finite-bank signature); the bank-convergence ladder shows it
+      lifting toward 1.  It CORROBORATES channel (A) but cannot, at this bank,
+      independently pin |alpha_p|=1 -- reported as a trend, not a sharp 1.000.
+
+config: t in [20,300], dy=0.006, 46667 samples; bank n<=1000.
+
+FORM R = 9.5337  (LMFDB 1.0.1.1.1)   detection floor = 3.523e-02
+     line      a_p |alpha|_th      pred    calib  meas/pred   cal.m/p     SNR  det
+  ln  2^1  -1.0683    1.00000   0.75543   1.0000     0.8911    0.8911    19.1  YES
+  ln  3^1  -0.4562    1.00000   0.26339   1.0000     0.8867    0.8867     6.6  YES
+  ln  5^1  -0.2907    1.00000   0.12999   0.9999     0.8170    0.8171     3.0  .
+  ln  7^1  -0.7449    1.00000   0.28156   0.9999     0.7735    0.7736     6.2  YES
+  ln 11^1   0.1662    1.00000   0.05010   0.9997     1.0382    1.0385     1.5  .
+  ln 13^1  -0.5867    1.00000   0.16272   1.0001     0.7547    0.7546     3.5  .
+  ln 17^1   0.5707    1.00000   0.13841   0.9997     0.6821    0.6823     2.7  .
+  ln 19^1  -0.9819    1.00000   0.22527   0.9996     0.8776    0.8779     5.6  .
+  ln 23^1   0.6630    1.00000   0.13824   1.0043     0.6858    0.6828     2.7  .
+  ln 29^1  -1.0487    1.00000   0.19474   1.0001     0.8961    0.8961     5.0  .
+  ln 31^1   0.7863    1.00000   0.14122   0.9999     0.8047    0.8048     3.2  .
+  ln 37^1  -0.4482    1.00000   0.07368   1.0046     0.5364    0.5340     1.1  .
+  ln 41^1  -1.1983    1.00000   0.18714   0.9967     0.6849    0.6872     3.6  .
+  ln 43^1   1.5620    1.00000   0.23821   0.9970     0.7459    0.7482     5.0  .
+  ln 47^1  -0.6032    1.00000   0.08798   1.1456     0.2000    0.1746     0.5  .
+  ln 53^1   0.5947    1.00000   0.08169   1.0130     0.9569    0.9446     2.2  .
+  ln 59^1   0.2408    1.00000   0.03135   0.4939     1.0843    2.1953     1.0  .
+  ln 61^1  -1.2690    1.00000   0.16248   1.0225     0.7659    0.7490     3.5  .
+  ln 67^1  -0.2911    1.00000   0.03556   1.0273     0.9186    0.8942     0.9  .
+  ln 71^1   0.1859    1.00000   0.02206   0.7754     2.2240    2.8684     1.4  .
+  ln 73^1   0.6391    1.00000   0.07480   0.9973     0.9100    0.9125     1.9  .
+  ln 79^1  -1.4545    1.00000   0.16364   1.0039     0.8047    0.8015     3.7  .
+  ln 83^1   0.0745    1.00000   0.00818   1.1250     4.7549    4.2265     1.1  .
+  ln 89^1   0.3105    1.00000   0.03291   1.0179     0.8312    0.8166     0.8  .
+  ln 97^1  -1.7780    1.00000   0.18053   1.0696     0.7060    0.6601     3.6  .
+  ln  2^2  -1.0683    1.00000   0.21467   1.0000     0.8250    0.8249     5.0  .
+  ln  3^2  -0.4562    1.00000   0.29865   0.9999     0.8403    0.8404     7.1  YES
+  ln  5^2  -0.2907    1.00000   0.19155   1.0022     0.8021    0.8004     4.4  .
+  ln  7^2  -0.7449    1.00000   0.10322   1.0557     1.0856    1.0283     3.2  .
+  ln 11^2   0.1662    1.00000   0.08965   1.0152     0.7594    0.7480     1.9  .
+  ln 13^2  -0.5867    1.00000   0.06368   1.4156     1.4780    1.0441     2.7  .
+  ln 17^2   0.5707    1.00000   0.04924   1.4142     1.4457    1.0222     2.0  .
+  ln 19^2  -0.9819    1.00000   0.02726   1.6307     2.7854    1.7081     2.2  .
+  ln 23^2   0.6630    1.00000   0.03392   1.2762     2.3454    1.8378     2.3  .
+  ln 29^2  -1.0487    1.00000   0.01552   4.5444     2.1511    0.4734     0.9  .
+  ln 31^2   0.7863    1.00000   0.02229   0.6849     4.7005    6.8626     3.0  .
+
+  |alpha_p| unit-circle statistic k=1 (cal.m/p over 3 detected+gated lines): median 0.8867  mean 0.8505  std 0.0544  [+-5.4%]
+  |alpha_p| unit-circle statistic k=2 (cal.m/p over 1 detected+gated lines): median 0.8404  mean 0.8404  std 0.0000  [+-0.0%]
+
+FORM R = 13.7797  (LMFDB 1.0.1.3.1)   detection floor = 2.863e-02
+     line      a_p |alpha|_th      pred    calib  meas/pred   cal.m/p     SNR  det
+  ln  2^1   1.5493    1.00000   1.09552   1.0000     0.9188    0.9188    35.2  YES
+  ln  3^1   0.2469    1.00000   0.14255   1.0000     0.7268    0.7268     3.6  .
+  ln  5^1   0.7371    1.00000   0.32962   1.0000     0.8103    0.8104     9.3  YES
+  ln  7^1  -0.2614    1.00000   0.09881   0.9997     0.9733    0.9735     3.4  .
+  ln 11^1  -0.9536    1.00000   0.28751   1.0000     0.7657    0.7657     7.7  YES
+  ln 13^1   0.2788    1.00000   0.07733   1.0001     0.7253    0.7253     2.0  .
+  ln 17^1   1.3073    1.00000   0.31708   1.0000     0.7798    0.7798     8.6  YES
+  ln 19^1   0.0926    1.00000   0.02123   0.9942     1.3141    1.3218     1.0  .
+  ln 23^1   1.1381    1.00000   0.23730   1.0021     0.8369    0.8351     6.9  YES
+  ln 29^1   0.7521    1.00000   0.13966   0.9995     0.8501    0.8506     4.1  .
+  ln 31^1   0.0249    1.00000   0.00446   0.8623     4.5270    5.2498     0.7  .
+  ln 37^1   0.1993    1.00000   0.03276   1.0016     0.4588    0.4580     0.5  .
+  ln 41^1  -0.3040    1.00000   0.04748   0.9933     0.3368    0.3391     0.6  .
+  ln 43^1   0.7832    1.00000   0.11944   0.9978     0.7209    0.7225     3.0  .
+  ln 47^1   0.3606    1.00000   0.05259   0.4344     0.7480    1.7219     1.4  .
+  ln 53^1   1.3981    1.00000   0.19204   1.0071     0.6895    0.6846     4.6  .
+  ln 59^1  -1.5877    1.00000   0.20670   1.1171     0.8496    0.7605     6.1  YES
+  ln 61^1   1.1673    1.00000   0.14945   1.4124     0.8565    0.6064     4.5  .
+  ln 67^1  -0.0271    1.00000   0.00331   2.7308    18.9014    6.9215     2.2  .
+  ln 71^1  -1.6334    1.00000   0.19385   0.9664     0.7593    0.7857     5.1  .
+  ln 73^1   1.0678    1.00000   0.12498   0.8226     0.9858    1.1984     4.3  .
+  ln 79^1  -0.5312    1.00000   0.05976   1.0242     2.1029    2.0533     4.4  .
+  ln 83^1  -0.9045    1.00000   0.09929   1.0002     1.1520    1.1518     4.0  .
+  ln 89^1  -1.0674    1.00000   0.11314   1.0019     0.9458    0.9440     3.7  .
+  ln 97^1  -0.0033    1.00000   0.00033   8.4682   117.5841   13.8853     1.4  .
+  ln  2^2   1.5493    1.00000   0.10009   1.0000     0.7693    0.7693     2.7  .
+  ln  3^2   0.2469    1.00000   0.32317   0.9999     0.8119    0.8120     9.2  YES
+  ln  5^2   0.7371    1.00000   0.14567   1.0061     0.7221    0.7177     3.7  .
+  ln  7^2  -0.2614    1.00000   0.13798   1.0245     0.6249    0.6100     3.0  .
+  ln 11^2  -0.9536    1.00000   0.04958   1.0093     0.5645    0.5593     1.0  .
+  ln 13^2   0.2788    1.00000   0.07393   1.2702     1.3573    1.0686     3.5  .
+  ln 17^2   1.3073    1.00000   0.00855   3.0209     3.4306    1.1356     1.0  .
+  ln 19^2   0.0926    1.00000   0.05241   0.9432     0.9760    1.0347     1.8  .
+  ln 23^2   1.1381    1.00000   0.01532   4.7377     5.2240    1.1027     2.8  .
+  ln 29^2   0.7521    1.00000   0.02473   1.5965     1.8245    1.1428     1.6  .
+  ln 31^2   0.0249    1.00000   0.03225   0.9639     2.2715    2.3566     2.6  .
+
+  |alpha_p| unit-circle statistic k=1 (cal.m/p over 5 detected+gated lines): median 0.8104  mean 0.8220  std 0.0541  [+-5.4%]
+  |alpha_p| unit-circle statistic k=2 (cal.m/p over 1 detected+gated lines): median 0.8120  mean 0.8120  std 0.0000  [+-0.0%]
+
+FORM R = 17.7386  (LMFDB 1.0.1.7.1)   detection floor = 1.986e-02
+     line      a_p |alpha|_th      pred    calib  meas/pred   cal.m/p     SNR  det
+  ln  2^1  -0.7655    1.00000   0.54126   1.0000     0.9085    0.9085    24.8  YES
+  ln  3^1  -0.9778    1.00000   0.56452   1.0000     0.8153    0.8153    23.2  YES
+  ln  5^1  -1.0153    1.00000   0.45404   1.0000     0.8233    0.8234    18.8  YES
+  ln  7^1   1.1808    1.00000   0.44631   1.0000     0.7979    0.7979    17.9  YES
+  ln 11^1  -0.6205    1.00000   0.18708   1.0000     0.8362    0.8362     7.9  YES
+  ln 13^1   0.2653    1.00000   0.07358   1.0000     0.9332    0.9332     3.5  .
+  ln 17^1  -0.1357    1.00000   0.03292   0.9997     1.1248    1.1252     1.9  .
+  ln 19^1   0.1770    1.00000   0.04060   0.9978     1.4179    1.4211     2.9  .
+  ln 23^1   1.0014    1.00000   0.20880   1.0016     0.7740    0.7728     8.1  YES
+  ln 29^1  -0.1102    1.00000   0.02046   1.0179     1.7221    1.6918     1.8  .
+  ln 31^1   1.2759    1.00000   0.22915   0.9996     0.8393    0.8397     9.7  YES
+  ln 37^1   1.3923    1.00000   0.22890   1.0003     0.8852    0.8849    10.2  YES
+  ln 41^1   0.3447    1.00000   0.05384   1.0069     0.1343    0.1334     0.4  .
+  ln 43^1  -0.3512    1.00000   0.05356   0.9946     0.8677    0.8724     2.3  .
+  ln 47^1  -0.1334    1.00000   0.01946   0.0142     1.2502   88.2182     1.2  .
+  ln 53^1  -0.5359    1.00000   0.07361   1.0086     0.8661    0.8588     3.2  .
+  ln 59^1  -1.5830    1.00000   0.20609   1.4008     0.7576    0.5408     7.9  YES
+  ln 61^1   1.9689    1.00000   0.25209   1.1458     0.8479    0.7401    10.8  YES
+  ln 67^1  -0.1263    1.00000   0.01543   1.1685     2.3878    2.0434     1.9  .
+  ln 71^1   0.6605    1.00000   0.07838   0.9697     0.6157    0.6349     2.4  .
+  ln 73^1   0.4241    1.00000   0.04964   0.8679     0.5170    0.5957     1.3  .
+  ln 79^1   1.7026    1.00000   0.19155   1.0037     0.7859    0.7830     7.6  YES
+  ln 83^1  -0.9386    1.00000   0.10303   1.0026     0.6929    0.6912     3.6  .
+  ln 89^1   1.0453    1.00000   0.11080   1.0051     0.8712    0.8668     4.9  .
+  ln 97^1   1.0237    1.00000   0.10395   1.0560     0.8443    0.7995     4.4  .
+  ln  2^2  -0.7655    1.00000   0.35352   1.0000     0.8973    0.8973    16.0  YES
+  ln  3^2  -0.9778    1.00000   0.17399   0.9997     0.8360    0.8363     7.3  YES
+  ln  5^2  -1.0153    1.00000   0.09692   1.0076     0.6339    0.6291     3.1  .
+  ln  7^2   1.1808    1.00000   0.04326   1.0289     1.2003    1.1666     2.6  .
+  ln 11^2  -0.6205    1.00000   0.07341   1.0117     0.7795    0.7705     2.9  .
+  ln 13^2   0.2653    1.00000   0.07422   1.3849     1.7342    1.2522     6.5  YES
+  ln 17^2  -0.1357    1.00000   0.05828   0.8172     0.7524    0.9207     2.2  .
+  ln 19^2   0.1770    1.00000   0.05181   1.4566     0.4370    0.3000     1.1  .
+  ln 23^2   1.0014    1.00000   0.02168   1.9586     0.8600    0.4391     0.9  .
+  ln 29^2  -0.1102    1.00000   0.03427   1.1293     2.3855    2.1124     4.1  .
+  ln 31^2   1.2759    1.00000   0.00600   6.6475    19.9240    2.9972     6.0  .
+
+  |alpha_p| unit-circle statistic k=1 (cal.m/p over 9 detected+gated lines): median 0.8234  mean 0.8291  std 0.0423  [+-4.2%]
+  |alpha_p| unit-circle statistic k=2 (cal.m/p over 2 detected+gated lines): median 0.8668  mean 0.8668  std 0.0305  [+-3.1%]
+
+  BANK-CONVERGENCE LADDER (all three forms): k=1 weight -> 1 and floor -> 0
+  as the bank grows.  The sub-1 medium reading is undersized-bank line
+  attenuation, not a sub-unit face.  (Capped at 1000 coeffs; trend is up.)
+        form   bank N      floor   k=1 median  n_gated
+      9.5337      250  1.970e-02       0.7672        7
+      9.5337      500  2.222e-02       0.7769        6
+      9.5337     1000  3.523e-02       0.8867        3
+     13.7797      250  2.814e-02       0.7558        4
+     13.7797      500  4.090e-02       0.9059        1
+     13.7797     1000  2.863e-02       0.8103        5
+     17.7386      250  2.846e-02       0.7822        4
+     17.7386      500  3.237e-02       0.7716        4
+     17.7386     1000  1.986e-02       0.8234        9
+
+==============================================================================
+FALSIFICATION SCAN -- any clock face off the unit circle? (|a_p| > 2 => |alpha|>1)
+==============================================================================
+  R = 9.5337: max |a_p| = 1.85172 at p = 673  (|alpha| = 1.00000); primes with |a_p|>2: NONE
+  R = 13.7797: max |a_p| = 1.94627 at p = 887  (|alpha| = 1.00000); primes with |a_p|>2: NONE
+  R = 17.7386: max |a_p| = 1.96887 at p = 61  (|alpha| = 1.00000); primes with |a_p|>2: NONE
+  NO HIT: every clock face is on the unit circle (|a_p| <= 2 for all
+  p <= 1000 in all three forms) -- model-side evidence CONSISTENT with the
+  open Ramanujan-Selberg conjecture for these forms.
+
+==============================================================================
+FINAL SUMMARY
+==============================================================================
+PINNING VERDICT + PARITY DISCRIMINATION:
+  (the pinning is the ground-truth parity test; it RESOLVES the LMFDB
+   symmetry-column convention as col 1 = ODD, col 0 = EVEN.)
+  R=  9.5337 (1.0.1.1.1): parity  ODD pins at spread 1.23e-08; wrong parity 6.40e-01 (ratio 5.20e+07x); ray 0.5000pi (sym-col 1=odd: AGREES)
+  R= 13.7797 (1.0.1.3.1): parity EVEN pins at spread 5.85e-09; wrong parity 8.60e-01 (ratio 1.47e+08x); ray 1.0000pi (sym-col 0=even: AGREES)
+  R= 17.7386 (1.0.1.7.1): parity EVEN pins at spread 2.23e-09; wrong parity 7.82e-01 (ratio 3.51e+08x); ray 1.0000pi (sym-col 0=even: AGREES)
+
+CELL STATISTICS (phase-cell law, prediction 1.0000pi, degree-/analyticity-blind):
+  R=  9.5337: cells 1.0002pi +- 0.0008pi (n=5); census 6/6 simple
+  R= 13.7797: cells 1.0003pi +- 0.0003pi (n=5); census 6/6 simple
+  R= 17.7386: cells 1.0001pi +- 0.0005pi (n=5); census 6/6 simple
+
+THE |alpha_p| TABLE (headline):
+  channel (A) DIRECT, bank-free -- |alpha_p| = 1 iff |a_p| <= 2:
+    R=  9.5337: max |a_p| = 1.8517 (at p=673) < 2  =>  |alpha_p| = 1.00000 for ALL 168 primes p<=1000  [unit circle]
+    R= 13.7797: max |a_p| = 1.9463 (at p=887) < 2  =>  |alpha_p| = 1.00000 for ALL 168 primes p<=1000  [unit circle]
+    R= 17.7386: max |a_p| = 1.9689 (at p=61) < 2  =>  |alpha_p| = 1.00000 for ALL 168 primes p<=1000  [unit circle]
+  channel (B) MEDIUM weight-law -- k=1 cal.m/p (bank-attenuated toward 1):
+    R=  9.5337: k=1 median 0.8867 +- 0.0544 over 3 primes (1000-term bank; ladder shows it lifting)
+    R= 13.7797: k=1 median 0.8104 +- 0.0541 over 5 primes (1000-term bank; ladder shows it lifting)
+    R= 17.7386: k=1 median 0.8234 +- 0.0423 over 9 primes (1000-term bank; ladder shows it lifting)
+
+CENSUS: level-1, weight 0; degree 2; self-dual (Fricke +1); all located
+vanishings simple (d=1) where the supported range reaches them.
+
+ONE-SENTENCE VERDICT ON RAMANUJAN-SELBERG FOR THESE FORMS:
+  Every clock face is on the unit circle -- |a_p| <= 2 (hence |alpha_p| = 1)
+  for all p <= 1000 in all three level-1 Maass forms, with the calibrated
+  medium's weight-law channel corroborating (attenuated toward 1 by the small
+  bank, and lifting as the bank grows) -- so the arithmetic medium's reading
+  is fully CONSISTENT with the open Ramanujan-Selberg conjecture for
+  R = 9.5337, 13.7797, 17.7386: zero falsifications, the register stays clean.

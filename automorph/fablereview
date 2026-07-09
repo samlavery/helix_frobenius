@@ -1,0 +1,202 @@
+⏺ I'll read the paper and give you a full review report.
+
+  Read 2 files (ctrl+o to expand)
+
+⏺ Bash(cd /Users/samuellavery/work/helix_frobenius/tmp && grep -iE "undefined|multiply defined|Overfull" emergent_clock_paper2.log | head
+      -30; echo ---; grep -o 'cite{…)
+  ⎿  ---
+        5 cite{KimShahidi}
+        5 cite{GJ}
+     … +18 lines (ctrl+o to expand)
+     
+⏺ Report complete. I read the full paper (2,772 lines) closely, checked the arithmetic in the closed-form claims, cross-checked text against
+  tables and the reproducibility appendix, and ran citation/label hygiene checks. Here is the full report.
+
+  Review: tmp/emergent_clock_paper2.tex
+
+  TLDR: The paper is in strong shape structurally, and almost every closed-form computation I could check by hand is correct. But it has one
+  load-bearing calibration failure — Part III states unconditional theorems (Sym^r functoriality for all r, Sato–Tate for Maass forms) whose
+  proof chain contains a link the paper itself elsewhere admits is "corroboration, not the proof" — plus one flat internal contradiction in
+  §Status, one genuine mathematical hole in the Sato–Tate corollary (even tetrahedral/octahedral Maass forms), a misattributed converse
+  theorem, and a factor-of-4 algebra slip. Details, with line numbers, below.
+
+  ---
+  A. Critical issues
+
+  A1. Part III over-claims relative to its own proof status (the big one).
+  The chain is thm:cps-nice → thm:func → cor:func234 → cor:satotate, and every link is stated unconditionally. But:
+
+  - The proof of Lemma lem:rankgap (line 1329) ends: "Machine-checked for the Dirichlet model; the same determinant-one lane balance for the
+  general symmetric-power/twist fiber, corroborated through Sym^13." A proof that ends in corroboration is not a proof of the stated
+  generality.
+  - §Status (lines 2339–2341) says explicitly: "the general tensor family is not yet Lean-formalized, and the numerics are corroboration, not
+  the proof."
+  - Yet cor:func234 (line 2232) says "Symmetric-power functoriality … is thereby established for every r," with no conditional.
+
+  Meanwhile Theorem thm:universal(b) (lines 2023–2028) does this right: it explicitly gates entireness/boundedness on the per-fiber cell
+  closure, "proved for the harmonic and Dirichlet classes and reduced to that one per-fiber input otherwise." Part III is inconsistent with
+  Part II's own gating. There are two unproven-in-general links: (i) the global carrier reflection K(1/x)=εx^κK(x) for the general tensor
+  theta (Lean covers the local algebra and the Dirichlet global case; the general global case is numerics through Sym^13), and (ii) residual
+  extinction (E4) for cuspidal twists — the Lean FocalResidualGeneral covers the 2×2 pencil algebra, but the identification of that pencil's
+  DC direction with the actual constant mode of the actual theta built from the actual λ_n is not proven for general fibers.
+
+  Fix (per the house calibration rule): name the input once — e.g. Hypothesis CC(r,σ) (per-fiber cell closure / residual extinction for the
+  cuspidal tensor fiber) — state thm:cps-nice, thm:func, cor:func234, cor:satotate conditionally on it, and then state the unconditional
+  content at its true strength (Lean-proved harmonic/Dirichlet classes; numerics through Sym^13, L(Δ×E₁₁), Maass Sym²). This costs nothing
+  structurally — the abstract already frames it this way ("reduced to a single per-fiber cell-closure input") — and it removes the
+  desk-reject trigger of claiming two famous open problems (Sym^r for Maass forms is open even after Newton–Thorne, which covers only
+  holomorphic forms; Sato–Tate for Maass forms is open).
+
+  A2. §Status directly contradicts §4 on the comb's origin.
+  Line 2352–2353: "The emergent comb is the cutoff's edge kinematics (R²≈1)." But §sec:comb (lines 433–441) proves the opposite with two
+  controls: "This oscillation is intrinsic to the orbital transform Ψ…, not the cutoff's edges… replacing the compact cutoff by a smooth
+  edgeless window leaves the comb unchanged." This looks like stale text from the earlier window-edge interpretation. Same stale vocabulary
+  survives in the appendix: "edge-clock law" (line 2477), "window-edge law" (line 2483). Fix: reword §Status to match §4 ("the comb is the
+  transform's own deterministic clock; the window sets only its ν-spacing"), and rename "edge-clock" → "clock law" in the appendix.
+
+  A3. Sato–Tate corollary: the exceptional-type exclusion has a hole.
+  Line 2280–2281: "it is not of the exceptional tetrahedral/octahedral type, which is holomorphic (weight one)." Only odd
+  tetrahedral/octahedral Artin representations give weight-one holomorphic forms. Even ones correspond (and by Langlands–Tunnell actually
+  lift) to Maass forms with eigenvalue exactly 1/4. So "non-dihedral Maass" does not exclude all exceptional types. Fix: add the hypothesis t
+  ≠ 0 (eigenvalue > 1/4) — Galois-type forms force λ = 1/4, so this cleanly excludes them — or exclude "of Galois type" explicitly.
+
+  A4. Converse-theorem attribution is wrong for the twist range used.
+  Theorem thm:cps (line 2089) is labeled "Cogdell–Piatetski-Shapiro 1994, Thm. 1" with twist range 1 ≤ m < n−1 (i.e., m ≤ n−2). The 1994 IHÉS
+  paper twists up to n−1; the improvement to n−2 is CPS II (1999) — which your bibliography already contains inside \cite{CPS}. Since the
+  paper's whole ledger uses m ≤ n−2 (m < r with n = r+1), cite the 1999 paper for the theorem, and double-check the exact conclusion there
+  (cuspidality of Π itself vs. the quasi-automorphic variant, which in CPS II attaches to the ramification-restricted twisting sets — the
+  paper's remark at line 2100 asserting full cuspidality should be verified against the actual statement).
+
+  A5. "Galois-free" vs. global parameters — internal inconsistency.
+  Prop prop:cps-cand(c) (lines 2125–2127) insists the construction "reads only the local parameter family, never a global φ_π, so it applies
+  verbatim to Maass π." But thm:func's hypothesis is "Sym^r φ_π irreducible" — a global-parameter condition that does not exist for Maass
+  forms — and the pole argument in its proof (lines 2213–2216) computes dim Hom(φ_τ^∨, Sym^r φ_π) of global objects. Fix: state the
+  exceptional/generic dichotomy automorphically (dihedral ⟺ π ≅ π⊗η for quadratic η; tetrahedral/octahedral via the Kim–Shahidi Sym²/Sym³
+  cuspidality criteria), and present the Hom computation as the motivating dictionary, with the actual load carried by entireness of the
+  carrier readout (which is what the ledger uses anyway).
+
+  A6. Central-character mismatch.
+  Lemma lem:selfdual (line 1386) assumes trivial central character (det φ_{π,v} = 1), and cor:satotate correctly restricts to trivial ω. But
+  cor:func234 (line 2222) claims "every cuspidal π." Trivializing ω by twisting is not always possible over ℚ. Either carry ω_π through the
+  determinant ledger in lem:selfdual (the machinery is built for exactly this — the ledger already books (det φ_τ)^{r+1}), or restrict
+  cor:func234 to trivial ω_π.
+
+  A7. §sec:rankdiff quietly asserts equivariant BSD.
+  Lines 817–819: "The left side is the order of vanishing at s=1 of L(E,Ad_g,s)." The proven content is the Artin-formalism rank identity;
+  equating the algebraic multiplicity with the analytic vanishing order is equivariant-BSD-strength and unmarked in the main text (the
+  tiering remark below it covers automorphy and the p-adic regulator, but not this bridge). Fix: "is, conjecturally (equivariant BSD), the
+  order of vanishing…" or restructure so only the proven identity is asserted.
+
+  ---
+  B. Mathematical corrections (local, checkable)
+
+  B1. Factor of 4 in the arithmetic-transparency computation (§sec:fl, line 674).
+  With disc_k = −4sin²(2kθ), sin(2kθ) = sinθ·U_{2k−1}(cosθ), and sin²θ = |D|/4n:
+  disc_k/D = (−4sin²θ·U²)/D = (D/n)·U²/D = U_{2k−1}(cosθ)²/n, not /(4n). Sanity check at k=1: disc₁/D = 4cos²θ/n = t²/n² = (t/n)². The
+  headline claim (a rational square) survives either way; fix the constant.
+
+  B2. thm:A14, the uniqueness-of-expansion identification (lines 246–251).
+  The "asymptotic expansion in a fixed scale is unique" argument needs care: the coefficients A_m^±(∓C²D) are not constants in the large
+  parameter D — they depend on D through x = C²D. Uniqueness in the scale {D^{−(m+1+a/2)}} requires either fixing C and handling the second
+  parameter explicitly, or (cleaner) identifying b_m(u) = c_m^±(u/2) directly by comparing the Taylor data of ψ_u with Altuğ's Def. A.6 —
+  likely a short computation that removes the referee-baitable step entirely.
+
+  B3. lem:residual(ii) (lines 1246–1251) packs the analytic content into an "i.e.".
+  Equating the Riemann–Hecke constant mode R (the x→0 constant term of K) with lim A(N)/N is a partial-summation/Tauberian step, not a
+  definition. Also, bounded warped primitive alone gives holomorphy on Re s > 0; entireness then needs the reflection. Spell out the two-line
+  partial-summation lemma (A(N)=O(1) + g of bounded variation and rapid decay ⟹ K(x)=O(1) as x→0 ⟹ no pole in Re s>0; reflection handles the
+  rest).
+
+  B4. prop:52 proof (lines 274–296).
+  The exponent N appears in the statement and conclusion but the proof never says what N indexes (profile derivatives? expansion order?). The
+  bookkeeping producing (lf²/√X)^{N−M+3} is asserted, not carried out. Either do it or mark the proof as a reduction sketch with a pointer
+  to where each power arises.
+
+  B5. Two competing boundedness routes — pick one.
+  prop:niceness(B) and §Status (line 2315) use warped-Abel polynomial growth + Phragmén–Lindelöf; lem:bounded (lines 1463–1480) and
+  thm:cps-nice (line 2167) prove genuine boundedness directly from the reflected integral, "no Phragmén–Lindelöf." The direct route is
+  stronger (CPS wants bounded, not polynomial) and simpler. Make it primary everywhere and demote P–L to a remark; right now the paper argues
+  with itself.
+
+  B6. Does Poisson enter or not?
+  §machinery (lines 1076–1087) derives the FE from theta self-duality/Poisson ("Tate's and Hecke's derivation, realized as the carrier's own
+  self-duality"); thm:carrierreflection's proof (line 1523) says "No lattice and no Poisson summation enter — the classical theta identity …
+  is the 1D readout shadow of J." I understand the intended hierarchy (J is the geometry, Poisson its 1D shadow), but as written the two
+  passages contradict. One sentence reconciling them would do.
+
+  ---
+  C. Text/table inconsistencies
+
+  ┌────────────────────────────┬─────────────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │           Where            │                                                  Issue                                                  │
+  ├────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ §pipeline table (line 511) │ Harmonic row shows the clock stage at O(30), but text says the harmonic fiber "closes at every stage."  │
+  │  vs. text (line 522)       │ Add a parenthetical (the scalar clock stage aliases even the harmonic fiber; +scale re-closes it).      │
+  ├────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ Line 548 vs. line 1942     │ Sym¹³ reopening exponent: table says 0.44 (smeared), §general says 0.48→0.61 under the delay adapter.   │
+  │                            │ If these are different setups, say so; as written it reads as a discrepancy.                            │
+  ├────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ Line 726 vs. 732           │ CM slope: table 0.997, text "0.97–0.99 across every interval." Reconcile ("0.997 overall, 0.97–0.99 per │
+  │                            │  interval").                                                                                            │
+  ├────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ Line 714, 726              │ The inert-prime census includes p=2, a bad-reduction prime, then explains it away as the "single        │
+  │                            │ exception." Cleaner: exclude bad primes from the census (725/725).                                      │
+  ├────────────────────────────┼─────────────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ Line 762                   │ χ_k(p) in the A4 coefficient formula is never defined (nebentypus? χ_K?). Also state the ε(p)=0 ⟹ a_p=0 │
+  │                            │  case before the closed formula, since ζ₁₂^{k(p)} is never 0.                                           │
+  └────────────────────────────┴─────────────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+  ---
+  D. Citations and bibliography
+
+  1. Deng–Espinosa (line 679): name-dropped, no \bibitem. Add the reference or drop the sentence.
+  2. \cite{LRS} is never cited in the text, but line 2388 mentions "Jacquet–Shalika/Luo–Rudnick–Sarnak" — add \cite{LRS} there.
+  3. Kim JAMS 16 (2003) appears in full in both \bibitem{KimSarnak} and \bibitem{KimShahidi}. Consolidate.
+  4. \begin{thebibliography}{9} → {99} (19 entries; two-digit labels will misalign).
+  5. CPS attribution per A4 above.
+
+  ---
+  E. Structural/editorial suggestions
+
+  1. The abstract is ~1.5 pages and contains Lean identifiers, per-fiber caveats, and the χ₃ archetype. Compress to ≤300 words (mechanisms,
+  four contributions, transport statement, one-sentence scope tier); the current abstract's middle half is §1 material.
+  2. Add a glossary table — carrier, fiber, warp, clock, weld, dwell, reverb, ledger, harmonization, bank — one line each plus the Lean file
+  it maps to. "Carrier" is used from line 20 but first defined at line 855. This is the single highest-leverage readability fix for an
+  external referee.
+  3. eq:twoclock forward reference: the Bessel identity is displayed unnumbered in §machinery (line 1093), then numbered as eq:twoclock in
+  §sym5 (line 1687), yet referenced as \eqref{eq:twoclock} in §machinery before its numbered home. Number the first display and make §sym5
+  refer back.
+  4. σ vs. τ for the CPS twist alternates across sections (lem:selfdual/thm:cps-nice use τ; prop:niceness/lem:rankgap use σ). Unify.
+  5. The Ceresa/Griffiths material is duplicated nearly verbatim (§general lines 1829–1851 and §status lines 2403–2437). Keep one, pointer
+  from the other.
+  6. \author{} is empty; "UNIT/2" (line 902) is opaque house jargon in print; tables mix booktabs and \hline styles; label cor:func234 no
+  longer matches its content (all r).
+  7. §sec:st placement: it interrupts the Altuğ arc (§2→§4) and leans on §construct/§machinery, which come 40 pages later. Consider moving it
+  to open Part II.
+  8. Reproducibility: the appendix promises self-contained scripts, but they live untracked in tmp/ (per git status). Commit them or bundle
+  them with the paper before circulating.
+
+  ---
+  F. What I verified and found correct
+
+  - ε(Sym^rΔ) = i^{−κ(11κ+1)} (eq:symeps): exponent algebra and all seven signs +,−,−,+,+,−,− for r = 1,3,…,13 check out.
+  - Δ₃/Δ₂ = 4|sinθ||sin2θ| = |D||t|/n^{3/2} (§fl): correct.
+  - μ₆ cell values (§carrier): 1−e^{iπ/3} = e^{−iπ/3} so the sum is exactly iπ/3; the eta-regulated sum ½ln3 + iπ/6: both correct.
+  - A₄ character table (§rankdiff): ⟨χ_perm,1⟩ = ⟨χ_perm,χ_std⟩ = 1: correct.
+  - ω_{Π_r} = ω_π^{r(r+1)/2}, the Jacquet–Shalika r→∞ temperedness squeeze, the CPS central-character phrasing (invariance, not unitarity),
+  and the Langlands-quotient irreducibility remark: all correct.
+  - Bessel/Whittaker Mellin pairs: 4K_{it}(2πx) ↔ Γ_ℝ(s+it)Γ_ℝ(s−it) and the Γ_ℂ two-clock K_{μb−μa}(4π√x) conventions are internally
+  consistent.
+  - Riemann–Siegel ϑ leading form, R = 13.7797 (first even Maass form), t = 9.5337 (first odd), the 37a1 model y² = x³−16x+16, conductor 36
+  for y² = x³+1: all correct.
+  - Text ↔ appendix numeric agreement: spot-checked ~15 quoted values (κ_eff = 0.943±0.025, the 10^{−79}/10^{−91} closures, 0.733√N, the tail
+  masses, the root-number sweeps) — all consistent.
+
+  One thing I could not verify from memory: the DLR A4 package details (level-124 form, quartic field w⁴+7w²−2w+14, curves 26b/52b, ranks
+  0/2) — worth a one-time check against Darmon–Lauder–Rotger before submission.
+
+  Priority order if you fix nothing else: A1 (name the hypothesis, make Part III conditional), A2 (the §Status contradiction), A3 (t ≠ 0 in
+  Sato–Tate), A4 (CPS II citation), B1 (factor 4). A1–A3 are exactly the kind of thing the falsifiability register and tone policy exist for
+  — the paper's §Status already knows the truth; the theorem statements just need to match it.
+
+✻ Worked for 10m 49s

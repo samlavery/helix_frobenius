@@ -1,0 +1,62 @@
+==============================================================================
+BE SCALE AUDIT — vector clocks and productive cells
+==============================================================================
+
+[GL2 Sym^r] cell-aware rank sweep
+  r  clock deep  prod   R2     lf2      X    kappa
+   0    12   10  0.83 1.000    1.03   -1.04   0.9417
+   1    12    9  0.75 1.000    1.04   -1.03   0.9405
+   2    12    8  0.67 1.000    1.03   -1.04   0.9411
+   3    12    8  0.67 1.000    1.03   -1.03   0.9419
+   4    12    7  0.58 1.000    1.03   -1.03   0.9415
+   5    12    6  0.50 1.000    1.03   -1.03   0.9416
+   6    12    7  0.58 1.000    1.03   -1.03   0.9427
+   7    12    7  0.58 1.000    1.03   -1.03   0.9420
+   8    12    7  0.58 1.000    1.03   -1.03   0.9414
+   9    12    5  0.42 1.000    1.03   -1.04   0.9424
+  10    10    5  0.50 1.000    1.04   -1.03   0.9446
+  11     9    3  0.33 1.000    1.04   -1.03   0.9423
+  12     8    3  0.38 1.000    1.04   -1.04   0.9473
+  13     8    5  0.62 1.000    1.04   -1.03   0.9482
+  verdict: clock law certified at R2>=0.999 for 14/14 ranks; productivity range 0.33--0.83.
+
+[GL3 vector clock] split trace-coordinate clock
+  gate: measured/predicted in [0.97,1.03] and >=3 dips
+     a: pass 24/24, median ratio 1.0000, max dev 0.0000, min dips 9
+     b: pass 24/24, median ratio 1.0000, max dev 0.0000, min dips 9
+  diag: pass 24/24, median ratio 1.0000, max dev 0.0000, min dips 19
+  scalar-control: anisotropic b-axis same-clock median ratio 0.7966; the scalar GL2 clock is rejected on split windows.
+
+[GL4 formally proven vector-clock scale law] three trace-coordinate clocks
+  gate: measured/predicted in [0.97,1.03] and >=3 dips
+     a: pass 36/36, median ratio 1.0000, max dev 0.0000, min dips 11
+     b: pass 36/36, median ratio 1.0000, max dev 0.0000, min dips 10
+     c: pass 36/36, median ratio 1.0000, max dev 0.0000, min dips 10
+  diag: pass 36/36, median ratio 1.0000, max dev 0.0000, min dips 34
+  scalar-control: anisotropic b median 0.9715, c median 0.9319; formal scalar-collapse obstruction is active.
+  formal core: CriticalLinePhasor.TwoClockWeightLaw.gl4_trace_window_vector_clock and gl4_scalar_collapse_not_uniform.
+
+[GL3 wall/productivity] per family yield
+  gates: visible=finite dip with >=3 dips; coherent envelope R2>=0.80; near-vector ratio in [0.75,1.75]
+   c branch dir  visible coherent near-vector  med-ratio  med-gamma
+  -1  mixed    a   12/12       7/12        8/12      1.322      1.742
+  -1  mixed    b   12/12       6/12        6/12      2.233      1.204
+  -1  mixed diag   10/12       3/12        0/12      4.284      0.898
+  -1  real3    a    7/12       7/12        0/12      3.715      1.364
+  -1  real3    b    9/12       6/12        0/12      3.715      0.883
+  -1  real3 diag   11/12       2/12        0/12      3.299      0.378
+   1  mixed    a   12/12       7/12        8/12      1.322      1.742
+   1  mixed    b   12/12       6/12        6/12      2.233      1.204
+   1  mixed diag    5/12       9/12        0/12     15.640      0.954
+   1  real3    a    7/12       7/12        0/12      3.715      1.364
+   1  real3    b    9/12       6/12        0/12      3.715      0.883
+   1  real3 diag    3/12      10/12        0/12     18.182      0.939
+  totals: visible 109/144, coherent 76/144, near-vector productive 28/144.
+
+[GL3 Sym^2 family] universal cell register
+  forms pinned 4/4 on weights [12, 16, 18, 20]; cell mean 1.0005pi, spread 0.0001pi; simple 4/4; worst weld 1.7e-07.
+
+[decision]
+  The clock scales after passing from one scalar period to cell-wise/vector clocks. The GL4 vector-clock law is now a Lean theorem and the audit instantiates it. Productivity is accounted independently: GL2 deep yield by rank and GL3 wall visible/coherent/near-vector yield are measured alongside the exact split clock.
+[budget] wall time 8.9s
+==============================================================================

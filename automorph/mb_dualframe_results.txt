@@ -1,0 +1,125 @@
+==============================================================================
+STEP 0 — ANCHOR GATE + FRAME STATEMENT (no silent frames)
+==============================================================================
+
+[frames]
+    chart F   : gauge e^{-i arg Ftilde(1.2+it)}
+    chart H   : gauge e^{-i arg[GR1(1+it) Ftilde(1+it)]}  (FE-reflected; GR1 =
+                the FE gamma-factor ratio = the explicit transition)
+    balanced  : e^{-i(argF+argH)/2} (geometric-mean chart)
+    energy    : second-moment readout, squared balanced gauge
+    down-proj : xi=0 shadow (xphase=1, the DC fiber)
+    measurement M_j(g) = ln[ int|g| / |int g e^{-i arg ker_j}| ]
+
+[anchor] (i) 80x80 lane-sum total == mb_contour recorded baseline:
+      spot max dev 0.0004 (tol 0.01); mean/std 0.680/0.424 (recorded 0.68/0.424)
+
+[anchor] (ii) |V_T| == J_house, 3 spot cells:
+          (0, 1, 1, 8.0): rel dev 6.66e-15
+         (2, 2, 1, 16.0): rel dev 1.38e-12
+         (6, 1, 2, 16.0): rel dev 7.10e-14
+
+[anchor] (iii) gauge unimodularity: mass dev 5.61e-18 (tol 1e-12); two-chart loop triviality: 5.55e-16 (tol 1e-12)
+
+[anchor] (iv) extended analysis mesh (mb_elastic convention):
+      lnC_T mean 0.679 std 0.422  (mb_elastic gate: 0.679/0.422)
+
+[anchor] GATE VERDICT: PASS  (records True, J True, gauges True, ext True)
+==============================================================================
+
+
+==============================================================================
+STEPS 1-4 — THE CECH MEASUREMENT (extended mesh, straight contour, nu*=8)
+==============================================================================
+
+[measured] 1. THE 2x2 COST MATRIX + holonomy (per cell):
+       cell (xi,l,f,X)    C_FF    C_FH    C_HF    C_HH    skew     HOL   total
+        (0, 1, 1, 8.0)   2.039   3.150   0.094   0.410   3.057   0.795   1.309
+       (0, 1, 1, 16.0)   2.696   4.099   0.143   1.094   3.956   0.453   1.772
+        (0, 2, 1, 8.0)   0.676   2.902   1.230   0.044   1.672   3.412   0.469
+       (0, 2, 1, 16.0)   1.439   2.490   0.278   0.088   2.212   1.241   0.922
+        (0, 1, 2, 8.0)   0.143   1.808   1.925   0.536  -0.117   3.055   0.191
+       (0, 1, 2, 16.0)   0.304   2.765   4.116   0.284  -1.352   6.292   0.257
+        (2, 1, 1, 8.0)   0.945   1.603   1.103   0.199   0.500   1.561   0.639
+       (2, 1, 1, 16.0)   0.783   1.481   0.965   0.080   0.517   1.583   0.590
+        (2, 2, 1, 8.0)   0.391   1.633   1.763   0.291  -0.130   2.715   0.362
+       (2, 2, 1, 16.0)   0.819   0.870   0.511   0.922   0.359  -0.361   1.197
+        (2, 1, 2, 8.0)   0.808   0.633   1.897   0.936  -1.265   0.787   0.725
+       (2, 1, 2, 16.0)   0.106   0.835   2.725   1.132  -1.890   2.321   0.126
+        (6, 1, 1, 8.0)   0.417   0.084   2.285   2.833  -2.201  -0.880   0.751
+       (6, 1, 1, 16.0)   0.439   0.092   1.532   1.602  -1.440  -0.417   0.929
+        (6, 2, 1, 8.0)   0.081   0.347   2.336   2.021  -1.990   0.580   0.292
+       (6, 2, 1, 16.0)   0.044   0.417   1.746   1.350  -1.329   0.769   0.248
+        (6, 1, 2, 8.0)   0.349   0.118   2.346   2.318  -2.228  -0.202   0.720
+       (6, 1, 2, 16.0)   0.351   0.076   2.177   2.331  -2.101  -0.429   0.714
+      medians: C_FF=0.428 C_FH=1.176 C_HF=1.755 C_HH=0.929 HOL=0.791 total=0.676
+
+      diagonal fraction of the wall  med(diag)/med(total) = 1.208
+      off-diag fraction              med(offd)/med(total) = 1.992
+      corr(off-diagonal, total) = -0.215
+
+[measured] 2. COCYCLE SYMMETRY: skew = C_FH - C_HF:
+      median -0.697, mean -0.209, std 1.850, max|skew| 3.956
+      -> transport SKEW at the 0.2*wall criterion
+
+[measured] 3. ROUND-TRIP HOLONOMY (loop vs staying home):
+      pure-gauge loop composition: trivial to 5.6e-16 (anchor);
+      measured pair holonomy HOL = C_FH + C_HF - C_FF - C_HH:
+      median 0.791, vs wall med(lnC_T) = 0.676  (ratio 1.17); corr(HOL, total) = -0.520
+      composition law: offdiag-sum = diag-sum + HOL holds by construction;
+      the content is the ratio and correlation above.
+
+[measured] 4(i). BALANCED CHART (geometric-mean gauge):
+      med C_F@bal 0.796, C_H@bal 1.017, C_T@bal 0.784
+      equipartition index E med 0.784 (conjecture: < 0.2) -> does NOT equipartition
+      equipartition LOCATION (lane-mass balance, 15/18 cells cross in range)   [5s]:
+        sigma_H(bal): median 0.515 (range 0.15..0.90);  sigma_F(bal): median 0.715
+        vs sigma* band (0.5, 0.54): sigma_H(bal) median IN BAND
+        [flag] sigma* is a gamma-SPREAD HEIGHT (dimensionless), not a contour
+        coordinate; the numerical agreement is reported as a coincidence-level
+        observation unless a mechanism ties the units.
+
+[measured] 4(ii). ENERGY CHART (second-moment readout, balanced gauge):
+      med E_F 1.475, E_H 2.423, E_T 0.641
+      quadrature index Q = C2_T^2/(C2_F^2+C2_H^2): median 0.014 (band (0.8, 1.2)) -> does NOT add in quadrature
+
+[measured] 5. DOWN-PROJECTION (xi=0 shadow) matrix:
+      medians: C_FF=1.058 C_FH=2.833 C_HF=0.754 C_HH=0.347 HOL=2.148 total=0.695
+      (xi=0 cells: shadow == cell; xi!=0: their DC fiber)
+
+[measured] reconciliation reference: rec(F) med 1.002, rec(H) med 1.297  (welded total per chart)
+
+[measured] MATRIX VERDICT: (b) NON-SPLITTABLE — diagonal stays at wall scale; dual-chart diagnosis needs revision
+
+[measured] transition-cost law: offdiag ~ [1, ln lf^2, ln(X/8), ln(1+xi)]:
+      beta = [+1.822, +0.288, +0.005, -0.499], R^2 = 0.509
+==============================================================================
+
+
+==============================================================================
+STEP 5 — CONTROLS
+==============================================================================
+
+[measured] (i) SCRAMBLED kernel (house recipe, seed 20260703), same protocol:
+      scrambled: diag/wall 1.61, offdiag/wall 3.29, corr(HOL,total) -0.32, med total 0.400
+      real     : diag/wall 1.21, offdiag/wall 1.99, corr(HOL,total) -0.52, med total 0.676
+      -> matrix structure DIFFERS (PASS: shape is a property of the coherent kernel)
+
+[measured] (ii) quadrature doubling (t x2, Bessel s x2), all readouts:
+      max |Delta| over readouts/cells = 0.0010  (tol 0.02)
+      -> PASS
+==============================================================================
+
+
+==============================================================================
+WELD-HOLONOMY / CECH VERDICT (pre-registered)
+==============================================================================
+[measured] (b) NON-SPLITTABLE — diagonal stays at wall scale; dual-chart diagnosis needs revision
+    matrix medians: FF 0.428, FH 1.176, HF 1.755, HH 0.929; wall 0.676
+    skew median -0.697 (skew); holonomy median 0.791
+    balanced chart: equipartition E med 0.784; location sigma_H(bal) med 0.515 (IN sigma* band (0.5, 0.54), units caveat applies)
+    energy chart: quadrature index med 0.014
+    transition-cost law R^2 = 0.509
+[controls] scrambled matrix DIFFERS; doubling PASS
+[budget] total wall time 24s
+==============================================================================

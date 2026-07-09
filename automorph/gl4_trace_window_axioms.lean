@@ -1,0 +1,4 @@
+import RequestProject.TwoClockWeightLaw
+
+#print axioms CriticalLinePhasor.TwoClockWeightLaw.gl4_trace_window_vector_clock
+#print axioms CriticalLinePhasor.TwoClockWeightLaw.gl4_scalar_collapse_not_uniform

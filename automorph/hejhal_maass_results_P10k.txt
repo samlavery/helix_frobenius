@@ -1,0 +1,108 @@
+HEJHAL'S ALGORITHM -- our OWN Hecke eigenvalues past the LMFDB 1000 cap
+==============================================================================
+Level-1 Maass cusp form, R = 13.7797513518907397  (LMFDB 1.0.1.3.1, EVEN/cos).
+R known to high precision -> WELL-CONDITIONED regime: we do NOT search for R,
+we solve the automorphy-constrained linear system V(R,Y)c=b for c_1..c_M.
+Target: Hecke eigenvalues a_p for primes p <= 10000.
+
+------------------------------------------------------------------------------
+STEP 0 -- K-Bessel K_iR(x) cross-check vs mpmath (imaginary order)
+------------------------------------------------------------------------------
+  8 test points x in [0.3,50]: max relative error vs mpmath = 7.51e-15
+  (rescaled by exp(pi R/2); power-series for x<0.7R, Miller recurrence else)
+
+------------------------------------------------------------------------------
+STEP 1 -- solve the Hejhal linear system for c_1..c_M
+------------------------------------------------------------------------------
+  bank M = 17000  (headroom 1.7x over P=10000); horocycle Y = 0.000398346; Q = 17020
+  full complex dense system size 16999 x 16999  (~2.31 GB)
+  primary solve wall time: 49.0s
+
+------------------------------------------------------------------------------
+GATE G1 -- recover LMFDB rigorous a_n (n <= 1000) to >= 6 digits
+------------------------------------------------------------------------------
+  max |our a_n - LMFDB a_n|, n<=1000: 7.04e-11 (at n=875)
+  agreement to >= 6 digits: 1000/1000 coefficients
+  spot check:  a_2 ours=1.549304477941  LMFDB=1.549304477941
+               a_7 ours=-0.261420075766  LMFDB=-0.261420075765
+               a_997 ours=-1.006056645396  LMFDB=-1.006056645396
+  --> G1 PASS (LMFDB agreement < 1e-6)
+
+------------------------------------------------------------------------------
+GATE G3 -- coefficient stability under horocycle height Y (eigenvalue cert.)
+------------------------------------------------------------------------------
+  second independent solve: M2=19000, Y2=0.000356415 (Y1/Y2 = 1.1176)
+  second solve wall time: 67.4s
+  max |c_n(Y1) - c_n(Y2)| over n <= 10000: 6.74e-09 (at n=9999)
+  median |c_n(Y1) - c_n(Y2)|: 1.34e-12
+  --> G3 PASS: solutions independent of Y 
+      (Y-independence is the certificate that R is a genuine eigenvalue).
+
+  cached a_1..a_10000 -> /Users/samuellavery/work/helix_frobenius/tmp/hejhal_a_R13.7797.npy
+
+------------------------------------------------------------------------------
+GATE G2 -- Hecke multiplicativity on FRESH primes above 1000
+------------------------------------------------------------------------------
+  1229 primes p<=P (1061 of them NEW, i.e. > 1000).
+  (a) a_p a_q = a_(pq), >=1 prime > 1000, pq<=P:  80 samples
+      max |resid| = 2.76e-09   median = 6.82e-12
+  (b) a_(2p) = a_2 a_p for ALL new primes p (2p<=P): 501 relations
+      max |resid| = 5.73e-09   median = 1.48e-12
+  --> G2 PASS (Hecke residuals < 1e-8 on fresh primes)
+
+==============================================================================
+RAMANUJAN-SELBERG FACE TEST AT DEPTH  (p up to 10000, 1229 primes)
+==============================================================================
+  R-S conjecture: |a_p| <= 2 (OPEN).  Kim-Sarnak (proven): |a_p| <= p^7/64 + p^-7/64.
+  max |a_p| = 1.986795 at p = 7687  (R-S ceiling 2, margin +0.013205)
+  primes with |a_p| > 2 (R-S exceedance): 0  NONE
+  primes with |a_p| > Kim-Sarnak ceiling:  0  NONE
+
+  Ten largest |a_p| (closest approaches to the R-S ceiling 2):
+          p         a_p      |a_p|    2-|a_p|   KS ceil
+       7687   -1.986795   1.986795   0.013205   3.03659
+       8317    1.984031   1.984031   0.015969   3.05639
+       6287   -1.962421   1.962421   0.037579   2.98707
+       2393   -1.956182   1.956182   0.043818   2.76892
+       4349    1.952556   1.952556   0.047444   2.90004
+        887   -1.946267   1.946267   0.053733   2.57698
+       3209   -1.946057   1.946057   0.053943   2.83181
+       7283   -1.945210   1.945210   0.054790   3.02315
+       6029   -1.941593   1.941593   0.058407   2.97694
+       9533   -1.941169   1.941169   0.058831   3.09122
+
+  SATAKE-ANGLE DISTRIBUTION  (theta_p = arccos(a_p/2), a_p in [-2,2])
+    Sato-Tate prediction (GL(2) unramified): density (2/pi) sin^2(theta).
+      bin (theta/pi)   count  emp.frac   ST pred
+    [0.00,0.10]           6    0.0049    0.0065
+    [0.10,0.20]          50    0.0407    0.0422
+    [0.20,0.30]         137    0.1115    0.1000
+    [0.30,0.40]         184    0.1497    0.1578
+    [0.40,0.50]         226    0.1839    0.1935
+    [0.50,0.60]         242    0.1969    0.1935
+    [0.60,0.70]         219    0.1782    0.1578
+    [0.70,0.80]         112    0.0911    0.1000
+    [0.80,0.90]          42    0.0342    0.0422
+    [0.90,1.00]          11    0.0090    0.0065
+    L1 distance (empirical vs Sato-Tate) = 0.0754   [reported as data]
+    mean theta/pi = 0.4995  (Sato-Tate mean = 0.5)
+
+------------------------------------------------------------------------------
+FALSIFICATION REGISTER -- any |a_p| > 2 re-validated at fresh Y / bigger bank
+------------------------------------------------------------------------------
+  NO HIT: |a_p| <= 2 for all primes p <= P_target.  Every clock face on the
+  unit circle (Satake pair {e^{i th}, e^{-i th}}) -- our independently computed
+  coefficients are CONSISTENT with the open Ramanujan-Selberg conjecture for
+  this form out to p = 10000, well past the LMFDB 1000-coefficient cap.
+
+==============================================================================
+SUMMARY
+==============================================================================
+  Form R = 13.7797513518907 (LMFDB 1.0.1.3.1, EVEN).  Own coefficients a_1..a_10000
+  computed via Hejhal's algorithm (no LMFDB coefficients used in the solve).
+  GATES: G1 (LMFDB recovery) PASS; G2 (Hecke, fresh primes) PASS; G3 (Y-stability) PASS.
+  R-S FACE TEST: max |a_p| = 1.98679 at p=7687 < 2; 0 exceedances over p<=10000.
+  Kim-Sarnak (proven bound) violations: 0 (expected 0).
+  VERDICT: every Satake face on the unit circle out to p=10000; the
+  falsifiability register stays clean; reading CONSISTENT with open R-S.
+  total wall time: 116.5s

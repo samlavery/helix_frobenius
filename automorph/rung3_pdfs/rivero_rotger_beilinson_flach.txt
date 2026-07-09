@@ -1,0 +1,1712 @@
+                                           DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF
+                                                        THE ADJOINT OF A MODULAR FORM
+
+                                                                           ÓSCAR RIVERO AND VICTOR ROTGER
+
+
+                                                   Abstract. Kings, Lei, Loeffler and Zerbes constructed in [LLZ], [KLZ2] a three-variable
+                                                   Euler system κ(g, h) of Beilinson–Flach elements associated to a pair of Hida families (g, h)
+
+
+
+
+arXiv:1806.10022v4 [math.NT] 29 Mar 2020
+                                                   and exploited it to obtain applications to the arithmetic of elliptic curves, extending the
+                                                   earlier work [BDR1]. The aim of this article is showing that this Euler system also encodes
+                                                   arithmetic information concerning the group of units of the associated number fields. The
+                                                   setting becomes specially novel and intriguing when g and h specialize in weight 1 to p-
+                                                   stabilizations of eigenforms such that one is dual of another. We encounter an exceptional
+                                                   zero phenomenon which forces the specialization of κ(g, h) to vanish and we are led to study
+                                                   the derivative of this class. The main result we obtain is the proof of the main conjecture of
+                                                   [DLR2] on iterated integrals and the main conjecture of [DR2] for Beilinson–Flach elements
+                                                   in the adjoint setting. The main point of this paper is that the methods of [DLR1], [DLR2]
+                                                   and [CaHs], where the above conjectures are proved when the weight 1 eigenforms have CM,
+                                                   do not apply to our setting and new ideas are required. In loc. cit. a crucial ingredient is a
+                                                   factorization of p-adic L-functions, which in our scenario is not available due to the lack of
+                                                   critical points. Instead we resort to the principle of improved Euler systems and p-adic L-
+                                                   functions to reduce our problems to questions which can be resolved using Galois deformation
+                                                   theory. We expect this approach may be adapted to prove other cases of the Elliptic Stark
+                                                   Conjecture and of its generalizations that are appearing in the literature.
+
+
+
+
+                                                                                           Contents
+                                             1. Introduction                                                                                         1
+                                             2. Preliminary concepts                                                                                 8
+                                             3. Derived Beilinson–Flach elements                                                                    12
+                                             4. Derivatives of Fourier coefficients via Galois deformation theory                                   19
+                                             5. Proof of main results                                                                               24
+                                             6. Darmon–Dasgupta units and factorization of p-adic L-functions                                       26
+                                             References                                                                                             28
+
+
+
+                                                                                      1. Introduction
+                                             The purpose of this article is proving two results conjectured by H. Darmon, A. Lauder
+                                           and one of the authors in [DLR2] and [DR2] respectively, concerning the interplay between
+                                           the arithmetic of units in number fields, the theory of Coleman iterated integrals, and the
+                                           Rankin p-adic L-function and Euler system of Beilinson–Flach elements associated to a pair
+                                           (g, h) of Hida families of modular forms.
+                                             The first theorem of this article is Theorem A (together with its equivalent form given in
+                                           Theorem A’), which yields a proof of the main conjecture of [DLR2] in the adjoint setting.
+                                           Although Beilinson–Flach elements are certainly behind the scenes, we find interesting to
+                                           remark that this Euler system is not involved neither in the statement nor the proof we
+                                             2010 Mathematics Subject Classification. 11F67 (primary); 11F85, 11G18, 19F27 (secondary).
+                                             Key words and phrases. p-adic L-functions, Hida–Rankin convolution, special values, Beilinson–Flach ele-
+                                           ments, exceptional zeros.
+                                                                                                 1
+2                              ÓSCAR RIVERO AND VICTOR ROTGER
+
+provide of Theorems A, A’, and can be phrased in purely analytic terms by means of p-adic
+iterated integrals and p-adic L-functions. It is only later in the note that we explore the
+consequences that Theorem A has on the weight one specialisations of the Euler system of
+Beilinson-Flach elements, as described in Theorems B and C.
+   Let χ be a Dirichlet character of level N ≥ 1 and let Mk (N, χ) (resp. Sk (N, χ)) denote
+P space nof (resp. cuspidal) modular forms of weight k, level
+the                                                              N and nebentype χ. Let g =
+                                                            ∗ = g ⊗ χ−1 denote its twist by the
+       a
+   n≥1 n q   ∈ S 1 (N, χ) be a normalized newform and let g
+inverse of its nebentype. Let
+      ̺g : Gal (Hg /Q) ֒→ GL(Vg ) ≃ GL2 (L),      ̺ad0 (g) : Gal (H/Q) ֒→ GL(ad0 (g)) ≃ GL3 (L)
+denote the Artin representations associated to g and its adjoint, respectively. Here Hg ⊇ H
+denote the finite Galois extensions of Q cut out by these representations, and L is a sufficiently
+large finite extension of Q containing their traces. The three-dimensional representation ad0 (g)
+may be identified with the subspace of End(Vg ) of null-trace endomorphisms, on which GQ
+acts by conjugation. There is a natural decomposition of L[GQ ]-modules ad(g) := End(Vg ) =
+L ⊕ ad0 (g), where L stands for the trivial representation.
+   Fix a prime p ∤ N and let Skoc (N, χ) denote the space of overconvergent p-adic modular
+forms of weight k, tame level N and character χ. Fix an embedding Q̄ ⊂ Q̄p and let Lp denote
+the completion of L in Q̄p .
+   Label and order the roots of the p-th Hecke polynomial of g as X 2 − ap (g)X + χ(p) =
+(X − α)(X − β). We assume throughout that
+  (H1) The reduction of ̺g mod p is irreducible;
+  (H2) g is p-distinguished, i.e. α 6= β (mod p), and
+  (H3) ̺g is not induced from a character of a real quadratic field in which p splits.
+   Let
+                                      gα (q) = g(q) − βg(q p )
+denote the p-stabilization of g on which the Hecke operator Up acts with eigenvalue α. Enlarge
+L if necessary so that it contains all Fourier coefficients of gα .
+   As shown in [BeDi] and [DLR1], the above hypotheses ensure that any generalized over-
+convergent modular form with the same generalized eigenvalues as gα is classical, and hence
+simply a multiple of gα . This allows to define a canonical projector
+                                      egα : S1oc (N, χ) −→ Lp
+which extracts from an overconvergent modular form its coefficient at gα with respect to an
+orthonormal basis: cf. [DLR1] for more details.
+   One can attach a p-adic invariant Ip (g) ∈ Lp to gα as follows. Let
+                                Y := Y1 (N )      ⊂     X := X1 (N )
+denote the models over Q of the (affine and projective, respectively) modular curves classifying
+pairs (A, P ) where A is a (generalised) elliptic curve and P is a point of order N on A.
+  For a ∈ (Z/N Z)× , let ga;N be Kato’s Siegel unit whose q-expansion is given by
+                                                  ∞
+                                                  Y
+                                      a                     a n        −a n
+(1)                     ga;N := (1 − ζN )q 1/12       (1 − ζN q )(1 − ζN q ),
+                                                  n=1
+where ζN is a fixed primitive N -th root of unity. The unit ga;N can naturally be viewed as
+belonging to Q ⊗ OY× , and its q-expansion is defined over Q(µN ).
+  Set
+                                          N
+                                       1 Y
+(2)                               g=    ⊗    ga;N ∈ Q ⊗ OY× ,
+                                       2 a=1
+          DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                                3
+
+and define
+                                                E0 = logp g.
+This is a locally analytic modular form of weight 0 on Y . It follows from (1) and (2) that the
+logarithmic derivative of g is
+                                               dq
+(3)                                   dE0 = E2     ∈ Ω1Y ,
+                                                q
+where                                                      
+                                                X ∞   X
+                                     1
+                               E2 = · ζ(−1) +             d q n
+                                     2
+                                                        n=1      d|n
+is the classical Eisenstein series of weight 2.
+         [p]    P
+   Let E0 := p∤n an (E0 )q n denote the p-depletion of E0 ; this is an overconvergent modular
+form and we may define
+                                                           [p]
+(4)                                       Ip (g) := egα (E0 · gα ).
+   The invariant Ip (g) can be recast as a p-adic iterated integral, denoted Ip′ (E2 , g, g∗ ) in
+[DLR2]. The first main result of this note, conjectured in [DLR2], asserts that Ip (g) is equal
+to the following motivic expression. As shown in [DLR2, Lemma 1.1], we have
+                       ×
+                dimL (OH ⊗ ad0 (g))GQ = 1,        dimL (OH [1/p]× /pZ ⊗ ad0 (g))GQ = 2.
+                        ×                                         ×
+Fix a generator u of (OH  ⊗ ad0 (g))GQ and also an element v of (OH [1/p]× ⊗ ad0 (g))GQ in such
+                                         ×   Z      0   G
+a way that {u, v} is a basis of (OH [1/p] /p ⊗ ad (g)) Q . The element v may be chosen to
+have p-adic valuation ordp (v) = 1, and we do so.
+   Viewed as a GQp -module, ad0 (g) decomposes as ad0 (g) = L ⊕ Lα⊗β̄ ⊕ Lβ⊗ᾱ , where each line
+is characterized by the property that the arithmetic Frobenius Frp acts on it with eigenvalue
+1, α/β and β/α, respectively1. Let Hp denote the completion of H in Q̄p and let
+                       u1 , uα⊗β̄ , uβ⊗ᾱ , v1 , vα⊗β̄ , vβ⊗ᾱ ∈ Hp× ⊗Q L (mod L× )
+denote the projection of the elements u and v in (Hp× ⊗ ad0 (g))GQp to the above lines: cf. (50)
+for more details. By construction we have u1 , v1 ∈ Q×
+                                                     p and
+                       β                       β                      α                      α
+      Frp (uα⊗β̄ ) =     uα⊗β̄ , Frp (vα⊗β̄ ) = vα⊗β̄ , Frp (uβ⊗ᾱ ) = uβ⊗ᾱ , Frp (vβ⊗ᾱ ) = vβ⊗ᾱ .
+                       α                       α                      β                      β
+   Let
+                                 logp : Hp× ⊗ L −→ Hp ⊗ L
+denote the usual p-adic logarithm.
+   Theorem A. The following equality holds in Lp ⊂ Hp ⊗ L (mod L× ):
+                                                                    
+                                  1               logp u1 logp uα⊗β̄
+(5)                Ip (g) =               × det                        .
+                            logp (uα⊗β̄ )         logp v1 logp vα⊗β̄
+
+   This is [DLR2, Conjecture 1.2] specialized to the pair (g, g ∗ ): note that both statements
+are equivalent because (OH  ×
+                               ⊗ Vgα )GQp ≃ HomGQp (Vgβ , OH×
+                                                              ).
+              0
+   Let L(ad (gα )) be Hida’s analytic L-invariant attached to the adjoint Galois representation
+of gα ; cf. (23). As we recall in Proposition 2.5, there are several equivalent definitions of this
+invariant.
+   1The decomposition of ad0 (g) as the direct sum of three canonical lines is also available when α/β = β/α =
+−1, see (45) and (50) for details.
+4                               ÓSCAR RIVERO AND VICTOR ROTGER
+
+   These L-invariants are in general difficult to compute, and explicit expressions for them
+are rather rare. The proof of the above result, which we describe further below in this
+introduction, shows that Theorem A may be recast as a formula for L(ad0 (gα )). Since this
+might be of independent interest, specially for the reader less acquainted with the Stark elliptic
+conjectures of [DLR1], [DLR2] and more familiar with the theory of L-invariants, we quote it
+below as a separate statement:
+    Theorem A’. The analytic L-invariant of ad0 (gα ) is
+                              logp (u1 ) logp (vα⊗β̄ ) − logp (uα⊗β̄ ) logp (v1 )
+(6)          L(ad0 (gα )) =                                                         (mod L× ).
+                                                 logp (uα⊗β̄ )
+
+
+Remark 1.1. The prototypical case where an explicit formula for the L-invariant is known
+arises of course when E/Q is an elliptic curve of split multiplicative reduction at p. In that
+                log (q )
+case Lp (E) = ordpp (qEE ) where qE ∈ pZp is a Tate period for E. Observe that this expression
+and the one in Theorem A’ are in fact very similar, as both may be recast as
+                                                    logp (κ)
+(7)                                           L=
+                                                    ordp (κ)
+where κ is an element in H 1 (Qp , Qp (1)) arising from some global class in motivic cohomology.
+In the classical case one has κ = qE , which might be regarded as an element in the extended
+Mordell-Weil group Ẽ(Q), or Nekovár’s extended Selmer group of E. In Theorem A’ one has,
+up to scalar, κ = logp (vα⊗β̄ )u1 − logp (uα⊗β̄ )v1 in the unit group of H; note that recipe (7)
+indeed gives rise to (6) because ordp (u1 ) = 0 and ordp (v1 ) = 1.
+   The second main result of this note may be regarded as a conceptual explanation of Theorem
+A, as it establishes a connection between the iterated integral Ip (g), a special value of Hida’s p-
+adic Rankin L-function associated to the pair (g, g∗ ), and the generalized Kato classes arising
+from the three-variable Euler system of Beilinson–Flach elements constructed in [KLZ2].
+   In order to describe it more precisely, let Λ = Zp [[Z×      p ]] denote the Iwasawa algebra and
+denote W = Spf(Λ) the associated weight space. As shown by Wiles in [Wi] (cf. also [KLZ2,
+§7.2] for the normalizations we adopt), associated to gα there are:
+     (1) a finite flat extension Λg of Λ, giving rise to a covering w : Wg = Spf(Λg ) −→ W;
+     (2) a family of overconvergent p-adic ordinary modular forms g with coefficients in Λg
+         specializing to gα at some point y0 ∈ Wg of weight w(y0 ) = 1; our running assumptions
+         imply that the above Hida family passing through gα is unique by [BeDi].
+     (3) a Galois representation ̺g : GQ −→ GL2 (Λg ) characterized by the property that all
+         its classical specializations coincide with Deligne’s Galois representation associated to
+         the corresponding specialization of the Hida family.
+   Let Vg denote the rank two Λg -module realizing the Galois representation ̺g as specified
+e.g. in [KLZ2, §7.2], where this is denoted M (g)∗ . Let g∗ := g ⊗ χ−1 denote the twist of
+g by the inverse of its tame nebentype. Note that g∗ specializes at y0 to the eigenform
+gα ⊗ χ−1 = g1/β ∗ , namely the p-stabilization of g ∗ on which U acts with eigenvalue 1/β.
+                                                                      p
+   Let
+                                 εcyc : GQ → Gal (Q(µp∞ )/Q) → Z×        p
+denote the p-adic cyclotomic character. Let εcyc be the composition of εcyc with the natural
+inclusion Z×        ×
+             p ⊂ Λ taking z to the group-like element [z] in Λ .
+                                                                       ×
+
+   Define the three-variable Iwasawa algebra Λgg∗ := Λg ⊗            ˆ Zp Λg∗ ˆ
+                                                                             ⊗Zp Λ and the Λgg∗ [GQ ]-
+module
+                                 Vgg∗ := Vg ⊗          ˆ Zp Λ(εcyc ε−1
+                                              ˆ Zp Vg∗ ⊗            cyc ).
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                        5
+
+  The article [KLZ2] attaches to (g, g∗ ) a Λ-adic global cohomology class
+                                      κ(g, g∗ ) ∈ H 1 (Q, Vgg∗ )
+parametrized by the triple product of weight spaces Wgg∗ := Wg × Wg × W, where the first
+two variables are afforded by the weight of the Hida families g and g∗ , and the third one is
+the cyclotomic variable.
+   The common key strategy in several recent works on the arithmetic of elliptic curves
+([BDR1], [DR1],[LLZ],[KLZ2],[CaHs]) consists in proving a reciprocity law relating a suit-
+able specialization of a Λ-adic class as the one above to the critical value of the underlying
+classical L-function. The non-vanishing of the appropriate (classical or p-adic) L-value can
+then be invoked to show that the associated global cohomology class is not trivial, and one can
+derive striking arithmetic consequences from this (cf. e.g. [DR1, Theorems A and B], [KLZ2,
+Corollary C]).
+   Our setting differs in several key aspects from the previous ones. Namely, while it is also
+natural to consider the specialization
+                             ∗
+(8)                  κ(gα , g1/β ) := κ(g, g∗ )(y0 , y0 , 0) ∈ H 1 (Q, Vg ⊗ Vg∗ (1))
+
+of the Euler system of Beilinson–Flach elements at the point (y0 , y0 , 0), one can show that
+this global cohomology class is trivial and thus no arithmetic information can be extracted
+directly from it: cf. Theorem 3.5.
+                         ∗ ) = 0 might be regarded as an exceptional zero phenomenon, albeit
+   The fact that κ(gα , g1/β
+quite different from the ones one typically encounters in e.g. the pioneering work [MTT] of
+Mazur, Tate and Teitelbaum, because our case corresponds to a point lying outside the classi-
+cal region of interpolation of the associated Hida–Rankin p-adic L-function. But it still keeps
+the same flavor, because the vanishing of the global cohomology class (8) is caused by the
+cancellation of the Euler-like factor at p arising in the interpolation process of the construction
+of the Euler system. To be more precise, the situation is more delicate than that: for classical
+points y ∈ Wg of weights ℓ > 1, the triples (y, y, ℓ − 1) do lie in the region of geometric inter-
+polation of the Euler system of Beilinson–Flach elements, and the main theorem of [KLZ2]
+applies and implies that κ(g, g∗ )(y, y, ℓ − 1) = 0. The vanishing of κ(gα , g1/β ∗ ) then follows
+
+by a density argument exploiting various Λ-adic Perrin-Riou regulators; we refer to §3.2 for
+more details.
+   We are hence placed to work with the derived class κ′ (gα , g1/β ∗ ) ∈ H 1 (Q, ad0 (g)(1)), which
+
+is introduced in §3.3 as the derivative along the weight of g of the Λ-adic class κ(g, g∗ ) at
+                                                                  ∗
+
+(y0 , y0 , 0).
+   In [DR2] it was laid a conjecture proposing an explicit description of the generalized Kato
+classes arising from the Euler systems of diagonal cycles of [DR1]. This conjecture, together
+with the expected (but so far also unproved) behavior of certain periods arising from Hida
+theory, is shown to imply the main conjecture of [DLR1] for twists of elliptic curves by Artin
+representations. This is seen to provide a conceptual interpretation of the numerical examples
+computed in [DLR1].
+   At the time of writing [DR2], the authors had in mind that a parallel formulation should also
+hold for the Euler system of Beilinson–Flach elements attached to pairs (g, h) of eigenforms
+of weights (1, 1) in connection with [DLR2]. This is indeed the case for arbitrary pairs (g, h)
+such that h 6= g∗ , as there are no exceptional zero phenomena and the constructions and
+conjectures [DR2] can be adapted to the setting of units of number fields. We refer to [RiRo]
+for the details.
+   However, pairs (g, g∗ ) present a completely different scenario, as we already hinted at
+                          ∗ ) = 0, but it also turns out that the derived class κ′ (g , g ∗ ) is
+above. Not only κ(gα , g1/β                                                               α 1/β
+not crystalline at p, as opposed to the set-up of [DR2] and [RiRo]. Yet it is still possible to
+6                              ÓSCAR RIVERO AND VICTOR ROTGER
+
+formulate a conjecture analogous to loc. cit., proposing an explicit description of κ′ (gα , g1/β
+                                                                                              ∗ )
+
+in terms of the ad0 (g)-isotypical component of the group of p-units of H. We can in fact prove
+it, giving rise to the second main result of this paper.
+          1 (Q, ad0 (g)(1)) denote the subspace of H 1 (Q, ad0 (g)(1)) consisting of classes that
+   Let Hf,p
+are de Rham at p and unramified at all remaining places. Kummer theory (cf. Proposition
+3.11 below) gives rise to a canonical isomorphism
+                                                        ≃
+(9)                      OH [1/p]× [ad0 (g)] ⊗ Lp −  1
+                                                  → Hf,p (Q, ad0 (g)(1))
+and we shall use (9) throughout to identify these two spaces.
+    Theorem B. Assume that L(ad0 (gα )) 6= 0. The equality
+                                                       logp (vα⊗β̄ )u − logp (uα⊗β̄ )v
+(10)                κ′ (gα , g1/β
+                              ∗
+                                  ) = L(ad0 (gα )) ·
+                                                                logp (uα⊗β̄ )
+                ×
+holds in OH [1/p]
+            pZ
+                  [ad0 (g)] ⊗ Lp   (mod L× ).
+   Here it again becomes apparent the notable differences between the phenomena occurring
+in say [BDR1], [DR1], [KLZ2] and this article. In loc. cit., the non-vanishing of the central
+critical L-value is shown to imply the triviality of the Mordell-Weil group; conversely, the
+vanishing of the central L-value should imply the non-triviality of the Mordell-Weil group.
+   In contrast, in our setting we have L(g, g∗ , 1) 6= 0 and nonetheless the associated motivic
+          ×
+groups OH   [ad0 (g)] and OH [1/p]× [ad0 (g)] have positive rank. This is ultimately explained
+by the fact that L(g, g ∗ , s) = L(ad0 (g), s) · ζ(s) factors as the product of two zeta functions
+having a simple zero and a simple pole at s = 1, respectively.
+
+Remark 1.2. As we show in §5, it is actually possible to prove that L(ad0 (gα )) 6= 0 in many
+dihedral cases, where ̺g is induced from a finite order character of the Galois group of a
+(real or imaginary) quadratic field. We refer to loc. cit. for more details. On the other hand,
+when g is exotic, we still expect the L-invariant not to vanish systematically, but proving
+this properly appears to be a less accessible question in the theory of transcendental p-adic
+numbers.
+    The main ingredients in the proof of Theorems A, A’ and B are the following:
+  (I) Let Lp (g, g∗ ) be the three-variable Hida–Rankin p-adic L-function as introduced in
+                                         ∗ , s) := L (g, g∗ )(y , y , s) denote the restriction to
+[Hi1] or [Das2, §3.6], and let Lp (gα , g1/β          p        0 0
+{y0 , y0 } × W. This function satisfies a functional equation relating the values at s and 1 − s.
+  As explained in [DLR2], the p-adic iterated integral introduced in (4) may be recast as
+a special value of a p-adic L-function, namely [DLR2, Lemma 4.2] asserts that under our
+running assumptions H1-H2-H3 that are in place throughout the article, we have
+                                        ∗                    ∗
+                     Ip (g) = Lp (gα , g1/β , 0) = Lp (gα , g1/β , 1)   (mod L× ).
+   Define SHida ⊂ Wg × Wg × W as the surface for which the collection of crystalline points
+(y, z, s) of weights (ℓ, m, m) is Zariski dense. The Euler-like factor at p showing-up in the
+interpolation formula of Hida–Rankin’s p-adic L-function turns out to be a rigid-analytic
+Iwasawa function when restricted to SHida . In §2.3 we recall how this observation allows to
+conclude thanks to [Das2] that
+(11)                       L(ad0 (gα )) := α′g (y0 ) = Ip (g)      (mod L× ).
+  Computing the latter derivative is a question which can be reduced to a problem in Galois
+deformation theory as in [DLR3], although the methods in loc. cit. do not apply directly and
+need to be adapted in order to cover our setting. This is carried out in §4, and allows us to
+prove Theorems A and A’, as we spell out in detail in §5.
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                            7
+
+  (II) The main result of §3 is Theorem 3.7, which we state here in slightly rough terms (as
+the Bloch–Kato logarithm map appearing below has not been specified; cf. loc. cit. for more
+details):
+  Theorem C. (Theorem 3.7) The derived Beilinson–Flach element satisfies
+(12)               logp (κ′ (gα , g1/β
+                                   ∗
+                                       )) = L(ad0 (gα )) · Lp (gα , g1/β
+                                                                     ∗
+                                                                         , 0)   (mod L× ).
+ We may see this as an exceptional zero formula, reminiscent of the main theorem of [GS],
+which asserts that for an elliptic curve E/Q with split multiplicative reduction at p, we have
+                                     L′p (E, 1) = Lp (E) · Lalg (E, 1).
+  We thus may invoke Theorem A, which combined with (12) implies that
+                                log (u1 ) log (v                                 
+                                    p         p α⊗β̄ ) − logp (uα⊗β̄ ) log p (v1 ) 2
+      logp (κ′ (gα , g1/β
+                      ∗
+                          )) =                                                       (mod L× ).
+                                                  logp (uα⊗β̄ )
+In light of the general properties satisfied by Beilinson–Flach elements established in [KLZ2],
+this allows us to prove in §5 that the following equality holds in OH [1/p]× [ad0 (g)] ⊗ Lp :
+                   logp (u1 ) logp (vα⊗β̄ ) − logp (uα⊗β̄ ) logp (v1 )                                
+  κ′ (gα , g1/β
+            ∗
+                )=                                                    ×  log  (v
+                                                                             p α⊗β̄ )u − log  (u
+                                                                                             p α⊗β̄ )v
+                                     logp (uα⊗β̄ )2
+up to a factor in L× , as claimed.
+   We close the paper in §6 by pointing out to the connection between our derived Beilinson–
+Flach classes, Darmon–Dasgupta units and the Artin p-adic L-functions associated to the
+motives in play. We prove a factorization theorem in the CM case, and explain how our main
+results shed some light in the much more intriguing RM setting.
+   As a concluding remark, we hope the approach introduced in this paper may be adapted
+to prove other instances of variants of the Elliptic Stark Conjecture in presence of exceptional
+zeroes. We also hope that the derived global cohomology classes appearing in this work
+may also be useful for the on-going research project [DHRV] of Darmon, Harris, Rotger and
+Venkatesh on derived Hecke algebras in weight one.
+   Acknowledgements. It is a pleasure to thank H. Darmon and A. Lauder for many
+conversations around the theme of this article along the years; although [DLR1] was written
+before than [DLR2], it was actually the numerical computations pertaining to the latter that
+led the authors to the idea that the p-adic iterated integral considered in loc. cit. ought to
+be non-trivial in scenarios of rank two. More specifically, [DLR2, Example 6.1] was the first
+ever numerical verification of the conjectures in a “genuine rank two” case (as opposed to
+scenarios where the order of vanishing is 2 because the L-function factors as the product of
+two L-functions of rank 1). Note that this example falls within our results, so this is now a
+theorem.
+   We heartily thank D. Loeffler for his useful and encouraging comments and explanations on
+his joint papers with S. Zerbes [LZ1], which was also one of the initial sources of motivation
+for the writing of this note, as it points out to the interesting phenomenon of exceptional
+vanishing of classical specializations of the Euler system of Beilinson–Flach elements. We also
+thank D. Benois for his interest and comments on an earlier draft of this note. The first author
+also wishes to thank F. Castellà and C. Skinner for their hospitality at Princeton University,
+where part of this research was conducted. We would like to thank the anonymous referee for
+a very careful reading of the manuscript, whose comments notably contributed to improve the
+exposition and correct a few number of inaccuracies in an earlier version of the manuscript.
+   Both authors were supported by Grant MTM2015-63829-P. This project has received fund-
+ing from the European Research Council (ERC) under the European Union’s Horizon 2020
+research and innovation programme (grant agreement No. 682152). The first author has also
+8                             ÓSCAR RIVERO AND VICTOR ROTGER
+
+received financial support through “la Caixa” Fellowship Grant for Doctoral Studies (grant
+LCF/BQ/ES17/11600010). The second author gratefully acknowledges Icrea for financial
+support through an Icrea Academia award.
+
+                                 2. Preliminary concepts
+2.1. Hida families. Fix an algebraic closure Q̄ of Q. For a number field K, let GK :=
+Gal (Q̄/K) denote its absolute Galois group. Fix a prime p and an embedding Q̄ ֒→ Q̄p ,
+and let ordp denote the resulting p-adic valuation on Q̄× , normalized in such a way that
+ordp (p) = 1.
+   Let g be a newform of weight k ≥ 1, level N and character χ, with Fourier coefficients
+in a finite extension L of Q. Label the roots of the p-th Hecke polynomial of g as αg , βg
+with ordp (αg ) ≤ ordp (βg ). By enlarging L if necessary, we shall assume throughout that L
+contains αg , βg , the N -th roots of unity and the pseudo-eigenvalue λN (g) with respect to the
+Atkin-Lehner operator WN (cf. [AL]).
+   Let Lp denote the completion of L in Q̄p and let Vg denote the two-dimensional represen-
+tation of GQ with coefficients in Lp associated to g as defined e.g. in [KLZ2, §2.8], where it is
+denoted MLp (g)∗ . If g is ordinary at p, there is an exact sequence of GQp -modules
+(13)        0 → Vg+ → Vg → Vg− → 0,          Vg+ ≃ Lp (εcyc
+                                                        k−1
+                                                            χψg−1 ),   Vg− ≃ Lp (ψg ),
+where ψg is the unramified Galois character of GQp sending Frp to αg .
+  The formal spectrum W = Spf(Λ) of the Iwasawa algebra Λ = Zp [[Z×    p ]] is called the weight
+space attached to Λ, and their A-valued points over a p-adic ring A are given by
+                          W(A) = Homalg (Λ, A) = Homgrp (Z×    ×
+                                                          p , A ).
+   Weight space is equipped with a distinguished class of arithmetic points νs,ε indexed by
+integers s ∈ Z and Dirichlet characters ε : (Z/pr Z)× → Q̄× of p-power conductor. The point
+νs,ε ∈ W is defined by the rule
+                                      νs,ε (n) = ε(n)ns .
+We let W cl denote the subset of W formed by such arithmetic points. When ε = 1 is the
+trivial character, we denote the point νs,1 simply as νs or even s by a slight abuse of notation.
+                                                                                       w
+   If Λ̃ is a finite flat algebra over Λ, there is a natural finite map W̃ := Spf(W̃) −→ W, and
+we say that a point x ∈ W̃ is arithmetic of weight s and character ε if w(x) = νs,ε . As in the
+introduction, let εcyc denote the p-adic cyclotomic character and εcyc be the composition of
+εcyc with the natural inclusion Z×          ×
+                                     p ⊂ Λ taking z to the group-like element [z] in Λ .
+                                                                                         ×
+
+   Let N ≥ 1 be an integer not divisible by p, and let χ : (Z/N Z)× → C×         p be a Dirichlet
+character. Let g be a Hida family of tame level N and tame character χ as defined and
+normalized in [KLZ2, §7.2]. Let Λg the associated Iwasawa algebra (cf. Def. 7.2.5 of loc. cit.),
+which is finite and flat over Λ. As in [KLZ2, §7.3], we may specialize g at any arithmetic
+point x ∈ Wg = Spf(Λg ) of weight k ≥ 2 and character ε : (Z/pr Z)× −→ L×           p and obtain
+a classical p-ordinary eigenform gx in the space Sk (N pr , χε) of cusp forms of weight k, level
+N pr and nebentype χε.
+Definition 2.1. Let x ∈ Wg be an arithmetic point of weight k ≥ 1 and character ε. We
+say x is crystalline if ε = 1 and there exists an eigenform gx◦ of level N such that gx is the
+ordinary p-stabilization of gx◦ (which given the previous condition, is automatic if k > 2, but
+not necessarily if k ≤ 2). We denote by Wg◦ the set of crystalline arithmetic points of Wg .
+  As shown by Wiles [Wi], [KLZ2, §7.2] and already recalled in the introduction, a Hida family
+g as above comes equipped with a free Λg [GQ ]-module Vg of rank two, yielding a Galois
+representation ̺g : GQ −→ GL2 (Λg ), all whose classical specializations recover the p-adic
+Galois representation associated to the classical specialization of g. We assume throughout
+        DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                      9
+
+that the mod p residual representation ̺¯g associated to any of its classical specializations is
+irreducible, and that the semi-simplification of ̺¯|GQp is non-scalar, as in hypotheses (H1-H2)
+in the introduction.
+   Similarly as in (13), the restriction to GQp of Vg admits a filtration
+(14)                               0 → V+         −
+                                        g → Vg → Vg → 0,
+
+where V+        −
+        g and Vg are flat Λg [GQp ]-modules, free of rank one over Λg . If we let ψg denote the
+unramified character of GQp taking the arithmetic Frobenius element Frp to ap (g), then
+(15)                     V+        −1  −1
+                          g ≃ Λg (ψg χεcyc εcyc ),          V−
+                                                             g ≃ Λg (ψg ).
+
+  Let dZur
+         p be the ring of integers of the completion of the maximal unramified extension of
+Qp . Given a finite-dimensional GQp -module V with coefficients over a finite extension Lp of
+Qp , the de Rham Dieudonné module associated to V is defined as
+                                   D(V ) = (V ⊗Qp BdR )GQp ,
+where BdR is Fontaine’s field of de Rham periods. If V is unramified there is a further
+canonical isomorphism
+                                                         Frp =1 1
+                                 D(V ) ≃ Vint ⊗      d
+                                                ˆ Zp Z ur        [ ],
+                                                       p
+                                                                   p
+where Vint is an integral lattice in V . Similarly, if V is a free module over an Iwasawa algebra
+equipped with an unramified action of GQp , we may define
+                                                         Frp =1
+(16)                                D(V) := V⊗   ˆ Zp d
+                                                      Zur
+                                                        p         .
+  Given a newform g ∈ Sk (N, χ) as at the beginning of this section, D(Vg ) is an Lp -filtered
+vector space of rank 2. Set g∗ = g ⊗ χ̄ ∈ Sk (N, χ̄). Poincaré duality induces a perfect pairing
+(17)                           h , i : D(Vg (−1)) × D(Vg∗ ) → Lp .
+  If g is ordinary at p, then (13) gives rise to an exact sequence of Dieudonné modules
+                                             i          π
+                             0 → D(Vg+ ) −        → D(Vg− ) → 0
+                                         → D(Vg ) −
+where D(Vg+ ) and D(Vg− ) have rank 1 over Lp .
+  If k ≥ 2, Faltings’ comparison theorem allows to associate to g a regular differential form
+ωg ∈ Fil(D(Vg )), which induces a linear form
+                               ωg : D(Vg+∗ ) → Lp ,      η 7→ hωg , ηi.
+There is also the differential form ηg , characterized by the properties that it spans the line
+D(Vg+ ) and hηg , ωg∗ i = 1. It again gives rise to a linear functional
+                            ηg : D(Vg−∗ ) → Lp ,     ω 7→ hπ −1 (ω), ηg i.
+   As shown in [Oh] and [KLZ2], the differential forms (or linear functionals) ωg and ηg vary
+in families. In order to recall this more precisely, let g be a Hida family of tame level N and
+tame character χ as above. Set g∗ = g ⊗ χ̄. Let Qg denote the fraction field of Λg , and
+set U+        + −1       −1                +                                      ◦
+     g := Vg (χ εcyc εcyc ); denote by Ugy its specialization at a point y ∈ Wg . By [KLZ2,
+Proposition 10.1.1], there exist
+     • A homomorphism of Λg -modules
+
+(18)                                  h , ωg i : D(U+
+                                                    g∗ ) → Λg
+       such that for every y ∈ Wg◦ , the specialization of ωg at y is the linear form
+                           y ◦ h , ωg i = h , Prα∗ (ωgy◦ )i : D(Ug+y∗ ) → Lp
+10                              ÓSCAR RIVERO AND VICTOR ROTGER
+
+         where Prα∗ is the p-stabilization pull-back isomorphism defined in loc. cit.. Note that
+         this makes sense: since Lp is assumed to contain the N -th roots of unity, D(Ug+y∗ ) and
+         D(Vg+y∗ ) are the same module up to a shift in their filtration.
+       • A homomorphism of Λg -modules
+
+(19)                                       h , ηg i : D(V−
+                                                         g∗ ) → Qg
+
+         such that for every y ∈ Wg◦ we have
+
+                                                Prα∗ (ηgy◦ )
+                         y ◦ h , ηg i =                                 : D(Vg−y∗ ) → Lp ,
+                                          λN (gy◦ )E0 (gy◦ )E1 (gy◦ )
+
+         where λN (gy◦ ) stands for the pseudo-eigenvalue of gy◦ , and
+
+                   E0 (gy◦ ) = 1 − χ−1 (p)βg2y◦ p1−k ,       E1 (gy◦ ) = 1 − χ(p)α−2
+                                                                                  gy◦ p
+                                                                                        k−2
+                                                                                            .
+
+
+2.2. Hida–Rankin’s three-variable p-adic L-function. Let g ∈ Λg [[q]], h ∈ Λh [[q]] be a
+pair of Hida families of tame level N and tame characters χg and χh respectively. As in the
+introduction, set Λgh := Λg ˆ⊗Zp Λh ˆ
+                                    ⊗Zp Λ and Wgh := Spf(Λgh ). Let Qgh denote the fraction
+field of Λgh , and set Wgh := Wg × Wh◦ × W cl .
+                        ◦       ◦
+
+
+                                                                      ◦ of weights (ℓ, m, s)
+Definition 2.2. The critical range is the set of points (y, z, σ) ∈ Wgh
+such that ℓ, m ≥ 2 and m ≤ s < ℓ.
+                                                                      ◦ of weights (ℓ, m, s)
+  The geometric range is defined to be the set of points (y, z, σ) ∈ Wgh
+such that ℓ, m ≥ 2 and 1 ≤ s < min(ℓ, m).
+
+   Hida constructed [Hi1], [Hi2] a three-variable p-adic Rankin L-function Lp (g, h) on Wgh ,
+interpolating the algebraic parts of the critical values L(gy◦ , h◦z , s) for every triple of classical
+                     ◦
+points (y, z, s) in Wgh lying in the critical range. More precisely, [Hi2, Theorem 5.1d] asserts
+the following.
+
+Theorem 2.3. (Hida) There exists a unique element Lp (g, h) ∈ Qgh whose value at any
+             ◦ of weights (ℓ, m, s) in the critical range is well-defined and equal to
+(y, z, s) ∈ Wgh
+
+                                                   C · E(y, z, s)
+                      Lp (g, h)(y, z, s) =                               × L(gy◦ , h◦z , s)
+                                                (2πi)2s−m+1 hgy◦ , gy◦ i
+
+where C is a non-zero algebraic number in the finite extension Q(gy◦ , h◦z ) generated by the
+Fourier coefficients of gy◦ and h◦z , hgy◦ , gy◦ i is the Petersson norm as normalized in loc. cit., and
+                               ps−1       ps−1     βg◦ αh◦  βg◦ βh◦ 
+(20)          E(y, z, s) = 1 −           1−           1− ys z 1− ys z .
+                               αgy◦ αh◦z    αgy◦ βh◦z     p          p
+
+   Let g and h be classical specializations of the families g and h at some point (y0 , z0 ) ∈
+Wgcl × Whcl of weight (ℓ, m). We denote by Lp (g, h, s) the restriction of Lp (g, h)(y, z, s) to the
+line (y0 , z0 , s). As quoted e.g. in [Das2, §9.2], this p-adic L-function satisfies the functional
+equation
+
+(21)                      Lp (g, h, ℓ + m − 1 − s) = ǫ(g, h, s)Lp (g∗ , h∗ , s)
+
+where ǫ(g, h, ψ, s) = A · B s , with A ∈ Q(gy , hz )× and B ∈ Q× .
+        DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                   11
+
+2.3. Improved p-adic L-functions. As before, let g ∈ Λg [[q]] be a Hida family of tame
+level N and tame character χ = χg , and set h = g∗ := g ⊗ χ−1 . As in the introduction, define
+the surface
+(22)              SHida := Sℓ,m,m := {(y, z, σ) ∈ Wg × Wg × W : w(z) = σ}.
+Note that this is a sub-variety of Wgg∗ all whose crystalline arithmetic points have weights
+(ℓ, m, m) for some ℓ, m ≥ 1.
+   The restriction to SHida of the second multiplier in the Euler-like factor (20) appearing in
+the interpolation formula for Hida–Rankin’s p-adic L-function is
+                                             ps−1        αg◦
+                                       1−             =1− z.
+                                            αgy◦ βh◦z    αgy◦
+This expression interpolates to an Iwasawa function in Λg × Λg , which by abuse of notation
+                                                                       α ◦
+we continue to denote with the same symbol. One naturally expects 1 − αgz◦ should divide the
+                                                                                        gy
+
+two-variable p-adic L-function Lp (g, g∗ )(y, z, s), where (y, z) vary in Wg × Wg and s = w(z)
+is determined by the weight of z. Hida proved in [Hi2] the following stronger statement:
+
+Theorem 2.4 (Hida). Let L̂p (g, g∗ ) be the unique element in the fraction field of Λg ⊗Λ
+                                                                                       ˆ g
+such that                                      αg◦ 
+                 Lp (g, g∗ )(y, z, w(z)) = 1 − z · L̂p (g, g∗ )(y, z).
+                                                αgy◦
+Then, fixing y0 ∈ Wg◦ , the one-variable meromorphic function
+
+                                            L̂p (g, g∗ )(y0 , z)
+on Wg has a simple pole at z = y0 whose residue is a non-zero explicit rational number.
+  Associated to the adjoint representation attached to any classical specialization g = gy0 of
+the Hida family g at some arithmetic point y0 ∈ Wgcl , Hida defined an analytic L-invariant,
+which can be recast in several equivalent ways (cf. the works of Hida, Harron, Citro and
+Dasgupta (cf. [Hi3], [Ci], [Das2]). We may define it for instance as:
+                                                          −α′g (y0 )
+(23)                                  L(ad0 (gy0 )) :=               ,
+                                                           αg (y0 )
+where recall αg = ap (g) ∈ Λg is the Iwasawa function given by the eigenvalue of the Hecke
+operator Up acting on g, and α′g is its derivative.
+  Let L′p (ad0 (gy0 ), s) denote Hida-Schmidt’s p-adic L-function associated to the adjoint of
+the ordinary eigenform gy0 (cf. [Sc], [Hi3]). The argument below is mainly due to Citro and
+Dasgupta, but since in loc. cit. they often assume that ℓ ≥ 2, we include it in order to ensure
+that it holds as well at weight 1, which is the case we mostly focus on. The main point is that
+the objects in play all vary in Hida families.
+Proposition 2.5. For a crystalline classical point y0 ∈ Wg◦ of weight ℓ ≥ 1, we have
+
+                      L(ad0 (gy0 )) = Lp (g, g∗ )(y0 , y0 , ℓ) = L′p (ad0 (gy0 ), ℓ),
+up to a non-zero rational constant.
+Proof. The first equality follows from Theorem 2.4, which amounts to say that
+                                                    αgz◦ 
+                           ∗
+                   Lp (g, g )(y0 , y0 , ℓ) = lim 1 −        · L̂p (g, g∗ )(y0 , z).
+                                             z→y0    αgy◦0
+12                                  ÓSCAR RIVERO AND VICTOR ROTGER
+                   
+            α◦
+Since 1 − α g◦z         vanishes at z = y0 and L̂p (g, g∗ )(y0 , z) has a pole at z = y0 given by a non-
+             gy
+                0
+zero rational number, the value of the previous limit agrees, modulo L× , with the derivative
+of the first factor, i.e.,
+                                                                  −α′g (y0 )
+                                       Lp (g, g∗ )(y0 , y0 , ℓ) =            .
+                                                                  αg (y0 )
+    In addition, Dasgupta’s factorization proved in [Das2] asserts that Lp (g, g∗ )(y0 , y0 , s) =
+ζp (s − ℓ + 1)Lp (ad0 (gy0 ), s). Here ζp (s) is the p-adic zeta function, which has a pole at s = 1
+with non-zero rational residue. The second factor vanishes at s = ℓ and it follows that
+Lp (g, g∗ )(y0 , y0 , ℓ) = L′p (ad0 (gy0 ), ℓ) (mod Q× ).                                         
+
+                               3. Derived Beilinson–Flach elements
+3.1. The three-variable Euler system of Kings, Lei, Loeffler and Zerbes. Let g and
+h be a pair of p-adic cuspidal Hida families of tame conductor N and tame nebentype χg
+and χh as in §2.1. As in the Introduction, and keeping the notations of the previous section,
+define the Λgh -module
+(24)                                                  ⊗Zp Λ(εcyc ε−1
+                                               ˆ Zp Vh ˆ
+                                     Vgh := Vg ⊗                  cyc ).
+
+ This Λ-adic Galois representation is characterized by the property that for any (y, z, σ) ∈
+ ◦ with w(σ) = ν with s ∈ Z, (24) specializes to
+Wgh              s
+
+                                      Vgh (y, z, σ) = Vgy ⊗ Vhz (1 − s),
+the (1 − s)-th Tate twist of the tensor product of the Galois representations attached to gy
+and hz .
+   Fix c ∈ Z>1 such that (c, 6pNg Nh ) = 1. [KLZ2, Theorem A] yields a three-variable Λ-adic
+global Galois cohomology class
+                                             κc (g, h) ∈ H 1 (Q, Vgh )
+that is referred to as the Euler system of Beilinson–Flach elements associated to g and h. We
+denote by κcp (g, h) ∈ H 1 (Qp , Vgh ) the image of κc (g, h) under the restriction map.
+   Since c is fixed throughout, we may sometimes drop it from the notation. This constant
+does make an appearance in fudge factors accounting for the interpolation properties satisfied
+by the Euler system, but in all cases we are interested in these fudge factors do not vanish
+and hence do not pose any problem for our purposes.
+   Given a crystalline arithmetic point (y, z, s) ∈ Wgh  ◦ of weights (ℓ, m, s), set for notational
+                                             ◦       ◦
+simplicity throughout this section g = gy , h = hz . With these notations, gy (resp. hz ) is the
+p-stabilization of g (resp. h) with Up -eigenvalue αg (resp. αh ).
+   Define
+(25)                     κ(gy , hz , s) := κ(g, h)(y, z, s) ∈ H 1 (Q, Vgy ⊗ Vhz (1 − s))
+as the specialisation of κ(g, h) at (y, z, s).
+   If one further assumes that (y, z, s) lies in the geometric range, Kings, Loeffler and Zerbes
+showed in [KLZ1] that the cohomology group appearing in (25) also hosts a canonical Rankin-
+Eisenstein class, denoted
+                                         [g,h,s]
+(26)                                 Eiset         ∈ H 1 (Q, Vg ⊗ Vh (1 − s)).
+This class is attached to the classical pair (g, h) and can be constructed purely by geometric
+methods, without appealing to the variation of (gy , hz ) in p-adic families. It is for this reason
+                            [g,h,s]
+that in fact the classes Eiset      lie in the Bloch–Kato Selmer subgroup
+                             Hf1 (Q, Vg ⊗ Vh (1 − s)) ⊂ H 1 (Q, Vg ⊗ Vh (1 − s)).
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                               13
+
+We refer to [KLZ1, §5] and [KLZ2, Definition 3.3.2] for the precise statements.
+                                   [g,h,s]
+  Since both κ(gy , hz , s) and Eiset      live in the same space, it makes sense to ask whether
+they are related. This is the content of [KLZ2, Theorem A (8.1.3)]:
+                                 ◦ lies in the geometric range. Then
+Theorem 3.1. Assume (y, z, s) ∈ Wgh
+                                                                       [g,h,s]
+(27)                                  κ(gy , hz , s) = E(g, h, s) · Eiset
+where
+                                  s−1
+                                                                     
+                                               α β         β α        β β
+                             1 − αpg αh     1 − gps h 1 − gps h 1 − gps h (c2 − c2s−ℓ−m+2 )
+(28)      E(g, h, s) =                                              
+                                                                 ℓ−2 m−2
+                                                                                           .
+                                                (−1)s−1 (s − 1)! s−1  s−1
+
+In particular κ(gy , hz , s) lies in Hf1 (Q, Vg ⊗ Vh (1 − s)).
+   The following proposition recalls the existence of the so-called Perrin-Riou big logarithm,
+interpolating the Bloch–Kato logarithm logBK and dual exponential map exp∗BK associated to
+the classical specializations of a Λ-adic representation of GQp . We refer to [BK] and [Bel] for
+an introduction to p-adic Hodge theory and the definitions of these maps.
+   Recall the unramified character ψg of GQp taking a Frobenius element Frp to ap (g), and as
+before, let εg be the composition of the cyclotomic character εcyc with the natural inclusion
+Λ× ⊂ Λ× g . Define the GQp -subquotient
+                                                         −ˆ +
+                                                 V−+
+                                                  gh := Vg ⊗Vh
+
+of Vg ˆ
+     ⊗Vh of rank one over the two-variable Iwasawa algebra Λg ˆ
+                                                             ⊗Λh . In light of (15), the
+                  −+
+Galois action on Vgh is given by the character
+(29)                                        ηhg := ε−1             −1
+                                                    cyc χh · ψg ⊗ ψh εh .
+                           −+        −1
+   It follows that U−+
+                    gh := Vgh (εcyc εh ) is an unramified GQp -module and we can thus invoke
+its Λ-adic Dieudonné module as defined in (16).
+Proposition 3.2. [KLZ2, Theorem 8.2.8] There is an injective morphism of Λgh -modules
+                                    1       −+ ˆ
+                             L−+                        −1          −+ ˆ
+                              gh : H (Qp , Vgh ⊗Λ(εcyc εcyc )) → D(Ugh )⊗Λ
+
+such that for all κp ∈ H 1 (Qp , V−+   ˆ         −1                           ◦
+                                    gh ⊗Λ(εcyc εcyc )) and all (y, z, s) ∈ Wgh of weights (ℓ, m, s):
+                                                             
+                                             ps−1         αg βh −1 (−1)m−s+1
+     • if s < m, (L−+gh (κ p ))y,z,s =   1 − αg βh    1 −  p s       · (m−s+1)! · logBK (κp (y, z, s));
+                                                             −1
+                                             ps−1         α β
+     • if s ≥ m, (L−+gh (κp ))y,z,s = 1 − αg βh       1 − gps h     (s − m)! · exp∗BK (κp (y, z, s)).
+   Here, logBK and exp∗BK stand for the Bloch–Kato logarithm (resp. dual exponential) asso-
+ciated to the Dieudonné module of the p-adic representation Vg−y ⊗ Uh+z (1 − s).
+Remark 3.3. In the case where αg βh = ps , we implicitly understand that the Euler factor in
+the denominator appears on the left hand side of the equality.
+  As shown in [KLZ2, Theorem 8.1.7], there is an injection
+                 H 1 (Qp , V− ˆ +ˆ         −1         1       −ˆ    ˆ        −1
+                            g ⊗Vh ⊗Λ(εcyc εcyc )) ֒→ H (Qp , Vg ⊗Vh ⊗Λ(εcyc εcyc )).
+
+If we denote by κ−−                                        1       −ˆ −ˆ          −1
+                  p (g, h) the projection of κp (g, h) to H (Qp , Vg ⊗Vh ⊗Λ(εcyc εcyc )), it is
+further shown in loc. cit. that
+(30)                                              κ−−
+                                                   p (g, h) = 0.
+
+   As a consequence, the projection of κp (g, h) to H 1 (Qp , V− ˆ   ˆ        −1
+                                                               g ⊗Vh ⊗Λ(εcyc εcyc )) actually lies
+in H 1 (Qp , V− ˆ +ˆ         −1                                   −+
+              g ⊗Vh ⊗Λ(εcyc εcyc )) and we may hence denote it κp (g, h).
+14                               ÓSCAR RIVERO AND VICTOR ROTGER
+
+  Let λN (g) denote the Λ-adic pseudo-eigenvalue of g as defined in [KLZ2, §10], interpolating
+the Atkin-Lehner pseudo-eigenvalues of the classical specializations of g. Recall from (18) and
+                                                                     −
+(19) Ohta’s families of differential forms ηg ∈ D(U+ g ) and ωh ∈ D(Vh ). As it follows from the
+properties recalled in loc. cit., there exists a homomorphism of Λgh -modules
+                             h , ηg ⊗ ωh i : D(U−+  ˆ
+                                                gh )⊗Λ → Qgh ⊗ Qp (µN )
+
+such that for all δ ∈ D(U−+  ˆ                       ◦
+                         gh )⊗Λ and all (y, z, s) ∈ Wgh ,
+                                               1                           α∗            α∗
+(31)        νy,z,s (hδ, ηg ⊗ ωh i) =   λN (g)E0 (g)E1 (g) · hνy,z,s (δ), Pr (ηgy ) ⊗ Pr (ωh◦z ) i
+                                                                                 ◦
+
+                                                   1                 α
+                                 =         λN (g)E0 (g)E1 (g) · hPr∗ (νy,z,s (δ)), ηgy ⊗ ωhz i,
+                                                                                     ◦      ◦
+
+
+where, recall again,
+                    E0 (g) = 1 − χ−1    2 1−ℓ
+                                  g (p)βg p   ,           E1 (g) = 1 − χg (p)α−2
+                                                                              g p
+                                                                                  ℓ−2
+                                                                                      .
+     The following explicit reciprocity law is [KLZ2, Theorem 10.2.2].
+Theorem 3.4. Define the Iwasawa function
+(32)               A(g, h) := λN (g)−1 (−1)s (c2 − c−(ℓ+m−2−2s) εg (c)−1 εh (c)−1 )
+in Λgh . Then
+(33)                      hL−+   −+
+                            gh (κp (g, h)), ηg ⊗ ωh i = A(g, h) · Lp (g, h).
+
+3.2. The self-dual case. Let g be a Hida family of tame conductor N and tame nebentype
+χ, and set again h = g∗ = g ⊗ χ̄. Define the curve
+(34)         C := Cℓ,ℓ,ℓ−1 = {(y, z, σ) ∈ Wgg∗ : y = z,        αgy 6= βgy ,    w(z) = σ · εcyc }.
+   Note that C is a finite cover of the line in W 3 given as the set of regular points in the Zariski
+closure of the set of points of weights (ℓ, ℓ, ℓ − 1) for some ℓ ≥ 1.
+Theorem 3.5. The restriction of κp (g, g∗ ) to C is zero.
+Proof. Recall firstly from (30) that κ−−     ∗                              −+        ∗
+                                      p (g, g ) = 0. We also claim that κp (g, g )|C =
+ +−     ∗                                                         −+ ˆ         −1
+κp (g, g )|C = 0. To see this, observe that the Λg [GQp ]-module Vgg∗ ⊗Λ(εcyc εcyc )|C is iso-
+                                                                                    αg◦
+                                                                             ℓ−1 · ε2−ℓ = ε
+morphic to Λg (1). This follows directly from (29) and (34), because α y◦ · εcyc    cyc    cyc .
+                                                                                     gy
+Hence
+                                                                                          (ordp ,logp )
+(35) H 1 (Qp , V−+  ˆ        −1           1                 1             ˆ
+                gg∗ ⊗Λ(εcyc εcyc )|C ) ≃ H (Qp , Λg (1)) ≃ H (Qp , Zp (1))⊗Λg                  ≃          Λg ⊕ Λg
+and κ−+          ∗
+       p (g, g )|C vanishes if and only if infinitely many of its specializations are zero. But
+this is true for any crystalline classical point (y, y, ℓ − 1) on C with ℓ > 1. Indeed, the factor
+E(gy , hz , s) of Theorem 3.1 vanishes, as αg βg = χ(p)pℓ−1 , and hence
+                                                         αg pℓ−1   pℓ−1
+(36)                             αh = αg · χ−1 (p) =             =      .
+                                                          αg βg     βg
+By (27) this shows that the specialization of the global cohomology class κ(g, g∗ )(y, y, ℓ − 1)
+is zero for all y ∈ Wg◦ of weight ℓ > 1, and a fortiori κ−+          ∗
+                                                              p (g, g )(y, y, ℓ − 1) = 0. We conclude
+that κ−+        ∗                         +−     ∗
+       p (g, g )|C = 0 and likewise κp (g, g )|C = 0 by a symmetric reasoning.
+   Finally, note that there is an exact sequence
+(37)
+  0 → H 1 (Qp , V++   ˆ        −1            1                   1               ++ ˆ        −1
+                  gg∗ ⊗Λ(εcyc εcyc )|C ) → H (Qp , Vgg∗ |C ) → H (Qp , Vgg∗ /(Vgg∗ ⊗Λ(εcyc εcyc ))|C ).
+
+   The first map above is injective because H 0 (Qp , Vgg∗ /(V++  ˆ        −1
+                                                              gg∗ ⊗Λ(εcyc εcyc ))|C ) = 0, as it
+                                                                                         −−
+follows again from the description of Vgg∗ given in (29) (and similarly for V+−
+                                       −+
+                                                                              gg∗ and Vgg∗ ).
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                          15
+
+   Since we have already shown that κ−−               ∗        −+    ∗      +−      ∗
+                                              p (g, g )|C = κp (g, g )|C = κp (g, g )|C = 0, this
+implies that the image of κ(g, g )|C in the right-most term of (37) vanishes. Hence, κ(g, g∗ )|C
+                                  ∗
+
+lies in H 1 (Qp , V+ ˆ + ˆ         −1
+                   g ⊗Vg∗ ⊗Λ(εcyc εcyc )|C ). It follows from [KLZ2, Theorem 8.2.3, Remark 8.2.4]
+that the latter space is isomorphic to Λg , and thus κ(g, g∗ )|C is zero if and only if infinitely
+many of its specializations are, which is the case as already argued above.
+                                                                                                
+
+3.3. A derived system of Beilinson–Flach elements. Keep the notations and assump-
+tions as in previous sections. Theorem 3.5 above establishes the vanishing of the local coho-
+mology class κp (g, g∗ ) along C and it is thus natural to ask about the existence of a derived
+cohomology class κ′p (g, g∗ ) on a proper subspace of three-dimensional weight space Wgg∗
+containing C, bearing a reciprocity law with Hida–Rankin’s improved p-adic L-function.
+   The purpose of this section is making this construction explicit. Consider the surface
+                      S := Sℓ,m,m−1 = {(y, z, σ) ∈ Wgg∗ : w(z) = σ · εcyc },
+which is a finite cover of the plane in W 3 arising as the Zariski closure of points of weights
+(ℓ, m, m − 1) for some ℓ, m ≥ 1. Note that S obviously contains the curve C.
+   Let Vgg∗ |S denote the restriction of Vgg∗ to the surface S and Vgg∗ |C denote its restriction
+to C. The following proposition establishes the existence of a class κ′p (g, g∗ ) ∈ H 1 (Qp , Vgg∗ |S )
+that may be regarded as the derivative of κp (g, g∗ ) along the z-direction.
+   We shrink weight space W to a rigid-analytic open disk U ⊂ W centered at 1 at which
+                                                                         ∼
+the finite cover w : Wg → W restricts to an isomorphism w : Ug → U with y0 ∈ Ug . Let
+ΛUg = O(Ug ) denote the Iwasawa algebra of analytic functions on Ug whose supremum norm
+is bounded by 1. Shrink likewise C and S so that projection to weight space restricts to an
+isomorphism with U and U × U respectively. Having done that, their associated Iwasawa
+algebras are respectively O(C) = ΛUg ≃ Zp [[Z]] and O(S) = ΛUg ⊗Λ       ˆ Ug ≃ Zp [[Y, Z]]. The
+isomorphism ΛUg ≃ Zp [[Z]] is not canonical and depends on the choice of an element γ ∈ Λ×          Ug
+which is sent to 1 + Z.
+   Consider the short exact sequence of Zp -modules
+                                           ·(Z−Y )
+                         0 → Zp [[Y, Z]] −−−−−→ Zp [[Y, Z]] → Zp [[Z]] → 0.
+Under the above identifications the previous exact sequence may be recast as
+                                                   δ
+                                      0 → OS −
+                                             → OS → OC → 0
+                                               ˆ Ug .
+with δ = 1 ⊗ (γ − 1) − (γ − 1) ⊗ 1 in OS ≃ ΛUg ⊗Λ
+
+Proposition 3.6. There exists a unique local class κ′p,γ (g, g∗ ) ∈ H 1 (Qp , Vgg∗ |S ) such that
+
+                                     κp (g, g∗ )|S = δ · κ′p,γ (g, g∗ ).
+Proof. The short exact sequence of GQp -modules
+                                               δ
+                                0 → Vgg∗ |S −
+                                            → Vgg∗ |S → Vgg∗ |C → 0
+gives rise to the long exact sequence
+                                                       δ
+           H 0 (Qp , Vgg∗ |C ) → H 1 (Qp , Vgg∗ |S ) −
+                                                     → H 1 (Qp , Vgg∗ |S ) → H 1 (Qp , Vgg∗ |C ).
+
+Since H 0 (Qp , Vgg∗ |C ) = 0 as already argued in the proof of Theorem 3.5, the vanishing of
+κp (g, g∗ )|C implies the existence of a unique element κ′p,γ (g, g∗ ) ∈ H 1 (Qp , Vgg∗ |S ) satisfying
+the claim.                                                                                            
+16                                 ÓSCAR RIVERO AND VICTOR ROTGER
+
+   We are interested in the restriction of κ′p,γ (g, g∗ ) to C; although it depends on the choice
+of the topological generator γ, the class κ′p (g, g∗ ) ∈ H 1 (Qp , Vgg∗ |C ) defined by
+
+                                           ′      ∗    κ′p,γ (g, g∗ )
+                                          κp (g, g ) =
+                                                         logp (γ)
+is independent of γ.
+                                                      αgy◦ βh◦z
+     Since in our setting the Euler factor 1 −           ps       appearing in Proposition 3.2 is equal to
+       αgy◦
+1 − α ◦ , it is natural to introduce a modified p-adic L-function on the surface S, defined as
+        gz
+                                                    αg◦ 
+(38)                      L̃p (g, g∗ )(y, z, s) = 1 − y × Lp (g, g∗ )(y, z, s).
+                                                     αgz◦
+                           ◦ ∩ S. Set L = Q(g ◦ , h◦ , λ (g ◦ )) and let L denote the p-adic
+  Fix a point (y, z, s) ∈ Wgh                y     z    N y               p
+completion of L. Define
+                                                      pr−+               +
+(39)          log−+ : H 1 (Qp , Vgy ⊗ Vhz (1 − s)) −−−→ H 1 (Qp , V−
+                                                                   gy ⊗ Vhz (1 − s)) → Lp ,
+                                                                 +
+where the first map is the projection onto H 1 (Qp , V−  gy ⊗ Vhz (1 − s)) and the last one is the
+composition of the Bloch–Kato logarithm with the pairing with the differential ηgy◦ ⊗ ωh◦z .
+  It follows from Theorems 3.2 and 3.4 that for all (y, z, s) ∈ Wgh   ◦ ∩ S:
+
+                                             αgz◦ 
+(40)              L̃p (g, g∗ )(y, z, s) = 1 −        · log−+ (κp (g, g∗ )(y, z, s)),
+                                              pαgy◦
+up to multiplication by the c-factor we have described in Theorem 3.4 and which does not
+affect to our discussion since we always work modulo L× .
+
+   Observe that the function L̃p (g, g∗ ) vanishes along the curve C, so the restriction of its
+derivative to that line is exactly zero. Recall that L̃p (g, g∗ ) is a two-variable function, deter-
+mined by the values of y and z, since the third variable σ comes automatically determined by
+z. Hence, one has that
+                                  ∂               ∂
+                                     L̃p (g, h) +    L̃p (g, h) = 0.
+                                  ∂y              ∂z
+   Recall that αg is an analytic function defined over Λg ; we denote by α′g its derivative. We
+may consider as before the L-invariant attached to the adjoint representation of g,
+                                                                  α′g
+                                             L(ad0 (g)) = −           .
+                                                                  αg
+Observe that its specializations at classical points agree with the definitions given before in
+(23).
+   Now, we can compute the partial derivatives of L̃p (g, h) at a crystalline point (y, y, ℓ − 1)
+of the curve C. Using (38), one gets
+                      ∂
+(41)                     L̃p (g, h)(y, y, ℓ − 1) = L(ad0 (gy )) · Lp (g, g∗ )(y, y, ℓ − 1).
+                      ∂y
+Then, using (40), we first observe that κp (g, g∗ )(y, z, s) vanishes at (y, y, ℓ − 1) and its de-
+rivative in the z-direction is precisely the logarithm of the derived cohomology class we have
+previously computed in Proposition 3.6; hence, one gets that
+               ∂
+(42)              L̃p (g, h)(y, y, ℓ − 1) = (1 − p−1 ) · (log−+ (κ′p (g, g∗ )(y, y, ℓ − 1))).
+               ∂z
+     We have then proved the following result:
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                               17
+
+Theorem 3.7. For any crystalline point (y, y, ℓ − 1) on C, it holds that
+         L(ad0 (gy )) · Lp (g, g∗ )(y, y, ℓ − 1) = log−+ (κ′p (g, g∗ )(y, y, ℓ − 1))         (mod L× ).
+3.4. Weight one modular forms. Let g ∈ S1 (N, χg ) and h ∈ S1 (N, χh ) be two cuspidal
+eigenforms of weight one. Let Vg and Vh denote the Artin representations over a finite exten-
+sion L of Q attached to g and h. Let αg , βg (resp. αh , βh ) denote the roots of the p-th Hecke
+polynomial of g (resp. of h). We assume throughout that αg 6= βg and αh 6= βh . We also
+assume L is large enough as specified in §2.1.
+Definition 3.8. Let g and h be Hida families passing through p-stabilizations gα , hα of g, h
+at some point (y0 , z0 ) ∈ Wg◦ × Wh◦ of weights (1, 1). Define
+                       κ(gα , hα ) := κ(g, h)(y0 , z0 , 0) ∈ H 1 (Q, Vgh ⊗ Lp (1))
+as the specialization of κ(g, h) at the point (y0 , z0 , 0).
+  This procedure yields four a priori different global cohomology classes:
+(43)                      κ(gα , hα ),       κ(gα , hβ ),      κ(gβ , hα ),   κ(gβ , hβ ),
+one for each choice of pair of roots of the p-th Hecke polynomials of g and h.
+   Given a p-adic representation V of GQp with coefficients in Qp , Bloch and Kato introduced
+in [BK] a collection of subspaces of the local Galois cohomology group H 1 (Qp , V ), denoted
+respectively
+                   0 ⊂ He1 (Qp , V ) ⊂ Hf1 (Qp , V ) ⊂ Hg1 (Qp , V ) ⊂ H 1 (Qp , V ).
+Definition 3.9. Let V be a representation of GQ with coefficients in Qp . The group of classes
+that are de Rham at p (i.e. the restriction to Qp lies in Hg1 (Qp , V )) and unramified at all primes
+                        1 (Q, V ).
+ℓ 6= p is denoted as Hf,p
+    The group of classes that are crystalline at p and unramified at any other prime q 6= p is
+denoted as Hf1 (Q, V ).
+                                                   1 (Q, V
+Proposition 3.10. The four classes in (43) lie in Hf,p    gh ⊗ Lp (1)).
+
+Proof. The dimensions of Hg1 (Qp , Vgh (1)) and H 1 (Qp , Vgh (1)) are equal, according to the dis-
+cussion of [DR3, Section 1.4]; hence, the classes are de Rham at p. Furthermore, the restric-
+tion of these classes to Qq is 0 for q 6= p. In fact a stronger fact holds true: the local Λ-adic
+classes κq (g, h) ∈ H 1 (Qq , Vgh ) are 0 at all q 6= p. This can be argued for instance by fixing
+weights (ℓ, m, s) large enough so that for every triple (ǫ1 , ǫ2 , ǫ3 ) of characters of arbitrary p-
+power conductor and for any point (x, y, z) above (νℓ,ǫ1 , νm,ǫ2 , νs,ǫ3 ), V(g, h)(x, y, z) contains
+no sub-quotient isomorphic to neither Qp nor Qp (1). It then follows from Tate’s local Euler
+characteristic formula (cf. [Nek, 2.5]) that H 1 (Qq , Vgh (x, y, z)) = 0. From this it follows that
+H 1 (Qq , Vgh ) = 0 arguing as in e.g. [KLZ2, Prop. 8.1.7 or Lemma 8.2.6].                         
+  Recall that we let H denote the Galois extension of Q cut out by Vg ⊗ Vh .
+Proposition 3.11. There are natural identifications
+                                                ×
+(44)                 Hf1 (Q, Vgh ⊗L Lp (1)) = (OH ⊗Z Vgh ⊗L Lp )GQ ,
+                     1
+                    Hf,p (Q, Vgh ⊗L Lp (1)) = (OH [1/p]× ⊗Z Vgh ⊗L Lp )GQ .
+Proof. This follows from the same arguments as in e.g. [Bel, Prop. 2.9].                                  
+                                                                                  α      β          α     β
+   Since αg 6= βg , Vg decomposes as a GQp -module as Vg = Vg g ⊕ Vg g , where Vg g and Vg g
+are the GQp -invariant lines on which Frp acts with eigenvalue αg and βg respectively. We
+similarly have Vh = Vhαh ⊕ Vhβh , and we may define
+                                         α                           ββ       β
+                            αα
+                          Vgh  := Vg g ⊗ Vhαh ,             ...,   Vgh  := Vg g ⊗ Vhβh .
+18                                ÓSCAR RIVERO AND VICTOR ROTGER
+
+Note that these four GQp -invariant lines in Vgh are linearly independent even though some of
+the eigenvalues αg αh , αg βh , βg αh , βg βh might be equal. Hence there is a decomposition of
+GQp -modules
+                                                     αα           ββ
+(45)                              Vgh := Vg ⊗ Vh = Vgh  ⊕ ... ⊕ Vgh  .
+
+     It follows that the local class κp (gα , hα ) may be decomposed as
+              κp (gα , hα ) = κ++              +−              −+              ++
+                               p (gα , hα ) + κp (gα , hα ) + κp (gα , hα ) + κp (gα , hα ),
+
+where
+                                    ββ                                             βα
+(46)      κ++              1
+           p (gα , hα ) ∈ H (Qp , Vgh ⊗ Lp (1)),         κ+−              1
+                                                          p (gα , hα ) ∈ H (Qp , Vgh ⊗ Lp (1))
+                           1        αβ
+          κ−+                                     −−              1        αα
+           p (gα , hα ) ∈ H (Qp , Vgh ⊗ Lp (1)), κp (gα , hα ) ∈ H (Qp , Vgh ⊗ Lp (1)).
+
+    As before, we are specially interested in the case where h = g∗ = g ⊗ χ−1 , and we impose
+on g the assumptions (H1-H2-H3) listed in the introduction; if we denote by {α, β} the p-th
+Hecke eigenvalues of g, the p-th Hecke eigenvalues of h are {1/β, 1/α}.
+    Let g and h = g∗ := g ⊗ χ−1 denote the Hida families over Wg = Wh passing through
+gα and (gα )∗ = (g ∗ )1/β respectively at some point y0 ∈ Wg in weight space. Thanks to our
+running assumptions, the main theorem of [BeDi] ensures that the weight map Wg −→ W is
+étale at the point associated to gα . It is therefore possible to fix an open subset in Wg around
+gα on which the weight map is an isomorphism. This way we are entitled to work under the
+simplifying assumptions posed in §3.2 and the results in loc. cit. and §3.3 may be applied.
+                                                        ∗ ) and κ(g , g ∗ ) are zero.
+Proposition 3.12. The global cohomology classes κ(gα , g1/β        β 1/α
+
+Proof. The restriction map
+                          resp : H 1 (Q, Vgh ⊗ Lp (1)) → H 1 (Qp , Vgh ⊗ Lp (1))
+is injective. This follows from [Bel, Proposition 2.12], which asserts that there are natural
+isomorphisms
+         H 1 (Q, Vgh ⊗ Lp (1)) ≃ (H × ⊗ Vgh )GQ ,        H 1 (Qp , Vgh ⊗ Lp (1)) ≃ (Hp× ⊗ Vgh )GQp ,
+and hence the restriction map corresponds to the natural inclusion H ֒→ Hp . From Theorem
+                               ∗ ) and κ (g , g ∗ ) are both zero, and the result follows.
+3.5, it follows that κp (gα , g1/β                                                         
+                                        p β 1/α
+
+     Define the curve
+                        D := {(y, z, σ) ∈ Wgg∗ : y = y0 ,       w(z) = σ · εcyc } ⊂ S
+Proposition 3.13. There exists a unique global class κ′γ (g, g∗ ) ∈ H 1 (Q, Vgg∗ |D ) such that
+                                   κ′γ (g, g∗ )|D = (γ − 1) · κ′γ (g, g∗ ).
+Proof. The short exact sequence of GQ -modules
+                                            δ
+                              0 → Vgg∗ |D −
+                                          → Vgg∗ |D → Vgh ⊗ Lp (1) → 0
+gives rise to the long exact sequence
+                                                     δ
+         H 0 (Q, Vgh ⊗ Lp (1)) → H 1 (Q, Vgg∗ |D ) −
+                                                   → H 1 (Q, Vgg∗ |D ) → H 1 (Q, Vgh ⊗ Lp (1)).
+
+Since H 0 (Q, Vgh ⊗ Lp (1)) = 0, the vanishing of κ(gα , g1/β
+                                                          ∗ ) proved in Proposition 3.12 implies
+
+the existence of a unique element κ′γ (g, g∗ ) ∈ H 1 (Q, Vgg∗ |D ) satisfying the claim.      
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                         19
+
+Remark 3.14. The global cohomology class in Proposition 3.13 only makes sense along the
+curve D. Besides, the local cohomology class constructed in Proposition 3.6 exists along the
+whole surface S. Hence one can not define the latter on the surface S as the restriction at p
+of the former, although this is indeed true after restricting to D, a fact that we shall apply
+right below.
+  Set
+                                                   1
+(47)                         κ′ (gα , g1/β
+                                       ∗
+                                           )=           κ′ (g, g∗ )(y0 , y0 , 0).
+                                                logp (γ) γ
+Since the construction of this class coincides with the one performed in the previous section
+once we localize at p and restrict to the curve D, Theorem 3.7 applies and we deduce that
+(48)          L(ad0 (gα )) · Lp (g, g∗ )(y0 , y0 , 0) = log−+ (κ′p (gα , g1/β
+                                                                          ∗
+                                                                              ))    (mod L× ).
+  Recall from (21) that Lp (g, g∗ ) satisfies a functional equation relating the values at s = 0
+and s = 1 up to a simple non-zero rational constant. Together with Proposition 2.5 this
+implies that
+(49)        Lp (g, g∗ )(y0 , y0 , 1)2 = L(ad0 (gy0 ))2 = log−+ (κ′p (gα , g1/β
+                                                                           ∗
+                                                                               ))    (mod L× ).
+  This formula is the key input for deriving Theorem B, the second main result of this note.
+
+       4. Derivatives of Fourier coefficients via Galois deformation theory
+  As in previous sections, let g ∈ S1 (N, χ) satisfying the hypothesis of the introduction. Let
+   ̺g : Gal (Hg /Q) ֒→ GL(Vg ) ≃ GL2 (L),           ̺ad0 (g) : Gal (H/Q) ֒→ GL(ad0 (g)) ≃ GL3 (L)
+denote the Artin representations associated to g and its adjoint, respectively. Here L is a
+finite extension of Q and Hg ⊇ H denote the finite Galois extensions of Q cut out by these
+representations. Let P denote the set of primes of H lying above p, and fix once for all a
+prime ℘ ∈ P, thus determining an embedding H ⊂ Hp ⊂ Q̄p of H into its completion Hp at
+℘, and an arithmetic Frobenius Frp ∈ Gal (Hp /Qp ).
+   As it occurred in [DLR2], the regularity assumptions we have imposed on g imply by e.g. in
+[Das1, Prop. 3.2.2] that
+                          ×
+                   dimL (OH ⊗ Vgg∗ )GQ = 1,          dimL (OH [1/p]× ⊗ Vgg∗ )GQ = 3,
+and thus
+             dimL (OH [1/p]× /pZ ⊗ Vgg∗ )GQ = dimL (OH [1/p]× /pZ ⊗ ad0 (g))GQ = 2.
+  Fix two linearly independent global cohomology classes
+                      u ∈ Hf1 (Q, Vgg∗ ⊗ Lp (1)),            1
+                                                        v ∈ Hf,p (Q, Vgg∗ ⊗ Lp (1))
+such that under the identifications provided by Proposition 3.11, project to a basis of the
+two-dimensional space (OH [1/p]× /pZ ⊗ ad0 (g))GQ . By a slight abuse of notation, we continue
+to denote
+                        ×
+                  u ∈ (OH  ⊗ ad0 (g))GQ , v ∈ (OH [1/p]× /pZ ⊗ ad0 (g))GQ
+the resulting elements.
+   Recall from (45) that Vgh admits a natural decomposition as GQp -module as the direct sum
+                              αα , ..., V ββ . Since ad0 (V ) is the quotient of V ∗ by the trivial
+of the four different lines Vgg ∗        gg ∗              g                      gg
+representation, (45) descends to a decomposition of ad0 (Vg ) as GQp -module as
+
+           ad0 (g) = ad0 (g)1 ⊕ ad0 (g)α⊗β̄ ⊕ ad0 (g)β⊗ᾱ = L · e1 ⊕ L · eα⊗β̄ ⊕ L · eβ⊗ᾱ ,
+20                                   ÓSCAR RIVERO AND VICTOR ROTGER
+
+
+where Frp (e1 ) = e1 , Frp (eα⊗β̄ ) = αβ · eα⊗β̄ , Frp (eβ⊗ᾱ ) = αβ · eβ⊗ᾱ . Note that α/β 6= 1 thanks
+to the regularity assumption. It could be that α = −β and hence α/β = β/α = −1, but the
+above decomposition is still available as explained in (45).
+   Restriction to the decomposition group at p allows us to regard u and v as elements in
+H 1 (Qp , ad0 (g) ⊗ Lp (1)) = (Hp× ⊗ ad0 (g))GQp , and as such we may write u and v as
+(50) u = u1 ⊗ e1 + uα⊗β̄ ⊗ eα⊗β̄ + uβ⊗ᾱ ⊗ eβ⊗ᾱ , v = v1 ⊗ e1 + vα⊗β̄ ⊗ eα⊗β̄ + vβ⊗ᾱ ⊗ eβ⊗ᾱ ,
+where u1 , v1 , uα⊗β̄ , vα⊗β̄ , uβ⊗ᾱ , vβ⊗ᾱ ∈ Hp× satisfy
+                                                       β                               α
+                  Frp (u1 ) = u1 ,    Frp (uα⊗β̄ ) =     ·u   ,       Frp (uβ⊗ᾱ ) =     · uβ⊗ᾱ
+                                                       α α⊗β̄                          β
+and similarly for v.
+  We can now provide the last step in our proof of Theorems A, A’ and B in the introduction.
+As it was shown in Corollary 2.5, Theorem A may be reduced to the computation of the
+derivative of the Fourier coefficient ap (g) at y0 , where g stands for the unique Hida family
+passing through gα .
+  Let
+                                     ρ̃g : GQ → GL2 (Lp [ε])
+be the unique first order α-ordinary deformation of ρg such that
+                                       det ρ̃g = χg (1 + logp χcyc · ε).
+This representation, whose existence follows from [BeDi], satisfies
+                                            ρ̃g = (1 + ε · κg ) · ρg ,
+for some cohomology class κg : GQ → ad(ρ). Considering a diagonal basis for the Frobenius
+action (where we take the first vector to have eigenvalue α), the matrix form of κ(σ) can be
+expressed as                                               
+                                              κ1 (σ) κ2 (σ)
+                                    κ(σ) =                    .
+                                              κ3 (σ) κ4 (σ)
+We denote by ρ̃g,p the restriction of ρ̃g to the decomposition group at p; in the same way, the
+restriction of κ to the decomposition group at p is denoted by κp , and similarly we denote by
+κi,p the restriction of κi to GQp .
+   In [BeDi, Lemmas 2.3 and 2.5] the authors determine the tangent space to a deformation
+problem which can be seen to be equivalent to ours. They conclude that there is a natural
+bijection between this tangent space and a certain subspace of H 1 (Q, ad(ρg )); in this case, it
+consists on those classes κ whose matrix representation satisfies
+(51)                                  κ3,p (σ) = 0,        κ1,p (σ)|Ip = 0,
+being Ip the inertia group at p. In [DLR4], the restriction of κ to the inertia group at p was
+determined, and the identifications of class field theory allow us to extend this to the whole
+decomposition group. A similar setting, where also a quite related deformation problem arises,
+is exploded in [BDP] to treat the case of weight one Eisenstein points.
+   Let Vgα be the étale subspace on which the action of the Frobenius is unramified for the
+Λ-adic representation. Restricting to the decomposition group at p, we have that
+                                        ρ̃g,p |Vgα = (1 + ε · κ1,p ) · αg ,
+where κ1,p ∈ H 1 (Qp , Hom(Vgα , Vgα )). If gα′ stands for the derivative of g evaluated at y0 , we
+then have
+                          ap (gα ) + ε · ap (gα′ ) = αg + ε · κ1,p (Frp ) · αg ,
+and consequently we have the following.
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                      21
+
+Proposition 4.1. Let g be the Hida family through gα . Then, it holds that
+                                 ap (gα′ ) = κ1,p (Frp )   (mod L× ).
+  Taking into account the identifications provided by class field theory, one can make κ1 (Frp )
+explicit.
+  From [BeDi, Section 3.2], there is an exact sequence
+                                                                ×
+            0 → Hom(GH , Q̄p ) → Hom((OH ⊗ Qp )× , Q̄p ) → Hom(OH ⊗ Qp , Q̄p ).
+Similarly, one has another exact sequence
+          0 → Hom(GH , Q̄p ) → Hom((H ⊗ Qp )× , Q̄p ) → Hom(OH [1/p]× ⊗ Qp , Q̄p ).
+  Consequently, we have identifications
+         H 1 (Q, Q̄p ) ⊗ ad(ρ) ≃ (H 1 (H, Q̄p ) ⊗ ad(ρ))GQ ≃ (Hom(GH , Q̄p ) ⊗ ad(ρ))GQ ,
+and this corresponds with the subspace of homomorphisms of
+                               (Hom((H ⊗ Qp )× , Q̄p ) ⊗ ad(ρ))GQ
+vanishing at OH [1/p]× ⊗ Qp .
+   We now recall some results which allow us to determine each of the κi,p . Since there are
+isomorphisms
+                                   Y                           Y
+                                         ×
+                     (OH ⊗ Qp )× ≃     OH  q
+                                             ,  (H  ⊗ Q p )×
+                                                             ≃   Hq× ,
+                                       q∈P                              q∈P
+
+we may write elements in (OH ⊗ Qp )× (or (H ⊗ Qp )× ) as tuples (xi )i∈P . The action of the
+Galois group G = Gal (H/Q) is transitive on P, so any Galois equivariant homomorphism
+from (H ⊗ Qp )× (resp. (OH ⊗ Qp )× ) to Q̄p is completely determined by its values on Hp×
+        ×
+(resp. OH p
+            ).
+   From class field theory, one has two distinguished elements in H 1 (Qp , Q̄p ):
+   (1) The class κnr , which is the unique homomorphism
+                                  κnr ∈ Hom(Gal (Qnr
+                                                  p /Qp ), Q̄p )
+
+       taking Frp to 1.
+   (2) The restriction to GQp of the logarithm of the cyclotomic character
+                                         κcyc := logp (εcyc ),
+
+        which gives a ramified element of H 1 (Qp , Q̄p ).
+   Furthermore, observe that H 1 (Qp , Q̄p ) is identified with Hom(GHp , Q̄p )Gal (Hp /Qp ) as ex-
+plained above. In the latter space, we denote by κnr the morphism that takes Frp to 1, and
+by κcyc the ramified element defined by logp (εcyc ).
+
+  Now we can determine explicitly the element κ ∈ H 1 (Q, ad(ρ)), by constructing a homo-
+morphism
+                          Φg (x) : (H ⊗ Qp )× → Hp ⊗ ad(ρ)
+corresponding to κ via the previous identifications. In particular, it vanishes when evaluated
+at the basis {u, v} of units for the adjoint. Moreover, Φg (πp−1 ) leaves invariant the one-
+dimensional space Vgα , being πp−1 the idèle which is equal to the inverse of a local uniformiser
+of Hp for the fixed prime ℘ above p, and to 1 everywhere else. The eigenvalue for the action
+of Φg (πp−1 ) on that subspace is precisely κ1 (Frp ).
+22                                ÓSCAR RIVERO AND VICTOR ROTGER
+
+                                 ×            GQ , and let v × be any element of the space
+  Let u×g be any generator of (OH ⊗ ad(ρ))                   g
+(OH [1/p] ⊗ ad(ρ)) Q such that {ug , vg } is a basis of (OH [1/p]× /pZ ⊗ ad(ρ))GQ . Let
+         ×        G              ×    ×
+
+     ug := (logp ⊗ Id)(u×
+                        g ),    vg := (logp ⊗ Id)(vg× ),       ṽg := (ordp ⊗ Id)(vg× )    ∈ Hp ⊗ ad(ρ).
+     Consider the element
+                                   Ag ∈ (Hp ⊗ ad(ρ))GQp ,
+which on an eigenbasis for the Frobenius takes the form
+                                              logp (u1 )
+                                                         !
+                                         0 log (u
+                                  Ag :          p α⊗β̄ )   .
+                                         0       1
+Consider also J ∈ (Hp ⊗ ad(ρ))GQp , which in the same basis is expressed as
+                                                  
+                                              a b
+                                      J=             ,
+                                              0 c
+where a, b, c ∈ Hp .
+  These choices give rise to the GQp -equivariant homomorphism Φg : H × → Hp ⊗ ad(ρ) given
+by the rule
+                           X                               X
+(52)             Φg (x) :=     logp (σ x) · (σ −1 · Ag ) +   ordp (σ x) · (σ −1 · J).
+                               σ∈G                               σ∈G
+
+  Here, σ −1 · Ag denotes the action of σ −1 by conjugation on the second factor of the tensor
+product, ad(ρ); then, this homomorphism can be extended to the whole (H ⊗ Qp )× . The
+aim is to determine a suitable J such that Φg (x) corresponds to κ via class field theory. The
+following result explains the behavior of the terms coming from the log-part.
+Proposition 4.2. Let ad(ρ)ord := Hom(Vg /Vgα , Vg ). The homomorphism Φg vanishes on
+ ×                                                                                          ×
+OH ⊗ Qp , and Φg (x) ⊂ Hp ⊗ ad(ρ)ord for any x of the form (xp , 1, . . . , 1), where xp ∈ OH p
+                                                                                                .
+                         α                                                      ×
+Moreover, Φg (x) fixes Vg for all x of the form (xp , 1, . . . , 1), with xp ∈ Hp .
+Proof. This follows from [DLR4, Lemma 1.6], where Φg is defined in the same way but without
+the ord-terms. It is clear that the behavior at the OH -units is not affected by the presence of
+these extra terms. The last part of the statement follows from the definition of Ag and J. 
+  To determine the remaining parameters of the matrix J (a, b and c), we first observe that
+the homomorphism Φg must vanish at OH [1/p]× ⊗ Qp . The endomorphism vg is represented
+by a matrix of the form                                            
+                                        logp (v1 )    logp (vβ⊗ᾱ )
+                              vg :                                    ,
+                                      logp (vα⊗β̄ ) − logp (v1 )
+and hence
+                               logp (u1 ) · logp (vα⊗β̄ ) − logp (uα⊗β̄ ) · logp (v1 )
+(53)              Tr(Ag vg ) =                                                         .
+                                                    logp (uα⊗β̄ )
+   Furthermore, observe that the restrictions of both κ1,p and κ4,p to the decomposition group
+at p belong to
+                               H 1 (Qp , Q̄p ) ≃ H 1 (Hp , Q̄p )GQp ;
+this space is two-dimensional and it is generated by κcyc and κnr ; in the same way, κ2,p is a
+cohomology class in the one-dimensional space
+                                          H 1 (Hp , Q̄p (β/α))GQp .
+     It is clear that
+                                                   logp (u1 )
+                        κ1 |Ip = 0,   κ2 |Ip =                 κcyc ,    κ4 |Ip = κcyc .
+                                                 logp (uα⊗β̄ )
+          DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                            23
+
+  Then, to determine the restriction of the cohomology classes to the whole decomposition
+group, we impose these three conditions:
+   (1) The fact that the trace of the representation is prescribed (and is equal to κcyc ) forces
+       that
+                            κ1 = λ · κnr ,    κ4 = κcyc − λ · κnr .
+   (2) The fact that H 1 (Hp , Q̄p (β/α))GQp is one-dimensional (since α 6= β), makes that
+                                                      logp (u1 )
+                                             κ2 =                 κcyc
+                                                    logp (uα⊗β̄ )
+       (i.e., there is no contribution coming from the Frobenius).
+   (3) The remaining parameter λ can be determined by considering the associated matrix
+       J giving rise to the endomorphism Φg (x). This is the content of the following propo-
+       sition.
+Proposition 4.3. There exists a unique λ such that the homomorphism Φg (x) vanishes at
+OH [1/p]× ⊗ Qp .
+Proof. Picking w ∈ OH [1/p]× and an arbitrary B ∈ ad(ρ), it is enough to see that
+                                              Tr(Φg (w) · B) = 0,
+due to the non-degeneracy of the Hp -valued trace pairing on H℘ ⊗ ad(ρ). Set
+                               X
+                        wg× :=    σ
+                                     w ⊗ (σ · B) ∈ (OH×
+                                                        ⊗ ad(ρ))GQ .
+                                       σ∈G
+
+Observe that wg× can be expressed in terms of the basis u×      ×
+                                                         g and vg . In particular, let
+
+           wg := (logp ⊗ Id)(wg× ) = λ · ug + µ · vg ;           w̃g := (ordp ⊗ Id)(wg× ) = µ · ṽg .
+  Then,
+                      Tr(Φg (w) · B) = λ · Tr(Ag · ug ) + µ · Tr(Ag vg − J · ṽg ).
+Observe that                                                     
+                                                         −λ 0
+                                               J=                     ,
+                                                          0 λ
+and from (53), one sees that
+                                 logp (u1 ) · logp (vα⊗β̄ ) − logp (v1 ) · logp (uα⊗β̄ )
+                         λ=                                                              .
+                                              2 · logp (uα⊗β̄ ) · ordp (v1 )
+                                                                                                        
+
+  Hence, we conclude that
+                                logp (u1 ) · logp (vα⊗β̄ ) − logp (v1 ) · logp (uα⊗β̄ )
+                     κ1 = −                                                             · κnr ,
+                                             2 · logp (uα⊗β̄ ) · ordp (v1 )
+and evaluating at Frp we finally obtain the formula we anticipated below
+                             logp (u1 ) · logp (vα⊗β̄ ) − logp (v1 ) · logp (vα⊗β̄ )
+(54)           ap (gα′ ) =                                                             (mod L× ),
+                                                 logp (uα⊗β̄ )
+as claimed.
+24                                 ÓSCAR RIVERO AND VICTOR ROTGER
+
+                                         5. Proof of main results
+5.1. Proof of Theorems A and A’. Recall that by [DLR2, Proposition 4.2], the p-adic
+iterated integral of the statement agrees, up to multiplication by a scalar in L× , with the
+special value Lp (g, g∗ )(y0 , y0 , 1). Further, applying the relation between Lp (g, g∗ )(y0 , y0 , 1)
+and ap (gα′ ) as described in Corollary 2.5, we have that
+          Lp (g, g∗ )(y0 , y0 , 1) = Lp (g, g∗ )(y0 , y0 , 0) = L(ad0 (gα )) = ap (gα′ ) (mod L× ).
+The derivative of the Fourier coefficient was computed in the previous section, and it follows
+from (54) that
+                                        logp (u1 ) · logp (vα⊗β̄ ) − logp (v1 ) · logp (uα⊗β̄ )
+(55)       Lp (g, g∗ )(y0 , y0 , 1) =                                                             (mod L× ).
+                                                             logp (uα⊗β̄ )
+This proves Theorems A and A’.
+5.2. Proof of Theorem B. We may combine (49) with the above result to deduce that
+                                  log (u1 ) log (v                                  
+                                      p         p α⊗β̄ ) − log p (uα⊗β̄ ) log p (v1 ) 2
+      log−+ (κ′p (gα , g1/β
+                        ∗
+                            )) =                                                        (mod L× ).
+                                                    logp (uα⊗β̄ )
+   Recall that in (39) we defined the map log−+ as the composition of the Perrin-Riou big
+logarithm of Proposition 3.2 specialized at weight (y0 , y0 , 0) and the pairing with the class
+ηgα ⊗ ωg1/β
+         ∗  introduced in §2.1. These differential classes satisfy
+                                                               1
+                               hηgα , ωg1/β
+                                        ∗ i =                                ∈ L× .
+                                                    λN (gα )E0 (gα )E1 (gα )
+under the perfect pairing D(Vg ) × D(Vg∗ ) → Lp . We may take a decomposition of Vg and Vg∗
+as GQp -modules
+                                                            ∗           ∗
+                      Vg = L · egα ⊕ L · egβ , Vg∗ = L · eg1/α ⊕ L · eg1/β ,
+                                               ∗     ∗
+respectively, where {egα , egβ } and {eg1/α , eg1/β } are basis of Vg and Vg∗ , one dual of each other,
+and compatible with the choice of the basis for the tensor product Vgg∗ considered at the
+previous section. As explained in [DR2, §2], one may define p-adic periods
+                                               Fr =β −1                       Fr =β
+(56)                              Ξgα ∈ Hp p              ,      Ωg1/β
+                                                                   ∗   ∈ Hp p
+satisfying that
+                                                                          ∗
+                               Ξgα ⊗ egβ = ηgα ,              Ωg1/β
+                                                                ∗   ⊗ eg1/β = ωg1/β
+                                                                                ∗ .
+
+
+The natural pairing between D(Vg ) = (Hp ⊗ Vg )GQp and D(Vg∗ ) = (Hp ⊗ Vg∗ )GQp induces a
+duality between Vg and Vg∗ , and hence the quantity
+                                                                      ∗
+                          hηgα , ωg1/β
+                                   ∗ i = Ξg · Ωg ∗
+                                           α    1/β
+                                                    · hegβ , eg1/β i = Ξgα · Ωg1/β
+                                                                               ∗
+
+
+belongs to L× . Consequently, the class
+            logp (u1 ) logp (vα⊗β̄ ) − logp (uα⊗β̄ ) logp (v1 )                                      
+      κ◦ =                                                     ×  log p (vα⊗ β̄ )u − log p (uα⊗ β̄ )v
+                              logp (uα⊗β̄ )2
+                            ∗ )) = log−+ (res (κ )).
+satisfies log−+ (κ′p (gα , g1/β              p ◦
+   We may write the cohomology class κ′ (gα , g1/β  ∗ ) as a linear combination
+
+
+                                        κ′ (gα , g1/β
+                                                  ∗
+                                                      ) = a · u + b · v + c · p,
+where a, b, c ∈ Lp .
+  The condition for an element to lie in the kernel of the map log−+ is
+                                   a · logp (uα⊗β̄ ) + b · logp (vα⊗β̄ ) = 0.
+          DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                                     25
+
+Hence, we have that
+                     κ′ (gα , g1/β
+                               ∗
+                                   ) = κ◦ + λ(logp (vα⊗β̄ ) · u − logp (uα⊗β̄ ) · v) + µ · p.
+  Consider now the map
+                                        pr−−       −−                                           log
+       log−− : H 1 (Qp , Vgh (1)) −−−→ H 1 (Qp , Vgh  (1)) ≃ H 1 (Qp , Qp (α/β)(1)) −−−
+                                                                                      BK
+                                                                                       → Lp .
+                                          ∗ ) also lies in the kernel of log −− . Hence, taking
+  According to (30), the class κ′p (gα , g1/β
+equalities up to periods,
+   log−− (κ′p (gα , g1/β
+                     ∗
+                         )) = log−− (resp (κ◦ )) + λ(logp (vα⊗β̄ ) · logp (u1 ) − logp (uα⊗β̄ ) · logp (v1 ))
+= λ · (logp (vα⊗β̄ ) · logp (u1 ) − logp (uα⊗β̄ ) · logp (v1 )) = λ · logp (uα⊗β̄ ) · Lp (g, g∗ )(y0 , y0 , 1) = 0.
+   The assumption L(ad0 (gα )) 6= 0 in Theorem B implies that Lp (g, g∗ )(y0 , y0 , 1) 6= 0 by the
+first display in this section. Hence λ = 0 and Theorem B follows.
+5.3. Non-vanishing of the L-invariant. We conclude this article by noting that the non-
+vanishing of the L-invariant can be proved in most dihedral cases, because the expression (55)
+simplifies considerably. Indeed, let K be a real or imaginary quadratic field of discriminant
+D and let ψ : GK −→ L× be a finite order character of conductor c ⊂ OK (and of mixed
+signature at the two archimedean places if K is real). Then the theta series g = θ(ψ) attached
+to ψ is an eigenform of weight 1, level Ng = |D| · NK/Q (c) and nebentype χg = χK χψ , where
+χK is the quadratic character associated to K/Q and χψ is the central character of ψ.
+   Let ψ ′ denote the Gal (K/Q)-conjugate of ψ defined by the rule ψ ′ (σ) = ψ(σ0 σσ0−1 ) for any
+choice of σ0 ∈ ΓQ \ GK . If ψ 6= ψ ′ then g is cuspidal.
+   Let p ∤ Ng be a prime number and fix an embedding Q̄ ⊂ Q̄p . In line with the introduction,
+suppose that hypotheses (H1-H2-H3) are fulfilled. This amounts to asking that
+     (i) ψ 6= ψ ′ (mod p), so that g is cuspidal even residually at p.
+    (ii) If K is imaginary and p = ℘℘¯ splits in K, then ψ(℘) 6= ψ ′ (℘) (mod p).
+   (iii) If K is real, p does not split. If K is imaginary and the field H = K̄ ker(ψ) cut out by
+         ψ has Galois group Gal (H/Q) = D4 , the dihedral group of order 8, then p does not
+         split in the single real quadratic field contained in H.
+Proposition 5.1. If K is imaginary with p split, or K is real with p inert, then
+(57)                                 L(ad0 (gα )) = logp (v1 )      (mod L× ).
+In particular L(ad0 (gα )) 6= 0.
+Proof. If K is real (and thus p remains inert in it) then u1 is the norm of the fundamental
+unit of K and hence its p-adic logarithm vanishes. If K is imaginary and p splits, then v is a
+p-unit in K × and hence logp (vα⊗β̄ ) = 0.                                                  
+  Note that Theorem B simplifies considerably in the setting of the above proposition. The
+simplest scenario where it is not a priori obvious that the L-invariant is non-zero arises when
+K is imaginary but p remains inert. Fix a prime ℘ in H above p and set ψad = ψ/ψ ′ . Note
+that ψad is a ring class character, regardless of whether ψ is so or not. Let uψad (resp. vψad )
+denote any element spanning the 1-dimensional L-vector space
+                   ×                 ×
+                  OH [ψad ] := {x ∈ OH ⊗ L : σ(x) = ψad (σ)x,               σ ∈ Gal (H/K)},
+               OH [1/℘]× [ψad ]
+respectively     OH ×
+                      [ψad ]
+                                  . Set also u′ψad = Fr℘ uψad and vψ′ ad = Fr℘ vψad . Then it is a straight-
+forward computation to check that the L-invariant appearing in Theorems A and A’ is
+                             log℘ (uψad ) log℘ (vψ′ ad ) − log℘ (u′ψad ) log℘ (vψad )
+(58)             0
+           L(ad (gα )) =                                                                  (mod L× ).
+                                            log℘ (uψad ) − log℘ (u′ψad )
+26                                    ÓSCAR RIVERO AND VICTOR ROTGER
+
+          6. Darmon–Dasgupta units and factorization of p-adic L-functions
+6.1. Darmon–Dasgupta units and Gross’ conjecture. Let us place ourselves again in
+the setting of §5.3, where K is real and p remains inert in it. In this scenario Darmon
+and Dasgupta [DD] associated to the ring class character ψad a local unit vDD [ψad ] ∈ Kp×
+and conjectured that vDD [ψad ] actually belongs to O[1/℘]× [ψad ]. The combination of [Park,
+Theorem 4.4] and Darmon–Dasgupta-Pollack’s [DDP, Theorem 2] provides strong evidence
+for this conjecture, as putting these results together it follows that, in our notations,
+(59)                         logp (NKp /Qp (vDD [ψad ])) = logp (v1 )          (mod L× ).
+   The above equality together with Theorems B and C yield a formula relating the derived
+Beilinson–Flach elements of this note with Darmon–Dasgupta units, much in the spirit of
+[BSV, Theorem A] and [DR3, Theorem C] for diagonal cycles versus Stark-Heegner points.
+Taking into account the decomposition introduced in (50), the element κ′ (gα , g1/β
+                                                                                ∗ ) belongs
+                                                                                    1
+     ×
+to Qp ⊗ Lp .
+Corollary 6.1. Let g = θ(ψ) be the theta series associated to a finite order character ψ of
+mixed signature of a real quadratic field K. Let p be a prime that remains inert in K. Then,
+               κ′ (gα , g1/β
+                         ∗
+                             )1 = logp (NKp /Qp (vDD [ψad ])) · NKp /Qp (vDD [ψad ]) (mod L× ).
+   In spite of the ostensible parallelism between the above formula and [BSV, Theorem A]
+and [DR3, Theorem C], note that the proof of Corollary 6.1 follows quite a different route
+from [BSV] and [DR3]. The main reason is that in the latter two references it was crucially
+exploited a factorization of p-adic L-functions, which follows from a comparison of critical
+values.
+   In our setting here one still expects to have an analogous factorization, but proving it
+appears to be far less trivial. Since this issue poses intriguing questions, and our results shed
+some light on them, we discuss it in more detail below.
+6.2. Artin p-adic L-functions. Let g = θ(ψ) ∈ S1 (N, χ) be a theta series of a quadratic
+field K and p be a prime which is split (resp. inert) if K is imaginary (resp. real). Keep the
+assumptions of Proposition 5.1, and set h = g ∗ = θ(ψ −1 ) and ψad = ψ/ψ ′ as usual.
+                 ∗ , s) denote the cyclotomic p-adic Rankin-Hida L-function associated to the
+   Let Lp (gα , g1/β
+            ∗ ) of p-stabilizations of g and h, as in §2.2. Note that this p-adic L-function has
+pair (gα , g1/β
+no critical points. Nevertheless, since
+(60)                                    Vg ⊗ Vg∗ ≃ 1 ⊕ χK ⊕ IndK
+                                                               Q (ψad ),
+                                       ∗ , s) admits a factorization mirroring the one satisfied
+one may still wonder whether Lp (gα , g1/β
+by its classical counterpart:
+(61)                               L(g, h, s) = ζ(s) · L(χK , s) · L(K, ψad , s).
+While (61) follows directly from (60) by Artin formalism, a putative analogous factorization
+             ∗ , s) is far less trivial. In the CM case one can prove it by a method which is
+of Lp (gα , g1/β
+nowadays standard, but rather deep as one needs firstly to extend Lp (gα , g1/β   ∗ , s) to a two-
+
+variable p-adic L-function, prove a factorization in this scenario, and then invoke Gross’s
+theorem [Gr]. Since we did not find it in the literature and the output is not precisely what
+one would naı̈vely expect2, we provide it below.
+   As a piece of notation, we say that an element f in a finite algebra over Λ⊗n for some n ≥ 0,
+is an L-rational fudge factor if it is a rational function with coefficients in L which extends to
+an Iwasawa function with neither poles nor zeroes at crystalline classical points. Let also LKatz
+                                                                                               p
+
+     2Indeed, the formula L (g, g ∗ , s) = f(s) · ζ (s) · L (χ ω, s) · LKatz (ψ · Ns ) is not correct, in spite of being
+                           p                       p       p  K         p      ad
+the direct analogue of (61). For one thing, this formula would enter in contradiction with Theorem A.
+           DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                                  27
+
+denote Katz’s p-adic L-function on the space of Hecke characters of an imaginary quadratic
+field. If ξ is one such a character of K, we write LKatz
+                                                      p  (ξ, s) = LKatz
+                                                                   p    (ξ · Ns ) where N stands
+for the Hecke character of infinity type (1, 1) induced by the norm from K to Q.
+Theorem 6.2. Assume K is imaginary and p splits in it. Then there exists an L-rational
+fudge factor f ∈ Λ such that
+                                            f(s)
+                     Lp (g, g ∗ , s) =                · ζp (s) · Lp (χK ω, s) · LKatz
+                                                                                 p    (ψad , s).
+                                         logp (uψad )
+Proof. We follow the notations and normalizations adopted in [DLR1, §3] and [DLR2, §4].
+Fix a prime ℘ of K above p. Take a Hecke character λ with image in Z× p of infinity type
+                                                                      (p)
+                     ℘. For every integer ℓ ≥ 1 define ψg,ℓ−1 = ψg hλiℓ−1 and let ψg,ℓ−1 be the
+(0, 1) and conductor ¯
+Hecke character given by
+                                     ( (p)
+                                      ψg,ℓ−1 (q)             if q 6= ¯
+                                                                     ℘,
+                        ψg,ℓ−1 (q) =              (p)
+                                      χ(p)pℓ−1 /ψg,ℓ−1 (℘) if q = ¯  ℘.
+As explained in loc. cit. there is a p-adic family ψg of Hecke characters whose weight ℓ special-
+            (p)
+ization is ψg,ℓ−1 and such that the Hida family g passing through gα satisfies gℓ◦ = θ(ψg,ℓ−1 ).
+   Given a pair of classical weights (ℓ, s), define the Hecke characters
+                     −1
+       Ψgh (ℓ, s) = ψg,ℓ−1 · ψg′ · Ns ,                       −1
+                                               Ψgh′ (ℓ, s) = ψg,ℓ−1 · ψg · Ns ,                  −2
+                                                                                       Ψg (ℓ) = ψg,ℓ−1 χNℓ .
+   All pairs (ℓ, s) such that ℓ > s ≥ 1 belong to the region of interpolation of both Rankin-
+                                   ∗ , s) and Katz’s p-adic L-functions LKatz (ψ (ℓ, s)) and
+Hida’s p-adic L-function Lp (g, g1/β                                          p     gh
+  Katz
+Lp (ψgh′ (ℓ, s)). At such critical pairs, it is readily verified that the following factorization
+of classical L-values occurs up to an L-rational fudge factor:
+                            L(gℓ , h, s) = L(ψgh (ℓ, s)−1 , 0)L(ψgh′ (ℓ, s)−1 , 0).
+Using this identity, the same computations as in [DLR2, Theorem 4.2] show that there is an
+L-rational fudge factor f(ℓ, s) ∈ Λ⊗2 such that
+(62)          Lp (g, h)(ℓ, s) · LKatz
+                                 p    (ψg (ℓ)) = f(ℓ, s) · LKatz
+                                                            p    (ψgh (ℓ, s)) · LKatz
+                                                                                 p    (ψgh′ (ℓ, s)).
+  If we now restrict to ℓ = 1 and invoke Katz’s p-adic analogue of Kronecker limit formula
+which asserts that LKatz
+                    p    (ψ) = logp (uψad ) (mod L× ), it follows that
+                                                 f(s)
+(63)                      Lp (g, g ∗ , s) =                · LKatz
+                                                              p    (Ns ) · LKatz
+                                                                            p    (ψad , s).
+                                              logp (uψad )
+  Finally, Gross’s main theorem in [Gr] together with the functional equation for Kubota-
+Leopoldt’s p-adic L-function asserts that
+(64)                                      LKatz
+                                           p    (s) = ζp (s) · Lp (χK ω, s)
+up to a rational fudge factor. This yields the theorem.                                                        
+  Assume now that g = θ(ψ) is the theta series of a character of a real quadratic field in
+which p is inert. In light of Theorem 6.2 it is natural to pose the following question:
+Question 6.3. Assume K is real and p remains inert in K. Let uK be a fundamental unit
+of K and let Lp (ψad ω, s) denote the Deligne-Ribet p-adic L-function attached to ψad ω. Is it
+true that
+                                   ?     1
+(65)               Lp (g, g ∗ , s) =            · ζp (s) · Lp (χK , s) · Lp (ψad ω, s)
+                                     logp (uK )
+up to an L-rational fudge factor?
+28                                ÓSCAR RIVERO AND VICTOR ROTGER
+
+  Note that the results of this paper, combined with Darmon–Dasgupta-Pollack’s [DDP,
+Theorem 2] prove that the above factorization holds when evaluated at s = 0 and s = 1.
+Indeed, Theorem A in this setting takes the simple form
+                                  Lp (g, g∗ , 1) = logp (v1 ) (mod L× ),
+while [DDP, Theorem 2] asserts that Lp (ψad ω, s) vanishes at s = 0 and
+                                 L′p (ψad ω, 0) = logp (v1 ) (mod L× ).
+Moreover, ζp (s) has a simple pole at s = 0 whose residue is a non-zero rational number, and
+Leopoldt’s formula asserts that Lp (χK , 0) = logp (uK ) (mod L× ). Putting all together shows
+that (65) is true at s = 0. The functional equations satisfied by each of the p-adic L-functions
+in play ensure that the same is true at s = 1. This of course falls short from establishing (65).
+
+                                              References
+[AL]   A. Atkin, W.C. Winnie Li, Twists of newforms and pseudo-eigenvalues of W -operators, Invent. Math.
+       48 (1978), no. 3, 221–243.
+[BDR1] M. Bertolini, H. Darmon, V. Rotger Beilinson-Flach elements and Euler systems II: p-adic families
+       and the Birch and Swinnerton-Dyer conjecture, J. Algebraic Geometry 24 (2015), 569–604.
+[BeDi] J. Bellaiche, M. Dimitrov, On the eigencurve at classical weight one points, Duke Math. J. 165 (2016),
+       245–266.
+[Bel]  J. Bellaiche, An introduction to the conjecture of Bloch and Kato, available at
+       http://people.brandeis.edu/~ jbellaic.
+[BDP] A. Betina, M. Dimitrov, and A. Pozzi. On the Gross-Stark conjecture. Preprint.
+[BK]   S. Bloch and K. Kato. L-functions and Tamagawa numbers of motives, The Grothendieck Festschrift
+       I, Progr. Math. 108 (1993), 333–400, Birkhauser.
+[BSV] M. Bertolini, M. Seveso, and R. Venerucci. Balanced diagonal classes and rational points on elliptic
+       curves, submitted in the collective volume ”Heegner points, Stark-Heegner points and diagonal classes”
+       together with H. Darmon and V. Rotger.
+[CaHs] F. Castellà and M.-L., Hsieh. On the On the non-vanishing of generalized Kato classes for elliptic
+       curves of rank two. Preprint.
+[Ci]   C. Citro. L-invariants of adjoint square Galois representations coming from modular forms, Int. Math
+       Res. Not. 14 (2008).
+[DD]   H. Darmon and S. Dasgupta. Elliptic units for real quadratic fields, Annals Math. 163 (2006), 301–346.
+[DDP] H. Darmon, S. Dasgupta, and R. Pollack. Hilbert modular forms and the Gross-Stark conjecture,
+       Annals Math. 174 (2011), 439–484.
+[DLR1] H. Darmon, A. Lauder, and V. Rotger. Stark points and p-adic iterated integrals attached to modular
+       forms of weight one, Forum Math., Pi (2015).
+[DLR2] H. Darmon, A. Lauder, and V. Rotger. Gross-Stark units and p-adic iterated integrals attached to
+       modular forms of weight one, Ann. Math. Québec, volume dedicated to Prof. Glenn Stevens on his
+       60th birthday, 40 (2016), 325–354.
+[DLR3] H. Darmon, A. Lauder, and V. Rotger. Overconvergent generalised eigenforms of weight one and class
+       fields of real quadratic fields, Advances Math. 283 (2015), 130–142.
+[DLR4] H. Darmon, A. Lauder, and V. Rotger. First order p-adic deformations of weight one newforms, in
+       “L-functions and automorphic forms”, Contr. in Math. and Comp. Sc. 12.
+[DR1] H. Darmon and V. Rotger. Diagonal cycles and Euler systems II: the Birch and Swinnerton-Dyer
+       conjecture for Hasse-Weil-Artin L-series, Journal Amer. Math. Soc. 30 (2017), 601–672.
+[DR2] H. Darmon and V. Rotger. Elliptic curves of rank two and generalised Kato classes, Research in Math.
+       Sciences 3:27 (2016).
+[DR3] H. Darmon and V. Rotger, Stark-Heegner points and diagonal cycles, submitted in the collective volume
+       “Heegner points, Stark-Heegner points and diagonal classes” together with M. Bertolini, M. A. Seveso
+       and R. Venerucci.
+[DHRV] H. Darmon, M. Harris, V. Rotger, and A. Venkatesh, Derived Hecke algebra for dihedral weight one
+       forms, in progress.
+[Das1] S. Dasgupta, Stark’s Conjectures. Senior honors thesis, Harvard University (1999).
+[Das2] S. Dasgupta, Factorization of p-adic Rankin L-series, Invent. Math. 205 (2016), no. 1, 221–268.
+[Gr]   B. Gross, On the factorization of p-adic L-series. Invent. Math. 57 (1980), no. 1, 83–95.
+[GS]   R. Greenberg and G. Stevens. On the Conjecture of Mazur, Tate, and Teitelbaum, Contemporary
+       Mathematics 165 (1994).
+         DERIVED BEILINSON–FLACH ELEMENTS AND THE ARITHMETIC OF THE ADJOINT                               29
+
+[Hi1]  H. Hida, A p-adic measure attached to the zeta functions associated with two elliptic modular forms I,
+       Invent. Math. 79 (1985), no. 1, 159–195.
+[Hi2]  H. Hida, A p-adic measure attached to the zeta functions associated with two elliptic modular forms
+       II, Ann. Inst. Fourier (Grenoble) 38 (1988), no. 3, 1–83.
+[Hi3]  H. Hida. Greenberg’s L-invariants of adjoint square Galois representations, IMRN 59 (2004), 3177–
+       3189.
+[KLZ2] G. Kings, D. Loeffler, and S.L. Zerbes, Rankin-Eisenstein classes and explicit reciprocity laws, Cam-
+       bridge J. Math 5 (2017), no. 1, 1–122.
+[KLZ1] G. Kings, D. Loeffler, and S.L. Zerbes, Rankin-Eisenstein classes for modular forms, American J.
+       Math. 142 (2020), no. 1, 79–138.
+[LLZ] A. Lei, D. Loeffler, and S.L. Zerbes, Euler systems for Rankin Selberg convolutions, Annals Math. 180
+       (2014), no. 2, 653–771.
+[LZ1]  D. Loeffler, and S.L. Zerbes, Iwasawa theory fo the symmetric square of a modular form, J. Reine
+       Angew. Math. 752 (2019), 179–210.
+[MTT] B. Mazur, J. Tate, and J. Teitelbaum, On p-adic analogs of the conjectures of Birch and Swinertonn-
+       Dyer, Invent. Math. 84 (1986), 1–48.
+[Nek]  J. Nekovár, p-adic Abel-Jacobi maps and p-adic heights. Lecture notes of the author’s lecture at the
+       1998 Conference “The Arithmetic and Geometry of Algebraic Cycles”.
+[Och]  T. Ochiai, A generalization of the Coleman map for Hida deformations, Amer. J. Math. 125 (2003),
+       no. 4.
+[Oh]   M. Ohta, Ordinary p-adic étale cohomology groups attached to towers of ellimptic modular curves II,
+       Math. Annalen 318 (2000), no. 3, 557–583.
+[Park] J. Park, The Darmon–Dasgupta units over genus fields and the Shimura correspondence, J. Number
+       Theory 130 (2010), no. 11, 2610–2627.
+[RiRo] O. Rivero and V. Rotger, Beilinson–Flach elements, Stark units, and p-adic iterated integrals, Forum
+       Math. 31 (2019), no. 6, 1517–1532.
+[Sc]   C. Schmidt, p-adic measures attached to automorphic representations of GL(3), Invent. Math. 92
+       (1988), 597–631.
+[Wi]   A. Wiles, On ordinary Λ-adic representations assoc. to modular forms, Invent. Math. 94 (1988), 529–
+       573.
+
+   O. R.: Departament de Matemàtiques, Universitat Politècnica de Catalunya, C. Jordi Girona
+1-3, 08034 Barcelona, Spain
+   E-mail address: oscar.rivero@upc.edu
+
+  V. R. (corresponding author): Departament de Matemàtiques, Universitat Politècnica de
+Catalunya, C. Jordi Girona 1-3, 08034 Barcelona, Spain
+  E-mail address: victor.rotger@upc.edu
+

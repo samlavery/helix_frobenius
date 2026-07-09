@@ -1,0 +1,102 @@
+ACF RE-ADJUDICATION WITH DIP-PRESERVING SURROGATES
+Loose end: chi5 residual max|ACF|=0.3386 exceeded the PHASE-RANDOMIZED band
+(95th 0.2792); zeta (0.3150) sat inside its band (95th 0.3690).
+Nulls: (A) IAAFT [amp+marginal -- CIRCULAR for ACF, shown as a demonstration];
+       (B1) AAFT-white and (B2) IID bootstrap [marginal-preserving, MEMORYLESS
+       -- the correct dip-preserving nulls for an ACF test].
+Construction: identical to tmp/ambient_memory.py (eta/chi bank N=40000, taper,
+recurrence sweep dy=0.01, t in [1000,3000], Euler fit+subtract). NO L-library calls. RNG seed 20260701.
+
+==========================================================================
+CLIP LEVEL: median-4
+==========================================================================
+
+  [zeta (de-modulated eta)]  clip=median-4
+    residual marginal: skew=-2.015, excess kurtosis=+5.893 (0/0=Gaussian; heavy one-sided => clipped dips)
+    REAL max|ACF| in band lags[20,2000] (t-lags [0.20,20.00]) = 0.3150
+      real peak lag 35 (dt) = 0.35 in t = 0.31 mean spacings
+    NULL BANDS (95th pct / max), n_marginal=40, n_IAAFT=20:
+      (A) IAAFT [amp+marginal, CIRCULAR ref]:      95th=0.3148 max=0.3148  => real EXCEEDS  [peak lag 0.31 sp]
+      (B1) AAFT-white [marginal, memoryless]:      95th=0.0095 max=0.0114  => real EXCEEDS
+      (B2) IID bootstrap [marginal, memoryless]:   95th=0.0094 max=0.0098  => real EXCEEDS
+    LAG PROFILE of real |ACF|: sub(<0.5sp)=0.3150  near(0.5-1.5sp)=0.2240  multi(>1.5sp)=0.0963
+
+  [chi5 (order-4 mod 5)]  clip=median-4
+    residual marginal: skew=-1.916, excess kurtosis=+5.014 (0/0=Gaussian; heavy one-sided => clipped dips)
+    REAL max|ACF| in band lags[20,2000] (t-lags [0.20,20.00]) = 0.3386
+      real peak lag 34 (dt) = 0.34 in t = 0.39 mean spacings
+    NULL BANDS (95th pct / max), n_marginal=40, n_IAAFT=20:
+      (A) IAAFT [amp+marginal, CIRCULAR ref]:      95th=0.3384 max=0.3384  => real EXCEEDS  [peak lag 0.39 sp]
+      (B1) AAFT-white [marginal, memoryless]:      95th=0.0092 max=0.0094  => real EXCEEDS
+      (B2) IID bootstrap [marginal, memoryless]:   95th=0.0097 max=0.0103  => real EXCEEDS
+    LAG PROFILE of real |ACF|: sub(<0.5sp)=0.3386  near(0.5-1.5sp)=0.2535  multi(>1.5sp)=0.1172
+
+==========================================================================
+CLIP LEVEL: median-3
+==========================================================================
+
+  [zeta (de-modulated eta)]  clip=median-3
+    residual marginal: skew=-1.634, excess kurtosis=+3.631 (0/0=Gaussian; heavy one-sided => clipped dips)
+    REAL max|ACF| in band lags[20,2000] (t-lags [0.20,20.00]) = 0.3449
+      real peak lag 36 (dt) = 0.36 in t = 0.32 mean spacings
+    NULL BANDS (95th pct / max), n_marginal=40, n_IAAFT=20:
+      (A) IAAFT [amp+marginal, CIRCULAR ref]:      95th=0.3449 max=0.3449  => real within  [peak lag 0.32 sp]
+      (B1) AAFT-white [marginal, memoryless]:      95th=0.0092 max=0.0106  => real EXCEEDS
+      (B2) IID bootstrap [marginal, memoryless]:   95th=0.0096 max=0.0104  => real EXCEEDS
+    LAG PROFILE of real |ACF|: sub(<0.5sp)=0.3449  near(0.5-1.5sp)=0.2519  multi(>1.5sp)=0.1101
+
+  [chi5 (order-4 mod 5)]  clip=median-3
+    residual marginal: skew=-1.610, excess kurtosis=+3.286 (0/0=Gaussian; heavy one-sided => clipped dips)
+    REAL max|ACF| in band lags[20,2000] (t-lags [0.20,20.00]) = 0.3670
+      real peak lag 34 (dt) = 0.34 in t = 0.39 mean spacings
+    NULL BANDS (95th pct / max), n_marginal=40, n_IAAFT=20:
+      (A) IAAFT [amp+marginal, CIRCULAR ref]:      95th=0.3671 max=0.3671  => real within  [peak lag 0.39 sp]
+      (B1) AAFT-white [marginal, memoryless]:      95th=0.0093 max=0.0096  => real EXCEEDS
+      (B2) IID bootstrap [marginal, memoryless]:   95th=0.0092 max=0.0106  => real EXCEEDS
+    LAG PROFILE of real |ACF|: sub(<0.5sp)=0.3670  near(0.5-1.5sp)=0.2796  multi(>1.5sp)=0.1278
+
+==========================================================================
+VERDICT
+==========================================================================
+
+  Per case (real vs the CORRECT marginal-preserving memoryless nulls B1/B2):
+    [zeta (de-modulated eta)   ] clip=median-4  real=0.3150  AAFT-white95=0.0095(EXCEEDS)  IIDboot95=0.0094(EXCEEDS)  | peak 0.31sp  sub/near/multi=0.31/0.22/0.10
+    [chi5 (order-4 mod 5)      ] clip=median-4  real=0.3386  AAFT-white95=0.0092(EXCEEDS)  IIDboot95=0.0097(EXCEEDS)  | peak 0.39sp  sub/near/multi=0.34/0.25/0.12
+    [zeta (de-modulated eta)   ] clip=median-3  real=0.3449  AAFT-white95=0.0092(EXCEEDS)  IIDboot95=0.0096(EXCEEDS)  | peak 0.32sp  sub/near/multi=0.34/0.25/0.11
+    [chi5 (order-4 mod 5)      ] clip=median-3  real=0.3670  AAFT-white95=0.0093(EXCEEDS)  IIDboot95=0.0092(EXCEEDS)  | peak 0.39sp  sub/near/multi=0.37/0.28/0.13
+
+  Read the three nulls as a DECOMPOSITION of the real ACF (~0.31-0.37), not as
+  three separate verdicts:
+
+  (1) MARGINAL alone explains almost NONE of it: the memoryless-same-marginal nulls
+      (B1 AAFT-white, B2 IID bootstrap) give ~0.009-0.011; real exceeds by ~35x
+      (confirmed all cases). The heavy clipped-dip marginal produces essentially
+      no ACF on its own. This REFUTES the original heavy-marginal suspicion.
+
+  (2) SPECTRUM explains essentially ALL of it: the spectrum-preserving IAAFT null
+      reproduces the real ACF to ~1e-4 (confirmed) -- so tight it is CIRCULAR (the ACF
+      is the transform of the power spectrum). The phase-randomized band (spectrum-
+      only) sits at the same ~0.3 order, which is why zeta fell INSIDE it. The real
+      ACF is set by the residual's COLORED spectrum: leftover Euler skirts, ln p +-
+      ln q intermod lines, and clip ripple the fit did not remove -- Euler/clip
+      structure, NOT independent memory.
+
+  (3) The chi5 phase-rand exceedance was a SURROGATE-CLASS ARTIFACT via spectrum
+      SHAPE, not marginal magnitude. chi5's real ACF equals its own IAAFT band to
+      ~1e-4 -- ZERO excess over what its colored spectrum forces. It only cleared
+      the phase-RANDOMIZED band because the max-over-lags of the randomized ACF, for
+      the chi5 spectrum, lands just below the real max (0.28 vs 0.34); for zeta it
+      lands just above (0.37 vs 0.31). That gap is spectrum-shape noise in the
+      max-over-lags statistic, not a memory difference.
+
+  (4) LAG PROFILE (direct memory test): |ACF| concentrated at SUB-SPACING lags
+      (~0.3-0.4 mean spacings), decaying monotonically to multi-spacing (confirmed).
+      This is the deterministic reverb/ARCH profile of |F| between consecutive zeros
+      (FIBER_DYNAMICS Sec.1) -- a known fiber structure. NOTHING elevated at multi-
+      spacing lags, where genuine cross-zero memory would live.
+
+  ==> LOOSE END CLOSED. Marginal explains none of the ACF; the colored spectrum
+      reproduces all of it; it lives only at sub-spacing (known ARCH-reverb) lags
+      with nothing at multi-spacing. NO genuine non-Euler memory. FALSIFIABILITY
+      REGISTER STAYS AT ZERO HITS. Clip-insensitive (median-4/-3 agree), chi5 and
+      zeta consistent.

@@ -1,0 +1,185 @@
+==============================================================================
+STEP 0 — ANCHOR GATE (nu-scan == J_house == cech |V_T|; matrix reproduction;
+         synthetic dip-detector)
+==============================================================================
+
+[anchor] (0) Nyquist-safe nu-scan meshes (ppc=8 at nu_max=40; the ny=112
+    cost mesh is aliased for dips — first-run doubling control caught it):
+      (l,f,X)=(1, 1, 8.0): scan ny = 936 (cost mesh 112)
+      (l,f,X)=(1, 1, 16.0): scan ny = 1832 (cost mesh 112)
+      (l,f,X)=(2, 1, 8.0): scan ny = 488 (cost mesh 112)
+      (l,f,X)=(2, 1, 16.0): scan ny = 936 (cost mesh 112)
+      (l,f,X)=(1, 2, 8.0): scan ny = 264 (cost mesh 112)
+      (l,f,X)=(1, 2, 16.0): scan ny = 488 (cost mesh 112)
+
+[anchor] (i) nu-scan A(8) == J_house (same scan mesh, machine) and vs cech
+    |V_T| (cost mesh; cross-mesh quadrature-level, tol 2e-2):
+      [scan cores built in 49s]
+          (0, 1, 1, 8.0): vs J_house 4.14e-15, vs cech |V_T| 1.91e-04
+         (2, 2, 1, 16.0): vs J_house 7.45e-14, vs cech |V_T| 1.11e-04
+         (6, 1, 2, 16.0): vs J_house 4.59e-15, vs cech |V_T| 2.46e-06
+
+[anchor] (ii) cech matrix medians reproduce the recorded mb_dualframe run:
+      C_FF:0.0002  C_FH:0.0002  C_HF:0.0002  C_HH:0.0000  lnC_T:0.0003  (tol 0.01)
+
+[anchor] (iii) synthetic dip-detector:
+      |sin|: zero recovery 100%, median phi 0.500 (expect 0.50 +- 0.02)
+      |sin sin(phi)|: zero recovery 100% (>=90% required)
+
+[anchor] GATE VERDICT: PASS  (J-tie True, matrix True, detector True)
+==============================================================================
+
+
+==============================================================================
+TEST 1 — REVERB LAWS on the MB nu-profile (deep dips: contrast < 0.3;
+Nyquist-safe scan meshes, ppc=8 at nu_max=40)
+==============================================================================
+
+[measured] per-cell event census + laws:
+                  cell  deep  meangap  medcontr    beta  phi_med  arches
+        (0, 1, 1, 8.0)     0      nan       nan     nan      nan       0
+       (0, 1, 1, 16.0)     0      nan       nan     nan      nan       0
+        (0, 2, 1, 8.0)     0      nan       nan     nan      nan       0
+       (0, 2, 1, 16.0)     0      nan       nan     nan      nan       0
+        (0, 1, 2, 8.0)     0      nan       nan     nan      nan       0
+       (0, 1, 2, 16.0)     0      nan       nan     nan      nan       0
+        (2, 1, 1, 8.0)    71    0.528     0.163   3.252    0.480      70
+       (2, 1, 1, 16.0)    13    0.279     0.204  15.405    0.452      12
+        (2, 2, 1, 8.0)     1      nan     0.251     nan      nan       0
+       (2, 2, 1, 16.0)    72    0.530     0.187   5.521    0.479      71
+        (2, 1, 2, 8.0)     4    2.288     0.268     nan    0.423       3
+       (2, 1, 2, 16.0)     0      nan       nan     nan      nan       0
+        (6, 1, 1, 8.0)    26    0.537     0.174 -17.937    0.472      25
+       (6, 1, 1, 16.0)    55    0.309     0.176  -0.168    0.481      54
+        (6, 2, 1, 8.0)    33    1.088     0.136 -12.029    0.473      32
+       (6, 2, 1, 16.0)    68    0.528     0.139 -14.171    0.482      67
+        (6, 1, 2, 8.0)    15    2.261     0.117  -1.126    0.456      14
+       (6, 1, 2, 16.0)    34    1.088     0.082  -7.107    0.474      33
+
+[measured] (a) ARCH LAW: median phi (tight gaps, n=380) = 0.477; all gaps median 0.477, IQR 0.467..0.483
+      -> HOLDS (band (0.45, 0.55))
+
+[measured] (b) PRODUCT LAW: per-cell beta median -1.126 (IQR -12.029..3.252, n=9 cells)
+      -> FAILS (band (0.8, 1.2); house beta ~ 1)
+
+[measured] (c) UNIVERSAL CURVE: pooled fit b = 1.67 g^0.23 (R^2 0.02, n=380 arches); house reference 1.35 g^2.3
+      binned medians vs house reference:
+        g=0.40: <5 arches in bin
+        g=0.60: <5 arches in bin
+        g=0.80: <5 arches in bin
+        g=1.00: measured   1.65 vs house  1.35  ok (n=376)
+        g=1.25: <5 arches in bin
+        g=1.60: <5 arches in bin
+      -> NO clean power law (R^2 0.02)
+
+[measured] (d) xi-ROTATION of the event configuration (per class):
+      (l,f,X)=(1,1,8.0): xi=0: n=  0 gap=nan c=nan   xi=2: n= 71 gap=0.528 c=0.16   xi=6: n= 26 gap=0.537 c=0.17   
+      (l,f,X)=(1,1,16.0): xi=0: n=  0 gap=nan c=nan   xi=2: n= 13 gap=0.279 c=0.20   xi=6: n= 55 gap=0.309 c=0.18   
+      (l,f,X)=(2,1,8.0): xi=0: n=  0 gap=nan c=nan   xi=2: n=  1 gap=nan c=0.25   xi=6: n= 33 gap=1.088 c=0.14   
+      (l,f,X)=(2,1,16.0): xi=0: n=  0 gap=nan c=nan   xi=2: n= 72 gap=0.530 c=0.19   xi=6: n= 68 gap=0.528 c=0.14   
+      (l,f,X)=(1,2,8.0): xi=0: n=  0 gap=nan c=nan   xi=2: n=  4 gap=2.288 c=0.27   xi=6: n= 15 gap=2.261 c=0.12   
+      (l,f,X)=(1,2,16.0): xi=0: n=  0 gap=nan c=nan   xi=2: n=  0 gap=nan c=nan   xi=6: n= 34 gap=1.088 c=0.08   
+      (kinematic spacing 4lf^2/span_y is xi-independent; the xi-signature is
+      in the count/contrast columns above)
+
+[measured] TEST 1 VERDICT: REVERB-LAW PARTIAL: arch no-product | curve: NO clean power law (R^2 0.02)
+==============================================================================
+
+
+==============================================================================
+TEST 2 — CONTAINMENT (F inside H, possibly alternating with xi)
+==============================================================================
+
+[measured] (a) xi-RESOLVED CHART TOTALS: T_F = C_FF+C_HF vs T_H = C_FH+C_HH:
+      xi=0: med T_F 2.100 vs T_H 2.997; F-chart wins 5/6 cells
+      xi=2: med T_F 2.101 vs T_H 1.797; F-chart wins 1/6 cells
+      xi=6: med T_F 2.473 vs T_H 2.387; F-chart wins 1/6 cells
+      per-cell winners: F F F F F H H H H F H H F H H H H H   (GRID order; xi blocks of 6)
+
+[measured] (b1) RESTRICTION (t-line supports and correlations):
+                  cell  m(F in S_H)  m(H in S_F)   r|S_F   r|S_H  direction
+        (0, 1, 1, 8.0)        0.989        0.967   0.069   0.069       None
+       (0, 1, 1, 16.0)        0.990        0.967   0.059   0.059       None
+        (0, 2, 1, 8.0)        0.985        0.976   0.073   0.073       None
+       (0, 2, 1, 16.0)        0.989        0.967   0.069   0.069       None
+        (0, 1, 2, 8.0)        0.991        0.965   0.053   0.053       None
+       (0, 1, 2, 16.0)        0.985        0.976   0.073   0.073       None
+        (2, 1, 1, 8.0)        0.981        0.965   0.059   0.059       None
+       (2, 1, 1, 16.0)        0.978        0.979   0.188   0.188       None
+        (2, 2, 1, 8.0)        0.988        0.970   0.148   0.148       None
+       (2, 2, 1, 16.0)        0.981        0.976   0.292   0.291       None
+        (2, 1, 2, 8.0)        0.988        0.975   0.220   0.219       None
+       (2, 1, 2, 16.0)        0.980        0.879   0.094   0.089       None
+        (6, 1, 1, 8.0)        0.977        0.988   0.193   0.193       None
+       (6, 1, 1, 16.0)        0.977        0.981   0.261   0.261       None
+        (6, 2, 1, 8.0)        0.980        0.950   0.222   0.222       None
+       (6, 2, 1, 16.0)        0.940        0.960   0.256   0.258       None
+        (6, 1, 2, 8.0)        0.977        0.976   0.338   0.338       None
+       (6, 1, 2, 16.0)        0.978        0.979   0.302   0.302       None
+      xi=0: F-in-H 0/6, H-in-F 0/6, none 6/6
+      xi=2: F-in-H 0/6, H-in-F 0/6, none 6/6
+      xi=6: F-in-H 0/6, H-in-F 0/6, none 6/6
+
+[measured] (b2) nu-EVENT containment (lane dip subsets, tol 0.25 local gap):
+      xi=0: median frac(F-dips near H-dips) nan, frac(H-dips near F-dips) nan
+      xi=2: median frac(F-dips near H-dips) 0.85, frac(H-dips near F-dips) 1.00
+      xi=6: median frac(F-dips near H-dips) 0.94, frac(H-dips near F-dips) 1.00
+
+[measured] (c) SKEW-DIRECTION LAW: sign(C_FH - C_HF) > 0 iff home == H:
+      agreement 15/18 cells (binomial p ~ 3.8e-03 one-sided if >9)
+
+[measured] TEST 2 VERDICT: CONTAINMENT ABSENT (criteria unmet in >= 2/3 of cells)
+==============================================================================
+
+
+==============================================================================
+CONTROLS
+==============================================================================
+
+[measured] (i) SCRAMBLED kernel (house recipe, seed 20260703) through both tests:
+      reverb laws on scrambled: phi_med 0.483 (real 0.477); beta_med -0.166 (real -1.126); curve b ~ 1.58 g^0.94 R^2 0.08 (real 1.67 g^0.23 R^2 0.02)
+      containment on scrambled: F-chart wins 14/18; directions F-in-H 0, H-in-F 0, none 18
+      [interpretation] compare against the real-kernel columns above; any law
+      surviving scrambling is content-generic, not an identification.
+
+[measured] (ii) mesh doubling (scan ny x2) — dip stability at 3 cells:
+          (0, 1, 1, 8.0): deep-dip census n 0->0 (no deep dips at one resolution — reported)
+          (2, 1, 1, 8.0): median dip shift 0.0000 local gaps (n 71->71)
+          (6, 1, 1, 8.0): median dip shift 0.0000 local gaps (n 26->26)
+      -> PASS
+==============================================================================
+
+
+==============================================================================
+IDENTIFICATION VERDICT (pre-registered)
+==============================================================================
+[measured] TEST 1 (reverb): REVERB-LAW PARTIAL: arch no-product | curve: NO clean power law (R^2 0.02)
+    phi_med 0.477 (band (0.45, 0.55)); beta_med -1.126 (band (0.8, 1.2)); curve b ~ 1.67 g^0.23 R^2 0.02 vs house 1.35 g^2.3 (1/6 bins in x2)
+[measured] TEST 2 (containment): CONTAINMENT ABSENT (criteria unmet in >= 2/3 of cells)
+    skew-direction law agreement 15/18
+[controls] scrambled: phi 0.483, beta -0.166, curve exponent 0.94; dip stability PASS
+[budget] total wall time 141s
+==============================================================================
+
+==============================================================================
+[interpretation — post-run reading of the measured tables (labeled; no numbers changed)]
+==============================================================================
+1. The deep-dip census is ZERO at every xi=0 cell and switches ON with xi
+   (0 events -> tens at xi=2,6; median contrast deepens 0.19 -> 0.14). The
+   cancellation-event structure is CREATED by the x-phase (xi) oscillation —
+   consistent with the arc's "single xi-oriented interference" reading.
+2. 376/380 arches sit in the g = 1.0 +- 0.1 unfolded-gap bin: the events form a
+   QUASI-PERIODIC COMB (|sin|-like; b ~ 1.65 vs 1.41 for a pure |sin|), not a
+   variable-gap reverb field. This is WHY the product-law fit is ill-conditioned
+   (ln S has no range; per-cell beta scatters -17.9..+15.4) and the universal
+   curve has no populated g-range: the MB medium at nu<=40 is a TWO-CLOCK BEAT
+   (single dominant frequency pair per cell), not a multi-mode reverb medium.
+   The reverb identification is NEGATIVE with a measured alternative: a comb.
+3. Test 2(a) chart totals DO flip with xi (F-chart wins 5/6 at xi=0; H-chart 5/6
+   at xi=2,6) — aligned with the home-lane flip — but the b1 restriction test
+   shows the lanes are co-extensive on the t-line (mass overlap ~0.9-0.99 both
+   ways): the flip is a COST/chart phenomenon, not spatial containment.
+   b2: at xi!=0 every H-lane event sits near an F-lane event (frac 1.00) while F
+   has extra events — a weak event-level subset in the direction H-inside-F,
+   OPPOSITE to the conjectured F-inside-H.
+==============================================================================

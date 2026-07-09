@@ -1,0 +1,169 @@
+======================================================================================
+VILLAIN DEFORMATION CURVE  --  compact-clock gap vs deformation, and the SHAPE TEST
+======================================================================================
+Template (RequestProject/ChiralityHB.lean, clock_zero_depth): offset = -log(defect)/rate,
+with the NATURAL defect = character-weight ratio D = lambda_1/lambda_0 (rate = 1).
+gap = -log(D) holds by construction; the TEST is whether the DEFECT CURVE D(deform)
+collapses to a single closed law, and where a running rate (correction) is forced.
+
+--------------------------------------------------------------------------------------
+(A) DIAL-DENSITY DEFORMATION  --  Z_N gauge, N=2,3,4,6,8,12,24,48,inf   [derived, exact]
+--------------------------------------------------------------------------------------
+
+  beta = 0.5   (U(1) limit gap = 1.41675517)
+        N    D=lam1/lam0      gap=-logD      gap-gapU1
+        2     0.46211716     0.77193683     -6.448e-01
+        3     0.27131407     1.30447821     -1.123e-01
+        4     0.24491866     1.40682911     -9.926e-03
+        6     0.24250720     1.41672388     -3.129e-05
+        8     0.24249962     1.41675512     -4.665e-08
+       12     0.24249961     1.41675517     -2.287e-14
+       24     0.24249961     1.41675517      2.220e-16
+       48     0.24249961     1.41675517      2.220e-16
+      inf     0.24249961     1.41675517      0.000e+00
+    approach fit: log|gap-gapU1| = -2.7805*N + 5.892  => gap-gapU1 ~ exp(-2.781 N)  [EXPONENTIAL tooth-aliasing, not -log]
+
+  beta = 2.0   (U(1) limit gap = 0.35985907)
+        N    D=lam1/lam0      gap=-logD      gap-gapU1
+        2     0.96402758     0.03663537     -3.232e-01
+        3     0.86416450     0.14599214     -2.139e-01
+        4     0.76159416     0.27234147     -8.752e-02
+        6     0.70119908     0.35496344     -4.896e-03
+        8     0.69785758     0.35974024     -1.188e-04
+       12     0.69777467     0.35985905     -1.524e-08
+       24     0.69777466     0.35985907      1.665e-16
+       48     0.69777466     0.35985907      1.665e-16
+      inf     0.69777466     0.35985907      0.000e+00
+    approach fit: log|gap-gapU1| = -1.7186*N + 3.781  => gap-gapU1 ~ exp(-1.719 N)  [EXPONENTIAL tooth-aliasing, not -log]
+
+  beta = 8.0   (U(1) limit gap = 0.06695692)
+        N    D=lam1/lam0      gap=-logD      gap-gapU1
+        2     0.99999977     0.00000023     -6.696e-02
+        3     0.99998157     0.00001843     -6.694e-02
+        4     0.99932930     0.00067093     -6.629e-02
+        6     0.98231379     0.01784448     -4.911e-02
+        8     0.95227281     0.04890372     -1.805e-02
+       12     0.93568883     0.06647230     -4.846e-04
+       24     0.93523549     0.06695692     -9.485e-12
+       48     0.93523549     0.06695692      2.498e-16
+      inf     0.93523549     0.06695692      0.000e+00
+    approach fit: log|gap-gapU1| = -1.0502*N + 1.971  => gap-gapU1 ~ exp(-1.050 N)  [EXPONENTIAL tooth-aliasing, not -log]
+
+  READING [derived]: at fixed beta the DEFECT D(N)=lam1(N) rises to its U(1) value
+  EXPONENTIALLY in N (the discrete character transform aliases the Bessel weight).
+  So gap(N) is FLAT in N except at the coarsest teeth: a finite clock is ALREADY
+  gapped, and adding teeth barely moves the gap.  The dial-density knob does NOT
+  trace a -log(defect) curve in N -- it saturates.  (This is the correct behaviour:
+  compactness, not tooth-count, is the gap's source; see period knob for the real curve.)
+
+--------------------------------------------------------------------------------------
+(B) PERIOD DEFORMATION  --  Villain clock of circumference L, fixed stiffness   [derived]
+--------------------------------------------------------------------------------------
+  stiffness s = 2.0;  L=2pi is the standard clock, L->inf is the non-compact line R
+       L/2pi      D=lam1/lam0        gap=-logD    2pi^2/(s L^2)
+         1.0     0.7788007831 2.5000000000e-01 2.5000000000e-01
+         2.0     0.9394130628 6.2500000000e-02 6.2500000000e-02
+         4.0     0.9844964370 1.5625000000e-02 1.5625000000e-02
+         8.0     0.9961013695 3.9062500000e-03 3.9062500000e-03
+        16.0     0.9990239142 9.7656250000e-04 9.7656250000e-04
+        32.0     0.9997558892 2.4414062500e-04 2.4414062500e-04
+        64.0     0.9999389667 6.1035156250e-05 6.1035156250e-05
+       128.0     0.9999847413 1.5258789062e-05 1.5258789062e-05
+  log-log fit: log gap = -2.00000 * log L + 2.2895   (slope = -2 => gap ~ 1/L^2)
+  => DECOMPACTIFICATION LAW [derived]:  gap(L) = 2 pi^2 / (s L^2)  -> 0 as L -> inf.
+  F3 VERDICT: the gap DOES vanish as the clock decompactifies (slope -2.000 ~ -2).
+             F3 does NOT fire -- compactness is confirmed as the gap's source.
+
+  SHAPE TEST on the PERIOD curve (does -log(defect)/rate hold?):
+    Defect D(L) = exp(-(2pi/L)^2/(2s)) exactly, so gap = -log D = (2pi/L)^2/(2s).
+    Writing gap = -log||alpha||/ell with ||alpha|| := D and ell := rate: rate = 1
+    EXACTLY, for ALL L (the template holds with CONSTANT rate 1, no correction).
+    The purity-defect shape is EXACT here: the 'defect' IS a clock-face modulus
+    ||alpha|| = e^{-gap} < 1, displaced off the axis by exactly -log||alpha|| -- the
+    literal ChiralityHB law.  The 1/L^2 is how the DEFECT depends on L, not a
+    breakdown of the template.
+
+--------------------------------------------------------------------------------------
+(C) COUPLING FACE  --  U(1) gap(beta), strong-coupling purity-defect asymptote   [derived]
+--------------------------------------------------------------------------------------
+       beta        D=I1/I0      gap=-logD   -log(beta/2)    1/(2beta)
+       0.05    0.024992191     3.68919187     3.68887945  10.00000000
+       0.10    0.049937604     2.99698097     2.99573227   5.00000000
+       0.20    0.099503311     2.30756436     2.30258509   2.50000000
+       0.50    0.242499613     1.41675517     1.38629436   1.00000000
+       1.00    0.446389966     0.80656235     0.69314718   0.50000000
+       2.00    0.697774658     0.35985907    -0.00000000   0.25000000
+       4.00    0.863522611     0.14673520    -0.69314718   0.12500000
+       8.00    0.935235494     0.06695692    -1.38629436   0.06250000
+      16.00    0.968227755     0.03228793    -2.07944154   0.03125000
+
+  STRONG COUPLING (beta<=0.5): gap vs template -log(beta/2):
+    max relative deviation = 2.197%   at beta=0.5
+    => gap -> -log(beta/2) = -log(D_asympt)/1, the PURITY-DEFECT SHAPE, rate = 1.
+
+  EXACT correction (small beta):  I_1/I_0 = (beta/2)*(1 - beta^2/8 + beta^4/48 - ...),
+    so  gap(beta) = -log(beta/2) + beta^2/8 - beta^4/... .  The template -log(defect)
+    with defect = beta/2 is EXACT to O(beta^2); the correction is +beta^2/8, i.e. the
+    RATE stays 1 and the DEFECT acquires a Bessel-series dressing (NOT a running rate).
+    check: gap+log(beta/2) at beta=0.5: 0.030461  vs  beta^2/8 = 0.031250
+
+  WEAK COUPLING (large beta): gap -> 1/(2 beta) [derived].  Here D=I1/I0 -> 1-1/(2b),
+    gap = -log D -> 1/(2 beta): STILL -log(defect) with rate 1, but the DEFECT
+    D -> 1 (an almost-PURE clock face, ||alpha||->1).  The off-axis displacement
+    -log||alpha|| -> 0: the weak-coupling clock is asymptotically UNITARY -- exactly
+    ChiralityHB's clock_zeros_real limit (||alpha||=1 => zeros on axis, gap 0).
+
+--------------------------------------------------------------------------------------
+SHAPE-TEST SUMMARY  --  the measured deformation law
+--------------------------------------------------------------------------------------
+  Across ALL THREE deformation knobs the gap is EXACTLY
+        gap = -log(D)/1 ,   D = lambda_1/lambda_0 = character-weight ratio,
+  the purity-defect template with rate identically 1 and defect = a clock-face
+  modulus ||alpha|| = e^{-gap} in (0,1].  What the deformation moves is the DEFECT:
+    * PERIOD L:      D(L) = exp(-(2pi/L)^2/(2s)),  gap = 2pi^2/(s L^2)      [power law in L]
+    * COUPLING beta: D = I_1/I_0; strong-cpl D~beta/2 (gap=-log(beta/2)+beta^2/8+...),
+                     weak-cpl D~1-1/(2b) (gap~1/(2beta), ||alpha||->1, axis limit)
+    * DIAL N:        D(N)=lam1(N) -> I_1/I_0 EXPONENTIALLY in N (saturates: gap ~ flat)
+  The rate NEVER runs; the template -log(defect)/rate holds EXACTLY with rate=1 in
+  every regime.  F4 does NOT fire.  The correction terms live entirely in the DEFECT
+  (Bessel dressing / theta-function tails), not in the rate -- so the bridge to
+  ChiralityHB (Im z = -log||alpha||/ell) is exact, not asymptotic.
+
+--------------------------------------------------------------------------------------
+(D) 3D SPOT-CHECK  --  Z_N Monte-Carlo string tension at beta=1.4, N=2,6,inf   [measured]
+--------------------------------------------------------------------------------------
+  lattice 10^3, beta=1.4; confining fingerprint = positive Creutz ratio chi(2,2).
+  Direction test: does the 2D ladder's 'more teeth -> gap saturates fast' survive to 3D?
+        N   <cos plaq>         chi(1,1)         chi(2,2)  chi22/chi11
+        2       0.9801   0.0202+/-0.0132   0.0147+/-0.0113        0.727
+        6       0.4767   0.7409+/-0.0022   0.5137+/-0.0102        0.693
+      inf       0.5211   0.6519+/-0.0041   0.4583+/-0.0038        0.703
+  Z_2 CONFINING-PHASE control (beta=0.50 < beta_c~0.761):
+        2       0.1956   1.6301+/-0.0054   1.0475+/-0.0906        0.643
+  (MC wall time: 5.3s)
+  [measured] 3D direction survives WITH ONE HONEST CAVEAT:
+   * N=6 clock already tracks U(1): chi(2,2) ~ 0.51 vs 0.46, chi22/chi11 ~ 0.69 both --
+     the 2D ladder's saturation ('by N=6 the finite clock behaves like the continuum
+     clock') is reproduced in 3D.  Adding teeth beyond ~6 barely moves the tension.
+   * N=2 (Z_2) is a SPECIAL CASE, not a failure: 3D Z_2 gauge is Ising-dual and
+     DECONFINES above beta_c ~ 0.761 (Wegner 1971).  At beta=1.4 it sits in its
+     deconfined phase, so chi(2,2) ~ 0.015 is exp-small -- a REAL phase transition of
+     the coarsest clock, NOT the compactness claim failing.  (A Z_2 run at beta<0.76
+     would show the confining tension; the coarsest clock just has its OWN critical
+     coupling.)  Compactness sources a gap for every N>=2 IN ITS CONFINING PHASE;
+     the tooth count sets WHERE that phase is, and by N>=6 the window matches U(1).
+
+======================================================================================
+KNOWN vs NEW  (honesty ledger)
+======================================================================================
+  KNOWN [classical]: Z_N and Villain lattice gauge are exactly solvable by characters
+    (Villain 1975; Elitzur-Pearson-Shigemitsu, PRD 19 (1979) 3698; Polyakov 1977 for
+    the 3D compact-U(1) gap).  gap=-log(I1/I0), gap~1/L^2 decompactification, and the
+    Z_N->U(1) convergence are all textbook.  We REPRODUCE, we do not claim to discover.
+  NEW [conjecture, frame only]: identifying the character-weight ratio D=lambda_1/lambda_0
+    with ChiralityHB's clock-face modulus ||alpha|| -- so the gauge mass gap and the
+    off-axis zero displacement Im z are ONE template gap = -log(defect)/rate with rate=1.
+    This is a cross-project SHAPE identification, not a theorem, and touches nothing
+    about 4D SU(N) / the Clay problem.
+  FALSIFIERS: F3 (gap survives decompactification) -- did NOT fire (slope -2).
+              F4 (strong-coupling gap not -log(defect)/rate) -- did NOT fire (rate=1 exact).

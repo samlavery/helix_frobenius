@@ -1,0 +1,56 @@
+RUNG 3 STAGE 1 — Conjecture ES right-hand side, results summary (≤350 words)
+
+PURPOSE (owner directive): certify the NEW HOUSE CAPABILITIES and deliver a fresh
+first-determination.  The 26b/52b anchors are a known-answer GATE, not the goal.
+Files: tmp/rung3_rhs.py (engine), tmp/rung3_rhs_run.py (driver; `... test` = fast internal
+gates only), tmp/rung3_rhs_results.txt.
+
+NEW HOUSE CAPABILITIES BUILT (only ec_add/ec_mul reused): number-field tower arithmetic
+over M; valuation-aware p-adic numbers in Q_{p^3} (so kernel-of-reduction points are
+representable); the from-scratch formal-group elliptic logarithm with good- AND
+multiplicative-reduction kernel descent; the p-adic Gross-Stark unit log; Galois embeddings.
+
+TIERS (per BSDClocks.lean licensing — corrected):
+  [exact] Stark unit u1=w^2-w+3 has norm 1 (UNIT); 26b/52b generators on-curve over M,
+          non-torsion (exact group law).
+  [p-adic certified] PRIMARY internal gates, exact to full precision N, independent of any
+          published digit: logE(mP)=m·logE(P) (m=2,3,5); log_p(u^2)=2log_p(u) and
+          log_p(ζ3)=0 (Iwasawa); Σ(4 Galois conjugates)=0.  These OWN the machinery.
+          The 26b/52b anchor match (4/4 to 20 digits, both branches) is corroboration at
+          this SAME tier: matching two p-adic TRANSCENDENTALS is AGREEMENT TO PRECISION,
+          NOT identification / NOT a "landing" (no bounded-set target).
+  [identified] The shared 26b/52b prefactor: C(26b)−C(52b) rational-reconstructs to 0/1
+          with 2H^2 < 13^20 satisfied, so it IS identified equal (rational_landing_unique) —
+          the only identification licensed here; it confirms DLR's stated cross-curve
+          constant from first principles rather than on faith.
+  [first-determination] *** THE DELIVERABLE ***: the ES right-hand side at p=37 (fresh,
+          unpublished; Case-3 regular, 37≡1 mod 12, GOOD reduction — a new regime vs the
+          multiplicative-reduction anchors) for 26b and 52b, both branches.  All 4 descend
+          to Q_37 (Galois-invariant — necessary for any rational left side; an exactness
+          certificate, NOT a landing).
+
+STATED HYPOTHESIS (not proved): log_p(u_gα) ≠ 0.  No order on C_p, so regulator_pos does
+NOT transfer p-adically; nonvanishing is a NUMERICAL hypothesis (v(log_p u)=1 < N observed
+in all 4 fresh instances, not proved).  Every ES instance carries this caveat.
+
+Negative control (4811a): for a Q-rational point (1+ζ3+ζ3^{-1})·P=0, so logE(Pgα)=0 and the
+regulator numerator vanishes — the trivial-vanishing mechanism, verified structurally.
+
+HONEST FLAG: literal DLR prefactor differs from measured by a fixed root of unity (α:−ζ3,
+β:−ζ3^{-1}), identical across both curves — the test-vector/embedding ambiguity DLR flag;
+pinned once, recorded, not a per-curve fudge.
+
+---
+HARMONIZATION ADDENDUM (2026-07-03, per team-lead framing): the ES construction is a
+RANK/DIMENSION LIFT. r(E,Ad_g)=rank E(M)−rank E(Q); for 26b/52b rank E(Q)=0 but rank E(M)=2,
+so the rank-2 is BORN one dimension up (at the quartic field M) and reads 0 at the base Q —
+the house's "source one dimension up" (SourceHolonomy) made concrete and non-p-adic. The
+Stage-1 RHS is the p-adic flesh on that skeleton: source up the tower (points/units over M)
+→ trace down by log_p/regulator. Certified in-house, [exact], by tmp/rung3_dimension_lift.py.
+
+DIMENSION-LIFT CAPTION [interpretation, not theorem]: the rank is born one dimension up; the
+rank-0 at Q is the projection of a rank-2 that lives at M. The Artin identity r(E,Ad_g) =
+rank E(M) − rank E(Q) is the theorem (Ad_g = Ind_M^{G_Q} sgn − sgn); this dimension-lift
+reading is its caption. All three ES ascents (Hida family, induced rep, Galois trace) are the
+conjugate-chart move (BSDClocks conjugate_lift_commutes); ES's "the two descents agree" is
+faithfulness-of-descent at the BSD frontier.

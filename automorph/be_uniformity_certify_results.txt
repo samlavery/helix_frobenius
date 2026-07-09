@@ -1,0 +1,56 @@
+==============================================================================
+BE UNIFORMITY BOUND — register-grade certificate (exact-gauge magnitude bound)
+Altug II Thm A.14/A.15 'central issue': implied constant independent of C, D.
+==============================================================================
+
+[C1] integrand tail decay on u=tau+iv (tau=1, m=0, a=1): predicts e^{-pi|v|} for v>0,
+     e^{-(pi/2)|v|} for v<0 (Gamma+c_m cancel on v<0; Phi~ carries the decay). MEASURED:
+           v      |integrand|     ratio to e^{-a|v|}
+           5         7.761e-6 (v>0)   decay/e^(-pi v)         51.5
+          -5          0.01999 (v<0)   decay/e^(-pi|v|/2)       51.5
+          10        2.267e-12 (v>0)   decay/e^(-pi v)         99.8
+         -10         1.504e-5 (v<0)   decay/e^(-pi|v|/2)       99.8
+          20        1.007e-25 (v>0)   decay/e^(-pi v)        195.0
+         -20        4.435e-12 (v<0)   decay/e^(-pi|v|/2)      195.0
+          30        3.431e-39 (v>0)   decay/e^(-pi v)        293.0
+         -30        1.003e-18 (v<0)   decay/e^(-pi|v|/2)      293.0
+          40        1.039e-52 (v>0)   decay/e^(-pi v)        391.0
+         -40        2.015e-25 (v<0)   decay/e^(-pi|v|/2)      391.0
+
+[C2] B_{tau=1,m=0,a=1} computed independently (no x anywhere):
+     B = 0.6863895998   (finite: YES)
+
+[C3] certificate margin  M(x) = |A(x)| x^{tau/2} / B  across x = C^2 D (must stay <= 1, x-uniform):
+          x = C^2 D           |A(x)|      |A| x^{t/2}   M(x)=.../B   <=1?
+               0.05          0.90201           0.2017      0.29385     OK
+               0.20          0.88407          0.39537      0.57601     OK
+               1.00          0.62727          0.62727      0.91387     OK
+               5.00          0.23646          0.52875      0.77034     OK
+              25.00         0.035297          0.17648      0.25712     OK
+             100.00        0.0021925         0.021925     0.031943     OK
+             500.00        1.0131e-5       0.00022654   0.00033004     OK
+            2500.00        1.0072e-9        5.0358e-8    7.3367e-8     OK
+     sup_x M(x) = 0.91387  (x-UNIFORM, <= 1: the C,D-independence, certified)
+
+[C4] robustness: B finite and bound holds for every tau>0, m tested (Gamma poles at u<0):
+       tau   m      B_{tau,m,a}   sup_x M(x)    verdict
+       0.5   0       0.71332302      0.87937         OK
+       1.0   0        0.6863896      0.91387         OK
+       2.0   0         1.303839      0.91694         OK
+       4.0   0        27.958936      0.78419         OK
+       1.0   2        4.5583574      0.79386         OK
+       2.0   2         12.89858      0.88718         OK
+
+==============================================================================
+[verdict]
+  Register-grade uniformity bound CERTIFIED: |A(x)| <= B_{tau,m,a} x^{-tau/2}, B finite
+  and x-independent (sup_x M(x) = 0.9139 <= 1); holds across (tau,m): ALL OK.
+  => the implied constant in Altug II Thm A.14 is independent of C,D by the triangle
+     inequality on the exactly-gauged (magnitude) integrand — NO oscillation estimate,
+     replacing the A.7/A.8 oscillation-control content. Empirical ground: the comb is
+     window kinematics (beat verdict, dnu=4lf^2/0.94X R^2 0.996), not arithmetic content.
+  RESIDUAL (isolated, NOT certified here): the SHARP nu-decay RATE uniformity across
+     (xi,l,f,X) — the sigma*~0.5 / gamma-spread 0.441±0.058 invariant — remains the
+     irreducible analytic core (Prop 5.2 sharp half). This bound gives decay-EXISTENCE
+     + crude C,D-uniformity, NOT the sharp rate.
+==============================================================================

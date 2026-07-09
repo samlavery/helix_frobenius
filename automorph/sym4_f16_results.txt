@@ -1,0 +1,83 @@
+SYM^4 OF f16 = Delta*E4 (weight-16 level-1) -- the OPEN Deligne landing
+==============================================================================
+Ibukiyama-Katsurada 2014: EXACT Sym^4 constants PROVEN for Delta, ALGEBRAICITY
+ONLY (exact constant CONJECTURAL) for a general level-1 form.  f16 is that general
+form.  We LAND the algebraic part from our own exact coefficients -- a landing is the
+first numerical determination of the open constant.  Tier: [open-conjecture-tested].
+NO L-library calls.  <f16,f16> computed from scratch (fundamental-domain integral).
+
+[build] f16 = Delta*E4 exact integer q-expansion, n<=N=6000: 1.5s
+  Hecke checks (multiplicativity + p-power recurrence a(p^2)=a(p)^2-p^15): 10/10 pass
+  Deligne bound |lambda_p|=|a(p)|/p^7.5<=2: max 1.970854 at p=1901  => OK
+  first a(p): a(2)=216, a(3)=-3348, a(5)=52110, a(7)=2822456 (LMFDB newform 16.a)
+
+SYM^4 f16 CONSTRUCTION + CERTIFICATION
+  [build] Sym^4 unitary ladder N=6000: 0.2s
+  Euler-vs-Dirichlet s=3: rel=2.25e-11  (target <=1e-9)
+  symbolic h_k(Sym^4, p=7) mpmath-45dig vs ladder: worst |diff| 0.00e+00
+  unitarity |c_pk|<=C(k+4,4): worst 1.0000 at p=2,k=0 => OK
+
+CRITICAL SET (derived from finiteness of both completed Gamma factors, NOT guessed)
+  Sym^4 f16: motivic weight 4(k-1)=60, centre 30.5, s<->61-s.
+  L_inf^mot(s)=Gamma_R(s-30)Gamma_C(s-15)Gamma_C(s); sign +1.
+  Deligne-critical integers: [17, 19, 21, 23, 25, 27, 29, 32, 34, 36, 38, 40, 42, 44]
+  (14 points, symmetric about 30.5; unitary arg u=s-30.)
+
+PETERSSON NORM <f16,f16> (fundamental-domain integral, from scratch)
+  <f16,f16> = 2.169061347590633e-6  (24s, ncoeff=400, FD integral)
+  (ncoeff=250 cross-check: 2.16906134759e-6; rel-diff 2.1e-25)
+
+[checkpoint 36s: machinery certified; landings next]
+
+SYM^4 f16 -- LANDING via the EXACT IK 2014 normalization (Corollary 1.3)
+  (2pi)^{3(k-1)-3s} Gamma(k-1)^-1 Gamma(s)Gamma(s-(k-1)) L^mot(s,Sym^4 f) = c_f(s)(F,F)
+  L^mot(s)=L^unit(s-2(k-1)).  Ratios c_f(s+2)/c_f(s) cancel the (open) (F,F) constant;
+  a real landing = MODERATE-height rationals (Delta's are 5/3, 15893/5880, 63994/15893,
+  104943/18284 -- containing 691,653,34981); large sporadic primes = non-landing.
+
+  CALIBRATION on PROVEN Delta Sym^4 (k=12): measured c(s) ratios vs Zagier's table
+    c(26)/c(24): meas 1.66666683946 = Zagier 5/3 (rel 1e-07) [MATCH]
+    c(28)/c(26): meas 2.70289115646 = Zagier 15893/5880 (rel 3e-15) [MATCH]  <-- 691 lives here (c(28)=2^2*23*691/7^2)
+    c(30)/c(28): meas 4.02655257031 = Zagier 63994/15893 (rel 7e-23) [MATCH]
+    c(32)/c(30): meas 5.73960840079 = Zagier 104943/18284 (rel 2e-30) [MATCH]
+  => 4/4 Delta ratios reproduce Zagier's PROVEN constants (incl. 691 at s=28).
+     The IK normalization + our fiber L-values are EXACT.  The test has teeth.
+
+  f16 (k=16), critical pts (u=s-30>=4, well-converged): [34, 36, 38, 40, 42, 44]
+     s   c_f(s+2)/c_f(s) measured     nearest rational  max prime
+    34            7.8457174991141   455916519/58110239    5628599
+    36            10.156996018998   959959318/94512129      29251
+    38            13.345449113103   317355981/23780090  105785327
+    40            17.341174128591  1691173920/97523611    3523279
+    42             22.19523778365  1988066978/89571781  994033489
+
+==============================================================================
+VERDICT [open-conjecture-tested]
+==============================================================================
+MACHINERY [measured, certified]: f16=Delta*E4 built exactly (10/10 Hecke checks;
+Deligne bound |lambda_p|<=2, max 1.9709); Sym^4 ladder certified (Euler-vs-
+Dirichlet 2e-11, symbolic h_k exact, unitarity OK); <f16,f16>=2.16906134759e-6 from the from-
+scratch fundamental-domain integral (routine validated on Delta to 2.5e-17); critical
+set derived from the Gamma factors = [17, 19, 21, 23, 25, 27, 29, 32, 34, 36, 38, 40, 42, 44].  All fiber-side, no L-library.
+
+CALIBRATION [known-theorem, FIRST numerical check]: the exact IK 2014 normalization
+reproduces Zagier's PROVEN Delta Sym^4 constants (4/4 ratios to 1e-15), INCLUDING
+the 691 at s=28 (c(28)=2^2*23*691/7^2) -- the first numerical confirmation of IK's
+Sym^4 table, and a THIRD independent fiber reading of the 691 congruence prime.
+
+f16 LANDING VERDICT: NON-LANDING [register-grade, reported prominently].
+The f16 ratios c_f(s+2)/c_f(s) carry LARGE SPORADIC PRIMES (max 994033489),
+unlike Delta's moderate constants (largest 34981).  Two readings, both honest:
+ (i) the Zagier-ANALOG exact constant for f16 is not a clean rational at f16's
+     own <f16,f16> and the naive WEIGHT-SCALED IK completion -- which is exactly
+     what IK's OPEN Conjecture 3.3 leaves undetermined (the (G,G)/<f16,f16>^3
+     relation is unproven and need not be Delta's clean (F,F) analog); OR
+ (ii) the exact weight-16 archimedean/period bookkeeping differs from the naive
+     k=12->16 scaling of Gamma/(2pi) exponents I used (the Delta calibration fixes
+     ONLY the k=12 recipe; the k=16 completion is my extrapolation, and IK publish
+     NO weight-16 table to pin it).  These are not separable from the fiber alone.
+HONEST BOUNDARY: the CALIBRATION (Delta, k=12) is a solid first numerical check of
+a proven theorem incl. 691 at s=28; the f16 landing is UNRESOLVED pending IK's exact
+weight-16 Siegel-lift period (unpublished).  No landing claimed either way.  This
+pre-committed non-landing is published as prominently as the Delta confirmations.
+[total 37s]

@@ -1,0 +1,230 @@
+SHA JETS AT RANK 1 — NONTRIVIAL |Sha| (4, 9) from the LEADING CENTRAL JET
+============================================================================
+BSD full formula:  L^(r)(E,1)/r! = Omega * Reg * |Sha| * prod cp / T^2
+  |Sha| = [L^(r)/r!] * T^2 / (Omega * Reg * prod cp)   (r = 1)
+Same frozen instrument as jet_census (anchors: kernel, L'(37a1), height, reg).
+New component: in-house generator search (naive x=t/d^2, reject torsion).
+Square test: #Sha carries the Cassels-Tate alternating pairing => perfect square.
+Targets verified TWO sources (LMFDB web + Cremona/Sage from-scratch).
+
+############################################################################
+# ANCHOR GATES (jet_census — must pass before any Sha claim)
+############################################################################
+############################################################################
+# ANCHOR GATES (all must pass before the census runs)
+############################################################################
+[GATE] incomplete-Gamma Taylor kernel
+    E1_series vs scipy.exp1, max|err| over x in [0.01,40] = 6.25e-17   [PASS]
+    I_0(y) vs e^(-y), max|err| = 0.00e+00   [PASS]
+    I_1(y) vs dense-Simpson quadrature, max|err| = 1.08e-12   [PASS]
+[GATE] L'(37a1,1)
+    L(37a1,1)   = 0.0000000000   (should be ~0, rank>=1)
+    L'(37a1,1)  = 0.3059997738   known 0.3059997738   |err|=3.44e-11   [PASS]
+[GATE] canonical height 37a1 generator (0,0)  [nmax=9, full precision]
+    ĥ naive-limit      = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    ĥ shifted h(2P)/4  = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    two-method agreement |naive - shifted| = 9.75e-15   [PASS]
+[GATE] regulators  [nmax=9, full precision]
+    Reg(37a1)  = 0.0511114082   known 0.0511114082   |err|=4.59e-11
+    Reg(389a1) = 0.1524593847   known 0.1524601779   |err|=7.93e-07
+    [PASS]
+
+  ALL GATES: PASS — census authorized
+
+[GATE] corrected Tamagawa & torsion vs two-source-known (targets + sha_hinge set)
+    1610f3    prod c_p = 1 (known 1) OK;  T = 2 (known 2) OK
+    3192n3    prod c_p = 1 (known 1) OK;  T = 2 (known 2) OK
+    12285w3   prod c_p = 1 (known 1) OK;  T = 1 (known 1) OK
+    7410t3    prod c_p = 2 (known 2) OK;  T = 1 (known 1) OK
+    11a1      prod c_p = 5 (known 5) OK;  T = 5 (known 5) OK
+    15a1      prod c_p = 8 (known 8) OK;  T = 8 (known 8) OK
+    14a1      prod c_p = 6 (known 6) OK;  T = 6 (known 6) OK
+    571a1     prod c_p = 1 (known 1) OK;  T = 1 (known 1) OK
+    681b1     prod c_p = 4 (known 4) OK;  T = 4 (known 4) OK
+    2849a1    prod c_p = 4 (known 4) OK;  T = 2 (known 2) OK
+    37a1      prod c_p = 1 (known 1) OK;  T = 1 (known 1) OK
+    389a1     prod c_p = 1 (known 1) OK;  T = 1 (known 1) OK
+    [PASS]
+
+############################################################################
+# THE NONTRIVIAL LANDINGS
+############################################################################
+
+=== 1610.g1  (Cremona 1610f3, conductor 1610, ainvs [1, -1, 1, -8587, -304111], rank r=1) ===
+  jets L^(k)/k!, k=0..1: 0.000000, 3.900024   [0.0s]
+    functional-eq sign eps = - (rank parity 1); dead lower jets: max|L^(k)/k!,k<r| = 0.00e+00  (order of central vanishing = 1)
+  L^(1)(E,1)/1! = 3.9000243580   [own point-counted a_n]
+  Omega   = 0.4959559904   [AGM]
+  prod cp = 1   (c_2=1 c_5=1 c_7=1 c_23=1)   [type-table]
+  T       = 2   [rational 2-torsion + group-law close; gcd bound 4]
+  generator (naive non-torsion point search, x = t/d^2): P = (1749/16, 11413/64)   [7.4s]
+    scan: 1 non-torsion + 1 torsion points in box; P is the minimal naive-height one (h_x=7.4668)
+    canonical height: naive-limit 7.8636282634  vs  shifted h(2P)/4 7.8636482270  |d|=2.00e-05
+  Reg = h_hat(P) = 7.8636282634
+  --- LANDING ---
+  |Sha| = [L^(1)/1!] * T^2 / (Omega * Reg * prod cp)
+        = 3.90002436 * 4 / (0.495956 * 7.86362826 * 1)
+        = 4.00001109
+        -> nearest integer 4  (margin 1.11e-05)  [LANDED]
+        square test: 4 = 2^2 ? YES (perfect square)
+  [scoring vs two-source known — verification only]
+    L^(1)/1! : measured 3.9000243580  known 3.9000243580  |d|=1.05e-11
+    Reg         : measured 7.8636282634  known 7.8636500677  |d|=2.18e-05
+    Omega       : measured 0.4959559904  known 0.4959559904  |d|=1.11e-11
+    prod cp     : measured 1  known 1  MATCH
+    T           : measured 2  known 2  MATCH
+    generator   : measured (1749/16,11413/64)  known x=1749/16  MATCH
+    |Sha|       : landed 4  known 4  MATCH
+
+=== 3192.d1  (Cremona 3192n3, conductor 3192, ainvs [0, -1, 0, -17024, -849300], rank r=1) ===
+  jets L^(k)/k!, k=0..1: 0.000000, 2.656581   [0.0s]
+    functional-eq sign eps = - (rank parity 1); dead lower jets: max|L^(k)/k!,k<r| = 0.00e+00  (order of central vanishing = 1)
+  L^(1)(E,1)/1! = 2.6565806792   [own point-counted a_n]
+  Omega   = 0.4179574070   [AGM]
+  prod cp = 1   (c_2=1 c_3=1 c_7=1 c_19=1)   [type-table]
+  T       = 2   [rational 2-torsion + group-law close; gcd bound 4]
+  generator (naive non-torsion point search, x = t/d^2): P = (501, 10776)   [7.3s]
+    scan: 1 non-torsion + 1 torsion points in box; P is the minimal naive-height one (h_x=6.2166)
+    canonical height: naive-limit 6.3560810260  vs  shifted h(2P)/4 6.3561026147  |d|=2.16e-05
+  Reg = h_hat(P) = 6.3560810260
+  --- LANDING ---
+  |Sha| = [L^(1)/1!] * T^2 / (Omega * Reg * prod cp)
+        = 2.65658068 * 4 / (0.417957 * 6.35608103 * 1)
+        = 4.00001436
+        -> nearest integer 4  (margin 1.44e-05)  [LANDED]
+        square test: 4 = 2^2 ? YES (perfect square)
+  [scoring vs two-source known — verification only]
+    L^(1)/1! : measured 2.6565806792  (known not tabulated separately)
+    Reg         : measured 6.3560810260  known 6.3561038196  |d|=2.28e-05
+    Omega       : measured 0.4179574070  known 0.4179574070  |d|=3.05e-11
+    prod cp     : measured 1  known 1  MATCH
+    T           : measured 2  known 2  MATCH
+    generator   : measured (501,10776)  known x=501  MATCH
+    |Sha|       : landed 4  known 4  MATCH
+
+=== 12285.o1  (Cremona 12285w3, conductor 12285, ainvs [0, 0, 1, -995112, -382081543], rank r=1) ===
+  jets L^(k)/k!, k=0..1: 0.000000, 3.949846   [0.0s]
+    functional-eq sign eps = - (rank parity 1); dead lower jets: max|L^(k)/k!,k<r| = 0.00e+00  (order of central vanishing = 1)
+  L^(1)(E,1)/1! = 3.9498456366   [own point-counted a_n]
+  Omega   = 0.1511581485   [AGM]
+  prod cp = 1   (c_3=1 c_5=1 c_7=1 c_13=1)   [type-table]
+  T       = 1   [rational 2-torsion + group-law close; gcd bound 3]
+  generator (naive non-torsion point search, x = t/d^2): P = (-9215/16, -31/64)   [7.3s]
+    scan: 2 non-torsion + 0 torsion points in box; P is the minimal naive-height one (h_x=9.1286)
+    canonical height: naive-limit 2.9033875920  vs  shifted h(2P)/4 2.9033889868  |d|=1.39e-06
+  Reg = h_hat(P) = 2.9033875920
+  --- LANDING ---
+  |Sha| = [L^(1)/1!] * T^2 / (Omega * Reg * prod cp)
+        = 3.94984564 * 1 / (0.151158 * 2.90338759 * 1)
+        = 9.00002142
+        -> nearest integer 9  (margin 2.14e-05)  [LANDED]
+        square test: 9 = 3^2 ? YES (perfect square)
+  [scoring vs two-source known — verification only]
+    L^(1)/1! : measured 3.9498456366  (known not tabulated separately)
+    Reg         : measured 2.9033875920  known 2.9033939759  |d|=6.38e-06
+    Omega       : measured 0.1511581485  known 0.1511581485  |d|=4.14e-11
+    prod cp     : measured 1  known 1  MATCH
+    T           : measured 1  known 1  MATCH
+    generator   : measured (-9215/16,-31/64)  known x=-9215/16  MATCH
+    |Sha|       : landed 9  known 9  MATCH
+
+=== 7410.t1  (Cremona 7410t3, conductor 7410, ainvs [1, 0, 0, -208136, -36744390], rank r=1) ===
+  jets L^(k)/k!, k=0..1: 0.000000, 6.605297   [0.0s]
+    functional-eq sign eps = - (rank parity 1); dead lower jets: max|L^(k)/k!,k<r| = 0.00e+00  (order of central vanishing = 1)
+  L^(1)(E,1)/1! = 6.6052970784   [own point-counted a_n]
+  Omega   = 0.1117211870   [AGM]
+  prod cp = 2   (c_2=1 c_3=1 c_5=2 c_13=1 c_19=1)   [type-table]
+  T       = 1   [rational 2-torsion + group-law close; gcd bound 3]
+  generator (naive non-torsion point search, x = t/d^2): P = (33093/16, 5793189/64)   [7.6s]
+    scan: 1 non-torsion + 0 torsion points in box; P is the minimal naive-height one (h_x=10.4071)
+    canonical height: naive-limit 3.2845967628  vs  shifted h(2P)/4 3.2846089820  |d|=1.22e-05
+  Reg = h_hat(P) = 3.2845967628
+  --- LANDING ---
+  |Sha| = [L^(1)/1!] * T^2 / (Omega * Reg * prod cp)
+        = 6.60529708 * 1 / (0.111721 * 3.28459676 * 2)
+        = 9.00004659
+        -> nearest integer 9  (margin 4.66e-05)  [LANDED]
+        square test: 9 = 3^2 ? YES (perfect square)
+  [scoring vs two-source known — verification only]
+    L^(1)/1! : measured 6.6052970784  (known not tabulated separately)
+    Reg         : measured 3.2845967628  known 3.2846136874  |d|=1.69e-05
+    Omega       : measured 0.1117211870  known 0.1117211869  |d|=7.87e-11
+    prod cp     : measured 2  known 2  MATCH
+    T           : measured 1  known 1  MATCH
+    generator   : measured (33093/16,5793189/64)  known x=33093/16  MATCH
+    |Sha|       : landed 9  known 9  MATCH
+
+############################################################################
+# SUMMARY — nontrivial Tate-Shafarevich orders from the leading jet
+############################################################################
+
+  curve      cremona   r   L^(r)/r!     Omega        Reg cp T  |Sha|raw int   margin  sq known
+  1610.g1    1610f3    1    3.90002  0.495956   7.863628  1 2   4.00001   4  1.1e-05   Y     4
+  3192.d1    3192n3    1    2.65658  0.417957   6.356081  1 2   4.00001   4  1.4e-05   Y     4
+  12285.o1   12285w3   1    3.94985  0.151158   2.903388  1 1   9.00002   9  2.1e-05   Y     9
+  7410.t1    7410t3    1    6.60530  0.111721   3.284597  2 1   9.00005   9  4.7e-05   Y     9
+
+  Nontrivial |Sha| landings (correct integer, within 1/2, perfect square): 4/4
+    of which nontrivial targets (|Sha| in {4,9}): 4/4
+  Max Reg error vs two-source known: 2.28e-05
+  Square-test hits (all landings a perfect square): 4/4  [falsification register: CLEAN]
+
+  The leading central jet L^(1)(E,1), divided by (Omega * Reg * prod cp / T^2),
+  lands NONTRIVIAL |Sha| = 4 and |Sha| = 9 as exact square integers at rank 1 —
+  the discriminating test the |Sha|=1 census could not provide.  The regulator is
+  the canonical height of a generator FOUND IN-HOUSE by naive point search; the
+  jet is the incomplete-Gamma readout of our own point-counted a_n.  Nothing tuned
+  per curve.
+
+############################################################################
+# CORRECTION / RETRACTION — the "corrupted legacy ledger" side finding was WRONG
+############################################################################
+
+In the first-pass report I flagged a side finding: that sha_hinge.py's rank-0
+|Sha|=9 landings for 681b1 and 2849a1 rested on a WRONG torsion order (I claimed
+T=2 not 4, and T=1 not 2), so its |Sha| would be off by a factor of 4.  On being
+asked to re-land those two curves with the corrected machinery and verify against
+two sources, that side finding does NOT survive scrutiny.  RETRACTED.  This block
+records the retraction as prominently as the original claim (falsification-register
+discipline: a published suspicion, re-verified and cleared).
+
+WHAT WAS ACTUALLY TRUE
+  * sha_hinge.torsion_order, called directly, returns T=4 for 681b1 and T=2 for
+    2849a1 — the CORRECT values.  It already finds the rational 2-torsion for these
+    two curves (681b1: full 2-torsion Z/2+Z/2, T=4; 2849a1: Z/2, T=2).
+  * sha_hinge's own rank-0 pipeline landed |Sha|=9 for BOTH, correctly.  There is
+    NO corrupted ledger entry.
+  * The origin of my false alarm: the regression gate in sha_jets.py was seeded with
+    "known" T values (T=2 for 681b1, T=1 for 2849a1) that I mis-transcribed from stale
+    inline notes, NOT from the two-source truth.  My CORRECTED routine returned the
+    true T=4 and T=2, which then "disagreed" with those wrong seeds — I misread the
+    disagreement as a sha_hinge bug when it was a bad seed in my own gate.  The gate
+    seeds are now the true two-source values and the gate passes 12/12.
+  * The genuine sha_hinge bugs I found and fixed remain genuine and are unaffected:
+    (1) rational 2-torsion missed on 1610f3 (x=-213/4) -> T=1 not 2;
+    (2) Kodaira II* misread as IV* on 12285w3 at p=3 -> c=3 not 1.
+    Those two surfaced on the rank-1 TARGET curves, not on 681b1/2849a1.
+
+RE-LANDING WITH THE CORRECTED sha_jets MACHINERY (rank 0, |Sha|=L(1) T^2/(Omega prod cp))
+  Inputs: L(1) via the E-series readout; Omega via AGM; prod c_p via the corrected
+  type-table Tamagawa; T via the corrected rational-2-torsion routine.  Two-source
+  known |Sha| = 9 (LMFDB analytic Sha + Cremona/Sage), both agreeing.
+
+  681b1  (LMFDB 681.e2):   L(1)=1.84481521  Omega=0.81991787  prod cp=4 (c_3=2, c_227=2)
+                           T=4   |Sha|_raw = 9.000000  -> 9  (margin 3.6e-15)  square 3^2 YES
+                           known |Sha| = 9  MATCH
+  2849a1 (LMFDB 2849.b2):  L(1)=1.41148663  Omega=0.15683185  prod cp=4 (c_7=1, c_11=2, c_37=2)
+                           T=2   |Sha|_raw = 9.000000  -> 9  (margin 0.0e+00)  square 3^2 YES
+                           known |Sha| = 9  MATCH
+
+  Per the task template — old claimed value / the bug / corrected landing / known / margin / square:
+    681b1 : old (my side finding) "|Sha| off by 4x from wrong T" ; the bug: NONE in
+            sha_hinge for this curve (my gate seed was wrong) ; corrected landing 9 ;
+            known 9 ; margin 3.6e-15 ; square YES.
+    2849a1: old (my side finding) "|Sha| off by 4x from wrong T" ; the bug: NONE in
+            sha_hinge for this curve (my gate seed was wrong) ; corrected landing 9 ;
+            known 9 ; margin 0.0e+00 ; square YES.
+
+  Net: two ledger entries INSPECTED, found already correct, re-landed at |Sha|=9=3^2
+  to machine precision.  sha_hinge.py and its results file were NOT modified.  The
+  correction lives here, in the ledger.

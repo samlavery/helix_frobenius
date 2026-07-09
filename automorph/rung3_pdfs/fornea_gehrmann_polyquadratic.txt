@@ -1,0 +1,1013 @@
+                                              On the algebraicity of polyquadratic plectic points
+
+
+
+
+arXiv:2203.15998v1 [math.NT] 30 Mar 2022
+                                                                    Michele Fornea and Lennart Gehrmann
+
+                                                                                          Abstract
+                                                We establish direct evidence of the arithmetic significance of plectic Stark–Heegner
+                                                points for elliptic curves of arbitrarily large rank. The main contribution is a proof of
+                                                the algebraicity of plectic points associated to polyquadratic CM extensions of totally
+                                                real number fields. Moreover, we relate the non-vanishing of plectic points to analytic
+                                                and algebraic ranks of elliptic curves.
+
+                                                                                          Contents
+                                                1 Introduction                                                                            1
+                                                  1.1 Conjectures on plectic Stark–Heegner points . . . . . . . . . . . . . . . .         2
+                                                  1.2 The polyquadratic setup . . . . . . . . . . . . . . . . . . . . . . . . . . .       4
+                                                  1.3 Main results . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    5
+                                                2 Preliminaries                                                                           6
+                                                  2.1 Symmetric powers . . . . . . . . . . . . . . . . . . . . . . . . . . . . . .        6
+                                                  2.2 Completed group algebras . . . . . . . . . . . . . . . . . . . . . . . . . .        7
+                                                3 Plectic points and p-adic L-functions                                                   8
+                                                  3.1 Plectic Stark–Heegner points . . . . . . . . . . . . . . . . . . . . . . . .        8
+                                                  3.2 Plectic points are Heegner points when |S| = 1 . . . . . . . . . . . . . .          8
+                                                  3.3 The anticyclotomic Gross–Zagier formula . . . . . . . . . . . . . . . . .           9
+                                                  3.4 Interpolation formula . . . . . . . . . . . . . . . . . . . . . . . . . . . . .    11
+                                                4 Artin formalism for plectic points                                                     12
+                                                  4.1 Factorization of complex L-functions . . . . . . . . . . . . . . . . . . . .       12
+                                                  4.2 Factorization of p-adic L-functions . . . . . . . . . . . . . . . . . . . . .      13
+                                                  4.3 Factorization of plectic invariants . . . . . . . . . . . . . . . . . . . . . .    13
+                                                5 Algebraicity and arithmetic significance of plectic points                             14
+                                                References                                                                               16
+
+
+                                                                                      1. Introduction
+
+                                           In previous work, plectic Stark–Heegner points were associated to quadratic extensions E/F of
+                                           number fields and modular elliptic curves A/F under some technical assumptions. The construc-
+                                           tion generalizes the description of classical Heegner points on Shimura curves admitting a p-adic
+                                           uniformization, and combines Nekovář–Scholl’s plectic insights ([NS16], [Nek16]) with Darmon’s
+                                           pioneering work on Stark-Heegner points [Dar01]. Moreover, Conjectures 1.3, 1.5 of [FG21] pre-
+                                           dict the algebraicity of plectic Stark–Heegner points and their significance for elliptic curves of
+                                           higher rank, for which some numerical evidence was provided in [FGM21]. The aim of this paper
+                                           is to establish direct evidence for the aforementioned conjectures in the polyquadratic CM case.
+
+                                           2010 Mathematics Subject Classification 11F41, 11F67, 11G05, 11G40.
+                            Michele Fornea and Lennart Gehrmann
+
+1.1 Conjectures on plectic Stark–Heegner points
+Even though the formulation of the conjectures does does not require any restriction on the
+possible signatures of the fields E and F , we only consider CM extensions in this article; that
+is, F is a totally real number field and E/F a is totally complex quadratic extension. All prime
+divisors of the conductor f of the elliptic curve A are assumed to be unramified in E/F . We fix
+a rational prime p and a set S = {p1 , . . . , pr } of p-adic primes of F such that
+   •   A/F has multiplicative reduction at every p ∈ S,
+   •   the primes in S are all inert in E.
+Given p ∈ S we also denote by p the unique prime of E above p . Furthermore, we let ap ∈ {±1}
+equal +1 (resp. −1) when A has split (resp. non-split) multiplicative reduction at p. The quantity
+ap is closely related to the local root number εp (A/F ) of A:
+                                              ap = −εp (A/F ).
+By setting pS := p1 · · · pr , we may write
+                                              f = p S · n♯ · n♭ ,
+for coprime ideals n♯ , n♭ ∈ OF such that n♯ is divisible by every prime divisor of f split in E/F .
+Assumption 1.1 (Plectic Heegner hypothesis for (A, E, S)). We require that
+   •   n♭ is square-free,
+   •   the number of prime factors of n♭ is congruent to [F : Q] modulo 2.
+
+Since E/F is a CM extension, Assumption 1.1 implies that the sign of the functional equation
+of the L-function L(A/E, s) of the base-change of A/F to E is equal to ε(A/E) = (−1)r .
+We introduce the following useful notations. First, if H is any commutative prodiscrete group,
+we denote by Hb the torsion-free part of its pro-p completion. Second, if M is an abelian group
+                                                       V
+and Ω a field of characteristic zero, we use MΩ and r(MΩ ) to respectively denote the tensor
+product M ⊗Z Ω, and the r-th exterior power of the Ω-vector space MΩ .
+Consider the tensor product
+                               A(ES ) := b
+                               b         A(Ep1 ) ⊗Zp . . . ⊗Zp b
+                                                               A(Epr ).
+Under the running assumptions, the plectic Stark–Heegner point (for the trivial character) is
+                                                     b S )Q
+                                              PA,S ∈ A(E
+as constructed in ([FG21], Section 4.4), where it was denoted P1A . The notion of algebraicity for
+plectic Stark–Heegner points is formulated in terms of a determinant map. Writing ιp : E ֒! Ep
+for the canonical embedding for every p ∈ S, we can consider the homomorphism
+                                            Vr
+                                    det :        (A(E)Q ) −! b
+                                                             A(ES )Q
+given by
+                                                                             
+                                                    ιp1 (P1 ) . . . ιpr (P1 )
+                                                                       ..  .
+                       det P1 ∧ · · · ∧ Pr = det  ...         ..
+                                                                  .       . 
+                                                    ιp1 (Pr ) . . . ιpr (Pr )
+As usual, ralg (A/E) denotes the rank of the finitely generated abelian group A(E), and ran (A/E)
+the order of vanishing of the L-function L(A/E, s) at s = 1.
+
+
+                                                      2
+                 On the algebraicity of polyquadratic plectic points
+                                                                                    Vr
+Conjecture 1.2. If ralg (A/E) ⩾ r, then there exists an element wA,S ∈                   (A(E)Q ) such that
+                                          PA,S = det(wA,S ).
+Moreover, if PA,S 6= 0, then ralg (A/E) = r.
+Remark 1.3. When S consists of a single prime, Conjecture 1.2 follows from the generalization
+of the Gross–Zagier–Kolyvagin theorem for totally real number fields by Nekovář and Zhang.
+Indeed, Čerednik–Drinfeld’s uniformization of Shimura curves implies that the plectic point PA,S
+is a Heegner point when |S| = 1 (see Section 3.2 for more details).
+
+There are also plectic Stark–Heegner points associated to non-trivial anticyclotomic characters
+of E/F . Aiming for clarity in the introduction, we discuss them only in the body of the paper.
+
+    1.1.1 Eigenspaces for partial Frobenii. Let σp be the generator of the Galois group of Ep /Fp .
+                     b p ), and thus also on A(E
+It naturally acts on A(E                      b S ) via its action on the p-th factor. We set
+                              b p )σp =±ap
+                    b p )± := A(E
+                    A(E                          and    b S )± := ⊗p∈S A(E
+                                                        A(E            b p )± .
+                                   Q
+There are two eigenspace projections
+                                                                Y
+                       pr±   b         b     ±
+                                                        pr±
+                         S : A(ES )Q ! A(ES ) ,           S =         (1 ± ap · σp ).
+                                                                p∈S
+
+The main results of this article (Theorems A & B) establish the first cases of the minus part of
+the following conjecture, a direct consequence of Conjecture 1.2.
+                                                                                    Vr
+Conjecture 1.4. If ralg (A/E) ⩾ r, then there exists an element wA,S ∈                   (A(E)Q ) such that
+                                                    ±
+                                    pr±
+                                      S (PA,S ) = prS (det(wA,S )).
+Moreover, if pr±
+               S (PA,S ) 6= 0, then ralg (A/E) = r.
+
+The special cases that we treat in Theorems A, B and C are singled out precisely to leverage
+the known properties of classical Heegner points. The key idea is to further suppose that F is
+a polyquadratic extension of another totally real number field F◦ , the elliptic curve is the base
+change of an elliptic curve A◦ defined over F◦ , and E is the compositum of F with a quadratic
+CM extension E◦ /F◦ . Then, under an appropriate Heegner hypothesis, we use Heegner points
+for A◦/E◦ and its twists by characters of Gal(F/F◦ ), plus a factorization of anticyclotomic p-adic
+L-functions to establish our results.
+
+     1.1.2 Plectic p-adic invariants. Anticyclotomic p-adic L-functions come in to play in the
+proofs of our theorems because of the p-adic Gross-Zagier formula ([FG21], Theorem A) relating
+higher order derivatives to plectic p-adic invariants. These invariants, denoted QA,S , are canonical
+lifts of the points pr−S (PA,S ) with respect to a “plectic” Tate parametrization: as the elliptic curve
+A/F has multiplicative reduction at every p ∈ S, Tate’s p-adic uniformization results provides
+surjections φTate
+               p    : Ep× ։ A(Ep ) whose kernels are generated by Tate periods qp ∈ Fp× \ OF×p . If
+we denote by E   bp− := (Ebp× )σp =−1 the subgroup of Ebp× on which σp acts via inversion, and we set
+                                          b− ⊗Zp . . . ⊗Zp E
+                                    b− := E
+                                    E                      b− ,
+                                     S,⊗   p1               pr
+
+                                                                b− satisfying
+then the plectic p-adic invariant QA,S is the unique element of ES,⊗
+
+                                      φTate
+                                       S    (QA,S ) = pr−
+                                                        S (PA,S ).
+
+
+
+                                                   3
+                          Michele Fornea and Lennart Gehrmann
+
+Here φTate  :Eb× ! A(E b S ) denotes the tensor product of Tate’s local uniformizations. Since the
+        S      S,⊗
+                        b − is injective, we have that QA,S 6= 0 if and only if pr− (PA,S ) 6= 0.
+restriction of φTate to E
+                S        S,⊗                                                         S
+
+
+1.2 The polyquadratic setup
+For the rest of the introduction we suppose that the totally real number field F is a polyquadratic
+extension of degree 2t of a number field F◦ , i.e., F/F◦ is a Galois extension with Galois group
+G := Gal(F/F◦ ) ∼ = (Z/2Z)t . Further, we assume that E is the compositum of F with a quadratic
+CM extension E◦ /F◦ and that the following technical assumptions are satisfied.
+Assumption 1.5. We require that
+   • every non-trivial subextension of F/F◦ is ramified,
+   • all primes of F◦ that ramify in F split in E◦ ,
+
+   • the elliptic curve A/F is the base change of a modular elliptic curve A◦ defined over F◦ ,
+
+     whose conductor f◦ is unramified in F/F◦ ,
+   • the set S consists of all primes of F lying above a single prime ℘ of F◦ , totally split in F .
+
+
+Remark 1.6. The need for the first assumption is explained in Remark 4.2. The splitting in E◦
+of the primes ramified in F/F◦ is necessary to construct Heegner points on twists of A◦/F by
+characters of G, while the total splitting of the prime ℘ in F/F◦ is just a simplifying hypothesis
+for the proof of Proposition 4.5.
+
+Assumption 1.5 implies that the elliptic curve A/F is modular by quadratic base change for
+Hilbert modular forms. Moreover, we deduce that the cardinality r = |S| equals 2t , and that the
+prime ℘ is inert in E◦ /F◦ . By a small abuse of notation, we denote by ℘ the unique prime of
+E◦ lying above ℘. Since ℘ is completely split in F/F◦ , the elliptic curve A◦/F◦ has multiplicative
+reduction at ℘. Furthermore, if we set a℘ = 1 (resp. a℘ = −1) in case A◦/F◦ has split (resp. non-
+split) multiplicative reduction, we have
+                                         ap = a℘           ∀ p ∈ S.                             (1)
+Now, write the conductor f◦ of A◦/F◦ as
+                                            f◦ = ℘ · n♯◦ · n♭◦
+where n♯◦ is divisible by every prime divisor of f◦ split in E◦ /F◦ .
+Assumption 1.7 (Generalized Heegner hypothesis for (A◦ , E◦ , ℘)). We require that
+   • n♭◦ is square-free,
+                                     ♭
+   • the number of prime factors of n◦ is congruent to [F◦ : Q] modulo 2.
+
+
+Under Assumption 1.7, the sign of the functional equation for A◦/E◦ equals ε(A◦ /E◦ ) = −1.
+Hence, the BSD–conjecture predicts that A◦ (E◦ ) is non-torsion. Moreover, for any character
+η : G ! {±1}, the twist Aη◦/F◦ also fulfils the generalized Heegner hypothesis and we have
+                                           ε(Aη◦ /E◦ ) = −1
+because every prime ramified in F/F◦ splits in E◦ /F◦ by Assumption 1.5. Thus, we expect that
+                                                   ?
+                                      ralg (A/E) ⩾ [F : F◦ ] = r,
+with equality if and only if ralg (Aη◦ /E◦ ) = 1 for every character η : G ! {±1}.
+
+
+                                                       4
+                On the algebraicity of polyquadratic plectic points
+
+Remark 1.8. Under the running assumptions 1.5 and 1.7, the plectic Heegner hypothesis for
+(A, E, S) holds if and only the number of prime divisors of n♭ is even. For example, this is the
+case when the conductor f◦ of A◦/F◦ is completely split in F/F◦ .
+Remark 1.9. Simple examples satisfying all our hypotheses can be found by considering F◦ = Q,
+E◦ /Q an imaginary quadratic field, F/Q a real quadratic field, and A◦ a rational elliptic curve
+of conductor f◦ = p · q for two rational primes both inert in E◦ /Q, and with p split in F/Q.
+
+1.3 Main results
+As ℘ is completely split in F , we have for every p ∈ S canonical identifications F◦,℘ = Fp and
+                                          c◦ (E◦,℘ ) = A(E
+E◦,℘ = Ep . The resulting identifications A             b p ) are used to define the norm map
+                                      ∼ c                                    
+                      NS/℘ : b
+                             A(ES ) −−! A  ◦ (E◦,℘ )
+                                                    ⊗r
+                                                       −! SymrZp A c◦ (E◦,℘ ) ,
+where the second arrow is the canonical projection.
+                                                                            b S )± is injective.
+Remark 1.10. If ℘ is of degree one, the restriction of the norm map NS/℘ to A(E
+Under our running assumptions (1.1, 1.5, 1.7), we deduce the following theorems about plectic
+points from the known properties of Heegner points, the p-adic uniformization of Shimura curves,
+and a factorization of anticyclotomic p-adic L-functions (Corollary 4.4).
+Theorem A (Arithmetic significance). The following implication holds:
+                           
+          NS/℘ pr−S (PA,S ) 6= 0     =⇒    ralg (A/E) = r & ran (A/E) = r.
+                                                                               Vr
+Theorem B (Algebraicity). There is a quadratic extension Ω/Q and wA,S ∈              (A(E)Ω ) s.t.
+                                                              
+                      NS/℘ pr−                      −
+                              S (PA,S ) = NS/℘ prS (det(wA,S )) .
+
+Remark 1.11. Aside from the quadratic extension Ω/Q, Theorems A and B provide a proof of
+the minus part of Conjecture 1.4 in the polyquadratic setup when ℘ is of degree one. Using the
+main theorem of [HM22] one can apply the same strategy to prove the plus part of the conjecture.
+This will be explained in more detail in future work.
+Remark 1.12. The quadratic extension Ω/Q is generated by the square-root of a rational number
+that is the product of various explicit terms: Petersson norms, discriminants, Euler factors and
+special values of Dedekind zeta functions. It would be interesting to know whether that rational
+number is in fact a square. Similar questions were raised and shown to be implied by the Birch–
+Swinnerton-Dyer conjecture in [Mok10].
+                                       −
+Now, set A+/F = A/F and denote by A/F the quadratic twist of A/F with respect to the extension
+E/F . We partition S = S + ∪ S − by declaring that the subset S + ⊆ Scontains all the primes in
+S of split multiplicative reduction for A+                                    ±         ±
+                                         /F , and define ̺A (S) := max ralg (A /F ) + |S | .
+Theorem C. We also have
+                                
+                NS/℘ pr−
+                       S (PA,S ) 6= 0     ⇐⇒       ran (A/E) = r   &   ̺A (S) = r.
+Remark 1.13. If ℘ is a prime of degree one, Theorem C establishes ([FGM21], Conjecture 1.5)
+in the polyquadratic CM case.
+We note that in the main body of this article, we prove generalizations of Theorems A, B for
+plectic Stark–Heegner points associated to anticyclotomic characters of E/F that are restrictions
+of anticyclotomic characters of E◦ /F◦ .
+
+
+                                               5
+                         Michele Fornea and Lennart Gehrmann
+
+Acknowledgements
+We warmly thank Jan Vonk for the numerous conversations related to our work on plectic Stark–
+Heegner points. While working on this article, the first named author was a Simons Junior Fellow.
+
+
+                                         2. Preliminaries
+We gather some basic results on symmetric powers and completed group algebras.
+
+2.1 Symmetric powers
+Let us fix a commutative ring R. Given an R-module M and an integer n ⩾ 0 we write
+                                     M ⊗n := M ⊗R . . . ⊗R M .
+                                             |     {z       }
+                                                       n times
+
+Recall that the symmetric algebra SymR (M ) of M is the quotient of the tensor algebra
+                                               M
+                                    TR (M ) :=     M ⊗n
+                                                       n⩾0
+
+by the ideal generated by x ⊗ y − y ⊗ x for x, y ∈ M . As this ideal is graded, the natural grading
+on TR (M ) induces a grading on SymR (M ):
+                                                 M
+                                  SymR (M ) =       SymnR (M ).
+                                                   n⩾0
+
+We denote the image of an element m ∈ M ⊗n in SymnR (M ) by [m]. Given a homomorphism
+f : M ! N of R-modules we write
+                               SymnR (f ) : SymnR (M ) −! SymnR (N )
+for the induced homomorphism. If M and N are R-modules, there is a canonical isomorphism
+                            SymR (N ⊕ M ) = SymR (M ) ⊗R SymR (N )                                   (2)
+of R-algebras. Now, suppose M is a finitely generated free R-module with generators m1 , . . . , mℓ ,
+then there is an isomorphism of graded R-algebras
+                                            ∼
+                            R[x1 , . . . , xℓ ] −
+                                                −! SymR (M ),    xi 7! mi .                          (3)
+Lemma 2.1. Let R be an integrally closed domain, M a finitely generated free R-module, and
+                                 (−)2 : SymnR (M ) −! Sym2n
+                                                         R (M )
+
+the squaring map. If x, y are elements of SymnR (M ) √   and C ∈ R \ {0} is a √
+                                                                              non-zero constant
+satisfying x2 = C · y 2 , then there exists a square-root C ∈ R such that x = C · y.
+Proof. As R is an integrally closed domain, equation (3) implies that the R-algebra SymR (M )
+is                                           2
+√ one as well. Thus, the equality C = (x/y) in√the fraction field of SymR (M ) implies that
+   C := x/y is an element of SymR (M ). Moreover, C ∈ R because its square belongs to R.
+The following lemma can be easily deduced from (2) and (3).
+Lemma 2.2. Let M1 , . . . , Mn and M be finitely generated free R-modules.
+(a) The canonical map
+       µ : M1 ⊗R . . . ⊗R Mn ! SymnR (M1 ⊕ . . . ⊕ Mn ),         m1 ⊗ . . . ⊗ mn 7! [m1 ⊗ . . . ⊗ mn ]
+
+
+                                                   6
+                  On the algebraicity of polyquadratic plectic points
+
+    is injective.
+(b) The following diagram is commutative
+                                                    µ
+                                     M ⊗n ❘❘            / Symn (M ⊕n )
+                                              ❘❘❘             R
+                                                 ❘❘❘                      ⊕n
+                                                    ❘❘❘           Symn
+                                                                     R (idM )
+                                                  [−]
+                                                       ❘❘❘
+                                                           ❘)   
+                                                             SymnR (M ).
+
+2.2 Completed group algebras
+Let G = limi Gi be a topologically finitely generated commutative profinite group. Recall that
+          −
+the completed group algebra of G with coefficients in a commutative ring R is defined as
+                                        RJGK = lim R[Gi ].
+                                                  −
+We denote by (−)∨ : RJGK ! RJGK the involution induced by inversion on G. In the rest of this
+section we always consider the coefficient ring R = Zp . Let I(G) ⊆ Zp JGK be the augmentation
+ideal, i.e. the kernel of the natural map Zp JGK ։ Zp . More generally, if Q is a quotient of G by
+an open subgroup, the relative augmentation ideal is defined as
+                                    IQ (G) := ker(Zp JGK −։ Zp [Q]).
+Note that the quotients IQ (G)n /IQ (G)n+1 are modules over the group ring Zp [Q]. If Θ is an
+element of IQ (G)n , we write ∂Q
+                               n (Θ) for its image in I (G)n /I (G)n+1 . The map G ! I(G),
+                                                       Q       Q
+g 7! [g] − 1 induces an isomorphism of Zp -modules
+                                                     ∼
+                                                 −! I(G)/I(G)2 ,
+                                        G ⊗Zb Zp −                                                    (4)
+and for every integer n ⩾ 1 a surjection of Zp -modules
+                                SymnZp (G ⊗Zb Zp ) −։ I(G)n /I(G)n+1 .
+When G is a finitely generated free Zp -module, a choice of topological generators {g1 , . . . , gs }
+determines an isomorphism
+                                        ∼
+                              Zp JGK −
+                                     −! Zp Jt1 , . . . , ts K,   [gi ] 7−! ti + 1,                    (5)
+mapping the augmentation ideal to the ideal (t1 , . . . , ts ). It follows that the surjective maps
+                                                    ∼
+                                     SymnZp (G) −! I(G)n /I(G)n+1                                     (6)
+are isomorphisms for all n ⩾ 1. Furthermore, when G is a product G = H × Q with Q finite, it
+is easy to see that the canonical map
+                        I(H)n /I(H)n+1 ⊗Zp Qp −! I(G)n /I(G)n+1 ⊗Zp Qp
+is an isomorphism for all n ⩾ 1. The following lemma gives a slight generalization of this fact.
+Lemma 2.3. Let G be a finitely generated commutative profinite group, H ⩽ G an open subgroup
+that is a finitely generated Zp -module, and Q a finite quotient of G such that H ⊆ ker(G ։ Q).
+Then, the canonical Qp [Q]-linear map
+                     I(H)n /I(H)n+1 ⊗Zp Qp [Q] −! IQ (G)n /IQ (G)n+1 ⊗Zp Qp
+is injective for all n ⩾ 1.
+
+Now, both the augmentation ideal I(G) and the relative versions IQ (G) are clearly stable un-
+der (−)∨ . Equation (4) implies that (−)∨ induces multiplication with −1 on I(G)/I(G)2 and,
+
+
+                                                         7
+                         Michele Fornea and Lennart Gehrmann
+
+thus, it induces multiplication with (−1)n on I(G)n /I(G)n+1 . This observation readily implies
+the following relative statement: under the assumptions of Lemma 2.3 the following diagram
+commutes
+                       I(H)n /I(H)n+1 ⊗Zp Zp [Q]               / IQ (G)n /IQ (G)n+1              (7)
+                       (−1)n id ⊗(−)∨                                        (−)∨
+                                                                        
+                       I(H)n /I(H)n+1 ⊗Zp Zp [Q]              / IQ (G)n /IQ (G)n+1 .
+
+
+                          3. Plectic points and p-adic L-functions
+
+We begin by explaining how the construction of plectic Stark-Heegner points recovers the p-
+adic uniformization of classical Heegner points as a special case. Then, we recall the p-adic
+Gross–Zagier formula ([FG21], Theorem A) relating plectic points to derivatives of certain anti-
+cyclotomic p-adic L-functions, for which we also state precise interpolation formulas. Note that
+in this section we work in the setup of Subsection 1.1, that is, E/F is an arbitrary quadratic CM
+extension and Assumption 1.1 is supposed to hold. In particular, we never assume that we are
+in a polyquadratic situation.
+
+3.1 Plectic Stark–Heegner points
+We fix an OF -ideal c coprime to the conductor of A/F . Let Ec /E denote the anticyclotomic
+extension of conductor c defined in ([FG21], Section 4.2.1) with Galois group Gc = Gal(Ec /E).
+Recall that for any character χ : Gc ! C× its conductor is the maximal divisor cχ of c such
+that χ factors through Gc ։ Gcχ . We write Qχ for the extension of Q generated by the values
+of χ. With a small change of notation compared to ([FG21], Section 4.4), we denote the plectic
+Stark–Heegner point associated to an anticyclotomic character χ by
+                                               PχA,S ∈ b
+                                                       A(ES )Qχ .
+It follows easily from the construction of plectic Stark–Heegner points that there is an element
+                                            PGA,S
+                                               c
+                                                  ∈ b
+                                                    A(ES ) ⊗Z Q[Gc ]
+
+such that the equality χ(PGA,S
+                             c
+                               ) = PχA,S holds for any character χ : Gc ! C× of conductor c. A
+similar statement also holds for plectic p-adic invariants ([FG21], Section 4.2): there is an element
+                                            QGA,S
+                                               c   b− ⊗Z Z[Gc ]
+                                                  ∈ES,⊗
+
+such that the equality χ(QGA,S
+                            c
+                               ) = QχA,S holds for any character χ : Gc ! C× of conductor c.
+Moreover, the two elements are related by the following equation
+                                                               Gc
+                                        φTate
+                                         S    (QGA,S
+                                                  c
+                                                     ) = pr−
+                                                           S (PA,S ).                            (8)
+
+3.2 Plectic points are Heegner points when |S| = 1
+The construction of plectic Stark–Heegner points generalizes the p-adic description of classical
+Heegner points given in ([BD98], [Mok11]). In this subsection, we recall the precise relation
+between the two constructions when the set S consists of a single prime {p} and χ : Gc ! C× is
+a character of conductor c.
+We fix embeddings ιp : Q ֒! Qp and ιν : Q ֒! C respectively inducing the p-adic prime p and
+an Archimedean place ν of F . Since p is inert in E/F , it splits completely in the anticyclotomic
+
+
+                                                       8
+                 On the algebraicity of polyquadratic plectic points
+
+extension Ec /E. Thus, the embedding ιp restricts to an embedding ι℘ : Ec ֒! Ep inducing an
+injective homomorphism
+                                                    b p )Qχ .
+                                ιA,p : A(Ec )Qχ −! A(E
+We write ralg (A/E, χ) for the Qχ -dimension of the χ-component A(Ec )χQχ and define ran (A/E, χ)
+to be the order of vanishing of the L-function L(A/E, χ, s) at s = 1. As explained in ([GMM20],
+Appendix A.1.2), there exists a Heegner point PA,c ∈ A(Ec ) of conductor c, arising from a Shimura
+curve associated to the F -quaternion algebra ramified exactly at pn♭ and all Archimedean places
+different from ν, such that the image of
+                                     X
+                             PAχ :=     χ−1 (σ) · σ(PA,c ) ∈ A(Ec )χQχ                         (9)
+                                     σ∈Gc
+
+under ιA,p is a non-zero rational multiple of the plectic Stark–Heegner point associated to the
+                                        χ
+triple (A, E, {p}), i.e., there exists kA,p ∈ Q× such that:
+                                         χ                       
+                                        kA,p · PχA,{p} = ιA,p PAχ .                        (10)
+
+Proposition 3.1. Let χ : Gc ! C× be a character of conductor c. We have
+                              PχA,{p} 6= 0     ⇐⇒       ran (A/E, χ) = 1,
+
+and both statements imply ralg (A/E, χ) = 1. Moreover, if χ is not quadratic,
+                              ran (A/E, χ) = 1          =⇒      QχA,{p} 6= 0.
+
+Proof. By equation (10), the equivalence between the non-triviality of PχA,{p} and the analytic
+rank one statement follows from ([Zha01], Theorem 1.2.1), while the relation with the algebraic
+rank is a consequence of the main theorem in [Nek07]. For the second claim, we begin by noting
+that the involution A(Ec ) ! A(Ec ), P 7! P , induced by the complex conjugation associated to
+the Archimedean place ν, yields an isomorphism
+                                                   ∼             −1
+                                                   −! A(Ec )χQχ .
+                                         A(Ec )χQχ −
+Then, we observe that equations (8) and (10) imply the equality
+                                                                     
+                            χ
+                           kA,p · φTate
+                                   ℘    QχA,{p} = ιA,p PAχ − a℘ · PAχ                    (11)
+                                  
+because σ℘ ◦ ιA,p PAχ = ιA,p PAχ by ([BD98], Theorem 4.7). Now, our assumption is that
+ran (A/E, χ) = 1, and ([Zha01], Theorem 1.2.1) implies that PAχ 6= 0. When χ is not quadratic,
+                                    −1
+the intersection A(Ec )χQχ ∩ A(Ec )χQχ is trivial and the claim follows.
+
+Remark 3.2. Let χ = 1 be the trivial character and assume that ran (A/E) = 1. Using equation
+(11) and ([Mok11], Corollary 4.2), we deduce that pr−   1
+                                                    ℘ (PA,{p} ) 6= 0 is equivalent to either
+                                                                                 
+              a℘ = +1 & ralg (A/F ) = 0       or   a℘ = −1 & ralg (A/F ) = 1 .
+
+3.3 The anticyclotomic Gross–Zagier formula
+                                                                            Q
+Let Ec,S be the union of the anticyclotomic extensions of E of conductor c · p∈S pn for n ⩾ 0.
+We put Gc,S = Gal(Ec,S /E) and denote by
+                                              Ic ⊆ Zp JGc,S K
+
+
+                                                    9
+                            Michele Fornea and Lennart Gehrmann
+
+the relative augmentation ideal with respect to the quotient map Gc,S ։ Gc . Restriction of the
+global Artin homomorphism to the local components at p ∈ S induces the homomorphism
+                                           M
+                                    recS :    Ep− −! Gc,S .
+                                                p∈S
+
+Since E/F is a quadratic CM extensions, the kernel of recS is torsion and its image is an open
+subgroup of ker(Gc,S ։ Gc ). Moreover, Lemma 2.2 (a) and Lemma 2.3 imply that the map
+                                                                                             
+                                          bp− ⊗Zp . . . ⊗Zp E
+               b − ⊗Zp Zp [Gc ] −! SymrZ (E
+      d recS : E                                            bp− ) ⊗Zp Zp [Gc ] −! Icr /Icr+1
+                S,⊗                     p    1                 r                              Q
+
+is injective. Associated to the quadruple (A, S, E, c) there is the square-root p-adic L-functions
+                                           LS (A/E)c ∈ ZJGc,S K
+constructed in ([BG18], Definition 5.2) and also in ([FG21], Definition 5.7). On the one hand,
+the values of this p-adic L-function at finite order characters not satisfying certain ramification
+conditions are always equal to zero (see [FG21], Theorem 5.10), while the (squares of the) non-
+trivial values are explicitly calculated in ([BG18], Theorem 5.8). We recall the interpolation
+formula in Theorem 3.8 below. For the rest of this subsection we consider LS (A/E)c as an
+element of Zp JGc,S K. Recall that ([BG18], Theorem 5.5) shows that
+                                             LS (A/E)c ∈ Icr .
+The following is a reformulation of the main theorem of [FG21].
+Theorem 3.3 (Anticyclotomic Gross-Zagier formula). The equality
+                                                                    
+                         2r · ∂Gr c (LS (A/E)c ) = d recS (QGA,S
+                                                              c
+                                                                 )∨
+holds in (Icr /Icr+1 )Q .
+
+Interestingly, ([BG18], Proposition 5.6) allows us to describe the behaviour of LS (A/E)c under
+the involution (−)∨ in terms
+                           Q of the global root number ε(A/F ) of A/F and a product of local
+root numbers εS (A/F ) := p∈S εp (A/F ).
+
+Proposition 3.4. The equality
+                            (LS (A/E)c )∨ = ε(A/F ) · εS (A/F ) · LS (A/E)c
+holds up to multiplication with an element in Gc,S .
+
+Corollary 3.5. There exists an element g ∈ Gc such that the equality
+                                −1
+                            QχA,S = χ(g) · ε(A/F ) · εS (A/F ) · (−1)r · QχA,S
+holds. In particular, if χ = 1 is the trivial character, we have
+                            Q1A,S 6= 0    =⇒      (−1)r = ε(A/F ) · εS (A/F ).
+Proof. Thanks to the commutative diagram (7) and Theorem 3.3 we have
+                            χ−1 (d recS (QGA,S
+                                            c
+                                               )) = (−1)r χ(d recS (QGA,S
+                                                                       c
+                                                                          )∨ )
+                                                 = (−2)r χ(∂Gr c (LS (A/E)c )).
+Proposition 3.4 implies that there is g ∈ Gc such that
+                  χ(∂Gr c (LS (A/E)c )) = χ(g) · ε(A/F ) · εS (A/F ) · χ(∂Gr c LS (A/E)∨
+                                                                                       c ),
+
+
+
+                                                      10
+                  On the algebraicity of polyquadratic plectic points
+
+and applying Theorem 3.3 once more we obtain the equality
+              χ−1 (d recS (QGA,S
+                              c
+                                 )) = χ(g) · ε(A/F ) · εS (A/F ) · (−1)r · χ(d recS (QcA,S )).
+The claim now follows from the injectivity of d recS .
+Remark 3.6. Corollary 3.5 proves one implication of ([FGM21], Conjecture 1.6) in the CM case.
+
+3.4 Interpolation formula
+The square-root p-adic L-function LS (A/E)c does not interpolate values of complex L-functions
+but – as the name suggests – a choice of their square-roots.
+Definition 3.7. The anticyclotomic p-adic L-function is defined as the product
+                          LS (A/E)c := LS (A/E)c · LS (A/E)∨
+                                                           c ∈ ZJGc,S K.
+
+It is this p-adic L-function that interpolates special values of complex L-functions. We introduce
+some notation to state the interpolation property: the normalized special value of the complex
+L-function L(A/E, χ, s) at s = 1 is given by
+                                           L(A/E, χ, 1) Y
+                          Lnm (A/E, χ) :=                 ·    Cν (E, πA , χ)
+                                            L(πA , Ad, 1)
+                                                               ν|∞
+
+where L(πA , Ad, s) is the adjoint L-function of the GL2,F -automorphic representation πA at-
+tached to A/F , and Cν (E, πA , χ) is the Archimedean factor defined in ([FMP17], Section 7B).
+Since the quadratic extension E/F is CM, the factors Cν (E, πA , χ) are all equal to a fixed con-
+stant C∞ independent of ν, A/F , E and χ. Note that we always include the Archimedean Euler
+factors in the definition of the L-functions and ζ-functions that occur.
+By our assumptions, the automorphic representation πA admits a Jacquet–Langlands lift to
+group of units of the totally definite quaternion algebra B/F that is ramified exactly at those
+finite primes that divide n♭ . As B/F is totally definite, we may normalize the newform of the
+Jacquet-Langlands lift such that it takes rational values. Let fAB be the rational newform involved
+in the construction of the p-adic L-function in [BG18].
+Theorem 3.8. For all locally constant characters χ : Gc,S ! C× we have
+                         1                                                           Y
+          χ(LS (A/E)c ) = · hfAB , fAB iB · LΣA (1, ωE/F ) · LΣadd (πA , Ad, 1) ·         eq (E/F )
+                         2                                     A
+                                                                                   q∈ΣA \S
+                                       r
+                             ΣA           ∆F                        Y
+                         × ζF (2) ·           · Lnm (A/E, χ, 1) ·        Cordp (c),χp ,Ap
+                                          ∆E
+                                                                     q|pS c
+
+where
+   •   h·, ·iB denotes the Petersson inner product on automorphic forms of the unit group of B/F ,
+   • ΣA denotes the set of primes of F at which A/F has bad reduction, and Σadd    A   ⊂ ΣA the
+     subset of primes of additive reduction,
+   • ωE/F is the quadratic character associated to E/F ,
+
+   • eq (E/F ) denotes the ramification degree of q in E/F ,
+
+   • ∆F are ∆E the absolute values of the discriminants of F and E respectively,
+
+   • Cordp (c),χp ,A    ∈ Qχ are constants that only depend on the the p-adic valuation of c, the
+                     Fp
+     restriction of χp to a decomposition group at p, and the base change A/Fp .
+
+
+                                                     11
+                          Michele Fornea and Lennart Gehrmann
+
+Proof. In case the conductor of χ is exactly c this follows from ([BG18], Theorem 5.8), and the
+explicit Waldspurger formula of [FMP17]. The general case follows from the norm relations of
+([BG18], Theorem 5.8).
+
+                             4. Artin formalism for plectic points
+
+We keep the same notation as in Subsection 3.3. In addition, we assume that we are in the
+polyquadratic setup of Subsection 1.2, and that c = c · OF for some ideal c of F◦ . Let E◦,c denote
+the ring class field of conductor c and E◦,c,{℘} the union of the ring class fields of E◦ of conductor
+c℘n for n ⩾ 0. We put Gc = Gal(E◦,c /E◦ ) and Gc,℘ = Gal(E◦,c,{℘} /E◦ ), so that there are natural
+maps Gc ! Gc and Gc,S ! Gc,℘ .
+
+Assumption 4.1. We require that
+   •   every prime divisor of c is completely split in F/F◦ and unramified in E/F◦ ,
+   •   the character χ : Gc ! C× is the restriction of an anticyclotomic character ξ : Gc ! C× .
+
+Remark 4.2. Since every non-trivial subextension of F/F◦ is ramified by Assumption 1.5, re-
+quiring the ideal c to be unramified in E/F◦ implies that the fields E and E◦,c are linearly disjoint
+over E◦ . We impose the total splitting in F/F◦ of the prime divisors of c just as a simplifying
+hypothesis for the proof of Proposition 4.5.
+
+4.1 Factorization of complex L-functions
+We write G⋆ := Homgr (G, {±1}) for the Pontryagin dual of G = Gal(F/F◦ ) ∼= Gal(E/E◦ ). For
+any number field Ω we write GΩ := Gal(Q/Ω) for its absolute Galois group.
+
+Lemma 4.3. There exists an isomorphism of GF◦ -representations:
+                                 G
+                                            M     G
+                              IndGEF◦ (χ) ∼
+                                          =    IndGEF◦ (ξ · η).
+                                                               ◦
+                                                η∈G⋆
+
+Proof. First, we claim that
+                                          G
+                                                       M
+                                       IndGEE◦ (χ) ∼
+                                                   =          ξ · η.
+                                                       η∈G⋆
+
+To prove the claim note that all the characters ξ · η, for η ∈ G⋆ , have the same restriction to GE ,
+namely the character χ. By Frobenius reciprocity we have
+                                           G                         
+                        HomGE◦ ξ · η, IndGEE◦ (χ) ∼   = HomGE χ, χ 6= 0
+and, therefore, the claim follows from semi-simplicity of representations of finite groups in char-
+acteristic zero. The statement of the lemma follows from transitivity of induction.
+
+Corollary 4.4. The following equality of complex L-functions holds:
+                                           Y
+                        Lnm (A/E, χ, s) =      Lnm (Aη◦ /E◦ , ξ, s).
+                                                η∈G⋆
+
+Proof. This is a direct consequence of Lemma 4.3 and Artin formalism for complex L-functions.
+
+
+
+
+                                                 12
+                 On the algebraicity of polyquadratic plectic points
+
+4.2 Factorization of p-adic L-functions
+For each η ∈ G⋆ , the quadruple (Aη◦ , E◦ , ℘, c) fulfils the conditions of Subsection 3.3 and thus,
+we can define the p-adic L-functions
+                             L{℘} (Aη◦ /E◦ )c , L{℘} (Aη◦ /E◦ )c ∈ ZJGc,℘ K.
+Let R be a commutative ring. The homomorphism Gc,S −! Gc,℘ induces the restriction map
+                                    resS,℘ : RJGc,S K −! RJGc,℘ K
+between completed group algebras.
+
+Proposition 4.5. There is a constant C ∈ Q× such that the equality
+                                                 Y
+                       resS,℘ (LS (A/E)c ) = C ·   L{℘} (Aη◦ /E◦ )c .
+                                                           η∈G⋆
+
+holds in ZJGc,℘ K.
+
+Proof. To prove the statement it is enough to use Theorem 3.8 to show equality of both sides
+after evaluation at every finite order character of Gc,℘ . We note that the first line of the interpo-
+lation formula is a non-zero rational number and, thus, we may neglect it. By Corollary 4.4, the
+normalized special values on both sides cancel out. In addition, the local constants Cordp (c),χp ,Ap
+cancel out as well because we assumed that all the primes of F◦ dividing c℘ are totally split
+in F/F◦ . As we are taking a product over r = 2t factors on the right hand side, we see that it
+suffices to show that
+                                          r
+                                             ∆F ζF (2)
+                                                 ·
+                                             ∆E ζF◦ (2)r
+is a rational number. Using the functional equation of the Dedekind zeta function, we may rewrite
+this term as
+                                     r                    −3/2
+                                        ∆F     ζF (−1)∆F
+                                            ·                  .
+                                        ∆E ζF (−1)r ∆−3r/2
+                                                  ◦           F◦
+By the Klingen–Siegel Theorem ([Sie37], [Kli62]), the special values of the Dedekind zeta function
+(excluding the Archimedean Euler factors) at negative integers are rational. The Archimedean
+factors of ζF (s) and ζF◦ (s)r agree, so we are left to show that ∆E ∈ Q× is a square. Let ∆E/F◦
+denote the relative discriminant of E/F◦ . The formula for relative discriminants in towers gives
+                                                                   [E:F◦ ]
+                                   ∆E = NF◦ /Q (∆E/F◦ ) · ∆F◦                .
+As [E : F◦ ] is a power of 2, it suffices to show that ∆E/F◦ is a square. At this point we conclude
+the argument because ([Kha19], Theorem 1.2) implies
+                                      ∆E/F◦ = ∆rE◦ /F◦ · ∆2F/F◦
+since the relative discriminants ∆E◦ /F◦ and ∆F/F◦ are coprime by Assumption 1.5.
+
+4.3 Factorization of plectic invariants
+Recall that by Assumption 4.1 the character χ is the restriction to Gc of an anticyclotomic
+character ξ : Gc ! C× . For every η ∈ G⋆ we can consider the plectic p-adic invariant
+                                        QξAη ,{℘} ∈ E
+                                                    b◦,℘
+                                                      −
+                                                         ⊗Z Qξ
+                                           ◦
+
+
+
+
+                                                      13
+                         Michele Fornea and Lennart Gehrmann
+
+attached to the triple (Aη◦ /F◦ , ξ, {℘}). As in Subsection 1.3, we use the fixed identifications
+Ep− = E◦,℘
+        − for p ∈ S to define the norm map
+
+                                                           b− ).
+                                   b− −! (E − )⊗r −! Symr (E
+                            NS/℘ : ES,⊗    ◦,℘          Zp  ◦,℘
+
+Corollary 4.6. There exists a constant Cχ ∈ Q×
+                                             χ such that the equality
+                                       2
+                                               Y             2
+                           NS/℘ QχA,S = Cχ ·       QξAη ,{℘}
+                                                                       ◦
+                                                         η∈G⋆
+
+                b−                          χ                   ξ
+holds in Sym2r                                                                            ⋆
+            Zp (E◦,℘ )Qχ . Moreover, NS/℘ (QA,S ) 6= 0 implies QAη ,{℘} 6= 0 for all η ∈ G .
+                                                                               ◦
+
+                                                              b − )Qχ has no nilpotent elements.
+Proof. The second claim follows from the first because SymZp (E◦,℘
+By Proposition 4.5 and Proposition 3.4 there exists C ∈ Q× such that the equality
+                                                    Y
+                         resS,℘ (LS (A/E)c )2 = C ·     L{℘} (Aη◦ /E◦ )2c
+                                                         η∈G⋆
+
+holds up to multiplication by an element in Gc,℘ . Lemma 2.2 (b) implies that the diagram
+                                                d recS
+                                     b−
+                                     E                    / (I r /I r+1 )Q
+                                                             c    c
+                                      S,⊗
+
+                                  NS/℘                                resS,℘
+                                                                 
+                                                d rec℘
+                                     b−
+                                     E                    / (I r /I r+1 )Q
+                                      ◦,℘                    c    c
+
+commutes. Thus, we may conclude by invoking Theorem 3.3.
+Assume that p does not split in the field Qχ , i.e., that Qχ,p := Qχ ⊗Q Qp is a field. Then, Lemma
+2.1 allows us to deduce the following corollary.
+                                                                                        p
+Corollary 4.7. Assume that p does not split in Qχ , then there exists a square-root Cχ ∈ Q×     χ,p
+of Cχ ∈ Qχ such that the equality
+                                                p        Y ξ
+                                NS/℘ (QχA,S ) = Cχ ·         QAη ,{℘}
+                                                                        ◦
+                                                           η∈G⋆
+
+                 b◦,℘                     χ                          ξ
+holds in SymrZp (E − ) . Moreover, N
+                      Qχ
+                                                                                               ⋆
+                                    S/℘ (QA,S ) 6= 0 if and only if QAη ,{℘} 6= 0 for all η ∈ G .
+                                                                                    ◦
+
+
+
+
+              5. Algebraicity and arithmetic significance of plectic points
+We keep the same notation as in Section 4. In particular, we are in the polyquadratic CM setting
+and Assumptions 1.1, 1.5, 1.7 and 4.1 hold. Moreover, we suppose that the conductor of the
+character ξ is c. One can always achieve this by shrinking c. We have the equalities
+                                      X
+                        r• (A/E, χ) =     r• (Aη◦ /E◦ , ξ),  • ∈ {an, alg},                 (12)
+                                         η∈G⋆
+
+which imply ran (A/E, χ) ⩾ r because ran (Aη◦ /E◦ , ξ) is odd for every character η ∈ G⋆ .
+Theorem 5.1. The following implication holds:
+                      χ   
+        NS/℘ pr− S (PA,S ) 6= 0   =⇒     ralg (A/E, χ) = r                     &   ran (A/E, χ) = r.
+Suppose p does not split in Qχ and that the character χ is not quadratic, then
+                                                  χ    
+           ran (A/E, χ) = r    =⇒    NS/℘ pr− S (PA,S ) 6= 0 & ralg (A/E, χ) = r.
+
+
+
+                                                  14
+                  On the algebraicity of polyquadratic plectic points
+                                       χ    
+Proof. The non-vanishing of NS/℘ pr−                                               ⋆
+                                   S (PA,S ) implies that for every character η ∈ G the point
+      ξ                                                          ξ
+pr−
+  S (PAη◦ ,{℘} ) is non-zero by Corollary 4.6. Hence, the point PAη ,{℘} is non-zero for every η ∈ G
+                                                                                                    ⋆
+
+and, thus, Proposition 3.1 gives
+                            ralg (Aη◦ /E◦ , ξ) = ran (Aη◦ /E◦ , ξ) = 1     ∀ η ∈ G⋆ .
+The first claim follows from (12). The second claim is proved similarly using Corollary 4.7.
+                                   −
+Set A+/F = A/F and denote by A/F the quadratic twist of A/F with respect to the extension
+E/F . We partition S = S + ∪ S − by declaring that the subset S + ⊆ Scontains all the primes in
+S of split multiplicative reduction for A+                                    ±         ±
+                                         /F , and define ̺A (S) := max ralg (A /F ) + |S | .
+
+Theorem 5.2. We also have
+                                   
+                  NS/℘ pr− (P1A,S ) 6= 0         ⇐⇒           ran (A/E) = r   &    ̺A (S) = r.
+
+Proof. Under our hypotheses we either have S = S + or S = S − . For simplicity we assume that
+S = S + , or equivalently that a℘ = +1, since the other case is proved by similar arguments.
+Suppose NS/℘ pr−          1 
+                     S (PA,S ) is non-zero. By Theorem 5.1, it is enough to show that ̺S (A) = r.
+Now, Corollary 4.7 implies that pr−        1                            ⋆
+                                       ℘ (PAη◦ ,℘ ) 6= 0 for every η ∈ G , and since a℘ = +1, Remark 3.2
+tells us that ralg (Aη◦ /F◦ ) = 0 for every η ∈ G⋆ . We deduce ralg (A+ /F ) = 0 and ralg (A− /F ) = r
+as required. For the converse implication, note that the assumptions imply that ralg (Aη◦ /E◦ ) = 1
+and ralg (Aη◦ /F◦ ) = 0 for every η ∈ G⋆ . Then, Remark 3.2 shows that pr−             1
+                                                                                   ℘ (PAη◦ ,℘ ) 6= 0 for every
+       ⋆
+η ∈ G and the claim follows from Corollary 4.7.
+
+As in Subsection 3.2 we fix an embedding ι℘ : E◦,c ֒! E◦,℘ extending the canonical embedding
+E◦ ֒! E◦,℘ . Furthermore, we choose an embedding ιp1 : Ec ֒! Ep1 that restricts to the chosen
+embedding ι℘ as well as to the canonical embedding E ֒! Ep1 . Under our assumptions, the
+fields E and E◦,c are linearly disjoint over E◦ , thus for every p ∈ S we can choose an element
+τp ∈ Gal(Ec /E◦,c ) whose restriction to Gal(E/E◦ ) ∼= G sends p to p1 , and such that ιp := ιp1 ◦ τp
+                                                                                V
+corresponds to the prime p. Then, we define the determinant map det : r(A(Ec )Q ) ! A(E     b S )Q
+by setting
+                                                                               
+                                                  ιA,p1 (P1 ) . . . ιA,pr (P1 )
+                                                     ..      ..        ..     
+                     det P1 ∧ · · · ∧ Pr = det         .         .       .     .
+                                                  ιA,p1 (Pr ) . . . ιA,pr (Pr )
+For every η ∈ G⋆ we may view Aη◦ (E◦,c ) as a subgroup of A(Ec ), and by construction we have
+                            ιA,p (P ) = η(τp ) · ιAη◦ ,℘ (P )      ∀ P ∈ Aη◦ (E◦,c ).                    (13)
+
+Theorem 5.3. Suppose p does not split in Qχ . There exists a quadratic extension Ωχ /Qχ , in
+                                      V
+                                χ
+which p splits, and an element wA,S ∈ r(A(Ec )χΩχ ) such that
+                                      χ                      χ    
+                          NS/℘ pr−                      −
+                                  S (PA,S ) = NS/℘ prS (det(wA,S ))
+
+           b ◦,℘ ))Qχ .
+in SymrZp (A(E
+
+Proof. We choose an ordering η{1}, . . . , η{r} of the elements of the character group G⋆ . For
+η ∈ G⋆ we consider the Heegner point PAξ η of equation (9), and set
+                                                 ◦
+
+                                        χ
+                                      eA,S
+                                      w    := P ξ η{1} ∧ . . . ∧ P ξ η{r} .
+                                               A     ◦            A    ◦
+
+
+
+
+                                                         15
+                          Michele Fornea and Lennart Gehrmann
+
+Using (13), the formula for the determinant gives
+                                                                                                    !
+                       χ               X                           ξ                 ξ        
+          NS/℘       eA,S
+                 det(w    ) = NS/℘             sgn(σ) · ιp1 P η{σ(1)} ⊗ . . . ⊗ ιpr P η{σ(r)}
+                                                                   A◦                 A◦
+                                        σ∈Sr
+                                      Y                   
+                             = CG ·          ιAη◦ ,℘ PAξ η ,
+                                                        ◦
+                                      η∈G⋆
+
+where
+                                        X                   r
+                                                            Y
+                                CG :=           sgn(σ) ·          η{σ(i)}(τpi )
+                                        σ∈Sr                i=1
+is the determinant of the character table of the group G. By orthogonality of characters, the
+                                                                 ξ
+determinant is non-zero. In fact, it is equal to ±r r/2 . Let kA   η    ∈ Q× be the constants appearing
+            p                                                      ◦ ,℘
+in (10), and Cχ ∈ Q×  χ,p the constant appearing in Corollary 4.7. By setting
+                                                 p
+                                   χ               Cχ                 χ
+                                wA,S :=         Q         ξ
+                                                                 ·weA,S
+                                           CG · η∈G⋆ kA     η
+                                                              ,℘   ◦
+
+we get that
+                                       χ     p     Y ξ
+                             NS/℘ det(wA,S ) = Cχ ·  PAη ,{℘} .
+                                                                            ◦
+                                                                    η∈G⋆
+The claim follows from Corollary 4.7 after applying the minus projector on both sides.
+
+
+References
+BD98     M. Bertolini and H. Darmon. Heegner points, p-adic L-functions, and the Cerednik-Drinfeld
+         uniformization. Invent. Math., 131(3):453–491, 1998.
+BG18     F. Bergunde and L. Gehrmann. Leading terms of anticyclotomic Stickelberger elements and
+         p-adic periods. Trans. Amer. Math. Soc., 370(9):6297–6329, 2018.
+Dar01    H. Darmon. Integration on Hp × H and arithmetic applications. Ann. of Math. (2), 154(3):589–
+         639, 2001.
+FG21     M. Fornea and L. Gehrmann. Plectic Stark-Heegner points. Preprint, 2021.
+FGM21    M. Fornea, X. Guitart, and M. Masdeu. Plectic p-adic invariants. preprint, 2021.
+FMP17    D. File, K. Martin, and A. Pitale. Test vectors and central L-values for GL(2). Algebra Number
+         Theory, 11(2):253–318, 2017.
+GMM20 X. Guitart, M. Masdeu, and S. Molina. An automorphic approach to Darmon points. Indiana
+      Univ. Math. J., 69(4):1251–1274, 2020.
+HM22     V. Hernández and S. Molina. Plectic points and Hida-Rankin p-adic L-functions. preprint,
+         2022.
+Kha19    S. K. Khanduja. The discriminant of compositum of algebraic number fields. Int. J. Number
+         Theory, 15(2):353–360, 2019.
+Kli62    H. Klingen.   Über die Werte der Dedekindschen Zetafunktion.            Math. Ann., 145:265–272,
+         1961/62.
+Mok10    C. P. Mok. Special values of L-functions of elliptic curves over Q and their base change to real
+         quadratic fields. J. Number Theory, 130(2):431–438, 2010.
+Mok11    C. P. Mok. Heegner points and p-adic L-functions for elliptic curves over certain totally real
+         fields. Comment. Math. Helv., 86(4):867–945, 2011.
+
+
+
+                                                      16
+               On the algebraicity of polyquadratic plectic points
+
+Nek07   J. Nekovář. The Euler system method for CM points on Shimura curves, page 471–547. London
+        Mathematical Society Lecture Note Series. Cambridge University Press, 2007.
+Nek16   J. Nekovár. Some remarks on the BSD conjecture. Rubinfest’s talk at Harvard, 2016.
+NS16    J. Nekovář and A. J. Scholl. Introduction to plectic cohomology. In Advances in the theory
+        of automorphic forms and their L-functions, volume 664 of Contemp. Math., pages 321–337.
+        Amer. Math. Soc., Providence, RI, 2016.
+Sie37   C. L. Siegel. Über die analytische Theorie der quadratischen Formen. III. Ann. of Math. (2),
+        38(1):212–291, 1937.
+Zha01   S. Zhang. Gross-Zagier formula for GL2 . Asian J. Math., 5(2):183–290, 2001.
+
+Michele Fornea mfornea@math.columbia.edu
+Columbia University, New York, USA.
+
+Lennart Gehrmann lennart.gehrmann@uni-due.de
+Universität Duisburg-Essen, Essen, Germany.
+
+
+
+
+                                                17
+

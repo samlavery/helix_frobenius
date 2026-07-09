@@ -1,0 +1,334 @@
+====================================================================================
+THE TWIST-FAMILY CENSUS — congruent-number family E_n: y^2 = x^3 - n^2 x
+squarefree 1 <= n <= 300;  base bank a_p(E_1) point-counted to p <= 1e+05
+====================================================================================
+
+[TIER: anchor-verified]  (1) ONE-PASS BANK + ANCHOR GATE
+------------------------------------------------------------------------------------
+  base bank built: 9591 good primes (3 <= p <= 1e+05)
+  GATE: ALL PASS — proceeding
+
+  family size: 183 squarefree n in [1, 300]
+
+[TIER: measured]  (2) CENSUS AT SCALE — smooth-entry DC S_w(X) on every twist
+------------------------------------------------------------------------------------
+  calibration on anchors [1, 2, 3, 5, 6, 7, 34] (ranks [0, 0, 0, 1, 1, 1, 2]):
+    S = A + B*rank,  A = 3.3107, B = -8.7878 per unit rank,  fit R^2 = 0.9411
+    (B<0 expected: Nagao/Mestre — deeper negative census = higher rank)
+  SCALE LIMITATION (state plainly): this is a SINGLE affine map (one A, one B) for
+  the whole family, but the conductor varies as N = 32 n^2 across it.  The rank
+  signal sits in primes p up to ~sqrt(N) (the analytic-conductor scale); with a
+  FIXED census height X=1e5 the window covers that scale amply for small n but only
+  a shrinking fraction of it as n grows (sqrt(N) ~ 6n reaches ~1800 at n=300, ~3000
+  at n=500).  So the rank-signal amplitude per unit rank SHRINKS with n while B is
+  held constant, and the fixed B under-reads high-n curves — this is why ~2/3 of
+  reads land in the 0/1-boundary 'unresolved' tier (below).  The signal is real
+  (parity/Tunnell never contradicted); the calibration simply does not transfer
+  across the conductor range.  LIKELY FIX (not implemented here): conductor-aware
+  calibration B(X, N) — fit the slope as a function of the analytic conductor, or
+  scale the census height per twist to hold X/sqrt(N) fixed.
+
+  RECALL on known-rank curves (held-out = not in calibration set):
+        n r_mod8 true r   S_w(1e5)   read r  margin  land      role
+        1      1      0     0.0000    0.377   0.377     *     calib
+        2      2      0     4.5589    0.000   0.000     *     calib
+        3      3      0     5.0829    0.000   0.000     *     calib
+        5      5      1    -4.7130    0.913   0.087     *     calib
+        6      6      1    -5.9078    1.049   0.049     *     calib
+        7      7      1    -5.2299    0.972   0.028     *     calib
+       10      2      0     6.1605    0.000   0.000     *  HELD-OUT
+       11      3      0     8.7093    0.000   0.000     *  HELD-OUT
+       13      5      1    -3.9868    0.830   0.170     *  HELD-OUT
+       14      6      1    -6.1475    1.076   0.076     *  HELD-OUT
+       15      7      1    -6.6779    1.137   0.137     *  HELD-OUT
+       17      1      0     5.4465    0.000   0.000     *  HELD-OUT
+       19      3      0     9.7129    0.000   0.000     *  HELD-OUT
+       21      5      1    -4.1801    0.852   0.148     *  HELD-OUT
+       23      7      1    -4.5324    0.892   0.108     *  HELD-OUT
+       34      2      2   -14.5553    2.033   0.033     *     calib
+       41      1      2   -14.9239    2.075   0.075     *  HELD-OUT
+       65      1      2   -13.8731    1.955   0.045     *  HELD-OUT
+  HELD-OUT RECALL (blind, clamped): 11/11
+
+  Parity-projected recall (theorem-informed read: snap to nearest correct-parity int):
+    PARITY-PROJECTED RECALL on all 18 known-rank anchors: 18/18
+
+[TIER: register-face, pre-committed]  (3) PROVEN CROSS-CHECKS on every twist
+------------------------------------------------------------------------------------
+  A register HIT is reserved for a CONFIDENT contradiction of a theorem — the
+  blind census landing cleanly (|read-int|<0.25) on an integer whose parity
+  contradicts w, OR far (>1) from every correct-parity integer.  Near-boundary
+  reads (census cannot resolve 0 vs 1) are tiered UNRESOLVED, not hits.
+  (a) ROOT NUMBER parity: blind read parity vs w(E_n) sign (theorem, Nekovar et al).
+  (b) TUNNELL: census confidently rank>=1 but Tunnell's finite counts FORBID it.
+
+  TERMINOLOGY (two INDEPENDENT registers; a row can flag one and not the other):
+   * PARITY register -> the full-table 'par-tier' column.  Its value is 'HIT' ONLY
+     for a confident PARITY contradiction; those are the 'PARITY register CONFIDENT
+     hits' count below (= 0 here).  Boundary reads show 'unresolved'/'unresolved-bdy'/
+     'undershoot-floor', NOT 'HIT'.
+   * TUNNELL register -> the full-table 'tun' column.  Its 'HIT' marks a confident
+     Tunnell OVERSHOOT (census r>=1 where Tunnell's identity forbids congruence).
+     These ARE real instrument overshoots, all corrected to rank 0 by the theorem.
+   So e.g. rows n=67,473,499 print par-tier='unresolved-bdy' AND tun='HIT': the
+   census reads ~0.9-1.0 (parity cannot tell 0 from 1, hence unresolved), but the
+   sharper Tunnell theorem RESOLVES it to rank 0 and flags the overshoot.  'PARITY
+   CONFIDENT hits: 0' and the per-row Tunnell 'HIT' flags are therefore consistent.
+
+  ROOT-NUMBER PARITY register: 0 confident hit(s)
+    (resolved & parity-consistent: 65;  unresolved near 0/1 boundary: 118)
+    ZERO confident hits — no clean rank read contradicts the functional-equation
+    sign.  Every parity mismatch is a near-0/1-boundary read the census cannot
+    resolve; none lands cleanly on a wrong-parity integer far from a correct one.
+
+  TUNNELL register: 4 blind-census overshoot(s) caught
+    These are BLIND-CENSUS instrument overshoots, not theorem failures: the
+    census rounds a rank-0 curve up to 1 near the 0/1 boundary, and Tunnell's
+    UNCONDITIONAL count (identity FAILS => not congruent => rank 0) forbids it.
+    Tunnell is the ground truth; the theorem-informed read corrects each to 0:
+    [OVERSHOOT] n=67: blind census r=1 (0.914); Tunnell counts ('odd', 4, 12) => 2*4=8 != 12 => rank 0.  Corrected read: 0.
+    [OVERSHOOT] n=83: blind census r=1 (1.200); Tunnell counts ('odd', 20, 36) => 2*20=40 != 36 => rank 0.  Corrected read: 0.
+    [OVERSHOOT] n=139: blind census r=1 (0.946); Tunnell counts ('odd', 20, 36) => 2*20=40 != 36 => rank 0.  Corrected read: 0.
+    [OVERSHOOT] n=179: blind census r=1 (1.129); Tunnell counts ('odd', 28, 60) => 2*28=56 != 60 => rank 0.  Corrected read: 0.
+    (Same 0/1-boundary resolution limit as the parity 'unresolved' tier; here
+    the sharper Tunnell theorem RESOLVES the boundary and fixes the census.)
+  Tunnell-informed correction: 9 census read(s) with r>=1 where Tunnell forbids congruence forced to rank 0
+    (of these, 4 were CONFIDENT overshoots |read-int|<0.25; the rest are boundary reads Tunnell also cleans up)
+  residual theorem contradictions after parity+Tunnell projection: 0
+
+  Tunnell/root-number theorem cross-check: 167/183 agree
+    (every w=-1 twist has Tunnell's identity HOLD, as parity requires; w=+1 twists split rank-0/rank-2)
+
+  RANK-2 cross-check (Tunnell+parity force rank 2 vs blind census r>=2):
+    proven rank-2 candidates (16): [34, 41, 65, 137, 138, 145, 154, 161, 194, 210, 219, 226, 257, 265, 291, 299]
+    census r>=2 reads       (16): [34, 41, 65, 137, 138, 145, 154, 161, 194, 210, 219, 226, 257, 265, 291, 299]
+    EXACT MATCH — the DC census reproduces the proven rank-2 set with no false
+    positives and no misses. (blind instrument = two theorems, independently.)
+
+[TIER: measured]  (4) GOLDFELD FACE — measured rank distribution across family
+------------------------------------------------------------------------------------
+  BLIND census read (clamp<0 to 0, nearest integer), swept over census height X:
+    X=  1e+03: avg rank = 0.4372  |  rank0 62.3%  rank1 31.7%  rank>=2 6.0%  |  hist [114, 58, 11]
+    X=  1e+04: avg rank = 0.5519  |  rank0 53.0%  rank1 38.8%  rank>=2 8.2%  |  hist [97, 71, 15]
+    X=  1e+05: avg rank = 0.6011  |  rank0 48.6%  rank1 42.6%  rank>=2 8.7%  |  hist [89, 78, 16]
+  PARITY-PROJECTED read (snap blind read to nearest correct-parity int, X=1e5):
+    avg rank = 0.7322  |  rank0 37.7%  rank1 51.4%  rank>=2 10.9%  |  hist [69, 94, 20]
+  Root-number split (exact, a theorem): w=+1 (even rank) 89 = 48.6%,  w=-1 (odd rank>=1) 94 = 51.4%
+  Goldfeld conjecture: average analytic rank -> 1/2, densities 50/50 rank 0/1,
+  higher ranks density zero.  The exact w-split IS Goldfeld's 50/50 in the limit;
+  the census measures the rank WITHIN each parity class (0-vs-2, 1-vs-3).
+  *** DO NOT READ AS EVIDENCE AGAINST GOLDFELD ***
+  The parity-projected average rank (0.732) and the 20 rank->=2 reads are
+  MEASUREMENT-BIAS-DOMINATED, not arithmetic.  The single-B calibration (see the
+  SCALE LIMITATION note above) inflates borderline rank-1 reads upward and, because
+  parity-projection snaps a ~1.6 read to 2, manufactures spurious rank-2 counts at
+  large n.  The TRUE rank-2 density in this range is FAR below the ~10-14% shown here
+  (proven rank-2, via Tunnell+parity, is only the 16-of-183 = 8.7% at N<=300 that the
+  RANK-2 cross-check confirms; the excess above that is instrument bias).  The single
+  defensible Goldfeld-facing number is the EXACT root-number split (~49/51), which is
+  a theorem, not a measurement; the census rank magnitudes here are NOT a test of
+  Goldfeld's density claim and must not be cited as one.
+
+====================================================================================
+FULL CENSUS TABLE (n, n mod 8, w, S_w, blind read, margin, parity-tier, Tunnell)
+------------------------------------------------------------------------------------
+     n  m8   w        S_w    read   marg        par-tier  tun  tun_id           counts
+     1   1  +1     0.0000   0.377  0.377      unresolved   OK    fail          odd:2,2
+     2   2  +1     4.5589   0.000  0.000 undershoot-floor   OK    fail         even:2,2
+     3   3  +1     5.0829   0.000  0.000 undershoot-floor   OK    fail          odd:4,4
+     5   5  -1    -4.7130   0.913  0.087     resolved-OK   OK    hold          odd:0,0
+     6   6  -1    -5.9078   1.049  0.049     resolved-OK   OK    hold         even:0,0
+     7   7  -1    -5.2299   0.972  0.028     resolved-OK   OK    hold          odd:0,0
+    10   2  +1     6.1605   0.000  0.000 undershoot-floor   OK    fail         even:4,4
+    11   3  +1     8.7093   0.000  0.000 undershoot-floor   OK    fail         odd:4,12
+    13   5  -1    -3.9868   0.830  0.170     resolved-OK   OK    hold          odd:0,0
+    14   6  -1    -6.1475   1.076  0.076     resolved-OK   OK    hold         even:0,0
+    15   7  -1    -6.6779   1.137  0.137     resolved-OK   OK    hold          odd:0,0
+    17   1  +1     5.4465   0.000  0.000 undershoot-floor   OK    fail         odd:4,16
+    19   3  +1     9.7129   0.000  0.000 undershoot-floor   OK    fail         odd:4,12
+    21   5  -1    -4.1801   0.852  0.148     resolved-OK   OK    hold          odd:0,0
+    22   6  -1    -2.9486   0.712  0.288      unresolved   OK    hold         even:0,0
+    23   7  -1    -4.5324   0.892  0.108     resolved-OK   OK    hold          odd:0,0
+    26   2  +1    10.3358   0.000  0.000 undershoot-floor   OK    fail        even:4,12
+    29   5  -1    -2.7705   0.692  0.308      unresolved   OK    hold          odd:0,0
+    30   6  -1    -5.3444   0.985  0.015     resolved-OK   OK    hold         even:0,0
+    31   7  -1    -5.6419   1.019  0.019     resolved-OK   OK    hold          odd:0,0
+    33   1  +1    10.1015   0.000  0.000 undershoot-floor   OK    fail        odd:12,16
+    34   2  +1   -14.5553   2.033  0.033     resolved-OK   OK    hold         even:4,8
+    35   3  +1     9.9330   0.000  0.000 undershoot-floor   OK    fail         odd:8,24
+    37   5  -1    -1.8743   0.590  0.410      unresolved   OK    hold          odd:0,0
+    38   6  -1    -4.0236   0.835  0.165     resolved-OK   OK    hold         even:0,0
+    39   7  -1    -3.5813   0.784  0.216     resolved-OK   OK    hold          odd:0,0
+    41   1  +1   -14.9239   2.075  0.075     resolved-OK   OK    hold        odd:16,32
+    42   2  +1     6.0862   0.000  0.000 undershoot-floor   OK    fail         even:0,8
+    43   3  +1     4.8191   0.000  0.000 undershoot-floor   OK    fail        odd:12,12
+    46   6  -1    -5.8979   1.048  0.048     resolved-OK   OK    hold         even:0,0
+    47   7  -1    -4.2194   0.857  0.143     resolved-OK   OK    hold          odd:0,0
+    51   3  +1     9.1025   0.000  0.000 undershoot-floor   OK    fail        odd:16,24
+    53   5  -1    -1.2015   0.513  0.487      unresolved   OK    hold          odd:0,0
+    55   7  -1    -1.6445   0.564  0.436      unresolved   OK    hold          odd:0,0
+    57   1  +1    10.3339   0.000  0.000 undershoot-floor   OK    fail        odd:12,16
+    58   2  +1     7.3276   0.000  0.000 undershoot-floor   OK    fail         even:4,4
+    59   3  +1    -0.5939   0.444  0.444      unresolved   OK    fail        odd:20,36
+    61   5  -1    -4.6113   0.901  0.099     resolved-OK   OK    hold          odd:0,0
+    62   6  -1    -2.3608   0.645  0.355      unresolved   OK    hold         even:0,0
+    65   1  +1   -13.8731   1.955  0.045     resolved-OK   OK    hold        odd:16,32
+    66   2  +1     5.5176   0.000  0.000 undershoot-floor   OK    fail        even:4,16
+    67   3  +1    -4.7183   0.914  0.086  unresolved-bdy  HIT    fail         odd:4,12
+    69   5  -1    -3.8503   0.815  0.185     resolved-OK   OK    hold          odd:0,0
+    70   6  -1    -6.0421   1.064  0.064     resolved-OK   OK    hold         even:0,0
+    71   7  -1     0.4905   0.321  0.321      unresolved   OK    hold          odd:0,0
+    73   1  +1     8.4772   0.000  0.000 undershoot-floor   OK    fail        odd:12,16
+    74   2  +1     3.0835   0.026  0.026     resolved-OK   OK    fail       even:12,20
+    77   5  -1    -3.3028   0.753  0.247     resolved-OK   OK    hold          odd:0,0
+    78   6  -1    -2.0129   0.606  0.394      unresolved   OK    hold         even:0,0
+    79   7  -1    -5.2128   0.970  0.030     resolved-OK   OK    hold          odd:0,0
+    82   2  +1    11.9471   0.000  0.000 undershoot-floor   OK    fail         even:8,8
+    83   3  +1    -7.2372   1.200  0.200  unresolved-bdy  HIT    fail        odd:20,36
+    85   5  -1    -3.3260   0.755  0.245     resolved-OK   OK    hold          odd:0,0
+    86   6  -1    -2.0804   0.613  0.387      unresolved   OK    hold         even:0,0
+    87   7  -1    -1.6520   0.565  0.435      unresolved   OK    hold          odd:0,0
+    89   1  +1    10.9131   0.000  0.000 undershoot-floor   OK    fail        odd:20,48
+    91   3  +1    10.3989   0.000  0.000 undershoot-floor   OK    fail         odd:8,24
+    93   5  -1    -4.0845   0.842  0.158     resolved-OK   OK    hold          odd:0,0
+    94   6  -1    -4.0903   0.842  0.158     resolved-OK   OK    hold         even:0,0
+    95   7  -1    -2.7252   0.687  0.313      unresolved   OK    hold          odd:0,0
+    97   1  +1     6.6434   0.000  0.000 undershoot-floor   OK    fail         odd:4,16
+   101   5  -1    -4.9189   0.936  0.064     resolved-OK   OK    hold          odd:0,0
+   102   6  -1    -2.4721   0.658  0.342      unresolved   OK    hold         even:0,0
+   103   7  -1    -1.9368   0.597  0.403      unresolved   OK    hold          odd:0,0
+   105   1  +1     6.2812   0.000  0.000 undershoot-floor   OK    fail         odd:8,32
+   106   2  +1     4.9872   0.000  0.000 undershoot-floor   OK    fail        even:4,12
+   107   3  +1    11.9249   0.000  0.000 undershoot-floor   OK    fail        odd:12,36
+   109   5  -1     2.0935   0.139  0.139  unresolved-bdy   OK    hold          odd:0,0
+   110   6  -1    -4.2776   0.863  0.137     resolved-OK   OK    hold         even:0,0
+   111   7  -1     1.8298   0.169  0.169  unresolved-bdy   OK    hold          odd:0,0
+   113   1  +1     9.4236   0.000  0.000 undershoot-floor   OK    fail        odd:24,32
+   114   2  +1    12.3470   0.000  0.000 undershoot-floor   OK    fail       even:12,16
+   115   3  +1     7.2082   0.000  0.000 undershoot-floor   OK    fail         odd:8,24
+   118   6  -1    -0.6741   0.453  0.453      unresolved   OK    hold         even:0,0
+   119   7  -1    -4.5776   0.898  0.102     resolved-OK   OK    hold          odd:0,0
+   122   2  +1    -2.3058   0.639  0.361      unresolved   OK    fail       even:12,20
+   123   3  +1     2.8122   0.057  0.057     resolved-OK   OK    fail         odd:8,24
+   127   7  -1    -2.4866   0.660  0.340      unresolved   OK    hold          odd:0,0
+   129   1  +1     5.4842   0.000  0.000 undershoot-floor   OK    fail        odd:20,48
+   130   2  +1    12.0361   0.000  0.000 undershoot-floor   OK    fail         even:8,8
+   131   3  +1    13.5259   0.000  0.000 undershoot-floor   OK    fail        odd:36,60
+   133   5  -1    -2.3790   0.647  0.353      unresolved   OK    hold          odd:0,0
+   134   6  -1    -3.8402   0.814  0.186     resolved-OK   OK    hold         even:0,0
+   137   1  +1   -12.3589   1.783  0.217     resolved-OK   OK    hold        odd:16,32
+   138   2  +1   -14.4753   2.024  0.024     resolved-OK   OK    hold        even:8,16
+   139   3  +1    -5.0061   0.946  0.054  unresolved-bdy  HIT    fail        odd:20,36
+   141   5  -1     1.3081   0.228  0.228  unresolved-bdy   OK    hold          odd:0,0
+   142   6  -1    -0.3829   0.420  0.420      unresolved   OK    hold         even:0,0
+   143   7  -1    -4.7258   0.915  0.085     resolved-OK   OK    hold          odd:0,0
+   145   1  +1   -11.7258   1.711  0.289      unresolved   OK    hold        odd:16,32
+   146   2  +1    12.0338   0.000  0.000 undershoot-floor   OK    fail       even:12,32
+   149   5  -1     0.5351   0.316  0.316      unresolved   OK    hold          odd:0,0
+   151   7  -1     0.9172   0.272  0.272      unresolved   OK    hold          odd:0,0
+   154   2  +1   -14.1965   1.992  0.008     resolved-OK   OK    hold        even:8,16
+   155   3  +1    13.3604   0.000  0.000 undershoot-floor   OK    fail        odd:32,48
+   157   5  -1    -3.3388   0.757  0.243     resolved-OK   OK    hold          odd:0,0
+   158   6  -1    -1.5517   0.553  0.447      unresolved   OK    hold         even:0,0
+   159   7  -1    -4.6259   0.903  0.097     resolved-OK   OK    hold          odd:0,0
+   161   1  +1   -15.0263   2.087  0.087     resolved-OK   OK    hold        odd:32,64
+   163   3  +1    12.5970   0.000  0.000 undershoot-floor   OK    fail        odd:12,12
+   165   5  -1    -6.6700   1.136  0.136     resolved-OK   OK    hold          odd:0,0
+   166   6  -1    -0.7839   0.466  0.466      unresolved   OK    hold         even:0,0
+   167   7  -1     2.0622   0.142  0.142  unresolved-bdy   OK    hold          odd:0,0
+   170   2  +1    11.0993   0.000  0.000 undershoot-floor   OK    fail       even:16,24
+   173   5  -1    -3.7127   0.799  0.201     resolved-OK   OK    hold          odd:0,0
+   174   6  -1    -2.7312   0.688  0.312      unresolved   OK    hold         even:0,0
+   177   1  +1     0.6336   0.305  0.305      unresolved   OK    fail        odd:12,16
+   178   2  +1     8.7469   0.000  0.000 undershoot-floor   OK    fail        even:4,16
+   179   3  +1    -6.6086   1.129  0.129  unresolved-bdy  HIT    fail        odd:28,60
+   181   5  -1     2.1792   0.129  0.129  unresolved-bdy   OK    hold          odd:0,0
+   182   6  -1    -3.9418   0.825  0.175     resolved-OK   OK    hold         even:0,0
+   183   7  -1    -3.5326   0.779  0.221     resolved-OK   OK    hold          odd:0,0
+   185   1  +1    14.2319   0.000  0.000 undershoot-floor   OK    fail        odd:40,64
+   186   2  +1    10.7875   0.000  0.000 undershoot-floor   OK    fail        even:8,24
+   187   3  +1     2.2317   0.123  0.123     resolved-OK   OK    fail        odd:16,24
+   190   6  -1     1.7150   0.182  0.182  unresolved-bdy   OK    hold         even:0,0
+   191   7  -1    -4.6127   0.902  0.098     resolved-OK   OK    hold          odd:0,0
+   193   1  +1     2.3978   0.104  0.104     resolved-OK   OK    fail         odd:4,16
+   194   2  +1   -10.8449   1.611  0.389      unresolved   OK    hold       even:20,40
+   195   3  +1    14.5898   0.000  0.000 undershoot-floor   OK    fail        odd:16,48
+   197   5  -1     0.9767   0.266  0.266      unresolved   OK    hold          odd:0,0
+   199   7  -1    -0.3791   0.420  0.420      unresolved   OK    hold          odd:0,0
+   201   1  +1     2.6160   0.079  0.079     resolved-OK   OK    fail        odd:20,48
+   202   2  +1    -2.8843   0.705  0.295      unresolved   OK    fail        even:4,12
+   203   3  +1    11.6846   0.000  0.000 undershoot-floor   OK    fail        odd:32,48
+   205   5  -1    -2.1959   0.627  0.373      unresolved   OK    hold          odd:0,0
+   206   6  -1    -3.0889   0.728  0.272      unresolved   OK    hold         even:0,0
+   209   1  +1     3.0795   0.026  0.026     resolved-OK   OK    fail        odd:44,80
+   210   2  +1   -12.0558   1.749  0.251      unresolved   OK    hold        even:8,16
+   211   3  +1    -8.6648   1.363  0.363      unresolved   OK    fail        odd:20,36
+   213   5  -1    -5.4574   0.998  0.002     resolved-OK   OK    hold          odd:0,0
+   214   6  -1    -0.3827   0.420  0.420      unresolved   OK    hold         even:0,0
+   215   7  -1    -0.7165   0.458  0.458      unresolved   OK    hold          odd:0,0
+   217   1  +1    13.0789   0.000  0.000 undershoot-floor   OK    fail         odd:8,32
+   218   2  +1    15.4929   0.000  0.000 undershoot-floor   OK    fail        even:4,20
+   219   3  +1   -13.8022   1.947  0.053     resolved-OK   OK    hold        odd:24,48
+   221   5  -1    -3.4938   0.774  0.226     resolved-OK   OK    hold          odd:0,0
+   222   6  -1    -3.9153   0.822  0.178     resolved-OK   OK    hold         even:0,0
+   223   7  -1    -0.1787   0.397  0.397      unresolved   OK    hold          odd:0,0
+   226   2  +1   -13.6007   1.924  0.076     resolved-OK   OK    hold        even:8,16
+   227   3  +1    -8.6076   1.356  0.356      unresolved   OK    fail        odd:28,60
+   229   5  -1     1.8530   0.166  0.166  unresolved-bdy   OK    hold          odd:0,0
+   230   6  -1    -5.0718   0.954  0.046     resolved-OK   OK    hold         even:0,0
+   231   7  -1    -0.1659   0.396  0.396      unresolved   OK    hold          odd:0,0
+   233   1  +1    -0.8990   0.479  0.479      unresolved   OK    fail        odd:20,48
+   235   3  +1    -0.8723   0.476  0.476      unresolved   OK    fail         odd:8,24
+   237   5  -1    -4.1228   0.846  0.154     resolved-OK   OK    hold          odd:0,0
+   238   6  -1    -5.7582   1.032  0.032     resolved-OK   OK    hold         even:0,0
+   239   7  -1    -6.7927   1.150  0.150     resolved-OK   OK    hold          odd:0,0
+   241   1  +1     3.7441   0.000  0.000 undershoot-floor   OK    fail        odd:28,48
+   246   6  -1    -5.3226   0.982  0.018     resolved-OK   OK    hold         even:0,0
+   247   7  -1    -3.5796   0.784  0.216     resolved-OK   OK    hold          odd:0,0
+   249   1  +1     0.4854   0.322  0.322      unresolved   OK    fail        odd:20,48
+   251   3  +1    10.1908   0.000  0.000 undershoot-floor   OK    fail        odd:36,84
+   253   5  -1    -1.3354   0.529  0.471      unresolved   OK    hold          odd:0,0
+   254   6  -1     1.5240   0.203  0.203  unresolved-bdy   OK    hold         even:0,0
+   255   7  -1    -1.6063   0.560  0.440      unresolved   OK    hold          odd:0,0
+   257   1  +1   -11.6751   1.705  0.295      unresolved   OK    hold        odd:32,64
+   258   2  +1     6.8250   0.000  0.000 undershoot-floor   OK    fail       even:12,16
+   259   3  +1    11.4429   0.000  0.000 undershoot-floor   OK    fail        odd:16,48
+   262   6  -1     1.2363   0.236  0.236  unresolved-bdy   OK    hold         even:0,0
+   263   7  -1    -2.9329   0.710  0.290      unresolved   OK    hold          odd:0,0
+   265   1  +1   -14.2325   1.996  0.004     resolved-OK   OK    hold        odd:16,32
+   266   2  +1    13.1007   0.000  0.000 undershoot-floor   OK    fail       even:16,40
+   267   3  +1    -1.7813   0.579  0.421      unresolved   OK    fail        odd:16,24
+   269   5  -1    -3.4457   0.769  0.231     resolved-OK   OK    hold          odd:0,0
+   271   7  -1     0.1029   0.365  0.365      unresolved   OK    hold          odd:0,0
+   273   1  +1    10.1738   0.000  0.000 undershoot-floor   OK    fail         odd:8,32
+   274   2  +1     9.9361   0.000  0.000 undershoot-floor   OK    fail        even:8,24
+   277   5  -1    -2.8455   0.701  0.299      unresolved   OK    hold          odd:0,0
+   278   6  -1    -4.1774   0.852  0.148     resolved-OK   OK    hold         even:0,0
+   281   1  +1     3.1156   0.022  0.022     resolved-OK   OK    fail        odd:44,80
+   282   2  +1    10.6674   0.000  0.000 undershoot-floor   OK    fail       even:16,16
+   283   3  +1     6.6327   0.000  0.000 undershoot-floor   OK    fail        odd:12,36
+   285   5  -1    -5.0921   0.956  0.044     resolved-OK   OK    hold          odd:0,0
+   286   6  -1     0.3365   0.338  0.338      unresolved   OK    hold         even:0,0
+   287   7  -1    -2.1244   0.618  0.382      unresolved   OK    hold          odd:0,0
+   290   2  +1     5.3404   0.000  0.000 undershoot-floor   OK    fail       even:24,40
+   291   3  +1   -14.2841   2.002  0.002     resolved-OK   OK    hold        odd:24,48
+   293   5  -1    -0.8821   0.477  0.477      unresolved   OK    hold          odd:0,0
+   295   7  -1    -0.6250   0.448  0.448      unresolved   OK    hold          odd:0,0
+   298   2  +1    13.6300   0.000  0.000 undershoot-floor   OK    fail       even:12,12
+   299   3  +1   -13.0641   1.863  0.137     resolved-OK   OK    hold        odd:48,96
+
+====================================================================================
+SUMMARY
+------------------------------------------------------------------------------------
+  family size (squarefree n<= 300): 183
+  blind held-out rank recall (clamped) on known anchors: 11/11
+  parity-projected recall on all known anchors: 18/18
+  root-number parity register CONFIDENT hits: 0
+    (near-0/1-boundary unresolved reads: 118; resolved-consistent: 65)
+  Tunnell register (blind-census overshoots caught, theorem-corrected to 0): 4
+  Tunnell/root-number theorem cross-check: 167/183
+  residual theorem contradictions after parity+Tunnell projection: 0
+  boundary-unresolved reads (single-B calibration does not transfer across N=32n^2): 118/183
+  parity-projected average rank (X=1e5): 0.7322  [MEASUREMENT-BIAS-DOMINATED — NOT evidence vs Goldfeld; see Goldfeld-face note]
+  parity-projected rank histogram: [69, 94, 20]  (proven rank-2 is only 16/183; excess = instrument bias)
+  defensible Goldfeld number = EXACT root-number split 49/51 (a theorem, not a measurement)

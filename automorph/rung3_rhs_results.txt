@@ -1,0 +1,104 @@
+RUNG 3 STAGE 1 — RIGHT-HAND SIDE of the Darmon-Lauder-Rotger Elliptic Stark
+Conjecture, built entirely from house machinery (exact group law + from-scratch
+p-adic formal-group log, Stark-unit log, number-field arithmetic over M).
+==============================================================================
+PURPOSE: certify NEW HOUSE CAPABILITIES (number-field tower arithmetic, from-
+scratch p-adic formal-group elliptic log, p-adic unit log) and DELIVER a fresh
+first-determination.  The 26b/52b anchors are a KNOWN-ANSWER GATE, not the goal.
+
+TIERS (per BSDClocks.lean licensing):
+  [exact]              number-field / unit facts (norm, on-curve, non-torsion).
+  [p-adic certified]   internal exactness gates to full precision (log-linearity,
+                       log homomorphism, Galois descent); AND transcendental
+                       agreement-to-precision (the anchor match — NOT identification).
+  [identified]         ONLY where the target is a bounded discrete set
+                       (bounded_landing_unique): the shared 26b/52b prefactor.
+  [first-determination] the ES RHS at a fresh unpublished configuration (p=37).
+
+PRIMARY INTERNAL GATES (own the machinery, independent of any Stark digit):
+  [exact] Stark unit u1 = w^2−w+3: norm_M/Q(u1) = 1  (unit iff ±1 -> UNIT)
+  [exact] 26b generators P,Q ∈ E(M): on-curve=True, non-torsion=True  [exact rational group law over M]
+  [exact] 52b generators P,Q ∈ E(M): on-curve=True, non-torsion=True  [exact rational group law over M]
+  [p-adic certified] logE(mP)=m·logE(P) for m=2,3,5: exact to 13^30 (N=30)  [PASS]  — the formal-group log is correct
+  [p-adic certified] log_p(u^2)=2 log_p(u): exact to 13^30; log_p(ζ3)=0 (Iwasawa): v=30  [PASS]  — the unit log is correct
+  [p-adic certified] Σ(4 Galois conjugates of w) = 0 (trace): v=30  [PASS]  — the conjugate embeddings are correct
+
+##############################################################################
+# CAPABILITY GATE (not the deliverable) — the new house p-adic machinery
+#   (number-field tower arithmetic, from-scratch formal-group elliptic log,
+#   p-adic unit log) is CERTIFIED by reproducing DLR's published iterated
+#   integrals for 26b/52b at p=13 as a known-answer test.
+#   RHS = (ζ3 Eα/√3)·[logE(P1)logE(Qgα) − logE(Q1)logE(Pgα)] / log_p(u_gα).
+#
+#   TIER (per BSDClocks.lean): matching two p-adic TRANSCENDENTALS to N digits
+#   is [p-adic certified precision — AGREEMENT TO PRECISION, NOT identification].
+#   NOT a 'landing': no integer/bounded-set target here, so bounded_landing_unique
+#   does not apply to the transcendental equality.  (The prefactor Eα and the
+#   shared 26b/52b constant ARE bounded rationals — those are identified below.)
+##############################################################################
+  embedding: ζ = 12th root of unity ≡ 7 mod 13 (DLR pin); ζ3 = ζ^2−1 (≡ 9 mod 13), √3 = ζ^3−2ζ.  [all exact in Z_13]
+  26b branch α: R∈Q_13 (Galois descent)=True  RHS ≈ DLR to 13^20: PASS  (agreement to precision 13^20)   [0s/curve]
+  26b branch β: R∈Q_13 (Galois descent)=True  RHS ≈ DLR to 13^20: PASS  (agreement to precision 13^20)   [0s/curve]
+  52b branch α: R∈Q_13 (Galois descent)=True  RHS ≈ DLR to 13^20: PASS  (agreement to precision 13^20)   [0s/curve]
+  52b branch β: R∈Q_13 (Galois descent)=True  RHS ≈ DLR to 13^20: PASS  (agreement to precision 13^20)   [0s/curve]
+  ------------------------------------------------------------------------
+  CAPABILITY GATE: ALL PASS — 4/4 agree to 20 digits [p-adic certified precision; the machinery is certified, NOT an ES identity claim]
+
+  IDENTIFICATION (licensed — bounded_landing_unique / rational_landing_unique):
+    DLR state the eq (79) algebraic constant is IDENTICAL for 26b and 52b.  We do
+    not take that on faith.  C(26b), C(52b) are units of a bounded-height algebraic
+    constant; the DIFFERENCE C(26b)−C(52b) is such a bounded quantity, so agreement
+    mod 13^N with 13^N past its height bound is IDENTIFICATION, not mere agreement.
+    branch α: (C(26b)−C(52b)) ≡ 0 mod 13^20; rational recon = (0, 1); height bound 2H^2 < 13^20: True  -> IDENTIFIED equal [tier: identified]
+    branch β: (C(26b)−C(52b)) ≡ 0 mod 13^20; rational recon = (0, 1); height bound 2H^2 < 13^20: True  -> IDENTIFIED equal [tier: identified]
+
+##############################################################################
+# NEGATIVE CONTROL (4811a, structural) — trivial-vanishing of the ES regulator.
+#   4811a: r(E/Q)=2 but r(E,Ad_g)=0 (rank exhausted by the trivial summand).
+#   For a Q-RATIONAL point the four Galois conjugates are equal, so the Case-3
+#   combination Pgα = (1 + ζ3^{-1} + ζ3)·P = 0 (since 1+ζ3+ζ3^2=0): logE(Pgα)=0,
+#   the whole regulator numerator vanishes.  This is the mechanism DLR verified.
+##############################################################################
+  1 + ζ3^{-1} + ζ3  valuation = 30 (>= N = 30 means exactly 0)  [PASS]
+  logE(Pgα) for a Q-rational P = 30 (>= N means O)  [PASS — regulator numerator ≡ 0, RHS vanishes]
+
+##############################################################################
+# *** THE DELIVERABLE *** — FIRST DETERMINATION of the ES right-hand side at a
+#   configuration NOBODY has published: 26b/52b at the fresh regular prime p=37.
+#   DLR published only p=13 for these curves.  p=37 is Case-3 regular (m splits
+#   linear·cubic mod 37, σ_37 order 3), 37 ≡ 1 mod 12 (so ζ3, ζ ∈ Q_37), and 37
+#   is a prime of GOOD reduction — a genuinely new regime (the anchors were
+#   MULTIPLICATIVE reduction) that exercises the good-reduction kernel descent.
+#
+#   TIER [first-determination]: the RHS value is new.  Its INTERNAL certificate
+#   is Galois DESCENT — the regulator core R must lie in Q_37 (a necessary
+#   condition for equalling any rational iterated integral); this is an exactness
+#   check, NOT a landing (no target to land on).  Reported as a p-adic value to
+#   certified precision, ready to meet a future overconvergent (Lauder) left side.
+#
+#   HYPOTHESIS (stated, not proved): the p-adic regulator log_p(u_gα) is nonzero.
+#   There is no order on C_p, so regulator_pos does NOT transfer p-adically; the
+#   nonvanishing used in the division is a NUMERICAL hypothesis (v(log_p u)<∞ is
+#   observed, not proved).  Every ES instance carries this caveat.
+##############################################################################
+  26b p=37 branch α: R∈Q_37 (descent)=True  v_37(R)=1  R/37^v mod 37^8 = 1522629494264
+      hypothesis log_p(u_gα)≠0: v(log_p u)=1 (holds numerically)   [0s]
+  26b p=37 branch β: R∈Q_37 (descent)=True  v_37(R)=1  R/37^v mod 37^8 = 3391098730376
+      hypothesis log_p(u_gα)≠0: v(log_p u)=1 (holds numerically)   [0s]
+  52b p=37 branch α: R∈Q_37 (descent)=True  v_37(R)=1  R/37^v mod 37^8 = 2836013780720
+      hypothesis log_p(u_gα)≠0: v(log_p u)=1 (holds numerically)   [0s]
+  52b p=37 branch β: R∈Q_37 (descent)=True  v_37(R)=2  R/37^v mod 37^8 = 1495760500670
+      hypothesis log_p(u_gα)≠0: v(log_p u)=1 (holds numerically)   [0s]
+  [first-determination] the ES right-hand-side core R at p=37 for 26b and 52b —
+  values never published.  Certificate: R descends to Q_37 (Galois-invariant, a
+  necessary condition for any rational left side); this is exactness, not a landing.
+
+##############################################################################
+# SUMMARY
+##############################################################################
+  [p-adic certified]   capability gate (26b/52b anchors, both branches, p=13): 4/4 AGREE to 20 digits — machinery certified
+                       (agreement to precision, NOT an ES identity claim)
+  [identified]         shared 26b/52b prefactor (bounded discrete): identified equal
+  [structural control] 4811a trivial-vanishing: PASS
+  [first-determination] *** ES RHS at p=37 (fresh, unpublished) ***: 4/4 descend to Q_37
+                       (under the numerical hypothesis log_p(u_gα)≠0: holds in all 4)
