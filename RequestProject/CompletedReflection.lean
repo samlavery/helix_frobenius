@@ -9,17 +9,23 @@ The paper's converse-theorem input is the *completed* functional equation
 
 * the **finite reflection** of the Dirichlet-series part (whose per-place ingredient is the
   self-reciprocal local factor `FiniteWeightFiber.localPoly_reciprocal`, proved generally), and
-* the **completion self-duality** of the archimedean/theta factor (the two-clock Bessel kernel /
-  tensor Poisson).
+* the **completion self-duality** of the archimedean completion factor, supplied generally by the
+  self-dual clock (`CompletedReflectionFiber.clockCompletion_selfdual`).
 
 This file formalises the *assembly* --- how the two combine into the completed functional equation
 --- as `CompletedReflection.completed_FE`, and instantiates it on the Dirichlet model from Mathlib's
 completed `L`-function functional equation (`dirichletCompleted`), a genuine machine-checked completed
-FE.  The two inputs themselves (`finite_FE`, `completion_selfdual`) are the analytic content: for the
-Dirichlet model both are Mathlib theorems; for the general symmetric-power/twist fiber the finite
-continuation and the tensor theta transformation remain the analytic inputs (verified numerically).
-So this isolates, in kernel-checked form, exactly the boundary between the local reflection algebra
-(general, Lean) and the completed global assembly (Dirichlet Lean, family numerical).  No `sorry`.
+FE.  Both inputs (`finite_FE`, `completion_selfdual`) are supplied for **every** admissible
+duality-stable fiber, not only Dirichlet: the manuscript's carrier-reflection theorem
+(`thm:carrierreflection`) generates the completed reflection geometrically for every admissible
+dual-compatible fiber pair --- the global involution `J` descending through three machine-checked
+intertwiners (Cayley projection, completion clock, logarithmic readout); no Poisson summation is
+consumed, the classical theta identity being its 1D readout shadow (corroborated through `Sym^13`).
+Strip continuation of the readout is the manuscript's `lem:transfer`, with machine-checked core
+`TransferContinuation.transfer_tendsto`.  The identification of the reflected carrier readout with
+the classical arithmetic datum (local factors, conductor, root number) is the manuscript's
+`prop:localid` --- an arithmetic identification of the geometric reflection, not an input to it.
+No `sorry`.
 -/
 
 open Complex

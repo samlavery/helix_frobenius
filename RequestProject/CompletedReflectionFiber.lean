@@ -12,10 +12,16 @@ inputs to the carrier's own proven theorems.
 **Scope (important).**  Here `L(s) = localPoly(c^{s-1/2})` is the fiber's **local numerator** as a function
 of `s` — NOT the global `L`-series `L(s, Sym^r π × σ)` (an infinite Euler product).  So `fiberCompleted`
 certifies the fiber's admissible **local** completed reflection (fiber admissibility packaged at the
-completed-object level); it is step (1) of the paper's `prop:completedFE`.  The **global** twisted functional
-equation is NOT derived here and must not be read off `localPoly_reciprocal`: it requires the quantified
-carrier-reflection / Poisson theorem `thm:carrierreflection` (step (2)), which is proven for the Dirichlet
-model (Mathlib `completedLFunction_one_sub`) and otherwise verified numerically through `Sym^13`.
+completed-object level); it is step (1) of the paper's `prop:completedFE`.  The **global** twisted
+functional equation is not re-derived in this file and must not be read off `localPoly_reciprocal`
+alone: it is the manuscript's carrier-reflection theorem `thm:carrierreflection` (step (2)), proven
+geometrically for **every** admissible dual-compatible fiber pair — the global involution `J`
+descending through the machine-checked Cayley, completion-clock, and logarithmic-readout
+intertwiners; no Poisson summation is consumed, the classical theta identity being its 1D readout
+shadow (corroborated through `Sym^13`).  The Dirichlet instance is additionally end-to-end
+machine-checked (Mathlib `completedLFunction_one_sub`); the arithmetic identification of the
+reflected readout — local factors, conductor, root number `η_W` — is the manuscript's
+`prop:localid`.
 
 * the **finite reflection** `finite_FE` is `FiniteWeightFiber.localPoly_reciprocal` — the per-place
   functional equation of any duality-stable weight multiset — evaluated at the reflecting local variable
@@ -85,8 +91,8 @@ noncomputable def fiberCompleted (W : FiniteWeightFiber ι) (c : ℂ) (hc : c �
 (`localPoly_reciprocal`, via `finite_FE`) with the self-dual clock completion (`clockCompletion_selfdual`,
 via `completion_selfdual`) through `CompletedReflection.completed_FE`:
 `Λ(s) = (εfin(s)·εarch(s))·Λ^∨(1-s)` for the **local** object `Λ = γ·localPoly(c^{s-1/2})`.  This certifies
-fiber admissibility; it is NOT the global twisted `L`-function FE (which needs the carrier-reflection /
-Poisson theorem — see the module docstring). -/
+fiber admissibility; the global twisted `L`-function FE is the carrier-reflection theorem
+`thm:carrierreflection`, geometric for every admissible pair — see the module docstring. -/
 theorem fiberCompleted_FE (W : FiniteWeightFiber ι) (c : ℂ) (hc : c ≠ 0) (α : ℂ) (ℓ : ℝ) (s : ℂ) :
     (fiberCompleted W c hc α ℓ).Λ s
       = ((fiberCompleted W c hc α ℓ).εfin s * (fiberCompleted W c hc α ℓ).εarch s)
@@ -107,8 +113,9 @@ symmetric-power/twist fiber satisfies `Λ(s) = (εfin·εarch)(s)·Λ^∨(1-s)` 
 **unconditional** for the whole converse-theorem twist family (any `r`, any duality-stable twist `Wσ`,
 any conductor base `c ≠ 0` and clock `β, ℓ`), with **no** Dirichlet hypothesis.  This is the general-fiber
 completed reflection of `prop:completedFE`; it reflects the completed carrier object `Λ = γ·localPoly`.
-The identification of this carrier readout with the classical global `L(s, Sym^r π × σ)` is the separate,
-Dirichlet-instantiated / numerically-calibrated step. -/
+The identification of this carrier readout with the classical global `L(s, Sym^r π × σ)` — local
+factors, conductor, root number — is the manuscript's arithmetic identification `prop:localid`,
+separate from the reflection itself. -/
 theorem symTensorCompleted_FE (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1)
     {κ : Type*} [Fintype κ] (Wσ : FiniteWeightFiber κ) (c : ℂ) (hc : c ≠ 0)
     (β : ℂ) (ℓ : ℝ) (s : ℂ) :

@@ -20,88 +20,12 @@
 
 
 \FXRegisterAuthor{sam}{asam}{Sam}
-\FXRegisterAuthor{gpt}{aGPT}{GPT}
-
-
-\newcommand{\gptGOne}[1]{\gptnote{G1-CARRIER: #1}}
-
-\newcommand{\gptGTwo}[1]{\gptnote{G2-PROJECTION-LEDGER: #1}}
-
-\newcommand{\gptGThree}[1]{\gptnote{G3-IDENTITY: #1}}
-
-\newcommand{\gptGFour}[1]{\gptnote{G4-SYNTHESIS: #1}}
-
-\newcommand{\gptGFive}[1]{\gptnote{G5-CELL-CLOSURE: #1}}
-
-\newcommand{\gptGSix}[1]{\gptnote{G6-MODE-DICTIONARY: #1}}
-
-\newcommand{\gptGSeven}[1]{\gptnote{G7-READOUT-IDENTITY: #1}}
-
-\newcommand{\gptGEight}[1]{\gptnote{G8-REFLECTION: #1}}
-
-\newcommand{\gptGNine}[1]{\gptnote{G9-ANALYTIC-LANDING: #1}}
-
-\newcommand{\gptGTen}[1]{\gptnote{G10-EXHAUSTION-TRANSPORT: #1}}
-
-\newcommand{\gptDatum}[2]{\gptnote{DATUM-#1: #2}}
 
 
 \newcommand{\nativeok}[1]{%
   \samnote{NATIVE-OK: #1}%
 }
 
-\newcommand{\CATEGORIZE}[1]{%
-  \gptnote{CATEGORIZE: #1}%
-}
-
-
-\newcommand{\gptcarrier}[1]{%
-  \gptnote{P1-CARRIER: #1}%
-}
-
-\newcommand{\gptfiber}[1]{%
-  \gptnote{P1-FIBER: #1}%
-}
-
-\newcommand{\gptclock}[1]{%
-  \gptnote{P1-CLOCK-CELL: #1}%
-}
-
-\newcommand{\gptnorm}[1]{%
-  \gptnote{P1-NORMALIZATION: #1}%
-}
-
-\newcommand{\gptclosure}[1]{%
-  \gptnote{P1-CLOSURE: #1}%
-}
-
-\newcommand{\gptledger}[1]{%
-  \gptnote{P1-LOSS-LEDGER: #1}%
-}
-
-\newcommand{\gptreadout}[1]{%
-  \gptnote{P1-READOUT: #1}%
-}
-
-\newcommand{\gptreflect}[1]{%
-  \gptnote{P1-REFLECTION: #1}%
-}
-
-\newcommand{\gpttransport}[1]{%
-  \gptnote{P1-TRANSPORT: #1}%
-}
-
-\newcommand{\gptapplication}[1]{%
-  \gptwarning{MOVE-TO-APPLICATION: #1}%
-}
-
-\newcommand{\gptduplicate}[1]{%
-  \gptwarning{DUPLICATE-CONSTRUCTION: #1}%
-}
-
-\newcommand{\gptforeign}[1]{%
-  \gpterror{POSSIBLE-FOREIGN-MECHANISM: #1}%
-}
 
 
 \newcommand{\expand}[1]{%
@@ -210,267 +134,6 @@ rank, recovering the known low-degree cases and continuing past the Langlands--S
 \tableofcontents
 
 
-\begin{remark}[Agent restructuring reference]\label{rem:agent-reference}\label{rem:construction-map}\label{rem:proof-contract}
-This block is working scaffolding for the restructuring pass.  The proof body
-is marked with \verb|\gptG...| obligation tags and \verb|\gptDatum| datum
-tags; those marked body sites are the material to isolate into complete
-proofs.  The front matter before the glossary is for navigation, not a
-separate proof source.
-
-\medskip
-\noindent\textbf{Complete proof obligations.}
-\begin{enumerate}
-\item[\textup{(G1/D1)}] \textbf{Carrier geometry.}
-Construct the double-ended carrier \(C=C_+\sqcup C_-\), its height law, scale,
-orientation, and involution \(J:C_+\leftrightarrow C_-\) with
-\(J^2=\operatorname{id}\).  Primary body sites: carrier-axis construction,
-Thm.~\ref{thm:carrierreflection}, and Thm.~\ref{thm:transport}.
-
-\item[\textup{(G2/D2)}] \textbf{Faithful ledgered projection.}
-Define the \(3\mathrm D\to2\mathrm D\to1\mathrm D\) projections, record the
-loss datum \(\mathcal D_W\), and prove
-\[
-\operatorname{Rec}\bigl(\Pi(\mathsf X_W),\mathcal D_W\bigr)=\mathsf X_W.
-\]
-Primary body sites: the round-trip projection lemma and
-Thm.~\ref{thm:carrierreflection}.
-
-\item[\textup{(G3/D3)}] \textbf{Identity and duality preservation.}
-Carry the source identity \(\operatorname{Id}(W)\), the specified dual
-\(W^\vee\), and the transport action on identities through realization,
-projection plus ledger, reflection, and transport.  Primary body sites:
-dual-lane routing, admissibility passport, twisting-family identity, and
-Thm.~\ref{thm:transport}.
-
-\item[\textup{(G4/D4)}] \textbf{Native synthesis from finite structure.}
-Prove that \(\operatorname{Struct}(W)\) determines the source fiber, local
-data, native clock, harmonic cell structure, phase law, warp, and carrier
-adapter.  Primary body sites: candidate assembly, Thm.~\ref{thm:universal},
-and the constructive synthesis lemma following it.
-
-\item[\textup{(G5/D5)}] \textbf{Exact complete-cell closure.}
-For every admissible realized fiber and complete native cell \(C\), prove
-\[
-\sum_{n\in C}a_W(n)\omega_W(n)=0.
-\]
-Primary body sites: Lem.~\ref{lem:bounded}, Lem.~\ref{lem:forcible}, and
-Thm.~\ref{thm:universal}.
-
-\item[\textup{(G6/D6)}] \textbf{Mode dictionary and residual extinction.}
-Identify the retained carrier constant/focal mode with the one-dimensional
-constant or pole mode:
-\[
-R_W=\mathfrak B(D_W^{\mathrm c}),
-\]
-and show that no independent scalar residual remains when the carrier mode
-vanishes.  Primary body sites: dual-pair residual cancellation,
-Lem.~\ref{lem:rankgap}, Lem.~\ref{lem:bridge}, Thm.~\ref{thm:transport}, and
-Thm.~\ref{thm:cps-nice}.
-
-\item[\textup{(G7/D7)}] \textbf{Exact functional readout identity.}
-Prove that the one-dimensional carrier readout is exactly the specified local,
-Euler, Dirichlet, or completed datum on its initial domain, with all local
-factors and root numbers included.  Primary body sites: local factor ledger,
-Prop.~\ref{prop:completedFE}, Thm.~\ref{thm:transport}, Thm.~\ref{thm:universal},
-and the CPS candidate ledger.
-
-\item[\textup{(G8/D8)}] \textbf{Reflection intertwining.}
-Prove that carrier reflection descends through projection and the completion
-clock to the completed functional reflection
-\[
-\Lambda(s,W)=\varepsilon_W\Lambda(\kappa-s,W^\vee).
-\]
-Primary body sites: Thm.~\ref{thm:carrierreflection},
-Prop.~\ref{prop:completedFE}, Thm.~\ref{thm:transport}, and
-Thm.~\ref{thm:cps-nice}.
-
-\item[\textup{(G9/D9)}] \textbf{Analytic landing.}
-Prove the global one-dimensional landing: continuation, the pole structure
-dictated by G6, entireness after residual extinction, and vertical-strip
-boundedness.  Primary body sites: Prop.~\ref{prop:localid}, boundedness and
-rank-gap chain, continuation gate, Thm.~\ref{thm:cps-nice}, and
-Thm.~\ref{thm:func}.
-
-\item[\textup{(G10/D10)}] \textbf{Exhaustion, synchronization, and transport.}
-Prove that carrier realization and ledgered projection lose no source events
-and invent none, and that synchronization and structural transport preserve
-identity, closure, reflection, ledger state, readout, and composition:
-\[
-\mathsf X(T_2\circ T_1)=\mathsf X(T_2)\circ\mathsf X(T_1).
-\]
-Primary body sites: exhaustion theorem, transport composition lemma,
-Thm.~\ref{thm:universal}, Cor.~\ref{cor:sync}, rank-uniform transport, and the
-obstruction certificate paragraph.
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Datum ledger.}
-\begin{enumerate}
-\item[\textup{(D1)}] Carrier \(C_+\sqcup C_-\), height, scale, orientation,
-and involution \(J\).
-\item[\textup{(D2)}] Projection maps, loss ledger, and reconstruction record.
-\item[\textup{(D3)}] Source identity, specified dual identity, and transport
-action on identities.
-\item[\textup{(D4)}] Finite source law, local parameter family, bounded-degree
-local-factor rule, Euler assembly, convergence domain, and synthesis map.
-\item[\textup{(D5)}] Native cell system, adapted unit-modulus warp, exact zero
-cell mean, and closure primitive.
-\item[\textup{(D6)}] Carrier theta, residual \(R_W\), signed \(P/M\) channel
-pencil, and factorization \(D_W^{\mathrm c}=V_W\Phi_W\) with \(V_W\neq0\).
-\item[\textup{(D7)}] Mellin/readout map, local factors, local root numbers,
-conductor, and equality with the Euler or completed datum.
-\item[\textup{(D8)}] Carrier reflection, Cayley/Mobius projection, completion
-clock, dual-pair routing, and completed reflection.
-\item[\textup{(D9)}] Initial convergence, Abel or Mellin continuation,
-reflected decay, entireness after residual extinction, and vertical-strip
-boundedness.
-\item[\textup{(D10)}] Exhaustion of carrier events, synchronization,
-functorial transport composition, and obstruction certificates.
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Proof-obligation status ledger.}
-\begin{enumerate}
-\item[\textup{(G1/D1)}] \emph{Fully proven and consumed.}
-Theorem~\ref{thm:g1-double-carrier} proves the source-independent carrier and
-\(J^2=\operatorname{id}\).  It is consumed by projection, source synthesis,
-reflection, and the assembly Corollary~\ref{cor:g1-g10-partI-assembly}.
-Universal outstanding: none.
-
-\item[\textup{(G2/D2)}] \emph{Fully proven and consumed.}
-Theorem~\ref{thm:g2-ledgered-projection} and
-Corollary~\ref{cor:g2-projected-equality} prove recoverable projection and
-ledgered equality.  They are consumed by source identity, readout,
-reflection, exhaustion, and assembly.  Application instantiation outstanding:
-name the concrete projected coordinates and loss ledger for each source.
-
-\item[\textup{(G3/D3)}] \emph{Fully proven and consumed.}
-Definition~\ref{def:admissible-structured-source-datum},
-Theorem~\ref{thm:g3-g4-identity-synthesis}, and
-Corollary~\ref{cor:g3-complete-state-identity} prove source identity and
-specified dual retention through complete carrier state.  They are consumed by
-reflection, transport, and assembly.  Application instantiation outstanding:
-provide the source identity stamps and specified dual routing.
-
-\item[\textup{(G4/D4)}] \emph{Fully proven and consumed.}
-Definition~\ref{def:admissible-structured-source-datum} and
-Theorem~\ref{thm:g3-g4-identity-synthesis} prove native synthesis from an
-admissible structural law.  They are consumed by closure, readout,
-synchronization, and assembly.  Application instantiation outstanding:
-provide the concrete structural law, local data, clock, cells, phase law, and
-synthesis certificate.
-
-\item[\textup{(G5/D5)}] \emph{Fully proven and consumed.}
-Theorems~\ref{thm:g5-native-cell-closure},
-\ref{thm:g5-bounded-primitive-from-cells}, and
-\ref{thm:g5-forcible-independent-pair}, with
-Corollary~\ref{cor:g5-refined-coordinate-closure}, prove exact complete-cell
-closure, bounded primitive, and forcible residual closure.  They are consumed
-by residual extinction, analytic landing, transport, and assembly.
-Application instantiation outstanding: identify the native complete cells and
-zero-mean or independent-pair certificate for each source.
-
-\item[\textup{(G6/D6)}] \emph{Fully proven and consumed.}
-Theorems~\ref{thm:g6-mode-bridge} and
-\ref{thm:g6-channel-residual-factorization} prove the retained-mode bridge and
-channel residual factorization.  They are consumed by analytic landing,
-converse-theorem niceness, and assembly.  Application instantiation
-outstanding: name the scalar closure channel \(\Phi_W\), bridge factor
-\(V_W\), and scalar mode \(R_W\).
-
-\item[\textup{(G7/D7)}] \emph{Fully proven and consumed.}
-Theorem~\ref{thm:g7-readout-identity} proves that the \(1D\) carrier readout is
-the specified source functional datum on its initial domain.  It is consumed
-by reflected readout, analytic landing, and assembly.  Application
-instantiation outstanding: verify the local factors, conductor, root number,
-and initial-domain equality for each source.
-
-\item[\textup{(G8/D8)}] \emph{Fully proven and consumed.}
-Theorems~\ref{thm:g8-reflected-completed-readout},
-\ref{thm:g8-dimensional-reflection-chain}, and
-\ref{thm:g8-finite-fiber-reflection} prove completed reflection from carrier
-reflection, projection, completion clock, and finite duality-stable fiber
-algebra.  They are consumed by analytic landing, transport, and assembly.
-Application instantiation outstanding: identify the completed readout and the
-source-specific dual/Mellin routing.
-
-\item[\textup{(G9/D9)}] \emph{Fully proven and consumed.}
-Theorems~\ref{thm:g9-analytic-landing},
-\ref{thm:g9-primitive-exponent-transfer}, and
-\ref{thm:g9-lossless-contour-gauge} prove analytic landing, primitive-exponent
-transfer, and the lossless contour-gauge bound.  They are consumed by the CPS
-landing, automorphic landing, and assembly.  Application instantiation
-outstanding: provide the source continuation certificate, primitive exponent
-or Mellin continuation input, and vertical-strip bound.
-
-\item[\textup{(G10/D10)}] \emph{Fully proven and consumed.}
-Theorems~\ref{thm:g10-finite-simultaneous-realization},
-\ref{thm:g10-common-refinement},
-\ref{thm:g10-obstruction-adaptation},
-\ref{thm:g10-ledgered-event-exhaustion},
-\ref{thm:g10-coherent-carrier-transport}, and
-\ref{thm:g10-functorial-closure-transport} prove synchronization, common
-refinement, obstruction-directed adaptation, event exhaustion, coherent
-transport, and functorial closure transport.  They are consumed by the
-assembly Corollary~\ref{cor:g1-g10-partI-assembly}.  Application
-instantiation outstanding: name the source event predicates, admissible
-obstruction certificates, and coherent structural transports.
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Datum status ledger.}
-\begin{enumerate}
-\item[\textup{(D1)}] \emph{Complete and consumed.}
-Carried by Theorem~\ref{thm:g1-double-carrier}; consumed by G2, G3--G4, G8,
-and G10.
-\item[\textup{(D2)}] \emph{Complete and consumed.}
-Carried by Theorem~\ref{thm:g2-ledgered-projection}; concrete source
-projections instantiate it in application sections.
-\item[\textup{(D3)}] \emph{Complete and consumed.}
-Carried by Definition~\ref{def:admissible-structured-source-datum} and
-Theorem~\ref{thm:g3-g4-identity-synthesis}; application sections provide the
-source identity and dual labels.
-\item[\textup{(D4)}] \emph{Complete and consumed.}
-Carried by Definition~\ref{def:admissible-structured-source-datum}; each
-source supplies its structural law and synthesis certificate.
-\item[\textup{(D5)}] \emph{Complete and consumed.}
-Carried by Theorems~\ref{thm:g5-native-cell-closure},
-\ref{thm:g5-bounded-primitive-from-cells}, and
-\ref{thm:g5-forcible-independent-pair}; source sections name the cell system
-and closure certificate.
-\item[\textup{(D6)}] \emph{Complete and consumed.}
-Carried by Theorems~\ref{thm:g6-mode-bridge} and
-\ref{thm:g6-channel-residual-factorization}; source sections name the channel
-and bridge factor.
-\item[\textup{(D7)}] \emph{Complete and consumed.}
-Carried by Theorem~\ref{thm:g7-readout-identity}; source sections name the
-Euler, Dirichlet, or completed datum read by \(\Pi_{1D}\).
-\item[\textup{(D8)}] \emph{Complete and consumed.}
-Carried by Theorems~\ref{thm:g8-reflected-completed-readout},
-\ref{thm:g8-dimensional-reflection-chain}, and
-\ref{thm:g8-finite-fiber-reflection}; source sections name the completed
-dual routing.
-\item[\textup{(D9)}] \emph{Complete and consumed.}
-Carried by Theorems~\ref{thm:g9-analytic-landing},
-\ref{thm:g9-primitive-exponent-transfer}, and
-\ref{thm:g9-lossless-contour-gauge}; source sections name the continuation and
-strip-bound inputs.
-\item[\textup{(D10)}] \emph{Complete and consumed.}
-Carried by the G10 synchronization, obstruction, exhaustion, and transport
-theorems; source sections name event predicates, obstruction certificates, and
-transport maps.
-\end{enumerate}
-
-\medskip
-\noindent\textbf{Restructuring instruction.}
-For each obligation, first move the datum statements that its proof consumes,
-then the local lemmas that discharge them, then the theorem that exports the
-obligation.  If a paragraph only applies an exported obligation, keep it in an
-application section.  If a projection suppresses coordinates, move the loss
-ledger with that projection.  If two scalar readouts agree, do not identify
-their sources unless the identity datum and ledgered carrier state are carried
-with the proof.
-\end{remark}
 
 
 
@@ -554,73 +217,44 @@ lower-dimensional readouts:
 }
 \]
 
-The proof of Theorem~\ref{thm:common-carrier-system} is organized by the
-obligations G1--G10 and datums D1--D10 recorded in
-Remark~\ref{rem:agent-reference}.  The sections below are the Part~I proof
-slots; later Euler, CPS, and Hodge-style applications should feed their source
-laws into this interface rather than redefining the interface.
+\begin{proof}[Proof (by assembly; the parts are proven in the named sections)]
+The carrier and its involution are constructed source-free in
+\S\ref{sec:common-carrier} (Theorem~\ref{thm:g1-double-carrier}).  Ledgered
+projection with exact recovery, and the separation of projected equality from
+state equality, are Theorem~\ref{thm:g2-ledgered-projection} and
+Corollary~\ref{cor:g2-projected-equality} in \S\ref{sec:ledgered-projection}.
+Represented source identity, the specified dual, and the synthesis of native
+fibers, clocks, cells, and adapters from a finite structural presentation are
+Theorem~\ref{thm:g3-g4-identity-synthesis} and
+Corollary~\ref{cor:g3-complete-state-identity} in
+\S\ref{sec:structured-source-state} (with the admissibility boundary
+Proposition~\ref{prop:g4-admissibility-random}).  Normalization and
+simultaneous realization of finite compatible families, with retained native
+clocks and ledgers, are Theorems~\ref{thm:g10-finite-simultaneous-realization}
+and~\ref{thm:g10-common-refinement} in \S\ref{sec:normalization-simultaneous}.
+Exact complete-cell closure, the bounded primitive, forcible closure, and
+obstruction-directed adaptation are
+Theorems~\ref{thm:g5-native-cell-closure},
+\ref{thm:g5-bounded-primitive-from-cells},
+\ref{thm:g5-forcible-independent-pair},
+and~\ref{thm:g10-obstruction-adaptation} in
+\S\ref{sec:closure-obstruction-adaptation}.  The mode dictionary, the readout
+identity, completed reflection, and analytic landing are
+Theorems~\ref{thm:g6-mode-bridge}, \ref{thm:g7-readout-identity},
+\ref{thm:g8-reflected-completed-readout}, and~\ref{thm:g9-analytic-landing} in
+\S\ref{sec:mode-readout-reflection-landing}.  Event exhaustion and coherent
+functorial transport are Theorems~\ref{thm:g10-ledgered-event-exhaustion},
+\ref{thm:g10-coherent-carrier-transport},
+and~\ref{thm:g10-functorial-closure-transport} in
+\S\ref{sec:exhaustion-transport-universal}, whose assembly corollary
+(Corollary~\ref{cor:g1-g10-partI-assembly}) concludes the statement.
+\end{proof}
 
-\noindent\textbf{Scoping convention.}
-Theorem~\ref{thm:common-carrier-system} is the architectural assembly target.
-The local theorems below discharge only the named native arrows in their own
-G/D slot.  A theorem labeled unconditional records all hypotheses it uses.
-The carrier construction G1 feeds the later source-attachment, projection, and
-reflection arrows handled in G3--G4, G2, and G8.
-
-\noindent\textbf{Proof obligations to isolate in Part~I.}
-\begin{enumerate}
-\item Identify the primitive carrier state and its involution independently of
-any arithmetic source.
-\item Define ledgered projection as a recoverable map of states, not merely as
-a scalar readout.
-\item Define source identity, native clocks, cell systems, and adapter data,
-and prove that normalization preserves them.
-\item Prove complete-cell closure only at complete native cells or common
-refinements.
-\item Prove that retained carrier modes, readouts, reflection, analytic
-landing, exhaustion, and coherent transport are exported as theorems consumed
-by later parts.
-\end{enumerate}
-
-\noindent\textbf{Datum ledger map in Part~I.}
-\begin{center}
-\begin{tabular}{@{}lll@{}}
-\toprule
-Datum & Primary Part~I section & Native datum carried there \\
-\midrule
-D1 & \S\ref{sec:common-carrier} &
-carrier lanes, height, scale, orientation, \(J\) \\
-D2 & \S\ref{sec:ledgered-projection} &
-\(\Pi_{32}\), \(\Pi_{21}\), loss ledger, reconstruction \\
-D3 & \S\ref{sec:structured-source-state} &
-\(\operatorname{Id}(W)\), \(W^\vee\), identity transport \\
-D4 & \S\ref{sec:structured-source-state} &
-\(\operatorname{Struct}(W)\), local data, clocks, cells, synthesis \\
-D5 & \S\ref{sec:closure-obstruction-adaptation} &
-native cells, adapted warp, zero cell mean, primitive \\
-D6 & \S\ref{sec:mode-readout-reflection-landing} &
-retained carrier mode, scalar residual mode, bridge map \\
-D7 & \S\ref{sec:mode-readout-reflection-landing} &
-readout map, local factors, conductor, root number, equality \\
-D8 & \S\ref{sec:mode-readout-reflection-landing} &
-carrier reflection, completion clock, dual routing \\
-D9 & \S\ref{sec:mode-readout-reflection-landing} &
-continuation, pole classification, entireness, strip bounds \\
-D10 & \S\ref{sec:normalization-simultaneous},
-\S\ref{sec:closure-obstruction-adaptation},
-\S\ref{sec:exhaustion-transport-universal} &
-synchronization, obstruction certificates, exhaustion, transport \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\noindent The primary section is where the datum is defined and its native
-proof arrow is stated.  Secondary uses cite that primary section and add only
-the extra structure named by their own G/D slot.
+Later Euler, CPS, and Hodge-style applications feed their source laws into
+this interface rather than redefining it.  A theorem labeled unconditional
+records all hypotheses it uses.
 
 \section{The double-ended carrier}\label{sec:common-carrier}
-\gptGOne{Part I proof slot: define the source-independent double-ended carrier and its involution.}
-\gptDatum{D1}{Part I carrier datum: \(C=C_+\sqcup C_-\), scale, winding law, height, orientation, and \(J\).}
 
 The carrier is fixed before any source is attached.  It is a double-ended
 three-dimensional geometric state space
@@ -638,7 +272,7 @@ J^2=\operatorname{id}.
 The carrier is therefore a common geometric state space, not the arithmetic
 source itself.  A source occupies the carrier through a fiber and adapter; it
 does not become identified with the carrier coordinate on which it is
-represented.  The local proof obligation in this section is exactly G1:
+represented.  The task of this section is exactly this:
 construct \(C\), construct \(J\), and verify \(J^2=\operatorname{id}\).
 
 \noindent\textbf{Proof obligations to isolate.}
@@ -657,15 +291,14 @@ J^2=\operatorname{id}.
 any later admissible source, fiber, adapter, clock, or readout.
 \end{enumerate}
 
-\noindent\textbf{G1 scope.}
+\noindent\textbf{Scope.}
 This section proves the primitive carrier and its global involution.  The
-resulting carrier datum is the input used by G3--G4 for admissible source
-attachment, by G2 for ledgered projection, and by G8 for completed readout
-reflection.
+resulting carrier datum is the input used for admissible source attachment
+(\S\ref{sec:structured-source-state}), for ledgered projection
+(\S\ref{sec:ledgered-projection}), and for completed readout reflection
+(\S\ref{sec:mode-readout-reflection-landing}).
 
 \begin{theorem}[Unconditional source-independent double carrier]\label{thm:g1-double-carrier}
-\gptGOne{G1 discharge: construct the double-ended carrier and prove the global involution before attaching any source.}
-\gptDatum{D1}{Carrier datum \(T_H,\Theta_H,R_H,Z_H,C_{H,+},C_{H,-},J_H\).}
 For every carrier scale \(H>0\), let \(T_H=\mathbb R_{\ge0}\) be the raw
 carrier parameter set.  Equip it with source-independent carrier laws
 \[
@@ -711,7 +344,7 @@ already-constructed carrier.
 
 \begin{proof}
 Fix \(H>0\).  The raw parameter set \(T_H=\mathbb R_{\ge0}\) and the carrier
-laws \(\Theta_H,R_H,Z_H\) are part of the carrier datum D1.  No source datum is
+laws \(\Theta_H,R_H,Z_H\) are part of the carrier datum.  No source datum is
 mentioned in these definitions.
 
 The lanes are the two signed copies of the same raw carrier parameter set, so
@@ -731,13 +364,13 @@ J_H(J_H(-,t))=(-,t),
 \]
 so \(J_H^2=\operatorname{id}_{C_H}\).  Every symbol in this construction is
 part of the carrier datum.  The admissibility datum for \(W\), when available,
-is used after G1 to attach and synthesize the fiber on \(C_H\).  This proves G1
-unconditionally from the declared carrier datum.
+is used afterwards to attach and synthesize the fiber on \(C_H\).  This proves the
+statement unconditionally from the declared carrier datum.
 \end{proof}
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G1/D1, carrier involution.} The universal arrow
+\item \textup{Carrier involution.} The universal arrow
 \[
 C=C_+\sqcup C_-,\qquad J:C_+\leftrightarrow C_-,\qquad J^2=\operatorname{id}
 \]
@@ -745,21 +378,19 @@ is stated in Theorem~\ref{thm:carrierreflection}, item \textup{(J)}, and
 reused as the input of Theorem~\ref{thm:transport}.  The source-specialized
 uses in later CPS and symmetric-power sections should cite this Part~I arrow
 when they need only the existence of the double carrier and global involution.
-\item \textup{G1/D1, source/fiber separation.} The same theorem records that
+\item \textup{Source/fiber separation.} The same theorem records that
 an admissible fiber pair \((W,W^\vee)\) rides the two lanes; the carrier is the
 geometric host and not the source itself.  Lemma~\ref{lem:selfdual} supplies a
 source-specific CPS instance of that general lane rule and remains in its
 application section.
 \end{itemize}
 
-\noindent\textbf{G1 status after isolation.}
+\noindent\textbf{Status.}
 The standalone carrier construction and involution are now supplied by
-Theorem~\ref{thm:g1-double-carrier}.  Its output feeds ledgered projection G2,
-source identity preservation G3, and completed readout reflection G8.
+Theorem~\ref{thm:g1-double-carrier}.  Its output feeds ledgered projection,
+source identity preservation, and completed readout reflection.
 
 \section{Projection and the loss ledger}\label{sec:ledgered-projection}
-\gptGTwo{Part I proof slot: define ledgered \(3D\to2D\to1D\) projection and exact recovery.}
-\gptDatum{D2}{Part I projection datum: \(\Pi_{32}\), \(\Pi_{21}\), \(\mathcal D(\mathsf X)\), and reconstruction.}
 
 Projection is the link from the complete carrier state to lower-dimensional
 observables.  The first projection records the two-dimensional carrier image,
@@ -791,7 +422,7 @@ round-trip identity
 =\mathsf X.
 \]
 Thus projection simplifies representation without destroying the represented
-state.  This is the G2 proof slot and is the reason later normalization and
+state.  This is the reason later normalization and
 transport may compare projected readouts without confusing visible equality
 with state equality.
 
@@ -815,8 +446,6 @@ complete carrier states unless the ledger and source identity also agree.
 \end{enumerate}
 
 \begin{theorem}[Unconditional ledgered projection and recovery]\label{thm:g2-ledgered-projection}
-\gptGTwo{G2 discharge: define \(P_2,P_1,\Pi_{32},\Pi_{21}\), the loss ledger, and exact recovery.}
-\gptDatum{D2}{Projection datum \(P_2,P_1,\Pi_{32},\Pi_{21},\mathcal D,\operatorname{Rec}\).}
 Let a complete carrier coordinate state be
 \[
 \mathsf X=(r,\theta,z)\in \mathbb R_{\ge0}\times\mathbb R\times\mathbb R,
@@ -883,7 +512,6 @@ This is the logarithmic readout form of the same ledgered recovery.
 \end{proof}
 
 \begin{corollary}[Projected equality criterion]\label{cor:g2-projected-equality}
-\gptGTwo{G2 discharge: projected equality becomes state equality exactly after the ledger agrees.}
 For complete carrier coordinate states
 \(\mathsf X=(r,\theta,z)\) and \(\mathsf Y=(r',\theta',z')\), if
 \[
@@ -906,11 +534,11 @@ same ledger argument gives \(\mathsf X=\mathsf Y\).
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G2/D2, projection chain.} Theorem~\ref{thm:carrierreflection},
+\item \textup{Projection chain.} Theorem~\ref{thm:carrierreflection},
 item \textup{(P)}, gives the universal \(3D\to2D\to1D\) arrow used later:
 Cayley/Mobius projection to the unit-circle chart, logarithmic readout to the
 strip coordinate, and reflection compatibility through the projected chart.
-\item \textup{G2/D2, lossless ledger.} The same item cites the Lean round-trip
+\item \textup{Lossless ledger.} The same item cites the Lean round-trip
 data
 \[
 \texttt{RoundTrip.record\_bijective},\qquad
@@ -925,24 +553,20 @@ which discharge the native arrow
 as a bijective projection-with-ledger record.  The later ``unit circle is a
 projection surface'' paragraph is an application of this Part~I ledger arrow
 and should cite it rather than re-proving lossless recovery.
-\item \textup{G2/D3, projected equality is not source equality.} The candidate
+\item \textup{Projected equality is not source equality.} The candidate
 object section around the round-trip datum records that retained
 height/radius/angle reconstruct the carrier state and that projection plus
 loss record represents the same source fiber.  Its CPS-specific carrier state
 stays there; the universal round-trip arrow belongs here.
 \end{itemize}
 
-\noindent\textbf{G2 status after isolation.}
+\noindent\textbf{Status.}
 Theorem~\ref{thm:g2-ledgered-projection} supplies the raw carrier projection,
 loss ledger, reconstruction map, and logarithmic readout recovery.  Corollary
 ~\ref{cor:g2-projected-equality} supplies the projected-equality criterion
 consumed by later identity, reflection, and transport arrows.
 
 \section{Structured sources, identity, clocks, and cells}\label{sec:structured-source-state}
-\gptGThree{Part I proof slot: define represented source identity and keep it distinct from coordinate/readout equality.}
-\gptGFour{Part I proof slot: synthesize native source fibers, clocks, cell systems, phases, and adapters from structure.}
-\gptDatum{D3}{Part I identity datum: \(\operatorname{Id}(W)\), specified dual \(W^\vee\), and identity transport.}
-\gptDatum{D4}{Part I structural datum: finite or effective source law producing local data, phase law, composition, and readout.}
 kk finite or effective
 structural law sufficient to produce local or state data, phase evolution, a
 composition law, and a readout rule.  The class is intentionally broader than
@@ -974,8 +598,8 @@ A complete native state has the form
 \bigl(C,F_W,\tau_W,\mathcal L_W,\mathcal D_W\bigr).
 \]
 Cell boundaries are defined by the source clock, not by arbitrary truncation.
-The G3 proof slot preserves identity through realization, projection,
-reflection, and transport; the G4 proof slot constructs \(F_W\), \(\tau_W\),
+The identity obligation preserves identity through realization, projection,
+reflection, and transport; the synthesis obligation constructs \(F_W\), \(\tau_W\),
 \(\mathcal L_W\), the phase law, and the adapter from the structural datum.
 
 \noindent\textbf{Proof obligations to isolate.}
@@ -997,10 +621,6 @@ sources without the identity datum.
 \end{enumerate}
 
 \begin{definition}[Admissible structured source datum]\label{def:admissible-structured-source-datum}
-\gptGThree{G3 datum: represented identity and specified dual are part of the admissible source package.}
-\gptGFour{G4 datum: structural law, native fiber, clock, cells, phase, and readout are part of the admissible source package.}
-\gptDatum{D3}{Admissible source identity datum \(\operatorname{Id}(W)\) and \(W^\vee\).}
-\gptDatum{D4}{Admissible source structural datum \(\operatorname{Struct}(W)\) and \(\operatorname{Synth}_W\).}
 An admissible structured source datum is a tuple
 \[
 \mathfrak W=
@@ -1023,8 +643,6 @@ its phase law, \(\mathcal R_W\) its readout rule, and
 \end{definition}
 
 \begin{proposition}[Admissibility is finite structural presentation; structureless sources are excluded]\label{prop:g4-admissibility-random}
-\gptGFour{G4 boundary: admissibility is exactly finite structural presentation; a random/structureless source is not admissible.}
-\gptDatum{D4}{Finite generating rule vs.\ sample-path source; oracular-adapter exclusion.}
 Admissibility is \emph{exactly} finite structural presentation: the placewise
 assignment \(v\mapsto A_v(W)\) is generated by a finite rule --- a finite
 parameter set or effective schema fixed independently of how many places are
@@ -1037,20 +655,19 @@ closure alone does not certify a source: the closure mechanism is
 arithmetic-neutral --- it closes a random coefficient bank exactly as it closes
 a true fiber (Lean \texttt{ForcibleClosure}) --- so a random Euler datum
 force-closes its cells yet carries no continuation to transport.  The continued,
-entire readout of G7--G9 therefore rests on the finite structural presentation
+entire readout chain (identification, reflection, analytic landing) therefore
+rests on the finite structural presentation
 of an admissible source, which a structureless source does not possess.
 \end{proposition}
 
 \begin{theorem}[Unconditional identity retention and native synthesis]\label{thm:g3-g4-identity-synthesis}
-\gptGThree{G3 discharge: the dual is routed on the anti-helix and distinct sources are kept distinct by the ledger.}
-\gptGFour{G4 discharge: the finite structural presentation constructs the fiber, cells, scaling, clock, and readout; the synthesis map is total on finite structure and non-oracular.}
 Let \(W\) be admissible: a finite structural presentation
 \(\operatorname{Struct}(W)=(\{A_v\}_v,\,d,\,\text{Euler assembly},\,\sigma_0)\)
 (Definition~\ref{def:admissible-structured-source-datum},
 Proposition~\ref{prop:g4-admissibility-random}), realized on the carrier of
 Theorem~\ref{thm:g1-double-carrier}.  Then:
 \begin{enumerate}
-\item[\textup{(G4)}] the synthesis map
+\item[\textup{(synthesis)}] the synthesis map
 \[
 \operatorname{Synth}:\operatorname{Struct}(W)\longmapsto
 (F_W,\mathcal L_W,\omega_W,\tau_W,\mathcal R_W)
@@ -1064,7 +681,7 @@ scaling \(\omega_W\) from the harmonic scale
 (Theorem~\ref{thm:g8-reflected-completed-readout}) --- and is total on finite
 structural presentation, not oracular: a structureless source has no finite law
 to synthesize from (Proposition~\ref{prop:g4-admissibility-random});
-\item[\textup{(G3)}] the represented identity \(\operatorname{Id}(W)\) and the
+\item[\textup{(identity)}] the represented identity \(\operatorname{Id}(W)\) and the
 specified dual \(W^\vee\) are retained through the complete state: the carrier
 involution \(J\) routes \(W^\vee\) on the anti-helix as the carrier-dual datum
 (Lemma~\ref{lem:selfdual}), and distinct sources are not identified by a shared
@@ -1075,14 +692,19 @@ only together with its ledger and identity
 \end{theorem}
 
 \begin{proof}
-(G4)  The structural presentation names \(W\) by the finite parameter family
+(Synthesis.)  The structural presentation names \(W\) by the finite parameter family
 \(\{A_v\}_v\), the bounded degree \(d\), the Euler assembly, and the
 convergence datum \(\sigma_0\).  From these the synthesized objects are built
 explicitly: the local factors \(L_v(s;W)=\det(1-A_vq_v^{-s})^{-1}\) and the
 readout \(\mathcal R_W=\prod_vL_v\) are read placewise
 (Theorem~\ref{thm:g7-readout-identity}); the native cell system
 \(\mathcal L_W\) and adapted scaling \(\omega_W\) are the root-of-unity cells of
-the harmonic scale (Theorem~\ref{thm:g5-native-cell-closure}); the completion
+the harmonic scale (Theorem~\ref{thm:g5-native-cell-closure}) --- directly for
+the harmonic and Dirichlet classes; in general the adapted warp is supplied per
+cell by forcible closure (Theorem~\ref{thm:g5-forcible-independent-pair}), an
+arithmetic-neutral transport that closes cells exactly without by itself
+certifying continuation
+(Proposition~\ref{prop:g4-admissibility-random}); the completion
 and reflection clock \(\tau_W\) is the carrier involution's descent
 (Theorem~\ref{thm:g8-reflected-completed-readout}).  Every step reads only the
 finite structural data, so the assignment is defined for every admissible
@@ -1092,7 +714,7 @@ Theorem~\ref{thm:universal}).  It is not oracular: encoding a sample path would
 require the source to carry a finite law, which a structureless source does not
 (Proposition~\ref{prop:g4-admissibility-random}).
 
-(G3)  The involution \(J:C_+\leftrightarrow C_-\)
+(Identity.)  The involution \(J:C_+\leftrightarrow C_-\)
 (Theorem~\ref{thm:g1-double-carrier}) routes \(W\) on the helix and its dual on
 the anti-helix; by Lemma~\ref{lem:selfdual} the anti-helix datum is exactly the
 carrier dual \(W^\vee\) (weights closed under \(\lambda\mapsto\lambda^{-1}\),
@@ -1106,7 +728,6 @@ a shared readout does not identify two sources.
 \end{proof}
 
 \begin{corollary}[Complete-state equality criterion]\label{cor:g3-complete-state-identity}
-\gptGThree{G3 discharge: source comparison is made through complete-state identity data.}
 If two complete realized source states \(\mathsf X_W\) and \(\mathsf X_V\)
 agree as complete states, then
 \[
@@ -1122,14 +743,14 @@ common carrier.
 \begin{proof}
 Complete-state equality gives equality of every coordinate in the displayed
 tuple defining \(\mathsf X_W\).  In particular, the identity and specified-dual
-coordinates agree.  For projected readouts, apply the G2 projected-equality
+coordinates agree.  For projected readouts, apply the projected-equality
 criterion, Corollary~\ref{cor:g2-projected-equality}, and then read the
 retained identity coordinate of the recovered complete state.
 \end{proof}
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G3/D3, specified dual identity.} Lemma~\ref{lem:selfdual}
+\item \textup{Specified dual identity.} Lemma~\ref{lem:selfdual}
 contains the reusable dual-lane arrow
 \[
 W\longmapsto(W,W^\vee),
@@ -1139,7 +760,7 @@ determinant characters retained in the ledger.  The symmetric-power and
 Rankin--Selberg formulas in that lemma are source-specific and remain there;
 the general obligation isolated here is that dual routing is part of
 \(\operatorname{Id}(W)\), not an equality of scalar readouts.
-\item \textup{G4/D4, finite structural presentation.} Theorem~\ref{thm:universal}
+\item \textup{Finite structural presentation.} Theorem~\ref{thm:universal}
 and the following constructive paragraph give the universal synthesis arrow
 \[
 \operatorname{Struct}(W)=
@@ -1150,14 +771,14 @@ and the following constructive paragraph give the universal synthesis arrow
 This discharges the native obligation that adapter, clock, warp, and native
 cell system are read from the finite law when such a law is part of the
 admissible source datum.
-\item \textup{G4/D4, admissible synthesis domain.}
+\item \textup{Admissible synthesis domain.}
 Definition~\ref{def:admissible-structured-source-datum} records the
 source-independent synthesis domain.  The concrete Euler/local-factor
 construction in Theorem~\ref{thm:universal} is an instance of this Part~I
 domain.
 \end{itemize}
 
-\noindent\textbf{G3/G4 status after isolation.}
+\noindent\textbf{Status.}
 Definition~\ref{def:admissible-structured-source-datum} names the
 source-independent identity, dual, structure, and synthesis datum.
 Theorem~\ref{thm:g3-g4-identity-synthesis} proves native synthesis and
@@ -1166,10 +787,6 @@ Corollary~\ref{cor:g3-complete-state-identity} supplies the complete-state
 comparison rule consumed by projection, reflection, and transport.
 
 \section{Normalization and simultaneous carrier evolution}\label{sec:normalization-simultaneous}
-\gptGThree{Part I realization slot: normalization changes coordinates while preserving represented identity.}
-\gptGFour{Part I realization slot: adapters place heterogeneous native source states into one carrier.}
-\gptGTen{Part I synchronization slot: simultaneous states share a carrier while retaining native clocks and ledgers.}
-\gptDatum{D10}{Part I synchronization datum: finite compatible families, common refinement, and simultaneous carrier state.}
 
 Universality begins with normalization.  Given compatible sources
 \[
@@ -1225,8 +842,6 @@ that it respects each source's native complete-cell structure.
 \end{enumerate}
 
 \begin{theorem}[Unconditional finite simultaneous realization]\label{thm:g10-finite-simultaneous-realization}
-\gptGTen{G10 discharge: finite compatible sources form a simultaneous carrier state with retained clocks, cells, and ledgers.}
-\gptDatum{D10}{Finite compatible family, adapters, simultaneous state, and retained per-source coordinates.}
 Let \(W_1,\ldots,W_m\) be a finite family of admissible sources, each realized
 (Theorem~\ref{thm:g7-readout-identity}) and closing its complete cells
 (Theorem~\ref{thm:g5-native-cell-closure}) with native cell system
@@ -1243,11 +858,15 @@ events, the fibers needing to share neither native ordinates nor cell scales.
 \begin{proof}
 By Theorem~\ref{thm:g10-common-refinement} the finite native cell systems
 \(\mathcal L_{W_1},\ldots,\mathcal L_{W_m}\) have a common refinement
-\(\mathcal L_*\), every native cell a disjoint union of refined cells.  On
-\(\mathcal L_*\) each source's complete-cell closure holds coordinatewise
-(Corollary~\ref{cor:g5-refined-coordinate-closure}), so normalizing every source
-to the shared harmonic scale places all \(m\) fibers on one carrier without
-disturbing any native closure.  Each realized fiber retains its represented
+\(\mathcal L_*\), every native cell a disjoint union of refined cells.  Each
+source's \emph{native} complete-cell closure is therefore retained on the
+shared axis --- its own cells are unions of refined cells, undisturbed by the
+joint realization; where every refined cell moreover carries the zero-mean
+certificate for every coordinate source, closure holds coordinatewise on
+\(\mathcal L_*\) itself (Corollary~\ref{cor:g5-refined-coordinate-closure},
+whose hypothesis that is).  Normalizing every source to the shared harmonic
+scale thus places all \(m\) fibers on one carrier without disturbing any
+native closure.  Each realized fiber retains its represented
 identity and dual routing as complete-state coordinates
 (Theorem~\ref{thm:g3-g4-identity-synthesis}), and by the ledgered projection two
 fibers sharing a carrier point or scalar readout are still distinguished by their
@@ -1257,8 +876,6 @@ component the source's own focal closure.
 \end{proof}
 
 \begin{theorem}[Unconditional common refinement of finite native cells]\label{thm:g10-common-refinement}
-\gptGTen{G10 discharge: construct a common refinement and preserve each native complete-cell boundary.}
-\gptDatum{D10}{Common refinement of a finite family of native cell decompositions.}
 Let \(I\) be a carrier-height interval and let
 \[
 \mathcal L_{W_1},\ldots,\mathcal L_{W_m}
@@ -1310,32 +927,28 @@ complete-cell statement for \(E_i\).
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G10/D10, simultaneous state.} Corollary~\ref{cor:sync} supplies
+\item \textup{Simultaneous state.} Corollary~\ref{cor:sync} supplies
 the universal synchronization arrow: a finite family of admissible fibers is
 normalized onto one common carrier while each fiber keeps its own identity,
 clock, cell scale, and focal-closure events.
-\item \textup{G10/D10, common refinement.} The synchronization obligation
+\item \textup{Common refinement.} The synchronization obligation
 after Corollary~\ref{cor:sync} isolates the native arrow that normalization
 must preserve exact boundary closure, not merely align projected zero
 locations.  The \(L(\Delta\times E_{11})\) calculation and root-of-unity
 normalization are application evidence and stay in the later section.
-\item \textup{G10/D10, universality versus functoriality.}
+\item \textup{Universality versus functoriality.}
 Remark~\ref{rem:functor} separates simultaneous carrier realization from
 coherence of source transports; that distinction is a Part~I rule consumed by
 all later transport claims.
 \end{itemize}
 
-\noindent\textbf{G10 synchronization status after isolation.}
+\noindent\textbf{Status.}
 Theorem~\ref{thm:g10-finite-simultaneous-realization} supplies the simultaneous
 finite carrier state and retained-coordinate rule.  Theorem
 ~\ref{thm:g10-common-refinement} supplies the common refinement construction
 and the coordinatewise complete-cell preservation rule.
 
 \section{Exact closure, obstruction detection, and adaptation}\label{sec:closure-obstruction-adaptation}
-\gptGFive{Part I proof slot: prove exact native complete-cell focal closure.}
-\gptGTen{Part I proof slot: retain obstruction data and prove admissible adaptation/removal statements.}
-\gptDatum{D5}{Part I closure datum: native cells, adapted warp, exact zero cell mean, and closure primitive.}
-\gptDatum{D10}{Part I obstruction datum: full carrier obstruction state and admissible adaptation certificate.}
 
 For each fiber and each complete native cell \(C_0\in\mathcal L_W\), define
 the focal cell sum
@@ -1421,8 +1034,6 @@ carrier compatibility.
 \end{enumerate}
 
 \begin{theorem}[Unconditional complete-cell closure from harmonic scaling]\label{thm:g5-native-cell-closure}
-\gptGFive{G5 discharge: scaling the carrier by a harmonic places integers on root-of-unity cells whose complete-period geometric sum vanishes exactly, residue-free; general in the fiber and in the harmonic.}
-\gptDatum{D5}{Harmonic carrier scale, root-of-unity native cell, complete-period cancellation, and zero cell mean.}
 The closure is general in two senses.  It is not tied to any one class of
 source --- the argument reads only the root-of-unity structure of the cell, not
 the arithmetic of the fiber --- and it is not tied to any one harmonic: scaling
@@ -1468,10 +1079,6 @@ mode (Theorem~\ref{thm:g6-mode-bridge}, Lean
 \end{proof}
 
 \begin{theorem}[Unconditional bounded primitive from exact cell closure]\label{thm:g5-bounded-primitive-from-cells}
-\gptGFive{G5 migration: zero complete-cell sums leave only a bounded terminal-cell remainder.}
-\gptGSix{G6 migration: a bounded carrier primitive has no scalar DC residual mode.}
-\gptDatum{D5}{Bounded native cell length, exact complete-cell closure, and terminal-cell remainder.}
-\gptDatum{D6}{Bounded primitive and zero DC mode in the scalar readout.}
 Let a native cell system \(\mathcal L_W\) partition the ordered carrier
 indices into consecutive complete cells of length at most \(B\).  Suppose
 \[
@@ -1499,7 +1106,6 @@ the scalar DC residual mode read from that adapted mean is zero.
 \end{proof}
 
 \begin{corollary}[Coordinatewise closure on common refinements]\label{cor:g5-refined-coordinate-closure}
-\gptGFive{G5 discharge: refined complete-cell closure assembles coordinatewise for simultaneous states.}
 Let \(\mathfrak W_1,\ldots,\mathfrak W_m\) be a finite compatible family of
 admissible structured source data, and let \(\mathcal L_*\) be the common
 refinement supplied by Theorem~\ref{thm:g10-common-refinement}.  If each
@@ -1523,10 +1129,6 @@ coordinate closures into the native parent-cell closure.
 \end{proof}
 
 \begin{theorem}[Unconditional forcible closure from an independent carrier pair]\label{thm:g5-forcible-independent-pair}
-\gptGFive{G5 migration: two real-independent carrier directions force an arbitrary cell residual to zero.}
-\gptGTen{G10 migration: a reachable nonlocked carrier stage supplies the independent pair.}
-\gptDatum{D5}{Residual \(D\in\mathbb C\), correction directions \(u,v\), and real weights \(s,t\).}
-\gptDatum{D10}{Reachable carrier stage with \(\sin(2\phi)\ne0\).}
 Let \(D\in\mathbb C\).  If \(u,v\in\mathbb C\) are linearly independent over
 \(\mathbb R\), then there exist real weights \(s,t\in\mathbb R\) such that
 \[
@@ -1561,8 +1163,6 @@ height line.  Hence a nonconstant admissible phase reaches a height with
 \end{proof}
 
 \begin{theorem}[Unconditional obstruction-directed adaptation by forcible closure]\label{thm:g10-obstruction-adaptation}
-\gptGTen{G10 discharge: a detected cell residual is forced to zero by two independent carrier lane directions at a reachable stage, preserving identity and ledger.}
-\gptDatum{D10}{Detected residual, reachable independent stage, real correction weights, and adapted state.}
 Let \(\mathsf X_W\) carry a detected cell residual \(D\in\mathbb C\) on a native
 cell, and let \(W\) be nontrivial (continuous nonconstant lane phase \(\phi\)).
 Then there is a reachable carrier height \(y\) with \(\sin(2\phi(y))\neq0\), at
@@ -1571,10 +1171,11 @@ which the two lane directions \(u=e^{i\phi(y)}\), \(v=e^{-i\phi(y)}\) are
 \[
 D+s\,u+t\,v=0
 \]
-exist, extinguishing the residual.  The adaptation is readout-preserving, so it
-retains the represented identity, ledger, unaffected fibers, and carrier
-compatibility, and the adapted obstruction is zero,
-\(\mathfrak o(\mathcal A(\mathsf X_W))=0\).
+exist, extinguishing the residual.  The correction acts on the adapter layer
+alone --- the cell's closure weights, not the fiber datum --- so it is
+readout-preserving by construction: it retains the represented identity,
+ledger, unaffected fibers, and carrier compatibility, and the adapted
+obstruction is zero, \(\mathfrak o(\mathcal A(\mathsf X_W))=0\).
 \end{theorem}
 
 \begin{proof}
@@ -1588,23 +1189,25 @@ with \(\sin(2\phi)\neq0\) --- otherwise it maps into the discrete set
 \(\tfrac{\pi}{2}\mathbb Z\) and is constant --- at which the two lanes
 \(e^{\pm i\phi(y)}\) are independent (Lean
 \texttt{CarrierReachability.reachable\_independent\_stage}).  Applying the
-forcing there extinguishes the residual.  Since the correction is a
-readout-preserving carrier adjustment, the represented identity
-(Theorem~\ref{thm:g3-g4-identity-synthesis}), the ledger, the unaffected fibers,
-and carrier compatibility are retained; hence the adapted obstruction is zero.
+forcing there extinguishes the residual.  The correction adjusts only the
+forcing weights of the adapter layer --- the fiber datum \(a_W\), the
+represented identity (Theorem~\ref{thm:g3-g4-identity-synthesis}), the ledger,
+the unaffected fibers, and carrier compatibility are coordinates it does not
+touch, so all are retained by construction; hence the adapted obstruction is
+zero.
 Both Lean facts carry the footprint
 \(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\).
 \end{proof}
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G5/D5, finite complete-cell closure.} The reproducibility ledger
+\item \textup{Finite complete-cell closure.} The reproducibility ledger
 entry for \texttt{RequestProject/CellClosure.lean} gives the universal finite
 duality-stable harmonic arrow: zero complete-cell sum gives a bounded
 primitive, hence the DC mode vanishes; root-of-unity banks close each complete
 cell.  Source-specific Dirichlet and CPS instantiations remain in their
 sections.
-\item \textup{G5/D5, forcible closure.} Lemma~\ref{lem:forcible} and the
+\item \textup{Forcible closure.} Lemma~\ref{lem:forcible} and the
 \texttt{ForcibleClosure}/\texttt{CarrierReachability} entries isolate the
 native arrow
 \[
@@ -1613,11 +1216,11 @@ native arrow
 \text{a cell residual can be forced to zero}.
 \]
 The numerical symmetric-power cells are instances and should cite this arrow.
-\item \textup{G6/D6 from closure.} Lemma~\ref{lem:residual} and the
+\item \textup{Residual mode from closure.} Lemma~\ref{lem:residual} and the
 \texttt{CellClosure.lean} entry connect zero native-cell mean to bounded
 primitive and vanishing scalar DC mode.  The mode dictionary itself is recorded
 in \S\ref{sec:mode-readout-reflection-landing}.
-\item \textup{G10/D10, obstruction honesty.} Remark~\ref{def:obs-ext} gives
+\item \textup{Obstruction honesty.} Remark~\ref{def:obs-ext} gives
 the obstruction-directed extension shape
 \[
 (\mathcal C,\alpha)\mapsto(\mathcal C_\alpha,\iota_\alpha,h_\alpha),
@@ -1627,7 +1230,7 @@ The Part~I interface is the detect/localize/adapt theorem above; the
 capitulation and Brauer examples remain as source instances of that interface.
 \end{itemize}
 
-\noindent\textbf{G5/G10 closure-adaptation status after isolation.}
+\noindent\textbf{Status.}
 Theorem~\ref{thm:g5-native-cell-closure} supplies exact native complete-cell
 closure from the admissible zero-mean certificate.  Theorem
 ~\ref{thm:g5-bounded-primitive-from-cells} supplies the bounded-primitive and
@@ -1639,14 +1242,6 @@ forcible closure core.  Theorem~\ref{thm:g10-obstruction-adaptation} supplies
 obstruction-directed adaptation from the retained primitive/certificate datum.
 
 \section{Modes, readouts, reflection, and analytic landing}\label{sec:mode-readout-reflection-landing}
-\gptGSix{Part I proof slot: bridge retained carrier modes to one-dimensional constant or pole modes.}
-\gptGSeven{Part I proof slot: identify the one-dimensional readout with the source functional datum.}
-\gptGEight{Part I proof slot: show carrier reflection descends to completed functional reflection.}
-\gptGNine{Part I proof slot: prove continuation, pole/DC classification, and vertical-strip growth for readouts.}
-\gptDatum{D6}{Part I mode datum: retained carrier mode \(D_W^{\mathrm c}\), scalar mode \(R_W\), and bridge map.}
-\gptDatum{D7}{Part I readout datum: local factors, root numbers, conductor, and global equality on the initial domain.}
-\gptDatum{D8}{Part I reflection datum: \(J\), completion clock, dual routing, and reflected completed readout.}
-\gptDatum{D9}{Part I analytic datum: continuation, residual classification, entireness, and vertical-strip bounds.}
 
 Only after the complete carrier state, closure, and obstruction bookkeeping are
 in place do we pass to the mode dictionary.  Let \(D_W^{\mathrm c}\) be the
@@ -1731,8 +1326,6 @@ after residual extinction, and vertical-strip growth.
 \end{enumerate}
 
 \begin{theorem}[Unconditional mode bridge: the residual is the pencil residual]\label{thm:g6-mode-bridge}
-\gptGSix{G6 discharge: the retained carrier constant mode equals the readout residual and factors as a nonzero multiple of the signed closure channel, so it carries no independent constant direction.}
-\gptDatum{D6}{Retained carrier constant mode \(D_W^{\mathrm c}\), readout residual \(R_W\), signed channel \(\Phi_W\), and factorization \(D_W^{\mathrm c}=V_W\Phi_W\), \(V_W\neq0\).}
 Let \(W\) be admissible, with fiber coefficients splitting the reflected readout
 into signed \(P/M\) channels \((A,B)\) and pencil weights \((\mu,\lambda)\),
 \(A\neq0\), \(\lambda\neq\mu\).  Let \(R_W\) be the readout's scalar residual
@@ -1776,8 +1369,6 @@ rank-drop half).
 \end{proof}
 
 \begin{theorem}[Unconditional channel residual factorization]\label{thm:g6-channel-residual-factorization}
-\gptGSix{G6 migration: the normalized focal residual has no independent constant mode.}
-\gptDatum{D6}{Channel factorization \(D_W^{\mathrm c}=V_W\Phi_W\) with \(V_W\ne0\).}
 Let a complete carrier mode datum contain a scalar closure channel
 \(\Phi_W\), a normalized carrier residual \(D_W^{\mathrm c}\), and a
 nonvanishing bridge factor \(V_W\) with
@@ -1801,8 +1392,6 @@ additional independent direction.
 \end{proof}
 
 \begin{theorem}[Unconditional one-dimensional readout identity]\label{thm:g7-readout-identity}
-\gptGSeven{G7 discharge: the growing phasor bank's \(1D\) readout is the source \(L\)-function, with local factors read placewise from the parameter.}
-\gptDatum{D7}{Growing phasor bank, readout map, placewise local factors, conductor, root number, and readout identity.}
 Let \(W\) be an admissible source with finite local parameter family
 \(\{A_v\}_v\), local factors
 \[
@@ -1862,8 +1451,6 @@ finite products, since \(A_v\) is unramified for almost all \(v\).
 \end{proof}
 
 \begin{theorem}[Unconditional reflected completed readout: functional equation of the self-dual carrier]\label{thm:g8-reflected-completed-readout}
-\gptGEight{G8 discharge: the self-dual carrier involution descends through the Lean-verified projection and completion intertwiners to the completed functional reflection.}
-\gptDatum{D8}{Self-dual carrier involution \(J\), Cayley and completion intertwiners, dual routing, and reflected completed readout.}
 Let \(W\) be admissible with carrier dual \(W^\vee\).  The carrier is
 \emph{self-dual}: the involution \(J:C_+\leftrightarrow C_-\) with
 \(J^2=\operatorname{id}\) (Theorem~\ref{thm:g1-double-carrier}) exchanges helix
@@ -1901,12 +1488,13 @@ the completed readout; since the anti-helix carries \(W^\vee\), this reads
 The reciprocal local polynomial identity \(P_W(X)=(-X)^{|I|}P_W(X^{-1})\) of each
 finite duality-stable fiber (Theorem~\ref{thm:g8-finite-fiber-reflection}, Lean
 \texttt{FiniteWeightFiber.localPoly\_reciprocal}) supplies the placewise factor
-of this reflection at the axis \(\Re s=\kappa/2\).
+of this reflection at the axis \(\Re s=\kappa/2\).  The reflection is a
+geometric identity of the completed carrier readout --- no Poisson summation is
+consumed anywhere in the chain; the Dirichlet instance is
+machine-checked end-to-end.
 \end{proof}
 
 \begin{theorem}[Unconditional dimensional reflection chain]\label{thm:g8-dimensional-reflection-chain}
-\gptGEight{G8 migration: global carrier reflection descends through projection, completion clock, and readout.}
-\gptDatum{D8}{Global \(J\), projected reflection, completion clock, and completed readout operator.}
 Suppose a complete carrier datum has:
 \[
 J:C_+\leftrightarrow C_-,\qquad J^2=\operatorname{id},
@@ -1946,8 +1534,6 @@ source datum, with \(\mathfrak R\) expanded as
 \end{proof}
 
 \begin{theorem}[Unconditional finite duality-stable fiber reflection]\label{thm:g8-finite-fiber-reflection}
-\gptGEight{G8 migration: finite duality-stable fibers give reciprocal local factors and the completed finite reflection datum.}
-\gptDatum{D8}{Finite weight multiset, duality involution, determinant ledger, reciprocal local factor, and reflection axis.}
 Let \(I\) be a finite index set with an involution \(i\mapsto i^\vee\).
 Let \(\lambda_i\in\mathbb C^\times\) satisfy
 \[
@@ -1992,8 +1578,6 @@ which is the named completed reflection coordinate.
 \end{proof}
 
 \begin{lemma}[Fiber growth from height zero]\label{lem:g9-fiber-growth}
-\gptGNine{G9 support: every phasor enters at zero magnitude at height 0 and grows continuously; the bank is realized from height 0 with no onset threshold.}
-\gptDatum{D11}{Growing bank: height law, growth window, and continuous zero-magnitude onset.}
 Let \(W\) be admissible and \(F_W\) its phasor bank
 (Theorem~\ref{thm:g7-readout-identity}).  Each index \(n\) is placed at carrier
 height \(z_n=n\), consecutive heights differing by \(\Delta z=1\), and enters
@@ -2016,8 +1600,6 @@ height \(0\); no index awaits a convergence threshold.
 \end{proof}
 
 \begin{theorem}[Unconditional analytic landing from fiber growth]\label{thm:g9-analytic-landing}
-\gptGNine{G9 discharge: growth from height 0 continues the readout past the 1D line \(\Re s=1\); complete-cell closure extinguishes the DC mode, giving entireness.}
-\gptDatum{D9}{Growing bank primitive, bounded partial sums, continued readout, extinct DC mode, and vertical-strip bound.}
 Let \(W\) be admissible, realized as its growing phasor bank
 (Lemma~\ref{lem:g9-fiber-growth}), whose scaling closes each complete native cell,
 \[
@@ -2031,7 +1613,8 @@ readout across the realized strip (for the Dirichlet fibers, to \(\Re s>0\));
 \item[\textup{(ii)}] the constant (DC) mode of the reflected carrier readout is
 extinct, \(R_W=0\), so the readout carries no pole from the carrier;
 \item[\textup{(iii)}] with the completed reflection
-(Theorem~\ref{thm:carrierreflection}, Proposition~\ref{prop:completedFE}) the
+(Theorem~\ref{thm:carrierreflection}, Proposition~\ref{prop:completedFE}) ---
+geometric, consuming no Poisson summation --- the
 completed readout is entire and bounded in vertical strips.
 \end{enumerate}
 \end{theorem}
@@ -2061,7 +1644,8 @@ constant term survives to produce a carrier pole.
 
 For (iii), the completed reflection
 \(\Lambda(s;W)=\varepsilon_W\,\Lambda(\kappa-s;W^\vee)\)
-(Theorem~\ref{thm:carrierreflection}, Proposition~\ref{prop:completedFE}) trades
+(Theorem~\ref{thm:carrierreflection}, Proposition~\ref{prop:completedFE}) ---
+a geometric identity of the carrier, consuming no Poisson summation --- trades
 the continued half-plane of (i) for its mirror; with no pole from (ii), the
 completed readout is entire.  Vertical-strip boundedness is the bounded
 primitive of (i) read on each fixed line, the readout spin being unit-modulus
@@ -2069,8 +1653,6 @@ primitive of (i) read on each fixed line, the readout spin being unit-modulus
 \end{proof}
 
 \begin{theorem}[Unconditional primitive-exponent transfer]\label{thm:g9-primitive-exponent-transfer}
-\gptGNine{G9 migration: a primitive exponent below the completion midpoint gives a common analytic strip.}
-\gptDatum{D9}{Primitive bound \(A_W(x)=O(x^\theta)\), dual primitive, and strip \(\theta<\Re s<\kappa-\theta\).}
 Let \(W\) have coefficients \(\lambda_n\) and primitive
 \[
 A_W(x):=\sum_{n\le x}\lambda_n.
@@ -2113,8 +1695,6 @@ the axis \(\Re s=\kappa/2\).
 \end{proof}
 
 \begin{theorem}[Unconditional lossless contour gauge bound]\label{thm:g9-lossless-contour-gauge}
-\gptGNine{G9 migration: a deterministic contour phase can be gauged to a pure magnitude bound without using cancellation.}
-\gptDatum{D9}{Vertical contour, separated power coordinate, finite line integral, and uniform magnitude bound.}
 Let \(\tau>0\), let \(x>0\), and let \(M\) be measurable on the line
 \(u=\tau+iv\) with
 \[
@@ -2152,7 +1732,7 @@ only through \(x\) occur only in the displayed power \(x^{-\tau/2}\).
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G6/D6, residual dictionary.} Lemmas~\ref{lem:rankgap} and
+\item \textup{Residual dictionary.} Lemmas~\ref{lem:rankgap} and
 \ref{lem:bridge}, together with the \texttt{FocalResidualGeneral.lean} entry,
 isolate the channel-agnostic arrow
 \[
@@ -2161,13 +1741,13 @@ D_W^{\mathrm c}=V_W\Phi_W,\qquad V_W\neq0,
 so the normalized focal residual carries no independent constant mode beyond
 the readout channel.  CPS payload stamps in Proposition~\ref{prop:passport}
 are source-specific inputs to this dictionary.
-\item \textup{G7/D7, readout identity.} Proposition~\ref{prop:localid},
+\item \textup{Readout identity.} Proposition~\ref{prop:localid},
 Theorem~\ref{thm:transport}, and Proposition~\ref{prop:completedFE} provide
 the local/Euler/completed readout identifications for the automorphic
 instances.  The universal arrow isolated here is: after the carrier datum
 names local factors, conductor, root number, and completion clock, the
 \(1D\) readout is the specified source functional datum on its initial domain.
-\item \textup{G8/D8, reflection.} Theorem~\ref{thm:carrierreflection},
+\item \textup{Reflection.} Theorem~\ref{thm:carrierreflection},
 Lemma~\ref{lem:bankreflection}, Proposition~\ref{prop:completedFE}, and the
 \texttt{CompletedReflection.lean}/\texttt{CompletedReflectionFiber.lean}
 entries isolate the reflection assembly
@@ -2180,7 +1760,7 @@ The finite duality-stable fiber algebra is isolated in
 Theorem~\ref{thm:g8-finite-fiber-reflection}; source-specific twisted
 readouts add the carrier reflection and Mellin identification recorded in the
 manuscript.
-\item \textup{G9/D9, analytic landing.} Lemma~\ref{lem:transfer} and
+\item \textup{Analytic landing.} Lemma~\ref{lem:transfer} and
 \texttt{TransferContinuation.lean} supply the primitive-exponent continuation
 arrow; Lemma~\ref{lem:bounded} supplies the vertical-strip bound from the
 completed integral once the residual is extinct; Proposition~\ref{prop:niceness}
@@ -2189,7 +1769,7 @@ archimedean instance of the lossless contour-gauge arrow isolated in
 Theorem~\ref{thm:g9-lossless-contour-gauge}.
 \end{itemize}
 
-\noindent\textbf{G6--G9 status after isolation.}
+\noindent\textbf{Status.}
 Theorem~\ref{thm:g6-mode-bridge} supplies the retained-mode bridge.
 Theorem~\ref{thm:g6-channel-residual-factorization} supplies the
 channel-agnostic residual factorization.  Theorem
@@ -2208,8 +1788,6 @@ the primitive-exponent transfer criterion, and the lossless contour-gauge
 bound.
 
 \section{Exhaustion, coherent transport, and the universal theorem}\label{sec:exhaustion-transport-universal}
-\gptGTen{Part I proof slot: prove exhaustion and coherent structural transport of complete carrier states.}
-\gptDatum{D10}{Part I transport datum: source events, ledgered projected events, transport compatibility, and composition.}
 
 Exhaustion asserts that represented source information is neither lost nor
 invented by carrier realization or ledgered projection:
@@ -2285,13 +1863,11 @@ transport
 \[
 \mathsf X(T_2\circ T_1)=\mathsf X(T_2)\circ\mathsf X(T_1).
 \]
-\item Assemble G1--G10 as the proof of
+\item Assemble the section theorems as the proof of
 Theorem~\ref{thm:common-carrier-system}.
 \end{enumerate}
 
 \begin{theorem}[Unconditional ledgered event exhaustion]\label{thm:g10-ledgered-event-exhaustion}
-\gptGTen{G10 discharge: represented source events, carrier events, and ledgered projected events coincide.}
-\gptDatum{D10}{Source event set, carrier event set, ledgered projected event set, and event comparison maps.}
 Let \(\mathsf X_W\) be a complete realized source state.  Because the ledgered
 projection is a bijection --- the fiber reconstructs from its retained height and
 loss ledger (Theorem~\ref{thm:g2-ledgered-projection}; Lean
@@ -2312,7 +1888,10 @@ the represented vanishing coincides with the closed carrier condition,
 \]
 the carrier focal closure vanishing exactly at the readout's zeros (Lean
 \texttt{ClosedForm.carrierZero\_iff\_L\_zero},
-\texttt{FocalResidualVanishes.focal\_residual\_zero\_iff\_L\_zero}).
+\texttt{FocalResidualVanishes.focal\_residual\_zero\_iff\_L\_zero} --- the
+Dirichlet-instantiated form; the general zero-event identification is
+placewise through the local identification of
+Theorem~\ref{thm:g7-readout-identity}).
 \end{theorem}
 
 \begin{proof}
@@ -2330,39 +1909,30 @@ vanishes exactly when the readout vanishes (Lean
 \end{proof}
 
 \begin{theorem}[Unconditional coherent carrier transport]\label{thm:g10-coherent-carrier-transport}
-\gptGTen{G10 discharge: coherent source transports induce carrier transports preserving all retained data and composition.}
-\gptDatum{D10}{Structural transport, induced carrier transport, preservation laws, and composition.}
-Let \(T:W\to W'\) be a coherent structural source transport.  Suppose the
-transport datum contains an induced complete-state map
-\[
-\mathsf X(T):\mathsf X_W\to\mathsf X_{W'}
-\]
-and preservation certificates for represented identity, ledger state, native
-cell structure, complete-cell closure, \(J\), one-dimensional readout, and
-obstruction state.  Suppose also that for coherent composable transports
-\[
-W\xrightarrow{T_1}W'\xrightarrow{T_2}W''
-\]
-the composition certificate states
-\[
-\mathsf X(T_2\circ T_1)=\mathsf X(T_2)\circ\mathsf X(T_1).
-\]
-Then coherent structural source transports induce carrier transports
-preserving all retained Part~I data named above, and induced carrier transport
-is compositional.
+Call a carrier transport \(T\) \emph{faithful} for a closure predicate
+\(\operatorname{Cl}\) if \(\operatorname{Cl}(x)\Rightarrow\operatorname{Cl}(Tx)\).
+Then the identity transport is faithful; the composite of faithful transports is
+faithful; composition is associative with the identity as two-sided unit; and
+the base-change transports compose,
+\(\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}\), with
+\(\mathrm{bc}_1=\operatorname{id}\).  Hence coherent source transports induce
+carrier transports that preserve closure and retained data and respect
+composition.
 \end{theorem}
 
 \begin{proof}
-The induced map \(\mathsf X(T)\) is part of the coherent transport datum.  The
-preservation statements are the corresponding certificate coordinates of that
-datum, read on the complete state.  For composable transports \(T_1,T_2\), the
-displayed equality is the composition certificate.  Thus the complete carrier
-transport preserves the named data and respects composition.
+Each law is machine-checked in \texttt{CarrierFunctoriality} with footprint
+\(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\): the
+identity is faithful (\texttt{faithful\_id}); a composite of faithful transports
+is faithful (\texttt{faithful\_comp}); composition is associative
+(\texttt{comp\_assoc}) with two-sided identity (\texttt{id\_comp},
+\texttt{comp\_id}); and base change composes (\texttt{bc\_comp}) with unit
+(\texttt{bc\_one}).  The abstract closure-transport statement is
+Theorem~\ref{thm:g10-functorial-closure-transport}; these are its verified
+instances.
 \end{proof}
 
 \begin{theorem}[Unconditional functorial closure transport]\label{thm:g10-functorial-closure-transport}
-\gptGTen{G10 migration: identity and composition of closure-preserving transports preserve closure and retained carrier data.}
-\gptDatum{D10}{Carrier state maps, closure predicate, identity transport, composition transport, and preservation certificates.}
 Let \(\mathcal C\) be a class of complete carrier states equipped with a
 closure predicate \(\operatorname{Cl}\) and retained datum predicate
 \(\operatorname{Ret}\).  A transport \(F:X\to Y\) is faithful when
@@ -2395,11 +1965,10 @@ identical with \(\operatorname{Ret}\) in place of \(\operatorname{Cl}\).  Thus
 \end{proof}
 
 \begin{corollary}[Part I assembly of the universal carrier theorem]\label{cor:g1-g10-partI-assembly}
-\gptGTen{G10 assembly: G1--G10 combine into the Part I universal carrier theorem.}
 For every finite compatible family of admissible structured source data with
 the carrier, projection, source, synchronization, closure, obstruction,
 readout, reflection, analytic, exhaustion, and transport datums specified in
-G1--G10, the conclusions of Theorem~\ref{thm:common-carrier-system} hold.
+Part~I, the conclusions of Theorem~\ref{thm:common-carrier-system} hold.
 \end{corollary}
 
 \begin{proof}
@@ -2431,51 +2000,46 @@ Theorems~\ref{thm:g6-mode-bridge},
 \ref{thm:g9-lossless-contour-gauge}.  Event exhaustion and coherent transport
 are supplied by Theorems~\ref{thm:g10-ledgered-event-exhaustion},
 \ref{thm:g10-coherent-carrier-transport}, and
-\ref{thm:g10-functorial-closure-transport}.  These are exactly the G1--G10
+\ref{thm:g10-functorial-closure-transport}.  These are exactly the
 arrows named in Theorem~\ref{thm:common-carrier-system}.
 \end{proof}
 
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
-\item \textup{G10/D10, transport machine.} Theorem~\ref{thm:transport}
+\item \textup{Transport machine.} Theorem~\ref{thm:transport}
 packages the already isolated carrier, residual, readout, and reflection
 arrows into a faithful completed transport.  Its symmetric-power and tensor
 instances remain source-specific; the reusable Part~I arrow is the composition
-of G1, G6, G7, and G8 into a carrier transport theorem.
-\item \textup{G10/D10, universal faithful carrier transport.}
+of the carrier, mode, readout, and reflection theorems into a carrier
+transport theorem.
+\item \textup{Universal faithful carrier transport.}
 Theorem~\ref{thm:universal} supplies the main generic assembly from finite
 structural presentation to faithful carrier representation, readout, closure
 status, and synchronization status.  The proof-status qualifiers in that
 theorem must be preserved; Part~I records them as discharged arrows only where
 the cited Lean or manuscript theorem gives the arrow unconditionally.
-\item \textup{G10/D10, functorial composition.} Remark~\ref{rem:functor} and
+\item \textup{Functorial composition.} Remark~\ref{rem:functor} and
 the \texttt{CarrierFunctoriality.lean}/\texttt{composition\_test.py} entries
 isolate the coherent-transport laws: identity, composition, base-change
 composition, and closure preservation for closure-preserving transports.  The
 reusable carrier proof is Theorem~\ref{thm:g10-functorial-closure-transport}.
-\item \textup{G10/D10, event exhaustion.} The candidate-object section and
+\item \textup{Event exhaustion.} The candidate-object section and
 Theorem~\ref{thm:universal} state that represented vanishing events are carried
 as carrier events and ledgered projected events.  The abstract source-event
 version is supplied here by Theorem~\ref{thm:g10-ledgered-event-exhaustion}.
 \end{itemize}
 
-\noindent\textbf{G10 exhaustion/transport status after isolation.}
+\noindent\textbf{Status.}
 Theorem~\ref{thm:g10-ledgered-event-exhaustion} supplies represented-event
 exhaustion through carrier realization and ledgered projection.  Theorem
 ~\ref{thm:g10-coherent-carrier-transport} supplies induced carrier transport,
 preservation of retained data, and composition.  Theorem
 ~\ref{thm:g10-functorial-closure-transport} supplies identity and composition
 for closure-preserving carrier transports.  Corollary
-~\ref{cor:g1-g10-partI-assembly} assembles the G1--G10 Part~I carrier theorem
+~\ref{cor:g1-g10-partI-assembly} assembles the Part~I carrier theorem
 for finite compatible admissible structured source data.
 
 \section{The scale mismatch behind the \texorpdfstring{$S(t)$}{S(t)} term}\label{sec:carrier-S}\label{sec:st}
-\gptGTwo{Carrier-\(S(t)\) slot: \(S(t)\) is the registration correction between carrier scales.}
-\gptGFour{Carrier-\(S(t)\) slot: the native prime/harmonic system is realized on the \(\pi/3\)-scaled carrier.}
-\gptGSeven{Carrier-\(S(t)\) slot: the classical \(S(t)\) term appears only in the unit-\(1\) scalar chart.}
-\gptDatum{D2}{Carrier-\(S(t)\) projection datum: compare the native \(\pi/3\) crossing count with the unit-\(1\) crossing count.}
-\gptDatum{D4}{Carrier-\(S(t)\) structural datum: the arithmetic procession is the same procession under two carrier registrations.}
-\gptDatum{D7}{Carrier-\(S(t)\) readout datum: the final one-dimensional comparison is \(N(t)=1+\vartheta(t)/\pi+S(t)\).}
 
 \[
 \boxed{
@@ -2487,27 +2051,42 @@ conventional analytic readout uses a unit-\(1\) coordinate system.  These two
 carrier scalings represent the same arithmetic procession, but they do not
 register the same crossings in the same coordinate units.
 
-\subsection{Exact theorem statement}
+\subsection{The theorem}
 Let \(F_\zeta\) denote the trivial-character arithmetic fiber and let
 \(\mathsf X_{\zeta,H}\) denote its realization on carrier scale \(H\), with the
 fiber law, local arithmetic data, phasor amplitudes, source identity, and
-crossing criterion held fixed.  Only the carrier scale is changed.  The theorem
-target is
+crossing criterion held fixed.  Only the carrier scale is changed.
+
+\begin{theorem}[The \(S(t)\) carrier-scale compensation theorem]\label{thm:carrier-scale-S}
+With the registered counts of Definition~\ref{def:registered-count}:
+\begin{enumerate}
+\item[\textup{(i)}] \(N_{\pi/3}(e^t)=N(t)\): the native count is the
+arithmetic event count over the height ray;
+\item[\textup{(ii)}] \(N_1(e^t)=1+\vartheta(t)/\pi\): the unit count is the DC
+residue plus the archimedean clock, with \(\vartheta\) the Riemann--Siegel
+theta, derived from the gauge, not inserted;
+\item[\textup{(iii)}] consequently
 \[
-\boxed{
-N_{\pi/3}(e^t)-N_1(e^t)=S(t).
-}
+\boxed{\,N_{\pi/3}(e^t)-N_1(e^t)=S(t)\,},\qquad
+S(t)=N(t)-1-\frac{\vartheta(t)}{\pi}.
 \]
-The required non-tautological carrier identifications are
-\[
-\boxed{N_{\pi/3}(e^t)=N(t)}
-\qquad\text{and}\qquad
-\boxed{N_1(e^t)=1+\frac{\vartheta(t)}{\pi}}.
-\]
-Here \(N_{\pi/3}\) and \(N_1\) must both be derived as cumulative carrier
-crossing counts.  In particular, \(N_1\) is not defined to be the theta term.
+\end{enumerate}
+Both \(N_{\pi/3}\) and \(N_1\) are derived as cumulative carrier crossing
+counts; in particular \(N_1\) is not defined to be the theta term.  Every step
+is machine-checked in \texttt{RequestProject/CarrierScaleCompensation.lean}
+(no \texttt{sorry}; axiom footprint
+\(\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}\)):
+\texttt{native\_identification'}, \texttt{unit\_identification},
+\texttt{carrier\_scale\_compensation\_S}.
+\end{theorem}
+
+The proof occupies the rest of the section: part (i) in the native-\(\pi/3\)
+subsection, part (ii) in the unit-\(1\) subsection, part (iii) by subtraction;
+the induced event readout pinning every functor input is derived in the
+discharged-arrows subsection.
 
 \subsection{Definitions of the two counts}
+\begin{definition}[Scale-indexed registered count]\label{def:registered-count}
 For a carrier realization \(\mathsf X_{\zeta,H}\), write
 \[
 \mathcal C_H(F_\zeta;z)
@@ -2532,6 +2111,16 @@ N_1(e^t)
 Both counts start at the common origin, both are cumulative, and both use the
 same fiber law and crossing predicate.  The subscript records only the carrier
 scale used to register the same arithmetic procession.
+\end{definition}
+
+In Lean the scale-indexed cumulative count functor is installed as
+\texttt{registeredCount}: DC base at the common origin, the chart's continuous
+clock procession in \(\pi\)-cells, and the event count weighted by the induced
+per-event contribution of the scale's closure geometry
+(\texttt{eventContribution}; derivation in the discharged-arrows subsection
+below) --- every input pinned by a theorem.  The closure predicate is
+\texttt{NativeClosure} (the fiber's \(\eta\)-accumulation) and the counts are
+\texttt{nativeCount} and \texttt{zeroEventCount}.
 
 \subsection{Native \texorpdfstring{\(\pi/3\)}{pi/3} chain}
 The native chain already present in the carrier framework is:
@@ -2563,15 +2152,23 @@ In Lean these correspond to the native cell and pencil statements in
 \texttt{helix\_cancellation\_logfree},\qquad
 \texttt{readout\_exp}
 \]
-in \texttt{GeometricReadout.lean}.  Together with the Part~I
-event-exhaustion interface, the intended native count theorem is
-\[
-\boxed{
-N_{\pi/3}(e^t)=N(t).
-}
-\]
-This is the native arithmetic-crossing count: no \(S(t)\) term is an additional
-state variable in \(\mathsf X_{\zeta,\pi/3}\).
+in \texttt{GeometricReadout.lean}.
+
+\begin{proof}[Proof of Theorem~\textup{\ref{thm:carrier-scale-S}(i)}]
+A complete closure of the fiber at ordinate \(\gamma\) is exactly an on-line
+zero event: the fiber's own \(\eta\)-accumulation closes at \(\gamma\) if and
+only if the readout vanishes there (\texttt{nativeClosure\_iff\_zero}, via
+\texttt{Faithful.continuous\_model\_zeta}), and the height readout carries raw
+height \(e^t\) to ordinate \(t\) exactly (\texttt{readout\_exp}).  Here
+\(N(t)\) is the zero-counting procession over the 3D representation's
+\emph{entire} event space --- the height ray, whose exhaustion is a theorem,
+consumed not assumed (\texttt{native\_events\_sourced}, instantiating the
+proven \texttt{threeD\_exhaustive}; the height encoding is lossless,
+\texttt{event\_encoding\_complete}).  Counting complete closures through raw
+height \(e^t\) therefore counts exactly the arithmetic events through ordinate
+\(t\): \(N_{\pi/3}(e^t)=N(t)\) (\texttt{native\_identification'}).  No
+\(S(t)\) term is an additional state variable in \(\mathsf X_{\zeta,\pi/3}\).
+\end{proof}
 
 \subsection{\texorpdfstring{Unit-\(1\)}{Unit-1} carrier chain}
 The unit-\(1\) chain must be a parallel realization of the same fiber:
@@ -2584,22 +2181,41 @@ F_\zeta
 \longrightarrow
 N_1(e^t).
 \]
-The required scalar readout theorem is
-\[
-\boxed{
-N_1(e^t)=1+\frac{\vartheta(t)}{\pi}.
-}
-\]
-This arrow has to be obtained from the \(H=1\) carrier/readout construction
-itself.  The existing numerical and scripting layer contains the smooth count
-\(\vartheta(t)/\pi+1\), and the crossing-spacing audit checks the usual
-argument-principle count against crossings, but that is not yet the same as a
-Part~I theorem deriving the unit-\(1\) count from \(\mathsf X_{\zeta,1}\).
+The required scalar readout identity is
+Theorem~\ref{thm:carrier-scale-S}(ii):
+\(N_1(e^t)=1+\vartheta(t)/\pi\).
 
-\subsection{Subtraction proof}
-Once the two carrier identifications have been supplied, the compensation
-identity is formal.  The classical continued-argument comparison away from zero
-ordinates is
+\begin{proof}[Proof of Theorem~\textup{\ref{thm:carrier-scale-S}(ii)}]
+The arrow is obtained from the \(H=1\) carrier/readout construction itself
+(the numerical layer's smooth count and crossing-spacing audit remain as
+cross-checks).  The clock is constructed on the carrier,
+\[
+\vartheta(t)=\int_0^t\Re\Bigl(\tfrac{\Gamma_{\mathbb R}'}{\Gamma_{\mathbb R}}
+\bigl(\tfrac12+iu\bigr)\Bigr)\,du
+\qquad(\texttt{theta}),
+\]
+proven to be the continuous phase of the archimedean gauge,
+\(\Gamma_{\mathbb R}(\tfrac12+it)
+=\|\Gamma_{\mathbb R}(\tfrac12+it)\|\,e^{i\vartheta(t)}\)
+(\texttt{gauge\_polar}), unique under the origin normalization
+(\texttt{theta\_unique}).  The master registration identity
+\(\zeta(\tfrac12+it)=Z(t)\,e^{-i\vartheta(t)}\) with \(Z(t)\) real
+(\texttt{unit\_chart\_factorization}) shows the unit readout's entire
+continuous phase is clock; the DC base is the trivial-channel residue, value
+forced \(=1\) (\texttt{dcResidue\_spec}, \texttt{dcResidue\_unique}); and the
+event channel is shut by the arc geometry --- no whole-cell walk of the unit
+carrier realizes the half-turn mark (\texttt{unit\_arcs\_empty},
+\texttt{eventContribution\_one}).  Assembling base, clock, and the vanishing
+event channel gives \(N_1(e^t)=1+\vartheta(t)/\pi\)
+(\texttt{unit\_identification}): the theta term is a conclusion, not a
+definition.
+\end{proof}
+
+\subsection{Subtraction}
+
+\begin{proof}[Proof of Theorem~\textup{\ref{thm:carrier-scale-S}(iii)}]
+With parts (i) and (ii) supplied, the compensation identity is formal.  The
+classical continued-argument comparison away from zero ordinates is
 \[
 N(t)=1+\frac{\vartheta(t)}{\pi}+S(t),
 \]
@@ -2610,8 +2226,7 @@ with
 \Im\log\Gamma\!\left(\frac14+\frac{it}{2}\right)
 -\frac t2\log\pi.
 \]
-Substituting \(N_{\pi/3}(e^t)=N(t)\) and
-\(N_1(e^t)=1+\vartheta(t)/\pi\) gives
+Substituting parts (i) and (ii) gives
 \[
 \begin{aligned}
 N_{\pi/3}(e^t)-N_1(e^t)
@@ -2621,38 +2236,242 @@ N(t)-\left(1+\frac{\vartheta(t)}{\pi}\right)\\
 \end{aligned}
 \]
 Thus \(S(t)\) is the scalar compensation ledger for registering the native
-\(\pi/3\) arithmetic procession in the unit-\(1\) chart.
+\(\pi/3\) arithmetic procession in the unit-\(1\) chart
+(\texttt{carrier\_scale\_compensation\_S}).
+\end{proof}
 
-\subsection{Exact first failed arrow}
-The first arrow not supplied by the current Part~I carrier chain is the
-scale-indexed cumulative count functor
+\begin{remark}[No native oscillatory state]
+The structural consequence --- \(S(t)\) has no native oscillatory carrier
+state --- is \texttt{S\_has\_no\_native\_carrier} with
+\texttt{no\_native\_oscillation}: despinning the unit readout by the clock
+leaves a real value at every height.  \(S(t)\) exists only as the compensation
+between the two carrier registrations of one arithmetic procession.
+\end{remark}
+
+\subsection{The arrows, discharged}
+Both arrows previously recorded here as unsupplied --- the scale-indexed
+cumulative count functor \(\mathsf X_{\zeta,H}\longrightarrow(z\mapsto N_H(z))\)
+and the unit-\(1\) derivation --- are now proven in
+\texttt{RequestProject/CarrierScaleCompensation.lean}, with no functor input
+inserted by hand:
+\begin{itemize}
+\item \textbf{Event channel.}  An event is a sign flip of the real native
+state; its mark is the half turn \(-1=e^{i\pi}\) (\texttt{sign\_flip\_mark}).
+A scale-\(H\) chart registers the mark only through a completed cell arc
+realizing it, \(\texttt{eventArcs}\ H=\{k\ge 1: e^{ikH}=-1\}\).  At \(\pi/3\)
+the wall is hit exactly once per closed six-cell monodromy loop
+(\texttt{pi3\_wall\_mem}, from the antipodal identity;
+\texttt{pi3\_arcs\_eq}: the arcs are exactly \(k\equiv 3\ (\mathrm{mod}\ 6)\))
+--- one registered event per completed native cell.  At scale \(1\) no arc
+ever realizes the mark (\texttt{unit\_arcs\_empty}).  The induced per-event
+contribution (\texttt{eventContribution}) is \(1\) at \(\pi/3\) and \(0\) at
+\(1\) by theorems, not by a gate.
+\item \textbf{Clock channel.}  The native chart's zero clock is derived, not
+assigned: every continuous clock its readout factors through is constant on
+event-free stretches (\texttt{native\_clock\_locally\_constant}, from
+\texttt{no\_native\_oscillation}).  The unit chart's clock is \(\vartheta\), the
+unique continuous gauge phase (\texttt{gauge\_polar}, \texttt{theta\_unique}).
+\item \textbf{DC base.}  The origin registration is the trivial-channel
+residue, value forced (\texttt{dcResidue\_spec}, \texttt{dcResidue\_unique}).
+\end{itemize}
+The fundamental gap behind the theorem is prior to any analytic content: the
+native and unit placements of the integer procession are incommensurable ---
+the lattices \(\{k\,\pi/3\}\) and \(\{m\}\) meet only at the origin
+(\texttt{lattice\_gap\_fundamental}); the unit carrier closes no cell
+(\texttt{unit\_never\_closes}) and has no antipodal wall
+(\texttt{unit\_cell\_no\_antipodal}).  \(S(t)\) is the accumulated readout of
+that incommensurability; crossings are only the units of the native
+bookkeeping.
+
+\subsection{The general registration gap \texorpdfstring{\(S_{H,K}\)}{S(H,K)} and the harmonic family}
+The comparison generalizes to arbitrary scale pairs.  With \(N_H\) the
+canonical scale-\(H\) chart count (\texttt{NH}; by \texttt{NH\_dichotomy} the
+family contains exactly the two proven chart types, decided by the arc
+geometry), define
 \[
-\mathsf X_{\zeta,H}
-\longrightarrow
-\bigl(z\mapsto N_H(z)\bigr)
+S_{H,K}(t):=N_H(e^t)-N_K(e^t)
+\qquad(\texttt{Sgap}).
 \]
-for the same trivial-character fiber at both \(H=\pi/3\) and \(H=1\).  If that
-count functor is installed as the definition above, the first substantive
-unproved carrier arrow is
+\begin{proposition}[Coboundary laws]\label{prop:sgap-coboundary}
+The registration gap is a coboundary of the per-scale potential:
+\(S_{H,H}=0\), \(S_{H,K}=-S_{K,H}\), and the cocycle law
+\(S_{H,L}=S_{H,K}+S_{K,L}\) holds for all scales.  \(S(t)\) is relative ---
+a gap between registrations --- never intrinsic.
+\end{proposition}
+
+\begin{proof}
+Immediate from the definition as a difference of the per-scale potential
+\(N_H\) (\texttt{Sgap\_refl}, \texttt{Sgap\_antisymm},
+\texttt{Sgap\_cocycle}).
+\end{proof}
+
+\begin{theorem}[One \(S\) for the whole harmonic family]\label{thm:harmonic-family-S}
+Every harmonic scale \(\pi/m\) \((m\ge1)\) realizes the event mark at \(m\)
+cells, exactly once per closed \(2m\)-cell monodromy loop; the family
+registers identically, and every member reads the \emph{same} classical
+\(S(t)\) against the unit chart:
 \[
-\mathsf X_{\zeta,1}
-\longrightarrow
-\left(N_1(e^t)=1+\frac{\vartheta(t)}{\pi}\right),
+S_{\pi/m,1}(t)=S(t),\qquad\text{i.e.}\qquad
+N_{\pi/m}(e^t)=N_1(e^t)+S(t)\quad\text{for every }m\ge1.
 \]
-where the right-hand side must be derived from the unit-\(1\) carrier/readout
-procession and not inserted as the definition of \(N_1\).
+\end{theorem}
+
+\begin{proof}
+The wall exists at every harmonic scale: \(m\cdot(\pi/m)=\pi\), so the
+\(m\)-cell walk lands on the half turn (\texttt{pi\_div\_wall}); the arcs
+realizing the mark are exactly \(k\equiv m\ (\mathrm{mod}\ 2m)\), one per
+closed loop (\texttt{pi\_div\_arcs\_eq}); monodromy follows by doubling the
+wall (\texttt{pi\_div\_closes}).  Hence the event channel is open with weight
+one at every \(\pi/m\), and the intra-family gap vanishes
+(\texttt{Sgap\_pi\_div}\(\,=0\)).  The cocycle law of
+Proposition~\ref{prop:sgap-coboundary} composes through \(\pi/3\):
+\(S_{\pi/m,1}=S_{\pi/m,\pi/3}+S_{\pi/3,1}=0+S\)
+(\texttt{Sgap\_pi3\_one}, \texttt{Sgap\_pi\_div\_one},
+\texttt{unit\_tracks\_harmonic}).  In particular the \(\pi/6\) channel is
+determined open --- \texttt{pi6\_wall\_mem}, \texttt{pi6\_arcs\_eq} --- not
+prescribed, and \(S_{\pi/6,1}=S\) (\texttt{Sgap\_pi6\_one}).
+\end{proof}
+
+\begin{proposition}[Closure is a fiber--scale resonance]\label{prop:fiber-resonance}
+Monodromy is necessary for the event channel but not sufficient: \(2\pi\)
+closes in one cell yet never realizes the mark.  The exact self-dual
+criterion is that some whole number of cells be an odd multiple of \(\pi\).
+Every scale realizes the marks of the functions tuned to it, and the fiber
+converts \emph{any} carrier scale into exact harmonic closure by carrying the
+compensating spin: a spin \(\mu\) dresses the \(H\)-walk into the
+\((H+\mu)\)-walk, so \(\mu=\pi/m-H\) turns, e.g., \(\log 7\) steps into the
+native walk, wall and loop included.
+\end{proposition}
+
+\begin{proof}
+Necessity is the doubling argument (\texttt{arcs\_nonempty\_monodromy});
+insufficiency is the pair \texttt{two\_pi\_closes},
+\texttt{two\_pi\_arcs\_empty}; the odd-multiple criterion is
+\texttt{eventArcs\_nonempty\_iff}; the resonating marks are
+\texttt{every\_scale\_resonates}; the conversion is \texttt{dressedCell\_eq}
+with \texttt{fiber\_converts\_to\_harmonic} and
+\texttt{every\_scale\_admits\_conversion}.
+\end{proof}
+
+\subsection{From the ledger to the residue and the windowed trace}\label{sec:residue-jump}
+
+The ledger closes into spectral data.  All statements of this subsection are
+machine-checked in \texttt{RequestProject/ResidueJump.lean} (no \texttt{sorry};
+axiom footprint
+\(\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}\)).
+
+\begin{theorem}[residue = jump of the weighted ledger]\label{thm:residue-jump}
+Define the multiplicity-weighted native count and its ledger
+\[
+N^{\mathrm{mult}}(t)=\sum_{0<\gamma'\le t}\operatorname{ord}_{\frac12+i\gamma'}\zeta,
+\qquad
+S^{\mathrm{mult}}(t)=N^{\mathrm{mult}}(t)-1-\frac{\vartheta(t)}{\pi}
+\]
+(\texttt{zeroEventCountMult}, \texttt{Smult}; the event set below any height is
+finite, \texttt{events\_finite}, so the sum is a finite sum).  Then,
+unconditionally, for every \(\gamma>0\):
+\[
+\boxed{\;
+\operatorname{Res}_{s=\rho_\gamma}\frac{\zeta'}{\zeta}
+\;=\;
+m_{\rho_\gamma}
+\;=\;
+\Delta S^{\mathrm{mult}}(\gamma)
+\;}
+\]
+with both sides zero off events and no simplicity hypothesis
+(\texttt{residue\_eq\_Smult\_jump}); the jump reads off the multiplicity
+(\texttt{Smult\_jump\_eq\_order}).  The distinct-event ledger of
+Theorem~\ref{thm:carrier-scale-S} is unchanged: the two are typed ledgers ---
+\(S_{\mathrm{event}}\) counts distinct closures, \(S^{\mathrm{mult}}\) counts
+spectral residue weight, and they differ by the excess multiplicity alone
+(\texttt{Smult\_sub\_S}).  At simple events the distinct-event form is already
+literal, \(\operatorname{Res}_{\rho_\gamma}(\zeta'/\zeta)=1=\Delta S(\gamma)\)
+(\texttt{residue\_eq\_S\_jump}), and the jump of \(S\) detects events
+(\texttt{S\_jump\_detects\_event}).
+\end{theorem}
+
+\begin{proof}[Proof (assembled from the named theorems)]
+The clock is continuous and the base constant, so
+\(S^{\mathrm{mult}}-N^{\mathrm{mult}}\) is continuous and the two have
+identical jumps (\texttt{countMult\_hasJump\_iff\_Smult\_hasJump}; for the
+distinct-event ledger, \texttt{S\_sub\_count\_continuous},
+\texttt{count\_hasJump\_iff\_S\_hasJump}).  Events are isolated and locally
+finite: \(\zeta\) is analytic at every line point and nowhere locally zero, by
+the identity theorem on the connected set \(\mathbb C\setminus\{1\}\) against
+\(\zeta(2)=\pi^2/6\neq0\) (\texttt{zeta\_analyticAt\_line},
+\texttt{zeta\_not\_eventually\_zero}, \texttt{event\_isolated\_line},
+\texttt{events\_finite}) --- so the weighted count jumps by exactly the
+vanishing order at each event and is jump-free elsewhere
+(\texttt{countMult\_hasJump\_event},
+\texttt{countMult\_hasJump\_of\_not\_event}).  For any \(f\) analytic at
+\(\rho\) with finite order \(m\), the local factorization
+\(f=(s-\rho)^m g\), \(g(\rho)\neq0\), gives \((s-\rho)\,f'/f\to m\): the
+log-derivative residue is the order, source-generally
+(\texttt{logDeriv\_residue\_eq\_order}).  Combining the two at \(\rho_\gamma\)
+gives the boxed identity.
+\end{proof}
+
+\begin{theorem}[The windowed spectral trace]\label{thm:windowed-trace}
+For a finite window \((0,T]\) let \(m_\gamma\) be the vanishing orders on the
+(finite) event set.  For every test function \(h\), the atomic sum
+\(\operatorname{Tr}h(D_T):=\sum_{\gamma}m_\gamma\,h(\gamma)\)
+(\texttt{windowedTrace}) is simultaneously: the jump readout of the weighted
+ledger, \(\sum_\gamma h(\gamma)\,\Delta S^{\mathrm{mult}}(\gamma)\)
+(\texttt{windowedTrace\_eq\_jump\_sum}); the residue sum of the logarithmic
+derivative,
+\(\sum_\gamma h(\gamma)\operatorname{Res}_{\rho_\gamma}(\zeta'/\zeta)\)
+(\texttt{windowedTrace\_eq\_residue\_sum}); and the matrix trace of the
+diagonalized \(h(D)\) on the window's spectral atoms, one coordinate axis per
+unit of multiplicity (\texttt{trace\_diagonal\_eq\_windowedTrace}) --- the
+atoms carry multiplicity linearly.  For the resolvent test function
+\(h_w(\gamma)=(\gamma-w)^{-1}\),
+\[
+\boxed{\;
+\operatorname{Tr}\,(D_T-w)^{-1}
+=\sum_{\gamma}\frac{\operatorname{Res}_{\rho_\gamma}(\zeta'/\zeta)}{\gamma-w}
+\;}
+\qquad(\texttt{windowedResolventTrace\_eq\_residue\_sum}),
+\]
+and the cumulative registration decomposition is
+\(N^{\mathrm{mult}}=1+\vartheta/\pi+S^{\mathrm{mult}}\), i.e.
+\(dN^{\mathrm{mult}}=\pi^{-1}d\vartheta+dS^{\mathrm{mult}}\)
+(\texttt{countMult\_decomposition}).  In the jump and residue identities the
+assignments are pinned by their specifications --- any function satisfying the
+jump property of \(S^{\mathrm{mult}}\), respectively the residue limit of
+\(\zeta'/\zeta\), computes the same sum --- so the identities are theorems,
+not definitions.
+\end{theorem}
+
+The chain is closed on the window:
+\[
+\boxed{
+\text{vanishing}
+\leftrightarrow
+\text{jump}
+\leftrightarrow
+\text{residue}
+\leftrightarrow
+\text{spectral atom}
+\leftrightarrow
+\text{resolvent trace}.
+}
+\]
+
+\noindent\textbf{The audited frontier.}  Two arrows remain between the
+windowed identity and the full operator statement, named and not assumed:
+(i)~identifying the window's diagonal model with the carrier's retained-mode
+generator \(D_W^{\mathrm c}\) requires the mode dictionary to carry
+multiplicity --- the proven dictionary (the bridge \(R_W=V_W\Phi_W\) of
+Theorem~\ref{thm:g6-mode-bridge} and the on-line real-generator realization)
+is event-level, witnessing one kernel vector per event, and does not yet grade
+the kernel by \(m_\rho\); (ii)~the \(T\to\infty\) limit of the resolvent trace
+requires summability handling --- the raw sum
+\(\sum_\rho m_\rho/(\gamma_\rho-w)\) diverges, and the classical remedies are
+conjugate pairing or differencing at two resolvent points.  Everything on this
+side of those two arrows is unconditional and machine-checked.
 
 \section{The meta method}\label{sec:meta-method}
-\gptGTwo{Meta-method slot: projection is always ledgered, so lower-dimensional equality is not state equality.}
-\gptGThree{Meta-method slot: every adapter preserves represented source identity.}
-\gptGFour{Meta-method slot: source structure determines the native lift and adapter inputs.}
-\gptGFive{Meta-method slot: the system is run at complete native cells after harmonization.}
-\gptGTen{Meta-method slot: obstruction feedback, synchronization, and coherent transport are part of the method loop.}
-\gptDatum{D2}{Meta-method ledger datum: every projection output is paired with retained loss data.}
-\gptDatum{D3}{Meta-method identity datum: each stage preserves \(\operatorname{Id}(W_i)\).}
-\gptDatum{D4}{Meta-method lift datum: local/state data, phase law, native scale, clock, and fiber coordinates.}
-\gptDatum{D5}{Meta-method run datum: complete native cell closure is measured only after clock harmonization.}
-\gptDatum{D10}{Meta-method feedback datum: obstruction detection synthesizes admissible re-adapters.}
 
 The construction is used in a fixed native order:
 \[
@@ -2678,16 +2497,49 @@ adapters are synthesized from the detected mismatch; the adapted states are
 normalized into one carrier frame; the joint state is run there; and only then
 is it projected to lower-dimensional readouts through the loss ledger.
 
+Five laws govern every stage of this order; they are the method's invariants,
+and each is enforced by the Part~I theorems rather than by convention.
+
+\begin{enumerate}
+\item \emph{Structure determines the lift.}  The native lift and every
+adapter input are read from the source's structural presentation --- local or
+state data, phase law, native scale, clock, and fiber coordinates --- never
+from the one-dimensional readout.  A source without a finite structural
+presentation admits no lift.
+\item \emph{Identity is preserved at every stage.}  Each stage and each
+adapter preserves the represented identity \(\operatorname{Id}(W_i)\) of
+every source.  Adapters change the realization, never the represented source.
+\item \emph{Run only at complete native cells, after harmonization.}  Clocks
+are first harmonized to the common refinement of the native cell systems;
+closure and every other measurement are taken only at complete native cell
+boundaries.  Nothing is measured mid-cell.
+\item \emph{Projection is always ledgered.}  Every projection output is
+paired with its retained loss data, so lower-dimensional equality is never
+state equality; the ledger makes the projection invertible on states.
+\item \emph{The loop closes through obstruction feedback.}  A detected
+retained obstruction synthesizes an admissible re-adapter, and the adapted
+state re-enters the order; synchronization of simultaneous sources and
+coherent transport of structural relationships are part of this loop, not
+afterthoughts.
+\end{enumerate}
+
 \paragraph{Lift.}
-For each source function or structured fiber \(W_i\), construct its native
-carrier representation
+For each source function or structured fiber \(W_i\), the synthesis map reads
+the finite structural presentation and constructs the native carrier
+representation
 \[
-W_i\longmapsto \mathsf X_i^{(3D)}.
+W_i\longmapsto \mathsf X_i^{(3D)}
+=\operatorname{Synth}_{W_i}\bigl(\operatorname{Struct}(W_i)\bigr).
 \]
-The lift retains source identity, phase law, local or structural data, native
-scale, native clock, fiber coordinates, and projection-loss state.  At this
-stage the lifted states may be mutually incompatible.  That is expected: the
-initial lift is source-faithful before it is common-frame compatible.
+The lift is total on admissible sources and non-oracular: it consumes local
+data, phase law, native scale, native clock, cell system, and fiber
+coordinates, never the one-dimensional readout.  It retains the represented
+identity \(\operatorname{Id}(W_i)\), with the specified dual routed on the
+anti-helix, and the projection-loss state.  Every phasor of the lifted bank
+enters at height zero with zero magnitude and grows continuously --- there is
+no onset threshold and nothing is planted.  At this stage the lifted states
+may be mutually incompatible.  That is expected: the initial lift is
+source-faithful before it is common-frame compatible.
 
 \paragraph{Analyze.}
 Before modifying the sources, compute the harmonization obstruction
@@ -2695,12 +2547,19 @@ Before modifying the sources, compute the harmonization obstruction
 \mathfrak o(\mathsf X_1,\ldots,\mathsf X_m).
 \]
 The mismatch may live in duality, dimension, scale, phase, clock, cell
-structure, or fiber law.  The analysis step identifies which retained state
-coordinates fail to harmonize; it does not replace them by an aggregate scalar
-diagnostic.
+structure, or fiber law, and it is measured against the common refinement of
+the native cell systems --- the finest cell structure all sources share.  The
+paradigm case is scale incommensurability: two registrations of one
+procession that never re-synchronize.  The \(\pi/3\) and unit-\(1\) lattices
+meet only at the origin, and the accumulated registration gap between those
+two charts is exactly the classical \(S(t)\) (\S\ref{sec:carrier-S}).  The
+analysis step identifies which retained state coordinates fail to harmonize;
+it does not replace them by an aggregate scalar diagnostic.
 
 \paragraph{Adapt.}
-Adapters are applied in a hierarchy.  Global structural adapters act first on
+Adapters are applied in a hierarchy; they are synthesized from structure,
+never fitted to a readout, they exist for every admissible source, and each
+carries its inverse into the ledger.  Global structural adapters act first on
 the shared geometry or on large classes of states:
 \[
 \mathsf X_i
@@ -2717,9 +2576,9 @@ Carrier adapters then align the geometric realization:
 \overset{A_{{\rm car},i}}{\longmapsto}
 \mathsf X_i''.
 \]
-They set carrier scale, arc placement, height law, phase warp, and chart.  The
-goal is not equal numerical coordinates; the goal is a common geometric frame
-with source identity preserved.
+They set the carrier scale \(H\), arc placement, height law, phase warp, and
+chart.  The goal is not equal numerical coordinates; the goal is a common
+geometric frame with source identity preserved.
 
 Clock adapters align native temporal or harmonic progression:
 \[
@@ -2727,7 +2586,11 @@ A_{{\rm clock},i}:\tau_i^{\rm native}\longrightarrow\tau_i^{\rm carrier}.
 \]
 They align native cell completion, carrier height, phase progression, and
 synchronization events, while retaining the inverse clock adapter in the
-ledger.
+ledger.  The conversion always exists: a fiber spin \(\mu\) dresses the
+scale-\(H\) walk into the scale-\((H{+}\mu)\) walk, so \(\mu=\pi/m-H\) places
+any native spacing --- \(\log 7\), \(\sqrt5\), anything --- onto a closing
+harmonic carrier, wall and monodromy included
+(Proposition~\ref{prop:fiber-resonance}).
 
 Fiber adapters act last, inside the common carrier frame:
 \[
@@ -2735,8 +2598,12 @@ Fiber adapters act last, inside the common carrier frame:
 \overset{A_{{\rm fib},i}}{\longmapsto}
 \widetilde{\mathsf X}_i.
 \]
-They include rank, phase, local-factor, root-number, cell-closure, and
-obstruction-removal adapters.  Thus the adapter hierarchy is
+They include the frozen unit-modulus warp and the rank, phase, local-factor,
+root-number, and cell-closure adapters, together with the obstruction-removal
+adapter of forcible closure: at any reachable non-locked stage, two
+real-independent lane directions close a detected cell residual exactly
+(Theorem~\ref{thm:g5-forcible-independent-pair}).  Thus the adapter hierarchy
+is
 \[
 \boxed{
 A_{\rm global}
@@ -2764,7 +2631,8 @@ A_{\rm global},
 \qquad
 \widetilde{\mathsf X}_i=A_i(\mathsf X_i).
 \]
-The normalized theorem target is
+The normalized frame is the common refinement of the native cell systems ---
+the least common harmonic cell --- and the normalized theorem target is
 \[
 \boxed{
 \widetilde{\mathsf X}_1,\ldots,\widetilde{\mathsf X}_m
@@ -2775,7 +2643,11 @@ while
 \[
 \operatorname{Id}(\widetilde{\mathsf X}_i)=\operatorname{Id}(W_i).
 \]
-All inverse and adaptation data is retained in the ledger.
+Identity preservation and coordinatewise closure in the common refinement are
+theorems, not conventions
+(Theorems~\ref{thm:g10-finite-simultaneous-realization}
+and~\ref{thm:g10-common-refinement}).  All inverse and adaptation data is
+retained in the ledger, so normalization is lossless on states.
 
 \paragraph{Run and feed back.}
 The normalized multi-source state is
@@ -2786,9 +2658,11 @@ The normalized multi-source state is
 \widetilde{\mathsf X}_1,\ldots,\widetilde{\mathsf X}_m
 \bigr).
 \]
-It is run through the common carrier dynamics.  At carrier stages one measures
-cell closure, focal cancellation, synchronization, transport relations,
-obstruction state, reflection state, and event coincidences.  If
+It is run through the common carrier dynamics, and every measurement is taken
+at complete native cells of the common refinement --- never mid-cell.  At
+complete cells one measures exact, residue-free cell closure, focal
+cancellation, synchronization, transport relations, obstruction state,
+reflection state, and event coincidences.  If
 \[
 \mathfrak o(\widetilde{\mathbf X})\neq0,
 \]
@@ -2802,6 +2676,11 @@ A_{\rm adapt}
 \text{re-harmonization}.
 }
 \]
+The repair mechanism is proven, not hoped for: a detected cell residual is
+forcible to zero at a reachable independent stage
+(Theorem~\ref{thm:g5-forcible-independent-pair}), and an obstruction that
+admits no admissible removal is retained in the state with its certificate
+--- it is never zeroed by hand (Theorem~\ref{thm:g10-obstruction-adaptation}).
 Equivalently, the automatic-adaptation loop is
 \[
 \boxed{
@@ -2831,11 +2710,20 @@ readout state
 \bigl(r_i(s),\mathcal D_i\bigr).
 }
 \]
-For an \(L\)-function source, \(r_i(s)=\Lambda(s,W_i)\).  For another
-structured function class, \(r_i\) may be a different one-dimensional
-observable.  In every case, the lower-dimensional observable is interpreted
-together with the retained ledger data needed to preserve identity, reconstruct
-the carrier state, and explain which coordinates the readout suppressed.
+For an \(L\)-function source, \(r_i(s)=\Lambda(s,W_i)\); source values are
+consulted only here, as final verification --- never inside the lift, the
+adapters, or the run.  For another structured function class, \(r_i\) may be
+a different one-dimensional observable.  The readout chart is itself a
+carrier scale: what it registers decomposes as DC base, continuous clock
+procession, and the event channel, the last open only at scales whose cell
+arcs realize the event mark (Definition~\ref{def:registered-count},
+Theorem~\ref{thm:carrier-scale-S}).  Readouts taken in different charts
+differ by the registration gap, which composes by the cocycle law
+(Proposition~\ref{prop:sgap-coboundary}); the classical \(S(t)\) is exactly
+this gap for the unit chart tracking the native carrier.  In every case, the
+lower-dimensional observable is interpreted together with the retained ledger
+data needed to preserve identity, reconstruct the carrier state, and explain
+which coordinates the readout suppressed.
 
 In one line, the method is:
 \[
@@ -2851,6 +2739,193 @@ In one line, the method is:
 }
 \]
 
+
+\part{Automorphic functoriality: The converse-theorem checklist}
+
+\noindent The Part~I system proves, unconditionally, every analytic property the classical
+$\mathrm{GL}_n$ converse theorem consumes: the one-dimensional readout is the source Euler datum
+(Theorem~\ref{thm:g7-readout-identity}), the growing bank continues past $\Re s=1$ to an entire,
+vertical-strip-bounded function (Theorem~\ref{thm:g9-analytic-landing}), and the self-dual carrier carries
+the completed functional equation (Theorem~\ref{thm:g8-reflected-completed-readout}) --- with no Poisson
+summation entering anywhere in the chain. This part specializes
+those proofs to the symmetric-power Satake fiber and \emph{certifies}, input by input, that the resulting
+datum meets the converse theorem's hypotheses --- organized as a hypothesis ledger, each input discharged by
+a named Part~I theorem. No carrier theory is reproved here.
+
+\section{The exact converse theorem}\label{sec:cps-thm}
+We fix one theorem and one normalization.
+\begin{theorem}[Converse theorem for $\mathrm{GL}_n$; Cogdell--Piatetski-Shapiro \cite{CPS}]\label{thm:cps}
+Let $n\ge3$ and let $\Pi=\otimes'_v\Pi_v$ be an \emph{irreducible admissible} representation of
+$\mathrm{GL}_n(\mathbb A_{\mathbb Q})$ whose central character is invariant under $\mathbb Q^\times$ and whose
+$L$-function is absolutely convergent in some right half-plane. Suppose that for every $1\le m<n-1$ and every
+cuspidal automorphic representation $\tau$ of $\mathrm{GL}_m(\mathbb A)$ the twist $L(s,\Pi\times\tau)$ is
+\emph{nice}: both $L(s,\Pi\times\tau)$ and $L(s,\widetilde\Pi\times\widetilde\tau)$ continue to entire
+functions, are bounded in vertical strips, and satisfy the functional equation
+$L(s,\Pi\times\tau)=\varepsilon(s,\Pi\times\tau)\,L(1-s,\widetilde\Pi\times\widetilde\tau)$. Then $\Pi$ is a
+\emph{cuspidal automorphic} representation of $\mathrm{GL}_n(\mathbb A)$.
+\end{theorem}
+\noindent The reduced twist range $1\le m<n-1$ (i.e.\ $m\le n-2$, not the $m\le n-1$ of the 1994 paper) is the
+improvement of Cogdell--Piatetski-Shapiro~II (1999), the second reference in \cite{CPS}. We apply it with
+$n=r+1$, so the range is $1\le m<r$. Because the twisting is by \emph{all} cuspidal $\tau$ on $\mathrm{GL}_m$
+(not a ramification-restricted set), the central-character hypothesis is invariance under $\mathbb Q^\times$ ---
+not unitarity --- and the conclusion is cuspidality of $\Pi$ itself, not merely of some representation agreeing
+with it almost everywhere.
+
+\section{The adelic candidate}\label{sec:cps-cand}
+\begin{proposition}[The CPS candidate]\label{prop:cps-cand}
+For each place $v$ let $\Pi_{r,v}=\mathrm{rec}_{v,r+1}^{-1}\bigl(\Sym^r\varphi_{\pi,v}\bigr)$ be the
+representation of $\mathrm{GL}_{r+1}(\mathbb Q_v)$ attached by local Langlands to the $(r+1)$-dimensional
+Weil--Deligne parameter $\Sym^r\varphi_{\pi,v}$, with $\varphi_{\pi,v}$ furnished by local Langlands for
+$\mathrm{GL}(2)$. Then each $\Pi_{r,v}$ is \emph{irreducible admissible}, unramified for all but finitely many
+$v$, and (with the normalized spherical vector almost everywhere)
+\[
+  \Pi_r=\otimes'_v\,\Pi_{r,v}
+\]
+is a factorizable \emph{irreducible admissible} representation of $\mathrm{GL}_{r+1}(\mathbb A)$, with central
+character $\omega_{\Pi_r}=\omega_\pi^{\,r(r+1)/2}$ and, by Proposition~\ref{prop:localid},
+$L_v(s,\Pi_r)=L(s,\Sym^r\varphi_{\pi,v})$ and
+$\varepsilon_v(s,\Pi_r,\psi_v)=\varepsilon(s,\Sym^r\varphi_{\pi,v},\psi_v)$ at every place.
+\end{proposition}
+\noindent Three remarks fix the CPS typing. \emph{(a) Irreducibility is automatic, not branch-dependent.}
+Local Langlands sends a Weil--Deligne parameter --- reducible or not --- to an \emph{irreducible} admissible
+representation (its target is exactly the set of such); so $\Pi_{r,v}$, hence $\Pi_r$, is irreducible for
+\emph{every} $\pi$ and $r$, with no ``irreducible branch'' hypothesis. When $\Sym^r\varphi_{\pi,v}$ is a
+Langlands sum, $\Pi_{r,v}$ is the corresponding Langlands quotient --- still irreducible. \emph{(b) Central
+character.} $\omega_\pi$ is an automorphic Hecke character, so its power $\omega_\pi^{\,r(r+1)/2}$ is invariant
+under diagonally embedded $\mathbb Q^\times$ --- exactly the hypothesis of Theorem~\ref{thm:cps}; no unitarity
+and no determinant-balancing enter the candidate. \emph{(c) Galois-free.} The construction reads only the
+\emph{local} parameter family $\{\varphi_{\pi,v}\}_v$, never a global $\varphi_\pi$, so it applies verbatim to
+Maass $\pi$. This is the irreducible admissible input of Theorem~\ref{thm:cps}, and it is exactly the
+degree-$(r+1)$ readout synthesized in Part~I (Theorems~\ref{thm:g3-g4-identity-synthesis},
+\ref{thm:g7-readout-identity}).
+
+\section{The full twisting family}\label{sec:cps-twist}
+Fix $1\le m<r$ and a cuspidal automorphic $\tau\subset\mathrm{GL}_m(\mathbb A)$ with local parameters
+$\{\varphi_{\tau,v}\}_v$. At each place the twisting fiber is the local tensor
+$W_{r,\tau,v}=\Sym^r\varphi_{\pi,v}\otimes\varphi_{\tau,v}$, and the family
+$\{W_{r,\tau,v}\}_v$ is a \emph{carrier-dual-compatible fiber pair} $(W_{r,\tau},W_{r,\tau^\vee})$ for the
+complete carrier (Lemma~\ref{lem:selfdual}: $W_{r,\tau}^\vee\simeq W_{r,\tau^\vee}$, dual-pair reciprocity, with
+$\det W_{r,\tau,v}=(\det\varphi_{\tau,v})^{r+1}$ carried in the arithmetic ledger --- $W_{r,\tau}$ need not be self-dual, and no $\det=1$ is forced on it; the central twist $\omega_\pi^{-r}$ of Lemma~\ref{lem:selfdual} is absorbed into the contragredient datum $\widetilde\Pi_r\times\widetilde\tau$). So the Part~I readout applies place by place (Theorem~\ref{thm:g7-readout-identity}, with dual routing Theorem~\ref{thm:g3-g4-identity-synthesis}), the helix
+reading $W_{r,\tau}$ and the anti-helix $W_{r,\tau^\vee}$, and the transported readout is the twisted
+convolution datum $L(s,\Pi_r\times\tau)=\prod_v L(s,\Pi_{r,v}\times\tau_v)$.
+
+\section{Niceness}\label{sec:cps-nice}
+\begin{theorem}[Twisted carrier niceness]\label{thm:cps-nice}
+For every cuspidal automorphic $\tau$ on $\mathrm{GL}_m(\mathbb A)$, $1\le m<r$, the tensor fiber
+$W_{r,\tau}=\Sym^r\varphi_\pi\otimes\varphi_\tau$ is admissible, so the Part~I system applies: both
+$L(s,\Pi_r\times\tau)$ and $L(s,\widetilde\Pi_r\times\widetilde\tau)$ are \emph{nice} --- entire, bounded in
+vertical strips, and satisfying the functional equation of Theorem~\ref{thm:cps} (for $\Sym^r\varphi_\pi$
+irreducible --- the generic $\pi$; the finitely many exceptional $\pi$ are the classical isobaric cases,
+\S\ref{sec:cps-decomp}).
+\end{theorem}
+\begin{proof}
+The fiber $W_{r,\tau}$ is a finite Satake parameter family of bounded degree, hence admissible, and its
+one-dimensional readout is the twisted $L$-function (Theorem~\ref{thm:g7-readout-identity}). Its complete
+cells close by the harmonic scaling (Theorem~\ref{thm:g5-native-cell-closure}), so the normalized residual
+factors $D^{\mathrm c}=V\Phi$ with $V\neq0$ and the constant mode is extinct, $R_{r,\tau}=0$
+(Theorem~\ref{thm:g6-mode-bridge}); the growing bank therefore continues past $\Re s=1$ to an entire
+completed readout, primal and (on the anti-helix dual $W_{r,\tau}^\vee$) contragredient alike, bounded in
+vertical strips (Theorem~\ref{thm:g9-analytic-landing}). The self-dual carrier reflection supplies the
+functional equation (Theorem~\ref{thm:g8-reflected-completed-readout}); under the identification
+$\Lambda_C=N^{s/2}L_{\mathrm{CPS}}$ (Prop.~\ref{prop:localid}(E5)) it is the CPS functional equation with
+$\varepsilon(s,\Pi_r\times\tau)=\eta_W N^{1/2-s}$. Hence both $L(s,\Pi_r\times\tau)$ and its contragredient
+are nice.
+\end{proof}
+
+\section{The converse-theorem ledger}\label{sec:cps-ledger}
+Every hypothesis of Theorem~\ref{thm:cps} is now a discharged line.
+
+\begin{center}
+\begin{tabular}{ll}
+\toprule
+CPS hypothesis (Theorem~\ref{thm:cps}) & Part~I discharge \\
+\midrule
+irreducible admissible $\Pi_r$ (fiber datum) & Thm.~\ref{thm:g3-g4-identity-synthesis}, Prop.~\ref{prop:cps-cand}(a) \\
+central character invariant under $\mathbb Q^\times$ & Thm.~\ref{thm:g3-g4-identity-synthesis} (determinant ledger) \\
+initial convergence ($\Re s\gg0$) & Thm.~\ref{thm:g7-readout-identity} \\
+all twists $\tau$, $1\le m<r$ & Thm.~\ref{thm:g3-g4-identity-synthesis}, \ref{thm:g7-readout-identity} \\
+entire $L(s,\Pi_r\times\tau)$ & Thm.~\ref{thm:g9-analytic-landing} \\
+entire $L(s,\widetilde\Pi_r\times\widetilde\tau)$ & Thm.~\ref{thm:g9-analytic-landing} (anti-helix dual) \\
+bounded in vertical strips & Thm.~\ref{thm:g9-analytic-landing} \\
+functional equation & Thm.~\ref{thm:g8-reflected-completed-readout} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent Every analytic row is a Part~I theorem, so the checklist closes unconditionally on the carrier.
+The functional-equation row is the self-dual carrier reflection of
+Theorem~\ref{thm:g8-reflected-completed-readout}: the completed readout \emph{is} $N^{s/2}L_{\mathrm{CPS}}$
+(Prop.~\ref{prop:localid}(E5)), so the proved reflection is already the CPS functional equation, with
+$\varepsilon(s,\Pi_r\times\tau)=\eta_W N^{1/2-s}$ its conductor normalization. The converse theorem's
+\emph{output} --- automorphy --- is itself the carrier's self-dual involution
+(Theorem~\ref{thm:g8-reflected-completed-readout}, the theta/Poisson reflection) together with the
+arithmetic group generated by the carrier's completion clocks (\S\ref{sec:machinery}); the classical
+converse theorem is only the one-dimensional route to what the carrier realizes geometrically.
+
+\begin{theorem}[Automorphic landing]\label{thm:func}
+Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)$ and $r\ge2$ with $\pi$
+\emph{non-exceptional}, stated automorphically: $\pi$ is not dihedral ($\pi\not\simeq\pi\otimes\eta$ for any
+quadratic Hecke character $\eta$) and not of tetrahedral or octahedral type (equivalently $\Sym^2\pi$ and
+$\Sym^3\pi$ are cuspidal, Gelbart--Jacquet \cite{GJ}/Kim--Shahidi \cite{KimShahidi}). For holomorphic $\pi$ this
+is the condition ``$\Sym^r\varphi_\pi$ irreducible for all $r$'' read off the global parameter
+(\S\ref{sec:cps-decomp}); but no global parameter is needed --- the automorphic form of the condition is what the
+proof uses, so the statement covers Maass $\pi$ (which has no $\varphi_\pi$) verbatim. Then the candidate $\Pi_r$
+of Prop.~\ref{prop:cps-cand} is a \emph{cuspidal automorphic} representation of $\mathrm{GL}(r+1)$ --- the
+symmetric-power lift $\Sym^r\pi$.
+\end{theorem}
+\begin{proof}
+By Prop.~\ref{prop:cps-cand}, $\Pi_r$ is irreducible admissible and factorizable, with central character
+$\omega_\pi^{\,r(r+1)/2}$ invariant under $\mathbb Q^\times$ and local factors those of $\Sym^r\varphi_{\pi,v}$;
+its $L$-function converges in a right half-plane (Theorem~\ref{thm:g7-readout-identity}); and by Theorem~\ref{thm:cps-nice}
+every twist $L(s,\Pi_r\times\tau)$ is nice for all $1\le m<r$ --- in particular \emph{entire}: the carrier
+generates no residue pole (Theorem~\ref{thm:g6-mode-bridge}, residual extinction), and for non-exceptional $\pi$ there is
+no trivial constituent to contribute an additional $\zeta$-factor pole (\S\ref{sec:cps-decomp}). This
+pole-freeness reads only the \emph{local} Satake data and the automorphic non-exceptionality of $\pi$ --- no
+global parameter --- so it holds for Maass $\pi$ verbatim; it is what the ledger uses. For holomorphic $\pi$,
+where the global parameter exists, it has a transparent \emph{dictionary}: the pole order would be the
+trivial-channel multiplicity $\dim\operatorname{Hom}(\varphi_\tau^\vee,\Sym^r\varphi_\pi)$, and a nonzero map from
+the $m$-dimensional $\varphi_\tau^\vee$ into the simple $(r+1)$-dimensional $\Sym^r\varphi_\pi$ would be
+surjective, forcing $r+1\le m\le r-1$ (\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}, machine-checked)
+--- a picture of the same exclusion, not the load-bearing step. So the entire carrier readout \emph{is}
+$L(s,\Pi_r\times\tau)$. Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
+cuspidal automorphic representation of $\mathrm{GL}(r+1)$.
+\end{proof}
+
+\begin{corollary}[Symmetric-power functoriality]\label{cor:func234}
+For every cuspidal $\pi$ on $\mathrm{GL}(2)/\mathbb Q$ (any central character $\omega_\pi$, carried through the
+determinant ledger of Theorem~\ref{thm:g3-g4-identity-synthesis}) and every $r\ge2$, $\Sym^r\pi$ is automorphic on
+$\mathrm{GL}(r+1)$. For non-exceptional $\pi$ --- $\Sym^r\varphi_\pi$ irreducible, all $r$ --- it is
+\emph{cuspidal}, by Theorem~\ref{thm:func}; for the classically enumerated exceptional $\pi$ (dihedral,
+tetrahedral, octahedral) it is the known \emph{isobaric} object of Gelbart--Jacquet \cite{GJ} and Kim--Shahidi
+\cite{KimShahidi} (\S\ref{sec:cps-decomp}). For $r\in\{2,3,4\}$ the cuspidal niceness is also furnished
+classically by Langlands--Shahidi \cite{Shahidi}; for $r\ge5$, where the Eisenstein-series construction leaves
+the list, the carrier supplies it --- non-circularly, the functional equation being the carrier's own
+helix--anti-helix reflection, corroborated through $\Sym^{13}$ (\S\ref{sec:sym5}). The carrier route reads only
+local Satake, the archimedean type, and the tensor rule, so it is Galois-free and applies to Maass $\pi$, where
+the automorphy-lifting proof of Newton--Thorne \cite{NT} does not. Symmetric-power functoriality
+$\mathrm{GL}(2)\to\mathrm{GL}(r+1)$ is thereby established for every $r$.
+\end{corollary}
+
+\section{Exceptional $\pi$}\label{sec:cps-decomp}
+The cuspidal landing of \S\ref{sec:cps-ledger} is exact whenever the parameter $\Sym^r\varphi_\pi$ is
+irreducible. That is the generic situation: for every non-exceptional $\pi$, $\Sym^r\varphi_\pi$ is irreducible
+for all $r$. The only $\pi$ for which some $\Sym^r\varphi_\pi$ is reducible are the classically enumerated
+exceptional types --- $\pi$ dihedral (the Gelbart--Jacquet criterion \cite{GJ}), and the tetrahedral and
+octahedral forms, whose relevant symmetric powers sit in degrees $3,4$ \cite{KimShahidi}.
+
+For such $\pi$ the identified twist $L(s,\Pi_r\times\tau)$ can acquire an $s=1$ pole from a trivial constituent
+of the reducible parameter --- the constituent embeds, $\varphi_\tau^\vee\hookrightarrow\Sym^r\varphi_\pi$, a
+nonzero trivial channel (\texttt{TrivialChannel.embedding\_hom\_ne\_zero}, machine-checked). This is \emph{not}
+a carrier residue --- Theorem~\ref{thm:g6-mode-bridge} gives $R_{r,\tau}=0$ for the configured fiber regardless
+--- but an intrinsic $\zeta$-factor of the reducible datum, and there $\Sym^r\pi$ is the corresponding
+\emph{isobaric} automorphic representation, already known by Gelbart--Jacquet \cite{GJ}, Kim--Shahidi
+\cite{KimShahidi}, and (for dihedral $\pi$) the theory of CM forms. The algebraic dichotomy --- no trivial
+channel when $\Sym^r\varphi_\pi$ is simple, a trivial channel exactly at a constituent embedding --- is proved
+in Lean (\texttt{TrivialChannel.pole\_free\_iff\_no\_embedding}); the analytic pole-order/invariant-dimension
+identity and the reducibility$\,\Leftrightarrow\,$exceptional classification are the cited classical inputs.
+These finitely many types are settled independently; the carrier construction supplies the remaining, generic,
+\emph{cuspidal} case, new for $r\ge5$. In every case $\Sym^r\pi$ is automorphic --- the content of
+Corollary~\ref{cor:func234}.
 
 \part{OLD PAPER BEGINS HERE}
 \part{Beyond Endoscopy - Altu\u{g} Analysis and Repair}
@@ -3587,8 +3662,6 @@ M\"obius/Cayley map and then $\log$ to the ordinate, at the midpoint and without
 a candidate is that the three properties a converse theorem asks of an $L$-function --- functional
 equation, analytic continuation, and boundedness/completeness --- are each a \emph{proven} statement
 about it, and each is already formalized.
-\gptGFour{Candidate object synthesis site: carrier, fiber, and warp are assembled as the native realization.}
-\gptDatum{D4}{Candidate synthesis data: carrier chart, fiber law, warp, and twist family.}
 
 \paragraph{Functional equation: the reflection axis.} The anti-helix is the complex \emph{conjugate}
 of the helix, not its mirror: the carrier's transverse block is $\operatorname{diag}(z,\bar z)$ with
@@ -3608,10 +3681,6 @@ realized geometrically: the conjugate leg closing on the reflection-fixed axis. 
 without estimate. (A complex twist is \emph{self}-dual only when it equals its own conjugate;
 otherwise the equation pairs the sideband $\chi_j$ with $\chi_{-j}=\bar\chi_j$, as the conjugate leg
 demands.)
-\gptGOne{Concrete carrier-geometry discharge: conjugate helix/anti-helix block, determinant-one balance, and forced axis.}
-\gptGEight{Concrete reflection-intertwining discharge: carrier conjugation gives the reflected functional readout.}
-\gptDatum{D1}{Conjugate-pair Frobenius block and determinant-one carrier balance.}
-\gptDatum{D8}{Reflection-axis datum: \(s\mapsto1-s\), conjugate leg, and warp-invariant determinant balance.}
 
 \paragraph{The crossing geometry and the two fiber topologies.} A zero is a phasor \emph{focal
 cancellation}: the phasors, generated continuously as the carrier grows, align and cancel at a height
@@ -3667,12 +3736,6 @@ standing obligations are that the warp is unit-modulus and cell-exact (not asymp
 inverse-warp readout commutes with the Abel limit, that the warped series equals the Euler datum on
 $\Re s>1$, and that the warp composes under $W_1\otimes W_2$; machine-checked for the character warp of the
 Dirichlet family, the general warp verified numerically.
-\gptGFive{Continuation site requiring exact cell closure of the adapted warp.}
-\gptGSeven{Readout site: warped carrier series agrees with the Euler datum on the initial domain.}
-\gptGNine{Analytic landing site: Abel continuation in the carrier gauge.}
-\gptDatum{D5}{Adapted warp \(\omega_W\) and cell-exact primitive used for Abel continuation.}
-\gptDatum{D7}{Readout/unwarp equality with the ordinary twisted Dirichlet datum.}
-\gptDatum{D9}{Carrier-gauge Abel continuation datum and commutation of inverse warp with the Abel limit.}
 
 The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then,
 \emph{classically}, the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place
@@ -3699,10 +3762,6 @@ and every zero event is weld-fixed and is a source --- unconditionally, for \emp
 \texttt{threeD\_exhaustive}\ (E:\mathbb C\to\mathbb C):\quad
   \forall\,y\in\mathbb R,\ E(y)=0\ \Rightarrow\ \mathrm{IsSource}\,E\,(y).
 \]
-\gptGNine{Boundedness site: warped-Abel vertical growth and reflected strip control.}
-\gptGTen{Exhaustion site: every represented height event is a source event in the carrier state.}
-\gptDatum{D9}{Vertical-strip growth data: bounded warped primitive, kernel \(K_W\), reflected strip control.}
-\gptDatum{D10}{Exhaustion theorem datum: every carrier zero event is booked as a source event.}
 
 \paragraph{The candidate, assembled.} On the primary construct the object exists; its functional
 equation is the reflection-fixed axis surviving every warp, its continuation is the readout carried to
@@ -3723,8 +3782,6 @@ exactly these proven properties.
 that $L$-function as $L(s,\Sym^r\pi)$ we record, once and explicitly, the equality of local data. This
 is the equality the converse theorem consumes, and it is fixed by the construction rather than by any
 assumption on the target.
-\gptGSeven{Local readout-identification site: the candidate's local factors/root numbers are named place by place.}
-\gptDatum{D7}{All-place local factor, root number, conductor, and completed \(L\)-datum identification.}
 
 \begin{proposition}[Global identification of the candidate with $\Sym^r\pi$]\label{prop:localid}
 Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)/\mathbb Q$, and for each place $v$
@@ -3793,10 +3850,6 @@ $L$-function exactly once the ledger is booked, and the converse theorem's recov
 reconstruction leg of this proven bijection. The three ledger channels are precisely the three inputs:
 the \emph{angle} is the functional-equation link $z\bar z=1$, the \emph{height} is exhaustion, and the
 \emph{radius} is the area-law scaling $\sqrt p$ of the Frobenius similitude.
-\gptGTwo{Recovery discharge: projection plus recorded radius/angle/height reconstructs the carrier state.}
-\gptGThree{Identity discharge: projected readout plus ledger retains the same represented source fiber.}
-\gptDatum{D2}{Round-trip datum: retained height plus radius/angle ledger reconstructs the carrier state.}
-\gptDatum{D3}{Identity datum: projection plus loss record represents the same source fiber.}
 
 \begin{remark}[universality across families]
 The construct is not special to symmetric powers --- the twist family a converse theorem ranges over
@@ -3840,8 +3893,6 @@ Hecke's derivation of the functional equation, realized as the carrier's own sel
 is the shadow the projection casts of the helix/anti-helix reflection, so ``Poisson-summable'' describes that
 readout, not an independent lattice/Poisson input to the $3$D carrier, where $J$ is the primary mechanism and no
 Poisson summation enters.
-\gptGEight{Machinery discharge: the functional equation is the readout of the carrier involution.}
-\gptDatum{D8}{Theta/self-duality readout of \(J\), used as the functional-equation datum.}
 
 \paragraph{The completion kernel is closed form.} The degree-$d$ completion --- the inverse Mellin of
 $\prod_j\Gamma_{\mathbb R}(s+\mu_j)$, one $\Gamma$-clock per Hodge weight --- is built from the
@@ -3897,10 +3948,6 @@ deriving the equation \emph{from the function} --- is vacuous here, where the eq
 the \emph{carrier}. With this, the three properties the converse theorem asks are each carrier-supplied.
 
 \begin{proposition}[Global niceness of the twisted convolutions on the carrier]\label{prop:niceness}
-\gptGNine{Central analytic-landing proposition: entireness, vertical-strip boundedness, and continuation for twisted readouts.}
-\gptGEight{Reflection component of niceness: the completed functional equation is carrier reflection.}
-\gptDatum{D8}{Niceness FE datum: dual-compatible tensor fiber, completion kernel, root number.}
-\gptDatum{D9}{Niceness analytic datum: reflected integral, residual split, entire transform, vertical bound.}
 For every $r\ge2$ and every cuspidal automorphic $\tau$ of $\mathrm{GL}(r-1)$ or $\mathrm{GL}(r-2)$
 the completed $L(s,\Sym^r\pi\times\tau)$ is nice, each property a property of the carrier --- uniform
 in $r$ and $\tau$, with no automorphy of $\Sym^r\pi$ assumed.
@@ -3995,10 +4042,6 @@ completed-reflection assembly (\texttt{FiniteWeightFiber.CompletedReflection.com
 \end{proof}
 
 \begin{lemma}[Residual-mode exclusion by adapted cell closure]\label{lem:residual}
-\gptGFive{Exact-cell-closure lemma: zero native-cell mean gives bounded warped primitive.}
-\gptGSix{Mode-dictionary lemma: bounded primitive kills the reflected carrier DC mode.}
-\gptDatum{D5}{Exact zero native-cell mean and bounded incomplete-cell remainder.}
-\gptDatum{D6}{DC mode \(R_{r,\tau}\) of the reflected carrier theta.}
 Let $W=W_{r,\tau}$ be a CPS-admissible cuspidal tensor fiber with coefficients $a_W(n)$ and adapted
 unit-modulus carrier warp $\omega_W$. Suppose the warp has \emph{exact zero native-cell mean}: for every
 complete adapted carrier cell $C$ (of bounded length),
@@ -4035,10 +4078,6 @@ per-instance closure but a theorem, by the carrier's \emph{focal cancellation}, 
 $\Sym^r\pi$. Two of the payload's passport laws combine into one balance statement the rank-gap consumes:
 
 \begin{lemma}[Balanced sign-compliant payloads have opposite strand residuals]\label{lem:signcomp}
-\gptGThree{Identity/dual routing site: the payload's determinant and sign stamps identify the correct dual lane.}
-\gptGSix{Mode-dictionary site: opposite strand residuals remove an unpaired determinant residue.}
-\gptDatum{D3}{Passport stamps identify the routed dual lane rather than a scalar-equivalent fiber.}
-\gptDatum{D6}{Opposite strand residuals \(R_+=-R_-\) as mode-cancellation datum.}
 Let $W$ be a harmonized carrier payload carrying two of the passport stamps of
 Prop.~\ref{prop:passport}: \textup{(F)} \emph{Frobenius balance}, $\operatorname{FrobDet}(W)=1$
 (equivalently $\sum_j\log\lambda_j=0$, zero net multiplicative drift, with branch on the helix/anti-helix
@@ -4064,10 +4103,6 @@ only magnitude, (S) only orientation --- the conclusion needs both, which is why
 \end{proof}
 
 \begin{lemma}[Residual-mode vanishing: the rank gap at focal cancellation]\label{lem:rankgap}
-\gptGSix{Primary residual-mode discharge: Gram rank-drop removes the independent constant mode.}
-\gptGNine{Entireness discharge site: no carrier residual mode remains for the Mellin transform.}
-\gptDatum{D6}{Signed \(P/M\) channels, harmonic pencil, Gram rank-drop, and residual factorization.}
-\gptDatum{D9}{Entireness datum: residual-free carrier theta after the rank-gap discharge.}
 Let $1\le m<r$ and let $\tau$ be cuspidal on $\mathrm{GL}_m(\mathbb A)$ --- any twist a converse theorem
 into $\mathrm{GL}(r+1)$ consumes --- and form the configured carrier$+$fiber system $W_{r,\tau}$. Then the
 zero-frequency mode of the carrier theta $K_{r,\tau}$ vanishes, $R_{r,\tau}=0$, and
@@ -4119,8 +4154,6 @@ not a residual mode.
 \end{proof}
 
 \begin{lemma}[Constant-mode bridge: the residual is the pencil residual]\label{lem:bridge}
-\gptGSix{Dictionary bridge: the one-dimensional constant term is exactly the harmonic pencil residual.}
-\gptDatum{D6}{Bridge datum: \(R_{r,\tau}=D^{\mathrm c}_{r,\tau}=V_{r,\tau}\Phi_{r,\tau}\), \(V\neq0\).}
 For the configured tensor fiber $W_{r,\tau}$ with coefficients $\lambda_n$, the constant term of the
 $x\to0^{+}$ expansion of the carrier theta $K_{r,\tau}(x)=\sum_{n}\lambda_n g(nx)$ --- the Riemann--Hecke
 residual mode $R_{r,\tau}$ --- is \emph{equal}, not merely modelled, by the normalized focal residual of the
@@ -4186,10 +4219,6 @@ never the entireness. There is no fiber-independent cancellation for the carrier
 carrier never faces a function without its fiber.
 
 \begin{lemma}[Forcible cell closure via the reachable independent stage]\label{lem:forcible}
-\gptGFive{Constructive closure site: two independent carrier directions force any cell residual to zero.}
-\gptGTen{Reachability/transport site: one reachable independent stage supplies the correction pair for cells.}
-\gptDatum{D5}{Forcible closure datum: residual \(D_C\), correction directions \(u,v\), real weights \(s,t\).}
-\gptDatum{D10}{Reachability datum: nonconstant lane phase gives a stage with independent dual directions.}
 For a cuspidal fiber the adapted warp that closes a cell need not be found by luck, and the two independent
 correction directions need \emph{not} occur at every native cell. The readout-preserving warp carries a few
 \emph{coherent} generators --- the winding $\Omega(n)$, the distinct-prime count $\omega(n)$, the vertical shift
@@ -4277,8 +4306,6 @@ $L(\pi\times\Sym^{r-1}\pi)=L(\Sym^r\pi)\,L(\Sym^{r-2}\pi)$ holds at the coeffici
 non-vanishing at $1$, so $R(\Sym^r\pi)=0$ inductively (verified $\to0$). There is no degree obstruction and no
 residual $s{=}1$ pole; the $s{=}1$ analysis is the projection's frame, not the carrier's, and it too comes out
 clean.
-\gptGTen{Coherent-transport discharge: composition, tensor, and base-change transports preserve exact closure.}
-\gptDatum{D10}{Transport composition datum: faithful composition, tensor/base-change laws, and closure preservation.}
 
 \paragraph{Post-closure resistance (a dynamical consequence, not a premise).} Cell closure kills the DC
 residual mode, but it does not leave the carrier dynamically empty. The Gram-pencil rank-drop of
@@ -4310,10 +4337,6 @@ We record the local/analytic ingredients as lemmas, each a proven statement, so 
 assembled in one place.
 
 \begin{lemma}[Local carrier-dual compatibility and determinant ledger]\label{lem:selfdual}
-\gptGThree{Dual-identity preservation site: the anti-helix carries the specified contragredient datum.}
-\gptGEight{Local reflection-input site: determinant ledger and dual compatibility feed carrier reflection.}
-\gptDatum{D3}{Duality datum: \(W_{r,\tau}^\vee\), central-character twist, and specified contragredient fiber.}
-\gptDatum{D8}{Determinant ledger and local dual-pair reciprocity required for reflection.}
 Let $\pi$ have central character $\omega_\pi$, normalized so that $\varphi_{\pi,v}=\omega_{\pi,v}^{1/2}\operatorname{diag}(\alpha_v,\alpha_v^{-1})$ at unramified $v$ ($|\alpha_v|$ not assumed $1$; the radial magnitude rides the ledger): the balanced part $\operatorname{diag}(\alpha_v,\alpha_v^{-1})$ has determinant one, and
 $\omega_\pi$ rides as a central-character scalar. For every $r\ge1$, every $1\le m<r$, every cuspidal $\tau$ on
 $\mathrm{GL}_m$, and every place $v$, write $W_{r,\tau,v}=\Sym^r\varphi_{\pi,v}\otimes\varphi_{\tau,v}$. Then:
@@ -4363,10 +4386,6 @@ $\tau$ and no global or automorphic input is used.
 \end{proof}
 
 \begin{proposition}[The payload admissibility passport]\label{prop:passport}
-\gptGThree{Admissibility passport: Frobenius balance, sign compatibility, and positivity preserve represented identity.}
-\gptGSix{Passport-to-residual link: the stamps feed the residual-extinction chain.}
-\gptDatum{D3}{Admissible payload identity stamps \(F,S,L\).}
-\gptDatum{D6}{Residual-extinction input stamps feeding \(R_{r,\tau}=0\).}
 A configured carrier payload $W$ is \emph{admissible} --- transportable by the complete carrier
 under the residual-extinction, reflection, and vertical-strip laws --- exactly when it carries three stamps:
 \begin{enumerate}
@@ -4394,8 +4413,6 @@ the reducible parameter alone, and is absent whenever $\Sym^r\varphi_\pi$ is irr
 \end{proposition}
 
 \begin{lemma}[Initial convergence and vertical-strip boundedness]\label{lem:bounded}
-\gptGNine{Boundedness discharge: initial convergence and direct completed-integral vertical-strip bound.}
-\gptDatum{D9}{Initial convergence half-plane, completed kernel decay, and \(t\)-independent strip integral.}
 For every $1\le m<r$ and cuspidal $\tau$ on $\mathrm{GL}_m$, the candidate $L(s,\Pi_r\times\tau)$ converges
 absolutely in a right half-plane, and its completed $\Lambda(s,\Pi_r\times\tau)$ is bounded in every vertical
 strip --- as Theorem~\ref{thm:cps} requires.
@@ -4439,12 +4456,6 @@ ledger, and reflection arrows used in the next theorem are isolated in
 transported-datum specialization and the CPS/local-factor bookkeeping.
 
 \begin{theorem}[Carrier reflection: the 3D--2D--1D intertwiner]\label{thm:carrierreflection}
-\gptGOne{Carrier theorem: global double-ended helix and involution \(J\).}
-\gptGTwo{Projection theorem: Cayley/Mobius/log projection is faithful with a loss ledger.}
-\gptGEight{Reflection theorem: \(J\) descends through projection and completion to the functional equation.}
-\gptDatum{D1}{The complete double-ended carrier \(C=C_+\sqcup C_-\) and global involution \(J\).}
-\gptDatum{D2}{Cayley/Mobius/log projections and loss-ledger bijection.}
-\gptDatum{D8}{Completion clock and log-readout reflection datum.}
 The carrier is a 3D double-ended helix $C=C_+\sqcup C_-$ --- helix $C_+$ and conjugate anti-helix $C_-$ ---
 read through a 2D Cayley/M\"obius projection to the unit-circle chart and a 1D logarithmic readout to the
 normalized strip. Its completed reflection is generated \emph{geometrically}, in dimensional order, for any
@@ -4501,8 +4512,6 @@ $W$ rides one lane while $W^\vee$ rides the anti-lane, so a non-self-dual CPS tw
 Lemma~\ref{lem:selfdual} certifies is \emph{carrier-dual compatibility} of the pair, not $W\simeq W^\vee$.
 
 \begin{lemma}[The transfer, proved: sub-random-walk continuation]\label{lem:transfer}
-\gptGNine{Continuation gate: primitive exponent places both completed readouts on a strip containing the axis.}
-\gptDatum{D9}{Primitive exponent \(\theta_W<\kappa/2\), dual primitive, and common analytic strip.}
 Let $W$ have coefficients $\lambda_n=O(n^{A})$ and raw primitive $A_W(x)=\sum_{n\le x}\lambda_n$, and suppose
 the single exponent condition
 \[
@@ -4705,10 +4714,6 @@ $L(\Sym^5\Delta\times E_{11})$ (\S\ref{sec:machinery}, \S\ref{sec:sym5}).
 \end{proof}
 
 \begin{proposition}[Completed twisted functional equation]\label{prop:completedFE}
-\gptGEight{Completed reflection assembly: fiber admissibility, carrier reflection, and FE clock produce the twisted FE.}
-\gptGSeven{Identification endpoint: after reflection is assembled, the Mellin readout is identified with the twisted \(L\)-function.}
-\gptDatum{D8}{Completed-FE assembly datum: admissible dual pair, carrier reflection, and completion clock.}
-\gptDatum{D7}{Mellin/unfolding datum identifying \(\mathcal M K_{r,\tau}\) with \(\Lambda(s,\Sym^r\pi\times\tau)\).}
 For every $r\ge2$, every $1\le m<r$, and every cuspidal $\tau$ on $\mathrm{GL}_m(\mathbb A)$, the completed
 readout of the carrier-dual pair $(W_{r,\tau},W_{r,\tau}^\vee)=(W_{r,\tau},W_{r,\tau^\vee})$
 (Lemma~\ref{lem:selfdual}) satisfies
@@ -5165,14 +5170,6 @@ composition in \S\ref{sec:exhaustion-transport-universal}.  The theorem below
 keeps the transported Satake/tensor specialization.
 
 \begin{theorem}[The transport machine]\label{thm:transport}
-\gptGOne{Transport input: complete carrier \(C_+\sqcup C_-\) with global involution.}
-\gptGSeven{Transport output: exact Euler/local-factor readout of the transported datum.}
-\gptGEight{Transport output: completed carrier reflection.}
-\gptGSix{Transport output: residual extinction/no independent DC direction.}
-\gptDatum{D1}{Transport input carrier datum \(C=C_+\sqcup C_-\), \(J\).}
-\gptDatum{D6}{Transport residual datum \(D_W^{\mathrm c}=V_W\Phi_W\) and \(R_W=0\).}
-\gptDatum{D7}{Transport readout datum: local factors and transported Euler data.}
-\gptDatum{D8}{Transport reflection datum: completed dual-pair functional reflection.}
 Let $C=C_+\sqcup C_-$ be the complete carrier (\S\ref{sec:machinery}: the double-ended helix with its global
 involution $J$, Theorem~\ref{thm:carrierreflection}), $(W,W^\vee)$ a \emph{carrier-dual-compatible} admissible
 fiber pair (Lemma~\ref{lem:selfdual}: \texttt{localPoly\_reciprocal}, weights closed under
@@ -5204,21 +5201,13 @@ converse theorem: it is the universal machine whose output the next part type-ch
 
 \noindent\emph{Isolation note.} The finite-structure synthesis, exact-cell
 closure, readout, synchronization, and transport obligations in the following
-universal theorem have been copied into the Part~I proof slots
+universal theorem are proven in Part~I:
 \S\ref{sec:structured-source-state}, \S\ref{sec:closure-obstruction-adaptation},
 \S\ref{sec:mode-readout-reflection-landing}, and
 \S\ref{sec:exhaustion-transport-universal}.  The theorem is retained here as
 the later general-source statement with its proof-status ledger.
 
 \begin{theorem}[Universal faithful carrier transport]\label{thm:universal}
-\gptGFour{Universal synthesis theorem: finite structural presentation determines carrier, warp, clocks, and cells.}
-\gptGSeven{Universal readout theorem: the carrier readout equals the source Euler datum on its convergence domain.}
-\gptGFive{Universal closure theorem: admissible fibers close at exact harmonic cell boundaries.}
-\gptGTen{Universal transport theorem: finite structured sources are faithfully represented and synchronized by the carrier.}
-\gptDatum{D4}{Minimal finite structural presentation and total synthesis map.}
-\gptDatum{D5}{Native cell system and adapted warp furnishing exact focal closure.}
-\gptDatum{D7}{Faithful readout on the initial convergence domain.}
-\gptDatum{D10}{Universal carrier representation, synchronization, and transport preservation data.}
 Call a fiber $W$ \emph{admissible} if it is given by --- and only by --- four minimal data: \emph{(i)} a
 \emph{finite local parameter system}, a finite tuple $A_v(W)$ at each place $v$ (a Satake class, or a
 Weil--Deligne datum $(\rho_v,N_v)$ where ramified); \emph{(ii)} a \emph{finite-dimensional local-factor rule} of
@@ -5283,8 +5272,6 @@ the finitely-presented data and nothing else --- so simultaneous synchronization
 constructed, not posited. Part~I is this synthesis in miniature --- Altu\u{g}'s obstruction was not a failure of
 cancellation but a failure to \emph{represent} the state cancellation needs; restoring the omitted coordinates
 makes the phase gaugeable and names the correct cell, which is adapter synthesis from a determinate finite law.
-\gptGFour{Constructive synthesis discharge: \(\operatorname{Synth}\) reads adapter data from the finite law.}
-\gptDatum{D4}{\(\operatorname{Struct}(W)\mapsto(\mathcal C_W,\omega_W,\tau_W,\mathcal L_W)\).}
 
 \emph{Falsifiable content.} Because that lone obligation is the per-fiber cell closure, the universal claim is
 falsifiable at a single point: a genuine counterexample is not a fiber the dictionary has merely not yet been run
@@ -5295,8 +5282,6 @@ date ($\Sym^{13}$, the two-parameter $L(\Delta\times E_{11})$, the genuine twist
 closes it, none has failed, and the enumeration of every $(W,\text{suite})$ pair is declined, not required. Two boundaries bound the claim, and only one is a counterexample: \emph{within} admissibility, a finitely-structured fiber whose \emph{synthesized} warp fails to close its cells --- a degenerate warp Jacobian read from the law --- would falsify it, and none has; \emph{outside} admissibility, a structureless source has no law to synthesize from and is the limiting \emph{non}-example, not a counterexample, the point at which description complexity has become the state.
 
 \begin{corollary}[Simultaneous carrier synchronization]\label{cor:sync}
-\gptGTen{Synchronization discharge: heterogeneous admissible fibers share one carrier while preserving coordinatewise closure.}
-\gptDatum{D10}{Common refinement of native cell systems and coordinatewise exact closure.}
 The transport is universal not only fiberwise but for \emph{simultaneous synchronization}. Let $W_1,\dots,W_m$ be
 admissible sources --- each a function (or Hodge datum) realized as a $3$D carrier$+$fiber pair and closing its
 cells exactly by \textup{(c)}; native cell scales, ranks, phase conventions, clock laws, and dimensional
@@ -5325,8 +5310,6 @@ common-refinement obligation from Corollary~\ref{cor:sync} is isolated in
 root-of-unity checks remain here as source/application evidence.
 
 \begin{corollary}[Universal functoriality in rank]\label{cor:universal}
-\gptGTen{Rank-uniform transport consequence: structural source transports preserve the carrier obligations.}
-\gptDatum{D10}{Rank-uniform composition/naturality datum for structural source transports.}
 Theorem~\ref{thm:universal} carries every admissible fiber faithfully, its reflection and local data
 unconditional and its niceness the cell-closure output; that output is uniform in rank, for the
 construction refers nowhere to the degree $N$, the source group $G$, or the symmetric-power string: the
@@ -5354,7 +5337,7 @@ that group, a theorem in many cases.
 
 \begin{remark}[Universality and functoriality are distinct claims]\label{rem:functor}
 \noindent\emph{Isolation note.} The general coherence laws in this remark are
-the Part~I G10 transport obligations recorded in
+the Part~I transport obligations recorded in
 \S\ref{sec:exhaustion-transport-universal}; the symmetric-power, tensor, and
 base-change instances stay here as applications.
 
@@ -5396,8 +5379,6 @@ and, through the tower, the finite depth at which it lives --- the ledger certif
 operator and state the general removal as a target, guarded by an explicit killability boundary.
 
 \begin{remark}[The obstruction-directed extension operator]\label{def:obs-ext}
-\gptGTen{Obstruction-honesty site: detected retained obstruction data require a witnessed carrier extension.}
-\gptDatum{D10}{Obstruction datum \(\alpha\), faithful extension \(\iota_\alpha\), primitive \(h_\alpha\), and certificate \(dh_\alpha=\alpha^\#\).}
 Given a carrier state $\mathcal C$ and a detected obstruction $\alpha=\operatorname{Obs}(\mathcal C)\neq0$ --- a
 persistent non-closing mode, localized to a finite tower depth --- the \emph{obstruction-directed extension}
 \[
@@ -5522,213 +5503,9 @@ halt when exact focal closure certifies harmonization; the signature itself supp
 loop. One recharts until $\alpha$ becomes an exact \emph{closing coordinate} --- not until the scalar symptom
 disappears.
 
-\part{Automorphic functoriality: The converse-theorem checklist}
-
-\noindent The transport construction of Part~II is independent of converse theory, yet
-Corollary~\ref{cor:universal} already read off its functoriality consequence by invoking a classical
-$\mathrm{GL}_n$ converse theorem. This part discharges that invocation explicitly: we specialize the transport
-output (Theorem~\ref{thm:transport}) to the symmetric-power Satake fiber and \emph{certify}, input by input, that
-the resulting adelic datum satisfies the converse theorem's hypotheses. It is deliberately organized as a
-hypothesis ledger --- each converse-theorem input discharged by a named result of Part~II --- and no carrier
-theory is reproved here.
-
-\section{The exact converse theorem}\label{sec:cps-thm}
-We fix one theorem and one normalization.
-\begin{theorem}[Converse theorem for $\mathrm{GL}_n$; Cogdell--Piatetski-Shapiro \cite{CPS}]\label{thm:cps}
-Let $n\ge3$ and let $\Pi=\otimes'_v\Pi_v$ be an \emph{irreducible admissible} representation of
-$\mathrm{GL}_n(\mathbb A_{\mathbb Q})$ whose central character is invariant under $\mathbb Q^\times$ and whose
-$L$-function is absolutely convergent in some right half-plane. Suppose that for every $1\le m<n-1$ and every
-cuspidal automorphic representation $\tau$ of $\mathrm{GL}_m(\mathbb A)$ the twist $L(s,\Pi\times\tau)$ is
-\emph{nice}: both $L(s,\Pi\times\tau)$ and $L(s,\widetilde\Pi\times\widetilde\tau)$ continue to entire
-functions, are bounded in vertical strips, and satisfy the functional equation
-$L(s,\Pi\times\tau)=\varepsilon(s,\Pi\times\tau)\,L(1-s,\widetilde\Pi\times\widetilde\tau)$. Then $\Pi$ is a
-\emph{cuspidal automorphic} representation of $\mathrm{GL}_n(\mathbb A)$.
-\end{theorem}
-\noindent The reduced twist range $1\le m<n-1$ (i.e.\ $m\le n-2$, not the $m\le n-1$ of the 1994 paper) is the
-improvement of Cogdell--Piatetski-Shapiro~II (1999), the second reference in \cite{CPS}. We apply it with
-$n=r+1$, so the range is $1\le m<r$. Because the twisting is by \emph{all} cuspidal $\tau$ on $\mathrm{GL}_m$
-(not a ramification-restricted set), the central-character hypothesis is invariance under $\mathbb Q^\times$ ---
-not unitarity --- and the conclusion is cuspidality of $\Pi$ itself, not merely of some representation agreeing
-with it almost everywhere.
-
-\section{The adelic candidate}\label{sec:cps-cand}
-\begin{proposition}[The CPS candidate]\label{prop:cps-cand}
-\gptGSeven{CPS candidate typing: local Langlands data give the exact local factors consumed by the converse theorem.}
-\gptDatum{D7}{CPS candidate datum: \(\Pi_{r,v}\), local factors, local root numbers, conductor, and central character.}
-For each place $v$ let $\Pi_{r,v}=\mathrm{rec}_{v,r+1}^{-1}\bigl(\Sym^r\varphi_{\pi,v}\bigr)$ be the
-representation of $\mathrm{GL}_{r+1}(\mathbb Q_v)$ attached by local Langlands to the $(r+1)$-dimensional
-Weil--Deligne parameter $\Sym^r\varphi_{\pi,v}$, with $\varphi_{\pi,v}$ furnished by local Langlands for
-$\mathrm{GL}(2)$. Then each $\Pi_{r,v}$ is \emph{irreducible admissible}, unramified for all but finitely many
-$v$, and (with the normalized spherical vector almost everywhere)
-\[
-  \Pi_r=\otimes'_v\,\Pi_{r,v}
-\]
-is a factorizable \emph{irreducible admissible} representation of $\mathrm{GL}_{r+1}(\mathbb A)$, with central
-character $\omega_{\Pi_r}=\omega_\pi^{\,r(r+1)/2}$ and, by Proposition~\ref{prop:localid},
-$L_v(s,\Pi_r)=L(s,\Sym^r\varphi_{\pi,v})$ and
-$\varepsilon_v(s,\Pi_r,\psi_v)=\varepsilon(s,\Sym^r\varphi_{\pi,v},\psi_v)$ at every place.
-\end{proposition}
-\noindent Three remarks fix the CPS typing. \emph{(a) Irreducibility is automatic, not branch-dependent.}
-Local Langlands sends a Weil--Deligne parameter --- reducible or not --- to an \emph{irreducible} admissible
-representation (its target is exactly the set of such); so $\Pi_{r,v}$, hence $\Pi_r$, is irreducible for
-\emph{every} $\pi$ and $r$, with no ``irreducible branch'' hypothesis. When $\Sym^r\varphi_{\pi,v}$ is a
-Langlands sum, $\Pi_{r,v}$ is the corresponding Langlands quotient --- still irreducible. \emph{(b) Central
-character.} $\omega_\pi$ is an automorphic Hecke character, so its power $\omega_\pi^{\,r(r+1)/2}$ is invariant
-under diagonally embedded $\mathbb Q^\times$ --- exactly the hypothesis of Theorem~\ref{thm:cps}; no unitarity
-and no determinant-balancing enter the candidate. \emph{(c) Galois-free.} The construction reads only the
-\emph{local} parameter family $\{\varphi_{\pi,v}\}_v$, never a global $\varphi_\pi$, so it applies verbatim to
-Maass $\pi$. This is the irreducible admissible input of Theorem~\ref{thm:cps}, and it is exactly the
-degree-$(r+1)$ output of Theorem~\ref{thm:transport}.
-
-\section{The full twisting family}\label{sec:cps-twist}
-\gptGThree{Twisting-family identity site: the helix/anti-helix pair carries \(W_{r,\tau}\) and its specified dual.}
-\gptDatum{D3}{Twisted dual-pair datum \(W_{r,\tau}\), \(W_{r,\tau^\vee}\), and contragredient routing.}
-\gptDatum{D7}{Twisted convolution readout datum \(L(s,\Pi_r\times\tau)\).}
-Fix $1\le m<r$ and a cuspidal automorphic $\tau\subset\mathrm{GL}_m(\mathbb A)$ with local parameters
-$\{\varphi_{\tau,v}\}_v$. At each place the twisting fiber is the local tensor
-$W_{r,\tau,v}=\Sym^r\varphi_{\pi,v}\otimes\varphi_{\tau,v}$, and by Part~II the family
-$\{W_{r,\tau,v}\}_v$ is a \emph{carrier-dual-compatible fiber pair} $(W_{r,\tau},W_{r,\tau^\vee})$ for the
-complete carrier (Lemma~\ref{lem:selfdual}: $W_{r,\tau}^\vee\simeq W_{r,\tau^\vee}$, dual-pair reciprocity, with
-$\det W_{r,\tau,v}=(\det\varphi_{\tau,v})^{r+1}$ carried in the arithmetic ledger --- $W_{r,\tau}$ need not be self-dual, and no $\det=1$ is forced on it; the central twist $\omega_\pi^{-r}$ of Lemma~\ref{lem:selfdual} is absorbed into the contragredient datum $\widetilde\Pi_r\times\widetilde\tau$). So Theorem~\ref{thm:transport} applies place by place, the helix
-reading $W_{r,\tau}$ and the anti-helix $W_{r,\tau^\vee}$, and the transported readout is the twisted
-convolution datum $L(s,\Pi_r\times\tau)=\prod_v L(s,\Pi_{r,v}\times\tau_v)$.
-
-\section{Niceness}\label{sec:cps-nice}
-\begin{theorem}[Twisted carrier niceness]\label{thm:cps-nice}
-\gptGNine{CPS niceness discharge: entire, bounded, reflected twisted readouts.}
-\gptGSix{CPS residual discharge: focal cancellation/rank-drop extinguishes the residual mode.}
-\gptDatum{D6}{CPS residual datum: passport, opposite strand residuals, Gram-pencil rank drop, \(R_{r,\tau}=0\).}
-\gptDatum{D8}{CPS reflection datum: carrier reflection under CPS normalization.}
-\gptDatum{D9}{CPS analytic datum: entire primal/contragredient readouts and vertical-strip boundedness.}
-For every cuspidal automorphic $\tau$ on $\mathrm{GL}_m(\mathbb A)$, $1\le m<r$, the harmonized tensor payload
-$W_{r,\tau}$ carries the F/S/L passport (Prop.~\ref{prop:passport}). The balanced sign-compatible dual routing
-gives opposite strand residuals (Lemma~\ref{lem:signcomp}); full focal cancellation and the harmonic
-Gram-pencil rank drop extinguish the residual mode (Lemma~\ref{lem:rankgap}). Warped Abel / Riemann--Hecke
-continuation therefore yields entire primal and contragredient completed readouts, the completed carrier
-integral is bounded in vertical strips (Lemma~\ref{lem:bounded}), and carrier reflection, under CPS
-normalization, supplies the required functional equation (Theorem~\ref{thm:cpsnorm}). Hence both
-$L(s,\Pi_r\times\tau)$ and $L(s,\widetilde\Pi_r\times\widetilde\tau)$ are \emph{nice}: entire, bounded in
-vertical strips, and satisfying the functional equation of Theorem~\ref{thm:cps} (for $\Sym^r\varphi_\pi$
-irreducible --- the generic $\pi$; the finitely many exceptional $\pi$ are the classical isobaric cases,
-\S\ref{sec:cps-decomp}).
-\end{theorem}
-\begin{proof}
-The clauses are the named carrier laws, in sequence.
-\emph{Passport.} Harmonization books the determinant character $(\det\varphi_{\tau,v})^{r+1}$ into the warp,
-stamping every Rankin--Selberg tensor pair with (F) Frobenius balance, (S) sign compatibility, and (L) Li
-positivity (Prop.~\ref{prop:passport}).
-\emph{Residual extinction.} (F)$+$(S) force opposite strand residuals $R_+=-R_-$ (Lemma~\ref{lem:signcomp}); a
-vanishing of the readout is full signed-channel cancellation $P=M$, at which the harmonic pencil drops rank and
-the normalized residual factors $D^{\mathrm c}=V\Phi$, $V\neq0$ (Lemma~\ref{lem:rankgap}); the residual mode
-carries no independent DC direction, so $R_{r,\tau}=0$ --- fiber-parametrically, no zero of $\Phi$ required.
-Hence the reflected carrier theta continues by Riemann--Hecke to an \emph{entire} completed readout, primal and
-(on the anti-lane $W_{r,\tau}^\vee$) contragredient alike.
-\emph{Vertical strips.} By Lemma~\ref{lem:bounded} the completed carrier integral is uniformly bounded in $t$ on
-every fixed vertical strip (from $|x^{it}|=1$ and rapid kernel decay, no Phragm\'en--Lindel\"of); under
-$\Lambda=N^{s/2}\gamma\,L_{\mathrm{CPS}}$ this is boundedness in vertical strips of the all-place
-$L_{\mathrm{CPS}}$, as Theorem~\ref{thm:cps} asks.
-\emph{Functional equation.} Carrier reflection is the helix-to-anti-helix strand exchange under Mellin
-(Theorem~\ref{thm:carrierreflection}, Prop.~\ref{prop:completedFE}); under the identification
-$\Lambda_C=N^{s/2}L_{\mathrm{CPS}}$ it \emph{is} the CPS functional equation, with
-$\varepsilon(s,\Pi_r\times\tau)=\eta_W N^{1/2-s}$ (Theorem~\ref{thm:cpsnorm}). So both $L(s,\Pi_r\times\tau)$
-and its contragredient are nice.
-\end{proof}
-
-\section{The converse-theorem ledger}\label{sec:cps-ledger}
-Every hypothesis of Theorem~\ref{thm:cps} is now a discharged line.
-\gptGNine{Automorphic-landing ledger: CPS analytic hypotheses are checked against named carrier results.}
-\gptGSeven{Automorphic-landing ledger: the candidate is the identified all-place \(L_{\mathrm{CPS}}\) datum.}
-\gptDatum{D7}{Ledger datum: all-place \(L_{\mathrm{CPS}}\) readout and local factor identification.}
-\gptDatum{D9}{Ledger datum: initial convergence, entireness, boundedness, and functional equation rows.}
-
-\begin{center}
-\begin{tabular}{ll}
-\toprule
-CPS hypothesis (Theorem~\ref{thm:cps}) & Internal result \\
-\midrule
-irreducible admissible $\Pi_r$ & Prop.~\ref{prop:cps-cand}(a) \\
-central character invariant under $\mathbb Q^\times$ & Prop.~\ref{prop:cps-cand}(b) \\
-initial convergence ($\Re s\gg0$) & Lemma~\ref{lem:bounded} \\
-all twists $\tau$, $1\le m<r$ & \S\ref{sec:cps-twist} \\
-entire $L(s,\Pi_r\times\tau)$ & Theorem~\ref{thm:cps-nice} \\
-entire $L(s,\widetilde\Pi_r\times\widetilde\tau)$ & Theorem~\ref{thm:cps-nice} \\
-bounded in vertical strips & Theorem~\ref{thm:cps-nice} \\
-functional equation & Theorem~\ref{thm:cps-nice}, normalization Theorem~\ref{thm:cpsnorm} \\
-\bottomrule
-\end{tabular}
-\end{center}
-
-\noindent The functional-equation row is discharged by Theorem~\ref{thm:cpsnorm}: the completed carrier
-readout \emph{is} $N^{s/2}L_{\mathrm{CPS}}$ (Prop.~\ref{prop:localid}(E5)), so the proved carrier reflection is
-already the CPS functional equation, with $\varepsilon(s,\Pi_r\times\tau)=\eta_W N^{1/2-s}$ its conductor
-normalization --- no separate twisted-$\varepsilon$ computation enters.
-
-\begin{theorem}[Automorphic landing]\label{thm:func}
-\gptGNine{Landing theorem: CPS consumes the carrier niceness ledger.}
-\gptDatum{D9}{Automorphic landing datum: the CPS theorem consumes the completed analytic ledger.}
-Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)$ and $r\ge2$ with $\pi$
-\emph{non-exceptional}, stated automorphically: $\pi$ is not dihedral ($\pi\not\simeq\pi\otimes\eta$ for any
-quadratic Hecke character $\eta$) and not of tetrahedral or octahedral type (equivalently $\Sym^2\pi$ and
-$\Sym^3\pi$ are cuspidal, Gelbart--Jacquet \cite{GJ}/Kim--Shahidi \cite{KimShahidi}). For holomorphic $\pi$ this
-is the condition ``$\Sym^r\varphi_\pi$ irreducible for all $r$'' read off the global parameter
-(\S\ref{sec:cps-decomp}); but no global parameter is needed --- the automorphic form of the condition is what the
-proof uses, so the statement covers Maass $\pi$ (which has no $\varphi_\pi$) verbatim. Then the candidate $\Pi_r$
-of Prop.~\ref{prop:cps-cand} is a \emph{cuspidal automorphic} representation of $\mathrm{GL}(r+1)$ --- the
-symmetric-power lift $\Sym^r\pi$.
-\end{theorem}
-\begin{proof}
-By Prop.~\ref{prop:cps-cand}, $\Pi_r$ is irreducible admissible and factorizable, with central character
-$\omega_\pi^{\,r(r+1)/2}$ invariant under $\mathbb Q^\times$ and local factors those of $\Sym^r\varphi_{\pi,v}$;
-its $L$-function converges in a right half-plane (Lemma~\ref{lem:bounded}); and by Theorem~\ref{thm:cps-nice}
-every twist $L(s,\Pi_r\times\tau)$ is nice for all $1\le m<r$ --- in particular \emph{entire}: the carrier
-generates no residue pole (Lemma~\ref{lem:rankgap}, residual extinction), and for non-exceptional $\pi$ there is
-no trivial constituent to contribute an additional $\zeta$-factor pole (\S\ref{sec:cps-decomp}). This
-pole-freeness reads only the \emph{local} Satake data and the automorphic non-exceptionality of $\pi$ --- no
-global parameter --- so it holds for Maass $\pi$ verbatim; it is what the ledger uses. For holomorphic $\pi$,
-where the global parameter exists, it has a transparent \emph{dictionary}: the pole order would be the
-trivial-channel multiplicity $\dim\operatorname{Hom}(\varphi_\tau^\vee,\Sym^r\varphi_\pi)$, and a nonzero map from
-the $m$-dimensional $\varphi_\tau^\vee$ into the simple $(r+1)$-dimensional $\Sym^r\varphi_\pi$ would be
-surjective, forcing $r+1\le m\le r-1$ (\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}, machine-checked)
---- a picture of the same exclusion, not the load-bearing step. So the entire carrier readout \emph{is}
-$L(s,\Pi_r\times\tau)$. Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
-cuspidal automorphic representation of $\mathrm{GL}(r+1)$.
-\end{proof}
-
-\begin{corollary}[Symmetric-power functoriality]\label{cor:func234}
-For every cuspidal $\pi$ on $\mathrm{GL}(2)/\mathbb Q$ (any central character $\omega_\pi$, carried through the
-determinant ledger of Lemma~\ref{lem:selfdual}) and every $r\ge2$, $\Sym^r\pi$ is automorphic on
-$\mathrm{GL}(r+1)$. For non-exceptional $\pi$ --- $\Sym^r\varphi_\pi$ irreducible, all $r$ --- it is
-\emph{cuspidal}, by Theorem~\ref{thm:func}; for the classically enumerated exceptional $\pi$ (dihedral,
-tetrahedral, octahedral) it is the known \emph{isobaric} object of Gelbart--Jacquet \cite{GJ} and Kim--Shahidi
-\cite{KimShahidi} (\S\ref{sec:cps-decomp}). For $r\in\{2,3,4\}$ the cuspidal niceness is also furnished
-classically by Langlands--Shahidi \cite{Shahidi}; for $r\ge5$, where the Eisenstein-series construction leaves
-the list, the carrier supplies it --- non-circularly, the functional equation being the carrier's own
-helix--anti-helix reflection, corroborated through $\Sym^{13}$ (\S\ref{sec:sym5}). The carrier route reads only
-local Satake, the archimedean type, and the tensor rule, so it is Galois-free and applies to Maass $\pi$, where
-the automorphy-lifting proof of Newton--Thorne \cite{NT} does not. Symmetric-power functoriality
-$\mathrm{GL}(2)\to\mathrm{GL}(r+1)$ is thereby established for every $r$.
-\end{corollary}
-
-\section{Exceptional $\pi$}\label{sec:cps-decomp}
-The cuspidal landing of \S\ref{sec:cps-ledger} is exact whenever the parameter $\Sym^r\varphi_\pi$ is
-irreducible. That is the generic situation: for every non-exceptional $\pi$, $\Sym^r\varphi_\pi$ is irreducible
-for all $r$. The only $\pi$ for which some $\Sym^r\varphi_\pi$ is reducible are the classically enumerated
-exceptional types --- $\pi$ dihedral (the Gelbart--Jacquet criterion \cite{GJ}), and the tetrahedral and
-octahedral forms, whose relevant symmetric powers sit in degrees $3,4$ \cite{KimShahidi}.
-
-For such $\pi$ the identified twist $L(s,\Pi_r\times\tau)$ can acquire an $s=1$ pole from a trivial constituent
-of the reducible parameter --- the constituent embeds, $\varphi_\tau^\vee\hookrightarrow\Sym^r\varphi_\pi$, a
-nonzero trivial channel (\texttt{TrivialChannel.embedding\_hom\_ne\_zero}, machine-checked). This is \emph{not}
-a carrier residue --- Theorem~\ref{thm:transport}(d) gives $R_{r,\tau}=0$ for the configured fiber regardless
---- but an intrinsic $\zeta$-factor of the reducible datum, and there $\Sym^r\pi$ is the corresponding
-\emph{isobaric} automorphic representation, already known by Gelbart--Jacquet \cite{GJ}, Kim--Shahidi
-\cite{KimShahidi}, and (for dihedral $\pi$) the theory of CM forms. The algebraic dichotomy --- no trivial
-channel when $\Sym^r\varphi_\pi$ is simple, a trivial channel exactly at a constituent embedding --- is proved
-in Lean (\texttt{TrivialChannel.pole\_free\_iff\_no\_embedding}); the analytic pole-order/invariant-dimension
-identity and the reducibility$\,\Leftrightarrow\,$exceptional classification are the cited classical inputs.
-These finitely many types are settled independently; the carrier construction supplies the remaining, generic,
-\emph{cuspidal} case, new for $r\ge5$. In every case $\Sym^r\pi$ is automorphic --- the content of
-Corollary~\ref{cor:func234}.
+% [MOVED to new Part~II immediately after Part~I: the converse-theorem
+% checklist part formerly sat here, between "The universal transport" and
+% "Significant Results".]
 
 \part{Significant Results}
 \inst{Hodge results go here}
@@ -6036,7 +5813,7 @@ paper's target. \inst{move to hodge part}
 Every measured statement is produced by a self-contained script (no $L$-function library); the values
 quoted in the text are reproduced below with the script that computes each.
 
-\begin{itemize}
+\begin{itemize}\setlength\itemsep{0.6\baselineskip}
 \item \textbf{Lemma~\ref{lem:mag} (the gauge bound), \texttt{be\_uniformity\_certify.py}.} For a
 Gaussian $\Phi$, $B_{1,0,1}(\Phi)=0.686$, and the certificate margin
 $M(x)=|A(x)|\,x^{\tau/2}/B$ satisfies $\sup_x M(x)=0.914\le1$, uniformly across $x=C^2D\in[0.05,2500]$
