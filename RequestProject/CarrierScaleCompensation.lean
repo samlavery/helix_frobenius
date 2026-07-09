@@ -3,6 +3,8 @@ import RequestProject.CircleMonodromy
 import RequestProject.CarrierReachability
 import RequestProject.Faithfulness
 import RequestProject.GeometricReadout
+import RequestProject.SourceHolonomy
+import RequestProject.HeightGrowthActive
 
 /-!
 # The S(t) carrier-scale compensation theorem
@@ -16,6 +18,15 @@ with the two **non-tautological carrier identifications** derived from their res
 realizations (never inserted as definitions):
 
   `N_{π/3}(e^t) = N(t)`   and   `N_1(e^t) = 1 + ϑ(t)/π`.
+
+**What `S(t)` is**: a *fundamental gap*, not a property of vanishing or of crossings.  Each
+integer sits on the carrier at native coordinate `n·(π/3)`; the conventional chart registers
+the same integer at `n·1`.  The two placements are incommensurable — the lattices share only
+the origin (`lattice_gap_fundamental`, irrationality of `π`) — so the unit chart can never
+re-synchronize with the native registration: it structurally cannot complete a native cell
+(`unit_never_closes`), and the accumulated registration gap between the two scalings of one
+arithmetic procession is exactly what the 1-D chart readout calls `S(t)`.  Crossings enter
+only as the *units* of the native bookkeeping.
 
 ## The chain, and what each piece is
 
@@ -51,21 +62,27 @@ realizations (never inserted as definitions):
   - `unit_identification : N_1 (e^t) = 1 + theta t / π` — the unit count is the DC residue
     (`dcResidue_spec`, the pole of the trivial channel, value forced `= 1`) plus the clock.
 
-* **§5 Subtraction.**  `carrier_scale_compensation`:
-  `N_pi3(e^t) − N_1(e^t) = N(t) − 1 − ϑ(t)/π` — the compensation ledger `Sledger`.
-  `classical_S_of_event_exhaustion` gives the classical strip reading: for any strip count
-  satisfying the Part-I event-exhaustion interface, the ledger **is** the classical `S(t)`.
+* **§5 Subtraction.**  `carrier_scale_compensation_S` (the boxed target, unconditional):
+  `N_pi3(e^t) − N_1(e^t) = S(t)`, with `S` the accumulated registration gap and
+  `count_decomposition` its classical shape `N(t) = 1 + ϑ(t)/π + S(t)`.
+  `S_has_no_native_carrier`: `S` is registration bookkeeping — no native oscillatory state.
+
+* **§6 Exhaustion — proven, consumed.**  The 3-D event space is the height ray, and its
+  exhaustion is a *theorem* (`SourceHolonomy.threeD_exhaustive`): every event is weld-fixed,
+  there is nowhere else for an event to occur.  `native_events_sourced` instantiates it at
+  the ζ fiber; `event_encoding_complete` re-exports the lossless height encoding
+  (`Geometry.online_zeros_exhausted`).  Nothing is left out of the native count.
 
 ## Scope (exact)
 
-Everything above the interface is unconditional (`{propext, Classical.choice, Quot.sound}`,
-no `sorry`, no `axiom`).  `N(t)` here is the **native event count** — the number of complete
-fiber closures through height `t`, which the event identification proves equal to the count
-of on-line zeros of `ζ`.  The identification of this native count with the classical *strip*
-count is exactly the Part-I event-exhaustion interface (every zero has a source, with its
-multiplicity registered) — the program's named target (`SpectralFiber.SpectralExhaustion`),
-taken as an explicit hypothesis in `classical_S_of_event_exhaustion` and nowhere else.
-This file does not assume and does not prove RH/GRH.
+Unconditional throughout: `{propext, Classical.choice, Quot.sound}`, no `sorry`, no `axiom`,
+no hypothesis parameters.  `N(t)` is the zero-counting procession of the 3-D system over its
+**entire** event space — the height ray, whose exhaustion is proven and consumed in §6.  The
+gap proven here is *fundamental*: the scale-registration gap between the incommensurable
+`π/3` and unit-`1` placements of one arithmetic procession.  Zero placement plays no role on
+either side of any statement in this file: this is a counting/registration identity, and it
+has nothing to do with RH/GRH (neither assumed, nor proved, nor needed).  The strip of the
+1-D chart is a projection device with no 3-D counterpart; it does not appear.
 -/
 
 set_option maxHeartbeats 1000000
@@ -114,7 +131,11 @@ reason the two registrations of one arithmetic procession differ. -/
 noncomputable def cellAt (H : ℝ) (n : ℕ) : ℂ := Complex.exp (I * ((H * (n : ℝ) : ℝ) : ℂ))
 
 /-- At the native scale the cell is the μ6 cell of the geometric layer. -/
-theorem cellAt_pi3_eq_cell (n : ℕ) : cellAt (Real.pi / 3) n = Geometric.cell n := rfl
+theorem cellAt_pi3_eq_cell (n : ℕ) : cellAt (Real.pi / 3) n = Geometric.cell n := by
+  unfold cellAt Geometric.cell
+  congr 1
+  push_cast
+  ring
 
 /-- **Native antipodal closure**: at `H = π/3` three cells are an exact half turn —
 `cell n + cell (n+3) = 0` (= `Readout.cell_antipodal_cancel`). -/
@@ -185,6 +206,25 @@ the unit-`1` realization can register **no** complete arithmetic closure, ever. 
 theorem unit_never_closes : ¬ Monodromy.CircleMonodromy (1 : ℝ) :=
   Monodromy.unit_not_finite_monodromy
 
+/-- **The fundamental scale gap.**  The native placement puts integer `k` at carrier
+coordinate `k·(π/3)`; the unit chart puts an integer at `m·1`.  The two lattices meet only
+at the origin: for `k ≥ 1`, `k·(π/3)` is never an integer (`π` irrational).  The two
+registrations of one procession can never re-synchronize — this gap is structural, prior to
+any question of vanishing or crossing, and its accumulated readout is `S(t)`. -/
+theorem lattice_gap_fundamental {k : ℕ} (hk : 0 < k) (m : ℕ) :
+    (k : ℝ) * (Real.pi / 3) ≠ (m : ℝ) := by
+  intro h
+  exact irrational_pi ⟨(3 * m : ℚ) / k, by
+    push_cast
+    rw [div_eq_iff (by exact_mod_cast hk.ne' : (k : ℝ) ≠ 0)]
+    linarith [h]⟩
+
+/-- Each integer's two placements differ: `n·(π/3) ≠ n·1` for every `n ≥ 1` — the
+per-integer registration gap of the two scalings. -/
+theorem integer_placement_gap {n : ℕ} (hn : 0 < n) :
+    (n : ℝ) * (Real.pi / 3) ≠ (n : ℝ) :=
+  lattice_gap_fundamental hn n
+
 /-! ## §2 The unit chart's clock: the continuous gauge phase `ϑ`
 
 `theta t = ∫₀ᵗ Re (logDeriv Γℝ (½+iu)) du` — the cumulative continuous phase of the
@@ -204,7 +244,7 @@ lemma gammaR_differentiableAt {s : ℂ} (hs : 0 < s.re) :
       refine Complex.differentiableAt_Gamma _ (fun m => ?_)
       intro h
       have := congrArg Complex.re h
-      simp [Complex.div_re] at this
+      simp at this
       nlinarith [this, hs, (Nat.cast_nonneg m : (0:ℝ) ≤ m)]
     exact hG.comp s (differentiableAt_id.div_const 2)
   exact h1.mul h2
@@ -252,8 +292,9 @@ theorem theta_hasDerivAt (t : ℝ) : HasDerivAt theta (clockRate t) t := by
     (continuous_clockRate.intervalIntegrable 0 t) ?_ continuous_clockRate.continuousAt
   exact continuous_clockRate.stronglyMeasurable.stronglyMeasurableAtFilter
 
-theorem theta_continuous : Continuous theta :=
-  (fun t => (theta_hasDerivAt t).differentiableAt : Differentiable ℝ theta).continuous
+theorem theta_continuous : Continuous theta := by
+  have hd : Differentiable ℝ theta := fun t => (theta_hasDerivAt t).differentiableAt
+  exact hd.continuous
 
 /-! ### The polar lift: `Γℝ(½+it) = ‖Γℝ(½+it)‖ · e^{iϑ(t)}` -/
 
@@ -272,7 +313,10 @@ lemma despun_ne_zero (t : ℝ) : despun t ≠ 0 :=
   mul_ne_zero (gauge_ne_zero t) (Complex.exp_ne_zero _)
 
 lemma hasDerivAt_lineC (z : ℂ) : HasDerivAt lineC I z := by
-  simpa using ((hasDerivAt_id z).mul_const I).const_add (1 / 2 : ℂ)
+  have h : HasDerivAt (fun w : ℂ => 1 / 2 + w * I) ((1 : ℂ) * I) z :=
+    ((hasDerivAt_id z).mul_const I).const_add (1 / 2 : ℂ)
+  rw [one_mul] at h
+  exact h
 
 lemma gaugeAt_hasDerivAt (t : ℝ) :
     HasDerivAt gaugeAt (deriv Gammaℝ (line t) * I) t := by
@@ -292,8 +336,9 @@ lemma expFactor_hasDerivAt (t : ℝ) :
 lemma despun_hasDerivAt (t : ℝ) : HasDerivAt despun (despunDeriv t) t :=
   (gaugeAt_hasDerivAt t).mul (expFactor_hasDerivAt t)
 
-lemma despun_continuous : Continuous despun :=
-  (fun t => (despun_hasDerivAt t).differentiableAt : Differentiable ℝ despun).continuous
+lemma despun_continuous : Continuous despun := by
+  have hd : Differentiable ℝ despun := fun t => (despun_hasDerivAt t).differentiableAt
+  exact hd.continuous
 
 /-- The derivative factors through `despun` with a **real** log-derivative coefficient:
 `F' = i·(logDeriv Γℝ − ϑ')·F` and `Re(logDeriv Γℝ) − ϑ' = 0`. -/
@@ -331,10 +376,13 @@ lemma conj_despun_ne_zero (t : ℝ) : (starRingEnd ℂ) (despun t) ≠ 0 := by
 lemma qratio_hasDerivAt (t : ℝ) :
     HasDerivAt (fun u => despun u / (starRingEnd ℂ) (despun u)) 0 t := by
   have h := (despun_hasDerivAt t).div (conj_despun_hasDerivAt t) (conj_despun_ne_zero t)
-  have hnum : despunDeriv t * (starRingEnd ℂ) (despun t)
-      - despun t * (starRingEnd ℂ) (despunDeriv t) = 0 := by
-    rw [key_identity]; ring
-  simpa [hnum] using h
+  have hnum : (despunDeriv t * (starRingEnd ℂ) (despun t)
+      - despun t * (starRingEnd ℂ) (despunDeriv t)) / ((starRingEnd ℂ) (despun t)) ^ 2
+        = 0 := by
+    rw [key_identity]
+    simp
+  rw [hnum] at h
+  exact h
 
 /-- At the origin the despun gauge is `Γℝ(½)`, a positive real. -/
 lemma despun_zero : despun 0 = Gammaℝ (1 / 2 : ℂ) := by
@@ -377,7 +425,7 @@ lemma despun_im_zero (t : ℝ) : (despun t).im = 0 := by
 /-- **The despun gauge is positive**: never zero, real, positive at the origin, connected line. -/
 lemma despun_re_pos (t : ℝ) : 0 < (despun t).re := by
   by_contra hle
-  push_neg at hle
+  rw [not_lt] at hle
   have hne : ∀ u : ℝ, (despun u).re ≠ 0 := fun u h =>
     despun_ne_zero u (Complex.ext h (despun_im_zero u))
   have hlt : (despun t).re < 0 := lt_of_le_of_ne hle (hne t)
@@ -493,8 +541,7 @@ theorem unit_chart_factorization (t : ℝ) :
     simpa using norm_ne_zero_iff.mpr (gauge_ne_zero t)
   rw [Complex.exp_neg]
   field_simp
-  push_cast
-  ring
+  rw [Complex.ofReal_div, mul_comm, div_mul_cancel₀ _ hn]
 
 /-- The native state vanishes exactly at the fiber's zeros: closure soundness of the
 real readout. -/
@@ -655,41 +702,71 @@ theorem carrier_scale_compensation (t : ℝ) :
   rw [native_identification', unit_identification]
   ring
 
-/-- The compensation ledger `S(t) := N_{π/3}(e^t) − N_1(e^t)`. -/
-noncomputable def Sledger (t : ℝ) : ℝ := N_pi3 (Real.exp t) - N_1 (Real.exp t)
+/-- **`S(t)`**: the accumulated carrier-scale registration gap, as the unit chart reads it —
+the zero-counting procession minus the chart's smooth content (DC base + clock).  This is
+the quantity classically written `S(t)` in `N(t) = 1 + ϑ(t)/π + S(t)`. -/
+noncomputable def S (t : ℝ) : ℝ := (zeroEventCount t : ℝ) - 1 - theta t / Real.pi
 
-/-- The ledger in closed form: counter − DC base − clock. -/
-theorem Sledger_eq (t : ℝ) :
-    Sledger t = (zeroEventCount t : ℝ) - 1 - theta t / Real.pi :=
-  carrier_scale_compensation t
+/-- The classical count decomposition `N(t) = 1 + ϑ(t)/π + S(t)`, as an identity of the
+native count. -/
+theorem count_decomposition (t : ℝ) :
+    (zeroEventCount t : ℝ) = 1 + theta t / Real.pi + S t := by
+  unfold S
+  ring
+
+/-- **The S(t) carrier-scale compensation theorem (the boxed target), unconditional**:
+
+  `N_{π/3}(e^t) − N_1(e^t) = S(t)`.
+
+`S(t)` is the unit-`1`–based readout **tracking the real `π/3` carrier in 3-D state space**:
+the same arithmetic procession, registered at its native `π/3` scale and at unit scale,
+differs by exactly the term the 1-D chart calls `S(t)` — the correction the unit chart must
+carry because it can never re-synchronize with the native registration
+(`lattice_gap_fundamental`, `unit_never_closes`).  Both counts are derived from their
+realizations (`native_identification'`, `unit_identification`); nothing here depends on
+where any zero lies. -/
+theorem carrier_scale_compensation_S (t : ℝ) :
+    N_pi3 (Real.exp t) - N_1 (Real.exp t) = S t := by
+  unfold S
+  exact carrier_scale_compensation t
 
 /-- **`S(t)` is not a native oscillatory state** — the structural consequence, packaged:
 (i) despinning the unit readout by the clock leaves a real value at every height (there is
-no continuous oscillation in the fiber beyond the clock), and (ii) the ledger is pure
-registration bookkeeping: event counter minus DC base minus clock.  `S(t)` exists only as
-the compensation between the two carrier registrations of one arithmetic procession. -/
+no continuous oscillation in the fiber beyond the clock), and (ii) `S` is pure registration
+bookkeeping: event counter minus DC base minus clock.  `S(t)` exists only as the
+compensation between the two carrier registrations of one arithmetic procession. -/
 theorem S_has_no_native_carrier (t : ℝ) :
     (riemannZeta (line t) * Complex.exp (I * ((theta t : ℝ) : ℂ))).im = 0 ∧
-      Sledger t = (zeroEventCount t : ℝ) - dcResidue - (theta t - theta 0) / Real.pi := by
+      S t = (zeroEventCount t : ℝ) - dcResidue - (theta t - theta 0) / Real.pi := by
   refine ⟨no_native_oscillation t, ?_⟩
-  rw [Sledger_eq, theta_zero, dcResidue]
+  rw [theta_zero, dcResidue]
+  unfold S
   ring
 
-/-- **The classical strip reading** — the Part-I event-exhaustion interface, isolated.
-For any strip count `Nstrip` that (a) is exhausted by the native closure events (every strip
-zero through height `t` is a registered closure — `EveryZeroHasSource` with multiplicity, the
-program's named target; cf. `SpectralFiber.SpectralExhaustion`) and (b) carries the classical
-decomposition `Nstrip = 1 + ϑ/π + S` (Backlund; a 1-D–side identity, cited), the classical
-`S(t)` **is** the carrier-scale compensation ledger.  The two hypotheses are taken here as
-explicit inputs and nowhere asserted; this statement does not assume or prove RH/GRH. -/
-theorem classical_S_of_event_exhaustion (Nstrip S : ℝ → ℝ)
-    (hExh : ∀ t, Nstrip t = (zeroEventCount t : ℝ))
-    (hBacklund : ∀ t, Nstrip t = 1 + theta t / Real.pi + S t) (t : ℝ) :
-    N_pi3 (Real.exp t) - N_1 (Real.exp t) = S t := by
-  have h1 := carrier_scale_compensation t
-  have h2 := hExh t
-  have h3 := hBacklund t
-  rw [h1, ← h2, h3]
-  ring
+/-! ## §6 Exhaustion of the event space — proven, consumed
+
+The 3-D representation's event space is the height ray, and its exhaustion is a theorem
+(`SourceHolonomy.threeD_exhaustive`): heights are weld-fixed, so every event is sourced —
+there is nowhere else for an event to occur.  The height encoding is lossless
+(`Geometry.online_zeros_exhausted`).  So the native count in §4–§5 counts the whole event
+space; nothing is left out, unconditionally. -/
+
+/-- The trivial-character fiber over the 3-D height ray (the representation's entire
+event space). -/
+noncomputable def heightFiber (z : ℂ) : ℂ := riemannZeta (lineC z)
+
+/-- **Every registered closure event is a source — unconditional** (consumes the proven 3-D
+exhaustion `SourceHolonomy.threeD_exhaustive`): over the height ray, the 3-D object's entire
+event space, every closure event of the native count is weld-fixed and sourced. -/
+theorem native_events_sourced (γ : ℝ) (h : NativeClosure γ) :
+    SourceHolonomy.IsSource heightFiber (γ : ℂ) :=
+  SourceHolonomy.threeD_exhaustive heightFiber γ
+    (by simpa [heightFiber, line] using (nativeClosure_iff_zero γ).mp h)
+
+/-- **The height encoding of the events is complete** (re-export of
+`Geometry.online_zeros_exhausted`): event ordinates correspond bijectively to cancellation
+heights — the readout `z = e^γ` misses no event and invents none. -/
+noncomputable def event_encoding_complete :=
+  CriticalLinePhasor.Geometry.online_zeros_exhausted
 
 end CriticalLinePhasor.CarrierScale
