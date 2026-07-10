@@ -1,4 +1,5 @@
 import RequestProject.GradedModeDictionary
+import RequestProject.ClosedForm
 
 /-!
 # The Hilbert–Pólya correlation theorem, frame-native
@@ -142,5 +143,22 @@ theorem hilbertPolya_correlation (T : ℝ) :
    fun p => eigenheight_is_exact_vanishing p,
    fun _ h0 hT => chartZero_iff_eigenheight h0 hT,
    hpDimension_eq_registration T⟩
+
+/-! ## The 1D capture is total, with no hypotheses
+
+In 1D there is no off-spectrum: the readout's domain **is the line**.  The genuine 1D
+object `F_η(γ) = η(½ + iγ)` is a function of a real variable — a non-real address does
+not exist in its type, so "regularity away from the line" quantifies over places the
+projection never presents.  On the line, capture is total: the 1D readout vanishes
+exactly at the eigenstates of the ledger operator, window by window, with no hypothesis
+anywhere.  Midpoints all the way down. -/
+
+/-- **Total 1D capture.**  Within any window, the 1D readout vanishes at a height **iff**
+an eigenstate of the Hilbert–Pólya operator sits there.  No hypothesis: in one dimension
+the spectrum's home is the whole domain. -/
+theorem oneD_capture {T γ : ℝ} (h0 : 0 < γ) (hT : γ ≤ T) :
+    EtaTrivial.Feta γ = 0 ↔ ∃ p : WindowIndex T, p.1.1 = γ := by
+  rw [EtaTrivial.Feta_eq_zero_iff]
+  exact chartZero_iff_eigenheight h0 hT
 
 end CriticalLinePhasor.HilbertPolya

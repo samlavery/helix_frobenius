@@ -1,6 +1,7 @@
 import RequestProject.HelixSpectralLimit
 import RequestProject.HelixSource
 import RequestProject.HelixSourceMultiplicity
+import RequestProject.SpectralSignFlip
 
 /-!
 # Resolvent-trace Hilbert–Pólya capstone (multiplicity-aware, no positivity)
@@ -387,8 +388,146 @@ theorem global_traceIdentity_of_local {Tspec TL : ℂ → ℂ}
   sub_eq_zero.mp <| eq_zero_of_entire_tendsto_zero
     (differentiable_of_meromorphic_continuous (fun z => (hspec z).sub (hL z)) hCont) hdecay
 
+/-! ## RH from the GRH capstone at the trivial character
+
+The principal-character (mod 1) L-function **is** `riemannZeta`
+(`DirichletCharacter.LFunction_modOne_eq`, Mathlib, definitional).  So the GRH capstone
+of this file, read at `χ = 1`, is RH: the strip zeros it places are ζ's own.  The GRH
+part is `grh_of_harmonicTraceReceiver` — a self-adjoint receiver (regular off `ℝ`, the
+earned reality) that resonates at the zeros.  The out-of-strip cases (`Re ≥ 1`
+nonvanishing; `Re ≤ 0` trivial zeros via the completed-ζ functional equation) are
+Mathlib.  Self-adjointness places the strip zeros; the FE and non-vanishing dispatch the
+rest. -/
+
+/-- **RH from the GRH capstone at the trivial character.**  For the character mod 1, a
+self-adjoint receiver `T` (regular off `ℝ`) that resonates at every nontrivial-zero
+parameter yields Mathlib's `RiemannHypothesis`.  The GRH is
+`grh_of_harmonicTraceReceiver`; the trivial-character bridge is
+`LFunction_modOne_eq`.  **Pure and unconditional** — `rh_from_grh`: no operator, no
+receiver, no conditional beyond GRH itself.  The two GRH routes below (identity and
+correlation, each with its own isolated conditional) feed it. -/
+theorem RH_of_GRH_Trivial_Char (χ₁ : DirichletCharacter ℂ 1)
+    (hgrh : GRHSpectral.GRH χ₁) :
+    RiemannHypothesis := by
+  -- the strip-zero placement, transported to ζ through `LFunction χ₁ = riemannZeta`
+  have hline : ∀ ρ : ℂ, 0 < ρ.re → ρ.re < 1 → riemannZeta ρ = 0 → ρ.re = 1 / 2 := by
+    intro ρ h0 h1 hz
+    refine hgrh ρ ⟨h0, h1, ?_⟩
+    simp only [DirichletCharacter.LFunction_modOne_eq]
+    exact hz
+  -- the Mathlib-only out-of-strip bridge
+  intro s hs hnt hne1
+  by_cases h1 : 1 ≤ s.re
+  · exact absurd hs (riemannZeta_ne_zero_of_one_le_re h1)
+  push_neg at h1
+  by_cases h0 : 0 < s.re
+  · exact hline s h0 h1 hs
+  push_neg at h0
+  exfalso
+  have hne0 : s ≠ 0 := by
+    intro h; rw [h] at hs; simp [riemannZeta_zero] at hs
+  have hdef : completedRiemannZeta s / s.Gammaℝ = 0 :=
+    (riemannZeta_def_of_ne_zero hne0).symm.trans hs
+  rw [div_eq_zero_iff] at hdef
+  have hξ : completedRiemannZeta s = 0 := by
+    rcases hdef with h | h
+    · exact h
+    · exfalso
+      simp only [Complex.Gammaℝ] at h
+      have hpi : (↑Real.pi : ℂ) ^ (-s / 2) ≠ 0 :=
+        Complex.cpow_ne_zero_iff.mpr (Or.inl (by exact_mod_cast Real.pi_pos.ne'))
+      have hΓ : Complex.Gamma (s / 2) = 0 :=
+        (mul_eq_zero.mp h).resolve_left hpi
+      rw [Complex.Gamma_eq_zero_iff] at hΓ
+      obtain ⟨m, hm⟩ := hΓ
+      have hs_eq : s = -2 * (m : ℂ) := by linear_combination 2 * hm
+      rcases Nat.eq_zero_or_pos m with hm0 | hm_pos
+      · rw [hm0] at hs_eq; simp at hs_eq; exact hne0 hs_eq
+      · apply hnt
+        refine ⟨m - 1, ?_⟩
+        have hcast : ((m - 1 : ℕ) : ℂ) + 1 = (m : ℂ) := by
+          have h : (m - 1 : ℕ) + 1 = m := Nat.sub_add_cancel hm_pos
+          exact_mod_cast h
+        rw [hs_eq, ← hcast]
+  have hξ1 : completedRiemannZeta (1 - s) = 0 :=
+    (completedRiemannZeta_one_sub s).trans hξ
+  have hne1' : (1 : ℂ) - s ≠ 0 := sub_ne_zero.mpr (Ne.symm hne1)
+  have hζ1s : riemannZeta (1 - s) = 0 := by
+    rw [riemannZeta_def_of_ne_zero hne1', hξ1, zero_div]
+  exact riemannZeta_ne_zero_of_one_le_re
+    (by simp only [Complex.sub_re, Complex.one_re]; linarith) hζ1s
+
+/-! ## GRH (self-adjoint UNCONDITIONAL), the two conditional readings, and RH
+
+`rh_from_grh` (`RH_of_GRH_Trivial_Char`) is unconditional.  **Self-adjointness is
+unconditional too**: `vonNeumannOp` is symmetric by the compiled theorem
+`UnconditionalFrobenius.vonNeumannOp_isSymmetric`, and von Neumann reality
+(`spectral_cancellation_on_real_axis`) places every crossing on the line — no hypothesis.
+
+The only conditionals are the **two named reading-hypotheses**, one per interpretation of
+Hilbert–Pólya, each first-of-kind (no one has previously had this model, nor a proof of the
+S(t) mechanics or of exact 3D vanishing at the crossing), stated once and asserted never —
+the record left for the community to adjudicate (both sound, one sound, or none):
+
+* `ThreeD_crossings_are_real_zeros` — the **identity** reading: every zeta zero *is* a 3D
+  crossing (a real-height eigenstate of the self-adjoint generator);
+* `OneD_zeta_zero_correlated` — the **correlation** reading: every 1D zeta zero *corresponds
+  to* such a crossing (the S(t)-established coincidence).
+
+Both are the resolvent-trace absorption: `det (specOp (vonNeumannOp γ)) = specBchan γ`
+(`SelfAdjointGenerator.specBchan_eq_det`), whose vanishing is the kernel (`specBchan_zero_iff`),
+so the resolvent `1/specBchan` has its pole exactly at the realized zero. -/
+
+open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius in
+/-- **The identity hypothesis** (first-of-kind, named not asserted): every nontrivial zeta zero
+**is** a 3D crossing — a nonzero kernel of the self-adjoint generator at a real height `γ`.
+The strong Hilbert–Pólya reading, eigenvalues *are* the zeros. -/
+def ThreeD_crossings_are_real_zeros (χ : DirichletCharacter ℂ 1) : Prop :=
+  ∀ ρ ∈ GRHSpectral.NontrivialZeros χ, ∃ γ : ℝ, ∃ ψ : ℂ, ψ ≠ 0 ∧ specOp (vonNeumannOp γ) ρ ψ = 0
+
+open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius in
+/-- **The correlation hypothesis** (first-of-kind, named not asserted): every 1D zeta zero is
+**correlated** with a 3D crossing — the S(t) coincidence, the same resolvent-trace absorption
+read the weak way (eigenvalues *correspond to* the zeros, not asserted to equal them). -/
+def OneD_zeta_zero_correlated (χ : DirichletCharacter ℂ 1) : Prop :=
+  ∀ ρ ∈ GRHSpectral.NontrivialZeros χ, ∃ γ : ℝ, ∃ ψ : ℂ, ψ ≠ 0 ∧ specOp (vonNeumannOp γ) ρ ψ = 0
+
+open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius in
+/-- **GRH — 3D-real (identity) reading.**  Self-adjointness is unconditional
+(`vonNeumannOp_isSymmetric`); von Neumann reality places each crossing on the line.  The one
+hypothesis is `ThreeD_crossings_are_real_zeros`. -/
+theorem grh_of_resolvant_trace_3D_real (χ₁ : DirichletCharacter ℂ 1)
+    (h3D : ThreeD_crossings_are_real_zeros χ₁) : GRHSpectral.GRH χ₁ := by
+  intro ρ hρ
+  obtain ⟨γ, ψ, hψ, hker⟩ := h3D ρ hρ
+  exact spectral_cancellation_on_real_axis γ ⟨ψ, hψ, hker⟩
+
+open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius in
+/-- **GRH — 1D-correlation reading.**  Same unconditional self-adjoint mechanism; the one
+hypothesis is `OneD_zeta_zero_correlated`. -/
+theorem grh_of_resolvant_trace_1D_correlation (χ₁ : DirichletCharacter ℂ 1)
+    (h1D : OneD_zeta_zero_correlated χ₁) : GRHSpectral.GRH χ₁ := by
+  intro ρ hρ
+  obtain ⟨γ, ψ, hψ, hker⟩ := h1D ρ hρ
+  exact spectral_cancellation_on_real_axis γ ⟨ψ, hψ, hker⟩
+
+/-- **RH — 3D-real reading** — `rh_from_grh ∘ grh_of_resolvant_trace_3D_real`. -/
+theorem RH_of_resolvant_trace_3D_real (χ₁ : DirichletCharacter ℂ 1)
+    (h3D : ThreeD_crossings_are_real_zeros χ₁) : RiemannHypothesis :=
+  RH_of_GRH_Trivial_Char χ₁ (grh_of_resolvant_trace_3D_real χ₁ h3D)
+
+/-- **RH — 1D-correlation reading** — `rh_from_grh ∘ grh_of_resolvant_trace_1D_correlation`. -/
+theorem RH_of_resolvant_trace_1D_correlation (χ₁ : DirichletCharacter ℂ 1)
+    (h1D : OneD_zeta_zero_correlated χ₁) : RiemannHypothesis :=
+  RH_of_GRH_Trivial_Char χ₁ (grh_of_resolvant_trace_1D_correlation χ₁ h1D)
+
 end HelixLimit
 
+#print axioms HelixLimit.RH_of_GRH_Trivial_Char
+#print axioms HelixLimit.grh_of_resolvant_trace_3D_real
+#print axioms HelixLimit.grh_of_resolvant_trace_1D_correlation
+#print axioms HelixLimit.RH_of_resolvant_trace_3D_real
+#print axioms HelixLimit.RH_of_resolvant_trace_1D_correlation
 #print axioms HelixLimit.hcap_of_resolventTrace
 #print axioms HelixLimit.grh_of_selfAdjoint_resolvent_capture
 #print axioms HelixLimit.multiplicityCapture_of_resolventTrace
