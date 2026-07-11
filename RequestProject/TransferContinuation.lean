@@ -14,6 +14,11 @@ that the unitary dual carries the same exponent for free.
 Main results:
 * `TransferContinuation.cpow_sub_bound`   : MVT step, `‖(k+1)^{-s} − k^{-s}‖ ≤ ‖s‖·k^{-Re s-1}`;
 * `TransferContinuation.transfer_tendsto` : the partial sums converge for `Re s > θ ≥ 0`;
+* `TransferContinuation.transfer_tendsto_tsum` : the same convergence, with the Abel-summed limit
+  named explicitly;
+* `TransferContinuation.transfer_analytic` : the limit function is analytic (`DifferentiableOn ℂ`)
+  on the open half-plane `{Re s > θ}` — the local-uniformity upgrade of `lem:transfer`, obtained
+  from the Weierstrass M-test applied to the (locally normally convergent) Abel series;
 * `TransferContinuation.dual_primitive_norm`, `TransferContinuation.strip_contains_axis`.
 -/
 
@@ -67,14 +72,16 @@ strip `(θ, κ−θ)` of the two completed readouts. -/
 theorem strip_contains_axis {θ κ : ℝ} (h : θ < κ / 2) : θ < κ / 2 ∧ κ / 2 < κ - θ :=
   ⟨h, by linarith⟩
 
-/-- THE TRANSFER (sharp form): a polynomially bounded primitive continues the Dirichlet
-series.  If `‖∑_{k<n} a k‖ ≤ C·n^θ` and `Re s > θ ≥ 0`, the partial sums of
-`∑ a n · (n+1)^{-s}` converge. -/
-theorem transfer_tendsto (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
+/-- THE TRANSFER (sharp form), explicit limit: a polynomially bounded primitive continues the
+Dirichlet series, and the limit is the Abel-summed value
+`0 − ∑_i ((i+2)^{-s} − (i+1)^{-s})·(∑_{k<i+1} a k)`.  If `‖∑_{k<n} a k‖ ≤ C·n^θ` and
+`Re s > θ ≥ 0`, the partial sums of `∑ a n · (n+1)^{-s}` converge to this value. -/
+theorem transfer_tendsto_tsum (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
     (hA : ∀ n : ℕ, ‖∑ k ∈ range n, a k‖ ≤ C * (n : ℝ) ^ θ)
     (s : ℂ) (hs : θ < s.re) :
-    ∃ L : ℂ, Tendsto (fun N => ∑ n ∈ range N, a n * ((n + 1 : ℕ) : ℂ) ^ (-s))
-      atTop (𝓝 L) := by
+    Tendsto (fun N => ∑ n ∈ range N, a n * ((n + 1 : ℕ) : ℂ) ^ (-s)) atTop
+      (𝓝 (0 - ∑' i : ℕ, (((i + 1 + 1 : ℕ) : ℂ) ^ (-s) - ((i + 1 : ℕ) : ℂ) ^ (-s))
+              * (∑ k ∈ range (i + 1), a k))) := by
   have hs0 : 0 < s.re := lt_of_le_of_lt hθ hs
   have hC : 0 ≤ C := by
     have h := hA 1
@@ -145,7 +152,6 @@ theorem transfer_tendsto (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
             rw [show θ - s.re = -s.re + θ by ring, Real.rpow_add hn0]
             ring
   -- assemble: partial sums = boundary − shifted partial sums of d
-  refine ⟨0 - ∑' i, d i, ?_⟩
   have hT : Tendsto (fun m : ℕ => ∑ i ∈ range m, d i) atTop (𝓝 (∑' i, d i)) :=
     hdsum.hasSum.tendsto_sum_nat
   have hTshift : Tendsto (fun n : ℕ => ∑ i ∈ range (n - 1), d i)
@@ -154,4 +160,122 @@ theorem transfer_tendsto (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
   have hfinal := hB.sub hTshift
   exact hfinal.congr fun n => (key n).symm
 
+/-- THE TRANSFER (sharp form): a polynomially bounded primitive continues the Dirichlet
+series.  If `‖∑_{k<n} a k‖ ≤ C·n^θ` and `Re s > θ ≥ 0`, the partial sums of
+`∑ a n · (n+1)^{-s}` converge. -/
+theorem transfer_tendsto (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
+    (hA : ∀ n : ℕ, ‖∑ k ∈ range n, a k‖ ≤ C * (n : ℝ) ^ θ)
+    (s : ℂ) (hs : θ < s.re) :
+    ∃ L : ℂ, Tendsto (fun N => ∑ n ∈ range N, a n * ((n + 1 : ℕ) : ℂ) ^ (-s))
+      atTop (𝓝 L) :=
+  ⟨_, transfer_tendsto_tsum a C θ hθ hA s hs⟩
+
+/-- ANALYTICITY UPGRADE of `lem:transfer`.  Under the same hypotheses as `transfer_tendsto`
+(a primitive bound `‖∑_{k<n} a k‖ ≤ C·n^θ`, `0 ≤ θ`), the limit function `F` of the Dirichlet
+partial sums is complex-analytic on the open half-plane `{Re s > θ}`, and the partial sums
+converge to `F s` at every such `s`.  This is exactly the pointwise-to-analytic step: `F` is
+realised as the Abel-summed series
+`s ↦ 0 − ∑_i ((i+2)^{-s} − (i+1)^{-s})·(∑_{k<i+1} a k)`, whose terms are entire and which
+converges normally on every closed ball inside the half-plane (Weierstrass M-test through
+`Complex.differentiableOn_tsum_of_summable_norm`), hence is holomorphic there.  Does not assume
+or prove RH/GRH; no automorphy, functional equation or Poisson summation is consumed. -/
+theorem transfer_analytic (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
+    (hA : ∀ n : ℕ, ‖∑ k ∈ range n, a k‖ ≤ C * (n : ℝ) ^ θ) :
+    ∃ F : ℂ → ℂ,
+      DifferentiableOn ℂ F {s : ℂ | θ < s.re} ∧
+      ∀ s : ℂ, θ < s.re →
+        Tendsto (fun N => ∑ n ∈ range N, a n * ((n + 1 : ℕ) : ℂ) ^ (-s)) atTop (𝓝 (F s)) := by
+  have hC : 0 ≤ C := by
+    have h := hA 1
+    simp only [Nat.cast_one, Real.one_rpow, mul_one] at h
+    exact le_trans (norm_nonneg _) h
+  -- `F` = the Abel-summed limit produced by `transfer_tendsto_tsum`
+  refine ⟨fun s => 0 - ∑' i : ℕ,
+      (((i + 1 + 1 : ℕ) : ℂ) ^ (-s) - ((i + 1 : ℕ) : ℂ) ^ (-s)) * (∑ k ∈ range (i + 1), a k),
+      ?_, ?_⟩
+  · -- analyticity: differentiability is local, so it suffices to differentiate `F` at each `z₀`
+    intro z₀ hz₀
+    have hz₀' : θ < z₀.re := hz₀
+    -- a closed ball around `z₀` that stays strictly right of the abscissa `θ`
+    set r : ℝ := (z₀.re - θ) / 2 with hr_def
+    have hr : 0 < r := by rw [hr_def]; linarith
+    set σ : ℝ := z₀.re - r with hσ_def
+    have hσθ : θ < σ := by rw [hσ_def, hr_def]; linarith
+    set M : ℝ := ‖z₀‖ + r with hM_def
+    have hM : 0 ≤ M := by rw [hM_def]; positivity
+    set B : Set ℂ := Metric.ball z₀ r with hB_def
+    -- the Weierstrass majorant on `B`: `Re s ≥ σ > θ` and `‖s‖ ≤ M`
+    have husum : Summable (fun i : ℕ => (M * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - σ - 1)) := by
+      apply Summable.mul_left
+      have hp : θ - σ - 1 < -1 := by linarith
+      exact (summable_nat_add_iff 1).mpr (Real.summable_nat_rpow.mpr hp)
+    -- each Abel term is entire, in particular differentiable on `B`
+    have hdiff : ∀ i : ℕ, DifferentiableOn ℂ
+        (fun s : ℂ => (((i + 1 + 1 : ℕ) : ℂ) ^ (-s) - ((i + 1 : ℕ) : ℂ) ^ (-s))
+          * (∑ k ∈ range (i + 1), a k)) B := by
+      intro i
+      apply Differentiable.differentiableOn
+      apply Differentiable.mul_const
+      apply Differentiable.sub
+      · exact (differentiable_id.neg).const_cpow (Or.inl (Nat.cast_ne_zero.mpr (by omega)))
+      · exact (differentiable_id.neg).const_cpow (Or.inl (Nat.cast_ne_zero.mpr (by omega)))
+    -- the uniform bound `‖term i w‖ ≤ (M·C)·(i+1)^{θ-σ-1}` on `B`
+    have hbound : ∀ i : ℕ, ∀ w ∈ B,
+        ‖(((i + 1 + 1 : ℕ) : ℂ) ^ (-w) - ((i + 1 : ℕ) : ℂ) ^ (-w))
+            * (∑ k ∈ range (i + 1), a k)‖
+          ≤ (M * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - σ - 1) := by
+      intro i w hw
+      rw [hB_def, Metric.mem_ball, Complex.dist_eq] at hw
+      have hwre : σ ≤ w.re := by
+        have h1 : |w.re - z₀.re| ≤ ‖w - z₀‖ := by
+          simpa [Complex.sub_re] using Complex.abs_re_le_norm (w - z₀)
+        have := (abs_le.mp h1).1
+        rw [hσ_def]; linarith
+      have hwnorm : ‖w‖ ≤ M := by
+        have h2 : ‖w‖ - ‖z₀‖ ≤ ‖w - z₀‖ := norm_sub_norm_le w z₀
+        rw [hM_def]; linarith
+      have hwre0 : 0 < w.re := lt_of_lt_of_le (lt_of_le_of_lt hθ hσθ) hwre
+      have hcpow : ‖((i + 1 + 1 : ℕ) : ℂ) ^ (-w) - ((i + 1 : ℕ) : ℂ) ^ (-w)‖
+          ≤ ‖w‖ * ((i + 1 : ℕ) : ℝ) ^ (-w.re - 1) :=
+        cpow_sub_bound w hwre0 (k := i + 1) (Nat.le_add_left 1 i)
+      have hAb : ‖∑ k ∈ range (i + 1), a k‖ ≤ C * ((i + 1 : ℕ) : ℝ) ^ θ := hA (i + 1)
+      have hpos : (0 : ℝ) < ((i + 1 : ℕ) : ℝ) := by positivity
+      have hbase : (1 : ℝ) ≤ ((i + 1 : ℕ) : ℝ) := by exact_mod_cast Nat.le_add_left 1 i
+      have hexp : (-w.re - 1) + θ = θ - w.re - 1 := by ring
+      have e1 : ‖(((i + 1 + 1 : ℕ) : ℂ) ^ (-w) - ((i + 1 : ℕ) : ℂ) ^ (-w))
+            * (∑ k ∈ range (i + 1), a k)‖
+          ≤ (‖w‖ * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - w.re - 1) := by
+        calc ‖(((i + 1 + 1 : ℕ) : ℂ) ^ (-w) - ((i + 1 : ℕ) : ℂ) ^ (-w))
+              * (∑ k ∈ range (i + 1), a k)‖
+            = ‖((i + 1 + 1 : ℕ) : ℂ) ^ (-w) - ((i + 1 : ℕ) : ℂ) ^ (-w)‖
+                * ‖∑ k ∈ range (i + 1), a k‖ := norm_mul _ _
+          _ ≤ (‖w‖ * ((i + 1 : ℕ) : ℝ) ^ (-w.re - 1)) * (C * ((i + 1 : ℕ) : ℝ) ^ θ) := by
+              apply mul_le_mul hcpow hAb (norm_nonneg _); positivity
+          _ = (‖w‖ * C) * (((i + 1 : ℕ) : ℝ) ^ (-w.re - 1) * ((i + 1 : ℕ) : ℝ) ^ θ) := by ring
+          _ = (‖w‖ * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - w.re - 1) := by
+              rw [← Real.rpow_add hpos, hexp]
+      have e2 : (‖w‖ * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - w.re - 1)
+          ≤ (M * C) * ((i + 1 : ℕ) : ℝ) ^ (θ - σ - 1) := by
+        apply mul_le_mul (mul_le_mul_of_nonneg_right hwnorm hC)
+          (Real.rpow_le_rpow_of_exponent_le hbase (by linarith))
+          (Real.rpow_nonneg (le_of_lt hpos) _) (mul_nonneg hM hC)
+      exact le_trans e1 e2
+    -- Weierstrass M-test: the Abel series is holomorphic on the ball `B`
+    have hDiffOn : DifferentiableOn ℂ (fun s : ℂ => ∑' i : ℕ,
+        (((i + 1 + 1 : ℕ) : ℂ) ^ (-s) - ((i + 1 : ℕ) : ℂ) ^ (-s))
+          * (∑ k ∈ range (i + 1), a k)) B :=
+      Complex.differentiableOn_tsum_of_summable_norm husum hdiff
+        (by rw [hB_def]; exact Metric.isOpen_ball) hbound
+    have hAt : DifferentiableAt ℂ (fun s : ℂ => ∑' i : ℕ,
+        (((i + 1 + 1 : ℕ) : ℂ) ^ (-s) - ((i + 1 : ℕ) : ℂ) ^ (-s))
+          * (∑ k ∈ range (i + 1), a k)) z₀ :=
+      hDiffOn.differentiableAt
+        (by rw [hB_def]; exact Metric.isOpen_ball.mem_nhds (Metric.mem_ball_self hr))
+    exact (hAt.const_sub 0).differentiableWithinAt
+  · -- agreement: `transfer_tendsto_tsum` already lands on the chosen `F s`
+    intro s hs
+    exact transfer_tendsto_tsum a C θ hθ hA s hs
+
 end TransferContinuation
+
+#print axioms TransferContinuation.transfer_analytic
