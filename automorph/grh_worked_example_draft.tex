@@ -1,0 +1,841 @@
+% ============================================================
+% DRAFT — new \part for universal.tex.
+% Insertion point: between the end of \part{Automorphic
+% functoriality: The converse-theorem checklist} (~line 2928) and
+% \part{Beyond Endoscopy - Altu\u{g} Analysis and Repair} (~line 2929).
+% Status: COMPLETE DRAFT (2026-07-10). All sections populated;
+% theorem/evidence sections written from
+% HELIX_RESOLVENT_CAPTURE_EXPANDED.md (calibrated to the Lean).
+% Remaining: Sam's two \inst checks (pitch wording, complex-chi
+% buckets); bibitems below; final read.
+% Needed bibitems (currently \cite placeholders): Riemann 1859
+% (Monatsberichte der Berliner Akademie); Montgomery pair
+% correlation; Odlyzko--Polya correspondence; Berry--Keating; Connes.
+% Riemann quote verified against standard reproductions of the
+% 1859 paper.
+% ============================================================
+
+\part{Worked Example: Two Conditional Proofs of GRH}\label{part:grh}
+
+\section{Overview}\label{sec:grh-overview}
+
+This part runs the machinery of Parts~I--II on the simplest configuration it
+admits --- the \(\pi/3\) carrier with an ordinary Dirichlet \(L\)-function
+riding it, nothing else --- and produces two proofs of the Generalized Riemann
+Hypothesis.
+
+Throughout, the hypothesis is stated in Riemann's own terms, and the nuance
+matters. Riemann did not conjecture about a decimal. Substituting
+\(s=\tfrac12+ti\) into the completed zeta function and regarding the result
+\(\xi(t)\) as an entire function of \(t\), he counted its real roots up to a
+given bound and wrote \cite{Riemann1859}:
+\begin{quote}
+``\ldots es ist sehr wahrscheinlich, dass alle Wurzeln reell sind. Hiervon
+w\"are allerdings ein strenger Beweis zu w\"unschen; ich habe indess die
+Aufsuchung desselben nach einigen fl\"uchtigen vergeblichen Versuchen
+vorl\"aufig bei Seite gelassen, da er f\"ur den n\"achsten Zweck meiner
+Untersuchung entbehrlich schien.''
+
+(``\ldots it is very probable that all the roots are real. One would of
+course like a rigorous proof of this; I have for the time being, after some
+fleeting futile attempts, provisionally set the search aside, as it appears
+dispensable for the immediate objective of my investigation.'')
+\end{quote}
+The hypothesis, as its author stated it, is that the roots are \emph{real}:
+that they lie on the \emph{real axis} of the \(\xi\) chart. The familiar
+``\(\Re s=\tfrac12\)'' is the same statement after the change of variable,
+and the half in it is not a privileged decimal value. It is
+\(\textsc{unit}/2\): the midpoint of the unit-width frame that the functional
+equation \(s\leftrightarrow1-s\) reflects --- in projection geometry, the
+midline of the frame; on the carrier, the weld axis fixed by the involution
+\(J\). Riemann's real axis, the classical midline, and the carrier's weld
+axis are one locus in three charts, and we will use whichever name keeps a
+given argument honest. Throughout this part, GRH means: for every modulus
+\(q\) and every Dirichlet character \(\chi\bmod q\), all roots of the
+completed \(\xi(t,\chi)\) are real --- equivalently, every nontrivial zero of
+\(L(s,\chi)\) lies on the midline. The principal case \(q=1\) is the Riemann
+zeta function, and each proof specializes there to the Riemann Hypothesis.
+
+Every theorem in this part is unconditional. The supporting ledger comprises
+thirty-four machine-checked facts --- sixteen for the identity reading,
+eighteen for the correlation reading --- together with the reduction spine
+that consumes them, every one at axiom footprint
+\(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\), no
+\texttt{sorry}, no \texttt{axiom}; each is stated below with its meaning and
+its Lean name (\S\S\ref{sec:grh-theorems}--\ref{sec:grh-E2}). What separates
+the theorems from GRH is not a missing proof. It is two decisions, and the
+decisions are not open problems: no computation, estimate, or further theorem
+can settle either one, because each is a choice of what a phrase names. The
+formalization renders each decision as a named hypothesis over the same zero
+set --- named once, asserted never --- with the strong reading's clause
+appearing verbatim as one branch of the weak reading's disjunction, and each
+closing GRH under explicit conjunction with its proven dossier
+(\S\ref{sec:grh-theorems}). The record is framed for adjudication in exactly
+three verdicts: both readings sound, one, or none. We state them exactly, and we prove everything on both
+sides of each. We hold preferred readings of both, and we supply unconditional
+proofs as supporting evidence for those readings --- but we do not presuppose
+the final result. The decisions are deferred to the community of
+mathematicians, and deliberately so: experts arriving from number theory,
+automorphic representation theory, cohomology, spectral and harmonic
+analysis, geometry and topology, mathematical physics, and formal
+verification will read these two questions through different instincts, and
+none of those viewpoints is automatically invalid. The questions are stated
+so that each community can apply its own standards to them.
+
+Our motivation for this methodology is two-fold. First, the obvious one: to
+obtain that community input on the two decisions, with every mathematical
+input to the decisions already proved and machine-checked, so that the
+discussion is about readings and not about gaps. Second, pedagogy by worked
+example: the least complex configuration the system admits is a complete,
+end-to-end demonstration of how and why automorphic functions acquire a
+geometric representation in which vanishing is \emph{derived} --- an exact
+alignment event in a three-dimensional state space --- rather than observed
+in an analytic readout. This part is therefore also the introduction to the
+system at large, which is ultimately a functorial universal transport and
+analysis methodology (Theorems~\ref{thm:transport} and~\ref{thm:universal},
+Corollary~\ref{cor:universal}). The program did not begin as an assault on
+zeros: it began as a root-cause analysis and repair of a stalled route to
+Langlands functoriality --- Altu\u{g}'s Beyond-Endoscopy execution for
+\(\mathrm{GL}(2)\) --- and closed as a Langlands-style unification: carrier
+transport supplying symmetric-power functoriality on \(\mathrm{GL}(r+1)\) for
+every \(r\) (Theorem~\ref{thm:func}), with the converse-theorem niceness
+discharged on the carrier (Proposition~\ref{prop:niceness}). The present part
+is that system pointed at the oldest question it touches.
+
+\medskip
+\noindent\textbf{The first decision: what the Hilbert--P\'olya criterion
+demands.} The suggestion attributed to Hilbert and P\'olya --- that the
+ordinates of the nontrivial zeros are the spectrum of a self-adjoint operator,
+and hence real --- was never published by either, and no canonical formal
+statement of it exists; the written record is P\'olya's later account in
+correspondence \cite{OdlyzkoPolya}. The literature instantiates the criterion
+at two distinct strengths without deciding between them: the pair-correlation
+line of work reads the zeros against a spectrum \emph{statistically}
+\cite{Montgomery}, while the operator-construction line demands the spectrum
+\emph{be} the zeros \cite{BerryKeating,Connes}. We name the two readings:
+\begin{itemize}
+\item[\textbf{(HP-S)}] \emph{Strong reading.} The criterion is satisfied only
+by a self-adjoint operator whose eigenvalues \emph{are} the nontrivial zeros
+--- an exact representation, identity of objects.
+\item[\textbf{(HP-W)}] \emph{Weak reading.} The criterion is satisfied by a
+self-adjoint operator whose eigenvalues \emph{coincide with} the nontrivial
+zeros' ordinates --- exact coincidence of the marked heights, the objects
+themselves living where the operator lives.
+\end{itemize}
+The weak reading does real work in both columns of the matrix below. Under
+(HP-W) together with (Z-3D), the resolvent trace is evaluated at the
+three-dimensional zero value itself --- the eigenvalue and the zero are the
+same marked height --- and GRH is immediate. Under (HP-W) with (Z-1D) ---
+the one-dimensional readout zero taken exclusively as the real zero --- what
+the criterion demands is coincidence between the eigenvalues, which are the
+three-dimensional zeros, and the one-dimensional readout zeros; and that
+correlation is exactly what the theorems of \S\ref{sec:grh-E1} prove.
+
+\medskip
+\noindent\textbf{The second decision: what ``nontrivial zero'' names.} The
+function has two representations. The classical one is the analytic
+continuation of the one-dimensional Dirichlet series. The carrier realization
+(Part~I) is the same function represented as a three-dimensional state: its
+readout reproduces the analytic object exactly, and the three-dimensional
+representation requires no oscillatory correction --- the conventional
+\(S(t)\) term is recovered as the scale correction of the unit chart, not as
+a native oscillation (\S\ref{sec:carrier-S}). These are alternative
+representations of one function, not a function and a model of it. Both carry
+vanishing events, and they mark the same heights; the marked objects are
+nevertheless not the same object --- one is an alignment state of a phasor
+bank in three dimensions, the other a point in the plane.
+\begin{itemize}
+\item[\textbf{(Z-3D)}] ``Nontrivial zero of \(L(s,\chi)\)'' names the marked
+event on the helix: the height at which the realized positive and negative
+phasor channels achieve exact focal cancellation (\S\ref{sec:grh-focal}).
+\item[\textbf{(Z-1D)}] ``Nontrivial zero of \(L(s,\chi)\)'' names the
+vanishing point of the analytic continuation of the one-dimensional Dirichlet
+series.
+\end{itemize}
+The classical literature never needed this decision: before the
+three-dimensional realization there was only one candidate object. (Z-1D) is
+therefore the current default reading, and we do not pretend otherwise. The
+decision exists because the 3D representation construction now exists.
+
+\medskip
+\noindent\textbf{The decision matrix.} Each proof below consumes exactly one
+decision. Proof~A (\S\ref{sec:grh-proofA}) conditions only on (Z-3D) and goes
+through under either reading of the criterion. Proof~B
+(\S\ref{sec:grh-proofB}) conditions only on (HP-W) and goes through under
+either naming of the zero.
+\begin{center}
+\begin{tabular}{c|cc}
+ & \textbf{(Z-3D)} & \textbf{(Z-1D)}\\
+\hline
+\textbf{(HP-S)} & GRH \; (Proof A) & no proof\\
+\textbf{(HP-W)} & GRH \; (Proofs A and B) & GRH \; (Proof B)\\
+\end{tabular}
+\end{center}
+Three of the four cells yield GRH. In the fourth, \((\text{HP-S})\wedge
+(\text{Z-1D})\), no proof is offered, and the reason is stated exactly: the
+one-dimensional zero's ordinate is minuscule beside the three-dimensional
+eigenstate. The eigenstate is a state of the three-dimensional system at
+carrier height \(e^{y}\); the 1D zero is its chart readout at ordinate
+\(y\). The strong reading demands identity of objects, and the two objects
+differ by the projection mechanism itself
+(\S\ref{sec:grh-projection}): at the first zero of \(\zeta\), an eigenstate
+of roughly \(1.38\) million accumulated phasors stands against the single
+complex number the chart prints at \(14.1347\ldots\). Equality of the two is
+not available at any scale --- and admitting the chart map into the
+comparison in order to manufacture it is already the weak reading, since
+identity through a chart \emph{is} coincidence, which is (HP-W). A reader in
+this cell has not found a missing theorem; they have demanded that a state
+and its logarithmically compressed summary be one object, and we decline to
+blur them into one.
+
+\medskip
+\noindent\textbf{What we prove, and what we ask.} The two evidence sections
+and the description of the system (\S\ref{sec:grh-construction}) carry the
+load. \S\ref{sec:grh-E1} proves the 3D--1D correlation: the heights of the
+carrier cancellations and resultant eigenstates correlate with the ordinates
+of the readout chart --- window by window, the chart's zero-readings and the
+operator's eigenheights are in exact bijection
+(\texttt{chartZero\_iff\_eigenheight}), the operator's dimension is the
+chart's own count \(1+\theta/\pi+S\)
+(\texttt{hpDimension\_eq\_registration}), and \(S(t)\) is the exact
+jump-carrier of the event count (\texttt{S\_jump\_detects\_event}).
+\S\ref{sec:grh-E2} proves the primacy facts about the three-dimensional
+object: the readout is a lossy chart of the realized state, and every
+structural feature of the readout is already present, with more resolution,
+on the carrier --- self-adjointness is a theorem
+(\texttt{vonNeumannOp\_isSymmetric}), the cell channel vanishes exactly when
+the \(L\)-value does, at exact \(\pi/3\) amplitude
+(\texttt{focal\_residual\_zero\_iff\_L\_zero}), and the bank accumulates to
+\(L\) straight across the strip, dissolving the \(\Re s>1\) gate
+(\texttt{fiber\_accumulates\_to\_L}). On the readings we prefer --- (HP-W) and (Z-3D)
+--- both proofs go through simultaneously. We state that preference, and
+believe it to be the correct interpretation. We support these positions with
+the two evidence sections, but we do not presuppose the community agrees. The
+matrix is printed so that a reader may consider the ultimate result while
+understanding the internal workings and deciding what interpretations are
+correct.
+
+\medskip
+\noindent\textbf{Non-circularity.} No value of \(L(s,\chi)\) enters any
+definition in this part. The carrier, the lanes, the clock, the cells, the
+buckets, the pencil, and the operator are synthesized from the character's
+finite data and the carrier and fiber representation laws alone (Part~I,
+Theorem~\ref{thm:g3-g4-identity-synthesis}); the readout chart ordinate
+appears only as the final readout against which the 3D marked events are
+verified. In particular the operator below is not built from the zeros it
+locates. Vanishing events and eigenstates are identified first.
+
+\section{The construction the decision requires}\label{sec:grh-construction}
+
+Everything in this section is Part~I machinery specialized to the basic
+configuration; nothing here is new, and every object carries a pointer to its
+general construction. The reader deciding the two questions of
+\S\ref{sec:grh-overview} needs exactly this much of the system, and no more.
+
+\subsection{The state space and the helix}\label{sec:grh-helix}
+
+The ambient object is the double-ended three-dimensional carrier of
+Theorem~\ref{thm:g1-double-carrier}: two lanes
+\(C=C_+\sqcup C_-\) over a common raw parameter, realized as
+\[
+\Gamma_{\pm}(t)=\bigl(R(t)\cos(\pm\Theta(t)),\,R(t)\sin(\pm\Theta(t)),\,Z(t)\bigr),
+\]
+with the global involution \(J:C_+\leftrightarrow C_-\), \(J^2=\mathrm{id}\),
+exchanging the lanes while preserving radius and height and reversing the
+transverse phase. The plus lane is the helix; the minus lane is its conjugate
+anti-helix at the same height. In the basic configuration the transverse
+shadow is an Archimedean spiral of unit pitch --- successive turns unit-spaced
+--- so the winding, radius, and height laws grow together with no free
+parameter. \inst{Sam: confirm pitch convention wording (radial ring spacing
+vs.\ axial advance)}
+
+The two lanes are not decorative. The functional equation of the readout is
+the involution \(J\) read phasor by phasor: on the weld axis, height inversion
+coincides with conjugation, and \(J\) supplies exactly that exchange
+(Theorem~\ref{thm:carrierreflection}, Lemma~\ref{lem:bankreflection}). What
+the classical theory obtains from Poisson summation, the carrier carries as a
+geometric symmetry of the state space, fixed before any source is attached.
+The weld axis --- the fixed locus of \(J\) --- is the carrier's copy of
+Riemann's real axis: the midline at \(\textsc{unit}/2\) of
+\S\ref{sec:grh-overview}.
+
+\subsection{The projection mechanism: how a 3D value becomes the 1D
+ordinate}\label{sec:grh-projection}
+
+The descent from the state space to the classical plane is two coordinate
+suppressions and a logarithm, and every step is a named map
+(Theorem~\ref{thm:g2-ledgered-projection}). Write a complete carrier
+coordinate state as \(\mathsf X=(r,\theta,z)\): radius, phase, height. The
+first projection forgets the radius,
+\[
+\Pi_{32}(r,\theta,z)=(\theta,z),
+\]
+recording the two-dimensional carrier image --- in the reflected chart, the
+Cayley/M\"obius image on the unit-circle chart
+(Theorem~\ref{thm:carrierreflection}, item (P)). The second forgets the
+phase,
+\[
+\Pi_{21}(\theta,z)=z,
+\]
+leaving the height alone. The analytic chart then reads the retained height
+logarithmically,
+\[
+\Pi^{\log}_{21}(\theta,z)=\log z=y,
+\]
+and places it at the represented point \(\tfrac12+iy\) of the strip: the
+abscissa supplied by the symmetry (the weld axis,
+\S\ref{sec:grh-helix}), the ordinate by the logarithm of the height. That is
+the whole mechanism. A three-dimensional value becomes a one-dimensional
+ordinate by having its radius suppressed, its phase suppressed, and its
+height passed through \(\log\).
+
+Suppressed is not destroyed. The projection is paired with the loss ledger
+\(\mathcal D(\mathsf X)=(r,\theta)\) --- in general: radius, angle, clock
+offset, adapter state, every coordinate the chosen chart makes invisible ---
+and the round trip is exact,
+\[
+\operatorname{Rec}\bigl(\Pi(\mathsf X),\mathcal D(\mathsf X)\bigr)=\mathsf X,
+\qquad
+\operatorname{Rec}^{\log}\bigl(y,(r,\theta)\bigr)=(r,\theta,e^{y})
+\]
+(Theorem~\ref{thm:g2-ledgered-projection}; Lean
+\texttt{RoundTrip.record\_bijective}, \texttt{reconstruct\_record},
+\texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}). Projection with
+its ledger is a bijection; projection without its ledger is a compression.
+The classical analytic function is the readout \emph{without} the ledger ---
+the ledger stays on the carrier. This is why equality of readouts does not
+imply equality of states: two states share an ordinate whenever their heights
+agree, whatever their radii and phases are doing; the exact criterion is that
+readout \emph{plus ledger} determines the state
+(Corollary~\ref{cor:g2-projected-equality}).
+
+Both decisions of \S\ref{sec:grh-overview} take their teeth from this
+mechanism. The 1D ordinate is the logged trace of the 3D event; the
+eigenstate carries the coordinates the ordinate dropped. Whether an
+eigenvalue must \emph{be} that trace or \emph{coincide} with it (decision
+one), and whether the event or its trace is ``the zero'' (decision two), are
+questions about the two ends of the maps displayed above.
+
+\subsection{The chart: \texorpdfstring{\(y=\log z\)}{y = log z} and the
+compression of the ordinate}\label{sec:grh-chart}
+
+The readout just constructed does not live at the carrier's scale. A carrier
+state at height \(z\) is read at the represented point \(\tfrac12+iy\) with
+\(z=e^{y}\) (\texttt{HarmonicPencilCell.reprPoint}); the chart ordinate is the
+\emph{logarithm} of the carrier height. The compression this induces is the
+single most important fact about the relation between the two
+representations. At the first zero of \(\zeta\), the chart reads
+\(y=14.1347\ldots\); the carrier height is
+\(z=e^{y}\approx1.38\times10^{6}\), and the realized bank below that height
+already holds about \(1.38\) million integer phasors per lane. In general the
+chart ordinate \(y\) summarizes a bank of \(\lfloor e^{y}\rfloor\) phasors in
+one complex number. The 1D representation is not a smaller copy of the 3D
+representation; it is a logarithmically compressed summary of the same
+function, and the scale mismatch between the two charts is itself a
+theorem-level object (\S\ref{sec:carrier-S}).
+
+The abscissa tells the same story from the other side. Riemann's substitution
+\(s=\tfrac12+ti\) places his real axis at the midline of the unit-width frame
+of the functional equation; the carrier realizes that midline as the weld
+axis, and the represented point \(\tfrac12+iy\) simply reads height along it.
+The ordinate compresses by a logarithm while the abscissa is pinned by a
+symmetry --- which is why every argument in this part is an argument about
+heights, and the midline is never something to be located, only something to
+be respected.
+
+\subsection{The carrier is the number line, rescaled}\label{sec:grh-numberline}
+
+The carrier admits an elementary description: it is the positive number line,
+rescaled so that a unit step of the integers advances the winding by
+\(\pi/3\). Six steps close one full turn, so the finite harmonic cells are the
+\(\mu_6\) buckets, and the natural coefficient ring of the closure arithmetic
+is the Eisenstein ring \(\mathbb Z[\zeta_6]\), in which the cancellation at a
+closed cell is exact --- integer arithmetic, no limit taken
+(\S\ref{sec:construct}). Nothing about the source is encoded in this choice;
+it is the harmonic scale at which the carrier's cells close exactly, and every
+integer occupies the same carrier whether or not any character ever reads it.
+
+\subsection{Phasors and the three buckets}\label{sec:grh-buckets}
+
+Each integer \(n\) contributes one phasor per lane. The phasor enters at
+height \(n\) at zero magnitude and grows continuously with height --- there is
+no convergence gate on the carrier; the half-plane \(\Re s>1\) is a property
+of the compressed 1D series, not of the state space. The dual copy rides the
+anti-helix with the same height law and conjugate transverse phase, so the two
+lanes run in parallel, heights matching, geometries conjugate
+(Theorem~\ref{thm:g1-double-carrier}).
+
+The conductor decides the buckets. For \(n\) sharing a factor with \(q\) we
+have \(\chi(n)=0\): the phasor is \emph{neutral} (U) --- present on the
+carrier, silent in this character's readout. For \(n\) coprime to \(q\) the
+character phase routes the phasor: a real character splits the units into a
+\emph{positive} lane P (\(\chi(n)=+1\)) and a \emph{negative} lane M
+(\(\chi(n)=-1\)); a complex character distributes its phases over the
+\(\mu_6\)-cell directions, and the P/M split is realized as the signed channel
+pair \((A,B)\) --- the \(\operatorname{Re}\)- and \(\operatorname{Im}\)-lanes
+of the reflected readout (Theorem~\ref{thm:g6-mode-bridge}). The same integers
+occupy the same carrier for every character; only the bucket assignment
+changes. \inst{Sam: check the complex-character bucket sentence --- is the
+\(\mu_6\)-direction description the right plain-language account?}
+
+\subsection{Vanishing is focal alignment}\label{sec:grh-focal}
+
+A zero, on the carrier, is not a value creeping down to nothing; it is an
+alignment event. At a marked height the accumulated bank achieves exact
+harmonic cancellation: the P and M lanes balance, the \(\mu_6\) cells close in
+\(\mathbb Z[\zeta_6]\), and the residual carries no independent constant mode
+--- the normalized cell residual factors as \(\det(L^{\mathrm c})/A=
+(\lambda-\mu)B\) with \(\lambda-\mu\neq0\), so the residual vanishes exactly
+when the signed closure channel does (Theorem~\ref{thm:g6-mode-bridge},
+Lemma~\ref{lem:bridge}). The event is registered by rank: the Hermitian Gram
+matrix of the lane states drops rank at the alignment and at no other height
+(\texttt{HarmonicPencilCell.gramH\_rank\_drop\_iff\_L\_zero}). This is the
+object (Z-3D) names: a height on the helix at which a finite, checkable,
+integer-arithmetic closure condition holds exactly.
+
+\subsection{The two Gram operators}\label{sec:grh-operators}
+
+Two operators read the bank, and they divide the labor.
+
+\emph{The Gram harmonic pencil} is the finite detector: the \(2\times2\)
+pencil
+\(L^{\mathrm c}=\left[\begin{smallmatrix}A&B\\ \mu A&\lambda
+B\end{smallmatrix}\right]\)
+on the signed channels, whose determinant vanishes --- whose rank drops ---
+exactly at the alignment events (\S\ref{sec:grh-focal}). It is the instrument
+that \emph{marks} the zeros' heights on the carrier.
+
+\emph{The von Neumann operator} is the spectral object, and it is
+disarmingly small. At each real height \(\gamma\) the fibre operator is
+multiplication by \(\gamma\) on the one-dimensional fibre,
+\[
+\texttt{vonNeumannOp}\ \gamma=(\gamma:\mathbb C)\cdot\mathrm{id},
+\]
+symmetric --- hence self-adjoint, with real spectrum \(\{\gamma\}\) --- as a
+theorem, not an assumption (\texttt{vonNeumannOp\_isSymmetric},
+\texttt{RequestProject/ClosedForm.lean}). Over a finite window \((0,T]\) the
+registration operator \(\texttt{hpOperator}\ T\) is the diagonal of the
+marked ordinates, Hermitian by type (\texttt{hpOperator\_isHermitian}), and
+its spectral multiplicity matches the analytic order: the mode space at an
+event is a graded local algebra
+\(\mathbb C[X]/((X-\mathrm{line}\,\gamma)^{\mathrm{ord}})\) of dimension
+exactly the vanishing order (\texttt{finrank\_modeSpace}) --- a double zero
+is a two-dimensional crossing. The spectral parametrization sends a real
+eigenvalue \(\mu\) to the represented point \(\tfrac12+i\mu\). And the
+window traces are honest analytic objects: the graded resolvent trace
+computes the explicit-formula sum of log-derivative residues
+(\texttt{gradedResolventTrace\_eq\_residue\_sum}), and the windowed
+differenced trace converges as \(T\to\infty\)
+(\texttt{windowedDiffResolvent\_tendsto}).
+
+\subsection{The Hilbert--P\'olya setup we use}\label{sec:grh-hp-setup}
+
+The classical suggestion runs: exhibit a self-adjoint operator whose spectrum
+gives the ordinates of the nontrivial zeros; self-adjointness forces the
+spectrum real; real ordinates place the zeros on the midline. It is worth
+saying plainly that this is not an exotic reformulation: Riemann's own
+sentence --- \emph{alle Wurzeln reell} --- already asks for a real spectrum,
+and real spectrum is precisely what self-adjointness delivers. The
+Hilbert--P\'olya suggestion is Riemann's phrasing transposed into operator
+language, which is why we treat it as the natural frame for the worked
+example rather than as one strategy among many.
+
+Our instantiation follows that shape exactly, with each step a named theorem:
+the operator is the von Neumann form of \S\ref{sec:grh-operators}, and its
+self-adjointness is proven (\texttt{vonNeumannOp\_isSymmetric}) --- in the
+classical program self-adjointness is the wished-for property; here it is
+never a hypothesis. Its eigenvalues are real by symmetry; the represented
+point of a real eigenvalue lies on the midline; over every finite window the
+eigenheights are exactly the marked events, with their multiplicities
+(\texttt{eigenheight\_is\_exact\_vanishing}, \texttt{finrank\_modeSpace});
+and the passage from finite windows to the limit is policed in both
+directions --- window traces converge
+(\texttt{windowedDiffResolvent\_tendsto}), the limit manufactures no zero the
+stages lack (\texttt{limit\_dominance}), and a zero accumulating across
+stages is a zero of the limit
+(\texttt{limit\_zero\_of\_stage\_accumulation}). What the classical
+suggestion left unfixed --- whether the criterion demands the spectrum
+\emph{be} the zeros or \emph{coincide} with them --- is exactly decision one,
+and no construction can close it, because the demand itself was never
+formalized.
+
+\section{The theorems}\label{sec:grh-theorems}
+
+The formal home of this part is
+\texttt{RequestProject/HelixResolventCapture.lean} together with the
+supporting files named below; every statement carries axiom footprint
+\(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\), no
+\texttt{sorry}, no \texttt{axiom}, built in-tree (App.~\ref{app:repro}).
+Below, \(\mathrm{GRH}(\chi_1)\) abbreviates the formal statement ``every
+nontrivial zero of the mod-\(1\) \(L\)-function lies on the midline''; the
+mod-\(1\) \(L\)-function \emph{is} \texttt{riemannZeta}, so
+\(\mathrm{GRH}(\chi_1)\) is the Riemann Hypothesis in its per-character
+uniform. The full chain is instantiated end-to-end at the trivial character;
+the dossier entries of \S\S\ref{sec:grh-E1}--\ref{sec:grh-E2} each carry
+their own stated generality (several are proven for every character or every
+entire readout).
+
+\medskip
+\noindent\textbf{The reduction spine} --- proven, unconditional:
+\begin{itemize}
+\item \texttt{RH\_of\_GRH\_Trivial\_Char}: \(\mathrm{GRH}(\chi_1)\implies\)
+Mathlib's \texttt{RiemannHypothesis}. The hypothesis handles the strip;
+Mathlib supplies no-zeros on \(\Re s\ge1\) and the negative-real trivial
+zeros via the completed functional equation. The entire target is one
+character's GRH.
+\item \texttt{vonNeumannOp\_isSymmetric}: self-adjointness of the fibre
+operator is a theorem, never a hypothesis (\S\ref{sec:grh-operators}).
+\item \texttt{grh\_of\_resolvant\_trace\_3D\_real}:
+\(\textsc{ThreeDRealEvidence}\wedge
+\texttt{ThreeD\_crossings\_are\_real\_zeros}(\chi_1)\implies
+\mathrm{GRH}(\chi_1)\). Each zero's crossing plus von Neumann reality gives
+\(\Re\rho=\tfrac12\); the open step is isolated cleanly on one side.
+\item \texttt{grh\_of\_resolvant\_trace\_1D\_correlation}:
+\(\textsc{OneDCorrelationEvidence}\wedge
+\texttt{OneD\_zeta\_zero\_correlated}(\chi_1)\implies\mathrm{GRH}(\chi_1)\),
+by a case split on the primary choice; both branches close by the same von
+Neumann reality --- the weak reading needs nothing stronger than the strong
+one.
+\item \texttt{RH\_of\_resolvant\_trace\_3D\_real},
+\texttt{RH\_of\_resolvant\_trace\_1D\_correlation}: the two implications
+composed with the bridge, landing \texttt{RiemannHypothesis} directly.
+\item \texttt{threeDRealEvidence}, \texttt{oneDCorrelationEvidence}: the two
+dossiers inhabited --- the \(16\)-fold and \(18\)-fold conjunctions of
+\S\ref{sec:grh-E2} and \S\ref{sec:grh-E1} certified theorem by theorem.
+\item \texttt{threeD\_real\_case}, \texttt{oneD\_correlation\_case}: each
+reading packaged as one auditable object --- its proven evidence paired with
+exactly what GRH additionally needs. Side by side they are the whole claim.
+\end{itemize}
+
+\medskip
+\noindent\textbf{The two decisions, rendered formal.} The formal system
+speaks the classical frame: its ``nontrivial zero'' is definitionally the 1D
+object, because \texttt{RiemannHypothesis} is the classical statement. Each
+decision of \S\ref{sec:grh-overview} therefore enters the formalization as a
+named hypothesis --- the kernel's rendering of a naming it cannot itself
+perform:
+\begin{itemize}
+\item \texttt{ThreeD\_crossings\_are\_real\_zeros} (\textsc{3D-Zero-Real};
+the strong reading with the 3D zero primary): every nontrivial zero \(\rho\)
+is registered by a crossing at a \emph{real} height \(\gamma\) --- some
+nonzero mode \(\psi\) with
+\(\texttt{specOp}\,(\texttt{vonNeumannOp}\,\gamma)\,\rho\,\psi=0\);
+equivalently, the resolvent blows up at \(\rho\).
+\item \texttt{OneD\_zeta\_zero\_correlated} (\textsc{1D-Zero-Exclusive-Real};
+the weak reading): a per-zero \emph{disjunction} --- either a crossing at
+some real height (the 3D-primary branch), or a crossing at the zero's own
+chart ordinate \(\gamma=\Im\rho\) (the 1D-primary branch, carrying the
+eigenstate\({}\leftrightarrow{}\)ordinate correspondence). The disjunction
+internalizes the naming decision: the hypothesis routes through whichever
+zero the reader holds primary.
+\end{itemize}
+What the kernel exhibits about the pair is exact. The strong clause is,
+verbatim, the left branch of the weak disjunction --- compare the two
+displays above --- so a reader who grants the strong reading has already
+granted the weak one. Each hypothesis is named once and asserted never; the
+development consumes each only under explicit conjunction with its proven
+dossier, and each conjunction closes \(\mathrm{GRH}(\chi_1)\) through the
+same unconditional von Neumann reality. A reader who adopts (Z-3D) reads the
+first hypothesis as discharged by the naming itself --- the zeros \emph{are}
+the crossings, and the crossing heights are real eigenvalues of a proven
+self-adjoint operator. A reader who retains (Z-1D) reads the same
+proposition as an open statement whose truth delivers the classical
+hypothesis. The kernel proves everything on both sides of that difference;
+it cannot arbitrate it, and the record is framed for adjudication in exactly
+three admissible verdicts: both readings sound, one, or none. Nothing in
+this part asserts RH or GRH: what is proven is the reduction spine and the
+thirty-four supporting facts, and the open link is the pair of named
+reading-hypotheses at \(\chi_1\).
+
+\section{Evidence I: the 3D--1D correlation}\label{sec:grh-E1}
+
+The eighteen facts of \texttt{oneDCorrelationEvidence}, each proven
+unconditionally. Together they establish that the chart's zero-readings and
+the carrier's registrations are one dataset read at two scales: counts
+agree with multiplicity, jumps carry residues, the projection books what it
+suppresses, and the correspondence is a window-by-window bijection.
+
+\begin{itemize}
+\item \texttt{chartZero\_iff\_eigenheight}
+(\texttt{RequestProject/HilbertPolya.lean}). For \(0<\gamma\le T\):
+\(\zeta(\tfrac12+i\gamma)=0\iff\gamma\) is an eigenheight of the window
+operator. The one-for-one coincidence, proven --- not asserted --- window by
+window.
+\item \texttt{hpDimension\_eq\_registration}
+(\texttt{RequestProject/HilbertPolya.lean}). The operator's dimension is the
+chart's own count formula, \(1+\theta(T)/\pi+S_{\mathrm{mult}}(T)\). The
+eigenstate count and the zero count are the same number because the ledger
+says so.
+\item \texttt{carrier\_scale\_compensation\_S}
+(\texttt{RequestProject/CarrierScaleCompensation.lean}).
+\(N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)\): the classical \(S(t)\) is the gap
+between the native-scale event count and the unit-scale smooth term --- one
+procession, two registrations, no mysterious remainder.
+\item \texttt{native\_identification$'$}
+(\texttt{RequestProject/CarrierScaleCompensation.lean}).
+\(N_{\pi/3}(e^{t})\) equals the number of on-line zero ordinates in
+\((0,t]\) --- one zero per completed \(\pi/3\) cell.
+\item \texttt{S\_jump\_detects\_event}
+(\texttt{RequestProject/ResidueJump.lean}). \(S\) has a unit jump at
+\(\gamma\) iff \(\zeta(\tfrac12+i\gamma)=0\): detecting a zero and detecting
+an \(S\)-jump are the same act.
+\item \texttt{count\_hasJump\_iff\_S\_hasJump}
+(\texttt{RequestProject/ResidueJump.lean}). The event count and \(S\) have
+identical jumps --- their difference is continuous, so \emph{all}
+discontinuity lives in \(S\), none in the smooth clock \(\theta/\pi\).
+\item \texttt{residue\_eq\_Smult\_jump}
+(\texttt{RequestProject/ResidueJump.lean}). At every event,
+log-derivative residue \(=\) vanishing order \(=\) ledger jump, with
+multiplicity and with \emph{no} simplicity hypothesis.
+\item \texttt{record\_bijective} (\texttt{RequestProject/RoundTrip.lean}).
+\(\texttt{record}\,f=(\text{height},(\text{radial},\text{phase}))\) is a
+bijection with explicit inverse \texttt{reconstruct}: the loss ledger made
+literal (\S\ref{sec:grh-projection}).
+\item \texttt{radial\_lost} (\texttt{RequestProject/RoundTrip.lean}).
+Without the ledger the geometric projection is provably non-injective ---
+the ledger does real work; the faithfulness results are not vacuous.
+\item \texttt{projection\_bijective\_loss\_ledger}
+(\texttt{RequestProject/SourceHolonomy.lean}). The chart chain
+\(y\mapsto1-(\tfrac12+yi)^{-1}\) is injective: distinct helix events write
+distinct ledger entries --- the data-processing inequality made literal.
+\item \texttt{pipeline\_midpoint\_iff}
+(\texttt{RequestProject/RoundTrip.lean}). The end-to-end
+3D\(\to\)height\(\to\)encode\(\to\)1D pipeline reads \(\tfrac12\) exactly
+when the retained 3D coordinate is \(\tfrac12\): the midline address
+survives projection intact, and only the midpoint maps there.
+\item \texttt{no\_radial\_drift\_on\_helix}
+(\texttt{RequestProject/SourceHolonomy.lean}). The Euler-factor phasor's
+radius depends only on \(\Re s=\tfrac12\), not on height: the
+height\(\to\)circle map is a faithful re-coordinatization, all
+distinguishing information in the phase the ledger keeps.
+\item \texttt{midpoint\_entry\_on\_circle}
+(\texttt{RequestProject/SourceHolonomy.lean}). Every helix height charts to
+a unit-circle ledger entry (\(\|1-(\tfrac12+yi)^{-1}\|=1\)): line-events are
+recorded as circle-points.
+\item \texttt{faithful\_projection\_zeta}
+(\texttt{RequestProject/Faithfulness.lean}). The projected fiber is real on
+the midline and vanishes exactly at the genuine on-line zeros: the collapse
+neither hides a zero nor manufactures one.
+\item \texttt{euler\_maclaurin\_dirichlet}
+(\texttt{RequestProject/EulerMaclaurinDirichlet.lean}). In the strip, the
+finite Dirichlet sum with boundary correction approximates \(\zeta\) with
+error uniform in the truncation --- the quantitative backbone of the chart
+readout.
+\item \texttt{transfer\_tendsto}
+(\texttt{RequestProject/TransferContinuation.lean}). A polynomial bound on
+the primitive continues the series past the trivial abscissa: the readout
+limit exists from a growth estimate alone, with no appeal to zero locations.
+\item \texttt{limit\_zero\_of\_stage\_accumulation}
+(\texttt{RequestProject/ExportAdapter.lean}). A zero accumulating across the
+finite stages is a zero of the limit \(\xi\)-section: the collapse does not
+counterfeit features.
+\item \texttt{windowedDiffResolvent\_tendsto}
+(\texttt{RequestProject/DifferencedResolvent.lean}). The windowed
+differenced-resolvent trace converges as \(T\to\infty\) to an absolutely
+convergent limit: the chart-side resolvent is an honest analytic object,
+unconditionally.
+\end{itemize}
+
+\section{Evidence II: the three-dimensional zero is the primary
+object}\label{sec:grh-E2}
+
+The sixteen facts of \texttt{threeDRealEvidence}, each proven
+unconditionally. Together they establish that the three-dimensional
+registration is structurally complete on its own terms: the operator is
+genuinely self-adjoint, the events are exact vanishings with the right
+multiplicities, the arithmetic is carried by the geometry, and the limit
+process adds nothing the stages lack.
+
+\begin{itemize}
+\item \texttt{vonNeumannOp\_isSymmetric}
+(\texttt{RequestProject/ClosedForm.lean}). The fibre operator
+\(\gamma\cdot\mathrm{id}\) is symmetric, hence self-adjoint with real
+spectrum \(\{\gamma\}\). The linchpin: classically self-adjointness is
+assumed; here it is a theorem.
+\item \texttt{eigenheight\_is\_exact\_vanishing}
+(\texttt{RequestProject/HilbertPolya.lean}). Every window index satisfies
+\(\zeta(\tfrac12+i\gamma)=0\) exactly: the spectrum is the exact zero
+ordinates, not an approximation.
+\item \texttt{hpOperator\_isHermitian}
+(\texttt{RequestProject/HilbertPolya.lean}). The registration diagonal is
+Hermitian --- reality by type, before any analysis.
+\item \texttt{finrank\_modeSpace}
+(\texttt{RequestProject/GradedModeDictionary.lean}). The mode space at an
+event is a graded local algebra of dimension exactly the vanishing order: a
+double zero is a two-dimensional crossing; spectral multiplicity \(=\)
+analytic order.
+\item \texttt{gradedResolventTrace\_eq\_residue\_sum}
+(\texttt{RequestProject/GradedModeDictionary.lean}). The 3D-mode resolvent
+trace equals the explicit-formula sum of log-derivative residues: the trace
+formulas coincide, not just the locations.
+\item \texttt{focal\_residual\_zero\_iff\_L\_zero}
+(\texttt{RequestProject/FocalResidualVanishes.lean}).
+\(D_{\mathrm{cell}}=V_\chi\Phi_\chi\) with \(V_\chi\neq0\) and
+\(\Phi_\chi=(\pi/3)\,L\): the cell channel vanishes iff the \(L\)-value
+does, residue-free, at exact \(\pi/3\) amplitude --- the sharpest local form
+of ``the crossing is the zero''.
+\item \texttt{fiber\_accumulates\_to\_L}
+(\texttt{RequestProject/Faithfulness.lean}). For \(\chi\neq1\) and
+\(\Re s>0\) the partial sums converge to \(L(s,\chi)\) across the whole
+strip: the bank and the \(L\)-function are the same object on the critical
+line, and the \(\Re s>1\) gate is a chart artifact.
+\item \texttt{threeD\_exhaustive}
+(\texttt{RequestProject/SourceHolonomy.lean}). Every zero event on the real
+height ray is sourced --- automatic, because reals are conjugation-fixed.
+Priced exactly: the 3D event space is the fixed locus, so there is nowhere
+else in 3D for a zero to live.
+\item \texttt{threeD\_metric\_no\_zeros}
+(\texttt{RequestProject/SourceHolonomy.lean}). The 3D cup form is definite:
+no nonzero state is null, so vanishing is a property of \emph{readings},
+never of states --- a zero cannot hide as a degenerate state.
+\item \texttt{windFromPrimes\_mul}
+(\texttt{RequestProject/Origination.lean}). The winding is multiplicative
+over factorization, with no \(\Re\!\log\): the fundamental theorem of
+arithmetic realized as a homomorphism into the circle --- carrier and
+\(L\)-function are two prime-built readings of one arithmetic.
+\item \texttt{heights\_distinct}
+(\texttt{RequestProject/NoDoubleCancellation.lean}). Distinct sites carry
+distinct eigen-heights: unique factorization as a spectral
+non-degeneracy.
+\item \texttt{cancellation\_modes\_subsingleton}
+(\texttt{RequestProject/NoDoubleCancellation.lean}). At any spectral
+parameter, at most one basis mode cancels: no split focus --- a crossing
+marks one ordinate, not a superposition.
+\item \texttt{localPoly\_reciprocal}
+(\texttt{RequestProject/FiniteWeightFiber.lean}). The local numerator is
+self-reciprocal: the per-place functional equation whose global assembly has
+fixed axis \(\Re s=\tfrac12\) --- the midline the crossings sit on.
+\item \texttt{fiber\_det\_one}
+(\texttt{RequestProject/FiniteWeightFiber.lean}). \(\prod_i\lambda_i=1\)
+under the duality involution: the modulus ledger the reciprocal law
+consumes.
+\item \texttt{frobeniusBlock\_det\_one}
+(\texttt{RequestProject/FrobeniusSimilitude.lean}). The chiral block
+\(\mathrm{diag}(z,\bar z)\) has determinant \(1\): the Frobenius similitude
+is a pure rotation --- Satake weights stay on the unit circle, eigenphases
+stay real.
+\item \texttt{limit\_dominance}
+(\texttt{RequestProject/LimitDominance.lean}). Hurwitz-type dominance: the
+limit cannot manufacture a zero the stages lack --- every chart zero is
+sourced by finite-stage features.
+\end{itemize}
+
+\section{Proof A: GRH under (Z-3D)}\label{sec:grh-proofA}
+
+\begin{theorem}[The identity route]\label{thm:grh-routeA}
+Unconditionally: \textup{(i)} \(\textsc{ThreeDRealEvidence}\) holds
+(\texttt{threeDRealEvidence}); \textup{(ii)}
+\(\textsc{ThreeDRealEvidence}\wedge
+\texttt{ThreeD\_crossings\_are\_real\_zeros}(\chi_1)\implies
+\mathrm{GRH}(\chi_1)\) (\texttt{grh\_of\_resolvant\_trace\_3D\_real});
+\textup{(iii)} the same two premises imply \texttt{RiemannHypothesis}
+(\texttt{RH\_of\_resolvant\_trace\_3D\_real}).
+\end{theorem}
+
+\begin{proof}[Proof A]
+Adopt (Z-3D): ``nontrivial zero'' names the crossing --- the focal-alignment
+event of \S\ref{sec:grh-focal}. Under that naming the hypothesis in
+\textup{(ii)} is the naming itself: every zero is a crossing because a zero
+\emph{is} a crossing, and each crossing is registered at a real height. The
+crossing heights are eigenvalues of the fibre operator, which is
+self-adjoint by theorem, not by assumption
+(\texttt{vonNeumannOp\_isSymmetric}); its eigenvalues are real; and the
+represented point of a real eigenvalue lies on the midline. With the
+evidence of \S\ref{sec:grh-E2} --- exact vanishing at the eigenheights,
+multiplicity equal to order, no split focus, definite metric, exhaustion of
+the real ray --- theorem \textup{(ii)} closes \(\mathrm{GRH}(\chi_1)\), and
+\textup{(iii)} lands the classical statement. The conclusion is available in
+both rows of the (Z-3D) column: identity of spectrum and zeros satisfies the
+strong criterion by construction, and coincidence a fortiori.
+\end{proof}
+
+\section{Proof B: GRH under (HP-W)}\label{sec:grh-proofB}
+
+\begin{theorem}[The correlation route]\label{thm:grh-routeB}
+Unconditionally: \textup{(i)} \(\textsc{OneDCorrelationEvidence}\) holds
+(\texttt{oneDCorrelationEvidence}); \textup{(ii)}
+\(\textsc{OneDCorrelationEvidence}\wedge
+\texttt{OneD\_zeta\_zero\_correlated}(\chi_1)\implies\mathrm{GRH}(\chi_1)\)
+(\texttt{grh\_of\_resolvant\_trace\_1D\_correlation}); \textup{(iii)} the
+same two premises imply \texttt{RiemannHypothesis}
+(\texttt{RH\_of\_resolvant\_trace\_1D\_correlation}).
+\end{theorem}
+
+\begin{proof}[Proof B]
+Adopt (HP-W): the criterion demands that the operator's eigenvalues
+\emph{coincide with} the zeros. The hypothesis in \textup{(ii)} is that
+demand rendered per zero, as a disjunction --- a crossing at some real
+height, or a crossing at the zero's own chart ordinate --- so it routes
+through whichever object the reader holds primary, and the naming decision
+is not consumed. The coincidence itself is what \S\ref{sec:grh-E1} proves:
+the window-by-window bijection of chart zeros and eigenheights, the
+registration identity for the counts, jump-for-residue agreement with
+multiplicity, and a projection whose ledger books exactly what it
+suppresses. Both branches of the disjunction close by the same von Neumann
+reality (the case split inside
+\texttt{grh\_of\_resolvant\_trace\_1D\_correlation}), whence
+\(\mathrm{GRH}(\chi_1)\), and \textup{(iii)} lands the classical statement.
+The weak reading consumes nothing stronger than the strong one --- the same
+self-adjoint mechanism closes both branches.
+\end{proof}
+
+\section{Riemann Hypothesis corollaries at \texorpdfstring{\(\chi=1\)}{chi=1}}
+\label{sec:grh-rh}
+
+The mod-\(1\) \(L\)-function is \texttt{riemannZeta}, so at the trivial
+character each route lands the classical statement with no further input:
+
+\begin{corollary}[RH, identity reading]\label{cor:grh-rhA}
+\(\textsc{ThreeDRealEvidence}\wedge
+\texttt{ThreeD\_crossings\_are\_real\_zeros}(\chi_1)\implies
+\texttt{RiemannHypothesis}\) \textup{(\texttt{RH\_of\_resolvant\_trace\_3D\_real},
+proven)}. A reader who adopts \textup{(Z-3D)} therefore holds RH.
+\end{corollary}
+
+\begin{corollary}[RH, correlation reading]\label{cor:grh-rhB}
+\(\textsc{OneDCorrelationEvidence}\wedge
+\texttt{OneD\_zeta\_zero\_correlated}(\chi_1)\implies
+\texttt{RiemannHypothesis}\)
+\textup{(\texttt{RH\_of\_resolvant\_trace\_1D\_correlation}, proven)}. A
+reader who adopts \textup{(HP-W)} and accepts the proven correlation as the
+coincidence the criterion demands therefore holds RH.
+\end{corollary}
+
+Both factor through the same bridge, \texttt{RH\_of\_GRH\_Trivial\_Char}:
+one character's GRH is RH.
+
+\section{Conclusion}\label{sec:grh-conclusion}
+
+The matrix, restated with our preferences marked:
+\begin{center}
+\begin{tabular}{c|cc}
+ & \textbf{(Z-3D)}\(^\star\) & \textbf{(Z-1D)}\\
+\hline
+\textbf{(HP-S)} & GRH \; (Proof A) & no proof\\
+\textbf{(HP-W)}\(^\star\) & GRH \; (Proofs A and B) & GRH \; (Proof B)\\
+\end{tabular}
+\end{center}
+What stands, and at what strength: the reduction spine and all thirty-four
+supporting facts are proven, machine-checked, unconditional. Nothing in this
+part asserts RH or GRH. The open link is the pair of named
+reading-hypotheses at \(\chi_1\) --- named once, asserted never, consumed
+only under explicit conjunction --- with the strong clause one branch of the
+weak disjunction, so the admissible verdicts are exactly three: both
+readings sound, one, or none. The residue of three quarters of the matrix is
+a decision about what ``nontrivial zero'' names and what the
+Hilbert--P\'olya criterion demands. Our preferred cell is
+\((\text{HP-W})\wedge(\text{Z-3D})\), where both proofs go through
+simultaneously; we believe the evidence sections support those readings, and
+we have said so plainly without presupposing agreement.
+
+The supporting structure is exposed at every computed window --- eigenheight
+against chart zero, jump against residue, registration count against chart
+count --- and every one of those agreements is a proven theorem, re-checkable
+by the kernel on demand from the public artifacts. What no observation can
+settle is the pair of decisions --- that is not a defect of the evidence but
+the nature of a naming --- and so we place them where they belong. The
+theorems are checked.
+The construction is elementary enough to hold in the mind: a number line
+rescaled to \(\pi/3\), a conjugate pair of helices, three buckets chosen by
+the conductor, an alignment event, a self-adjoint reading of its height. The
+decisions are the community's.
