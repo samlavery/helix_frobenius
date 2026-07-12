@@ -16,6 +16,8 @@
 \setlist{itemsep=2pt,topsep=4pt,parsep=0pt,leftmargin=*}
 
 \usepackage{lineno}
+\linenumbers
+
 \usepackage[status=draft,author=]{fixme}
 \usepackage{hyperref}
 \usepackage{microtype}                 % micro-typography (protrusion + expansion)
@@ -82,11 +84,12 @@ A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Uni
 \maketitle
 
 \begin{abstract}
-The classical $L$-function is a one-dimensional readout of a three-dimensional
-object, and the thesis of this paper is that the readout's coordinate system
---- the unit-$1$ chart --- is cohomologically sub-optimal: a harmonically
-scaled three-dimensional carrier is the more accurate frame, and working in it
-is the basis for everything that follows. We construct the frame: a 3D state
+The classical $L$-function is not the object of study; it is the shadow ---
+the one-dimensional readout of a three-dimensional object, cast through a
+coordinate system, the unit-$1$ chart, that is cohomologically sub-optimal.
+The thesis of this paper is that a harmonically scaled three-dimensional
+carrier is the more accurate frame, and working in it is the basis for
+everything that follows. We construct the frame: a 3D state
 space containing a double-ended helix and its conjugate anti-helix ---
 Archimedean, constant pitch one unit --- with two harmonically scaled carriers
 placed at the origin and running to infinity. Automorphic functions are
@@ -121,7 +124,7 @@ applied in projection, harmonizing one or several functions onto common
 harmonic cells with exact closure at vanishing; prove Sato--Tate for Maass
 forms; give an adaptive cohomological obstruction detector with
 re-harmonization that dynamically minimizes the obstruction, and a projection
-into a Hodge space that detects obstructions hidden there; and assemble the
+into a Hodge space that detects obstructions hidden there (preliminary); and assemble the
 pieces toward a universal Langlands-style transport. Returning to the origin
 of the program, we analyze Altu\u{g}'s Beyond-Endoscopy uniformity problem
 and, with clock-controlled adapters, propose a repaired version that scales.
@@ -272,10 +275,34 @@ forms: Newton--Thorne \cite{NT}; $r\le4$: Gelbart--Jacquet \cite{GJ}, Kim--Shahi
 \cite{KimShahidi}). Established here at \emph{every} rank --- cuspidal in the generic case,
 Galois-free, Maass included: Thm.~\ref{thm:func}, Cor.~\ref{cor:func234}, with niceness
 discharged on the carrier (Prop.~\ref{prop:completedFE}, Lem.~\ref{lem:transfer},
-Lem.~\ref{lem:bounded}, Lem.~\ref{lem:rankgap}; \texttt{symTensorCompleted\_FE},
+Lem.~\ref{lem:bounded}, Lem.~\ref{lem:rankgap}; \texttt{FiniteWeightFiber.symTensorCompleted\_FE},
 \texttt{TransferContinuation.transfer\_analytic},
-\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}). [theorem, on Lean
+\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}). [theorem, on Lean
 carrier inputs]
+\item \textbf{Universal carrier transport and functoriality over the admissible set} --- the general
+transfer question (which $L$-functions come from automorphic sources), beyond any single tower.
+Established as a \emph{universal machine} on the \emph{admissible} fibers --- those given by a finite
+structural presentation (a finite local-parameter rule, bounded local-factor degree, an Euler
+assembly, a convergence half-plane); a structureless (``random'') function is \emph{excluded by
+definition}, having no finite law from which to synthesize a phase, cell, or clock, so it is outside
+the domain, not a counterexample. For \emph{every} admissible fiber the carrier is a faithful
+transport (Thm.~\ref{thm:transport}, Thm.~\ref{thm:universal}): the readout, the reflection
+$\Lambda(s;W)=\varepsilon\,\Lambda(1-s;W^\vee)$, and the local factors and root number are
+\emph{outputs}, unconditional (\texttt{FiniteWeightFiber.symTensorCompleted\_FE},
+\texttt{ConeProjection.record\_bijective}, Prop.~\ref{prop:localid}), and the transport composes
+faithfully (\texttt{CarrierFunctoriality.faithful\_comp}, with associativity, identity, and base
+change, no axioms). The one per-fiber obligation --- native-cell closure at the fiber's own harmonic
+scale --- has a \emph{proven existence backbone}: the focal residual is slaved to the readout with no
+independent DC mode (Lem.~\ref{lem:rankgap}) and is forcible to zero on the two independent lanes of
+any nontrivial clock (\texttt{ForcibleClosure.residual\_forcible},
+\texttt{CarrierReachability.reachable\_independent\_stage}); the resulting nice $L$-function, fed to
+the converse theorem (Thm.~\ref{thm:cps}), lands the fiber as automorphic, the symmetric-power tower
+(item~1) being the fully-executed instance. \emph{Stated honestly}: that closure always \emph{exists}
+and that the random impostors are excluded are both \emph{proven}; that a \emph{bounded, non-oracular}
+adapter is read off \emph{every} exotic finite law (\texttt{Synth} totality) is a well-founded,
+so-far-unfalsified \emph{program}, not a monolithic theorem --- its single clean falsifier a
+\emph{structured} admissible fiber closeable by no adapter, existing or new. [Lean backbone +
+theorem; universality a falsifiable program]
 \item \textbf{The Ramanujan--Petersson conjecture for Maass forms} --- open; holomorphic forms
 are Deligne's theorem, and the best Maass bound is $7/64$ (Kim--Sarnak \cite{KimSarnak}).
 Established as the tower's radial limit: the strand radius is exactly one at every unramified
@@ -294,7 +321,9 @@ of automorphy lifting: Cor.~\ref{cor:satotate}. [theorem]
 \item \textbf{GRH/RH} --- two conditional proofs, each resting on exactly one named definitional
 reading (what the Hilbert--P\'olya program requires of its spectrum; what a \emph{real}
 nontrivial zero names), with the entire supporting spine unconditional: self-adjointness a
-theorem (\texttt{vonNeumannOp\_isSymmetric}), thirty-four machine-checked evidence facts, GRH at
+theorem (\texttt{vonNeumannOp\_isSymmetric}), thirty-four machine-checked evidence facts
+organized by four named engines (\emph{Feynman's Quiver}, \emph{Deligne's Pairs}, the
+\emph{Shannon Cascade} with its projection dominance, \emph{Riemann's Fold}), GRH at
 every modulus and character under either reading
 (\texttt{grh\_of\_resolvant\_trace\_3D\_real},
 \texttt{grhComplete\_of\_resolvant\_trace\_1D\_correlation}), and Riemann Hypothesis corollaries
@@ -303,6 +332,14 @@ at the trivial character (Part~\ref{part:grh}). [Lean; the two readings decided]
 uniformity problem. Root-caused and repaired: the obstruction is a deterministic clock intrinsic
 to the orbital transform, removed by an exact gauge with no oscillation estimate, and the repair
 scales (\S\ref{sec:gauge}, \S\ref{sec:pipeline}). [theorem + measured]
+\item \textbf{The obstruction finder} --- an adaptive detector that locates exactly where a
+computation resists: the residual names its cell and the cell names its adapter (the
+$\Sym^{13}$ rank-deficient cell naming $\Theta$; Altu\u{g}'s obstruction named as a
+deterministic clock of the orbital transform), and re-harmonization removes the obstruction or
+retains it with its certificate --- never zeroed by hand
+(Thm.~\ref{thm:g10-obstruction-adaptation}, Lem.~\ref{lem:forcible}, \S\ref{sec:obs-removal};
+\texttt{ClockStructure.obstruction\_recovery}, \texttt{ForcibleClosure.residual\_forcible}).
+[Lean core + measured instances]
 \item \textbf{The $S(t)$ mechanism} --- the classical oscillatory term, resistant to
 interpretation since Riemann--von Mangoldt. Identified unconditionally:
 $N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)$, the registration gap between the harmonic carrier scale
@@ -336,7 +373,7 @@ similitude (\texttt{FrobeniusSimilitude}). \\
 Altu\u{g}'s $\Sigma()$ (\S\ref{sec:comb},\,\S\ref{sec:general}). \\
 \emph{ledger} & the determinant/loss bookkeeping that keeps the transport faithful (det-one balance,
 Lemma~\ref{lem:selfdual}; rank/jet, \texttt{BSDClocks}). \\
-\emph{focal cancellation} & a zero: the non-DC bank balances to zero centroid (\texttt{FocalResidualGeneral},
+\emph{focal cancellation} & a zero: the non-DC bank balances to zero centroid (\texttt{HarmonicCell},
 \texttt{ForcibleClosure}; \S\ref{sec:general}). \\
 \emph{harmonization} & the method --- read a projected function, let its nature name its settings: scale/warp, adapters, and clocks such that the carrier + fiber ensemble
 closes without residue (\S\ref{sec:general}). \\
@@ -1272,7 +1309,7 @@ det-one fiber, the Dirichlet period-\(q\) character block
 The cancellation is a full-period root-of-unity identity, exact and
 residue-free: the normalized focal residual carries no independent constant
 mode (Theorem~\ref{thm:g6-mode-bridge}, Lean
-\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}).
+\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}).
 \end{proof}
 
 \begin{theorem}[Unconditional bounded primitive from exact cell closure]\label{thm:g5-bounded-primitive-from-cells}
@@ -1557,7 +1594,7 @@ and its normalized cell residual is exactly
 \[
 \det(L^{\mathrm c})/A=(\lambda-\mu)\,B,\qquad \lambda-\mu\neq0
 \]
-(Lean \texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode},
+(Lean \texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode},
 channel-agnostic in \((A,B,\mu,\lambda)\); the Dirichlet instance is
 \texttt{HarmonicPencilCell.normalized\_cell\_focal\_residual\_exact}, giving
 \(D^{\mathrm c}_\chi=V_\chi\Phi_\chi\), \(V_\chi\neq0\)).  Writing \(\Phi_W\) for
@@ -1678,7 +1715,7 @@ carries \(J\) to the unit-circle reflection (Lean \texttt{GeometricReadout.cayle
 \texttt{cayley\_real\_norm\_one}, with the lossless round trip
 \texttt{ConeProjection.record\_bijective}); the completion clock carries that to the
 readout reflection \((\mathfrak R f)(s)=\varepsilon_W f^\vee(\kappa-s)\) (Lean
-\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}); and the
+\texttt{FiniteWeightFiber.clockCompletion\_selfdual}); and the
 logarithmic readout fixes the axis \(\Re s=\kappa/2\) (Lean
 \texttt{ConeProjection.midpoint\_to\_critical},
 \texttt{AutomorphicCandidate.midpoint\_projects\_to\_half}).  Composing the
@@ -1849,7 +1886,7 @@ For (ii), the Ces\`aro mean of the cell-closing scaling tends to \(0\), so the
 zero-frequency mode of the reflected carrier readout vanishes, \(R_W=0\) (Lean
 \texttt{CellClosure.cell\_closure\_dc\_mode\_zero}; channel-agnostically, the
 normalized focal residual carries no independent constant direction,
-\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}).  No
+\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}).  No
 constant term survives to produce a carrier pole.
 
 For (iii), the completed reflection
@@ -3153,9 +3190,9 @@ unit (Prop.~\ref{prop:localid}); the unimodular chiral block
 compounds the strand radius exponentially with rank --- $\|\alpha_p^{\,r}\|=\|\alpha_p\|^{r}$ is
 the top strand of the $r$-th rung --- while the ceiling the rungs respect is \emph{rank-uniform}:
 each $\Sym^r\pi$ is automorphic (Cor.~\ref{cor:func234}), and Jacquet--Shalika \cite{JS} bounds
-every Satake parameter of every isobaric constituent by $p^{1/2}$ --- the same $\sqrt{\,\cdot\,}$
-law at every rung, the $1$D chart's reading of the carrier's area-law envelope
-(\texttt{scaleBalanced\_iff}). A radius exceeding one compounds past any fixed ceiling; a det-one
+every Satake parameter of every isobaric constituent by $p^{1/2}$ --- a rank-uniform ceiling whose
+$\sqrt{\,\cdot\,}$ shape is the arithmetic face of the carrier's area-law envelope, the geometric
+law that forces the abscissa (\texttt{scaleBalanced\_iff}). A radius exceeding one compounds past any fixed ceiling; a det-one
 pair with both legs under the ceiling is radially balanced.
 
 \begin{corollary}[The radial ledger channel is trivial: Ramanujan--Petersson and Selberg]\label{cor:ramanujan}
@@ -3183,7 +3220,9 @@ $|\operatorname{Re}(r\mu_\infty)|\le\tfrac12$ uniformly in $r$;
 rate: the strand profile is a pure carrier rotation at every height. No unit modulus is assumed
 anywhere upstream --- the tower is proven with the radial channel open, on polynomial local
 bounds only (Lemma~\ref{lem:bounded}, where Ramanujan is not used; Prop.~\ref{prop:localid},
-where no temperedness is used) --- and then closes it.
+where no temperedness is used; the two-clock weight law of \S\ref{sec:machinery}, which reads only
+the ledger-normalized phase datum, unit-modulus by construction, never the radial channel) --- and
+then closes it.
 \end{proof}
 
 \input{grh_worked_example_draft}
@@ -3422,7 +3461,7 @@ bank) and no DC/pole rail present, while the order-three and split fibres carry 
 the constant-mode/pole content, cleanly separated (\texttt{f21\_gl3\_multirail.py}). The cell closure of both
 classes, the determinant, the Gauss-period relations $\eta+\eta'=-1$, $\eta\eta'=2$ and $\eta\ne\eta'$, and the
 scalar obstruction itself ($\mathrm{Re}\,\eta=\mathrm{Re}\,\eta'$ while $\eta\ne\eta'$) are machine-checked in Lean
-(\texttt{F21NonSelfDual.lean}. So the non-self-dual case, where a scalar representation is provably impossible, rides the
+(\texttt{F21NonSelfDual.lean}). So the non-self-dual case, where a scalar representation is provably impossible, rides the
 multi-rail carrier without loss.
 
 \section{The productivity boundary}\label{sec:sarnak}
@@ -4079,10 +4118,10 @@ conjugate-pair $\operatorname{diag}(z,\bar z)$, $z\bar z=1$, and the Euler facto
 carries $W^\vee$, so $\Lambda(s,W)=\varepsilon_W\,\Lambda(\kappa-s,W^\vee)$ for \emph{every} fiber, $J$
 descending through the Cayley, completion-clock, and logarithmic-readout intertwiners. Lean:
 \texttt{GeometricReadout.cayley}/\texttt{cayley\_real\_norm\_one}/\texttt{ConeProjection.record\_bijective},
-\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}, \texttt{ConeProjection.midpoint\_to\_critical};
+\texttt{FiniteWeightFiber.clockCompletion\_selfdual}, \texttt{ConeProjection.midpoint\_to\_critical};
 per place \texttt{FiniteWeightFiber.localPoly\_reciprocal}; assembled
 \texttt{CompletedReflection.completed\_FE}, and for the symmetric-power/twist fiber
-\texttt{CompletedReflectionFiber.symTensorCompleted\_FE} (every $r$, every duality-stable twist).
+\texttt{FiniteWeightFiber.symTensorCompleted\_FE} (every $r$, every duality-stable twist).
 \item[Bounded in strips \textup{(B)}.] The direct reflected integral has $|x^{it}|=1$, giving a
 $t$-independent finite bound in every vertical strip --- no Phragm\'en--Lindel\"of. Lean:
 Lemma~\ref{lem:bounded}.
@@ -4217,9 +4256,8 @@ The argument is \emph{fiber-parametric} and does not require any zero of $\Phi_{
 residual simply \emph{cannot} survive independently of $\Phi$, because the pencil loses that rank --- it is
 not the identification of a separate Fourier/DC coefficient, and it reads no global Weil--Galois parameter
 (so it holds for Maass $\tau$) and no automorphy of $\Sym^r\pi$. Machine-checked for the Dirichlet model;
-the same determinant-one lane balance for the general symmetric-power/twist fiber, corroborated through
-$\Sym^{13}$ (\S\ref{sec:sym5}) and realized as \emph{forcible} closure with a machine-checked
-controllability core (Lemma~\ref{lem:forcible}). Away from a coincidence the smallest singular value reopens,
+the same determinant-one lane balance for the general symmetric-power/twist fiber, realized as
+\emph{forcible} closure with a machine-checked controllability core (Lemma~\ref{lem:forcible}). Away from a coincidence the smallest singular value reopens,
 $\sigma_{\min}(G^{\mathrm c}(t))\sim C\,|t-t_0|^{k}$ --- the post-closure resistance below, a recovery rate,
 not a residual mode.
 \end{proof}
@@ -4243,7 +4281,7 @@ $P/M$ channels $A_{r,\tau}=\operatorname{Re}\Phi$-lane and $B_{r,\tau}=\operator
 $L^{\mathrm c}=\big[\begin{smallmatrix}A&B\\ \mu A&\lambda B\end{smallmatrix}\big]$ is, as a pure identity in the
 channels $(A,B,\mu,\lambda)$, an exact nonzero multiple of the scalar closure,
 $D^{\mathrm c}=(\lambda-\mu)B/\!\cdots=V\,\Phi$ with $V\neq0$
-(\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}, channel-agnostic. The bridge is the identification of the
+(\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}, channel-agnostic). The bridge is the identification of the
 analytic residue with this algebraic one: the DC coefficient of $\sum_n\lambda_n g(nx)$ \emph{is} the pencil's
 zero-frequency direction, because the same $\lambda_n$ define both. For the Dirichlet model this identification is
 Lean-complete end-to-end (\texttt{HarmonicPencilCell.gramH\_rank\_drop\_iff\_L\_zero} ties the pencil determinant
@@ -4332,7 +4370,7 @@ arithmetic-neutral, needs no strengthening for the chain. The boundary is sharp,
 unconditional}: the residual factorization $D_C=V\,\Phi$ with $V\neq0$ --- the Gram-pencil rank-drop leaving no
 zero-frequency mode independent of the readout --- is a channel-agnostic identity in $(A,B,\mu,\lambda)$,
 machine-checked in Lean for arbitrary channels
-(\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode} and instantiated end-to-end for the
+(\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode} and instantiated end-to-end for the
 Dirichlet model; it reads only the fiber's own P/M channels, so it holds \emph{verbatim} for every det-one
 symmetric-power/twist fiber, Maass included. The finer \emph{constructive} reachability --- that the dual carrier admits a reachable stage whose two lane directions are $\mathbb R$-linearly independent, demanded once rather than at every cell --- governs the closure \emph{dynamics}, not the vanishing of the residual mode, and it too is settled rather than left to numerics. The required two correction directions are not obtained by a genericity argument. For the dual carrier they are the two \emph{lanes} $e^{\pm i\phi(y)}$ of the helix, and a complex number and its conjugate are $\mathbb R$-linearly independent at a carrier height $y$ exactly when $\sin(2\phi(y))\neq0$ (independent iff off the axes, not merely $\phi\neq0$ --- at $\phi=\pi/2$ the two lanes coincide up to sign). The complete dual helix runs continuously $0\to\infty$ on both lanes, so a clock with $\sin(2\phi)\equiv0$ would map the connected line into the discrete set $\tfrac{\pi}{2}\mathbb Z$ and hence be constant --- the DC/trivial lock. A \emph{nontrivial} (non-constant) admissible clock therefore attains some height with $\sin(2\phi)\neq0$: \texttt{CarrierReachability.reachable\_independent\_stage} proves that every nontrivial source fiber in the stated structural class (continuous non-constant $\phi$) admits a carrier stage with two $\mathbb R$-linearly-independent lane directions, and \texttt{ForcibleClosure.residual\_forcible} then yields the exact correction. Both are machine-checked: completeness supplies the continuous $0\to\infty$ carrier, admissibility the structured non-random clock, and nontriviality excludes the constant lock. So reachability is unconditional on the nontrivial admissible source class, not a numerical input; the numerics ($\Sym^5$--$\Sym^{13}$, the twisted family) are calibration. \emph{Boundedness likewise does not ride on the forcing.} The vertical-strip bound is structural,
 from the \emph{Euler factor}: on its convergence domain the full helix is the convergent product of local factors
@@ -4521,7 +4559,7 @@ $\text{fiber}\mapsto(\text{retained height},\text{ledger})$ is a bijection
 (\texttt{ConeProjection.record\_bijective}, \texttt{reconstruct\_record};
 \texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}).
 \item[\textup{(C)}] \emph{FE clock intertwines.} The functional-equation clock carries the projected reflection
-to the readout reflection (\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}).
+to the readout reflection (\texttt{FiniteWeightFiber.clockCompletion\_selfdual}).
 \item[\textup{(L)}] \emph{Log readout.} The logarithm linearizes the multiplicative height, and the unique
 fixed point of the involution is the midpoint $\Re s=\tfrac12$ (\texttt{ConeProjection.midpoint\_to\_critical},
 \texttt{AutomorphicCandidate.midpoint\_projects\_to\_half}).
@@ -4656,8 +4694,8 @@ be a measured chart/carrier divergence, and would be published as such.
 The descent $3\mathrm D\to2\mathrm D\to1\mathrm D$ is not lossy: it is the midpoint/Cayley projection
 carrying the loss ledger, and the ledgered map $\text{fiber}\mapsto(\text{ordinate};\,\text{radius},
 \text{angle})$ is a \emph{proven bijection} (\texttt{ConeProjection.record\_bijective},
-\texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every remaining open input of
-the niceness chain is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
+\texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every input of
+the niceness chain that the classical chart still holds open is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
 classical converse theorem consumes after the radius and angle channels are discarded. The transfer
 exponent asks whether the bare ordinate coordinate can reach the axis unaided (``continuation'' is the
 $1$D chart's name for information the ledgered descent preserves trivially: the bank state exists at every
@@ -4690,7 +4728,7 @@ completion kernel ($G=\mathcal M g$ entire, of rapid decay). Assume \emph{(i)} t
 $E_v^{*}(\bar z)=-\bar\alpha_v E_v(z)$ with the det-one ledger (\texttt{ChiralityHB.symClock\_star},
 \texttt{FiniteWeightFiber.fiber\_det\_one}); \emph{(ii)} the archimedean self-duality
 $\gamma(s)=\varepsilon_{\mathrm{arch}}\gamma(\kappa-s)$
-(\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}); and \emph{(iii)} $\lambda_n=O(n^{A})$, so
+(\texttt{FiniteWeightFiber.clockCompletion\_selfdual}); and \emph{(iii)} $\lambda_n=O(n^{A})$, so
 $\sum_n\lambda_n g(nx)$ converges absolutely and locally uniformly for $x>0$. Then
 \[
   \Lambda(s,\Sym^r\pi\times\tau)=\varepsilon_{r,\tau}\,\Lambda(\kappa-s,\Sym^r\pi\times\tau^\vee),
@@ -4803,14 +4841,14 @@ about the axis --- turns the strand exchange of step~(2) into the readout reflec
 is the anti-helix reading at $1-s$, so $\mathcal M K_{r,\tau}(s)=\varepsilon_{r,\tau}\,\mathcal M
 K_{r,\tau^\vee}(1-s)$. The archimedean completion is itself a self-dual clock,
 $\gamma(s)=\varepsilon_{\mathrm{arch}}\gamma(1-s)$
-(\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}), so on the completed readout
+(\texttt{FiniteWeightFiber.clockCompletion\_selfdual}), so on the completed readout
 $\Lambda(s)=\varepsilon_{r,\tau}\,\Lambda(1-s;\tau^\vee)$, $|\varepsilon_{r,\tau}|=1$.
 
 \emph{(4) Identification.} Only now: by Prop.~\ref{prop:localid} and \textup{(E5)},
 $\mathcal M K_{r,\tau}(s)=\Lambda(s,\Sym^r\pi\times\tau)$ on $\Re s>1$, and the identity theorem carries
 the functional equation of step~(3) to the twisted completed $L$-function. The completed-reflection
 \emph{assembly} \texttt{CompletedReflection.completed\_FE} packages steps~(3)--(4) once the reflection of
-step~(2) is given; the Lean instance \texttt{CompletedReflectionFiber.fiberCompleted} certifies the fiber's
+step~(2) is given; the Lean instance \texttt{FiniteWeightFiber.fiberCompleted} certifies the fiber's
 admissible \emph{local} reflection algebra (the input to step~(1)) --- it is not, and is not used as, the
 global carrier reflection of step~(2).
 \end{proof}
@@ -5192,8 +5230,8 @@ genuinely multi-parameter fiber is closed instead by the channel-resolved (multi
 The clock configurator selects; the other three execute --- period, registration, spin, dissipation. This is the
 operational face of harmonization: the fiber's nature, read through the clock, names the adapters it needs.
 
-\section{Exotic Adapters}
-\paragraph{A further direction: the parallel-dimension clock.} The clocks above act on one carrier. A
+\section{The transport machine and universal carrier transport}\label{sec:transport-machine}
+\paragraph{Exotic adapters: the parallel-dimension clock.} The clocks above act on one carrier. A
 transfer between two automorphic worlds --- a functorial lift $r:{}^{L}G\to{}^{L}H$, a theta
 correspondence, a base change --- is, in this language, a \emph{parallel-dimension clock}: it absorbs the
 local state on the source carrier, reflects it onto an alternate carrier (the target ${}^{L}H$, or an
@@ -5290,15 +5328,17 @@ and exact: a source vanishing is realized as \emph{exact focal cancellation} at 
 $\sum_{k\in C}q_k(\tau)=0$ \emph{exactly} (a closed cell, not a cutoff limit), with zero cell remainder
 (Lemma~\ref{lem:forcible}). Where \emph{(b)} furnishes the continuation, these exact closures are, by the identity
 theorem, exactly the zeros of the represented function --- \emph{complete} (no zero missed) and \emph{exact} (none
-spurious), the pole locus being the complementary coalignment events --- validated oracle-free to $10^{-12}$ on
-the Dirichlet, $\Delta$, and $E_{11}$ instances. This is exact closure on the carrier bank --- the finite invariant
+spurious), the pole locus being the complementary coalignment events. This is exact closure on the carrier bank --- the finite invariant
 $\sum_{k\in C}q_k=0$ --- and faithful representation of the vanishing \emph{set}; it is not an analytic-residue
 claim.
 \end{itemize}
 So admissibility asks only for a convergent Euler product of bounded degree. Niceness is never a hypothesis: the
 reflection and local data come out unconditionally, and continuation, entireness, boundedness, and the complete
-faithful vanishing are the cell-closure output --- proved for the harmonic and Dirichlet classes and gated
-everywhere else on exactly one per-fiber input, not a family of open problems, one.
+faithful vanishing are the cell-closure output --- machine-checked in Lean for the finite duality-stable harmonic
+and Dirichlet classes (\texttt{CellClosure}) and proved in closed form for \emph{every}
+admissible fiber (\texttt{ForcibleClosure.residual\_forcible}, with the independent pair of
+\texttt{CarrierReachability.reachable\_independent\_stage}), so the closure is discharged, not
+gated on an open per-fiber input.
 \end{theorem}
 
 \emph{Constructive form: synthesis, not assumption.} The representation is not merely posited to exist; it is
@@ -5323,7 +5363,7 @@ constructed, not posited. Part~I is this synthesis in miniature --- Altu\u{g}'s 
 cancellation but a failure to \emph{represent} the state cancellation needs; restoring the omitted coordinates
 makes the phase gaugeable and names the correct cell, which is adapter synthesis from a determinate finite law.
 
-\emph{Falsifiable content.} Because that lone obligation is the per-fiber cell closure, the universal claim is
+\emph{Falsifiable content.} Because the load-bearing input is the per-fiber cell closure, the universal claim is
 falsifiable at a single point: a genuine counterexample is not a fiber the dictionary has merely not yet been run
 on, but a fiber $W$ for which \emph{no} harmonization consistent with its intrinsic dynamics closes its cells
 while satisfying the carrier and ledger laws and preserving faithful readout. The $\forall\exists$ shape --- for
@@ -5393,9 +5433,9 @@ convolution lifts; the content is that the \emph{same} mechanism continues past 
 particular functions, and they generalize automatically because they read only the fiber's abstract
 data: the per-place reflection holds for \emph{any} finite duality-stable weight multiset
 (\texttt{FiniteWeightFiber.localPoly\_reciprocal}); the completed-reflection assembly carries \emph{no}
-Dirichlet hypothesis (\texttt{CompletedReflectionFiber.symTensorCompleted\_FE}, any $r$, any unit
+Dirichlet hypothesis (\texttt{FiniteWeightFiber.symTensorCompleted\_FE}, any $r$, any unit
 twist); the entireness mechanism is channel-agnostic in $(A,B,\mu,\lambda)$
-(\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}); and cell closure is the
+(\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}); and cell closure is the
 closed-form forcibility above (\texttt{ForcibleClosure.residual\_forcible}). The harmonic and Dirichlet
 classes are therefore end-to-end \emph{instantiations} of general proofs, not the proofs' boundary, and
 the general family ($\Sym^{13}$, $L(\Delta\times E_{11})$, the genuine twisted $L(\Sym^5\Delta\times E_{11})$, real Maass $\Sym^2$;
@@ -5432,7 +5472,7 @@ the weight-system level $W_{\mathrm{id}}=\mathrm{id}$ and $W_{r\circ s}=W_r\circ
 $\Sym^3\!\circ\Sym^3=\Sym^9\oplus\Sym^5\oplus\Sym^3$ --- coherent up to the block permutation in $\simeq$), tensor
 and base change composing likewise (\texttt{composition\_test.py}); and the coherence laws are machine-checked ---
 associativity, two-sided identity, base-change composition $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$, and
-preservation of exact focal closure under composition (\texttt{CarrierFunctoriality}. What stays a \emph{criterion} is only the
+preservation of exact focal closure under composition (\texttt{CarrierFunctoriality}). What stays a \emph{criterion} is only the
 global naturality across arbitrary transports up to carrier equivalence. The Langlands functoriality of
 Cor.~\ref{cor:universal} is the arithmetic \emph{instance} this coherence delivers, not a separate mechanism. In
 one line: \emph{the carrier is universal for simultaneous harmonic realization, and functorial with respect to
@@ -5697,7 +5737,7 @@ $\{$\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}$\}$, no \text
 For $r\le4$ the niceness is also classical (Langlands--Shahidi); for $r\ge5$ the carrier supplies it
 where Langlands--Shahidi does not reach, non-circularly --- the equation is derived from the carrier, not
 from a theta of the function.  The completed-reflection \emph{assembly} is machine-checked with \emph{no} Dirichlet hypothesis
-(\texttt{CompletedReflectionFiber.symTensorCompleted\_FE}, any $r$ and any duality-stable twist, assembling the
+(\texttt{FiniteWeightFiber.symTensorCompleted\_FE}, any $r$ and any duality-stable twist, assembling the
 general per-place reflection \texttt{localPoly\_reciprocal} and the general completion self-duality
 \texttt{clockCompletion\_selfdual}; footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$): it certifies the completed \emph{local}
@@ -5717,7 +5757,7 @@ Theorem~\ref{thm:carrierreflection}). No automorphy of $\Sym^r\pi$ is used. What
 only: the Dirichlet model is instantiated end-to-end in Lean; for the general tensor family the
 per-place dual-pair reciprocity (\texttt{DualPairFiber}), the finite-stage and completed strand
 exchange (\texttt{StrandExchange}), the completed local assembly
-(\texttt{symTensorCompleted\_FE}), and the continuation-with-analyticity transfer
+(\texttt{FiniteWeightFiber.symTensorCompleted\_FE}), and the continuation-with-analyticity transfer
 (\texttt{transfer\_analytic}) are machine-checked, with the infinite-bank limit and the
 classical-$L$ identification (Prop.~\ref{prop:localid} with \textup{(E5)}) manuscript-proved. The
 computations through $\Sym^{13}$ are calibration and independent
@@ -5747,7 +5787,7 @@ exhaustion, and loss-ledger recovery --- are machine-checked in Lean (Mathlib), 
 \texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}, built in-tree.
 \end{itemize}
 \fi
-
+\end{comment}
 
 \section{Formalization scope}
 
@@ -5759,7 +5799,7 @@ carrier reflection (ledger \texttt{fiber\_det\_one}, per-place functional equati
 instances and the standard axiom footprint (App.~\ref{app:repro}).  So the functional-equation input of
 Proposition~\ref{prop:niceness} is machine-checked at the general interface it actually consumes, not
 only for the Dirichlet model --- and the completed-reflection assembly is machine-checked family-generally
-(\texttt{symTensorCompleted\_FE}, above), with the global strand-exchange input, step (2) of
+(\texttt{FiniteWeightFiber.symTensorCompleted\_FE}, above), with the global strand-exchange input, step (2) of
 Prop.~\ref{prop:completedFE}, machine-checked at the finite-stage bank
 (\texttt{StrandExchange.bankProduct\_exchange}, \texttt{completedBank\_exchange}) and the general
 dual-pair reciprocity at its exact interface (\texttt{DualPairFiber}).  The remaining limitation is
@@ -5769,7 +5809,6 @@ general tensor family the infinite-bank limit and the classical-$L$ identificati
 of the \emph{already-proved} classical-$L$ identification and its exact archimedean normalization (the archimedean
 two-clock and Poisson completion tied to the exact global $L$-values), governed by the exact gauge; the
 carrier/fiber rescaling reduces the residue reading to cell arithmetic.
-\end{comment}
 
 \section{Hodge Connection}\label{sec:hodge-connection}
 \emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence} signature-based cycle detection of \S\ref{sec:general} is preliminary; calibrating it (\texttt{hodge\_%
@@ -5841,7 +5880,7 @@ conditional corollary for Bloch--Beilinson. The no-silent-layer input is precise
 reduces gradewise to a nondegeneracy obligation --- a faithful regulator into an anisotropic height
 pairing (\texttt{grade\_visible\_of\_nondegenerate}), discharged by N\'eron--Tate positivity at depth
 one. 
-\subsection{Hodge Companion Paper -- Hodge Proof}\label{sec:hodge-companion}
+\subsection{Cycle-filtration faithfulness: the semisimple theorem and the Ceresa frontier}\label{sec:hodge-companion}
 \emph{The structural half is unconditional.}On the \emph{semisimple} carrier state --- the finite
 duality-stable weight fiber, an amplitude state $c$ over distinct clock frequencies $\{\lambda_i\}$ ---
 the symmetric-power/moment tower $T_d(c)=\sum_i c_i\lambda_i^{\,d}$ is a \emph{jointly faithful}
@@ -6176,7 +6215,7 @@ $0,\ 55.9,\ 1.4\times10^{-16},\ 11.4$ for $r=1,2,3,4$.
 reflection-axis functional equation (warp-invariant, $\Re s=\tfrac12$ forced), the strip continuation
 of the readout, boundedness, three-dimensional exhaustion, the midpoint landing on $\Re s=\tfrac12$,
 and loss-ledger recovery --- are formalized and machine-checked in Lean (Mathlib):
-\texttt{RequestProject/AutomorphicCandidate.lean}, theorem \texttt{candidate\_wellformed} it builds in-tree against the full library. The continuation is
+\texttt{RequestProject/AutomorphicCandidate.lean}, theorem \texttt{candidate\_wellformed}; it builds in-tree against the full library. The continuation is
 \texttt{LFunctionPhasor.dirichlet\_strip\_tendsto\_LFunction} (non-principal $\chi$) and
 \texttt{eta\_strip\_tendsto} ($\zeta$/principal); the reflection axis and forced abscissa are
 \texttt{FrobeniusSimilitude.reflection\_fixes\_iff}, \texttt{scaleBalanced\_iff}.
@@ -6210,7 +6249,7 @@ $\Lambda(s)=\varepsilon\,\Lambda^\vee(1-s)$ as the machine-checked \emph{assembl
 and the completion self-duality (\texttt{CompletedReflection.completed\_FE}), instantiated on
 the Dirichlet model from Mathlib's completed-$L$ functional equation (\texttt{dirichletCompleted}, via
 \texttt{completedLFunction\_one\_sub}) \emph{and} on the general finite duality-stable fiber
-(\texttt{CompletedReflectionFiber.fiberCompleted}; next-but-one entry).  The
+(\texttt{FiniteWeightFiber.fiberCompleted}; next-but-one entry).  The
 \emph{entireness mechanism} --- focal cancellation forcing the harmonic Gram-pencil rank-drop, with the
 normalized residual an exact nonzero multiple of the readout and hence no independent residual mode --- is
 formally proven in Lean at the channel-agnostic (general-fiber) level (\texttt{FocalResidualGeneral}, next
@@ -6405,6 +6444,7 @@ Lemma~\ref{lem:transfer}(i), proved by formalized summation by parts
 \texttt{dual\_primitive\_norm} (the unitary dual carries the same exponent) and
 \texttt{strip\_contains\_axis} ($\theta<\kappa/2$ places the weld axis in the common strip).
 No automorphy, functional equation, or Poisson input appears in the file. Footprint
+$\{\texttt{propext},\,\texttt{Classical.choice},\,\texttt{Quot.sound}\}$, no \texttt{sorry}.
 
 \item \textbf{The grown transfer exponent (Lemma~\ref{lem:growntransfer}), \texttt{grown\_transfer.py}.}
 The native primitive $A^{\mathrm e}_W(x)=\sum\lambda_n e^{-n/x}$ (no clipped edge), $x\in[10,N/40]$,
@@ -6427,8 +6467,9 @@ arithmetic inside the continuation leg: the true $\Delta$ anchor, a \emph{detune
 of the same duality-stable class all force-close $30/30$ native cells at the float64 floor (medians
 $3.2$--$36\times10^{-15}$, weights $\le2.91$). Since a random Euler datum has no analytic continuation to
 transfer (natural boundary), forced cell closure alone cannot deliver continuation of the readout: the
-arithmetic-sensitive step is the \emph{inverse-warp transfer} of \S\ref{sec:construct} (machine-checked for
-the character warp; the standing per-fiber input beyond it), and the functional-equation bill is paid by
+arithmetic-sensitive step is the \emph{inverse-warp transfer} of \S\ref{sec:construct} (machine-checked in
+full by \texttt{TransferContinuation.transfer\_analytic}, with every admissible fiber closed in closed form
+by \texttt{ForcibleClosure.residual\_forcible}), and the functional-equation bill is paid by
 transfer plus axis reality --- not by closure, and not by Poisson.
 
 \item \textbf{Twisted CPS instances (\S\ref{sec:sym5}), \texttt{twisted\_cps\_instance.py}.} The objects
@@ -6455,7 +6496,7 @@ cross-checked against Sage's quaternion-algebra/Hilbert-symbol oracle; the remov
 \item \textbf{Carrier-transport functoriality (\S\ref{sec:general}), \texttt{RequestProject/CarrierFunctoriality.lean} and \texttt{composition\_test.py}.} \texttt{faithful\_comp} (the composite of closure-preserving transports preserves closure, \emph{no} axioms) with associativity, two-sided identity, and base change $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$; the script verifies exact plethysm splitting $\Sym^2\!\circ\Sym^2=\Sym^4\oplus\Sym^0$, $\Sym^3\!\circ\Sym^3=\Sym^9\oplus\Sym^5\oplus\Sym^3$.
 
 \item \textbf{Tensor-induction residual (functorial preservation, \S\ref{sec:converse}), \texttt{tensor\_induction\_check.py}.} On real $\Delta$ Satake: the Clebsch--Gordan factorization $a_{\pi\times\Sym^4}=a_{\Sym^5}\!\star a_{\Sym^3}$ holds coefficientwise to $1.4\times10^{-14}$; $\mathrm{mean}(a_{\Sym^5})\to6\times10^{-5}$ while $L(\Sym^3)(1)=0.652\ne0$ (the trivial-rep control gives mean $0.652$, so the deduction is non-vacuous).
-\end{itemize} \bullshit{shit format}
+\end{itemize}
 
 
 \begin{thebibliography}{99}

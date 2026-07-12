@@ -9,11 +9,93 @@
 
 
 \FXRegisterAuthor{sam}{asam}{Sam}
+\FXRegisterAuthor{gpt}{aGPT}{GPT}
+
+
+\newcommand{\gptGOne}[1]{\gptnote{G1-CARRIER: #1}}
+
+\newcommand{\gptGTwo}[1]{\gptnote{G2-PROJECTION-LEDGER: #1}}
+
+\newcommand{\gptGThree}[1]{\gptnote{G3-IDENTITY: #1}}
+
+\newcommand{\gptGFour}[1]{\gptnote{G4-SYNTHESIS: #1}}
+
+\newcommand{\gptGFive}[1]{\gptnote{G5-CELL-CLOSURE: #1}}
+
+\newcommand{\gptGSix}[1]{\gptnote{G6-MODE-DICTIONARY: #1}}
+
+\newcommand{\gptGSeven}[1]{\gptnote{G7-READOUT-IDENTITY: #1}}
+
+\newcommand{\gptGEight}[1]{\gptnote{G8-REFLECTION: #1}}
+
+\newcommand{\gptGNine}[1]{\gptnote{G9-ANALYTIC-LANDING: #1}}
+
+\newcommand{\gptGTen}[1]{\gptnote{G10-EXHAUSTION-TRANSPORT: #1}}
+
 
 \newcommand{\nativeok}[1]{%
-
   \samnote{NATIVE-OK: #1}%
+}
 
+\newcommand{\CATEGORIZE}[1]{%
+  \gptnote{CATEGORIZE: #1}%
+}
+
+
+\newcommand{\gptcarrier}[1]{%
+  \gptnote{P1-CARRIER: #1}%
+}
+
+\newcommand{\gptfiber}[1]{%
+  \gptnote{P1-FIBER: #1}%
+}
+
+\newcommand{\gptclock}[1]{%
+  \gptnote{P1-CLOCK-CELL: #1}%
+}
+
+\newcommand{\gptnorm}[1]{%
+  \gptnote{P1-NORMALIZATION: #1}%
+}
+
+\newcommand{\gptclosure}[1]{%
+  \gptnote{P1-CLOSURE: #1}%
+}
+
+\newcommand{\gptledger}[1]{%
+  \gptnote{P1-LOSS-LEDGER: #1}%
+}
+
+\newcommand{\gptreadout}[1]{%
+  \gptnote{P1-READOUT: #1}%
+}
+
+\newcommand{\gptreflect}[1]{%
+  \gptnote{P1-REFLECTION: #1}%
+}
+
+\newcommand{\gpttransport}[1]{%
+  \gptnote{P1-TRANSPORT: #1}%
+}
+
+\newcommand{\gptapplication}[1]{%
+  \gptwarning{MOVE-TO-APPLICATION: #1}%
+}
+
+\newcommand{\gptduplicate}[1]{%
+  \gptwarning{DUPLICATE-CONSTRUCTION: #1}%
+}
+
+\newcommand{\gptforeign}[1]{%
+  \gpterror{POSSIBLE-FOREIGN-MECHANISM: #1}%
+}
+
+
+\newcommand{\expand}[1]{%
+  \samnote{EXPAND: #1}%
+}
+\newcommand{\inst}[1]{%
+\samnote{INSTRUCTION: #1}%
 }
 
 \newcommand{\foreign}[1]{%
@@ -23,9 +105,7 @@
 }
 
 \newcommand{\bullshit}[1]{%
-
-  \samerror{MODEL-CONTAMINATION: #1}%
-
+  \samwarning{MODEL-CONTAMINATION: #1}%
 }
 
 \newcommand{\provenance}[1]{%
@@ -36,6 +116,9 @@
   \samnote{FRAME-LOSS: #1}%
 }
 
+\newcommand{\garbage}[1]{%
+  \samnote{GARBAGE: #1}%
+}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{lemma}[theorem]{Lemma}
@@ -50,7 +133,7 @@
 \newcommand{\Sym}{\operatorname{Sym}}
 \newcommand{\Sha}{\mathrm{Sha}}
 
-\title{Carrier, Fiber, Adapters, Functoriality:
+\title{Carrier, Fiber, Adapters, and Functoriality:
 A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Universality }
 \author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
 \date{}
@@ -59,22 +142,31 @@ A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Uni
 \maketitle
 
 \begin{abstract}
-Several estimates on the analytic side of the trace formula are correct \emph{bookkeeping} whose
-\emph{mechanism} sits outside the frame. We isolate two. The \emph{product law}: a
-derivative/repulsion statistic is identically a product of distances between configuration points, so
-``repulsion'' is an algebraic identity shared by random matrices and the arithmetic. The \emph{exact
-gauge}: an oscillatory integrand is a real magnitude times a deterministic phase carrier, so its
-oscillation is a removable chart artifact and $|\int g|\le\int|g|$ is lossless.
+We introduce an Archimedean 3D double-ended helix geometry as a foundational carrier structure and methods for representing automorphic analytic functions (and other structures) as finite-phasor based harmonic fibers. One or more of these fibers are mated to the carrier creating a source compatible faithful higher dimensional functorial representation.  
 
-Working the exact gauge out on the central obstruction of Altu\u{g}'s Beyond-Endoscopy for
-$\mathrm{GL}(2)$ --- Proposition~5.2 of Part~III, the ``central issue'' of Part~II --- gives four
+Each source function may have local native clocking, features, parameters and dimensionality. For a given set of functions we derive the least common harmonic cell structure and apply that as a transformation to the carrier. This global normalizing process results in a 3D state space enabling analysis in a lossless common frame. 
+
+Within this frame, phasor based exact focal closure occurs at complete native cell boundaries; carrier reflection induces the corresponding functional reflection on the completed readout. \fixme{REWORD}
+
+
+
+Representations in three-dimensional state-space are bijectively linked by geometric projection transport with a shared loss ledger. This enables the preservation of data rendered inaccessible to the traditional one-dimensional readout chart. 
+
+
+
+We begin by performing analysis on the  defined by Altu\u{g}'s Beyond-Endoscopy for \inst{restructure and reframe}
+$\mathrm{GL}(2)$ --- Specifically, Proposition~5.2 of Part~III, and the \emph{central obstruction} of Part~II. We provide four
 contributions: (1) an \emph{oscillatory cancellation} reducing the uniformity to a single magnitude
-bound with no oscillation estimate; (2) the identification of the difficulty as a deterministic
-\emph{emergent clock} intrinsic to the orbital transform, not the cutoff's edges; (3) the consequent
-re-reading of the productivity boundary as gradual attrition rather than a wall; and (4) a
-\emph{candidate automorphic object} whose four converse-theorem inputs --- functional equation,
-continuation, exhaustion, and loss-ledger recovery --- are formalized and machine-checked.
+bound with no oscillation estimate; (2) the identification of the initial difficulty as a deterministic
+\emph{emergent clock} intrinsic to the orbital transform, not the cutoff's edges; (4) apply the carrier native projection + fiber representation + derived harmonizing adapter pattern to arrive at faithful and scalable result.
 
+\inst{make first part}
+We continue by fully defining the carrier + fiber model from first principles and demonstrate universality. \expand{expand}
+
+
+To formally prove functoriality, we apply the CPS converse theorem checklist to our model. \expand{expand}
+
+\garbage{what is this?}
 The same two mechanisms organize three further objects: the GUE-level derivative statistics of zeros,
 the archimedean transfer factor of symmetric-power functoriality, and a detection identity closed on a
 genuine transfer --- on a CM form the pole order of a self-twist Rankin--Selberg $L$-function, read as
@@ -85,7 +177,7 @@ Gelbart--Jacquet/Rankin--Selberg theory; and the candidate object supplies the c
 every $r$, with its \emph{local} reflection algebra --- self-reciprocal local factor, determinant
 ledger, reflection axis --- machine-checked in Lean at the general finite duality-stable interface the
 converse theorem consumes, not only the Dirichlet model.
-
+\garbage{wrong detail level for an abstract}
 Global niceness follows from one carrier-cell theorem: the adapted unit-modulus warp has exact zero
 mean over each complete native cell, discharging together the vanishing residual constant mode
 (entireness), the bounded warped primitive (continuation), and the polynomial vertical growth. This
@@ -103,9 +195,459 @@ rank, recovering the known low-degree cases and continuing past the Langlands--S
 
 \tableofcontents
 
-\section*{Glossary of carrier terms}
-\noindent A reader's map of the vocabulary; each term is defined where first cited, and the machine-checked ones
-name their Lean file.
+
+\begin{remark}[Map of the construction]\label{rem:construction-map}
+The construction begins with the geometry.
+
+First comes the \emph{double-ended helix carrier}.  The carrier is the common
+three-dimensional geometric object on which the construction is realized.  Its
+winding, orientation, scale, and helix/anti-helix symmetry are fixed before any
+particular arithmetic source is attached.  The carrier is therefore not an
+$L$-function, an automorphic representation, or a source fiber.  It is the
+shared geometric support on which such fibers may be realized.
+
+The carrier is then observed through a sequence of \emph{projections}.
+The first projection passes from the three-dimensional helix to its
+two-dimensional carrier image; the second passes from that image to the
+one-dimensional functional readout.  These maps are the link between the
+geometric construction and the familiar scalar functions that appear later in
+the paper:
+\[
+\text{3D carrier}
+\longrightarrow
+\text{2D projected geometry}
+\longrightarrow
+\text{1D functional readout}.
+\]
+The one-dimensional readout is an observable of the carrier state, not the
+whole state itself.
+
+Projection discards coordinates.  The construction therefore attaches a
+\emph{loss ledger} to the projected state.  Radius, angle, clock data, adapter
+data, and any other coordinate suppressed by a lower-dimensional readout are
+retained rather than forgotten.  Thus projection simplifies the visible
+representation without declaring the discarded information nonexistent.
+Faithful reconstruction belongs to the projection together with its loss
+ledger:
+\[
+\boxed{\text{projected readout}+\text{recorded projection loss}
+       =\text{retained carrier state}.}
+\]
+
+Only after this geometric and projection architecture is fixed do we place a
+\emph{fiber} on the carrier.  The fiber carries the source-specific
+information: local factors, rank, phase law, coefficients, and arithmetic
+identity.  Distinct fibers remain distinct.  The common carrier supplies a
+compatible geometry; it does not identify their arithmetic data.
+
+Each fiber has a \emph{native clock}.  Its clock determines the natural
+harmonic cell structure and the progression of phase through a cell.  A
+complete native cell is the source's natural cancellation unit.  Exact focal
+closure is therefore a statement at complete cell boundaries:
+\[
+\sum_{n\in C} a_W(n)\,\omega_W(n)=0.
+\]
+A partial observation made before the cell has completed is a transient
+readout of an unfinished cancellation process; it is not a residual left
+behind by the closed cell.
+
+Scale, chart, and clock adapters place the native cells of heterogeneous fibers
+into compatible coordinates on the fixed carrier.  This normalization changes
+the coordinate in which the fiber is realized, not the identity of the fiber.
+In this sense the construction is universal by normalization and compatible by
+carrier realization.
+
+The double-ended carrier also carries a geometric involution exchanging the
+helix and anti-helix.  Projection and the completion clock transport this
+involution through the two-dimensional carrier image to the one-dimensional
+functional readout.  Consequently the functional reflection is the readout of
+a carrier symmetry:
+\[
+\text{helix}
+\longleftrightarrow
+\text{anti-helix}
+\quad\rightsquigarrow\quad
+s\longleftrightarrow 1-s.
+\]
+The functional equation is therefore derived from the reflected carrier
+geometry and its readout intertwining, rather than added later as an
+independent analytic repair.
+
+Finally, coherent adapters allow several source fibers to occupy the common
+carrier simultaneously.  Their native clocks may differ, but normalization
+places their harmonic cells in compatible carrier coordinates, while the loss
+ledger preserves the information suppressed by projection.  Coherent
+transport can then act on the shared carrier realization without erasing the
+identity of the individual fibers.
+
+Schematically, the construction is
+\[
+\boxed{
+\text{double-ended 3D helix}
+\longrightarrow
+\text{2D projection}
+\longrightarrow
+\text{1D readout}
+}
+\]
+together with
+\[
+\boxed{
+\text{projection loss}
+\longrightarrow
+\text{loss ledger}
+\longrightarrow
+\text{faithful retained state},
+}
+\]
+after which
+\[
+\boxed{
+\text{source fiber}
+\longrightarrow
+\text{native clock and cells}
+\longrightarrow
+\text{normalized carrier realization}
+\longrightarrow
+\text{exact focal closure}
+\longrightarrow
+\text{reflected functional readout}
+\longrightarrow
+\text{coherent transport}.
+}
+\]
+
+The later analytic, automorphic, functorial, obstruction-theoretic, and Hodge
+applications consume this construction.  They are consequences and test cases
+of the carrier architecture, not alternative descriptions of how the carrier
+itself works.
+\end{remark}
+\begin{remark}[Unconditional proof contract]\label{rem:proof-contract}
+The construction has a small number of load-bearing obligations.  They are
+defined here once.  Later applications consume these obligations through the
+carrier interface and must not replace them by application-specific analytic
+surrogates.
+
+\begin{enumerate}
+\item[\textup{(U1)}] \textbf{Carrier geometry.}
+The double-ended helix and anti-helix are defined globally, with fixed carrier
+scale, orientation, height law, and involution
+\[
+J:C_+\longleftrightarrow C_-.
+\]
+The carrier geometry exists independently of the source fiber.
+
+\item[\textup{(U2)}] \textbf{Faithful projection and loss accounting.}
+The maps
+\[
+3\mathrm D\longrightarrow2\mathrm D\longrightarrow1\mathrm D
+\]
+are defined together with a loss ledger recording every coordinate discarded
+by projection.  Projection together with the ledger is faithful: the realized
+carrier state can be reconstructed exactly from the projected state and its
+recorded loss data.
+
+\item[\textup{(U3)}] \textbf{Native fiber realization.}
+Every source in the declared admissible class determines a finite structural
+fiber law, including its local data, rank, phase law, native clock, and native
+harmonic cell structure.  The realization map places this fiber on the carrier
+without changing the source data or identifying distinct fibers.
+
+\item[\textup{(U4)}] \textbf{Exact complete-cell closure.}
+For every realized admissible fiber and every complete native cell \(C\), the
+adapted fiber state closes exactly:
+\[
+\sum_{n\in C} a_W(n)\,\omega_W(n)=0.
+\]
+This is an exact boundary statement.  No uncancelled cell remainder or
+independent constant residual mode survives completion of the native cell.
+
+\item[\textup{(U5)}] \textbf{Readout identification.}
+The one-dimensional carrier readout agrees exactly with the source functional
+datum on its original domain of definition.  In the Euler setting this means
+that the local carrier readout gives the specified local factor at every place
+and that the global readout unfolds to the corresponding Euler--Dirichlet or
+completed \(L\)-datum on its convergence domain.
+
+\item[\textup{(U6)}] \textbf{Reflection intertwining.}
+Carrier reflection commutes with projection and the completion clock.  If
+\(\mathcal R\) denotes the completed one-dimensional readout, then
+\[
+\mathcal R(JW)(s)
+=
+\varepsilon_W\,\mathcal R(W^\vee)(\kappa-s).
+\]
+Thus the functional reflection is the one-dimensional image of the
+helix--anti-helix involution.
+
+\item[\textup{(U7)}] \textbf{Exhaustion.}
+Every source event represented by the declared fiber law is faithfully present
+in the carrier state and in the projection-plus-ledger record.  No additional
+source event lies outside the realized carrier merely because it is invisible
+in one projected coordinate.
+
+\item[\textup{(U8)}] \textbf{Coherent synchronization and transport.}
+For any finite compatible family of admissible fibers, the clock and chart
+adapters place their native cells on one common carrier coherently.  Transport
+preserves source identity, exact boundary closure, reflection, and retained
+loss data, and composition of transports agrees with transport by the
+composite source law.
+
+\item[\textup{(U9)}] \textbf{Obstruction honesty.}
+Failure of a realized fiber to satisfy the required carrier condition is
+detected as retained obstruction data rather than erased by projection or
+declared closed from an aggregate scalar alone.  Removal requires an explicit
+admissible enlargement and an exact certificate that the obstruction itself,
+not merely its aggregate readout, vanishes.
+\item[\textup{(U4)}] \textbf{Identity preservation.}
+Every admissible source fiber carries a distinguished source identity
+\(\operatorname{Id}(W)\).  Carrier realization, clock and chart normalization,
+projection together with its loss ledger, reflection to the dual fiber, and
+coherent transport preserve the represented source identity in the precise
+sense appropriate to each map.
+
+If
+\[
+W
+\longmapsto
+\widetilde W
+\longmapsto
+\pi(\widetilde W)
+\]
+is a normalized carrier realization followed by projection, then the projected
+readout together with its loss record represents the same source fiber:
+\[
+\operatorname{Id}
+\bigl(\pi(\widetilde W),\operatorname{Loss}(\widetilde W)\bigr)
+=
+\operatorname{Id}(W).
+\]
+Likewise, an admissible transport \(T\) satisfies
+\[
+\operatorname{Id}(T W)
+=
+T_\ast\operatorname{Id}(W),
+\]
+and carrier reflection sends the fiber to its specified dual identity
+\(W^\vee\), not to an unrelated fiber with the same scalar readout.
+
+Thus equal carrier coordinates, equal focal values, or equal projected
+readouts do not by themselves identify two fibers.  Source identity is retained
+through the full carrier--projection--ledger state.
+
+
+GPT PROOF OBLIGATIONS v1 
+\begin{enumerate}
+
+\item[\textup{(G1)}] \textbf{Complete double-ended carrier.}
+
+Prove that the fixed three-dimensional helix/anti-helix carrier is globally
+
+defined and carries an involution
+
+\[
+
+J:C_+\longleftrightarrow C_-,
+
+\qquad
+
+J^2=\operatorname{id}.
+
+\]
+
+\item[\textup{(G2)}] \textbf{Faithful ledgered projection.}
+
+Prove that
+
+\[
+
+3D\longrightarrow2D\longrightarrow1D
+
+\]
+
+together with the loss ledger retains the complete realized state:
+
+\[
+
+\operatorname{Rec}\bigl(\Pi(\mathsf X_W),\mathscr D_W\bigr)
+
+=
+
+\mathsf X_W.
+
+\]
+
+\item[\textup{(G3)}] \textbf{Identity preservation.}
+
+Prove that realization, normalization, projection plus ledger, reflection, and
+
+transport preserve the identity of the represented source, with reflection
+
+sending \(W\) to the specified dual \(W^\vee\).
+
+\item[\textup{(G4)}] \textbf{Native synthesis.}
+
+Prove that every admissible finite source law determines its source fiber,
+
+native clock, harmonic cell structure, phase law, and carrier adapter:
+
+\[
+
+\operatorname{Struct}(W)
+
+\longmapsto
+
+(F_W,\tau_W,\mathcal L_W,\omega_W).
+
+\]
+
+\item[\textup{(G5)}] \textbf{Exact complete-cell closure.}
+
+Prove that every complete native cell of every admissible realized fiber closes
+
+exactly:
+
+\[
+
+\forall W\in\mathsf{Adm}\;
+
+\forall C\in\mathcal L_W,
+
+\qquad
+
+\sum_{n\in C}a_W(n)\omega_W(n)=0.
+
+\]
+
+\item[\textup{(G6)}] \textbf{Three-dimensional mode / one-dimensional pole
+
+dictionary.}
+
+Prove the exact correspondence between the retained three-dimensional
+
+focal or constant mode and the one-dimensional constant or pole mode:
+
+\[
+
+R_W=\mathfrak B(D_W^{\mathrm c}).
+
+\]
+
+In particular, no independent one-dimensional residual mode may appear if the
+
+corresponding three-dimensional carrier mode vanishes.
+
+\item[\textup{(G7)}] \textbf{Exact functional readout identity.}
+
+Prove that the one-dimensional projection of the realized carrier state is
+
+exactly the specified source Euler or completed functional datum:
+
+\[
+
+\mathcal R_W^{\mathrm{comp}}(s)=\Lambda(s,W)
+
+\]
+
+on the initial domain, with the correct local factors at every place.
+
+\item[\textup{(G8)}] \textbf{Reflection intertwining.}
+
+Prove that carrier reflection projects exactly to functional reflection:
+
+\[
+
+\Pi_{1D}\circ J
+
+=
+
+\mathfrak R\circ\Pi_{1D},
+
+\]
+
+where
+
+\[
+
+(\mathfrak Rf)(s)
+
+=
+
+\varepsilon_W f^\vee(\kappa-s).
+
+\]
+
+Hence
+
+\[
+
+\Lambda(s,W)
+
+=
+
+\varepsilon_W\Lambda(\kappa-s,W^\vee).
+
+\]
+
+\item[\textup{(G9)}] \textbf{One-dimensional analytic landing.}
+
+Prove that the complete realized three-dimensional state projects to a valid
+
+global one-dimensional function with:
+
+\[
+
+\text{analytic or meromorphic continuation},
+
+\]
+
+\[
+
+\text{the pole structure dictated exactly by G6},
+
+\]
+
+and
+
+\[
+
+\text{the required polynomial vertical-strip growth}.
+
+\]
+
+\item[\textup{(G10)}] \textbf{Exhaustion and coherent transport.}
+
+Prove that source events are neither lost nor invented by carrier realization
+
+and ledgered projection, and that synchronization and structural transport
+
+preserve identity, closure, reflection, ledger state, and readout while
+
+composing coherently:
+
+\[
+
+\mathsf X(T_2\circ T_1)
+
+=
+
+\mathsf X(T_2)\circ\mathsf X(T_1).
+
+\]
+
+\end{enumerate}
+
+
+
+
+
+
+
+
+
+\section*{Glossary of terms}
+\noindent A reader's map of the vocabulary; each term is defined where first cited, and their Lean mappings.
+
 \begin{center}
 \small
 \begin{tabular}{@{}lp{0.74\textwidth}@{}}
@@ -138,17 +680,19 @@ closes (\S\ref{sec:general}). \\
 \end{tabular}
 \end{center}
 
-\part{The exact gauge and the productivity boundary}
+\part{The construction}\inst{make this main part first}
+
+\part{The exact gauge and the productivity boundary} \inst{reframe correctly}
 
 \section{Two mechanisms}\label{sec:two}
 
 The present framework arose not from a proposed alternative to functoriality, but from a root-cause
-analysis of the loss of productivity in the direct Beyond Endoscopy route. Once the induced clock is
+analysis of the loss of productivity in the direct Beyond Endoscopy route. We discovered the obstruction to be an emergent clocking related phenomenon. Once the induced clock is
 separated, the higher-order analysis becomes compositional; the resulting transport interface is then
 extracted from the structure actually consumed by that composition.
 
 Two devices recur in the analytic theory as \emph{answers} while their \emph{explanations} stay
-outside the frame.
+outside the frame. \bullshit{sandbag}
 
 \paragraph{The product law (self-interference).} The unitary ensembles predict the local statistics
 of the zeros of an $L$-function correctly, but the ensemble contains no mechanism: ``eigenvalue repulsion'' is
@@ -161,7 +705,7 @@ so $|P'(\mu)|$ \emph{is} the product of distances from $\mu$ to the other config
 same product governs the reopening rate of an arithmetic fiber at a zero. Hence a ``GUE-level''
 prediction and its arithmetic counterpart compute one object; they differ only through the
 configuration fed to \eqref{eq:prod}. Repulsion is the product law, not a force. (This is an
-algebraic identity; it does not by itself prove that zeros follow GUE.)
+algebraic identity; it does not by itself prove that zeros follow GUE.) \bullshit{out of place}
 
 \paragraph{The exact gauge (removable oscillation).} An oscillatory integral $\int g$ is normally
 attacked by estimating cancellation. But if $g=|g|\,e^{i\phi}$ with $\phi$ a \emph{deterministic}
@@ -370,7 +914,7 @@ $x$-independence of the single line integral $B_{\tau,m,a}(\Phi)$, with no cance
 step.
 
 \section{Carrier coordinates, lifted phase transport, and the \texorpdfstring{$S(t)$}{S(t)} readout}\label{sec:st}
-
+\inst{MOVE THIS TO ITS OWN SECTION}
 The exact gauge (\S\ref{sec:gauge}) is one instance of a structural fact this paper uses repeatedly and which
 is easy to overstate. A scalar analytic readout can turn deterministic carrier/fiber transport into an
 \emph{apparent} oscillatory remainder; a lifted, harmonically compatible representation retains that transport
@@ -451,7 +995,7 @@ derivation is present here, and none is used anywhere in the paper; Hardy $Z$, t
 ordinates, Euler--Maclaurin, and Riemann--Siegel proper are external validators or classical receiver
 descriptions, never inputs to the lifted-state mechanism.
 
-\emph{What we do and do not say.} Not: ``$S(t)$ disappears.'' Rather: the lifted representation does not
+\emph{What we do and do not say.} \bullshit{muddy water} Not: ``$S(t)$ disappears.'' Rather: the lifted representation does not
 require $S(t)$ as an independent phase-estimation term; the apparent irregular phase correction is absent
 \emph{as an unresolved remainder} in the harmonized state, its information retained in the carrier/fiber state
 prior to scalar projection; and the conventional $S(t)$-type oscillation is recovered when the lifted state is
@@ -680,7 +1224,7 @@ $\text{ceiling}\times\sqrt{\#\text{harmonics}}$ at $R^2=0.977$)---gradual attrit
 Sarnak's productivity boundary \cite[fn.~5]{AltIII} records the growth of a removable floor, not a
 loss of the residue.
 
-\part{The transport machine}
+\part{The universal transport} \inst{this should be first}
 
 \section{Toward functoriality: the product law and the transfer factor}\label{sec:gue}
 
@@ -705,7 +1249,7 @@ intervals overlap and deform the local spacing deterministically. The algebraic 
 \emph{cluster product law} generalizing \eqref{eq:prod} to any finite cluster --- is proven
 (\texttt{ReverbResidue.cluster\_product\_law}, with pair suppression and the reopening residue), and
 the dynamics is measured to hold uniformly across pairs, triples, quads, and clusters carrying
-non-uniformly spaced neighbours: it is not a pairwise artifact, the case a triple would expose. This is
+non-uniformly spaced neighbors: it is not a pairwise artifact, the case a triple would expose. This is
 a deterministic candidate for the configuration law that populates \eqref{eq:prod} --- like the
 unitary ensembles, but with a reason. We make no limiting-ensemble claim here (finite-$N$
 characteristic-polynomial geometry is naturally unitary-circular, while the unfolded zero statistics
@@ -1143,7 +1687,7 @@ the \emph{angle} is the functional-equation link $z\bar z=1$, the \emph{height} 
 The construct is not special to symmetric powers --- the twist family a converse theorem ranges over
 is generic. For the \emph{Dirichlet family} it is the fully machine-checked case: the continuation, the
 reflection-axis functional equation, and the boundedness of \S\ref{sec:construct} hold for every
-Dirichlet $L$-function --- and for $\zeta$ --- as the theorems
+Dirichlet $L$-function --- and for $\zeta$ --- as the theorems \\
 \texttt{dirichlet\_strip\_tendsto\_LFunction} and \texttt{eta\_strip\_tendsto}, so each Dirichlet
 $L$-function is a \emph{proven} instance of the candidate, not merely a fitted one. Beyond it the same
 closure is confirmed numerically: run oracle-free on five further structurally distinct families ---
@@ -2191,6 +2735,8 @@ odd $\theta_\Delta$-weight, so no total phase is identically zero), and the mult
 entireness --- on the twisted family itself, a first direct numerical instance of the converse theorem's input
 beyond the classical range.
 
+
+\inst{move this to its own part}
 \section{Generalization: a representation-agnostic transport}\label{sec:general}
 
 The construction is written for $\Sym^r$, but the symmetric-power pattern is nowhere used. This section
@@ -2266,6 +2812,7 @@ phasor spin and magnitude producing the zeros). The content is not opaque --- it
 Satake data into vanishing --- though it is \emph{fed} that data; the clock operates the arithmetic, it
 does not conjure it.
 
+\inst{move to new Hodge specific part}
 \paragraph{The vanishing clock in the Hodge substructure: signature-based cycle detection.}
 \emph{The following is preliminary: a calibration that opened a separate development, the
 loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence sketched at the end of \S\ref{sec:status}
@@ -2622,6 +3169,7 @@ one line: \emph{the carrier is universal for simultaneous harmonic realization, 
 those source transports that commute, up to carrier equivalence, with faithful harmonic normalization.}
 \end{remark}
 
+\inst{move to new hodge part}
 \section{Obstruction-directed harmonization: from detection to removal}\label{sec:obs-removal}
 
 The transport of Theorem~\ref{thm:universal} is, so far, an obstruction \emph{detector and locator}: it reads a
@@ -2756,7 +3304,7 @@ halt when exact focal closure certifies harmonization; the signature itself supp
 loop. One recharts until $\alpha$ becomes an exact \emph{closing coordinate} --- not until the scalar symptom
 disappears.
 
-\part{Automorphic landing: the converse-theorem checksum}
+\part{Automorphic functoriality: The converse-theorem checklist}
 
 \noindent The transport construction of Part~II is independent of converse theory, yet
 Corollary~\ref{cor:universal} already read off its functoriality consequence by invoking a classical
@@ -2948,6 +3496,13 @@ These finitely many types are settled independently; the carrier construction su
 \emph{cuspidal} case, new for $r\ge5$. In every case $\Sym^r\pi$ is automorphic --- the content of
 Corollary~\ref{cor:func234}.
 
+\part{Significant Results}
+\inst{Hodge results go here}
+\inst{Obstruction removal results go here}
+
+
+
+\inst{Sato--Tate proof goes here}
 \section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
 \begin{corollary}[Sato--Tate for Maass forms]\label{cor:satotate}
 Let $\pi$ be a non-dihedral cuspidal Maass form on $\mathrm{GL}(2)/\mathbb Q$ with trivial central
@@ -2996,7 +3551,7 @@ geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and t
 proves it.
 \end{proof}
 
-\section{Status and active research}\label{sec:status}
+\section{Status and active research}\label{sec:status} \bullshit{not remotely accurate}
 
 We summarize the standing of each result at its own strength.
 
@@ -3084,11 +3639,11 @@ exhaustion, and loss-ledger recovery --- are machine-checked in Lean (Mathlib), 
 \texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}, built in-tree.
 \end{itemize}
 
-\paragraph{Active research.} Theorem~\ref{thm:func} proves $\Sym^r$ functoriality from the candidate
+\paragraph{Active research.} \bullshit {half correct fabrication}Theorem~\ref{the:func} proves $\Sym^r$ functoriality from the candidate
 object once the twisted convolutions are nice, and Proposition~\ref{prop:niceness} discharges that
 niceness on the carrier for every $r$ --- the identification of the candidate with $\Sym^r\pi$ at every
 place (Prop.~\ref{prop:localid}, global) and the three niceness properties (functional equation,
-boundedness, entireness) being carrier statements, not classical inputs. Three directions remain active.
+boundedness, entireness) being carrier statements, not classical inputs. Three directions remain active. \bullshit{sandbag}
 
 \emph{Formalization.} The reflection for a \emph{general} fiber is Lean-proved: \texttt{FiniteWeightFiber}
 formalizes the finite duality-stable weight fiber and its
@@ -3105,9 +3660,9 @@ identification included (Prop.~\ref{prop:localid} with \textup{(E5)}) --- is pro
 formalized end-to-end.  The numerical experiments retained serve only as calibration and independent reproduction
 of the \emph{already-proved} classical-$L$ identification and its exact archimedean normalization (the archimedean
 two-clock and Poisson completion tied to the exact global $L$-values), governed by the exact gauge; the product law
-and the carrier/fiber rescaling reduce the residue reading to cell arithmetic.
+and the carrier/fiber rescaling reduce the residue reading to cell arithmetic.\inst{tighten}
 
-\emph{Sato--Tate for Maass forms} (Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
+\emph{Sato--Tate for Maass forms} \inst{move to sato--tate section }(Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
 the Sato--Tate law: automorphy of \emph{every} $\Sym^r\pi$ first forces temperedness --- the normalized
 Satake classes onto the compact locus $|\alpha_p|=1$, by the $r\to\infty$ limit of the
 Jacquet--Shalika/Luo--Rudnick--Sarnak bound \cite{JS,LRS} (Corollary~\ref{cor:satotate}(i)), so the angles $\theta_p$ are
@@ -3123,9 +3678,9 @@ Proposition~\ref{prop:niceness} holds verbatim and, with the Jacquet--Shalika \c
 supplies, Corollary~\ref{cor:satotate} gives Sato--Tate for $\pi$. This is where the carrier's
 Galois-freeness is decisive: a Maass form carries no geometric Galois representation, so the
 automorphy-lifting proof of Newton--Thorne \cite{NT} does not reach it, whereas the carrier --- needing
-none --- does.
+none --- does. \inst{isolate as a significant result}
 
-\emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence} (companion paper). The
+\emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence} \bullshit{scrambling} (companion paper). The
 signature-based cycle detection of \S\ref{sec:general} is preliminary; calibrating it (\texttt{hodge\_%
 layer\_calib.py}) surfaced a structural question out of scope here. The carrier's descent
 $3\mathrm D\!\to\!2\mathrm D\!\to\!1\mathrm D$ books a loss ledger --- height (ordinate), radius, angle ---
@@ -3195,9 +3750,9 @@ conditional corollary for Bloch--Beilinson. The no-silent-layer input is precise
 \emph{carrier radical} $R:=\bigcap_d\ker T_d$ (\texttt{exhaustive\_of\_radical\_trivial}), which
 reduces gradewise to a nondegeneracy obligation --- a faithful regulator into an anisotropic height
 pairing (\texttt{grade\_visible\_of\_nondegenerate}), discharged by N\'eron--Tate positivity at depth
-one.
+one. \inst{move to hodge part}
 
-\emph{The structural half is unconditional.} On the \emph{semisimple} carrier state --- the finite
+\emph{The structural half is unconditional.}\bullshit{hedging} On the \emph{semisimple} carrier state --- the finite
 duality-stable weight fiber, an amplitude state $c$ over distinct clock frequencies $\{\lambda_i\}$ ---
 the symmetric-power/moment tower $T_d(c)=\sum_i c_i\lambda_i^{\,d}$ is a \emph{jointly faithful}
 coordinate system: distinct frequencies make the moment matrix Vandermonde, so $\bigcap_d\ker T_d=0$
@@ -3237,7 +3792,9 @@ is therefore a class with $AJ_{\mathbb C}(z)$ zero or torsion yet a nonzero \emp
 level-three invariant --- necessarily one where the \emph{non-archimedean} local height dominates
 (Zhang's metrized-graph terms) or where the finer $\ell$-adic/Galois Ceresa class, not the archimedean
 height, is the retained coordinate; that, with the from-scratch Ceresa landing, is the companion
-paper's target.
+paper's target. \inst{move to hodge part}
+
+
 
 \appendix
 \section{Reproducibility}\label{app:repro}
@@ -3608,8 +4165,10 @@ cross-checked against Sage's quaternion-algebra/Hilbert-symbol oracle; the remov
 \item \textbf{Carrier-transport functoriality (\S\ref{sec:general}), \texttt{RequestProject/CarrierFunctoriality.lean} and \texttt{composition\_test.py}.} \texttt{faithful\_comp} (the composite of closure-preserving transports preserves closure, \emph{no} axioms) with associativity, two-sided identity, and base change $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$; the script verifies exact plethysm splitting $\Sym^2\!\circ\Sym^2=\Sym^4\oplus\Sym^0$, $\Sym^3\!\circ\Sym^3=\Sym^9\oplus\Sym^5\oplus\Sym^3$.
 
 \item \textbf{Tensor-induction residual (functorial preservation, \S\ref{sec:converse}), \texttt{tensor\_induction\_check.py}.} On real $\Delta$ Satake: the Clebsch--Gordan factorization $a_{\pi\times\Sym^4}=a_{\Sym^5}\!\star a_{\Sym^3}$ holds coefficientwise to $1.4\times10^{-14}$; $\mathrm{mean}(a_{\Sym^5})\to6\times10^{-5}$ while $L(\Sym^3)(1)=0.652\ne0$ (the trivial-rep control gives mean $0.652$, so the deduction is non-vacuous).
-\end{itemize}
+\end{itemize} \bullshit{shit format}
 
+
+\inst{make a fucking bibtex file}
 \begin{thebibliography}{99}
 \bibitem{AltI} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, I}, Compositio Math.
 \textbf{151} (2015).

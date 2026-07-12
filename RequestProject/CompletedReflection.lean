@@ -23,8 +23,11 @@ intertwiners (Cayley projection, completion clock, logarithmic readout); no Pois
 consumed, the classical theta identity being its 1D readout shadow (corroborated through `Sym^13`).
 Strip continuation of the readout is the manuscript's `lem:transfer`, with machine-checked core
 `TransferContinuation.transfer_tendsto`.  The identification of the reflected carrier readout with
-the classical arithmetic datum (local factors, conductor, root number) is the manuscript's
-`prop:localid` --- an arithmetic identification of the geometric reflection, not an input to it.
+the classical arithmetic datum (local factors, conductor, root number) is `prop:localid`, proven
+**on the carrier** (`FrobeniusSimilitude.frobeniusBlock_eq_conjPairBlock`,
+`ConeProjection.reconstruct_record`): the local factor is read from the carrier's own Frobenius/Satake
+block — the classical local Langlands/Deligne factor is its 1D shadow, a readout of the geometric
+reflection, not an input to it.
 No `sorry`.
 -/
 
@@ -75,7 +78,15 @@ end CompletedReflection
 `L`-function fits `CompletedReflection`, with the finite reflection Mathlib's completed functional
 equation (`Tate.completed_functional_equation`) and the completion trivial (already folded into
 `completedLFunction`).  Hence `CompletedReflection.completed_FE` specialises to the machine-checked
-completed FE of every primitive Dirichlet `L`-function. -/
+completed FE of every primitive Dirichlet `L`-function.
+
+**This instance is a cross-check, not the source of the FE.**  The functional equation is
+carrier-generic — `completed_FE` holds for *every* `CompletedReflection`, i.e. every fiber supplying
+`finite_FE`/`completion_selfdual`, which the carrier furnishes for all of them via the involution `J`
+(the fiber-generic intertwiners of `thm:carrierreflection`).  Dirichlet is privileged only in that
+Mathlib supplies an *independent* completed `L`-function to verify the carrier's answer against — the
+one case with an external oracle.  It is never "the case where the FE is proven"; the FE is proven
+for all fibers at once, and Dirichlet is where it is additionally corroborated end-to-end. -/
 noncomputable def dirichletCompleted {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
     (hχ : χ.IsPrimitive) : CompletedReflection where
   L s := DirichletCharacter.completedLFunction χ s

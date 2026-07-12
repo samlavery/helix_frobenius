@@ -19,9 +19,17 @@ geometrically for **every** admissible dual-compatible fiber pair — the global
 descending through the machine-checked Cayley, completion-clock, and logarithmic-readout
 intertwiners; no Poisson summation is consumed, the classical theta identity being its 1D readout
 shadow (corroborated through `Sym^13`).  The Dirichlet instance is additionally end-to-end
-machine-checked (Mathlib `completedLFunction_one_sub`); the arithmetic identification of the
-reflected readout — local factors, conductor, root number `η_W` — is the manuscript's
-`prop:localid`.
+machine-checked (Mathlib `completedLFunction_one_sub`) — a **cross-check, not the locus of
+generality**.  The FE is *carrier-generic*: it is one property of the involution `J`, holding for
+every fiber that rides the carrier, so there is no per-`L`-function functional equation to re-derive.
+Dirichlet is simply the one case where an *independent* completed `L`-function (Mathlib) exists to
+check the carrier's reflection against; "FE proven for Dirichlet but not in general" is a category
+error in this frame, not a weaker result.  The arithmetic identification of the reflected readout —
+local factors, conductor, root number `η_W` — is `prop:localid`, itself proven **on the carrier**:
+the transverse block *is* the Satake conjugate-pair block
+(`FrobeniusSimilitude.frobeniusBlock_eq_conjPairBlock`, definitional) and deprojection is lossless
+(`ConeProjection.reconstruct_record`), so the local factor is read natively, no temperedness used.  The
+classical local Langlands/Deligne factor is its 1D readout, not an input.
 
 * the **finite reflection** `finite_FE` is `FiniteWeightFiber.localPoly_reciprocal` — the per-place
   functional equation of any duality-stable weight multiset — evaluated at the reflecting local variable
