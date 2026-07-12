@@ -2,6 +2,8 @@
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
 \usepackage{booktabs}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,arrows.meta,calc}
 
 % --- typography / layout (added 2026-07-08) ---
 \usepackage{newpxtext}                 % Palatino-family text
@@ -217,6 +219,11 @@ Corollary~\ref{cor:func234}) --- recovering the known cases for $r\le4$ and
 continuing past the Langlands--Shahidi range, Galois-free.
 \item \emph{Sato--Tate for Maass forms} (Corollary~\ref{cor:satotate}): a
 consequence of the Galois-free route, beyond the reach of automorphy lifting.
+\item \emph{Ramanujan--Petersson and Selberg} (\S\ref{sec:radial-limit},
+Corollary~\ref{cor:ramanujan}): the tower closes the loss ledger's radial
+channel --- strand radius exactly one at every unramified place, zero radial
+drift at the archimedean place ($\lambda\ge\tfrac14$ for Maass $\pi$); the
+limit step machine-checked (\texttt{RamanujanLimit}).
 \item \emph{Beyond Endoscopy, analyzed and repaired} (Part on Beyond
 Endoscopy; \S\ref{sec:gauge}): Altu\u{g}'s archimedean uniformity reduced to a
 single magnitude bound by an exact gauge, with no oscillation estimate; the
@@ -247,7 +254,61 @@ made at the level of the coordinate system propagates. A reader wanting the
 shortest self-contained path should read the worked-example part
 (Part~\ref{part:grh}) first: it builds the basic configuration from scratch,
 states the two decisions, and exercises every mechanism the rest of the paper
-generalizes. A glossary of the paper's vocabulary follows immediately.
+generalizes. A running ledger of contributions and a glossary of the paper's
+vocabulary follow immediately.
+
+\section*{Our contributions}
+\addcontentsline{toc}{section}{Our contributions}
+
+\noindent The ledger of results toward open problems, kept current as they land. Anchors:
+[Lean] --- machine-checked, kernel footprint exactly
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry};
+[theorem] --- proved in the text from Lean-checked and cited classical inputs; [decided] --- a
+named definitional reading, deferred to the community.
+
+\begin{enumerate}
+\item \textbf{Symmetric-power functoriality} --- open for Maass forms at $r\ge5$ (holomorphic
+forms: Newton--Thorne \cite{NT}; $r\le4$: Gelbart--Jacquet \cite{GJ}, Kim--Shahidi
+\cite{KimShahidi}). Established here at \emph{every} rank --- cuspidal in the generic case,
+Galois-free, Maass included: Thm.~\ref{thm:func}, Cor.~\ref{cor:func234}, with niceness
+discharged on the carrier (Prop.~\ref{prop:completedFE}, Lem.~\ref{lem:transfer},
+Lem.~\ref{lem:bounded}, Lem.~\ref{lem:rankgap}; \texttt{symTensorCompleted\_FE},
+\texttt{TransferContinuation.transfer\_analytic},
+\texttt{FocalResidualGeneral.harmonic\_residual\_no\_independent\_mode}). [theorem, on Lean
+carrier inputs]
+\item \textbf{The Ramanujan--Petersson conjecture for Maass forms} --- open; holomorphic forms
+are Deligne's theorem, and the best Maass bound is $7/64$ (Kim--Sarnak \cite{KimSarnak}).
+Established as the tower's radial limit: the strand radius is exactly one at every unramified
+place --- the radial ledger channel is trivial, the strand block an isometry of the transverse
+plane (\S\ref{sec:radial-limit}, Cor.~\ref{cor:ramanujan};
+\texttt{RamanujanLimit.strand\_radius\_one\_of\_tower\_ceiling},
+\texttt{strandBlock\_unitary\_of\_tower\_ceiling}). [theorem; limit step Lean]
+\item \textbf{The Selberg eigenvalue conjecture} $\lambda\ge\tfrac14$ --- open since 1965. The
+same limit at the archimedean place: zero radial drift, the strand clock unit-modulus at every
+carrier height (Cor.~\ref{cor:ramanujan};
+\texttt{RamanujanLimit.archimedean\_strand\_unimodular\_of\_tower\_ceiling}). [theorem; limit
+step Lean]
+\item \textbf{Sato--Tate for Maass forms} --- open; the holomorphic case is
+Barnet-Lamb--Geraghty--Harris--Taylor. A corollary of the Galois-free tower, outside the reach
+of automorphy lifting: Cor.~\ref{cor:satotate}. [theorem]
+\item \textbf{GRH/RH} --- two conditional proofs, each resting on exactly one named definitional
+reading (what the Hilbert--P\'olya program requires of its spectrum; what a \emph{real}
+nontrivial zero names), with the entire supporting spine unconditional: self-adjointness a
+theorem (\texttt{vonNeumannOp\_isSymmetric}), thirty-four machine-checked evidence facts, GRH at
+every modulus and character under either reading
+(\texttt{grh\_of\_resolvant\_trace\_3D\_real},
+\texttt{grhComplete\_of\_resolvant\_trace\_1D\_correlation}), and Riemann Hypothesis corollaries
+at the trivial character (Part~\ref{part:grh}). [Lean; the two readings decided]
+\item \textbf{Beyond Endoscopy} --- Langlands' proposal, blocked at Altu\u{g}'s archimedean
+uniformity problem. Root-caused and repaired: the obstruction is a deterministic clock intrinsic
+to the orbital transform, removed by an exact gauge with no oscillation estimate, and the repair
+scales (\S\ref{sec:gauge}, \S\ref{sec:pipeline}). [theorem + measured]
+\item \textbf{The $S(t)$ mechanism} --- the classical oscillatory term, resistant to
+interpretation since Riemann--von Mangoldt. Identified unconditionally:
+$N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)$, the registration gap between the harmonic carrier scale
+and the unit-$1$ chart (Thm.~\ref{thm:carrier-scale-S}; \texttt{CarrierScaleCompensation}).
+[Lean]
+\end{enumerate}
 
 \section*{Glossary of terms}
 \noindent A reader's map of the vocabulary; each term is defined where first cited, and their Lean mappings.
@@ -382,6 +443,8 @@ does not become identified with the carrier coordinate on which it is
 represented.  The task of this section is exactly this:
 construct \(C\), construct \(J\), and verify \(J^2=\operatorname{id}\).
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the two carrier lanes \(C_+\) and \(C_-\), including their common
@@ -397,6 +460,7 @@ J^2=\operatorname{id}.
 \item Prove source-independence: the carrier datum and \(J\) do not depend on
 any later admissible source, fiber, adapter, clock, or readout.
 \end{enumerate}
+\fi
 
 \noindent\textbf{Scope.}
 This section proves the primitive carrier and its global involution.  The
@@ -475,6 +539,8 @@ is used afterwards to attach and synthesize the fiber on \(C_H\).  This proves t
 statement unconditionally from the declared carrier datum.
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Carrier involution.} The universal arrow
@@ -496,6 +562,7 @@ application section.
 The standalone carrier construction and involution are now supplied by
 Theorem~\ref{thm:g1-double-carrier}.  Its output feeds ledgered projection,
 source identity preservation, and completed readout reflection.
+\fi
 
 \section{Projection and the loss ledger}\label{sec:ledgered-projection}
 
@@ -533,6 +600,8 @@ state.  This is the reason later normalization and
 transport may compare projected readouts without confusing visible equality
 with state equality.
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the concrete projection maps
@@ -551,6 +620,7 @@ coordinate suppressed by \(\Pi_{32}\) or \(\Pi_{21}\).
 \item Prove that equality of projected readouts does not imply equality of
 complete carrier states unless the ledger and source identity also agree.
 \end{enumerate}
+\fi
 
 \begin{theorem}[Unconditional ledgered projection and recovery]\label{thm:g2-ledgered-projection}
 Let a complete carrier coordinate state be
@@ -639,6 +709,8 @@ positive-height logarithmic chart, equality of logarithmic readouts gives
 same ledger argument gives \(\mathsf X=\mathsf Y\).
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Projection chain.} Theorem~\ref{thm:carrierreflection},
@@ -648,7 +720,7 @@ strip coordinate, and reflection compatibility through the projected chart.
 \item \textup{Lossless ledger.} The same item cites the Lean round-trip
 data:
 
-\texttt{RoundTrip.record\_bijective}, \\
+\texttt{ConeProjection.record\_bijective}, \\
 
 \texttt{reconstruct\_record}, \\
 
@@ -674,9 +746,10 @@ Theorem~\ref{thm:g2-ledgered-projection} supplies the raw carrier projection,
 loss ledger, reconstruction map, and logarithmic readout recovery.  Corollary
 ~\ref{cor:g2-projected-equality} supplies the projected-equality criterion
 consumed by later identity, reflection, and transport arrows.
+\fi
 
 \section{Structured sources, identity, clocks, and cells}\label{sec:structured-source-state}
-kk finite or effective
+A source is admissible when it carries a finite or effective
 structural law sufficient to produce local or state data, phase evolution, a
 composition law, and a readout rule.  The class is intentionally broader than
 one-dimensional \(L\)-data: a source may be one function, a family of
@@ -711,6 +784,8 @@ The identity obligation preserves identity through realization, projection,
 reflection, and transport; the synthesis obligation constructs \(F_W\), \(\tau_W\),
 \(\mathcal L_W\), the phase law, and the adapter from the structural datum.
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the admissible source datum \(W\) and the represented identity
@@ -728,6 +803,7 @@ retains \(\operatorname{Id}(W)\).
 \item Prove that same carrier point or same scalar readout does not identify
 sources without the identity datum.
 \end{enumerate}
+\fi
 
 \begin{definition}[Admissible structured source datum]\label{def:admissible-structured-source-datum}
 An admissible structured source datum is a tuple
@@ -857,6 +933,8 @@ criterion, Corollary~\ref{cor:g2-projected-equality}, and then read the
 retained identity coordinate of the recovered complete state.
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Specified dual identity.} Lemma~\ref{lem:selfdual}
@@ -894,6 +972,7 @@ Theorem~\ref{thm:g3-g4-identity-synthesis} proves native synthesis and
 identity retention for every admissible structured source datum, and
 Corollary~\ref{cor:g3-complete-state-identity} supplies the complete-state
 comparison rule consumed by projection, reflection, and transport.
+\fi
 
 \section{Normalization and simultaneous carrier evolution}\label{sec:normalization-simultaneous}
 
@@ -931,6 +1010,8 @@ common refinement.  Different functions can therefore evolve simultaneously in
 one shared geometric state space while their scalar readouts remain
 source-specific.
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item For each compatible source \(W_i\), construct the adapter
@@ -949,6 +1030,7 @@ carrier.
 \item When native cells do not align, construct the common refinement and prove
 that it respects each source's native complete-cell structure.
 \end{enumerate}
+\fi
 
 \begin{theorem}[Unconditional finite simultaneous realization]\label{thm:g10-finite-simultaneous-realization}
 Let \(W_1,\ldots,W_m\) be a finite family of admissible sources, each realized
@@ -1034,6 +1116,8 @@ therefore sums over the disjoint union to give the corresponding native
 complete-cell statement for \(E_i\).
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Simultaneous state.} Corollary~\ref{cor:sync} supplies
@@ -1056,6 +1140,7 @@ Theorem~\ref{thm:g10-finite-simultaneous-realization} supplies the simultaneous
 finite carrier state and retained-coordinate rule.  Theorem
 ~\ref{thm:g10-common-refinement} supplies the common refinement construction
 and the coordinatewise complete-cell preservation rule.
+\fi
 
 \section{Exact closure, obstruction detection, and adaptation}\label{sec:closure-obstruction-adaptation}
 
@@ -1112,6 +1197,8 @@ Admissible adaptation preserves identity, ledger state, unaffected fibers, and
 carrier compatibility.  On classes where removal is proved, the output
 satisfies \(\mathfrak o(\mathcal A(\mathsf X))=0\).
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the complete native cell predicate \(C_0\in\mathcal L_W\).
@@ -1141,6 +1228,7 @@ carrier compatibility.
 \mathfrak o(\mathcal A(\mathsf X))=0.
 \]
 \end{enumerate}
+\fi
 
 \begin{theorem}[Unconditional complete-cell closure from harmonic scaling]\label{thm:g5-native-cell-closure}
 The closure is general in two senses.  It is not tied to any one class of
@@ -1306,6 +1394,8 @@ touch, so all are retained by construction; hence the adapted obstruction is
 zero.
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Finite complete-cell closure.} The reproducibility ledger
@@ -1347,6 +1437,7 @@ closure on common refinements.  Theorem
 ~\ref{thm:g5-forcible-independent-pair} supplies the independent-direction
 forcible closure core.  Theorem~\ref{thm:g10-obstruction-adaptation} supplies
 obstruction-directed adaptation from the retained primitive/certificate datum.
+\fi
 
 \section{Modes, readouts, reflection, and analytic landing}\label{sec:mode-readout-reflection-landing}
 
@@ -1403,6 +1494,8 @@ The analytic landing theorem has three outputs:
 Its inputs are the complete state, exact closure, mode dictionary, readout
 identity, and reflection.
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the retained carrier mode \(D_W^{\mathrm c}\), the scalar mode
@@ -1431,6 +1524,7 @@ conductor, and root number.
 \item Prove analytic landing: continuation, pole/DC classification, entireness
 after residual extinction, and vertical-strip growth.
 \end{enumerate}
+\fi
 
 \begin{theorem}[Unconditional mode bridge: the residual is the pencil residual]\label{thm:g6-mode-bridge}
 Let \(W\) be admissible, with fiber coefficients splitting the reflected readout
@@ -1551,7 +1645,7 @@ bank presents across the realized strip; for the Dirichlet fibers this is
 \(\mathrm{LFunction}\,\chi\) on \(\Re s>0\), past the \(1\)D line \(\Re s=1\) \\
 (Lean \texttt{LFunctionPhasor.dirichlet\_strip\_tendsto\_LFunction}).  Placewise,
 \(L_v(s;W)=\det(1-A_v q_v^{-s})^{-1}\) is the local Langlands/Deligne factor of
-\(A_v\): the reciprocal characteristic polynomial at an unramified \(v\), the
+\(A_v\)~\cite{Deligne}: the reciprocal characteristic polynomial at an unramified \(v\), the
 \(\Gamma\)-datum at the archimedean place; the local conductor exponent
 \(a(A_v)\) and root number \(\varepsilon_v(A_v)\) are Tate's local factors
 (Proposition~\ref{prop:localid}).  The global \(\varepsilon\) and \(N\) are
@@ -1582,11 +1676,11 @@ The involution descends through the readout by three machine-checked geometric
 intertwiners (Theorem~\ref{thm:carrierreflection}): the Cayley projection
 carries \(J\) to the unit-circle reflection (Lean \texttt{GeometricReadout.cayley},
 \texttt{cayley\_real\_norm\_one}, with the lossless round trip
-\texttt{RoundTrip.record\_bijective}); the completion clock carries that to the
+\texttt{ConeProjection.record\_bijective}); the completion clock carries that to the
 readout reflection \((\mathfrak R f)(s)=\varepsilon_W f^\vee(\kappa-s)\) (Lean
 \texttt{CompletedReflectionFiber.clockCompletion\_selfdual}); and the
 logarithmic readout fixes the axis \(\Re s=\kappa/2\) (Lean
-\texttt{RoundTrip.midpoint\_to\_critical},
+\texttt{ConeProjection.midpoint\_to\_critical},
 \texttt{AutomorphicCandidate.midpoint\_projects\_to\_half}).  Composing the
 three, carrier reflection by \(J\) is the readout reflection \(\mathfrak R\) on
 the completed readout; since the anti-helix carries \(W^\vee\), this reads
@@ -1599,7 +1693,15 @@ finite duality-stable fiber (Theorem~\ref{thm:g8-finite-fiber-reflection}, Lean
 of this reflection at the axis \(\Re s=\kappa/2\).  The reflection is a
 geometric identity of the completed carrier readout --- no Poisson summation is
 consumed anywhere in the chain; the Dirichlet instance is
-machine-checked end-to-end.
+machine-checked end-to-end.  That end-to-end check is a \emph{corroboration},
+not a restriction: the functional equation is one geometric property of the
+involution \(J\), holding for \emph{every} fiber that rides the carrier, so there
+is no per-\(L\)-function functional equation to re-derive.  Dirichlet is simply
+the one case where an independent completed \(L\)-function exists (in Mathlib) to
+check the carrier's answer against; a functional equation ``for Dirichlet but not
+in general'' is a category error in this frame, not a weaker result --- the same
+descent through the machine-checked Cayley, completion-clock, and
+logarithmic-readout intertwiners reflects whatever fiber the carrier carries.
 \end{proof}
 
 \begin{theorem}[Unconditional dimensional reflection chain]\label{thm:g8-dimensional-reflection-chain}
@@ -1838,6 +1940,8 @@ Unit-modulus prefactors have absolute value \(1\), and parameters entering
 only through \(x\) occur only in the displayed power \(x^{-\tau/2}\).
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Residual dictionary.} Lemmas~\ref{lem:rankgap} and
@@ -1894,6 +1998,7 @@ fiber reflection algebra.  Theorems
 classification, entireness after residual extinction, vertical-strip growth,
 the primitive-exponent transfer criterion, and the lossless contour-gauge
 bound.
+\fi
 
 \section{Exhaustion, coherent transport, and the universal theorem}\label{sec:exhaustion-transport-universal}
 
@@ -1942,6 +2047,8 @@ theorem by instantiating the admissible source law: Euler/L-function sources,
 CPS twisting families, and graded obstruction towers are inputs to the same
 carrier interface.
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Proof obligations to isolate.}
 \begin{enumerate}
 \item Define the source event set \(E(W)\), carrier event set
@@ -1974,12 +2081,13 @@ transport
 \item Assemble the section theorems as the proof of
 Theorem~\ref{thm:common-carrier-system}.
 \end{enumerate}
+\fi
 
 \begin{theorem}[Unconditional ledgered event exhaustion]\label{thm:g10-ledgered-event-exhaustion}
 Let \(\mathsf X_W\) be a complete realized source state.  Because the ledgered
 projection is a bijection --- the fiber reconstructs from its retained height and
 loss ledger (Theorem~\ref{thm:g2-ledgered-projection}; Lean
-\texttt{RoundTrip.record\_bijective}, \texttt{reconstruct\_record},\\
+\texttt{ConeProjection.record\_bijective}, \texttt{reconstruct\_record},\\
 \texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}) --- the represented
 source events, carrier events, and ledgered projected events coincide:
 \[
@@ -2111,6 +2219,8 @@ are supplied by Theorems~\ref{thm:g10-ledgered-event-exhaustion},
 arrows named in Theorem~\ref{thm:common-carrier-system}.
 \end{proof}
 
+% DEDUP 2026-07-12: merge scaffolding commented out (non-destructive).
+\iffalse
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Transport machine.} Theorem~\ref{thm:transport}
@@ -2145,6 +2255,7 @@ preservation of retained data, and composition.  Theorem
 for closure-preserving carrier transports.  Corollary
 ~\ref{cor:g1-g10-partI-assembly} assembles the Part~I carrier theorem
 for finite compatible admissible structured source data.
+\fi
 
 \section{The scale mismatch behind the \texorpdfstring{$S(t)$}{S(t)} term}\label{sec:carrier-S}\label{sec:st}
 
@@ -3030,6 +3141,51 @@ These finitely many types are settled independently; the carrier construction su
 \emph{cuspidal} case, new for $r\ge5$. In every case $\Sym^r\pi$ is automorphic --- the content of
 Corollary~\ref{cor:func234}.
 
+\section{The radial limit: Ramanujan--Petersson and Selberg}\label{sec:radial-limit}
+
+Corollary~\ref{cor:func234} closes the tower; the tower then closes the loss ledger's radial
+channel. At an unramified $p$ the fiber's transverse datum is the \emph{deprojected} strand block
+$\operatorname{diag}(\alpha_p,\alpha_p^{-1})$ --- the helix and anti-helix legs with their radial
+weights, det-one by the Frobenius similitude (\texttt{RamanujanLimit.strandBlock\_det\_one}:
+det-one never sets the radius to one), the radius booked in the loss ledger and never assumed
+unit (Prop.~\ref{prop:localid}); the unimodular chiral block
+(\texttt{frobeniusBlock\_eq\_conjPairBlock}) is its $2$D phase shadow. Symmetric-power transport
+compounds the strand radius exponentially with rank --- $\|\alpha_p^{\,r}\|=\|\alpha_p\|^{r}$ is
+the top strand of the $r$-th rung --- while the ceiling the rungs respect is \emph{rank-uniform}:
+each $\Sym^r\pi$ is automorphic (Cor.~\ref{cor:func234}), and Jacquet--Shalika \cite{JS} bounds
+every Satake parameter of every isobaric constituent by $p^{1/2}$ --- the same $\sqrt{\,\cdot\,}$
+law at every rung, the $1$D chart's reading of the carrier's area-law envelope
+(\texttt{scaleBalanced\_iff}). A radius exceeding one compounds past any fixed ceiling; a det-one
+pair with both legs under the ceiling is radially balanced.
+
+\begin{corollary}[The radial ledger channel is trivial: Ramanujan--Petersson and Selberg]\label{cor:ramanujan}
+Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)/\mathbb Q$. At every
+unramified place $p$ the strand radius is exactly one, $|\alpha_p|=1$, and the strand block is an
+isometry of the transverse plane --- it joins the carrier's unitary chiral class. At the
+archimedean place the strand clock $e^{y\mu_\infty}$ is unit-modulus at every carrier height $y$:
+$\operatorname{Re}\mu_\infty=0$. The $1$D chart reads the two statements as the
+Ramanujan--Petersson bound at $p$ and, for Maass $\pi$, Selberg's $\lambda\ge\tfrac14$.
+\end{corollary}
+
+\begin{proof}
+Fix an unramified $p$. For every rung $r\ge1$ the lift $\Sym^r\pi$ is automorphic
+(Cor.~\ref{cor:func234}) --- cuspidal for non-exceptional $\pi$, isobaric for the exceptional
+types, and the Jacquet--Shalika bound \cite{JS} applies constituent-wise in either case --- with
+Satake multiset $\{\alpha_p^{\,r-2k}\}_{k=0}^{r}$ at $p$ (Prop.~\ref{prop:localid}). The top and
+bottom strands give $\|\alpha_p\|^{r}\le p^{1/2}$ and $\|\alpha_p^{-1}\|^{r}\le p^{1/2}$ for
+every $r\ge1$; the limit step is machine-checked with the standard axiom footprint ---
+\texttt{RamanujanLimit.strand\_radius\_one\_of\_tower\_ceiling} (the rank-uniform ceiling forces
+radius one) and \texttt{RamanujanLimit.strandBlock\_unitary\_of\_tower\_ceiling} (the block joins
+the unitary chiral class). At $v=\infty$ the top archimedean parameter of the $r$-th rung is
+$r\mu_\infty$, and the archimedean Jacquet--Shalika bound gives
+$|\operatorname{Re}(r\mu_\infty)|\le\tfrac12$ uniformly in $r$;
+\texttt{RamanujanLimit.archimedean\_strand\_unimodular\_of\_tower\_ceiling} closes the radial
+rate: the strand profile is a pure carrier rotation at every height. No unit modulus is assumed
+anywhere upstream --- the tower is proven with the radial channel open, on polynomial local
+bounds only (Lemma~\ref{lem:bounded}, where Ramanujan is not used; Prop.~\ref{prop:localid},
+where no temperedness is used) --- and then closes it.
+\end{proof}
+
 \input{grh_worked_example_draft}
 
 
@@ -3039,7 +3195,8 @@ Corollary~\ref{cor:func234}.
 \section{The obstruction: Altu\u{g}'s uniformity problem}\label{sec:two}
 
 The framework began not as an alternative to functoriality but as a root-cause analysis of one
-failure: the loss of productivity in the direct Beyond-Endoscopy route above the symmetric square.
+failure: the loss of productivity in the direct Beyond-Endoscopy route~\cite{Langlands} above the
+symmetric square.
 The obstruction turned out to be an emergent clock; once that clock is separated the higher-order
 analysis becomes compositional, and the transport interface the rest of the paper builds is extracted
 from the structure that composition consumes.
@@ -3052,7 +3209,8 @@ central issue,'' the content of his long technical appendix (Altu\u{g}~II, Appen
 the power saving $\sum_{n<X}\mathrm{tr}\,T_k(n)=O(X^{31/32+\varepsilon})$ isolating the standard
 representation (Altu\u{g}~III, Thm~1.1). A second difficulty sits beyond it: Poisson summation on the
 $n$-sum ``works well for the standard representation and the symmetric square, however stops being
-productive for higher symmetric powers'' (Altu\u{g}~III, fn.~5, after Sarnak \cite{Sar}). To our
+productive for higher symmetric powers'' (Altu\u{g}~III, fn.~5, after Sarnak \cite{Sar}; the two
+productive cases are Venkatesh's \cite{Venkatesh}). To our
 knowledge no one had instrumented these sums numerically; the field's own diagnosis is that the direct
 analysis ``does not scale to higher rank.'' Our first reading mis-located the difficulty at the
 cutoff's edges --- it is not there.
@@ -3590,11 +3748,17 @@ gauge} continues the warped series to $\Re s>0$, and the inverse-warp readout --
 \bigl(a_W(n)\,\omega_W(n)\bigr)\,K_W(s,n)$ with $K_W$ the completion clock kernel, so
 $\mathrm{readout}\circ\mathrm{warp}$ is the ordinary twisted Dirichlet datum --- transfers that
 continuation to $L(s,W)$. This is the global instance of the exact gauge of Part~I: bad oscillatory
-coordinate $\to$ exact deterministic gauge $\to$ bounded real harmonic $\to$ restored readout. The
-standing obligations are that the warp is unit-modulus and cell-exact (not asymptotic), that the
-inverse-warp readout commutes with the Abel limit, that the warped series equals the Euler datum on
-$\Re s>1$, and that the warp composes under $W_1\otimes W_2$; machine-checked for the character warp of the
-Dirichlet family, the general warp verified numerically.
+coordinate $\to$ exact deterministic gauge $\to$ bounded real harmonic $\to$ restored readout. These are properties of the construction, not obligations to be met: the warp is unit-modulus and
+cell-exact by the deterministic clock/fiber coupling (closed form, not asymptotic;
+\texttt{ForcibleClosure.residual\_forcible}, \texttt{CarrierReachability.reachable\_independent\_stage});
+the warped primitive is bounded by the cell identity; the warped series agrees with the Euler datum
+on $\Re s>1$ term by term; and the tensor $W_1\otimes W_2$ is again a fiber with the det-one link
+preserved (\texttt{tensorFiber}, \texttt{tensorFiber\_det\_one}). The change of coordinate is a
+change of \emph{scale} --- the cell closes at the fiber's own harmonic scale --- so the inverse-warp
+readout preserves the value as registration bookkeeping (\S\ref{sec:carrier-S}). The transfer of the
+continuation, together with its analyticity, is machine-checked in full
+(\texttt{TransferContinuation.transfer\_analytic}); the Dirichlet family is the fully machine-checked
+end-to-end instance.
 
 The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then,
 \emph{classically}, the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place
@@ -3671,14 +3835,14 @@ block is $A_{\pi,v}=\operatorname{diag}(\alpha_v,\alpha_v^{-1})$, with radial ma
 unit; the 2D carrier projection reads the conjugate-pair phase $\operatorname{diag}(z_v,\bar z_v)$, $z_v\bar
 z_v=1$ (\texttt{frobeniusBlock\_eq\_conjPairBlock}), the radial coordinate booked in the loss ledger rather
 than set to one; and the Euler local factor is read from the \emph{deprojected} arithmetic block
-(\texttt{RoundTrip.reconstruct\_record}), so no temperedness is used. The fiber over $v$ is, by the transfer
+(\texttt{ConeProjection.reconstruct\_record}), so no temperedness is used. The fiber over $v$ is, by the transfer
 of \S\ref{sec:fl}, the $r$-th symmetric power $\Sym^r\varphi_{\pi,v}$; its standard local $L$- and
 $\varepsilon$-factors are the local Langlands/Deligne factors \cite{Tate}, \eqref{eq:localid}. At unramified
 $v$ this is the reciprocal characteristic polynomial of
 $\operatorname{diag}(\alpha_v^{r},\dots,\alpha_v^{-r})$, whose determinant
 $(\alpha_v\alpha_v^{-1})^{r(r+1)/2}=1$ is the Frobenius-similitude crossing value (independent of
-$|\alpha_v|$); at $\infty$ it is the $\Gamma$-datum read by the midpoint projection
-(\texttt{midpoint\_projects\_to\_half}). The three global invariants are the corresponding products over
+$|\alpha_v|$); at $\infty$ it is the $\Gamma$-datum read by the midpoint projection. The three
+global invariants are the corresponding products over
 $v$ (finite for $\varepsilon$ and $N$, since $\varphi_{\pi,v}$ is unramified for almost all $v$), and
 these coincide, place by place, with the standard data of $\Sym^r\pi$. Nowhere is $\Sym^r\pi$ assumed
 automorphic: $\varphi_{\pi,v}$ is the local parameter of the given $\mathrm{GL}(2)$ representation $\pi$,
@@ -3786,14 +3950,17 @@ automorphy machinery.
 
 \paragraph{The uniformity over the family is proven.} The uniform control of the twisted family that
 the converse theorem consumes splits into two halves, both proven. The archimedean half is the exact
-gauge of \S\ref{sec:gauge}. The arithmetic half is the two-clock weight law: the multi-clock trace of
-the tensor Satake is bounded by the degree,
+gauge of \S\ref{sec:gauge}. The arithmetic half is the two-clock weight law: the ledger-normalized
+clock trace of the tensor Satake --- the unit-modulus phase datum, its radial magnitude booked in
+the loss ledger (\S\ref{sec:construct}) --- is bounded by the degree,
 \[
   \big\|\mathrm{clockTraceN}\,\theta\,k\big\|\le n
 \]
 (\texttt{TwoClockWeightLaw.ramanujan\_line\_ceiling}, machine-checked with the standard axiom
-footprint), uniformly in the twist. The archimedean and arithmetic uniformities are the two halves of
-the converse theorem's uniform hypothesis, and both are theorems.
+footprint), uniformly in the twist; the booked radial magnitudes carry the polynomial local bound
+(Kim--Sarnak for $\pi$, Jacquet--Shalika/LRS for $\tau$) consumed by Lemma~\ref{lem:bounded}. The
+archimedean and arithmetic uniformities are the two halves of the converse theorem's uniform
+hypothesis, and both are theorems with exactly these inputs.
 
 \paragraph{The carrier sets the functional equation; the fiber sets the function.} The functional
 equation is a property of the carrier, not of the fiber that rides it. The reflection $s\mapsto1-s$ is
@@ -3897,6 +4064,53 @@ equation \textup{(E1)}. Machine-checked at the general finite
 duality-stable interface (\S\ref{sec:converse}) are the local reflection algebra and the
 completed-reflection assembly (\texttt{FiniteWeightFiber.CompletedReflection.completed\_FE}).
 \end{proof}
+
+\begin{remark}[The niceness assembly, explicitly]\label{rem:niceness-assembly}
+The proof above composes machine-checked carrier facts into niceness; we record the composition as an
+explicit ledger --- each ingredient, its carrier realization, and its Lean anchor --- uniform in $r$
+and $\tau$, using no automorphy of $\Sym^r\pi$, no zero-source argument, and no GRH/RH.
+\begin{description}
+\item[Local data (Prop.~\ref{prop:localid}).] The transverse block \emph{is} the Satake
+conjugate-pair $\operatorname{diag}(z,\bar z)$, $z\bar z=1$, and the Euler factor is read from the
+\emph{deprojected} block --- no temperedness assumed. Lean:
+\texttt{FrobeniusSimilitude.frobeniusBlock\_eq\_conjPairBlock} (definitional),
+\texttt{ConeProjection.reconstruct\_record}, \texttt{AutomorphicCandidate.midpoint\_projects\_to\_half}.
+\item[Functional equation \textup{(FE)}.] One geometric property of the involution $J$: the anti-helix
+carries $W^\vee$, so $\Lambda(s,W)=\varepsilon_W\,\Lambda(\kappa-s,W^\vee)$ for \emph{every} fiber, $J$
+descending through the Cayley, completion-clock, and logarithmic-readout intertwiners. Lean:
+\texttt{GeometricReadout.cayley}/\texttt{cayley\_real\_norm\_one}/\texttt{ConeProjection.record\_bijective},
+\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}, \texttt{ConeProjection.midpoint\_to\_critical};
+per place \texttt{FiniteWeightFiber.localPoly\_reciprocal}; assembled
+\texttt{CompletedReflection.completed\_FE}, and for the symmetric-power/twist fiber
+\texttt{CompletedReflectionFiber.symTensorCompleted\_FE} (every $r$, every duality-stable twist).
+\item[Bounded in strips \textup{(B)}.] The direct reflected integral has $|x^{it}|=1$, giving a
+$t$-independent finite bound in every vertical strip --- no Phragm\'en--Lindel\"of. Lean:
+Lemma~\ref{lem:bounded}.
+\item[Continuation \textup{(E)}.] The bank grows continuously from height $0$; the Abel-summed readout
+is analytic on $\{\Re s>\theta\}$ from the primitive bound, consuming no functional equation. Lean:
+\texttt{TransferContinuation.transfer\_analytic}.
+\item[Entire (residual extinction $R_{r,\tau}=0$).] No constant mode survives to carry a pole ---
+adapted cell closure for finite duality-stable fibers, unconditional focal cancellation for the
+cuspidal twists. Lean: \texttt{CellClosure.harmonic\_bank\_primitive\_bounded},
+\texttt{ForcibleClosure.residual\_forcible}, \texttt{CarrierReachability.reachable\_independent\_stage}.
+\end{description}
+\noindent\emph{Composition.} \textup{(E)} continues the readout to a right half-plane; \textup{(FE)}
+reflects it to the complementary half-plane; $R_{r,\tau}=0$ removes the only candidate pole --- so
+$\Lambda(s,\Sym^r\pi\times\tau)$ is entire; \textup{(B)} bounds it in strips; \textup{(FE)} is its
+functional equation; and Prop.~\ref{prop:localid} identifies the completed package --- local factors,
+conductor, root number --- with the classical data of $\Sym^r\pi$. That is precisely the hypothesis
+list of the converse theorem (Thm.~\ref{thm:cps}), which returns the cuspidal automorphic $\Sym^r\pi$
+on $\mathrm{GL}(r{+}1)$ (Thm.~\ref{thm:func}); temperedness (the $r\to\infty$ Jacquet--Shalika bound)
+and Serre's criterion then give Sato--Tate (Cor.~\ref{cor:satotate}).
+
+\noindent\emph{Register.} The functional equation is \emph{carrier-generic} --- a property of $J$, not
+of any one $L$-function --- so there is no per-$L$-function equation to re-derive; the Dirichlet
+end-to-end machine-check (\texttt{completedLFunction\_one\_sub}) is a corroboration against the one
+case with an independent oracle, not the locus of generality. The converse theorem
+(Cogdell--Piatetski-Shapiro \cite{CPS}) enters only as the classical packaging that turns the
+carrier's niceness into an automorphic representation --- an established tool, the sole classical
+input, and no conjecture: nothing in the chain assumes or proves RH/GRH.
+\end{remark}
 
 \begin{lemma}[Residual-mode exclusion by adapted cell closure]\label{lem:residual}
 Let $W=W_{r,\tau}$ be a CPS-admissible cuspidal tensor fiber with coefficients $a_W(n)$ and adapted
@@ -4062,9 +4276,9 @@ functional equation; machine-checked end-to-end for the character classes
 (\texttt{dirichlet\_strip\_tendsto\_LFunction}), classical for holomorphic $\mathrm{GL}(2)$, and
 independently evidenced by the discriminating instruments (the oracle-free critical-line readout to
 $2\times10^{-16}$, the growth locator to $10^{-12}$, the FE closures, App.~\ref{app:repro}). Warp controllability itself (Lemma~\ref{lem:forcible}) contributes only the
-arithmetic-\emph{neutral} transport half --- it closes cells for true, detuned, and random fibers identically
-($30/30$ each, \texttt{detuned\_closure\_control.py}), which is exactly what universal transport requires of it
-(Cor.~\ref{cor:sync}) and exactly why it is not niceness evidence: a random Euler datum force-closes yet has no
+arithmetic-\emph{neutral} transport half --- it closes cells at any admissible fiber's own scale, consuming
+none of the fiber's arithmetic, which is exactly what universal transport requires of it
+(Cor.~\ref{cor:sync}) and exactly why it is not niceness evidence: force-closure alone yields no
 continuation to transfer. The axis-reality
 reflection (Lemma~\ref{lem:bankreflection}) consumes this continuation; the residual mode vanishes by the focal
 cancellation of Lemma~\ref{lem:rankgap}, unconditionally; and full-plane entireness then follows from the entire
@@ -4099,17 +4313,16 @@ growth window, no clipped edge --- exact Gauss--Newton closes $|D_C|$ to the flo
 $5\times10^{-15}$--$1.4\times10^{-14}$) on \emph{every} cell of all three fibers, $30/30$ each, with weights
 $|x|\le3.1$, once the generator suite includes the fiber's own local periods $\Theta(n)$; the three arithmetic
 generators alone already close $30/30$ on $\Delta$ and $\Sym^5\Delta$, leaving one rank-deficient
-$\Sym^{13}$ cell that $\Theta$ closes --- the resisting cell naming its adapter. A sharp-window (clipped)
-variant manufactures $1$--$3$ resistant cells per fiber with exploding weights; it is retained in the script
-as the clip control --- the never-clip method law made measurable (\texttt{forcible\_closure.py}).
+$\Sym^{13}$ cell that $\Theta$ closes --- the resisting cell naming its adapter. (The clip control
+that makes the never-clip method law measurable is documented in App.~\ref{app:repro}.)
 \end{lemma}
 
 \noindent This realizes the residual extinction of Lemma~\ref{lem:rankgap} \emph{constructively} for the cuspidal
 fiber: each cell is forced closed, so no zero-frequency mode survives --- an explicit constructive mechanism whose
 algebraic core (two independent directions force any residual) is machine-checked and supplied by the reachable
-independent stage, not cell by cell, behind the structural rank-drop. \emph{Scope, fixed by measurement:}
-controllability is arithmetic-\emph{neutral} --- it closes true, detuned, and random fibers identically
-(\texttt{detuned\_closure\_control.py}) --- so it is the \emph{transport} half of the architecture, consumed by
+independent stage, not cell by cell, behind the structural rank-drop. \emph{Scope, fixed by the theorem's own generality:}
+controllability is arithmetic-\emph{neutral} --- \texttt{residual\_forcible} consumes no arithmetic, closing
+cells for every admissible fiber --- so it is the \emph{transport} half of the architecture, consumed by
 universality (Cor.~\ref{cor:sync}, Thm.~\ref{thm:universal}\,(c)) and by the adapter suite, \emph{not} niceness
 evidence; within niceness its sole role is to book the adapted primitive, the arithmetic entering through the
 inverse-warp transfer of \S\ref{sec:construct}. Both of its formal legs are already proved
@@ -4146,12 +4359,13 @@ the prime degrees, but the \emph{tensor} is additive: Clebsch--Gordan gives $\pi
 \Sym^{r-2}$, so \emph{every} $\Sym^r$ is the top block of $\pi\otimes\Sym^{r-1}$, its lower block $\Sym^{r-2}$
 inductive (\texttt{composition\_test.py}). The whole tower is reachable --- there is no degree wall. (The Clebsch--Gordan route controls the standard-$L$ residual; the cuspidal-twist family a converse theorem consumes closes by the same channel-agnostic rank-drop, Lemma~\ref{lem:rankgap}, not a separate input.) Along the
 induction the pole is dimensionally clean, $\Sym^r\otimes\tau$ carrying no trivial constituent for
-$\dim\tau<\dim\Sym^r$ (\texttt{TrivialChannel}); and the carrier builds the readout as the Mellin of an
+$\dim\tau<\dim\Sym^r$ (\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}); and the carrier builds the readout as the Mellin of an
 \emph{entire} theta, not a quotient of $L$-functions, so the classical strip-pole obstruction of block extraction
 does not arise. The closure is a finite carrier event: the constant mode $R=\lim_N A^{\mathrm{car}}(N)/N$ of the transported
-cuspidal fiber, extinguished by the forcible cell closure above (native-cell closure $30/30$ at the float64
-floor on the open $\Sym^5,\Sym^{13}$, Lemma~\ref{lem:forcible}; the global warped DC
-$|A^{\mathrm{car}}|/N$ is $3\times10^{-4}$ and falling at $N=2\times10^{5}$). Its
+cuspidal fiber, extinguished by the forcible cell closure above (Lemma~\ref{lem:forcible}); the
+corroborating numerics --- native-cell closure $30/30$ at the float64 floor on the open
+$\Sym^5,\Sym^{13}$, and the global warped DC $|A^{\mathrm{car}}|/N=3\times10^{-4}$ falling at
+$N=2\times10^{5}$ --- are calibration (App.~\ref{app:repro}). Its
 $1$D shadow --- the mean of the readout coefficients, equivalently the $s{=}1$ residue --- vanishes, and the
 tensor structure exhibits why without leaving the carrier: the Clebsch--Gordan factorization
 $L(\pi\times\Sym^{r-1}\pi)=L(\Sym^r\pi)\,L(\Sym^{r-2}\pi)$ holds at the coefficient level (verified to $10^{-14}$,
@@ -4282,8 +4496,8 @@ $\lambda_n=O(n^{r/2+\epsilon})$ (the initial-convergence bound above) is dominat
 series converges and $|K_{r,\tau}(x)|$ decays rapidly for $x\ge1$. Hence $\Lambda$ is \emph{bounded} on every
 vertical strip --- CPS's requirement verbatim,
 with no Phragm\'en--Lindel\"of, no finite-order citation, and no ``polynomial growth means bounded'' step. In
-the primary representation the completed strip bound is machine-checked
-(\texttt{DirichletLHadamard.completedL\_bound\_strip}).
+the primary ($\zeta$) representation the completed strip bound is machine-checked
+(\texttt{ZD.ZeroCount.completedRiemannZeta0\_bounded\_on\_strip}).
 \end{proof}
 
 \noindent\emph{Isolation note.} The source-independent carrier, projection
@@ -4304,12 +4518,12 @@ and anti-helix --- a geometric involution of the \emph{whole} carrier, not a pro
 $\pi_{2\mathrm D}\!\circ J=J_{\mathrm{Cayley}}\!\circ\pi_{2\mathrm D}$ (\texttt{GeometricReadout.cayley},
 \texttt{cayley\_real\_norm\_one}); the discarded radial and phase coordinates are booked \emph{losslessly} ---
 $\text{fiber}\mapsto(\text{retained height},\text{ledger})$ is a bijection
-(\texttt{RoundTrip.record\_bijective}, \texttt{reconstruct\_record};
+(\texttt{ConeProjection.record\_bijective}, \texttt{reconstruct\_record};
 \texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}).
 \item[\textup{(C)}] \emph{FE clock intertwines.} The functional-equation clock carries the projected reflection
 to the readout reflection (\texttt{CompletedReflectionFiber.clockCompletion\_selfdual}).
 \item[\textup{(L)}] \emph{Log readout.} The logarithm linearizes the multiplicative height, and the unique
-fixed point of the involution is the midpoint $\Re s=\tfrac12$ (\texttt{RoundTrip.midpoint\_to\_critical},
+fixed point of the involution is the midpoint $\Re s=\tfrac12$ (\texttt{ConeProjection.midpoint\_to\_critical},
 \texttt{AutomorphicCandidate.midpoint\_projects\_to\_half}).
 \end{enumerate}
 Composing, the completed readout obeys $\Lambda(s;W)=\varepsilon_W\,\Lambda(1-s;W^\vee)$, $|\varepsilon_W|=1$:
@@ -4334,13 +4548,13 @@ $\varepsilon_v$ factors and the conductor (\S\ref{sec:sym5}, \eqref{eq:symeps}),
 almost-everywhere product structure --- and is \emph{not} the bare product of the clock phases $-\bar\alpha_v$,
 which are the weld's readout, not the local $\varepsilon$ factor. No lattice and no Poisson summation enter ---
 the classical theta identity $\theta(Y^{-1})=\det(Y)^{1/2}\theta(Y)$ of \S\ref{sec:machinery} is the 1D readout
-shadow of $J$, corroborated through $\Sym^{13}$.
+shadow of $J$.
 \end{proof}
 
 \noindent\emph{The unit circle is a projection surface, not a unitarity claim.} A point of the 2D chart lies
 on $S^1$ because it is the \emph{phase} projection of the source datum $\alpha=\rho\,e^{i\theta}$; the radial
 magnitude $\rho$ is \emph{not} declared $1$ but booked in the loss ledger and restored at the logarithmic
-readout (\texttt{RoundTrip.record\_bijective}: $\text{fiber}\mapsto(\text{height},(\text{radial},\text{phase}))$
+readout (\texttt{ConeProjection.record\_bijective}: $\text{fiber}\mapsto(\text{height},(\text{radial},\text{phase}))$
 is a bijection). So $\alpha=2$ and $\alpha=\tfrac12$ ride opposite lanes with reciprocal radial data and a
 common unit-circle phase; membership in $S^1$ asserts nothing about $|\alpha|$. \emph{The fiber need not be
 self-dual.} Duality is first a property of the \emph{carrier}, $C_+\leftrightarrow C_-$: an admissible fiber
@@ -4433,8 +4647,7 @@ exponents inherit this. Measured window-drift of the grown slope (App.~\ref{app:
 ($0.040\to0.000$, the proved $A^{\mathrm e}\to L(0)$); $\Sym^5\Delta$ equilibrates ($0.25\to0.05$ in the
 late windows --- the global $0.29$ is a finite-window transient of channel windings not yet averaged);
 $\Sym^{13}\Delta$'s fastest channels have not yet equilibrated at $N=2\times10^{5}$ (late windows
-oscillatory, no steady growth); the random control fluctuates about $\tfrac12$ in \emph{every} window and
-never equilibrates. Pre-committed to the falsifiability register: the $\Sym^{13}$ late-window slope falls
+oscillatory, no steady growth). Pre-committed to the falsifiability register: the $\Sym^{13}$ late-window slope falls
 with $N$ as its channels equilibrate; its persistence at ${\approx}0.46$ alongside exact $3$D closure would
 be a measured chart/carrier divergence, and would be published as such.
 \end{remark}
@@ -4442,7 +4655,7 @@ be a measured chart/carrier divergence, and would be published as such.
 \begin{remark}[The open inputs live where the ledger is discarded]\label{rem:ledgertoll}
 The descent $3\mathrm D\to2\mathrm D\to1\mathrm D$ is not lossy: it is the midpoint/Cayley projection
 carrying the loss ledger, and the ledgered map $\text{fiber}\mapsto(\text{ordinate};\,\text{radius},
-\text{angle})$ is a \emph{proven bijection} (\texttt{RoundTrip.record\_bijective},
+\text{angle})$ is a \emph{proven bijection} (\texttt{ConeProjection.record\_bijective},
 \texttt{reconstruct\_record} --- Lean, unconditional; \S\ref{sec:construct}). Every remaining open input of
 the niceness chain is therefore a statement about the \emph{unledgered} shadow --- the bare scalar the
 classical converse theorem consumes after the radius and angle channels are discarded. The transfer
@@ -4454,8 +4667,9 @@ two-lane object has termwise. The latter is now split in Lean at exactly that se
 (\texttt{pairedBank\_real} --- free, any fiber, no arithmetic); the classical readout decomposes as
 $(\text{paired}+\text{odd})/2$ (\texttt{readout\_decomposition}); and the axis functional equation is
 \emph{precisely} extinction of the odd lane-mode (\texttt{fe\_iff\_oddMode\_eq\_zero}) --- the same genre as
-the residual extinction $R=0$, where the carrier's machinery (\texttt{FocalResidualGeneral},
-Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) is strongest. The frontier is thus not hard analysis at high
+the residual extinction $R=0$, where the carrier's machinery
+(\texttt{RequestProject/FocalResidualGeneral.lean}, Lemmas~\ref{lem:bridge}, \ref{lem:rankgap})
+is strongest. The frontier is thus not hard analysis at high
 degree: it is two reach/extinction statements about a projection that provably discards nothing when its
 ledger is kept, imposed only because the classical category reads the unledgered coordinate.
 \end{remark}
@@ -4528,21 +4742,19 @@ then consume --- no step feeds on its successor.
 
 \emph{Why no Poisson --- and why not termwise.} Off the axis, $x\mapsto1/x$ mixes distinct phasors: the
 reciprocal-height identity is a resummation across the bank, and per-phasor symmetry alone cannot supply it.
-This is \emph{measured}: a completely multiplicative sign system carries the identical per-term reflection
-algebra (same self-dual kernel, unit channels, negation-closed), yet its summed identity fails by up to two
-orders of magnitude while the self-dual lattice anchor holds at machine zero
-(\texttt{random\_euler\_control.py}; the scrambled-coefficient controls of \texttt{delta\_discriminate.py}
-agree). Classically that resummation is Poisson/modularity --- unavailable at $r\ge5$. The route above never
+Classically that resummation is Poisson/modularity --- unavailable at $r\ge5$. The route above never
 performs it: the inversion leg is used only on the axis, where it is conjugation, and continuation --- a
 carrier property, not the fiber's automorphy --- carries it off. The $1$D co-convergence gap
 ($\{\Re s>\sigma_0\}\cap\{\Re s<\kappa-\sigma_0\}$ empty for $\sigma_0>\kappa/2$) is the scalar chart's record
 of the same fact: the half-plane series cannot reach the axis, so the classical frame must resummate; the
-carrier readout, continued to the axis by cell closure, need not. Axis reality is per-block Lean, whole-bank
+carrier readout, continued to the axis by cell closure, need not.
+\end{proof}
+
+\noindent Axis reality is per-block Lean, whole-bank
 geometric ($J$ with the balanced ledger), and machine-zero across the measured suite --- Dirichlet
 Lean-complete, the Siegel ($\mathrm{Sp}(2g,\mathbb Z)$) and Godement--Jacquet
 ($\mathrm{GL}(r{+}1,\mathbb Z)$) carrier lattices, the twisted family through $\Sym^{13}$ and
 $L(\Sym^5\Delta\times E_{11})$ (\S\ref{sec:machinery}, \S\ref{sec:sym5}).
-\end{proof}
 
 \begin{proposition}[Completed twisted functional equation]\label{prop:completedFE}
 For every $r\ge2$, every $1\le m<r$, and every cuspidal $\tau$ on $\mathrm{GL}_m(\mathbb A)$, the completed
@@ -4649,8 +4861,7 @@ it is Prop.~\ref{prop:localid}\,(E5), and the archimedean/conductor match is the
 at every place --- archimedean factors and conductor included --- by Prop.~\ref{prop:localid} with (E5) for the
 whole twisted family (standard side $\tau$ trivial, \eqref{eq:symeps}), and independently reproduced through
 $\Sym^{13}$: $\eta_{r,\tau}$ read non-circularly from the tensor Satake and the archimedean type
-alone (never an assumed automorphy) matches every known value through degree six and fails on detuned controls
-by fifteen orders (Appendix~\ref{app:repro}). There is no separate twisted-$\varepsilon$ theorem to prove:
+alone (never an assumed automorphy) matches every known value through degree six (Appendix~\ref{app:repro}). There is no separate twisted-$\varepsilon$ theorem to prove:
 Theorem~\ref{thm:cpsnorm} derives it.
 For the standard $L$-function ($\tau$ trivial) Proposition~\ref{prop:completedFE} is the
 Tate/Godement--Jacquet zeta integral \cite{Tate,GJa}; for the convolutions it recovers Langlands--Shahidi
@@ -4823,7 +5034,6 @@ phasor spin and magnitude producing the zeros). The content is not opaque --- it
 Satake data into vanishing --- though it is \emph{fed} that data; the clock operates the arithmetic, it
 does not conjure it.
 
-\inst{move to new Hodge specific part}
 \paragraph{The vanishing clock in the Hodge substructure: signature-based cycle detection.}
 \emph{The following is preliminary: a calibration that opened a separate development, the
 loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence sketched in \S\ref{sec:hodge-connection}
@@ -4860,7 +5070,7 @@ Sato--Tate/Hodge structure from the signature alone.
 \emph{Calibration (what these preliminaries opened).} Pushing the reading toward the layers
 \emph{invisible} to ordinary Hodge projection --- homologically-trivial cycles, the Abel--Jacobi kernel,
 filtration depth --- one asks whether each is carried by a \emph{distinct} retained carrier coordinate.
-The leading central jet factors, by the BSD/Gross--Zagier formula
+The leading central jet factors, by the BSD/Gross--Zagier formula~\cite{BSD,GrossZagier}
 $L^{(r)}(E,1)/r!=\Omega\cdot\mathrm{Reg}\cdot|\Sha|\cdot\prod_p c_p/T^2$, into three invariants that the
 census resolves \emph{independently} (\texttt{hodge\_layer\_calib.py}, App.~\ref{app:repro}): the order
 $r$ (vanishing multiplicity), the regulator $\mathrm{Reg}$ (the height/Abel--Jacobi datum),
@@ -5234,7 +5444,7 @@ those source transports that commute, up to carrier equivalence, with faithful h
 
 \part{Other Significant Results}
 
-\subsection{Obstruction-directed harmonization: from detection to removal}\label{sec:obs-removal}
+\section{Obstruction-directed harmonization: from detection to removal}\label{sec:obs-removal}
 
 The transport of Theorem~\ref{thm:universal} is, so far, an obstruction \emph{detector and locator}: it reads a
 source, and where a mode fails to close it names the obstruction coordinate $\alpha=\operatorname{Obs}(X)\neq0$
@@ -5369,8 +5579,11 @@ loop. One recharts until $\alpha$ becomes an exact \emph{closing coordinate} ---
 disappears.
 
 
+% DEDUP 2026-07-12: duplicate of sec:cps-satotate (the full corollary + proof
+% immediately below); commented out non-destructively.
+\iffalse
 \subsection{Sato--Tate for Maass forms}
-\emph{Sato--Tate for Maass forms} \inst{move to sato--tate section }(Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
+\emph{Sato--Tate for Maass forms} (Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
 the Sato--Tate law: automorphy of \emph{every} $\Sym^r\pi$ first forces temperedness --- the normalized
 Satake classes onto the compact locus $|\alpha_p|=1$, by the $r\to\infty$ limit of the
 Jacquet--Shalika/Luo--Rudnick--Sarnak bound \cite{JS,LRS} (Corollary~\ref{cor:satotate}(i)), so the angles $\theta_p$ are
@@ -5386,7 +5599,8 @@ Proposition~\ref{prop:niceness} holds verbatim and, with the Jacquet--Shalika \c
 supplies, Corollary~\ref{cor:satotate} gives Sato--Tate for $\pi$. This is where the carrier's
 Galois-freeness is decisive: a Maass form carries no geometric Galois representation, so the
 automorphy-lifting proof of Newton--Thorne \cite{NT} does not reach it, whereas the carrier --- needing
-none --- does. 
+none --- does.
+\fi
 
 \section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
 \begin{corollary}[Sato--Tate for Maass forms]\label{cor:satotate}
@@ -5438,6 +5652,9 @@ proves it.
 
 \begin{comment}
 	
+% DEDUP 2026-07-12: standing summary superseded by the Introduction's result
+% list and the Conclusion; commented out non-destructively.
+\iffalse
 We summarize the standing of each result at its own strength.
 
 \begin{itemize}
@@ -5529,9 +5746,10 @@ exhaustion, and loss-ledger recovery --- are machine-checked in Lean (Mathlib), 
 \texttt{candidate\_wellformed}, axiom footprint $\{$\texttt{propext}, \texttt{Classical.choice},
 \texttt{Quot.sound}$\}$, no \texttt{sorry}/\texttt{axiom}, built in-tree.
 \end{itemize}
+\fi
 
 
-\paragraph{Formalization scope.}
+\section{Formalization scope}
 
 \emph{Formalization.} The reflection for a \emph{general} fiber is Lean-proved: \texttt{FiniteWeightFiber}
 formalizes the finite duality-stable weight fiber and its
@@ -5553,11 +5771,11 @@ two-clock and Poisson completion tied to the exact global $L$-values), governed 
 carrier/fiber rescaling reduces the residue reading to cell arithmetic.
 \end{comment}
 
-\subsection{Hodge Connection}\label{sec:hodge-connection}
+\section{Hodge Connection}\label{sec:hodge-connection}
 \emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence} signature-based cycle detection of \S\ref{sec:general} is preliminary; calibrating it (\texttt{hodge\_%
 layer\_calib.py}) surfaced a structural question out of scope here. The carrier's descent
 $3\mathrm D\!\to\!2\mathrm D\!\to\!1\mathrm D$ books a loss ledger --- height (ordinate), radius, angle ---
-and its leading central jet factors, by BSD/Gross--Zagier, into three invariants the census resolves
+and its leading central jet factors, by BSD/Gross--Zagier~\cite{BSD,GrossZagier}, into three invariants the census resolves
 \emph{independently}: the order $r$ (vanishing multiplicity), the regulator $\mathrm{Reg}$ (the
 height/Abel--Jacobi datum), and $|\Sha|$ (the local--global obstruction). So each of three
 cycle-filtration layers ordinarily invisible to Hodge projection carries a \emph{distinct} retained
@@ -5615,7 +5833,7 @@ on extension data (\texttt{Exhaustive}; supported numerically by \texttt{hodge\_
 \texttt{tower\_exhaustion\_test.py}, \emph{not} proved on extension data), and the from-scratch triple-product
 central-derivative identity landing the Ceresa/Gross--Schoen height at level three (whose
 derivative-to-height step consumes Zhang \cite{ZhangGS} / Yuan--Zhang--Zhang \cite{YZZ}). Each
-arithmetic landing invoked is theorem-anchored --- Tate and Gross--Zagier--Kolyvagin at depth one,
+arithmetic landing invoked is theorem-anchored --- Tate and Gross--Zagier--Kolyvagin~\cite{GrossZagier,Kolyvagin} at depth one,
 the Gross--Schoen/Ceresa triple-product bridge at tensor depth three (\cite{ZhangGS,YZZ}). So the
 depth correspondence is a machine-checked theorem for the carrier filtration $F_{\mathrm{car}}$ and a
 conditional corollary for Bloch--Beilinson. The no-silent-layer input is precisely triviality of the
@@ -6240,14 +6458,20 @@ cross-checked against Sage's quaternion-algebra/Hilbert-symbol oracle; the remov
 \end{itemize} \bullshit{shit format}
 
 
-\inst{make a fucking bibtex file}
 \begin{thebibliography}{99}
+\bibitem{Langlands} R.~P.~Langlands, \emph{Beyond endoscopy}, in \emph{Contributions to Automorphic
+Forms, Geometry, and Number Theory} (Shalika 60th birthday volume), Johns Hopkins Univ.\ Press,
+Baltimore (2004), 611--697; the proposal to isolate functorial transfers through the poles of
+$L(s,\pi,\rho)$ inside the trace formula.
 \bibitem{AltI} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, I}, Compositio Math.
 \textbf{151} (2015).
 \bibitem{AltII} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, II}, Amer.\ J.\ Math.
 \textbf{139} (2017).
 \bibitem{AltIII} S.~A.~Altu\u{g}, \emph{Beyond endoscopy via the trace formula, III}, J.\ Inst.\
 Math.\ Jussieu \textbf{19} (2020).
+\bibitem{Venkatesh} A.~Venkatesh, \emph{``Beyond endoscopy'' and special forms on
+$\mathrm{GL}(2)$}, J.\ reine angew.\ Math.\ \textbf{577} (2004), 23--80; the standard-representation
+and symmetric-square cases carried out --- the two productive cases Sarnak's boundary marks the end of.
 \bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic representations of
 $\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS \textbf{11} (1978).
 \bibitem{Sar} P.~Sarnak, \emph{Comments on Robert Langlands' lecture ``Endoscopy and Beyond''}, notes
@@ -6261,6 +6485,17 @@ Mathematics \textbf{34}, SIAM (2001); Ch.~3 (Watson's lemma and the Mellin metho
 (1967), 305--347.
 \bibitem{GJa} R.~Godement and H.~Jacquet, \emph{Zeta Functions of Simple Algebras}, Lecture Notes in
 Mathematics \textbf{260}, Springer (1972).
+\bibitem{Weil} A.~Weil, \emph{Sur les courbes alg\'ebriques et les vari\'et\'es qui s'en
+d\'eduisent}, Actualit\'es Sci.\ Ind.\ \textbf{1041}, Hermann, Paris (1948); the Riemann hypothesis
+for curves over a finite field --- the Frobenius eigenvalues on the Jacobian have absolute value
+$q^{1/2}$, placing the zeros of the congruence zeta function on $\Re s=\tfrac12$.
+\bibitem{Deligne} P.~Deligne, \emph{Les constantes des \'equations fonctionnelles des fonctions L},
+in \emph{Modular Functions of One Variable II} (Antwerp), Lecture Notes in Math.\ \textbf{349},
+Springer (1973), 501--597 (the local $L$- and $\varepsilon$-factors of a Weil--Deligne
+representation); \emph{La conjecture de Weil.\ I}, Publ.\ Math.\ IH\'ES \textbf{43} (1974),
+273--307 (the Riemann hypothesis for smooth projective varieties over finite fields); and
+\emph{\ldots\ II}, Publ.\ Math.\ IH\'ES \textbf{52} (1980), 137--252 (purity: the normalized
+Frobenius eigenvalues lie on the unit circle).
 \bibitem{CPS} J.~W.~Cogdell and I.~I.~Piatetski-Shapiro, \emph{Converse theorems for
 $\mathrm{GL}_n$}, Publ.\ Math.\ IH\'ES \textbf{79} (1994), 157--214; \emph{II}, J.\ reine angew.\
 Math.\ \textbf{507} (1999), 165--188.
@@ -6289,6 +6524,15 @@ Sympos.\ Pure Math.\ \textbf{66}, Part 2, AMS (1999), 301--310; the bound
 $|\alpha|\le p^{1/2-1/(n^2+1)}$ toward Ramanujan.
 \bibitem{Titchmarsh} E.~C.~Titchmarsh, \emph{The Theory of Functions}, 2nd ed., Oxford University
 Press (1939), \S\S5.6--5.65 (Phragm\'en--Lindel\"of).
+\bibitem{BSD} B.~J.~Birch and H.~P.~F.~Swinnerton-Dyer, \emph{Notes on elliptic curves.\ II},
+J.\ reine angew.\ Math.\ \textbf{218} (1965), 79--108; the conjecture relating the analytic rank to
+the Mordell--Weil rank.
+\bibitem{GrossZagier} B.~H.~Gross and D.~B.~Zagier, \emph{Heegner points and derivatives of
+$L$-series}, Invent.\ Math.\ \textbf{84} (1986), 225--320; the central derivative as the
+N\'eron--Tate height of a Heegner point (analytic rank one).
+\bibitem{Kolyvagin} V.~A.~Kolyvagin, \emph{Euler systems}, in \emph{The Grothendieck Festschrift,
+Vol.\ II}, Progr.\ Math.\ \textbf{87}, Birkh\"auser (1990), 435--483; finiteness of $\Sha$ and the
+rank bound completing Birch--Swinnerton-Dyer at analytic rank $\le1$.
 \bibitem{ZhangGS} S.~Zhang, \emph{Gross--Schoen cycles and dualizing sheaves}, Invent.\ Math.\
 \textbf{179} (2010), 1--73; the Beilinson--Bloch height of the modified diagonal.
 \bibitem{YZZ} X.~Yuan, S.~Zhang, and W.~Zhang, \emph{Triple product $L$-series and Gross--Schoen

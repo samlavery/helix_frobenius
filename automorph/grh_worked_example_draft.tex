@@ -298,7 +298,101 @@ the classical theory obtains from Poisson summation, the carrier carries as a
 geometric symmetry of the state space, fixed before any source is attached.
 The weld axis --- the fixed locus of \(J\) --- is the carrier's copy of
 Riemann's real axis: the midline at \(\textsc{unit}/2\) of
-\S\ref{sec:grh-overview}.
+\S\ref{sec:grh-overview}. Figure~\ref{fig:grh-weld} shows where the origin
+and the functional equation enter: the double-ended object welded at
+\(z=1\), the height inversion pivoting there, and \(J\) supplying it as
+conjugation on the axis.
+
+\begin{figure}[t]
+\centering
+\resizebox{0.82\textwidth}{!}{%
+\begin{tikzpicture}[>={Stealth[length=2.4mm]}, line cap=round]
+\colorlet{carrierY}{yellow!85!orange}
+\colorlet{fiberB}{blue!72!black}
+\colorlet{midV}{violet!85!blue}
+\colorlet{vanishR}{red!82!black}
+% ---- background ----
+\fill[blue!4, rounded corners=8pt] (-6.6,-5.3) rectangle (6.6,5.6);
+\node[anchor=north west, font=\bfseries\small, text=blue!40!black]
+  at (-6.45,5.50) {the double-ended object: origin and functional equation};
+% ---- weld axis (midline) ----
+\draw[midV, line width=1.4pt, densely dash dot] (0,-4.35) -- (0,4.35);
+% ---- weld plane at z=1 ----
+\fill[gray!16, opacity=0.75] (0,0) ellipse [x radius=2.35, y radius=0.42];
+\draw[gray!60, densely dashed] (0,0) ellipse [x radius=2.35, y radius=0.42];
+\node[anchor=west, font=\scriptsize, align=left] at (2.55,0.02)
+  {weld plane: $z=1$ ($y=0$;\\[-2pt]$x=1$ in the theta variable)};
+% ---- upper helix: readout leg ----
+\draw[carrierY, line width=4.2pt, opacity=0.95]
+  plot[domain=0:1800, samples=320, smooth]
+  ({(0.55+0.0003*\x)*cos(\x)}, {\x/450+0.2*(0.55+0.0003*\x)*sin(\x)});
+\draw[fiberB, line width=1.25pt]
+  plot[domain=0:1800, samples=320, smooth]
+  ({(0.55+0.0003*\x)*cos(\x)}, {\x/450+0.2*(0.55+0.0003*\x)*sin(\x)});
+% ---- lower anti-helix: dual leg (exact mirror through the weld) ----
+\draw[carrierY, line width=4.2pt, opacity=0.95]
+  plot[domain=0:1800, samples=320, smooth]
+  ({(0.55+0.0003*\x)*cos(\x)}, {-\x/450-0.2*(0.55+0.0003*\x)*sin(\x)});
+\draw[fiberB, line width=1.25pt]
+  plot[domain=0:1800, samples=320, smooth]
+  ({(0.55+0.0003*\x)*cos(\x)}, {-\x/450-0.2*(0.55+0.0003*\x)*sin(\x)});
+% ---- origin / weld point ----
+\fill[midV] (0,0) circle (2.8pt);
+\node[midV, anchor=north west, font=\scriptsize\bfseries] at (0.14,-0.30)
+  {the origin/weld --- central point $s=\tfrac12$};
+% ---- continuations to infinity ----
+\draw[fiberB, densely dashed, ->] (1.09,4.02) -- (1.32,4.62)
+  node[anchor=west, font=\scriptsize] {to $\infty$};
+\draw[fiberB, densely dashed, ->] (1.09,-4.02) -- (1.32,-4.62)
+  node[anchor=west, font=\scriptsize] {the $z<1$ end, folded};
+% ---- functional-equation reflection P <-> P^vee ----
+\fill[fiberB, opacity=0.18] (0.874,2.4) circle (0.22);
+\fill[fiberB, opacity=0.18] (0.874,-2.4) circle (0.22);
+\fill[fiberB] (0.874,2.4) circle (2.4pt);
+\fill[fiberB] (0.874,-2.4) circle (2.4pt);
+\node[anchor=west, font=\scriptsize] at (1.10,2.58) {$s=\tfrac12+iy$};
+\node[anchor=west, font=\scriptsize] at (1.10,-2.58) {$1-s=\tfrac12-iy$};
+\draw[<->, vanishR, thick, densely dashed]
+  (1.05,2.32) .. controls (3.9,1.3) and (3.9,-1.3) .. (1.05,-2.32);
+\node[vanishR, align=center, font=\scriptsize, anchor=west] at (3.45,0.95)
+  {height inversion\\[-2pt]$z\mapsto 1/z$ \ ($s\mapsto 1-s$)};
+% ---- J and epsilon annotations (left) ----
+\node[align=right, anchor=east, font=\scriptsize] at (-2.55,1.05)
+  {on the weld axis, inversion $=$ conjugation:\\[-2pt]
+   $J$, phasor by phasor};
+\draw[densely dotted] (-2.45,1.05) -- (-0.12,0.12);
+\node[align=right, anchor=east, font=\scriptsize] at (-2.55,-1.30)
+  {$\varepsilon=\prod_v(-\bar\alpha_v)$, $|\varepsilon|=1$:\\[-2pt]
+   the offset at the weld};
+\draw[densely dotted] (-2.45,-1.30) -- (-0.12,-0.14);
+% ---- leg labels ----
+\node[align=right, anchor=east, font=\scriptsize, fiberB] at (-2.55,3.10)
+  {readout leg $\Lambda(s;W)$:\\[-2pt]heights $z>1$, fiber $W$};
+\node[align=right, anchor=east, font=\scriptsize, fiberB] at (-2.55,-3.10)
+  {dual leg $\varepsilon\,\Lambda(1-s;W^{\vee})$:\\[-2pt]
+   conjugate phases, anti-helix};
+% ---- FE banner ----
+\node[font=\scriptsize\bfseries] at (0,-4.95)
+  {$\Lambda(s;W)=\varepsilon\,\Lambda(1-s;W^{\vee})$ --- the strand
+   exchange, read at the weld};
+\end{tikzpicture}}
+\caption{Where the origin and the functional equation enter. The carrier is
+double-ended: the readout leg (heights \(z>1\), fiber \(W\)) and the dual
+leg (the \(z<1\) end, conjugate phases on the anti-helix, fiber
+\(W^{\vee}\)) are welded at the origin \(z=1\) --- the central point
+\(s=\tfrac12\), where the weld plane meets the weld axis. The functional
+equation is the fold through that weld: height inversion \(z\mapsto1/z\)
+(\(s\mapsto1-s\)) exchanges the legs, and on the weld axis the inversion
+coincides with conjugation, which \(J\) supplies phasor by phasor
+(Theorem~\ref{thm:carrierreflection}, Lemma~\ref{lem:bankreflection},
+step~1) --- no Poisson summation is consumed. The only mismatch the exchange
+permits is the unimodular offset at the weld,
+\(\varepsilon=\prod_v(-\bar\alpha_v)\), assembled per place in Lean
+(\texttt{StrandExchange.bankProduct\_exchange} from
+\texttt{ChiralityHB.symClock\_star}); \(\varepsilon\) is the root number,
+the offset that places or doubles the central cancellation.}
+\label{fig:grh-weld}
+\end{figure}
 
 \subsection{The fiber: the character's occupation of the
 carrier}\label{sec:grh-buckets}
@@ -387,12 +481,12 @@ restores the radius and phase; and the lift lands on the exact state the
 projection left. This is a bijection with an explicit two-sided inverse ---
 \(\texttt{record}\,f=(\text{height},(\text{radial},\text{phase}))\) inverts
 by \texttt{reconstruct} and \texttt{reconstruct} inverts by \texttt{record}
-(Lean \texttt{RoundTrip.record\_bijective}, \texttt{reconstruct\_record});
+(Lean \texttt{ConeProjection.record\_bijective}, \texttt{reconstruct\_record});
 distinct helix events write distinct ledger entries
 (\texttt{SourceHolonomy.projection\_bijective\_loss\_ledger}). Transport with
 the ledger is lossless in both directions; transport without the ledger is a
 compression, and provably so --- dropping the radial channel alone already
-makes the projection non-injective (\texttt{RoundTrip.radial\_lost},
+makes the projection non-injective (\texttt{ConeProjection.radial\_lost},
 \S\ref{sec:grh-E1}).
 
 The two directions do different work in this part. Downward is
@@ -417,6 +511,161 @@ eigenstate carries the coordinates the ordinate dropped. Whether an
 eigenvalue must \emph{be} that trace or \emph{coincide} with it (decision
 one), and whether the event or its trace is ``the zero'' (decision two), are
 questions about the two ends of the maps displayed above.
+Figure~\ref{fig:grh-pipeline} draws the entire pipeline for \(\chi_3\): the
+conjugate pair up to its first crossing, and the ledgered descent to the
+chart --- with the midline surviving every stage.
+
+\begin{figure}[p]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[>={Stealth[length=2.4mm]}, line cap=round]
+\colorlet{carrierY}{yellow!85!orange}
+\colorlet{fiberB}{blue!72!black}
+\colorlet{midV}{violet!85!blue}
+\colorlet{vanishR}{red!82!black}
+% ================= PANEL BACKGROUNDS =================
+\fill[blue!4, rounded corners=8pt] (-8.0,-1.75) rectangle (4.35,8.85);
+\fill[gray!7, rounded corners=8pt] (4.65,-1.75) rectangle (15.4,8.85);
+\node[anchor=north west, font=\bfseries\small, text=blue!40!black]
+  at (-7.85,8.75) {3D state space};
+\node[anchor=north east, font=\bfseries\small, text=black!60]
+  at (15.25,8.75) {the ledgered descent};
+% ================= PANEL A: the 3D object =================
+% weld axis: the midline, unit/2 (midpoint no. 1)
+\draw[midV, line width=1.4pt, densely dash dot] (0,-0.15) -- (0,7.55);
+\node[midV, font=\scriptsize\bfseries] at (0,-1.30)
+  {midpoint: weld axis $=\textsc{unit}/2$};
+% height axis
+\draw[->, thick] (-5.15,0) -- (-5.15,7.9) node[above] {\small height $z$};
+\foreach \n in {1,2,3}{
+  \draw (-5.23,\n) -- (-5.07,\n) node[left=3pt] {\scriptsize $n=\n$};}
+\draw[thick] (-5.29,5.25) -- (-5.01,5.45);
+\draw[thick] (-5.29,5.10) -- (-5.01,5.30);
+\draw (-5.23,7) -- (-5.07,7);
+\node[anchor=east, font=\scriptsize] at (-5.30,7)
+  {$z=e^{y}\approx 3.10\times10^{3}$};
+% ---- helix C+ (left): yellow carrier band, blue fiber riding it ----
+\draw[carrierY, line width=4.2pt, opacity=0.95]
+  plot[domain=0:3420, samples=480, smooth]
+  ({-1.7+(0.55+0.00017*\x)*cos(\x)}, {\x/488.57+0.22*(0.55+0.00017*\x)*sin(\x)});
+\draw[fiberB, line width=1.25pt]
+  plot[domain=0:3420, samples=480, smooth]
+  ({-1.7+(0.55+0.00017*\x)*cos(\x)}, {\x/488.57+0.22*(0.55+0.00017*\x)*sin(\x)});
+% ---- anti-helix C- (right, mirrored winding, conjugate tilt) ----
+\draw[carrierY, line width=4.2pt, opacity=0.95]
+  plot[domain=0:3420, samples=480, smooth]
+  ({1.7-(0.55+0.00017*\x)*cos(\x)}, {\x/488.57-0.22*(0.55+0.00017*\x)*sin(\x)});
+\draw[fiberB, line width=1.25pt]
+  plot[domain=0:3420, samples=480, smooth]
+  ({1.7-(0.55+0.00017*\x)*cos(\x)}, {\x/488.57-0.22*(0.55+0.00017*\x)*sin(\x)});
+% ---- phasor entries on C+ ----
+\draw[->, fiberB, thick] (-2.34,1.10) -- ++(-0.26,0);
+\draw[->, fiberB, thick] (-0.97,2.21) -- ++(0.30,0);
+\draw[->, fiberB, thick] (-2.53,3.32) -- ++(-0.36,0);
+% ---- left label stack ----
+\node[align=left, anchor=west, font=\scriptsize] at (-7.85,4.90)
+  {carrier: $\pi/3$-scaled\\[-2pt](yellow layer)};
+\draw[densely dotted] (-6.05,4.90) -- (-2.72,4.62);
+\node[align=left, anchor=west, font=\scriptsize, fiberB] at (-7.85,3.70)
+  {fiber $F_{\chi_3}$ (blue)\\[-2pt]riding the carrier};
+\draw[fiberB, densely dotted] (-6.00,3.70) -- (-2.60,3.45);
+\node[fiberB, align=left, anchor=west, font=\scriptsize] at (-7.85,2.20)
+  {phasor of $n$ enters\\[-2pt]at height $n$, grows};
+\draw[fiberB, densely dotted] (-6.00,2.20) -- (-2.66,1.12);
+% ---- crossing / focal cancellation (glow) ----
+\fill[vanishR, opacity=0.12] (0,7) circle (0.52);
+\fill[vanishR, opacity=0.22] (0,7) circle (0.30);
+\draw[vanishR, densely dashed, line width=0.9pt] (-3.35,7) -- (3.35,7);
+\fill[fiberB, opacity=0.18] (-2.83,7) circle (0.26);
+\fill[fiberB, opacity=0.18] (2.83,7) circle (0.26);
+\fill[fiberB] (-2.83,7) circle (2.6pt);
+\fill[fiberB] (2.83,7) circle (2.6pt);
+\node[vanishR] at (0,7) {$\otimes$};
+\node[vanishR, align=center, font=\scriptsize, fill=blue!4, inner sep=1.5pt]
+  at (0,6.22) {focal cancellation\\[-2pt](vanishing)};
+% ---- Frobenius bracket ----
+\draw[decorate, decoration={brace, amplitude=7pt}, thick]
+  (-2.83,7.42) -- (2.83,7.42);
+\node[font=\scriptsize] at (0,8.02)
+  {conjugate eigenstates --- Frobenius $\det=1$};
+% ---- lane labels ----
+\node[font=\scriptsize] at (-2.4,-0.62) {helix $C_{+}$ (phase $+\theta$)};
+\node[font=\scriptsize] at (2.4,-0.62) {anti-helix $C_{-}$ (phase $-\theta$)};
+% ================= PANEL B: the ledgered descent =================
+% ledger box
+\node[draw, thick, rounded corners, align=center, inner sep=5pt,
+      fill=white, font=\scriptsize] (ledger) at (7.05,6.85)
+  {loss ledger $\mathcal D=(r,\theta)$\\[-1pt]radius $r$ booked};
+\draw[->, very thick, black!70] (2.95,7.05) .. controls (4.55,7.10) .. (ledger.west);
+% ---- 2D stage: unit circle (midpoint no. 2) ----
+\draw[midV, line width=1.3pt] (11.6,6.15) circle (0.95);
+\fill (11.6,6.15) circle (1.1pt);
+\draw[gray, densely dashed] (11.6,6.15) -- ++(128:0.95);
+\fill[fiberB, opacity=0.18] ($(11.6,6.15)+(128:0.95)$) circle (0.2);
+\fill[fiberB] ($(11.6,6.15)+(128:0.95)$) circle (2.2pt);
+\draw (11.95,6.15) arc[start angle=0, end angle=128, radius=0.35];
+\node[font=\scriptsize] at (11.85,6.60) {$\theta$};
+\node[align=center, font=\scriptsize] at (11.6,4.82)
+  {Cayley/M\"obius $\to$ 2D unit circle\\[-2pt](radius held in the ledger)};
+\node[midV, font=\scriptsize\bfseries, align=center] at (11.6,7.55)
+  {midpoint: lands \emph{on} the circle};
+\draw[->, very thick, black!70] (ledger.east) -- (10.55,6.45);
+% ---- 1D stage ----
+\draw[->, very thick, black!70] (11.6,4.45) -- (11.6,3.85)
+  node[midway, right=3pt, font=\scriptsize] {project: angle $\theta$ booked};
+\draw[thick] (10.2,3.55) -- (13.0,3.55);
+\fill[fiberB] (11.6,3.55) circle (2.2pt);
+\node[anchor=west, font=\scriptsize] at (13.1,3.62)
+  {1D: height retained};
+\node[anchor=west, font=\scriptsize, text=black!60] at (13.1,3.22)
+  {abscissa pinned at $\textsc{unit}/2$};
+% ---- chart stage (midpoint no. 3) ----
+\draw[->, very thick, black!70] (11.6,3.25) -- (11.6,2.62)
+  node[midway, right=3pt, font=\scriptsize] {$\log$};
+\fill[white] (10.6,0.42) rectangle (12.6,2.32);
+\draw[thick] (10.6,0.42) rectangle (12.6,2.32);
+\draw[midV, line width=1.3pt, densely dash dot] (11.6,0.42) -- (11.6,2.32);
+\fill[fiberB, opacity=0.18] (11.6,1.75) circle (0.2);
+\fill[fiberB] (11.6,1.75) circle (2.2pt);
+\node[anchor=west, font=\scriptsize] at (12.7,1.75)
+  {$y=\log z\approx 8.04$};
+\node[midV, font=\scriptsize\bfseries] at (11.6,0.14)
+  {midpoint: $\Re s=\tfrac12$};
+\node[font=\scriptsize] at (11.6,-0.42)
+  {readout: first zero of $L(s,\chi_3)$};
+\node[font=\scriptsize] at (11.6,-0.86)
+  {chart registration: $N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)$};
+% ---- return arrow (bidirectional transport) ----
+\draw[->, densely dashed, thick, gray!65!black]
+  (10.5,1.35) .. controls (8.0,1.7) and (6.35,3.6) .. (6.70,6.35);
+\node[gray!65!black, align=center, rotate=68, font=\scriptsize] at (6.82,3.65)
+  {$\operatorname{Rec}$: $z=e^{y}$; ledger restores $(r,\theta)$};
+% ---- midline thread annotation ----
+\node[midV, font=\scriptsize\bfseries] at (10.0,-1.38)
+  {midpoint $\to$ midpoint $\to$ midpoint: the midline survives every stage};
+\end{tikzpicture}}
+\caption{The pipeline for \(\chi_3\), end to end (heights schematic, not to
+scale). \emph{Left panel} --- the 3D object: helix \(C_{+}\) and conjugate
+anti-helix \(C_{-}\), the \(\pi/3\)-scaled carrier as the yellow layer, the
+fiber \(F_{\chi_3}\) in blue growing from the origin with phasors entering
+at integer heights; the violet dash-dot line is the weld axis --- the
+midline at \(\textsc{unit}/2\), the fixed locus of \(J\). At the first
+crossing the lanes align in exact focal cancellation, and the conjugate
+eigenstate pair (Frobenius \(\det=1\)) marks the event at height
+\(z=e^{y}\approx3.10\times10^{3}\). \emph{Right panel} --- the ledgered
+descent: radius booked in the loss ledger, Cayley/M\"obius to the 2D unit
+circle, angle booked at the projection to 1D, logarithm to the chart,
+landing the readout at \(y=\log z\approx 8.0397\), the first zero of
+\(L(s,\chi_3)\), with \(S(t)\) the registration bookkeeping between the two
+scales (\S\ref{sec:carrier-S}). The violet thread is the midline surviving
+every stage --- weld axis in 3D, on-circle landing in 2D
+(\texttt{midpoint\_entry\_on\_circle}), \(\Re s=\tfrac12\) in the chart
+(\texttt{pipeline\_midpoint\_iff}): the ordinate compresses by a logarithm
+while the abscissa is pinned by the symmetry. The dashed return arrow is the
+upward transport: readout plus ledger reconstructs the state exactly
+(\S\ref{sec:grh-projection}).}
+\label{fig:grh-pipeline}
+\end{figure}
 
 \subsection{The chart: \texorpdfstring{\(y=\log z\) and
 \(z=e^{y}\)}{y = log z and z = e\^{}y}}\label{sec:grh-chart}
@@ -463,6 +712,34 @@ matrix of the lane states drops rank at the alignment and at no other height
 (Z-3D) names: a 3D height \(z\) on the helix at which the canonical finite
 carrier bank closes exactly. That vanishing is definitionally
 \texttt{ThreeDFocal.ThreeDZero}; it is not a chart criterion.
+
+\medskip
+\noindent\textbf{Note (Frobenius determinant one).} The conjugate eigenstate pair the alignment
+realizes is not free to sit anywhere; it is pinned by an algebraic constraint. On the carrier the
+local Frobenius acts as a \emph{similitude of determinant one}: its chiral block has \(\det=1\)
+(\texttt{RequestProject/FrobeniusSimilitude.lean}, \texttt{frobeniusBlock\_det\_one}), so its two
+eigenvalues multiply to one --- a reciprocal pair \(\{\alpha,\alpha^{-1}\}\). With the class
+unitary they lie on the unit circle as a conjugate pair \(\{e^{i\theta},e^{-i\theta}\}\), and the
+eigenphases \(\pm\theta\) are real: the algebraic reason the eigenstate pair is symmetric about the
+weld axis rather than drifting off it. This is the carrier's realization of the classical
+unit-circle normalization of the Satake--Frobenius class; on the analytic side it is Deligne's
+purity, which places the normalized Frobenius eigenvalues on the unit circle \cite{Deligne}, with
+the trivial similitude factor \(\det=1\) keeping them a conjugate pair. The one setting where this
+mechanism is already a completed theorem is the function-field analog: Weil's Riemann hypothesis for
+curves over a finite field \(\mathbb F_q\) is precisely the statement that the Frobenius eigenvalues
+on the Jacobian have absolute value \(q^{1/2}\) and pair as \(\{\alpha,q/\alpha\}\), which after
+normalization sit as conjugate pairs \(\{\beta,\beta^{-1}\}\) of determinant one on the unit circle
+--- forcing the zeros of the congruence zeta function onto \(\Re s=\tfrac12\) \cite{Weil}; Deligne's
+proof of the Weil conjectures extends this purity to smooth projective varieties of every dimension
+\cite{Deligne}. There the Frobenius \emph{is} the operator whose spectrum pins the zeros to the
+critical line, and determinant-one unitarity is the entire content of that conclusion --- the
+carrier's \(\det=1\) block is the local, archimedean shadow of the same mechanism. We claim the
+analog, not the classical case: the finite-field statement is an unconditional theorem, the
+classical one is not, and importing the former as a proof of the latter is exactly the elision this
+part refuses. The determinant-one fact is
+a structural property of the representation, proven on the carrier; it does not by itself adjudicate
+the naming decisions of \S\ref{sec:grh-overview} --- it fixes where the paired eigenphases live, not
+which of \((\text{Z-3D})\)/\((\text{Z-1D})\) names the zero.
 
 \subsection{The two Gram operators}\label{sec:grh-operators}
 
