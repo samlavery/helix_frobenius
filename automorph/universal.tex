@@ -116,7 +116,12 @@ requires of its spectrum, and whether the real zeta zero is the 3D source
 event or its classical 1D interpretation --- with the decisions stated exactly
 and deferred to the community.
 
-The same machinery extends. We prove symmetric-power functoriality on
+The same machinery extends, and its extension is the paper's Langlands
+content: the carrier is a \emph{common representation} --- every admissible
+automorphic fiber normalizes onto one shared harmonic carrier, and
+\emph{functoriality is the coherence of that normalization} under source
+transports, a structural claim that is unconditional and machine-checked. We
+prove symmetric-power functoriality on
 $\mathrm{GL}(2)$ data at every rank through the Cogdell--Piatetski-Shapiro
 converse checklist, with niceness discharged on the carrier; extend the model
 beyond $\mathrm{GL}(2)$ through configuration sets of adapters and clocks
@@ -190,6 +195,29 @@ the unit circle with the radius booked, then to the line with the angle booked
 and the logarithm applied --- at $y=\log z$. Projection with its ledger is a
 bijection (Theorem~\ref{thm:g2-ledgered-projection}); without it, a
 compression.
+
+One consequence organizes everything below and is the paper's Langlands
+content, so we name it first: the carrier is not built per $L$-function --- it
+is a \emph{common representation}. Heterogeneous automorphic objects
+(different groups, ranks, conductors, and Satake data) each lift to a fiber,
+and a per-source normalization scales all of them onto \emph{one} shared
+harmonic carrier at a common scale --- the least common refinement of their
+native cells (\S\ref{sec:normalization-simultaneous},
+Corollary~\ref{cor:sync}) --- where they are simultaneously realized and
+directly comparable. \emph{Functoriality is then a coherence law, not an
+analogy}: a structural transport between two automorphic worlds descends to a
+transport of their common-carrier representations, and these compose ---
+identity, associativity, base change --- preserving exact focal closure
+(Theorem~\ref{thm:transport}; \texttt{CarrierFunctoriality.faithful\_comp}, no
+axioms). Symmetric powers, Rankin--Selberg, base change, and theta are each
+one instance of this single common-representation transport. This structural
+core --- normalization onto the common refinement, closure transfer, and
+coherent transport --- is unconditional and machine-checked
+(\texttt{RequestProject/CommonRepresentation.lean}); the arithmetic that lands
+a \emph{particular} fiber as automorphic (harmonization of its cells,
+Lemma~\ref{lem:forcible}, and the completeness that makes its readout entire,
+Lemma~\ref{lem:completeness}) is the per-fiber input the converse theorem
+consumes.
 
 The main results, each at its stated register:
 \begin{enumerate}
@@ -275,7 +303,7 @@ forms: Newton--Thorne \cite{NT}; $r\le4$: Gelbart--Jacquet \cite{GJ}, Kim--Shahi
 \cite{KimShahidi}). Established here at \emph{every} rank --- cuspidal in the generic case,
 Galois-free, Maass included: Thm.~\ref{thm:func}, Cor.~\ref{cor:func234}, with niceness
 discharged on the carrier (Prop.~\ref{prop:completedFE}, Lem.~\ref{lem:transfer},
-Lem.~\ref{lem:bounded}, Lem.~\ref{lem:rankgap}; \texttt{FiniteWeightFiber.symTensorCompleted\_FE},
+Lem.~\ref{lem:bounded}, Lem.~\ref{lem:completeness}; \texttt{FiniteWeightFiber.symTensorCompleted\_FE},
 \texttt{TransferContinuation.transfer\_analytic},
 \texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}). [theorem, on Lean
 carrier inputs]
@@ -1982,7 +2010,7 @@ only through \(x\) occur only in the displayed power \(x^{-\tau/2}\).
 \noindent\textbf{Isolated universal proof content already found.}
 \begin{itemize}
 \item \textup{Residual dictionary.} Lemmas~\ref{lem:rankgap} and
-\ref{lem:bridge}, together with the \texttt{FocalResidualGeneral.lean} entry,
+\ref{lem:completeness}, together with the \texttt{FocalResidualGeneral.lean} entry,
 isolate the channel-agnostic arrow
 \[
 D_W^{\mathrm c}=V_W\Phi_W,\qquad V_W\neq0,
@@ -3225,6 +3253,54 @@ the ledger-normalized phase datum, unit-modulus by construction, never the radia
 then closes it.
 \end{proof}
 
+\section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
+\begin{corollary}[Sato--Tate for Maass forms]\label{cor:satotate}
+Let $\pi$ be a non-dihedral cuspidal Maass form on $\mathrm{GL}(2)/\mathbb Q$ with trivial central
+character and spectral parameter $t\neq0$ (Laplace eigenvalue $\tfrac14+t^2>\tfrac14$; equivalently $\pi$ is not
+of Galois type). For each unramified prime $p$ let
+$A_p=\operatorname{diag}(\alpha_p,\alpha_p^{-1})$ be the normalized Satake conjugacy class of $\pi_p$, a
+semisimple class in $\mathrm{SL}_2(\mathbb C)$ --- a priori only $|\alpha_p|\le p^{7/64}$ (Kim--Sarnak),
+\emph{not} assumed unitary. Then:
+\begin{enumerate}
+\item[\textup{(i)}] \emph{(temperedness)} $|\alpha_p|=1$ for every unramified $p$; the classes $A_p$ are
+supported on the compact locus, conjugate into $\mathrm{SU}(2)$.
+\item[\textup{(ii)}] \emph{(equidistribution)} writing $\alpha_p=e^{i\theta_p}$ with $\theta_p\in[0,\pi]$
+(equivalently $a_p=2\cos\theta_p$), the angles $\theta_p$ equidistribute against the Sato--Tate measure
+$\tfrac2\pi\sin^2\theta\,d\theta$.
+\end{enumerate}
+\end{corollary}
+
+\begin{proof}
+\emph{Automorphy of every symmetric power.} Corollary~\ref{cor:func234} holds for a Maass $\pi$ verbatim, the
+sole change being the archimedean clock: for the principal series
+$\varphi_{\pi,\infty}=\operatorname{diag}(|\cdot|^{it},|\cdot|^{-it})$ the $\Sym^r$ shifts are $i(r-2j)t$
+($j=0,\dots,r$), each conjugate pair completing to the \emph{imaginary}-order Bessel
+$\big(2x^{iat}e^{-\pi x^2}\big)\star_{\mathrm M}\big(2x^{-iat}e^{-\pi x^2}\big)=4K_{iat}(2\pi x)$, the Maass
+Whittaker function itself (App.~\ref{app:repro}); the det-one reflection, the $\Re s=\tfrac12$ area law with
+Phragm\'en--Lindel\"of, and residual extinction are unchanged. A non-dihedral Maass $\pi$ with $t\neq0$ has
+irreducible $\Sym^r\varphi_\pi$ for every $r$: non-dihedral removes the case $\pi\simeq\pi\otimes\eta$ (quadratic
+$\eta$), which would make $\Sym^2$ reducible, and $t\neq0$ removes the Galois-type exceptional forms --- the
+\emph{even} tetrahedral and octahedral forms are Maass of Galois type with Laplace eigenvalue exactly $\tfrac14$
+($t=0$), so $t\neq0$ excludes them, the \emph{odd} ones being holomorphic of weight one --- leaving no reducible
+symmetric power. Hence $\Sym^r\pi$ is \emph{cuspidal} automorphic on $\mathrm{GL}(r+1)$ for
+every $r$ (Theorem~\ref{thm:func}), Galois-free. The Rankin--Selberg niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$
+used in (ii) is then Theorem~\ref{thm:cps-nice} applied to these cuspidal, unequal-degree factors.
+\emph{(i) Support on the compact locus --- derived, not assumed.} Fix an unramified $p$, normalize
+$|\alpha_p|\ge1$. For each $r$, $\Sym^r\pi$ is a unitary automorphic representation of $\mathrm{GL}(r+1)$, so
+each Satake parameter is bounded by $p^{1/2}$ (Jacquet--Shalika \cite{JS}). Its parameters are
+$\{\alpha_p^{\,r-2j}\}$, largest modulus $\alpha_p^{\,r}$; hence $|\alpha_p|^{\,r}\le p^{1/2}$, i.e.
+$|\alpha_p|\le p^{1/(2r)}$, for \emph{every} $r$. Letting $r\to\infty$ forces $|\alpha_p|\le1$, so with
+$|\alpha_p|\ge1$, $|\alpha_p|=1$: every $A_p$ is unitary --- a theorem from the automorphy of every symmetric
+power, exactly what $a_p=2\cos\theta_p$ would have presupposed.
+\emph{(ii) Equidistribution.} Now $\alpha_p=e^{i\theta_p}$, $\theta_p\in[0,\pi]$, $a_p=2\cos\theta_p$ real.
+From the carrier niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$ (Theorem~\ref{thm:cps-nice}), the positivity
+argument of Jacquet--Shalika \cite{JS} excludes a zero of any $L(s,\Sym^r\pi)$ on $\Re s=1$; with holomorphy
+on $\Re s\ge1$, Serre's criterion \cite{Serre} equidistributes the $\theta_p$ against
+$\tfrac2\pi\sin^2\theta\,d\theta$. This case is out of reach of automorphy lifting --- a Maass form carries no
+geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and the carrier, needing none,
+proves it.
+\end{proof}
+
 \input{grh_worked_example_draft}
 
 
@@ -4070,12 +4146,14 @@ zero-frequency/constant-term part; $\mathcal M K=\mathcal M K^\circ+\mathcal M R
 \emph{(E4) The residual vanishes.} $R_{r,\tau}=0$. For a finite duality-stable harmonic fiber this is the
 cell closure of Lemma~\ref{lem:residual} (the adapted warp has exact zero native-cell mean, so the
 zero-frequency projection of the warped bank vanishes); for the cuspidal twists a converse theorem consumes
---- $\tau$ on $\mathrm{GL}(r-1)$ or $\mathrm{GL}(r-2)$ --- it is the unconditional focal cancellation of
-Lemma~\ref{lem:rankgap}, through the harmonic Gram pencil: at the focal event the det-one fiber's two lanes
-become dependent, the Gram matrix drops rank, its singular direction is the closed harmonic direction, so the
-pencil's representing measure loses the independent residual mode --- the normalized residual is then an exact
-nonzero multiple of the readout, and no constant mode survives to carry a pole. Either route uses no global
-parameter and no coefficient-average-to-multiplicity step, and is Galois-free.
+--- $\tau$ on $\mathrm{GL}(r-1)$ or $\mathrm{GL}(r-2)$ --- it is \emph{completeness}
+(Lemma~\ref{lem:completeness}): the DC/residue mode is the coefficient mean, which by character orthogonality
+(\texttt{harmonize\_char}) equals the \emph{trivial-channel} coefficient alone; a complete fiber has no
+trivial channel --- for non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\tau$ has no trivial
+constituent by the dimension count $\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$
+(\texttt{no\_nonzero\_hom\_of\_finrank\_lt}) --- so $R_{r,\tau}=0$ and no constant mode survives to carry a
+pole. (The pencil rank-drop of Lemma~\ref{lem:rankgap} is the separate zero-detector, not this residue.)
+Either route uses no global parameter and no coefficient-average-to-multiplicity step, and is Galois-free.
 \emph{(E5) Identification.} $\mathcal M K_{r,\tau}(s)=\Lambda(s,\Sym^r\pi\times\tau)$ on $\Re s>1$, by
 term-by-term unfolding against the local factors of Prop.~\ref{prop:localid} --- used only \emph{after} the
 entire transform is built, never to assert continuation of the $L$-function. By the identity theorem
@@ -4092,8 +4170,8 @@ harmonic fiber the carrier-cell closure of Lemma~\ref{lem:residual} discharges s
 vanishing \textup{(E4)}, the bounded warped primitive $A^{\mathrm{car}}_W=O(1)$, the continuation, and the
 vertical bound --- \emph{proved in Lean} (\texttt{CellClosure.harmonic\_bank\_primitive\_bounded}: each
 root-of-unity weight channel cancels over its cell), the Dirichlet family included. For the cuspidal twists a
-converse theorem consumes, the residual vanishing \textup{(E4)} is instead the \emph{unconditional} focal
-cancellation of Lemma~\ref{lem:rankgap}; continuation to the axis neighbourhood is continuation at the
+converse theorem consumes, the residual vanishing \textup{(E4)} is instead the \emph{unconditional}
+completeness argument of Lemma~\ref{lem:completeness}; continuation to the axis neighbourhood is continuation at the
 fiber's own scale --- the adapted closure of Lemma~\ref{lem:forcible} closes the cells at that scale, the
 primitive there is bounded by identity, and the machine-checked transfer (Lemma~\ref{lem:transfer};
 \texttt{transfer\_analytic}) carries the readout to the axis neighbourhood --- feeding the axis-reality
@@ -4212,13 +4290,15 @@ the sign flip and the $(-1)^k$ reopening fixing the orientation at a multiplicit
 only magnitude, (S) only orientation --- the conclusion needs both, which is why it is one lemma and not two.
 \end{proof}
 
-\begin{lemma}[Residual-mode vanishing: the rank gap at focal cancellation]\label{lem:rankgap}
+\begin{lemma}[Zero-detection: the rank gap at focal cancellation]\label{lem:rankgap}
 Let $1\le m<r$ and let $\tau$ be cuspidal on $\mathrm{GL}_m(\mathbb A)$ --- any twist a converse theorem
 into $\mathrm{GL}(r+1)$ consumes --- and form the configured carrier$+$fiber system $W_{r,\tau}$. Then the
-zero-frequency mode of the carrier theta $K_{r,\tau}$ vanishes, $R_{r,\tau}=0$, and
-$\mathcal M K_{r,\tau}$ is entire. The statement is \emph{fiber-parametric}: it holds for the whole
-configured class, reads only the signed-channel/lane geometry, and requires no zero of $\Phi_{r,\tau}$ to
-exist.
+harmonic-pencil rank-drop occurs \emph{exactly at the readout's zeros}: focal cancellation of the signed
+$P/M$ channels coincides with a vanishing of the readout,
+$\Phi_{r,\tau}(y)=0\iff L(\tfrac12+iy,\Sym^r\pi\times\tau)=0$ --- the carrier's exact zero-detector,
+fiber-parametric, reading only the signed-channel/lane geometry. \emph{This detects the vanishing set; it
+does not by itself establish pole-absence --- entireness is the separate completeness statement of
+Lemma~\ref{lem:completeness}.}
 \end{lemma}
 
 \begin{proof}
@@ -4249,47 +4329,47 @@ loss of a state-space degree of freedom: the closed signed direction \emph{disap
 some other coefficient, it is gone.
 \emph{Factorization.} The normalized focal residual is tied to that same signed channel,
 $D^{\mathrm c}_{r,\tau}=V_{r,\tau}\,\Phi_{r,\tau}$ with $V_{r,\tau}\neq0$
-(\texttt{normalized\_cell\_focal\_residual\_exact}); it carries \emph{no independent} zero-frequency
-direction. So the Riemann--Hecke residual mode has no free constant source: $R_{r,\tau}=0$ and
-$\mathcal M K_{r,\tau}$ is entire (the identification of the analytic residual $R_{r,\tau}$ with this pencil residual is Lemma~\ref{lem:bridge}).
-The argument is \emph{fiber-parametric} and does not require any zero of $\Phi_{r,\tau}$ to exist: the
-residual simply \emph{cannot} survive independently of $\Phi$, because the pencil loses that rank --- it is
-not the identification of a separate Fourier/DC coefficient, and it reads no global Weil--Galois parameter
-(so it holds for Maass $\tau$) and no automorphy of $\Sym^r\pi$. Machine-checked for the Dirichlet model;
+(\texttt{normalized\_cell\_focal\_residual\_exact}); so the pencil residual vanishes exactly with the
+signed channel $\Phi_{r,\tau}$, i.e.\ exactly at the readout's zeros
+(\texttt{harmonic\_residual\_no\_independent\_mode}, \texttt{gramH\_rank\_drop\_iff\_L\_zero}). This is
+zero-detection --- the pencil marks the vanishing set; pole-absence (entireness) is the \emph{separate}
+DC/constant mode, established from completeness in Lemma~\ref{lem:completeness}.
+The detector is \emph{fiber-parametric} and does not require any zero of $\Phi_{r,\tau}$ to exist: it reads
+no global Weil--Galois parameter (so it holds for Maass $\tau$) and no automorphy of $\Sym^r\pi$. Machine-checked for the Dirichlet model;
 the same determinant-one lane balance for the general symmetric-power/twist fiber, realized as
 \emph{forcible} closure with a machine-checked controllability core (Lemma~\ref{lem:forcible}). Away from a coincidence the smallest singular value reopens,
 $\sigma_{\min}(G^{\mathrm c}(t))\sim C\,|t-t_0|^{k}$ --- the post-closure resistance below, a recovery rate,
 not a residual mode.
 \end{proof}
 
-\begin{lemma}[Constant-mode bridge: the residual is the pencil residual]\label{lem:bridge}
+\begin{lemma}[Entireness from completeness: the residue is the trivial-channel coefficient]\label{lem:completeness}
 For the configured tensor fiber $W_{r,\tau}$ with coefficients $\lambda_n$, the constant term of the
 $x\to0^{+}$ expansion of the carrier theta $K_{r,\tau}(x)=\sum_{n}\lambda_n g(nx)$ --- the Riemann--Hecke
-residual mode $R_{r,\tau}$ --- is \emph{equal}, not merely modelled, by the normalized focal residual of the
-harmonic $P/M$ pencil:
-\[
-  R_{r,\tau}=D^{\mathrm c}_{r,\tau}=V_{r,\tau}\,\Phi_{r,\tau},\qquad V_{r,\tau}\neq0 .
-\]
-Hence $R_{r,\tau}=0$ iff the signed channel $\Phi_{r,\tau}$ closes; the two are one analytic quantity.
+residual $R_{r,\tau}$, equal by the Mellin pair to the edge residue of $\Lambda(s)$ --- is the DC/zero-frequency
+mode of the bank, i.e.\ its \emph{coefficient mean}. Every \emph{nontrivial} channel of the self-compatible
+cell has zero cell-mean (\texttt{CommonRepresentation.harmonize\_char}), so $R_{r,\tau}$ equals the
+\emph{trivial-channel coefficient alone} (\texttt{complete\_bank\_dc\_zero}). Hence if $W_{r,\tau}$ carries
+\emph{no trivial channel} --- \emph{completeness} --- then $R_{r,\tau}=0$ and $\Lambda(s,\Sym^r\pi\times\tau)$ is
+entire. For non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\tau$ has no trivial constituent
+whenever $\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$
+(\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}, a dimension count --- no automorphy of $\Sym^r\pi$
+used), so $W_{r,\tau}$ is complete and the twist is entire. The exceptional/reducible $\pi$ carry a genuine
+trivial constituent --- the classical $\zeta$-factor pole --- and $\Sym^r\pi$ is then the known isobaric object
+(\S\ref{sec:cps-decomp}).
 \end{lemma}
 \begin{proof}
 By absolute convergence ($\lambda_n=O(n^{A})$) the Mellin pair is exact on $\Re s>\sigma_0$, so the $x\to0^{+}$
-constant term of $K_{r,\tau}$ is the residue of $\mathcal M K_{r,\tau}(s)=\Lambda(s)$ at the edge --- the DC
-Fourier coefficient of the readout, $R_{r,\tau}$. The fiber's own coefficients split that readout into the signed
-$P/M$ channels $A_{r,\tau}=\operatorname{Re}\Phi$-lane and $B_{r,\tau}=\operatorname{Im}\Phi$-lane
-(\texttt{FocalEigenheight.focalP}/\texttt{focalM}); the normalized cell residual of the harmonic pencil
-$L^{\mathrm c}=\big[\begin{smallmatrix}A&B\\ \mu A&\lambda B\end{smallmatrix}\big]$ is, as a pure identity in the
-channels $(A,B,\mu,\lambda)$, an exact nonzero multiple of the scalar closure,
-$D^{\mathrm c}=(\lambda-\mu)B/\!\cdots=V\,\Phi$ with $V\neq0$
-(\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}, channel-agnostic). The bridge is the identification of the
-analytic residue with this algebraic one: the DC coefficient of $\sum_n\lambda_n g(nx)$ \emph{is} the pencil's
-zero-frequency direction, because the same $\lambda_n$ define both. For the Dirichlet model this identification is
-Lean-complete end-to-end (\texttt{HarmonicPencilCell.gramH\_rank\_drop\_iff\_L\_zero} ties the pencil determinant
-to the readout $L$ itself); for the general symmetric-power/twist fiber the channels $A,B$ are read from the same
-Satake data, so the identity holds verbatim, the only fiber-specific content being that $A,B$ are the fiber's own
-$P/M$ projections --- verified through $\Sym^{13}$ and on the twisted family (\S\ref{sec:sym5}). Since
-$D^{\mathrm c}=V\Phi$ carries no zero-frequency direction independent of $\Phi$, $R_{r,\tau}$ has no free constant
-source: it vanishes with the closure and cannot survive it.
+constant term of $K_{r,\tau}$ is the residue of $\mathcal M K_{r,\tau}(s)=\Lambda(s)$ at the edge (Riemann--Hecke)
+--- the DC Fourier coefficient of the bank. Decomposing the coefficients into the fiber's channels (additive
+characters of the self-compatible cell group), character orthogonality gives that each nontrivial channel sums to
+zero over a cell (\texttt{harmonize\_char}), so the DC coefficient is the trivial-channel coefficient alone
+(\texttt{complete\_bank\_dc\_zero}). A trivial channel is present iff $\varphi_\tau^\vee$ embeds in
+$\Sym^r\varphi_\pi$ (a trivial constituent); for non-exceptional $\pi$ with
+$\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$ that $\operatorname{Hom}$-space is zero
+(\texttt{no\_nonzero\_hom\_of\_finrank\_lt}), so there is no trivial channel, $R_{r,\tau}=0$, and $\Lambda$ is
+entire. The pencil residual $D^{\mathrm c}_{r,\tau}=V_{r,\tau}\Phi_{r,\tau}$ of Lemma~\ref{lem:rankgap} is a
+\emph{separate} quantity --- the zero-detector, the readout's value along the line --- not this DC/residue mode;
+the two must not be conflated.
 \end{proof}
 
 \noindent Cell closure is not a fiber-uniform theorem to be proved once for all functions, but a property
@@ -4318,8 +4398,8 @@ arithmetic-\emph{neutral} transport half --- it closes cells at any admissible f
 none of the fiber's arithmetic, which is exactly what universal transport requires of it
 (Cor.~\ref{cor:sync}) and exactly why it is not niceness evidence: force-closure alone yields no
 continuation to transfer. The axis-reality
-reflection (Lemma~\ref{lem:bankreflection}) consumes this continuation; the residual mode vanishes by the focal
-cancellation of Lemma~\ref{lem:rankgap}, unconditionally; and full-plane entireness then follows from the entire
+reflection (Lemma~\ref{lem:bankreflection}) consumes this continuation; the residual mode vanishes by
+completeness (Lemma~\ref{lem:completeness}), unconditionally; and full-plane entireness then follows from the entire
 reflected carrier theta, downstream of the functional equation --- the dependency order of
 Lemma~\ref{lem:bankreflection}, no step feeding on its successor.
 What is exhibited per instance is then only the finer warp dynamics --- the post-closure resistance below ---
@@ -4355,7 +4435,7 @@ $\Sym^{13}$ cell that $\Theta$ closes --- the resisting cell naming its adapter.
 that makes the never-clip method law measurable is documented in App.~\ref{app:repro}.)
 \end{lemma}
 
-\noindent This realizes the residual extinction of Lemma~\ref{lem:rankgap} \emph{constructively} for the cuspidal
+\noindent This realizes the cell closure of Lemma~\ref{lem:rankgap} \emph{constructively} for the cuspidal
 fiber: each cell is forced closed, so no zero-frequency mode survives --- an explicit constructive mechanism whose
 algebraic core (two independent directions force any residual) is machine-checked and supplied by the reachable
 independent stage, not cell by cell, behind the structural rank-drop. \emph{Scope, fixed by the theorem's own generality:}
@@ -4380,8 +4460,8 @@ so the readout is finite order there; the functional equation extends that bound
 forcing weights need \emph{not} be bounded for $L$ to be finite order (in the native growth chart the measured
 closing weights are in fact $O(1)$--$O(3)$; only the clipped control chart inflates them --- either way a
 feature of the constructive route, not a bound on $L$). Forcible closure
-thus makes Lemma~\ref{lem:rankgap}'s extinction \emph{constructive}; entireness rests on the channel-agnostic
-rank-drop, boundedness on the Euler factor, and reachability on the completeness--admissibility argument above ---
+thus makes the cell closure \emph{constructive}; entireness rests on completeness (Lemma~\ref{lem:completeness}),
+boundedness on the Euler factor, and reachability on the completeness--admissibility argument above ---
 so no leg of niceness rests on numerics; the tested families confirm the mechanism rather than carry it.
 
 \emph{Functorial preservation --- and its limit.} That reachability is not isolated per fiber. Exact focal
@@ -4523,7 +4603,7 @@ reflected carrier integral of \S\ref{sec:machinery},
 \[
   \mathcal C(s)=\int_1^\infty K_{r,\tau}(x)\bigl(x^{s}+\eta\,x^{\kappa-s}\bigr)\tfrac{dx}{x},\qquad|\eta|=1,
 \]
-entire once $R=0$ (Lemma~\ref{lem:rankgap}) and equal to the completed twist $\Lambda(s,\Pi_r\times\tau)$ by
+entire once $R=0$ (Lemma~\ref{lem:completeness}) and equal to the completed twist $\Lambda(s,\Pi_r\times\tau)$ by
 the identification \textup{(E5)}. On a fixed strip $a\le\Re s\le b$ the factor $x^{it}$ has modulus one, so
 \[
   |\mathcal C(\sigma+it)|\le\int_1^\infty|K_{r,\tau}(x)|\bigl(x^{b}+x^{\kappa-a}\bigr)\tfrac{dx}{x}<\infty,
@@ -4706,7 +4786,7 @@ two-lane object has termwise. The latter is now split in Lean at exactly that se
 $(\text{paired}+\text{odd})/2$ (\texttt{readout\_decomposition}); and the axis functional equation is
 \emph{precisely} extinction of the odd lane-mode (\texttt{fe\_iff\_oddMode\_eq\_zero}) --- the same genre as
 the residual extinction $R=0$, where the carrier's machinery
-(\texttt{RequestProject/FocalResidualGeneral.lean}, Lemmas~\ref{lem:bridge}, \ref{lem:rankgap})
+(\texttt{RequestProject/FocalResidualGeneral.lean}, Lemmas~\ref{lem:completeness}, \ref{lem:rankgap})
 is strongest. The frontier is thus not hard analysis at high
 degree: it is two reach/extinction statements about a projection that provably discards nothing when its
 ledger is kept, imposed only because the classical category reads the unledgered coordinate.
@@ -4773,7 +4853,7 @@ identity or the functional equation. On that neighbourhood
 the two sides of the claimed equation are analytic and agree on the axis, a set with accumulation points; by
 the identity theorem they agree identically. The dependency order is
 continuation~$\to$~axis reality~$\to$~functional equation~$\to$~theta identity: with the residual extinct
-(Lemmas~\ref{lem:bridge}, \ref{lem:rankgap}) Mellin inversion \emph{returns} the summed-bank self-duality
+(Lemmas~\ref{lem:completeness}, \ref{lem:rankgap}) Mellin inversion \emph{returns} the summed-bank self-duality
 $K_{r,\tau}(1/x)=\varepsilon_{r,\tau}x^{\kappa}K_{r,\tau^\vee}(x)$ as an \emph{output}, which is what the
 Riemann--Hecke split of Prop.~\ref{prop:niceness}\,(E) and the direct strip bound of Lemma~\ref{lem:bounded}
 then consume --- no step feeds on its successor.
@@ -5274,10 +5354,11 @@ $\Lambda(s;W)=\varepsilon\,\Lambda(1-s;W^\vee)$ --- the helix-to-anti-helix invo
 \item[\textup{(d)}] \emph{Residual extinction (a configured focal event, fiber-parametric)}: the fiber's
 coefficients configure a signed phasor system $(P_W,M_W)$, which the adapted carrier realizes on the two lanes
 $(X_{W,+},X_{W,-})$ at height $z=e^y$; the normalized focal residual factors through the readout,
-$D^{\mathrm c}_W(y)=V_W(y)\,\Phi_W(y)$ with $V_W\neq0$ (Lemma~\ref{lem:rankgap}), so it carries \emph{no
-independent} DC direction --- it is algebraically slaved to $\Phi_W$, not a free constant source --- whence
-$R_W=0$: \emph{the carrier generates no residue pole}, without any zero of $\Phi_W$ being required to exist ---
-so the completed carrier readout is entire. (For a reducible parameter the identified $L$-function may carry an
+$D^{\mathrm c}_W(y)=V_W(y)\,\Phi_W(y)$ with $V_W\neq0$ (Lemma~\ref{lem:rankgap}) is the \emph{zero-detector},
+algebraically slaved to $\Phi_W$; the DC/residue mode is a \emph{separate} quantity --- the coefficient mean,
+the trivial-channel coefficient alone (\texttt{harmonize\_char}) --- so a \emph{complete} fiber (no trivial
+channel) has $R_W=0$: \emph{the carrier generates no residue pole} (Lemma~\ref{lem:completeness}), and the
+completed carrier readout is entire. (For a reducible parameter the identified $L$-function may carry an
 additional $\zeta$-factor pole from a trivial constituent; that is not a carrier residue, and it occurs only
 for the classically enumerated exceptional $\pi$, \S\ref{sec:cps-decomp}.)
 \end{itemize}
@@ -5619,76 +5700,9 @@ loop. One recharts until $\alpha$ becomes an exact \emph{closing coordinate} ---
 disappears.
 
 
-% DEDUP 2026-07-12: duplicate of sec:cps-satotate (the full corollary + proof
-% immediately below); commented out non-destructively.
-\iffalse
-\subsection{Sato--Tate for Maass forms}
-\emph{Sato--Tate for Maass forms} (Corollary~\ref{cor:satotate}). Symmetric-power functoriality carries
-the Sato--Tate law: automorphy of \emph{every} $\Sym^r\pi$ first forces temperedness --- the normalized
-Satake classes onto the compact locus $|\alpha_p|=1$, by the $r\to\infty$ limit of the
-Jacquet--Shalika/Luo--Rudnick--Sarnak bound \cite{JS,LRS} (Corollary~\ref{cor:satotate}(i)), so the angles $\theta_p$ are
-real \emph{after} this is proved, not by fiat --- and then, with every $L(s,\Sym^r\pi)$ holomorphic and
-non-vanishing on $\Re s\ge1$, Serre's criterion \cite{Serre} equidistributes them against the Sato--Tate
-measure. The carrier
-route to that niceness reads only the Satake parameters, the archimedean type, and the tensor rule --- it
-is Galois-free --- so it applies to a non-holomorphic (Maass) $\pi$ with \emph{only the archimedean clock
-changed}: the principal-series shifts $i(r-2j)t$ complete, two clocks at a time, to the imaginary-order
-Bessel $4K_{iat}(2\pi x)$, the Maass Whittaker function, in place of the real-order holomorphic clock
-(machine-verified, App.~\ref{app:repro}). The three niceness properties are unchanged, so
-Proposition~\ref{prop:niceness} holds verbatim and, with the Jacquet--Shalika \cite{JS} non-vanishing it
-supplies, Corollary~\ref{cor:satotate} gives Sato--Tate for $\pi$. This is where the carrier's
-Galois-freeness is decisive: a Maass form carries no geometric Galois representation, so the
-automorphy-lifting proof of Newton--Thorne \cite{NT} does not reach it, whereas the carrier --- needing
-none --- does.
-\fi
-
-\section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
-\begin{corollary}[Sato--Tate for Maass forms]\label{cor:satotate}
-Let $\pi$ be a non-dihedral cuspidal Maass form on $\mathrm{GL}(2)/\mathbb Q$ with trivial central
-character and spectral parameter $t\neq0$ (Laplace eigenvalue $\tfrac14+t^2>\tfrac14$; equivalently $\pi$ is not
-of Galois type). For each unramified prime $p$ let
-$A_p=\operatorname{diag}(\alpha_p,\alpha_p^{-1})$ be the normalized Satake conjugacy class of $\pi_p$, a
-semisimple class in $\mathrm{SL}_2(\mathbb C)$ --- a priori only $|\alpha_p|\le p^{7/64}$ (Kim--Sarnak),
-\emph{not} assumed unitary. Then:
-\begin{enumerate}
-\item[\textup{(i)}] \emph{(temperedness)} $|\alpha_p|=1$ for every unramified $p$; the classes $A_p$ are
-supported on the compact locus, conjugate into $\mathrm{SU}(2)$.
-\item[\textup{(ii)}] \emph{(equidistribution)} writing $\alpha_p=e^{i\theta_p}$ with $\theta_p\in[0,\pi]$
-(equivalently $a_p=2\cos\theta_p$), the angles $\theta_p$ equidistribute against the Sato--Tate measure
-$\tfrac2\pi\sin^2\theta\,d\theta$.
-\end{enumerate}
-\end{corollary}
-
-\begin{proof}
-\emph{Automorphy of every symmetric power.} Corollary~\ref{cor:func234} holds for a Maass $\pi$ verbatim, the
-sole change being the archimedean clock: for the principal series
-$\varphi_{\pi,\infty}=\operatorname{diag}(|\cdot|^{it},|\cdot|^{-it})$ the $\Sym^r$ shifts are $i(r-2j)t$
-($j=0,\dots,r$), each conjugate pair completing to the \emph{imaginary}-order Bessel
-$\big(2x^{iat}e^{-\pi x^2}\big)\star_{\mathrm M}\big(2x^{-iat}e^{-\pi x^2}\big)=4K_{iat}(2\pi x)$, the Maass
-Whittaker function itself (App.~\ref{app:repro}); the det-one reflection, the $\Re s=\tfrac12$ area law with
-Phragm\'en--Lindel\"of, and residual extinction are unchanged. A non-dihedral Maass $\pi$ with $t\neq0$ has
-irreducible $\Sym^r\varphi_\pi$ for every $r$: non-dihedral removes the case $\pi\simeq\pi\otimes\eta$ (quadratic
-$\eta$), which would make $\Sym^2$ reducible, and $t\neq0$ removes the Galois-type exceptional forms --- the
-\emph{even} tetrahedral and octahedral forms are Maass of Galois type with Laplace eigenvalue exactly $\tfrac14$
-($t=0$), so $t\neq0$ excludes them, the \emph{odd} ones being holomorphic of weight one --- leaving no reducible
-symmetric power. Hence $\Sym^r\pi$ is \emph{cuspidal} automorphic on $\mathrm{GL}(r+1)$ for
-every $r$ (Theorem~\ref{thm:func}), Galois-free. The Rankin--Selberg niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$
-used in (ii) is then Theorem~\ref{thm:cps-nice} applied to these cuspidal, unequal-degree factors.
-\emph{(i) Support on the compact locus --- derived, not assumed.} Fix an unramified $p$, normalize
-$|\alpha_p|\ge1$. For each $r$, $\Sym^r\pi$ is a unitary automorphic representation of $\mathrm{GL}(r+1)$, so
-each Satake parameter is bounded by $p^{1/2}$ (Jacquet--Shalika \cite{JS}). Its parameters are
-$\{\alpha_p^{\,r-2j}\}$, largest modulus $\alpha_p^{\,r}$; hence $|\alpha_p|^{\,r}\le p^{1/2}$, i.e.
-$|\alpha_p|\le p^{1/(2r)}$, for \emph{every} $r$. Letting $r\to\infty$ forces $|\alpha_p|\le1$, so with
-$|\alpha_p|\ge1$, $|\alpha_p|=1$: every $A_p$ is unitary --- a theorem from the automorphy of every symmetric
-power, exactly what $a_p=2\cos\theta_p$ would have presupposed.
-\emph{(ii) Equidistribution.} Now $\alpha_p=e^{i\theta_p}$, $\theta_p\in[0,\pi]$, $a_p=2\cos\theta_p$ real.
-From the carrier niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$ (Theorem~\ref{thm:cps-nice}), the positivity
-argument of Jacquet--Shalika \cite{JS} excludes a zero of any $L(s,\Sym^r\pi)$ on $\Re s=1$; with holomorphy
-on $\Re s\ge1$, Serre's criterion \cite{Serre} equidistributes the $\theta_p$ against
-$\tfrac2\pi\sin^2\theta\,d\theta$. This case is out of reach of automorphy lifting --- a Maass form carries no
-geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and the carrier, needing none,
-proves it.
-\end{proof}
+% Sato--Tate for Maass forms (Cor.~\ref{cor:satotate}) moved up to
+% \S\ref{sec:radial-limit}, immediately after Ramanujan--Petersson and Selberg,
+% for ordering (2026-07-13).
 
 \begin{comment}
 	
@@ -5828,12 +5842,17 @@ Beilinson--Bloch height is related, in the relevant theorem-anchored triple-prod
 $L$-derivative of $H^1(C)^{\otimes3}$ (Zhang \cite{ZhangGS}; Yuan--Zhang--Zhang \cite{YZZ}); the classical
 hyperelliptic control vanishes, while known nontrivial Ceresa/Gross--Schoen examples provide positive
 level-three controls. Its exact carrier landing and extension-tower faithfulness are developed in the
-companion paper --- not proved here. \emph{Initial results appear to affirm} this
+companion paper \cite{HodgeCompanion} --- not proved here. \emph{Initial results appear to affirm} this
 (\texttt{hodge\_griffiths\_probe.py}, App.~\ref{app:repro}): the regulator/value channel fires for every
 homologically-trivial cycle in the census (no silent cycle), and the recursive tower already shows cycles
-absent at level one appearing at level $\ge2$. The companion paper carries out the full correspondence: a
+absent at level one appearing at level $\ge2$. The companion paper \cite{HodgeCompanion} carries out the
+full correspondence: a
 from-scratch triple-product central derivative landing the Ceresa height, the exact coupling that induces
-each higher Griffiths layer, and the ledger$\,\leftrightarrow\,$Bloch--Beilinson-graded bijection. A
+each higher Griffiths layer, and the ledger$\,\leftrightarrow\,$Bloch--Beilinson-graded bijection. (Status
+at this draft: the depth dictionary and semisimple theorem are machine-checked there; the Ceresa
+computation's $L$-side is on record --- the Klein quartic's Ceresa channel carries forced sign $-1$ and
+central derivative $0.8299\ne0$, matching the known non-torsion of the cycle --- with the height side
+open; and the first unnamed rung, grade four, is mapped and crossed on the carrier.) A
 further probe against a deeper cycle-filtration example produced the expected \emph{delayed tower
 signature} $0,\dots,0,\neq0$: a class silent at depth $1$ first fires at depth $2$, recomputed from
 point-counting, its first nonzero slot matching the expected tower level of the class
@@ -5921,7 +5940,7 @@ is therefore a class with $AJ_{\mathbb C}(z)$ zero or torsion yet a nonzero \emp
 level-three invariant --- necessarily one where the \emph{non-archimedean} local height dominates
 (Zhang's metrized-graph terms) or where the finer $\ell$-adic/Galois Ceresa class, not the archimedean
 height, is the retained coordinate; that, with the from-scratch Ceresa landing, is the companion
-paper's target. \\
+paper's target \cite{HodgeCompanion}. \\
 
 
 \hrule\hrule
@@ -6584,6 +6603,10 @@ Ann.\ of Math.\ (2) \textbf{117} (1983), 285--291.
 \bibitem{Harris} B.~Harris, \emph{Harmonic volumes}, Acta Math.\ \textbf{150} (1983), 91--123, and
 \emph{Homological versus algebraic equivalence in a Jacobian}, Proc.\ Natl.\ Acad.\ Sci.\ USA
 \textbf{80} (1983), 1157--1158 --- the Fermat-quartic Ceresa cycle detected by a nonzero harmonic volume.
+\bibitem{HodgeCompanion} S.~Lavery, \emph{The loss ledger and the cycle filtration: tower exhaustion
+on the helix carrier, and a program whose terminus is the Hodge conjecture}, companion preprint draft
+(2026); the depth dictionary, the harmonic Hodge frame, the grade-four program, and the Ceresa landing.
+
 \bibitem{LagaShnidman} J.~Laga and A.~Shnidman, \emph{Ceresa cycles of bielliptic Picard curves},
 arXiv:2312.12965 (2024); the Beilinson--Bloch height proportional to the N\'eron--Tate height of an
 explicit elliptic point.

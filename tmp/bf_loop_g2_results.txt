@@ -1,0 +1,42 @@
+##############################################################################
+# GRADE-2 RECOGNITION LOOP  (Beilinson-Flach even rung)
+##############################################################################
+
+GATE 0  (evaluator sanity, center=1/2, kappa=1):  L(11a1, 1/2)
+  eps=+1 (match 6.5e-06 vs 3.1e-01);  L(1/2)=0.2538415  (house 0.2538419)
+  GATE 0: PASS
+
+CONSTRUCTION ARM  (the closeable corner: single modular curve =
+  Eisenstein-degeneration of Beilinson-Flach; Rogers-Zudilin proven):
+  curve (0, -1, 0, -4, 4): a_p signature = 24.2.a.a (conductor 24)? True
+  Mahler  m(x+1/x+y+1/y+8) = 2.0456962682  (grid-refine dq 4.4e-16)
+  L(E24,s): eps=+1/+1  two-pt cert 2.2e-05,2.8e-05
+  L(E24, 2) = 0.8412719163  (imag -1.5e-17)
+  identity  m(8) ?= (24/pi^2) L(E24,2):  2.04569627  vs  2.04572799   rel 1.55e-05
+  RATIONAL LANDING  m(8)*pi^2 / L(E24,2) = 23.999628  (target 24)   [round 24]
+  --> construction arm CLOSED: an independent geometric regulator
+      (Mahler 2D integral) = detection arm (L-value) x explicit const.
+
+DETECTION ARM  (genuine grade-2 object: RS product 11a1 x 37a1,
+  degree 4, motivic weight 2, center 3/2, kappa=3):
+  conductor Q = (11*37)^2 = 165649, sqrt Q = 407
+  building degree-4 RS bank (nmax=9000) ...
+  lambda_1..6 = [1.0, 4.0, 3.0, 8.0, -2.0, 12.0]
+  two-point certificate: eps=+1/+1  match 3.39e-05,5.50e-05  wrong 7.3e-02,1.8e-02
+  eps = +1   CERTIFIED
+  L(11a1 x 37a1, 2) = 3.46319093   (imag -5.8e-17)
+  L'(11a1 x 37a1, 1):  route A (Lambda(1)/Res) = 35.70352601
+                       route B (num. deriv)     = 35.68382790
+  FE bridge  eps*(407/4pi^2)*L(2) = 35.70352601   rel(A) 1.99e-16
+
+CONSTITUENTS (single-curve Beilinson values L(E,2), the degenerate
+  Eisenstein corners of the product):
+  L(11a1, 2) = 0.54605695   (eps=+1, cert 2.8e-05)
+  L(37a1, 2) = 0.38158174   (eps=-1, cert 2.9e-05)
+
+SUMMARY
+  detection arm: L(11a1x37a1,2)=3.463191, L'(..,1)=35.703526, bridge rel 2.0e-16, eps=+1
+  construction arm: closed at the conductor-24 corner (rational 24 landed).
+  genuine degree-4 product: L-side certified; independent geometric
+  regulator NUMBER is the literature gap (Brunault-Chida numerics are
+  all the degenerate corner) -- see notes for the carrier translation.

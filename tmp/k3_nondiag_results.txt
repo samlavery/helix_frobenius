@@ -1,0 +1,65 @@
+##############################################################################
+# CLAUSE-(c) HUNT ON NON-DIAGONAL QUARTIC K3s
+# exact counts; common good primes p <= 600
+##############################################################################
+
+>> CORE VALIDATION (new counters vs brute projective enumerator)
+   all cores match brute counts at p in {5,7,11,13}  OK
+
+>> CALIBRATION GATE (reproduce k3_ledger diagonal t_p, p <= 800)
+   diag c=1: mean=  3.233 (ref 3.233)  mod8 1: 18.826 5: -5.124 3,7:  1.000   MATCH
+   diag c=2: mean=  2.298 (ref 2.298)  mod8 1:  4.304 5:  5.163 3,7: -0.042   MATCH
+   gate passed: new core reproduces k3_ledger diagonal readings
+
+>> SMOOTHNESS + BAD-REDUCTION (exact binary-quartic discriminants;
+   cross-validated vs brute singular-point search at small primes)
+   bad-prime validation vs brute (p<=23): consistent OK
+   diag c=1               smooth K3/Q            disc(Phi,Psi)=(256,256)  bad primes<=1000: [2]  Fermat quartic, rho=20
+   diag c=2               smooth K3/Q            disc(Phi,Psi)=(256,2048)  bad primes<=1000: [2]  
+   Dwork c=2              smooth K3/Q            bad primes<=1000: [2, 3, 5]  singular at c^4=1
+   Dwork c=-2             smooth K3/Q            bad primes<=1000: [2, 3, 5]  singular at c^4=1
+   Dwork c=3              smooth K3/Q            bad primes<=1000: [2, 5]  singular at c^4=1
+   Dwork c=5              smooth K3/Q            bad primes<=1000: [2, 3, 13]  singular at c^4=1
+   Dwork c=1/2            smooth K3/Q            bad primes<=1000: [2, 3, 5]  singular at c^4=1
+   gen_A xy^3|2zw^3       smooth K3/Q            disc(Phi,Psi)=(229,-176)  bad primes<=1000: [2, 11, 229]  
+   gen_B x^3y|z^3w        smooth K3/Q            disc(Phi,Psi)=(229,229)  bad primes<=1000: [2, 229]  
+   gen_C x2y2|3z2w2       smooth K3/Q            disc(Phi,Psi)=(144,400)  bad primes<=1000: [2, 3, 5]  
+
+>> SCAN: exact #X(F_p), t_p profile, p <= 600
+   (scan wall time 136.4s)
+
+   per-surface fingerprint (DC occupancy + angle channel):
+   diag c=1               [smooth  ] DC=  3.434  mod8 1: 18.670 5: -4.971 3,7:  1.000  (n=108)
+   diag c=2               [smooth  ] DC=  2.363  mod8 1:  4.867 5:  5.236 3,7: -0.053  (n=108)
+   Dwork c=2              [smooth  ] DC= -0.964  mod8 1: -4.343 5:  0.223 3,7: -0.067  (n=106)
+   Dwork c=-2             [smooth  ] DC= -0.964  mod8 1: -4.343 5:  0.223 3,7: -0.067  (n=106)
+   Dwork c=3              [smooth  ] DC= -1.230  mod8 1:  0.271 5: -5.233 3,7: -0.035  (n=107)
+   Dwork c=5              [smooth  ] DC= -0.067  mod8 1: -2.452 5:  0.762 3,7:  0.571  (n=106)
+   Dwork c=1/2            [smooth  ] DC= -0.897  mod8 1: -4.334 5:  0.196 3,7:  0.069  (n=106)
+   gen_A xy^3|2zw^3       [smooth  ] DC= -0.244  mod8 1:  0.439 5: -0.991 3,7: -0.190  (n=106)
+   gen_B x^3y|z^3w        [smooth  ] DC=  0.844  mod8 1:  4.745 5: -0.195 3,7: -0.324  (n=107)
+   gen_C x2y2|3z2w2       [smooth  ] DC= -0.269  mod8 1: -1.203 5:  1.998 3,7: -0.922  (n=106)
+
+   PAIRWISE SEPARATION  sep(S,S') = max_p |#X_S(F_p) - #X_S'(F_p)|
+   over common good primes (exact integer); forced-iso pairs are a control
+   forced-isomorphic controls (Dwork c ~ -c, must be identical):
+     Dwork c=2            == Dwork c=-2           sep=    0  (n=106)  OK identical
+   non-iso pairs: 44   sep distribution  min=3992  median=12920  max=19512
+   closest (smallest-sep) non-iso pairs:
+     Dwork c=2            vs Dwork c=1/2          sep=  3992  min t-gap>=0.000  (n=106)
+     Dwork c=-2           vs Dwork c=1/2          sep=  3992  min t-gap>=0.000  (n=106)
+     Dwork c=2            vs gen_A xy^3|2zw^3     sep=  7959  min t-gap>=0.090  (n=104)
+     Dwork c=-2           vs gen_A xy^3|2zw^3     sep=  7959  min t-gap>=0.090  (n=104)
+     Dwork c=5            vs gen_A xy^3|2zw^3     sep=  7959  min t-gap>=0.066  (n=104)
+     Dwork c=1/2          vs gen_A xy^3|2zw^3     sep=  8433  min t-gap>=0.039  (n=104)
+
+VERDICT:
+  Clean null: all 44 non-isomorphic pairs separate (min sep = 3992 > 0 in exact point counts), every
+  forced-isomorphic control (Dwork c ~ -c) is identical as required,
+  and the new counting cores are validated against brute enumeration
+  and reproduce the k3_ledger diagonal readings.  No clause-(c) event
+  on the Dwork pencil or the block-separable non-diagonal generics at
+  the tested primes -- a clean strengthening of the retention register
+  past the diagonal family, where no Faltings shield and no twist
+  structure protects the ledger.
+

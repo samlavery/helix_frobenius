@@ -1,0 +1,171 @@
+##############################################################################
+# VALUE-REGISTRATION CENSUS -- R = F_w(1/2)/L(1/2) across every certified
+# central value (the S(t)-compensation analogue at value level)
+##############################################################################
+
+FROZEN PROTOCOL:
+  NMAX = 1500000;  cells KMIN..KMAX = 4..12 (pi/3 lattice);
+  Y-ladder (common, absolute) = [40000, 130000, 420000, 1350000];
+  warp = GN closure on [log n, omega, Theta_leg]; reader = C-inf window;
+  R_0 = unwarped window (the m=0 harmonic-lattice point).
+
+building generators (log n, omega, Theta_11a1, Theta_37a1) -- vectorized...
+  generator std over support: log n 1.000, omega 1.002, Theta_11 3.856, Theta_37 4.291
+
+VALIDATION -- reproduce adapted_center.py ratios (NMAX=1e5, hard cutoff):
+  (faithfulness check: analytic-Jacobian GN must recover the published
+   full-warp mis-registrations 1.35 on RS4, 0.78 on Sym4)
+    RS 11a1x37a1     full-warp F_w(1/2) hard-cutoff = +6.7674-0.4026i   |F_w|/L = 1.3497
+    Sym4 11a1        full-warp F_w(1/2) hard-cutoff = +0.4711+0.0272i   |F_w|/L = 0.7790
+
+building banks (unitary, exact locals); per-window adapted warp per (obj,Y)...
+  (warp trained on the cells the window sees -- KMIN..cellcap(Y); the
+   smooth-window translation of adapted's cutoff protocol.  It is active
+   where cells are under-closed (small Y) and self-vanishes as Y grows.)
+  L(11a1)                  deg 2 built; warp |x| across Y: 0.00, 0.00, 0.00, 0.00
+  L(Sym2 11a1)             deg 3 built; warp |x| across Y: 0.19, 0.14, 0.00, 0.00
+  L(Sym3 11a1)             deg 4 built; warp |x| across Y: 0.00, 0.00, 0.00, 0.00
+  L(11a1 x 37a1) RS4       deg 4 built; warp |x| across Y: 0.21, 0.15, 0.11, 0.00
+  L(Sym4 11a1)             deg 5 built; warp |x| across Y: 0.06, 0.00, 0.00, 0.00
+  L(Sym2(11a1) x 37a1)     deg 6 built; warp |x| across Y: 0.26, 0.58, 0.18, 0.29
+
+==============================================================================
+TABLE A -- per-window full warp at the most-active window Y = 40000 
+           (cells 4..9):
+==============================================================================
+  object                   deg    |x|     closure b->a  ratio  energy d_latt
+  L(11a1)                    2  0.000   0.090->0.090     1.00  0.0000  0.000
+    weights: logn=+0.0000, omega=+0.0000, 11a1=-0.0000
+  L(Sym2 11a1)               3  0.193   0.042->0.056     0.76  0.0385  0.193
+    weights: logn=+0.0235, omega=+0.1894, 11a1=-0.0269
+  L(Sym3 11a1)               4  0.000   0.201->0.201     1.00  0.0000  0.000
+    weights: logn=+0.0000, omega=+0.0000, 11a1=-0.0000
+  L(11a1 x 37a1) RS4         4  0.211   0.845->0.719     1.18  0.6844  0.211
+    weights: logn=-0.0103, omega=-0.0294, 11a1=-0.1323, 37a1=+0.1614
+  L(Sym4 11a1)               5  0.061   0.251->0.255     0.99  0.0037  0.061
+    weights: logn=-0.0292, omega=+0.0531, 11a1=+0.0066
+  L(Sym2(11a1) x 37a1)       6  0.259   0.351->0.444     0.79  0.1316  0.259
+    weights: logn=-0.0624, omega=+0.2396, 11a1=-0.0682, 37a1=-0.0334
+
+==============================================================================
+TABLE B -- registration census (R_0 = unwarped window, R_free = per-window
+           adapted warp).  |x|,energy,d_latt are the warp for THAT (obj,Y).
+==============================================================================
+  object                         Y    Y/sqQ   |x| energy     R_0  |R0-1|    ReRf    ImRf  |Rf-1|
+  L(11a1)                    40000  12060.5  0.00  0.000  1.0000  0.0000  1.0000 -0.0000  0.0000
+  L(11a1)                   130000  39196.5  0.00  0.000  1.0000  0.0000  1.0000 -0.0000  0.0000
+  L(11a1)                   420000 126634.8  0.00  0.000  1.0000  0.0000  1.0000 -0.0000  0.0000
+  L(11a1)                  1350000 407040.3  0.00  0.000  1.0000  0.0000  1.0000 -0.0000  0.0000
+  L(Sym2 11a1)               40000   3636.4  0.19  0.039  1.0002  0.0002  1.0108 -0.2211  0.2213
+  L(Sym2 11a1)              130000  11818.2  0.14  0.024  1.0000  0.0000  1.0047 -0.1763  0.1764
+  L(Sym2 11a1)              420000  38181.8  0.00  0.000  1.0000  0.0000  1.0000  0.0000  0.0000
+  L(Sym2 11a1)             1350000 122727.3  0.00  0.000  1.0000  0.0000  1.0000 -0.0000  0.0000
+  L(Sym3 11a1)               40000   1096.4  0.00  0.000  1.0015  0.0015  1.0015 -0.0000  0.0015
+  L(Sym3 11a1)              130000   3563.3  0.00  0.000  0.9998  0.0002  0.9998 -0.0000  0.0002
+  L(Sym3 11a1)              420000  11512.3  0.00  0.000  0.9999  0.0001  0.9999 -0.0000  0.0001
+  L(Sym3 11a1)             1350000  37003.7  0.00  0.000  1.0001  0.0001  1.0001 -0.0000  0.0001
+  L(11a1 x 37a1) RS4         40000     98.3  0.21  0.684  1.0186  0.0186  1.1046  0.0087  0.1050
+  L(11a1 x 37a1) RS4        130000    319.4  0.15  0.050  1.0305  0.0305  1.0301 -0.1138  0.1177
+  L(11a1 x 37a1) RS4        420000   1031.9  0.11  0.089  1.0307  0.0307  1.0521 -0.0938  0.1073
+  L(11a1 x 37a1) RS4       1350000   3317.0  0.00  0.000  1.0267  0.0267  1.0267 -0.0000  0.0267
+  L(Sym4 11a1)               40000    330.6  0.06  0.004  0.9908  0.0092  0.9913 -0.0024  0.0091
+  L(Sym4 11a1)              130000   1074.4  0.00  0.000  0.9949  0.0051  0.9949 -0.0001  0.0051
+  L(Sym4 11a1)              420000   3471.1  0.00  0.000  1.0048  0.0048  1.0048 -0.0000  0.0048
+  L(Sym4 11a1)             1350000  11157.0  0.00  0.000  0.9977  0.0023  0.9977 -0.0000  0.0023
+  L(Sym2(11a1) x 37a1)       40000      1.5  0.26  0.132  0.0405  0.9595 -0.0590  0.1914  1.0762
+  L(Sym2(11a1) x 37a1)      130000      4.8  0.58  2.710  0.5224  0.4776 -0.1702 -1.1409  1.6344
+  L(Sym2(11a1) x 37a1)      420000     15.4  0.18  0.044  0.9984  0.0016  0.4775  0.3469  0.6272
+  L(Sym2(11a1) x 37a1)     1350000     49.6  0.29  0.536  1.1815  0.1815  0.5687  0.7062  0.8275
+
+==============================================================================
+THE HUNT -- candidate laws for the registration defect delta = |R-1|.
+Leave-one-object-out CV (object-level predictors tested on UNSEEN objects).
+==============================================================================
+
+Target = |R_free - R_0| (warp-INDUCED shift -- isolates the warp from the
+finite-Y transient that R_0 and R_free share):
+  (i)    warp energy                 held-RMS 0.3079  (null 0.3778)  corr +0.818  BEATS null
+  (ii)   closure-improvement ratio   held-RMS 0.3716  (null 0.3778)  corr -0.180  no lift
+  (money) off-lattice distance       held-RMS 0.2737  (null 0.3778)  corr +0.893  BEATS null
+  (iii)  log Q                       held-RMS 0.3817  (null 0.3778)  corr +0.722  no lift
+  (iv)   log(Y/sqrtQ)                held-RMS 0.3641  (null 0.3778)  corr -0.651  BEATS null
+
+Target = |R_free - 1| (the full warped/adapted reading, transient included):
+  (i)    warp energy                 held-RMS 0.3961  (null 0.4787)  corr +0.784  BEATS null
+  (money) off-lattice distance       held-RMS 0.3687  (null 0.4787)  corr +0.917  BEATS null
+  (iv)   log(Y/sqrtQ)                held-RMS 0.4702  (null 0.4787)  corr -0.772  no lift
+
+Target = |R_0 - 1| (the UNWARPED window -- the pure finite-Y transient law):
+  (iv)   log(Y/sqrtQ)                held-RMS 0.2369  (null 0.2319)  corr -0.666  no lift
+  (iii)  log Q                       held-RMS 0.2281  (null 0.2319)  corr +0.618  no lift
+  (v) null is the 'null' column; a candidate is a measured law ONLY if it
+      beats null out-of-sample (held-RMS < null).
+
+==============================================================================
+THE MONEY QUESTION -- is mis-registration caused by OFF-LATTICE freedom?
+Graded warp families at the most-active window Y = 40000, per object:
+==============================================================================
+  object                 family               Re R     Im R   |R-1|  energy d_latt
+  L(11a1)                unwarped(m=0)      1.0000   0.0000  0.0000  0.0000  0.000
+  L(11a1)                Theta-only         1.0000  -0.0000  0.0000  0.0000  0.000
+  L(11a1)                omega+Theta        1.0000  -0.0000  0.0000  0.0000  0.000
+  L(11a1)                full               1.0000  -0.0000  0.0000  0.0000  0.000
+  L(11a1)                lattice-snap       1.0000   0.0000  0.0000  0.0000  0.000
+
+  L(Sym2 11a1)           unwarped(m=0)      1.0002   0.0000  0.0002  0.0000  0.000
+  L(Sym2 11a1)           Theta-only         1.0002   0.0000  0.0002  0.0000  0.000
+  L(Sym2 11a1)           omega+Theta        1.0056  -0.1385  0.1386  0.0220  0.157
+  L(Sym2 11a1)           full               1.0108  -0.2211  0.2213  0.0385  0.193
+  L(Sym2 11a1)           lattice-snap       1.0002   0.0000  0.0002  0.0000  0.000
+
+  L(Sym3 11a1)           unwarped(m=0)      1.0015   0.0000  0.0015  0.0000  0.000
+  L(Sym3 11a1)           Theta-only         1.0015  -0.0000  0.0015  0.0000  0.000
+  L(Sym3 11a1)           omega+Theta        1.0015  -0.0000  0.0015  0.0000  0.000
+  L(Sym3 11a1)           full               1.0015  -0.0000  0.0015  0.0000  0.000
+  L(Sym3 11a1)           lattice-snap       1.0015   0.0000  0.0015  0.0000  0.000
+
+  L(11a1 x 37a1) RS4     unwarped(m=0)      1.0186   0.0000  0.0186  0.0000  0.000
+  L(11a1 x 37a1) RS4     Theta-only         1.1123   0.0737  0.1343  0.7219  0.214
+  L(11a1 x 37a1) RS4     omega+Theta        1.1067  -0.0094  0.1071  0.6787  0.214
+  L(11a1 x 37a1) RS4     full               1.1046   0.0087  0.1050  0.6844  0.211
+  L(11a1 x 37a1) RS4     lattice-snap       1.0186   0.0000  0.0186  0.0000  0.000
+
+  L(Sym4 11a1)           unwarped(m=0)      0.9908   0.0000  0.0092  0.0000  0.000
+  L(Sym4 11a1)           Theta-only         0.9908   0.0000  0.0092  0.0000  0.000
+  L(Sym4 11a1)           omega+Theta        0.9908  -0.0000  0.0092  0.0000  0.000
+  L(Sym4 11a1)           full               0.9913  -0.0024  0.0091  0.0037  0.061
+  L(Sym4 11a1)           lattice-snap       0.9908   0.0000  0.0092  0.0000  0.000
+
+  L(Sym2(11a1) x 37a1)   unwarped(m=0)      0.0405   0.0000  0.9595  0.0000  0.000
+  L(Sym2(11a1) x 37a1)   Theta-only        -0.0328  -0.2014  1.0522  0.3726  0.162
+  L(Sym2(11a1) x 37a1)   omega+Theta       -0.1112  -0.0091  1.1112  0.1544  0.195
+  L(Sym2(11a1) x 37a1)   full              -0.0590   0.1914  1.0762  0.1316  0.259
+  L(Sym2(11a1) x 37a1)   lattice-snap       0.0405   0.0000  0.9595  0.0000  0.000
+
+  family-mean |R-1| across the six certified objects:
+    unwarped(m=0)     mean |R-1| = 0.1648   median = 0.0054
+    Theta-only        mean |R-1| = 0.1996   median = 0.0054
+    omega+Theta       mean |R-1| = 0.2280   median = 0.0582
+    full              mean |R-1| = 0.2355   median = 0.0570
+    lattice-snap      mean |R-1| = 0.1648   median = 0.0054
+
+  warp-induced shift vs off-lattice distance (does the lattice govern it?):
+    L(11a1)                |R_full - R_0| = 0.0000   d_latt = 0.000   energy = 0.0000
+    L(Sym2 11a1)           |R_full - R_0| = 0.2213   d_latt = 0.193   energy = 0.0385
+    L(Sym3 11a1)           |R_full - R_0| = 0.0000   d_latt = 0.000   energy = 0.0000
+    L(11a1 x 37a1) RS4     |R_full - R_0| = 0.0864   d_latt = 0.211   energy = 0.6844
+    L(Sym4 11a1)           |R_full - R_0| = 0.0025   d_latt = 0.061   energy = 0.0037
+    L(Sym2(11a1) x 37a1)   |R_full - R_0| = 0.2157   d_latt = 0.259   energy = 0.1316
+    corr(|R_full-R_0|, d_latt) = +0.878
+
+==============================================================================
+VERDICT (pre-registered; read the census, not a hope):
+==============================================================================
+  mean |R-1|:  unwarped(m=0) 0.1648   full-warp 0.2355   lattice-snap 0.1648
+  -> The m=0 lattice point (unwarped window) registers markedly BETTER
+     than the off-lattice continuous warp: removing off-lattice warp
+     freedom improves registration.  Consistent with the money
+     hypothesis -- the value-registration law is the lattice restriction.
+
+  Any candidate that BEATS null out-of-sample above is a measured law;
+  the rest are killed forms -- the measured shape of what the law is NOT.

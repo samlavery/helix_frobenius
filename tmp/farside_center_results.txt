@@ -1,0 +1,34 @@
+##############################################################################
+# STAGE 2 -- the windowed center-reading: calibration, then the far side
+##############################################################################
+
+building the degenerate bank (exact 11-local, degree drop 16 -> 6)...
+building the primitive bank (exact Steinberg legs at 11,37,53,61)...
+
+CALIBRATION (degenerate f^{x4}; the zeta^2 double pole is the A,B terms;
+C must land on the certified factored center 0.921258569):
+  degenerate:
+    X =      100   V_X(1/2) =      70.724453
+    X =      283   V_X(1/2) =     144.933433
+    X =      800   V_X(1/2) =     288.323736
+    X =     2263   V_X(1/2) =     560.022336
+    X =     6400   V_X(1/2) =    1068.641431
+    fit V = A sqrt(X) log X + B sqrt(X) + C + D/sqrt(X) + E/X:
+    A = +1.538637  B = -0.154674  C = +2.557638525  D = -28.0608  E = +167.475  (rms 1.39e-02)
+    C vs certified target: |2.557639 - 0.921258569| = 1.64e+00   FAIL
+
+THE FAR SIDE (primitive quadruple; occupancy 0 => A, B must vanish;
+C is the prediction):
+  primitive:
+    X =      100   V_X(1/2) =      10.581482
+    X =      283   V_X(1/2) =      14.308594
+    X =      800   V_X(1/2) =      18.358065
+    X =     2263   V_X(1/2) =      22.744741
+    X =     6400   V_X(1/2) =      27.484254
+    fit V = A sqrt(X) log X + B sqrt(X) + C + D/sqrt(X) + E/X:
+    A = -0.039274  B = +0.527543  C = +14.046127034  D = -100.9631  E = +317.486  (rms 1.23e-02)
+    pole-freeness at the value level: A = -0.0393, B = +0.5275   NOT CONFIRMED
+
+VERDICT:
+  Calibration status: degenerate False, primitive pole-freeness
+  False -- do not read the prediction until both hold.

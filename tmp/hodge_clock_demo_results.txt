@@ -1,0 +1,40 @@
+##############################################################################
+# HODGE CLOCK DEMO -- the harmonic Hodge frame, calibrated on Lefschetz (1,1)
+# weight-2 surfaces E1 x E2; DC occupancy rho read two ways; X = 30000
+##############################################################################
+
+CLOCK SIDE (periods; archimedean).  tau self-certified against exact j:
+  11a1: tau = -0.500000 +1.149390i   |j(tau)-j_exact|/(1+|j|) = 4.93e-16   [generic]
+  11a2: tau = -0.500000 +5.746951i   |j(tau)-j_exact|/(1+|j|) = 2.50e-15   [generic]
+  37a1: tau = +0.000000 +1.221127i   |j(tau)-j_exact|/(1+|j|) = 3.04e-16   [generic]
+  32a1: tau = +0.000000 +1.000000i   |j(tau)-j_exact|/(1+|j|) = 2.24e-15   [CM disc -4]
+  27a1: tau = -0.500000 +0.866025i   |j(tau)-j_exact|/(1+|j|) = 1.39e-44   [CM disc -3]
+  period certificate: PASS (every tau reproduces its curve's exact algebraic j)
+
+  [certificate] 11a1/11a2 a_p agreement (good p < 400): max dev = 0
+
+COUNT SIDE (point counts; arithmetic).  good p <= 30000:
+  11a1: m4 = 1.974 (2 generic / 3 CM)   ss-density = 0.008 (0 / 0.5)
+  11a2: m4 = 1.974 (2 generic / 3 CM)   ss-density = 0.008 (0 / 0.5)
+  37a1: m4 = 1.951 (2 generic / 3 CM)   ss-density = 0.005 (0 / 0.5)
+  32a1: m4 = 2.918 (2 generic / 3 CM)   ss-density = 0.503 (0 / 0.5)
+  27a1: m4 = 2.934 (2 generic / 3 CM)   ss-density = 0.504 (0 / 0.5)
+
+CASES -- DC occupancy of the (1,1) channel, two readings vs known truth:
+  case pair            align(deg)     CM     m11 rho_clock rho_count known  OK
+  A    11a1x37a1             none      -  -0.005         2         2     2 YES
+  B    11a1x11a2                5      -   0.993         3         3     3 YES
+  C    11a1x11a1             self      -   0.993         3         3     3 YES
+  D    32a1x32a1           self+2     -4   0.979         4         4     4 YES
+  E    27a1x27a1           self+3     -3   0.982         4         4     4 YES
+  F    27a1x32a1             none      -   0.001         2         2     2 YES
+
+VERDICT:
+  rho_clock = rho_count = rho_known on every case: the harmonic Hodge
+  frame (Hodge class = rational DC mode; alignment = clock phase-lock;
+  CM class carried one tower level up, on the angle channel) reproduces
+  Lefschetz (1,1) truth from both sides, oracle-free.  CALIBRATED.
+
+  Scope: weight 2, product surfaces, Q-isogenies read at depth 1 and the
+  CM (K-rational) class at depth 2.  Not tested here: non-product K3s
+  (the v2 ledger hunt) and any case where Lefschetz (1,1) is unavailable.

@@ -1,0 +1,170 @@
+##############################################################################
+# GRADE 5 / 6 SCALING -- the plateau test
+##############################################################################
+
+fibers: 148927 good primes to 1999993 (all 6 curves), portal statistics ~0.26%
+curves: 11a1(N=11), 37a1(N=37), 53a1(N=53), 61a1(N=61), 79a1(N=79), 83a1(N=83)
+  79a1=[1,1,1,-2,0] cond79 I1 Steinberg root-1; 83a1=[1,1,1,1,0] cond83 I1 Steinberg root-1 (sage-verified)
+
+==========================================================================
+(1) CALIBRATION GATE -- grade 4 must reproduce published numbers
+==========================================================================
+  grade-4 primitive channels (exact 99/8, 7, 1):
+    |T_4|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_2|^2 =    7.0040 +- 0.0105   exact         7 =    7.0000   (  0.4 sigma)
+    |T_0|^2 =   12.3818 +- 0.0248   exact      99/8 =   12.3750   (  0.3 sigma)
+  grade-4 degenerate control (exact 36, 16, 1; zero var):
+    |T_4|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_2|^2 =   16.0000 +- 0.0000   exact        16 =   16.0000   (  0.0 sigma)
+    |T_0|^2 =   36.0000 +- 0.0000   exact        36 =   36.0000   (CONSTANT -- frozen DC, zero variance)
+    DC occupancy (mean prod 2cos): primitive -0.0019 +- 0.0026 (exact 0);  degenerate 1.9964 (exact Catalan C2 = 2)
+    Schur 2nd moment (mean (prod 2cos)^2): primitive 0.9887 (exact 1);  degenerate 13.9372 (exact C4 = 14)
+    FE recipe check: eps(grade4) = +1  (published +1)
+
+==========================================================================
+(2) PRE-REGISTERED EXACT PREDICTIONS (derived, printed before measuring)
+==========================================================================
+  grade 5  (degree 32, weight 5, Hodge diamond (1, 5, 10, 10, 5, 1)):
+    channel k=5  lanes= 1  E|T_5|^2 =        1 =    1.0000   degenerate |T_5|^2 = 1
+    channel k=3  lanes= 5  E|T_3|^2 =       10 =   10.0000   degenerate |T_3|^2 = 25
+    channel k=1  lanes=10  E|T_1|^2 =    215/8 =   26.8750   degenerate |T_1|^2 = 100
+    DC occupancy: N/A (odd weight -- no k=0 channel; center governed by eps, below)
+    Schur 2nd moment: primitive 1 ; degenerate = C5 = 42
+
+  grade 6  (degree 64, weight 6, Hodge diamond (1, 6, 15, 20, 15, 6, 1)):
+    channel k=6  lanes= 1  E|T_6|^2 =        1 =    1.0000   degenerate |T_6|^2 = 1
+    channel k=4  lanes= 6  E|T_4|^2 =     27/2 =   13.5000   degenerate |T_4|^2 = 36
+    channel k=2  lanes=15  E|T_2|^2 =    405/8 =   50.6250   degenerate |T_2|^2 = 225
+    channel k=0  lanes=20  E|T_0|^2 =  1225/16 =   76.5625   degenerate |T_0|^2 = 400
+    DC occupancy: primitive 0 ; degenerate = Catalan C3 = 5
+    Schur 2nd moment: primitive 1 ; degenerate = C6 = 132
+
+==========================================================================
+(3) MEASUREMENTS -- primitive channels, degenerate controls, occupancy
+==========================================================================
+  --- grade 5 ---
+  grade-5 primitive channels:
+    |T_5|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_3|^2 =   10.0081 +- 0.0148   exact        10 =   10.0000   (  0.5 sigma)
+    |T_1|^2 =   26.9110 +- 0.0590   exact     215/8 =   26.8750   (  0.6 sigma)
+  grade-5 degenerate control (zero var expected):
+    |T_5|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_3|^2 =   25.0000 +- 0.0000   exact        25 =   25.0000   (  0.0 sigma)
+    |T_1|^2 =  100.0000 +- 0.0000   exact       100 =  100.0000   (  0.0 sigma)
+    DC occupancy: N/A (odd weight); primitive mean-prod +0.0022 (drifts to 0, no DC channel to occupy)
+    Schur 2nd moment: primitive 0.9976 (exact 1); degenerate 41.7460 (exact C5 = 42)
+
+  --- grade 6 ---
+  grade-6 primitive channels:
+    |T_6|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_4|^2 =   13.5197 +- 0.0195   exact      27/2 =   13.5000   (  1.0 sigma)
+    |T_2|^2 =   50.7632 +- 0.1150   exact     405/8 =   50.6250   (  1.2 sigma)
+    |T_0|^2 =   76.8083 +- 0.1979   exact   1225/16 =   76.5625   (  1.2 sigma)
+  grade-6 degenerate control (zero var expected):
+    |T_6|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_4|^2 =   36.0000 +- 0.0000   exact        36 =   36.0000   (  0.0 sigma)
+    |T_2|^2 =  225.0000 +- 0.0000   exact       225 =  225.0000   (  0.0 sigma)
+    |T_0|^2 =  400.0000 +- 0.0000   exact       400 =  400.0000   (CONSTANT -- frozen DC, zero variance)
+    DC occupancy: primitive +0.0023 +- 0.0026 (exact 0);  degenerate 4.9847 (exact C3 = 5)
+    Schur 2nd moment: primitive 1.0090 (exact 1); degenerate 130.9851 (exact C6 = 132)
+
+==========================================================================
+(4) FUNCTIONAL-EQUATION SHEETS
+==========================================================================
+  grade 5:
+    Q = (11*37*53*61*79)^16
+    G(s) = Q^(s/2) GammaC(s+2.5) GammaC(s+1.5)^5 GammaC(s+0.5)^10
+    Lambda(s) = eps Lambda(1-s),  eps = -1  (provisional recipe)
+      eps_finite = (+-1)^16 = +1   (2^(g-1)=16 even)
+      (p,q)=(0,5) h=1: (i^6)^1 = -1
+      (p,q)=(1,4) h=5: (i^4)^5 = +1
+      (p,q)=(2,3) h=10: (i^2)^10 = +1
+      eps_infinity = -1   =>   eps = -1
+    => odd functional equation forces L(center, s=1/2) = 0 (odd-weight branch)
+
+  grade 6:
+    Q = (11*37*53*61*79*83)^32
+    G(s) = Q^(s/2) GammaC(s+3) GammaC(s+2)^6 GammaC(s+1)^15 GammaR(s)^10 GammaR(s+1)^10
+    Lambda(s) = eps Lambda(1-s),  eps = +1  (provisional recipe)
+      eps_finite = (+-1)^32 = +1   (2^(g-1)=32 even)
+      (p,q)=(0,6) h=1: (i^7)^1 = -i
+      (p,q)=(1,5) h=6: (i^5)^6 = -1
+      (p,q)=(2,4) h=15: (i^3)^15 = +i
+      (p,q)=(3,3) h=20 split 10/10: i^10 = -1   (#minus=10)
+      eps_infinity = +1   =>   eps = +1
+
+==========================================================================
+(5) FALSIFIERS
+==========================================================================
+  --- grade 5 ---
+  wrong-harmonic (theta_1 <- 2 theta_1) -- MUST blow predictions:
+    |T_5|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_3|^2 =    8.0108 +- 0.0143   exact        10 =   10.0000   (138.9 sigma)
+    |T_1|^2 =   19.4123 +- 0.0540   exact     215/8 =   26.8750   (138.2 sigma)
+    => wrong-harmonic worst separation: 138.9 sigma (FIRES)
+  lane-scramble on primitive (permute leg-1 primes) -- control: should NOT move (marginal-ST origin):
+    |T_5|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_3|^2 =    9.9986 +- 0.0148   exact        10 =   10.0000   (  0.1 sigma)
+    |T_1|^2 =   26.8704 +- 0.0590   exact     215/8 =   26.8750   (  0.1 sigma)
+  lane-scramble on degenerate (break alignment) -- MUST lift the frozen channels:
+    |T_5|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_3|^2 =   18.9942 +- 0.0137   exact        25 =   25.0000   (437.3 sigma)
+    |T_1|^2 =   63.9654 +- 0.0824   exact       100 =  100.0000   (437.3 sigma)
+    => degenerate-alignment scramble worst lift: 437.3 sigma (constancy is a genuine alignment signature)
+
+  --- grade 6 ---
+  wrong-harmonic (theta_1 <- 2 theta_1) -- MUST blow predictions:
+    |T_6|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_4|^2 =   11.0155 +- 0.0188   exact      27/2 =   13.5000   (132.1 sigma)
+    |T_2|^2 =   36.9576 +- 0.1036   exact     405/8 =   50.6250   (131.9 sigma)
+    |T_0|^2 =   53.8779 +- 0.1753   exact   1225/16 =   76.5625   (129.4 sigma)
+    => wrong-harmonic worst separation: 132.1 sigma (FIRES)
+  lane-scramble on primitive (permute leg-1 primes) -- control: should NOT move (marginal-ST origin):
+    |T_6|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_4|^2 =   13.5205 +- 0.0195   exact      27/2 =   13.5000   (  1.1 sigma)
+    |T_2|^2 =   50.7667 +- 0.1151   exact     405/8 =   50.6250   (  1.2 sigma)
+    |T_0|^2 =   76.7978 +- 0.1981   exact   1225/16 =   76.5625   (  1.2 sigma)
+  lane-scramble on degenerate (break alignment) -- MUST lift the frozen channels:
+    |T_6|^2 =    1.0000 +- 0.0000   exact         1 =    1.0000   (  0.0 sigma)
+    |T_4|^2 =   28.5052 +- 0.0171   exact        36 =   36.0000   (437.6 sigma)
+    |T_2|^2 =  150.0521 +- 0.1713   exact       225 =  225.0000   (437.6 sigma)
+    |T_0|^2 =  250.1043 +- 0.3426   exact       400 =  400.0000   (437.6 sigma)
+    => degenerate-alignment scramble worst lift: 437.6 sigma (constancy is a genuine alignment signature)
+
+==========================================================================
+(6) DESIGN-CHANGE LOG -- every point beyond {g, curve list}
+==========================================================================
+  Instrument-by-instrument, what changed from grade 4:
+
+  * theta_cache: same convention, two new .npy (79a1, 83a1). COMPUTE ONLY.
+  * hodge_portal channels(): loop eps in {+-1}^g, k=sum(eps); the set of
+    channels channels_of(g) is range(g,-1,-2). For odd g the k=0 channel
+    is simply absent -- same loop, one fewer bucket. COMPUTE ONLY.
+  * moment law predictions(): identical closed form, cross-checked by
+    brute force at every grade. COMPUTE ONLY.
+  * degenerate control / Schur / DC occupancy: identical trace-product
+    moments; C_{g/2} and C_g just index higher Catalan numbers. The odd
+    grade has NO DC occupancy reading -- but that is the ABSENCE of a
+    measurement (odd weight has no trivial subrep), not a new method.
+  * FE sheet assembly fe_sheet(): the ONE standard Hodge->Gamma recipe
+    (Serre): pairs (p,q) p<q -> GammaC(s + g/2-p); middle p=q -> GammaR
+    split by F_inf. HONEST NUANCE: the original grade-4 wall_dissolve.py
+    HARDCODED the even-weight middle (2,2) block -- it had no odd branch,
+    because grade 4 is even. Reaching grade 5 required WRITING the odd
+    branch (all-GammaC, half-integer shifts, no middle). That is a real
+    code addition, NOT a literal zero-diff -- but it is the odd case of
+    the same standard recipe, requiring NO new mathematical idea. Grade 6
+    (even) re-uses the middle-block branch verbatim (split 10/10). So:
+    NEW CODE, NO NEW METHOD.
+  * eps recipe: finite = +1 (2^{g-1} even, all grades); archimedean =
+    product over the diamond. Same recipe. Grade 5 lands eps=-1 (odd FE,
+    central zero forced); grade 6 lands eps=+1. Both are OUTPUTS of the
+    unchanged recipe, flagged provisional exactly as grade 4.
+
+  VERDICT: COMPUTE-ONLY at the level of MATHEMATICAL METHOD. Every
+  instrument -- channels, moment law, degenerate/Schur/occupancy, eps --
+  scaled by changing only g and the curve list. The single genuine code
+  addition is the odd-weight Gamma-assembly branch (grade 5): all-GammaC,
+  no middle block, which the standard Serre recipe already dictates and
+  which was simply never instantiated at even grade 4. No new invention
+  was needed at any grade. The plateau is not reached at grade 6.

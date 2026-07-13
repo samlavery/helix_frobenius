@@ -1,0 +1,76 @@
+##############################################################################
+# TENSOR TOWER ON THE HELIX -- gate-first spectral door (3D locator)
+##############################################################################
+
+building banks in RAM (no caches): Sym3, quadruple to 2e5 ...
+  built: Sym3 (2 MB), quadruple (2 MB)
+
+==========================================================================
+(1) GATE -- Sym3(11a1) vs 12 PARI oracle zeros, two columns
+==========================================================================
+  FIXED-HEAD (Z=2e5, pi/3): matched 11/12, median closure 0.342
+    median |diff| = 6.03e-04; missed: ['10.371']
+    close-pair 7.75/8.01 (gap 0.25): SPLIT
+  DIAGONAL (growth window, scan y=log Z): matched 1/12 (events 3)
+    => growth-window schedule STARVES (gates worse, as diagnosed); higher conductor is data-starved at low y. Fixed-head is the locator.
+  arrow-gauge check (unit vs pi/3): matched 11/12 -- IDENTICAL, confirming arrow is gauge in fixed-head scans (not a valid falsifier here).
+  FALSIFIER (sign-scramble the bank): matched 0/12, median 0.437  (the arithmetic lane structure is what locates the zeros)
+  GATE VERDICT: fixed-head 11/12 => PASS -- proceed
+
+==========================================================================
+(2) THE QUADRUPLE (degree 16) -- spectral door, both columns + controls
+==========================================================================
+  PRE-REGISTERED: clean null (AFE head ~3e24, zero spacing 2pi/logQ~0.056
+  beneath reach). Any dip must survive Z-wander + sign- + value-scramble.
+  FIXED-HEAD quad (Z=2e5): events<cut = 1; closure median 0.1247, min 0.0147
+  DIAGONAL quad: events<cut = 0
+  deepest quad dip: t = 2.6791, closure 0.0147 (below the 2e-2 event cut)
+  HOSTILE CONTROLS on the deepest dip (must survive ALL to be real):
+    Z-wander (head 2e5 -> 1e5): dip moved 0.400 in t (WANDERS -> artifact)
+    sign-scramble: min closure 0.0184 (vs true 0.0147) -- comparable => the dip is generic, not arithmetic
+    value-scramble: min closure 0.0097 (vs true 0.0147) -- comparable => the dip is generic, not arithmetic
+  CONTROL VERDICT: deepest dip does NOT survive => no arithmetic event; the pre-registered NULL holds (spectral toll, measured)
+
+==========================================================================
+(3) GROWTH vs EQUAL-MAGNITUDE -- does the height weighting sharpen focus?
+==========================================================================
+  The atlas was EQUAL-MAGNITUDE (height-blind). Test the standing law
+  'growth sharpens log focus': the SAME focal lane-balance read, with the
+  growth window (grown) vs equal magnitude (flat), on the Sym3 close pair
+  7.7516/8.0052 (gap 0.25) and across shrinking heads. Honest: does growth
+  resolve or sharpen where equal-magnitude does not?
+  head-sweep (does the close pair split? linear limit 2pi/logZ):
+    Z=    2500 (lin.res 0.80): grown 0 min [] | equal-mag 0 min []
+    Z=   10000 (lin.res 0.68): grown 1 min [7.897] | equal-mag 1 min [7.667]
+    Z=   50000 (lin.res 0.58): grown 2 min [7.75, 7.983] | equal-mag 2 min [7.734, 8.037]
+    Z=  200000 (lin.res 0.51): grown 2 min [7.749, 8.005] | equal-mag 2 min [7.77, 8.021]
+  dip depth at each zero (deeper = sharper focus), Z=2e5:
+    zero 7.7516: grown depth 1.26e-03 @ 7.7484 | equal-mag depth 2.12e-03 @ 7.7701 | comparable
+    zero 8.0052: grown depth 4.45e-03 @ 8.0044 | equal-mag depth 4.18e-03 @ 8.0210 | comparable
+  HONEST READING: report exactly what the sweep shows above -- growth
+  buys resolution ONLY where equal-magnitude fails to split; if both
+  split at every reachable head, the height weighting is a mild tail
+  taper here, not a resolution gain. The clean 'growth sharpens focus'
+  regime is the diagonal schedule, which STARVES at tensor conductor
+  (sec 1); so at reachable scale this is a limited, honest test.
+  (The g~17 primitivity-cliff extension needs the Rankin-Selberg carrier
+  pole -- a degree-(2^g)^2 bank, beyond this budget; not claimed.)
+
+==========================================================================
+VERDICT (register-honest)
+==========================================================================
+  * GATE reproduced: fixed-head 11/12 oracle zeros at pi/3 (the
+    'bare' sign-rail config; median |diff| ~6e-4), close pair split. The
+    diagonal growth-window schedule STARVES (1/12) -- data-starved at low
+    y, as the ledger diagnosed; fixed-head is the locator. Arrow scale is
+    gauge in fixed-head (confirmed); sign-scramble is the real falsifier
+    and it collapses the gate (0/12).
+  * QUADRUPLE: clean NULL as pre-registered. The deepest dip (t~2.68) does
+    NOT survive the hostile controls (Z-wander moves it 0.4; sign/value
+    scramble reproduce it) -- the SAME t=2.68 artifact the ledger killed,
+    re-killed here. Individual zeros sit behind the conductor head (~3e24),
+    the spectral form of the toll; lanes fine, wall is radial scale (height).
+  * RESOLUTION (honest / limited): the growth-vs-equal-magnitude test is
+    only conclusive where equal-magnitude fails -- see the head-sweep. The
+    clean 'growth sharpens focus' regime is the diagonal schedule, which
+    starves at tensor conductor, so this is a bounded test, not a claim.

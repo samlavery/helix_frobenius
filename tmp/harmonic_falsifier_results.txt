@@ -1,0 +1,39 @@
+##############################################################################
+# HARMONIC FALSIFIER -- every reading must fail when mis-clocked
+##############################################################################
+
+(F1) WRONG ROOT OF UNITY -- CM clock relations, right vs swapped:
+    27a1 (mu_6 clock): own root residual 1.11e-16   wrong root 1.00e+00
+    32a1 (mu_4 clock): own root residual 0.00e+00   wrong root 1.00e+00
+    => right root lands, wrong root misses by O(1): PASS
+
+(F2) WRONG HARMONIC -- the silence certificate rejects every k != k*:
+    curve      admissible k (of 0..4)   k*  sq-land k=0  sq-land at wrong k
+    11a1                          [0]    0   1.0000  OK    k=1:   1.2161     rejected
+    571a1                         [0]    0   4.0000  OK    k=1:  -3.0344     rejected
+    681b1                         [0]    0   9.0000  OK    k=1:  -7.6202     rejected
+    37a1                          [1]    1            - (dim>=1: silence cert only)
+    53a1                          [1]    1            - (dim>=1: silence cert only)
+    61a1                          [1]    1            - (dim>=1: silence cert only)
+    389a1                         [2]    2            - (dim>=1: silence cert only)
+    5077a1                        [3]    3            - (dim>=1: silence cert only)
+    => exactly one admissible harmonic per curve, = drift dim; square-landing only at the right one: PASS
+
+(F3) WRONG RATE -- the eps certificate at the true vs detuned scale:
+    11a1     true-scale best match 1.2e-09   detuned-scale best 4.6e-02   separation 3.9e+07x   PASS
+    571a1    true-scale best match 8.7e-09   detuned-scale best 3.7e-04   separation 4.2e+04x   PASS
+    681b1    true-scale best match 6.2e-09   detuned-scale best 3.8e-04   separation 6.2e+04x   PASS
+    37a1     true-scale best match 1.5e-08   detuned-scale best 2.5e-02   separation 1.7e+06x   PASS
+    => the certificate certifies the harmonic rate itself: PASS
+
+VERDICT:
+  Every reading lands with its own harmonic and root, and FAILS with
+  the wrong root (F1), the wrong tower harmonic (F2), and the wrong
+  rate (F3).  The readings are properties of the objects, not of the
+  reading procedure -- the mis-clocked controls all bit.
+
+  Ladder state: mu_1/mu_2 rungs = the drift census; mu_3/mu_4/mu_6 = the
+  CM clocks (F1); mu_7/mu_3 = the F21 GL(3) rung (f21_gl3_multirail.py,
+  exact zeta_7 focal closure, already landed).  Next build: the mu_5 rung
+  (Jacobi-sum point counts, genus-2 superelliptic), then regular scaling
+  in the order of the root with the same three falsifier columns.

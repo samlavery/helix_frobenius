@@ -1,0 +1,53 @@
+##############################################################################
+# HARMONIC LATTICE -- base unit theta_p, integer factors, the value law
+##############################################################################
+
+PARALLEL ENGINEERING: 7 degree-2..4 banks to 200000 in 0.9s
+  (vectorized sieve; scalar builder extrapolates to ~23s for
+  ONE degree-16 bank at this size -- the sweep is now cheap)
+
+T1 -- exact lane identities (absolute region):
+  s = 2.5:  |F2 F-2 - Sym3*C2| = 1.10e-09   |F3 F-3 - Sym4/zeta*C3| = 6.66e-11
+  s = 3.0:  |F2 F-2 - Sym3*C2| = 1.87e-12   |F3 F-3 - Sym4/zeta*C3| = 2.58e-13
+
+T2 -- incommensurate falsifier (m = sqrt2, s = 2.5):
+  |F_sqrt2 F_-sqrt2 - Sym3*C2| = 0.691   (O(1) = no partner)
+  |F_sqrt2 F_-sqrt2 - Sym4/zeta*C3| = 1.101   (O(1) = no partner)
+
+T3 -- cell profiles at 1/2, ALL cells, no fitting:
+  unwarped f       median|D| 0.0695  max|D| 0.1540  gapiness max/med   2.2  primitive growth exp -0.023
+  lattice m=2      median|D| 4.6994  max|D| 21.4758  gapiness max/med   4.6  primitive growth exp +0.427
+  incomm m=sqrt2   median|D| 9.9822  max|D| 51.6604  gapiness max/med   5.2  primitive growth exp +0.456
+
+Sym3(11a1) center (Q = 11^3, GammaC(s+3/2) GammaC(s+1/2)):
+  eps +1/+1, match 4.57e-05, 3.53e-05
+  our L(Sym3, 1/2)_u = 1.1402380
+  PARI lfunsympow:     1.1402309   |diff| = 7.09e-06
+
+T4 -- FLAGSHIP: the value-registration law at the center:
+  m = 2: window ladder for F_2(1/2):
+    Y =    4000   F(1/2) = -4.356251 +4.639732i   |F|^2 = 40.504034
+    Y =   16000   F(1/2) = -7.963979 +6.037961i   |F|^2 = 99.881926
+    Y =   64000   F(1/2) = -13.856831 +7.765472i   |F|^2 = 252.314328
+    Y =  120000   F(1/2) = -17.635263 +8.566569i   |F|^2 = 384.388595
+    stability 3.8624;  |F_2(1/2)|^2 = 384.388595   vs L(Sym3,1/2)*C2 = 1.368286   ratio 280.9272
+  m = 3: window ladder for F_3(1/2):
+    Y =    4000   F(1/2) = -1.177330 +0.447557i   |F|^2 = 1.586413
+    Y =   16000   F(1/2) = -1.758753 +0.502987i   |F|^2 = 3.346209
+    Y =   64000   F(1/2) = -2.561950 +0.572334i   |F|^2 = 6.891152
+    Y =  120000   F(1/2) = -2.978218 +0.639622i   |F|^2 = 9.278902
+    stability 0.4217;  |F_3(1/2)|^2 = 9.278902   vs L(Sym4,1/2)/|zeta(1/2)|*C3 = 0.716827   ratio 12.9444
+
+  incommensurate control at 1/2 (must NOT stabilize to any law):
+    F_sqrt2(1/2) ladder: 21.3751  34.5356  43.0418   drift 8.5730
+
+READING (two-sided, pre-registered):
+  T1 machine-zero => the lane identities are exact: integer multiples of
+  the base unit theta_p ARE the Sym tower; T2 O(1) => no identity off the
+  lattice (harmonic compatibility is the law, not a preference).  T4 is
+  the decisive row: if |F_m(1/2)|^2 lands on the certified RHS, the
+  value-registration law has its first measured instances -- the missing
+  piece named by the adapted-center falsifier now has a working form;
+  next rung: the same law on RS4-scale warps, then the quadruple's
+  identity graph (parallel sweep).  If it misses, the miss and its size
+  are the finding.

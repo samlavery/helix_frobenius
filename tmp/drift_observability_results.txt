@@ -1,0 +1,84 @@
+##############################################################################
+# DRIFT OBSERVABILITY -- harmonic placement of the adapter response
+##############################################################################
+
+[falsifier-curve certificates] prime disc => minimal model, N = |disc|;
+  53a1: disc = -53 (prime), N = 53 certified; point (0, 0) on curve: True
+  61a1: disc = -61 (prime), N = 61 certified; point (1, 0) on curve: True
+
+(H) THE JET LADDER.  Root number certified in-house first (split-vs-direct
+    Lambda(3) match, no rank assumption; wrong sign misses by O(1)):
+
+  11a1     eps = +1 certified (match 1.2e-09 vs wrong-sign 3.1e-01)
+           jets(k=0..4): +2.54e-01  +3.09e-01  +4.29e-01  +2.68e-01  +2.61e-01
+           first fire k* = 0   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  571a1    eps = +1 certified (match 8.7e-09 vs wrong-sign 1.1e-02)
+           jets(k=0..4): +1.73e+00  -1.31e+00  +3.73e+00  -3.27e+00  +4.63e+00
+           first fire k* = 0   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  681b1    eps = +1 certified (match 6.2e-09 vs wrong-sign 8.3e-03)
+           jets(k=0..4): +1.84e+00  -1.56e+00  +4.31e+00  -4.01e+00  +5.60e+00
+           first fire k* = 0   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  37a1     eps = -1 certified (match 1.5e-08 vs wrong-sign 8.0e-02)
+           jets(k=0..4): +0.00e+00  +3.06e-01  +1.87e-01  +3.67e-01  +7.77e-02
+           first fire k* = 1   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  53a1     eps = -1 certified (match 3.9e-09 vs wrong-sign 6.0e-02)
+           jets(k=0..4): +0.00e+00  +4.36e-01  +1.87e-01  +4.95e-01  +2.68e-02
+           first fire k* = 1   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  61a1     eps = -1 certified (match 2.4e-09 vs wrong-sign 5.2e-02)
+           jets(k=0..4): +0.00e+00  +4.86e-01  +1.75e-01  +5.46e-01  -5.80e-03
+           first fire k* = 1   sub-ladder silence (max|jet<k*|/|jet_k*|) = 0.0e+00
+  389a1    eps = +1 certified (match 1.6e-08 vs wrong-sign 1.5e-02)
+           jets(k=0..4): -9.83e-16  +5.57e-16  +7.59e-01  -4.30e-01  +1.06e+00
+           first fire k* = 2   sub-ladder silence (max|jet<k*|/|jet_k*|) = 1.3e-15
+  5077a1   eps = -1 certified (match 9.8e-09 vs wrong-sign 5.7e-04)
+           jets(k=0..4): +0.00e+00  +4.48e-08  -8.30e-08  +1.73e+00  -3.21e+00
+           first fire k* = 3   sub-ladder silence (max|jet<k*|/|jet_k*|) = 4.8e-08
+
+  HARMONIC PLACEMENT vs ARITHMETIC DRIFT DIMENSION:
+    curve     drift dim (arith)  k* (harmonic)  match
+    11a1                      0              0    YES
+    571a1                     0              0    YES
+    681b1                     0              0    YES
+    37a1                      1              1    YES
+    53a1                      1              1    YES
+    61a1                      1              1    YES
+    389a1                     2              2    YES
+    5077a1                    3              3    YES
+
+  => hypothesis (H): complexity r responds at harmonic k* = r, silent
+     below -- CONFIRMED on the census: the drift-side delayed signature
+     0,...,0,!=0 with the first nonzero slot at exactly the drift dimension.
+
+(O) OBSERVABILITY -- the normalized adapter response at k*:
+    response := jet_k* * T^2 / (Omega * prod c_p)  =  Reg * |Sha|
+    curve     k*       jet_k*      Omega  T   c     response            reading
+    11a1       0     0.253842   1.269209  5   5     1.000000 |Sha| = 1.0000 -> 1
+    571a1      0     1.729365   0.432341  1   1     4.000000 |Sha| = 4.0000 -> 4
+    681b1      0     1.844815   0.819918  4   4     9.000000 |Sha| = 9.0000 -> 9
+    37a1       1     0.306000   5.986917  1   1     0.051111 Reg*|Sha| = 0.0511
+    53a1       1     0.435864   4.687641  1   1     0.092981 Reg*|Sha| = 0.0930
+    61a1       1     0.485674   6.133193  1   1     0.079188 Reg*|Sha| = 0.0792
+    389a1      2     0.759317   4.980425  1   1     0.152460 Reg*|Sha| = 0.1525
+    5077a1     3     1.731850   4.151688  1   1     0.417144 Reg*|Sha| = 0.4171
+
+  pairwise response distinctness at fixed placement:
+    11a1 vs 571a1 (both k*=0): relative separation 0.750  distinct
+    11a1 vs 681b1 (both k*=0): relative separation 0.889  distinct
+    571a1 vs 681b1 (both k*=0): relative separation 0.556  distinct
+    37a1 vs 53a1 (both k*=1): relative separation 0.450  distinct
+    37a1 vs 61a1 (both k*=1): relative separation 0.355  distinct
+    53a1 vs 61a1 (both k*=1): relative separation 0.148  distinct
+
+VERDICT:
+  (H) CONFIRMED: the response harmonic climbs with complexity, one jet per
+      drift dimension, silent below -- different harmonics as complexity
+      increases, exactly as conjectured.  The root number was certified
+      in-house by the split-vs-direct Lambda(3) match (true sign ~1e-8,
+      wrong sign O(1e-2..0.3)), with no rank assumption anywhere.
+  (O) NO OBSERVABILITY FAILURE: at fixed placement every drift/obstruction
+      state gave a distinct normalized response (Reg*|Sha| separates).
+  Scope: GL(2)/Q census, drift dimensions 0-3, obstructions 1,4,9; the
+  same-placement falsifier now runs at drift dim 1 on THREE curves
+  (37a1/53a1/61a1, in-house certified: prime disc + exhibited point).
+  Not yet tested: non-elliptic drift; coincidence hunts over larger
+  censuses (the falsifier stays open as a standing search).

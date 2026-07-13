@@ -1,0 +1,64 @@
+##############################################################################
+# CERESA L-SIDE -- Klein quartic X(7), CM by Q(sqrt(-7)); the grade-3
+# matching-law rung.  L(psi^3, .) = weight-4 CM newform 49.4.a.a is the
+# Ceresa channel; non-torsion (Tadokoro, Math.Z. 260 (2008)) predicts a
+# NONZERO central derivative.
+##############################################################################
+
+(A) DECOMPOSITION CHECK -- brute-force point counts (independent path):
+    p   split?  a_p(E=49a1)  a_p(psi)[Hecke]   a_p(Klein C)   3*a_p(E)
+     2   split            1               1              0          3
+     3   inert            0               0              0          0
+     5   inert            0               0              0          0
+    11   split            4               4              0         12
+    13   inert            0               0              0          0
+    23   split            8               8              0         24
+    29   split            2               2              6          6
+    37   split           -6              -6              0        -18
+    43   split          -12             -12            -36        -36
+    53   split          -10             -10              0        -30
+    71   split           16              16             48         48
+    79   split            8               8              0         24
+    a_p(psi) == a_p(49a1) point counts: OK
+    (Klein a_p(C) vanishes at every inert p -- the CM-by-sqrt(-7) shape.  At
+     split p it reads 3 a_p(E) exactly when p = 1 mod 7 and 0 when p = 2,4 mod 7:
+     the three factors are CONJUGATE twists of E (cubic character of conductor 7,
+     from the order-3 coordinate permutation), so the naive model is not itself
+     Q-isogenous to E^3 -- Elkies' model C7^0 is.  Geometrically (Qbar) all agree.)
+
+(B) GATE / EVEN CHANNEL -- L(psi, s) = L(49a, s), Q = 49, GammaC(s+1/2):
+    eps = +1/+1  two-point match 1.7e-05, 1.3e-05
+    L(49a, center)_unitary = 0.9666592   (oracle L(49a,1) = 0.9666559)
+    This is the psi^2.psibar = psi.N even channel central value (mult 3),
+    eps = +1: the elliptic/decorated piece, nonvanishing.   PASS
+
+(C) CERESA CHANNEL -- L(psi^3, s) = L(49.4.a.a, s), Q = 49, GammaC(s+3/2):
+    self-certified sign:  eps = -1/-1  (two-point AGREE)
+    split-vs-direct match 2.17e-05, 1.70e-05  (wrong sign 1.06e-02, 2.39e-02)
+    sign certificate: PASS  eps = -1 (odd)   [oracle eps = -1]
+    central VALUE  L(psi^3, center) = +0.000e+00  (forced 0 by eps=-1; oracle 0e+00)
+    central DERIV  L'(psi^3, center) = 0.8298893   (imag -3.6e-17)
+    oracle (PARI lfuncreate/lfun, independent) = 0.8298864   rel 3.6e-06   PASS
+
+VERDICT (grade-3 matching law):
+  The Ceresa channel of the Klein quartic -- the weight-4 CM newform
+  L(psi^3,.) = 49.4.a.a, the genuinely-new piece of L(H^1(C)^{ot3}) -- has
+  ROOT NUMBER eps = -1 (self-certified split-vs-direct, two-point), so its
+  central value is forced to zero and the leading term is the DERIVATIVE
+  L'(center) = 0.829889 != 0 (oracle 0.829886).
+  This MATCHES the literature: Tadokoro proved C - C^- is NON-torsion in
+  J(Klein), so under Beilinson-Bloch nondegeneracy the Ceresa height, hence
+  the central derivative of its channel, must be nonzero -- and it is.
+  The even (decorated) channel L(49a, center) = 0.966659 != 0 sits with eps=+1;
+  the total triple-product sign is (-1)(+1)^3 = -1, so the Gross-Schoen
+  cycle is a DERIVATIVE, consistent throughout.
+
+  Falsifier register (grade 3): a zero derivative here, or eps=+1 with a
+  nonvanishing central value (forcing torsion), would contradict Tadokoro.
+  Neither occurs.  The matching law reads true at grade 3.
+
+  Scope: L(psi^m) built from scratch (K=Q(sqrt-7) ideals, explicit Hecke
+  character, house AFE split-vs-direct certificate); a_p validated by point
+  counts on 49a1; center cross-checked against a PARI oracle.  The
+  proportionality h(Ceresa) ~ L'(center) (Beilinson-Bloch / Zhang-YZZ) is the
+  consumed theorem; the nondegeneracy is the one hypothesis, isolated here.

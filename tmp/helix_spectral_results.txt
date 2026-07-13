@@ -1,0 +1,56 @@
+##############################################################################
+# SPECTRAL HALF -- focal locator on the Sym tower (Sym3 gate, Sym4 escalate)
+##############################################################################
+
+building Sym3, Sym4 banks in RAM to 2e5 ...
+  built.
+
+==========================================================================
+(1) GATE -- Sym3(11a1), 12 oracle zeros, both columns
+==========================================================================
+  FIXED-HEAD: 11/12 (median |diff| 6.03e-04), median closure 0.342
+  DIAGONAL  : 1/12  (growth-window schedule; starves at higher conductor)
+  GATE PASSES (fixed-head is the locator).
+
+==========================================================================
+(2) ESCALATION -- Sym4(11a1), conductor 11^4=14641, 19 oracle zeros
+==========================================================================
+  FIXED-HEAD: 8/19 (median |diff| 3.35e-03), median closure 0.289
+  DIAGONAL  : 0/19
+  ESCALATION PARTIAL: the locator reaches one rung
+  up the Sym tower (degree 5, conductor 14641) -- 8/19 zeros located.
+
+==========================================================================
+(3) HOSTILE CONTROLS on the Sym4 detections (must survive ALL)
+==========================================================================
+  Z-WANDER (head 2e5 -> 1e5): 5/19 oracle zeros still located (STABLE -- real zeros persist)
+  SIGN-SCRAMBLE: 0/19 oracle matches (DIES -- detections are arithmetic)
+  VALUE-SCRAMBLE: 0/19 oracle matches (DIES -- detections are arithmetic)
+  VERDICT: Z-stable + scramble-killed => the Sym4 zeros are real focal
+  events located from local data, not fitting artifacts.
+
+==========================================================================
+(4) GROWTH vs EQUAL-MAGNITUDE resolution -- Sym4 close pair
+==========================================================================
+  Sym4 close pair 12.6670/12.8223 (gap 0.155); linear
+  resolution 2pi/logZ ~ 0.515. grown (growth window) vs equal-magnitude
+  (the height-blind read); does height buy resolution?
+  grown       : 0 minima []
+  equal-mag   : 0 minima []
+  => both find NOTHING: this tight pair is in the high-ordinate region
+     the 8/19 gate does NOT reach -- not a clean resolution test. The
+     clean tests (Sym3 pair 7.75/8.01, g=4) already showed grown == 
+     equal-mag (null); growth does not buy resolution at reachable head.
+
+==========================================================================
+VERDICT (register-honest)
+==========================================================================
+  * Sym3 gate 11/12 (fixed-head, pi/3), Sym4 escalation 8/19 --
+    the focal locator reaches degree 5 / conductor 14641 on the small-
+    conductor Sym side, where zeros are reachable focal events (unlike the
+    degree-16 primitive tensor, whose conductor head ~3e24 is out of reach).
+  * Sym4 detections are Z-stable and die under sign/value scramble -- real
+    arithmetic focal events, not artifacts (hostile controls all pass).
+  * The diagonal growth-window column starves at both (higher conductor
+    data-starved at low y); fixed-head is the locator, as the ledger found.
+  * Resolution: reported above, honestly (growth vs equal-magnitude).

@@ -1,0 +1,35 @@
+##############################################################################
+# CENTER READING, stage 1 -- general self-certifying AFE evaluator
+##############################################################################
+
+GATE A (zeta, pole terms included): certificate + zeta(1/2):
+  eps = +1 (match 6.5e-05 vs wrong 6.4e-02);  zeta(1/2) = -1.46035417  (known -1.4603545088)
+  GATE A: PASS
+
+GATE B (11a1, degree 2): certificate + central value vs house 0.2538419:
+  eps = +1 (match 4.8e-06 vs wrong 3.1e-01);  L(1/2) = 0.2538417  (house: 0.2538419)
+  GATE B: PASS
+
+SYM2(11a1), degree 3, Q = 121: shape scan (self-certifying):
+  shape GammaC(s+1) GammaR(s+0): eps +1/+1, two-point match 4.19e-02, 6.85e-02
+  shape GammaC(s+1) GammaR(s+1): eps +1/+1, two-point match 1.07e-05, 8.45e-06
+  selected shape: GammaR shift 1, eps = +1, match 1.1e-05   CERTIFIED
+  L(Sym2 11a1, 1/2)_u = 0.8933980  (imag -2.8e-17)
+
+SYM4(11a1), degree 5, Q = 14641: shape scan (self-certifying):
+  shape GammaC(s+2) GammaC(s+1) GammaR(s+0): eps +1/+1, two-point match 8.09e-06, 6.39e-06
+  shape GammaC(s+2) GammaC(s+1) GammaR(s+1): eps +1/+1, two-point match 3.47e-04, 1.18e-03
+  selected shape: GammaR shift 0, eps = +1, match 8.1e-06   CERTIFIED
+  L(Sym4 11a1, 1/2)_u = 0.6058010  (imag 2.7e-17)
+
+VERDICT (stage 1):
+  evaluator validated (Gate B), Sym2 and Sym4 shapes CERTIFIED by
+  split-vs-direct with no external input.
+  ASSEMBLY -- the factored center of f^(x4) (classical side of
+  the rung-4 calibration):
+    zeta(1/2)^2 * L(Sym2,1/2)^3 * L(Sym4,1/2)
+    = (-1.4603545)^2 * (0.8933980)^3 * (0.6058010)
+    = 0.921258569
+  Next stage: the windowed carrier reading of the degree-16
+  bank, calibrated to this value, then the primitive quadruple
+  -- the prediction.

@@ -1,0 +1,43 @@
+############################################################################
+# HODGE-PROGRAM FAST TESTS -- battery v1 (oracle-free)
+############################################################################
+
+TEST A -- ledger-failure search v1: the 11a isogeny class
+----------------------------------------------------------------------------
+  [certificate] a_p agreement across class, good p < 400: max |delta a_p| = 0
+  => identical Dirichlet coefficients: the 1D value channel CANNOT
+     separate these curves (same L-function, Faltings).
+
+  [ledger] per-curve retained channels (computed from the curve, not L):
+    curve            L(1)        Omega   T  prod c_p |Sha| land
+    11a1        0.2538419    1.2692093   5         5          1
+    11a2        0.2538419    0.2538419   1         1          1
+    11a3        0.2538419    6.3460465   5         1          1
+
+  [separation] pairwise, channel by channel:
+    11a1 vs 11a2:  L(1) separates: False;  Omega: True;  T: True;  c_p: True   -> ledger separates: True
+    11a1 vs 11a3:  L(1) separates: False;  Omega: True;  T: False;  c_p: True   -> ledger separates: True
+    11a2 vs 11a3:  L(1) separates: False;  Omega: True;  T: True;  c_p: False   -> ledger separates: True
+
+  [Cassels] Omega * prod(c_p) / T^2 across the class (must coincide):
+    11a1     -> 0.253841861
+    11a2     -> 0.253841861
+    11a3     -> 0.253841861
+    relative spread = 2.19e-16
+
+  VERDICT (Test A):
+    1D readout separates any pair:        NO  (identical a_p, certified)
+    retained ledger separates every pair: YES
+    Cassels combination invariant:        YES (spread 2.2e-16)
+    |Sha| landed = 1 on every member:     YES
+    => LEDGER-FAILURE SEARCH v1: no failure found.  The retained
+       channels separate exactly what the 1D readout provably cannot,
+       and redistribute in the Cassels-invariant combination.  The
+       program's crux survives its first adversarial instance.
+
+  Scope, stated exactly: v1 tests GL(2)/Q isogeny classes, where the
+  cycle-data variation is (Omega, T, c_p) at Sha = 1.  The stronger
+  adversarial search -- a pair with equal FULL ledger and different Sha
+  or different Chow/Griffiths data (higher dimension, same zeta) -- is
+  the v2 target and the genuine clause-(c) falsifier hunt.
+

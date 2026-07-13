@@ -1,0 +1,44 @@
+##############################################################################
+# CERESA ANISOTROPY -- the depth-3 drift pairing, measured on the
+# Laga-Shnidman family C_t: y^3 = x^4 + 2tx^2 + 1  (arXiv:2312.12965)
+# readout: h-hat(Q_t), Q_t = (cbrt(t^2-1), t) on y^2 = x^3 + 1
+##############################################################################
+
+  BOUNDARY (the L-S torsion locus over Q -- Ceresa torsion, exact):
+    t =    0: orbit terminated exactly at doubling 1 -> h-hat = 0 (torsion)   OK
+    t =    3: orbit terminated exactly at doubling 2 -> h-hat = 0 (torsion)   OK
+    t =   -3: orbit terminated exactly at doubling 2 -> h-hat = 0 (torsion)   OK
+
+  GENERIC CENSUS (off the locus -- anisotropy requires h-hat > 0;
+  convergence certificate = |estimate(n) - estimate(n-1)|):
+    t =    2: h-hat(Q_t) ~=   0.814574   conv |d| = 3.6e-04   non-isotropic
+    t =    4: h-hat(Q_t) ~=   1.158321   conv |d| = 2.5e-04   non-isotropic
+    t =    5: h-hat(Q_t) ~=   0.814796   conv |d| = 1.8e-04   non-isotropic
+    t =    7: h-hat(Q_t) ~=   0.999900   conv |d| = 3.4e-04   non-isotropic
+    t =  1/2: h-hat(Q_t) ~=   0.999674   conv |d| = 3.4e-04   non-isotropic
+    t =    9: h-hat(Q_t) ~=   0.593410   conv |d| = 2.0e-08   non-isotropic
+
+  pairwise separations (observation, not a pass/fail axis):
+    COINCIDENCE RESOLVED: t = 2 vs t = 5 agree to 2.7e-04 because Q_t' = +Q_t + (0.0, -1.0) (group law, verified numerically):
+      a torsion-translation symmetry of the L-S family (t'^2-1 = c^3 (t^2-1)); height equality is EXACT at the
+      Q-level -- discovered by the instrument, proven by the group law.  Not an anisotropy issue.
+    COINCIDENCE RESOLVED: t = 7 vs t = 1/2 agree to 2.3e-04 because Q_t' = +Q_t + (0.0, 1.0) (group law, verified numerically):
+      a torsion-translation symmetry of the L-S family (t'^2-1 = c^3 (t^2-1)); height equality is EXACT at the
+      Q-level -- discovered by the instrument, proven by the group law.  Not an anisotropy issue.
+
+VERDICT:
+  The depth-3 drift pairing is NON-ISOTROPIC at every census point off
+  the Laga-Shnidman locus -- h-hat(Q_t) > 0 with clear margin and a
+  passing convergence certificate -- and EXACTLY zero on the locus
+  (finite orbits, no limit taken).  By L-S Thm 1.1/1.4 this is a
+  theorem-anchored measurement of Beilinson-Bloch anisotropy ABOVE
+  grade one: the first such reading in the program.  The isotropy
+  locus exists, is exactly where the theorem puts it, and is detected
+  exactly -- anisotropy off it is measured, not assumed.
+
+  Scope: h-hat(Q_t) is the L-S proxy; the proportionality h(kappa) ~ h-hat
+  is their theorem, consumed as a citation.  Heights over the cubic field
+  Q(cbrt(t^2-1)) from scratch: exact field arithmetic, exact charpoly,
+  Mahler measure at matched precision; raw 4^-n term at n=6 (rel. error
+  ~1e-3, ample for anisotropy).  Next: larger census + height growth vs
+  the L-S Northcott statement; then non-product K3 clause-(c).

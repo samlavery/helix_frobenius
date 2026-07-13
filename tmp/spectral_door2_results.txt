@@ -1,0 +1,30 @@
+##############################################################################
+# SPECTRAL DOOR 2 -- fixed-head lane-balance scan
+##############################################################################
+
+banks built (Sym3, quadruple to 2e5)
+
+GATE S3 -- fixed head Z = 2e5, t in [1.8, 12.2]:
+    t =   2.320552   depth 2.51e-04   = oracle 2.320021   |diff| 5.31e-04
+    t =   3.591454   depth 5.58e-04   = oracle 3.591881   |diff| 4.28e-04
+    t =   4.622415   depth 1.07e-03   = oracle 4.622627   |diff| 2.12e-04
+    t =   5.508031   depth 2.96e-04   = oracle 5.508633   |diff| 6.03e-04
+    t =   6.891537   depth 2.58e-03   = oracle 6.891141   |diff| 3.96e-04
+    t =   7.748399   depth 1.26e-03   = oracle 7.751612   |diff| 3.21e-03
+    t =   8.004441   depth 4.45e-03   = oracle 8.005204   |diff| 7.63e-04
+    t =   8.891961   depth 4.49e-03   = oracle 8.890556   |diff| 1.41e-03
+    t =   9.375682   depth 5.33e-04   = oracle 9.374304   |diff| 1.38e-03
+    t =  11.117912   depth 1.31e-03   = oracle 11.116477   |diff| 1.44e-03
+    t =  11.709600   depth 1.09e-02   = oracle 11.710144   |diff| 5.45e-04
+    t =  12.152776   depth 1.15e-02   SPURIOUS?
+  matched 11/12; missed: ['10.3713']; median closure 0.342
+  close-pair 7.75/8.01: SPLIT
+
+FALSIFIER -- unit arrow scale, same head:
+  events 12, oracle-matched 11, median closure 0.342
+
+TARGET -- quadruple, fixed head Z = 2e5, t in [0.05, 6.0]:
+  events below cut: 1
+    t =   2.679576   depth 1.47e-02
+  profile: median 0.1247, min 0.0147
+  EVENTS -- hostile checks next

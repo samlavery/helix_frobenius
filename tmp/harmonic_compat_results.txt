@@ -1,0 +1,77 @@
+##########################################################################
+# HARMONIC COMPATIBILITY -- is the tower on the compatible lattice?
+##########################################################################
+fibers: 148913 good primes; each leg driven at its own fundamental (w=1).
+
+======================================================================
+(A) SINGLE-CLOCK PARTNER STRENGTH  c(w) = E[cos(2 w theta)]
+======================================================================
+   probe                     | measured c(w) | analytic | lattice class
+   w=1  (own fundamental)    | -0.50045     | -0.50000 | FULL closure (-1/2): builds the motive
+   w=2  (integer)            | +0.00001     | +0.00000 | decoupled (0): trivial/empty partner
+   w=3  (integer)            | -0.00086     | +0.00000 | decoupled (0): trivial/empty partner
+   w=1/2 (half-integer)      | +0.00029     | +0.00000 | decoupled (0): trivial/empty partner
+   w=3/2 (half-integer)      | +0.00028     | +0.00000 | decoupled (0): trivial/empty partner
+   w=sqrt2 (INCOMMENSURATE)  | -0.05769     | -0.05777 | OFF-LATTICE: irrational, NO partner
+   w=phi   (INCOMMENSURATE)  | +0.04154     | +0.04106 | OFF-LATTICE: irrational, NO partner
+   w=pi/2  (INCOMMENSURATE)  | +0.03013     | +0.02971 | OFF-LATTICE: irrational, NO partner
+  => only w=1 gives the -1/2 that builds the exact rationals; every
+     other RATIONAL w decouples to 0 (a trivial partner); IRRATIONAL w
+     leaks a transcendental c(w) -- no partner, closure lost.  (The
+     off-lattice c(sqrt2)=-0.05777... is NOT a small rational; a big-
+     denominator best-fit fraction would be a self-deception.)
+
+======================================================================
+(B) CONJUGATE CLOSURE of the true bank:  T_{-k} = conj(T_k) ?
+======================================================================
+  g= 6: max_p max_k |T_-k - conj(T_k)| = 0.00e+00  (bank is conjugate-closed: compatible by construction)
+  g=12: max_p max_k |T_-k - conj(T_k)| = 0.00e+00  (bank is conjugate-closed: compatible by construction)
+  g=20: max_p max_k |T_-k - conj(T_k)| = 0.00e+00  (bank is conjugate-closed: compatible by construction)
+
+======================================================================
+(C) DOES THE EXACT-RATIONAL CLOSURE NEED COMPATIBLE HARMONICS?
+======================================================================
+  warp leg-0 by w; measure the primitive channel moments; ask whether
+  they still land on the motive's exact rationals.
+  each channel moment is AFFINE in the leg-0 closure value cw=c(w):
+  M(cw) = M(0) + [M(-1/2)-M(0)]*(cw / -1/2).  So M is rational iff cw is
+  a lattice value {-1/2, 0}; for irrational cw the moment is irrational.
+  --- grade 4 ---
+    TRUE  w=1 (compatible)                : MATCHES motive (<1.5s); RATIONAL channels
+        witness k=2: measured 7.00399, w-law = 7.00000 (rational, cw=-1/2)
+    WRONG w=2 (commensurate, wrong rung)  : LEAVES motive (145s off); RATIONAL channels
+        witness k=2: measured 5.50628, w-law = 5.50000 (rational, cw=0)
+    BAD   w=sqrt2 (INCOMMENSURATE)        : LEAVES motive (127s off); IRRATIONAL channels (transcendental cw)
+        witness k=2: measured 5.67988, w-law = 5.5000 + -3.0000*c(w), c(w)=-0.05777 irrational -> 5.67330 (irrational)
+
+  --- grade 6 ---
+    TRUE  w=1 (compatible)                : MATCHES motive (<1.5s); RATIONAL channels
+        witness k=4: measured 13.51970, w-law = 13.50000 (rational, cw=-1/2)
+    WRONG w=2 (commensurate, wrong rung)  : LEAVES motive (132s off); RATIONAL channels
+        witness k=4: measured 11.01552, w-law = 11.00000 (rational, cw=0)
+    BAD   w=sqrt2 (INCOMMENSURATE)        : LEAVES motive (115s off); IRRATIONAL channels (transcendental cw)
+        witness k=4: measured 11.31404, w-law = 11.0000 + -5.0000*c(w), c(w)=-0.05777 irrational -> 11.28883 (irrational)
+
+  --- grade 8 ---
+    TRUE  w=1 (compatible)                : MATCHES motive (<1.5s); RATIONAL channels
+        witness k=6: measured 22.01898, w-law = 22.00000 (rational, cw=-1/2)
+    WRONG w=2 (commensurate, wrong rung)  : LEAVES motive (120s off); RATIONAL channels
+        witness k=6: measured 18.52726, w-law = 18.50000 (rational, cw=0)
+    BAD   w=sqrt2 (INCOMMENSURATE)        : LEAVES motive (105s off); IRRATIONAL channels (transcendental cw)
+        witness k=6: measured 18.92579, w-law = 18.5000 + -7.0000*c(w), c(w)=-0.05777 irrational -> 18.90436 (irrational)
+
+======================================================================
+VERDICT
+======================================================================
+  YES -- the harmonics are compatible and it is load-bearing.  The atlas
+  drives every leg at its own fundamental (w=1); the channels are integer
+  combinations, conjugate-closed (B) at machine zero.  Three-way witness (C):
+    w=1     : c=-1/2  -> MATCHES the motive's exact rationals (compatible)
+    w=2     : c=0     -> rational but a DIFFERENT (decoupled) object; leaves
+                        the motive by >100 sigma (commensurate, wrong rung)
+    w=sqrt2 : c=-0.0577 (irrational) -> every channel moment IRRATIONAL;
+                        no motivic closure at all (incommensurate)
+  The exact-rational atlas exists ONLY because every clock sits at its own
+  fundamental on the shared commensurate lattice.  An incompatible clock
+  would have produced a FALSE NULL / an un-recognisable transcendental --
+  the compatible lattice is precisely what makes the tower read as a motive.

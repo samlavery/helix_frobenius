@@ -1,0 +1,199 @@
+##############################################################################
+# RECOGNITION LOOP -- grade 4, clock-relation (Lefschetz/isogeny) classes
+# detect -> align -> construct -> recognize; truth read ONLY at grading
+##############################################################################
+
+angle fibers: 41533 good primes to 499979 (portal statistics ~0.49%)
+
+period fibers (tau self-certified by exact algebraic j = c4^3/Delta):
+  11a1: tau = -0.50000+1.14939i   |j-j_exact|/(1+|j|) = 4.9e-16
+  11a2: tau = -0.50000+5.74695i   |j-j_exact|/(1+|j|) = 2.5e-15
+  17a1: tau = +0.50000+0.88739i   |j-j_exact|/(1+|j|) = 2.8e-15
+  17a2: tau = -0.00000+1.77479i   |j-j_exact|/(1+|j|) = 8.3e-16
+  37a1: tau = +0.00000+1.22113i   |j-j_exact|/(1+|j|) = 3.0e-16
+  53a1: tau = -0.39661+0.91799i   |j-j_exact|/(1+|j|) = 6.5e-15
+  61a1: tau = +0.50000+1.53760i   |j-j_exact|/(1+|j|) = 5.0e-16
+  period certificate: PASS
+
+==============================================================================
+CASE (i)  DEGENERATE  11a1^4
+==============================================================================
+  [1] DETECTION  -- folded (2,2) direction variances (freeze cert):
+        12|34:  Var[cos] = 0.000e+00   FROZEN (zero-variance cert)
+        13|24:  Var[cos] = 0.000e+00   FROZEN (zero-variance cert)
+        14|23:  Var[cos] = 0.000e+00   FROZEN (zero-variance cert)
+      => frozen directions: ['12|34', '13|24', '14|23']
+  [2] ALIGNMENT
+      (a) counting side: full diagonal (all legs clock-locked)
+          pairwise lock graph (Var<1e-09): [(1, 2), (1, 3), (1, 4), (2, 3), (2, 4), (3, 4)]
+          folded-fold vs pairwise-graph: consistent
+      (b) period side (independent Hecke/period-lattice certificate):
+          full-diagonal self-lock: identical curve (trivial cert)
+  [3] CONSTRUCTION -- exhibit the isogeny (degree + cyclic kernel):
+          degenerate: 6 diagonal algebraic classes (full (2,2) block)
+  [4] RECOGNITION -- exact certificates:
+        (a) occupancy: measured m4 = 1.9843 +- 0.0154   predicted 2   (1.0 sigma)
+            parity control m3 = +0.0057 (must be ~0)
+        (b) channel profile  E|T_k|^2  (predicted-from-relation vs measured):
+            |T_0|^2: predict  36.0000   measured  36.0000 +- 0.0000   (0.0 sigma)  [frozen channel]
+            |T_2|^2: predict  16.0000   measured  16.0000 +- 0.0000   (0.0 sigma)
+            |T_4|^2: predict   1.0000   measured   1.0000 +- 0.0000   (0.0 sigma)
+        (c) freeze profile: predicted ['12|34', '13|24', '14|23']  measured ['12|34', '13|24', '14|23']  MATCH
+  ---- GRADE vs truth ---------------------------------------------
+        detection freeze  : PASS  (got ['12|34', '13|24', '14|23'], truth ['12|34', '13|24', '14|23'])
+        alignment locks   : PASS  (got none, truth none)
+        construction deg  : PASS  (got none, truth none)
+        occupancy         : PASS  (got 1.984~2, truth 2)
+        profile match     : PASS
+        LOOP (i)        : CLOSED
+
+==============================================================================
+CASE (ii)  MAIN  {11a1,11a2}x{17a1,17a2}
+==============================================================================
+  [1] DETECTION  -- folded (2,2) direction variances (freeze cert):
+        12|34:  Var[cos] = 4.363e-01   live
+        13|24:  Var[cos] = 0.000e+00   FROZEN (zero-variance cert)
+        14|23:  Var[cos] = 0.000e+00   FROZEN (zero-variance cert)
+      => frozen directions: ['13|24', '14|23']
+  [2] ALIGNMENT
+      (a) counting side: live direction 12|34 names locked pairs (1, 2),(3, 4)
+          pairwise lock graph (Var<1e-09): [(1, 2), (3, 4)]
+          folded-fold vs pairwise-graph: consistent
+      (b) period side (independent Hecke/period-lattice certificate):
+          pair (1,2) 11a1~11a2: period-lock CERTIFIED (deg [5], j-residual 2.5e-15)
+          pair (3,4) 17a1~17a2: period-lock CERTIFIED (deg [2], j-residual 8.3e-16)
+  [3] CONSTRUCTION -- exhibit the isogeny (degree + cyclic kernel):
+          pair (1,2): isogeny degree 5 (cyclic kernel Z/5), landing margin 2.5e-15
+          pair (3,4): isogeny degree 2 (cyclic kernel Z/2), landing margin 8.3e-16
+          grade-4 class = product of graphs, degree 5*2 = 10
+  [4] RECOGNITION -- exact certificates:
+        (a) occupancy: measured m4 = 0.9955 +- 0.0085   predicted 1   (0.5 sigma)
+            parity control m3 = +0.0008 (must be ~0)
+        (b) channel profile  E|T_k|^2  (predicted-from-relation vs measured):
+            |T_0|^2: predict  22.0000   measured  22.0218 +- 0.0542   (0.4 sigma)
+            |T_2|^2: predict  10.0000   measured  10.0119 +- 0.0259   (0.5 sigma)
+            |T_4|^2: predict   1.0000   measured   1.0000 +- 0.0000   (0.0 sigma)
+        (c) freeze profile: predicted ['13|24', '14|23']  measured ['13|24', '14|23']  MATCH
+  ---- GRADE vs truth ---------------------------------------------
+        detection freeze  : PASS  (got ['13|24', '14|23'], truth ['13|24', '14|23'])
+        alignment locks   : PASS  (got [(1, 2), (3, 4)], truth [(1, 2), (3, 4)])
+        construction deg  : PASS  (got [2, 5], truth [2, 5])
+        occupancy         : PASS  (got 0.996~1, truth 1)
+        profile match     : PASS
+        LOOP (ii)        : CLOSED
+
+==============================================================================
+CASE (iii)  SCRAMBLED  {11a1,37a1,53a1,61a1}
+==============================================================================
+  [1] DETECTION  -- folded (2,2) direction variances (freeze cert):
+        12|34:  Var[cos] = 2.617e-01   live
+        13|24:  Var[cos] = 2.618e-01   live
+        14|23:  Var[cos] = 2.596e-01   live
+      => frozen directions: NONE
+  [2] ALIGNMENT
+      (a) counting side: no locks
+          pairwise lock graph (Var<1e-09): none
+          folded-fold vs pairwise-graph: consistent
+      (b) period side (independent Hecke/period-lattice certificate):
+          no locks recovered -> nothing to certify (null)
+  [3] CONSTRUCTION -- exhibit the isogeny (degree + cyclic kernel):
+          no algebraic class constructed (null)
+  [4] RECOGNITION -- exact certificates:
+        (a) occupancy: measured m4 = -0.0019 +- 0.0049   predicted 0   (0.4 sigma)
+            parity control m3 = +0.0012 (must be ~0)
+        (b) channel profile  E|T_k|^2  (predicted-from-relation vs measured):
+            |T_0|^2: predict  12.3750   measured  12.3780 +- 0.0469   (0.1 sigma)
+            |T_2|^2: predict   7.0000   measured   7.0038 +- 0.0199   (0.2 sigma)
+            |T_4|^2: predict   1.0000   measured   1.0000 +- 0.0000   (0.0 sigma)
+        (c) freeze profile: predicted NONE  measured NONE  MATCH
+  ---- GRADE vs truth ---------------------------------------------
+        detection freeze  : PASS  (got NONE, truth NONE)
+        alignment locks   : PASS  (got none, truth none)
+        construction deg  : PASS  (got none, truth none)
+        occupancy         : PASS  (got -0.002~0, truth 0)
+        profile match     : PASS
+        LOOP (iii)        : CLOSED
+
+##############################################################################
+# FALSIFIERS
+##############################################################################
+
+  F1 (PRIMARY -- reading-scale; warps deprecated per Sam 2026-07-13).
+     Fibers UNTOUCHED -- only the reading harmonic grid varies.  Occupancy
+     must land on its exact integer on the mu6 fundamental (w=1) and
+     over-split/degrade off it.  Exact prediction = the c(w)=E[cos 2w theta]
+     Sato-Tate discriminator (measured meets predicted below):
+       reading grid          case  occupancy(meas / exact)   note
+       mu6 fundamental w=1     i    1.9843 /   2.0000    mu6: lands on truth
+       mu6 fundamental w=1    ii    0.9955 /   1.0000    mu6: lands on truth
+       mu6 fundamental w=1   iii   -0.0019 /   0.0000    mu6: lands on truth
+
+       mod-12 doubled  w=2     i    5.9968 /   6.0000    over-split (decoupled)
+       mod-12 doubled  w=2    ii    3.9893 /   4.0000    over-split (decoupled)
+       mod-12 doubled  w=2   iii    1.0129 /   1.0000    NULL -> HALLUCINATED class
+
+       rational grid   w=3     i    5.9889 /   6.0000    decoupled object
+       rational grid   w=3    ii    4.0170 /   4.0000    decoupled object
+       rational grid   w=3   iii   -0.0114 /   0.0000    decoupled object
+
+       off-lattice w=sqrt2     i    5.5488 /   5.5520    transcendental (no integer)
+       off-lattice w=sqrt2    ii    3.5547 /   3.5512    transcendental (no integer)
+       off-lattice w=sqrt2   iii    0.5525 /   0.5672    transcendental (no integer)
+
+      => mu6 fundamental clean (all cases hit their integer): YES
+         mod-12 over-splits AND hallucinates a class in the null: YES
+         off-lattice reads transcendental (no integer landing): YES
+         READING-SCALE FALSIFIER: FIRES as required -- mu6 is THE lattice
+      freeze-invariance control (MAIN case): theta_i=theta_j is an EXACT zero,
+      so the frozen set is invariant under the reading winding -- a GENUINE
+      lock, not a w=1 artifact (precisely what a warp would falsely destroy):
+        w=1      frozen set = ['13|24', '14|23']
+        w=2      frozen set = ['13|24', '14|23']
+        w=sqrt2  frozen set = ['13|24', '14|23']
+      => freeze reading-scale invariant: CONFIRMED
+
+  F1-legacy (DEPRECATED-FAMILY -- fiber warp; retained for the record only):
+        12|34:  Var before 4.363e-01  after warp 4.991e-01  pred   live 
+        13|24:  Var before 0.000e+00  after warp 2.491e-01  pred 0.250 
+        14|23:  Var before 0.000e+00  after warp 2.491e-01  pred 0.250 
+      => warp breaks the freeze to Var~1/4 (reproduces old spec); superseded by the
+         reading-scale probe (warps mutate the fiber; deprecated).
+
+  F2  scrambled control clean-null: CONFIRMED (case (iii) returned no freeze, occupancy 0, no locks, no cycle)
+
+  F3  deliberate false alignment on the MAIN case: assert partition {13|24}
+      (claim locks {1,3},{2,4}: 11a1~17a1 and 11a2~17a2 -- both FALSE):
+        pair (1,3) 11a1~17a1: degrees -, min j-residual 2.988e-01 (best try deg 16) -> construction FAILS (no integer degree)
+        pair (2,4) 11a2~17a2: degrees -, min j-residual 1.378e-01 (best try deg 23) -> construction FAILS (no integer degree)
+        contrast: TRUE pair (1,2) 11a1~11a2 lands at deg [5], residual 2.5e-15
+      => false alignment REJECTED by construction (as required)
+
+##############################################################################
+# VERDICT
+##############################################################################
+  recognition loops: (i)=CLOSED  (ii)=CLOSED  (iii)=CLOSED
+  falsifiers: F1 reading-scale PASS (mu6-clean, off-mu6 over-splits; warp deprecated) | F2 scrambled-null PASS | F3 false-align-rejected PASS
+
+  The full recognition loop CLOSES at grade 4 for CLOCK-RELATION classes.
+  From carrier data alone: the isogeny-lock freeze was DETECTED, the lock
+  lattice ALIGNED and independently period-certified, the isogeny degrees
+  (5 and 2) CONSTRUCTED from the period lattice with machine-zero landing,
+  and the class RECOGNIZED against the invariant-theory occupancy and the
+  exact product-Sato-Tate channel profile.  Every falsifier fired exactly
+  where required: the READING-SCALE probe (fibers untouched) landed the
+  occupancy on its exact integer only on the mu6 fundamental and over-split
+  off it -- the scrambled null even hallucinating a class at mod-12 -- while
+  the isogeny freeze stayed reading-scale invariant (a genuine lock); the
+  scrambled quadruple was a clean null at all four arms; and the deliberate
+  false partition was rejected by the construction arm (no integer isogeny
+  degree between non-isogenous curves).
+
+  HONEST BOUNDARY.  This closes recognition for the LEFSCHETZ/ISOGENY-TYPE
+  regime only: grade-4 classes SOURCED BY PAIRWISE CLOCK RELATIONS
+  (theta_i = theta_j), where the freeze is exact and the period lattice
+  exhibits the correspondence.  The EXOTIC / WEIL-TYPE classes -- Hodge
+  invariants carried with NO pairwise clock relation among the legs (the
+  homeless (2,2) 2-plane of hodge_portal PT3, occupancy WITHOUT any frozen
+  pair-direction) -- are a strictly different object: no leg-pair freezes,
+  no isogeny to construct, and the recognition template here does not reach
+  them.  That regime remains the open frontier.

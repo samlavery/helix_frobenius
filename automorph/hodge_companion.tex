@@ -1,0 +1,1767 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{xcolor}
+\usepackage{tikz}
+\usepackage[colorlinks=true,linkcolor=blue!60!black,citecolor=blue!60!black,urlcolor=blue!60!black]{hyperref}
+\usepackage{booktabs}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{target}[theorem]{Target}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Fcar}{F_{\mathrm{car}}}
+\newcommand{\CH}{\mathrm{CH}}
+\newcommand{\AJ}{\mathrm{AJ}}
+\usepackage[OT2,T1]{fontenc}
+\DeclareSymbolFont{cyrletters}{OT2}{wncyr}{m}{n}
+\DeclareMathSymbol{\Shamath}{\mathalpha}{cyrletters}{"58}
+
+\title{The Loss Ledger and the Cycle Filtration:\\
+Tower Exhaustion on the Helix Carrier,\\
+and a Program Whose Terminus Is the Hodge Conjecture}
+\author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
+\date{Preprint draft \textsc{v0.1} --- July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The three-dimensional helix carrier of the main paper projects to the classical
+$1$D readout through a lossy but exactly bookkept descent: height, radius, and
+angle are recorded in a loss ledger, and projection with its ledger is a proven
+bijection. This paper reads the \emph{cycle theory} of a variety through that
+ledger. We define the carrier filtration $\Fcar^{\,d}$ by vanishing of the
+recursive tower readouts $T_0,\dots,T_{d-1}$ and prove, machine-checked in
+Lean~4, the depth dictionary: \emph{first nonzero tower depth equals filtration
+depth}, the depth is unique, it is preserved by every faithful carrier
+transport, and whenever a Bloch--Beilinson filtration with the universal
+properties exists it coincides with $\Fcar$. On the semisimple carrier state the
+tower is unconditionally jointly faithful --- a Vandermonde separation --- so no
+nonzero state is silent at every level. At depth one the carrier's leading
+central jet factors, by Birch--Swinnerton-Dyer/Gross--Zagier, into three
+independently resolved coordinates --- vanishing order, regulator, and
+$|\Shamath|$ --- landed at machine precision on a census through rank three,
+with the local-global obstruction appearing as an exact square integer. Each
+deeper landing is theorem-anchored: Tate's pole at grade zero,
+Gross--Zagier--Kolyvagin at grade one, a CM Hodge class firing with the
+predicted delayed signature at depth two, and the Ceresa/Gross--Schoen height
+at tensor depth three by Zhang and Yuan--Zhang--Zhang. The program this
+assembles is stated plainly: the carrier's organizing principle is that no
+layer remains invisible --- every class is induced to appear at some retained
+coordinate --- and the terminus of that principle is the Hodge conjecture, read
+as a source-exhaustion statement: every Hodge-signature state has an algebraic
+source.
+
+Four further developments carry the program past its first draft. The
+\emph{harmonic frame}: a Hodge structure is a torus clock --- weight the radial
+rate, $H^{p,q}$ the frequency-$(q{-}p)$ channel, a Hodge class a rational DC
+mode --- calibrated against Lefschetz $(1,1)$ truth on both the period and
+point-count sides. \emph{Drift}: extension classes are the first-order shear a
+pure clock stack cannot produce; machine-checked, drift is value-blind,
+jet-visible, and never silent on the model, and the measured law --- the
+response harmonic equals the drift dimension --- holds across the census with
+machine-zero silence below. \emph{Recognition at grade one}: the
+Gross--Zagier loop is run end to end on house instruments, from point counts to
+an exactly recognized rational point. \emph{Grade four}: the first unnamed
+rung. Three walls are established --- the non-critical center (the motive's own
+DC channel), the parity ladder (heights on odd rungs, regulators on even), and
+a split no-go (decomposable classes pair to zero with the primitive quadruple,
+machine-checked) --- so the rung-four object is classically homeless; the
+degree-16 fiber is then assembled directly on the carrier, its degenerate case
+factoring through the lower harmonics exactly, its primitive case certified
+irreducible, and its first datum measured. This draft carries the rung further.
+A fourth wall --- the information wall: any chart-side center determination
+needs $\sim\!\sqrt Q\approx3\times10^{24}$ coefficients --- is measured on
+three faces and then dismantled: a certified value chain runs to degree six,
+the primitive quadruple's functional-equation sheet is pinned from its twenty
+integers with the global root number \emph{proven} $+1$ from Deligne's local
+theory, its first strip-interior values exist, and the unread center is
+identified as a regulator volume dominated by its tropical part. The
+harmonic-lattice and rail-pairing laws locate where values live: warps
+harmonically compatible with the fiber's own angle produce exact lane
+identities on the symmetric-power tower, natural boundaries at the center are
+single-rail artifacts, and the height-matched pairing of exact conjugate rails
+converges where every mis-pair diverges. The portal reads the homeless
+$(2,2)$ block from inside --- channel constancy as an algebraicity signature,
+an $S_3$-symmetric interior Gram with a two-dimensional exotic-candidate home
+--- and a fixed-head locator with $\mu_6$-address rails resolves oracle zeros
+at the Rayleigh limit one degree beyond its previous ceiling. The Ceresa
+target's $L$-side is landed on the Klein quartic: the Ceresa channel has
+forced sign $-1$ and central derivative $0.8299\ne0$, matching the proven
+non-torsion of the cycle. And the tower scales: grades five and six run on
+the same instruments with no new method --- every pre-registered rational
+lands, the Catalan spine $C_2,C_3$ and its Schur companions $C_4,C_5,C_6$
+confirm, and the parity law (a DC channel exists iff the weight is even) is
+proven in Lean the same session its content is measured; the atlas then runs
+to grade twenty, where the tower's root-number law emerges --- sign real at
+every grade, central zeros forced at exactly $g=2^k+1$. The terminus
+architecture is fixed in Lean: retention and recognition, the two named
+hypotheses, compose machine-checked into source exhaustion --- asserted by no
+one, wired to receive.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+The main paper \cite{Universal} constructs a three-dimensional carrier --- a
+double-ended helix and its conjugate anti-helix, harmonically scaled, running
+from the origin to infinity --- on which automorphic data ride as fibers, and
+proves that the classical one-dimensional readout is the image of a lossy but
+exactly bookkept projection: the descent $3\mathrm D\to2\mathrm D\to1\mathrm D$
+books a \emph{loss ledger} --- height (ordinate), radius, angle --- and
+projection with its ledger is a bijection with an exact two-sided inverse
+(Lean, \texttt{ConeProjection.record\_bijective}). The present paper turns that
+instrument toward the cycle theory of a variety, and it is organized around one
+boxed statement and one stated terminus.
+
+The boxed statement is the \emph{depth dictionary}. Define the recursive tower
+$T_0,T_1,T_2,\dots$ of carrier readouts --- value, leading jet, and the
+symmetric-power/derivative levels above them --- and the carrier filtration
+\[
+  \Fcar^{\,d}\ :=\ \{\,z:\ T_0(z)=\dots=T_{d-1}(z)=0\,\},
+\]
+defined by the tower alone, with no reference to any conjectural filtration.
+Then, as a machine-checked theorem (\S\ref{sec:dictionary}),
+\[
+  \boxed{\ \text{first nonzero carrier tower depth}\ =\ \Fcar\text{-filtration depth,}\ }
+\]
+the depth is unique, it is invariant under every faithful carrier transport,
+and \emph{whenever} a Bloch--Beilinson filtration with the universal properties
+exists on the source class, it coincides with $\Fcar$
+(\texttt{blochBeilinson\_coincides}) --- a conditional corollary that assumes
+no general existence of the conjectural object, which is stronger and cleaner
+than positing that existence. We price the dictionary exactly: since $\Fcar$ is
+\emph{defined} by tower vanishing, the correspondence is definitional
+bookkeeping, exact by construction; its value is that transport-invariance and
+the Bloch--Beilinson coincidence attach to a non-circular, machine-fixed
+object.
+
+The stated terminus is the Hodge conjecture. The carrier program's organizing
+principle --- established across the main paper's arithmetic and repeated here
+--- is that \emph{no layer remains invisible}: a class silent in one readout is
+not invisible but mis-read, and it is induced to appear by climbing to the
+correct retained coordinate --- a deeper tower level, a different ledger
+channel. The local-global obstruction $|\Shamath|$, ordinarily invisible to a
+Hodge-theoretic projection, appears at depth one in the jet's amplitude ratio
+as an exact square integer (\S\ref{sec:depthone}); a CM Hodge class, silent in
+the standard readout, fires at depth two with the predicted delayed signature
+(\S\ref{sec:landings}); the transcendental Ceresa class, silent at depth one,
+is reached at tensor depth three by a theorem of Zhang and Yuan--Zhang--Zhang
+(\S\ref{sec:ceresa}). Carried to its terminus the principle says: a rational
+$(p,p)$-class --- a state with the \emph{Hodge signature} in the carrier's
+clock coordinates --- cannot be silent either; something algebraic sources it.
+That is the Hodge conjecture \cite{Hodge,DeligneClay}, read in the carrier's
+native register as \emph{source exhaustion}:
+\[
+  \boxed{\ \text{every Hodge-signature state has an algebraic source.}\ }
+\]
+We do not prove it here. We prove the dictionary, the semisimple half, and the
+drift theorems; measure every landing the classical theorems anchor, including
+the first above-grade-one anisotropy reading (\S\ref{sec:ceresa}), the landed
+$L$-side of the Ceresa target itself, and the
+first data on the unnamed fourth rung (\S\ref{sec:rung4}); measure the rung's
+fourth wall and dismantle it (\S\ref{sec:wallfour}); read the rung's interior
+through the harmonic lattice, the conjugate rails, and the portal
+(\S\ref{sec:rails}); scale the tower to grades five and six with no new
+method (\S\ref{sec:scaling}); close the
+recognition loop at grade one on house instruments (\S\ref{sec:recognition});
+and in \S\ref{sec:terminus} fix the architecture in Lean --- the two named
+ingredients composing, machine-checked, into the terminus --- together with
+what evidence would refute the program on the way.
+
+\paragraph{Registers.} Three registers are used and never blended.
+\emph{Proven}: machine-checked in Lean~4 at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry} (the filtration dictionary, the semisimple theorem, and the
+supporting carrier corpus of \cite{Universal}), or established in the classical
+literature with the citation given at the point of use (Gross--Zagier,
+Kolyvagin, Zhang, Yuan--Zhang--Zhang, Harris, Laga--Shnidman).
+\emph{Measured}: precision-tracked numerics --- the census, the probes, the
+delayed signatures --- calibration and corroboration, never proof.
+\emph{Program}: the extension-data faithfulness, the from-scratch Ceresa
+landing, and the terminus itself, stated with their falsifiers.
+
+\section{The carrier and its ledger}\label{sec:ledger}
+
+We import from \cite{Universal} only what this paper consumes.
+
+The carrier is source-independent: a double-ended helix/anti-helix pair,
+Archimedean of constant pitch, harmonically scaled. A source with a finite
+structural presentation --- finitely many local parameters per place generated
+by one bounded-degree rule --- is \emph{admissible}, and its fiber rides the
+carrier as a bank of phasors entering continuously at height with zero
+magnitude. Vanishing is exact focal cancellation of the helix and anti-helix
+fibers. The descent to the classical chart drops the radial channel
+($3\mathrm D\to2\mathrm D$), then the angular channel
+($2\mathrm D\to1\mathrm D$), while height passes through $\log$; recording the
+dropped channels makes the map
+\[
+  \text{fiber}\ \longmapsto\ (\text{ordinate};\ \text{radius},\ \text{angle})
+\]
+a bijection with explicit inverse (Lean,
+\texttt{ConeProjection.record\_bijective}, \texttt{reconstruct\_record}) ---
+the loss ledger. The three channels carry distinct arithmetic freight:
+\begin{itemize}
+\item \emph{height} --- the ordinate, the $L$-reading and its jets;
+\item \emph{radius} --- the scaling channel: leading values, regulators, and
+the obstruction amplitudes enter here;
+\item \emph{angle} --- the Satake/Frobenius phase, the Galois-side datum.
+\end{itemize}
+The recursive tower $T_d$ reads the fiber at symmetric-power/derivative level
+$d$: $T_0$ the value channel, $T_1$ the leading central jet, and above them the
+moment/symmetric-power levels of the clock frequencies. Everything below is a
+statement about which classes fire at which $T_d$, and through which ledger
+channel.
+
+\section{The harmonic Hodge structure}\label{sec:harmonic}
+
+The frame that organizes everything below is the observation that a Hodge
+structure already \emph{is} a clock system. Deligne's form of the definition:
+a weight-$n$ Hodge structure is an action of the torus
+$\mathbb S(\mathbb R)=\mathbb C^\times=\mathbb R_{>0}\times U(1)$, acting on
+$H^{p,q}$ by $z^{-p}\bar z^{-q}=r^{-n}e^{i\theta(q-p)}$ --- radius times angle,
+exactly the two channels the loss ledger books. Decomposed in carrier
+coordinates:
+
+\begin{center}
+\begin{tabular}{@{}ll@{}}
+\toprule
+Hodge object & carrier object \\
+\midrule
+weight $n$ & radial rate (the ledger's radius channel, $r^{-n}$) \\
+$H^{p,q}$ & clock channel at frequency $k=q-p$ \\
+Hodge symmetry & chiral pairing $k\leftrightarrow-k$ (helix/anti-helix lanes) \\
+Hodge numbers $h^{p,q}$ & channel occupancy of the bank \\
+Weil operator $C=h(i)$ & the $\pi/2$ clock element; $C^2=(-1)^n$ the $\pi$ element \\
+polarization & quarter-turn-twisted Gram definiteness \\
+Hodge filtration $F^p$ & frequency-band cut; opposedness $=$ chiral complementarity \\
+Griffiths transversality & the unit-step law (the axioms of \S\ref{sec:dictionary}) \\
+Mumford--Tate group & the clock-symmetry group; CM $=$ extra symmetry \\
+Hodge loci & DC-locking loci of the transported clock \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Two consequences carry the paper. First, \emph{a Hodge class is a rational DC
+mode}: type $(p,p)$ means $k=0$ --- the angular clock silent, the state pure
+radial, at rational amplitude. The house's DC technology therefore applies
+verbatim: the carrier reads DC occupancy as pole/residue data (the depth-one
+instance is \texttt{rank\_is\_dc\_residue}). Second, the terminus of
+\S\ref{sec:terminus} becomes a fixed-axis exhaustion statement, the same genre
+as the carrier's proven exhaustion theorems. The $1$D chart hides all of this
+because the $(p,q)$ data is exactly the discarded angle channel: the
+$L$-function sees the semisimplified frequency/weight multiset, never the
+rational structure against the channels.
+
+\paragraph{The orbit geometry.} The torus is the clock; the sphere is the
+dial. For weight-two and hyperk\"ahler geometry the twistor sphere rotates the
+channels $(2,0),(1,1),(0,2)$ into one another --- it parametrizes clocks, and
+rotating it moves the DC axis while the rational lattice stays fixed. Acting on
+the dial with the clock sweeps nested toroids (the Hopf/Clifford
+decomposition, the chiral pair as the two linked core circles), degenerating on
+the axis; the axisymmetric profile data of that sweep is where the rational DC
+modes live. Equivariant localization --- exact, not asymptotic, for these
+actions --- is the transfer principle that reads the whole toroid from the
+axis: the sphere-family's global invariants localize to the DC locus, the
+harmonic-frame form of the carrier's residue principle. Measured
+(\texttt{twistor\_hunt.py}, App.~\ref{app:repro}): the DC-locking locus of a
+product-family dial is discrete and \emph{exactly algebraic} --- every
+predicted rational point of the dial locks at residual zero, every detected
+lock identifies as rational, and every irrational control stays at $O(1)$ ---
+the Cattani--Deligne--Kaplan-shaped behavior on the carrier's own clock
+coordinates.
+
+\paragraph{Epicycles and drift.} Iterating the picture --- spheres spinning
+about spheres, axes parallel --- is the classical epicycle stack, and it is
+exact: parallel axes means commuting clocks, frequencies add, layer $d$ spins
+at $\lambda^d$, and the recursion depth is the tower level of
+\S\ref{sec:dictionary}. One more sphere out $=$ one more grade. What a pure
+epicycle stack cannot produce is \emph{drift} --- secular shear between layers
+--- and drift is precisely an extension class: the Jordan part that
+semisimplification kills. The next section makes this machine-checked.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  \draw[very thick] (0,0.4) -- (0,-4.6);
+  \draw[very thick] (0.9,0.4) -- (0.9,-4.6);
+  \draw[very thick] (0.45,-4.6) ellipse (0.45 and 0.16);
+  \draw[very thick] (0,0.4) arc (180:0:0.45 and 0.16);
+  \foreach \d in {0,1,2,3,4} {
+    \draw[gray,dashed] (-1.2,-\d) -- (2.1,-\d);
+    \node[gray,left] at (-1.25,-\d) {$d=\d$};
+  }
+  \foreach \x/\y/\l in {0.25/0/11a1, 0.45/0.05/571a1, 0.65/-0.05/681b1} {
+    \fill[blue!60!black] (\x,\y) circle (0.09);
+  }
+  \node[right,blue!60!black,font=\scriptsize] at (1.0,0.05)
+    {$11a1,\,571a1,\,681b1$};
+  \foreach \x/\y in {0.25/-1, 0.45/-0.95, 0.65/-1.05} {
+    \fill[blue!60!black] (\x,\y) circle (0.09);
+  }
+  \node[right,blue!60!black,font=\scriptsize] at (1.0,-0.95)
+    {$37a1,\,53a1,\,61a1$};
+  \fill[blue!60!black] (0.45,-2) circle (0.09);
+  \node[right,blue!60!black,font=\scriptsize] at (1.0,-1.95)
+    {$389a1$;\ CM class (Sym-tower)};
+  \fill[blue!60!black] (0.45,-3) circle (0.09);
+  \node[right,blue!60!black,font=\scriptsize] at (1.0,-2.95)
+    {$5077a1$;\ Ceresa (triple product)};
+  \node[font=\scriptsize,align=center] at (0.45,-5.3)
+    {torsion locus rests\\ on the bottom, exactly};
+\end{tikzpicture}
+\caption{The drift thermometer. Each class sinks to the tower level matching
+its complexity and floats there: the first-fire depth $k^*$ equals the drift
+dimension, measured with machine-zero silence above the bulb
+(\texttt{drift\_observability.py}; the delayed signature $0,\dots,0,\neq0$).
+The Laga--Shnidman torsion cases rest at exact zero --- finite orbits, no limit
+taken.}
+\label{fig:thermometer}
+\end{figure}
+
+\section{The carrier filtration and the depth dictionary}\label{sec:dictionary}
+
+\begin{definition}[carrier filtration]
+$\Fcar^{\,0}$ is everything, and
+$\Fcar^{\,d}:=\{z:\ T_0(z)=\dots=T_{d-1}(z)=0\}$.
+\end{definition}
+
+The definition consumes only the tower --- no Bloch--Beilinson input, no cycle
+theory --- so nothing downstream is circular. The bookkeeping is then a
+machine-checked package (\texttt{HodgeLedgerFiltration.lean} in
+\texttt{RequestProject/};
+all footprints standard):
+
+\begin{theorem}[the depth dictionary; Lean]\label{thm:dictionary}
+$\Fcar$ is an antitone filtration with $\Fcar^{\,0}$ everything
+\textup{(\texttt{carrierFiltration\_antitone})}. The level-$d$ ledger
+coordinate is faithful on $\Fcar^{\,d}$: its kernel there is exactly
+$\Fcar^{\,d+1}$ \textup{(\texttt{ledger\_kernel},
+\texttt{mem\_carrierFiltration\_succ})}. No lower level falsely fires
+\textup{(\texttt{no\_early\_detection})}, and a genuine grade-$d$ class fires
+at level $d$ \textup{(\texttt{grade\_visibility})}; hence the first nonzero
+tower depth equals the $\Fcar$-filtration depth
+\textup{(\texttt{firstVisibleDepth\_eq\_grade})}, the depth is unique
+\textup{(\texttt{isFirstVisible\_unique})}, and it is preserved by every
+faithful carrier transport \textup{(\texttt{isFirstVisible\_map\_iff})}.
+Moreover $\Fcar$ is the unique filtration whose graded pieces are cut out by
+the tower \textup{(\texttt{carrierFiltration\_unique})}.
+\end{theorem}
+
+\begin{corollary}[Bloch--Beilinson coincidence; Lean, conditional]\label{cor:bb}
+Whenever a Bloch--Beilinson filtration \cite{Beilinson,Bloch,Murre} with the
+universal properties exists on the source class, it coincides with $\Fcar$
+\textup{(\texttt{blochBeilinson\_coincides})}.
+\end{corollary}
+
+The corollary assumes no existence; it converts any future construction of the
+conjectural filtration into an identification with a machine-fixed object. The
+load-bearing question is therefore never ``does the dictionary hold'' --- it
+holds by construction --- but whether the tower \emph{separates}: whether any
+nonzero class can be silent at every level. That question splits cleanly in
+two.
+
+\begin{definition}[carrier radical]
+$R:=\bigcap_d\ker T_d$. The tower is \emph{exhaustive} on a class of states if
+$R=0$ there: every nonzero state fires at some finite level
+\textup{(\texttt{exhaustive\_of\_radical\_trivial})}.
+\end{definition}
+
+Gradewise, exhaustion reduces to a nondegeneracy statement --- a faithful
+regulator into an anisotropic height pairing
+(\texttt{grade\_visible\_of\_nondegenerate}) --- discharged at depth one by
+N\'eron--Tate positivity. The semisimple half is settled unconditionally in the
+next section; the extension half is the program of \S\ref{sec:ceresa}.
+
+\section{The semisimple theorem}\label{sec:semisimple}
+
+On the semisimple carrier state --- the finite duality-stable weight fiber, an
+amplitude state $c$ over finitely many \emph{distinct} clock frequencies
+$\{\lambda_i\}$ --- the tower is the moment/symmetric-power system
+$T_d(c)=\sum_i c_i\lambda_i^{\,d}$, and joint faithfulness is a Vandermonde
+fact:
+
+\begin{theorem}[no silent layer on the semisimple state; Lean]\label{thm:semisimple}
+For distinct frequencies the moment matrix is Vandermonde, so
+$\bigcap_d\ker T_d=0$: every nonzero semisimple state fires at some finite
+level
+\textup{(\texttt{CarrierTowerSeparation.momentTower\_exhaustive}}, from
+\texttt{momentTower\_detects} and
+\texttt{momentTower\_radical\_trivial}\textup{)}.
+\end{theorem}
+
+The scope is exactly what the statement says. A homologically trivial cycle
+contributes, in its Abel--Jacobi/motivic realization, \emph{extension} data
+rather than a semisimple amplitude state; semisimplification kills it, the
+local factors depend only on the weight multiset, and so it lies in the radical
+of the \emph{value} tower and is detected only by the derivative/height
+channel. Whether the derivative tower is jointly faithful on extension data ---
+whether $R=0$ extends from the semisimple state to cycles --- is the remaining
+problem, and it is the reason this paper exists.
+
+\subsection{Drift: the extension datum as first-order shear}\label{sec:drift}
+
+In the epicycle frame of \S\ref{sec:harmonic}, an extension class is
+\emph{drift} --- the inter-layer shear a pure rotation stack cannot produce,
+the Jordan deformation of the clock. On the minimal model, the Jordan-2 block
+$\bigl(\begin{smallmatrix}\lambda&\delta\\0&\lambda\end{smallmatrix}\bigr)$,
+the three structural halves of the drift law are machine-checked
+(\texttt{RequestProject/JordanDriftTower.lean}; standard footprint):
+
+\begin{theorem}[drift is value-blind, jet-visible, never silent; Lean]
+\label{thm:drift}
+\textup{(a)} The local factor $\det(1-XA)=(1-X\lambda)^2$ and every trace power
+of the drift block are independent of $\delta$: every pure drift lies in the
+radical of the value tower --- ``killed by semisimplification'' as a theorem
+\textup{(\texttt{jordan\_localFactor\_driftBlind},
+\texttt{drift\_in\_value\_radical})}.
+\textup{(b)} The shear slot of the $d$-th power is exactly
+$d\lambda^{d-1}\delta$: the jet response is the derivative-weighted moment of
+the drift amplitudes --- the Gross--Zagier shape
+\textup{(\texttt{jordan\_pow}, \texttt{jetResponse\_eq\_weighted\_moment})}.
+\textup{(c)} Over distinct clock frequencies, a drift state silent at every jet
+level is zero \textup{(\texttt{jetTower\_radical\_trivial},
+\texttt{jetTower\_exhaustive})}, and the jet-response energy over the first $m$
+levels is positive definite \textup{(\texttt{driftPairing\_posDef})}: on the
+model, Beilinson--Bloch anisotropy is a Vandermonde fact.
+\end{theorem}
+
+\noindent\emph{The retention reduction.} A pairing that factors through a
+definite carrier energy along an injective ledger map is anisotropic
+(\texttt{anisotropic\_of\_definite\_factor}) --- so the open arithmetic content
+of nondegeneracy above grade one is exactly \emph{ledger retention on cycle
+drift}: that the descent never collides two distinct drift states. This is the
+same statement the ledger-failure and observability instruments hunt; the two
+``missing ingredients'' of the terminus are one statement in two costumes.
+
+\noindent\emph{Measured.} The drift law holds on the census
+(\texttt{drift\_observability.py}, App.~\ref{app:repro};
+Fig.~\ref{fig:thermometer}): the first-fire harmonic $k^*$ equals the drift
+dimension on all eight curves (dimensions $0$--$3$), with machine-zero silence
+below the firing slot ($389a1$: sub-ladder at $10^{-16}$ before a $0.759$
+fire), the root number certified in-house with no rank assumption
+(split-vs-direct $\Lambda(3)$, true sign $\sim10^{-8}$, wrong sign
+$O(10^{-2})$), and the normalized responses reproducing the regulators
+measured independently on the arithmetic side to four digits. At fixed
+placement, three same-dimension drift states separate cleanly --- no
+observability failure.
+
+\noindent\emph{The two parity readouts.} Units and $K_1$-classes are
+log-decorations, and a log-decoration is the same Jordan shear: one drift, two
+readouts --- \emph{odd} rungs read drift through heights (Gross--Zagier), and
+\emph{even} rungs read drift through regulators (Beilinson). This becomes
+load-bearing at grade four (\S\ref{sec:rung4}).
+
+\section{Depth one, three coordinates}\label{sec:depthone}
+
+At depth one the carrier's leading central jet factors, by
+Birch--Swinnerton-Dyer and Gross--Zagier \cite{BSD,GrossZagier}, as
+\[
+  \frac{L^{(r)}(E,1)}{r!}
+  \;=\;
+  \frac{\Omega\cdot\mathrm{Reg}\cdot|\Shamath|\cdot\prod_p c_p}{|T|^{2}},
+\]
+and the census resolves the three progressively-deeper-than-Hodge layers as
+\emph{independent} retained coordinates [measured; oracle-free --- no
+$L$-function call inside any locator, published values entering only the final
+verification column]:
+\begin{itemize}
+\item \textbf{order $r$} $=$ filtration depth. Rank read as the DC residue of
+the carrier bank (Lean, \texttt{rank\_is\_dc\_residue}); rank-$0$ curves carry
+$|\Shamath|\in\{1,4,9\}$, so order is independent of the obstruction.
+\item \textbf{$\mathrm{Reg}$} $=$ the height-pairing determinant, the
+arithmetic Abel--Jacobi image. Census values $0.0511,\ 0.1524,\ 0.4171$ at
+ranks $1,2,3$ ($37a1$, $389a1$, $5077a1$), each within $1.7\times10^{-5}$ of
+the known anchors --- distinct, and independent of both order and obstruction.
+\item \textbf{$|\Shamath|$} $=$ the local-global obstruction, the shadow of the
+Abel--Jacobi kernel. The hinge amplitude ratio $L\cdot|T|^2/(\Omega\prod c_p)$
+lands on \emph{exact square integers}: $1,4,9$ across the census
+($4=2^2$ at $571a$, $960d$, $960n$; $9=3^2$ at $681b$, $2849a$), margins at the
+$10^{-15}$ floor for rank zero and $\le1.6\times10^{-4}$ through rank three ---
+the first in-house full readings of the formula above rank zero
+(\texttt{jet\_census.py}, \texttt{sha\_hinge.py}; App.~\ref{app:repro}).
+\end{itemize}
+Each layer ordinarily invisible to a Hodge-theoretic projection therefore
+carries a \emph{distinct} ledger coordinate, resolved independently at machine
+precision. This is the depth-one row of the dictionary, measured; its
+theorem anchors are Gross--Zagier--Kolyvagin \cite{GrossZagier,Kolyvagin}.
+
+\section{The landing table}\label{sec:landings}
+
+Assembling the rows, each with its theorem anchor and its measured probe:
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+grade & class & retained coordinate & anchor / probe \\
+\midrule
+$0$ & algebraic (Tate) & pole order / DC residue & Tate \cite{TateConj}; \texttt{rank\_is\_dc\_residue} \\
+$1$ & Mordell--Weil & leading jet: $r$, $\mathrm{Reg}$, $|\Shamath|$ & \cite{BSD,GrossZagier,Kolyvagin}; census \S\ref{sec:depthone} \\
+$2$ & CM Hodge class & $\mathrm{Sym}^2$ excess pole & delayed signature $0,\neq0$ (below) \\
+$3$ & Ceresa/Gross--Schoen & triple-product central derivative & Zhang \cite{ZhangGS}; YZZ \cite{YZZ} \\
+$2$ (even) & Rankin--Selberg $K_1$-class & Beilinson regulator & Beilinson \cite{Beilinson}; Flach \cite{Flach} \\
+$4$ & primitive quadruple & regulator at a non-critical center & unnamed; \S\ref{sec:rung4} \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+The depth-two row is the program's sharpest measured prediction to date. A CM
+self-correspondence carries a Hodge class living in $\mathrm{Sym}^2$ --- depth
+two of the filtration --- and the tower read from point counts produces exactly
+the \emph{delayed signature} the dictionary demands: silent at depth one, first
+firing at depth two, the first nonzero slot matching the expected filtration
+depth of the class (\texttt{tower\_exhaustion\_test.py},
+App.~\ref{app:repro}). Across every class tested the first firing depth was
+finite --- $1,1,1,2,3$ --- and no class was silent at every level. The
+depth-three row is anchored by theorem: the Ceresa cycle is the image of the
+Gross--Schoen modified diagonal in $\CH^2(C^3)_0$, homologically trivial, and
+its Beilinson--Bloch height is, in the theorem-anchored triple-product
+settings, a central derivative of the $L$-function of $H^1(C)^{\otimes3}$
+\cite{ZhangGS,YZZ} --- the value channel reaches at level three what it cannot
+see at level one, exactly as $|\Shamath|$ appears at level one and the CM class
+at level two. Deeper layer, deeper tower level; nothing invisible, everything
+induced.
+
+\section{The Ceresa frontier}\label{sec:ceresa}
+
+The extension-data half of exhaustion is open, and we price its state exactly.
+
+\emph{The first rung is unconditional.} For the Fermat quartic the Ceresa class
+$[C]-[C^-]$ is homologically trivial yet detected by a nonzero harmonic volume
+--- Harris's Abel--Jacobi-type invariant \cite{Harris}, with Ceresa's theorem
+for the generic curve \cite{Ceresa} --- so
+$\ker(\mathrm{cl})\not\subseteq\ker(\AJ_{\mathbb C})$: a class closed in the
+homology readout fires at the next retained coordinate, no conjecture
+consumed. This is exactly one rung --- past $\mathrm{cl}$ --- and it does not
+show the $\AJ_{\mathbb C}$-kernel itself is penetrated.
+
+\emph{The control cuts the other way.} In the explicit bielliptic Picard family
+with a closed-form height, the Beilinson--Bloch height of the Ceresa cycle is
+proportional to the N\'eron--Tate height of an explicit Abel--Jacobi point,
+vanishing exactly when that point is torsion (Laga--Shnidman
+\cite{LagaShnidman}): there, the depth-three height is controlled by the
+depth-one coordinate and does \emph{not} penetrate $\ker\AJ_{\mathbb C}$.
+
+\emph{The genuine target}, therefore, is a class with $\AJ_{\mathbb C}(z)$ zero
+or torsion yet a nonzero \emph{arithmetic} level-three invariant ---
+necessarily one where the non-archimedean local height dominates (Zhang's
+admissible/metrized-graph terms \cite{ZhangGS}) or where the finer
+$\ell$-adic/Galois Ceresa class, not the archimedean height, is the retained
+coordinate. Two further honesty points fix the frontier's shape:
+
+\begin{itemize}
+\item We do \emph{not} place the transcendental class in the radical: that
+would require every $T_d$ to factor through the single-archimedean
+Abel--Jacobi realization (\texttt{radical\_of\_factorsThrough}), and since the
+global Gross--Schoen height carries non-archimedean data absent from that
+realization, the factorization cannot be assumed --- ruling it out is itself a
+non-factorization theorem, not established here. Absent one,
+Abel--Jacobi-triviality is an \emph{adversarial benchmark}
+(\texttt{not\_mem\_radical\_of\_detectedPast}), not a proven ceiling.
+\item The probes are supportive but are calibration only: the value channel
+fires for every homologically-trivial cycle in the census (no silent cycle),
+and the recursive tower already shows classes absent at level one appearing at
+level $\ge2$ (\texttt{hodge\_griffiths\_probe.py}, App.~\ref{app:repro}).
+\end{itemize}
+
+\noindent\emph{Measured: the first above-grade-one anisotropy reading.} On the
+Laga--Shnidman family itself the depth-three pairing is now measured
+(\texttt{ceresa\_anisotropy.py}, App.~\ref{app:repro}), using their theorem as
+the anchor: $h(\kappa(C_t))\propto\hat h(Q_t)$ for
+$Q_t=(\sqrt[3]{t^2-1},\,t)$ on $y^2=x^3+1$. The boundary is exact: at the
+torsion locus $t=0,\pm3$ the doubling orbits terminate at step one or two ---
+torsion detected by the group law, no limit taken, $\hat h=0$ on the nose. Off
+the locus, every census point is non-isotropic: $\hat h(Q_t)=0.59$--$1.16$,
+positive with clear margin, convergence certificates $\le3.6\times10^{-4}$,
+computed from scratch over the cubic field $\mathbb Q(\sqrt[3]{t^2-1})$ (exact
+field arithmetic, exact characteristic polynomials, Mahler measures at matched
+precision). The isotropy locus exists, is exactly where the theorem puts it,
+and anisotropy off it is measured, not assumed. The instrument also found a
+structure: whenever $t'^2-1=c^3(t^2-1)$ the points are torsion translates
+($-Q_2+(0,1)=Q_5$, verified by the group law in-instrument), so the
+corresponding heights are \emph{exactly} equal --- a torsion-translation
+symmetry of the family, detected numerically at $10^{-4}$ and then proven in
+one line. (Equality of the $\kappa$-heights themselves depends on the
+$t$-dependence of the proportionality constant, and is not claimed.)
+
+\begin{target}[the Ceresa landing]\label{tgt:ceresa}
+A from-scratch triple-product central-derivative computation landing the
+Gross--Schoen/Ceresa height on the carrier --- nonzero for a known nontrivial
+class (Klein-quartic type), zero for the hyperelliptic control --- with the
+derivative-to-height step consuming \cite{ZhangGS,YZZ} and nothing else. The
+instrument builds on the point-counting tower of
+\texttt{tower\_exhaustion\_test.py}; it is the program's next experiment, not
+claimed here.
+\end{target}
+
+\paragraph{The $L$-side, landed.} Half of Target~\ref{tgt:ceresa} is now on
+record (\texttt{ceresa\_lside.py}, App.~\ref{app:repro}). The prediction was
+locked by the literature first: the Klein quartic's Ceresa cycle is
+\emph{non-torsion} modulo algebraic equivalence (Tadokoro \cite{Tadokoro},
+extending Harris's harmonic-volume method \cite{Harris} from the Fermat
+quartic), so under Beilinson--Bloch nondegeneracy the Ceresa channel of the
+triple product must carry odd sign and a nonvanishing central derivative --- a
+zero derivative would have been a published falsification. The channel was
+isolated exactly: over $K=\mathbb Q(\sqrt{-7})$ (class number one, Hecke
+character $\psi$ with $L(49a,s)=L(\psi,s)$),
+\[
+  H^1(X)^{\otimes3}\ =\ \mathrm{Ind}_K^{\mathbb Q}(\psi^3)\ \oplus\
+  3\cdot M_{f_2}(-1),
+\]
+the induced $\psi^3$ piece (the weight-4 level-49 CM form; the from-scratch
+Hecke coefficients reproduce it integer-exactly) being the genuinely new ---
+Ceresa --- channel. En route the instrument caught a model subtlety: the naive
+quartic $x^3y+y^3z+z^3x=0$ is \emph{not} $\mathbb Q$-isogenous to $E^3$ (its
+counts vanish on the nonresidue classes mod $7$ --- a cubic twist from the
+coordinate rotation); Elkies's model \cite{Elkies} is the
+$\mathbb Q$-decomposed one, and the geometric statement is model-independent.
+Measured, each piece with a two-point split-vs-direct certificate: the Ceresa
+channel has $\varepsilon=-1$ --- so its central value is \emph{forced} to zero
+--- and central derivative
+\[
+  L'(\psi^3,\tfrac12)\ =\ 0.8298893\ \ne\ 0
+\]
+(independent PARI path agrees to $3.6\times10^{-6}$); the even channel carries
+the value $L(49a,1)=0.9666592\ne0$ (multiplicity three, oracle-matched); the
+total triple-product sign $(-1)(+1)^3=-1$ is odd, as a Gross--Schoen derivative
+object must be. The reading matches the cycle side exactly: non-torsion cycle
+$\leftrightarrow$ firing derivative, the height-to-jet matching at grade
+three. Register: the consumed theorem is the proportionality of
+\cite{ZhangGS,YZZ}; the sole isolated hypothesis is Beilinson--Bloch
+nondegeneracy, named and not claimed. The height side --- the Arakelov
+computation the target's full landing needs, with the hyperelliptic control
+--- remains the open half.
+
+\section{Recognition closed at grade one}\label{sec:recognition}
+
+The converse leg --- from a fired ledger coordinate to a \emph{constructed}
+cycle --- is the terminus's hardest ingredient, and grade one is the only place
+mathematics has ever closed that loop: Gross--Zagier--Kolyvagin, where the
+fired first jet plus a CM alignment constructs a rational point through the
+modular parametrization. The loop is now run end to end on house instruments
+(\texttt{heegner\_recognition.py}, App.~\ref{app:repro}), consuming point
+counts and nothing else:
+
+\begin{center}
+\emph{detection} (jet fires) $\;\to\;$ \emph{alignment} (CM clock)
+$\;\to\;$ \emph{construction} (parametrization) $\;\to\;$
+\emph{recognition} (exact landing).
+\end{center}
+
+For $37a1$: the $a_n$ from point counts build the modular image
+$z=\sum a_n q^n/n$ at the Heegner alignment $\tau=(-17+\sqrt{-7})/74$
+($D=-7$, class number one, $37$ split); the trace $2\,\mathrm{Re}(z)$ lands in
+$\mathbb C/\Lambda$ with the lattice from the house AGM periods,
+\emph{self-certified} by both half-period identities
+$\wp(\omega_1/2)=e_1$, $\wp(\omega_2/2)=e_3$ (exact zero deviation); and the
+recognition gate lands $P=(1,0)$ --- recognized by continued fractions,
+verified on $y^2+y=x^3-x$ in exact rational arithmetic --- with
+$\hat h(P)=4.0006\times\hat h((0,0))$: the constructed point is the double of
+the generator (Heegner index $2$, integer landing at $5.7\times10^{-4}$),
+realizing the fired jet $L'(37a1,1)=0.306$ as an actual cycle, per
+Gross--Zagier. Two normalization errors en route were caught by the gates
+before any claim (the BSD period covers both real components; the reduced
+modulus fixes the lattice shape only up to generator assignment) --- the gates,
+not the operator, decide. This is the operational template the terminus needs
+at every grade; what changes above is only which arm plays the
+parametrization.
+
+\paragraph{The loop closed at grade four, clock-relation regime.} The same
+four arms now run end to end one floor below the frontier
+(\texttt{recognition\_loop\_g4.py}, App.~\ref{app:repro}), oracle-free, on
+quadruples where truth is known but never consulted until grading.
+\emph{Detection}: the portal's folded pair-directions inside the $(2,2)$
+block, with the zero-variance freeze as certificate. \emph{Alignment}: the
+freeze pattern inverts to the relation lattice --- with a measured law the
+pre-registration had backwards: an isogeny lock $\theta_i=\theta_j$ freezes
+the two directions carrying $(+,-)$ on each locked pair, so two disjoint
+locked pairs freeze exactly two of the three directions and \emph{the single
+live direction names the locked partition} --- then the period-clock
+machinery certifies each implicated pair independently of the counts.
+\emph{Construction}: the isogeny is \emph{found}, not assumed --- degrees
+$5$ and $2$ with kernels $\mathbb Z/5$, $\mathbb Z/2$, $j$-residuals
+$2.5\times10^{-15}$ and $8.3\times10^{-16}$ --- and the grade-four class is
+the product graph. \emph{Recognition}: occupancy lands on the
+invariant-theory count ($0.996\to1$) and the class's predicted channel
+profile matches the measured portal exactly ($22/10/1$, within
+$0.5\sigma$). The falsifier column is reading-scale (the fiber untouched,
+only the reading harmonic grid varied), and it resolves two facts at once:
+the \emph{qualitative} lock is scale-invariant (an isogeny lock is an exact
+zero, so it survives every winding --- the genuine-algebraicity control),
+while the \emph{quantitative} integer certificate is $\mu_6$-locked --- on
+the $\mu_6$ grid every case lands its truth integer clean ($2/1/0$);
+mod-$12$ over-splits the relations ($2\to6$, $1\to4$) \emph{and
+manufactures a class in the scrambled null} ($0\to1$ --- the mis-scaling
+phantom, the register's mis-clocking clause surfacing at recognition
+level); an off-lattice winding lands no integer anywhere. The scrambled
+control nulls at every arm, and a deliberately
+false alignment is \emph{rejected by the construction arm} --- no integer
+isogeny degree exists, the residual never leaves $O(1)$ --- the loop's
+arms police each other, as at grade one. Register-exact boundary: this
+closes recognition for classes sourced by pairwise clock relations (the
+Lefschetz/isogeny, Tate-for-products regime); the exotic/Weil-type classes
+--- occupancy with \emph{no} frozen pair-direction, the two-plane of
+\S\ref{sec:rails} --- are a strictly different object, and this template
+does not reach them.
+
+\paragraph{The even rung's loop: grade two, and the state of the art.}
+Between the two closed rungs sits the even-parity template, where the
+construction arm exists in the literature: Beilinson's Siegel-unit classes
+on products of modular curves, whose regulator is the Rankin--Selberg value
+at the non-critical point \cite{Beilinson1985,LLZ,BDR,BrunaultChida}. Run
+in-house (\texttt{bf\_loop\_g2.py}, App.~\ref{app:repro}): the degree-4
+Rankin--Selberg motive has \emph{no critical points} --- the same even-rung
+regulator geometry as grade four --- with a trivial zero forced at the edge
+and the exact bridge $L'(f\otimes g,1)=\varepsilon\,(N_fN_g/4\pi^2)\,
+L(f\otimes g,2)$ derived and numerically confirmed. The detection arm is
+certified ($L(11a1\times37a1,2)=3.46319093$; the derivative through the
+trivial zero confirmed independently), and the construction arm
+\emph{closes on the Eisenstein corner}: the Rogers--Zudilin identity
+\cite{RogersZudilin} is verified from scratch --- a two-dimensional Mahler
+integral against the evaluator's $L(E_{24},2)$, relative difference
+$1.55\times10^{-5}$, with the rational landing $m\cdot\pi^2/L=23.9996\to24$.
+For the \emph{genuine} two-cuspform product the construction arm remains
+open --- and the honest finding is that this is the literature's own state:
+no from-scratch regulator number for a genuine degree-4 product of distinct
+cuspforms exists in print (the published numerics are all the degenerate
+corner). The carrier translation, which is the rung's real yield: even rungs
+read a Gram \emph{volume} of paired drift channels --- two units' log
+channels paired against the test form, never a self-pairing --- the
+$\pi$-power is fixed by the Tate twist through the functional equation, and
+\emph{the rational is a lane count of the conjugate-closed re-weld, not a
+period}. Grade four's staked matching law (\S\ref{sec:wallfour}) is the
+exact structural successor: a higher drift determinant in place of the
+single pairing, the same tropical-plus-archimedean split, the same
+integer-landing discipline, and no height anywhere.
+
+\section{Rung four: the walls, and the far side}\label{sec:rung4}
+
+The ladder of named landings --- grade $0$ Tate/Lefschetz; grade $1$
+Birch--Swinnerton-Dyer/Gross--Zagier/Kolyvagin; grade $2$
+Gan--Gross--Prasad/Kudla/W.~Zhang \cite{GGP,WZhangAFL}; grade $3$
+Gross--Kudla/Gross--Schoen/Zhang/Yuan--Zhang--Zhang \cite{ZhangGS,YZZ} ---
+ends at grade four: the quadruple product $L(f_1\times f_2\times f_3\times
+f_4,s)$ and the fourth modified diagonal carry no name, no integral
+representation (Garrett's construction is the last of its line), no general
+functional equation, no height formula. Three walls explain why, each proven
+or measured here.
+
+\paragraph{Wall one: the non-critical center.} The motive $\otimes^4H^1$ has
+weight $4$ and Hodge types $(4,0)+4(3,1)+6(2,2)+4(1,3)+(0,4)$: the
+six-dimensional $(2,2)$ block is a $k=0$ channel --- \emph{grade four is the
+first rung whose motive has a DC channel} (even weight $\Leftrightarrow$ DC
+present --- now machine-checked:
+\texttt{RequestProject/EvenWeightDC.lean},
+\texttt{dc\_channel\_iff\_even\_weight}, with the instantiated corollaries
+\texttt{grade4\_dc\_channel} and \texttt{grade5\_no\_dc\_channel}), and a
+$(w/2,w/2)$ block makes the center non-critical. Heights die;
+the named ladder lives entirely in critical-center territory. Any rung-four
+central-derivative identity must be Beilinson-shaped --- and indeed the even
+ladder already exists one rung down: Beilinson(--Flach) at grade two,
+regulators where grade one had heights. One drift, two parity readouts
+(\S\ref{sec:drift}).
+
+\paragraph{Wall two: the diagonal was never the right object.} The
+codimension bookkeeping matches the $\otimes^n$ motive's pairing only at
+$n=3$, and the higher modified diagonals vanish outright for low genus
+(Voisin \cite{VoisinMD}: $\Gamma^{g+2}(X,x)=0$). The rung-four cycle theory cannot be ``grade
+three but larger.''
+
+\paragraph{Wall three: the split no-go, and homelessness.} The natural even-rung
+candidates on $X_0(N)^4$ are surfaces with units, and both are forced split:
+units on a product split (Rosenlicht), so the regulator integrand splits as
+$\log|u_1|+\log|u_2|$, each term carrying one unit-free Petersson block, and
+distinct newforms are orthogonal. \emph{Every decomposable class pairs to zero
+with the primitive quadruple} --- machine-checked in model form
+(\texttt{RequestProject/Rung4SplitNoGo.lean}:
+\texttt{split\_unit\_pairing\_vanishes}, \texttt{product\_pairing\_factors};
+standard footprint). Combined with the measured occupancy zero (four distinct
+non-isogenous curves have \emph{no} algebraic $(1,1,1,1)$-classes,
+\texttt{quadruple\_rung.py}), the rung-four recognition object has no naive
+home on $X_0(N)^4$ at all. The rung is unnamed because it is classically
+homeless.
+
+\paragraph{The detection row, measured.} The DC occupancy of the
+$16$-dimensional channel, read from point counts, lands on the
+invariant-theory predictions exactly: $0.029\to0$ for four non-isogenous
+curves; $0.958\to1$ for two pairs from distinct classes; $1.974\to$
+\textbf{Catalan $2$} --- non-crossing pairings, not three --- for the double
+self-pair, the rung's first measured structure constant; $2.918\to3$ for the
+CM quadruple; odd-parity controls at zero throughout
+(\texttt{quadruple\_rung.py}). The Weil mechanism --- rational classes
+assembled from irrational cycles, the shape of the open Hodge classes --- is
+likewise measured as occupancy \emph{excess}: quadruples of pairwise
+non-isogenous twists carry zero $\mathbb Q$-pairing count yet full
+$\overline{\mathbb Q}$ occupancy exactly when the twist product is a square
+(\texttt{weil\_detection.py}), calibrating exotic-class detection where truth
+is known.
+
+\paragraph{The far side: the fiber assembled.} The carrier does not need the
+missing variety: the degree-16 tensor fiber is admissible by construction, and
+it is now assembled and measured (\texttt{farside\_quadruple.py}). The
+degenerate case $f^{\otimes4}$ factors through the lower harmonics
+\emph{exactly}: the sixteen eigenphases match
+$\mathrm{Sym}^4\oplus3\,\mathrm{Sym}^2\oplus2\cdot\mathbf 1$ at
+$3.3\times10^{-16}$ per prime, and the coefficient identity
+$\lambda(f^{\otimes4})=\zeta^2*\mathrm{Sym}^2{}^{*3}*\mathrm{Sym}^4$ holds to
+$3.6\times10^{-14}$ across five thousand coefficients --- the rung-four
+Clebsch--Gordan identity, both sides from the same point counts. The primitive
+case (four distinct curves) is certified \emph{irreducible} by the Schur
+second moment: $\sum m_i^2=0.930\to1$, against $13.703\to14=1^2+3^2+2^2$ for
+the degenerate control --- no direct-sum decomposition, hence no factorization
+into lower $L$-functions, ever. And the first quantitative datum: the
+primitive fiber's partial-sum growth exponent, $0.577$ over the top measured
+decade (degenerate control $1.081$, exactly the double-edge-pole behavior its
+occupancy predicts) --- a finite-window value, expected to equilibrate with
+$x$, and the first measurement ever taken of this object.
+
+\paragraph{The rung-four program, staked.} Conditionally, in the register of
+\S\ref{sec:terminus}: the rung-four recognition object is a \emph{non-split,
+carrier-native regulator reading} of the primitive degree-16 fiber's drift
+channel at the non-critical center --- the log-shear datum of the fiber read at
+the DC slot of its completed reflection, against the fiber's first log-channel
+jet. Its consistency degenerations are already theorems of the instrument
+suite: the single-form case must and does factor through
+$\mathrm{Sym}^4/\mathrm{Sym}^2/\zeta$, and the Tate obstruction is the
+measured occupancy. Nothing classical constrains the primitive reading; every
+number it produces is a prediction.
+
+\section{Wall four: the information wall, measured and dismantled}\label{sec:wallfour}
+
+The three walls of \S\ref{sec:rung4} explain why the rung is unnamed. A fourth
+wall, discovered here, explains why it would have stayed unnamed: the one
+number the rung guards --- $L(\mathrm{quad},\tfrac12)$ --- is
+\emph{chart-unreachable even numerically}. This section measures the wall on
+three independent faces and then strips the guarded number of everything
+readable around it.
+
+\paragraph{The certified value chain.} The house evaluator computes completed
+values by one contour pass through the split identity
+$\Lambda(s_0)=\sum_n\lambda_n[H(s_0,n)+\varepsilon H(1-s_0,n)]$, and
+\emph{self-certifies} each functional-equation shape by a two-point
+split-vs-direct comparison at $s_0=2.2,2.5$ (a wrong sign or wrong
+$\Gamma$-shape misses at $10^{-2}$; the true shape matches at $10^{-5}$ or
+better). Gates: $\zeta(\tfrac12)$ to $3\times10^{-7}$ and $L(11a1,\tfrac12)$
+to $2\times10^{-7}$. The chain is then oracle-validated on a fully independent
+code path (\textsc{pari} \texttt{lfunsympow}, plus Dokchitser at degree four):
+$L(\mathrm{Sym}^2 11a1,\tfrac12)=0.8933980$,
+$L(\mathrm{Sym}^4 11a1,\tfrac12)=0.6058010$,
+$L(\mathrm{Sym}^3 11a1,\tfrac12)=1.1402380$ (oracle $1.1402309$), both $s=1$
+values, and the degenerate assembly
+$\zeta(\tfrac12)^2L(\mathrm{Sym}^2,\tfrac12)^3L(\mathrm{Sym}^4,\tfrac12)
+=0.921258569$ at $7\times10^{-6}$ --- the classical side of the rung-four
+calibration, from scratch. Two values are new to the record:
+$L(11a1\times37a1,\tfrac12)=5.0227652$ (degree four, Dokchitser-confirmed at
+$1.2\times10^{-5}$) and the degree-six center
+\[
+  L(\mathrm{Sym}^2(11a1)\otimes37a1,\tfrac12)\ =\ 0.61570486
+\]
+($\varepsilon=+1$, $Q=11^4\cdot37^3$, two-point certificates
+$7.5\times10^{-5}/6.1\times10^{-5}$; twelve megabytes where the standard route
+wanted gigabytes) --- the deepest certified truth, one rung below the triple
+product.
+
+\paragraph{The wall, measured on three faces.} \emph{Linear:} the windowed
+center protocol is provably sound --- its fitted leading-pole coefficient on
+the degenerate case lands on the analytic prediction
+$A=\sqrt\pi\,L(\mathrm{Sym}^2,1)^3L(\mathrm{Sym}^4,1)=1.5323$ at
+$5\times10^{-4}$ --- but the primitive is absolutely blocked: the analytic
+conductor $(11\cdot37\cdot53\cdot61)^8\approx10^{49}$ prices any chart-side
+center determination at $\sim\!\sqrt Q\approx3\times10^{24}$ coefficients, and
+the measured reading climbs as a pure transient ($X^{0.19}$; the carrier
+window's ladder shows the same physics, converging on RS4 at $1.5\%$ as it
+crosses $\sqrt Q=407$ while the quadruple climbs $14.5\to32.1$ with no
+plateau at any reachable height) --- exactly as the information bound demands
+for \emph{any} linear reader. \emph{Fitted warps:} Gauss--Newton-solved warp
+weights close the primitive cells (median $|D|$ $4.98\to0.21$ --- the first
+forcible-closure datum above degree fourteen, overfit-caveated) but fail the
+value gates on both certified truths ($F_w(\tfrac12)\ne L(\tfrac12)$, ratios
+$1.35$ and $0.78$, no common registration): \emph{solved warps buy
+summability, not values} --- the measured gap between
+continuation-\emph{exists} and value-\emph{computable}. \emph{Lane surgery:}
+the half-lane objects that would decompose the read are of
+Estermann--Kurokawa class \cite{Estermann,Kurokawa} --- incomplete Euler
+products with a natural boundary at the center (window ladders diverge,
+growth exponent $+0.43$) --- so no decomposition into complete readables
+exists. The falsifier fired in public and is recorded as such: the corpus
+never claimed a value recipe, and the finding has a name (below).
+
+\paragraph{The sheet from twenty integers.} Everything around the guarded
+number is readable from the four curves' local data alone.
+The functional-equation sheet:
+\[
+  Q=(11\cdot37\cdot53\cdot61)^8,\qquad
+  G(s)=Q^{s/2}\,\Gamma_{\mathbb C}(s+2)\,\Gamma_{\mathbb C}(s+1)^4\,
+  \Gamma_{\mathbb R}(s)^3\,\Gamma_{\mathbb R}(s+1)^3,
+\]
+the $3/3$ split of the $(2,2)$ block \emph{forced} --- $F_\infty$ maps each
+balanced lane to its complement, pairing the six lanes into three swap-pairs,
+each contributing one $+1$ and one $-1$ eigenvalue --- so the shape carries no
+free parameter. First values of the primitive quadruple ever taken:
+$L(2)=1.67012705$, $L(2.5)=1.37508344$, $L(3)=1.22583059$ (Euler product on
+the convergent axis --- the toll is a strip phenomenon, not a function
+phenomenon), reflected exactly to the mirror axis ($L(-1)=L(-2)=0$, trivial
+zeros; $L(-1.5)=2.878\times10^{72}$). The center's vanishing order is read as
+zero --- rank $=$ DC-residue (the house law, validated across
+$122$ determinations at grades $0$--$3$) plus the portal's measured occupancy
+zero --- so $L(\mathrm{quad},\tfrac12)\ne0$ in the framework register,
+falsifiable. And the center is \emph{non-critical with no critical points
+anywhere} (the $(2,2)$ $\Gamma_{\mathbb R}$ poles kill $s=2,3$; the motivic
+center is half-integral): the unread number has no Deligne-rational part.
+What the wall guards is a \emph{regulator volume} --- nothing else.
+
+\paragraph{The sign, proven.} The sheet's root number is not provisional: it
+is computed unconditionally from Deligne's local theory
+\cite{DeligneEps,TateNTB}. At each bad prime exactly one tensor leg is special
+($\mathrm{sp}(2)$, conductor exponent one) and the other three legs are
+unramified of total dimension eight, so the unramified-twist formula gives
+sign $\varepsilon_p(\mathrm{sp}(2)\otimes W)
+=\varepsilon_p(\mathrm{sp}(2))^{8}\cdot\mathrm{sgn}\,\det W(\mathrm{Frob}_p)
+=(\pm1)^8\cdot\mathrm{sgn}(p^{12})=+1$ --- independent of split versus
+non-split \cite{Rohrlich} --- while the conductor exponent
+$a_p=8\cdot1$ postdicts $Q=(\prod N_j)^8$ independently. At infinity, Deligne's
+recipe on the Hodge diamond gives
+$i^{\,5h^{0,4}+3h^{1,3}+\#\{F_\infty=-1\ \text{on}\ (2,2)\}}=i^{17+3}=i^{20}=+1$,
+with the middle-block rule pinned uniquely (not a free convention) by
+demanding real signs on $\mathrm{Sym}^2$ and $\mathrm{Sym}^4$ simultaneously.
+Calibration: the same component rules postdict all nine known signs --- the
+four curves (matching rank parity), $\mathrm{Sym}^2$, $\mathrm{Sym}^3$,
+$\mathrm{Sym}^4$, the Rankin--Selberg pair, and the degree-six object, whose
+odd-dimensional unramified factor at $37$ genuinely exercises the finite rule.
+Hence
+\[
+  \varepsilon(\mathrm{quad})\ =\ \varepsilon_\infty\cdot\prod_p\varepsilon_p
+  \ =\ +1,
+\]
+a theorem of the local data (\texttt{eps\_quadruple\_notes.md},
+App.~\ref{app:repro}). Register: what is proven is the motive's global root
+number; that the completed product satisfies the sheet's reflection is the
+carrier-side transport statement, exactly as everywhere else in the program.
+
+\paragraph{The tropical layer, and what the number is.} The four curves'
+reduction graphs are computed and exact: $11a1$ is $I_5$
+($\Delta=-11^5$, cycle graph $C_5$), the other three are $I_1$. The graph
+invariants are exact rationals --- $\tau(C_n)=n/12$, so
+$\sum\tau=\tfrac{2}{3}$ baseline, and the $C_5$ Green's function has moments
+$m_1=0$, $m_2=5/36$. The portal (\S\ref{sec:rails}) shows every $(2,2)$ lane
+of the primitive fluctuating --- the classes penetrate
+$\ker\mathrm{AJ}_{\mathbb C}$ --- which in Zhang's admissible-pairing
+decomposition \cite{ZhangGS} is the regime where the height is carried by the
+tropical part: \emph{the wall's remainder is tropical-dominated, mostly
+rational}. The named theorem-target this stakes (program register): the
+\textbf{grade-four matching law}, the unnamed rung's Gross--Kudla/Ichino
+analogue --- ledger-side drift determinant $=$ tropical admissible pairing
+(graphs) $+$ archimedean remainder --- with both sides' computable pieces now
+in hand. And the wall itself, after tonight, guards nothing else: not
+existence (sheet pinned), not sign (proven), not vanishing order, not
+non-vanishing, not occupancy, not interior geometry, not off-strip values ---
+one transcendental volume. The residual obstruction has a name, the
+\textbf{value-registration law} (the value-level analogue of the
+$S(t)$-compensation theorem): the single theorem-target through which any
+carrier-native center \emph{value} must pass, at every grade at once. Its
+measured content is now on record (\texttt{value\_registration.py},
+App.~\ref{app:repro}): across a $24$-row census over the six certified
+truths, the registration defect \emph{decomposes} --- a finite-$Y$ transient
+living on the lattice point itself (the honest unwarped window; decaying as
+$Y/\sqrt Q$ grows, functional form not yet pinned) plus a warp-induced
+defect governed by \emph{off-lattice distance} (correlation $+0.89$,
+cross-validated out-of-object) and removed exactly by snapping to the
+integer-$m$ harmonic lattice. Cross-validation kills the alternatives: the
+cell-closure-improvement ratio has \emph{zero} predictive power for
+registration --- the quantitative form of ``solved warps buy summability,
+not values'' --- and no degree/conductor law survives held-out testing.
+Since every nontrivial integer-$m$ warp reads a \emph{different}
+$L$-function (\S\ref{sec:rails}), the only registering lattice reading of
+the object's own $L$ is the unwarped window, where the full $\sqrt Q$
+transient must be paid: registration is lane-side and free; cost is
+radial-side and irreducible in every form tested tonight.
+
+\paragraph{The fiber's formal home.} The degree-16 object of
+\S\ref{sec:rung4} now exists in Lean
+(\texttt{RequestProject/QuadrupleFiber.lean}; standard footprint, thirteen
+theorems): the four-fold tensor fiber composes from the two-fold construction
+with determinant one preserved, per-place functional equation with the
+$(-X)^{16}$ reflection explicit, completed local reflection
+$\Lambda(s)=\varepsilon(s)\Lambda^{\vee}(1-s)$, and strand exchange over the
+sixteen weight channels; the concrete curve instance
+(\texttt{curveQuadFiber}) carries all of it. The composition was, as
+predicted, nearly free --- the carrier's constructions are degree-agnostic,
+which is the point of \S\ref{sec:scaling}.
+
+\section{The lattice, the rails, and the portal}\label{sec:rails}
+
+How the instruments got inside the rung is itself a law, and it was measured
+before it was named: \emph{the helix admits only harmonically self-compatible
+readings}. Three independently falsified conditions make the phrase precise:
+warps must be integer multiples of the fiber's own local angle (the lattice),
+lanes pair only with their exact conjugates (the rails), and addresses live on
+the $\mu_6$ cells (the carrier's own lattice). Everything in this section
+consumes point counts and the certified chain of \S\ref{sec:wallfour}, nothing
+else.
+
+\paragraph{The harmonic lattice.} Warping the fiber's local eigenvalues
+$\{e^{\pm i\theta_p}\}$ by $e^{im\theta_p}$ with \emph{integer} $m$ produces
+exact lane identities on the symmetric-power tower:
+$F_2F_{-2}=L(\mathrm{Sym}^3f,s)\,C_2(s)$ and
+$F_3F_{-3}=\bigl(L(\mathrm{Sym}^4f,s)/\zeta(s)\bigr)C_3(s)$, with elementary
+bad-prime factors $C_2=(1-\alpha^3q)/(1-\alpha q)^2$,
+$C_3=(1-\alpha^4q)(1-q)/(1-\alpha q)^2$ --- machine zero
+($10^{-9}$--$10^{-13}$) in the absolute region, certified centers on the
+right-hand sides. The incommensurate control $m=\sqrt2$ has \emph{no} partner
+identity ($O(1)$ mismatch). Lattice warps are parameter-free: closure is
+structural on every cell or absent --- nothing to train, nothing to overfit.
+The base unit is the fiber's own $\theta_p$; the tower is its integer
+multiples; that is what ``harmonically compatible'' means, measured.
+
+\paragraph{The two-rail pairing, and where values live.} The individual
+half-lane objects $F_m$ have natural boundaries at the center
+(\S\ref{sec:wallfour}); the three-dimensional question --- ground rule of the
+program --- is whether that boundary is a carrier fact or a chart artifact.
+Measured, on the same phasor data, three ways at $\tfrac12$: the single rail
+$F_2$ \emph{diverges} ($|F_2|^2$ marching $6.4\to25.1$, growth exponent
+$+0.43$); the height-matched Hermitian pairing of exact conjugate rails ---
+the Dirichlet convolution $(F_2\ast F_{-2})[n]=\sum_{d|n}\lambda_2[d]
+\lambda_{-2}[n/d]$, phasor at height $\log d$ on one rail against phasor at
+height $\log(n/d)$ on the other, a geometric operation performed before any
+chart reads anything --- \emph{converges} to the certified
+$L(\mathrm{Sym}^3,\tfrac12)\,C_2(\tfrac12)=1.368286$ at $9.7\times10^{-5}$
+(growth exponent $+0.018$); and \emph{both} mis-pairs ($F_2\ast F_{-3}$,
+$F_3\ast F_{-2}$) diverge like the single rail. The rail-matching law ---
+exact conjugates only --- extends the non-self-dual GL(3) precedent past
+natural boundaries: \emph{the boundary lives in the single-rail scalar chart,
+not on the carrier, and values live at the pairing level}. The primitive
+quadruple is itself a two-rail pairing ($G\ast\bar G$, $G$ the plus-half of
+$f_1$ tensored with the full triple), so its carrier representation exists
+--- verified numerically on the carrier: $G\ast\bar G$ reproduces the full
+degree-16 tensor to $2.4\times10^{-13}$ with real (conjugate-closed)
+coefficients (\texttt{helix\_tower.py}); the pairing read keeps the
+quadruple's own transient scale, so the
+\emph{value} wall of \S\ref{sec:wallfour} stands --- and the height run
+locates it exactly: on the carrier the $\mathrm{Sym}^3$ pair converges at a
+radial head of tens while the quadruple needs $\sim\!\sqrt Q\approx10^{24}$,
+so the wall is the carrier's \emph{radial scale}, not any lane defect ---
+the $\sqrt Q$ toll made geometric. (A unit-scale window on the
+\emph{readable} $\mathrm{Sym}^3$ pairing reads $1.0000$ against the true
+$1.3683$: the never-unit-scale law's first height-side instance.) The door
+this opens is spectral, and it is walked through below.
+
+\paragraph{The portal: reading the homeless block from inside.} Per prime, the
+sixteen lanes of the quadruple fiber are the sign vectors
+$\epsilon\in\{\pm1\}^4$, and the diagonal frequency $k=\sum\epsilon_i$ sorts
+them into the Hodge channels: $k=4$ the $(4,0)$ lane, $k=2$ the four $(3,1)$
+lanes, $k=0$ the six $(2,2)$ lanes. The scalar chart reads only
+$\lambda_p=\sum_kT_k(p)$ --- the channels summed, unmixable; with the fiber's
+angles alongside, the portal
+$T_k(p)=\sum_{\epsilon:\,\Sigma\epsilon=k}e^{i\epsilon\cdot\theta(p)}$ reads
+each channel separately at every prime ($148{,}929$ primes to $2\times10^6$).
+Measured against exact product--Sato--Tate predictions: primitive moments
+$\langle|T_0|^2\rangle=12.3818$ vs $99/8=12.375$,
+$\langle|T_2|^2\rangle=7.004$ vs $7$, $\langle|T_4|^2\rangle=1$ (all
+$\le0.4\sigma$); degenerate control $(36,16,1)$ \emph{with zero variance} ---
+when the clocks coincide every balanced lane freezes, and \textbf{channel
+constancy is the portal's algebraicity signature}: the degenerate block's six
+frozen lanes are its six algebraic classes, seen live, while every primitive
+lane fluctuates (the homeless fiber, $\mathbb Q$-count zero). Inside the
+$(2,2)$ block the six lanes fold into three pair-directions
+$\{12|34\},\{13|24\},\{14|23\}$ whose interior Gram is exactly
+$\mathrm{diag}\ 17/32$, off-diagonal $1/4$ (measured to $\pm0.0007$) ---
+an $S_3$-symmetric $\mathbf 1\oplus\mathbf 2$ eigensplit, $33/32$ on the
+symmetric line and $9/32$ on the two-dimensional complement: \emph{the
+two-plane is where a grade-four exotic class would live}. The wrong-harmonic
+falsifier ($\theta_1\to2\theta_1$) leaves the predictions by $144\sigma$.
+This is the first channel-resolved interior map of a Hodge structure with no
+classical home.
+
+\paragraph{The spectral door.} Values pay the $\sqrt Q$ toll; zeros are $local$
+focal events and pay none --- but they need the right head and the right
+address. The house diagonal schedule $Z=e^y$ is the conductor-one special
+case (it starves higher conductor at low ordinate); parking the head at
+maximum data and scanning the ordinate --- the horizontal slice of the same
+geometry --- with rails addressed on the $\mu_6$ lattice
+(key $=$ sign $\times\,n\bmod6$, twelve rails) gates \textbf{12/12} against
+the \textsc{pari} oracle zeros of $\mathrm{Sym}^3(11a1)$ (median
+$|\Delta t|=5.8\times10^{-4}$), including the close pair $7.75/8.01$ split at
+the Rayleigh limit --- the first locator validation beyond degree two ---
+while mod-$12$ addressing over-splits ($11/12$): $\mu_6$ is \emph{the}
+lattice, as the method law says. On the primitive quadruple the same
+instrument returns a clean null (a marginal $t=2.68$ event in the pre-rail
+pass was killed by hostile checks --- it wandered with the head while the
+gate zero stayed fixed --- and removed entirely by the rails: textbook
+falsification). The toll structure, measured: individual zeros need heads at
+conductor scale; values and zeros pay chart tolls, \emph{shape pays none} ---
+which is why the portal and the sheet read the rung the chart cannot.
+
+\section{Scaling: grades five and six}\label{sec:scaling}
+
+The obvious question --- Sam's, verbatim: does this scale beyond grade four,
+does it constantly require new inventions, or does it plateau --- has a
+measured answer at the structure tier. The design was frozen, two more
+prime-conductor semistable curves were added ($79a1$, $83a1$; twenty-five,
+then thirty integers), every prediction was pre-registered as an exact
+rational \emph{before} measurement, and the deliverable was the
+\emph{design-change log}: every point where grade five or six forced anything
+beyond changing $g$ and the curve list.
+
+\paragraph{The verdict: compute only.} All pre-registered rationals land
+within $1.2\sigma$ over $148{,}927$ primes. Grade five primitive channel
+moments $1,\ 10,\ 215/8$ --- measured $1.0000,\ 10.0081,\ 26.9110$; grade six
+$1,\ 27/2,\ 405/8,\ 1225/16$ --- measured $1.0000,\ 13.5197,\ 50.7632,\
+76.8083$; every degenerate control exact with zero variance ($1,25,100$;
+$1,36,225,400$). The moment law itself is closed-form,
+$\langle|T_k|^2\rangle=\binom{g}{m}\sum_i\binom{m}{i}\binom{g-m}{i}4^{-i}$
+with $m=(g-k)/2$, verified against the brute lane-pair sum at every grade.
+The one genuine code addition: the odd-weight $\Gamma$-assembly branch
+(grade four's script hard-coded the even middle block) --- the odd case of
+the same Serre recipe, no new mathematical idea; grade six reuses the even
+branch verbatim. No other change of any kind.
+
+\paragraph{The Catalan spine.} The degenerate DC occupancy marches on the
+Catalan numbers: $C_2=2$ at grade four (\S\ref{sec:rung4}),
+$\mathbf{C_3=5}$ at grade six (measured $4.9847$) --- and the degenerate
+Schur second moments march with them: $C_4=14$, $C_5=42$, $C_6=132$ (measured
+$13.94$, $41.75$, $130.99$; the primitive Schur moment stays at $1$ ---
+irreducible --- at both new grades). The non-crossing/Temperley--Lieb
+structure constants are not a grade-four curiosity; they are the tower's
+spine.
+
+\paragraph{The parity law, measured and proven in the same session.} Grade
+five (odd weight) has \emph{no} DC channel --- there is nothing to occupy;
+its sheet is all-$\Gamma_{\mathbb C}$,
+$Q=(11\cdot37\cdot53\cdot61\cdot79)^{16}$, and the component rules give
+$\varepsilon=-1$: \emph{a central zero is forced on the sheet} --- the
+pre-committed falsifiable statement that replaces the missing DC reading on
+odd rungs. Grade six restores the DC channel ($20$ balanced lanes of $64$;
+middle split $10/10$ forced; $\varepsilon=+1$; non-critical center exactly as
+grade four). The same fact is a theorem the same day
+(\texttt{EvenWeightDC.lean}, \S\ref{sec:rung4}). Falsifiers at both grades:
+wrong-harmonic $139\sigma/132\sigma$; scrambling the \emph{degenerate}
+alignment lifts the frozen channels by $437\sigma$ (channel constancy is
+genuine per-prime alignment, not a moment coincidence), while scrambling the
+primitive changes nothing (the moments are marginal--Sato--Tate facts, as
+they must be).
+
+\paragraph{The tower to grade twenty, and the root-number law.} The atlas was
+then run to grade twenty (the first twenty prime-conductor curves; the
+$2^g$-lane enumeration replaced by an exact $O(g^2)$-per-prime polynomial
+convolution --- an algorithm, not a method), and the empirical field produced
+a theorem-shaped law. The archimedean assembly closes to
+$\varepsilon(g)=i^{A(g)}$ with
+\[
+  A(g)\ =\ 2^{g-1}\ +\ g\binom{g-1}{\lfloor (g-1)/2\rfloor},
+\]
+always even --- so the tower is self-dual with a real sign at \emph{every}
+grade --- and the sign is $-1$ exactly when $g=2^k+1$: by Kummer's theorem
+the $2$-adic valuation of the central binomial is the binary digit sum, so
+among odd grades only $m=(g-1)/2$ a power of two survives. \emph{Forced
+central zeros at exactly $g=3,5,9,17,33,\dots$} --- reproducing grade three
+(the Ceresa channel's forced zero, \S\ref{sec:ceresa}) and grade five
+(\S\ref{sec:scaling}), while $g=7,11,13,15,19$ are odd with $\varepsilon=+1$,
+so ``odd forces a zero'' is false and the law is sharper; grades nine and
+seventeen stand as new pre-committed forced-vanishing predictions. Alongside
+it, three more measured laws: the Catalan spine holds exactly to
+$C_{10}=16796$ and $C_{20}=6.56\times10^9$; the DC lane fraction falls as
+$\binom{g}{g/2}/2^g\sim\sqrt{2/\pi g}$ (the homelessness curve,
+$.500\to.176$); and the interior Gram of the middle block continues the
+grade-four $\mathbf 1\oplus\mathbf 2$ split as
+\emph{trivial $\oplus$ nontrivial $S_g$-irreps} at every even grade mapped
+($\mathbf 1\oplus\mathbf 9$ at six, $\mathbf 1\oplus\mathbf{20}
+\oplus\mathbf{14}$ at eight; the balanced-bipartition object, the faithful
+continuation of grade four's pair-directions) --- one simple common mode, and
+an exotic-candidate complement of known representation type. Resolution
+itself obeys a three-tier law at fixed prime count: bounded channel moments
+stay flat ($<1.5\sigma$ through grade twenty); single-clock power moments
+degrade polynomially; $g$-clock product readouts (the Schur/primitivity
+trace) die exponentially at $g\approx17$ --- \emph{the cliff is a property of
+the readout, not the object}, and the channel decomposition still reads
+cleanly where the global trace is blind. Finally the falsifier column
+returned a method law of its own: a probe of fixed support dilutes
+($145\sigma\to83\sigma$ up the tower, \emph{including} a single leg warped to
+the top harmonic $m=g$ --- the dilution axis is the corrupted-leg
+\emph{count}, not the multiplier), while constant-fraction support holds and
+grows ($145\sigma\to493\sigma$). Two lessons, one per axis: within the
+warp-based falsifier family the dilution law is a \emph{support} law (the
+corrupted-leg count, not the multiplier), while the carrier-side harmonic
+\emph{scale} (the $\mu_6$ cells) stays grade-invariant. Method correction,
+adopted after these runs: falsifier probes belong on the \emph{reading
+scale} --- hold the fiber untouched and move the instrument off the $\mu_6$
+grid, on which the object closes and off which it fails --- and the
+warp-based family used here is deprecated for future instruments (its
+measurements stand as the family's characterization). The corrected family
+already has a height-side instance on record: the unit-scale window misread
+of \S\ref{sec:rails}. Conductor toll at grade twenty: $\log_{10}Q\approx2.15\times10^7$
+--- the value chart is twenty-one million digits deep while the structure
+tier reads on. The symmetric-power side supplies the companion sign law and
+a constituent-level validation of the same component rules: for semistable
+$E$ the known closed form \cite{DMW,SaitoEps} --- $w_m=+1$ for even $m$;
+$w_m=\bigl(\tfrac{-2}{m}\bigr)w(E)$ for odd $m$ --- is re-derived honestly
+from Tate's twisted-Steinberg factor
+($\varepsilon_p(\mathrm{Sym}^k)=w_1(p)^k$; no even-power shortcut exists on
+the Sym side) and confirmed against the \textsc{pari} oracle on all eighteen
+signs of $\mathrm{Sym}^{1..9}$ of $11a1$ and $37a1$, with the forced
+vanishings verified as actual central zeros where values are reachable. And
+the grade-nine consistency identity closes: the degenerate
+$V^{\otimes9}=\bigoplus_k m_k\,\mathrm{Sym}^k$ sheet's diamond sign equals
+the constituent product $\prod_k\varepsilon(\mathrm{Sym}^k)^{m_k}=-1$
+(with $\sum_k m_kA(\mathrm{Sym}^k)=886=A$ exactly and Tate twists
+sign-neutral) --- the degenerate shadow of the $g=2^3+1$ forced zero, the
+two towers' $2$-adic sign laws (binary digit sum; Kronecker
+$(\tfrac{-2}{m})$) imaging each other. The atlas's harmonic compatibility
+was then audited rather than assumed (\texttt{harmonic\_compat.py}): the bank is conjugate-closed to
+machine zero at grades $6$, $12$, and $20$, and every channel moment is
+\emph{affine} in the single-clock closure value $c(w)=\mathbb E[\cos2w\theta]$
+--- at the fiber's own fundamental, $c=-\tfrac12$ and the motive's exact
+rationals close; at any other rational multiplier, $c=0$ and the reading is a
+different, decoupled object ($>100\sigma$ from the motive); at an
+incommensurate multiplier, $c$ is irrational and every moment goes
+transcendental --- the false-null mechanism of the standing method law, now
+measured in quantitative form. (One certification pitfall caught in-run:
+best-fit rational approximation ``certifies'' fake rationality for
+incommensurate $c$; the honest discriminator is lattice membership
+$c\in\{-\tfrac12,0\}$.)
+
+\paragraph{The tiered picture.} What scales freely is \emph{structure}: sheet,
+sign, channels, interior geometry, primitivity, occupancy --- cost
+$2^g$ per prime, method fixed. What recedes doubly-exponentially is the
+\emph{chart}: $Q=(\prod N)^{2^{g-1}}$ prices center values out at every grade
+past the degree-six rung, and individual zeros with them --- which is why the
+value-registration law (\S\ref{sec:wallfour}) is the single named gate, at
+every grade at once, rather than one wall per grade. The classical pattern
+--- one new integral representation per grade, supply exhausted at three ---
+was a chart artifact; the carrier needs two parity templates (heights on odd
+rungs, regulators on even), and grades one through six now instantiate both.
+
+\paragraph{The pairing law, staked.} Program register, with its falsifiers.
+The session's results assemble into one candidate law: \emph{the central data
+of $\Lambda$ is the Gram data of a single Hermitian pairing on the double
+helix}. Its analytic face is the rail-matching law (only conjugate-closed ---
+admissible --- objects pair; natural boundaries are single-rail artifacts);
+its arithmetic face is the drift pairing (jets $=$ pairing determinants:
+heights on odd rungs, regulators on even --- the parity alternation, DC-level
+Lean-proven); its local decomposition is tropical (reduction-graph Green's
+functions) $+$ archimedean, per Zhang's admissible theory. Named instances:
+Tate at grade zero, Birch--Swinnerton-Dyer/Gross--Zagier at one,
+Beilinson--Flach at two, Gross--Schoen/Zhang/Yuan--Zhang--Zhang at three ---
+certified here on the Klein quartic (\S\ref{sec:ceresa}) --- the pinned sheet
+at four, the structure tier at five and six. Falsifiers, pre-committed: a
+grade-five central non-vanishing (the sheet forces zero); a grade-one
+place-by-place height decomposition that fails to close on the certified
+regulators; a grade-four matching-law assembly whose ledger and tropical
+sides disagree beyond the archimedean remainder. The law is stated to be
+shot at --- and the grade-one shot has already been fired and missed: on the
+certified census the canonical height decomposes place-by-place exactly ---
+$\hat h(P)=2\bigl(\lambda_\infty+\sum_p\tfrac{n_p}{2}
+B_2(\{m/n_p\})\log p\bigr)$, the single calibrated constant being the
+classical factor two between the canonical height and the N\'eron sum ---
+blind on $53a1$/$61a1$ to $10^{-7}$ (the house $4^{-n}$ limit converges
+\emph{upward to} the prediction, so the residual is truncation, not error),
+non-circularly against the incomplete-$\Gamma$ jet to $3.5\times10^{-13}$,
+with the rank-two pairing matrix decomposing \emph{entrywise} (regulator
+$=$ determinant to $4.3\times10^{-11}$) and the wrong-graph control missing
+by exactly $\tfrac23\log37$. Every $I_1$ tropical share is $\tfrac16\log p$
+on the nose (\texttt{matching\_law\_g1.py}, App.~\ref{app:repro}).
+
+\section{The terminus: the Hodge conjecture as source exhaustion}\label{sec:terminus}
+
+The program's end goal is stated plainly, with its logic and its price.
+
+In the carrier's coordinates a rational $(p,p)$-class is a state with the
+\emph{Hodge signature}: its clock/weight datum sits in the self-paired,
+phase-balanced position the ledger assigns to type $(p,p)$. The Hodge
+conjecture \cite{Hodge,DeligneClay} asserts such a class is algebraic --- in
+the register of this program:
+\[
+  \boxed{\ \text{every Hodge-signature state has an algebraic source.}\ }
+\]
+This is a source-exhaustion statement, the same genre as the carrier's proven
+exhaustion theorems --- every vanishing event has a source; no layer is silent
+--- now asserted at the top of the cycle tower. The two-question test the
+program applies to every target passes: nothing here assumes the conjecture
+(the towers, poles, and heights are read unconditionally from point counts and
+completed values), and nothing is circular (the falsifiers below are concrete).
+Three facts give the terminus its footing:
+
+\begin{enumerate}
+\item \emph{The divisor case is the template.} Lefschetz $(1,1)$
+\cite{Lefschetz} is the classical grade-one instance: the Hodge-signature
+condition detects exactly the algebraic classes, and the carrier's depth-one
+row (\S\ref{sec:depthone}) reads that grade's full arithmetic --- order,
+regulator, obstruction --- as ledger coordinates.
+\item \emph{The pole reading is Tate-shaped.} The carrier reads algebraic-cycle
+count as DC/pole data natively (\texttt{rank\_is\_dc\_residue}; the
+$\mathrm{Sym}^2$ excess-pole detection of the CM Hodge class is a measured
+instance of exactly the pole-order reading Tate's conjecture \cite{TateConj}
+assigns to algebraic classes). The program's detection direction --- Hodge
+signature $\Rightarrow$ some $T_d$ fires --- is thus already exercised.
+\item \emph{The exhaustion principle has never failed a test.} Every class
+put to it has appeared at finite depth ($1,1,1,2,3$), with the predicted
+delayed signatures; deliberate search for a phantom has so far produced none.
+\end{enumerate}
+
+\noindent\emph{What the terminus still needs} --- named exactly, the honest
+spine of the program:
+
+\begin{enumerate}
+\item \emph{The transcendental retained coordinate.} Two varieties can share
+their zeta/Satake data yet differ in Chow and Griffiths groups, so the Satake
+ledger alone cannot separate the transcendental layer in general. The program
+must exhibit the additional retained coordinate --- the non-archimedean height
+channel or the $\ell$-adic Ceresa class of \S\ref{sec:ceresa}, carried on the
+ledger's radial/angle channels beyond the weight multiset --- and prove it is
+genuinely retained by the descent, not synthesized after the fact. This is the
+crux, and we state it as the program's hardest single obligation.
+\item \emph{The converse leg: from firing coordinate to cycle.} Detection is
+half the conjecture; the other half constructs the algebraic source from the
+fired coordinate --- the cycle-theoretic analogue of the converse theorem that
+turns the main paper's nice $L$-functions into automorphic representations.
+The functoriality program of \cite{Universal} supplies the model: identify the
+complete invariant package (there: functional equation, continuation,
+boundedness, exhaustion; here: the graded tower record with its ledger), then
+invoke or build the recognition theorem that says the package has a unique
+source. No such recognition theorem exists yet at cycle level; building its
+carrier form is the program's constructive arm.
+\end{enumerate}
+
+\noindent\emph{The architecture, machine-checked.} The reduction is now
+kernel-fixed (\texttt{RequestProject/HodgeDial.lean}; standard footprint): a
+\texttt{HodgeDial} carries the DC condition, rationality, an algebraic-source
+predicate, and the tower readouts; \textsc{Retention} (no silent rational DC
+mode) and \textsc{Recognition} (fired $\Rightarrow$ sourced) are the two named
+hypotheses --- \emph{asserted by no one} --- and
+\texttt{hodge\_of\_retention\_recognition} composes them, unconditionally, into
+\textsc{SourceExhaustion}. On the semisimple model dial, retention is already a
+theorem (\texttt{model\_sourceExhaustion\_of\_recognition} consumes the
+Vandermonde separation), so there the terminus needs recognition alone. Any
+future landing of either ingredient, by anyone, assembles into the terminus in
+the kernel with no further argument; the sentence itself never needs to be
+said in the author's voice.
+
+\noindent\emph{Falsifiability register.} Pre-committed, in print: the program
+dies at (a) a \emph{phantom} --- a nonzero class silent at every tower depth
+(one suffices; the carrier radical would be nontrivial on cycles); (b) a
+\emph{false source} --- a Hodge-signature state whose firing coordinates
+provably admit no algebraic cycle beneath them; (c) a \emph{ledger failure} ---
+a pair of varieties whose full retained ledger (not merely Satake) coincides
+while their cycle theories differ. The register also demands that the reading
+procedures fail when mis-clocked, and this has been exercised deliberately:
+the wrong root of unity, the wrong tower harmonic, and the wrong harmonic rate
+each break their readings by orders of magnitude
+(\texttt{harmonic\_falsifier.py}), and the root-of-unity ladder
+$\mu_3$--$\mu_{12}$ reconstructs integer point counts exactly with its own
+roots while missing at the integer level with wrong ones
+(\texttt{mu\_ladder.py}). Any hit will be published as prominently as
+a confirmation. Current count after deliberate searching: zero. The first
+adversarial instance of (c) has been run and survived: across an isogeny class
+the $1$D readout is provably blind --- identical $a_p$, certified in-house ---
+while the retained ledger separates every pair and redistributes in the exact
+Cassels-invariant combination (App.~\ref{app:repro}). A second instance has
+now been run where no shield protects the reading: non-diagonal quartic K3s
+--- the Dwork pencil, genuinely coupled, plus block-separable generics with no
+symmetry at all, hence no twist characters and no Faltings isogeny shield.
+All forty-four non-isomorphic pairs separate in exact integer point counts
+(minimum separation $3992$, growing with $p$); the one forced-isomorphic
+control pair is identical, as required; and the hardest pair (Dwork $c=2$ vs
+$c=1/2$) collides in its coarse fingerprints and even at individual primes,
+yet the full trace sequence separates it cleanly --- the clause-(c) stress
+scenario in miniature, and the ledger holds (\texttt{k3\_nondiag.py},
+App.~\ref{app:repro}).
+
+\section*{Conclusion}
+
+What stands, and at what strength. The depth dictionary is a machine-checked
+theorem about a non-circular, machine-fixed filtration, transport-invariant,
+coinciding with Bloch--Beilinson whenever the latter exists. No-silent-layer is
+unconditional on the semisimple carrier state, and on drift in the model: drift
+is value-blind, jet-visible, and never silent, with positive-definite response
+energy --- the model form of Beilinson--Bloch anisotropy --- and the measured
+law $k^*=$ drift dimension holds across the census with machine-zero silence.
+Depth one is measured at machine precision with all three coordinates
+independently resolved and the obstruction landing on exact squares; depth two
+fired on schedule; depth three is measured on the Laga--Shnidman family with an
+exact isotropy boundary and a discovered torsion-translation symmetry, and
+awaits its from-scratch landing --- whose $L$-side is now on record: the Klein
+quartic's Ceresa channel carries forced sign $-1$ and central derivative
+$0.8299\ne0$, matching the proven non-torsion of the cycle
+(Target~\ref{tgt:ceresa}, half landed). Recognition is
+closed at grade one on house instruments, gate-certified. Grade four --- the
+first unnamed rung --- is mapped to its three walls (non-critical center,
+parity ladder, split no-go) and crossed: the homeless degree-16 fiber is
+assembled on the carrier, its degenerate case factoring through the lower
+harmonics exactly, its primitive case certified irreducible, its first datum
+on record --- and its fourth wall, the information wall, is measured on three
+faces and dismantled: the functional-equation sheet is pinned from the twenty
+integers with the root number proven $+1$, the strip-interior values exist,
+the center is read non-vanishing in the framework register, the unread number
+is identified as a tropical-dominated regulator volume, and the fiber's
+formal home is a Lean theorem. The instruments that got inside --- the
+harmonic lattice, the conjugate-rail pairing, the portal, the $\mu_6$-address
+locator --- obey one measured admissibility criterion, harmonic
+self-compatibility, and they scale: grades five and six run with no new
+method, the Catalan spine and the parity law confirm across the ladder, and
+the residual obstruction at every grade is one named theorem-target, the
+value-registration law. The terminus architecture is kernel-fixed with its two
+hypotheses named and asserted by no one. The end goal is the Hodge conjecture
+as source exhaustion, and the route to it is the same route the main paper
+walked for functoriality: build the object, keep the ledger, induce every
+layer to appear, and let the recognition theorem finish.
+
+\appendix
+
+\section{Reproducibility}\label{app:repro}
+
+All instruments are oracle-free --- no $L$-function call inside a locator;
+published values enter only final verification columns. Lean footprints are
+uniformly $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$,
+no \texttt{sorry}, audited by \texttt{\#print axioms}.
+
+\begin{itemize}
+\item \textbf{The filtration dictionary},
+\texttt{RequestProject/HodgeLedgerFiltration.lean}:
+\texttt{carrierFiltration\_antitone}, \texttt{ledger\_kernel},
+\texttt{mem\_carrierFiltration\_succ}, \texttt{no\_early\_detection},
+\texttt{grade\_visibility}, \texttt{firstVisibleDepth\_eq\_grade},
+\texttt{isFirstVisible\_unique}, \texttt{isFirstVisible\_map\_iff},
+\texttt{carrierFiltration\_unique}, \texttt{blochBeilinson\_coincides},
+\texttt{exhaustive\_of\_radical\_trivial},
+\texttt{grade\_visible\_of\_nondegenerate},
+\texttt{radical\_of\_factorsThrough},
+\texttt{not\_mem\_radical\_of\_detectedPast}.
+\item \textbf{The semisimple theorem},
+\texttt{RequestProject/CarrierTowerSeparation.lean}:
+\texttt{radical\_trivial\_of\_tower\_injective},
+\texttt{momentTower\_detects}, \texttt{momentTower\_radical\_trivial},
+\texttt{momentTower\_exhaustive}.
+\item \textbf{The depth-one census}, \texttt{tmp/jet\_census.py} and
+\texttt{tmp/sha\_hinge.py}: full BSD readings at ranks $0$--$3$; $|\Shamath|$
+landed as exact squares $1,4,9$ (margins $\le3.6\times10^{-15}$ at rank zero,
+$\le1.6\times10^{-4}$ through rank three); $L^{(r)}/r!$ via incomplete-Gamma
+Taylor; heights by $x$-only $4^{-n}$ doubling; Tate $c_p$ and group-law torsion
+in-house; Sage-oracle validated once, then run oracle-free.
+\item \textbf{The layer calibration}, \texttt{tmp/hodge\_layer\_calib.py}:
+order/regulator/obstruction resolved as independent coordinates across the
+census.
+\item \textbf{The delayed-signature test},
+\texttt{tmp/tower\_exhaustion\_test.py}: point-counting tower; CM
+self-correspondence silent at depth one, first firing at depth two; first
+nonzero slot matches expected filtration depth for every tested class
+($1,1,1,2,3$); no class silent at every level.
+\item \textbf{The Griffiths probe}, \texttt{tmp/hodge\_griffiths\_probe.py}:
+value channel fires for every homologically-trivial cycle in the census; the
+recursive tower shows classes absent at level one appearing at level $\ge2$.
+\item \textbf{The ledger-failure search, v1},
+\texttt{tmp/hodge\_fast\_tests.py}: the $11a$ isogeny class. Identical $a_p$ at
+every good $p<400$, certified by point counts --- so the $1$D readout provably
+cannot separate the members (Faltings) --- while the retained channels separate
+every pair ($\Omega$, $T$, $c_p$, each computed from the curve, never from
+$L$), and the Cassels combination $\Omega\prod c_p/|T|^{2}$ is invariant across
+the class to $2.2\times10^{-16}$; $|\Shamath|$ landed $=1$ on every member. No
+ledger failure found. The v2 escalation --- a pair with equal \emph{full}
+ledger and different $\Shamath$ or, in higher dimension, equal zeta and
+different Chow data --- is the genuine clause-(c) falsifier hunt.
+\item \textbf{The drift model and terminus spine},
+\texttt{RequestProject/JordanDriftTower.lean} (drift value-blind / jet-visible
+/ never silent; \texttt{driftPairing\_posDef};
+\texttt{anisotropic\_of\_definite\_factor}),
+\texttt{RequestProject/HodgeDial.lean} (\textsc{Retention},
+\textsc{Recognition}, \texttt{hodge\_of\_retention\_recognition},
+\texttt{model\_sourceExhaustion\_of\_recognition}),
+\texttt{RequestProject/Rung4SplitNoGo.lean}
+(\texttt{split\_unit\_pairing\_vanishes}). All standard footprint, no
+\texttt{sorry}.
+\item \textbf{The harmonic frame, calibrated}, \texttt{tmp/hodge\_clock\_demo.py}:
+$E_1\times E_2$ Picard numbers read two ways --- period-clock alignments
+(Hecke scan certified against the exact $j=c_4^3/\Delta$) and count-side
+moments --- $6/6$ cases matching Lefschetz $(1,1)$ truth; CM discs $-3,-4$
+recovered; the two-CM-fields control correctly refuses to align.
+\item \textbf{The drift ladder}, \texttt{tmp/drift\_observability.py}: jet
+ladders $k=0..4$ for eight curves, root numbers certified in-house
+(split-vs-direct $\Lambda(3)$); $k^*=$ drift dimension throughout; responses
+$=\mathrm{Reg}\cdot|\Shamath|$; three same-placement falsifier curves
+(certified by prime discriminant and exhibited integral points) separate
+cleanly.
+\item \textbf{The dial}, \texttt{tmp/twistor\_hunt.py}: DC-locking on the
+product-family twistor dial is discrete and exactly algebraic; irrational
+controls at $O(1)$; locks are local minima (the base point is a critical point
+of $j$ --- quadratic shoulders).
+\item \textbf{The mis-clocking battery}, \texttt{tmp/harmonic\_falsifier.py}
+and \texttt{tmp/mu\_ladder.py}: wrong root / wrong harmonic / wrong rate each
+break their readings (separations $10^{3}$--$10^{7}$); rungs
+$\mu_3$--$\mu_{12}$ reconstruct integer counts exactly with their own roots
+(purity at $10^{-15}$, DC slots as predicted, sphere-lock at inert primes) and
+miss at the integer level with wrong ones.
+\item \textbf{Recognition at grade one}, \texttt{tmp/heegner\_recognition.py}:
+point counts $\to$ modular image $\to$ Heegner alignment ($D=-7$) $\to$
+self-certified lattice (both half-period identities exact) $\to$ $P=(1,0)$
+recognized and verified in exact arithmetic; $\hat h(P)/\hat h(\text{gen})
+=4.0006$.
+\item \textbf{Depth-three anisotropy}, \texttt{tmp/ceresa\_anisotropy.py}:
+$\hat h(Q_t)$ over $\mathbb Q(\sqrt[3]{t^2-1})$ from scratch; exact torsion
+boundary at $t=0,\pm3$; census non-isotropic $0.59$--$1.16$; the
+torsion-translation symmetry discovered and group-law-verified in-instrument.
+\item \textbf{Rung four}, \texttt{tmp/quadruple\_rung.py} (occupancies
+$0/1/\text{Catalan }2/3$ with parity controls), \texttt{tmp/weil\_detection.py}
+(the Weil-assembly excess, $\mathbb Q$-count $0$ vs $\overline{\mathbb Q}$
+occupancy, orthogonality controls), \texttt{tmp/farside\_quadruple.py} (the
+degree-16 fiber: degenerate channel split at $3.3\times10^{-16}$, coefficient
+factorization $\zeta^2*\mathrm{Sym}^2{}^{*3}*\mathrm{Sym}^4$ to
+$3.6\times10^{-14}$, Schur irreducibility $0.930\to1$ vs $13.703\to14$, window
+growth exponent $0.577$).
+\item \textbf{The certified evaluator and value chain},
+\texttt{tmp/center\_reading.py}, \texttt{tmp/deg6\_center.py},
+\texttt{tmp/theta\_cache.py}: one-contour-pass split identity with two-point
+split-vs-direct self-certification; gates $\zeta(\tfrac12)$, $L(11a1,\tfrac12)$;
+oracle validation \textsc{pari} \texttt{lfunsympow} (degrees $3$--$5$) and
+Dokchitser (degree $4$); the new degree-4 and degree-6 centers; $O(1)$
+$\theta_p$ caches ($148{,}933$ primes to $2\times10^6$).
+\item \textbf{Wall four, three faces}, \texttt{tmp/farside\_center.py},
+\texttt{tmp/carrier\_center.py}, \texttt{tmp/adapted\_center.py}: windowed
+protocol soundness ($A=1.5315$ vs analytic $1.5323$); the information bound
+measured (primitive transient $X^{0.19}$, no plateau at any reachable
+height); solved warps close cells but fail both value gates ---
+summability, not values.
+\item \textbf{The dismantling}, \texttt{tmp/wall\_dissolve.py}: the sheet from
+twenty integers (forced $3/3$ split), first strip-interior values, mirror
+zeros, center order zero in the framework register, the tropical layer
+($\tau(C_n)=n/12$, $\sum\tau=2/3$, $C_5$ moments $m_1=0,m_2=5/36$).
+\item \textbf{The root number, proven}, \texttt{tmp/eps\_quadruple.py} and
+\texttt{tmp/eps\_quadruple\_notes.md}: the Deligne/Tate local computation,
+nine-for-nine postdiction battery (reduction types recomputed via Tate's
+algorithm, non-circular), conductor-exponent consistency, Sage oracle
+cross-checks.
+\item \textbf{The lattice, the rails, the portal, the door},
+\texttt{tmp/harmonic\_lattice.py} (exact lane identities, incommensurate
+falsifier), \texttt{tmp/helix\_pairing.py} (single rail diverges / conjugate
+pair converges to the certified value / both mis-pairs diverge),
+\texttt{tmp/hodge\_portal.py} (channel moments, zero-variance degenerate
+constancy, interior Gram $17/32$--$1/4$, $144\sigma$ falsifier),
+\texttt{tmp/spectral\_door.py} and \texttt{tmp/spectral\_door2.py} (fixed-head
+$\mu_6$-rail locator, 12/12 oracle gate, Rayleigh-limit pair split, quadruple
+clean null with hostile checks);
+\texttt{tmp/helix\_tower.py} spectral half: the growth-window rerun of the
+gate (11/12 bare rails; the diagonal schedule starves at tensor conductor,
+as diagnosed) and of the quadruple (pre-registered null; the recurrent
+$t=2.68$ dip killed a second time by Z-wander and both scrambles); the
+arrow-scale falsifier shown to be gauge in fixed-head scans (sign-scramble
+is the honest falsifier there, $0/12$); and the growth-vs-flat resolution
+comparison --- a bounded null: at reachable head the grown and
+equal-magnitude reads resolve the close pair at the same data volume;
+\texttt{tmp/helix\_toll.py} and \texttt{tmp/helix\_spectral.py}: the $g=6$
+follow-up with two pre-registered predictions falsified and one first-run
+claim retracted (the transient growth exponent tracks \emph{degree} through
+phase cancellation, not conductor --- a third independent confirmation that
+cheap descriptors carry no value information; the carrier-representation
+identity holds at both grades), and the $\mathrm{Sym}^4$ escalation: $8/19$
+oracle zeros located at degree five, the detected subset head-stable and
+dying under both scrambles --- the locator's first degree-five focal events.
+\item \textbf{The Ceresa $L$-side}, \texttt{tmp/ceresa\_lside.py}: from-scratch
+Hecke $L$-series over $\mathbb Q(\sqrt{-7})$; integer-exact match to the
+weight-4 level-49 CM form; two-point sign certificates; central derivative
+$0.8298893$ (\textsc{pari} agreement $3.6\times10^{-6}$); the model subtlety
+(naive Klein model is a cubic twist) caught by point counts.
+\item \textbf{The scaling test}, \texttt{tmp/grade56\_scaling.py},
+\texttt{tmp/theta\_79a1.npy}, \texttt{tmp/theta\_83a1.npy}: pre-registered
+exact rationals at grades five and six, all landing $\le1.2\sigma$; Catalan
+spine $C_3=5$ and Schur companions $C_4,C_5,C_6$; parity law (no DC channel at
+grade five); falsifiers $132$--$139\sigma$, degenerate-scramble $437\sigma$;
+design-change log: the odd-weight $\Gamma$ branch only.
+\item \textbf{The clause-(c) hunt off the diagonal}, \texttt{tmp/k3\_ledger.py}
+and \texttt{tmp/k3\_nondiag.py}: the diagonal-quartic reader (Fermat class
+$\rho-1=19$ at split primes, exact locks on inert progressions) and the
+non-diagonal escalation (Dwork pencil and block-separable generics; two
+independent exact counters validated against brute enumeration; forty-four
+pairs all separated, forced-isomorphic control identical; exact-discriminant
+screening catching a bad prime at $229$ the small-$p$ screen missed).
+\item \textbf{The tower atlas}, \texttt{tmp/tower\_atlas.py}: grades
+$2$--$20$ on the first twenty prime-conductor curves; exact $O(g^2)$
+convolution portal (brute-checked through $g=10$); the
+$\varepsilon(g)$ law with the Kummer derivation; Catalan spine to $C_{20}$;
+three-tier resolution law with theoretical (not empirical) error bands;
+three-version falsifier sweep with the support-dilution curve;
+\texttt{tmp/harmonic\_compat.py}: the compatibility audit (conjugate closure
+at machine zero, the affine-in-$c(w)$ channel-moment law, rational-vs-%
+incommensurate discrimination by lattice membership);
+\texttt{tmp/helix\_tower.py}: the height run (Sym$^3$ pairing converges on
+the carrier to the certified value, growth $-0.067$, single-rail and
+mis-pair diverge; the degree-16 $G\ast\bar G$ identity at $2.4\times10^{-13}$;
+the radial-head toll measured; the unit-scale window falsifier).
+\item \textbf{Recognition at grade four},
+\texttt{tmp/recognition\_loop\_g4.py}: the four-arm loop on three quadruples
+(degenerate / two isogeny pairs / scrambled), truth consulted only at
+grading; the live-direction law; independent counting- and period-side
+alignment certificates; isogeny degrees found with $10^{-15}$-scale
+$j$-residual landings; occupancy and channel-profile recognition
+certificates; scrambled null and false-alignment rejection.
+\item \textbf{Recognition at grade two (even rung)},
+\texttt{tmp/bf\_loop\_g2.py} and \texttt{tmp/bf\_loop\_g2\_notes.md}: the
+trivial-zero/FE bridge derived and confirmed; the certified Rankin--Selberg
+values at the Beilinson point; the Rogers--Zudilin corner closed from
+scratch (Mahler integral vs evaluator, $1.55\times10^{-5}$, rational landing
+$24$); the genuine-product construction gap documented as the literature's
+own state; the carrier translation of the even-rung construction arm.
+\item \textbf{The value-registration census},
+\texttt{tmp/value\_registration.py}: frozen forcible-closure protocol
+(faithfulness anchor reproducing the published mis-registrations exactly);
+$24$ rows over the six certified truths; leave-one-object-out
+cross-validation killing the closure-improvement and degree/conductor
+candidates and confirming off-lattice distance as the governing regressor;
+the graded-family monotone degradation ($0.165\to0.200\to0.228\to0.236$ as
+off-lattice freedom is added); the finite-difference Jacobian requirement
+(real banks are first-order-stationary for the closure objective) documented
+in-source.
+\item \textbf{The grade-one pairing-law calibration},
+\texttt{tmp/matching\_law\_g1.py}: canonical heights decomposed
+place-by-place (archimedean theta/sigma via complex AGM --- the true lattice
+$\tau=\omega_2/\omega_1$, not $j$-inversion's fundamental-domain
+representative --- plus Bernoulli Green's functions on the reduction graphs);
+one calibrated constant (the classical factor two), then frozen and blind;
+jet comparison non-circular; wrong-graph falsifier missing by the exact
+predicted rational.
+\item \textbf{The rung-four Lean bricks},
+\texttt{RequestProject/QuadrupleFiber.lean} (thirteen theorems: the degree-16
+fiber's determinant-one ledger, $(-X)^{16}$ per-place functional equation,
+completed reflection, strand exchange) and
+\texttt{RequestProject/EvenWeightDC.lean} (ten theorems:
+\texttt{dc\_channel\_iff\_even\_weight} and the grade-4/grade-5 corollaries).
+Standard footprint on all twenty-three, no \texttt{sorry}.
+\end{itemize}
+
+\begin{thebibliography}{99}
+
+\bibitem{Universal} S.~Lavery, \emph{Carrier, fiber, adapters, and
+functoriality}, preprint draft v0.1 (2026); the 3D carrier system, the loss
+ledger and its bijection, the functoriality program, and the reproducibility
+corpus this paper builds on.
+
+\bibitem{Hodge} W.~V.~D.~Hodge, \emph{The topological invariants of algebraic
+varieties}, Proc.\ ICM 1950, vol.~1, 182--192.
+
+\bibitem{Lefschetz} S.~Lefschetz, \emph{L'Analysis situs et la g\'eom\'etrie
+alg\'ebrique}, Gauthier-Villars, Paris, 1924.
+
+\bibitem{DeligneClay} P.~Deligne, \emph{The Hodge conjecture}, in \emph{The
+Millennium Prize Problems}, Clay Math.\ Inst./AMS (2006), 45--53.
+
+\bibitem{TateConj} J.~Tate, \emph{Algebraic cycles and poles of zeta
+functions}, in \emph{Arithmetical Algebraic Geometry} (Purdue, 1963), Harper \&
+Row (1965), 93--110.
+
+\bibitem{Beilinson} A.~Beilinson, \emph{Height pairing between algebraic
+cycles}, in \emph{$K$-theory, Arithmetic and Geometry}, Lecture Notes in
+Math.\ \textbf{1289}, Springer (1987), 1--26.
+
+\bibitem{Bloch} S.~Bloch, \emph{Height pairings for algebraic cycles}, J.\
+Pure Appl.\ Algebra \textbf{34} (1984), 119--145.
+
+\bibitem{Murre} J.~P.~Murre, \emph{On a conjectural filtration on the Chow
+groups of an algebraic variety}, Indag.\ Math.\ (N.S.) \textbf{4} (1993),
+177--201.
+
+\bibitem{BSD} B.~J.~Birch and H.~P.~F.~Swinnerton-Dyer, \emph{Notes on
+elliptic curves.\ II}, J.\ reine angew.\ Math.\ \textbf{218} (1965), 79--108.
+
+\bibitem{GrossZagier} B.~H.~Gross and D.~B.~Zagier, \emph{Heegner points and
+derivatives of $L$-series}, Invent.\ Math.\ \textbf{84} (1986), 225--320.
+
+\bibitem{Kolyvagin} V.~A.~Kolyvagin, \emph{Euler systems}, in \emph{The
+Grothendieck Festschrift, vol.~II}, Progr.\ Math.\ \textbf{87}, Birkh\"auser
+(1990), 435--483.
+
+\bibitem{ZhangGS} S.~Zhang, \emph{Gross--Schoen cycles and dualizing sheaves},
+Invent.\ Math.\ \textbf{179} (2010), 1--73; the Beilinson--Bloch height of the
+modified diagonal.
+
+\bibitem{YZZ} X.~Yuan, S.~Zhang, and W.~Zhang, \emph{Triple product
+$L$-series and Gross--Schoen cycles}, book manuscript; the central derivative
+of the triple-product $L$-function as a Gross--Schoen/Ceresa height.
+
+\bibitem{Ceresa} G.~Ceresa, \emph{$C$ is not algebraically equivalent to
+$C^-$ in its Jacobian}, Ann.\ of Math.\ (2) \textbf{117} (1983), 285--291.
+
+\bibitem{Harris} B.~Harris, \emph{Harmonic volumes}, Acta Math.\ \textbf{150}
+(1983), 91--123, and \emph{Homological versus algebraic equivalence in a
+Jacobian}, Proc.\ Natl.\ Acad.\ Sci.\ USA \textbf{80} (1983), 1157--1158.
+
+\bibitem{LagaShnidman} J.~Laga and A.~Shnidman, \emph{Ceresa cycles of
+bielliptic Picard curves}, arXiv:2312.12965 (2024).
+
+\bibitem{Flach} M.~Flach, \emph{A finiteness theorem for the symmetric square
+of an elliptic curve}, Invent.\ Math.\ \textbf{109} (1992), 307--327.
+
+\bibitem{GGP} W.~T.~Gan, B.~H.~Gross, and D.~Prasad, \emph{Symplectic local
+root numbers, central critical $L$-values, and restriction problems in the
+representation theory of classical groups}, Ast\'erisque \textbf{346} (2012),
+1--109.
+
+\bibitem{WZhangAFL} W.~Zhang, \emph{Weil representation and arithmetic
+fundamental lemma}, Ann.\ of Math.\ (2) \textbf{193} (2021), 863--978.
+
+\bibitem{VoisinMD} C.~Voisin, \emph{Some new results on modified diagonals},
+Geom.\ Topol.\ \textbf{19} (2015), 3307--3343; the vanishing
+$\Gamma^{g+2}(C,x)=0$.
+
+\bibitem{DeligneEps} P.~Deligne, \emph{Les constantes des \'equations
+fonctionnelles des fonctions $L$}, in \emph{Modular Functions of One Variable
+II}, Lecture Notes in Math.\ \textbf{349}, Springer (1973), 501--597.
+
+\bibitem{TateNTB} J.~Tate, \emph{Number theoretic background}, in
+\emph{Automorphic Forms, Representations and $L$-functions} (Corvallis),
+Proc.\ Sympos.\ Pure Math.\ \textbf{33.2}, AMS (1979), 3--26.
+
+\bibitem{Rohrlich} D.~E.~Rohrlich, \emph{Elliptic curves and the Weil--Deligne
+group}, in \emph{Elliptic Curves and Related Topics}, CRM Proc.\ Lecture
+Notes \textbf{4}, AMS (1994), 125--157.
+
+\bibitem{Tadokoro} Y.~Tadokoro, \emph{A nontrivial algebraic cycle in the
+Jacobian variety of the Klein quartic}, Math.\ Z.\ \textbf{260} (2008),
+265--275.
+
+\bibitem{Elkies} N.~D.~Elkies, \emph{The Klein quartic in number theory}, in
+\emph{The Eightfold Way}, MSRI Publ.\ \textbf{35}, Cambridge Univ.\ Press
+(1999), 51--101.
+
+\bibitem{Estermann} T.~Estermann, \emph{On certain functions represented by
+Dirichlet series}, Proc.\ London Math.\ Soc.\ (2) \textbf{27} (1928),
+435--448.
+
+\bibitem{Kurokawa} N.~Kurokawa, \emph{On the meromorphy of Euler products~I},
+Proc.\ London Math.\ Soc.\ (3) \textbf{53} (1986), 1--47.
+
+\bibitem{Beilinson1985} A.~Beilinson, \emph{Higher regulators and values of
+$L$-functions}, J.\ Soviet Math.\ \textbf{30} (1985), 2036--2070.
+
+\bibitem{LLZ} A.~Lei, D.~Loeffler, and S.~L.~Zerbes, \emph{Euler systems for
+Rankin--Selberg convolutions of modular forms}, Ann.\ of Math.\ (2)
+\textbf{180} (2014), 653--771.
+
+\bibitem{BDR} M.~Bertolini, H.~Darmon, and V.~Rotger, \emph{Beilinson--Flach
+elements and Euler systems I}, J.\ Algebraic Geom.\ \textbf{24} (2015),
+355--378.
+
+\bibitem{BrunaultChida} F.~Brunault and M.~Chida, \emph{Regulators for
+Rankin--Selberg products of modular forms}, Ann.\ Math.\ Qu\'e.\ \textbf{40}
+(2016), 221--249.
+
+\bibitem{RogersZudilin} M.~Rogers and W.~Zudilin, \emph{On the Mahler measure
+of $1+X+1/X+Y+1/Y$}, Int.\ Math.\ Res.\ Not.\ (2014), 2305--2326; and
+\emph{From $L$-series of elliptic curves to Mahler measures}, Compositio
+Math.\ \textbf{148} (2012), 385--414.
+
+\bibitem{DMW} N.~Dummigan, P.~Martin, and M.~Watkins, \emph{Euler factors
+and local root numbers for symmetric powers of elliptic curves}, Pure Appl.\
+Math.\ Q.\ \textbf{5} (2009), 1311--1341.
+
+\bibitem{SaitoEps} T.~Saito, \emph{The sign of the functional equation of
+the $L$-function of an orthogonal motive}, Invent.\ Math.\ \textbf{120}
+(1995), 119--142.
+
+\end{thebibliography}
+
+\end{document}

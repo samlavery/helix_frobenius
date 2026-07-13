@@ -1,0 +1,111 @@
+##############################################################################
+# CONSTANCY MECHANISM -- variance spectroscopy of the freeze detector
+##############################################################################
+
+==========================================================================
+(a) GENERIC QUADRUPLE  11a1 x 37a1 x 53a1 x 61a1  (H = full torus T^4)
+==========================================================================
+  PRE-REGISTERED: H = T^4 (dim 4), H^perp = {0} (rank 0); NO +-1 lane
+  is frozen.  Channel second moments (exact rationals, product-Sato-Tate):
+    E|T_0|^2 =   99/8 = 12.3750
+    E|T_2|^2 =      7 = 7.0000
+    E|T_4|^2 =      1 = 1.0000
+  MEASURED (148929 primes):
+    |T_0|^2 =  12.3818 +- 0.0248   (0.3 sigma)
+    |T_2|^2 =   7.0040 +- 0.0105   (0.4 sigma)
+    |T_4|^2 =   1.0000 +- 0.0000   (0.0 sigma)
+  frozen +-1/0 lanes measured: 0  (predicted 0)  => H = full torus, every Hodge channel fluctuates.
+
+==========================================================================
+(b) DEGENERATE  (all four legs = 11a1)  (H = diagonal circle, dim 1)
+==========================================================================
+  PRE-REGISTERED: H = diagonal (dim 1), H^perp = {sum eps = 0} (rank 3) = the BALANCED lanes (EvenWeightDC).  All six balanced +-1
+  lanes are FROZEN (variance exactly 0); channel moments (all constant):
+    E|T_0|^2 =  36 = 36.0  (Var = 0)
+    E|T_2|^2 =  16 = 16.0  (Var = 0)
+    E|T_4|^2 =   1 = 1.0  (Var = 0)
+  MEASURED (148932 primes):
+    |T_0|^2 =  36.0000 +- 0.000000   (CONSTANT)
+    |T_2|^2 =  16.0000 +- 0.000000   (CONSTANT)
+    |T_4|^2 =   1.0000 +- 0.000000   (CONSTANT)
+  worst balanced-lane variance = 0.00e+00  (all 6 frozen)
+
+==========================================================================
+(c) ISOGENOUS PAIR  (11a1,11a1,37a1,37a1)  H = {th1=th2, th3=th4} dim 2
+==========================================================================
+  Isogenous elliptic curves over Q share every a_p (Faltings), so theta
+  is identical pointwise -- the pair (11a1,11a1) IS an isogenous pair, and
+  likewise (37a1,37a1); the two pairs are mutually non-isogenous.
+  PRE-REGISTERED: H = {(a,a,b,b)} (dim 2), H^perp rank 2, generators
+    (1, -1, 0, 0) and (0, 0, 1, -1)  (theta1=theta2, theta3=theta4).
+  Directional freeze INSIDE the (2,2) block -- which pair-directions freeze:
+    12|34 = (1, 1, -1, -1): sum_12=+2, sum_34=-2  => fluctuating (separates classes)
+    13|24 = (1, -1, 1, -1): sum_12=+0, sum_34=+0  => FROZEN (in H^perp)
+    14|23 = (1, -1, -1, 1): sum_12=+0, sum_34=+0  => FROZEN (in H^perp)
+  Channel second moments (exact rationals, blocks {12}{34}):
+    E|T_0|^2 =  22 = 22.0
+    E|T_2|^2 =  10 = 10.0
+    E|T_4|^2 =   1 = 1.0
+  MEASURED (148931 primes):
+    |T_0|^2 =  22.0045 +- 0.028605   (0.2 sigma)
+    |T_2|^2 =  10.0033 +- 0.013700   (0.2 sigma)
+    |T_4|^2 =   1.0000 +- 0.000000   (0.0 sigma)
+    Var(12|34) = 0.937284
+    Var(13|24) = 0.000000
+    Var(14|23) = 0.000000
+
+==========================================================================
+(d) CM LEG  (32a1: CM by Q(i);  49a1: CM by Q(sqrt-7))  finer structure
+==========================================================================
+  CM Sato-Tate group N(U(1))=O(2): P[theta=pi/2] = 1/2 (inert, a_p=0),
+  P[split] = 1/2 (theta Hecke-equidistributed).  Single-clock ladder:
+    non-CM: c(m) = E[cos 2m th] = -1/2 (m=1), 0 (m>=2)  -- dies after m=1
+    CM:     c(m) = (1/2)(-1)^m for all m >= 1           -- never dies
+  => harmonic-lane partial freeze  Var(e^{2im th}) = 1 - c(m)^2 :
+     non-CM 3/4, 1, 1, 1, ...    CM  3/4, 3/4, 3/4, 3/4, ...
+
+   leg   | frac(theta=pi/2) |  m=1   m=2   m=3   m=4   (Var e^{2im th})
+   11a1  | meas 0.0009      | 0.750  1.000  1.000  1.000   pred ['3/4', '1', '1', '1']
+   32a1  | meas 0.5003      | 0.749  0.750  0.749  0.750   pred ['3/4', '3/4', '3/4', '3/4']
+   49a1  | meas 0.5002      | 0.749  0.750  0.749  0.751   pred ['3/4', '3/4', '3/4', '3/4']
+   (32a1/49a1 freeze every harmonic to 3/4 = the CM signature; 11a1 to 1)
+
+  FINITE PART (the disconnected component = extra algebraic class).  Two
+  NON-isogenous curves sharing a CM field share the inert set exactly
+  (a frozen Z/2 relation in the component group); different fields => the
+  inert sets are Chebotarev-independent.
+    49a1 & 49tw5 (both Q(sqrt-7), non-isogenous): P[both inert]=0.5002, agree(inert1==inert2)=1.0000
+      predicted (shared field): P[both]=1/2, agreement 1  -- FROZEN relation
+    32a1(Q(i)) & 49a1(Q(sqrt-7)) different fields: P[both inert]=0.2500  predicted 1/4 (independent)
+
+==========================================================================
+(e) INVERSION DEMO  --  recover H from the frozen set ALONE (no labels)
+==========================================================================
+  H = (H^perp)^perp: probe eps in {-1,0,1}^4, collect frozen lanes, take
+  their annihilator.  The isogeny partition = connected components of the
+  frozen difference relations e_i - e_j.  Truth given only for scoring.
+   case                | dim H (rec/true) | partition recovered      | ok?
+   generic             |    4 / 4         | [[0], [1], [2], [3]]     | YES
+   degenerate          |    1 / 1         | [[0, 1, 2, 3]]           | YES
+   isogenous {12}{34}  |    2 / 2         | [[0, 1], [2, 3]]         | YES
+   isog triple {123}   |    2 / 2         | [[0, 1, 2], [3]]         | YES
+
+  FALSIFIER (wrong-harmonic warp): drive leg 0 at 2*theta on the isogenous
+  case.  Prediction: the relation theta1=theta2 breaks, leg 0 detaches, so
+  dim H rises 2 -> 3 and the recovered partition loses the {0,1} block.
+    warped: dim H = 3 (was 2), partition = [[0], [1], [2, 3]]
+    falsifier FIRES as predicted (leg 0 detaches from leg 1).
+
+==========================================================================
+VERDICT
+==========================================================================
+  Channel constancy is not a coincidence read off a control -- it is the
+  annihilator lattice H^perp of the equidistribution subgroup H, and H is
+  fixed by the motive's isogeny/CM relations.  The freeze pattern is
+  measure-free (support only); the exact channel rationals are the
+  Sato-Tate refinement.  Inverting the frozen set recovers H (the isogeny
+  partition) with an address, and the wrong-harmonic warp shifts it by
+  exactly the broken relation.  On PRODUCTS OF ELLIPTIC CURVES the frozen
+  lanes are algebraic classes by theorem (Hodge conj.: Imai/Kahn; Tate
+  divisors: Faltings) -- there the detector is CERTIFIED.  Beyond that
+  class the algebraicity bridge is named, not claimed.

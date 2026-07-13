@@ -1,0 +1,52 @@
+##############################################################################
+# CARRIER CENTER READINGS -- gates on reachable truth, then the wall
+##############################################################################
+
+GATE RS4 setup: exact L(11a1 x 37a1, 1/2) via the evaluator:
+  shape GammaC(s+1) GammaR(s+0) GammaR(s+0): eps +1/+1, match 5.02e-04, 1.89e-03
+  shape GammaC(s+1) GammaR(s+0) GammaR(s+1): eps +1/+1, match 2.86e-06, 1.55e-05
+  shape GammaC(s+1) GammaR(s+1) GammaR(s+1): eps +1/+1, match 1.34e-04, 5.48e-04
+  CERTIFIED shape (deltas 0,1, eps +1); L_RS(1/2) = 5.0227652
+
+GATE RS4 (sqrt(Q) = 407; the ladder crosses it):
+  RS 11a1 x 37a1:
+    Y =       200   R(Y) =     6.381105   (truth 5.022765, err 1.36e+00)
+    Y =       800   R(Y) =     6.007064   (truth 5.022765, err 9.84e-01)
+    Y =      3200   R(Y) =     5.167921   (truth 5.022765, err 1.45e-01)
+    Y =     12800   R(Y) =     5.007957   (truth 5.022765, err 1.48e-02)
+    Y =     18000   R(Y) =     5.039358   (truth 5.022765, err 1.66e-02)
+  top-of-ladder error 0.017, stability 0.031   GATE RS4: PASS
+
+GATE S4 (Sym4, sqrt(Q) = 121, truth 0.6058010):
+  Sym4 11a1:
+    Y =       200   R(Y) =     0.664539   (truth 0.605801, err 5.87e-02)
+    Y =       800   R(Y) =     0.484278   (truth 0.605801, err 1.22e-01)
+    Y =      3200   R(Y) =     0.589605   (truth 0.605801, err 1.62e-02)
+    Y =     12800   R(Y) =     0.637340   (truth 0.605801, err 3.15e-02)
+    Y =     18000   R(Y) =     0.629395   (truth 0.605801, err 2.36e-02)
+  top-of-ladder error 0.024, stability 0.008   GATE S4: PASS
+
+ALIGNMENT FALSIFIER (RS4 at Y = 12800): pi/3-cell-aligned vs misaligned:
+  smooth 5.007957   cell-aligned 5.085061   misaligned 4.947203
+  (alignment sensitivity 1.38e-01 -- reported, two-sided)
+
+THE WALL (primitive quadruple, sqrt(Q) ~ 3e24; ladder tops at 2e5):
+  primitive quadruple:
+    Y =      1000   R(Y) =    14.464586
+    Y =      4000   R(Y) =    18.663029
+    Y =     16000   R(Y) =    23.097982
+    Y =     64000   R(Y) =    27.875567
+    Y =    200000   R(Y) =    32.136067
+  top-of-ladder drift 4.261
+
+VERDICT:
+  The linear carrier window CONVERGES on every reachable truth (RS4
+  crossing its sqrt(Q), Sym4 well past it) -- the reader is sound.
+  The primitive reading is transient-dominated at every reachable
+  Y (drift 4.261), exactly as the information bound demands
+  for ANY linear reader: wall four is measured, not assumed.  The
+  no-sqrt(Q) claim is hereby located PRECISELY: it lives in the
+  nonlinear adapted machinery -- forcible closure with solved warp
+  weights, consuming the fiber's structural law rather than its
+  coefficient stream.  That is the named follow-on experiment, now
+  with its calibration gates already passing.

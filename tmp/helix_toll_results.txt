@@ -1,0 +1,59 @@
+##############################################################################
+# RADIAL-TOLL DOUBLING -- growth exp vs log sqrt Q, g=4 and g=6
+##############################################################################
+fixed head N = 100000 (log N = 11.5); same head both grades.
+
+======================================================================
+(g=4) degree 16 primitive tensor of 11a1, 37a1, 53a1, 61a1
+======================================================================
+  self-dual check: max|Im(lam)| = 1.50e-13 (real => conjugate-closed)
+  growth exp @ N=100000, s0=1/2 (like-degree 16 pairings):
+    CONJUGATE  G(*)Gbar : +0.143   <- the tensor
+    mis-conj   G(*)G    : +0.218
+    wrong-warp G(*)Gw   : +0.111
+    => conjugate is NOT the least transient here -- the growth-exp ORDERING among like-degree pairings is NOT
+       robust (flips with head/estimator); it is not a lane-law signal.
+    (half-object G deg 8: +0.092, smaller object, ref only)
+    conjugate growth exp at N/4, N/2, N = [0.152, 0.154, 0.143]  (a swing => the single slope is not a stable descriptor at this head)
+  radial scale: log10 sqrt Q = 24.5
+
+======================================================================
+(g=6) degree 64 primitive tensor of 11a1, 37a1, 53a1, 61a1, 79a1, 83a1
+======================================================================
+  self-dual check: max|Im(lam)| = 4.26e-13 (real => conjugate-closed)
+  growth exp @ N=100000, s0=1/2 (like-degree 64 pairings):
+    CONJUGATE  G(*)Gbar : +0.093   <- the tensor
+    mis-conj   G(*)G    : +0.049
+    wrong-warp G(*)Gw   : +0.054
+    => conjugate is NOT the least transient here -- the growth-exp ORDERING among like-degree pairings is NOT
+       robust (flips with head/estimator); it is not a lane-law signal.
+    (half-object G deg 32: +0.012, smaller object, ref only)
+    conjugate growth exp at N/4, N/2, N = [0.15, 0.113, 0.093]  (a swing => the single slope is not a stable descriptor at this head)
+  radial scale: log10 sqrt Q = 159.0
+
+======================================================================
+TOLL CURVE -- the geometric wall's first two-point slope
+======================================================================
+  g=4: log10 sqrt Q =   24.5,  conjugate growth exp = +0.143
+  g=6: log10 sqrt Q =  159.0,  conjugate growth exp = +0.093
+  slope d(growth exp)/d(log10 sqrt Q) = -0.00037 per decade of head
+
+  *** PRE-REGISTERED PREDICTIONS FALSIFIED (published as prominently as a hit) ***
+  (1) 'g=6 growth exp HIGHER than g=4 (head doubled)': FALSIFIED. g4 +0.143 vs g6 +0.093 -- g6 is LOWER. The two-point slope is -0.0004 (flat/negative), NOT the rise I pre-registered.
+  (2) 'conjugate least-transient among like-degree': FALSIFIED at both grades (conjugate is the HIGHEST here); the ordering is not robust. My
+      earlier 'weak-but-real conjugate-least' signal (N=2e5, crude slope)
+      does NOT replicate with the robust estimator -- I retract it.
+
+  HONEST INTERPRETATION: the growth exponent tracks DEGREE / cancellation,
+  not the conductor. More eigenphases (deg 64 vs 16) => more phase
+  cancellation => LOWER net growth, so the higher grade reads LOWER. The
+  conductor toll onsets only at head N ~ sqrt(Q) (1e24 at g4, 1e159 at g6)
+  -- off the reachable chart entirely -- so at N=1e5 both banks are pure
+  transient governed by local statistics, and the growth exponent is BLIND
+  to the conductor. The 'toll curve via growth exponent' does not work.
+  This is CONSISTENT with the framework's own registration census:
+  'closure-improvement / summability has ZERO predictive power for the
+  value; degree/conductor killed.' The radial toll is real and information-
+  bound (spectral null, elsewhere); the growth exponent is not its proxy.
+  What DOES hold: the identity G(*)Gbar == tensor and real coeffs (the
+  lanes / carrier representation) -- verified to ~1e-13 at both grades.

@@ -1,0 +1,82 @@
+####################################################################################
+# GRADE-1 MATCHING LAW  --  place-by-place Neron height = drift pairing
+####################################################################################
+
+Local decomposition tested:  h_hat(P) = lambda_inf(P) + sum_p lambda_p(P)
+  lambda_inf : archimedean theta/sigma Green's function
+  lambda_p   : tropical Green's function on the reduction graph C_{n_p}
+             = (n_p/2) B_2({m/n_p}) log p     (Neron normalization)
+
+------------------------------------------------------------------------------------
+[1] CALIBRATION  (37a1, gen (0,0), the certified regulator 0.0511114082)
+------------------------------------------------------------------------------------
+  elliptic log verified via P-reconstruction: True   (z1=(0.31054136 + 0.0j), z2=0.5)
+  lambda_inf (theta)              = -0.275354121933701
+  lambda_fin (tropical, C_1@37)   = 0.300909826053685   = (1/12) log 37
+  raw = lambda_inf + lambda_fin   = 0.0255557041199844
+  h_hat (house, x-only 4^-n)      = 0.0511114081541082
+  CONVENTION FACTOR  = h_hat/raw  = 1.99999999664026
+  -> the house canonical height is TWICE the Neron sum (classical factor-2
+     convention: h_hat = 2*sum_v lambda_v).  factor FROZEN = 2.
+
+------------------------------------------------------------------------------------
+[2] BLIND GATE  (factor frozen = 2; NOTHING else tuned)
+------------------------------------------------------------------------------------
+  curve   lambda_inf(cal)   lambda_p(cal)          h_pred    h_hat(house)    |resid|
+  37a1    -0.550708243867  0.601819652107 0.05111140823997 0.05111140815411  8.586e-11  [CAL]
+  53a1    -0.568733834287  0.661715318925 0.09298148463865 0.09298057995387   9.047e-7  [BLIND]
+  61a1    -0.605957912667  0.685145644029 0.07918773136204 0.07918747309721   2.583e-7  [BLIND]
+
+  Note: the house h_hat uses the naive 4^-n limit at nmax=9; it converges
+  UPWARD to h_pred as nmax grows (53a1: nmax9=0.09298058, nmax10=0.09298140,
+  h_pred=0.09298148), so h_pred is the more accurate value and the residual is
+  house-side truncation, not a matching-law defect.
+
+------------------------------------------------------------------------------------
+[3] TROPICAL LEDGER  (finite share as an exact rational multiple of log p)
+------------------------------------------------------------------------------------
+  curve   bad p  graph   m/n   B_2(m/n)   lambda_p(calibrated)
+  37a1       37 C_1        0        1/6   1/6 * log 37   = 0.6018196521
+  53a1       53 C_1        0        1/6   1/6 * log 53   = 0.6617153189
+  61a1       61 C_1        0        1/6   1/6 * log 61   = 0.685145644
+
+  Every rank-1 tropical share is exactly (1/6) log p = n_p * B_2(0) * log p
+  (identity component of I_1; Neron value (1/12) log p doubled by the factor).
+
+------------------------------------------------------------------------------------
+[4] JET CROSS-CHECK  (37a1): L'(1) = Omega * (arch+trop) * |Sha| * prod c_p / T^2
+------------------------------------------------------------------------------------
+  Reg = arch+trop = 0.05111140824   Omega = 5.986917292463919   c_prod=1  T=1
+  L'(1) predicted from the split height = 0.305999773834
+  L'(1) house (incomplete-Gamma jet)    = 0.305999773834   |diff| = 3.46e-13
+
+------------------------------------------------------------------------------------
+[5] FALSIFIER  (wrong graph: evaluate p=37 with C_5 instead of C_1)
+------------------------------------------------------------------------------------
+  C_1 prediction = 0.05111140824  (matches h_hat)
+  C_5 prediction = 2.45839001667
+  miss = C_5pred - h_hat        = 2.40727860852
+  predicted miss = 2*(5/2-1/2)*B_2(0)*log37 = (2/3) log 37 = 2.40727860843
+  |miss - predicted|            = 8.586e-11   -> the decomposition misses by EXACTLY the graph difference.
+
+------------------------------------------------------------------------------------
+[6] RANK 2  (389a1): full 2x2 drift pairing, each entry split place-by-place
+------------------------------------------------------------------------------------
+  P1=(-1,1)  P2=(0,0)  P1+P2=(1,0)
+  h_hat(P1   ) : arch=-0.3072628073  trop=0.9939298906  sum=0.68666708331  [ellog ok:True]
+  h_hat(P2   ) : arch=-0.66692911695  trop=0.9939298906  sum=0.32700077365  [ellog ok:True]
+  h_hat(P1+P2) : arch=-0.51721823126  trop=0.9939298906  sum=0.47671165934  [ellog ok:True]
+  <P1,P1>=h(P1)=0.68666708331   <P2,P2>=h(P2)=0.32700077365
+  <P1,P2> = -0.26847809881   (arch share 0.2284868465, trop share -0.4969649453 = -(1/12) log 389)
+  Reg = det(Gram) = 0.152460177943   house Reg = 0.1524601779   |diff| = 4.314e-11
+
+####################################################################################
+# VERDICT
+####################################################################################
+  The grade-1 matching-law identity CLOSES:
+    h_hat(P) = 2 * ( lambda_inf(theta) + sum_p (n_p/2) B_2({m/n_p}) log p ).
+  ONE convention constant (the factor 2, Neron-vs-house) was read on 37a1; the
+  two rank-1 blind curves and the rank-2 regulator then land with no further
+  tuning.  The archimedean part is the sigma/theta Green's function; the finite
+  parts are exact rational (1/6) log p tropical values on the I_1 cycle graph.
+  The wrong-graph control misses by exactly the predicted (2/3) log 37.
