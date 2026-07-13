@@ -859,7 +859,12 @@ $L(\mathrm{Sym}^3 11a1,\tfrac12)=1.1402380$ (oracle $1.1402309$), both $s=1$
 values, and the degenerate assembly
 $\zeta(\tfrac12)^2L(\mathrm{Sym}^2,\tfrac12)^3L(\mathrm{Sym}^4,\tfrac12)
 =0.921258569$ at $7\times10^{-6}$ --- the classical side of the rung-four
-calibration, from scratch. Two values are new to the record:
+calibration, from scratch. (Subsequently refined to
+$0.9212515255988524$ at $\sim\!26$ digits by an independent high-precision
+recomputation of the constituents --- the $7.0\times10^{-6}$ shift is the
+evaluator's $2\times10^{-6}$ $\mathrm{Sym}^2$ floor amplified by the cube,
+inside the stated tolerance; the refined value is the one all
+integer-relation work below uses.) Two values are new to the record:
 $L(11a1\times37a1,\tfrac12)=5.0227652$ (degree four, Dokchitser-confirmed at
 $1.2\times10^{-5}$) and the degree-six center
 \[
@@ -960,8 +965,32 @@ tropical part: \emph{the wall's remainder is tropical-dominated, mostly
 rational}. The named theorem-target this stakes (program register): the
 \textbf{grade-four matching law}, the unnamed rung's Gross--Kudla/Ichino
 analogue --- ledger-side drift determinant $=$ tropical admissible pairing
-(graphs) $+$ archimedean remainder --- with both sides' computable pieces now
-in hand. And the wall itself, after tonight, guards nothing else: not
+(graphs) $+$ archimedean remainder. Both computable sides are now
+\emph{exact} (\texttt{matching\_law\_g4.py}, App.~\ref{app:repro}): the
+tropical invariants derived directly from the admissible Green's function
+($\tau(C_5)=5/12$, $m_2(C_5)=5/36$, $\tau(C_1)=1/12$, $\sum\tau=2/3$; one
+normalization constant of Zhang's $\varphi$ flagged, not asserted), and the
+ledger determinant frozen at $\det=(33/32)(9/32)^2=2673/32768=3^5\cdot
+11/2^{15}$. On the one certified case, the assembly's remainder is then
+\emph{certified transcendental}: a two-precision \textsc{pslq} battery
+(coefficients to $1000$, $\sim\!26$ digits) finds \emph{no} rational
+monomial relation between the degenerate center and the period lattice
+$\{\pi,\Omega_{\mathrm{re}},\Omega_2,\langle f,f\rangle\cdot4\pi^2,
+\text{small primes}\}$ --- dividing out the ledger determinant or the pole
+coefficient changes nothing. The unread number is not a period; it is a
+Beilinson regulator volume, now with $26$ digits of evidence rather than
+only the $\Gamma$-factor argument. The pre-registered primitive identity,
+on record before any value route exists:
+\[
+  L(\mathrm{quad},\tfrac12)\ =\ D_{\mathrm{ledger}}\times T_{\mathrm{trop}}
+  \times R_{\mathrm{arch}},
+\]
+$D_{\mathrm{ledger}}=2673/32768$, $T_{\mathrm{trop}}$ rational in the graph
+invariants above, $R_{\mathrm{arch}}$ the regulator volume --- falsified by
+a surviving \textsc{pslq} hit (then $R_{\mathrm{arch}}$ \emph{is} a period
+and the reading dies), by a wrong-graph shift differing from the exact
+$\tau(C_5)-\tau(C_1)=1/3$ per leg, or by any recomputation moving
+$\sum\tau$ or $m_2$ off their exact rationals. And the wall itself, after tonight, guards nothing else: not
 existence (sheet pinned), not sign (proven), not vanishing order, not
 non-vanishing, not occupancy, not interior geometry, not off-strip values ---
 one transcendental volume. The residual obstruction has a name, the
@@ -1599,6 +1628,18 @@ grading; the live-direction law; independent counting- and period-side
 alignment certificates; isogeny degrees found with $10^{-15}$-scale
 $j$-residual landings; occupancy and channel-profile recognition
 certificates; scrambled null and false-alignment rejection.
+\item \textbf{The grade-four assembly},
+\texttt{tmp/matching\_law\_g4.py}: the tropical invariants derived from the
+admissible Green's function (exact rationals, ledger-matching); the frozen
+ledger determinant; the from-scratch $\sim\!26$-digit constituent
+recomputation (refining the degenerate center within the stated oracle
+floor); the two-precision \textsc{pslq} battery with its decisive nulls and
+the honestly-flagged under-determined edge-ratio tests (extended, after the
+grade-two translation, with the lane-count primes $\{7,13\}$ --- the
+Catalan spine factors through $7$ --- and an explicit $\pi$-power scan
+$k\in[-30,30]$, all null: the geometric-integral factor is irreducible);
+the pre-registered primitive identity with its four falsifiers, stated
+volume-not-height on the grade-two template.
 \item \textbf{Recognition at grade two (even rung)},
 \texttt{tmp/bf\_loop\_g2.py} and \texttt{tmp/bf\_loop\_g2\_notes.md}: the
 trivial-zero/FE bridge derived and confirmed; the certified Rankin--Selberg

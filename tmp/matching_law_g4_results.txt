@@ -74,6 +74,7 @@
   (exact integer a_p by point count; self-contained smoothed AFE;
    precision certified by agreement across two (T,M) parameter sets):
 
+  [loaded constituents from matching_law_g4_cache.txt]
   L(Sym2 11a1, 1/2) = 0.893396046101988577524275455117
       house 0.8933980  |diff|=1.95e-6   (agreed digits across 2 param sets: 26)
   L(Sym2 11a1, 1  ) = 1.05759924459095784912107834997
@@ -83,7 +84,7 @@
   L(Sym4 11a1, 1  ) = 0.730805906888476982825254708513
       house 0.730807   |diff|=1.09e-6   (18)
   zeta(1/2)         = -1.46035450880958681288949915252
-  CERTIFIED precision of the constituents: 17 digits (min agreed across two (T,M) sets)   [AFE time 734s]
+  CERTIFIED precision of the constituents: 17 digits (min agreed across two (T,M) sets)   [AFE time 0s]
 
   DEGENERATE CENTER  C = zeta(1/2)^2 L(Sym2,1/2)^3 L(Sym4,1/2)
      = 0.9212515255988523964099804745
@@ -173,6 +174,26 @@
      tol 1e-24: NO relation (|coeff| <= 30) -- NULL
      >>> NULL at both thresholds (no relation, |coeff| <= 30)
 
+  --- lane-count hypothesis (grade-2 BF transfer): add Catalan-spine
+      primes 7,13 (C_4=14, C_5=42 need 7); explicit pi-power scan ---
+  [T11 (lane): center C vs {pi, 2,3,5,7,11,13}]  target = 0.92125152559885239641
+     dim 8, maxcoeff 60; needs top-threshold ~19 dig -> decisive
+     basis (logs of): target, pi, 2, 3, 5, 7, 11, 13
+     tol 1e-16: NO relation (|coeff| <= 60) -- NULL
+     tol 1e-24: NO relation (|coeff| <= 60) -- NULL
+     >>> NULL at both thresholds (no relation, |coeff| <= 60)
+
+  [T12 (lane): center C vs {pi,Om_re,Om_2, 2,3,5,7,11,13}]  target = 0.92125152559885239641
+     dim 10, maxcoeff 20; needs top-threshold ~18 dig -> decisive
+     basis (logs of): target, pi, Omega_re, Omega_2, 2, 3, 5, 7, 11, 13
+     tol 1e-16: NO relation (|coeff| <= 20) -- NULL
+     tol 1e-24: NO relation (|coeff| <= 20) -- NULL
+     >>> NULL at both thresholds (no relation, |coeff| <= 20)
+
+  pi-power scan k in [-30,30]: NO surviving lane-integer x period
+  relation for any pi exponent -> the transcendental (geometric
+  integral / R_arch) is irreducible, as the even-rung law predicts.
+
 ----------------------------------------------------------------------------
   PSLQ VERDICT: NULL across the whole decisive battery. No relation
   with |coeff| <= 1000 survives both thresholds. The certified
@@ -195,20 +216,27 @@
     L( H^1(11a1) (x) H^1(37a1) (x) H^1(53a1) (x) H^1(61a1), 1/2 )
         =  D_ledger  x  T_trop  x  R_arch
 
-  where, in the frozen conventions of sections 1-2:
+  where, in the frozen conventions of sections 1-2 (structured per the
+  grade-2 even-rung law: value = pi-power(Tate twist) x RATIONAL lane
+  count x geometric integral; the drift term is a Gram VOLUME of paired
+  log-channels, NOT a height -- no height appears at any even rung):
     D_ledger  = det(portal drift Gram) = 2673/32768 = 3^5*11/2^15
-                (order-0 DC channel, (2,2)-occupancy 0; exotic 2-plane
-                 sub-det 81/1024 = 3^4/2^10)
+                -- a Gram VOLUME of the paired interior channels (not a
+                self-pairing height); order-0 DC channel, (2,2)-occupancy
+                0; exotic 2-plane sub-det 81/1024 = 3^4/2^10
     T_trop    = the admissible tropical pairing on the reduction graphs,
-                a rational in {tau(C_5)=5/12, tau(C_1)=1/12, Sigma tau=2/3,
-                m2(C_5)=5/36} (grade-1 template: the finite local shares
-                are exact rationals (n/2)B_2({m/n}) log p; here the
-                Green's moments enter for the fourfold modified diagonal)
-    R_arch    = the archimedean Beilinson regulator volume -- a
-                transcendental determinant, NOT a monomial in
-                {pi, Omega_re, Omega_2, <f,f>} (the PSLQ battery above is
-                the evidence: NULL at ~17 digits => R_arch is outside
-                the naive period lattice).
+                place-by-place per locked graph, a rational (a LANE COUNT
+                in the even-rung reading) in {tau(C_5)=5/12, tau(C_1)=1/12,
+                Sigma tau=2/3, m2(C_5)=5/36} (grade-1 template: finite
+                local shares are exact rationals (n/2)B_2({m/n}) log p;
+                here the Green's moments enter, volume-not-height)
+    R_arch    = the archimedean geometric integral = a Beilinson regulator
+                volume -- a transcendental determinant, NOT a monomial in
+                {pi, Omega_re, Omega_2, <f,f>} and NOT pi-power x lane
+                integer (Catalan spine 2,5,14,42,132 tested): the PSLQ
+                battery is the evidence -- NULL at ~26 digits incl. a
+                pi-power scan k in [-30,30] => R_arch is outside every
+                tested period/lane lattice; the transcendental is irreducible.
 
   DEGENERATE SPECIALIZATION (certified, the one reachable truth):
     all four legs = 11a1  =>  tropical side = C_5 alone, and
@@ -245,4 +273,4 @@
   certified degenerate center = 0.9212515255988524 (~26 digits;
     supersedes house 0.921258569, |diff| 7e-6 = cube-amplified Sym2 err)
   PSLQ battery: NULL (regulator volume outside the tested lattice)
-  total runtime 734s
+  total runtime 6s

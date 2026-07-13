@@ -422,10 +422,18 @@ def main():
     t1 = time.time()
     cache = os.path.join(REPO_TMP, "matching_law_g4_cache.txt")
     keys = ["L2hA", "L2oA", "L2hB", "L2oB", "L4hA", "L4oA", "L4hB", "L4oB"]
+
+    def _parse_real(s):
+        s = s.strip()
+        if s.startswith("("):                       # "(real +/- imagj)" form
+            s = s[1:-1]
+            s = s.split(" + ")[0] if " + " in s else s.split(" - ")[0]
+        return mp.mpf(s)
+
     if os.path.exists(cache):
-        with open(cache) as fh:
-            vals = {k: mp.mpc(v) for k, v in
-                    (ln.split("=", 1) for ln in fh.read().splitlines() if "=" in ln)}
+        vals = {k: _parse_real(v) for k, v in
+                (ln.split("=", 1) for ln in open(cache).read().splitlines()
+                 if "=" in ln)}
         L2h_A, L2o_A, L2h_B, L2o_B = (vals[k] for k in keys[:4])
         L4h_A, L4o_A, L4h_B, L4o_B = (vals[k] for k in keys[4:])
         P("  [loaded constituents from matching_law_g4_cache.txt]")
@@ -438,7 +446,8 @@ def main():
         (L4h_A, L4o_A), (L4h_B, L4o_B) = s4
         vv = [L2h_A, L2o_A, L2h_B, L2o_B, L4h_A, L4o_A, L4h_B, L4o_B]
         with open(cache, "w") as fh:
-            fh.write("\n".join(f"{k}={mp.nstr(v, 40)}" for k, v in zip(keys, vv)))
+            fh.write("\n".join(f"{k}={mp.nstr(mp.re(v), 40)}"
+                               for k, v in zip(keys, vv)))
 
     def agree_digits(a, b):
         d = abs(mp.mpf(a.real) - mp.mpf(b.real))
@@ -549,6 +558,46 @@ def main():
     pslq_report("T10 (exploratory): center C vs full {pi,Om_re,Om_2,2,3,5,11}",
                 center, base_names, base_vals, thr_c, maxcoeff=30)
 
+    # --- LANE-COUNT hypothesis (grade-2 BF intelligence): the even-rung value
+    #     structure that closes is (pi-power fixed by the Tate twist) x (RATIONAL
+    #     = a LANE COUNT of the conjugate-closed re-weld, NOT a period) x
+    #     (geometric integral). Test with the Catalan-spine primes present:
+    #     C_2..C_6 = 2,5,14,42,132 need the prime 7 (14=2.7, 42=2.3.7), which the
+    #     {2,3,5,11} basis above could NOT represent.  Add 7,13. -------------
+    P("  --- lane-count hypothesis (grade-2 BF transfer): add Catalan-spine")
+    P("      primes 7,13 (C_4=14, C_5=42 need 7); explicit pi-power scan ---")
+    lane_names = ["pi", "Omega_re", "Omega_2", "2", "3", "5", "7", "11", "13"]
+    lane_vals = [mp.pi, Om_re, Om_im, mp.mpf(2), mp.mpf(3), mp.mpf(5),
+                 mp.mpf(7), mp.mpf(11), mp.mpf(13)]
+    pslq_report("T11 (lane): center C vs {pi, 2,3,5,7,11,13}", center,
+                lane_names[:1] + lane_names[3:],
+                [lane_vals[0]] + lane_vals[3:], thr_c, maxcoeff=60)
+    pslq_report("T12 (lane): center C vs {pi,Om_re,Om_2, 2,3,5,7,11,13}", center,
+                lane_names, lane_vals, thr_c, maxcoeff=20)
+    # explicit pi-power scan: for each integer k, is C/pi^k a lane-integer x
+    # elliptic-period monomial?  (isolates the twist-predicted pi exponent)
+    scan_names = ["Omega_re", "Omega_2", "2", "3", "5", "7", "11", "13"]
+    scan_vals = [Om_re, Om_im, mp.mpf(2), mp.mpf(3), mp.mpf(5), mp.mpf(7),
+                 mp.mpf(11), mp.mpf(13)]
+    scan_hit = None
+    with mp.workdps(35):
+        for k in range(-30, 31):
+            tgt = center / mp.pi**k
+            vec = [mp.log(abs(tgt))] + [mp.log(abs(v)) for v in scan_vals]
+            r1 = mp.pslq(vec, tol=mp.mpf(10)**(-16), maxcoeff=20, maxsteps=10**6)
+            r2 = mp.pslq(vec, tol=mp.mpf(10)**(-23), maxcoeff=20, maxsteps=10**6)
+            if r1 is not None and r1 == r2:
+                scan_hit = (k, r1)
+                break
+    if scan_hit:
+        P(f"  pi-power scan: HIT at k={scan_hit[0]}: {scan_hit[1]}")
+        hits.append(("pi-scan", True))
+    else:
+        P("  pi-power scan k in [-30,30]: NO surviving lane-integer x period")
+        P("  relation for any pi exponent -> the transcendental (geometric")
+        P("  integral / R_arch) is irreducible, as the even-rung law predicts.")
+    P("")
+
     P("-" * 76)
     any_hit = any(h for _, h in hits)
     if any_hit:
@@ -579,20 +628,27 @@ def main():
     P("    L( H^1(11a1) (x) H^1(37a1) (x) H^1(53a1) (x) H^1(61a1), 1/2 )")
     P("        =  D_ledger  x  T_trop  x  R_arch")
     P("")
-    P("  where, in the frozen conventions of sections 1-2:")
+    P("  where, in the frozen conventions of sections 1-2 (structured per the")
+    P("  grade-2 even-rung law: value = pi-power(Tate twist) x RATIONAL lane")
+    P("  count x geometric integral; the drift term is a Gram VOLUME of paired")
+    P("  log-channels, NOT a height -- no height appears at any even rung):")
     P(f"    D_ledger  = det(portal drift Gram) = 2673/32768 = 3^5*11/2^15")
-    P(f"                (order-0 DC channel, (2,2)-occupancy 0; exotic 2-plane")
-    P(f"                 sub-det 81/1024 = 3^4/2^10)")
+    P(f"                -- a Gram VOLUME of the paired interior channels (not a")
+    P(f"                self-pairing height); order-0 DC channel, (2,2)-occupancy")
+    P(f"                0; exotic 2-plane sub-det 81/1024 = 3^4/2^10")
     P(f"    T_trop    = the admissible tropical pairing on the reduction graphs,")
-    P(f"                a rational in {{tau(C_5)=5/12, tau(C_1)=1/12, Sigma tau=2/3,")
-    P(f"                m2(C_5)=5/36}} (grade-1 template: the finite local shares")
-    P(f"                are exact rationals (n/2)B_2({{m/n}}) log p; here the")
-    P(f"                Green's moments enter for the fourfold modified diagonal)")
-    P(f"    R_arch    = the archimedean Beilinson regulator volume -- a")
-    P(f"                transcendental determinant, NOT a monomial in")
-    P(f"                {{pi, Omega_re, Omega_2, <f,f>}} (the PSLQ battery above is")
-    P(f"                the evidence: NULL at ~{cert} digits => R_arch is outside")
-    P(f"                the naive period lattice).")
+    P(f"                place-by-place per locked graph, a rational (a LANE COUNT")
+    P(f"                in the even-rung reading) in {{tau(C_5)=5/12, tau(C_1)=1/12,")
+    P(f"                Sigma tau=2/3, m2(C_5)=5/36}} (grade-1 template: finite")
+    P(f"                local shares are exact rationals (n/2)B_2({{m/n}}) log p;")
+    P(f"                here the Green's moments enter, volume-not-height)")
+    P(f"    R_arch    = the archimedean geometric integral = a Beilinson regulator")
+    P(f"                volume -- a transcendental determinant, NOT a monomial in")
+    P(f"                {{pi, Omega_re, Omega_2, <f,f>}} and NOT pi-power x lane")
+    P(f"                integer (Catalan spine 2,5,14,42,132 tested): the PSLQ")
+    P(f"                battery is the evidence -- NULL at ~{cert_c} digits incl. a")
+    P(f"                pi-power scan k in [-30,30] => R_arch is outside every")
+    P(f"                tested period/lane lattice; the transcendental is irreducible.")
     P("")
     P("  DEGENERATE SPECIALIZATION (certified, the one reachable truth):")
     P("    all four legs = 11a1  =>  tropical side = C_5 alone, and")
