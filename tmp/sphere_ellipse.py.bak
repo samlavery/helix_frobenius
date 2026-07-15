@@ -1,0 +1,61 @@
+"""
+Sam's spherical/ellipsoidal test, framed as HARD CONSTRAINTS (no drift).
+mu_3 cover y^3 = prod(x-b_i)^{a_i}, a_i in {1 (n1 roots), 2 (n2 roots)}.  Sweep (n1,n2) to move
+the omega-eigenspace SIGNATURE (d1,d2) across spherical (balanced d1=d2) <-> ellipsoidal
+(unbalanced).  For each, compute the EXACT freeze  ^dim V / p^{dim/2}  (root of unity or not)
+via the proven rail char-poly (weil_sixfold_count).
+
+HARD constraint under test:  a genuine Weil/Hodge class needs BOTH
+   (i) balanced signature (spherical)  AND  (ii) frozen determinant (exact root of unity).
+Altering spherical->ellipsoidal keeps the mu_3 determinant character (may still 'freeze') but
+BREAKS the (n,n) signature -> NO Hodge class.  So the exact test is: freeze-order stable AND
+signature balanced.  Double-spherical / double-ellipsoidal = the extreme configs.
+"""
+import sys, importlib.util, math
+sys.path.insert(0, "/Users/samuellavery/work/helix_frobenius/tmp")
+spec = importlib.util.spec_from_file_location("wsc", "/Users/samuellavery/work/helix_frobenius/tmp/weil_sixfold_count.py")
+wsc = importlib.util.module_from_spec(spec); sys.modules["wsc"] = wsc
+spec.loader.exec_module(wsc)
+
+def frac(x): return x - math.floor(x)
+def signature(n1, n2):
+    # exponents: 1 (n1 finite roots), 2 (n2 finite roots), inf = -(n1+2 n2) mod 3
+    ainf = (-(n1 + 2*n2)) % 3
+    exps = [1]*n1 + [2]*n2 + ([ainf] if ainf != 0 else [])
+    d1 = round(-1 + sum(frac(a/3) for a in exps))
+    d2 = round(-1 + sum(frac(2*a/3) for a in exps))
+    return d1, d2, exps
+
+def order_of(z, tol=1e-3):
+    for o in (1,2,3,6):
+        if abs(z**o - 1) < tol: return o
+    return None
+
+PRIMES = [7, 13, 19, 31, 37]
+print("== spherical<->ellipsoidal sweep (mu_3), HARD freeze constraint ==")
+print(" n1 n2 | dim  sig(d1,d2)  shape       | freeze ^dimV/p^(dim/2) (order, primes)   Hodge?")
+CONFIGS = [(4,3),(6,2),(2,4),(5,3),(3,5),(8,1),(1,7),(4,4),(6,3),(3,6)]
+for n1, n2 in CONFIGS:
+    d1, d2, exps = signature(n1, n2)
+    g = d1 + d2
+    if g < 2 or g > 6:               # keep char-poly degree tractable (k<=6)
+        print(" %2d %2d | dim %d skipped (out of tractable range)" % (n1, n2, g)); continue
+    fr = list(range(n1)); gr = list(range(n1, n1+n2))     # distinct integer roots
+    hc = wsc.h_member(fr, gr)
+    allroots = fr + gr
+    orders, frzvals = [], []
+    for p in PRIMES:
+        if (p-1) % 3 or len({r % p for r in allroots}) != len(allroots): continue
+        Ts = {k: wsc.Tk(p, k, hc) for k in range(1, g+1)}
+        cpoly = wsc.rail_charpoly(Ts, g)
+        val = wsc.validate_rail(cpoly, p, g)
+        frz = val["freeze"]
+        if frz is not None:
+            orders.append(order_of(frz)); frzvals.append(round(abs(frz),3))
+    stable = orders and all(o is not None for o in orders) and len(set(orders)) == 1
+    shape = "SPHERICAL" if d1 == d2 else ("ellipsoid(%+d)" % (d1-d2))
+    hodge = "YES (spherical+frozen)" if (d1 == d2 and stable) else \
+            ("no: not frozen" if d1 == d2 else "no: not spherical")
+    print(" %2d %2d | %2d   (%d,%d)     %-12s| order %s  |frz|~%s   %s"
+          % (n1, n2, g, d1, d2, shape, (orders[0] if stable else orders),
+             frzvals[:3], hodge))

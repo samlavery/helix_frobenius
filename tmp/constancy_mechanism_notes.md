@@ -195,10 +195,31 @@ graph of frozen differences is exactly the block partition. ∎
 collecting the frozen lanes, and taking their annihilator recovers `(dim H, partition)`
 correctly for all four cases (generic `4 / {singletons}`, degenerate `1 / {1234}`,
 isogenous `2 / {12}{34}`, isogenous-triple `2 / {123}{4}`) — from variance data alone,
-no curve labels. **Falsifier:** driving one leg at `2θ` (wrong harmonic) breaks exactly
-the relations touching that leg; on the isogenous case leg 0 detaches from leg 1, `dim H`
-rises `2 → 3`, and the recovered partition loses the `{0,1}` block — the predicted shift,
-observed.
+no curve labels.
+
+**Falsifier (reading-scale — hold the fiber fixed, vary the reading grid).** The correct
+falsifier does not touch the fiber (the true curve angles); it varies only the *reading*
+harmonic scale `s` of the lane `e^{i s ε·θ}`, on the fixed carrier cells
+(`π/6, π/3, π/2, π`). Two facts, both register-honest:
+
+* The **occupancy** (the count `E|T_k|²`, *not* the binary freeze) is the falsifiable
+  diagnostic. Read on the **μ6 grid** (`s = 1`, the `π/3` fundamental) it lands the motive's
+  truth (generic `|T_0|² = 99/8`); **off-grid** it breaks — `s = 1/2` (`π/6`, the mod-12
+  fold) *over-splits* to `26.4` (`925σ` off the motive), `s = 2` collapses to the decoupled
+  `6.0`, `s = √2` gives the irrational `7.14`. The Sato–Tate prediction tracks the
+  measurement at every `s`, so the instrument is correct — it is the *reading grid* that is
+  falsified. (This is the single-clock lattice-membership discriminator `c(s) = E[cos 2sθ]`,
+  read as a reading scale with the fiber untouched.)
+* The **binary freeze / H-inversion is reading-scale invariant**: it detects the exact angle
+  equalities `θ_i = θ_j`, which are scale-free, so the recovered partition `{12}{34}` is
+  identical at `s = 1, 1/2, 2, √2`. Hence *check the count, not the freeze* — the reading-grid
+  falsifier bites the quantitative occupancy, and the genuine (exact-zero) lock is a
+  topological invariant of the support. The **CM finite part** is pinned to the `π/2` carrier
+  cell (the inert cell): read off `π/2` it is missed entirely.
+
+*(Register note: fiber-**warp** falsifiers — mutating `θ_j → mθ_j` — are the deprecated
+family, kept as a labelled continuity column in the instrument only. Warps corrupt the
+carrier; the reading-scale falsifier holds the carrier fixed and varies the readout grid.)*
 
 ---
 
@@ -262,10 +283,11 @@ The detector reads the annihilator lattice `H^⊥`. The claim to be weighed is:
 algebraicity" is now a *proven mechanism* (channel freeze = annihilator lattice of the
 Frobenius equidistribution subgroup) and a *certified detector* on **products of
 elliptic curves** (frozen lanes are algebraic classes by the Hodge/Tate theorems for
-that class), with the recovered address = the isogeny partition and a firing wrong-
-harmonic falsifier. The single named remainder is the general Hodge/Tate bridge beyond
-products of elliptic curves — carried exactly at the strength of those open conjectures,
-never overstated.
+that class), with the recovered address = the isogeny partition and a firing reading-scale
+falsifier (μ6/`π/3` grid lands the truth, off-grid over-splits; the exact-freeze inversion
+is reading-scale invariant — check the count, not the freeze). The single named remainder
+is the general Hodge/Tate bridge beyond products of elliptic curves — carried exactly at
+the strength of those open conjectures, never overstated.
 
 *Instruments:* `constancy_mechanism.py` (+ `_results.txt`); Lean model
 `RequestProject/ChannelConstancy.lean`; upstream `hodge_portal.py`, `tower_atlas.py`,

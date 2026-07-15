@@ -63,8 +63,10 @@ open Faithful
 
 namespace CriticalLinePhasor.RiemannEvidence
 
-/-- **The 3D-real (identity) evidence proposition** — the conjunction of the 3D-real supporting
-facts (see `threeDRealEvidence` for the proof and full description). -/
+/-- A conjunction of internal 3D carrier, completed-readout, arithmetic, and general limit facts.
+It contains no theorem mapping every analytic nontrivial zero to a completed physical-height
+crossing; see
+`NativeCarrierCoverage` for that separate statement. -/
 abbrev ThreeDRealEvidence : Prop :=
     (∀ γ : ℝ, (UnconditionalFrobenius.vonNeumannOp γ).IsSymmetric)
     ∧ (∀ E : ℂ → ℂ, ThreeDExhaustive E)
@@ -105,12 +107,11 @@ abbrev ThreeDRealEvidence : Prop :=
         ∀ (z₀ : ℂ), z₀ ∈ U → f z₀ = 0 → ¬ (∀ᶠ z in nhds z₀, f z = 0) →
         ∀ (ε : ℝ), 0 < ε → ∀ᶠ n in atTop, ∃ z ∈ Metric.ball z₀ ε, F n z = 0)
 
-/-- **The 1D chart dossier** — the conjunction of the compiled chart-supporting facts
-(see `oneDChartEvidence` for the proof and full description).  This dossier records the
-registration and transport infrastructure for the three-way correspondence
-`ThreeDZero χ bank z ↔ OneDChartZero χ ρ ↔ von Neumann eigenstate at ρ`.
-The `S(t)` registration is its universal layer; the bijective projection system is its local
-layer.  The character-indexed chart-to-kernel leg is `OneDCorrelationEvidence`. -/
+/-- The conjunction of compiled chart-registration and transport facts.  `S(t)` is the global
+coordinate map between the carrier-scale and unit-chart censuses.  Count and jump registration
+does not itself establish a pointwise equivalence between completed physical-height crossings and
+arbitrary Dirichlet L-zeros.  The character-indexed chart-to-kernel premise is
+`OneDCorrelationEvidence`. -/
 abbrev OneDChartEvidence : Prop :=
     (∀ t : ℝ, N_pi3 (Real.exp t) - N_1 (Real.exp t) = S t)
     ∧ (∀ T : ℝ, (Fintype.card (WindowIndex T) : ℝ) = 1 + theta T / Real.pi + Smult T)
@@ -159,10 +160,10 @@ abbrev OneDChartEvidence : Prop :=
 def OneDChartZero {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) (ρ : ℂ) : Prop :=
   DirichletCharacter.LFunction χ ρ = 0 ∧ ∃ γ : ℝ, γ = ρ.im
 
-/-- **The operative 1D-correspondence evidence** for a character `χ`: the chart-to-eigenstate
-leg of `ThreeDZero χ bank z ↔ OneDChartZero χ ρ ↔ von Neumann eigenstate at ρ`.
-A 1D chart-zero event at its reported ordinate realizes a nonzero von Neumann kernel at that
-same complex point.  This bridge is the proof input used by the 1D-primary branch. -/
+/-- The operative pointwise 1D premise for a character `χ`: every chart-reported analytic zero
+realizes a nonzero scalar-fibre kernel at that same complex point.  Because the kernel equation
+already forces the carrier abscissa, `grh_of_oneDCorrelationEvidence` shows that this premise alone
+implies the critical-line conclusion. -/
 def OneDCorrelationEvidence {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ⦃ρ : ℂ⦄, OneDChartZero χ ρ →
     ∃ γ : ℝ, ∃ ψ : ℂ, ψ ≠ 0 ∧
@@ -594,109 +595,138 @@ theorem RH_of_GRH_Trivial_Char (χ₁ : DirichletCharacter ℂ 1)
   exact riemannZeta_ne_zero_of_one_le_re
     (by simp only [Complex.sub_re, Complex.one_re]; linarith) hζ1s
 
-/-! ## GRH (self-adjoint UNCONDITIONAL), the two conditional readings, and RH
+/-! ## Logical audit of the worked GRH interfaces
 
-`rh_from_grh` (`RH_of_GRH_Trivial_Char`) is unconditional.  **Self-adjointness is
-unconditional too**: `vonNeumannOp` is symmetric by the compiled theorem
-`UnconditionalFrobenius.vonNeumannOp_isSymmetric`, and von Neumann reality
-(`spectral_cancellation_on_real_axis`) places every crossing on the line — no hypothesis.
+The carrier midpoint is derived in `ThreeDFocalEvent`: `carrierAbscissa` is selected by the
+unique unit-gauge area-law balance condition, and only then normalized to `1 / 2`.  The scalar
+fibre operator `vonNeumannOp γ = γ • id` is a local coordinate detector: its kernel calculation
+shows that a point already represented at real height `γ` has the carrier's derived abscissa.  It
+does not identify the analytic zero set with the native focal-event set.
 
-The only conditionals are the **two named reading-hypotheses**, one per interpretation of
-Hilbert–Pólya, each first-of-kind (no one has previously had this model, nor a proof of the
-S(t) mechanics or of exact 3D vanishing at the crossing), stated once and asserted never —
-the record left for the community to adjudicate (both sound, one sound, or none):
+The declarations below expose that identification boundary exactly.
 
-* `ThreeD_crossings_are_real_zeros` — the **identity** reading: every nontrivial zero of
-  `L(s,χ)` *is* a 3D crossing (a real-height eigenstate of the self-adjoint generator);
-* `OneD_zeta_zero_correlated` — the **correlation** reading: every 1D zero of `L(s,χ)`
-  *corresponds to* such a crossing (the S(t)-established coincidence).
+* `NativeCarrierCoverage χ` is midpoint-free: it says an analytic zero produces a completed
+  fibre crossing at physical height `exp ρ.im`, whose ordinate is `ρ.im`.
+* `threeDCrossings_iff_grh_and_nativeCarrierCoverage` proves that the older identity premise is
+  precisely the conjunction of the critical-line conclusion and midpoint-free coverage.
+* `oneD_zeta_zero_correlated_proved` proves the disjunctive routing proposition unconditionally;
+  `grh_of_oneDCorrelationEvidence` shows that the separate chart-to-kernel evidence is the
+  substantive 1D identification premise.
 
-Both hypotheses and both GRH implications are stated for **every modulus and character**
-(`{N : ℕ} [NeZero N]`, `χ : DirichletCharacter ℂ N`); the `RiemannHypothesis` corollaries are
-their trivial-character instantiations, and adopting a reading at every modulus yields the full
-conjecture `GRHSpectral.GRHComplete` (`grhComplete_of_resolvant_trace_*`).
-
-Both are the resolvent-trace absorption: `det (specOp (vonNeumannOp γ)) = specBchan γ`
-(`SelfAdjointGenerator.specBchan_eq_det`), whose vanishing is the kernel (`specBchan_zero_iff`),
-so the resolvent `1/specBchan` has its pole exactly at the realized zero. -/
+Thus the two legacy implication names remain API-compatible, but their proofs now call the
+minimal premise directly.  The independent operator interface earlier in this file is
+`grh_of_selfAdjoint_resolvent_capture`: it takes a fixed self-adjoint operator together with a
+proved analytic-zero-to-spectrum capture map. -/
 
 open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
   CriticalLinePhasor.ThreeDFocal in
-/-- **The identity hypothesis — `3D-ZERO-REAL` (strong Hilbert–Pólya)** (first-of-kind, named not
-asserted): the **3D zero is primary**.  Every nontrivial zero of `L(s,χ)` **is** a 3D crossing — a nonzero
-finite phasor-bank focal event at a real 3-D height `z`.  `ThreeDZero χ bank z` is the focal
-vanishing itself; the Gram rank-drop and fibre kernel are its proven consequences, and the
-represented carrier point is exactly `ρ`.  The bank is the canonical physical carrier bank at
-one completed stage `N`, not a new freely chosen bank for each zero.
-The strong reading: the zeros the 3D operator makes *are* the real zeros. -/
+/-- Legacy identity premise in physical-height coordinates.  A completed fibre crossing occurs
+by focal cancellation at a positive helix height `Z`; its analytic ordinate is `y = log Z`.  The equality
+`ρ = carrierPointAtHeight Z` also includes the critical-line conclusion. -/
 def ThreeD_crossings_are_real_zeros {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
-  ∀ ρ ∈ GRHSpectral.NontrivialZeros χ, ∃ stage : ℕ, ∃ hstage : 1 ≤ stage, ∃ z : ℝ,
-    ThreeDZero χ (carrierBank stage hstage) z ∧ ρ = carrierPoint z
+  ∀ ρ ∈ GRHSpectral.NontrivialZeros χ, ∃ Z : ℝ,
+    CompletedThreeDZeroAtHeight χ Z ∧ ρ = carrierPointAtHeight Z
+
+open CriticalLinePhasor.ThreeDFocal in
+/-- Midpoint-free analytic coverage in physical-height coordinates: the zero with ordinate
+`ρ.im` produces a completed fibre event at helix height `Z = exp ρ.im`, so `log Z = ρ.im`.
+This proposition contains neither `carrierPointAtHeight` nor an equality fixing the real part. -/
+def NativeCarrierCoverage {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
+  ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
+    CompletedThreeDZeroAtHeight χ (Real.exp ρ.im)
+
+open CriticalLinePhasor.ThreeDFocal in
+/-- The exact logical content of the identity premise: native-event coverage does not select an
+abscissa, while `GRH χ` supplies the analytic-zero identification with the area-law carrier. -/
+theorem threeDCrossings_iff_grh_and_nativeCarrierCoverage {N : ℕ} [NeZero N]
+    (χ : DirichletCharacter ℂ N) :
+    ThreeD_crossings_are_real_zeros χ ↔ GRHSpectral.GRH χ ∧ NativeCarrierCoverage χ := by
+  constructor
+  · intro h
+    constructor
+    · intro ρ hρ
+      obtain ⟨Z, _hzero, hrepr⟩ := h ρ hρ
+      rw [hrepr]
+      simp [carrierPointAtHeight]
+    · intro ρ hρ
+      obtain ⟨Z, hzero, hrepr⟩ := h ρ hρ
+      have hy : ρ.im = Real.log Z := by
+        rw [hrepr]
+        simp
+      have hZ : Real.exp ρ.im = Z := by
+        rw [hy, Real.exp_log hzero.1]
+      simpa only [hZ] using hzero
+  · rintro ⟨hgrh, hcoverage⟩ ρ hρ
+    have hzero := hcoverage ρ hρ
+    refine ⟨Real.exp ρ.im, hzero, ?_⟩
+    rw [carrierPointAtHeight_exp]
+    apply Complex.ext
+    · simpa using hgrh ρ hρ
+    · simp
+
+open CriticalLinePhasor.ThreeDFocal in
+/-- The identity premise directly contains the critical-line conclusion through its carrier
+equality; no fibre-operator or focal-cancellation fact is needed for this implication. -/
+theorem grh_of_threeDCrossings {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    (h : ThreeD_crossings_are_real_zeros χ) : GRHSpectral.GRH χ := by
+  exact (threeDCrossings_iff_grh_and_nativeCarrierCoverage χ).1 h |>.1
 
 open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
   CriticalLinePhasor.ThreeDFocal in
-/-- **The correlation hypothesis — `1D-ZERO-EXCLUSIVE-REAL` (weak Hilbert–Pólya)** (first-of-kind,
-named not asserted): agnostic about which zero is primary.  For every nontrivial zero the vonNeumann
-resolvent **resonates through whichever zero is chosen as primary**:
-
-* **3D primary** (left disjunct) — a finite-bank native `ThreeDZero` at a 3-D height `z`
-  represents the zero (identical to the strong reading's clause); or
-* **3D not primary → 1D primary** (right disjunct) — the resonance is at the **1D ordinate**, and
-  the 3D eigenstate **corresponds** to that ordinate (`γ = ρ.im`): the S(t)-established coincidence
-  of the 3D crossing height with the ordinate the 1D chart reports.
-
-Read the weak way: the 1D zeros are exclusively real *because* the resonance routes through them —
-with the eigenstate↔ordinate correspondence `γ = ρ.im` proven in the 1D branch — not because they
-are asserted to *be* the 3D crossing.  Von Neumann reality closes either branch. -/
+/-- Legacy disjunctive routing proposition.  Its right branch merely records an analytic zero
+and chooses its own imaginary part as ordinate, so the proposition is proved unconditionally by
+`oneD_zeta_zero_correlated_proved`.  The separate `OneDCorrelationEvidence χ` is the premise that
+places a kernel at the analytic zero. -/
 def OneD_zeta_zero_correlated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
-    -- 3D primary: a canonical completed carrier stage has a native zero at height z
-    (∃ stage : ℕ, ∃ hstage : 1 ≤ stage, ∃ z : ℝ,
-      ThreeDZero χ (carrierBank stage hstage) z ∧ ρ = carrierPoint z)
+    -- 3D primary: the completed fibre has a focal cancellation at physical height `Z`,
+    -- whose chart ordinate is `log Z`.
+    (∃ Z : ℝ, CompletedThreeDZeroAtHeight χ Z ∧ ρ = carrierPointAtHeight Z)
     ∨
     -- 3D NOT primary → 1D primary: the chart reports a zero and its ordinate.  The operative
     -- evidence `OneDCorrelationEvidence χ` realizes this report as the von Neumann kernel.
     CriticalLinePhasor.RiemannEvidence.OneDChartZero χ ρ
 
-open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
-  CriticalLinePhasor.ThreeDFocal in
-/-- **GRH — 3D-real (identity) reading**, every modulus and character.  Depends on the
-**conjunction** of the 3D-real evidence and the identity conditional
-`ThreeD_crossings_are_real_zeros χ`.  Self-adjointness is unconditional
-(`vonNeumannOp_isSymmetric`); von Neumann reality places each crossing on the line. -/
-theorem grh_of_resolvant_trace_3D_real {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
-    (h : CriticalLinePhasor.RiemannEvidence.ThreeDRealEvidence
-          ∧ ThreeD_crossings_are_real_zeros χ) : GRHSpectral.GRH χ := by
+/-- The routing proposition is unconditional: every member of `NontrivialZeros χ` satisfies
+the right branch because `OneDChartZero` records only the defining L-value equation and its own
+imaginary coordinate. -/
+theorem oneD_zeta_zero_correlated_proved {N : ℕ} [NeZero N]
+    (χ : DirichletCharacter ℂ N) : OneD_zeta_zero_correlated χ := by
   intro ρ hρ
-  obtain ⟨stage, hstage, z, hzero, hrepr⟩ := h.2 ρ hρ
-  rw [hrepr]
-  have hstate :=
-    (threeDZero_twoGram_eigenstate χ (carrierBank stage hstage) z (0 : ℂ) 1 (by norm_num) hzero).2.2
-  obtain ⟨Z, _hZ, hcarrier⟩ :=
-    specOp_kernel_admissible (vonNeumannOp z) (h.1.1 z) (carrierPoint z) hstate
-  rw [hcarrier]
-  simp
+  right
+  exact ⟨hρ.2.2, ρ.im, rfl⟩
+
+open CriticalLinePhasor.SelfAdjointGenerator in
+/-- The operative 1D evidence alone implies the critical-line conclusion: its kernel assertion
+at the analytic zero is the substantive identification; the disjunctive routing proposition is
+not used. -/
+theorem grh_of_oneDCorrelationEvidence {N : ℕ} [NeZero N]
+    (χ : DirichletCharacter ℂ N)
+    (h : CriticalLinePhasor.RiemannEvidence.OneDCorrelationEvidence χ) :
+    GRHSpectral.GRH χ := by
+  intro ρ hρ
+  have hchart : CriticalLinePhasor.RiemannEvidence.OneDChartZero χ ρ :=
+    ⟨hρ.2.2, ρ.im, rfl⟩
+  obtain ⟨γ, ψ, hψ, hker, _hγ⟩ := h hchart
+  exact spectral_cancellation_on_real_axis γ ⟨ψ, hψ, hker⟩
 
 open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
   CriticalLinePhasor.ThreeDFocal in
-/-- **GRH — 1D-correlation reading (`1D-ZERO-EXCLUSIVE-REAL`)**, every modulus and character.
-Depends on the **conjunction** of the correlation evidence and the correlation conditional
-`OneD_zeta_zero_correlated χ`.  Case-splits on the primary choice: the **3D-primary** branch
-resonates at the 3D zero; the **1D-primary** branch resonates at the 1D ordinate carrying the
-eigenstate↔ordinate correspondence `γ = ρ.im`.  Von Neumann reality
-(`spectral_cancellation_on_real_axis`, self-adjointness unconditional) closes both. -/
+/-- Legacy 3D implication.  The evidence component is redundant here; the conclusion follows
+directly from the carrier equality inside `ThreeD_crossings_are_real_zeros χ`. -/
+theorem grh_of_resolvant_trace_3D_real {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
+    (h : CriticalLinePhasor.RiemannEvidence.ThreeDRealEvidence
+          ∧ ThreeD_crossings_are_real_zeros χ) : GRHSpectral.GRH χ :=
+  grh_of_threeDCrossings χ h.2
+
+open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
+  CriticalLinePhasor.ThreeDFocal in
+/-- Legacy 1D implication.  The routing component is redundant; the conclusion follows from
+`OneDCorrelationEvidence χ`, which asserts a fibre kernel at every analytic chart zero. -/
 theorem grh_of_resolvant_trace_1D_correlation {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
     (h : CriticalLinePhasor.RiemannEvidence.OneDCorrelationEvidence χ
-          ∧ OneD_zeta_zero_correlated χ) : GRHSpectral.GRH χ := by
-  intro ρ hρ
-  rcases h.2 ρ hρ with ⟨stage, hstage, z, hzero, hrepr⟩ | hchart
-  · rw [hrepr]
-    have hstate :=
-      (threeDZero_twoGram_eigenstate χ (carrierBank stage hstage) z (0 : ℂ) 1
-        (by norm_num) hzero).2.2
-    exact spectral_cancellation_on_real_axis z hstate
-  · obtain ⟨γ, ψ, hψ, hker, _hγ⟩ := h.1 hchart
-    exact spectral_cancellation_on_real_axis γ ⟨ψ, hψ, hker⟩
+          ∧ OneD_zeta_zero_correlated χ) : GRHSpectral.GRH χ :=
+  grh_of_oneDCorrelationEvidence χ h.1
 
 /-- **RH — 3D-real reading** — `rh_from_grh ∘ grh_of_resolvant_trace_3D_real`; depends on the
 conjunction `ThreeDRealEvidence ∧ ThreeD_crossings_are_real_zeros χ₁`. -/
@@ -736,6 +766,10 @@ theorem grhComplete_of_resolvant_trace_1D_correlation
 end HelixLimit
 
 #print axioms HelixLimit.RH_of_GRH_Trivial_Char
+#print axioms HelixLimit.threeDCrossings_iff_grh_and_nativeCarrierCoverage
+#print axioms HelixLimit.grh_of_threeDCrossings
+#print axioms HelixLimit.oneD_zeta_zero_correlated_proved
+#print axioms HelixLimit.grh_of_oneDCorrelationEvidence
 #print axioms HelixLimit.grh_of_resolvant_trace_3D_real
 #print axioms HelixLimit.grh_of_resolvant_trace_1D_correlation
 #print axioms HelixLimit.RH_of_resolvant_trace_3D_real
@@ -762,22 +796,22 @@ end HelixLimit
 
 /-! # The Riemann evidence dossiers and the combined readings
 
-Two bundles of **unconditionally-proven facts**, one per reading of Hilbert–Pólya, assembled to
-hand the community the support base for each interpretation.  Each dossier is a single theorem
-whose conjuncts are the supporting facts; the theorem's inhabitation **certifies every fact is a
-theorem, no hypothesis** (`#print axioms` returns the standard three).  These are **evidence
-_for_ the readings, not proofs _of_ them** — the two conditional hypotheses
-(`ThreeD_crossings_are_real_zeros`, `OneD_zeta_zero_correlated`, above) are named and asserted by
-no one; proving either at every modulus would resolve GRH — at the trivial character, RH.
+Two bundles of unconditionally proven internal facts.  Each dossier is a single theorem whose
+conjuncts are kernel-clean, but inhabiting a dossier does not compose those conjuncts into an
+analytic-zero-to-native-event map.  The exact missing interfaces are exposed above:
+`NativeCarrierCoverage` for midpoint-free 3D coverage, and `OneDCorrelationEvidence χ` for the
+pointwise chart-to-kernel assertion.  The older 3D identity premise is decomposed by
+`threeDCrossings_iff_grh_and_nativeCarrierCoverage`; the older 1D routing proposition is proved
+unconditionally by `oneD_zeta_zero_correlated_proved`.
 
 The author's assignment of evidence to readings, cast leads in **bold**:
 
-* **`threeDRealEvidence`** — the *3D-real (identity)* reading: the operator's crossings are the
-  genuine, exact article.  **Feynman's Quiver** (the crossings are prime-generated by FTA, the
+* **`threeDRealEvidence`** — internal carrier and readout support.  **Feynman's Quiver** (the
+  winding is prime-generated by FTA, the
   phasor bank is *summable*, the phasor-version-of-FTA uniqueness, no split focus), **Deligne's
   Pairs** (the det-1 self-reciprocal local factor, the Frobenius conjugate `det = 1`, the fiber
-  weight product `= 1` — purity at the finite places), the carrier's self-adjoint reality, 3D
-  exhaustion, the Hilbert–Pólya operator and its multiplicity, exact harmonic vanishing, the
+  weight product `= 1` — purity at the finite places), local scalar-fibre symmetry, real-height
+  exhaustion, chart-indexed multiplicity, represented-point harmonic vanishing, the
   graded 3D-mode resolvent, and **Shannon Projection Dominance** (in projection geometry the
   highest level is the real one).
 
@@ -792,8 +826,8 @@ The author's assignment of evidence to readings, cast leads in **bold**:
   limit.
 
 The operative `OneDCorrelationEvidence χ` is separate: it maps a reported 1D chart-zero event
-for `χ` to the von Neumann kernel used in the correlation proof.  The dossiers are
-machine-checked at the standard axioms. -/
+for `χ` to a scalar-fibre kernel at that same complex point, and by itself supplies the
+critical-line conclusion.  The dossiers are machine-checked at the standard axioms. -/
 
 open Complex Filter Topology
 open CriticalLinePhasor CriticalLinePhasor.SourceHolonomy CriticalLinePhasor.HilbertPolya
@@ -802,13 +836,13 @@ open Faithful
 
 namespace CriticalLinePhasor.RiemannEvidence
 
-/-- **The 3D-real (identity) evidence holds unconditionally.**  The operator's crossings are the
-genuine, exact article: carrier self-adjoint reality, 3D exhaustion with no spurious state zeros,
+/-- **The internal 3D support dossier holds unconditionally.**  It contains local scalar-fibre
+symmetry, real-height exhaustion with no spurious state zeros,
 **Feynman's Quiver** (FTA generation, phasor summability, phasor-FTA uniqueness, no split focus),
 **Deligne's Pairs** (self-reciprocal, Frobenius conjugate `det = 1`, weight product `= 1`), the
-Hilbert–Pólya operator and multiplicity, exact harmonic vanishing, the graded 3D-mode resolvent,
-and **Shannon Projection Dominance**.  Inhabiting `ThreeDRealEvidence` certifies every conjunct as
-a theorem; it is evidence *for* the identity reading, not a proof *of* it. -/
+chart-indexed multiplicity, represented-point harmonic vanishing, the graded mode resolvent, and
+**Shannon Projection Dominance**.  Inhabiting `ThreeDRealEvidence` certifies every conjunct but
+does not prove `NativeCarrierCoverage`. -/
 theorem threeDRealEvidence : ThreeDRealEvidence := by
   refine ⟨UnconditionalFrobenius.vonNeumannOp_isSymmetric, threeD_exhaustive,
     threeD_metric_no_zeros, fun m n hm hn => Origination.windFromPrimes_mul hm hn,
@@ -825,14 +859,15 @@ theorem threeDRealEvidence : ThreeDRealEvidence := by
   · exact fun _ _ _ hU hconv hdiff _ hz₀ hf0 hnz _ hε =>
       CriticalLinePhasor.LimitDominance.limit_dominance hU hconv hdiff hz₀ hf0 hnz hε
 
-/-- **The 1D chart dossier holds unconditionally.**  It records the chart-side infrastructure:
-**S(t)** the global registration binding, no radial
+/-- **The 1D chart dossier holds unconditionally.**  It records chart-side infrastructure:
+**S(t)** as the global coordinate/registration map, no radial
 drift, on-circle placement, the lossless round-trip projection (**Shannon** — the collapse never
 counterfeits), **Riemann's Fold** (the real axis is preserved across all crossed dimensions), the
 real-on-line faithful projection, the coincidence, residue = jump(S), the 1D infinite-continuation
 approximation, faithful transport, the **Shannon Cascade** convergence, S(t) detecting every
 crossing, the loss ledger, native identification, and the chart resolvent limit.  Inhabiting
-`OneDChartEvidence` certifies every conjunct. -/
+`OneDChartEvidence` certifies every conjunct; it does not prove the pointwise
+`OneDCorrelationEvidence χ` premise. -/
 theorem oneDChartEvidence : OneDChartEvidence := by
   refine ⟨carrier_scale_compensation_S, hpDimension_eq_registration,
     no_radial_drift_on_helix, midpoint_entry_on_circle,

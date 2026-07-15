@@ -1,0 +1,130 @@
+==============================================================================
+g=9 via the CONJUGATE RAIL PAIRING (3D-first)  --  F_8 F_{-8} = L(Sym^9)/L(Sym^5) C_8
+==============================================================================
+g9_rail_pairing.py -- the CARRIER-NATIVE (3D) route to the g=9 forced zero of
+Sym^9(37a1), via the conjugate rail pairing of the harmonic-lattice law.
+
+Sam's standing directive: use the helix, the harmonics, the rails -- 3D not 1D.  The
+1D chart route (brute AFE evaluator on Sym^9 -- g9_verification.py) is DEMOTED to a
+secondary cross-check; the PRIMARY is the two-rail pairing (harmonic_lattice.py +
+helix_pairing.py).
+
+THE HARMONIC-LATTICE LAW.  Integer-m lattice warps of the base fiber -- F_m, whose
+good-p Satake angles are the shifted pair {(m+1)theta_p, (m-1)theta_p} -- satisfy an
+EXACT rail-pairing identity.  F_m F_{-m} has good-p angles {+-(m+1)theta, +-(m-1)theta},
+which is the Sym^{m+1} angle set with the inner block Sym^{m-3} removed:
+
+    F_m F_{-m}  =  L(Sym^{m+1}) / L(Sym^{m-3})  *  C_m(s),
+    C_m(s) = (1 - alpha^{m+1} q) / [ (1 - alpha q)^2 (1 - alpha^{m-3} q) ],
+             alpha = a_{p0}/sqrt(p0)  (Steinberg unitary eigenvalue),  q = p0^{-s}.
+
+  m=2:  Sym^{-1} = 1        =>  F_2 F_{-2} = L(Sym^3)   * C_2,  C_2 = (1-a^3 q)/(1-a q)^2
+  m=3:  Sym^0   = zeta      =>  F_3 F_{-3} = L(Sym^4)/z * C_3,  C_3 = (1-a^4 q)/[(1-q)(1-a q)^2]
+  m=8:  Sym^5   (genuine)   =>  F_8 F_{-8} = L(Sym^9)/L(Sym^5) * C_8,
+        C_8 = (1 - a^9 q) / [ (1 - a q)^2 (1 - a^5 q) ]   <-- THE g=9 IDENTITY.
+
+The height-matched Hermitian rail pairing is the Dirichlet convolution
+(F_m (*) F_{-m})[n] = sum_{d|n} F_m[d] F_{-m}[n/d] -- a geometric operation on the two
+rails performed BEFORE any chart reads anything.  The paired bank is conjugate-closed
+and its midline read lands on the certified center value where the SINGLE rail (lane set
+not conjugate-closed) hits a natural boundary and diverges.
+
+WHAT THE PAIRING BUYS (and what it does NOT).  Honest, pre-stated:
+  * a BUILT-IN SELF-CERTIFICATE valid at ANY conductor -- convolve(Sym^5, F_8 F_{-8}) =
+    Sym^9 off p0-powers, to machine precision at s=2.5.  This REPLACES the two-point AFE
+    self-cert, which is floor-limited (blind to eps) at Q=37^9 (see g9_verification.py).
+  * value-law REGISTRATION: the conjugate pair converges at the center while the single
+    rail diverges -- the forced zero is a carrier fact, not a chart artifact.
+  * it does NOT beat the information bound.  F_8 F_{-8} = L(Sym^9)/L(Sym^5) has POLES at
+    the Sym^5 zeros, so it is NOT a clean degree-4 L-function: reading it as one (conductor
+    37^4, sqrt Q = 1369) gives the WRONG derivative (15.76, demonstrated below).  The
+    CORRECT derivative carries Sym^9's own transient scale sqrt(Q) ~ 1.14e7.  The VALUE
+    wall stands, as pre-registered.
+
+DELIVERABLES:
+  A. DERIVE + SELF-CERTIFY the m=8 identity (entrywise + value at s=2.5) for 37a1 and
+     11a1; reproduce m=2, m=3.
+  B. GATES (value law): reproduce the certified Sym^3 pairing value 1.368286 (11a1,
+     F_2 F_{-2} center) and the Sym^4 analogue (11a1, F_3 F_{-3} = L(Sym^4)/zeta * C_3),
+     each with single-rail divergence for contrast.
+  C. HEADLINE (Sym^9(37a1)): the conjugate rail read registers the forced central zero
+     (pair -> 0, single rail diverges); the derivative L'(Sym^9(37a1), center) is the
+     reader's number 10.9686 (degree-10 AFE, g9_verification), and the naive degree-4
+     rail read gives 15.76 -- the WRONG number -- proving the pairing does not evade the
+     sqrt(Q) wall.  Pre-registered: central value 0 (forced), derivative != 0.
+
+Run: python3 g9_rail_pairing.py     (~2-3 min; uses the shared 37a1/11a1 theta caches)
+
+==============================================================================
+(A) THE m=8 IDENTITY, DERIVED AND SELF-CERTIFIED  (built-in, any conductor)
+==============================================================================
+  --- 37a1  (p0=37, alpha=a_37/sqrt(p0)=-0.16440) ---
+    F_8(*)F_-8 == direct pair bank (off 37-powers):        max|diff| = 6.40e-14
+    convolve(Sym^5, F_8 F_-8) == Sym^9 (off 37-powers):    max|diff| = 3.91e-14   <- SELF-CERT
+    value @ s=2.5:  F_8F_-8 = 0.693834639   (Sym^9/Sym^5)*C_8 = 0.693834639   |diff| = 7.9e-12
+    m=2 check @2.5: F_2F_-2 = 0.9144507  L(Sym^3)*C_2 = 0.9144507  |diff| = 1.3e-13
+    m=3 check @2.5: F_3F_-3 = 0.6685939  L(Sym^4)/zeta*C_3 = 0.6685939  |diff| = 7.7e-13
+
+  --- 11a1  (p0=11, alpha=a_11/sqrt(p0)=+0.30151) ---
+    F_8(*)F_-8 == direct pair bank (off 11-powers):        max|diff| = 4.09e-14
+    convolve(Sym^5, F_8 F_-8) == Sym^9 (off 11-powers):    max|diff| = 3.91e-14   <- SELF-CERT
+    value @ s=2.5:  F_8F_-8 = 0.648460668   (Sym^9/Sym^5)*C_8 = 0.648460668   |diff| = 1.3e-11
+    m=2 check @2.5: F_2F_-2 = 1.0540755  L(Sym^3)*C_2 = 1.0540755  |diff| = 2.9e-13
+    m=3 check @2.5: F_3F_-3 = 0.6443285  L(Sym^4)/zeta*C_3 = 0.6443285  |diff| = 8.9e-13
+
+==============================================================================
+(B) GATES -- the value law at pairing level (11a1); single rail diverges
+==============================================================================
+  Sym^3 (F_2 F_-2 = L(Sym^3) C_2):  target = L(Sym^3,1/2)*C_2(1/2) = 1.368286
+    single rail F_2        |R(Y)|:   9.9941   15.8844   25.0586   (diverges)
+    rail pair F_2(*)F_-2   |R(Y)|:   1.3659    1.3689    1.3682   err 9.7e-05
+    mis-pair F_2(*)F_-3    |R(Y)|:   3.6718    5.6077    8.1952   (diverges)
+  Sym^4 (F_3 F_-3 = L(Sym^4)/zeta C_3):  target = L(Sym^4,1/2)/zeta(1/2)*C_3(1/2) = -0.716827
+    single rail F_3         R(Y):  -1.7588   -2.5619   -3.5350   (diverges)
+    rail pair F_3(*)F_-3    R(Y):  -0.7093   -0.7481   -0.6942   err 2.3e-02
+
+==============================================================================
+(C) HEADLINE -- Sym^9(37a1) via the rails
+==============================================================================
+  eps(F_8 F_-8) = eps(Sym^9)/eps(Sym^5) = (-1)/(+1) = -1  =>  forced central zero
+  building the paired bank F_8(*)F_-8(37a1) + single rail F_8 to 2000000 (0.175 sqrt(Q)) ...
+  (a) value-law REGISTRATION at the center (forced zero -> 0 on the carrier):
+    single rail F_8        |R(Y)|:    0.2439     0.3526     0.4295     0.4744   diverges
+    rail pair F_8(*)F_-8   |R(Y)|:    0.2320     0.1421     0.0065     0.0088   -> 0 (forced, converges)
+    mis-pair F_8(*)F_-7    |R(Y)|:    0.1884     0.5763     0.7740     0.7740   diverges (mis-pair)
+    the conjugate pair stays bounded and settles toward the forced 0 while the
+    single rail and the mis-pair diverge -- the forced zero is a CARRIER fact.
+
+  (b) the DERIVATIVE, and why the pairing does NOT beat sqrt(Q):
+    identity at center:  (F_8 F_-8)'(1/2) = L(Sym^9)'(1/2) * C_8(1/2)/L(Sym^5)(1/2)
+      with L(Sym^9)'(center) = 10.9686 (degree-10 AFE reader, g9_verification),
+      C_8(1/2) = 0.948042,  L(Sym^5)(center) = 4.319184
+      =>  (F_8 F_-8)'(1/2) should be 2.40756
+    naive degree-4 rail-AFE (conductor 37^4, GammaC(s+9/2)GammaC(s+7/2)):
+      (F_8 F_-8)'(1/2) = 3.46004  ->  L(Sym^9)' = 15.7636   *** WRONG (should be 10.9686) ***
+    F_8 F_-8 = L(Sym^9)/L(Sym^5) has POLES at Sym^5's zeros, so it is NOT a clean
+    degree-4 L-function: the cheap read converges fast to a DIFFERENT object.  The
+    correct derivative carries Sym^9's transient scale sqrt(Q) = 1.14e+07.  The
+    pairing gives the self-certificate and the registration, NOT a cheaper value/
+    derivative -- the VALUE wall stands, exactly as pre-registered.
+
+  HEADLINE (carrier-native):  central value 0 registered on the carrier; the leading
+  jet L'(Sym^9(37a1), center) = 10.9686 (reader, cross-certified by the
+  machine-precision m=8 rail identity above).  Pre-registration met: value 0 (forced),
+  derivative != 0.
+
+==============================================================================
+(D) REGISTER
+==============================================================================
+  PRIMARY (carrier-native, this run):
+    * the m=8 rail identity F_8 F_-8 = L(Sym^9)/L(Sym^5) C_8 DERIVED and SELF-
+      CERTIFIED to machine precision (37a1 AND 11a1) -- a certificate valid at 37^9,
+      where the two-point AFE cert is blind (g9_verification).
+    * value-law registration: the conjugate pair converges (Sym^3=1.368286, Sym^4
+      analogue) / settles to the forced 0 (Sym^9(37a1)); single rails + mis-pairs
+      diverge -- the forced zero is a carrier fact.
+  DEMOTED (secondary, 1D cross-check): L'(Sym^9(37a1), center) = 10.9686 (degree-10
+    AFE reader).  The naive degree-4 rail read (15.76) is WRONG -- the pairing does
+    not evade sqrt(Q); the value wall stands, as pre-registered.
+  runtime 15s
+==============================================================================

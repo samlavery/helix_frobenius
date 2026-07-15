@@ -147,11 +147,16 @@ theorem warpFiber_det_one {κ : Type*} [Fintype κ] (V : FiniteWeightFiber κ) (
     ∏ i, (V.warpFiber A).weight i = 1 :=
   (V.warpFiber A).fiber_det_one
 
-/-- **The symmetric-power instance**: `Sym^r` of a unit Satake class `α` (`‖α‖ = 1`, `αβ = 1`).
-The weight channels are the Chebyshev string `α^{r-2k}` (`k = 0..r`), the duality involution is
-`Fin.rev` (`k ↦ r-k`), and the self-dual centre (`r` even, `k = r/2`) carries `α⁰ = 1`.  So the
-Chebyshev string is one instance of a finite duality-stable weight multiset — the construction
-does not use it.  (Maass: identical finite fiber; only the archimedean clock differs.) -/
+/-- **The symmetric-power instance** on the **ledger-normalized phase** eigenvalue `α`:
+`‖α‖ = 1` holds by the projection normalization — this is the carrier-kept chiral datum
+(`FrobeniusSimilitude.frobeniusBlock`), **not** an arithmetic temperedness assumption.  The
+arithmetic Satake radius is the *open* channel of `RamanujanLimit.strandBlock`, carried until the
+tower closes it downstream (`cor:ramanujan`); the arithmetic local factor's own reciprocity is
+radial-open (`localPoly_reciprocal`, needing only `weight ≠ 0`, never `‖·‖ = 1`).  The weight
+channels are the Chebyshev string `α^{r-2k}` (`k = 0..r`), the duality involution is `Fin.rev`
+(`k ↦ r-k`), and the self-dual centre (`r` even, `k = r/2`) carries `α⁰ = 1`.  So the Chebyshev
+string is one instance of a finite duality-stable weight multiset — the construction does not use
+it.  (Maass: identical finite fiber; only the archimedean clock differs.) -/
 noncomputable def symFiber (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1) : FiniteWeightFiber (Fin (r + 1)) where
   weight k := α ^ ((r : ℤ) - 2 * (k.val : ℤ))
   dual := Fin.rev

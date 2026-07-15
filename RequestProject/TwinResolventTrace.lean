@@ -1,5 +1,6 @@
 import RequestProject.MeromorphicTraceIdentity
 import RequestProject.HilbertPolya
+import RequestProject.ThreeDFocalEvent
 
 /-!
 # The twin resolvent-trace capture formulas: one per reading of "the zero"
@@ -33,7 +34,7 @@ two charts:
 
 Scope: finite window, unconditional; no RH/GRH is assumed or proved.  The `T → ∞` limit of
 the windowed resolvent is `windowedDiffResolvent_tendsto` (`DifferencedResolvent.lean`), not
-re-proved here.  No `sorry`, no `axiom` beyond the standard three.
+re-proved here.  Every declaration below has the standard kernel footprint.
 
 ## Conformance note (statements differ from the informal directive, by design)
 
@@ -46,11 +47,25 @@ ordinate `γ`.  Reusing it faithfully therefore forces two departures from a ver
   * the correlation carries the chart Jacobian `I` and evaluates `trace3D` at `lineC w`.
 
 Both are the honest content of the operator's own resolvent trace.
+
+## Construction search audit
+
+The completed-event assembly was preceded by:
+
+* `rg -n -i "CompletedThreeDEigenEvent|completedThreeDOperator|threeD.*eigenvector|
+  trace3D.*eigen|oneD.*threeD.*trace|fixed.*3D.*operator" RequestProject --glob '*.lean'`;
+* `rg -n -i "diagOp|Finsupp.single.*eigen|resolvent.*trace|Matrix.trace|
+  LinearMap.trace" RequestProject --glob '*.lean'`;
+* the same diagonal/eigenvector/trace search in `.lake/packages/mathlib/Mathlib`.
+
+The matching repo conclusions used below are `diagOp_symmetric`, `diagOp_eigenvector`,
+`vonNeumannResolventTrace_eq_line`, and the retained `trace3D_capture`.
 -/
 
 open Complex Filter Topology
 open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.CarrierScale
 open CriticalLinePhasor.ResidueJump CriticalLinePhasor.GradedModes
+open CriticalLinePhasor.ThreeDFocal
 
 namespace CriticalLinePhasor.TwinResolventTrace
 
@@ -172,6 +187,165 @@ theorem trace3D_analyticAt_off (E : Finset ℝ) (m : ℝ → ℕ) {w₀ : ℂ}
     analyticAt_id.sub analyticAt_const
   exact analyticAt_const.mul (hden.fun_inv (sub_ne_zero.mpr (hw₀ γ hγ)))
 
+/-! ## §1A Two traces assembled on completed 3D events
+
+The preceding trace accepts an abstract finite set of ordinates.  The next two definitions use
+the stronger index `CompletedThreeDEigenEvent χ`: membership in the index type already carries the
+completed 3D focal-crossing certificate.  Both traces use the same finite event set.  The first
+bundles below retain the event-restricted presentation; the ambient bundles place those same
+events into `carrierThreeDOperator p r`, whose full carrier domain is independent of certificates.
+
+* `completedTrace3D` places the poles at the 3D carrier points;
+* `completedTrace1D` places the same poles in the logarithmic ordinate chart.
+
+Thus the first bundle records 3D zeros and 3D eigenvectors.  The second additionally exposes the
+1D analytic equation supplied by the completed fibre. -/
+
+variable {q : ℕ} [NeZero q]
+
+/-- The area-law carrier point at physical height `Z` is the critical-line chart of the derived
+ordinate `log Z`. -/
+theorem carrierPointAtHeight_eq_line (Z : ℝ) :
+    carrierPointAtHeight Z = line (Real.log Z) := by
+  simp [carrierPointAtHeight, carrierPoint, line, lineC]
+  ring
+
+/-- Version I: the completed-event 3D resolvent trace.  Each summand is the genuine local
+resolvent-determinant trace of the diagonal mode selected by a completed 3D event. -/
+noncomputable def completedTrace3D
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) : ℂ :=
+  ∑ e ∈ E, (m e : ℂ) * vonNeumannResolventTrace (Real.log e.1) w
+
+/-- Closed form of Version I: its poles are the physical 3D carrier points of the completed
+events. -/
+theorem completedTrace3D_eq_sum
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    completedTrace3D χ E m w =
+      ∑ e ∈ E, (m e : ℂ) * (w - carrierPointAtHeight e.1)⁻¹ := by
+  unfold completedTrace3D
+  refine Finset.sum_congr rfl fun e _ => ?_
+  rw [vonNeumannResolventTrace_eq_line, carrierPointAtHeight_eq_line]
+
+/-- Version II: the same completed 3D events read in the 1D logarithmic-ordinate chart. -/
+noncomputable def completedTrace1D
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) : ℂ :=
+  ∑ e ∈ E, (m e : ℂ) * ((Real.log e.1 : ℂ) - w)⁻¹
+
+/-- Closed form of Version II. -/
+theorem completedTrace1D_eq_sum
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    completedTrace1D χ E m w =
+      ∑ e ∈ E, (m e : ℂ) * ((Real.log e.1 : ℂ) - w)⁻¹ := rfl
+
+/-- The two completed-event traces are the same resolvent object in the carrier and ordinate
+charts.  The factor `I` is exactly the chart Jacobian. -/
+theorem completedTraces_agree
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    completedTrace3D χ E m (lineC w) = Complex.I * completedTrace1D χ E m w := by
+  rw [completedTrace3D_eq_sum, completedTrace1D_eq_sum, Finset.mul_sum]
+  refine Finset.sum_congr rfl fun e _ => ?_
+  rw [carrierPointAtHeight_eq_line]
+  have h : lineC w - line (Real.log e.1) =
+      -Complex.I * ((Real.log e.1 : ℂ) - w) := by
+    simp only [lineC, line]
+    ring
+  rw [h, mul_inv, inv_neg, Complex.inv_I, neg_neg]
+  ring
+
+/-- Version I bundled: every index is a completed 3D zero and its basis state is a nonzero
+eigenvector of the single completed 3D operator; the associated trace has its pole at that 3D
+carrier point. -/
+theorem threeDZero_eigenvector_resolventTrace
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    (∀ e ∈ E,
+      CompletedThreeDZeroAtHeight χ e.1 ∧
+        Finsupp.single e (1 : ℂ) ≠ 0 ∧
+        completedThreeDOperator χ (Finsupp.single e (1 : ℂ)) =
+          (Real.log e.1 : ℂ) • Finsupp.single e (1 : ℂ)) ∧
+      completedTrace3D χ E m w =
+        ∑ e ∈ E, (m e : ℂ) * (w - carrierPointAtHeight e.1)⁻¹ := by
+  constructor
+  · intro e _he
+    exact ⟨e.2, (completedThreeDOperator_eigenvector χ e).1,
+      (completedThreeDOperator_eigenvector χ e).2⟩
+  · exact completedTrace3D_eq_sum χ E m w
+
+/-- Version II bundled: in addition to the same 3D crossing and eigenvector data, every event
+has its 1D analytic L-function readout equation.  The 1D and 3D traces agree by the explicit chart
+map. -/
+theorem oneDZero_threeDZero_eigenvector_resolventTrace
+    (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    (∀ e ∈ E,
+      DirichletCharacter.LFunction χ (carrierPointAtHeight e.1) = 0 ∧
+        CompletedThreeDZeroAtHeight χ e.1 ∧
+        Finsupp.single e (1 : ℂ) ≠ 0 ∧
+        completedThreeDOperator χ (Finsupp.single e (1 : ℂ)) =
+          (Real.log e.1 : ℂ) • Finsupp.single e (1 : ℂ)) ∧
+      completedTrace1D χ E m w =
+        ∑ e ∈ E, (m e : ℂ) * ((Real.log e.1 : ℂ) - w)⁻¹ ∧
+      completedTrace3D χ E m (lineC w) =
+        Complex.I * completedTrace1D χ E m w := by
+  refine ⟨?_, completedTrace1D_eq_sum χ E m w, completedTraces_agree χ E m w⟩
+  intro e _he
+  exact ⟨completedThreeDEigenEvent_L_zero χ e, e.2,
+    (completedThreeDOperator_eigenvector χ e).1,
+    (completedThreeDOperator_eigenvector χ e).2⟩
+
+/-- Ambient Version I: the same completed 3D trace, now bundled with eigenvectors of the carrier
+operator whose state space was defined independently of completed-event certificates. -/
+theorem threeDZero_ambientEigenvector_resolventTrace
+    (p r : ℝ) (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    (∀ e ∈ E,
+      CompletedThreeDZeroAtHeight χ e.1 ∧
+        Finsupp.single (e.toCarrierState p r) (1 : ℂ) ≠ 0 ∧
+        carrierThreeDOperator p r (Finsupp.single (e.toCarrierState p r) (1 : ℂ)) =
+          (Real.log e.1 : ℂ) • Finsupp.single (e.toCarrierState p r) (1 : ℂ)) ∧
+      completedTrace3D χ E m w =
+        ∑ e ∈ E, (m e : ℂ) * (w - carrierPointAtHeight e.1)⁻¹ := by
+  constructor
+  · intro e _he
+    exact ⟨e.2, (carrierThreeDOperator_completedEvent_eigenvector p r e).1,
+      (carrierThreeDOperator_completedEvent_eigenvector p r e).2⟩
+  · exact completedTrace3D_eq_sum χ E m w
+
+/-- Ambient Version II: the analytic 1D readout, the same completed 3D event, and its eigenvector
+of the independently defined carrier operator are bundled with the exact trace chart relation. -/
+theorem oneDZero_threeDZero_ambientEigenvector_resolventTrace
+    (p r : ℝ) (χ : DirichletCharacter ℂ q)
+    (E : Finset (CompletedThreeDEigenEvent χ))
+    (m : CompletedThreeDEigenEvent χ → ℕ) (w : ℂ) :
+    (∀ e ∈ E,
+      DirichletCharacter.LFunction χ (carrierPointAtHeight e.1) = 0 ∧
+        CompletedThreeDZeroAtHeight χ e.1 ∧
+        Finsupp.single (e.toCarrierState p r) (1 : ℂ) ≠ 0 ∧
+        carrierThreeDOperator p r (Finsupp.single (e.toCarrierState p r) (1 : ℂ)) =
+          (Real.log e.1 : ℂ) • Finsupp.single (e.toCarrierState p r) (1 : ℂ)) ∧
+      completedTrace1D χ E m w =
+        ∑ e ∈ E, (m e : ℂ) * ((Real.log e.1 : ℂ) - w)⁻¹ ∧
+      completedTrace3D χ E m (lineC w) =
+        Complex.I * completedTrace1D χ E m w := by
+  refine ⟨?_, completedTrace1D_eq_sum χ E m w, completedTraces_agree χ E m w⟩
+  intro e _he
+  exact ⟨completedThreeDEigenEvent_L_zero χ e, e.2,
+    (carrierThreeDOperator_completedEvent_eigenvector p r e).1,
+    (carrierThreeDOperator_completedEvent_eigenvector p r e).2⟩
+
 /-! ## §2 The 1D-selected trace (bridge to the graded machinery)
 
 The 1D reading is the graded resolvent trace of `GradedModeDictionary`, indexed by the real
@@ -248,5 +422,12 @@ theorem twin_capture (T : ℝ) (w : ℂ)
 end CriticalLinePhasor.TwinResolventTrace
 
 #print axioms CriticalLinePhasor.TwinResolventTrace.trace3D_capture
+#print axioms CriticalLinePhasor.TwinResolventTrace.completedTrace3D_eq_sum
+#print axioms CriticalLinePhasor.TwinResolventTrace.completedTrace1D_eq_sum
+#print axioms CriticalLinePhasor.TwinResolventTrace.completedTraces_agree
+#print axioms CriticalLinePhasor.TwinResolventTrace.threeDZero_eigenvector_resolventTrace
+#print axioms CriticalLinePhasor.TwinResolventTrace.oneDZero_threeDZero_eigenvector_resolventTrace
+#print axioms CriticalLinePhasor.TwinResolventTrace.threeDZero_ambientEigenvector_resolventTrace
+#print axioms CriticalLinePhasor.TwinResolventTrace.oneDZero_threeDZero_ambientEigenvector_resolventTrace
 #print axioms CriticalLinePhasor.TwinResolventTrace.twinTraces_agree_on_window
 #print axioms CriticalLinePhasor.TwinResolventTrace.twin_capture

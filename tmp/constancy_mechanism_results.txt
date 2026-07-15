@@ -90,11 +90,42 @@
    isogenous {12}{34}  |    2 / 2         | [[0, 1], [2, 3]]         | YES
    isog triple {123}   |    2 / 2         | [[0, 1, 2], [3]]         | YES
 
-  FALSIFIER (wrong-harmonic warp): drive leg 0 at 2*theta on the isogenous
-  case.  Prediction: the relation theta1=theta2 breaks, leg 0 detaches, so
-  dim H rises 2 -> 3 and the recovered partition loses the {0,1} block.
-    warped: dim H = 3 (was 2), partition = [[0], [1], [2, 3]]
-    falsifier FIRES as predicted (leg 0 detaches from leg 1).
+  ----- FALSIFIER (primary): READING-SCALE, fiber UNTOUCHED -----
+  Hold the fiber (true curve angles) fixed; vary only the READING harmonic
+  scale s of the lane exp(i*s*eps.theta), on the fixed carrier cells
+  (pi/6, pi/3, pi/2, pi).  The reading must land the motive's truth on the
+  mu6 (pi/3, s=1) grid and must break off-grid.  Warps (which MUTATE the
+  fiber) are the deprecated family, retained relabelled at the bottom.
+
+  * OCCUPANCY is the falsifiable diagnostic (the COUNT, not the binary
+    freeze).  Generic |T_0|^2 read at scale s (ST-predicted vs measured):
+    s (reading grid)              ST-pred   measured   dev vs 99/8   verdict
+    s=1    (pi/3 mu6 grid)            12.375    12.382         0s   TRUTH (on-grid)
+    s=1/2  (pi/6 mod-12 fold)         26.407    26.411       925s   FALSE (over-split/collapse)
+    s=2    (commensurate wrong rung)   6.000     5.994       336s   FALSE (over-split/collapse)
+    s=sqrt2 (incommensurate)           7.143     7.145       248s   FALSE (over-split/collapse)
+    => only mu6 (s=1) lands 99/8; mod-12 over-splits (26.4), s=2 collapses
+       (6.0).  ST-pred tracks measured at every s: the instrument is right,
+       the READING GRID is what is falsified.
+
+  * The binary FREEZE / H-inversion is reading-scale INVARIANT (it reads
+    exact angle equalities theta_i=theta_j, which are scale-free).  The
+    falsifiable quantity is the COUNT, not the freeze ('check the count'):
+    s=1.000: recovered partition = [[0, 1], [2, 3]]  (unchanged)
+    s=0.500: recovered partition = [[0, 1], [2, 3]]  (unchanged)
+    s=2.000: recovered partition = [[0, 1], [2, 3]]  (unchanged)
+    s=1.414: recovered partition = [[0, 1], [2, 3]]  (unchanged)
+
+  * The CM FINITE PART is pinned to the pi/2 carrier cell (inert cell);
+    reading it off pi/2 misses it entirely:
+    read inert at pi/2 (inert cell, correct) : P[theta=cell]=0.5003 -> CM detected (1/2)
+    read inert at pi/3 (mu6, wrong cell)     : P[theta=cell]=0.0000 -> misses finite part
+    read inert at pi/6 (mod-12 fold)         : P[theta=cell]=0.0000 -> misses finite part
+
+  ----- DEPRECATED FAMILY (fiber-WARP; retained for continuity only) -----
+  Old design MUTATED the fiber (theta_0 -> 2*theta_0) -- superseded by the
+  reading-scale falsifier above.  It still fires (leg 0 detaches, dim H 2->3):
+    [deprecated] warp theta_0->2theta_0: dim H = 3 (was 2), partition = [[0], [1], [2, 3]]
 
 ==========================================================================
 VERDICT
@@ -104,8 +135,10 @@ VERDICT
   fixed by the motive's isogeny/CM relations.  The freeze pattern is
   measure-free (support only); the exact channel rationals are the
   Sato-Tate refinement.  Inverting the frozen set recovers H (the isogeny
-  partition) with an address, and the wrong-harmonic warp shifts it by
-  exactly the broken relation.  On PRODUCTS OF ELLIPTIC CURVES the frozen
-  lanes are algebraic classes by theorem (Hodge conj.: Imai/Kahn; Tate
-  divisors: Faltings) -- there the detector is CERTIFIED.  Beyond that
-  class the algebraicity bridge is named, not claimed.
+  partition) with an address.  Falsification is READING-SCALE (fiber held
+  fixed): the occupancy lands the motive's integers ONLY on the mu6 (pi/3)
+  grid and over-splits off-grid, while the exact-freeze inversion is scale-
+  invariant -- check the count, not the freeze.  On PRODUCTS OF ELLIPTIC
+  CURVES the frozen lanes are algebraic classes by theorem (Hodge conj.:
+  Imai/Kahn; Tate divisors: Faltings) -- there the detector is CERTIFIED.
+  Beyond that class the algebraicity bridge is named, not claimed.

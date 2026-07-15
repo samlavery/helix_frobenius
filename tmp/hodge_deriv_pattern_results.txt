@@ -1,0 +1,24 @@
+== derivative pattern: eps=-1 grades m=2,3,4 (high precision) ==
+ m  wt   L'(1/2)     G(1/2)     Lambda'(1/2)   GammaC(1/2+m/2)   L'*(2pi)^((m+1)/2)
+ 2   3    0.65009   0.297752     0.193566      0.112540      10.23870
+ 3   4    0.82989   0.134035     0.111234      0.050661      32.76258
+ 4   5    1.80397   0.071083     0.128231      0.026867     178.51651
+
+-- ratios up the grades --
+  m=2->3 :  L'ratio=1.2766   Lambda'ratio=0.5747   G(1/2)ratio=0.4502   GammaCratio=0.4502
+            compare: sqrt2=1.4142 sqrt3=1.7321 2=2.0 e=2.7183 pi/2=1.5708
+  m=3->4 :  L'ratio=2.1738   Lambda'ratio=1.1528   G(1/2)ratio=0.5303   GammaCratio=0.5303
+            compare: sqrt2=1.4142 sqrt3=1.7321 2=2.0 e=2.7183 pi/2=1.5708
+
+-- completed regulator sequence Lambda'(1/2), normalized to grade 2 --
+  m=2 :  Lambda'=0.193566   /base=1.00000   *2^(m-2)=0.19357   *(m-1)!=0.19357
+  m=3 :  Lambda'=0.111234   /base=0.57466   *2^(m-2)=0.22247   *(m-1)!=0.22247
+  m=4 :  Lambda'=0.128231   /base=0.66247   *2^(m-2)=0.51293   *(m-1)!=0.76939
+
+== sign law period check: eps(psi^m), m=7..12 (certify only) ==
+  m= 7  wt= 8  eps=-1   (match residual 1.09e-06)
+  m= 8  wt= 9  eps=-1   (match residual 4.04e-04)
+  m= 9  wt=10  eps=+1   (match residual 1.45e-05)
+  m=10  wt=11  eps=+1   (match residual 1.02e-02)
+  m=11  wt=12  eps=-1   (match residual 2.17e-05)
+  m=12  wt=13  eps=-1   (match residual 1.03e-03)

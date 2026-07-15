@@ -1,0 +1,107 @@
+##############################################################################
+# CLAUSE-(c) K3 ESCALATION: ISOGENOUS-BUT-NON-ISOMORPHIC KUMMER SURFACES
+# exact counts; good primes p <= 500
+##############################################################################
+
+>> COUNTING-CORE VALIDATION (formula vs 3 independent brute counts)
+   (a) explicit Kummer model: double cover of P^1xP^1, nodes blown up
+   (b) raw F_p^3 triple loop on the affine chart w^2=g1 g2 (no chi fn)
+   (c) abelian-surface orbit count (#A+#A_tw)/2 + p*N2 (no cohomology)
+   p=  3: formula=      20 proj=      20 orbit=      20  affine=     10(pred      10)  N2=(1,1)  OK
+   p=  5: formula=      42 proj=      42 orbit=      42  affine=     26(pred      26)  N2=(1,1)  OK
+   p=  7: formula=      96 proj=      96 orbit=      96  affine=     53(pred      53)  N2=(2,2)  OK
+   p= 13: formula=     264 proj=     264 orbit=     264  affine=    185(pred     185)  N2=(2,2)  OK
+   p= 17: formula=     396 proj=     396 orbit=     396  affine=    293(pred     293)  N2=(2,2)  OK
+   p= 23: formula=     600 proj=     600 orbit=     600  affine=    530(pred     530)  N2=(1,1)  OK
+   all three brute counts agree with the formula at every tested prime  OK
+
+==============================================================================
+BLIND PAIR (11a, ODD isogeny):  A = 11a1 x 11a2   A' = 11a1 x 11a3
+------------------------------------------------------------------------------
+  ANGLE  channel [Satake/Frobenius phase], good p<= 499:
+     max |a_p(E') - a_p(E'')| = 0   X BLIND (identical Satake angles, Faltings)
+     (2-torsion module: max |N2(E',p)-N2(E'',p)| = 0, =0 => odd isogeny preserves the exceptional lane -- angle 0 for both)
+  HEIGHT channel [L-value/count readout]:
+     sep(Kum A, Kum A') = max_p |#Kum_A - #Kum_A'| = 0   (n=93 primes)
+     => X BLIND: zeta-IDENTICAL, no count at any good prime separates.
+  RADIUS channel [scaling/period/lattice -- the retention test]:
+     period scaling Omega_K3 = Omega(11a1)*Omega(varying), via AGM:
+        Omega_K3(A)  = 0.32217845   Omega_K3(A') = 8.05446129
+        ratio = 25.000000 (= isogeny degree 11a2<->11a3, pred 25)  -> CHECK SEPARATES
+     j-invariant (period-domain coord, count-blind): j(11a2)=-52893159101157376/11  j(11a3)=-4096/11  -> SEPARATES
+     NS/polarization lattice disc |det Gram| = 2*deg(min isogeny):
+        NS(A) = 2*5 = 10   NS(A') = 2*5 = 10   -> coarse-lattice invariant does NOT separate (equal distance)
+     => RADIUS retains the separation the height/angle channels lose
+        (via the period-scaling amplitude, not the coarse disc).  CHECK.
+  RADIAL Cassels analogue [isogeny-invariant scaling amplitude]:
+     Omega(E)*[Omega(E') prod c_p(E') / T(E')^2]:
+     11a2: prod c_p=1 T=1  -> 0.32217845
+     11a3: prod c_p=1 T=5  -> 0.32217845
+     relative spread = 1.72e-16   ISOGENY-INVARIANT radial amplitude (bonus law)
+     (the radial register carries a Cassels-invariant sub-amplitude even
+      as the separating period scaling and torsion redistribute)
+
+==============================================================================
+BLIND PAIR (19a, ODD isogeny):  A = 19a1 x 19a2   A' = 19a1 x 19a3
+------------------------------------------------------------------------------
+  ANGLE  channel [Satake/Frobenius phase], good p<= 499:
+     max |a_p(E') - a_p(E'')| = 0   X BLIND (identical Satake angles, Faltings)
+     (2-torsion module: max |N2(E',p)-N2(E'',p)| = 0, =0 => odd isogeny preserves the exceptional lane -- angle 0 for both)
+  HEIGHT channel [L-value/count readout]:
+     sep(Kum A, Kum A') = max_p |#Kum_A - #Kum_A'| = 0   (n=93 primes)
+     => X BLIND: zeta-IDENTICAL, no count at any good prime separates.
+  RADIUS channel [scaling/period/lattice -- the retention test]:
+     period scaling Omega_K3 = Omega(19a1)*Omega(varying), via AGM:
+        Omega_K3(A)  = 0.61631551   Omega_K3(A') = 5.54683960
+        ratio = 9.000000 (= isogeny degree 19a2<->19a3, pred 9)  -> CHECK SEPARATES
+     j-invariant (period-domain coord, count-blind): j(19a2)=-50357871050752/19  j(19a3)=32768/19  -> SEPARATES
+     NS/polarization lattice disc |det Gram| = 2*deg(min isogeny):
+        NS(A) = 2*3 = 6   NS(A') = 2*3 = 6   -> coarse-lattice invariant does NOT separate (equal distance)
+     => RADIUS retains the separation the height/angle channels lose
+        (via the period-scaling amplitude, not the coarse disc).  CHECK.
+  RADIAL Cassels analogue [isogeny-invariant scaling amplitude]:
+     Omega(E)*[Omega(E') prod c_p(E') / T(E')^2]:
+     19a2: prod c_p=1 T=1  -> 0.61631551
+     19a3: prod c_p=1 T=3  -> 0.61631551
+     relative spread = 0.00e+00   ISOGENY-INVARIANT radial amplitude (bonus law)
+     (the radial register carries a Cassels-invariant sub-amplitude even
+      as the separating period scaling and torsion redistribute)
+
+==============================================================================
+BOUNDARY PAIR (17a, EVEN 2-isogeny):  A = 17a3 x 17a1   A' = 17a3 x 17a2
+------------------------------------------------------------------------------
+  ANGLE  channel: max |a_p(E')-a_p(E'')| = 0  X still BLIND (Satake identical)
+  HEIGHT channel: sep(Kum A, Kum A') = 3928  (first separating prime 3)
+     N2(E') != N2(E'') at 50 of 93 primes (first [3, 7, 11, 19, 23, 31])
+  => the EVEN isogeny changes the 2-torsion Galois module, so the
+     exceptional (-2)-curve LATTICE differs -- a radial/algebraic-lattice
+     object -- and it LEAKS INTO THE HEIGHT channel: the counts separate.
+     So the Kummer's height/angle blindness to isogeny is exactly the
+     ODD-degree condition; under an even isogeny the radial NS datum is
+     no longer hidden and the separation surfaces in the count itself.
+
+==============================================================================
+VERDICT (register-honest, per carrier channel):
+  Counting core validated 3 independent ways (explicit surface, raw
+  triple loop, abelian orbit count) at every tested prime.
+  For the odd-isogeny pairs (11a deg 5, 19a deg 3), per channel:
+    HEIGHT [count/L-value]  : X BLIND  -- #Kum identical at EVERY good
+                              prime (sep = 0, certified).
+    ANGLE  [Satake/Frob]    : X BLIND  -- max|a_p(E')-a_p(E'')| = 0.
+    RADIUS [period/lattice] : CHECK RETAINS -- the period scaling
+                              Omega_K3 separates (ratio = isogeny degree,
+                              25 for 11a, 9 for 19a) and j separates;
+                              the COARSE NS disc does NOT (equal distance),
+                              so the fire is the fine period amplitude.
+  => the radial channel retains exactly the separation height and angle
+     provably lose.  EXPECTED OUTCOME CONFIRMED; no clause-(c)
+     falsification (no pair blind in ALL retained channels).
+  BONUS: a RADIAL Cassels analogue Omega(E)*[Omega(E')prod c_p/T^2] is
+     isogeny-INVARIANT across the pair -- an invariant scaling amplitude
+     in the same radial register (spread ~1e-16 / 0).
+  BOUNDARY (17a, EVEN deg 2): the radial NS lattice (exceptional lane)
+     LEAKS into the HEIGHT channel -- counts separate (N2 differs).  So
+     the height/angle blindness holds iff the isogeny degree is ODD.
+  SCOPE: Kummer-of-product K3s are Hodge/Tate-shielded; this is a
+     ledger-retention strengthening, not an open-conjecture test.
+

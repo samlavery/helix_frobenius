@@ -1,16 +1,19 @@
 import RequestProject.CarrierTowerSeparation
 
 /-!
-# The Jordan drift tower: drift is value-blind, jet-visible, and never silent
+# The constraint tower (drift mechanism): each harmonic constrains the vanishing, and none is silent
 
-**The harmonization reading of extension data** (companion paper; instrument
-`tmp/drift_observability.py`).  A pure epicycle stack -- commuting clocks at distinct
-frequencies -- produces only rotation; *drift* is the first-order shear between layers, the
-Jordan/extension part that semisimplification kills.  The measured law (drift dimensions
-0--3, GL(2)/`ℚ` census): the value ladder is silent below the drift dimension and first
-fires at exactly that harmonic, with the response amplitude the height-pairing volume.
-This file proves the three structural halves of that law on the finite Jordan-2 model,
-unconditionally:
+**Framing (companion paper; the Hodge terminus).**  The object is a *constraint tower*: a
+class's obstruction must pass through each unique harmonic, one per cycle-filtration grade, the
+harmonics being integer multiples of one base harmonic (the μ₆/`π/3` cell), so that vanishing is
+constrained to close at each level and — the terminus conjecture — simultaneously at a common
+height.  *Drift* is the internal mechanism at one level, not the frame: a pure epicycle stack of
+commuting clocks at distinct frequencies produces only rotation, and drift is the first-order
+shear between layers (the Jordan/extension part semisimplification kills).  This file proves,
+unconditionally on the finite Jordan-2 model, that the drift mechanism realizing each constraint
+level is value-blind, jet-visible, and never silent (instrument `tmp/drift_observability.py`;
+drift dimensions 0--3, GL(2)/`ℚ` census: the value ladder is silent below the drift dimension and
+first fires at exactly that harmonic, amplitude the height-pairing volume):
 
 * **the value channel is drift-blind** (`jordan_localFactor_driftBlind`,
   `drift_in_value_radical`): the local factor `det(1 - X·A)` and every trace power of the

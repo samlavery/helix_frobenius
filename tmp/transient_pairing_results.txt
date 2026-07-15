@@ -1,0 +1,57 @@
+##############################################################################
+# VALUE-REGISTRATION TRANSIENT, TWO FORMS -- single rail vs conjugate pairing
+# (value-level sibling of S(t)-compensation: V_Y = L + [mirror] = truth + toll)
+##############################################################################
+
+building rail banks F_2, F_-2 and the pairing F_2(*)F_-2 = Sym3.C2 ...
+  pairing identity  max|paired - Sym3| off 11-powers = 1.6e-15
+  paired central target  L(Sym3,1/2).C2(1/2) = 1.368286
+
+==============================================================================
+FORM 1 -- SINGLE RAIL F_2 (half-lane, NO conjugate closure)
+==============================================================================
+  Sheet status: lanes {3th, th} both positive-frequency -> no conjugate to
+  complete a Gamma-factor -> NO functional equation -> NO mirror term.
+  Prediction: Estermann/Kurokawa natural boundary at Re s=1/2; the read has
+  no finite target and DIVERGES.  Sheet bound (Rankin-Selberg + Cauchy-
+  Schwarz on the degree-2 lanes): |read| <= N^{1/2}(log N)^{1/2}.
+          Y   |F_2(1/2)|   measured(helix_pairing)
+       4000       6.3643       6.3643
+      16000       9.9941       9.9941
+      64000      15.8844      15.8844
+     250000      25.0586      25.0586
+  growth exponent of the sqrt-weighted read: +0.443  (measured helix_pairing +0.427; sheet bound <= +0.5)
+  => single-rail 'transient' is a DIVERGENCE: no mirror term to derive,
+     because there is no functional equation.  Confirmed.
+
+==============================================================================
+FORM 2 -- CONJUGATE PAIRING F_2(*)F_-2 = Sym3.C2 (mirror term RESTORED)
+==============================================================================
+  Sheet: Q = 11^3, G(s)=Q^{s/2} Gamma_C(s+3/2) Gamma_C(s+1/2), eps=+1 -- the
+  FULL Sym3 archimedean factor, supplied BY the conjugate pairing.  The
+  transient is now the mirror term (transient_form), DERIVED from this sheet.
+
+  T_pred(Sym3) = pure Sym3 sheet;  T_pred(Sym3.C2) = completed paired sheet
+  (chi carries the extra bad-factor reflection C2(1/2+z)/C2(1/2-z)):
+          Y  V_Y[paired]     T_meas    T(Sym3)  T(Sym3.C2)      resid
+       4000     1.359326   -0.00896   -0.00162    -0.00895  -8.86e-06
+      16000     1.365933   -0.00235   +0.00031    -0.00234  -8.58e-06
+      64000     1.368897   +0.00061   -0.00139    +0.00062  -8.69e-06
+     250000     1.368189   -0.00010   +0.00050    -0.00009  -8.52e-06
+  growth exponent of the paired read: +0.013  (measured helix_pairing +0.018; convergent)
+
+==============================================================================
+WHAT THE PAIRING BUYS (analytic)
+==============================================================================
+  The single rail F_2 supplies only HALF the archimedean factor (the
+  positive-frequency Gamma_C's with no reflection) -> no FE -> the mirror
+  term M_m -- the value-level compensation -- does not exist -> divergence.
+  The conjugate pairing completes the lanes {3th,th}(x){-3th,-th} ->
+  {+-3th,+-th} = Sym3, i.e. it SUPPLIES the full Gamma_C(s+3/2)Gamma_C(s+1/2)
+  and the FE.  The mirror term the pairing buys IS the transient's
+  compensation -- exactly the value-level sibling of theta(t)/pi + S(t)
+  supplying the count's compensation in CarrierScaleCompensation.lean.
+
+  Concretely, the difference between the two forms at the center is the
+  entire mirror sum: single rail (mirror absent) diverges as N^{~0.43};
+  paired (mirror present) converges, transient = the derived mirror term.

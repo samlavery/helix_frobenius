@@ -39,7 +39,7 @@ classical local Langlands/Deligne factor is its 1D readout, not an input.
   argument times its `s ↦ 1-s` reflection, manifestly invariant under `s ↦ 1-s` (`clockCompletion_selfdual`).
 
 `fiberCompleted` is the resulting `CompletedReflection`; `symTensorCompleted` is the `Sym^r π × σ` fiber
-instance. No `axiom`, no `sorry`.
+instance. Its declarations use only the standard logical footprint recorded below.
 -/
 
 open Complex CriticalLinePhasor.ChiralityHB
@@ -57,6 +57,11 @@ noncomputable def reflVar (c s : ℂ) : ℂ := c ^ (s - 1 / 2)
 theorem reflVar_ne_zero {c : ℂ} (hc : c ≠ 0) (s : ℂ) : reflVar c s ≠ 0 := by
   rw [reflVar, Complex.cpow_def_of_ne_zero hc]
   exact Complex.exp_ne_zero _
+
+/-- The reflecting variable is entire in `s` when its conductor base is nonzero. -/
+theorem reflVar_differentiable {c : ℂ} (hc : c ≠ 0) : Differentiable ℂ (reflVar c) := by
+  unfold reflVar
+  exact (differentiable_id.sub_const _).const_cpow (Or.inl hc)
 
 /-- `X(1-s) = X(s)⁻¹`: the reflecting variable exchanges `s` and `1-s` with inversion. -/
 theorem reflVar_one_sub {c : ℂ} (s : ℂ) :
@@ -76,6 +81,25 @@ theorem clockCompletion_selfdual (α : ℂ) (ℓ : ℝ) (s : ℂ) :
   rw [one_mul, clockCompletion, clockCompletion,
     show (1 - s) - 1 / 2 = 1 / 2 - s by ring, show 1 / 2 - (1 - s) = s - 1 / 2 by ring]
   exact mul_comm _ _
+
+/-- The self-dual completion clock is entire. -/
+theorem clockCompletion_differentiable (α : ℂ) (ℓ : ℝ) :
+    Differentiable ℂ (clockCompletion α ℓ) := by
+  unfold clockCompletion symClock
+  fun_prop
+
+/-- A finite fiber's local numerator evaluated at the reflecting variable is entire. -/
+theorem localPoly_reflVar_differentiable (W : FiniteWeightFiber ι) {c : ℂ} (hc : c ≠ 0) :
+    Differentiable ℂ (fun s => W.localPoly (reflVar c s)) := by
+  unfold FiniteWeightFiber.localPoly
+  rw [show (fun s => ∏ i, (1 - W.weight i * reflVar c s)) =
+      Finset.univ.prod (fun i => fun s => 1 - W.weight i * reflVar c s) by
+    funext s
+    simp]
+  apply Differentiable.finsetProd
+  intro i _
+  exact (differentiable_const (c := (1 : ℂ))).sub
+    ((differentiable_const (c := W.weight i)).mul (reflVar_differentiable hc))
 
 /-- **The general fiber completed reflection.**  For any finite duality-stable weight fiber `W`, any
 conductor base `c ≠ 0`, and any self-dual clock face `α` / rate `ℓ`, the completed object `Λ = γ·L`
@@ -107,6 +131,12 @@ theorem fiberCompleted_FE (W : FiniteWeightFiber ι) (c : ℂ) (hc : c ≠ 0) (�
         * (fiberCompleted W c hc α ℓ).Λdual (1 - s) :=
   CompletedReflection.completed_FE _ s
 
+/-- The finite fiber's completed local readout is entire. -/
+theorem fiberCompleted_differentiable (W : FiniteWeightFiber ι) (c : ℂ) (hc : c ≠ 0)
+    (α : ℂ) (ℓ : ℝ) : Differentiable ℂ (fiberCompleted W c hc α ℓ).Λ := by
+  unfold CompletedReflection.Λ fiberCompleted
+  exact (clockCompletion_differentiable α ℓ).mul (localPoly_reflVar_differentiable W hc)
+
 /-- **The `Sym^r π × σ` completed reflection**: `fiberCompleted` at the Rankin–Selberg tensor of the
 symmetric-power fiber `symFiber r α` and any duality-stable twist fiber `Wσ`.  So the completed twisted
 functional equation is a `CompletedReflection` for the whole converse-theorem twist family, wiring in
@@ -133,4 +163,13 @@ theorem symTensorCompleted_FE (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1)
         * (symTensorCompleted r α hα Wσ c hc β ℓ).Λdual (1 - s) :=
   CompletedReflection.completed_FE _ s
 
+/-- The symmetric-power/twist fiber's completed local readout is entire. -/
+theorem symTensorCompleted_differentiable (r : ℕ) (α : ℂ) (hα : ‖α‖ = 1)
+    {κ : Type*} [Fintype κ] (Wσ : FiniteWeightFiber κ) (c : ℂ) (hc : c ≠ 0)
+    (β : ℂ) (ℓ : ℝ) : Differentiable ℂ (symTensorCompleted r α hα Wσ c hc β ℓ).Λ :=
+  fiberCompleted_differentiable _ c hc β ℓ
+
 end CriticalLinePhasor.FiniteWeightFiber
+
+#print axioms CriticalLinePhasor.FiniteWeightFiber.fiberCompleted_differentiable
+#print axioms CriticalLinePhasor.FiniteWeightFiber.symTensorCompleted_differentiable

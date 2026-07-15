@@ -13,8 +13,10 @@ no per-fiber niceness is assumed, no automorphic input is used.
 Entireness (pole-absence) comes from **completeness**, not from the pencil: the pole/residue is
 the DC mode = coefficient mean = trivial-channel coefficient (nontrivial channels have zero mean,
 `harmonize_char`), so a complete fiber — *no* trivial channel — has zero DC mode, hence no pole
-(`complete_bank_dc_zero`).  Completeness for Symʳπ non-exceptional is the dimension count
-`TrivialChannel.no_nonzero_hom_of_finrank_lt`; the DC-mode = residue link is the standard
+(`complete_bank_dc_zero`).  Completeness for Symʳπ is tested in the representation category:
+`RepresentationRankGap.no_nonzero_intertwiner_of_finrank_lt` kills an equivariant residual into
+a simple target, while `NonSelfDual.tateClass_zero_of_simple_not_unit` is the corresponding
+`FDRep` Schur statement; the DC-mode = residue link is the standard
 Riemann–Hecke Mellin identity.  (The pencil `B = L(1/2+iγ)` is zero-*detection*, not pole-absence;
 it must not stand in for entireness — that was the audited error.)
 
@@ -248,8 +250,10 @@ character orthogonality, is the coefficient of the **trivial** channel (every *n
 has zero mean, `harmonize_char`).  A **complete** fiber — one with *no* trivial channel, i.e. a
 purely cuspidal bank — therefore has zero DC mode: **no pole, entire**.  This is the winding-side
 core of "entireness comes from completeness".  It is *not* the pencil (zero-detection); it reads
-the trivial-channel structure.  For Symʳπ non-exceptional, completeness (no trivial constituent) is
-`TrivialChannel.no_nonzero_hom_of_finrank_lt` — a dimension count, no automorphy of Symʳ used.  The
+the trivial-channel structure.  For a simple Symʳπ parameter, completeness (no trivial constituent)
+is `RepresentationRankGap.no_nonzero_intertwiner_of_finrank_lt`: the residual is required to be
+linear over the representation algebra, so a nonzero image is the whole simple target; only then
+does the strict complex-rank inequality contradict surjectivity.  The
 remaining bridge — DC mode `=` analytic residue — is the standard Riemann–Hecke Mellin identity. -/
 
 /-- **Complete bank ⇒ zero DC mode (no pole).**  A bank that is a finite ℂ-combination of

@@ -137,7 +137,7 @@ theorem diagOp_hasEigenvalue (d : ι → ℝ) (i : ι) :
   simp_all +decide [ Submodule.eq_bot_iff ];
   specialize h ( Finsupp.single i 1 ) ; simp_all +decide [ diagOp ]
 
-/-! ## Von Neumann reality and the one-dimensional fiber operator -/
+/-! ## Von Neumann reality and the local one-dimensional fibre operator -/
 
 /-- Von Neumann reality: an eigenvalue of a symmetric complex operator is real. -/
 theorem symmetric_eigenvalue_real {E : Type*} [NormedAddCommGroup E] [InnerProductSpace ℂ E]
@@ -146,7 +146,8 @@ theorem symmetric_eigenvalue_real {E : Type*} [NormedAddCommGroup E] [InnerProdu
   have h := hT.conj_eigenvalue_eq_self hmu
   rwa [Complex.conj_eq_iff_im] at h
 
-/-- The von Neumann / Hilbert operator `H_γ z = γ · z` on the one-dimensional fiber `ℂ`. -/
+/-- The local scalar fibre operator `H_γ z = γ · z` on `ℂ`.  It is indexed by an already
+supplied real height and is not a single global operator encoding an analytic zero set. -/
 noncomputable def vonNeumannOp (γ : ℝ) : Module.End ℂ ℂ := (γ : ℂ) • LinearMap.id
 
 theorem vonNeumannOp_apply (γ : ℝ) (z : ℂ) : vonNeumannOp γ z = (γ : ℂ) * z := by
@@ -215,7 +216,8 @@ theorem diagOp_spectrum_real (d : ι → ℝ) {μ : ℂ}
     (hμ : Module.End.HasEigenvalue (diagOp d) μ) : μ.im = 0 :=
   symmetric_eigenvalue_real (diagOp_symmetric d) hμ
 
-/-- The real-diagonal design is real and self-adjoint, with explicit Frobenius eigenstates. -/
+/-- A generic real-diagonal design is symmetric with explicit eigenstates.  This theorem is
+parametric in the supplied diagonal `d`; it does not identify `d` with an analytic zero set. -/
 theorem hilbertPolya_design_real_selfAdjoint (d : ι → ℝ) :
     (diagOp d).IsSymmetric
       ∧ (∀ μ : ℂ, Module.End.HasEigenvalue (diagOp d) μ → μ.im = 0)

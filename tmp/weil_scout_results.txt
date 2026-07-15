@@ -1,0 +1,133 @@
+##############################################################################
+# WEIL-TYPE ABELIAN FOURFOLD PORTFOLIO SCOUT
+# simple/product members, exact CM-type signatures, degree-8 counting recipe
+##############################################################################
+
+==============================================================================
+PART 1 -- CM-TYPE SIGNATURE ENGINE  (cyclic covers y^N = x^a (1-x)^b)
+==============================================================================
+  degree-8 CM types realized by covers over N in {15,16,20,24}: 40
+    SIMPLE (primitive), signature (1,3)/(3,1) [exceptional-Hodge]: 16
+    balanced (2,2) [Weil type] and IMPRIMITIVE (non-simple):       24
+    SIMPLE and balanced (2,2) [simple Weil type]:                  0
+  EXHAUSTIVE over ALL CM types (not just covers): #simple-balanced-(2,2) per field = {15: 0, 16: 0, 20: 0, 24: 0}
+  => NO simple Weil-type fourfold has cyclotomic (abelian) CM.  A SIMPLE
+     balanced-(2,2) Weil fourfold requires a NON-abelian degree-8 CM field
+     (Mumford 1969's twist); the cover route gives only the two rungs above.
+
+  [SIMPLE exceptional-Hodge rung]  N=15 y^15=x^1(1-x)^1  Phi=[8, 11, 13, 14]  primitive=True
+        signatures: Q(√-3) [disc -3]:(1, 3), Q(√-15) [disc -15]:(1, 3)
+  [WEIL-TYPE (2,2) rung]  N=15 y^15=x^1(1-x)^2  Phi=[7, 11, 13, 14]  primitive=False
+        signatures: Q(√-3) [disc -3]:(2, 2), Q(√-15) [disc -15]:(0, 4)    balanced/Weil for: Q(√-3) [disc -3]
+
+==============================================================================
+PART 2 -- JACOBI-SUM COUNTING RECIPE  (the degree-8 char poly data shape)
+==============================================================================
+
+  --- SIMPLE exceptional-Hodge (1,3) ---
+  Q(zeta_15) factor of Jac(y^15 = x^1(1-x)^1)
+       p  |J|^2=p rel  int L rel   FE  count recon  #Tate H^4  excess
+      31     1.15e-15   1.48e-15  YES        exact          6       0
+      61     1.28e-15   2.91e-15  YES        exact          6       0
+     151     2.64e-15   2.69e-15  YES        exact          6       0
+     181     2.67e-15   4.28e-15  YES        exact          6       0
+     211     2.83e-15   1.38e-15  YES        exact          6       0
+  degree-8 L-poly at p=31:  P_p(T) = 1 -16T +135T^2 -914T^3 +5519T^4 -28334T^5 +129735T^6 -476656T^7 +923521T^8
+  K-rail (Q(sqrt-3)) wedge^2 W / p^2 at [31, 61, 151]: ['-0.74+0.67i', '-0.99-0.13i', '+0.20+0.98i']
+  VALIDATION: ALL PASS (Weil bound |J|^2=p, integer L-poly, functional equation, oracle-free brute-count reconstruction)
+  H^4 Tate occupancy: baseline 6 (two conjugate-pair divisor products) + excess 0 (stable across primes)
+    excess = exceptional (2,2) occupancy detected from point counts; Hodge=Tate for CM
+
+  --- WEIL-TYPE (2,2), imprimitive ---
+  Q(zeta_15) factor of Jac(y^15 = x^1(1-x)^2)
+       p  |J|^2=p rel  int L rel   FE  count recon  #Tate H^4  excess
+      31     1.15e-15   2.02e-15  YES        exact          8       2
+      61     1.75e-15   1.28e-15  YES        exact          8       2
+     151     2.82e-15   1.95e-15  YES        exact          8       2
+     181     2.67e-15   2.28e-15  YES        exact          8       2
+     211     2.56e-15   4.33e-15  YES        exact          8       2
+  degree-8 L-poly at p=31:  P_p(T) = 1 +8T +33T^2 +16T^3 -895T^4 +496T^5 +31713T^6 +238328T^7 +923521T^8
+  K-rail (Q(sqrt-3)) wedge^2 W / p^2 at [31, 61, 151]: ['1(FREEZE)', '1(FREEZE)', '1(FREEZE)']
+  VALIDATION: ALL PASS (Weil bound |J|^2=p, integer L-poly, functional equation, oracle-free brute-count reconstruction)
+  H^4 Tate occupancy: baseline 6 (two conjugate-pair divisor products) + excess 2 (stable across primes)
+    excess = exceptional (2,2) occupancy detected from point counts; Hodge=Tate for CM
+
+==============================================================================
+PART 3 -- PRODUCT CALIBRATION  (A = E^4, K acting (2,2); ALGEBRAIC Weil classes)
+==============================================================================
+  base CM elliptic curve E = 27.a (CM by Q(sqrt-3)); A = E^4, K=Q(sqrt-3)
+  acting with CM type (sigma,sigmabar,sigma,sigmabar) => signature (2,2).
+
+       p   a_p  #Tate in H^4  (of 70)               note
+       7    -1            36       70           ordinary
+      13     5            36       70           ordinary
+      19    -7            36       70           ordinary
+      31    -4            36       70           ordinary
+      37    11            36       70           ordinary
+      43     8            36       70           ordinary
+      61    -1            36       70           ordinary
+      67     5            36       70           ordinary
+      73    -7            36       70           ordinary
+      79    17            36       70           ordinary
+      97   -19            36       70           ordinary
+
+  mean #Tate(2,2) classes on H^4(E^4): 36.00  (divisor/Lefschetz baseline + Weil-class excess; the excess is the
+  ALGEBRAIC (Schoen) exceptional occupancy -- calibrates the detector on
+  known truth.  See tmp/weil_detection.py for the twist-quadruple reading.)
+
+==============================================================================
+PART 4 -- GENERAL RECIPE  (genus-4 curve -> degree-8 char poly; CM-AGNOSTIC)
+==============================================================================
+  The counting path for NON-CM / non-abelian-CM simple Weil targets (Jacobi
+  sums do not apply there).  Test curve: Shioda C: y^2 = x^9 - 1, genus 4,
+  Jac ~ (CM threefold, Q(zeta_9)) x (CM elliptic, Q(zeta_3)) -- the historical
+  Mumford relative (8 exceptional (2,2) Hodge classes).  #C(F_{p^k}) k=1..4
+  -> power sums -> degree-8 L-poly (Newton); VALIDATED by predicting #C(F_{p^5}).
+
+     p         deg-8 L-poly (integer coeffs c0..c8)  Weil  C(F_p^5) pred/brute
+     5              [1, 0, 5, 0, 0, 0, 125, 0, 625]   YES     3126/3126  MATCH
+     7 [1, -4, 7, -28, 112, -196, 343, -1372, 2401]   YES   17044/17044  MATCH
+
+  VALIDATION: degree-8 char poly from k=1..4 point counts predicts the
+  independent k=5 count EXACTLY (p=7), and all 8 Frobenius roots lie on
+  |alpha|=sqrt(p) (Weil).  This recipe requires NO CM structure -> ready for
+  the genuine simple Weil targets (Schoen Pryms, van Geemen non-CM family).
+
+==============================================================================
+PART 5 -- ABELIAN SIXFOLDS of Weil type (signature (3,3), K=Q(sqrt-3))
+==============================================================================
+  Dim 6 = first UNCLASSIFIED exotic zoo (Moonen-Zarhin stop at dim 5); the open
+  frontier.  Two routes; both give the per-prime angle-6-vector + K-eigen rails.
+
+  5a. Chevalley-Weil mu_3 signature of cyclic cubic covers y^3 = h(x):
+     y^3=f_7 (deg 7)                    sig(zeta,zeta^2)=(2, 4) genus=6  unbalanced -- NOT Weil type
+     y^3=f_8 (deg 8)                    sig(zeta,zeta^2)=(2, 5) genus=7  unbalanced -- NOT Weil type
+     y^3=f_4*g_4^2  (4 exp-1, 4 exp-2)  sig(zeta,zeta^2)=(3, 3) genus=6  BALANCED (3,3) WEIL TYPE
+  => the naive y^3=f_7 is (2,4), NOT Weil type.  Balanced (3,3) genus-6 configs
+     (r1 exp-1 pts, r2 exp-2 pts, e_inf): [(3, 4, 1), (4, 3, 2), (4, 4, 0)]
+     cleanest: y^3 = f(x) g(x)^2, deg f = deg g = 4 (8 branch pts, inf unramified).
+     GENERIC f,g -> NON-CM, End^0 = Q(sqrt-3) exactly: the open-frontier hunt
+     target (count #C(F_p^k) k=1..6 -> zeta-rail degree-6 char poly, Recipe II).
+
+  5b. EXACT-ANGLE CM sixfolds via Jacobi sums (Q(zeta_N) factor, phi(N)=12, 3|N):
+     UNLIKE fourfolds, SIMPLE (primitive) balanced-(3,3) Weil CM sixfolds EXIST
+     in cyclotomic fields (exhaustive: 12 for Q(zeta_21), 12 for Q(zeta_36)).
+     [SIMPLE Weil sixfold]  Q(zeta_21) factor of Jac(y^21=x^1(1-x)^1), Phi=[11, 13, 16, 17, 19, 20], primitive, sig=(3,3)
+           p  |J|^2=p rel  int L   FE    wedge^6 W / p^3 (rail freeze)
+          43      6.6e-16    YES  YES        FREEZE (Weil class, Tate)
+         127      1.1e-15    YES  YES        FREEZE (Weil class, Tate)
+         211      1.1e-15    YES  YES        FREEZE (Weil class, Tate)
+       angle-6-vector at p=43 (W-rail arg/pi): [0.051, -0.115, 0.576, 0.267, -0.572, -0.208]
+     [SIMPLE Weil sixfold]  Q(zeta_36) factor of Jac(y^36=x^1(1-x)^13), Phi=[11, 13, 19, 29, 31, 35], primitive, sig=(3,3)
+           p  |J|^2=p rel  int L   FE    wedge^6 W / p^3 (rail freeze)
+          37      7.7e-16    YES  YES       -0.500-0.866i (Hecke char)
+          73      9.7e-16    YES  YES       -0.500+0.866i (Hecke char)
+         109      9.1e-16    YES  YES        FREEZE (Weil class, Tate)
+         181      9.4e-16    YES  YES       -0.500-0.866i (Hecke char)
+       angle-6-vector at p=37 (W-rail arg/pi): [0.556, 0.481, -0.372, 0.11, 0.75, -0.191]
+
+  VALIDATION: degree-12 char poly integer & Weil (|J|^2=p); the (3,3) Weil class
+  wedge^6 W = p^3 FREEZES exactly (trivial Hecke character) -- detected from
+  exact Jacobi-sum angles on a SIMPLE sixfold.  disc-1-like (trivial char) = the
+  Markman-covered gate; generic non-CM members (route 5a) are the true hunt,
+  where the rail character order and freeze are the OPEN measurement.

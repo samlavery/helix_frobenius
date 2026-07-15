@@ -1,0 +1,87 @@
+##############################################################################
+# REGISTRATION DICHOTOMY -- verification harness (base object: 11a1)
+# f = weight-2 newform of level 11 (conductor 11 squarefree => semistable;
+#     non-CM).  Newton-Thorne (Publ. IHES 134, 2021, I+II): Sym^n f cuspidal
+#     automorphic for all n>=1  =>  every L(Sym^n f, s) is nice.  UNCONDITIONAL.
+##############################################################################
+
+building rails F_2, F_-2, F_3, F_-3, incommensurate F_+-sqrt2, and Sym3/Sym4
+banks to NMAX = 200000 ...
+  done.
+
+==============================================================================
+BACKBONE -- the item-38 pairing identity  F_m F_-m = L(Sym^{m+1})/L(Sym^{m-3}).C_m
+==============================================================================
+  Algebraic identity of Euler products; checked in the absolute region s=2.5,3.0
+  (numerator/denominator both NICE by Newton-Thorne).
+  s=2.5:  |F2 F-2 - Sym3.C2| = 1.10e-09   |F3 F-3 - (Sym4/zeta).C3| = 6.23e-11
+  s=3.0:  |F2 F-2 - Sym3.C2| = 1.87e-12   |F3 F-3 - (Sym4/zeta).C3| = 1.12e-13
+  convolution identity  max|F2(*)F-2 - Sym3| off 11-powers (n<5000) = 1.6e-15
+  => the pairing IS Sym3.C2 entrywise; the RHS is the completed sheet the
+     pairing supplies.  For m=2 the denominator Sym^{-1}=1 => RHS ENTIRE.
+
+==============================================================================
+ARM A -- CONJUGATE-CLOSED lattice pairing REGISTERS (m=2, entire flagship)
+==============================================================================
+  Completed sheet: Q=11^3, G(s)=Q^{s/2} Gamma_C(s+3/2) Gamma_C(s+1/2), eps=+1.
+  FE => smoothed-AFE mirror term (Lemma 1). Register: V_Y(pair) - L_pair equals
+  the completed-sheet mirror term to the certified-value floor, ZERO fit params.
+  central target L(Sym3,1/2).C2(1/2) = 1.368286
+          Y   V_Y(pair)     T_meas T_pred(compl)       resid
+       4000    1.359326   -0.00896      -0.00895   -8.43e-06
+      16000    1.365933   -0.00235      -0.00234   -8.62e-06
+      64000    1.368897   +0.00061      +0.00062   -8.64e-06
+     250000    1.368189   -0.00010      -0.00009   -8.54e-06
+  paired-read growth exponent -0.067  (convergent)
+  residual is CONSTANT: spread over the Y-ladder = 2.0e-07 (= certified-value floor, not a trend)
+  => the integer-m pairing REGISTERS at its derived transient.  PROVEN arm.
+
+==============================================================================
+ARM B -- SINGLE RAIL F_2 does NOT register (not self-dual => no FE => no mirror)
+==============================================================================
+  (B1) non-self-dual, unconditional:
+       max |Im lambda_n(F_2)|, n<2000 = 2.423  (NONZERO => complex coeffs,
+            so the root multiset {(m+1)th,(m-1)th} is NOT conjugation-closed)
+       max |lambda_n(F_-2) - conj(lambda_n(F_2))| = 0.0e+00  (=> dual(F_2)=F_-2,
+            NOT F_2: no self functional equation)
+  (B3) center read (same window, same coeffs, no mirror to fold the tail):
+               Y   |F_2(1/2)|
+            4000       6.3643
+           16000       9.9941
+           64000      15.8844
+          250000      25.0586
+       growth exponent +0.450   (Rankin-Selberg+Cauchy-Schwarz bound <= +0.5)
+  => no self-FE => no archimedean completion => the mirror term of ARM A is
+     ABSENT.  The read has no finite target and diverges.  'Nothing to register'
+     is the divergence being ABSENCE of a value, not truncation error.
+
+  Natural-boundary refinement (CRITERION + EVIDENCE, see notes s.4): Re s=1/2
+  is the Estermann-Kurokawa natural boundary of a non-class-function local
+  factor.  NB the published theorems (Estermann'28, Kurokawa'86, Koyama-
+  Kurokawa'21) are stated for SELF-DUAL factors H in 1+T.R(SU(2))[T]; F_2's
+  factor has complex (non-class-function) coeffs and sits outside their stated
+  scope, so the boundary at 1/2 is criterion + the growth exponent above, NOT
+  a verbatim citation.  The unconditional negative arm is (B1)+(B3) alone.
+
+==============================================================================
+ARM C -- INCOMMENSURATE control m=sqrt2 (interpolates toward B; MEASURED)
+==============================================================================
+  no lattice partner: the incommensurate pairing matches NO Sym.C candidate:
+    |F_sqrt2 F_-sqrt2 - Sym3.C2|      = 0.691   (O(1) = no identity)
+    |F_sqrt2 F_-sqrt2 - (Sym4/z).C3|  = 1.101   (O(1) = no identity)
+  => no completed sheet, no mirror term; the paired center read drifts:
+    |R(Y)| ladder: 43.6977  75.3882  129.8646  222.1955   drift 92.3310
+  PROVEN endpoints: (A) integer-m pairings register; (B) single rails do not.
+  MEASURED (not proven): the monotone off-lattice interpolation between them
+  (value-registration census, item 11: 0.165 unwarped -> 0.236 full-warp,
+  CV corr +0.89 with off-lattice distance).  OUT OF SCOPE: the RS-product
+  extra transient (RS4/deg6, item 40) -- products carry a term powers do not.
+
+==============================================================================
+VERDICT
+==============================================================================
+  BACKBONE identity machine-zero; ARM A registers to the value floor (~8.6e-6,
+  constant); ARM B diverges (growth ~+0.44) with the non-self-dual structure
+  exhibited; ARM C confirms the incommensurate interpolation. The dichotomy's
+  two endpoints are PROVEN (Newton-Thorne inputs, unconditional for 11a1); the
+  Re s=1/2 boundary and the census interpolation are criterion/measured.

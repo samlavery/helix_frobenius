@@ -1,0 +1,119 @@
+##############################################################################
+# CARRIER INVERSION ARM -- do the per-prime readings DETERMINE the arithmetic?
+# blind protocol: measure()=carrier, invert_*()=blind, grade()=truth-only
+##############################################################################
+##############################################################################
+# PART 1 -- DISCRIMINANT-CLASS INVERSION  (from freeze stream -> D mod cubes)
+# candidate lattice (small-prime, task-sanctioned): [2, 3, 5, 7, 11, 13]
+##############################################################################
+
+------------------------------------------------------------------------------
+MEMBER M1   fourfold (2,2), D=16
+  freeze stream (clean cube-root primes) [p: (index,order)] = {7: (2, 3), 13: (1, 3), 19: (1, 3), 31: (0, 1), 37: (1, 3), 43: (0, 1)}
+  candidate lattice = [2, 3, 5, 7, 11, 13]
+  BLIND recovered D mod cubes : 2^1   (= 2 mod cubes)
+    rank 6/6;  data cost = 6 clean primes to full rank;  primes scanned = [7, 13, 19, 31, 37, 43]
+  TRUE D = 16 = 2^1   (= 2 mod cubes)
+  ==> MATCH (inversion correct)
+
+------------------------------------------------------------------------------
+MEMBER M2   fourfold (2,2), D=810000
+  freeze stream (clean cube-root primes) [p: (index,order)] = {13: (2, 3), 19: (0, 1), 31: (0, 1), 37: (2, 3), 43: (2, 3), 61: (2, 3)}
+  bad primes skipped (degenerate reading) = [7]
+  candidate lattice = [2, 3, 5, 7, 11, 13]
+  BLIND recovered D mod cubes : 2^1 * 3^1 * 5^1   (= 30 mod cubes)
+    rank 6/6;  data cost = 6 clean primes to full rank;  primes scanned = [7, 13, 19, 31, 37, 43, 61]
+  TRUE D = 810000 = 2^1 * 3^1 * 5^1   (= 30 mod cubes)
+  ==> MATCH (inversion correct)
+
+------------------------------------------------------------------------------
+MEMBER M3   fourfold (2,2), D=186624
+  freeze stream (clean cube-root primes) [p: (index,order)] = {7: (1, 3), 13: (2, 3), 19: (2, 3), 31: (0, 1), 37: (2, 3), 43: (0, 1)}
+  candidate lattice = [2, 3, 5, 7, 11, 13]
+  BLIND recovered D mod cubes : 2^2   (= 4 mod cubes)
+    rank 6/6;  data cost = 6 clean primes to full rank;  primes scanned = [7, 13, 19, 31, 37, 43]
+  TRUE D = 186624 = 2^2   (= 4 mod cubes)
+  ==> MATCH (inversion correct)
+
+------------------------------------------------------------------------------
+MEMBER S6   sixfold (3,3), D=2304
+  freeze stream (clean cube-root primes) [p: (index,order)] = {7: (0, 1), 13: (1, 3)}
+  candidate lattice = [2, 3]
+  BLIND recovered D mod cubes : 2^2 * 3^2   (= 36 mod cubes)
+    rank 2/2;  data cost = 2 clean primes to full rank;  primes scanned = [7, 13]
+  TRUE D = 2304 = 2^2 * 3^2   (= 36 mod cubes)
+  ==> MATCH (inversion correct)
+
+PART 1 SUMMARY: M1:OK(cost 6), M2:OK(cost 6), M3:OK(cost 6), S6:OK(cost 2)
+
+##############################################################################
+# PART 2 -- STRUCTURE INVERSION  (signature / decomposability / bad set / K)
+##############################################################################
+
+(a) SIGNATURE inversion
+  M1       BLIND signature = (2, 2)   [balanced: freeze is a root of unity at every good prime]
+           Chevalley-Weil truth = (2, 2)   ==> MATCH
+  S6       BLIND signature = (3, 3)   [balanced: freeze is a root of unity at every good prime]
+           Chevalley-Weil truth = (3, 3)   ==> MATCH
+  Q5(1,3)  BLIND signature = (1, 3)   [unbalanced: pi-adic Newton signature [(7, 3), (13, 3)]]
+           Chevalley-Weil truth = (1, 3)   ==> MATCH
+
+(b) DECOMPOSABILITY inversion (item-39 tell, two signals DECOUPLED)
+  M1       orders=[1, 3] real_rail=False
+           decomposability: SIMPLE-type (genuinely complex Z[zeta3] rails: W not conjugation-closed)
+           disc bit:        D not a cube (freeze order varies 1<->3 by prime)
+  M2       orders=[1, 3] real_rail=False
+           decomposability: SIMPLE-type (genuinely complex Z[zeta3] rails: W not conjugation-closed)
+           disc bit:        D not a cube (freeze order varies 1<->3 by prime)
+  M3       orders=[1, 3] real_rail=False
+           decomposability: SIMPLE-type (genuinely complex Z[zeta3] rails: W not conjugation-closed)
+           disc bit:        D not a cube (freeze order varies 1<->3 by prime)
+  S6       orders=[1, 3] real_rail=False
+           decomposability: SIMPLE-type (genuinely complex Z[zeta3] rails: W not conjugation-closed)
+           disc bit:        D not a cube (freeze order varies 1<->3 by prime)
+  DEC64    orders=[1] real_rail=False
+           decomposability: SIMPLE-type (genuinely complex Z[zeta3] rails: W not conjugation-closed)
+           disc bit:        D in cubes (freeze order uniformly 1)
+  [DECOUPLING FINDING: DEC64 has D a cube (order uniformly 1) yet COMPLEX rails
+   => order-uniformity tracks D mod cubes; rail-reality tracks decomposability;
+   the Schoen bielliptic member (item 39) is the instance carrying BOTH tells.]
+
+(c) BAD-SET inversion (blind gate failure = degeneracy)
+  M1       BLIND bad set (scan 7..43, =1 mod3) = []
+           TRUE {p | disc.disc.Res} in scan = []   ==> MATCH
+  M4bad7   BLIND bad set (scan 7..43, =1 mod3) = [7]
+           TRUE {p | disc.disc.Res} in scan = [7]   ==> MATCH
+
+(d) HASSE-DAVENPORT bit (even freeze order => inert branch factor) + K-field
+  F4-irr (f=x^2+1)  freeze orders by prime = {7: 2, 13: 1, 19: 2, 31: 2, 37: 1, 43: 2}
+           even-order primes (BLIND 'inert branch factor present') = [7, 19, 31, 43]
+           truth: x^2+1 is inert at p = 3 mod 4  => [7, 19, 31, 43]   ==> MATCH
+  K-FIELD: rail coefficients live in Z[zeta_3] (cubic deck sigma) => K = Q(sqrt-3),
+           read directly off the rail lattice at every member (universal for y^3=fg^2).
+
+##############################################################################
+# PART 3 -- WELL-POSEDNESS  (how much of (f,g) does the carrier determine?)
+##############################################################################
+
+  engineered pair, SAME D mod cubes = 2^1 (= 2 mod cubes):
+    cover A:  f-roots [0, 1], g-roots [2, 3, 4]
+    cover B:  f-roots [0, 1], g-roots [2, 4, 6]
+
+     p | A freeze idx B freeze idx |                   A angles                   B angles  angles differ
+     7 |            2            2 | [-0.907, -0.4264, 0.0147, 0.652] [-0.1061, -0.1061, 0.7728, 0.7728]           True
+    13 |            1            1 | [-0.9228, -0.4105, -0.2561, 0.2561] [-0.5043, -0.1624, 0.3644, 0.969]           True
+    19 |            1            1 | [-0.9932, -0.5817, -0.085, 0.3265] [-0.643, -0.0237, 0.4037, 0.9296]           True
+    31 |            0            0 | [-0.8287, -0.1026, 0.1026, 0.8287] [-0.7965, -0.2859, 0.2859, 0.7965]           True
+
+  freeze stream identical across primes : True   (both read chi_3(D), same D mod cubes)
+  angle stream differs at some prime    : True   (different Frobenius => not isogenous)
+
+  => D mod cubes is STRICTLY COARSER than the full angle stream: the freeze
+     scalar is one cubic character of D; the angle stream is the whole L-function.
+
+##############################################################################
+# VERDICT
+##############################################################################
+  PART 1 (D mod cubes):     M1:OK, M2:OK, M3:OK, S6:OK
+  PART 2 (structure):       signature/decomposability/bad-set/HD-bit/K-field -- see above
+  PART 3 (well-posedness):  same-class pair found; freeze identical, angles differ -> carrier stream ⇒ isogeny class (Faltings) + D mod cubes; specific member = L-invisible

@@ -142,7 +142,9 @@ def bank_hecke_unitary(m, nmax):
     """Unitary lambda_n of L(psi^m): weight k = m+1, lam_n = a_n / n^{(k-1)/2}.
     Multiplicative from a_p via the Hecke recursion a_{p^{j+1}} = a_p a_{p^j}
     - p^m a_{p^{j-1}} (good split p); inert p: a_{p^2}=-p^m, a_{p^{2j}}=(-p^m)^j,
-    odd powers 0; ramified p=7: a_{7^j}=0.  Returns arithmetic a_n and unitary lam_n."""
+    odd powers 0; p=7 ramified in K: odd m (level 49, psi^m ramified) a_{7^j}=0, but
+    even m (level 7, psi^m UNRAMIFIED) a_{7^j}=(sqrt-7)^{mj}=(-7)^{mj/2} (lam_7=i^m).
+    Returns arithmetic a_n and unitary lam_n."""
     a = np.zeros(nmax + 1)
     a[1] = 1.0
     for p in sieve_primes(nmax):
@@ -150,7 +152,11 @@ def bank_hecke_unitary(m, nmax):
         c = np.zeros(kmax + 1)
         c[0] = 1.0
         if p == 7:
-            pass                                   # a_{7^j} = 0 for j >= 1
+            if m % 2 == 0:                         # even m: psi^m UNRAMIFIED at 7 (level 7),
+                a7 = (-7.0) ** (m // 2)            # degree-1 factor a_{7^j}=psi^m(p_7)^j=(sqrt-7)^{mj}
+                for j in range(1, kmax + 1):       # -> lam_7=(-1)^{m/2}=i^m (matches 7.3.b.a a_7=-7)
+                    c[j] = a7 ** j
+            # odd m: level 49, psi^m RAMIFIED at 7 -> a_{7^j}=0 (c stays zero)
         elif p % 7 in (3, 5, 6):                   # inert
             for j in range(2, kmax + 1, 2):
                 c[j] = (-float(p) ** m) ** (j // 2)
@@ -186,7 +192,18 @@ def make_G(Qc, factors):
 def _kernels(G, s, ys, T=60, NODES=12001, M=1600, order=1):
     """H(s,y)=(1/2pi)int G(c+it) y^-(c+it)/(c+it-s)^order dt over a fixed Simpson
     grid in t, y-dependence vectorized (log-grid + interpolation).  order=1 -> H,
-    order=2 -> H' (dH/ds)."""
+    order=2 -> H' (dH/ds).
+
+    Auto-scales the interpolation resolution (NODES, M) with the y-range, which tracks
+    sqrt(conductor).  The fixed defaults are calibrated for the base conductor; at large
+    conductor they UNDER-RESOLVE the kernel and the interpolation error can fit the WRONG
+    sign decisively (root cause of the twist-sign artifacts).  Scaling is one-directional
+    (never below the passed values), so it is a strict improvement; the small-conductor
+    path (log y-range <= 8.5) is untouched."""
+    _ys = np.asarray(ys, float)
+    _extra = max(0.0, math.log(_ys.max() / _ys.min()) - 8.5)
+    NODES = max(NODES, (12001 + int(26000 * _extra)) | 1)      # keep odd for Simpson
+    M = max(M, 1600 + int(6500 * _extra))
     c = max(float(mp.re(s)) + 1.5, 0.8)
     ts = np.linspace(-T, T, NODES)
     Gv = np.array([complex(G(mp.mpc(c, t))) for t in ts])

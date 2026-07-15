@@ -78,7 +78,7 @@
 \title{Carrier, Fiber, Adapters, and Functoriality:
 A Novel Geometric Transport Framework \\  From Repairing Beyond Endoscopy To Universality }
 \author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
-\date{Preprint draft \textsc{v0.1} --- July 11, 2026}
+\date{Preprint draft \textsc{v0.2} --- July 14, 2026}
 
 \begin{document}
 \maketitle
@@ -99,22 +99,40 @@ the character sorts the integers into channels of phasors as the fiber crosses
 each unit. At certain heights the helix and anti-helix fibers align in exact
 focal cancellation --- vanishing --- observed by a Gram--von Neumann/Gram
 harmonic pencil operator as two conjugate eigenstates in Frobenius
-determinant-one correspondence, and the height $z$ of the event is marked.
+determinant-one correspondence, and the physical height $Z>0$ of the event is
+marked.  Its analytic ordinate is $y=\log Z$: the completed fibre crossing
+is exactly $L(\sigma_*+i\log Z,\chi)=0$, while the finite phasor-bank event
+is its truncation-level detector.
+For each fixed nondegenerate geometric carrier $(p,r)$ with $p\ne0$, Lean first defines the ambient state
+type independently of all event certificates:
+\(\mathcal C_{p,r}=\{(X,y):X=\gamma_{p,r}(y)\}\),
+\(\mathcal H^{(3)}_{p,r}=\mathcal C_{p,r}\to_0\mathbb C\), and
+\(A^{(3)}_{p,r}=\operatorname{diag}(y)\).  This operator is symmetric and every
+geometric carrier basis state is an explicit eigenvector.  A completed event
+at height $Z_e$ is then embedded into the already-defined state at
+$y=\log Z_e$, whose third spatial coordinate is proved to be $Z_e$; the event
+selects an eigenstate but does not define the operator.  Its finite resolvent has two compiled
+readings: 3D zeros with 3D eigenvectors at carrier-point poles, and analytic
+1D zero readouts with the same 3D zeros and eigenvectors at ordinate poles.
+The two traces agree under the carrier chart, including its factor \(i\).
 Projecting the event down --- M\"obius/Cayley to the 2D unit circle with the
 radius booked in a loss ledger, then to 1D with the angle booked and the
-logarithm applied --- recovers the classical zero at $y=\log z$, to very high
+logarithm applied --- recovers the classical zero at $y=\log Z$, to very high
 precision: the 3D space is vastly larger and more regular than its compressed
 chart.
 
 The scaled frame explains the classical one. We prove, unconditionally, that
-the $S(t)$ oscillatory term is the gap between the $\pi/3$-scaled carrier's
+the $S(t)$ oscillatory term is the global coordinate/registration map: the
+gap between the $\pi/3$-scaled carrier's
 registration and the unit-$1$ chart's --- the first proof and mechanical
 description of why $S(t)$ exists and is needed: a chart-defect compensation
-mechanism. On this mechanism we give two conditional proofs of GRH, each
-conditional on a single named reading --- what the Hilbert--P\'olya program
-requires of its spectrum, and whether the real zeta zero is the 3D source
-event or its classical 1D interpretation --- with the decisions stated exactly
-and deferred to the community.
+mechanism.  The GRH worked example gives two retained conditional deductions
+and audits their exact logical inputs.  The carrier midpoint is derived from
+the Archimedean area law and no-drift geometry; finite focal cancellation is
+equivalent to finite harmonic-pencil rank drop, while completed fibre
+cancellation is exactly the represented $L$-zero.  Identifying every analytic
+zero with a native event remains a separate pointwise coverage or
+fixed-operator spectral-capture premise.
 
 The same machinery extends, and its extension is the paper's Langlands
 content: the carrier is a \emph{common representation} --- every admissible
@@ -147,8 +165,10 @@ corroboration, both provided.
 \small
 \fbox{\parbox{0.92\textwidth}{\emph{Draft status.} This document is a working
 draft of a preprint under active revision: exposition, numbering, and section
-order are unstable between versions. Version \textsc{v0.1}, July 11, 2026;
-changes from this version forward are tracked in the source repository. The
+order are unstable between versions. Version \textsc{v0.2}, July 14, 2026
+(adds the compiled Rankin--Selberg cancellation at $r=2$,
+\S\ref{sec:aristotle-rs}); changes from this version forward are tracked in
+the source repository. The
 mathematical claims are backed by Lean~4 machine-checked proofs (axiom
 footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$,
 no \texttt{sorry}) and by the empirical artifacts of the reproducibility
@@ -192,7 +212,8 @@ anti-helix fibers, observed as two conjugate eigenstates of a Gram--von
 Neumann/harmonic-pencil pair in Frobenius determinant-one correspondence; the
 classical zero is recovered by the ledgered projection --- M\"obius/Cayley to
 the unit circle with the radius booked, then to the line with the angle booked
-and the logarithm applied --- at $y=\log z$. Projection with its ledger is a
+and the logarithm applied --- at $y=\log Z$, where $Z>0$ is physical helix
+height. Projection with its ledger is a
 bijection (Theorem~\ref{thm:g2-ledgered-projection}); without it, a
 compression.
 
@@ -229,20 +250,36 @@ Theorem~\ref{thm:g6-mode-bridge}); event exhaustion and the universal
 transport theorem (Theorems~\ref{thm:g10-ledgered-event-exhaustion}
 and~\ref{thm:universal}).
 \item \emph{The $S(t)$ mechanics} (\S\ref{sec:carrier-S}): unconditionally,
-$N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)$ --- the classical oscillatory term is the
-registration gap between the $\pi/3$-scaled carrier and the unit-$1$ chart, a
-chart-defect compensation mechanism (Lean,
-\texttt{CarrierScaleCompensation}).
-\item \emph{Two conditional proofs of GRH} (Part~\ref{part:grh}):
-self-adjointness is \emph{unconditional} --- a theorem
-(\texttt{vonNeumannOp\_isSymmetric}), never a hypothesis --- and on it sit
-thirty-four machine-checked facts and a proven reduction spine: GRH
-implications for every modulus and character, the full conjecture under a
-reading adopted at every modulus (\texttt{GRHComplete}), and Riemann
-Hypothesis corollaries at the trivial character. The only conditionals are two
-named definitional readings --- what the Hilbert--P\'olya program requires of
-its spectrum, and what a \emph{real} nontrivial zero names --- stated exactly
-and deferred to the community.
+$N_{\pi/3}(e^{t})-R_{1}(e^{t})=S_{\mathrm{ev}}(t)$: a cardinal-valued native
+event count minus a real-valued unit phase registration.  For the
+multiplicity ledger the exact clock--jump law is
+$\Delta S_{\mathrm{mult}}=M(a,b)-\pi^{-1}\int_a^b\mathrm{clockRate}$, with
+the corresponding finite-window bound, zero-free derivative rule, and
+residue-equals-jump theorem all compiled (Lean,
+\texttt{CarrierScaleCompensation}, \texttt{StClockJumpLaw},
+\texttt{ResidueJump}).  The classical strip term additionally contains
+excess line multiplicity and off-line strip multiplicity, stated separately.
+\item \emph{Two conditional GRH routes and carrier geometry}
+(Part~\ref{part:grh}): the midpoint is selected by the unique area-law
+scale balance and no-drift law before \texttt{carrierPoint} is formed.  The
+physical-height readout is
+\(\texttt{carrierPointAtHeight}(Z)=\texttt{carrierPoint}(\log Z)\).
+The local scalar fibre is symmetric, the finite harmonic pencil detects the
+truncated event, and the completed harmonic pencil detects the completed
+\(L\)-fibre crossing exactly.  The harmonic and von Neumann Gram matrices have
+three-coordinate lifts \(G\otimes I_3\), with determinant \((\det G)^3\), so
+spatial lifting preserves and reflects every rank drop.  One fixed symmetric
+operator on the full geometric carrier state space is defined before any
+event, and a completed event embeds as the basis state with eigenvalue
+\(\log Z_e\).  Its two ambient Lean resolvent bundles are
+\texttt{threeDZero\_ambientEigenvector\_resolventTrace} and
+\texttt{oneDZero\_threeDZero\_ambientEigenvector\_resolventTrace}; the latter
+adds the analytic \(L\)-zero equation and the exact chart relation.
+Lean also proves that the older 3D identity
+premise decomposes into GRH plus midpoint-free native coverage, and that the
+older 1D routing proposition is unconditional while its chart-to-kernel
+premise alone supplies the critical-line conclusion.  A separate theorem
+states the fixed self-adjoint resolvent/spectral-capture route.
 \item \emph{Symmetric-power functoriality} (Part~II): $\Sym^r\pi$ automorphic
 on $\mathrm{GL}(r+1)$ at every rank through the Cogdell--Piatetski-Shapiro
 checklist with niceness discharged on the carrier (Theorem~\ref{thm:func},
@@ -273,10 +310,10 @@ Lean~4, every named theorem at axiom footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ with no
 \texttt{sorry}, built in-tree (\S\ref{app:repro}). \emph{Measured}:
 precision-tracking numerics --- calibration and independent reproduction of
-proven statements, never their proof. \emph{Decided}: exactly two named
-reading-hypotheses in the GRH part, asserted by no one and left to the
-community, with three admissible verdicts. No claim in this paper exceeds its
-register.
+proven statements, never their proof. \emph{Conditional}: the GRH interfaces
+are displayed with their exact premises, and the compiler audit identifies
+which premise supplies the critical-line conclusion. No claim in this paper
+exceeds its register.
 
 The diversity of the results is unusual for one paper, and the explanation is
 the origin: the work began as an effort to repair a proof in the Langlands
@@ -305,8 +342,14 @@ Galois-free, Maass included: Thm.~\ref{thm:func}, Cor.~\ref{cor:func234}, with n
 discharged on the carrier (Prop.~\ref{prop:completedFE}, Lem.~\ref{lem:transfer},
 Lem.~\ref{lem:bounded}, Lem.~\ref{lem:completeness}; \texttt{FiniteWeightFiber.symTensorCompleted\_FE},
 \texttt{TransferContinuation.transfer\_analytic},
-\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}). [theorem, on Lean
-carrier inputs]
+\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}) --- and, ungated by any per-fiber
+cell-closure input, for the twisted bank itself: entirety, vertical-strip bounds, and the functional
+equation for \emph{every} CPS twist degree and \emph{every} unitary Satake family, hypothesis-free
+(\texttt{GlobalHelix.cpsAllTwists\_unconditional3DAnalyticPayload},
+\texttt{GlobalHelix.cpsDualPair\_twistedNiceness}, coefficient bound
+\texttt{GlobalHelix.unitaryGlobalSatakeCoeff\_norm\_le}; a general polynomially-bounded datum passes
+through the same constructor, \texttt{CarrierTheta.automaticCoefficientThetaStrongFEPair}). [theorem,
+on Lean carrier inputs]
 \item \textbf{Universal carrier transport and functoriality over the admissible set} --- the general
 transfer question (which $L$-functions come from automorphic sources), beyond any single tower.
 Established as a \emph{universal machine} on the \emph{admissible} fibers --- those given by a finite
@@ -323,9 +366,14 @@ change, no axioms). The one per-fiber obligation --- native-cell closure at the 
 scale --- has a \emph{proven existence backbone}: the focal residual is slaved to the readout with no
 independent DC mode (Lem.~\ref{lem:rankgap}) and is forcible to zero on the two independent lanes of
 any nontrivial clock (\texttt{ForcibleClosure.residual\_forcible},
-\texttt{CarrierReachability.reachable\_independent\_stage}); the resulting nice $L$-function, fed to
-the converse theorem (Thm.~\ref{thm:cps}), lands the fiber as automorphic, the symmetric-power tower
-(item~1) being the fully-executed instance. \emph{Stated honestly}: that closure always \emph{exists}
+\texttt{CarrierReachability.reachable\_independent\_stage}) --- the arithmetic-neutral
+\emph{transport} half, and transport only; the \emph{niceness} is the carrier's own and is proven,
+not gated: admissibility already supplies polynomial coefficient bounds (the convergence
+half-plane), and the constructor then delivers entirety, vertical-strip bounds, and the functional
+equation hypothesis-free (\texttt{CarrierTheta.automaticCoefficientThetaStrongFEPair}; for the
+twisted bank, \texttt{GlobalHelix.cpsAllTwists\_unconditional3DAnalyticPayload}, item~1); the nice
+$L$-function, fed to the converse theorem (Thm.~\ref{thm:cps}), lands the fiber as automorphic, the
+symmetric-power tower (item~1) being the fully-executed instance. \emph{Stated honestly}: that closure always \emph{exists}
 and that the random impostors are excluded are both \emph{proven}; that a \emph{bounded, non-oracular}
 adapter is read off \emph{every} exotic finite law (\texttt{Synth} totality) is a well-founded,
 so-far-unfalsified \emph{program}, not a monolithic theorem --- its single clean falsifier a
@@ -337,7 +385,15 @@ Established as the tower's radial limit: the strand radius is exactly one at eve
 place --- the radial ledger channel is trivial, the strand block an isometry of the transverse
 plane (\S\ref{sec:radial-limit}, Cor.~\ref{cor:ramanujan};
 \texttt{RamanujanLimit.strand\_radius\_one\_of\_tower\_ceiling},
-\texttt{strandBlock\_unitary\_of\_tower\_ceiling}). [theorem; limit step Lean]
+\texttt{strandBlock\_unitary\_of\_tower\_ceiling}); on the ledger-normalized CPS phase itself the
+complete two-sided ceiling and the resulting block isometry are also recorded by
+\texttt{GlobalHelix.unitaryPrimePhase\_towerCeiling} and
+\texttt{GlobalHelix.unitaryPrimePhase\_strandBlock\_isometry}.  The radial capstone itself no
+longer takes that unitary phase structure as input: it starts from a nonzero arithmetic strand and
+the two rank-uniform tower ceilings, packaged as \texttt{GlobalHelix.TowerCeilingStrand}; it returns
+radius one as its first conclusion and only then
+returns the block isometry
+(\texttt{cpsRadialSatoTateGeometry3D\_unified}). [theorem; limit step Lean]
 \item \textbf{The Selberg eigenvalue conjecture} $\lambda\ge\tfrac14$ --- open since 1965. The
 same limit at the archimedean place: zero radial drift, the strand clock unit-modulus at every
 carrier height (Cor.~\ref{cor:ramanujan};
@@ -345,17 +401,26 @@ carrier height (Cor.~\ref{cor:ramanujan};
 step Lean]
 \item \textbf{Sato--Tate for Maass forms} --- open; the holomorphic case is
 Barnet-Lamb--Geraghty--Harris--Taylor. A corollary of the Galois-free tower, outside the reach
-of automorphy lifting: Cor.~\ref{cor:satotate}. [theorem]
-\item \textbf{GRH/RH} --- two conditional proofs, each resting on exactly one named definitional
-reading (what the Hilbert--P\'olya program requires of its spectrum; what a \emph{real}
-nontrivial zero names), with the entire supporting spine unconditional: self-adjointness a
-theorem (\texttt{vonNeumannOp\_isSymmetric}), thirty-four machine-checked evidence facts
-organized by four named engines (\emph{Feynman's Quiver}, \emph{Deligne's Pairs}, the
-\emph{Shannon Cascade} with its projection dominance, \emph{Riemann's Fold}), GRH at
-every modulus and character under either reading
-(\texttt{grh\_of\_resolvant\_trace\_3D\_real},
-\texttt{grhComplete\_of\_resolvant\_trace\_1D\_correlation}), and Riemann Hypothesis corollaries
-at the trivial character (Part~\ref{part:grh}). [Lean; the two readings decided]
+of automorphy lifting: Cor.~\ref{cor:satotate}. Its native carrier geometry and moment law are
+machine-checked in \texttt{CPSRadialSatoTateGeometry3D}: the Sato--Tate density is pushed onto
+the helix $(\cos\theta,\sin\theta,\theta)$, the third coordinate $S(t)$ recovers the measure
+exactly, and the transverse trace has the Catalan/Fourier moments; the same theorem first derives
+the arithmetic strand's unit radius from the tower ceiling rather than accepting a unitary input
+(\texttt{cpsRadialSatoTateGeometry3D\_unified}). [theorem; 3D geometry Lean]
+\item \textbf{GRH/RH interfaces} --- the two legacy conditional deductions
+are retained as two proof routes under the identity and correlation readings,
+and are compiler-audited.  The midpoint is an area-law/no-drift
+output; finite focal cancellation is equivalent to harmonic rank drop; the
+completed crossing at physical height \(Z\) is exactly the analytic
+\(L\)-zero at ordinate \(y=\log Z\); the three-coordinate Gram lifts preserve
+and reflect rank drop; the event-independent ambient carrier operator supplies explicit
+3D eigenvectors and two correlated resolvent traces; and \(S(t)\) is the global carrier-to-chart coordinate
+registration.  The old 3D
+identity premise already includes the critical-line conclusion, while the old
+1D routing disjunction is unconditional and its separate chart-to-kernel
+premise supplies that conclusion.  The genuine global operator route is the
+fixed self-adjoint resolvent-capture interface
+\texttt{grh\_of\_selfAdjoint\_resolvent\_capture} (Part~\ref{part:grh}). [Lean]
 \item \textbf{Beyond Endoscopy} --- Langlands' proposal, blocked at Altu\u{g}'s archimedean
 uniformity problem. Root-caused and repaired: the obstruction is a deterministic clock intrinsic
 to the orbital transform, removed by an exact gauge with no oscillation estimate, and the repair
@@ -368,11 +433,16 @@ retains it with its certificate --- never zeroed by hand
 (Thm.~\ref{thm:g10-obstruction-adaptation}, Lem.~\ref{lem:forcible}, \S\ref{sec:obs-removal};
 \texttt{ClockStructure.obstruction\_recovery}, \texttt{ForcibleClosure.residual\_forcible}).
 [Lean core + measured instances]
-\item \textbf{The $S(t)$ mechanism} --- the classical oscillatory term, resistant to
-interpretation since Riemann--von Mangoldt. Identified unconditionally:
-$N_{\pi/3}(e^{t})-N_{1}(e^{t})=S(t)$, the registration gap between the harmonic carrier scale
-and the unit-$1$ chart (Thm.~\ref{thm:carrier-scale-S}; \texttt{CarrierScaleCompensation}).
-[Lean]
+\item \textbf{The $S(t)$ mechanism} --- the oscillatory term, resistant to
+interpretation since Riemann--von Mangoldt. Proven unconditionally for the
+\emph{line ledgers}: the distinct-event compensation identity, the exact
+multiplicity clock--jump law, its finite-window and zero-free bounds, and
+residue equals jump (Thm.~\ref{thm:carrier-scale-S},
+Eqns.~\eqref{eq:st-clock-jump}--\eqref{eq:st-clock-jump-bound};
+\texttt{CarrierScaleCompensation}, \texttt{StClockJumpLaw},
+\texttt{ResidueJump}).  The unit object is typed as continuous phase
+registration, not as a cardinality; the classical strip correction is
+recorded separately. [Lean]
 \end{enumerate}
 
 \section*{Glossary of terms}
@@ -2326,13 +2396,39 @@ for finite compatible admissible structured source data.
 
 \[
 \boxed{
-S(t)\text{ is not a native oscillatory feature of the prime/harmonic system.}
+S_{\mathrm{ev}}(t)\text{ is not an additional native oscillatory feature of the
+prime/harmonic system.}
 }
 \]
 The native system is realized on the \(\pi/3\)-scaled harmonic carrier.  The
 conventional analytic readout uses a unit-\(1\) coordinate system.  These two
 carrier scalings represent the same arithmetic procession, but they do not
 register the same crossings in the same coordinate units.
+
+\emph{Typing convention, fixed before the theorem.} Throughout this section
+\(N_{\mathrm{ev}}(t)\) denotes the carrier's distinct event count --- the
+on-line ordinate census
+\(\#\{\gamma\in(0,t]:\zeta(\tfrac12+i\gamma)=0\}\) (Lean:
+\texttt{zeroEventCount}) --- and
+\(S_{\mathrm{ev}}(t):=N_{\mathrm{ev}}(t)-1-\vartheta(t)/\pi\) its normalized
+form.  The multiplicity-weighted line census is
+\(N_{\mathrm{line}}^{\mathrm{mult}}(t)=\sum_{0<\gamma\le t}
+\operatorname{ord}_{1/2+i\gamma}\zeta\) (Lean:
+\texttt{zeroEventCountMult}), with ledger
+\(S_{\mathrm{mult}}=N_{\mathrm{line}}^{\mathrm{mult}}-1-\vartheta/\pi\).
+The classical Riemann--von Mangoldt term instead normalizes the strip census
+with multiplicity.  Consequently the exact bookkeeping is
+\[
+ S_{\mathrm{class}}(t)
+ =S_{\mathrm{ev}}(t)
+  +\bigl(N_{\mathrm{line}}^{\mathrm{mult}}(t)-N_{\mathrm{ev}}(t)\bigr)
+  +N_{\mathrm{off}}^{\mathrm{mult}}(t),
+\]
+or equivalently
+\(S_{\mathrm{class}}=S_{\mathrm{mult}}+N_{\mathrm{off}}^{\mathrm{mult}}\).
+Thus distinct events, excess line multiplicity, and off-line strip
+multiplicity are separate typed ledgers.  Every unconditional theorem below
+states explicitly which one it uses.
 
 \subsection{The theorem}
 Let \(F_\zeta\) denote the trivial-character arithmetic fiber and let
@@ -2341,33 +2437,175 @@ fiber law, local arithmetic data, phasor amplitudes, source identity, and
 crossing criterion held fixed.  Only the carrier scale is changed.
 
 \begin{theorem}[The \(S(t)\) carrier-scale compensation theorem]\label{thm:carrier-scale-S}
-With the registered counts of Definition~\ref{def:registered-count}:
+With the registered readouts of Definition~\ref{def:registered-count}:
 \begin{enumerate}
-\item[\textup{(i)}] \(N_{\pi/3}(e^t)=N(t)\): the native count is the
+\item[\textup{(i)}] \(N_{\pi/3}(e^t)=N_{\mathrm{ev}}(t)\): the native count is the
 arithmetic event count over the height ray;
-\item[\textup{(ii)}] \(N_1(e^t)=1+\vartheta(t)/\pi\): the unit count is the DC
-residue plus the archimedean clock, with \(\vartheta\) the Riemann--Siegel
-theta, derived from the gauge, not inserted;
+\item[\textup{(ii)}] \(R_1(e^t)=1+\vartheta(t)/\pi\): the unit-chart
+\emph{continuous phase registration} is the DC residue plus the
+archimedean clock, with \(\vartheta\) independently derived from the gauge
+(the current Lean identifier for \(R_1\) is \texttt{N\_1});
 \item[\textup{(iii)}] consequently
 \[
-\boxed{\,N_{\pi/3}(e^t)-N_1(e^t)=S(t)\,},\qquad
-S(t)=N(t)-1-\frac{\vartheta(t)}{\pi}.
+\boxed{\,N_{\pi/3}(e^t)-R_1(e^t)=S_{\mathrm{ev}}(t)\,},\qquad
+S_{\mathrm{ev}}(t)=N_{\mathrm{ev}}(t)-1-\frac{\vartheta(t)}{\pi}.
 \]
 \end{enumerate}
-Both \(N_{\pi/3}\) and \(N_1\) are derived as cumulative carrier crossing
-counts; in particular \(N_1\) is not defined to be the theta term.  Every step
-is machine-checked in \texttt{RequestProject/CarrierScaleCompensation.lean}
+The two terms have different types: \(N_{\pi/3}\) is cardinal-valued event
+data, whereas \(R_1\) is real-valued continuous phase registration.  Lean's
+\texttt{registeredCount} assembles the latter from an independently proved
+gauge clock, DC base, and scale-dependent event coefficient; it does not
+prove that \(R_1\) is the cardinality of a set of unit-chart crossings.  Every
+displayed identity is machine-checked in
+\texttt{RequestProject/CarrierScaleCompensation.lean}
 \texttt{native\_identification'}, \texttt{unit\_identification},
 \texttt{carrier\_scale\_compensation\_S}.
 \end{theorem}
+
+\begin{remark}[Register: the classical $S(t)$]\label{rem:st-register}
+What is proven above is unconditional for the distinct-event line ledger.
+For the classical strip term the unconditional decomposition is
+\[
+S_{\mathrm{class}}(t)=
+\underbrace{N_{\pi/3}(e^t)-R_1(e^t)}_{S_{\mathrm{ev}}(t),\ \text{proven}}
++\underbrace{\bigl(N_{\mathrm{line}}^{\mathrm{mult}}(t)-N_{\mathrm{ev}}(t)\bigr)}
+ _{\text{excess line multiplicity}}
++\underbrace{N_{\mathrm{off}}^{\mathrm{mult}}(t)}_{\text{off-line strip multiplicity}}.
+\]
+Equivalently, the multiplicity ledger proved below satisfies
+\(S_{\mathrm{class}}=S_{\mathrm{mult}}+N_{\mathrm{off}}^{\mathrm{mult}}\).
+This is the precise boundary between the unconditional line theorem and the
+classical strip function; neither off-line multiplicity nor simplicity is
+silently discarded.
+\end{remark}
+
+\subsection{Independent contour coordinate for the classical argument}
+The classical argument is constructed independently of every event and
+zero-count ledger.  At a good height \(T>0\), meaning that no nontrivial zero
+has ordinate \(T\), let
+\[
+ \Gamma_T:\quad 2\longrightarrow 2+iT\longrightarrow \frac12+iT.
+\]
+The first segment lies in \(\Re s=2\), where Euler-product nonvanishing
+applies.  On the second segment, a hypothetical vanishing either has
+\(\Re s\geq1\), again contradicting nonvanishing, or is a nontrivial zero of
+ordinate \(T\), contradicting goodness.  Thus
+\(\zeta\circ\Gamma_T\) is a path in \(\mathbb C^\times\).
+
+Lift this path through the exponential covering
+\(\exp:\mathbb C\to\mathbb C^\times\), with initial value
+\[
+ L_T(0)=\log\zeta(2)=\log(\pi^2/6)\in\mathbb R.
+\]
+Path-lift uniqueness removes every branch choice.  Define
+\begin{equation}\label{eq:st-contour-definition}
+ S_\Gamma(T):=\frac{\Im L_T(1)}{\pi}.
+\end{equation}
+This is a genuine global coordinate of the zeta path: its definition contains
+none of \(\texttt{zeroEventCount}\), \(\texttt{zeroEventCountMult}\),
+\(\texttt{S}\), or \(\texttt{Smult}\), and the endpoint theorem is
+\[
+ e^{L_T(1)}=\zeta\!\left(\frac12+iT\right).
+\]
+Combining this independently lifted phase with the independently derived
+Gamma clock and the real native factor gives
+\begin{equation}\label{eq:st-contour-sign}
+ \exp\!\bigl(i(\pi S_\Gamma(T)+\vartheta(T))\bigr)
+ =\frac{Z(T)}{|Z(T)|}\in\{-1,1\},
+\end{equation}
+where \(Z(T)=\texttt{rsZ}(T)\).  Consequently the covering itself produces an
+integer winding coordinate \(k_\Gamma(T)\), rather than receiving one as a
+counting assumption, and
+\begin{equation}\label{eq:st-contour-winding}
+ \boxed{\quad S_\Gamma(T)=k_\Gamma(T)-\frac{\vartheta(T)}{\pi}.\quad}
+\end{equation}
+In Lean these are
+\(\texttt{standardContour}\), \(\texttt{zetaContourPath}\),
+\(\texttt{contourLogLift}\), \(\texttt{classicalSContour}\),
+\(\texttt{contour\_phase\_times\_clock\_eq\_sign\_rsZ}\), and
+\(\texttt{classicalSContour\_eq\_winding\_sub\_clock}\) in
+\(\texttt{RequestProject/ZetaContourArgument.lean}\).  They are proved from
+the analytic zeta path, the exponential covering, and the Gamma-factor
+factorization; no census formula is unfolded in the construction.
+
+The census side is also constructed independently.  Lean's
+\(\texttt{stripZeroWindow}(T)\) is the finite set of actual nontrivial zeros
+with \(0<\Im\rho\leq T\), and \(\texttt{stripZeroCountMult}\) sums their
+\(\xi\)-orders.  Filtering this same finite set by
+\(\Re\rho=1/2\) and \(\Re\rho\neq1/2\) gives typed on-line and off-line
+counts.  The compiled identities are
+\[
+ N_{\mathrm{strip}}^{\mathrm{mult}}(T)
+ =N_{\mathrm{on}}^{\mathrm{mult}}(T)
+  +N_{\mathrm{off}}^{\mathrm{mult}}(T),
+ \qquad
+ N_{\mathrm{on}}^{\mathrm{mult}}(T)
+ =N_{\mathrm{line}}^{\mathrm{mult}}(T).
+\]
+They are \(\texttt{stripZeroCountMult\_eq\_onLine\_add\_offLine}\) and
+\(\texttt{onLineStripZeroCountMult\_eq\_zeroEventCountMult}\); their
+composition is \(\texttt{stripZeroCountMult\_eq\_line\_add\_offLine}\).
+The second equality is a proved bijection
+\(\gamma\mapsto\frac12+i\gamma\), with multiplicities transported by the
+analytic-unit order bridge \(\texttt{eventOrder\_eq\_xiOrderNat}\).
+
+The argument-principle comparison now identifies \(k_\Gamma(T)+1\) with this
+independently defined strip census by an explicit second construction, rather
+than by citing the classical counting formula.  On the same broken path Lean
+forms the completed logarithmic lift
+\[
+ \mathcal L_{\xi,T}(u)=
+ \log\Gamma_T(u)+\log(\Gamma_T(u)-1)-\log 2
+ +\log\Gamma_{\mathbb R}(\Gamma_T(u))+L_T(u).
+\]
+The Gamma logarithm is first constructed on the simply connected right
+half-plane and normalized at (2); its imaginary part on the critical line is
+then proved to be the independently integrated clock \(\vartheta(T)\).  The
+two principal polynomial logarithms stay in the upper slit plane and satisfy
+the geometric endpoint law
+\[
+ \Im\!\left(\log(\tfrac12+iT)+
+             \log(-\tfrac12+iT)-\log2\right)=\pi.
+\]
+Thus the value (+1) is the winding contribution of the completion factor
+(s(s-1)/2); it is derived from the upper-half-plane geometry and is not
+inserted into the carrier or census definitions.  Pointwise exponentiation
+gives
+\(exp \mathcal L_{\xi,T}(u)=\xi(\Gamma_T(u))\).
+
+The continuous-lift calculus then proves, on the two affine segments,
+\[
+ i\int_0^T\frac{\xi'}{\xi}(2+iy)\,dy
+ -\int_{1/2}^{2}\frac{\xi'}{\xi}(x+iT)\,dx
+ =\mathcal L_{\xi,T}(1)-\mathcal L_{\xi,T}(0).
+\]
+Reflection and conjugation turn this half-contour increment into the full
+rectangle boundary integral.  Independently, the analytic divisor
+factorization evaluates that same boundary integral as \(2\pi i\) times the
+multiplicity sum over \emph{all} zeros in the upper strip, including any
+off-line zeros.  Cancelling the nonzero factor \(2\pi i\) gives the compiled
+theorem
+\[
+ \boxed{\ k_\Gamma(T)+1=N_{\mathrm{strip}}^{\mathrm{mult}}(T)\ }.
+\]
+The corresponding Lean spine is
+\texttt{gammaLog\_line\_im},
+\texttt{xiPolynomialLog\_line\_im},
+\texttt{exp\_xiContourLog},
+\texttt{halfContourIntegral\_logDeriv\_riemannXi\_eq\_lift\_sub},
+\texttt{rectangleBoundaryIntegral\_logDeriv\_riemannXi} and
+\texttt{contourWindingIndex\_add\_one\_eq\_stripZeroCountMult}.
+This comparison is downstream of both independent constructions: it is not
+the definition of either \(S_\Gamma\) or the zero count, and no critical-line
+location statement is used in the strip census.
 
 The proof occupies the rest of the section: part (i) in the native-\(\pi/3\)
 subsection, part (ii) in the unit-\(1\) subsection, part (iii) by subtraction;
 the induced event readout pinning every functor input is derived in the
 discharged-arrows subsection.
 
-\subsection{Definitions of the two counts}
-\begin{definition}[Scale-indexed registered count]\label{def:registered-count}
+\subsection{The event count and the phase registration}
+\begin{definition}[Scale-indexed registered readout]\label{def:registered-count}
 For a carrier realization \(\mathsf X_{\zeta,H}\), write
 \[
 \mathcal C_H(F_\zeta;z)
@@ -2375,31 +2613,30 @@ For a carrier realization \(\mathsf X_{\zeta,H}\), write
 \{\,c:\ c\text{ is a complete }F_\zeta\text{-closure in }\mathsf X_{\zeta,H}
 \text{ through raw height }z\,\}.
 \]
-The cumulative crossing count at carrier scale \(H\) is
-\[
-N_H(z):=\#\mathcal C_H(F_\zeta;z).
-\]
-Thus
+At the native scale the cumulative crossing count is
 \[
 N_{\pi/3}(e^t)
  =
-\#\mathcal C_{\pi/3}(F_\zeta;e^t),
-\qquad
-N_1(e^t)
- =
-\#\mathcal C_{1}(F_\zeta;e^t).
+\#\mathcal C_{\pi/3}(F_\zeta;e^t).
 \]
-Both counts start at the common origin, both are cumulative, and both use the
-same fiber law and crossing predicate.  The subscript records only the carrier
-scale used to register the same arithmetic procession.
+The unit chart instead supplies the real-valued phase registration
+\[
+R_1(e^t)=1+\frac{\vartheta(t)}{\pi}.
+\]
+The theorem compares these two readouts; it does not identify the continuous
+quantity \(R_1\) with a cardinality.  A topological-degree or
+contour-winding coordinate for the classical argument is instead constructed
+in \eqref{eq:st-contour-definition}--\eqref{eq:st-contour-winding}; it is a
+path lift of the actual zeta fiber, not a reinterpretation of \(R_1\) as a set
+cardinality.
 \end{definition}
 
-In Lean the scale-indexed cumulative count functor is installed as
-\texttt{registeredCount}: DC base at the common origin, the chart's continuous
-clock procession in \(\pi\)-cells, and the event count weighted by the induced
-per-event contribution of the scale's closure geometry
+In Lean the scale-indexed registered readout is installed as
+\texttt{registeredCount}: DC base at the common origin, an independently
+constructed continuous clock procession in \(\pi\)-units, and the event count
+weighted by the induced per-event contribution of the scale's closure geometry
 (\texttt{eventContribution}; derivation in the discharged-arrows subsection
-below) --- every input pinned by a theorem.  The closure predicate is
+below).  The closure predicate is
 \texttt{NativeClosure} (the fiber's \(\eta\)-accumulation) and the counts are
 \texttt{nativeCount} and \texttt{zeroEventCount}.
 
@@ -2441,30 +2678,29 @@ zero event: the fiber's own \(\eta\)-accumulation closes at \(\gamma\) if and
 only if the readout vanishes there (\texttt{nativeClosure\_iff\_zero}, via
 \texttt{Faithful.continuous\_model\_zeta}), and the height readout carries raw
 height \(e^t\) to ordinate \(t\) exactly (\texttt{readout\_exp}).  Here
-\(N(t)\) is the zero-counting procession over the 3D representation's
+\(N_{\mathrm{ev}}(t)\) is the zero-counting procession over the 3D representation's
 \emph{entire} event space --- the height ray, whose exhaustion is a theorem,
 consumed not assumed (\texttt{native\_events\_sourced}, instantiating the
 proven \texttt{threeD\_exhaustive}; the height encoding is lossless,
 \texttt{event\_encoding\_complete}).  Counting complete closures through raw
 height \(e^t\) therefore counts exactly the arithmetic events through ordinate
-\(t\): \(N_{\pi/3}(e^t)=N(t)\) (\texttt{native\_identification'}).  No
+\(t\): \(N_{\pi/3}(e^t)=N_{\mathrm{ev}}(t)\)
+(\texttt{native\_identification'}).  No
 \(S(t)\) term is an additional state variable in \(\mathsf X_{\zeta,\pi/3}\).
 \end{proof}
 
-\subsection{\texorpdfstring{Unit-\(1\)}{Unit-1} carrier chain}
-The unit-\(1\) chain must be a parallel realization of the same fiber:
+\subsection{\texorpdfstring{Unit-\(1\)}{Unit-1} phase-registration chain}
+The unit-\(1\) chain is the scalar phase registration of the same fiber:
 \[
 F_\zeta
 \longrightarrow
 \mathsf X_{\zeta,1}
 \longrightarrow
-\mathcal C_{1}(F_\zeta;e^t)
-\longrightarrow
-N_1(e^t).
+R_1(e^t).
 \]
 The required scalar readout identity is
 Theorem~\ref{thm:carrier-scale-S}(ii):
-\(N_1(e^t)=1+\vartheta(t)/\pi\).
+\(R_1(e^t)=1+\vartheta(t)/\pi\).
 
 \begin{proof}[Proof of Theorem~\textup{\ref{thm:carrier-scale-S}(ii)}]
 The arrow is obtained from the \(H=1\) carrier/readout construction itself
@@ -2487,54 +2723,99 @@ forced \(=1\) (\texttt{dcResidue\_spec}, \texttt{dcResidue\_unique}); and the
 event channel is shut by the arc geometry --- no whole-cell walk of the unit
 carrier realizes the half-turn mark (\texttt{unit\_arcs\_empty},
 \texttt{eventContribution\_one}).  Assembling base, clock, and the vanishing
-event channel gives \(N_1(e^t)=1+\vartheta(t)/\pi\)
-(\texttt{unit\_identification}): the theta term is a conclusion, not a
-definition.
+event channel in the registered readout gives
+\(R_1(e^t)=1+\vartheta(t)/\pi\) (\texttt{unit\_identification}).  The clock
+itself is independently derived and characterized by \texttt{gauge\_polar}
+and \texttt{theta\_unique}; the assembly formula \texttt{registeredCount}
+then uses that derived clock as its continuous input.
 \end{proof}
 
 \subsection{Subtraction}
 
 \begin{proof}[Proof of Theorem~\textup{\ref{thm:carrier-scale-S}(iii)}]
-With parts (i) and (ii) supplied, the compensation identity is formal.  The
-classical continued-argument comparison away from zero ordinates is
-\[
-N(t)=1+\frac{\vartheta(t)}{\pi}+S(t),
-\]
-with
-\[
-\vartheta(t)
-=
-\Im\log\Gamma\!\left(\frac14+\frac{it}{2}\right)
--\frac t2\log\pi.
-\]
-Substituting parts (i) and (ii) gives
+With parts (i) and (ii) supplied, substitution in the fixed definition
+\(S_{\mathrm{ev}}=N_{\mathrm{ev}}-1-\vartheta/\pi\) gives
 \[
 \begin{aligned}
-N_{\pi/3}(e^t)-N_1(e^t)
+N_{\pi/3}(e^t)-R_1(e^t)
 &=
-N(t)-\left(1+\frac{\vartheta(t)}{\pi}\right)\\
-&=S(t).
+N_{\mathrm{ev}}(t)-\left(1+\frac{\vartheta(t)}{\pi}\right)\\
+&=S_{\mathrm{ev}}(t).
 \end{aligned}
 \]
-Thus \(S(t)\) is the scalar compensation ledger for registering the native
+Thus \(S_{\mathrm{ev}}(t)\) is the scalar compensation ledger for
+registering the native
 \(\pi/3\) arithmetic procession in the unit-\(1\) chart
 (\texttt{carrier\_scale\_compensation\_S}).
 \end{proof}
 
+\subsection{The exact clock--jump rule and its bound}
+The multiplicity ledger has a stronger, non-asymptotic formulation.  For
+\(0\le a\le b\), put
+\[
+ M(a,b):=\sum_{a<\gamma\le b}
+ \operatorname{ord}_{1/2+i\gamma}\zeta ,
+ \qquad
+ C(a,b):=\int_a^b
+ \Re\frac{\Gamma_{\mathbb R}'}{\Gamma_{\mathbb R}}
+       \!\left(\frac12+it\right)dt .
+\]
+These inputs are defined independently from the analytic zero orders and the
+Archimedean gauge.  The compiled finite-window law is
+\begin{equation}\label{eq:st-clock-jump}
+\boxed{
+ S_{\mathrm{mult}}(b)-S_{\mathrm{mult}}(a)
+ =M(a,b)-\frac{C(a,b)}{\pi}.}
+\end{equation}
+It immediately gives the unconditional bound
+\begin{equation}\label{eq:st-clock-jump-bound}
+\boxed{
+ \left|S_{\mathrm{mult}}(b)-S_{\mathrm{mult}}(a)\right|
+ \le M(a,b)+\frac1\pi\int_a^b
+ \left|\Re\frac{\Gamma_{\mathbb R}'}{\Gamma_{\mathbb R}}
+       \!\left(\frac12+it\right)\right|dt.}
+\end{equation}
+On a zero-free interval the discrete term vanishes, so equality
+\(S_{\mathrm{mult}}(b)-S_{\mathrm{mult}}(a)=-C(a,b)/\pi\) holds and the
+right side of the bound contains only the clock budget.  At every interior
+non-event,
+\[
+ S_{\mathrm{mult}}'(t)=-\frac{\operatorname{clockRate}(t)}{\pi};
+\]
+at an event its jump is the analytic multiplicity, which is also the residue
+of \(\zeta'/\zeta\).  In distributional notation, summarizing the compiled
+finite-window statements,
+\[
+ dS_{\mathrm{mult}}
+ =\sum_{\gamma>0}m_\gamma\,\delta_\gamma
+  -\frac{\operatorname{clockRate}(t)}{\pi}\,dt.
+\]
+The Lean proofs are
+\texttt{Smult\_interval\_clock\_jump},
+\texttt{abs\_Smult\_interval\_le\_multiplicity\_add\_clock},
+\texttt{abs\_Smult\_interval\_le\_clock\_of\_event\_free}, and
+\texttt{Smult\_hasDerivWithinAt\_of\_event\_free} in
+\texttt{RequestProject/StClockJumpLaw.lean}; the residue/jump identity is
+\texttt{residue\_eq\_Smult\_jump} in
+\texttt{RequestProject/ResidueJump.lean}.  Thus the result supplies a local
+equation of motion, an exact jump rule, and a finite-window bound without
+identifying the line ledger with the classical strip argument.
+
 \begin{remark}[No native oscillatory state]
-The structural consequence --- \(S(t)\) has no native oscillatory carrier
+The structural consequence --- \(S_{\mathrm{ev}}(t)\) has no additional native
+oscillatory carrier
 state --- is \texttt{S\_has\_no\_native\_carrier} with
 \texttt{no\_native\_oscillation}: despinning the unit readout by the clock
-leaves a real value at every height.  \(S(t)\) exists only as the compensation
-between the two carrier registrations of one arithmetic procession.
+leaves a real value at every height.  The distinct and multiplicity-weighted
+line ledgers record the event jumps against that continuous clock.  Per
+Remark~\ref{rem:st-register}, the classical strip term additionally contains
+off-line strip multiplicity.
 \end{remark}
 
 \subsection{The arrows, discharged}
-Both arrows previously recorded here as unsupplied --- the scale-indexed
-cumulative count functor \(\mathsf X_{\zeta,H}\longrightarrow(z\mapsto N_H(z))\)
-and the unit-\(1\) derivation --- are now proven in
-\texttt{RequestProject/CarrierScaleCompensation.lean}, with no functor input
-inserted by hand:
+The native cumulative count and the unit phase registration are assembled in
+\texttt{RequestProject/CarrierScaleCompensation.lean}.  Their inputs have the
+following proved origins:
 \begin{itemize}
 \item \textbf{Event channel.}  An event is a sign flip of the real native
 state; its mark is the half turn \(-1=e^{i\pi}\) (\texttt{sign\_flip\_mark}).
@@ -2555,22 +2836,23 @@ unique continuous gauge phase (\texttt{gauge\_polar}, \texttt{theta\_unique}).
 \item \textbf{DC base.}  The origin registration is the trivial-channel
 residue, value forced (\texttt{dcResidue\_spec}, \texttt{dcResidue\_unique}).
 \end{itemize}
-The fundamental gap behind the theorem is prior to any analytic content: the
+The geometric scale gap is prior to the analytic event data: the
 native and unit placements of the integer procession are incommensurable ---
 the lattices \(\{k\,\pi/3\}\) and \(\{m\}\) meet only at the origin
 (\texttt{lattice\_gap\_fundamental}); the unit carrier closes no cell
 (\texttt{unit\_never\_closes}) and has no antipodal wall
-(\texttt{unit\_cell\_no\_antipodal}).  \(S(t)\) is the accumulated readout of
-that incommensurability; crossings are only the units of the native
-bookkeeping.
+(\texttt{unit\_cell\_no\_antipodal}).  The compiled compensation identity
+compares the native event count with the unit phase registration against
+that scale geometry.
 
 \subsection{The general registration gap \texorpdfstring{\(S_{H,K}\)}{S(H,K)} and the harmonic family}
-The comparison generalizes to arbitrary scale pairs.  With \(N_H\) the
-canonical scale-\(H\) chart count (\texttt{NH}; by \texttt{NH\_dichotomy} the
+The comparison generalizes to arbitrary scale pairs.  With \(R_H\) the
+canonical scale-\(H\) registered readout (Lean identifier \texttt{NH}; by
+\texttt{NH\_dichotomy} the
 family contains exactly the two proven chart types, decided by the arc
 geometry), define
 \[
-S_{H,K}(t):=N_H(e^t)-N_K(e^t)
+S_{H,K}(t):=R_H(e^t)-R_K(e^t)
 \qquad(\texttt{Sgap}).
 \]
 \begin{proposition}[Coboundary laws]\label{prop:sgap-coboundary}
@@ -2582,18 +2864,18 @@ a gap between registrations --- never intrinsic.
 
 \begin{proof}
 Immediate from the definition as a difference of the per-scale potential
-\(N_H\) (\texttt{Sgap\_refl}, \texttt{Sgap\_antisymm},
+\(R_H\) (\texttt{Sgap\_refl}, \texttt{Sgap\_antisymm},
 \texttt{Sgap\_cocycle}).
 \end{proof}
 
 \begin{theorem}[One \(S\) for the whole harmonic family]\label{thm:harmonic-family-S}
 Every harmonic scale \(\pi/m\) \((m\ge1)\) realizes the event mark at \(m\)
 cells, exactly once per closed \(2m\)-cell monodromy loop; the family
-registers identically, and every member reads the \emph{same} classical
-\(S(t)\) against the unit chart:
+registers identically, and every member reads the same distinct-event
+ledger \(S_{\mathrm{ev}}(t)\) against the unit chart:
 \[
-S_{\pi/m,1}(t)=S(t),\qquad\text{i.e.}\qquad
-N_{\pi/m}(e^t)=N_1(e^t)+S(t)\quad\text{for every }m\ge1.
+S_{\pi/m,1}(t)=S_{\mathrm{ev}}(t),\qquad\text{i.e.}\qquad
+R_{\pi/m}(e^t)=R_1(e^t)+S_{\mathrm{ev}}(t)\quad\text{for every }m\ge1.
 \]
 \end{theorem}
 
@@ -2606,11 +2888,12 @@ wall (\texttt{pi\_div\_closes}).  Hence the event channel is open with weight
 one at every \(\pi/m\), and the intra-family gap vanishes
 (\texttt{Sgap\_pi\_div}\(\,=0\)).  The cocycle law of
 Proposition~\ref{prop:sgap-coboundary} composes through \(\pi/3\):
-\(S_{\pi/m,1}=S_{\pi/m,\pi/3}+S_{\pi/3,1}=0+S\)
+\(S_{\pi/m,1}=S_{\pi/m,\pi/3}+S_{\pi/3,1}=0+S_{\mathrm{ev}}\)
 (\texttt{Sgap\_pi3\_one}, \texttt{Sgap\_pi\_div\_one},
 \texttt{unit\_tracks\_harmonic}).  In particular the \(\pi/6\) channel is
 determined open --- \texttt{pi6\_wall\_mem}, \texttt{pi6\_arcs\_eq} --- not
-prescribed, and \(S_{\pi/6,1}=S\) (\texttt{Sgap\_pi6\_one}).
+prescribed, and \(S_{\pi/6,1}=S_{\mathrm{ev}}\)
+(\texttt{Sgap\_pi6\_one}).
 \end{proof}
 
 \begin{proposition}[Closure is a fiber--scale resonance]\label{prop:fiber-resonance}
@@ -2633,6 +2916,47 @@ insufficiency is the pair \texttt{two\_pi\_closes},
 with \texttt{fiber\_converts\_to\_harmonic} and
 \texttt{every\_scale\_admits\_conversion}.
 \end{proof}
+
+\subsection{The registration dynamics and the census bound}\label{sec:registration-dynamics}
+
+The deterministic component of the compensation ledger --- the carrier tick $\pi/3$ read in the
+unit chart --- is an irrational rotation of the unit ledger, and its dynamics are proven
+(\texttt{RequestProject/RegistrationGaps.lean}, standard footprint throughout): the scale ratio is
+irrational (\texttt{irrational\_pi\_div\_three}), the tick is of infinite order --- the two scales
+never re-register (\texttt{carrierTick\_not\_isOfFinAddOrder}, \texttt{carrierTick\_nsmul\_ne\_zero})
+--- the registration marks are dense (\texttt{denseRange\_carrierTicks}), the rotation is
+\emph{ergodic} (\texttt{ergodic\_carrierTick\_rotation}, via Mathlib's
+\texttt{AddCircle.ergodic\_add\_left}), and the defect sequence is injective.  By Birkhoff, the
+deterministic layer equidistributes over the unit cell --- so it leaves no periodic or
+quasi-periodic fingerprint of its own.  This theorem concerns the deterministic tick sequence;
+it does not by itself prove statistical independence from the zeta-event sequence.  The
+pre-registered instruments in App.~\ref{app:repro} test that additional positional question and
+find no detected coupling at the stated sample sizes.
+
+The census side carries the first compiled growth bound
+(\texttt{RequestProject/CarrierJensen.lean}): every on-line event through height $t$ embeds as a
+$\xi$-zero in the origin ball of radius $t+1$
+(\texttt{event\_line\_mem\_xiZeros\_ball}, \texttt{zeroEventCount\_le\_xiZeros\_ball}), so the
+compiled Jensen disk count (\texttt{ZD.ZeroCount.xi\_zero\_count\_disk\_bound}, $N(R)\le C\,R\log R$
+by circle averages) caps the line census unconditionally:
+\texttt{census\_polynomial\_bound}, $N_{\mathrm{line}}(t)\le C\,(t{+}1)\log(t{+}1)$ --- consumed
+from the compiled analytic layer with no new analysis.  The sharper local result is the exact
+multiplicity clock--jump law \eqref{eq:st-clock-jump} and its bound
+\eqref{eq:st-clock-jump-bound}: on every zero-free interval the multiplicity ledger has no
+discrete contribution and its derivative is exactly $-\mathrm{clockRate}/\pi$.  No global
+$O(\!\log t)$ estimate for this line ledger is asserted here.  On the clock side
+the Borel--Carath\'eodory brick is compiled (\texttt{RequestProject/ClockRateBound.lean}):
+\texttt{bc\_deriv\_bound} --- real oscillation at most $M$ on a ball of radius $R$ forces
+$\lVert g'\rVert\le 4M/R$ at the center, Mathlib's Borel--Carath\'eodory composed with the Cauchy
+derivative estimate --- with \texttt{deriv\_branchLog\_eq\_logDeriv} and
+\texttt{clockRate\_le\_of\_stripLog}: a branch logarithm of $\Gamma_{\mathbb R}$ on the
+quarter-ball at $\tfrac12+it$ with real oscillation at most $M$ forces
+$\mathrm{clockRate}(t)\le 16M$.  The clock target is thereby reduced to two named inputs with
+compiled anchors --- branch-log existence on the ball (Mathlib
+\texttt{Analysis.Complex.BranchLogRoot}; the ball is simply connected and $\Gamma_{\mathbb R}$
+nonvanishing there) and the strip Stirling bound $M(t)=O(\log t)$ (the
+\texttt{StirlingBound.lean} ladder).  The census side's remaining anchor is the circle-average
+machinery of \texttt{ZeroCountJensen.lean} run on height-centered disks.
 
 \subsection{From the ledger to the residue and the windowed trace}\label{sec:residue-jump}
 
@@ -3164,7 +3488,13 @@ global parameter --- so it holds for Maass $\pi$ verbatim; it is what the ledger
 where the global parameter exists, it has a transparent \emph{dictionary}: the pole order would be the
 trivial-channel multiplicity $\dim\operatorname{Hom}(\varphi_\tau^\vee,\Sym^r\varphi_\pi)$, and a nonzero map from
 the $m$-dimensional $\varphi_\tau^\vee$ into the simple $(r+1)$-dimensional $\Sym^r\varphi_\pi$ would be
-surjective, forcing $r+1\le m\le r-1$ (\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}, machine-checked)
+an \emph{equivariant} map.  Its image is a subrepresentation of the simple target, hence a nonzero
+map is surjective, forcing $r+1\le m\le r-1$
+(\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}, machine-checked over the
+representation algebra).  Equivalently, in the bundled finite-dimensional representation category,
+Schur's lemma gives
+\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_not\_unit}.  The rank inequality is never used for
+an ordinary vector-space embedding.
 --- a picture of the same exclusion, not the load-bearing step. So the entire carrier readout \emph{is}
 $L(s,\Pi_r\times\tau)$. Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
 cuspidal automorphic representation of $\mathrm{GL}(r+1)$.
@@ -3182,7 +3512,10 @@ the list, the carrier supplies it --- non-circularly, the functional equation be
 helix--anti-helix reflection, corroborated through $\Sym^{13}$ (\S\ref{sec:sym5}). The carrier route reads only
 local Satake, the archimedean type, and the tensor rule, so it is Galois-free and applies to Maass $\pi$, where
 the automorphy-lifting proof of Newton--Thorne \cite{NT} does not. Symmetric-power functoriality
-$\mathrm{GL}(2)\to\mathrm{GL}(r+1)$ is thereby established for every $r$.
+$\mathrm{GL}(2)\to\mathrm{GL}(r+1)$ is thereby established for every $r$. (Register: the twisted
+analytic niceness is the carrier's own, hypothesis-free for every twist degree and unitary Satake
+family --- \texttt{GlobalHelix.cpsAllTwists\_unconditional3DAnalyticPayload}, \S\ref{sec:cps-3d-engine}
+--- and the classical reading passes through the named identification layer, Prop.~\ref{prop:localid}.)
 \end{corollary}
 
 \section{Exceptional $\pi$}\label{sec:cps-decomp}
@@ -3205,6 +3538,253 @@ identity and the reducibility$\,\Leftrightarrow\,$exceptional classification are
 These finitely many types are settled independently; the carrier construction supplies the remaining, generic,
 \emph{cuspidal} case, new for $r\ge5$. In every case $\Sym^r\pi$ is automorphic --- the content of
 Corollary~\ref{cor:func234}.
+
+\section{The converse engine in three dimensions: the machine-checked generator descent}\label{sec:cps-3d-engine}
+\begingroup
+\emergencystretch=3em
+\let\cpsoldunderscore\_
+\renewcommand{\_}{\cpsoldunderscore\allowbreak}%
+The ledger of \S\ref{sec:cps-ledger} discharges the classical converse theorem's \emph{analytic}
+hypotheses --- niceness of every twist --- through the carrier (Theorem~\ref{thm:cps-nice},
+Proposition~\ref{prop:niceness}). A second, self-contained Lean development internalizes the converse
+theorem's other half: the \emph{generator descent} that turns invariance under the arithmetic group's
+generators into invariance under the whole group --- automorphy as full invariance, with the adelic
+Whittaker/Poisson analysis appearing only as its one-dimensional shadow. This section states exactly what
+that development establishes, at exactly its current strength, in the register of
+Remark~\ref{rem:st-register}: the engine is machine-checked and unconditional; its inputs are named; the
+classical analytic input it consumes is cited, not re-proved.
+
+\paragraph{The engine (machine-checked, unconditional).} The following declarations compile with the
+standard footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ and no
+\texttt{sorry}; all lie in the namespace \texttt{CriticalLinePhasor.ThreeDConverse} unless noted.
+\begin{itemize}
+\item \emph{Unit-winding generation.} A diagonal source clock and its reciprocal target clock conjugate
+the unit winding to any winding: $D(q)\,T_{ij}(1)\,D(q^{-1})=T_{ij}(q)$
+(\texttt{coordinateScaleGL\_mul\_transvectionGL\_mul\_coordinateScaleGL\_inv}). Hence diagonal-clock
+invariance together with a \emph{single} unit winding in each off-diagonal direction forces invariance
+under all of $\mathrm{GL}(n,K)$ (\texttt{cps3D\_readout\_invariant\_of\_unit}), the diagonal/transvection
+family generating the group for every rank by Mathlib's
+$\texttt{diagonal\_transvection\_induction}$ (\texttt{glCarrierGenerators\_closure},
+\texttt{cps3D\_invariant\_of\_carrier\_generators}). Consequently the former rational-parameter density
+step is unnecessary for this generator argument.
+\item \emph{Mellin inversion $\Rightarrow$ reflection.} A completed Mellin functional equation recovers
+the pointwise theta reflection on the positive ray, under Mathlib's Mellin-inversion hypotheses
+(\texttt{theta\_reflection\_of\_mellin\_functionalEquation}, from
+\texttt{Mathlib.Analysis.MellinInversion}).
+\item \emph{Finite Fourier separation.} The complete additive-character family separates a finite winding
+cell (\texttt{finiteAbelianCell\_eq\_of\_all\_twists\_eq}); evaluating the separated identity at the cell
+origin needs only that the finite representatives preserve $0$ and $1$
+(\texttt{local\_unit\_transvection\_invariant\_of\_finiteQuotientMellin}).
+\item \emph{Archimedean descent.} The same completed Mellin data at the archimedean place gives invariance
+of the left adelic factor (\texttt{adelic\_archimedean\_readout\_invariant\_of\_mellinFunctionalEquations}).
+\item \emph{Adelic assembly and rational-quotient descent.} The archimedean and finite-place invariances
+assemble to the full product move group (\texttt{cpsAdelic3D\_readout\_invariant}) and descend to the
+rational orbit quotient (\texttt{cpsAdelic3D\_rationalQuotientReadout}).
+\item \emph{Cuspidal landing.} An integrable, nontrivial unipotent eigenmove in every proper channel
+forces the simultaneous vanishing of all proper-unipotent constant terms
+(\texttt{unipotentConstantTerm\_eq\_zero}); assembled, this is the landing theorem
+\texttt{cpsConverse3D\_landing}.
+\end{itemize}
+
+\paragraph{The interface ledger.} The assembled landing \texttt{cpsConverse3D\_landing} is quantified over
+an abstract carrier state space with its group action and its scalar readout; it consumes exactly the
+following named inputs, listed with their carrier meaning. These are the interface the engine exposes ---
+the honest counterpart of the analytic ledger of \S\ref{sec:cps-ledger}.
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Input & carrier meaning & discharged by \\
+\midrule
+\texttt{hFE} & per-winding completed Mellin FE & Prop.~\ref{prop:niceness}/Thm.~\ref{thm:cps-nice} \\
+\texttt{hInversion} & Mellin convergence/vertical integrability & Prop.~\ref{prop:niceness} (warped-Abel) \\
+\texttt{hPrimalReadout} & winding-cell $=$ primal kernel at height & finite-model instantiation$^\dagger$ \\
+\texttt{hDualReadout} & winding-cell $=$ reflected-dual kernel & finite-model instantiation$^\dagger$ \\
+\texttt{hdiag} & diagonal-clock invariance & finite-model instantiation$^\dagger$ \\
+\texttt{hintegrable} & unipotent-kernel integrability & carrier-kernel decay$^\dagger$ \\
+\texttt{heigen} & unipotent eigenmove & explicit carrier move$^\dagger$ \\
+\texttt{hnontrivial} & eigenvalue $\neq 1$ & explicit carrier move$^\dagger$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent This table records the projected Mellin-inversion route.  The direct 3D tower route now
+bypasses its \texttt{hFE}/\texttt{hInversion} block and discharges the bank wiring itself.
+\texttt{ThreeDConverse.cpsTowerFunctoriality3D\_unified} constructs the actual two-chart bank state,
+proves the primal/dual weld identity from the all-height 3D reflection, obtains the diagonal and every
+transvection invariance through \texttt{towerBankInstance\_landing}, and proves that the resulting
+general-linear transports preserve the bank's exact zero predicate under identity and composition.
+The same capstone identifies both scalar fields of its \texttt{StrongFEPair} with the primal and
+contragredient 3D banks and includes their entirety, vertical-strip bounds, and functional equation;
+the prescribed Gamma-product projection is supplied by \texttt{CPSCompletionUnification3D}.  The
+explicit unipotent cancellation used for cuspidality remains the separate conclusion
+\texttt{unipotentConstantTerm\_eq\_zero}, as it should, rather than a hidden field of the functorial
+transport.  Classically, Poisson summation on $\mathbb A/\mathbb Q$ in Tate's
+thesis \cite{Tate} (Godement--Jacquet \cite{GJa} for higher-rank convolution) is the corresponding
+one-dimensional adelic readout; on the carrier the global equation is already the pointwise
+helix/anti-helix reflection of Theorem~\ref{thm:g8-reflected-completed-readout}.
+
+\begin{remark}[Register: the constructed Lean pair is a carrier-theta object]\label{rem:cps-carrier-register}
+The Lean strong functional-equation pair built for the all-place twisted symmetric-power Satake bank
+(\texttt{GlobalHelix.twistedSymmetricPowerCarrierStrongFEPair}; without self-duality,
+\texttt{GlobalHelix.cpsDualPairStrongFEPair}) is a \emph{carrier-theta object with a synthesized
+completion kernel} (\texttt{CarrierTheta.automaticCoefficientThetaStrongFEPair}). On its initial
+half-plane its completed $\Lambda$ equals the actual Satake Dirichlet series
+$\sum_n a_n(\Sym^r\pi\times\tau)(n+1)^{-s}$ times the Mellin transform of that synthesized kernel
+(\texttt{twistedSymmetricPowerCarrier\_initialIdentification}); its niceness --- entire, bounded in
+vertical strips, functional equation with $k=1$, $\varepsilon=1$ --- is automatic
+(\texttt{twistedSymmetricPowerCarrier\_twistedNiceness}).  The prescribed classical completion is
+now also present directly on the three-dimensional banks.  Given a positive conductor $C$ and a
+nonempty list of Deligne shifts $\{\mu_j\}$, Lean proves simultaneously that the primal 3D Mellin
+readout is
+\[
+ C^s\prod_j\Gamma_{\mathbb C}(s+\mu_j)
+   \sum_n a_n(W)(n+1)^{-s}
+\]
+and that the reciprocal-height contragredient 3D Mellin readout is the analogous completed dual
+series (\texttt{GlobalHelix.cpsPolynomialFullCompletion3D\_identification}).  This is an equality of
+the 3D bank projections themselves, not a postulated identification of two scalar functions.
+
+These clauses are now closed under the entire CPS twist range in one theorem over the actual
+polynomial radial Satake datum.  For every $1\leq m<r$ and every instance of
+\texttt{CPSPolynomialTwist},
+\texttt{GlobalHelix.cpsPolynomialAllTwists\_fullCompletion3D\_unified} keeps the same datum $W$
+through (i) the primal/contragredient radial 3D banks, (ii) their reciprocal-height reflection,
+(iii) both prescribed conductor/Gamma-product Mellin identifications, and (iv) the strong pair's
+entireness, dual entireness, two vertical-strip bounds, and global functional equation.  In
+particular, ``all twists,'' ``standard completion,'' and ``niceness'' are no longer three adjacent
+interfaces: they are fields of one quantified conclusion, with the initial-half-plane point and
+completion clock carried as typed data.
+
+The word ``actual'' here now has a separate coefficient-level theorem, rather than meaning only
+``an arbitrary bank with the correct rank.''  In \texttt{CPSArithmeticTwist3D}, a rank-two radial
+Satake pair $(\alpha_p,\beta_p)$ and a rank-$m$ twist $(\gamma_{p,k})$ construct the CPS bank with
+literal roots
+\[
+  \alpha_p^{\,r-j}\beta_p^{\,j}\gamma_{p,k}
+  \qquad(0\le j\le r,\ 1\le k\le m).
+\]
+Lean proves both the local numerator identity
+\texttt{arithmeticCPS\_localFactor\_identification} and the equality of every global Euler
+coefficient
+\texttt{arithmeticCPS\_globalCoefficient\_identification}, together with the contragredient
+version.  Thus the carrier bank used by the completion theorem is constructed from, and is
+definitionally equal coefficient-by-coefficient to, the twisted symmetric-power Euler datum; no
+post hoc equality between two unrelated degree-$(r+1)m$ banks is assumed.
+
+The reflection and analytic package are likewise assembled on one source, rather than inferred by
+identifying unrelated operators.  For every finite tensor--Euler exponent box, the single Lean
+theorem \texttt{GlobalHelix.finiteTensorEulerZeroMode3D\_unified} identifies the scalar field of one
+\texttt{StrongFEPair} with the actual 3D Euler bank, proves its exact reciprocal-height anti-helix
+reflection, identifies its entire Mellin transform with the truncated Euler readout times the fixed
+zero-mode completion multiplier, and proves both entire transforms, both vertical-strip bounds, and
+the global functional equation.  Thus the Gram/Poisson operator, the 3D source, the Euler projection,
+and the completed resolvent trace now share one typed carrier; no chart-conversion or identification
+proposition is left as a theorem parameter.  The place-by-place equality with the named automorphic
+local factors and root number remains the arithmetic content of Proposition~\ref{prop:localid}
+(local Langlands and Deligne \cite{Tate} for the $\varepsilon$-factors), while the carrier completion,
+reflection, and niceness are the compiled geometric construction.
+\end{remark}
+
+\paragraph{The GL(2) seed, closed on a genuine automorphic object.} The generator descent is
+exercised non-vacuously at the base of the tower. On the upper half plane, with its native ---
+and genuinely nontrivial --- $\mathrm{SL}(2,\mathbb Z)$ action, the weight-zero readout
+$z\mapsto (\Im z)^{k}\,\lVert f(z)\rVert^{2}$ of any level-one slash-invariant form $f$ of weight
+$k$ is $\mathrm{SL}(2,\mathbb Z)$-invariant, proved directly from Mathlib's modular transformation
+law $f(\gamma z)=(\text{denom}\,\gamma\,z)^{k}f(z)$
+(\texttt{CPSModularSeed3D.seedReadout\_invariant}) --- genuine automorphy arithmetic, not a
+synthesized completion. Invariance under the two modular generators $S,T$ alone then forces
+invariance under the whole group through the audited engine
+(\texttt{seedReadout\_invariant\_of\_ST}, via \texttt{readoutStabilizer} and Mathlib's
+$\langle S,T\rangle=\mathrm{SL}(2,\mathbb Z)$), and the composition
+(\texttt{seedReadout\_landing}) is the full converse landing for this object. The hypothesis class
+is inhabited by the level-one Eisenstein series $E_{k}$ ($k\ge3$); no cuspidality is claimed
+($E_{4}$ is not cuspidal), and none is needed --- the seed's content is Hecke's, that the two
+generators suffice.
+
+\paragraph{The tower, unified as a concrete 3D carrier functor.}  The entire carrier-side CPS
+functoriality chain is now one compiled statement,
+\texttt{ThreeDConverse.cpsTowerFunctoriality3D\_unified}.  Its state is the genuine two-chart
+Satake-bank state of \texttt{CPSTowerInstance3D}: a position vector together with one unitary
+Satake configuration.  At every finite place the same configuration first satisfies the general
+primal/contragredient local-polynomial reciprocity law, with its determinant factor retained
+(\texttt{GlobalHelix.cpsTensorWeight\_localReciprocity}).  At every positive radial height the
+same coefficients then satisfy the exact 3D helix/anti-helix reflection
+(\texttt{cpsDualPair3D\_globalHelixReflection}).  At the self-dual weld this reflection identifies
+the primal and contragredient charts, and the resulting readout is invariant under the full
+$\mathrm{GL}(n,K)$ action (\texttt{towerBankInstance\_landing}).
+
+The functoriality law is no longer an analogy with that action.  Lean defines the induced transport
+itself by
+\[
+ T_g(x):=g\cdot x,
+ \qquad
+ \operatorname{Cl}_{r,\alpha}(x):\Longleftrightarrow
+   \operatorname{Readout}_{r,\alpha}(x)=0,
+\]
+where the readout is the actual two-chart CPS bank.  The capstone proves
+\[
+ \operatorname{Readout}(T_gx)=\operatorname{Readout}(x),\qquad
+ T_1=\operatorname{id},\qquad T_{gh}=T_g\circ T_h,
+\]
+and proves both $T_g$ and every composite $T_g\circ T_h$ faithful for
+$\operatorname{Cl}_{r,\alpha}$.  Thus full tower landing, identity, composition, and exact focal
+closure preservation are conclusions about one typed 3D bank, not separately named wiring
+conditions.  The proof uses \texttt{CarrierFunctoriality.faithful\_comp} only after each concrete
+matrix transport has been proved faithful from the bank landing.
+
+The compiled claim map is:
+\[
+\begin{array}{c@{\quad\Longrightarrow\quad}c@{\quad\Longrightarrow\quad}c}
+\boxed{\substack{\text{local primal/dual reciprocity}\\
+  \texttt{cpsTensorWeight\_localReciprocity}}}
+&
+\boxed{\substack{\text{all-height 3D reflection}\\
+  \texttt{cpsDualPair3D\_globalHelixReflection}}}
+&
+\boxed{\substack{\text{full GL bank landing}\\
+  \texttt{towerBankTransport\_readout}}}
+\\[1.2em]
+\boxed{\substack{T_1=\mathrm{id},\;T_{gh}=T_g\circ T_h\\
+  \texttt{towerBankTransport\_functorial}}}
+&
+\boxed{\substack{\text{exact focal closure is preserved}\\
+  \texttt{towerBankTransport\_faithful}}}
+&
+\boxed{\substack{\text{entire pair, strip bounds, global FE}\\
+  \texttt{cpsTowerFunctoriality3D\_unified}}}.
+\end{array}
+\]
+Here \texttt{towerBankTransport\_functorial} is the named functor law itself: it universally
+quantifies $g,h$ and proves equality of endomorphisms, rather than equality only after choosing a
+bank state.
+
+The radial and distribution companion is likewise a single compiled carrier theorem,
+\texttt{CriticalLinePhasor.cpsRadialSatoTateGeometry3D\_unified}. On the same native conventions it
+accepts one \texttt{GlobalHelix.TowerCeilingStrand} containing a nonzero arithmetic strand together
+with the top- and bottom-strand tower ceilings,
+derives its radius to be one, and consequently proves its deprojected block is an isometry.  In
+the same conclusion the Archimedean exponent has no radial drift at any height, the helix point
+$(\cos\theta,\sin\theta,\theta)$ has unit transverse radius, its third coordinate is the global map
+$S(t)=\theta$, and the pushforward carrier measure is sent back by $S(t)$ to
+$\frac2\pi\sin^2\theta\,d\theta$ exactly. The Fourier moments are proved on that same
+three-dimensional probability measure; \texttt{angleMeasure\_apply\_univ} proves its total mass is
+one. Thus unit radius is an output of tower closure in the theorem signature, not an input to the
+radial capstone. These are statements about the native carrier and its projections;
+no obstruction belonging only to a one-dimensional zero chart is used in their signatures.
+
+Non-vacuity remains compiled: \texttt{chartReadout\_not\_invariant\_of\_ne} supplies a unit
+transvection that crosses the weld and separates any pair of chart values that disagree.  Hence the
+landing genuinely consumes the primal/contragredient reflection.  The completed analytic readout is
+part of the same capstone: it identifies the strong pair's primal and dual scalar fields with these
+two 3D banks and includes entirety, both vertical-strip bounds, and the functional equation.  The
+companion prescribed Gamma-product projection is
+\texttt{GlobalHelix.cpsPolynomialFullCompletion3D\_identification}.  The place-by-place naming of
+these compiled carrier factors as the automorphic local factors and root number is
+Proposition~\ref{prop:localid}
+(local Langlands and Deligne--Tate \cite{Tate}); it does not re-enter as a carrier invariance or
+transport hypothesis.  The same construction covers holomorphic and Maass input data without a
+branch in the 3D functoriality theorem.
+\endgroup
 
 \section{The radial limit: Ramanujan--Petersson and Selberg}\label{sec:radial-limit}
 
@@ -3253,6 +3833,29 @@ the ledger-normalized phase datum, unit-modulus by construction, never the radia
 then closes it.
 \end{proof}
 
+\begin{remark}[Phase shadow versus the open radial strand]
+The Lean carrier keeps these two coordinates separate. A
+\texttt{UnitaryPrimePhase} is the ledger-normalized angular coordinate, so
+\texttt{unitaryPrimePhase\_towerCeiling} proves its two-sided power ceiling and
+\texttt{unitaryPrimePhase\_strandBlock\_isometry} proves the associated transverse phase block is
+an isometry. This does not insert unit modulus into the arithmetic strand
+$\operatorname{diag}(\alpha_p,\alpha_p^{-1})$: that strand is the separate input of
+\texttt{RamanujanLimit}, and its radius is obtained above from the rank-uniform top and bottom
+ceilings by \texttt{strand\_radius\_one\_of\_tower\_ceiling}.  The capstone
+\texttt{cpsRadialSatoTateGeometry3D\_unified} now consumes exactly that raw strand and those two
+ceilings, exposes the derived radius-one equality, and then assembles it with the 3D phase geometry.
+Thus the two coordinates remain typed separately without placing the conclusion in the input.
+
+The arithmetic wiring is also explicit.  \texttt{ArithmeticSatakeTowerAtPrime} stores the actual
+top and bottom Satake coordinates of every identified symmetric-power rung and proves them equal to
+$\alpha_p^r$ and $\alpha_p^{-r}$.  Its common bound is the rank-independent
+Jacquet--Shalika constituent ceiling supplied after automorphy of the rungs.  The theorems
+\texttt{ArithmeticSatakeTowerAtPrime.radius\_one} and
+\texttt{ArithmeticSatakeTowerAtPrime.strandBlock\_isometry} then derive the arithmetic radius and
+the 3D transverse isometry.  Neither theorem mentions \texttt{UnitaryPrimePhase}; that structure is
+used only for the already-normalized angular shadow.
+\end{remark}
+
 \section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
 \begin{corollary}[Sato--Tate for Maass forms]\label{cor:satotate}
 Let $\pi$ be a non-dihedral cuspidal Maass form on $\mathrm{GL}(2)/\mathbb Q$ with trivial central
@@ -3269,6 +3872,51 @@ supported on the compact locus, conjugate into $\mathrm{SU}(2)$.
 $\tfrac2\pi\sin^2\theta\,d\theta$.
 \end{enumerate}
 \end{corollary}
+
+\begin{remark}[The Sato--Tate law on the native 3D carrier]
+Lean defines
+\[
+ h(\theta)=(\cos\theta,\sin\theta,\theta),\qquad
+ S(x_1,x_2,x_3)=x_3,\qquad \operatorname{tr}(x_1,x_2,x_3)=2x_1.
+\]
+It then defines \texttt{angleMeasure} with density
+$\frac2\pi\sin^2\theta$ on $[0,\pi]$ and
+\texttt{carrierMeasure}=\(h_*\)\texttt{angleMeasure}. The theorem
+\texttt{angleMeasure\_apply\_univ} proves that this density has total mass one, and the theorem
+\texttt{SatoTateCarrier3D.map\_globalCoordinate\_carrierMeasure} proves
+$S_*\texttt{carrierMeasure}=\texttt{angleMeasure}$, using the geometric identity
+$S\circ h=\mathrm{id}$. Theorems \texttt{traceMoment\_even},
+\texttt{traceMoment\_odd}, and \texttt{globalCoordinate\_fourierMoment} prove the Catalan,
+vanishing odd, and Fourier moment laws directly on the same helix. This is the
+three-dimensional distribution object used below; the prime-indexed arithmetic statement is the
+identification of the unramified classes with these carrier points followed by the global
+equidistribution argument, not a one-dimensional chart assumption.
+
+The prime empirical measures themselves are explicit in
+\texttt{CPSPrimeSatoTateConvergence3D}.  If $p_j$ is the canonical $j$-th prime and
+$\theta_{p_j}$ its Satake angle, Lean forms
+\[
+ \mu_N^\theta=\frac1{N+1}\sum_{j=0}^{N}\delta_{\theta_{p_j}},
+ \qquad
+ \mu_N^{(3)}=h_*\mu_N^\theta
+\]
+as genuine \texttt{ProbabilityMeasure}s: internally the first measure is the pushforward of the
+uniform law on \texttt{Fin (N+1)}, so no informal prime average is hidden in the notation.  The
+typed arithmetic datum \texttt{EmpiricalPrimeSatoTate} records weak convergence
+$\mu_N^\theta\Rightarrow\mu_{\rm ST}$.  Equivalently, the standard arithmetic boundary may be
+supplied as \texttt{PrimeSatoTateTestAverageInput}: for every bounded continuous test function,
+the literal averages $(N+1)^{-1}\sum_{j=0}^N f(\theta_{p_j})$ converge to the Sato--Tate integral.
+Lean proves that this sum is exactly the empirical-measure integral
+(\texttt{integral\_empiricalPrimeAngleMeasure}), constructs
+\texttt{EmpiricalPrimeSatoTate} from those test averages, and carries it directly to the carrier
+in \texttt{empiricalPrimeCarrierMeasure\_tendsto\_of\_testAverages}.  The theorem
+\texttt{empiricalPrimeCarrierMeasure\_tendsto} then proves
+$\mu_N^{(3)}\Rightarrow h_*\mu_{\rm ST}$, and the stronger theorem
+\texttt{empiricalPrimeCarrierMeasure\_tendsto\_iff} proves the converse as well.  The reverse
+direction follows from the continuous global coordinate $S\circ h=\mathrm{id}$.  Thus the
+standard arithmetic equidistribution input and its native 3D realization meet at an exact,
+machine-checked empirical-measure interface.
+\end{remark}
 
 \begin{proof}
 \emph{Automorphy of every symmetric power.} Corollary~\ref{cor:func234} holds for a Maass $\pi$ verbatim, the
@@ -3295,8 +3943,21 @@ power, exactly what $a_p=2\cos\theta_p$ would have presupposed.
 \emph{(ii) Equidistribution.} Now $\alpha_p=e^{i\theta_p}$, $\theta_p\in[0,\pi]$, $a_p=2\cos\theta_p$ real.
 From the carrier niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$ (Theorem~\ref{thm:cps-nice}), the positivity
 argument of Jacquet--Shalika \cite{JS} excludes a zero of any $L(s,\Sym^r\pi)$ on $\Re s=1$; with holomorphy
-on $\Re s\ge1$, Serre's criterion \cite{Serre} equidistributes the $\theta_p$ against
-$\tfrac2\pi\sin^2\theta\,d\theta$. This case is out of reach of automorphy lifting --- a Maass form carries no
+on $\Re s\ge1$, the logarithmic Euler expansion and the prime number theorem applied to each nontrivial
+$\mathrm{SU}(2)$ character give
+\[
+  \frac1{\pi(X)}\sum_{p\le X}U_r(\cos\theta_p)\longrightarrow0
+  \qquad(r\ge1).
+\]
+These are not assumed continuous-test averages: they are the prime character averages read from the
+identified $L(s,\Sym^r\pi)$.  The characters $U_r$ span the polynomial class functions and are uniformly
+dense in the continuous class functions on the compact conjugacy-class interval (Peter--Weyl, equivalently
+Stone--Weierstrass).  Since the Sato--Tate law has character integrals $0$ for $r\ge1$ and mass $1$ for
+$r=0$, Serre's criterion \cite{Serre} therefore yields weak convergence of the empirical prime measures to
+$\tfrac2\pi\sin^2\theta\,d\theta$.  The Lean theorem
+\texttt{integral\_empiricalPrimeAngleMeasure} identifies the resulting literal prime averages with the
+probability-measure integrals, and the continuous mapping theorem then moves this already-derived
+arithmetic convergence to the native 3D carrier. This case is out of reach of automorphy lifting --- a Maass form carries no
 geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and the carrier, needing none,
 proves it.
 \end{proof}
@@ -3855,25 +4516,24 @@ correctly excising the pole (\texttt{eta\_strip\_tendsto}). This is a genuine an
 machine-checked, with no remainder: the finite harmonic cells (the $\mu_6$ buckets) cancel exactly.
 
 For a general fiber the ordinary coefficients $a_W(n)$ are not periodic, so their bare partial sums need
-not be bounded --- but the continuation is performed \emph{in the carrier gauge}, not the projected
-coordinate. The deterministic unit-modulus warp $\omega_W(n)$ induced by the clock/fiber coupling closes
-the cell, $\sum_{n\in\mathrm{cell}}a_W(n)\,\omega_W(n)=0$, so the warped primitive
-$\sum_{n\le N}a_W(n)\,\omega_W(n)=O(1)$ exactly as in the character case; Abel summation \emph{in that
-gauge} continues the warped series to $\Re s>0$, and the inverse-warp readout --- $a_W(n)\,n^{-s}=
-\bigl(a_W(n)\,\omega_W(n)\bigr)\,K_W(s,n)$ with $K_W$ the completion clock kernel, so
-$\mathrm{readout}\circ\mathrm{warp}$ is the ordinary twisted Dirichlet datum --- transfers that
-continuation to $L(s,W)$. This is the global instance of the exact gauge of Part~I: bad oscillatory
-coordinate $\to$ exact deterministic gauge $\to$ bounded real harmonic $\to$ restored readout. These are properties of the construction, not obligations to be met: the warp is unit-modulus and
-cell-exact by the deterministic clock/fiber coupling (closed form, not asymptotic;
-\texttt{ForcibleClosure.residual\_forcible}, \texttt{CarrierReachability.reachable\_independent\_stage});
-the warped primitive is bounded by the cell identity; the warped series agrees with the Euler datum
-on $\Re s>1$ term by term; and the tensor $W_1\otimes W_2$ is again a fiber with the det-one link
-preserved (\texttt{tensorFiber}, \texttt{tensorFiber\_det\_one}). The change of coordinate is a
-change of \emph{scale} --- the cell closes at the fiber's own harmonic scale --- so the inverse-warp
-readout preserves the value as registration bookkeeping (\S\ref{sec:carrier-S}). The transfer of the
-continuation, together with its analyticity, is machine-checked in full
-(\texttt{TransferContinuation.transfer\_analytic}); the Dirichlet family is the fully machine-checked
-end-to-end instance.
+not be bounded.  A deterministic unit-modulus warp $\omega_W(n)$ may close cells and make the \emph{warped}
+primitive $\sum_{n<N}a_W(n)\omega_W(n)$ bounded.  The formal theorem
+\texttt{TransferContinuation.transfer\_analytic} then continues the Dirichlet series whose coefficients are
+$a_W(n)\omega_W(n)$; it does not remove the $n$-dependent warp.  Removing it by summation by parts requires
+the full inverse kernel
+\[
+ K_W(s,n)=\omega_W(n)^{-1}(n+1)^{-s}
+\]
+to satisfy a summable first-difference condition against the warped primitive, together with a vanishing
+boundary term.  The exact kernel-level statement is
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto}.  Unit modulus and cell closure alone do
+not imply its first-difference hypothesis: the compiled separating instance
+\texttt{InverseWarpTransferAudit.unwarped\_half\_not\_summable} uses the constant coefficient bank and the
+period-two unit warp.  Thus \texttt{ForcibleClosure.residual\_forcible} and
+\texttt{CarrierReachability.reachable\_independent\_stage} establish cell controllability, while an
+application to the ordinary twisted readout must additionally discharge the inverse-kernel hypotheses (or
+construct the fixed-completion carrier theta and its global reflection directly).  The Dirichlet family is
+the end-to-end instance where the required analytic recovery is separately available.
 
 The completed function $\Lambda(s)=\gamma(s)L(s)$ and the \emph{global} functional equation are then,
 \emph{classically}, the standard Tate \cite{Tate}/Godement--Jacquet \cite{GJa} assembly of the per-place
@@ -3881,10 +4541,11 @@ det-one links by Poisson summation on $\mathbb A/\mathbb Q$ --- the route availa
 on the carrier the same equation is the axis-reality reflection of Lemma~\ref{lem:bankreflection}, which
 consumes no Poisson summation.
 
-\paragraph{Boundedness and completeness.} Two inputs, both discharged in the construct.
+\paragraph{Boundedness and completeness.} The two analytic inputs are separated as follows.
 \emph{Bounded in vertical strips}: this is the vertical-growth companion of the warped-Abel continuation,
 not a compactness statement. Summation by parts against the bounded warped primitive
-$A^{\mathrm{car}}_W(x)=\sum_{n\le x}a_W(n)\,\omega_W(n)=O(1)$ gives, on $\Re s>0$, the representation
+$A^{\mathrm{car}}_W(x)=\sum_{n\le x}a_W(n)\,\omega_W(n)=O(1)$ gives, once the inverse-kernel difference and
+boundary conditions above are verified, the representation
 $L(s,W)=s\int_1^\infty A^{\mathrm{car}}_W(x)\,K_W(s,x)\,\tfrac{dx}{x}$, whose kernel carries the explicit
 $s$-dependence; the resulting bound is polynomial in $|t|$, $|L(\sigma+it)|\ll(1+|t|)^{A}$ uniformly on
 $\delta\le\sigma\le B$. With the functional equation supplying the reflected strip, this polynomial growth
@@ -4150,8 +4811,10 @@ zero-frequency projection of the warped bank vanishes); for the cuspidal twists 
 (Lemma~\ref{lem:completeness}): the DC/residue mode is the coefficient mean, which by character orthogonality
 (\texttt{harmonize\_char}) equals the \emph{trivial-channel} coefficient alone; a complete fiber has no
 trivial channel --- for non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\tau$ has no trivial
-constituent by the dimension count $\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$
-(\texttt{no\_nonzero\_hom\_of\_finrank\_lt}) --- so $R_{r,\tau}=0$ and no constant mode survives to carry a
+constituent because an equivariant map $\varphi_\tau^\vee\to\Sym^r\varphi_\pi$ into the simple target
+is zero: a nonzero image would be the whole target, and only at that point does
+$\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$ contradict surjectivity
+(\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}) --- so $R_{r,\tau}=0$ and no constant mode survives to carry a
 pole. (The pencil rank-drop of Lemma~\ref{lem:rankgap} is the separate zero-detector, not this residue.)
 Either route uses no global parameter and no coefficient-average-to-multiplicity step, and is Galois-free.
 \emph{(E5) Identification.} $\mathcal M K_{r,\tau}(s)=\Lambda(s,\Sym^r\pi\times\tau)$ on $\Re s>1$, by
@@ -4159,28 +4822,201 @@ term-by-term unfolding against the local factors of Prop.~\ref{prop:localid} ---
 entire transform is built, never to assert continuation of the $L$-function. By the identity theorem
 $\Lambda$ extends to the entire $\mathcal C$. This is Mathlib-complete for the Dirichlet model
 (\texttt{completedRiemannZeta}, \texttt{completedLFunction}). The two structural ingredients are not open
-analytic mysteries: the reflection \textup{(E1)} is a property of the \emph{carrier geometry} --- the
-helix--anti-helix conjugation fixed at $\Re s=\tfrac12$, the \emph{natural} functional equation, per-place
-the proven \texttt{FiniteWeightFiber.localPoly\_reciprocal}, invariant under the dual-compatible unit warps
-(\texttt{warpFiber}), and globally the carrier's own theta self-duality (\S\ref{sec:machinery}), with the
-tunable FE clock of \S\ref{sec:general} supplying the adjustment wherever a warp or non-self-duality
-perturbs the closure --- needing no automorphy of the fiber; and the identification \textup{(E5)} is the
-readout of Prop.~\ref{prop:localid}. The remaining input splits by fiber class. For a finite duality-stable
+formal interfaces: the fixed-kernel identification \textup{(E5)} on the initial half-plane is
+\texttt{CarrierTheta.theta\_hasMellin\_of\_polynomial}.  The reflection \textup{(E1)} of the \emph{same
+global coefficient theta} is a separate statement: per-place
+\texttt{FiniteWeightFiber.localPoly\_reciprocal}, the coordinate involution, and a tunable FE clock do not
+alone identify the summed primal bank with its transformed anti-helix bank.  At the 3D interface it is exactly
+the odd-channel extinction characterized by
+\texttt{GlobalHelix.fixedBankOddChannel\_eq\_zero\_iff\_theta\_reflection}. The remaining input splits by fiber class. For a finite duality-stable
 harmonic fiber the carrier-cell closure of Lemma~\ref{lem:residual} discharges simultaneously the residual
 vanishing \textup{(E4)}, the bounded warped primitive $A^{\mathrm{car}}_W=O(1)$, the continuation, and the
 vertical bound --- \emph{proved in Lean} (\texttt{CellClosure.harmonic\_bank\_primitive\_bounded}: each
 root-of-unity weight channel cancels over its cell), the Dirichlet family included. For the cuspidal twists a
 converse theorem consumes, the residual vanishing \textup{(E4)} is instead the \emph{unconditional}
-completeness argument of Lemma~\ref{lem:completeness}; continuation to the axis neighbourhood is continuation at the
-fiber's own scale --- the adapted closure of Lemma~\ref{lem:forcible} closes the cells at that scale, the
-primitive there is bounded by identity, and the machine-checked transfer (Lemma~\ref{lem:transfer};
-\texttt{transfer\_analytic}) carries the readout to the axis neighbourhood --- feeding the axis-reality
-functional equation (Lemma~\ref{lem:bankreflection}); and full entireness then comes from the entire reflected carrier theta
+completeness argument of Lemma~\ref{lem:completeness}; continuation to the axis neighbourhood then requires
+the raw primitive bound of Lemma~\ref{lem:transfer}, the inverse-kernel hypotheses of
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto}, or the fixed-theta reflection just
+isolated.  Under that continuation and reflection input, full entireness comes from the entire reflected carrier theta
 (\textup{(E1)--(E3),(E5)} with $R_{r,\tau}=0$) together with Phragm\'en--Lindel\"of across the functional
 equation \textup{(E1)}. Machine-checked at the general finite
 duality-stable interface (\S\ref{sec:converse}) are the local reflection algebra and the
 completed-reflection assembly (\texttt{FiniteWeightFiber.CompletedReflection.completed\_FE}).
 \end{proof}
+
+\subsection{The symmetric-power functoriality cancellation at \texorpdfstring{$r=2$}{r=2}: compiled to the Perron input}\label{sec:aristotle-rs}
+
+The proposition above builds the completed transform $\Lambda(s,\Sym^r\pi\times\tau)$ from the
+carrier theta. The sharper analytic statement that makes that transform \emph{productive} --- and
+which a hostile review isolated as the crux to attack directly --- is the summatory cancellation
+\[
+  \sum_{n\le x}\lambda_n(\Sym^r\pi\times\tau)=O(x^\theta),\qquad \theta<\kappa/2,
+\]
+with the test weight $\omega_W$ explicit, a bound far below the trivial $O(x^{r/2+1+\epsilon})$
+obtained by summing the per-term Euler bound $\lambda_n=O(n^{r/2+\epsilon})$.
+
+The reduction is \emph{$r$-uniform} and is exactly the rung-by-rung law of
+\S\ref{sec:machinery}: the cancellation at rung $r$ is equivalent to that rung's fixed-kernel
+functional equation $K_{r,\tau}(1/x)=\varepsilon x^{\kappa}K_{r,\tau}(x)$, which delivers the
+meromorphic continuation, and Perron's formula then converts continuation into the summatory
+bound. This is the same argument at every $r$; only the discharge of the fixed-kernel FE is
+rung-specific. The Lean capstone \texttt{symr\_functoriality\_cancellation} states this reduction
+over an abstract coefficient sequence and archimedean parameter $\kappa$, with the two inputs
+--- the rung continuation and the Perron/Tauberian transfer --- named explicitly.
+
+\paragraph{The weld is free on the dual-helix; Poisson lives in the projection.} The fixed-kernel
+FE $K(1/x)=\varepsilon x^{\kappa}K(x)$ is not, on the carrier, an analytic identity to be proved:
+it is a \emph{structural} property of the double-ended construction (\S\ref{sec:common-carrier}).
+The carrier carries a primal helix and its conjugate anti-helix; the weld is exactly the statement
+that the primal bank equals the reflected anti-helix bank, and the inversion $x\mapsto1/x$ (the
+modular $S$) maps one leg to the other by construction. The primal leg carries the lattice and the
+anti-leg its dual, so the weld is the identity ``self-dual lattice $=$ its own dual'' --- free for
+$\mathbb Z,\mathbb Z^2$ --- and the phasor growth profile is reflection-symmetric by the same
+double-ended construction, so the kernel side is free as well. \emph{Poisson summation does not
+live on the carrier}: projecting to the readout axis collapses the two helices onto one line and
+hides the symmetry, and Poisson is precisely the $1$D analytic reconstruction of a weld that was
+manifest in $3$D. Treating ``you need Poisson'' as an input is the Ground-Rule-$4$ error one level
+up --- importing a projection-chart artifact as a requirement. Our $r=2$ Lean routes through
+Mathlib's Poisson-based \texttt{jacobiTheta} because it validates the $1$D readout against the
+classical Epstein object; the \emph{carrier} reason the weld holds is the free dual-helix
+self-duality, and that is the mechanism that generalizes. Across the ladder:
+\begin{itemize}
+\item $r=1$ (abelian): the weld reads out in $1$D as Gauss/Poisson (the one-variable theta);
+\item $r=2$ ($\Sym^2$): the fixed kernel is the \emph{Gaussian--lattice/Epstein} theta, whose
+weld reads out as Poisson summation on $\mathbb Z^2$ --- \emph{compiled unconditionally in Lean}
+on the existing Mathlib \texttt{jacobiTheta}/\texttt{WeakFEPair} substrate;
+\item $r=3,4$: functoriality is known (Kim--Shahidi), but the classical kernel is
+Langlands--Shahidi, not an elementary lattice theta --- compilable in principle, not yet compiled;
+\item $r\ge5$: no classical lattice theta exists --- and here the carrier changes the problem
+entirely. Classically $r\ge5$ is blocked because the FE of $\Lambda(s,\Sym^r\pi)$ requires
+$\Sym^r\pi$ to be automorphic (functoriality itself). On the carrier, \emph{two} of the three
+classical difficulties are already dissolved: the weld/FE is structural (free from the dual-helix,
+above), and the identification of the readout with $\Lambda(s,\Sym^r\pi\times\tau)$ is
+\emph{generic}. The identification is generic for a concrete reason --- it is the coherence law of
+\S\ref{sec:common-carrier-architecture} realized on the admissible set. The carrier kernel is a
+\emph{universal machine} on the admissible fibers (\S\ref{sec:general},
+\S\ref{sec:transport-machine}), and $\Sym^r\pi\times\tau$ is admissible (a finite duality-stable
+datum). Two properties then preserve the $1$D readout for \emph{every} such fiber:
+\emph{(a)} \emph{carrier scaling is readout-preserving} --- different carrier scales represent the
+same arithmetic procession, the harmonic $3$D unit ($\tfrac{\pi}{3}$) relating to the value-one
+$1$D chart by the fixed carrier-unit-scale relation, so the projected $L$-function is invariant
+under the scaling and ledgered projection has an exact round trip
+(\S\ref{sec:ledgered-projection}, \S\ref{sec:st}); and \emph{(b)} \emph{harmonization} sets the one
+universal kernel to the fiber's nature (read the projected function, let it name the
+scale/adapters/clocks so the ensemble closes). Together these are exactly
+``functoriality is the coherence of the normalization under source change'': the same universal
+machine, harmonized to each admissible fiber and projected at a readout-preserving carrier scale,
+so
+$\mathcal M K_{r,\tau}=\Lambda(s,\Sym^r\pi\times\tau)$ holds \emph{by the same argument} at every
+$r$ (E5, \texttt{CarrierTheta.theta\_hasMellin\_of\_polynomial}). This is not per-$L$-function and
+\emph{not} restricted to Dirichlet: the Dirichlet model
+(\texttt{completedRiemannZeta}, \texttt{completedLFunction}) is only where Mathlib supplies an
+independent oracle to cross-check against --- an anchor, not the scope --- and the compiled $r=2$
+rung is itself non-Dirichlet, the Sym$^2$ Rankin--Selberg of a general weight-$k$ cusp form.
+Admissibility also supplies the polynomial coefficient bound $\lambda_n=O(n^{r/2+\epsilon})$
+(\S\ref{sec:structured-source-state}), so the convergence of the Dirichlet series --- the input
+Perron consumes --- is free, not a separate estimate. The meromorphic continuation therefore
+follows generically at every $r$. What is genuinely per-rung is
+\emph{narrower} than construction-plus-identification: instantiating the geometric bank (the
+Siegel theta on $\mathrm{Sp}(2g,\mathbb Z)$, the Godement--Jacquet $\mathrm{GL}(r{+}1,\mathbb Z)$
+``$\Sym^r$ engine'' verified to machine zero in the tower-atlas work, \S\ref{sec:carrier}) with its
+\emph{arithmetic input} --- the Satake/Frobenius data $\theta^{e}$ feeding the local factors, the
+arithmetic frontier --- and the residual vanishing E4 (completeness for non-exceptional $\pi$).
+Perron remains the $r$-uniform gap. The reason $r=2$ is the \emph{compiled} rung is not that the
+higher rungs lack the weld or the identification --- they have both generically --- but that its
+arithmetic input ($\lVert a_n\rVert^2$, the Rankin square) and kernel are elementary and
+Mathlib-adjacent, so the entire chain machine-checks. That is the carrier passing \emph{beyond}
+Langlands--Shahidi, not a classical dead end; the $r=2$ rung is the proof of concept that the
+generic weld and identification can be turned, on one rung, into a fully machine-checked
+functional equation and continuation.
+\end{itemize}
+We now record what the carrier proves for the compiled $r=2$ rung --- the first rung where the
+fixed-kernel FE is turned into a machine-checked theorem, the template for the ladder --- and
+the single classical input on which the cancellation rests at every $r$. Here $\pi$ is the
+representation of a level-one holomorphic cusp form $f$ of weight $k$ (so $\kappa=k$),
+$\tau=\mathbf 1$, and $r=2$.
+
+\paragraph{The fiber and the explicit weight.} The $\Sym^2$ coefficients are the
+M\"obius-normalized Rankin square $\lambda_n=(\mu\star\lVert a\rVert^2)(n)$
+(\texttt{MoebiusTransfer.rankinSquare}; \texttt{rankin\_sym2\_transfer} is the definitional
+$\zeta$-peel $L(\lVert a\rVert^2,s)=\zeta(s)\,L(\lambda,s)$, no Hecke-operator theory). The weight
+$\omega_W$ is \emph{explicit}: the invariant Petersson density read against the Eisenstein height,
+\[
+  \omega_W(z,s)=P(z)\,(\Im z)^{s},\qquad P(z)=(\Im z)^{k}\,\lvert f(z)\rvert^2 ,
+\]
+and its integral over the modular fundamental domain \emph{is} the completed series
+(\texttt{rs\_master}):
+\[
+  \int_{\mathcal D} P(z)\,\Lambda_z(s)\,d\mu(z)
+   =\Gamma(s)\,\pi^{-s}\,2\zeta(2s)\,\Gamma(s+k-1)\,
+    \sum_{n\ge1}\frac{\lVert a_n\rVert^2}{(4\pi n)^{s+k-1}},
+    \qquad \Re s>2,
+\]
+where $\Lambda_z$ is the completed Epstein kernel of the carrier's lattice phasor bank at $z$ and
+$d\mu=dx\,dy/y^2$ the invariant measure.
+
+\paragraph{What the carrier proves, unconditionally.} Every analytic ingredient of the
+continuation is machine-checked at the standard axiom footprint
+$\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$, with no \texttt{sorry}
+and no RH/GRH:
+\begin{itemize}
+\item the lattice bank $\Theta_z(t)=\sum_{p\in\mathbb Z^2}e^{-\pi t\,\mathrm{gram}(z,p)}$ carries
+the weld reflection $\Theta_z(1/t)=t\,\Theta_z(t)$ at \emph{every} $z\in\mathbb H$
+(\texttt{latticeTheta\_inv}), whence its Epstein kernel $\Lambda_z$ continues to
+$\mathbb C\setminus\{0,1\}$ with functional equation $\Lambda_z(1-s)=\Lambda_z(s)$
+(\texttt{generalEpsteinLambda\_differentiableAt}, \texttt{\_functional\_equation});
+\item the Rankin--Selberg unfolding is a compiled identity, not an appeal: the vertical strip and
+the coset tiling of $\mathcal D$ are both fundamental domains of the translation subgroup
+(\texttt{isFundamentalDomain\_strip}, \texttt{isFundamentalDomain\_fdUnion}), so
+$\int_{\mathcal D}\omega_W\,\Lambda_z$ equals the strip integral, which by Fubini and the
+\emph{exact} Parseval energy identity (\texttt{rankin\_energy\_exact}) is the Mellin transform of
+the smoothed second moment --- the displayed \texttt{rs\_master} equation;
+\item the poles sit exactly on the DC channel: $\Lambda_z(s)=\Lambda_z^{0}(s)-1/s-1/(1-s)$ with
+$\Lambda_z^{0}$ entire, so the completed series is meromorphic with simple poles only at
+$s\in\{0,1\}$, residue the Petersson norm $\int_{\mathcal D}P\,d\mu$ (\texttt{lambda\_pole\_split},
+\texttt{lambda\_residue\_one}, \texttt{lambda\_residue\_zero}) --- rank-is-DC-residue at the
+Rankin--Selberg level;
+\item the holomorphy of the entire part $s\mapsto\int_{\mathcal D}P\,\Lambda_z^{0}(s)\,d\mu$ is
+reduced to a single decay estimate, itself compiled: the $\mathcal D$-averaged tail
+$G(t)=\int_{\mathcal D}P(z)\,(\Theta_z(t)-1)\,d\mu$ decays faster than every power, by the
+$y\sim\sqrt t$ saddle $e^{-2\pi y}\,e^{-3\pi t/8y}\le e^{-\pi y}\,e^{-\pi\sqrt{3t/2}}$
+(\texttt{amgm\_saddle}, \texttt{ptwise\_bound}, \texttt{exp\_sqrt\_isBigO}) integrated against the
+\emph{finite} fundamental-domain measure (\texttt{volume\_fd\_lt\_top}); the residual passage
+$\int_{\mathcal D}P\,\mathcal M[\Theta_z-1]=\mathcal M G$ is Fubini and $\mathcal M G$ is then
+entire by Mathlib's \texttt{mellin\_differentiableAt\_of\_isBigO\_rpow} --- routine and
+dominant-in-hand, not an open obstruction.
+\end{itemize}
+
+\paragraph{The one classical input.} What remains is the passage from this continued Dirichlet
+series to the summatory bound: Perron's formula plus a contour shift past the pole line. It is
+classical and standard in analytic number theory, and not presently in Mathlib. We isolate it as a
+single named hypothesis $\mathrm{PerronTauberian}(\lambda,\theta):=\exists\,C\ge0,\
+\forall x\ge1,\ \lvert\sum_{n\le x}\lambda_n\rvert\le C\,x^\theta$ and cite it as literature
+pending formalization. The capstone
+\[
+  \texttt{sym2\_functoriality\_cancellation}:\qquad
+  \theta<\tfrac k2,\ \ \mathrm{PerronTauberian}(\lambda,\theta)\ \Longrightarrow\
+  \sum_{n\le x}\lambda_n=O(x^\theta)
+\]
+is machine-checked at the standard footprint; every hypothesis except $\mathrm{PerronTauberian}$
+is discharged by the compiled continuation above. This is the honest reduction of the
+cancellation: for $r=2$ the carrier genuinely proves the analytic engine --- continuation,
+functional equation, explicit poles, tail decay, finite measure --- and the whole game rests on
+one
+classical, Mathlib-absent Tauberian step, with $\omega_W$ made explicit as the
+Petersson--Eisenstein density. The $r\ge5$ rungs remain open exactly where the fixed-kernel
+functional equation is not yet a compiled carrier fact; $r=2$ closes because its kernel is the
+Gaussian--lattice weld above.
+
+\paragraph{Three-dimensional reading.} $\omega_W$ is the carrier's phasor-bank density $P$ read
+against the Eisenstein clock $(\Im z)^s$; the continuation is the weld reflection of the bank
+$\Theta_z(1/t)=t\,\Theta_z(t)$ transported through the Mellin projection; the poles at
+$s\in\{0,1\}$ are the DC channel of the bank carrying the Petersson norm as residue. The abscissa
+$\Re s>1$ of the projected Dirichlet series is the chart artifact where the readout stops
+converging, not a barrier on the carrier: the bank's phasors enter at height zero and grow with no
+convergence gate (Ground rule~4). The cancellation is thus a 3D statement --- exact tail decay of
+the phasor bank averaged against the invariant density --- whose 1D shadow is the summatory
+bound the review isolated as the crux.
 
 \begin{remark}[The niceness assembly, explicitly]\label{rem:niceness-assembly}
 The proof above composes machine-checked carrier facts into niceness; we record the composition as an
@@ -4350,10 +5186,11 @@ mode of the bank, i.e.\ its \emph{coefficient mean}. Every \emph{nontrivial} cha
 cell has zero cell-mean (\texttt{CommonRepresentation.harmonize\_char}), so $R_{r,\tau}$ equals the
 \emph{trivial-channel coefficient alone} (\texttt{complete\_bank\_dc\_zero}). Hence if $W_{r,\tau}$ carries
 \emph{no trivial channel} --- \emph{completeness} --- then $R_{r,\tau}=0$ and $\Lambda(s,\Sym^r\pi\times\tau)$ is
-entire. For non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\tau$ has no trivial constituent
-whenever $\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$
-(\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}, a dimension count --- no automorphy of $\Sym^r\pi$
-used), so $W_{r,\tau}$ is complete and the twist is entire. The exceptional/reducible $\pi$ carry a genuine
+entire. For non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\tau$ has no trivial constituent:
+the relevant map $\varphi_\tau^\vee\to\Sym^r\varphi_\pi$ is a morphism for the parameter-group action,
+and simplicity makes every nonzero morphism surjective; the strict rank inequality then rules it out
+(\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}; the bundled Schur form is
+\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_not\_unit}).  Thus $W_{r,\tau}$ is complete and the twist is entire. The exceptional/reducible $\pi$ carry a genuine
 trivial constituent --- the classical $\zeta$-factor pole --- and $\Sym^r\pi$ is then the known isobaric object
 (\S\ref{sec:cps-decomp}).
 \end{lemma}
@@ -4385,12 +5222,12 @@ $R_{r,\tau}=0$ (\texttt{cell\_closure\_dc\_mode\_zero}). The Dirichlet character
 the $\chi_3$ archetype of \S\ref{sec:carrier} included --- are the classical instances
 (\texttt{dirichlet\_cell\_closure}, recovering \texttt{character\_partialSum\_norm\_le}). A cuspidal fiber,
 whose Satake angles are not roots of unity, is not in this harmonic class: at the \emph{base} scale its
-cells do not close. At its \emph{own} harmonic scale they do --- the scale stage refines the carrier until
-every channel is resolved (\S\ref{sec:pipeline}) and the closure is exact, in closed form
-(\texttt{ForcibleClosure.residual\_forcible}) --- so the primitive at that scale is bounded by identity,
-and the machine-checked transfer (Lemma~\ref{lem:transfer}; \texttt{transfer\_analytic}) places both
-completed readouts on an open strip containing the weld axis, presupposing neither automorphy nor the
-functional equation; machine-checked end-to-end for the character classes
+cells do not close. At its \emph{own} harmonic scale the controllability theorem
+\texttt{ForcibleClosure.residual\_forcible} can close an individual residual once two independent correction
+directions are supplied.  This does not show that the ordinary coefficient primitive is bounded or that an
+$n$-dependent inverse warp has summable variation.  Placing both ordinary completed readouts on an open strip
+therefore requires the raw primitive hypothesis of Lemma~\ref{lem:transfer} or the kernel hypotheses of
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto}; machine-checked end-to-end for the character classes
 (\texttt{dirichlet\_strip\_tendsto\_LFunction}), classical for holomorphic $\mathrm{GL}(2)$, and
 independently evidenced by the discriminating instruments (the oracle-free critical-line readout to
 $2\times10^{-16}$, the growth locator to $10^{-12}$, the FE closures, App.~\ref{app:repro}). Warp controllability itself (Lemma~\ref{lem:forcible}) contributes only the
@@ -4442,12 +5279,14 @@ independent stage, not cell by cell, behind the structural rank-drop. \emph{Scop
 controllability is arithmetic-\emph{neutral} --- \texttt{residual\_forcible} consumes no arithmetic, closing
 cells for every admissible fiber --- so it is the \emph{transport} half of the architecture, consumed by
 universality (Cor.~\ref{cor:sync}, Thm.~\ref{thm:universal}\,(c)) and by the adapter suite, \emph{not} niceness
-evidence; within niceness its sole role is to book the adapted primitive, the arithmetic entering through the
-inverse-warp transfer of \S\ref{sec:construct}. Both of its formal legs are already proved
-(\texttt{ForcibleClosure.residual\_forcible}, \texttt{CarrierReachability.reachable\_independent\_stage}); a
+evidence; within niceness its role is to book the per-cell correction, while the arithmetic enters through the
+inverse-warp transfer of \S\ref{sec:construct}. Its controllability and reachability legs are proved
+(\texttt{ForcibleClosure.residual\_forcible}, \texttt{CarrierReachability.reachable\_independent\_stage});
+the inverse-kernel summability and boundary legs are separately exposed by
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto}. A
 universal bounded-weight per-cell claim would be false on the rank-deficient locus and, being
-arithmetic-neutral, needs no strengthening for the chain. The boundary is sharp, and not where a first reading places it. \emph{Entireness itself is
-unconditional}: the residual factorization $D_C=V\,\Phi$ with $V\neq0$ --- the Gram-pencil rank-drop leaving no
+arithmetic-neutral, needs no strengthening for the chain. The boundary is sharp, and not where a first reading places it. \emph{The residual factorization is
+unconditional}: $D_C=V\,\Phi$ with $V\neq0$ --- the Gram-pencil rank-drop leaving no
 zero-frequency mode independent of the readout --- is a channel-agnostic identity in $(A,B,\mu,\lambda)$,
 machine-checked in Lean for arbitrary channels
 (\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode} and instantiated end-to-end for the
@@ -4476,8 +5315,9 @@ all their composites, tensors, and base changes. Composition alone --- multiplic
 the prime degrees, but the \emph{tensor} is additive: Clebsch--Gordan gives $\pi\otimes\Sym^{r-1}\pi=\Sym^r\oplus
 \Sym^{r-2}$, so \emph{every} $\Sym^r$ is the top block of $\pi\otimes\Sym^{r-1}$, its lower block $\Sym^{r-2}$
 inductive (\texttt{composition\_test.py}). The whole tower is reachable --- there is no degree wall. (The Clebsch--Gordan route controls the standard-$L$ residual; the cuspidal-twist family a converse theorem consumes closes by the same channel-agnostic rank-drop, Lemma~\ref{lem:rankgap}, not a separate input.) Along the
-induction the pole is dimensionally clean, $\Sym^r\otimes\tau$ carrying no trivial constituent for
-$\dim\tau<\dim\Sym^r$ (\texttt{TrivialChannel.no\_nonzero\_hom\_of\_finrank\_lt}); and the carrier builds the readout as the Mellin of an
+induction the pole channel is representation-theoretically clean: for simple $\Sym^r$, an equivariant
+$\tau^\vee\to\Sym^r$ is zero when $\dim\tau<\dim\Sym^r$
+(\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}); and the carrier builds the readout as the Mellin of an
 \emph{entire} theta, not a quotient of $L$-functions, so the classical strip-pole obstruction of block extraction
 does not arise. The closure is a finite carrier event: the constant mode $R=\lim_N A^{\mathrm{car}}(N)/N$ of the transported
 cuspidal fiber, extinguished by the forcible cell closure above (Lemma~\ref{lem:forcible}); the
@@ -4669,6 +5509,17 @@ the classical theta identity $\theta(Y^{-1})=\det(Y)^{1/2}\theta(Y)$ of \S\ref{s
 shadow of $J$.
 \end{proof}
 
+\noindent\emph{Formal scope of the concluding identity.}
+The cited Lean intertwiners prove the involution, lossless coordinate ledger, clock exchange, and logarithmic
+inversion for a carrier function already obeying the exchange law.  They do not identify the fixed-kernel
+global coefficient theta
+$\sum_n\lambda_n g((n+1)x)$ with its transformed anti-helix bank for arbitrary Satake coefficients.
+At the coefficient-theta interface this distinction is explicit in
+\texttt{GlobalHelix.fixedBankOddChannel\_eq\_zero\_iff\_theta\_reflection}: vanishing of the odd 3D channel
+is exactly the required global theta reflection, rather than a consequence of the coordinate involution
+alone.  Consequently the displayed completed-readout identity applies to the actual twisted $L$-function
+after that odd-channel/global-reflection statement and the Mellin identification are both supplied.
+
 \noindent\emph{The unit circle is a projection surface, not a unitarity claim.} A point of the 2D chart lies
 on $S^1$ because it is the \emph{phase} projection of the source datum $\alpha=\rho\,e^{i\theta}$; the radial
 magnitude $\rho$ is \emph{not} declared $1$ but booked in the loss ledger and restored at the logarithmic
@@ -4837,19 +5688,19 @@ lanes with the det-one ledger \textup{(i)} and the self-dual completion clock \t
 $|\varepsilon_{r,\tau}|=1$ from \texttt{localPoly\_reciprocal}). The reflection is read where the carrier
 itself reads it --- at the weld --- not reassembled from local data at a convergence edge.
 
-\emph{Step 2: continuation carries the axis identity everywhere.} Both completed readouts are analytic on an
-open strip containing the axis, by continuation at the fiber's own scale. A character's cells close at the
-base harmonic scale and its primitive is bounded; the readout continues across the strip, machine-checked
-end-to-end (\texttt{dirichlet\_strip\_tendsto\_LFunction}, \texttt{eta\_strip\_tendsto}). A general fiber's
-channels close at its own harmonic scale: the scale stage refines the carrier until every channel is
-resolved (\S\ref{sec:pipeline}) and the cells close exactly, in closed form
-(\texttt{ForcibleClosure.residual\_forcible} with
-\texttt{CarrierReachability.reachable\_independent\_stage}), so the primitive at that scale is bounded by
-identity --- as for a character --- and the machine-checked transfer converts the bounded primitive into
-continuation and analyticity across the strip (Lemma~\ref{lem:transfer}; \texttt{transfer\_analytic}). The
-readout is unchanged by the rescaling: scale changes are registration bookkeeping, the content of the
-$S(t)$ theorem (\S\ref{sec:carrier-S}). The route is reflection-free: no step here consumes the theta
-identity or the functional equation. On that neighbourhood
+\emph{Step 2: continuation carries the axis identity everywhere.} Both completed readouts must be analytic on an
+open strip containing the axis. A character's cells close at the base harmonic scale and its primitive is bounded;
+the readout continues across the strip, machine-checked end-to-end
+(\texttt{dirichlet\_strip\_tendsto\_LFunction}, \texttt{eta\_strip\_tendsto}). For a general fiber this step
+is discharged either by the raw primitive-exponent hypothesis of Lemma~\ref{lem:transfer}, or by applying
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto} after proving its summable inverse-kernel
+difference and vanishing-boundary conditions for the configured warp.  The cell-solvability theorems
+\texttt{ForcibleClosure.residual\_forcible} and
+\texttt{CarrierReachability.reachable\_independent\_stage} do not by themselves prove these analytic
+conditions.  Equivalently, the fixed-completion route may establish continuation from a reflected rapidly
+decaying coefficient theta; its initial-half-plane Mellin identification is the compiled theorem
+\texttt{CarrierTheta.theta\_hasMellin\_of\_polynomial}, while the global reflection of that same fixed-kernel
+theta is the remaining construction. On a neighbourhood supplied by one of these routes,
 the two sides of the claimed equation are analytic and agree on the axis, a set with accumulation points; by
 the identity theorem they agree identically. The dependency order is
 continuation~$\to$~axis reality~$\to$~functional equation~$\to$~theta identity: with the residual extinct
@@ -5553,8 +6404,12 @@ the weight-system level $W_{\mathrm{id}}=\mathrm{id}$ and $W_{r\circ s}=W_r\circ
 $\Sym^3\!\circ\Sym^3=\Sym^9\oplus\Sym^5\oplus\Sym^3$ --- coherent up to the block permutation in $\simeq$), tensor
 and base change composing likewise (\texttt{composition\_test.py}); and the coherence laws are machine-checked ---
 associativity, two-sided identity, base-change composition $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$, and
-preservation of exact focal closure under composition (\texttt{CarrierFunctoriality}). What stays a \emph{criterion} is only the
-global naturality across arbitrary transports up to carrier equivalence. The Langlands functoriality of
+preservation of exact focal closure under composition (\texttt{CarrierFunctoriality}).  For the CPS
+tower this coherence is instantiated on the genuine Satake-bank state, with strict equality
+$T_{gh}=T_g\circ T_h$ and exact bank-zero preservation
+(\texttt{ThreeDConverse.cpsTowerFunctoriality3D\_unified}); no carrier equivalence is needed in that
+instance.  The carrier-equivalence formulation is retained only for structural transports between
+arbitrary source presentations whose native charts differ. The Langlands functoriality of
 Cor.~\ref{cor:universal} is the arithmetic \emph{instance} this coherence delivers, not a separate mechanism. In
 one line: \emph{the carrier is universal for simultaneous harmonic realization, and functorial with respect to
 those source transports that commute, up to carrier equivalence, with faithful harmonic normalization.}
@@ -5720,15 +6575,16 @@ coordinate, the removal is the exact gauge.
 
 \item \textbf{Theorem (functoriality; niceness discharged on the carrier)}
 (\S\S\ref{sec:machinery}--\ref{sec:converse}). $\Sym^r\pi$ is automorphic on $\mathrm{GL}(r+1)$
-(Theorem~\ref{thm:func}) once the twisted convolutions are nice, and Proposition~\ref{prop:niceness}
-discharges that niceness on the carrier for every $r$. Its three parts stand at their own strength:
+(Theorem~\ref{thm:func}) once the twisted convolutions are nice.  Proposition~\ref{prop:niceness}
+is a carrier criterion for that niceness; for general twists its fixed-theta global reflection and its
+inverse-warp analytic hypotheses remain explicit inputs as recorded above. Its three parts stand at their own strength:
 boundedness is the direct reflected-integral bound (Lemma~\ref{lem:bounded}); the functional equation is the
 axis-reality reflection (Lemma~\ref{lem:bankreflection}: on the weld axis height inversion coincides with
 conjugation, which $J$ supplies phasor by phasor, and the warped-Abel continuation carries the axis identity
 off-axis --- no Poisson summation and no termwise bank interchange), in the dependency order
 continuation~$\to$~axis reality~$\to$~functional equation~$\to$~theta identity, where continuation is
-at the fiber's own scale --- exact cell closure at that scale making the primitive bounded, the
-machine-checked transfer converting boundedness into strip analyticity (\texttt{transfer\_analytic}),
+at the fiber's own scale --- a raw primitive bound handled by \texttt{transfer\_analytic}, or the full
+inverse-kernel conditions handled by \texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto} ---
 end-to-end Lean for the Dirichlet family; entireness is the Riemann--Hecke
 continuation on the carrier theta (the completed carrier transform is entire after explicit constant-mode
 subtraction, focal cancellation killing the residual modes) --- Mathlib-complete for the Dirichlet model,
@@ -5816,10 +6672,22 @@ only for the Dirichlet model --- and the completed-reflection assembly is machin
 (\texttt{FiniteWeightFiber.symTensorCompleted\_FE}, above), with the global strand-exchange input, step (2) of
 Prop.~\ref{prop:completedFE}, machine-checked at the finite-stage bank
 (\texttt{StrandExchange.bankProduct\_exchange}, \texttt{completedBank\_exchange}) and the general
-dual-pair reciprocity at its exact interface (\texttt{DualPairFiber}).  The remaining limitation is
-formalization scope only: the Dirichlet model is instantiated end-to-end in Lean, while for the
-general tensor family the infinite-bank limit and the classical-$L$ identification
-(Prop.~\ref{prop:localid} with \textup{(E5)}) are proved in the manuscript, not yet in Lean.  The numerical experiments retained serve only as calibration and independent reproduction
+dual-pair reciprocity at its exact interface (\texttt{DualPairFiber}).  The E5 bridge is likewise
+machine-checked in the initial half-plane:
+\texttt{CarrierTheta.theta\_hasMellin\_of\_polynomial} identifies the full coefficient theta
+with its Dirichlet readout times the completion Mellin factor, while
+\texttt{GlobalHelix.cpsPolynomialConductor\_initialIdentification\_pair} simultaneously
+specializes the primal and contragredient banks to the prescribed Gamma/conductor completion.
+The full nonempty Deligne-shift list, rather than only the one-shift specialization, is assembled
+for every CPS twist by
+\texttt{GlobalHelix.cpsPolynomialAllTwists\_fullCompletion3D\_unified}; its single conclusion also
+contains radial 3D reflection, both completed identifications, analytic continuation, strip bounds,
+and the functional equation for the strong pair built from the same $W$.  Thus the analytic
+identification used by Prop.~\ref{prop:localid} is wired into the CPS completion surface rather than
+left as an unnamed manuscript transition.  The remaining formalization scope
+is the final all-place arithmetic instantiation of the abstract Satake family, including the
+ramified local dictionaries; Prop.~\ref{prop:localid} proves that dictionary in the manuscript.
+The numerical experiments retained serve only as calibration and independent reproduction
 of the \emph{already-proved} classical-$L$ identification and its exact archimedean normalization (the archimedean
 two-clock and Poisson completion tied to the exact global $L$-values), governed by the exact gauge; the
 carrier/fiber rescaling reduces the residue reading to cell arithmetic.
@@ -5842,17 +6710,20 @@ Beilinson--Bloch height is related, in the relevant theorem-anchored triple-prod
 $L$-derivative of $H^1(C)^{\otimes3}$ (Zhang \cite{ZhangGS}; Yuan--Zhang--Zhang \cite{YZZ}); the classical
 hyperelliptic control vanishes, while known nontrivial Ceresa/Gross--Schoen examples provide positive
 level-three controls. Its exact carrier landing and extension-tower faithfulness are developed in the
-companion paper \cite{HodgeCompanion} --- not proved here. \emph{Initial results appear to affirm} this
+companion paper \cite{HodgeCompanion}: the typed Lean capstone consumes the standard height identity
+and exact carrier identification and proves nonzero height, nonzero realized state, first visibility
+at depth three, and an explicit algebraic source. \emph{Initial results appear to affirm} the arithmetic instance
 (\texttt{hodge\_griffiths\_probe.py}, App.~\ref{app:repro}): the regulator/value channel fires for every
 homologically-trivial cycle in the census (no silent cycle), and the recursive tower already shows cycles
 absent at level one appearing at level $\ge2$. The companion paper \cite{HodgeCompanion} carries out the
-full correspondence: a
-from-scratch triple-product central derivative landing the Ceresa height, the exact coupling that induces
-each higher Griffiths layer, and the ledger$\,\leftrightarrow\,$Bloch--Beilinson-graded bijection. (Status
-at this draft: the depth dictionary and semisimple theorem are machine-checked there; the Ceresa
-computation's $L$-side is on record --- the Klein quartic's Ceresa channel carries forced sign $-1$ and
-central derivative $0.8299\ne0$, matching the known non-torsion of the cycle --- with the height side
-open; and the first unnamed rung, grade four, is mapped and crossed on the carrier.) A
+formal correspondence: arbitrary finite extension stacks are retained, the radial--Torelli--cycle
+bridge constructs higher-grade certified sources with exact realization, and the grade split assembles
+source exhaustion on the finite-extension dial. At depth three,
+\texttt{CeresaGrossSchoenLanding.complete\_landing} proves the full implication from the standard
+height certificate to the carrier and cycle source. The Klein-quartic computation's measured $L$-side
+is on record --- forced sign $-1$ and central derivative $0.8299\ne0$, matching the known non-torsion
+of the cycle --- while the decimal is not presented as a Lean theorem. The first unnamed rung, grade
+four, is mapped and crossed on the carrier. A
 further probe against a deeper cycle-filtration example produced the expected \emph{delayed tower
 signature} $0,\dots,0,\neq0$: a class silent at depth $1$ first fires at depth $2$, recomputed from
 point-counting, its first nonzero slot matching the expected tower level of the class
@@ -5884,11 +6755,14 @@ $F_{\mathrm{car}}$ is the \emph{unique} filtration whose graded pieces are cut o
 exists with those universal properties on the source class, it coincides with $F_{\mathrm{car}}$
 (\texttt{blochBeilinson\_coincides}) --- a conditional corollary that assumes no general existence of
 the (conjectural) Bloch--Beilinson filtration, which is stronger and cleaner than positing that
-existence. Two inputs are \emph{not} carried here for the full extension/cycle class --- the semisimple half
-being unconditional (below) --- and are the spine of the companion paper: joint faithfulness of the
-derivative/height tower, equivalently the no-silent-layer statement $z\ne0\Rightarrow\exists d,\ T_d(z)\ne0$
-on extension data (\texttt{Exhaustive}; supported numerically by \texttt{hodge\_griffiths\_probe.py} and
-\texttt{tower\_exhaustion\_test.py}, \emph{not} proved on extension data), and the from-scratch triple-product
+existence. The structural retention input is now carried not only on semisimple values but on every
+finite normalized extension stack: \texttt{GeneralExtensionRetention} stores layers
+$c_{\ell,i}$, pairs a layer $\ell$ with a moment depth $d$, and proves by Vandermonde separation that
+$T_{\langle\ell,d\rangle}=\sum_i c_{\ell,i}\lambda_i^d$ is jointly faithful
+(\texttt{generalExtensionTower\_exhaustive}, \texttt{generalExtension\_retention}).  This theorem
+does not silently identify an arithmetic cycle with such a stack; that identification is the
+typed realization map required at each arithmetic landing.  The remaining companion-paper input
+is therefore the analytic-to-cycle construction, beginning with the from-scratch triple-product
 central-derivative identity landing the Ceresa/Gross--Schoen height at level three (whose
 derivative-to-height step consumes Zhang \cite{ZhangGS} / Yuan--Zhang--Zhang \cite{YZZ}). Each
 arithmetic landing invoked is theorem-anchored --- Tate and Gross--Zagier--Kolyvagin~\cite{GrossZagier,Kolyvagin} at depth one,
@@ -5898,23 +6772,25 @@ conditional corollary for Bloch--Beilinson. The no-silent-layer input is precise
 \emph{carrier radical} $R:=\bigcap_d\ker T_d$ (\texttt{exhaustive\_of\_radical\_trivial}), which
 reduces gradewise to a nondegeneracy obligation --- a faithful regulator into an anisotropic height
 pairing (\texttt{grade\_visible\_of\_nondegenerate}), discharged by N\'eron--Tate positivity at depth
-one. 
-\subsection{Cycle-filtration faithfulness: the semisimple theorem and the Ceresa frontier}\label{sec:hodge-companion}
-\emph{The structural half is unconditional.}On the \emph{semisimple} carrier state --- the finite
+one.
+\subsection{Cycle-filtration faithfulness: finite extension retention and the Ceresa frontier}\label{sec:hodge-companion}
+\emph{The structural half is unconditional.} On the \emph{semisimple} carrier state --- the finite
 duality-stable weight fiber, an amplitude state $c$ over distinct clock frequencies $\{\lambda_i\}$ ---
 the symmetric-power/moment tower $T_d(c)=\sum_i c_i\lambda_i^{\,d}$ is a \emph{jointly faithful}
 coordinate system: distinct frequencies make the moment matrix Vandermonde, so $\bigcap_d\ker T_d=0$
 and every nonzero state fires at some finite level (\texttt{CarrierTowerSeparation.momentTower\_%
 exhaustive}, from \texttt{momentTower\_detects} $\to$ \texttt{momentTower\_radical\_trivial} $\to$
 \texttt{exhaustive\_of\_radical\_trivial}; Lean).
-This is the finite-structural route --- faithful carrier state $\to$ complete moment record $\to$ tower
-decomposition --- carried out where it closes, discharging no-silent-layer \emph{unconditionally} on the
-semisimple source class with \emph{no} Bloch--Beilinson input. The scope is exactly that: the Vandermonde
-separation is a theorem about the weight-fiber amplitude state. A homologically-trivial cycle contributes,
-in the relevant Abel--Jacobi/motivic realization, \emph{extension} data rather than merely a semisimple
-weight-fiber amplitude state --- \emph{outside} the reach of this theorem; whether the derivative/height
-tower is a jointly faithful coordinate system on that extension data --- and hence whether $R=0$ extends
-from the semisimple state to cycles --- is the remaining problem, not settled here.
+The same separation now holds for arbitrary finite extension order.  For a typed distinct clock bank,
+\texttt{GeneralExtensionData} stores a complete finite jet stack $c_{\ell,i}$; the tower decodes its
+natural index as $(\ell,d)$ and reads $\sum_i c_{\ell,i}\lambda_i^d$.  Silence at every paired index
+therefore kills each layer separately, proving trivial radical, \texttt{Exhaustive}, and
+\textsc{Retention} (\texttt{generalExtensionTower\_detects},
+\texttt{generalExtensionTower\_exhaustive}, \texttt{generalExtension\_retention}; Lean).  Thus the
+finite structural route covers semisimple values and all finite normalized jet layers with no
+Bloch--Beilinson input.  For a homologically-trivial cycle the remaining obligation is precise: construct
+its typed finite extension datum and prove that the arithmetic derivative/height readouts agree with this
+paired tower.  Retention then follows by transport rather than by a new no-silent-layer assumption.
 
 We do \emph{not} place the transcendental (Abel--Jacobi-trivial) Griffiths class in $R$: that
 would require every $T_d$ to \emph{factor through} the conventional Abel--Jacobi realization
@@ -5939,8 +6815,9 @@ controlled by the associated N\'eron--Tate coordinate there, so it does not pene
 is therefore a class with $AJ_{\mathbb C}(z)$ zero or torsion yet a nonzero \emph{arithmetic}
 level-three invariant --- necessarily one where the \emph{non-archimedean} local height dominates
 (Zhang's metrized-graph terms) or where the finer $\ell$-adic/Galois Ceresa class, not the archimedean
-height, is the retained coordinate; that, with the from-scratch Ceresa landing, is the companion
-paper's target \cite{HodgeCompanion}. \\
+height, is the retained coordinate. The companion's typed Ceresa theorem now proves the exact
+analytic-to-cycle implication once this arithmetic certificate is supplied
+(\texttt{CeresaGrossSchoenLanding.complete\_landing}) \cite{HodgeCompanion}. \\
 
 
 \hrule\hrule
@@ -5959,41 +6836,45 @@ functoriality holds at every rank with niceness discharged on the carrier, and
 Sato--Tate for Maass forms follows on the Galois-free route. Beyond Endoscopy's
 uniformity problem is reduced to a single magnitude bound and its obstruction
 identified as the orbital transform's own clock, with a repair that scales.
-The worked-example part delivers two proofs of GRH, each resting on a single
-reading and on nothing else, because everything mathematical beneath them is
-unconditional: self-adjointness is a theorem
-(\texttt{vonNeumannOp\_isSymmetric}) --- the property the classical
-Hilbert--P\'olya program could only wish for --- the evidence dossiers are
-inhabited, every GRH implication is proven at every modulus and character, the
-full conjecture follows under a reading adopted at every modulus
-(\texttt{GRHComplete}), and the Riemann Hypothesis lands at the trivial
-character.
+The worked-example part retains two conditional GRH deductions and now states
+their minimal dependencies explicitly.  The helix midpoint is a geometric
+output of unique area-law scale balance and no drift.  A native 3D zero is a
+completed fibre focal cancellation at physical height \(Z>0\), exactly the
+analytic \(L\)-zero at \(\sigma_*+i\log Z\); its finite-bank detector is
+exactly equivalent to finite harmonic-pencil rank drop.  Both Gram operators
+have \(G\otimes I_3\) spatial lifts that preserve and reflect rank drop.
+The scalar fibre \(\gamma\,\mathrm{id}_{\mathbb C}\) is a valid local
+coordinate detector.  Lean now also defines one fixed symmetric operator on
+the completed 3D event type, proves its explicit event eigenvectors, and
+packages the two resolvent versions: 3D-zero/eigenvector and
+1D-zero/3D-zero/eigenvector.  This event-space assembly does not by itself
+route an arbitrary analytic zero into the event subtype.  Lean proves that the old 3D identity premise
+is GRH conjoined with midpoint-free native coverage; it also proves that the
+old 1D routing disjunction is automatic and that its pointwise
+chart-to-kernel premise alone implies the critical-line conclusion.
 
-The only conditionals in this paper are not mathematical. They are two
-readings: what the Hilbert--P\'olya program requires of its spectrum ---
-identity with the zeros, or exact coincidence --- and what a \emph{real}
-nontrivial zeta zero names --- the 3D source event, or its classical 1D
-interpretation. Every theorem on both sides of each reading is proven, and no
-computation or further theorem can settle either one, because each is a choice
-of what a phrase names. The admissible verdicts are exactly three: both
-readings sound, one, or none. That adjudication belongs to the community, and
-the paper is written so that each of its communities --- number theory,
-automorphic representation theory, spectral and harmonic analysis, geometry
-and topology, mathematical physics, formal verification --- can apply its own
-standards to the question.
+The global \(S(t)\) coordinate law remains an exact theorem: it carries the
+carrier-scale census to the unit-chart census and matches jumps, residues, and
+multiplicities.  Completing the analytic-coverage route requires proving the
+resolvent/spectral capture for the event-independent ambient carrier operator
+\(A^{(3)}_{p,r}\), or instantiating the same interface with another fixed
+self-adjoint operator, as stated by
+\texttt{grh\_of\_selfAdjoint\_resolvent\_capture}.  This separation
+preserves the proved carrier geometry and registration results while making
+the zero-set identification boundary explicit.
 
 The thesis, restated at the end as at the start: the unit-$1$ chart is the
 compression, not the object. Working in the scaled three-dimensional frame
-turned the $S(t)$ mystery into a theorem, the convergence gate into a chart
-artifact, a stalled trace-formula estimate into an exact gauge, and the oldest
-question in the subject into a pair of stated decisions. The open research is
-the Hodge companion paper: the
-loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence, joint
-faithfulness on extension data, and the from-scratch Ceresa/Gross--Schoen
-landing (\S\ref{sec:hodge-companion}). Everything else that remains is
+turned the $S(t)$ registration into a theorem, the convergence gate into a chart
+artifact, and a stalled trace-formula estimate into an exact gauge. The next arithmetic work is in
+the Hodge companion paper: instantiating the typed cycle-to-jet realization and
+source packages on the desired geometric classes. The kernel now contains
+finite-extension retention, higher-grade certified source construction, the
+Ceresa/Gross--Schoen landing implication, and their unrestricted source-exhaustion
+assembly (\S\ref{sec:hodge-companion}). Everything else that remains is
 bookkeeping at its own site: the Lean formalization scope is recorded where
-the theorems live (\S\ref{sec:construct}, Prop.~\ref{prop:niceness}). The theorems are checked; the
-artifacts are public; the decisions are the community's.
+the theorems live (\S\ref{sec:construct}, Prop.~\ref{prop:niceness}). The theorems are checked and the
+artifacts are public.
 
 \appendix{}
 
@@ -6175,6 +7056,24 @@ The $lf^2$-exponent $a_M$ grows more slowly than $M$ ($da/dM\approx-0.23$), so e
 parts nets $\nu^{-1}$ and the bound is summable --- the standard-representation side of the
 productivity boundary. (This is the crude magnitude route; the sharp exponents of
 Proposition~\ref{prop:52} follow from Theorem~\ref{thm:A14}.)
+
+\item \textbf{The registration instruments (\S\ref{sec:registration-dynamics}),
+\texttt{st\_mu6\_gram.py}, \texttt{st\_cf\_lags.py}, \texttt{st\_cell\_phase.py}.} Four
+pre-registered tests of positional coupling between the zero events and the lattice layers, all
+null, as the proven ergodicity predicts. (1)~Gram parity: violation rates $0.0728$ vs $0.0720$ at
+$N{=}5000$ ticks --- flat. (2)~mod-$6$ alignment of the Gram defect: the run-1 signal ($p=0.0355$,
+IID permutation, $N{=}1200$) fails to replicate under the autocorrelation-preserving
+circular-shift null at $N{=}5000$ ($p=0.058$ full range, $p=0.49$ upper half); the IID null
+overstates significance for Rosser-block-correlated sequences --- the circular shift is the
+correct null for alignment tests. (3)~CF lags $\{7,106,113\}$ (the $\pi$-convergent
+denominators): $66$th percentile, $p=0.32$; the visible autocorrelation is short-range spacing
+rigidity. (4)~Cell-phase kinks: the zeros' phases $x=\operatorname{frac}(\theta(\gamma)/\pi)$
+follow the smooth classical $S$-shape (mean $0.4980$, the half-jump shift); density kinks at the
+carrier subdivision $x=1/3,2/3$ are \emph{smaller} than at control breakpoints ($0.0396$ vs
+$0.0477$). Method laws recorded: sampling at the chart's own ticks aliases the carrier
+subdivision away (instruments must sample the carrier coordinate); and positional statistics test
+a claim the ontology disclaims --- the $\pi/3$ claim is cancellation \emph{at} events, never
+placement \emph{of} events.
 
 \item \textbf{The emergent clock (\S\ref{sec:comb}), \texttt{mb\_beat.py}.} The script scans the clock
 coordinate $\nu_{\mathrm{clock}}=2\nu_J$, so its profile is
@@ -6484,12 +7383,14 @@ random $0.43/0.58/0.76/0.49$ --- about $\tfrac12$ in every window, never equilib
 arithmetic inside the continuation leg: the true $\Delta$ anchor, a \emph{detuned} $\Delta$
 ($\theta_2\leftrightarrow\theta_3$ swapped, multiplicatively rebuilt), and a fully \emph{random}-angle fiber
 of the same duality-stable class all force-close $30/30$ native cells at the float64 floor (medians
-$3.2$--$36\times10^{-15}$, weights $\le2.91$). Since a random Euler datum has no analytic continuation to
-transfer (natural boundary), forced cell closure alone cannot deliver continuation of the readout: the
-arithmetic-sensitive step is the \emph{inverse-warp transfer} of \S\ref{sec:construct} (machine-checked in
-full by \texttt{TransferContinuation.transfer\_analytic}, with every admissible fiber closed in closed form
-by \texttt{ForcibleClosure.residual\_forcible}), and the functional-equation bill is paid by
-transfer plus axis reality --- not by closure, and not by Poisson.
+$3.2$--$36\times10^{-15}$, weights $\le2.91$). The random-angle control shows that forced cell closure alone
+cannot deliver continuation of the ordinary readout. The arithmetic-sensitive step is the
+\emph{inverse-warp transfer} of \S\ref{sec:construct}. What is machine-checked by
+\texttt{TransferContinuation.transfer\_analytic} is continuation for the coefficient sequence whose own
+primitive is bounded. The valid $n$-dependent inverse-kernel interface is machine-checked in
+\texttt{InverseWarpKernelTransfer.inverseWarp\_transfer\_tendsto}; applying it requires its summable
+first-difference and vanishing-boundary conditions for the selected fiber warp. Cell closure from
+\texttt{ForcibleClosure.residual\_forcible} supplies neither condition by itself.
 
 \item \textbf{Twisted CPS instances (\S\ref{sec:sym5}), \texttt{twisted\_cps\_instance.py}.} The objects
 Theorem~\ref{thm:cps} actually consumes, tested directly. \emph{Factorizing control:} the degree-$12$ twisted

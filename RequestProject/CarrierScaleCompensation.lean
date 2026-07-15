@@ -19,14 +19,25 @@ realizations (never inserted as definitions):
 
   `N_{π/3}(e^t) = N(t)`   and   `N_1(e^t) = 1 + ϑ(t)/π`.
 
-**What `S(t)` is**: a *fundamental gap*, not a property of vanishing or of crossings.  Each
+**What `S(t)` is** (in this file): the normalized **line ledger** — `S t` is defined from
+`zeroEventCount`, the on-line ordinate census `#{γ ∈ (0,t] : ζ(½+iγ) = 0}` — and it is a
+*fundamental gap*, not a property of vanishing or of crossings.  Each
 integer sits on the carrier at native coordinate `n·(π/3)`; the conventional chart registers
 the same integer at `n·1`.  The two placements are incommensurable — the lattices share only
 the origin (`lattice_gap_fundamental`, irrationality of `π`) — so the unit chart can never
 re-synchronize with the native registration: it structurally cannot complete a native cell
 (`unit_never_closes`), and the accumulated registration gap between the two scalings of one
-arithmetic procession is exactly what the 1-D chart readout calls `S(t)`.  Crossings enter
+arithmetic procession is exactly the line ledger's normalized count.  Crossings enter
 only as the *units* of the native bookkeeping.
+
+**Scope: the classical Riemann–von Mangoldt `S(t)`.**  The classical term normalizes the
+**strip** count (all zeros with `0 < Im ρ ≤ t`, via the argument principle); this file's `S`
+normalizes the **line** count.  The two agree iff every strip zero lies on the line —
+`EveryZeroHasSource`, the RH-strength branch of the standing dichotomy — which is **neither
+assumed nor proven here**.  Unconditionally, classical `S(t)` = this file's `S(t)` + the
+off-line strip census; the identification of the compensation mechanism with the classical
+term is carried at exactly branch strength (see `rem:st-register` in the manuscript).  The
+theorems of this file are unconditional statements about the line ledger.
 
 ## The chain, and what each piece is
 
@@ -104,13 +115,17 @@ only as the *units* of the native bookkeeping.
 ## Scope (exact)
 
 Unconditional throughout: `{propext, Classical.choice, Quot.sound}`, no `sorry`, no `axiom`,
-no hypothesis parameters.  `N(t)` is the zero-counting procession of the 3-D system over its
-**entire** event space — the height ray, whose exhaustion is proven and consumed in §6.  The
+no hypothesis parameters.  `N(t)` (`zeroEventCount`) is the zero-counting procession of the
+3-D system over its **entire** event space — the height ray (the on-line ordinate census),
+whose exhaustion is proven and consumed in §6.  The
 gap proven here is *fundamental*: the scale-registration gap between the incommensurable
-`π/3` and unit-`1` placements of one arithmetic procession.  Zero placement plays no role on
-either side of any statement in this file: this is a counting/registration identity, and it
-has nothing to do with RH/GRH (neither assumed, nor proved, nor needed).  The strip of the
-1-D chart is a projection device with no 3-D counterpart; it does not appear.
+`π/3` and unit-`1` placements of one arithmetic procession.  As an identity between the two
+carrier registrations of the line ledger, no statement in this file assumes or proves
+RH/GRH.  What RH-strength *would* add is the **identification** of this file's `S` with the
+classical strip-count `S(t)` (see the scope paragraph above): that identification is exactly
+the `EveryZeroHasSource` branch, is not made here, and no theorem below depends on it.  The
+strip of the 1-D chart is a projection device with no 3-D counterpart; it enters only through
+that named identification, never through a proof.
 -/
 
 set_option maxHeartbeats 1000000
