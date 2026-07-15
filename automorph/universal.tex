@@ -379,9 +379,8 @@ adapter is read off \emph{every} exotic finite law (\texttt{Synth} totality) is 
 so-far-unfalsified \emph{program}, not a monolithic theorem --- its single clean falsifier a
 \emph{structured} admissible fiber closeable by no adapter, existing or new. [Lean backbone +
 theorem; universality a falsifiable program]
-\item \textbf{The Ramanujan--Petersson conjecture for Maass forms} --- open; holomorphic forms
-are Deligne's theorem, and the best Maass bound is $7/64$ (Kim--Sarnak \cite{KimSarnak}).
-Established as the tower's radial limit: the strand radius is exactly one at every unramified
+\item \textbf{The Ramanujan--Petersson theorem for the Maass forms of Corollary~\ref{cor:satotate}.}
+Established here as the tower's radial limit: the strand radius is exactly one at every unramified
 place --- the radial ledger channel is trivial, the strand block an isometry of the transverse
 plane (\S\ref{sec:radial-limit}, Cor.~\ref{cor:ramanujan};
 \texttt{RamanujanLimit.strand\_radius\_one\_of\_tower\_ceiling},
@@ -394,14 +393,13 @@ the two rank-uniform tower ceilings, packaged as \texttt{GlobalHelix.TowerCeilin
 radius one as its first conclusion and only then
 returns the block isometry
 (\texttt{cpsRadialSatoTateGeometry3D\_unified}). [theorem; limit step Lean]
-\item \textbf{The Selberg eigenvalue conjecture} $\lambda\ge\tfrac14$ --- open since 1965. The
-same limit at the archimedean place: zero radial drift, the strand clock unit-modulus at every
+\item \textbf{The Selberg bound} $\lambda\ge\tfrac14$ for the same carrier family. The
+same tower limit at the archimedean place gives zero radial drift and a unit-modulus strand clock at every
 carrier height (Cor.~\ref{cor:ramanujan};
 \texttt{RamanujanLimit.archimedean\_strand\_unimodular\_of\_tower\_ceiling}). [theorem; limit
 step Lean]
-\item \textbf{Sato--Tate for Maass forms} --- open; the holomorphic case is
-Barnet-Lamb--Geraghty--Harris--Taylor. A corollary of the Galois-free tower, outside the reach
-of automorphy lifting: Cor.~\ref{cor:satotate}. Its native carrier geometry and moment law are
+\item \textbf{Sato--Tate for Maass forms.} A corollary of the Galois-free tower:
+Cor.~\ref{cor:satotate}. Its native carrier geometry and moment law are
 machine-checked in \texttt{CPSRadialSatoTateGeometry3D}: the Sato--Tate density is pushed onto
 the helix $(\cos\theta,\sin\theta,\theta)$, the third coordinate $S(t)$ recovers the measure
 exactly, and the transverse trace has the Catalan/Fourier moments; the same theorem first derives
@@ -2599,6 +2597,184 @@ This comparison is downstream of both independent constructions: it is not
 the definition of either \(S_\Gamma\) or the zero count, and no critical-line
 location statement is used in the strip census.
 
+Eliminating the total strip census between this theorem and the independently
+proved on-line/off-line partition gives a sharper registration rule.  At every
+good height,
+\begin{align}
+ N_{\mathrm{off}}^{\mathrm{mult}}(T)
+   &=k_\Gamma(T)+1-N_{\mathrm{line}}^{\mathrm{mult}}(T),
+   \label{eq:off-line-winding-defect}\\
+ S_\Gamma(T)
+   &=\boxed{\;S_{\mathrm{mult}}(T)+N_{\mathrm{off}}^{\mathrm{mult}}(T)\;}
+   \label{eq:global-coordinate-defect}
+\end{align}
+These are the compiled theorems
+\texttt{offLineStripZeroCountMult\_eq\_winding\_sub\_line} and
+\texttt{classicalSContour\_eq\_Smult\_add\_offLine}.  In particular,
+\texttt{classicalSContour\_eq\_Smult\_iff\_offLine\_eq\_zero} proves that
+the independently continued global coordinate agrees with the native
+multiplicity coordinate exactly when the finite-strip coverage defect
+vanishes.  There can be no cancellation hidden in that defect: every summand
+is the positive analytic order of an actual zero.  The pointwise theorem
+\texttt{mem\_stripZeroFinset\_line\_or\_coordinate\_defect} therefore says
+that each analytic strip zero is either a native line event or produces a
+detectable mismatch of the two global coordinates.  This is the precise
+finite-window rule connecting the contour census, the multiplicity ledger,
+and the \(S(t)\) registration.  Finally,
+\texttt{exists\_goodHeight\_gt} constructs a good contour above every real
+ordinate from the finite next-window census, and
+\texttt{upper\_nontrivialZero\_line\_or\_globalCoordinateDefect} promotes the
+dichotomy globally: every upper-half-plane nontrivial zero is a native line
+event or exhibits an explicit higher good height where the two global
+coordinates differ.
+
+The native branch is now carried all the way into the event-independent
+three-dimensional operator.  In
+\texttt{RequestProject/ZetaContourNative3D.lean}, the data type
+\texttt{PrincipalContourNative3DCertificate} contains a completed mod-one
+focal event \(e\) whose height is \(e.Z=\exp(\operatorname{Im}\rho)\),
+its exact ambient physical height,
+the equality of its carrier readout with \(\rho\), a nonzero eigenvector of
+\texttt{carrierThreeDOperator 1 1} with eigenvalue \(\Im\rho\), every spatial
+harmonic-pencil rank drop, and the exact one-dimensional/three-dimensional
+resolvent-trace relation weighted by \(\texttt{xiOrderNat}\,\rho\).  It now also
+contains a single parameter-preserving kernel coupling from
+\texttt{RequestProject/SpectralCarrierKernelCoupling3D.lean}.  That object retains
+simultaneously the nonzero kernel of the configured full analytic operator
+\(L_{\mathrm{spec}}(\rho)\,\mathrm{id}\), the completed focal event at the same
+analytic point, the ambient carrier eigenvector, and the self-adjoint one-mode
+resolvent kernel.  The constructor \texttt{ofLspecZeroAtHeight} builds this object
+from \(L_{\mathrm{spec}}(\sigma_*+i\log Z)=0\) at every positive carrier height;
+conversely \texttt{lspec\_zero\_of\_coupling} proves that the spatial coupling
+cannot create an analytic vanishing.  The exact identification theorems
+\texttt{nonempty\_coupling\_iff} and
+\texttt{nonempty\_coupling\_iff\_readoutKernel} state that such a coupling exists
+precisely when the analytic kernel and the independently derived carrier
+coordinate refer to the same point.  Thus neither operator is silently replaced
+by the other, and the midpoint coordinate is supplied by carrier membership.
+The finite-window defect has now been rewritten entirely in this typed language.
+In \texttt{RequestProject/ZetaContourCouplingDefect3D.lean}, define
+\(N_{\mathrm{uncpl}}^{\mathrm{mult}}(T)\) by summing the positive analytic order
+over precisely those strip kernels for which no
+\texttt{SpectralCarrierKernelCoupling3D} exists.  The compiled identities
+\[
+ N_{\mathrm{uncpl}}^{\mathrm{mult}}(T)
+   =N_{\mathrm{off}}^{\mathrm{mult}}(T),\qquad
+ S_\Gamma(T)=S_{\mathrm{mult}}(T)
+   +N_{\mathrm{uncpl}}^{\mathrm{mult}}(T)
+\]
+are \texttt{uncoupledKernelCountMult\_eq\_offLine} and
+\texttt{classicalSContour\_eq\_Smult\_add\_uncoupledKernelCount}.
+Because each included order is positive,
+\texttt{classicalSContour\_eq\_Smult\_iff\_everyKernelCoupled} proves that the
+two global coordinates agree exactly when every enclosed full analytic kernel
+has a parameter-preserving coupling to the independently defined carrier
+operator.  Hence an absent coupling cannot be hidden by cancellation between
+zeros.  This has a midpoint-free no-drift form.  For every base \(n>1\),
+\texttt{ofLspecZeroOfNoRadialDrift} constructs the full coupling from analytic
+vanishing and \(n^{\operatorname{Re}s-\sigma_*}=1\); it derives
+\(\operatorname{Re}s=\sigma_*\) internally from
+\texttt{noRadialDrift\_iff\_carrierAbscissa}.  The independent constructor
+\texttt{ofLspecZeroOfBinaryNoRadialDrift} repeats the construction through the
+physical height \(Z=\exp(\operatorname{Im}s)\).  Thus no numerical midpoint is
+an input to either constructor.  At finite-window scale,
+\texttt{uncoupledKernelCountMult\_eq\_radialDrift} proves that the uncoupled
+count is exactly the positive multiplicity of kernels with nontrivial radial
+drift, and
+\texttt{classicalSContour\_eq\_Smult\_iff\_everyKernelNoRadialDrift} identifies
+global-coordinate agreement with zero drift for every enclosed kernel.
+These finite-window statements have also been globalized without changing their
+content.  In
+\texttt{RequestProject/ZetaContourGlobalIdentification3D.lean}, the theorem
+\texttt{globalCoordinateIdentification\_iff\_upperKernelCoupling} identifies
+agreement at every good height with a full parameter-preserving coupling for
+every upper nontrivial analytic zero.  The corresponding theorem
+\texttt{globalCoordinateIdentification\_iff\_upperNative3DCertificate} upgrades
+each such coupling to the complete physical-height focal-event, ambient-eigenvector,
+harmonic-rank-drop, twin-trace, and multiplicity certificate.  Independently,
+\texttt{globalCoordinateIdentification\_iff\_upperNoRadialDrift} obtains the same
+global criterion directly by enclosing each zero in a higher good contour.
+
+There is now also a conservation-native source formulation with no literal
+half-unit in its definition.  For a conservative source mode \(\psi\), set
+\[
+ \operatorname{coord}_{\mathrm{src}}(\psi)
+   :=\sigma_*+\operatorname{rate}(\psi),
+\]
+where \(\sigma_*\) is the unique area-law-selected carrier abscissa.
+The theorem \texttt{conservativeCarrierCoord\_re} derives
+\(\operatorname{Re}\operatorname{coord}_{\mathrm{src}}(\psi)=\sigma_*\) from
+source conservation, and
+\texttt{conservativeCarrierCoord\_noRadialDrift} derives unit radial projection
+at every base greater than one.  Finally,
+\texttt{globalCoordinateIdentification\_iff\_upperConservativeSource} proves that
+all-good-height coordinate agreement is exactly the statement that every upper
+analytic zero is the coordinate of one of these conservative carrier modes.
+This source identification has a direct pointwise landing as well:
+\texttt{principalContourNative3DCertificate\_of\_noRadialDrift} constructs the
+complete certificate from a zero and its no-drift projection, while
+\texttt{principalContourNative3DCertificate\_of\_conservativeSource} constructs
+it from a conservative source representation.  Neither constructor assumes any
+global coordinate identity; both produce the physical event and operator data at
+that single analytic parameter.
+The upper-half-plane census has now been joined to the complete two-sided analytic
+channel in
+\texttt{RequestProject/ZetaContourXiReceiverIdentification3D.lean}.
+The theorem \texttt{conj\_mem\_nontrivialZeros} transports genuine zeros by the
+real structure of the entire xi function, while
+\texttt{nontrivialZero\_im\_ne\_zero} consumes the independently proved zero-free
+region \(0<\operatorname{Re}s<1\), \(\lvert\operatorname{Im}s\rvert<2\), to
+exclude a real-axis member.  Consequently
+\texttt{upperNoRadialDrift\_iff\_allNoRadialDrift} promotes the upper no-drift
+statement to the complete nontrivial zero set.
+
+This gives the exact analytic receiver formulation
+\[
+ \bigl(\forall T\text{ good},\ S_\Gamma(T)=S_{\mathrm{mult}}(T)\bigr)
+ \quad\Longleftrightarrow\quad
+ \text{the xi-channel is regular off the real spectral axis},
+\]
+compiled as
+\texttt{globalCoordinateIdentification\_iff\_xiChannel\_offReal\_regular}.
+Thus the coordinate identification and the analytic receiver are now one theorem,
+not parallel narrative interfaces.  Finally,
+\texttt{globalCoordinateIdentification\_and\_upperNative3D\_of\_selfAdjointXiReceiver}
+proves that a self-adjoint receiver of this independent channel supplies both the
+all-good-height equality and, for every upper zero, the complete physical-height
+3D/operator certificate described above.
+The operator geometry needed by that receiver is now constructed on the full,
+event-independent state space in
+\texttt{RequestProject/CarrierUnboundedResolvent3D.lean}.  Because the carrier
+ordinate ranges over all of \(\mathbb R\), the native height operator \(H\) is
+unbounded; it is therefore represented directly on finitely supported carrier
+modes rather than being mislabeled as a bounded C-star-algebra element.  For
+\(\operatorname{Im}z\ne0\), the diagonal formula
+\[
+  (z-H)^{-1}e_s=\frac{1}{z-s.\operatorname{ordinate}}e_s
+\]
+is proved to be both a left and a right inverse of \(zI-H\) by
+\texttt{carrierThreeDShift\_comp\_resolvent} and
+\texttt{carrierThreeDResolvent\_comp\_shift}.  Moreover,
+\texttt{carrierBasisResolventReadout\_regular\_off\_real} proves that every
+geometric basis matrix coefficient has a finite punctured limit at every
+nonreal parameter.  These are properties of the Archimedean helix state space
+itself: the construction mentions no zero predicate, L-function, focal event,
+or event certificate.  A bounded C-star receiver is used only after a compact
+coordinate transform; the unbounded 3D height operator retains the literal
+ordinate and hence the full real spectral axis.
+The all-height theorem
+\texttt{upper\_nontrivialZero\_kernelCoupling\_or\_globalCoordinateDefect}
+then returns, for every upper nontrivial zero, either this full typed coupling
+or an explicit higher good height at which the two coordinates differ.
+The
+compiled capstone
+\texttt{upper\_nontrivialZero\_native3DCertificate\_or\_}allowbreak
+\texttt{globalCoordinateDefect} constructs this complete certificate or
+returns the explicit higher good height where the global coordinates differ.
+Thus the contour census, physical-height event, ambient eigenvector, harmonic
+pencil, analytic multiplicity, and both trace charts are joined without
+defining the ambient operator from the zero certificate.
+
 The proof occupies the rest of the section: part (i) in the native-\(\pi/3\)
 subsection, part (ii) in the unit-\(1\) subsection, part (iii) by subtraction;
 the induced event readout pinning every functor input is derived in the
@@ -3493,9 +3669,11 @@ map is surjective, forcing $r+1\le m\le r-1$
 (\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}, machine-checked over the
 representation algebra).  Equivalently, in the bundled finite-dimensional representation category,
 Schur's lemma gives
-\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_not\_unit}.  The rank inequality is never used for
-an ordinary vector-space embedding.
---- a picture of the same exclusion, not the load-bearing step. So the entire carrier readout \emph{is}
+\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_finrank\_succ}: dimension is used only to
+exclude an isomorphism with the unit object, after which Schur kills every equivariant map.  The
+rank inequality is never used for
+an ordinary vector-space embedding.  This is the representation-theoretic exclusion consumed by
+the residual calculation. So the entire carrier readout \emph{is}
 $L(s,\Pi_r\times\tau)$. Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
 cuspidal automorphic representation of $\mathrm{GL}(r+1)$.
 \end{proof}
@@ -3671,6 +3849,124 @@ version.  Thus the carrier bank used by the completion theorem is constructed fr
 definitionally equal coefficient-by-coefficient to, the twisted symmetric-power Euler datum; no
 post hoc equality between two unrelated degree-$(r+1)m$ banks is assumed.
 
+The archimedean clock is arithmetic as well.  The structure
+\texttt{ArithmeticCPSCompletionData} carries the actual conductor, the $r+1$ symmetric-power
+Deligne shifts, and the $m$ twisting shifts; \texttt{tensorShifts} constructs the complete
+degree-$(r+1)m$ list by the literal pairwise sums $\mu_j+\nu_k$.  The theorem
+\texttt{arithmeticCPSFullCompletion3D\_identification} then identifies both 3D Mellin projections
+with the completed primal and contragredient Euler readouts using precisely that conductor and
+that tensor-parameter Gamma product.  Consequently neither the finite-place roots nor the
+archimedean completion can be replaced by an unrelated bank of the same dimension.
+
+The one-source compatibility is now also a typed theorem rather than an informal juxtaposition.
+In \texttt{CPSArithmeticStrongSource3D}, an
+\texttt{ArithmeticCPSReflectedThetaSource} contains one \texttt{StrongFEPair} and identifies
+its two source functions exactly with the prescribed primal and reciprocal-height contragredient
+arithmetic 3D banks.  From that single source,
+\texttt{ArithmeticCPSReflectedThetaSource.unified} derives the literal coefficient passport,
+both conductor/Gamma completed Euler readouts on the common initial half-plane, the pointwise 3D
+reflection, both entire continuations, both vertical-strip bounds, and the global functional
+equation.  Thus the type checker does not permit a standard completion read from one bank to be
+combined with a functional equation belonging to another synthesized kernel: all clauses of the
+capstone refer to the same pair and the same arithmetic Satake datum, uniformly in $r$ and $m$.
+The constructor \texttt{ArithmeticCPSReflectedThetaSource.analyticCandidate} now packages these
+clauses in the exact analytic-input shape used by a converse theorem: named primal and dual entire
+functions, weight, nonzero root number, two strip bounds, the global functional equation, and
+pointwise identifications with the literal arithmetic completed Euler products throughout their
+initial domain.  These identifications are fields of the candidate, so ``analytic continuation of
+the carrier'' cannot be substituted for continuation of a different Euler product.  At the kernel
+level, \texttt{gammaClock\_rapid} proves directly from
+$2x^\mu e^{-2\pi x}$ that each prescribed archimedean clock decreases faster than every real
+power.  The signed-log convolution branch is now closed for every finite shift list by
+\texttt{completionKernelLog\_rapid}.  Its proof chooses one real Mellin weight above all shift
+exponents, proves the weighted Gamma profile is both integrable and uniformly bounded, and uses
+the exact log-height convolution identity together with the $L^1*L^\infty$ norm estimate
+\texttt{norm\_convolution\_mul\_le\_of\_integrable\_of\_bound}.  Finally
+\texttt{conductorScaledCompletionKernelLog\_rapid} transports this result through every positive
+arithmetic conductor scale.  Hence the complete prescribed tensor-parameter Gamma kernel, not
+only each individual clock, supplies the rapid-decay fields of the strong-pair constructor.
+
+The two local-integrability fields of that constructor are now derived from the same prescribed
+data as well.  The general Lean lemma
+\texttt{CarrierTheta.locallyIntegrableOn\_of\_mellinConvergent} observes that convergence of
+one Mellin integral makes $x^{s-1}f(x)$ globally integrable on $x>0$; multiplication there by the
+continuous, nowhere-vanishing reciprocal weight $x^{1-s}$ recovers $f$, and therefore makes $f$
+locally integrable.  For each of the primal and contragredient coefficient banks,
+\texttt{cpsPolynomialFullPrimalTheta\_locallyIntegrableOn} and
+\texttt{cpsPolynomialFullDualTheta\_locallyIntegrableOn} choose a real weight $\sigma$ satisfying
+simultaneously
+\[
+  \sigma>A+1,
+  \qquad \sigma> -\Re\mu \quad(\mu\in\boldsymbol\mu),
+\]
+where $A$ is the proved polynomial coefficient-growth exponent and $\boldsymbol\mu$ is the finite
+tensor-shift list.  The Gamma-product Mellin theorem and the polynomial theta summability theorem
+then supply the required convergent weighted integrals.  Finally the exact positive-height 3D
+readout identities transfer these results to the literal primal bank and to
+$x\mapsto\widetilde\Theta^\vee(1/x)$; these are the compiled theorems
+\texttt{cpsPolynomialFullPrimal3DBankReadout\_locallyIntegrableOn} and
+\texttt{cpsPolynomialFullDual3DReflectedReadout\_locallyIntegrableOn}.  Their arithmetic CPS
+specializations are wired directly as
+\texttt{prescribedPrimal\_locallyIntegrableOn} and
+\texttt{prescribedDual\_locallyIntegrableOn}.  Thus local integrability is a consequence of the
+prescribed coefficient bounds and Gamma completion, rather than an analytic regularity premise
+attached to the source.
+
+The reverse assembly direction is now canonical.  Given an
+\texttt{ArithmeticCPSAnalyticCandidate3D}, its typed
+\texttt{native3DReflection} is already the all-positive-height equality of the literal prescribed
+primal and reciprocal-height contragredient 3D banks, with the candidate's weight and root number.
+The constructor \texttt{ArithmeticCPSReflectedThetaSource.ofAnalyticCandidate} uses that equality
+as the reflection field of a \texttt{StrongFEPair} whose two functions are definitionally those
+same banks.  It does not import regularity or decay from the candidate: the two local-integrability
+fields are the theorems above, while
+\texttt{cpsPolynomialFullPrimal3DBankReadout\_rapid} and
+\texttt{cpsPolynomialFullDual3DReflectedReadout\_rapid} derive both rapid-decay fields from the
+polynomial coefficient bounds and the finite Gamma-convolution decay.  Thus the only off-weld
+datum transferred from the assembled arithmetic candidate is its actual native reflection; every
+analytic source condition is reconstructed on the prescribed banks.
+The theorem \texttt{ofAnalyticCandidate\_unified} then applies the existing one-source capstone to
+this canonical constructor, yielding both exact completed Euler identifications, native
+reflection, entire continuations, strip bounds, and the functional equation.  Finally
+\texttt{reassembledAnalyticCandidate} packages the resulting strong-pair continuations back into
+the converse-theorem input type, now definitionally tied to the literal coefficient/Gamma banks.
+
+The representation and analytic sides now meet in one further typed capstone.  In
+\texttt{CPSRestrictedTensorConverseCapstone3D}, the base object
+\texttt{RestrictedSymmetricPowerRepresentation3D} is a representation of the actual group
+\[
+ G_\infty\times\prod
+ {}'_p\bigl(G_p,K_p\bigr),
+\]
+where the finite factor is Mathlib's restricted-product type, not an unrestricted product or a
+formal label.  Its local components and its global restricted-product representation carry the
+precise predicates used in the assembly: irreducibility is
+\texttt{Representation.IsIrreducible}; smoothness says that every vector is fixed by an open
+subgroup; and admissibility says that the fixed-vector space for every open subgroup is
+finite-dimensional.  The action is identified with the carrier action consumed by the quotient
+landing, and the local Satake readout is identified, at every prime and every channel, with the
+literal roots
+\[
+  \alpha_p^{\,r-j}\beta_p^{\,j},\qquad 0\le j\le r.
+\]
+Thus ``restricted tensor product'', ``irreducible'', ``smooth admissible'', and ``locally
+compatible'' are fields of one representation object and cannot be supplied for different
+candidates.
+
+The structure \texttt{ArithmeticCPSAllTwistsConverseCandidate3D} attaches to that base object,
+for every $1\le m<r$, every arithmetic polynomial Satake twist \texttt{tau}, and every prescribed
+pairwise-shift completion \texttt{D}, the exact
+\texttt{ArithmeticCPSAnalyticCandidate3D} and an equivariant finite-parameter residual channel.
+The residual is an $A$-linear intertwiner into a simple target; its vanishing is derived by
+\texttt{EquivariantCPSResidual3D.residue\_eq\_zero} from simplicity and the strict rank gap, so
+no ordinary-vector-space non-embedding assertion occurs.  Finally
+\texttt{ArithmeticCPSAllTwistsConverseCandidate3D.converseCapstone} returns, simultaneously, the
+base restricted-product action and rational-quotient cuspidal landing and, for every twist in the
+CPS range, the literal coefficient passport, both initial Euler/completion identifications, both
+entire continuations, both vertical-strip bounds, the functional equation, the native 3D
+reflection, and the derived zero residual.  The theorem has one candidate argument: none of those
+clauses appears as a detached proposition in its signature.
+
 The reflection and analytic package are likewise assembled on one source, rather than inferred by
 identifying unrelated operators.  For every finite tensor--Euler exponent box, the single Lean
 theorem \texttt{GlobalHelix.finiteTensorEulerZeroMode3D\_unified} identifies the scalar field of one
@@ -3836,9 +4132,8 @@ then closes it.
 \begin{remark}[Phase shadow versus the open radial strand]
 The Lean carrier keeps these two coordinates separate. A
 \texttt{UnitaryPrimePhase} is the ledger-normalized angular coordinate, so
-\texttt{unitaryPrimePhase\_towerCeiling} proves its two-sided power ceiling and
-\texttt{unitaryPrimePhase\_strandBlock\_isometry} proves the associated transverse phase block is
-an isometry. This does not insert unit modulus into the arithmetic strand
+\texttt{unitaryPrimePhase\_towerCeiling} proves its two-sided power ceiling; its isometry
+corollary then proves the associated transverse phase block is an isometry. This does not insert unit modulus into the arithmetic strand
 $\operatorname{diag}(\alpha_p,\alpha_p^{-1})$: that strand is the separate input of
 \texttt{RamanujanLimit}, and its radius is obtained above from the rank-uniform top and bottom
 ceilings by \texttt{strand\_radius\_one\_of\_tower\_ceiling}.  The capstone
@@ -3916,6 +4211,26 @@ $\mu_N^{(3)}\Rightarrow h_*\mu_{\rm ST}$, and the stronger theorem
 direction follows from the continuous global coordinate $S\circ h=\mathrm{id}$.  Thus the
 standard arithmetic equidistribution input and its native 3D realization meet at an exact,
 machine-checked empirical-measure interface.
+
+The smaller Serre/Peter--Weyl boundary is also formalized, rather than being silently identified
+with the all-test interface.  In \texttt{CPSCharacterSatoTate3D}, the structure
+\texttt{SymmetricPowerCharacterPrime\-ZeroInput} contains only the support
+$\theta_p\in[0,\pi]$ and convergence to zero of the canonical prime averages of
+$U_r(\cos\theta_p)$ for each $r\geq1$.  The target measure is not stored in this arithmetic
+input: \texttt{chebyshev\_U\_angleMeasure\_integral\_zero} computes
+$\int U_r(\cos\theta)\,d\mu_{\rm ST}=0$ from the explicit carrier density by
+$2\sin((r+1)\theta)\sin\theta=\cos(r\theta)-\cos((r+2)\theta)$; the trivial-character
+average and integral are both proved equal to one.  Lean then proves that the second-kind Chebyshev family is a
+polynomial sequence of exact degree $r$, uses
+\texttt{Polynomial.Sequence.span\_degreeLT} to obtain every polynomial trace test
+(\texttt{polynomial\_tendsto}), and then applies the formal Weierstrass theorem after the
+$\arccos$ change of coordinate to obtain every bounded continuous test
+(\texttt{integral\_tendsto}).  Consequently the theorem
+\texttt{empiricalPrimeCarrierMeasure\_tendsto\_of\_}\allowbreak
+\texttt{characterAveragesZero} proves
+$\mu_N^{(3)}\Rightarrow h_*\mu_{\rm ST}$ directly from the symmetric-power character averages.
+Thus the passage from the identified symmetric-power Euler products to the 3D empirical law is a
+compiled density argument, not an additional equidistribution field.
 \end{remark}
 
 \begin{proof}
@@ -3955,9 +4270,11 @@ dense in the continuous class functions on the compact conjugacy-class interval 
 Stone--Weierstrass).  Since the Sato--Tate law has character integrals $0$ for $r\ge1$ and mass $1$ for
 $r=0$, Serre's criterion \cite{Serre} therefore yields weak convergence of the empirical prime measures to
 $\tfrac2\pi\sin^2\theta\,d\theta$.  The Lean theorem
-\texttt{integral\_empiricalPrimeAngleMeasure} identifies the resulting literal prime averages with the
-probability-measure integrals, and the continuous mapping theorem then moves this already-derived
-arithmetic convergence to the native 3D carrier. This case is out of reach of automorphy lifting --- a Maass form carries no
+\texttt{empiricalPrimeCarrierMeasure\_tendsto\_of\_}\allowbreak
+\texttt{characterAveragesZero} implements this
+criterion: it derives all polynomial tests from the $U_r$, promotes them to bounded continuous tests
+by uniform approximation on $[0,\pi]$, identifies the literal prime averages with the corresponding
+probability-measure integrals, and moves the resulting convergence to the native 3D carrier. This case is out of reach of automorphy lifting --- a Maass form carries no
 geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and the carrier, needing none,
 proves it.
 \end{proof}
@@ -5190,7 +5507,7 @@ entire. For non-exceptional $\pi$ the tensor $\Sym^r\varphi_\pi\otimes\varphi_\t
 the relevant map $\varphi_\tau^\vee\to\Sym^r\varphi_\pi$ is a morphism for the parameter-group action,
 and simplicity makes every nonzero morphism surjective; the strict rank inequality then rules it out
 (\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}; the bundled Schur form is
-\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_not\_unit}).  Thus $W_{r,\tau}$ is complete and the twist is entire. The exceptional/reducible $\pi$ carry a genuine
+\texttt{NonSelfDual.tateClass\_zero\_of\_simple\_finrank\_succ}).  Thus $W_{r,\tau}$ is complete and the twist is entire. The exceptional/reducible $\pi$ carry a genuine
 trivial constituent --- the classical $\zeta$-factor pole --- and $\Sym^r\pi$ is then the known isobaric object
 (\S\ref{sec:cps-decomp}).
 \end{lemma}
@@ -5202,8 +5519,8 @@ characters of the self-compatible cell group), character orthogonality gives tha
 zero over a cell (\texttt{harmonize\_char}), so the DC coefficient is the trivial-channel coefficient alone
 (\texttt{complete\_bank\_dc\_zero}). A trivial channel is present iff $\varphi_\tau^\vee$ embeds in
 $\Sym^r\varphi_\pi$ (a trivial constituent); for non-exceptional $\pi$ with
-$\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$ that $\operatorname{Hom}$-space is zero
-(\texttt{no\_nonzero\_hom\_of\_finrank\_lt}), so there is no trivial channel, $R_{r,\tau}=0$, and $\Lambda$ is
+$\dim\varphi_\tau<\dim\Sym^r\varphi_\pi$ that equivariant $\operatorname{Hom}$-space is zero
+(\texttt{RepresentationRankGap.no\_nonzero\_intertwiner\_of\_finrank\_lt}), so there is no trivial channel, $R_{r,\tau}=0$, and $\Lambda$ is
 entire. The pencil residual $D^{\mathrm c}_{r,\tau}=V_{r,\tau}\Phi_{r,\tau}$ of Lemma~\ref{lem:rankgap} is a
 \emph{separate} quantity --- the zero-detector, the readout's value along the line --- not this DC/residue mode;
 the two must not be conflated.
@@ -6847,7 +7164,11 @@ The scalar fibre \(\gamma\,\mathrm{id}_{\mathbb C}\) is a valid local
 coordinate detector.  Lean now also defines one fixed symmetric operator on
 the completed 3D event type, proves its explicit event eigenvectors, and
 packages the two resolvent versions: 3D-zero/eigenvector and
-1D-zero/3D-zero/eigenvector.  This event-space assembly does not by itself
+1D-zero/3D-zero/eigenvector.  The compiled
+\texttt{SpectralCarrierKernelCoupling3D} now joins the full analytic zero kernel,
+completed focal event, ambient eigenvector, and real-generator resolvent kernel at
+one identical analytic parameter; the principal contour certificate carries that
+coupling as a field.  This event-space assembly does not by itself
 route an arbitrary analytic zero into the event subtype.  Lean proves that the old 3D identity premise
 is GRH conjoined with midpoint-free native coverage; it also proves that the
 old 1D routing disjunction is automatic and that its pointwise
@@ -6855,7 +7176,17 @@ chart-to-kernel premise alone implies the critical-line conclusion.
 
 The global \(S(t)\) coordinate law remains an exact theorem: it carries the
 carrier-scale census to the unit-chart census and matches jumps, residues, and
-multiplicities.  Completing the analytic-coverage route requires proving the
+multiplicities.  The independent contour census now sharpens it to
+\(S_\Gamma(T)=S_{\mathrm{mult}}(T)+N_{\mathrm{off}}^{\mathrm{mult}}(T)\),
+with positive multiplicity summands and the pointwise line-event-or-coordinate-defect
+theorem above.  The same defect is now exactly the positive multiplicity sum of
+full analytic kernels lacking a parameter-preserving
+\texttt{SpectralCarrierKernelCoupling3D}; consequently the coordinates agree
+exactly when every enclosed kernel is coupled, and uncoupled kernels cannot
+cancel one another in the contour ledger.  Its global native branch now constructs the complete physical-height event,
+ambient eigenvector, harmonic rank drops, and 1D/3D trace relation in
+\texttt{upper\_nontrivialZero\_native3DCertificate\_or\_globalCoordinateDefect}.
+Completing the analytic-coverage route requires proving the
 resolvent/spectral capture for the event-independent ambient carrier operator
 \(A^{(3)}_{p,r}\), or instantiating the same interface with another fixed
 self-adjoint operator, as stated by

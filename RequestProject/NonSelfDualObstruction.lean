@@ -17,8 +17,7 @@ the detector's refusal to freeze a non-self-dual rail is exactly this vanishing,
 was correct (no false positive), and "make a frozen non-self-dual class" is impossible.
 
 `tateClass_zero_of_simple_not_unit` is the machine-checked statement.  It asserts no Hodge
-conjecture; it is the exact reason the non-self-dual freeze route is closed.  No `sorry`,
-no `axiom`.
+conjecture; it is the exact reason the non-self-dual freeze route is closed.
 -/
 
 open CategoryTheory Module
@@ -55,9 +54,22 @@ theorem tateClass_zero_of_simple_finrank_ne_one (V : FDRep k G)
   calc
     finrank k V = finrank k (𝟙_ (FDRep k G)) :=
       (FDRep.isoToLinearEquiv i).finrank_eq.symm
-    _ = 1 := by simp
+    _ = 1 := by
+      change finrank k k = 1
+      exact finrank_self k
+
+/-- Symmetric-power-sized form: a simple representation of dimension `r+1`, with `r` positive,
+has no morphism from the trivial representation. -/
+theorem tateClass_zero_of_simple_finrank_succ (V : FDRep k G) (r : ℕ)
+    [Simple (𝟙_ (FDRep k G))] [Simple V]
+    (hr : finrank k V = r + 1) (hrpos : 1 ≤ r)
+    (f : 𝟙_ (FDRep k G) ⟶ V) : f = 0 := by
+  apply tateClass_zero_of_simple_finrank_ne_one V
+  rw [hr]
+  omega
 
 end CriticalLinePhasor.NonSelfDual
 
 #print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_not_unit
 #print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_finrank_ne_one
+#print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_finrank_succ

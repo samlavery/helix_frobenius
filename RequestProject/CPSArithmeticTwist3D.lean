@@ -60,7 +60,7 @@ private theorem arithmeticCPSTensorRoot_bound
     ‖arithmeticCPSTensorRoot r m pi tau p i‖ =
         ‖pi.primal p 0‖ ^ (r - i.1.1) *
           ‖pi.primal p 1‖ ^ i.1.1 * ‖tau.primal p i.2‖ := by
-            simp [arithmeticCPSTensorRoot, norm_mul, norm_pow]
+            simp [arithmeticCPSTensorRoot, norm_pow]
     _ ≤ ((p.1 : ℝ) ^ pi.primalExponent) ^ (r - i.1.1) *
           ((p.1 : ℝ) ^ pi.primalExponent) ^ i.1.1 *
             (p.1 : ℝ) ^ tau.primalExponent := by
@@ -85,7 +85,7 @@ private theorem arithmeticCPSDualTensorRoot_bound
     ‖arithmeticCPSDualTensorRoot r m pi tau p i‖ =
         ‖pi.dual p 0‖ ^ (r - i.1.1) *
           ‖pi.dual p 1‖ ^ i.1.1 * ‖tau.dual p i.2‖ := by
-            simp [arithmeticCPSDualTensorRoot, norm_mul, norm_pow]
+            simp [arithmeticCPSDualTensorRoot, norm_pow]
     _ ≤ ((p.1 : ℝ) ^ pi.dualExponent) ^ (r - i.1.1) *
           ((p.1 : ℝ) ^ pi.dualExponent) ^ i.1.1 *
             (p.1 : ℝ) ^ tau.dualExponent := by
@@ -162,6 +162,57 @@ theorem arithmeticCPSCoefficientPassport
     arithmeticCPS_globalCoefficient_identification r m pi tau,
     arithmeticCPS_globalDualCoefficient_identification r m pi tau⟩
 
+/-- The arithmetic conductor and archimedean parameters of one CPS tensor twist.  The completion
+shifts are constructed as all pairwise sums, exactly as for a tensor-product local parameter. -/
+structure ArithmeticCPSCompletionData (r m : ℕ) where
+  conductor : ℝ
+  conductor_pos : 0 < conductor
+  symmetricShift : Fin (r + 1) → ℂ
+  twistShift : Fin m → ℂ
+
+/-- The tensor-product Deligne shifts, with one entry for every `(j,k)` channel. -/
+noncomputable def ArithmeticCPSCompletionData.tensorShifts
+    {r m : ℕ} (D : ArithmeticCPSCompletionData r m) : List ℂ :=
+  List.ofFn fun i : Fin ((r + 1) * m) =>
+    let jk : Fin (r + 1) × Fin m :=
+      (Fintype.equivFin (Fin (r + 1) × Fin m)).symm
+        (Fin.cast (by simp [Nat.mul_comm]) i)
+    D.symmetricShift jk.1 + D.twistShift jk.2
+
+/-- The prescribed CPS completion clock built from the arithmetic conductor and tensor shifts. -/
+noncomputable def ArithmeticCPSCompletionData.clock
+    {r m : ℕ} (D : ArithmeticCPSCompletionData r m) (hm : 0 < m) : CPSCompletionClock where
+  conductor := D.conductor
+  conductor_pos := D.conductor_pos
+  shifts := D.tensorShifts
+  shifts_nonempty := by
+    intro h
+    have hlen := congrArg List.length h
+    simp [tensorShifts, Nat.ne_of_gt hm] at hlen
+
+/-- For the literal arithmetic CPS bank, the primal and dual 3D Mellin projections have the
+tensor-product conductor and Gamma shifts supplied by the local parameter data. -/
+theorem arithmeticCPSFullCompletion3D_identification
+    (r m : ℕ) (hm : 0 < m)
+    (pi : PolynomialSatakeDualPair (Fin 2))
+    (tau : PolynomialSatakeDualPair (Fin m))
+    (D : ArithmeticCPSCompletionData r m)
+    (point : CPSCompletionPoint (arithmeticCPSPolynomialTwist r m pi tau) (D.clock hm)) :
+    mellin (cpsPolynomialFullPrimal3DBankReadout
+        (arithmeticCPSPolynomialTwist r m pi tau)
+        D.conductor D.tensorShifts) point.s =
+      cpsPolynomialFullPrimalCompletedReadout
+        (arithmeticCPSPolynomialTwist r m pi tau)
+        D.conductor D.tensorShifts point.s ∧
+    mellin (fun x : ℝ => cpsPolynomialFullDual3DTransformedReadout
+        (arithmeticCPSPolynomialTwist r m pi tau)
+        D.conductor D.tensorShifts (1 / x)) point.s =
+      cpsPolynomialFullDualCompletedReadout
+        (arithmeticCPSPolynomialTwist r m pi tau)
+        D.conductor D.tensorShifts point.s := by
+  exact cpsPolynomialFullCompletion3D_identification
+    (arithmeticCPSPolynomialTwist r m pi tau) (D.clock hm) point
+
 end CriticalLinePhasor.GlobalHelix
 
 namespace CriticalLinePhasor.CPSResidual
@@ -185,4 +236,5 @@ end CriticalLinePhasor.CPSResidual
 #print axioms CriticalLinePhasor.GlobalHelix.arithmeticCPS_localFactor_identification
 #print axioms CriticalLinePhasor.GlobalHelix.arithmeticCPS_globalCoefficient_identification
 #print axioms CriticalLinePhasor.GlobalHelix.arithmeticCPSCoefficientPassport
+#print axioms CriticalLinePhasor.GlobalHelix.arithmeticCPSFullCompletion3D_identification
 #print axioms CriticalLinePhasor.CPSResidual.equivariantResidual_zero

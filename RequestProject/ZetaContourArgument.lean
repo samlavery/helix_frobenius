@@ -1037,6 +1037,53 @@ theorem stripZeroWindow_finite (T : ℝ) : (stripZeroWindow T).Finite := by
 /-- The finite upper-strip zero window as a finset. -/
 def stripZeroFinset (T : ℝ) : Finset ℂ := (stripZeroWindow_finite T).toFinset
 
+/-- Above every real ordinate there is a good contour height.  The construction uses the first
+zero ordinate in the next finite strip window when one exists, and takes a strict midpoint below
+it; otherwise it takes the midpoint of the empty unit window. -/
+theorem exists_goodHeight_gt (a : ℝ) : ∃ T : ℝ, a < T ∧ GoodHeight T := by
+  classical
+  let b : ℝ := max a 0
+  let O : Finset ℝ :=
+    ((stripZeroFinset (b + 1)).image Complex.im).filter (fun y => b < y)
+  by_cases hO : O.Nonempty
+  · let m : ℝ := O.min' hO
+    have hmO : m ∈ O := Finset.min'_mem O hO
+    have hbm : b < m := (Finset.mem_filter.mp hmO).2
+    have hmle : m ≤ b + 1 := by
+      obtain ⟨ρ, hρ, hρm⟩ := Finset.mem_image.mp (Finset.mem_filter.mp hmO).1
+      have hstrip := (stripZeroWindow_finite (b + 1)).mem_toFinset.mp hρ
+      rw [← hρm]
+      exact hstrip.2.2
+    let T : ℝ := (b + m) / 2
+    have hbT : b < T := by dsimp [T]; linarith
+    have hTm : T < m := by dsimp [T]; linarith
+    have hTpos : 0 < T := lt_of_le_of_lt (le_max_right a 0) hbT
+    refine ⟨T, lt_of_le_of_lt (le_max_left a 0) hbT, hTpos, ?_⟩
+    intro ρ hρ hρT
+    have hTle : T ≤ b + 1 := hTm.le.trans hmle
+    have hρstrip : ρ ∈ stripZeroFinset (b + 1) := by
+      apply (stripZeroWindow_finite (b + 1)).mem_toFinset.mpr
+      exact ⟨hρ, hρT.symm ▸ hTpos, hρT.symm ▸ hTle⟩
+    have himO : ρ.im ∈ O := by
+      apply Finset.mem_filter.mpr
+      exact ⟨Finset.mem_image.mpr ⟨ρ, hρstrip, rfl⟩, hρT.symm ▸ hbT⟩
+    have hmT : m ≤ T := by
+      rw [← hρT]
+      exact Finset.min'_le O ρ.im himO
+    exact (not_le_of_gt hTm) hmT
+  · let T : ℝ := b + 1 / 2
+    have hbT : b < T := by dsimp [T]; norm_num
+    have hTle : T ≤ b + 1 := by dsimp [T]; norm_num
+    have hTpos : 0 < T := lt_of_le_of_lt (le_max_right a 0) hbT
+    refine ⟨T, lt_of_le_of_lt (le_max_left a 0) hbT, hTpos, ?_⟩
+    intro ρ hρ hρT
+    apply hO
+    refine ⟨ρ.im, Finset.mem_filter.mpr ⟨?_, hρT.symm ▸ hbT⟩⟩
+    apply Finset.mem_image.mpr
+    refine ⟨ρ, ?_, rfl⟩
+    apply (stripZeroWindow_finite (b + 1)).mem_toFinset.mpr
+    exact ⟨hρ, hρT.symm ▸ hTpos, hρT.symm ▸ hTle⟩
+
 /-- The multiplicity-weighted count of all nontrivial zeros in the upper strip. -/
 def stripZeroCountMult (T : ℝ) : ℕ :=
   ∑ ρ ∈ stripZeroFinset T, ZD.xiOrderNat ρ
@@ -1353,6 +1400,87 @@ theorem stripZeroCountMult_eq_line_add_offLine (T : ℝ) :
   rw [stripZeroCountMult_eq_onLine_add_offLine,
     onLineStripZeroCountMult_eq_zeroEventCountMult]
 
+/-- The off-line multiplicity is exactly the excess of the independently lifted contour
+winding over the native line-event multiplicity.  Both sides are integers; no argument branch
+or zero-set identification occurs in this subtraction. -/
+theorem offLineStripZeroCountMult_eq_winding_sub_line
+    {T : ℝ} (hT : GoodHeight T) :
+    (offLineStripZeroCountMult T : ℤ) =
+      contourWindingIndex hT + 1 - zeroEventCountMult T := by
+  have hw := contourWindingIndex_add_one_eq_stripZeroCountMult hT
+  have hsplit := stripZeroCountMult_eq_line_add_offLine T
+  omega
+
+/-- **Global-coordinate registration law.**  The independently continued classical argument
+is the native multiplicity ledger plus the multiplicity of the analytic zeros not represented
+by line events.  Thus `S_mult` is the native 3D coordinate and the second summand is the exact,
+nonnegative coverage defect of the scalar strip census. -/
+theorem classicalSContour_eq_Smult_add_offLine
+    {T : ℝ} (hT : GoodHeight T) :
+    classicalSContour hT =
+      Smult T + (offLineStripZeroCountMult T : ℝ) := by
+  have hw := contourWindingIndex_add_one_eq_stripZeroCountMult hT
+  have hsplit := stripZeroCountMult_eq_line_add_offLine T
+  rw [classicalSContour_eq_winding_sub_clock hT]
+  unfold Smult
+  have hwR : (contourWindingIndex hT : ℝ) + 1 =
+      (stripZeroCountMult T : ℝ) := by exact_mod_cast hw
+  have hsplitR : (stripZeroCountMult T : ℝ) =
+      (zeroEventCountMult T : ℝ) + (offLineStripZeroCountMult T : ℝ) := by
+    exact_mod_cast hsplit
+  linarith
+
+/-- Equality of the independent contour coordinate and the native registration coordinate is
+equivalent, at each good height, to vanishing of the off-line multiplicity ledger. -/
+theorem classicalSContour_eq_Smult_iff_offLine_eq_zero
+    {T : ℝ} (hT : GoodHeight T) :
+    classicalSContour hT = Smult T ↔ offLineStripZeroCountMult T = 0 := by
+  rw [classicalSContour_eq_Smult_add_offLine hT]
+  constructor
+  · intro h
+    have : (offLineStripZeroCountMult T : ℝ) = 0 := by linarith
+    exact_mod_cast this
+  · intro h
+    simp [h]
+
+/-- Every analytic zero in a good finite strip is either represented by the native line ledger,
+or it forces a detectable discrepancy between the independently continued global coordinate and
+the native multiplicity coordinate.  Positivity of the analytic order prevents an off-line zero
+from disappearing inside the summed defect. -/
+theorem mem_stripZeroFinset_line_or_coordinate_defect
+    {T : ℝ} (hT : GoodHeight T) {ρ : ℂ} (hρ : ρ ∈ stripZeroFinset T) :
+    ρ.re = 1 / 2 ∨ classicalSContour hT ≠ Smult T := by
+  by_cases hline : ρ.re = 1 / 2
+  · exact Or.inl hline
+  · right
+    intro hcoordinate
+    have hoff : offLineStripZeroCountMult T = 0 :=
+      (classicalSContour_eq_Smult_iff_offLine_eq_zero hT).mp hcoordinate
+    have hρoff : ρ ∈ (stripZeroFinset T).filter (fun z => z.re ≠ 1 / 2) :=
+      Finset.mem_filter.mpr ⟨hρ, hline⟩
+    have hterm : ZD.xiOrderNat ρ = 0 := by
+      unfold offLineStripZeroCountMult at hoff
+      exact (Finset.sum_eq_zero_iff_of_nonneg
+        (fun z _ => Nat.zero_le (ZD.xiOrderNat z))).mp hoff ρ hρoff
+    have hstrip := (stripZeroWindow_finite T).mem_toFinset.mp hρ
+    exact (Nat.ne_of_gt (ZD.xiOrderNat_pos_of_mem_NontrivialZeros hstrip.1)) hterm
+
+/-- Global upper-half-plane form of the coverage dichotomy.  Every nontrivial zero is enclosed
+by a strictly higher good contour; hence it is either represented on the native line or supplies
+an explicit good height at which the independent and native global coordinates differ. -/
+theorem upper_nontrivialZero_line_or_globalCoordinateDefect
+    {ρ : ℂ} (hρ : ρ ∈ ZD.NontrivialZeros) (hρim : 0 < ρ.im) :
+    ρ.re = 1 / 2 ∨
+      ∃ T : ℝ, ∃ hT : GoodHeight T,
+        ρ.im < T ∧ classicalSContour hT ≠ Smult T := by
+  obtain ⟨T, hρT, hT⟩ := exists_goodHeight_gt ρ.im
+  have hρstrip : ρ ∈ stripZeroFinset T := by
+    apply (stripZeroWindow_finite T).mem_toFinset.mpr
+    exact ⟨hρ, hρim, hρT.le⟩
+  rcases mem_stripZeroFinset_line_or_coordinate_defect hT hρstrip with hline | hdefect
+  · exact Or.inl hline
+  · exact Or.inr ⟨T, hT, hρT, hdefect⟩
+
 /-- Any continuous logarithmic lift of the same contour with the same positive normalization is
 the constructed lift.  Thus the continued argument has no branch choice left in it. -/
 theorem contourLogLift_unique {T : ℝ} (hT : GoodHeight T) (L : C(unitInterval, ℂ))
@@ -1387,3 +1515,9 @@ end CriticalLinePhasor.ContourArgument
 #print axioms CriticalLinePhasor.ContourArgument.rectangleBoundaryIntegral_logDeriv_riemannXi_eq_contour_phase
 #print axioms CriticalLinePhasor.ContourArgument.rectangleBoundaryIntegral_logDeriv_riemannXi
 #print axioms CriticalLinePhasor.ContourArgument.contourWindingIndex_add_one_eq_stripZeroCountMult
+#print axioms CriticalLinePhasor.ContourArgument.exists_goodHeight_gt
+#print axioms CriticalLinePhasor.ContourArgument.offLineStripZeroCountMult_eq_winding_sub_line
+#print axioms CriticalLinePhasor.ContourArgument.classicalSContour_eq_Smult_add_offLine
+#print axioms CriticalLinePhasor.ContourArgument.classicalSContour_eq_Smult_iff_offLine_eq_zero
+#print axioms CriticalLinePhasor.ContourArgument.mem_stripZeroFinset_line_or_coordinate_defect
+#print axioms CriticalLinePhasor.ContourArgument.upper_nontrivialZero_line_or_globalCoordinateDefect

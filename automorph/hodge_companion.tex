@@ -804,16 +804,21 @@ $\varepsilon$-factors---and never from the location of an $L$-zero.  After
 each power is reduced to its primitive conductor, the computation gives the
 exception-free law
 \[
-\varepsilon(\psi^m)=+1
+\varepsilon(\psi^m)=-1
 \quad\Longleftrightarrow\quad
-m\equiv1,2\pmod4,
+m\equiv3\pmod4,
 \]
-and hence $\varepsilon(\psi^m)=-1\iff m\equiv0,3\pmod4$.
-The period four belongs to the \emph{global} local-factor product.  Its
-archimedean component has phase $i^{m+1}$, while the ramified finite
-component supplies the compensating Gauss phase; in the standard
-normalization the quadratic character modulo $7$ has
-$\tau(\eta_7)/\sqrt7=i$.  Neither factor alone is the global sign.
+so $\varepsilon(\psi^m)=+1$ for $m\equiv0,1,2\pmod4$: only the grades
+$m\equiv3$ carry a forced central zero.  The sign is fixed by the completed
+functional equation once the two bad local factors are the CM-correct
+ones.  At an inert prime $a_{p^2}=\psi^m(\mathfrak p_p)=(-p)^m$, so the
+odd-weight (even-$m$) nebentypus flips its sign to $+p^m$; at the ramified
+place $a_{7^j}=(\sqrt{-7})^{mj}$ for even $m$ (level $7$, $\psi^m$
+unramified) while $a_{7^j}=0$ for odd $m$ (level $49$, $\psi^m$ ramified).
+With these the functional equation closes to machine precision
+($|\phi|=1.000$) at every measured grade, and its sign gives the law above;
+an earlier phase-count over $i^{m+1}$ and the ramified Gauss phase
+mis-added at $m\equiv0$ and is superseded by this reading.
 
 The same parity is visible in the polarization type.  Since the associated
 Hodge structure has weight $m$, its polarization is alternating
@@ -845,18 +850,22 @@ the primitive level restores $\varepsilon(\psi^2)=+1$ and removes the sole
 apparent anomaly.  The conductor has period two; the root number has period
 four.
 
-At every measured grade with $\varepsilon(\psi^m)=-1$, the functional
-equation forces a central zero and the computed derivative is nonzero.
-Thus every forced zero in the tested range $1\leq m\leq12$ is simple: no
-silent grade occurs in that range.  This is empirical evidence for
+At every measured grade with $\varepsilon(\psi^m)=-1$ (that is, at
+$m\equiv3$), the functional equation forces a central zero and the computed
+derivative is nonzero.  Every forced zero in the tested range is simple: the
+firing grades $m=3,7,11,15,19,23,27,31,35,39$ are read directly in machine
+arithmetic, and with the unitary bank (coefficients $\lambda_{p^{k}}$ formed
+without the overflowing $p^{m/2}$) the reading extends cleanly to grade
+$199$ (weight $200$); no silent grade occurs.  This is empirical evidence for
 Retention along the ladder, not an all-grade nonvanishing theorem.  The
-bad-prime coefficient at the ramified place is the primitive-local value
-$\lambda_7=i^m$ (so $a_7=(\sqrt{-7})^m$; at grade two $a_7=-7$, the
-classical coefficient of $7.3.b.a$), and the sign follows from the
-carrier's $\varepsilon$-factor independently of it.  The residual left by
-the split-vs-direct certificate at level $7$ is a projection-side artifact
-of a one-dimensional device at the ramified place --- the sign is fixed on
-the carrier and does not rest on it --- not an obstruction on the carrier.
+bad-prime coefficient at the ramified place is $\lambda_7=i^m$ (so
+$a_7=(\sqrt{-7})^m$; at grade two $a_7=-7$, the classical coefficient of
+$7.3.b.a$).  An earlier reading mistook the even-grade functional-equation
+residual for a projection-side artifact; it was in fact two \emph{missing}
+local factors --- the unramified degree-one factor at $7$ and the
+nebentypus-flipped inert sign $a_{p^2}=(-p)^m$ --- and with both restored the
+completed functional equation closes to machine precision at every even
+grade.  The correction record is kept: the even grades do not fire.
 
 Nothing here proves the Hodge conjecture, Beilinson--Bloch, or
 $\mathrm{SL}_2$-orbit finiteness.  It gives an exact primitive-conductor

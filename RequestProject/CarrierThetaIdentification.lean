@@ -70,6 +70,26 @@ noncomputable def theta (a : ℕ → ℂ) (g : ℝ → ℂ) (x : ℝ) : ℂ :=
 noncomputable def dirichlet (a : ℕ → ℂ) (s : ℂ) : ℂ :=
   ∑' n : ℕ, a n * ((n + 1 : ℕ) : ℂ) ^ (-s)
 
+/-- Convergence of one Mellin integral makes the underlying function locally integrable on the
+positive axis.  The Mellin weight is nowhere zero there, and multiplication by its continuous
+reciprocal recovers the unweighted function. -/
+theorem locallyIntegrableOn_of_mellinConvergent
+    (f : ℝ → ℂ) (s : ℂ) (hf : MellinConvergent f s) :
+    LocallyIntegrableOn f (Ioi 0) := by
+  have hweighted : LocallyIntegrableOn
+      (fun x : ℝ => (x : ℂ) ^ (s - 1) * f x) (Ioi 0) := by
+    apply IntegrableOn.locallyIntegrableOn
+    simpa [MellinConvergent, smul_eq_mul] using hf
+  have hinverse : ContinuousOn (fun x : ℝ => (x : ℂ) ^ (1 - s)) (Ioi 0) := by
+    intro x hx
+    exact (Complex.continuousAt_ofReal_cpow_const x (1 - s)
+      (Or.inr (ne_of_gt hx))).continuousWithinAt
+  have hproduct := hweighted.continuousOn_mul hinverse isLocallyClosed_Ioi
+  apply LocallyIntegrableOn.congr _ hproduct
+  filter_upwards [ae_restrict_mem measurableSet_Ioi] with x hx
+  rw [← mul_assoc, ← Complex.cpow_add _ _ (Complex.ofReal_ne_zero.mpr (ne_of_gt hx))]
+  simp
+
 /-- E5 for the full carrier theta.  Absolute summability of the Mellin-integrand norms is exactly
 the dominated-convergence condition needed to interchange the coefficient bank with the integral.
 The conclusion identifies the already convergent global carrier transform with the Dirichlet
@@ -265,6 +285,7 @@ theorem theta_hasMellin_of_polynomial
 end CriticalLinePhasor.CarrierTheta
 
 #print axioms CriticalLinePhasor.CarrierTheta.coefficientTerm_hasMellin
+#print axioms CriticalLinePhasor.CarrierTheta.locallyIntegrableOn_of_mellinConvergent
 #print axioms CriticalLinePhasor.CarrierTheta.finiteTheta_hasMellin
 #print axioms CriticalLinePhasor.CarrierTheta.theta_hasMellin
 #print axioms CriticalLinePhasor.CarrierTheta.coefficientTerm_integral_norm_eq

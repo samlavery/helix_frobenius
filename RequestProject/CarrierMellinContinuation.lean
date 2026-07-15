@@ -141,14 +141,19 @@ theorem completeHarmonicPair_entire_functionalEquation
 /-- A constant mode factoring linearly through `Hom(W,V)` vanishes when `V` is simple and the
 carrier twist has strictly smaller dimension. -/
 theorem rankGapConstant_zero
-    {W V : Type*}
-    [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V]
+    {A W V : Type*} [Ring A] [Algebra ℂ A]
+    [AddCommGroup W] [Module ℂ W] [Module A W] [IsScalarTower ℂ A W]
+    [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
     [FiniteDimensional ℂ W] [FiniteDimensional ℂ V]
-    (hV : IsSimpleModule ℂ V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
-    (residue : W →ₗ[ℂ] V) (readout : (W →ₗ[ℂ] V) →ₗ[ℂ] ℂ) :
+    (hV : IsSimpleModule A V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
+    (residue : W →ₗ[A] V) (readout : (W →ₗ[A] V) →ₗ[ℂ] ℂ) :
     readout residue = 0 := by
-  rw [CriticalLinePhasor.TrivialChannel.no_nonzero_hom_of_finrank_lt hV hdim residue,
-    map_zero]
+  have hresidue : residue = 0 :=
+    CriticalLinePhasor.TrivialChannel.no_nonzero_hom_of_finrank_lt
+      (k := ℂ) (A := A) hV hdim residue
+  calc
+    readout residue = readout 0 := congrArg readout hresidue
+    _ = 0 := map_zero readout
 
 /-- End-to-end Riemann--Hecke continuation for a reflected rapid theta pair whose two constant
 modes factor through representation-theoretic trivial channels.  A strict rank gap into a simple
@@ -156,12 +161,13 @@ target kills both channels, so the completed Mellin transform is entire and obey
 functional equation. -/
 theorem rankGapPair_entire_functionalEquation
     (P : WeakFEPair ℂ)
-    {W V : Type*}
-    [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V]
+    {A W V : Type*} [Ring A] [Algebra ℂ A]
+    [AddCommGroup W] [Module ℂ W] [Module A W] [IsScalarTower ℂ A W]
+    [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
     [FiniteDimensional ℂ W] [FiniteDimensional ℂ V]
-    (hV : IsSimpleModule ℂ V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
-    (residueF residueG : W →ₗ[ℂ] V)
-    (readoutF readoutG : (W →ₗ[ℂ] V) →ₗ[ℂ] ℂ)
+    (hV : IsSimpleModule A V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
+    (residueF residueG : W →ₗ[A] V)
+    (readoutF readoutG : (W →ₗ[A] V) →ₗ[ℂ] ℂ)
     (hf₀ : P.f₀ = readoutF residueF)
     (hg₀ : P.g₀ = readoutG residueG) :
     Differentiable ℂ (mellin P.f) ∧
@@ -175,12 +181,13 @@ theorem rankGapPair_entire_functionalEquation
 /-- The full primal/dual niceness package for the rank-gap branch. -/
 theorem rankGapPair_twistedNiceness
     (P : WeakFEPair ℂ)
-    {W V : Type*}
-    [AddCommGroup W] [Module ℂ W] [AddCommGroup V] [Module ℂ V]
+    {A W V : Type*} [Ring A] [Algebra ℂ A]
+    [AddCommGroup W] [Module ℂ W] [Module A W] [IsScalarTower ℂ A W]
+    [AddCommGroup V] [Module ℂ V] [Module A V] [IsScalarTower ℂ A V]
     [FiniteDimensional ℂ W] [FiniteDimensional ℂ V]
-    (hV : IsSimpleModule ℂ V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
-    (residueF residueG : W →ₗ[ℂ] V)
-    (readoutF readoutG : (W →ₗ[ℂ] V) →ₗ[ℂ] ℂ)
+    (hV : IsSimpleModule A V) (hdim : Module.finrank ℂ W < Module.finrank ℂ V)
+    (residueF residueG : W →ₗ[A] V)
+    (readoutF readoutG : (W →ₗ[A] V) →ₗ[ℂ] ℂ)
     (hf₀ : P.f₀ = readoutF residueF)
     (hg₀ : P.g₀ = readoutG residueG) :
     Differentiable ℂ (mellin P.f) ∧

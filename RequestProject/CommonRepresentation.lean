@@ -21,8 +21,7 @@ Riemann–Hecke Mellin identity.  (The pencil `B = L(1/2+iγ)` is zero-*detectio
 it must not stand in for entireness — that was the audited error.)
 
 `native_closure_of_refined_closure` is the mathematical heart (`thm:g10-common-refinement`):
-pure finite combinatorics.  No `sorry`, no `axiom`; footprint
-`{propext, Classical.choice, Quot.sound}`.
+pure finite combinatorics, with footprint `{propext, Classical.choice, Quot.sound}`.
 -/
 
 namespace CriticalLinePhasor.CommonRepresentation
