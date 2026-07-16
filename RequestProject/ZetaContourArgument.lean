@@ -1465,6 +1465,41 @@ theorem mem_stripZeroFinset_line_or_coordinate_defect
     have hstrip := (stripZeroWindow_finite T).mem_toFinset.mp hρ
     exact (Nat.ne_of_gt (ZD.xiOrderNat_pos_of_mem_NontrivialZeros hstrip.1)) hterm
 
+/-- An off-carrier zero cannot disappear through cancellation in the contour defect: its full
+positive analytic order occurs as a summand of the nonnegative off-carrier ledger. -/
+theorem xiOrderNat_le_offLineStripZeroCountMult_of_offCarrier
+    {T : ℝ} {ρ : ℂ} (hρ : ρ ∈ stripZeroFinset T) (hoff : ρ.re ≠ 1 / 2) :
+    ZD.xiOrderNat ρ ≤ offLineStripZeroCountMult T := by
+  classical
+  unfold offLineStripZeroCountMult
+  apply Finset.single_le_sum (fun z _hz => Nat.zero_le (ZD.xiOrderNat z))
+  exact Finset.mem_filter.mpr ⟨hρ, hoff⟩
+
+/-- Quantitative `S(t)` form of no off-carrier cancellation.  At a good height enclosing an
+off-carrier zero, the independent contour coordinate exceeds the native carrier coordinate by
+at least that zero's positive analytic multiplicity. -/
+theorem xiOrderNat_le_classicalSContour_sub_Smult_of_offCarrier
+    {T : ℝ} (hT : GoodHeight T) {ρ : ℂ}
+    (hρ : ρ ∈ stripZeroFinset T) (hoff : ρ.re ≠ 1 / 2) :
+    (ZD.xiOrderNat ρ : ℝ) ≤ classicalSContour hT - Smult T := by
+  rw [classicalSContour_eq_Smult_add_offLine hT]
+  have hle := xiOrderNat_le_offLineStripZeroCountMult_of_offCarrier hρ hoff
+  have hleR : (ZD.xiOrderNat ρ : ℝ) ≤ (offLineStripZeroCountMult T : ℝ) := by
+    exact_mod_cast hle
+  linarith
+
+/-- Hence an enclosed off-carrier zero forces a strictly positive global-coordinate defect;
+neither another zero nor a reflected partner can cancel it. -/
+theorem classicalSContour_sub_Smult_pos_of_offCarrier
+    {T : ℝ} (hT : GoodHeight T) {ρ : ℂ}
+    (hρ : ρ ∈ stripZeroFinset T) (hoff : ρ.re ≠ 1 / 2) :
+    0 < classicalSContour hT - Smult T := by
+  have hpos : 0 < (ZD.xiOrderNat ρ : ℝ) := by
+    exact_mod_cast ZD.xiOrderNat_pos_of_mem_NontrivialZeros
+      ((stripZeroWindow_finite T).mem_toFinset.mp hρ).1
+  exact lt_of_lt_of_le hpos
+    (xiOrderNat_le_classicalSContour_sub_Smult_of_offCarrier hT hρ hoff)
+
 /-- Global upper-half-plane form of the coverage dichotomy.  Every nontrivial zero is enclosed
 by a strictly higher good contour; hence it is either represented on the native line or supplies
 an explicit good height at which the independent and native global coordinates differ. -/
@@ -1519,5 +1554,8 @@ end CriticalLinePhasor.ContourArgument
 #print axioms CriticalLinePhasor.ContourArgument.offLineStripZeroCountMult_eq_winding_sub_line
 #print axioms CriticalLinePhasor.ContourArgument.classicalSContour_eq_Smult_add_offLine
 #print axioms CriticalLinePhasor.ContourArgument.classicalSContour_eq_Smult_iff_offLine_eq_zero
+#print axioms CriticalLinePhasor.ContourArgument.xiOrderNat_le_offLineStripZeroCountMult_of_offCarrier
+#print axioms CriticalLinePhasor.ContourArgument.xiOrderNat_le_classicalSContour_sub_Smult_of_offCarrier
+#print axioms CriticalLinePhasor.ContourArgument.classicalSContour_sub_Smult_pos_of_offCarrier
 #print axioms CriticalLinePhasor.ContourArgument.mem_stripZeroFinset_line_or_coordinate_defect
 #print axioms CriticalLinePhasor.ContourArgument.upper_nontrivialZero_line_or_globalCoordinateDefect

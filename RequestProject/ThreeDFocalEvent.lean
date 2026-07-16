@@ -158,6 +158,15 @@ theorem carrierPoint_eq_half_add_I (z : ℝ) :
     (carrierPointAtHeight Z).re = carrierAbscissa := by
   simpa only [carrierPointAtHeight] using carrierPoint_re (Real.log Z)
 
+/-- A state represented by a physical helix height has no radial drift.  This is a theorem of
+carrier membership: the represented point first reads the area-law-selected abscissa, and only
+then the no-drift law is evaluated.  No zero predicate or numerical midpoint occurs in the
+statement. -/
+theorem carrierPointAtHeight_noRadialDrift (Z n : ℝ) (hn : 1 < n) :
+    n ^ ((carrierPointAtHeight Z).re - carrierAbscissa) = 1 := by
+  apply (noRadialDrift_iff_carrierAbscissa n (carrierPointAtHeight Z).re hn).2
+  exact carrierPointAtHeight_re Z
+
 /-- The carrier's imaginary coordinate is its logarithmic ordinate. -/
 @[simp] theorem carrierPoint_im (z : ℝ) : (carrierPoint z).im = z := by
   simp [carrierPoint]
@@ -314,6 +323,48 @@ theorem completedThreeDZeroAtHeight_on_midline
     (_hzero : CompletedThreeDZeroAtHeight χ Z) :
     (carrierPointAtHeight Z).re = 1 / 2 := by
   rw [carrierPointAtHeight_re, carrierAbscissa_eq_half]
+
+/-- Exact focal cancellation representing a specified analytic parameter.  The parameter is not
+an independent label on the event: it must be the readout of the same positive physical helix
+height at which `Dcell` vanishes. -/
+noncomputable def CompletedFocalCancellationRepresents
+    (χ : DirichletCharacter ℂ q) (ρ : ℂ) : Prop :=
+  ∃ Z : ℝ, CompletedThreeDZeroAtHeight χ Z ∧ carrierPointAtHeight Z = ρ
+
+/-- Parameter-preserving focal cancellation has exactly two consequences: the analytic
+L-function vanishes at that parameter, and the parameter has the area-law carrier abscissa.
+Conversely these two facts reconstruct the unique physical height `exp (Im ρ)` and its completed
+focal event. -/
+theorem completedFocalCancellationRepresents_iff
+    (χ : DirichletCharacter ℂ q) (ρ : ℂ) :
+    CompletedFocalCancellationRepresents χ ρ ↔
+      DirichletCharacter.LFunction χ ρ = 0 ∧ ρ.re = carrierAbscissa := by
+  constructor
+  · rintro ⟨Z, hzero, hpoint⟩
+    have hL := (completedThreeDZeroAtHeight_iff_L_zero χ Z hzero.1).1 hzero
+    rw [hpoint] at hL
+    refine ⟨hL, ?_⟩
+    rw [← hpoint, carrierPointAtHeight_re]
+  · rintro ⟨hL, hre⟩
+    let Z := Real.exp ρ.im
+    have hZ : 0 < Z := Real.exp_pos ρ.im
+    have hpoint : carrierPointAtHeight Z = ρ := by
+      rw [carrierPointAtHeight_exp]
+      apply Complex.ext
+      · simpa [carrierPoint] using hre.symm
+      · simp [carrierPoint]
+    have hzero : CompletedThreeDZeroAtHeight χ Z :=
+      (completedThreeDZeroAtHeight_iff_L_zero χ Z hZ).2 (by simpa [hpoint] using hL)
+    exact ⟨Z, hzero, hpoint⟩
+
+/-- Exact 3D focal cancellation has carrier support: an off-carrier complex parameter cannot be
+the parameter represented by a completed focal event.  This is pointwise, before any trace or
+zero-count sum, so no other event can cancel the discrepancy. -/
+theorem no_offCarrier_completedFocalCancellation
+    (χ : DirichletCharacter ℂ q) (ρ : ℂ) (hoff : ρ.re ≠ carrierAbscissa) :
+    ¬ CompletedFocalCancellationRepresents χ ρ := by
+  intro hcancel
+  exact hoff ((completedFocalCancellationRepresents_iff χ ρ).1 hcancel).2
 
 /-! ## The ambient 3D carrier operator, defined before event certificates
 
@@ -581,6 +632,28 @@ theorem completedThreeDZeroAtHeight_twoGram3D_rankDrop
   exact (vonNeumannGram3D_rankDrop_iff (Real.log Z) mu lam).2
     (vonNeumannGram_rankDrop (Real.log Z) mu lam hlam)
 
+/-- Complete native-event assembly at one physical helix height.  A completed 3D focal
+cancellation supplies the literal focal residual zero, the spatial harmonic-pencil rank drop,
+the event-independent carrier eigenvector at ordinate `log Z`, and zero radial drift of its
+analytic readout.  Thus the pencil and the no-drift law concern the same marked carrier event;
+the latter is derived from helix membership rather than inserted into the event certificate. -/
+theorem completedThreeDZeroAtHeight_focal_rankDrop_eigenvector_noRadialDrift
+    (χ : DirichletCharacter ℂ q) (p r Z n : ℝ) (mu lam : ℂ)
+    (hn : 1 < n) (hlam : lam ≠ mu) (hzero : CompletedThreeDZeroAtHeight χ Z) :
+    HarmonicCell.Dcell χ Z = 0 ∧
+      (completedHarmonicGram3DAtHeight χ Z mu lam).det = 0 ∧
+      let e : CompletedThreeDEigenEvent χ := ⟨Z, hzero⟩
+      Finsupp.single (e.toCarrierState p r) (1 : ℂ) ≠ 0 ∧
+        carrierThreeDOperator p r (Finsupp.single (e.toCarrierState p r) (1 : ℂ)) =
+          (Real.log Z : ℂ) • Finsupp.single (e.toCarrierState p r) (1 : ℂ) ∧
+        n ^ ((carrierPointAtHeight Z).re - carrierAbscissa) = 1 := by
+  have hrank :=
+    (completedHarmonicGram3DAtHeight_rankDrop_iff χ Z mu lam hzero.1 hlam).2 hzero
+  let e : CompletedThreeDEigenEvent χ := ⟨Z, hzero⟩
+  have heigen := carrierThreeDOperator_completedEvent_eigenvector p r e
+  refine ⟨hzero.2, hrank, heigen.1, ?_, carrierPointAtHeight_noRadialDrift Z n hn⟩
+  simpa [e] using heigen.2
+
 omit [NeZero q] in
 /-- The carrier coordinate of every native 3-D zero lies on the midline. -/
 theorem threeDZero_on_midline (χ : DirichletCharacter ℂ q) (bank : FocalBank) (z : ℝ)
@@ -622,6 +695,8 @@ end CriticalLinePhasor.ThreeDFocal
 #print axioms CriticalLinePhasor.ThreeDFocal.reprPoint_eq_carrierPointAtHeight
 #print axioms CriticalLinePhasor.ThreeDFocal.completedThreeDZeroAtHeight_iff_L_zero
 #print axioms CriticalLinePhasor.ThreeDFocal.completedThreeDZeroAtHeight_on_midline
+#print axioms CriticalLinePhasor.ThreeDFocal.completedFocalCancellationRepresents_iff
+#print axioms CriticalLinePhasor.ThreeDFocal.no_offCarrier_completedFocalCancellation
 #print axioms CriticalLinePhasor.ThreeDFocal.CarrierState3D.physicalHeight_eq_exp
 #print axioms CriticalLinePhasor.ThreeDFocal.carrierThreeDOperator_isSymmetric
 #print axioms CriticalLinePhasor.ThreeDFocal.carrierThreeDOperator_eigenvector
@@ -634,4 +709,6 @@ end CriticalLinePhasor.ThreeDFocal
 #print axioms CriticalLinePhasor.ThreeDFocal.completedHarmonicGram3DAtHeight_rankDrop_iff
 #print axioms CriticalLinePhasor.ThreeDFocal.completedHarmonicGram3DAtHeight_rankDrop_iff_L_zero
 #print axioms CriticalLinePhasor.ThreeDFocal.completedThreeDZeroAtHeight_twoGram3D_rankDrop
+#print axioms CriticalLinePhasor.ThreeDFocal.carrierPointAtHeight_noRadialDrift
+#print axioms CriticalLinePhasor.ThreeDFocal.completedThreeDZeroAtHeight_focal_rankDrop_eigenvector_noRadialDrift
 #print axioms CriticalLinePhasor.ThreeDFocal.threeDZero_on_midline
