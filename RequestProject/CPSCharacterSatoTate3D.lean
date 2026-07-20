@@ -433,6 +433,201 @@ theorem characterAverageZero_iff_equidistribution
   · intro hequi r hr
     exact equidistribution_forces_characterAverage_zero hequi r hr
 
+/-! ## Exact arithmetic Satake-to-carrier identification -/
+
+/-- The trace of the literal local roots
+`a^r, a^(r-1)a⁻¹, ..., (a⁻¹)^r` of the `r`th symmetric power. -/
+noncomputable def symmetricPowerSatakeTrace (a : ℂ) (r : ℕ) : ℂ :=
+  ∑ j ∈ Finset.range (r + 1), a ^ (r - j) * (a⁻¹) ^ j
+
+/-- The `j`th literal local root of the `r`th symmetric power. -/
+noncomputable def symmetricPowerSatakeRoot
+    (a : ℂ) (r : ℕ) (j : Fin (r + 1)) : ℂ :=
+  a ^ (r - j.1) * (a⁻¹) ^ j.1
+
+/-- The symmetric-power Satake trace is exactly the sum of its literal local roots. -/
+theorem symmetricPowerSatakeTrace_eq_sum_roots (a : ℂ) (r : ℕ) :
+    symmetricPowerSatakeTrace a r =
+      ∑ j : Fin (r + 1), symmetricPowerSatakeRoot a r j := by
+  exact (Fin.sum_univ_eq_sum_range
+    (fun j => a ^ (r - j) * (a⁻¹) ^ j) (r + 1)).symm
+
+theorem symmetricPowerSatakeTrace_succ (a : ℂ) (r : ℕ) :
+    symmetricPowerSatakeTrace a (r + 1) =
+      a * symmetricPowerSatakeTrace a r + (a⁻¹) ^ (r + 1) := by
+  rw [symmetricPowerSatakeTrace, symmetricPowerSatakeTrace,
+    show r + 1 + 1 = (r + 1) + 1 by omega,
+    Finset.sum_range_succ, Finset.mul_sum]
+  simp only [Nat.sub_self, pow_zero, one_mul]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro j hj
+  have hjle : j ≤ r := Nat.le_of_lt_succ (Finset.mem_range.mp hj)
+  rw [show r + 1 - j = (r - j) + 1 by omega, pow_succ]
+  ring
+
+@[simp] theorem symmetricPowerSatakeTrace_zero (a : ℂ) :
+    symmetricPowerSatakeTrace a 0 = 1 := by
+  simp [symmetricPowerSatakeTrace]
+
+theorem symmetricPowerSatakeTrace_one (a : ℂ) :
+    symmetricPowerSatakeTrace a 1 = a + a⁻¹ := by
+  norm_num [symmetricPowerSatakeTrace, Finset.sum_range_succ, pow_succ]
+
+/-- The literal symmetric-power root trace obeys the second-kind Chebyshev recurrence. -/
+theorem symmetricPowerSatakeTrace_add_two (a : ℂ) (ha : a ≠ 0) (r : ℕ) :
+    symmetricPowerSatakeTrace a (r + 2) =
+      (a + a⁻¹) * symmetricPowerSatakeTrace a (r + 1) -
+        symmetricPowerSatakeTrace a r := by
+  rw [show r + 2 = (r + 1) + 1 by omega,
+    symmetricPowerSatakeTrace_succ, symmetricPowerSatakeTrace_succ]
+  simp only [pow_succ]
+  have hprod : a * symmetricPowerSatakeTrace a r * a⁻¹ =
+      symmetricPowerSatakeTrace a r := by
+    calc
+      a * symmetricPowerSatakeTrace a r * a⁻¹ =
+          symmetricPowerSatakeTrace a r * (a * a⁻¹) := by ring
+      _ = symmetricPowerSatakeTrace a r := by rw [mul_inv_cancel₀ ha, mul_one]
+  ring_nf
+  rw [hprod]
+  ring
+
+/-- Once the arithmetic tower has derived `‖a‖ = 1`, its literal symmetric-power Satake trace is
+exactly the `SU(2)` character `U_r(re a)`.  No angle or compact support is assumed. -/
+theorem chebyshev_U_re_eq_symmetricPowerSatakeTrace
+    (a : ℂ) (ha : ‖a‖ = 1) (r : ℕ) :
+    (((Polynomial.Chebyshev.U ℝ r).eval a.re : ℝ) : ℂ) =
+      symmetricPowerSatakeTrace a r := by
+  have ha0 : a ≠ 0 := by
+    exact norm_ne_zero_iff.mp (by rw [ha]; norm_num)
+  have hinv : a⁻¹ = starRingEnd ℂ a := Complex.inv_eq_conj ha
+  have hadd : a + a⁻¹ = ((2 * a.re : ℝ) : ℂ) := by
+    rw [hinv, Complex.add_conj]
+  induction r using Nat.twoStepInduction with
+  | zero => simp [symmetricPowerSatakeTrace_zero]
+  | one =>
+      norm_num [Polynomial.Chebyshev.U_one, symmetricPowerSatakeTrace_one, hadd]
+  | more r h0 h1 =>
+      have h0c : (Polynomial.Chebyshev.U ℂ (r : ℤ)).eval (a.re : ℂ) =
+          symmetricPowerSatakeTrace a r := by simpa using h0
+      have h1c : (Polynomial.Chebyshev.U ℂ ((r + 1 : ℕ) : ℤ)).eval (a.re : ℂ) =
+          symmetricPowerSatakeTrace a (r + 1) := by simpa using h1
+      rw [show ((r + 1 : ℕ) : ℤ) = (r : ℤ) + 1 by omega] at h1c
+      rw [show ((r + 2 : ℕ) : ℤ) = (r : ℤ) + 2 by omega,
+        Polynomial.Chebyshev.U_add_two,
+        symmetricPowerSatakeTrace_add_two a ha0 r, hadd]
+      simp only [Polynomial.eval_sub, Polynomial.eval_mul,
+        Polynomial.eval_ofNat, Polynomial.eval_X]
+      push_cast
+      rw [h0c, h1c]
+
+/-- The canonical conjugacy-class angle is derived from the unit-radius arithmetic strand, and
+its character is still the literal symmetric-power Satake trace. -/
+theorem chebyshev_U_cos_abs_arg_eq_symmetricPowerSatakeTrace
+    (a : ℂ) (ha : ‖a‖ = 1) (r : ℕ) :
+    (((Polynomial.Chebyshev.U ℝ r).eval (Real.cos |Complex.arg a|) : ℝ) : ℂ) =
+      symmetricPowerSatakeTrace a r := by
+  rw [Real.cos_abs]
+  have hre : Real.cos (Complex.arg a) = a.re := by
+    have hpolar := Complex.norm_mul_cos_arg a
+    rw [ha, one_mul] at hpolar
+    exact hpolar
+  rw [hre]
+  exact chebyshev_U_re_eq_symmetricPowerSatakeTrace a ha r
+
+/-- A prime-indexed arithmetic rank-two strand.  At every prime its unit radius is an output of
+the identified all-rank tower ceiling. -/
+structure ArithmeticSatakePrimeFamily where
+  tower : Nat.Primes → GlobalHelix.ArithmeticSatakeTowerAtPrime
+
+/-- The prime angle is the canonical compact conjugacy-class coordinate extracted from the
+arithmetic strand after radial closure. -/
+noncomputable def ArithmeticSatakePrimeFamily.angle
+    (F : ArithmeticSatakePrimeFamily) (p : Nat.Primes) : ℝ :=
+  |Complex.arg (F.tower p).value|
+
+theorem ArithmeticSatakePrimeFamily.angle_mem
+    (F : ArithmeticSatakePrimeFamily) (p : Nat.Primes) :
+    F.angle p ∈ Set.Icc (0 : ℝ) Real.pi := by
+  exact ⟨abs_nonneg _, Complex.abs_arg_le_pi _⟩
+
+/-- Exact local identification: the character read on the native helix is the real part of the
+literal arithmetic symmetric-power Satake trace. -/
+theorem ArithmeticSatakePrimeFamily.character_eq_satakeTrace
+    (F : ArithmeticSatakePrimeFamily) (p : Nat.Primes) (r : ℕ) :
+    (Polynomial.Chebyshev.U ℝ r).eval (Real.cos (F.angle p)) =
+      (symmetricPowerSatakeTrace (F.tower p).value r).re := by
+  have h := chebyshev_U_cos_abs_arg_eq_symmetricPowerSatakeTrace
+    (F.tower p).value (F.tower p).radius_one r
+  exact congr_arg Complex.re h
+
+/-- The literal first-prime average of the actual symmetric-power Satake traces. -/
+noncomputable def arithmeticSymmetricPowerPrimeAverage
+    (F : ArithmeticSatakePrimeFamily) (r n : ℕ) : ℝ :=
+  (1 / ((n + 1 : ℕ) : ℝ)) *
+    ∑ i : Fin (n + 1),
+      (symmetricPowerSatakeTrace (F.tower (nthPrime i)).value r).re
+
+/-- Exact global identification: the character average used by the Sato--Tate density theorem is
+definitionally the average of the literal arithmetic symmetric-power prime traces. -/
+theorem ArithmeticSatakePrimeFamily.primeTestAverage_eq_arithmetic
+    (F : ArithmeticSatakePrimeFamily) (r n : ℕ) :
+    primeTestAverage F.angle n
+      (cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r)) =
+      arithmeticSymmetricPowerPrimeAverage F r n := by
+  unfold primeTestAverage arithmeticSymmetricPowerPrimeAverage
+  simp only [one_div]
+  congr 1
+  apply Finset.sum_congr rfl
+  intro i _
+  exact F.character_eq_satakeTrace (nthPrime i) r
+
+/-- Prime cancellation stated on the literal arithmetic symmetric-power Satake bank. -/
+structure ArithmeticSymmetricPowerPrimeCancellation
+    (F : ArithmeticSatakePrimeFamily) : Prop where
+  tendsto_zero : ∀ r : ℕ, 1 ≤ r →
+    Tendsto (fun n => arithmeticSymmetricPowerPrimeAverage F r n)
+      atTop (nhds 0)
+
+noncomputable def ArithmeticSymmetricPowerPrimeCancellation.toCharacterPrimeZeroInput
+    {F : ArithmeticSatakePrimeFamily}
+    (h : ArithmeticSymmetricPowerPrimeCancellation F) :
+    SymmetricPowerCharacterPrimeZeroInput where
+  angle := F.angle
+  angle_mem := F.angle_mem
+  character_average_tendsto_zero := by
+    intro r hr
+    simpa only [F.primeTestAverage_eq_arithmetic] using h.tendsto_zero r hr
+
+/-- Arithmetic symmetric-power prime cancellation lands directly in weak convergence of the
+native 3D carrier measures. -/
+theorem empiricalPrimeCarrierMeasure_tendsto_of_arithmeticSatakeCancellation
+    (F : ArithmeticSatakePrimeFamily)
+    (h : ArithmeticSymmetricPowerPrimeCancellation F) :
+    Tendsto (empiricalPrimeCarrierMeasure F.angle) atTop
+      (nhds carrierProbability) :=
+  empiricalPrimeCarrierMeasure_tendsto_of_characterAveragesZero
+    h.toCharacterPrimeZeroInput
+
+/-- The exact arithmetic boundary for 3D Sato--Tate: cancellation of the literal
+symmetric-power Satake prime traces is equivalent to convergence of the empirical carrier
+measures. -/
+theorem arithmeticSatakeCancellation_iff_carrierEquidistribution
+    (F : ArithmeticSatakePrimeFamily) :
+    (∀ r : ℕ, 1 ≤ r →
+        Tendsto (fun n => arithmeticSymmetricPowerPrimeAverage F r n)
+          atTop (nhds 0)) ↔
+      Tendsto (empiricalPrimeCarrierMeasure F.angle) atTop
+        (nhds carrierProbability) := by
+  constructor
+  · intro h
+    exact empiricalPrimeCarrierMeasure_tendsto_of_arithmeticSatakeCancellation F ⟨h⟩
+  · intro hcarrier r hr
+    have hangle := (empiricalPrimeCarrierMeasure_tendsto_iff F.angle).mp hcarrier
+    have hcharacters :=
+      (characterAverageZero_iff_equidistribution F.angle F.angle_mem).mpr hangle
+    simpa only [F.primeTestAverage_eq_arithmetic] using hcharacters r hr
+
 end CriticalLinePhasor.SatoTateCarrier3D
 
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.SymmetricPowerCharacterPrimeAverageInput.polynomial_tendsto
@@ -442,3 +637,8 @@ end CriticalLinePhasor.SatoTateCarrier3D
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.empiricalPrimeCarrierMeasure_tendsto_of_characterAveragesZero
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.equidistribution_forces_characterAverage_zero
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.characterAverageZero_iff_equidistribution
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.symmetricPowerSatakeTrace_eq_sum_roots
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.chebyshev_U_re_eq_symmetricPowerSatakeTrace
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.ArithmeticSatakePrimeFamily.character_eq_satakeTrace
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.ArithmeticSatakePrimeFamily.primeTestAverage_eq_arithmetic
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.arithmeticSatakeCancellation_iff_carrierEquidistribution

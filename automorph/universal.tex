@@ -422,7 +422,12 @@ machine-checked in \texttt{CPSRadialSatoTateGeometry3D}: the Sato--Tate density 
 the helix $(\cos\theta,\sin\theta,\theta)$, the third coordinate $S(t)$ recovers the measure
 exactly, and the transverse trace has the Catalan/Fourier moments; the same theorem first derives
 the arithmetic strand's unit radius from the tower ceiling rather than accepting a unitary input
-(\texttt{cpsRadialSatoTateGeometry3D\_unified}). [theorem; 3D geometry Lean]
+(\texttt{cpsRadialSatoTateGeometry3D\_unified}).  The arithmetic identification is also exact:
+\texttt{ArithmeticSatakePrimeFamily.character\_eq\_satakeTrace} identifies each carrier
+character with the literal symmetric-power Satake root sum, and
+\texttt{primeTestAverage\_eq\_arithmetic} identifies their empirical averages term-by-term; the
+prime-cancellation theorem supplied by Jacquet--Shalika plus Wiener--Ikehara remains cited.
+[theorem; arithmetic identification and 3D geometry Lean; analytic prime cancellation cited]
 \item \textbf{GRH/RH interfaces} --- the two legacy conditional deductions
 are retained as two proof routes under the identity and correlation readings,
 and are compiler-audited.  The midpoint is an area-law/no-drift
@@ -4555,26 +4560,38 @@ $\tfrac2\pi\sin^2\theta\,d\theta$.
 \end{corollary}
 
 \begin{center}
-\fbox{\parbox{0.94\textwidth}{\textbf{Status of equidistribution: everything but one Tauberian
-character-average is proved.} The full passage from the symmetric-power character averages to the
-three-dimensional equidistribution is machine-checked in Lean~4 at the standard footprint
-$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}: the
+\fbox{\parbox{0.94\textwidth}{\textbf{Status of equidistribution: exact arithmetic-to-3D
+identification, with the analytic prime-cancellation theorem cited.} The full passage from the
+literal arithmetic symmetric-power prime traces to three-dimensional equidistribution is
+machine-checked in Lean~4 at the standard footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}.  The
+all-rank tower first derives $|\alpha_p|=1$; \texttt{ArithmeticSatakePrimeFamily.angle} then extracts
+$\theta_p=|\arg\alpha_p|\in[0,\pi]$; and
+\texttt{ArithmeticSatakePrimeFamily.character\_eq\_satakeTrace} proves
+$U_r(\cos\theta_p)=\operatorname{Re}\sum_{j=0}^{r}
+\alpha_p^{,r-j}(\alpha_p^{-1})^j$.  These are the literal local symmetric-power roots
+(\texttt{symmetricPowerSatakeTrace\_eq\_sum\_roots}), and
+\texttt{primeTestAverage\_eq\_arithmetic} identifies the finite averages term-by-term.  Thus no
+independently supplied angle bank or one-dimensional chart intervenes.  From that exact arithmetic
+bank, the
 method-of-moments density bridge --- every polynomial trace test
 (\texttt{polynomial\_tendsto}), every bounded-continuous test via the Weierstrass theorem after the
 $\arccos$ change of coordinate (\texttt{integral\_tendsto}), and the carrier convergence
 (\texttt{empiricalPrimeCarrierMeasure\_tendsto\_of\_characterAveragesZero}) --- together with the
 Sato--Tate moment computations (\texttt{chebyshev\_U\_angleMeasure\_integral\_zero}). The
-\emph{single} cited input is the symmetric-power character prime-average cancellation
-$(N+1)^{-1}\sum_{j\le N}U_r(\cos\theta_{p_j})\to 0$ for each $r\ge1$
-(\texttt{SymmetricPowerCharacterPrimeZeroInput}) --- a genuine Wiener--Ikehara Tauberian that is
+\emph{single} cited analytic input is the cancellation of the literal arithmetic prime traces
+$(N+1)^{-1}\sum_{k\le N}\operatorname{Re}\sum_{j=0}^{r}
+\alpha_{p_k}^{,r-j}(\alpha_{p_k}^{-1})^j\to0$ for each $r\ge1$
+(\texttt{ArithmeticSymmetricPowerPrimeCancellation}) --- the Wiener--Ikehara step that is
 \emph{provably on the equidistribution critical path}: the machine-checked biconditional
-\texttt{characterAverageZero\_iff\_equidistribution} (standard footprint, no \texttt{sorry}) proves
-this cancellation is not merely sufficient but \emph{equivalent} to weak convergence of the empirical
+\texttt{arithmeticSatakeCancellation\_iff\_carrierEquidistribution} (standard footprint, no
+\texttt{sorry}) proves this cancellation is not merely sufficient but \emph{equivalent} to weak
+convergence of the empirical
 prime-angle measures to the Sato--Tate law, so --- unlike the off-path summatory shadow of
 \S\ref{sec:aristotle-rs} --- discharging it \emph{is} the Sato--Tate conclusion. Given the
 symmetric-power functoriality of item~1 (each $\Sym^r\pi$ automorphic) it reduces to the classical
 non-vanishing of $L(\Sym^r\pi,s)$ on $\Re s=1$ (Jacquet--Shalika) followed by Wiener--Ikehara ---
-both cited, neither of RH/GRH strength. Everything but that one Tauberian input is proved.}}
+both cited.}}
 \end{center}
 
 \medskip
@@ -4641,6 +4658,21 @@ $\arccos$ change of coordinate to obtain every bounded continuous test
 $\mu_N^{(3)}\Rightarrow h_*\mu_{\rm ST}$ directly from the symmetric-power character averages.
 Thus the passage from the identified symmetric-power Euler products to the 3D empirical law is a
 compiled density argument, not an additional equidistribution field.
+
+There is now also no identification gap between the arithmetic prime roots and that character
+boundary.  \texttt{ArithmeticSatakePrimeFamily} is indexed by the already identified
+\texttt{ArithmeticSatakeTowerAtPrime}, so radius one is obtained from
+\texttt{ArithmeticSatakeTowerAtPrime.radius\_one} before an angle is defined.  Lean proves
+\[
+ \operatorname{tr}(\Sym^r A_p)
+ =\sum_{j=0}^{r}\alpha_p^{,r-j}(\alpha_p^{-1})^j
+ =U_r(\cos|\arg\alpha_p|),
+\]
+and equality of the corresponding finite first-prime averages.  The capstone
+\texttt{arithmeticSatakeCancellation\_iff\_carrierEquidistribution} therefore has the actual
+arithmetic Satake-trace average on its left and convergence of native 3D carrier measures on its
+right; it does not declare that a separately chosen angle sequence represents the arithmetic
+fiber.
 \end{remark}
 
 \begin{proof}
