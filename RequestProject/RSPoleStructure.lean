@@ -20,12 +20,15 @@ Dirichlet series as a function holomorphic away from the explicit poles at `s �
 poles carrying the Petersson norm, the rank-is-DC-residue reading at the Rankin–Selberg level.
 
 **Status of the analytic continuation.**  Every object above is compiled unconditionally at
-the standard axiom footprint.  Two inputs remain to convert the pole-split into the classical
-`∑_{n≤x} λ_n = O(x^θ)` bound, and neither is presently available in Mathlib: (i) holomorphy of
-`s ↦ ∫_𝒟 P·Λ₀_z(s) dμ` (differentiation under the integral / Morera, for which the dominant
-is compiled here), and (ii) the Perron/Tauberian inversion of the continued Dirichlet series to
-the summatory bound.  These are named honestly as the remaining frontier, not papered over.
-No RH/GRH.
+the standard axiom footprint.  Converting the pole-split into the classical `∑_{n≤x} λ_n = O(x^θ)`
+bound needed two inputs.  **(i)** holomorphy of `s ↦ ∫_𝒟 P·Λ₀_z(s) dμ` (differentiation under the
+integral — once "not in Mathlib") is now **closed unconditionally** in
+`RSEntireHolo.rs_entirePart_differentiable`: the dominant compiled here
+(`lambda0_bound_on_fd × P_exp_decay_on_fd`) feeds the general holomorphy-under-integral lemma
+`HolomorphicUnderIntegral.differentiableAt_integral_of_dominated_holo` (which needs only a bound on
+the integrand, not its derivative).  The single remaining input is **(ii)** the Perron/Tauberian
+inversion of the continued Dirichlet series to the summatory bound — classical analytic number
+theory, named honestly, not papered over.  No RH/GRH.
 -/
 
 open MeasureTheory Complex UpperHalfPlane ModularGroup

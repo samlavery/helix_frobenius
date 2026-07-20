@@ -42,11 +42,20 @@ ledger. We define the carrier filtration $\Fcar^{\,d}$ by vanishing of the
 recursive tower readouts $T_0,\dots,T_{d-1}$ and prove, machine-checked in
 Lean~4, the depth dictionary: \emph{first nonzero tower depth equals filtration
 depth}, the depth is unique, it is preserved by every faithful carrier
-transport, and whenever a Bloch--Beilinson filtration with the universal
-properties exists it coincides with $\Fcar$. On every finite normalized
+transport, and $\Fcar$ is the unique filtration graded by its tower --- so a
+Bloch--Beilinson filtration coincides with it \emph{if} its steps are cut out
+by that same tower, an identification hypothesis, not a consequence of
+existence. On every finite normalized
 extension stack, including the semisimple layer, the paired jet/moment tower is
 unconditionally jointly faithful --- a layerwise Vandermonde separation --- so
-no nonzero finite extension state is silent at every level. At depth one the carrier's leading
+no nonzero finite extension state is silent at every level --- a theorem
+about the abstract model, which cycle groups enter only through a faithful
+realization, an interface now typed in Lean with its retention transport
+proven and its first genuine instances executed end to end --- on the rational
+group algebra of $\mathbb Z/n$ and on the Artin motive of any cyclic Galois
+number field (the CM quadratic fields included), source exhaustion is a
+theorem, recognition on the latter consumed from classical Galois descent. At
+depth one the carrier's leading
 central jet factors, by Birch--Swinnerton-Dyer/Gross--Zagier, into three
 independently resolved coordinates --- vanishing order, regulator, and
 $|\Shamath|$ --- landed at machine precision on a census through rank three,
@@ -64,8 +73,9 @@ source.
 Four further developments carry the program past its first draft. The
 \emph{harmonic frame}: a Hodge structure is a torus clock --- weight the radial
 rate, $H^{p,q}$ the frequency-$(q{-}p)$ channel, a Hodge class a rational DC
-mode --- calibrated against Lefschetz $(1,1)$ truth on both the period and
-point-count sides. \emph{Drift}: extension classes are the first-order shear a
+mode --- an organizing dictionary, a re-expression of Deligne's torus action
+(frequency zero detects Hodge type; it does not construct a cycle), calibrated
+against Lefschetz $(1,1)$ truth on both the period and point-count sides. \emph{Drift}: extension classes are the first-order shear a
 pure clock stack cannot produce; machine-checked, drift is value-blind,
 jet-visible, and never silent on the model, and the measured law --- the
 response harmonic equals the drift dimension --- holds across the census with
@@ -153,15 +163,21 @@ Then, as a machine-checked theorem (\S\ref{sec:dictionary}),
   \boxed{\ \text{first nonzero carrier tower depth}\ =\ \Fcar\text{-filtration depth,}\ }
 \]
 the depth is unique, it is invariant under every faithful carrier transport,
-and \emph{whenever} a Bloch--Beilinson filtration with the universal properties
-exists on the source class, it coincides with $\Fcar$
-(\texttt{blochBeilinson\_coincides}) --- a conditional corollary that assumes
-no general existence of the conjectural object, which is stronger and cleaner
-than positing that existence. We price the dictionary exactly: since $\Fcar$ is
-\emph{defined} by tower vanishing, the correspondence is definitional
-bookkeeping, exact by construction; its value is that transport-invariance and
-the Bloch--Beilinson coincidence attach to a non-circular, machine-fixed
-object.
+and $\Fcar$ is the unique filtration whose successive steps are cut out by its
+tower; hence a Bloch--Beilinson filtration coincides with $\Fcar$ \emph{if}
+its steps are cut out by that same tower
+(\texttt{blochBeilinson\_coincides}). We price both statements exactly. Since
+$\Fcar$ is \emph{defined} by tower vanishing, the depth correspondence is
+definitional bookkeeping, exact by construction. And the coincidence hypothesis
+is \emph{stronger} than the existence of a Bloch--Beilinson filtration with
+its usual conjectural properties: it already asserts that every successive
+Bloch--Beilinson step is graded by this very tower, so the corollary is
+uniqueness bookkeeping --- any filtration recursively defined by these tower
+kernels equals the filtration so defined --- and the entire identification
+content lives in verifying that grading hypothesis for an independently
+constructed Bloch--Beilinson filtration, which remains open. The value of the
+package is that transport-invariance and the coincidence interface attach to a
+non-circular, machine-fixed object.
 
 The stated terminus is the Hodge conjecture. The carrier program's organizing
 principle --- established across the main paper's arithmetic and repeated here
@@ -204,7 +220,8 @@ what evidence would refute the program on the way.
 \paragraph{Registers.} Three registers are used and never blended.
 \emph{Proven}: machine-checked in Lean~4 at axiom footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
-\texttt{sorry} (the filtration dictionary, the finite-extension retention theorem, and the
+\texttt{sorry} (the filtration dictionary, the finite-extension retention theorem, the
+realization bridge, and the
 supporting carrier corpus of \cite{Universal}), or established in the classical
 literature with the citation given at the point of use (Gross--Zagier,
 Kolyvagin, Zhang, Yuan--Zhang--Zhang, Harris, Laga--Shnidman).
@@ -225,7 +242,9 @@ stated as claims with their registers, in the order of their depth.
 clock: the weight is the radial rate, $H^{p,q}$ is the frequency-$(q{-}p)$
 channel, and a Hodge class is a \emph{rational DC mode} --- the $(p,p)$
 condition is frequency zero, not a transcendence mystery
-(\S\ref{sec:harmonic}). [Frame calibrated against Lefschetz $(1,1)$ truth on
+(\S\ref{sec:harmonic}). [Register: a re-expression of Deligne's definition,
+not a new theorem --- frequency zero \emph{detects} Hodge type, it does not
+\emph{construct} a cycle; frame calibrated against Lefschetz $(1,1)$ truth on
 both the period and point-count sides; measured.]
 
 \item \textbf{Algebraicity reads as freeze, and the freeze has an arithmetic
@@ -249,7 +268,9 @@ held on every census run, including the genuine stress tests: the non-CM
 Markman-transcendental members and the dimension-six dissolution
 ($20-8=12$, kernel-checked with an \emph{empty} axiom list)
 (\S\ref{sec:collective}--\ref{sec:bridge}). [Theorem-grade on the family;
-law pre-registered, unfalsified.]
+law pre-registered, unfalsified; quantifier: the censuses and certified
+families, never all Hodge structures; freeze detects, never constructs
+(\texttt{detector\_not\_constructor}, Lean).]
 
 \item \textbf{Cycle depth is jet depth, and the jet coordinates are the
 classical invariants.} The depth dictionary --- first nonzero tower readout
@@ -357,6 +378,18 @@ Hodge loci & DC-locking loci of the transported clock \\
 \end{tabular}
 \end{center}
 
+The frame's register is stated once, here. The table is a \emph{re-expression}
+of Deligne's definition --- $z^{-p}\bar z^{-q}=r^{-n}e^{i(q-p)\theta}$ is
+radial weight times angular frequency, and nothing beyond that identity is
+imported --- so it is an organizing dictionary, not a new theorem, and it must
+not be over-read: frequency zero \emph{detects} Hodge type; it does not
+\emph{construct} a cycle. Algebraicity is never a consequence of the dictionary
+in what follows; where the paper reaches for it, the reach is named and priced
+(\S\ref{sec:terminus}). On the finite model the central entry is itself
+machine-checked at exactly this strength: a state is DC precisely when the
+angular torus action fixes it (\texttt{modelDC\_iff\_angularFixed},
+\S\ref{sec:semisimple}).
+
 Two consequences carry the paper. First, \emph{a Hodge class is a rational DC
 mode}: type $(p,p)$ means $k=0$ --- the angular clock silent, the state pure
 radial, at rational amplitude. The house's DC technology therefore applies
@@ -463,14 +496,24 @@ Moreover $\Fcar$ is the unique filtration whose graded pieces are cut out by
 the tower \textup{(\texttt{carrierFiltration\_unique})}.
 \end{theorem}
 
-\begin{corollary}[Bloch--Beilinson coincidence; Lean, conditional]\label{cor:bb}
-Whenever a Bloch--Beilinson filtration \cite{Beilinson,Bloch,Murre} with the
-universal properties exists on the source class, it coincides with $\Fcar$
+\begin{corollary}[tower-graded coincidence; Lean, conditional]\label{cor:bb}
+If a Bloch--Beilinson filtration \cite{Beilinson,Bloch,Murre} $BB$ has
+$BB^{\,0}$ everything and each successive step cut out by the carrier tower ---
+$BB^{\,d+1}=\{z\in BB^{\,d}:T_d(z)=0\}$ --- then it coincides with $\Fcar$
 \textup{(\texttt{blochBeilinson\_coincides})}.
 \end{corollary}
 
-The corollary assumes no existence; it converts any future construction of the
-conjectural filtration into an identification with a machine-fixed object. The
+We state the corollary at its exact strength. The hypothesis is not the
+existence of a Bloch--Beilinson filtration with its usual conjectural
+properties; it is the far stronger assertion that every successive
+Bloch--Beilinson step is graded by this very tower. Under that hypothesis the
+conclusion is \texttt{carrierFiltration\_unique} bookkeeping --- any filtration
+recursively defined by these tower kernels equals the filtration so defined ---
+so the corollary is an \emph{interface}, not an independent identification of
+$\Fcar$ with Bloch--Beilinson. A future construction of the conjectural
+filtration is identified with the machine-fixed $\Fcar$ only upon verifying
+that grading hypothesis for it; that verification is the open identification
+step. The
 next question is whether the tower \emph{separates}: whether any nonzero class
 can be silent at every level. The finite normalized extension model now answers
 that question; arithmetic applications must additionally identify their
@@ -517,11 +560,206 @@ $c_{\ell,i}=0$ (\texttt{RequestProject/GeneralExtensionRetention.lean}:
 a theorem for arbitrary finite normalized extension data, not only the
 semisimple value layer.
 
-The scope is exact: a homologically trivial cycle must still be supplied with a
-typed realization into this finite jet stack, and its arithmetic
-derivative/height channels must be identified with the paired tower. Once that
-landing is proved, retention transports automatically; semisimplification by
-itself only sees layer zero.
+The scope is exact, in two respects. First, the theorem is a finite Vandermonde
+separation for an abstract array of complex jet coefficients at pairwise
+distinct frequencies: it resolves the abstract obstruction --- finite
+normalized extension data, once faithfully represented by such a bank, is not
+silently lost by the tower --- and it proves nothing about actual cycle groups,
+mixed Hodge structures, normal functions, or motivic extensions until a
+faithful realization theorem lands the geometric class in the model with
+(i) finite support, (ii) distinct frequencies, (iii) the correct rational
+structure, (iv) compatibility with extensions and regulators, and (v) no kernel
+on the geometric classes at issue. Once that landing is proved, retention
+transports automatically; semisimplification by itself only sees layer zero.
+Second, the Lean dial that packages the theorem
+(\texttt{generalExtensionDial}) counts \emph{every} state as a rational DC mode
+--- the worst case for retention, hence the strongest statement on the model
+--- and carries an arbitrary source predicate; its \textsc{DC} and
+\textsc{Rational} fields consume no Hodge-theoretic content, so the theorem is
+separation of the abstract array, not a statement about the rational $(p,p)$
+locus of any variety.
+
+Both halves of that scope are now themselves machine-checked
+(\texttt{RequestProject/HodgeRealizationBridge.lean}; standard footprint). The
+five conditions are a typed structure: \texttt{FaithfulRealization} carries the
+additive realization, the identification of the geometric readouts with the
+paired layer/moment tower, rational and DC compatibility, and the no-kernel
+condition on the classes at issue, with finite support and distinct frequencies
+structural in the bank. Retention transports along any such realization as a
+theorem (\texttt{FaithfulRealization.retention}: a nonzero rational DC
+geometric class has nonzero image by the no-kernel field, the Vandermonde
+separation fires on the image, and the readout identification pulls the firing
+back), the first-visible depth is preserved
+(\texttt{FaithfulRealization.isFirstVisible\_iff}), and the terminus reduction
+specializes: a geometric dial admitting a faithful realization needs
+\textsc{Recognition} alone
+(\texttt{FaithfulRealization.sourceExhaustion\_of\_recognition}). The
+trivialized dial acquires a contentful companion: on integer channel
+frequencies $k=q-p$, \textsc{DC} is genuine frequency-zero support and
+\textsc{Rational} genuine rational amplitude (\texttt{modelHodgeDial}), and
+retention holds on that dial (\texttt{modelHodge\_retention}; proved from the
+same layerwise separation --- the content is in the statement, which now ranges
+over a genuine model rational-$(p,p)$ locus). The harmonic dictionary's central
+entry is likewise a theorem on the model: a state is DC exactly when the
+angular part of the Deligne torus action fixes it
+(\texttt{modelDC\_iff\_angularFixed}) --- the dictionary at dictionary
+strength, constructing nothing. What remains open per arithmetic landing is
+exactly the construction of the \texttt{FaithfulRealization} term for the cycle
+data at issue: a single typed object, not a prose promise.
+
+\emph{The effective ledger.} Three sharpenings, each unconditional
+(\texttt{RequestProject/EffectiveLedger.lean}; standard footprint). Detection
+closes at the bank size: a nonzero state on $m$ distinct clocks fires within
+the first $m$ moment readings --- the $m\times m$ Vandermonde block already
+separates, so the infinite tower quantifier was never needed
+(\texttt{momentTower\_detects\_within},
+\texttt{momentTower\_firstVisible\_lt}). The bound is sharp: every bank of
+$m\ge1$ clocks carries a \emph{maximally hidden state} --- nonzero yet silent
+through the first $m-1$ readings (\texttt{exists\_maximally\_hidden},
+rank--nullity) --- so bank-size detection cannot be improved. And on the
+arithmetic rung the carrier radical is \emph{computed}: for the depth-one
+bundle of an elliptic curve, $R=\bigcap_d\ker T_d$ is exactly the torsion
+subgroup (\texttt{radical\_coordinateTower\_eq\_torsion}) --- torsion is
+invisible to the height channel and nothing else is --- the first exact
+arithmetic answer to the program's own \emph{identify $R$} question, from the
+two cited classical inputs alone.
+
+\emph{The first genuine instance.} The realization structure is now inhabited
+by a non-identity term on a library-native object with independent meaning
+(\texttt{RequestProject/CyclicRealizationInstance.lean}; standard footprint).
+The object is the rational group algebra $\mathbb Q[\mathbb Z/n]$; the
+realization is the finite winding-clock transform
+$\widehat a(k)=\sum_j a_j\zeta^{jk}$ onto integer channel frequencies
+$k=0,\dots,n-1$, $\zeta$ any primitive $n$-th root of unity. Every field is
+exercised by a real proof. The no-kernel condition is the injectivity of the
+transform, and it reduces to the same layerwise Vandermonde separation that
+powers retention --- the geometric faithfulness and the model separation are
+one theorem (\texttt{windingTransform\_injective} consumes
+\texttt{momentTower\_detects} at the nodes $\zeta^j$, extended to all moments
+by periodicity). DC compatibility is the finite harmonic dictionary on a
+genuine object: translation invariance forces frequency-zero support
+(\texttt{winding\_dc}, the shift identity
+$\zeta^k\widehat a(k)=\widehat a(k)$ with $\zeta^k\neq1$). Recognition is
+provable here --- an invariant rational class is a rational multiple of the
+diagonal element (\texttt{cyclic\_recognition}) --- so the terminus pipeline
+executes end to end: \texttt{cyclic\_sourceExhaustion} derives unrestricted
+\textsc{SourceExhaustion} for the cyclic dial from the realization term and
+recognition, unconditionally, with the unpacked corollary that every nonzero
+translation-invariant class in $\mathbb Q[\mathbb Z/n]$ is a rational multiple
+of the diagonal (\texttt{cyclic\_diagonal\_law}). Building the instance also
+corrected the interface: channel-wise rationality of \emph{all} rational
+classes is false in any genuine instance --- amplitudes of a rational class
+are Galois-spread across channels --- so the rational-compatibility field now
+reads rationality on the DC locus, where it is true and where the bridge
+consumes it; no bridge theorem used the stronger form. The register is exact:
+this is the abelian, character-level shadow --- the group-algebra analogue of
+Lefschetz~$(1,1)$ --- not a cycle group; the arithmetic landings remain the
+open constructions.
+
+\emph{The second rung: the Artin motive.} The ladder climbs from the
+combinatorial shadow to a genuine zero-dimensional variety
+(\texttt{RequestProject/GaloisRealizationInstance.lean}; standard footprint):
+$\mathrm{Spec}\,K$ for $K$ any cyclic Galois number field --- the class
+covering the CM quadratic fields $\mathbb Q(\sqrt{-d})$ and the cyclotomic
+fields $\mathbb Q(\zeta_p)$. The classes are the field elements (the
+$H^0$/Artin-motive cycle data); the realization is the classical
+Lagrange-resolvent transform $R_k(z)=\sum_s\iota(g^sz)\,\omega^{sk}$ on the
+winding bank; DC is the Galois-clock freeze $gz=z$. No-kernel is once more
+the house Vandermonde engine (\texttt{finDFT\_detects} feeding
+\texttt{galoisTransform\_injective}, the $s=0$ coordinate read by a field
+embedding); DC compatibility is the geometric-series identity
+(\texttt{galois\_dc}); and recognition is \emph{Artin descent consumed from
+the classical library}: freeze propagates to the full group by cyclicity, and
+the frozen class equals the average of its conjugates by the trace formula
+(\texttt{galois\_recognition\_of\_frozen}, consuming
+\texttt{trace\_eq\_sum\_automorphisms}). The terminus executes:
+\texttt{galois\_sourceExhaustion} and the unpacked
+\texttt{galois\_descent\_law} --- \emph{every nonzero frozen class of the
+Artin motive has a source in the base field} --- with the generator supplied
+by cyclicity alone when the Galois group is cyclic
+(\texttt{galois\_sourceExhaustion\_of\_isCyclic}). The register is exact: for
+zero-dimensional varieties the Hodge/Tate statement \emph{is} Galois descent,
+classically known; what is new is the executed pipeline on a genuine
+arithmetic variety, one dimension up from the group algebra.
+
+\emph{The Lefschetz rung: positive-dimensional geometry.} The ladder now
+reaches $H^2$ of a smooth projective surface
+(\texttt{RequestProject/LefschetzRung.lean}; standard footprint). The bundle
+(\texttt{LefschetzData}) carries the classical inputs, cited: the Hodge
+decomposition into the three weight-two channels at frequencies $-2,0,2$,
+faithful; the rational degree reading on the DC channel (intersection
+theory); and \emph{Lefschetz $(1,1)$} itself as the recognition field. From
+the bundle alone: the five-condition realization term
+(\texttt{LefschetzData.realization}, no-kernel = faithfulness of the
+decomposition), retention through the bridge, recognition consumed from the
+theorem of record, and the executed terminus
+(\texttt{LefschetzData.sourceExhaustion}, unpacked as
+\texttt{divisor\_law}): every nonzero rational $(1,1)$ class is a divisor
+class --- the Hodge conjecture at the $(1,1)$ rung, run end to end through
+the carrier pipeline on positive-dimensional geometry, with the recognition
+slot filled by Lefschetz. Sharp per-channel retention comes free
+(\texttt{dc\_fires\_at\_dc\_channel}: a nonzero rational DC class fires
+precisely at the frequency-zero channel). Register: nothing new is claimed
+about Lefschetz $(1,1)$; what is new is the pipeline executing on genuine
+$H^2$ data --- the next rungs (CM abelian varieties, where Hodge--Tate is
+likewise a theorem to consume) climb the same way.
+
+\emph{The CM-product rung, bank-generic.} The Lefschetz bundle generalizes to
+arbitrary distinct integer frequency sets
+(\texttt{RequestProject/CMProductRung.lean}; standard footprint): the channel
+bundle \texttt{HodgeChannelData} --- faithful decomposition, rational DC
+readings, a recognition field --- proves the realization term, retention,
+recognition, the executed terminus, and sharp DC-rail retention
+(\texttt{dc\_fires\_on\_dc\_rail}) \emph{once for every bundle}. The
+CM-product instantiation is the character decomposition of
+$H^{2p}(E_1\times\cdots\times E_n)$ under its CM/Galois clock --- the family
+on which the freeze detector of \S\ref{sec:collective} was certified --- with
+the recognition field supplied by the theorem of record: rational Hodge
+classes on products of elliptic curves are algebraic, divisor-generated
+(Imai~\cite{Imai}, Kahn~\cite{KahnHodge}; Faltings on the Tate side). The
+executed terminus (\texttt{cmProduct\_sourceExhaustion}) is the Hodge
+conjecture on this family run through the carrier pipeline; every rung above
+it must earn the same interface that here consumes a known theorem.
+
+\emph{The third rung, typed and literature-anchored.} The $H^1$ rung ---
+Mordell--Weil groups, the depth-one cycle data --- is now typed against the
+genuine Mathlib object with its classical inputs as cited hypothesis fields
+(\texttt{RequestProject/EllipticDepthOneRung.lean}; standard footprint). The
+bundle \texttt{DepthOneHeightData}, attached to the point group of a
+Weierstrass curve over $\mathbb Q$ (\texttt{EllipticDepthOneHypotheses}),
+carries exactly two literature inputs: finite generation ---
+Mordell~\cite{Mordell1922}, Weil~\cite{Weil1929} --- in explicit
+generators-mod-torsion form, and the N\'eron--Tate canonical height pairing
+with its symmetry, positivity, and torsion-kernel laws ---
+N\'eron~\cite{Neron1965}, Tate (cf.\ Silverman~\cite{Silverman}, VIII.9).
+From the bundle alone, three statements are proved unconditionally: torsion is
+orthogonal to everything (the discrete Cauchy--Schwarz argument,
+\texttt{pairing\_torsion\_right}); the pairing coordinates against the
+generators have kernel exactly the torsion --- the depth-one no-kernel
+condition mod torsion (\texttt{faithful\_mod\_torsion}); and \emph{no silent
+point} --- every non-torsion rational point is detected by the depth-one
+coordinate tower (\texttt{coordinateTower\_detects\_nonTorsion},
+\texttt{elliptic\_no\_silent\_point}), retention at grade one in the
+anisotropic-pairing shape of \texttt{grade\_visible\_of\_nondegenerate}. The
+rung now also carries its \emph{general cycle-to-jet realization}: the
+pairing-coordinate map into the order-zero jet model is additive with kernel
+\emph{exactly} the torsion, as an equivalence
+(\texttt{realization\_eq\_zero\_iff}) --- the jet coordinates see precisely
+the free part of the Mordell--Weil group, from the two cited inputs and
+nothing else. The depth-one numerics of \S\ref{sec:depthone} therefore
+calibrate an interface that exists as mathematics; in the measured register
+they remain corroboration --- they anchor, and never prove, the classical
+inputs. The
+conditionality is priced to the day: the current Mathlib carries the Weil
+height machine with Northcott and the in-progress approximate parallelogram
+law for elliptic curves, together with reduction theory and elliptic
+$L$-functions, so both hypothesis fields sit on the library's active frontier,
+and the rung's statements go unconditional, unchanged, when they land. The
+angular (\texttt{FaithfulRealization}) form is deliberately not forced: the
+depth-one pairing coordinates are radial--regulator data, not
+frequency-channel data, and their frequency identification (the
+jet/derivative channels of \S\ref{sec:depthone}) is a named next step. Above
+this rung, CM abelian varieties and the Ceresa data await their bundles.
 
 \subsection{Drift: the extension datum as first-order shear}\label{sec:drift}
 
@@ -728,6 +966,21 @@ curve, construction of the typed certificate remains in the appropriate
 register: the height identity is consumed from \cite{ZhangGS,YZZ}, while the
 from-scratch analytic computation below supplies the measured $L$-side.
 
+\noindent\emph{The certificate's anatomy, machine-checked.} Stripping every
+nonvanishing input on the central derivative from the certificate leaves the
+identification-only datum (\texttt{CeresaIdentification}: cycle, realization,
+height identity, carrier identification, silence below three); from that
+datum alone, the depth-three firing is \emph{equivalent} to the nonvanishing
+of the completed triple-product central derivative
+(\texttt{CeresaIdentification.fires\_iff}, \texttt{firstVisible\_iff}), and a
+complete landing exists precisely when an identification carries that one
+nonzero number (\texttt{landing\_iff\_identification}). The per-rail depth is
+therefore not a supplied field of the certificate: it is \emph{established},
+and established by exactly the analytic quantity the instruments compute ---
+for the Klein quartic, $0.8299\ne0$ in the measured register, with
+non-torsion anchored unconditionally by Tadokoro \cite{Tadokoro} --- and by
+nothing else.
+
 \paragraph{The $L$-side, landed.} Half of Target~\ref{tgt:ceresa} is now on
 record (\texttt{ceresa\_lside.py}, App.~\ref{app:repro}). The prediction was
 locked by the literature first: the Klein quartic's Ceresa cycle is
@@ -765,6 +1018,37 @@ three. Register: the consumed theorem is the proportionality of
 nondegeneracy, named and not claimed. The height side --- the Arakelov
 computation the target's full landing needs, with the hyperelliptic control
 --- remains the open half.
+
+\paragraph{The unconditional companion: an archimedean harmonic volume, built
+and run.} The reading above is Beilinson--Bloch-conditional \emph{as a cycle
+statement}. Its unconditional shadow is the archimedean Abel--Jacobi image
+itself --- Harris's harmonic volume \cite{Harris}, a length-two iterated
+integral of the holomorphic differentials, nonzero iff the Ceresa cycle is
+non-torsion modulo algebraic equivalence, with no appeal to Beilinson--Bloch.
+We compute it directly (\texttt{hv\_exact.py}). The evaluation cycle is a
+commutator of \emph{based} loops on the branched cover; being homologically
+trivial its period vanishes exactly, so the length-two iterated integral is
+base-point-\emph{independent} --- the harmonic volume as a genuine invariant.
+Three self-checks gate every value: the shuffle relation (the fundamental
+iterated-integral identity, machine-zero off the degenerate diagonal), the
+exact vanishing of the period (the based-loop test), and base-point invariance
+of the answer. On the Fermat quartic, where Harris's theorem makes the answer
+known nonzero, the instrument returns the exact invariant $14.88330$, identical
+to five digits across base points --- the non-vanishing reproduced, now with a
+value. Pointed at a curve outside the tables ---
+$y^4=(x-1)(x-2)(x-4)(x-7)$, a generic non-CM genus-three curve whose Ceresa
+cycle has not been computed --- it returns $6.27215$, again base-point-invariant
+and nonzero: \emph{the Ceresa cycle of this curve is non-trivial,
+unconditionally} (\texttt{hv\_exact\_new.py}). Register: the detection is
+numerical (a base-point-invariant nonzero value, not an interval certificate),
+and the outcome is Ceresa-generic --- a first computation for a named curve,
+not a surprise; the harmonic volume's numerical value is cycle-normalization
+dependent and is not matched to Harris's, whose \emph{theorem}, non-vanishing,
+is what is reproduced. This is the unconditional half of the Ceresa target:
+no Beilinson--Bloch, built from scratch, portable to any curve with locatable
+branch points. The genuinely new direction it opens is the \emph{torsion}
+regime --- a curve with vanishing harmonic volume --- where a null reading
+would be a real discovery and demands the harder mod-period certification.
 
 \paragraph{Localization: the hidden cycle has a rail, not just a depth.} The
 original tower detector was \emph{scalar}: it read that a hidden class fires at
@@ -1698,7 +1982,16 @@ integers; on the certified $\mathbb Q(\zeta_{15})$ Jacobi-sum families the
 detector reads the Weil-type member at excess $2$ --- \emph{exactly one
 full-support collective lane frozen to phase zero at $2.9\times10^{-14}$,
 with no pairwise shadow} --- and the $(1,3)$ control at excess $0$
-(\texttt{weil\_rails.py}, App.~\ref{app:repro}).
+(\texttt{weil\_rails.py}, App.~\ref{app:repro}). The detector's register is
+itself a theorem: identical readout, DC, and rationality data admit both a
+fully sourced and a fully sourceless completion
+(\texttt{detector\_not\_constructor}, Lean), so freeze \emph{detects} and
+never constructs --- construction is always the separate, named input --- and
+the quantifier of ``nothing is exotic'' is exactly the censuses and certified
+families in evidence, never all Hodge structures. The classical imports of
+the mechanism are listed where they are consumed (Weil's RH for curves,
+Deligne--Laumon, Hasse--Davenport, below): imported theorems, never outputs
+of the carrier.
 
 \paragraph{The two censuses, kernel-checked.} Why the fourfold frontier
 was always hard, and why the sixfold one is now accessible, are both
@@ -2069,15 +2362,40 @@ predicate, and the tower readouts; \textsc{Retention} (no silent rational DC
 mode) and \textsc{Recognition} (fired $\Rightarrow$ sourced) are the two named
 hypotheses --- \emph{asserted by no one} --- and
 \texttt{hodge\_of\_retention\_recognition} composes them, unconditionally, into
-\textsc{SourceExhaustion}. On every finite normalized extension dial, retention
+\textsc{SourceExhaustion}. The factorization is now itself measured in Lean
+(\texttt{RequestProject/ArchitectureExactness.lean}; standard footprint). It
+is \emph{exact}: given the proven detector and zero-silence of the tower,
+recognition is precisely source exhaustion on fired classes
+(\texttt{sourceExhaustion\_iff\_recognition}) --- the reduction is lossless,
+so what remains open is isolated without remainder, neither thinned nor
+padded. And it is \emph{independent}: the \emph{phantom} dial satisfies
+recognition vacuously while a nonzero rational DC class stays silent, and the
+\emph{sourceless} dial retains every class while nothing is algebraic
+(\texttt{factorization\_exact\_and\_independent}) --- so neither hypothesis
+alone yields the terminus, both are load-bearing, and the assembly does real
+work: it upgrades the strictly weaker recognition hypothesis to the full
+statement by paying with the detector the program proves. The two model dials
+are exactly the pre-registered falsifiers (a) and (b) below, exhibited as
+consistent mathematics --- retention genuinely fails somewhere, so proving it
+on every constructed dial is substance, not bookkeeping. The register stays
+exact: none of this proves any part of recognition above grade one; the
+composition names the hard part precisely, and the naming is now a theorem.
+On every finite normalized extension dial, retention
 is already a theorem (\texttt{generalExtension\_retention} consumes the
-layerwise Vandermonde separation). The new grade-split source packages prove
+layerwise Vandermonde separation; the dial counts every state as rational DC
+--- worst case for retention, no Hodge-theoretic content consumed). The new
+grade-split source packages prove
 recognition, and
 \texttt{generalExtension\_sourceExhaustion\_of\_gradeSplit\_sourceConstruction}
 assembles both into unrestricted \textsc{SourceExhaustion} on the complete
 finite-extension dial. Its scope is exact: arithmetic applications instantiate
-the typed source packages and cycle-to-jet realization; no further logical
-assembly remains.
+the typed source packages and the five-condition faithful realization of
+\S\ref{sec:semisimple} --- itself now a typed Lean structure whose retention
+transport is a theorem (\texttt{FaithfulRealization.retention}), inhabited by
+two rungs of genuine instances with source exhaustion executed end to end ---
+the group algebra and the Artin motive of any cyclic Galois number field
+(\texttt{cyclicRealization}, \texttt{galoisRealization}); no further
+logical assembly remains.
 
 \noindent\emph{Falsifiability register.} Pre-committed, in print: the program
 dies at (a) a \emph{phantom} --- a nonzero class silent at every tower depth
@@ -2085,7 +2403,10 @@ dies at (a) a \emph{phantom} --- a nonzero class silent at every tower depth
 \emph{false source} --- a Hodge-signature state whose firing coordinates
 provably admit no algebraic cycle beneath them; (c) a \emph{ledger failure} ---
 a pair of varieties whose full retained ledger (not merely Satake) coincides
-while their cycle theories differ. The register also demands that the reading
+while their cycle theories differ. Falsifiers (a) and (b) are now exhibited as
+consistent Lean model dials (\texttt{phantomDial}, \texttt{sourcelessDial};
+the architecture paragraph above): the register describes scenarios that
+genuinely exist in the mathematics, not straw targets. The register also demands that the reading
 procedures fail when mis-clocked, and this has been exercised deliberately:
 the wrong root of unity, the wrong tower harmonic, and the wrong harmonic rate
 each break their readings by orders of magnitude
@@ -2155,7 +2476,11 @@ constraint on Hodge classes, independent of the terminus.
 triviality of the carrier radical. The paired layer/moment tower now proves it
 for arbitrary normalized finite jet stacks
 (\texttt{generalExtensionTower\_exhaustive}); an arithmetic cycle landing must
-identify its extension coordinates with that stack.
+land its extension coordinates in that stack through the five-condition
+faithful realization of \S\ref{sec:semisimple} (finite support, distinct
+frequencies, rational structure, extension/regulator compatibility, no
+kernel); the realization is now a typed structure and retention transports
+along any instance as a theorem (\texttt{FaithfulRealization.retention}).
 \item \textbf{Recognition above grade one.} Every fired rail must carry an
 algebraic source --- detection to \emph{construction}. The typed composition is
 now a theorem: radial reading $\to$ Torelli reconstruction $\to$ cycle
@@ -2179,7 +2504,16 @@ $\mathrm{SL}(2)$-orbit and Saito admissibility in carrier dress, an import rathe
 than a new theorem. Step~two may follow from \emph{admissibility} itself: the
 Green--Griffiths--Kerr reading of the Hodge condition as singularities of
 admissible normal functions makes the common-height closure a corollary of the
-admissible frame, not a fresh construction. Step~three should then \emph{fall out}
+admissible frame, not a fresh construction. The lattice half of that closure is
+now a theorem (\texttt{RequestProject/ZetaSixLattice.lean}; standard
+footprint): integer-weighted $\mu_6$ residuals are \emph{rigid} --- the norm
+form $a^2+ab+b^2$ of $\mathbb Z[\zeta_6]$ has minimal nonzero value $1$
+(\texttt{normForm\_ge\_one}), so a lattice residual of magnitude below one is
+exactly zero (\texttt{lattice\_residual\_exact}), and the threshold is sharp
+(\texttt{threshold\_sharp}). Machine-zero closure of a lattice-weighted cell is
+therefore exactness, not approximation; the real-weight cancellation of the
+path step (\texttt{pathStep2\_exactClosure}) is transport, and is never the
+constraint. Step~three should then \emph{fall out}
 of one and two with the proofs already in hand --- finite generation collapses it
 to a single pairing, the closure of step~two supplies that pairing's
 nondegeneracy, and grade one is unconditional. The load therefore concentrates on
@@ -2192,13 +2526,299 @@ recognizing the \emph{single generating pairing}. So the residuum is not an
 unbounded tower but one construction at the structureless boundary, uniform in the
 fiber. Three of the four steps are an import, a corollary, and a composition; the
 fourth is closable grade by grade, with the whole remaining weight resting on that
-one universal recognition. That, not a diffuse frontier, is where the work lives.
+one universal recognition. That, not a diffuse frontier, is where the work
+lives. Both endgame imports are now typed with their reduction spines proven
+(\texttt{RequestProject/GeneratingPairing.lean}; standard footprint): if every
+tower level factors through one pairing --- the field the Schmid/Saito
+collapse is staked to supply --- then recognition of the \emph{entire dial}
+follows from recognition of that single pairing
+(\texttt{recognition\_of\_generating\_pairing}), and with proven retention the
+terminus needs exactly one construction
+(\texttt{sourceExhaustion\_of\_generating\_pairing}); likewise a
+Green--Griffiths--Kerr landing of the residual in $\mathbb Z[\zeta_6]$
+composes with the proven rigidity threshold into exact closure
+(\texttt{exact\_closure\_of\_lattice\_landing}). The whole remaining weight of
+the program is thereby a single named field:
+\texttt{sourced\_of\_pairing} --- one recognition statement for one pairing.
+
+\paragraph{The attempt, opened.} That field now factors, and the factors are
+largely discharged
+(\texttt{RequestProject/RecognitionReconstruction.lean},
+\texttt{TriangulatedAssembly.lean}; standard footprints throughout).
+\emph{Reconstruction factorization}
+(\texttt{sourced\_of\_reconstruction}): recognition splits into a Torelli leg
+--- fired coordinates reconstruct the class as an explicit generator
+combination plus torsion --- and a \emph{finite} algebraicity list, closed
+under the group structure; the infinite quantifier over Hodge classes becomes
+finitely many certified specimens. \emph{Both Torelli legs are discharged}:
+at depth one the reconstruction field is Mordell--Weil verbatim
+(\texttt{ReconstructionData.ofDepthOne}), and on the channel dials the
+spanning statement is the effective form of the same theorem of record that
+supplies recognition (\texttt{ReconstructionData.ofChannelSpanning},
+\texttt{channel\_sourceExhaustion\_of\_spanning} --- the full chain executing
+wherever the inputs are theorems). \emph{The generator list is typed and
+inhabited} (\texttt{TriangulatedGenerator}: a class enters only with its
+three bearings --- annihilator address, tower detection, support/order ---
+and its algebraicity certificate): the cyclic diagonal and the Artin unit
+enter with detection \emph{computed} (\texttt{cyclicDiagonalGenerator},
+\texttt{artinUnitGenerator}), and the bundle-level constructor
+(\texttt{certifiedGenerator}) admits the census specimens --- the CM-product
+divisors and the explicit point-counted Schoen $(2,2)$ cycle with its freeze
+certificate and exact integer landings --- with detection \emph{proven} by
+retention from the census-supplied class, never read from the census itself.
+The specimen itself is now collected (next paragraph); what remains above it
+is the generating pairing of the collapse and the construction of the
+collected specimen's classes. The falsifiers stay armed: a specimen whose
+bearings disagree is an orphan, published as such.
+
+\paragraph{The sixfold, collected.} Two constructions, one theorem, one
+specimen --- all exact arithmetic, no conjecture consumed
+(\texttt{tmp/weil\_sixfold*}; Weil's RH for curves is the only ceiling,
+cited). \emph{First construction and its theorem}: the Prym of $t^3=y$ over
+$u^3+xu+c=0$ over Schoen's conductor-$19$ curve is a $(3,3)$-sixfold whose
+split-prime characteristic polynomials are perfect squares --- and the square
+is a \emph{theorem}, not evidence: the linear $u$-coefficient makes $x$
+rational in $u$, resurrecting a hidden double cover whose involution lifts
+explicitly, $\tilde\tau(u,y,t)=(u,\,-x^3/y,\,-x/t)$, inverting the deck
+($\tilde\tau\sigma\tilde\tau=\sigma^2$, machine-verified pointwise at five
+primes), so $\langle\sigma,\tilde\tau\rangle\cong S_3$ acts and
+$M_2(K)\subseteq\mathrm{End}^0(B_K)$: the duplication holds at every good
+prime of $K=\mathbb Q(\sqrt{-3})$ at once, with the multiplicity projector an
+\emph{explicit algebraic correspondence} --- a worked recognition one register
+above Schoen's fourfold. \emph{Second construction, hardened}: replacing the
+cover by $u^3+xu+(y+a)=0$ (genus four, degree three over $\mathbb P^1_u$ ---
+both involution mechanisms excluded by design) yields, at $a=1$, a Prym whose
+degree-$12$ characteristic polynomial at $p=7$ is \emph{irreducible} with
+exact Weil purity: a one-polynomial certificate that $B$ is a \textbf{simple
+Weil-type abelian sixfold over $\mathbb Q(\sqrt{-3})$} --- fully explicit,
+point-counted, Weil signature confirmed across a fourteen-prime battery
+($s_1=0$ at every inert prime), non-isotriviality of the $a$-family certified
+by distinct members' Frobenius data. Register, exact, with the literature
+boundary drawn precisely: Markman's recent work covers all Weil
+\emph{fourfolds} and the sixfolds of \emph{split type} (Weil discriminant
+$-1$); outside discriminant $-1$, no sixfold algebraicity theorem applies.
+The decisive invariant for this specimen is therefore its Weil discriminant
+in $\mathbb Q^\times/\mathrm{Nm}_{K/\mathbb Q}(K^\times)$ --- not settled by
+simplicity, $\mathrm{End}^0=K$, the polarization type, or full $GU(3,3)$,
+none of which determine it. That computation is now done, exactly: the lattice Pfaffian
+in an elementary-divisor basis is $\pm 3^{b}$ on the nose (the residual unit
+is $\pm1$, never an unknown local unit; the sign is forced by the $(3,3)$
+signature), so the discriminant class is $-1$ --- \emph{split}, inside the
+covered locus. Existence of the algebraic Weil classes on this Prym is in
+fact classical --- Schoen's cycles, generalized to all abelian covers by
+Patel--Zhang \cite{PatelZhang} --- with Markman's theorem covering the
+general split sixfold beyond the Prym locus; what this construction adds is
+the explicit cycle and an independent elementary proof: $\Xi=W_3-\Theta^3/162$, nonzero by the
+integrality trap, with \emph{every} input now machine-verified or
+textbook-cited --- the battery $q_k=k!\binom{6}{k}$ verified as an exact
+symbolic Pfaffian identity on the integral cut-and-glue homology model of
+the cover, the polarization type $(1,1,1,3,3,3)$ (so $m=3$) obtained by
+Smith form on the same model and agreeing with Lange--Ortega
+\cite{LangeOrtega} read at source, and the collective rail reading frozen at
+order one at two split primes ($\det(\mathrm{Frob}_p\,|\,V_\omega)=p^3$
+exactly at $p=7$ and $13$). A by-product is a no-go with the force of a
+theorem: the Pfaffian argument gives $\det=-3^{b}$ for \emph{every}
+\'etale-$\mathbb Z/3$ Prym sixfold, so this entire construction family is
+split --- the beyond-boundary hunt must change its glue. The day's own
+falsification record is part of the claim: two hidden involutions were found
+and killed by the program's instruments before the specimen stood. The register of this paragraph is exact: each ``should'' is a stake
+naming a theorem to be written --- the Schmid/Saito collapse to one generating
+pairing included --- and none is treated as an automatic import; what is
+proved is cited by Lean name, and nothing else is claimed.
+
+\paragraph{The universal rigidity law.} The sixfold's integrality endgame,
+freed of its specimen, is a theorem about \emph{every} cyclic
+$\mathbb Z/3$-Prym at once. For the \'etale $\mathbb Z/3$-Prym of a
+genus-$g'$ curve ($n=g'-1$, $\dim B=2n$) the two geometric inputs are
+machine-verified on the integral model --- the battery identity
+$\mathrm{Pf}(sE+tE_V)=s^{g'}(s+t)^{2(g'-1)}$, an exact symbolic Pfaffian
+(verified at $g'=4,5$; general $g'$ by the handle-block structure), and the
+type $(1^{\,n},3^{\,n})$ \cite{LangeOrtega} --- and under proportionality
+$W_n=\lambda\Theta^n$ of the middle Abel--Prym class they force
+$W_n^2=\binom{2n}{n}/3^{n}$: the \emph{central binomial over the glue}. Its
+$3$-adic valuation is the number of base-$3$ carries of $n+n$ (Kummer),
+strictly less than $n$ always, so proportionality contradicts integrality of
+the cycle class in \emph{every} dimension:
+$\Xi_n=W_n-\Theta^n/(n!\,3^{n})$ is a nonzero, algebraic, $\Theta$-primitive
+middle class on every such Prym. The contrast is sharp: for
+\'etale $\mathbb Z/2$-Pryms the Abel--Prym class \emph{is}
+theta-proportional (Welters \cite{Welters}); the $\mu_3$ harmonic rigidifies
+the cycle. The arithmetic chain is Lean at full generality, the dimension a
+bound variable (\texttt{UniversalTrap.lean}:
+\texttt{centralBinom\_three\_adic\_lt},
+\texttt{universal\_integrality\_obstruction},
+\texttt{PrymTrapData.abel\_prym\_rigidity}; standard footprint), and the
+all-$m$ firing dimensions form the $\zeta_3$-adic ladder ($6,8,18,20,\dots$:
+every base-$3$ digit of $n$ at most $1$). Placement against the literature,
+checked at source: Schoen's cycles and their Patel--Zhang generalization
+\cite{PatelZhang} prove the \emph{Weil classes} of these Pryms algebraic at
+every dimension, but say nothing about the Abel--Prym cycle itself; the
+rigidity law is complementary content --- it locates $W_n$ off the theta
+line, a computation of intersection numbers their construction does not
+touch --- and, to the best of our knowledge after that audit, it is new.
+
+\paragraph{The Prym--Petri rung.} The frontier named twice in this section
+--- the semiregularity that would carry a cycle's algebraicity along with
+its Hodge class --- runs, for Pryms, through a Gieseker--Petri statement:
+injectivity of the Petri multiplication controls the tangent spaces of the
+Brill--Noether loci in $\mathrm{Nm}^{-1}(\omega)$ that govern the
+Abel--Prym cycle's deformations. For \'etale $\mathbb Z/2$-Pryms this is
+Welters' theorem \cite{WeltersGP}; for cyclic covers of degree $\ge3$ no
+statement existed --- every extension in the literature is degree two, a
+fact checked on the complete citation graph of \cite{WeltersGP}. The
+$\mu_3$ statement is now proven at the depth-one stratum, by a mechanism
+with no $\mathbb Z/2$ ancestor (there the stratum is empty, $\chi=0$): for
+$h^0(L)=1$ the entire Petri kernel is base-curve divisor geometry --- it
+equals $h^0$ of the \emph{collision excess} of the section divisor (the
+part of $\mathrm{div}(s)$ meeting a $\pi$-fiber on more than one sheet), so
+the map fails exactly when that excess moves in a pencil. Three-sheet
+arithmetic forces a canonical divisor to contain the excess plus its
+half-thickening, $K\ge E+\lceil E/2\rceil$, and on a general base curve no
+moving divisor admits such a containment: the profile arithmetic is exact
+(the automatic-speciality zone is empty, $c+\delta\ge e$ against
+$c+\delta\le e-2$; virtual dimension $r-c-2\le-2$), and the reduced case
+dies by dimension comparison against Farkas' de Jonqui\`eres theorem
+\cite{FarkasDJ}, whose hypotheses (every series, boundary slack, no
+distinctness) were verified at source. The theorem is
+$\varepsilon$-uniform --- one generality condition on $C$ serves all covers
+at once --- unconditional for $g\le5$, in particular at $g=4$, the
+sixfold's own base genus; at $g\ge6$ a window
+$\frac{g+2}{2}\le e\le\frac{2g}{3}$ remains, localized in the two-series
+incidence framework of \cite{UngureanuSec}. Sharpness is constructed, not
+conjectured: on any curve with a vanishing thetanull ($\omega=2N$) the
+failing bundle exists --- two of three preimages over each point of a
+trigonal fiber, kernel $h^0(N)=2$ --- and the program's own genus-4 tower
+curve \emph{is} such a cone: the instrument confirmed the predicted kernel
+jump on trigonal fibers ($5/5$; controls $5/5$; the bundles literally
+depth-one in $10/12$ configurations), which retroactively explains the
+depth-one battery's $14/14$: random sections are collision-free, and
+collision-free never fails. The arithmetic chain is Lean
+(\texttt{MuThreePrymPetri.lean}: \texttt{zone\_empty},
+\texttt{dimension\_comparison}, \texttt{g4\_kill}; standard footprint),
+including the honesty marker \texttt{g6\_boundary\_not\_killed}: an initial
+``$g\le6$'' coverage claim was corrected to ``$g\le5$ plus boundary'' when
+formalization exposed the equality case --- the falsification machinery
+running on our own arithmetic. One caution kept in the record: the
+general-series hypothesis in Ungureanu's non-existence theorem
+\cite{UngureanuDim} is essential (composed series violate the unrestricted
+reading), so it is never invoked here against special pencils.
+
+\paragraph{The rung consumed: the depth-one threefold and the $\mu_3$
+parity.} The Petri theorem is the deformation control the semiregularity
+route consumes, and its geometric payoff is now proven and measured. In
+the torsor $Y=\mathrm{Nm}^{-1}(\omega)$ (tangent space the anti-invariant
+$H^1$, dimension $2g-2$) the effective locus $V^1=\{h^0\ge1\}$ has
+dimension $g-1$ by a finite parametrization over $|\omega_C|$, and at a
+depth-one point its tangent space is the annihilator of the Prym--Petri
+image --- so the $\mu_3$ theorem above is \emph{equivalent} to smoothness
+of $V^1$ along the depth-one locus, and the normal bundle is canonically
+the dual Petri image bundle: the Abel--Prym cycle's deformation theory and
+the Petri map are one object seen three ways. On a certified non-thetanull
+specimen --- a bielliptic tower whose canonical quadric is rank four in
+closed form; the trinomial towers are \emph{structurally} thetanull
+($\mathrm{div}(F_u)=R-2\cdot O$-fiber forces $\omega=2N$, a design law
+found the hard way) --- the battery lands all $54$ depth-one
+configurations as smooth points of $V^1$ (rank $3$ exactly, Euler checks
+exact), the Gauss map at a generic depth-one point has full rank three
+(second-fundamental blocks $(2,3,3)$: theta-like, the favorable regime
+for the semiregularity pairing), and the bielliptic locus's structural bad
+configurations hide at $h^0=3$, outside the stratum. The census then
+delivered a discovery by refuting the program's own first draft, within
+the hour: the $\mathbb F_{49}$ count $341552/49^3=2.903$ tracks $3q^3$,
+not $q^3$ --- $V^1$ has \emph{three} irreducible components --- and the
+corrected monodromy names the invariant: the cycle traced by
+$\mathrm{div}(\eta)$ under an $|\omega|$-loop bounds the swept chain,
+hence carries zero $\varepsilon$-holonomy, so the total sheet-shift
+$\Sigma\bmod3$ is conserved, the monodromy is the index-three wreath
+subgroup, and $\Sigma$ is the \textbf{$\mu_3$ Prym parity} --- the
+$\mathbb Z/3$ twin of Mumford's parity for classical Pryms
+\cite{MumfordPrym}, with no footprint in the literature sweeps. Its
+distribution law is proven (\texttt{MuThreePrymParity.lean}:
+\texttt{uniformity}, \texttt{concentration}; standard footprint) and
+confirmed pointwise, $48/48$ over $\mathbb F_7$: rational lifts spread
+uniformly over the three components iff some closed-point degree is prime
+to three, and concentrate in a single component iff every degree is
+divisible by three. The Weil-cycle bookkeeping accordingly carries
+\emph{one} parity component --- an irreducible, generically smooth,
+Gauss-nondegenerate threefold. The semiregularity route is thereby specced
+to coordinates: on the abelian sixfold the target $H^4(X,\Omega^2)$
+trivializes, the pairing columns are integrals of constant forms over the
+component, and $H^1(N)$ assembles from the same section spaces through the
+parametrization --- the rung's next named computation, with the
+identification of the component as a translate of $W_3$ the named open
+question beside it.
+
+\paragraph{The eightfold, constructed.} Dimension eight is where the
+literature's construction stops: the secant-sheaf candidates on abelian
+eightfolds await a semiregularity that has, by its author's statement, not
+yet been addressed \cite{Markman}; the route above never invokes it. The
+genus-five base is governed by the index formula $g'=3K-I+1$ ($K$ the pole
+renormalization, $I$ the order index of the plane model), which prices the
+two available routes, and both prices are now laws: the \emph{flex}
+construction (tangency at the $3$-torsion flex of the base curve) dies of a
+correspondence leak --- the flex tangent is itself a second magic function,
+and the rail instrument diagnosed the resulting elliptic invaders inside
+$V_\omega$ as CM-lines with eigenvalues $\mp(3\omega+1)$ --- while the
+\emph{tuned-pair} construction pays only in nodes: its split-index points
+are nodes of the plane model, a per-level bookkeeping correction that the
+genus-five functional equation then confirms exactly (predicted and actual
+$\#C'(\mathbb F_{7^6})$ and $\#C'(\mathbb F_{13^6})$ agree on the nose).
+The surviving specimen --- $C'\colon u^3-3x^2u+(xy+3y+2x+1)=0$ over the
+conductor-$19$ curve, index pair at $x^2+x+1=0$, non-torsion by design ---
+is a \textbf{simple Weil-type abelian eightfold}: its node-corrected
+degree-$16$ Frobenius polynomial at the split prime $7$ is irreducible with
+exact purity (the correction fit unique, ten orders beyond its rivals), its
+Frobenius field a degree-$16$ CM field whose only quadratic subfield is
+$\mathbb Q(\sqrt{-3})$, power-stable through $n=16$. It inherits $m=4$ and
+the battery from the model, so $\Xi=W_4-\Theta^4/1944$ is nonzero,
+algebraic, and primitive by the universal law. Register, exact --- and
+corrected by the program's own literature audit: for \emph{Prym-type} Weil
+classes, algebraicity at every dimension is covered by Schoen's cycles,
+recently recast and generalized to all abelian covers by Patel--Zhang
+\cite{PatelZhang}; so this specimen's Weil classes were never open, and what
+the $\Xi$-route adds on the Prym locus is an independent elementary proof
+with the cycle exhibited (the same register the sixfold holds against
+Markman). The genuinely open frontier --- Markman's semiregularity-blocked
+candidates \cite{Markman} --- is the \emph{general} Weil eightfold, and the
+audit yields a no-go sharper than the split law: abelian \'etale glue lands
+in the covered locus \emph{by construction}, so no cover in this playbook
+reaches it; the beyond-boundary hunt requires non-abelian structure. The
+accounting ($\mathrm{End}^0=K$ and full $GU(4,4)$, second-prime
+compute-gated) completes our proof, not the existence. The falsification
+record --- the flex specimen's death by its own rails, and this paragraph's
+own first draft, corrected within the hour by the audit --- is part of the
+claim.
+
+\paragraph{The harmonic turn: the $\mu_6$ tower.} Changing the harmonic ---
+base curve with rational $\mathbb Z/6$ torsion, magic function the Miller
+product $f_3^2\,(x-x(3P_6))$ with divisor $6[P_6]-6[O]$, top cover $t^6=h$
+--- yields three rail systems in one object: a $\chi$-primitive $K$-Weil
+sixfold $B_6$, a $\mu_3$ control sixfold $B_3$, and a $\mathbb Z/2$-Prym
+$B_2$. The first roll certified $B_6$ \emph{and} $B_3$ simple (irreducible
+degree-$12$ at the split prime, exact purity, the six twisted-count
+conventions self-validated, the descent character calibrated at the torsion
+support by a leading-coefficient regularization computed by hand and
+confirmed by the instrument), with order-one freezes on all three rails and
+the $\mathbb Z/2$ content quarantined exactly where the inert-prime traces
+predicted it. The prize question --- whether $B_6$'s $2$-adic glue breaks
+the split class --- was computed exactly on the $\mu_6$ integral model and
+answered \emph{no}: the induced type is $2\cdot(1,1,1,3,3,3)$, the $2$-glue
+enters as a uniform scale, and the discriminant class is $-1$ again. The
+split no-go thereby \emph{extends} from $\mu_3$ to $\mu_6$ towers ---
+published here as the null it is, per the falsifiability register --- and is
+then itself subsumed by the literature audit: Patel--Zhang's theorem
+\cite{PatelZhang} covers the Weil classes of \emph{every} abelian-cover Prym
+regardless of discriminant, so the entire cyclic playbook lands in covered
+territory twice over. The beyond-boundary specification is now exact:
+non-abelian covers, or constructions that are not Pryms at all.
 
 \section*{Conclusion}
 
 What stands, and at what strength. The depth dictionary is a machine-checked
 theorem about a non-circular, machine-fixed filtration, transport-invariant,
-coinciding with Bloch--Beilinson whenever the latter exists. No-silent-layer is
+and unique among filtrations graded by its tower --- coinciding with
+Bloch--Beilinson only under the (unverified) hypothesis that the latter is
+graded by the same tower. No-silent-layer is
 unconditional on every finite normalized extension stack: semisimple values and
 all retained jet layers are separated layerwise. In the first-order model drift
 is value-blind, jet-visible, and never silent, with positive-definite response
@@ -2243,6 +2863,49 @@ is one located coordinate --- the curve, invisible to the projection,
 retained by the radius, reachable by Torelli --- plus the genuinely open
 sixfold frontier, under attack with pre-registered outcomes and no
 assertion beyond what closes.
+
+\paragraph{The arrow ledger.} The terminus chain --- actual rational Hodge
+class $\to$ faithful carrier state $\to$ firing coordinate $\to$ constructed
+algebraic cycle --- carries an exact per-arrow account. The middle arrow,
+separation, is proven in general, at every finite extension order
+(\texttt{generalExtensionTower\_exhaustive}). The composition is proven in
+general, and it is exact and irredundant: given the detector, recognition is
+\emph{equivalent} to source exhaustion
+(\texttt{sourceExhaustion\_iff\_recognition}), neither factor alone suffices,
+and the two failure modes are exhibited as consistent models --- the
+pre-registered falsifiers (\texttt{factorization\_exact\_and\_independent}).
+The first arrow, realization, is typed in general with its retention
+transport proven (\texttt{FaithfulRealization.retention}); it is proven, not
+projected, on the executed rungs --- the group algebra and the Artin motive
+of every cyclic Galois number field --- where the third arrow, recognition,
+is also proven (diagonal recognition; Artin descent), so the complete chain
+runs end to end, unconditionally, on those objects
+(\texttt{cyclic\_sourceExhaustion}, \texttt{galois\_sourceExhaustion}). At
+depth one the first arrow is typed against the library curve with kernel
+exactly the torsion from the two cited classical inputs
+(\texttt{realization\_eq\_zero\_iff}), and grade-one recognition is classical
+(Gross--Zagier--Kolyvagin). What remains open is exactly the first and third
+arrows \emph{above} the executed rungs --- new realization terms and new
+recognition theorems, one grade at a time; the rungs already executed are
+theorems, not projections.
+
+\paragraph{The bottom-out, agreed and typed.} The audit form of the
+obstruction --- geometric rational $(p,p)$ class $\to$ faithful
+finite/controlled carrier extension state $\to$ recognized algebraic source
+--- is verbatim the artifact's typed frontier. The finiteness half of
+``finite/controlled'' is not where the load sits: the geometric sides at
+issue are finite-dimensional by their own theorems (the cohomology of a
+smooth projective variety; Mordell--Weil by the cited classical input), so
+finite support and distinct frequencies are the bank's structural fields,
+and the load is faithfulness --- fields (iii)--(v) of
+\texttt{FaithfulRealization}, proven on the executed rungs,
+cited-conditional at depth one, open above. And ``recognition is essentially
+the algebraicity theorem'' is priced by the exactness theorem: modulo the
+proven detector it is \emph{exactly} the algebraicity theorem
+(\texttt{sourceExhaustion\_iff\_recognition}), neither more nor less ---
+which is what a lossless reduction means. The audit's bottom-out and the
+program's named frontier are the same object; it is typed, its transport is
+proven, and it is climbed rung by rung.
 
 \paragraph{The recognition mechanism, staked.} The program's candidate for
 \emph{why} completeness should force a source is stated here at its exact
@@ -2309,6 +2972,39 @@ no \texttt{sorry}, audited by \texttt{\#print axioms}.
 \texttt{momentTower\_exhaustive}, \texttt{generalExtensionTower\_detects},
 \texttt{generalExtensionTower\_exhaustive},
 \texttt{generalExtension\_retention}.
+\item \textbf{The realization bridge and the contentful model dial},
+\texttt{RequestProject/HodgeRealizationBridge.lean}:
+\texttt{modelHodgeDial}, \texttt{modelHodge\_retention},
+\texttt{modelDC\_iff\_angularFixed}, \texttt{FaithfulRealization},
+\texttt{FaithfulRealization.retention},
+\texttt{FaithfulRealization.isFirstVisible\_iff},
+\texttt{FaithfulRealization.sourceExhaustion\_of\_recognition}.
+\item \textbf{The cyclic instance},
+\texttt{RequestProject/CyclicRealizationInstance.lean}:
+\texttt{windingTransform\_injective}, \texttt{winding\_dc},
+\texttt{winding\_rational}, \texttt{cyclicRealization},
+\texttt{cyclic\_retention}, \texttt{cyclic\_recognition},
+\texttt{cyclic\_sourceExhaustion}, \texttt{cyclic\_diagonal\_law}.
+\item \textbf{The Artin-motive instance},
+\texttt{RequestProject/GaloisRealizationInstance.lean}:
+\texttt{finDFT\_detects}, \texttt{galoisTransform\_injective},
+\texttt{galois\_dc}, \texttt{galois\_recognition\_of\_frozen},
+\texttt{galoisRealization}, \texttt{galois\_sourceExhaustion},
+\texttt{galois\_descent\_law},
+\texttt{galois\_sourceExhaustion\_of\_isCyclic}.
+\item \textbf{The depth-one literature-hypothesis rung},
+\texttt{RequestProject/EllipticDepthOneRung.lean} (conditional on the cited
+bundle fields, which are classical):
+\texttt{DepthOneHeightData}, \texttt{pairing\_torsion\_right},
+\texttt{faithful\_mod\_torsion}, \texttt{no\_silent\_point},
+\texttt{coordinateTower\_detects\_nonTorsion},
+\texttt{realization\_eq\_zero\_iff},
+\texttt{elliptic\_no\_silent\_point}.
+\item \textbf{Architecture exactness and independence},
+\texttt{RequestProject/ArchitectureExactness.lean}:
+\texttt{sourceExhaustion\_iff\_recognition}, \texttt{phantomDial},
+\texttt{sourcelessDial}, \texttt{factorization\_exact\_and\_independent},
+\texttt{detector\_not\_constructor}.
 \item \textbf{The depth-one census}, \texttt{tmp/jet\_census.py} and
 \texttt{tmp/sha\_hinge.py}: full BSD readings at ranks $0$--$3$; $|\Shamath|$
 landed as exact squares $1,4,9$ (margins $\le3.6\times10^{-15}$ at rank zero,
@@ -2345,7 +3041,10 @@ retained by the paired layer/moment tower),
 \texttt{RequestProject/HigherGradeRecognition.lean} (explicit certified source,
 exact higher-grade realization, and grade-split recognition),
 \texttt{RequestProject/CeresaGrossSchoenLanding.lean} (height nonvanishing,
-depth-three first visibility, and analytic-to-cycle source landing),
+depth-three first visibility, analytic-to-cycle source landing, and the
+certificate anatomy: \texttt{CeresaIdentification.fires\_iff},
+\texttt{landing\_iff\_identification} --- the depth-three firing equivalent
+to the central-derivative nonvanishing, established not supplied),
 \texttt{RequestProject/HodgeSourceExhaustionAssembly.lean} (unrestricted source
 exhaustion on the complete finite-extension dial),
 \texttt{RequestProject/HodgeDial.lean} (\textsc{Retention},
@@ -2621,6 +3320,19 @@ derivatives of $L$-series}, Invent.\ Math.\ \textbf{84} (1986), 225--320.
 Grothendieck Festschrift, vol.~II}, Progr.\ Math.\ \textbf{87}, Birkh\"auser
 (1990), 435--483.
 
+\bibitem{Mordell1922} L.~J.~Mordell, \emph{On the rational solutions of the
+indeterminate equations of the third and fourth degrees}, Proc.\ Cambridge
+Philos.\ Soc.\ \textbf{21} (1922), 179--192.
+
+\bibitem{Weil1929} A.~Weil, \emph{L'arithm\'etique sur les courbes
+alg\'ebriques}, Acta Math.\ \textbf{52} (1929), 281--315.
+
+\bibitem{Neron1965} A.~N\'eron, \emph{Quasi-fonctions et hauteurs sur les
+vari\'et\'es ab\'eliennes}, Ann.\ of Math.\ (2) \textbf{82} (1965), 249--331.
+
+\bibitem{Silverman} J.~H.~Silverman, \emph{The Arithmetic of Elliptic Curves},
+2nd ed., Graduate Texts in Mathematics \textbf{106}, Springer, 2009.
+
 \bibitem{ZhangGS} S.~Zhang, \emph{Gross--Schoen cycles and dualizing sheaves},
 Invent.\ Math.\ \textbf{179} (2010), 1--73; the Beilinson--Bloch height of the
 modified diagonal.
@@ -2728,12 +3440,41 @@ abelian varieties of low dimension}, Math.\ Ann.\ \textbf{315} (1999),
 ``Discontinuous groups and abelian varieties''}, Math.\ Ann.\ \textbf{181}
 (1969), 345--351.
 
-\bibitem{Markman} E.~Markman, the algebraicity of Weil-type Hodge classes
-on abelian fourfolds via hyper-K\"ahler geometry and hyperholomorphic
-sheaves (2019--2024): the discriminant-one case and its extensions to all
-fields and discriminants. [Exact reference chain per the campaign notes,
-\texttt{tmp/weil\_scout\_notes.md}; to be pinned at final bibliography
-pass.]
+\bibitem{Markman} E.~Markman, \emph{Cycles on abelian $2n$-folds of Weil
+type from secant sheaves on abelian $n$-folds}, arXiv:2502.03415 (2025)
+(sixfolds of split type; all fourfolds via Schoen's degeneration);
+\emph{Secant sheaves and Weil classes on abelian varieties} (survey),
+arXiv:2509.23403; \emph{Secant sheaves on abelian $n$-folds with real
+multiplication and Weil classes on abelian $2n$-folds with complex
+multiplication}, arXiv:2509.23079 (the dimension-eight candidates, with
+the required semiregularity stated as not yet addressed). Earlier: the
+hyper-K\"ahler route to the fourfold discriminant-one case (2019--2024).
+
+\bibitem{LangeOrtega} H.~Lange and A.~Ortega, \emph{Prym varieties of
+cyclic coverings}, Geom.\ Dedicata \textbf{150} (2011), 391--403
+(arXiv:0805.1020); induced polarization type $(1^{\,g-1},n^{\,g-1})$ for
+\'etale cyclic covers via Birkenhake--Lange, Cor.~12.1.4 and
+Lemma~12.3.1.
+
+\bibitem{Welters} G.~Welters, \emph{Curves of twice the minimal class on
+principally polarized abelian varieties}, Nederl.\ Akad.\ Wetensch.\ Indag.\
+Math.\ \textbf{49} (1987), 87--109.
+
+\bibitem{WeltersGP} G.~E. Welters, \emph{A theorem of Gieseker--Petri type
+for Prym varieties}, Ann.\ Sci.\ \'Ec.\ Norm.\ Sup\'er.\ (4) \textbf{18}
+(1985), 671--683.
+
+\bibitem{MumfordPrym} D.~Mumford, \emph{Prym varieties I}, in
+Contributions to Analysis, Academic Press (1974), 325--350.
+
+\bibitem{FarkasDJ} G.~Farkas, \emph{Generalized De Jonqui\`eres divisors on
+generic curves}, arXiv:2210.07843.
+
+\bibitem{UngureanuDim} M.~Ungureanu, \emph{Dimension theory and
+degenerations of de Jonqui\`eres divisors}, arXiv:1612.03141.
+
+\bibitem{UngureanuSec} M.~Ungureanu, \emph{Geometry of intersections of
+some secant varieties to algebraic curves}, arXiv:1810.05461.
 
 \bibitem{Schoen88} C.~Schoen, \emph{Hodge classes on self-products of a
 variety with an automorphism}, Compositio Math.\ \textbf{65} (1988),
@@ -2743,8 +3484,14 @@ variety with an automorphism}, Compositio Math.\ \textbf{65} (1988),
 self-products of a variety with an automorphism}, Compositio Math.\
 \textbf{114} (1998), 349--359.
 
-\bibitem{PatelZhang} D.~Patel and Z.~Zhang, \emph{On Weil classes and
-cyclic covers}, arXiv:2506.13729 (2025).
+\bibitem{PatelZhang} D.~Patel and Y.~Zhang, \emph{Algebraicity of Hodge
+classes on some generalized Prym varieties}, arXiv:2506.13729 (v2, May
+2026): the Weil Hodge classes $U_{\mathrm{Weil}}$ of the Prym of any
+\'etale abelian cover are algebraic (Thm.~1.2), via unramified geometric
+class field theory and the standard conjecture for abelian varieties;
+the cyclic-\'etale primitive-character case credited to Schoen. Read at
+source for the audit of the paragraphs above; contains no results on the
+Abel--Prym cycle $W_k$.
 
 \bibitem{vanGeemenNotes} B.~van Geemen, \emph{Weil classes and decomposable
 abelian fourfolds}, arXiv:2108.02087 (2021).

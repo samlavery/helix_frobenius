@@ -28,8 +28,13 @@ filtration is cut out purely by the tower `T`), unconditionally, with the standa
   transport**: a faithful (readout-intertwining, injective) transport preserves the filtration and
   the first-visible depth;
 * `carrierFiltration_unique` and `blochBeilinson_coincides` — **uniqueness**: any filtration whose
-  graded pieces are cut out by the same tower equals `carrierFiltration T`; hence the *conditional*
-  Bloch–Beilinson corollary (if a BB filtration is graded by the carrier tower, it coincides with it).
+  graded pieces are cut out by the same tower equals `carrierFiltration T`.  Exact strength of the
+  corollary: its hypothesis `hBBsucc` *already asserts* that every successive BB step is cut out by
+  this very tower — far stronger than the existence of a Bloch–Beilinson filtration with its usual
+  (conjectural) properties — so the statement is recursion bookkeeping (any filtration recursively
+  defined by these tower kernels equals the filtration so defined), NOT an independent
+  identification of the carrier filtration with Bloch–Beilinson.  The identification content lives
+  entirely in verifying `hBBsucc` for an independently constructed BB filtration, which is open.
 
 What is **NOT** proved here — and stated as explicit hypotheses (`Exhaustive`) or left to the paper:
 the no-silent-layer / tower-completeness input (`Exhaustive T`, numerically supported, not proved),
@@ -172,9 +177,13 @@ theorem carrierFiltration_unique {T : ℕ → Z → V} (G : ℕ → Set Z)
       ext z
       rw [Set.mem_setOf_eq, mem_carrierFiltration_succ]
 
-/-- **Conditional Bloch–Beilinson coincidence.** *Whenever* a filtration `BB` with the stated
-universal properties exists — its graded pieces cut out by the carrier tower `T` — it coincides with
-the carrier filtration. No existence of a general BB filtration is assumed. -/
+/-- **Tower-graded coincidence (Bloch–Beilinson reading, exact strength).** If a filtration `BB`
+has top `univ` and each successive step cut out by the carrier tower (`hBBsucc`), it equals
+`carrierFiltration T`.  Note the strength: `hBBsucc` is not "a Bloch–Beilinson filtration exists" —
+it already asserts that every BB step is graded by this very tower, so the theorem is
+`carrierFiltration_unique` bookkeeping, not an independent identification with Bloch–Beilinson.
+Verifying `hBBsucc` for an independently constructed BB filtration is the open identification
+step; nothing here supplies it. -/
 theorem blochBeilinson_coincides {T : ℕ → Z → V} (BB : ℕ → Set Z)
     (hBB0 : BB 0 = Set.univ)
     (hBBsucc : ∀ d, BB (d+1) = {z | z ∈ BB d ∧ T d z = 0}) :

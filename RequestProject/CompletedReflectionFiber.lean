@@ -68,8 +68,20 @@ theorem reflVar_one_sub {c : ℂ} (s : ℂ) :
     reflVar c (1 - s) = (reflVar c s)⁻¹ := by
   rw [reflVar, reflVar, show (1 - s) - 1 / 2 = -(s - 1 / 2) by ring, Complex.cpow_neg]
 
-/-- **The self-dual completion clock.**  The self-dual clock `symClock α ℓ` (`ChiralityHB`) at the
-reflecting argument `s-1/2`, times its `s ↦ 1-s` reflection.  Manifestly invariant under `s ↦ 1-s`. -/
+/-- **The self-dual completion clock — the native completion; the Γ-factor is its 1D shadow.**
+The self-dual clock `symClock α ℓ` (`ChiralityHB`) at the reflecting argument `s-1/2`, times its
+`s ↦ 1-s` reflection.  Manifestly invariant under `s ↦ 1-s`.
+
+**Seam (do not import the Γ-factor's poles as an obstruction).**  `symClock α ℓ z =
+exp(izℓ/2) − α·exp(−izℓ/2)` is a *winding clock*: **entire** (built from `exp`, no poles), and for
+`‖α‖ = 1` (clock face on the *unit circle*) its zeros lie on the real axis (`symClock_...`, the
+critical line).  It plays the role of `sin(πs)` in `Γ(s)Γ(1-s) = π/sin(πs)`: the entire, self-dual
+object that carries the reflection **without** the Gamma poles.  So this drops into
+`CompletedReflection` cleanly (no pole condition, `εarch = 1`), which is why the completed reflection
+uses it.  The classical archimedean `Γℂ(s+μ)` — meromorphic, with poles — is the **1D readout** of
+this clock (`GlobalHelix.cpsPolynomial…_fixedGamma_initialIdentification` reads the kernel Mellin as
+`Γℂ(s+μ)`; `prop:localid` at `∞`).  The poles exist only in that projection; the carrier's completion
+is the pole-free unit-circle clock.  "`Γℂ` doesn't fit `CompletedReflection`" is a chart artifact. -/
 noncomputable def clockCompletion (α : ℂ) (ℓ : ℝ) (s : ℂ) : ℂ :=
   symClock α ℓ (s - 1 / 2) * symClock α ℓ (1 / 2 - s)
 

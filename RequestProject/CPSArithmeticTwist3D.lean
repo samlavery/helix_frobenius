@@ -128,14 +128,14 @@ theorem arithmeticCPS_globalCoefficient_identification
     (r m : ℕ) (pi : PolynomialSatakeDualPair (Fin 2))
     (tau : PolynomialSatakeDualPair (Fin m)) (n : ℕ) :
     cpsPolynomialPrimalCoeff (arithmeticCPSPolynomialTwist r m pi tau) n =
-      unitaryGlobalSatakeCoeff (arithmeticCPSTensorRoot r m pi tau) n := rfl
+      radialGlobalSatakeCoeff (arithmeticCPSTensorRoot r m pi tau) n := rfl
 
 /-- The same exact identification on the contragredient bank. -/
 theorem arithmeticCPS_globalDualCoefficient_identification
     (r m : ℕ) (pi : PolynomialSatakeDualPair (Fin 2))
     (tau : PolynomialSatakeDualPair (Fin m)) (n : ℕ) :
     cpsPolynomialDualCoeff (arithmeticCPSPolynomialTwist r m pi tau) n =
-      unitaryGlobalSatakeCoeff (arithmeticCPSDualTensorRoot r m pi tau) n := rfl
+      radialGlobalSatakeCoeff (arithmeticCPSDualTensorRoot r m pi tau) n := rfl
 
 /-- A single exact passport showing that the local factors and both all-place coefficient banks
 of the 3D CPS datum are the literal arithmetic symmetric-power tensor data. -/
@@ -148,10 +148,10 @@ structure ArithmeticCPSCoefficientPassport
       DualPairFiber.dualLocalPoly (arithmeticCPSTensorRoot r m pi tau p) X
   primalCoefficient : ∀ n : ℕ,
     cpsPolynomialPrimalCoeff (arithmeticCPSPolynomialTwist r m pi tau) n =
-      unitaryGlobalSatakeCoeff (arithmeticCPSTensorRoot r m pi tau) n
+      radialGlobalSatakeCoeff (arithmeticCPSTensorRoot r m pi tau) n
   dualCoefficient : ∀ n : ℕ,
     cpsPolynomialDualCoeff (arithmeticCPSPolynomialTwist r m pi tau) n =
-      unitaryGlobalSatakeCoeff (arithmeticCPSDualTensorRoot r m pi tau) n
+      radialGlobalSatakeCoeff (arithmeticCPSDualTensorRoot r m pi tau) n
 
 /-- The arithmetic CPS coefficient passport is constructed without identification hypotheses. -/
 theorem arithmeticCPSCoefficientPassport

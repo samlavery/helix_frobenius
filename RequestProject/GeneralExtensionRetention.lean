@@ -9,6 +9,16 @@ stores an arbitrary finite jet stack at every clock: layer zero is the value coo
 positive layers are extension coordinates.  The normalized jet tower pairs a layer with a moment
 depth.  Each layer is separated by the same Vandermonde theorem, so simultaneous silence of all
 value and jet channels forces the entire extension datum to vanish.
+
+Scope, stated exactly: these are **finite Vandermonde separation theorems for an abstract array
+of complex jet coefficients at pairwise distinct frequencies**.  They resolve the abstract
+obstruction — finite normalized extension data, once faithfully represented by such a bank, is
+not silently lost by the tower — and they prove nothing about actual cycle groups, mixed Hodge
+structures, normal functions, or motivic extensions.  The missing bridge is a faithful
+realization theorem taking the geometric class to this finite clock/jet model with (i) finite
+support, (ii) distinct frequencies, (iii) the correct rational structure, (iv) compatibility with
+extensions and regulators, and (v) no kernel on the geometric classes at issue.  Nothing here
+supplies that bridge.
 -/
 
 open scoped BigOperators
@@ -66,7 +76,12 @@ theorem generalExtensionTower_exhaustive {order m : ℕ} (bank : DistinctClockBa
   exhaustive_of_radical_trivial (generalExtensionTower_radical_trivial bank)
 
 /-- The Hodge dial on the complete finite extension state, with no semisimplification of its
-positive jet layers. -/
+positive jet layers.  Register: `DC` and `Rational` are `True` — every state counts as a rational
+DC mode, the worst case for `Retention` and hence the strongest statement on the model — and
+`Algebraic` is an arbitrary predicate.  The dial therefore carries no Hodge-theoretic content:
+the retention theorem below is separation of the abstract array, not a statement about the
+rational `(p,p)` locus of any variety.  That identification is the faithful-realization bridge
+named in the module docstring, which is open. -/
 noncomputable def generalExtensionDial {order m : ℕ} (bank : DistinctClockBank m)
     (Algebraic : GeneralExtensionData order m → Prop) :
     HodgeDial (GeneralExtensionData order m) where
@@ -75,7 +90,8 @@ noncomputable def generalExtensionDial {order m : ℕ} (bank : DistinctClockBank
   Algebraic := Algebraic
   T := generalExtensionTower (order := order) bank
 
-/-- The complete finite extension dial satisfies `Retention` at every extension order. -/
+/-- The complete finite extension dial satisfies `Retention` at every extension order — on the
+trivialized dial; see `generalExtensionDial` for the exact register. -/
 theorem generalExtension_retention {order m : ℕ} (bank : DistinctClockBank m)
     (Algebraic : GeneralExtensionData order m → Prop) :
     Retention (generalExtensionDial bank Algebraic) :=

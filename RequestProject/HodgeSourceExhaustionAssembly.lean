@@ -13,7 +13,10 @@ namespace CriticalLinePhasor.HodgeLedgerFiltration
 
 /-- The complete finite-extension capstone.  There is no semisimple restriction and no singled-out
 grade in the conclusion: every nonzero rational DC state in the general extension dial has an
-algebraic source. -/
+algebraic source.  Register: on this dial `DC` and `Rational` are `True` (see
+`generalExtensionDial`), so the conclusion quantifies over every nonzero state of the abstract
+array; Hodge-theoretic content enters only through the faithful realization of a geometric class
+into the model and through the source packages the hypotheses assert. -/
 theorem generalExtension_sourceExhaustion_of_gradeSplit_sourceConstruction
     {order m : ℕ} (bank : DistinctClockBank m)
     (Algebraic : GeneralExtensionData order m → Prop)

@@ -281,6 +281,88 @@ structure ArithmeticCPSAllTwistsConverseCandidate3D
     (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
       EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m)
 
+/-- Construct the complete all-twists converse candidate from the representation-theoretic
+carrier, its rational-quotient bank, one literal reflected arithmetic theta source for every CPS
+twist, and the equivariant residual channels.  In particular, callers do not supply an already
+assembled analytic candidate: each analytic input is constructed from the corresponding
+`ArithmeticCPSReflectedThetaSource`, whose one strong pair carries the prescribed primal and dual
+banks, their reflection, continuation, strip bounds, and functional equation. -/
+noncomputable def ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (representation :
+      RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact Vlocal X)
+    (bank : CPSBankBridge Nat.Primes X Garch P compact U)
+    (source : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+      (D : GlobalHelix.ArithmeticCPSCompletionData r m) →
+        GlobalHelix.ArithmeticCPSReflectedThetaSource r m pi tau D)
+    (residual : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+        EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m)) :
+    ArithmeticCPSAllTwistsConverseCandidate3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres where
+  representation := representation
+  bank := bank
+  analytic := fun m hm hmr tau D => (source m hm hmr tau D).analyticCandidate
+  residual := residual
+
+@[simp] theorem ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources_analytic
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (representation :
+      RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact Vlocal X)
+    (bank : CPSBankBridge Nat.Primes X Garch P compact U)
+    (source : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+      (D : GlobalHelix.ArithmeticCPSCompletionData r m) →
+        GlobalHelix.ArithmeticCPSReflectedThetaSource r m pi tau D)
+    (residual : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+        EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m))
+    (m : ℕ) (hm : 1 ≤ m) (hmr : m < r)
+    (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m))
+    (D : GlobalHelix.ArithmeticCPSCompletionData r m) :
+    (ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+      representation bank source residual).analytic m hm hmr tau D =
+        (source m hm hmr tau D).analyticCandidate := rfl
+
 /-- The analytic and residual payload for one member of the universally quantified twist family. -/
 def ArithmeticCPSAllTwistsConverseCandidate3D.TwistPayload
     {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
@@ -446,9 +528,126 @@ theorem ArithmeticCPSAllTwistsConverseCandidate3D.converseCapstone
   intro m hm hmr tau D
   exact C.twistPayload m hm hmr tau D
 
+/-! ## Object-valued symmetric-power landing -/
+
+/-- The object returned by the three-dimensional symmetric-power converse construction.
+
+It retains one restricted-product representation whose local roots are the literal arithmetic
+`Sym^r` roots, the rational-quotient cuspidal landing for that same representation, and the complete
+analytic CPS payload for every required twist.  Representation compatibility, irreducibility,
+smoothness, and admissibility remain fields of `candidate.representation`; they are not copied into
+a second object. -/
+structure ArithmeticSymmetricPowerCuspidalLift3D
+    (r : ℕ) (pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2))
+    (X Garch P : Type*) (G : Nat.Primes → Type*) (S : Nat.Primes → Type*)
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    (compact : ∀ p, S p)
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    (U : P → Type*)
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    (Vlocal : Nat.Primes → Type*)
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    (Ares Wres Vres : ℕ → Type*)
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)] where
+  candidate : ArithmeticCPSAllTwistsConverseCandidate3D r pi X Garch P G S compact U Vlocal
+    Ares Wres Vres
+  cuspidal : CuspidalAlong3D candidate.bank.μ
+    (quotientUnipotentKernel
+      (cpsAdelic3D_rationalQuotientReadout compact candidate.bank.H candidate.bank.readout
+        candidate.bank.readout_continuous candidate.bank.tate_archimedean
+        candidate.bank.tate_finite)
+      candidate.bank.translate)
+  allTwists : ∀ (m : ℕ) (hm : 1 ≤ m) (hmr : m < r)
+    (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m))
+    (D : GlobalHelix.ArithmeticCPSCompletionData r m),
+      candidate.TwistPayload m hm hmr tau D
+
+/-- Convert the assembled all-twist converse candidate into the first-class cuspidal
+symmetric-power lift returned by the three-dimensional model. -/
+noncomputable def ArithmeticCPSAllTwistsConverseCandidate3D.cuspidalSymmetricPowerLift
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (C : ArithmeticCPSAllTwistsConverseCandidate3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres) :
+    ArithmeticSymmetricPowerCuspidalLift3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres where
+  candidate := C
+  cuspidal := C.bank.landing.2
+  allTwists := fun m hm hmr tau D => C.twistPayload m hm hmr tau D
+
+/-- One-step symmetric-power landing from the restricted representation, its arithmetic reflected
+theta sources, and its equivariant residual channels.  The result is an object, rather than a
+conjunction of properties. -/
+noncomputable def symmetricPowerFunctoriality3D_ofReflectedThetaSources
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (representation :
+      RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact Vlocal X)
+    (bank : CPSBankBridge Nat.Primes X Garch P compact U)
+    (source : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+      (D : GlobalHelix.ArithmeticCPSCompletionData r m) →
+        GlobalHelix.ArithmeticCPSReflectedThetaSource r m pi tau D)
+    (residual : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+        EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m)) :
+    ArithmeticSymmetricPowerCuspidalLift3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres :=
+  (ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+    representation bank source residual).cuspidalSymmetricPowerLift
+
 end CriticalLinePhasor.ThreeDConverse
 
 #print axioms CriticalLinePhasor.ThreeDConverse.EquivariantCPSResidual3D.residue_eq_zero
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSRestrictedTensorCandidate3D.converseCapstone
+#print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+#print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources_analytic
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.twistPayload
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.converseCapstone
+#print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.cuspidalSymmetricPowerLift
+#print axioms CriticalLinePhasor.ThreeDConverse.symmetricPowerFunctoriality3D_ofReflectedThetaSources

@@ -68,8 +68,43 @@ theorem tateClass_zero_of_simple_finrank_succ (V : FDRep k G) (r : ℕ)
   rw [hr]
   omega
 
+/-! ## General Schur exclusion (the group-representation statement, not a bare finite-rank one)
+
+The exclusion aristotle's objection 5 requires is **not** "smaller dimension ⇒ no embedding" (false
+for plain vector spaces).  It is Schur's lemma for the *group action*: a nonzero map between simple
+`G`-representations is an isomorphism, so **non-isomorphic** simples have zero Hom.  Dimension enters
+only to certify non-isomorphism.  Stated below for arbitrary simple `V W : FDRep k G` — with the
+genuine `G`-action — so it applies to any twist / any constituent, not merely the unit. -/
+
+/-- **Schur exclusion, general form.**  For simple `G`-representations `V`, `W` that are **not
+isomorphic**, every morphism `V ⟶ W` is zero.  This is Schur's lemma in `FDRep k G`; the group
+action is present (`FDRep.finrank_hom_simple_simple`), so it is a representation-theoretic statement,
+not a bare linear-algebra dimension count. -/
+theorem hom_zero_of_simple_not_iso {V W : FDRep k G} [Simple V] [Simple W]
+    (hne : ¬ Nonempty (V ≅ W)) (f : V ⟶ W) : f = 0 := by
+  have hz : finrank k (V ⟶ W) = 0 := by rw [FDRep.finrank_hom_simple_simple, if_neg hne]
+  exact Subsingleton.elim (h := finrank_zero_iff.mp hz) f 0
+
+/-- Different dimensions ⇒ non-isomorphic representations.  This is the **only** role dimension
+plays; it supplies non-isomorphism, never the vanishing directly. -/
+theorem not_iso_of_finrank_ne {V W : FDRep k G} (h : finrank k V ≠ finrank k W) :
+    ¬ Nonempty (V ≅ W) := by
+  rintro ⟨i⟩
+  exact h (FDRep.isoToLinearEquiv i).finrank_eq
+
+/-- **The corrected exclusion.**  For simple `G`-representations with `finrank V < finrank W`, every
+`V ⟶ W` is zero — because the strict dimension inequality forces non-isomorphism
+(`not_iso_of_finrank_ne`) and Schur (`hom_zero_of_simple_not_iso`) then forces the vanishing.  The
+vanishing is Schur's lemma with the group action, *not* "dimension alone": exactly the step objection
+5 flags, done correctly. -/
+theorem hom_zero_of_finrank_lt {V W : FDRep k G} [Simple V] [Simple W]
+    (h : finrank k V < finrank k W) (f : V ⟶ W) : f = 0 :=
+  hom_zero_of_simple_not_iso (not_iso_of_finrank_ne (Nat.ne_of_lt h)) f
+
 end CriticalLinePhasor.NonSelfDual
 
 #print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_not_unit
 #print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_finrank_ne_one
 #print axioms CriticalLinePhasor.NonSelfDual.tateClass_zero_of_simple_finrank_succ
+#print axioms CriticalLinePhasor.NonSelfDual.hom_zero_of_simple_not_iso
+#print axioms CriticalLinePhasor.NonSelfDual.hom_zero_of_finrank_lt

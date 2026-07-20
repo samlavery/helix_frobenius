@@ -326,7 +326,7 @@ theorem mellinFmodif_eq_symmetric_form (s : ℂ) :
       (fun t : ℝ => (t : ℂ)^(s/2 - 1) •
         ((hurwitzEvenFEPair (0 : UnitAddCircle)).toStrongFEPair.f t))
       (Set.Ioi 0) :=
-    ((hurwitzEvenFEPair (0 : UnitAddCircle)).toStrongFEPair.hasMellin (s/2)).1
+    ((hurwitzEvenFEPair (0 : UnitAddCircle)).isStrongFEPair_toStrongFEPair.hasMellin (s/2)).1
   -- The two indicator integrands are non-negative-norm parts of f_modif, hence integrable
   -- Common bound: indicator-restricted integrand has norm ≤ full f_modif integrand
   -- because at each point, only one indicator is nonzero (disjoint supports)

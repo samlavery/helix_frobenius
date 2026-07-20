@@ -125,10 +125,9 @@ theorem rsIntegrand_product_integrable (f : CuspForm 𝒮ℒ k) (hk : 0 ≤ k) {
   have hmeas : Measurable (fun p : ℝ × ℝ => ((p.2 ^ 2)⁻¹ : ℝ) •
       rsIntegrand f s (UpperHalfPlane.ofComplex
         (Complex.measurableEquivRealProd.symm p))) := by
-    apply Measurable.smul
-    · exact ((measurable_snd.pow_const 2).inv)
-    · exact (continuous_rsIntegrand f s).measurable.comp
-        (measurable_ofComplex.comp Complex.measurableEquivRealProd.symm.measurable)
+    exact Measurable.smul ((measurable_snd.pow_const 2).inv)
+      ((continuous_rsIntegrand f s).measurable.comp
+        (measurable_ofComplex.comp Complex.measurableEquivRealProd.symm.measurable))
   rw [integrable_prod_iff' hmeas.aestronglyMeasurable]
   obtain ⟨M, hM0, hM⟩ := P_bounded f
   constructor

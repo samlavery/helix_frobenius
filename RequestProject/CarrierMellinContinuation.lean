@@ -1,4 +1,4 @@
-import Mathlib.NumberTheory.LSeries.AbstractFuncEq
+import RequestProject.StrongFEPairCompat
 import RequestProject.CommonRepresentation
 import RequestProject.TrivialChannelPole
 

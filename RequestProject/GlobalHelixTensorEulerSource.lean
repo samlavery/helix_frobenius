@@ -101,7 +101,7 @@ theorem tensorSymTwist_localEulerCoeff_eq_antidiagonal
         (FiniteWeightFiber.tensorFiber
           (FiniteWeightFiber.symFiber 1 α hα)
           (FiniteWeightFiber.symFiber (r - 1) α hα)) Wτ) n =
-      ∑ p ∈ Finset.antidiagonal n,
+      ∑ p ∈ Finset.HasAntidiagonal.antidiagonal n,
         localEulerCoeff
           (FiniteWeightFiber.tensorFiber (FiniteWeightFiber.symFiber r α hα) Wτ) p.1 *
         localEulerCoeff

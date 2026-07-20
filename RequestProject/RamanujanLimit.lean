@@ -23,6 +23,17 @@ reads the conclusions as **Ramanujan–Petersson** (`|α_p| = 1`, temperedness a
 **Selberg** (`Re μ_∞ = 0`; for a `GL(2)` Maass form, `λ ≥ 1/4`) — legitimate 1D readouts of the
 3D radial-balance facts, never the objects of the proofs.
 
+**The 3-D reframe of the conclusion** (`HelixStrandTemperedness`).  Temperedness `|α_p| = 1` is, on
+the carrier, the statement that the strand is a **helix** (an elliptic rotation `e^{iθ}`), not a
+**spiral** (a real, off-circle stretch): `isHelixStrand_iff_norm_one`.  The chart's `|a_p| ≤ 2` is
+its automatic shadow (`helix_strandTrace_mem_Icc`; a spiral reads `|a_p| > 2`,
+`spiral_strandTrace_gt_two`), and a nonzero real-trace strand is helix or spiral and nothing else
+(`strand_dichotomy`) — the radial-channel twin of `SourceHolonomy.source_dichotomy`.  The forcing
+direction *helix source ⟹ tempered* is proven (`tempered_of_hasHelixSource`); *every* Frobenius
+having a helix source (`EveryFrobeniusHasHelixSource`, no spiral orphan) is the **favored branch** —
+the radial twin of `EveryZeroHasSource` — grounded in the similitude structure, never asserted as a
+from-1-D proof.
+
 Does not assume or prove RH/GRH.  No unit modulus is assumed anywhere: the strand pair carries
 its radius until the last line, where the tower closes it.  No `sorry`, no `axiom`.
 -/

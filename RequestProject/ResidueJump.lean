@@ -103,9 +103,9 @@ theorem hasJump_add_continuous_iff {f c : ℝ → ℝ} (hc : Continuous c) (γ j
   constructor
   · intro h
     have h2 := h.add_continuous hc.neg
-    have he : (fun t => (f t + c t) + (-c t)) = f := by
+    have he : (fun t => f t + c t + (-c) t) = f := by
       funext t
-      ring
+      simp [Pi.neg_apply]
     rwa [he] at h2
   · intro h
     exact h.add_continuous hc

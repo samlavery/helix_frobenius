@@ -69,7 +69,7 @@ lemma HurwitzZeta.evenKernel_zero_ge_one {t : ℝ} (ht : 0 < t) :
 /-- Mellin convergence for the zeta pair's f_modif. -/
 lemma zeta_f_modif_mellinConvergent (s : ℂ) :
     MellinConvergent (HurwitzZeta.hurwitzEvenFEPair 0).f_modif s := by
-  exact ( HurwitzZeta.hurwitzEvenFEPair 0 ).toStrongFEPair.hasMellin s |>.1
+  exact ( HurwitzZeta.hurwitzEvenFEPair 0 ).isStrongFEPair_toStrongFEPair.hasMellin s |>.1
 
 /-- cosKernel 0 equals evenKernel 0 -/
 lemma HurwitzZeta.cosKernel_zero_eq_evenKernel_zero (x : ℝ) :

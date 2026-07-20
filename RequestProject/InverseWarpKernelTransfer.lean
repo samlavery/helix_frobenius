@@ -1,14 +1,16 @@
 import RequestProject.TransferContinuation
 
 /-!
-# Abel transfer through an inverse-warp kernel
+# Abel transfer through the warp-removal kernel
 
-This is the kernel-level form of summation by parts required by an inverse-warp readout.  Unlike
-`TransferContinuation.transfer_analytic`, the theorem below permits an `n`-dependent kernel.  Its two
-analytic inputs are exactly the Abel difference series and the boundary term.
--/
+This is the kernel-level form of summation by parts required to remove a coefficient warp from
+the readout.  Unlike `TransferContinuation.transfer_analytic`, the theorem below permits an
+`n`-dependent kernel.  Its two analytic inputs are exactly the Abel difference series and the
+boundary term.  (Ontology: a warp scales by a *function*, a carrier scale by a harmonic
+*constant*; the reciprocal of a warp is again a warp, so there is no separate "inverse warp" —
+what acts here is the removal kernel `(ω n)⁻¹ · (n+1)^{-s}`, a kernel-transfer operation.) -/
 
-namespace InverseWarpKernelTransfer
+namespace WarpRemovalTransfer
 
 open Complex Finset Filter Topology
 
@@ -44,9 +46,9 @@ theorem kernel_transfer_tendsto
   have hfinal := hBoundary.sub hTshift
   simpa [A, d] using hfinal.congr (fun n => (hParts n).symm)
 
-/-- A nonvanishing coefficient warp is removed exactly at every finite stage once its full inverse
-kernel satisfies the Abel difference and boundary conditions. -/
-theorem inverseWarp_transfer_tendsto
+/-- A nonvanishing coefficient warp is removed exactly at every finite stage once its full
+removal kernel satisfies the Abel difference and boundary conditions. -/
+theorem warpRemoval_transfer_tendsto
     (a ω : ℕ → ℂ) (s : ℂ) (hω : ∀ n, ω n ≠ 0)
     (hDiff : Summable (fun i : ℕ =>
       ((ω (i + 1))⁻¹ * (((i + 2 : ℕ) : ℂ) ^ (-s)) -
@@ -76,7 +78,7 @@ theorem inverseWarp_transfer_tendsto
   intro n _
   field_simp [hω n]
 
-end InverseWarpKernelTransfer
+end WarpRemovalTransfer
 
-#print axioms InverseWarpKernelTransfer.kernel_transfer_tendsto
-#print axioms InverseWarpKernelTransfer.inverseWarp_transfer_tendsto
+#print axioms WarpRemovalTransfer.kernel_transfer_tendsto
+#print axioms WarpRemovalTransfer.warpRemoval_transfer_tendsto

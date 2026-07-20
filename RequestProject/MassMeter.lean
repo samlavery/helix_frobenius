@@ -47,21 +47,22 @@ open CategoryTheory
 namespace CriticalLinePhasor.HodgeLedgerFiltration
 
 variable {k : Type*} [Field k] {G : Type*} [Group G] [Fintype G]
-  [Invertible (Fintype.card G : k)]
+  [Invertible (Nat.card G : k)]
 
 /-- **The mass meter**: the freeze mass `⟨χ_V, χ_V⟩` of a fiber equals the dimension of its
 endomorphism algebra `End_G(V)` — the multi-rail decomposition count `Σ mᵢ²`.  Each simple
 component is a rail; the mass is the number of rails counted with multiplicity.  No orphan:
 every unit of freeze mass is a named component. -/
 theorem mass_meter (V : FDRep k G) :
-    ⅟(Fintype.card G : k) • ∑ g : G, V.character g * V.character g⁻¹ =
-      Module.finrank k (V ⟶ V) :=
-  FDRep.scalar_product_char_eq_finrank_equivariant V V
+    ⅟(Nat.card G : k) • ∑ g : G, V.character g * V.character g⁻¹ =
+      Module.finrank k (V ⟶ V) := by
+  rw [invOf_eq_inv, smul_eq_mul]
+  exact FDRep.scalar_product_char_eq_finrank_equivariant V V
 
 /-- **The freeze mass is quantized**: it equals the natural number `dim End_G(V)`, cast into
 `k`.  No fractional orphan — the rail count is always an integer. -/
 theorem freeze_mass_eq_natCast (V : FDRep k G) :
-    ⅟(Fintype.card G : k) • ∑ g : G, V.character g * V.character g⁻¹ =
+    ⅟(Nat.card G : k) • ∑ g : G, V.character g * V.character g⁻¹ =
       ((Module.finrank k (V ⟶ V) : ℕ) : k) :=
   mass_meter V
 

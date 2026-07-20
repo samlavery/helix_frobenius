@@ -48,8 +48,15 @@ theorem cpsTensorDualWeight_unit
     ‖cpsTensorDualWeight r α τ p i‖ = 1 := by
   rw [cpsTensorDualWeight, norm_inv, cpsTensorWeight_unit, inv_one]
 
-/-- The complete-homogeneous coefficient of a bare finite unitary weight family. -/
-noncomputable def unitaryLocalEulerCoeff
+/-- The complete-homogeneous symmetric coefficient `h_n(w)` of a finite weight family `w`.
+
+**Radius-live — no unit-modulus assumption.**  This is `∑ ∏ w_i^{l_i}` over the `n`-antidiagonal,
+a polynomial in the weights that is well defined for *arbitrary* nonzero radial magnitudes; the
+`radial…` name is deliberate.  (An earlier `unitary…` name was a misnomer: only some of the *bound*
+lemmas below take `‖w‖ = 1`; the coefficient itself, and the polynomial-bound lemmas in
+`GlobalHelixCPSPolynomialDualPair`, are radial.  Temperedness `‖α_p‖ = 1` is never an input to the
+niceness that consumes this — it is the radial-limit *output*, `RamanujanLimit`.) -/
+noncomputable def radialLocalEulerCoeff
     {ι : Type*} [Fintype ι] (w : ι → ℂ) (n : ℕ) : ℂ :=
   by
     classical
@@ -57,11 +64,11 @@ noncomputable def unitaryLocalEulerCoeff
       ∏ i, w i ^ l i
 
 /-- A local unitary Euler coefficient is bounded by the standard multichoose majorant. -/
-theorem norm_unitaryLocalEulerCoeff_le_add_one_pow
+theorem norm_radialLocalEulerCoeff_le_add_one_pow
     {ι : Type*} [Fintype ι] (w : ι → ℂ) (hw : ∀ i, ‖w i‖ = 1) (n : ℕ) :
-    ‖unitaryLocalEulerCoeff w n‖ ≤ ((n + 1) ^ Fintype.card ι : ℕ) := by
+    ‖radialLocalEulerCoeff w n‖ ≤ ((n + 1) ^ Fintype.card ι : ℕ) := by
   classical
-  unfold unitaryLocalEulerCoeff
+  unfold radialLocalEulerCoeff
   calc
     ‖∑ l ∈ Finset.finsuppAntidiag (Finset.univ : Finset ι) n,
         ∏ i, w i ^ l i‖
@@ -77,20 +84,22 @@ theorem norm_unitaryLocalEulerCoeff_le_add_one_pow
     _ ≤ (((n + 1) ^ Fintype.card ι : ℕ) : ℝ) := by
       exact_mod_cast multichoose_le_add_one_pow (Fintype.card ι) n
 
-/-- The all-place coefficient bank attached to a bare local unitary family. -/
-noncomputable def unitaryGlobalSatakeCoeff
+/-- The all-place coefficient bank attached to a local weight family — **radius-live**, arbitrary
+nonzero radial magnitudes (see `radialLocalEulerCoeff`); the `radial…` name is deliberate, not a
+unit-modulus bank. -/
+noncomputable def radialGlobalSatakeCoeff
     {ι : Type*} [Fintype ι]
     (w : Nat.Primes → ι → ℂ) (n : ℕ) : ℂ :=
   ∏ p : ↑(n + 1).primeFactors,
-    unitaryLocalEulerCoeff
+    radialLocalEulerCoeff
       (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
       ((n + 1).factorization p.1)
 
 /-- The all-place unitary bank has a polynomial bound determined only by its rank. -/
-theorem unitaryGlobalSatakeCoeff_norm_le
+theorem radialGlobalSatakeCoeff_norm_le
     {ι : Type*} [Fintype ι]
     (w : Nat.Primes → ι → ℂ) (hw : ∀ p i, ‖w p i‖ = 1) (n : ℕ) :
-    ‖unitaryGlobalSatakeCoeff w n‖ ≤
+    ‖radialGlobalSatakeCoeff w n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card ι : ℕ)) := by
   classical
   let m : ℕ := n + 1
@@ -99,13 +108,13 @@ theorem unitaryGlobalSatakeCoeff_norm_le
     dsimp [m]
     omega
   have hlocal : ∀ p : ↑m.primeFactors,
-      ‖unitaryLocalEulerCoeff
+      ‖radialLocalEulerCoeff
         (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
         (m.factorization p.1)‖ ≤
         (((m.factorization p.1 + 1 : ℕ) : ℝ) ^ d) := by
     intro p
     simpa [d, Nat.cast_pow] using
-      norm_unitaryLocalEulerCoeff_le_add_one_pow
+      norm_radialLocalEulerCoeff_le_add_one_pow
         (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
         (hw (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
         (m.factorization p.1)
@@ -113,7 +122,7 @@ theorem unitaryGlobalSatakeCoeff_norm_le
   rw [norm_prod]
   calc
     ∏ p : ↑m.primeFactors,
-        ‖unitaryLocalEulerCoeff
+        ‖radialLocalEulerCoeff
           (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
           (m.factorization p.1)‖
         ≤ ∏ p : ↑m.primeFactors,
@@ -136,10 +145,10 @@ theorem unitaryGlobalSatakeCoeff_norm_le
             exact_mod_cast Nat.card_divisors_le_self m
 
 /-- Every all-place unitary coefficient bank starts with coefficient one. -/
-theorem unitaryGlobalSatakeCoeff_zero
+theorem radialGlobalSatakeCoeff_zero
     {ι : Type*} [Fintype ι] (w : Nat.Primes → ι → ℂ) :
-    unitaryGlobalSatakeCoeff w 0 = 1 := by
-  unfold unitaryGlobalSatakeCoeff
+    radialGlobalSatakeCoeff w 0 = 1 := by
+  unfold radialGlobalSatakeCoeff
   letI : IsEmpty ↥(Nat.primeFactors 1) :=
     ⟨fun p => by simpa using p.property⟩
   exact Fintype.prod_empty _
@@ -148,34 +157,34 @@ theorem unitaryGlobalSatakeCoeff_zero
 noncomputable def cpsPrimalSatakeCoeff
     {κ : Type*} [Fintype κ] (r : ℕ) (α : UnitaryPrimePhase)
     (τ : UnitarySatakeFamily κ) : ℕ → ℂ :=
-  unitaryGlobalSatakeCoeff (cpsTensorWeight r α τ)
+  radialGlobalSatakeCoeff (cpsTensorWeight r α τ)
 
 /-- The contragredient global CPS coefficient bank. -/
 noncomputable def cpsDualSatakeCoeff
     {κ : Type*} [Fintype κ] (r : ℕ) (α : UnitaryPrimePhase)
     (τ : UnitarySatakeFamily κ) : ℕ → ℂ :=
-  unitaryGlobalSatakeCoeff (cpsTensorDualWeight r α τ)
+  radialGlobalSatakeCoeff (cpsTensorDualWeight r α τ)
 
 theorem cpsPrimalSatakeCoeff_norm_le
     {κ : Type*} [Fintype κ] (r : ℕ) (α : UnitaryPrimePhase)
     (τ : UnitarySatakeFamily κ) (n : ℕ) :
     ‖cpsPrimalSatakeCoeff r α τ n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card (Fin (r + 1) × κ) : ℕ)) :=
-  unitaryGlobalSatakeCoeff_norm_le _ (cpsTensorWeight_unit r α τ) n
+  radialGlobalSatakeCoeff_norm_le _ (cpsTensorWeight_unit r α τ) n
 
 theorem cpsDualSatakeCoeff_norm_le
     {κ : Type*} [Fintype κ] (r : ℕ) (α : UnitaryPrimePhase)
     (τ : UnitarySatakeFamily κ) (n : ℕ) :
     ‖cpsDualSatakeCoeff r α τ n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card (Fin (r + 1) × κ) : ℕ)) :=
-  unitaryGlobalSatakeCoeff_norm_le _ (cpsTensorDualWeight_unit r α τ) n
+  radialGlobalSatakeCoeff_norm_le _ (cpsTensorDualWeight_unit r α τ) n
 
 @[reducible] noncomputable def cpsPrimalCoefficientOneInvertible
     {κ : Type*} [Fintype κ] (r : ℕ) (α : UnitaryPrimePhase)
     (τ : UnitarySatakeFamily κ) :
     Invertible ((CarrierTheta.coefficientArithmetic (cpsPrimalSatakeCoeff r α τ)) 1) := by
   rw [CarrierTheta.coefficientArithmetic]
-  simp [cpsPrimalSatakeCoeff, unitaryGlobalSatakeCoeff_zero]
+  simp [cpsPrimalSatakeCoeff, radialGlobalSatakeCoeff_zero]
   exact invertibleOne
 
 @[reducible] noncomputable def cpsDualCoefficientOneInvertible
@@ -183,7 +192,7 @@ theorem cpsDualSatakeCoeff_norm_le
     (τ : UnitarySatakeFamily κ) :
     Invertible ((CarrierTheta.coefficientArithmetic (cpsDualSatakeCoeff r α τ)) 1) := by
   rw [CarrierTheta.coefficientArithmetic]
-  simp [cpsDualSatakeCoeff, unitaryGlobalSatakeCoeff_zero]
+  simp [cpsDualSatakeCoeff, radialGlobalSatakeCoeff_zero]
   exact invertibleOne
 
 theorem cpsPrimalCoefficientArithmetic_norm_le
@@ -380,8 +389,8 @@ theorem cpsAllTwists_3D_globalHelixReflection
 
 end CriticalLinePhasor.GlobalHelix
 
-#print axioms CriticalLinePhasor.GlobalHelix.norm_unitaryLocalEulerCoeff_le_add_one_pow
-#print axioms CriticalLinePhasor.GlobalHelix.unitaryGlobalSatakeCoeff_norm_le
+#print axioms CriticalLinePhasor.GlobalHelix.norm_radialLocalEulerCoeff_le_add_one_pow
+#print axioms CriticalLinePhasor.GlobalHelix.radialGlobalSatakeCoeff_norm_le
 #print axioms CriticalLinePhasor.GlobalHelix.cpsDualPairStrongFEPair
 #print axioms CriticalLinePhasor.GlobalHelix.cpsDualPair3D_globalHelixReflection
 #print axioms CriticalLinePhasor.GlobalHelix.cpsDualPair_twistedNiceness

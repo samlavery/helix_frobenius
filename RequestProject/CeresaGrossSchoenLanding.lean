@@ -98,8 +98,109 @@ theorem CeresaGrossSchoenLanding.complete_landing
       D.DC L.ceresaState ∧ D.Rational L.ceresaState ∧ D.Algebraic L.ceresaState :=
   ⟨L.state_ne_zero, L.firstVisible_three, L.dc, L.rational, L.algebraic_source⟩
 
+/-! ## The certificate's anatomy: the depth is established, not supplied
+
+The landing structure above carries two nonvanishing fields.  The structure below strips them
+*both* (up to the proportionality constant, which is part of the cited Zhang/YZZ identity) and
+proves that the depth-three firing is then **equivalent** to the nonvanishing of the completed
+triple-product central derivative — so the per-rail depth is not a supplied field of the
+certificate: it is established by exactly the analytic quantity the instruments compute, and
+by nothing else. -/
+
+/-- The **identification-only certificate**: the landing data with no nonvanishing input on the
+central derivative — cycle, realization, height identity, carrier identification, silence below
+three. -/
+structure CeresaIdentification (D : HodgeDial Z) (Cycle : Type*) where
+  sourceRealization : AlgebraicSourceRealization D Cycle
+  ceresaCycle : Cycle
+  ceresaState : Z
+  height : Cycle → ℝ
+  centralDerivative : ℝ
+  proportionality : ℝ
+  proportionality_ne_zero : proportionality ≠ 0
+  grossSchoen_height_identity :
+    height ceresaCycle = proportionality * centralDerivative
+  cycle_realizes_state : sourceRealization.realize ceresaCycle = ceresaState
+  height_zero_of_zero_realization :
+    ∀ cycle, sourceRealization.realize cycle = 0 → height cycle = 0
+  tower_height_identification :
+    D.T 3 ceresaState = (height ceresaCycle : ℂ)
+  silent_below_three : ∀ d < 3, D.T d ceresaState = 0
+  dc : D.DC ceresaState
+  rational : D.Rational ceresaState
+
+/-- **The depth is established by the arithmetic**: from the identifications alone, the
+depth-three carrier firing is equivalent to the nonvanishing of the completed triple-product
+central derivative. -/
+theorem CeresaIdentification.fires_iff (I : CeresaIdentification D Cycle) :
+    D.T 3 I.ceresaState ≠ 0 ↔ I.centralDerivative ≠ 0 := by
+  rw [I.tower_height_identification, I.grossSchoen_height_identity]
+  constructor
+  · intro h hL
+    exact h (by rw [hL, mul_zero, Complex.ofReal_zero])
+  · intro hL
+    exact Complex.ofReal_ne_zero.mpr (mul_ne_zero I.proportionality_ne_zero hL)
+
+/-- First visibility at exactly depth three is likewise equivalent to the analytic
+nonvanishing. -/
+theorem CeresaIdentification.firstVisible_iff (I : CeresaIdentification D Cycle) :
+    IsFirstVisible D.T I.ceresaState 3 ↔ I.centralDerivative ≠ 0 :=
+  ⟨fun h => I.fires_iff.mp h.2, fun hL => ⟨I.silent_below_three, I.fires_iff.mpr hL⟩⟩
+
+/-- An identification plus the one analytic nonvanishing assembles the complete landing. -/
+def CeresaIdentification.toLanding (I : CeresaIdentification D Cycle)
+    (hL : I.centralDerivative ≠ 0) : CeresaGrossSchoenLanding D Cycle where
+  sourceRealization := I.sourceRealization
+  ceresaCycle := I.ceresaCycle
+  ceresaState := I.ceresaState
+  height := I.height
+  centralDerivative := I.centralDerivative
+  proportionality := I.proportionality
+  proportionality_ne_zero := I.proportionality_ne_zero
+  centralDerivative_ne_zero := hL
+  grossSchoen_height_identity := I.grossSchoen_height_identity
+  cycle_realizes_state := I.cycle_realizes_state
+  height_zero_of_zero_realization := I.height_zero_of_zero_realization
+  tower_height_identification := I.tower_height_identification
+  silent_below_three := I.silent_below_three
+  dc := I.dc
+  rational := I.rational
+
+/-- Forgetting the nonvanishing recovers the identification certificate. -/
+def CeresaGrossSchoenLanding.toIdentification (L : CeresaGrossSchoenLanding D Cycle) :
+    CeresaIdentification D Cycle where
+  sourceRealization := L.sourceRealization
+  ceresaCycle := L.ceresaCycle
+  ceresaState := L.ceresaState
+  height := L.height
+  centralDerivative := L.centralDerivative
+  proportionality := L.proportionality
+  proportionality_ne_zero := L.proportionality_ne_zero
+  grossSchoen_height_identity := L.grossSchoen_height_identity
+  cycle_realizes_state := L.cycle_realizes_state
+  height_zero_of_zero_realization := L.height_zero_of_zero_realization
+  tower_height_identification := L.tower_height_identification
+  silent_below_three := L.silent_below_three
+  dc := L.dc
+  rational := L.rational
+
+/-- **Certificate exactness**: a complete landing exists precisely when an identification
+certificate carries a nonzero central derivative — the landing consumes the identifications
+plus exactly one analytic number, nothing more. -/
+theorem landing_iff_identification :
+    Nonempty (CeresaGrossSchoenLanding D Cycle) ↔
+      ∃ I : CeresaIdentification D Cycle, I.centralDerivative ≠ 0 := by
+  constructor
+  · rintro ⟨L⟩
+    exact ⟨L.toIdentification, L.centralDerivative_ne_zero⟩
+  · rintro ⟨I, hL⟩
+    exact ⟨I.toLanding hL⟩
+
 end CriticalLinePhasor.HodgeLedgerFiltration
 
+#print axioms CriticalLinePhasor.HodgeLedgerFiltration.CeresaIdentification.fires_iff
+#print axioms CriticalLinePhasor.HodgeLedgerFiltration.CeresaIdentification.firstVisible_iff
+#print axioms CriticalLinePhasor.HodgeLedgerFiltration.landing_iff_identification
 #print axioms CriticalLinePhasor.HodgeLedgerFiltration.CeresaGrossSchoenLanding.height_ne_zero
 #print axioms CriticalLinePhasor.HodgeLedgerFiltration.CeresaGrossSchoenLanding.state_ne_zero
 #print axioms CriticalLinePhasor.HodgeLedgerFiltration.CeresaGrossSchoenLanding.tower_fires_three

@@ -46,4 +46,15 @@ theorem residual_forcible {u v : ℂ} (h : LinearIndependent ℝ ![u, v]) (D : �
   simp only [Matrix.cons_val_zero, Matrix.cons_val_one] at hc
   rw [hc]; abel
 
+/-- **Arithmetic neutrality, as a theorem.**  The same independent pair closes any two residuals
+— one from an automorphic fiber, one from a random bank — identically.  Forcibility is therefore
+non-discriminating: it carries no information about the fiber, so it can never serve as niceness
+evidence; it is the transport half of the architecture and nothing more.  (The numerically
+observed neutrality of `tmp/detuned_closure_control.py`, at theorem strength.) -/
+theorem forcible_nondiscriminating {u v : ℂ} (h : LinearIndependent ℝ ![u, v]) (D₁ D₂ : ℂ) :
+    (∃ s t : ℝ, D₁ + (s • u + t • v) = 0) ∧ (∃ s t : ℝ, D₂ + (s • u + t • v) = 0) :=
+  ⟨residual_forcible h D₁, residual_forcible h D₂⟩
+
 end CriticalLinePhasor.ForcibleClosure
+
+#print axioms CriticalLinePhasor.ForcibleClosure.forcible_nondiscriminating

@@ -82,7 +82,7 @@ theorem finiteTensorSymTwistEulerCoeff_eq_prod_antidiagonal
         (FiniteWeightFiber.tensorFiber
           (FiniteWeightFiber.symFiber 1 (α v) (hα v))
           (FiniteWeightFiber.symFiber (r - 1) (α v) (hα v))) (Wτ v)) k =
-      ∏ v ∈ S, ∑ p ∈ Finset.antidiagonal (k v),
+      ∏ v ∈ S, ∑ p ∈ Finset.HasAntidiagonal.antidiagonal (k v),
         localEulerCoeff
           (FiniteWeightFiber.tensorFiber
             (FiniteWeightFiber.symFiber r (α v) (hα v)) (Wτ v)) p.1 *

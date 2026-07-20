@@ -208,8 +208,65 @@ own readout point.  The separate finite object
 ordinate-level focal detector and must not be substituted for the completed
 event without its limiting bridge.  An arbitrary analytic event is membership
 \(\rho\in\texttt{NontrivialZeros}(\chi)\), which includes
-\(L(\rho,\chi)=0\) in the critical strip.  The remaining coverage question is
-whether every such \(\rho\) equals the readout of some physical-height event.
+\(L(\rho,\chi)=0\) in the critical strip.  The coverage step asks when that
+analytic fiber projects to the readout of a physical-height event.
+
+For the principal channel this coverage is now decomposed by a compiled
+zero-to-source transfer rather than left as a bare identification.  The
+constructor \path{principalZeroAnalyticFiber3D} sends every genuine
+\(\rho\in\texttt{ZD.NontrivialZeros}\) to the literal eta-configured
+three-dimensional \(\texttt{Vec3}\) fiber at \(\rho\), proves that its
+rescaled plane partial sums converge to \(\zeta(\rho)=0\), and supplies the
+event-independent ambient helix eigenstate at ordinate \(\Im\rho\) and
+physical height \(e^{\Im\rho}\).  This first transfer does not mention a
+midpoint.  Before any equality between the analytic parameter and a carrier
+readout is requested, the constructor
+\path{principalZero_focalCancellation_on_carrier} registers the analytic
+closure as a \path{PrincipalZeroNativeCarrierEvent3D}.  The event contains a
+typed \path{CarrierState3D} on the Archimedean helix at that same physical
+height.  Its theorems \path{.on_archimedeanHelix},
+\path{.physicalHeight_eq_focalHeight}, and \path{.ambient_eigenvector} prove
+literal helix membership, equality of marked heights, and the ambient 3D
+eigenvector equation.  Its \path{.noRadialDrift} theorem follows directly
+from helix membership through
+\path{carrierPointAtHeight_noRadialDrift}; neither a Euclidean fiber radius
+nor a radial-limit premise is used.  The area law is applied only afterwards
+by \path{.carrierReadout_scaleBalanced}.  The constructor
+\path{principalZeroNative3DSourceTransfer_of_noRadialDrift} then performs
+the geometric projection into a conservative source and the complete native
+focal/operator certificate from the area-law equation
+\(n^{\Re\rho-\sigma_*}=1\).  Its converse is proved from source conservation,
+giving the exact theorem
+\path{nonempty_principalZeroNative3DSourceTransfer_iff_noRadialDrift}.
+Thus the native landing is not encoded by writing
+\(\rho=\tfrac12+i z\); the half-unit is the evaluated value of the
+area-law-selected \(\sigma_*\) after no drift has been established.
+
+Here ``fiber rides carrier, carrier rides helix'' is a typed composition.
+The first map is
+\path{PrincipalZeroAnalyticFiber3D.RidesCarrier}, equality of the literal
+\(\mathbb N\to\texttt{Vec3}\) analytic fiber with the spectral fiber evaluated
+at its carrier-height readout.  The second is the independent geometric field
+\path{CarrierState3D.point_eq_gammaY}.  Lean proves that the first map is
+equivalent to the parameter-preserving weld by
+\path{ridesCarrier_iff_carrierWeld}, and every completed native transfer proves
+both maps simultaneously in
+\path{fiberRidesCarrier_carrierRidesHelix}.  Merely sharing an ordinate is not
+used as a substitute for the fiber attachment.
+
+The exact completed focal event has carrier support by construction and
+theorem, not by a later chart assumption.  Namely,
+\path{CompletedFocalCancellationRepresents}$(\chi,\rho)$ requires a positive
+physical height \(Z\), exact vanishing of \(\texttt{Dcell}\,\chi\,Z\), and the
+same-parameter readout \(\texttt{carrierPointAtHeight}\,Z=\rho\).  Lean proves
+\path{completedFocalCancellationRepresents_iff}:
+\[
+ \texttt{CompletedFocalCancellationRepresents}(\chi,\rho)
+ \Longleftrightarrow L(\rho,\chi)=0\ \wedge\ \Re\rho=\sigma_*.
+\]
+Thus \path{no_offCarrier_completedFocalCancellation} rules out an
+off-carrier focal cancellation pointwise, before the \(S(t)\) ledger or a
+resolvent trace is formed.
 
 The function \(S(t)\) is the global coordinate map for this readout, not a
 local numerical coincidence.  In the compiled registration law,
@@ -220,9 +277,61 @@ and \texttt{count\_hasJump\_iff\_S\_hasJump} identifies its jumps with the
 global analytic event ledger, including multiplicity through
 \texttt{residue\_eq\_Smult\_jump}.  Thus \(S(t)\) globally transports the
 carrier-scale census to the unit-chart census.  This establishes the global
-coordinate bookkeeping used in the correlation route; the pointwise
-analytic-zero-to-native-event assertion remains the separately named
-identification interface.
+coordinate bookkeeping used in the correlation route.  Pointwise, the
+compiled transfer theorem above identifies native landing with no drift;
+globally, \path{allNative3DSourceTransfer_of_selfAdjointXiReceiver} selects that
+landing for every nontrivial zero in both half-planes.
+Moreover the contour defect cannot hide an off-carrier contribution:
+\path{classicalSContour_sub_Smult_pos_of_offCarrier} proves that any enclosed
+off-carrier zero makes
+\(\texttt{classicalSContour}-\texttt{Smult}>0\), with lower bound its positive
+analytic order.  At the operator level,
+\path{zeroPoleResolvent_eq_carrierBasisReadout_iff_scaleBalanced} proves
+basiswise that the analytic pole receiver equals the independently defined
+event-free carrier receiver exactly at area-law balance; inversion is
+injective, so neither a trace sum nor a reflected partner can create this
+equality.  The corresponding global equivalence is
+\path{globalCoordinateIdentification_iff_eachZeroPoleResolvent_eq_carrierBasisReadout}.
+The summed bridge is now derived only after this pointwise comparison.  The
+definitions \path{xiZeroResolventKernel} and
+\path{xiCarrierHeightResolventKernel} retain the zero basis index, analytic
+multiplicity, and Hadamard counterterm, while
+\path{xiZeroResolventKernel_eq_carrierHeightKernel_iff_scaleBalanced} proves
+their equality exactly at area-law balance.  Lean then compiles
+\path{globalCoordinateIdentification_iff_basisResolvedCarrierResolventBridge};
+after its basiswise equality,
+\path{carrierHeightResolventTrace_of_globalCoordinateIdentification} rewrites
+the completed xi-channel as the regularized trace of the real carrier-height
+receiver.  No equality of summed traces is used to manufacture the weld of an
+individual analytic mode.
+At the state level,
+\path{nonempty_principalZeroNative3DSourceTransfer_iff_fiberRidesCarrier}
+proves for each zero that a completed native source exists exactly when the
+literal analytic \(\mathbb N\to\texttt{Vec3}\) fiber equals the carrier-readout
+fiber at its own physical focal height.  Its quantified form
+\path{allNative3DSourceTransfer_iff_allCanonicalZeroFibersRideCarrier} and the
+operator form
+\path{allNative3DSourceTransfer_iff_zeroLedger_eq_carrierHeight} make the
+source/state/operator weld explicit, rather than treating the common
+ordinate as sufficient.
+The operator propagation is then literal on the analytic-zero basis:
+\path{xiZeroLedgerOperator_eq_carrierHeight_of_allNative3DSourceTransfer}
+uses each completed transfer to prove that its zero-ledger coefficient equals
+its real carrier-height coefficient.  Consequently
+\path{globalCoordinateIdentification_of_allNative3DSourceTransfer} returns
+\(\texttt{classicalSContour}=\texttt{Smult}\) at every good height, without a
+summed-trace cancellation step.  The receiver capstone
+\path{globalCoordinateIdentification_and_zeroLedger_eq_carrierHeight_of_selfAdjointXiReceiver}
+returns the global coordinate identity and the operator equality together.
+Under the stated (Z--3D) reading that a native 3D zero is primary and its 1D
+analytic zero is its shadow, this assembly is now exposed by one theorem:
+\path{globalCoordinateIdentification_basisResolvedBridge_and_carrierTrace_of_allNative3DSourceTransfer}.
+Its sole conditional input is one completed native source transfer for every
+analytic shadow.  It returns simultaneously the global coordinate identity,
+the equality of the two resolvent kernels on every zero basis mode, and the
+regularized carrier-height trace.  Thus the shadow conditional is used once
+at the source/state weld; no equation \(\Re\rho=1/2\) is supplied as an
+additional premise to the capstone.
 
 \medskip
 \noindent\textbf{Formal dependency table.}
@@ -234,8 +343,18 @@ Statement & Proven here & Logical role\\
 \hline
 \(\texttt{carrierAbscissa}=\tfrac12\) & yes, from the area law & fixes the
 native carrier image\\
-\texttt{NativeCarrierCoverage}\((\chi)\) & a separate premise & connects
-analytic zeros to native focal events without mentioning a midpoint\\
+\shortstack[l]{\texttt{PrincipalZero}\\
+\texttt{AnalyticFiber3D}\((\rho)\)} & yes, for every genuine
+zeta zero & literal 3D analytic state, zero readout, physical height and
+ambient eigenvector\\
+\shortstack[l]{\texttt{PrincipalZero}\\
+\texttt{NativeCarrierEvent3D}\((\rho)\)} & yes, for every genuine
+zeta zero & registers focal closure on a typed helix state at the same height;
+no drift follows from carrier membership, with no radius comparison\\
+\shortstack[l]{\texttt{PrincipalZero}\\
+\texttt{Native3DSourceTransfer}\((\rho)\)} & yes, from no drift; converse proved &
+connects the analytic fiber to its conservative source and complete focal
+certificate without a midpoint input\\
 \shortstack[l]{\texttt{ThreeD\_crossings\_are}\\
 \texttt{real\_zeros}\((\chi)\)} & legacy premise &
 equals \(\mathrm{GRH}(\chi)\wedge\texttt{NativeCarrierCoverage}(\chi)\)\\
@@ -997,6 +1116,30 @@ normal-form check, not the provenance of the half. Thus focal
 cancellation \(=\) 3D zero \(\to\) harmonic Gram rank drop plus von Neumann
 Gram rank drop at \(y=\log Z\): that is the detecting and realizing
 instrument of this part, and no step consults the chart.
+
+The same-event assertion is now a single compiled assembly theorem, rather
+than an inference made in prose.  The theorem
+\texttt{completedThreeDZeroAtHeight\_focal\_rankDrop\_eigenvector\_noRadialDrift}
+returns, from a completed 3D event at physical height \(Z\), its focal residual
+zero, spatial harmonic-pencil rank drop, nonzero ambient eigenvector with
+eigenvalue \(\log Z\), and zero radial drift.  Its last component is proved by
+\texttt{carrierPointAtHeight\_noRadialDrift}, which uses only that the readout
+is a point of the area-law carrier.  Moreover,
+\texttt{PrincipalContourNative3DCertificate.analyticFiber\_eq\_carrierFiber}
+identifies the literal three-dimensional \(L\)-fiber at \(\rho\) with the
+fiber at that certificate's marked carrier height, and the companion theorem
+\texttt{.noRadialDrift} transports the geometric no-drift result to the
+original analytic parameter.  Thus no-drift is an output of native helix
+realization, not an extra condition attached to a zero.
+More precisely, the compiled equality
+\texttt{eventHeight\_eq\_focalCancellationHeight} identifies the event's
+physical height with the literal analytic fiber's stored cancellation height.
+The theorem \texttt{harmonicRankDrop\_at\_focalCancellationHeight} rewrites the
+completed pencil by this equality before applying its rank-drop certificate;
+it does not detect a second event having the same ordinate.  Finally,
+\texttt{focalCancellation\_rankDrop\_noRadialDrift\_sameHeight} packages the
+readout closure, the determinant zero, and the carrier no-drift law at that one
+physical height.
 
 The resolvent trace now has two event-typed versions
 (\texttt{RequestProject/TwinResolventTrace.lean}).  For a finite

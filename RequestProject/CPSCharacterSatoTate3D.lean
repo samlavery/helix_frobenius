@@ -391,6 +391,48 @@ theorem empiricalPrimeCarrierMeasure_tendsto_of_characterAveragesZero
   empiricalPrimeCarrierMeasure_tendsto_of_symmetricPowerCharacters
     input.toCharacterAverageInput
 
+/-- **Equidistribution forces every nontrivial symmetric-power character average to vanish.**  The
+converse of the method of moments: if the empirical prime-angle measures converge weakly to the
+Sato--Tate law, then for every `r ≥ 1` the prime average of the `r`th symmetric-power character
+`(N+1)^{-1}∑_{j≤N} U_r(cos θ_{p_j})` tends to `0`.  Weak convergence, applied to the
+bounded-continuous test `cosinePolynomialTest (U r)`, gives convergence of the empirical integral to
+the Sato--Tate integral, which vanishes for `r ≥ 1` (`chebyshev_U_angleMeasure_integral_zero`). -/
+theorem equidistribution_forces_characterAverage_zero
+    {angle : Nat.Primes → ℝ}
+    (hequi : Tendsto (empiricalPrimeAngleMeasure angle) atTop (𝓝 angleProbability))
+    (r : ℕ) (hr : 1 ≤ r) :
+    Tendsto (fun n => primeTestAverage angle n
+        (cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r))) atTop (𝓝 0) := by
+  have h := (ProbabilityMeasure.tendsto_iff_forall_integral_tendsto).mp hequi
+    (cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r))
+  rw [show (∫ theta, cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r) theta
+        ∂(angleProbability : Measure ℝ)) =
+      ∫ theta, cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r) theta ∂angleMeasure from rfl,
+    chebyshev_U_angleMeasure_integral_zero r hr] at h
+  simpa only [integral_empiricalPrimeAngleMeasure] using h
+
+/-- **The symmetric-power character prime-average cancellation IS equidistribution** (method of
+moments, both directions).  For a Satake-angle assignment supported on `[0, π]`, the empirical
+prime-angle measures converge weakly to the Sato--Tate law **iff** every nontrivial symmetric-power
+character average vanishes.  This puts the arithmetic Tauberian input
+(`SymmetricPowerCharacterPrimeZeroInput`) provably *on* the equidistribution critical path: it is not
+only sufficient (`←`, the moment method) but necessary (`→`) --- equidistribution cannot hold without
+it.  Unlike an off-path chart shadow, discharging this one input is exactly equivalent to the
+Sato--Tate conclusion. -/
+theorem characterAverageZero_iff_equidistribution
+    (angle : Nat.Primes → ℝ) (angle_mem : ∀ p, angle p ∈ Icc (0 : ℝ) Real.pi) :
+    (∀ r : ℕ, 1 ≤ r →
+        Tendsto (fun n => primeTestAverage angle n
+          (cosinePolynomialTest (Polynomial.Chebyshev.U ℝ r))) atTop (𝓝 0))
+      ↔ Tendsto (empiricalPrimeAngleMeasure angle) atTop (𝓝 angleProbability) := by
+  constructor
+  · intro hzero
+    exact (empiricalPrimeSatoTate_of_testAverages
+      (SymmetricPowerCharacterPrimeZeroInput.toCharacterAverageInput
+          ⟨angle, angle_mem, hzero⟩).toTestAverageInput).angle_tendsto
+  · intro hequi r hr
+    exact equidistribution_forces_characterAverage_zero hequi r hr
+
 end CriticalLinePhasor.SatoTateCarrier3D
 
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.SymmetricPowerCharacterPrimeAverageInput.polynomial_tendsto
@@ -398,3 +440,5 @@ end CriticalLinePhasor.SatoTateCarrier3D
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.empiricalPrimeCarrierMeasure_tendsto_of_symmetricPowerCharacters
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.chebyshev_U_angleMeasure_integral_zero
 #print axioms CriticalLinePhasor.SatoTateCarrier3D.empiricalPrimeCarrierMeasure_tendsto_of_characterAveragesZero
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.equidistribution_forces_characterAverage_zero
+#print axioms CriticalLinePhasor.SatoTateCarrier3D.characterAverageZero_iff_equidistribution

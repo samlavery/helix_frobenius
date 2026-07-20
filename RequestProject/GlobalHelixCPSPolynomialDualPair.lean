@@ -32,13 +32,13 @@ abbrev CPSTensorIndex (r m : ℕ) := Fin (r + 1) × Fin m
 abbrev CPSPolynomialTwist (r m : ℕ) := PolynomialSatakeDualPair (CPSTensorIndex r m)
 
 /-- A local coefficient with weight bound `Q` is bounded by multichoose times `Q^n`. -/
-theorem norm_unitaryLocalEulerCoeff_le_multichoose_mul_pow
+theorem norm_radialLocalEulerCoeff_le_multichoose_mul_pow
     {ι : Type*} [Fintype ι] (w : ι → ℂ) (Q : ℝ) (_hQ : 0 ≤ Q)
     (hw : ∀ i, ‖w i‖ ≤ Q) (n : ℕ) :
-    ‖unitaryLocalEulerCoeff w n‖ ≤
+    ‖radialLocalEulerCoeff w n‖ ≤
       ((Fintype.card ι).multichoose n : ℝ) * Q ^ n := by
   classical
-  unfold unitaryLocalEulerCoeff
+  unfold radialLocalEulerCoeff
   calc
     ‖∑ l ∈ Finset.finsuppAntidiag (Finset.univ : Finset ι) n,
         ∏ i, w i ^ l i‖
@@ -65,11 +65,11 @@ theorem norm_unitaryLocalEulerCoeff_le_multichoose_mul_pow
       simp [Finset.card_finsuppAntidiag_nat_eq_multichoose]
 
 /-- Prime-wise polynomial radial bounds give a polynomial all-place coefficient bound. -/
-theorem unitaryGlobalSatakeCoeff_norm_le_of_prime_pow
+theorem radialGlobalSatakeCoeff_norm_le_of_prime_pow
     {ι : Type*} [Fintype ι]
     (w : Nat.Primes → ι → ℂ) (B : ℕ)
     (hw : ∀ p i, ‖w p i‖ ≤ (p.1 : ℝ) ^ B) (n : ℕ) :
-    ‖unitaryGlobalSatakeCoeff w n‖ ≤
+    ‖radialGlobalSatakeCoeff w n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card ι + B : ℕ)) := by
   classical
   let m : ℕ := n + 1
@@ -78,17 +78,17 @@ theorem unitaryGlobalSatakeCoeff_norm_le_of_prime_pow
     dsimp [m]
     omega
   have hlocal : ∀ p : ↑m.primeFactors,
-      ‖unitaryLocalEulerCoeff
+      ‖radialLocalEulerCoeff
         (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
         (m.factorization p.1)‖ ≤
         (((m.factorization p.1 + 1) ^ d : ℕ) : ℝ) *
           (p.1 : ℝ) ^ (B * m.factorization p.1) := by
     intro p
     let pp : Nat.Primes := ⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩
-    have hraw := norm_unitaryLocalEulerCoeff_le_multichoose_mul_pow
+    have hraw := norm_radialLocalEulerCoeff_le_multichoose_mul_pow
       (w pp) ((p.1 : ℝ) ^ B) (by positivity) (hw pp) (m.factorization p.1)
     calc
-      ‖unitaryLocalEulerCoeff (w pp) (m.factorization p.1)‖
+      ‖radialLocalEulerCoeff (w pp) (m.factorization p.1)‖
           ≤ (((Fintype.card ι).multichoose (m.factorization p.1) : ℕ) : ℝ) *
               ((p.1 : ℝ) ^ B) ^ (m.factorization p.1) := hraw
       _ ≤ (((m.factorization p.1 + 1) ^ d : ℕ) : ℝ) *
@@ -101,7 +101,7 @@ theorem unitaryGlobalSatakeCoeff_norm_le_of_prime_pow
   rw [norm_prod]
   calc
     ∏ p : ↑m.primeFactors,
-        ‖unitaryLocalEulerCoeff
+        ‖radialLocalEulerCoeff
           (w (⟨p.1, Nat.prime_of_mem_primeFactors p.2⟩ : Nat.Primes))
           (m.factorization p.1)‖
         ≤ ∏ p : ↑m.primeFactors,
@@ -155,37 +155,37 @@ theorem unitaryGlobalSatakeCoeff_norm_le_of_prime_pow
 /-- Primal all-place coefficients with the radial ledger retained. -/
 noncomputable def cpsPolynomialPrimalCoeff
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) : ℕ → ℂ :=
-  unitaryGlobalSatakeCoeff W.primal
+  radialGlobalSatakeCoeff W.primal
 
 /-- Contragredient all-place coefficients. -/
 noncomputable def cpsPolynomialDualCoeff
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) : ℕ → ℂ :=
-  unitaryGlobalSatakeCoeff W.dual
+  radialGlobalSatakeCoeff W.dual
 
 theorem cpsPolynomialPrimalCoeff_norm_le
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) (n : ℕ) :
     ‖cpsPolynomialPrimalCoeff W n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card ι + W.primalExponent : ℕ)) :=
-  unitaryGlobalSatakeCoeff_norm_le_of_prime_pow W.primal W.primalExponent W.primal_bound n
+  radialGlobalSatakeCoeff_norm_le_of_prime_pow W.primal W.primalExponent W.primal_bound n
 
 theorem cpsPolynomialDualCoeff_norm_le
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) (n : ℕ) :
     ‖cpsPolynomialDualCoeff W n‖ ≤
       (((n + 1 : ℕ) : ℝ) ^ (Fintype.card ι + W.dualExponent : ℕ)) :=
-  unitaryGlobalSatakeCoeff_norm_le_of_prime_pow W.dual W.dualExponent W.dual_bound n
+  radialGlobalSatakeCoeff_norm_le_of_prime_pow W.dual W.dualExponent W.dual_bound n
 
 @[reducible] noncomputable def cpsPolynomialPrimalOneInvertible
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) :
     Invertible ((CarrierTheta.coefficientArithmetic (cpsPolynomialPrimalCoeff W)) 1) := by
   rw [CarrierTheta.coefficientArithmetic]
-  simp [cpsPolynomialPrimalCoeff, unitaryGlobalSatakeCoeff_zero]
+  simp [cpsPolynomialPrimalCoeff, radialGlobalSatakeCoeff_zero]
   exact invertibleOne
 
 @[reducible] noncomputable def cpsPolynomialDualOneInvertible
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) :
     Invertible ((CarrierTheta.coefficientArithmetic (cpsPolynomialDualCoeff W)) 1) := by
   rw [CarrierTheta.coefficientArithmetic]
-  simp [cpsPolynomialDualCoeff, unitaryGlobalSatakeCoeff_zero]
+  simp [cpsPolynomialDualCoeff, radialGlobalSatakeCoeff_zero]
   exact invertibleOne
 
 theorem cpsPolynomialPrimalArithmetic_norm_le
@@ -282,7 +282,19 @@ noncomputable def cpsPolynomialStrongFEPair
     (cpsPolynomialDualArithmetic_norm_le W)
 
 /-- Exact audit of the synthesized pair: its primal completed transform is the Mellin transform
-of the common completed carrier. -/
+of the common completed carrier.
+
+**Seam (this is the engineered demonstration route, NOT the load-bearing one).**  The pair above uses
+the Dirichlet-inverse dilation kernel, whose theta convolution *cancels the coefficients*: this
+theorem shows `Λ` equals the Mellin of the fixed self-dual profile `completedLogTheta`
+(**coefficient-independent**).  So this pair is a proof that *a* self-dual completion with a chosen
+reflection can be built; it is **not** the standard completed `L(s, Sym^r π × τ)` and must not be
+read as one.  The standard-normalized niceness rides two other, non-engineered facts: the finite
+functional equation from the **local reciprocal identity** `FiniteWeightFiber.localPoly_reciprocal`
+(a rational palindrome, not a supplied field, not coefficient-canceling — see
+`symTensorCompleted_FE`), and the **standard Γℂ completion** identified natively by
+`cpsPolynomialPrimal_fixedGamma_initialIdentification` (`mellin (…completionKernel [μ]) =
+dirichlet · Γℂ(s+μ)`).  Do not cite this synthesized-kernel pair as the arithmetic object. -/
 theorem cpsPolynomialStrongFEPair_Lambda_eq_carrierMellin
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι) (s : ℂ) :
     (cpsPolynomialStrongFEPair W).Λ s =
@@ -383,8 +395,8 @@ theorem cpsPolynomialAllTwists_payload
 
 end CriticalLinePhasor.GlobalHelix
 
-#print axioms CriticalLinePhasor.GlobalHelix.norm_unitaryLocalEulerCoeff_le_multichoose_mul_pow
-#print axioms CriticalLinePhasor.GlobalHelix.unitaryGlobalSatakeCoeff_norm_le_of_prime_pow
+#print axioms CriticalLinePhasor.GlobalHelix.norm_radialLocalEulerCoeff_le_multichoose_mul_pow
+#print axioms CriticalLinePhasor.GlobalHelix.radialGlobalSatakeCoeff_norm_le_of_prime_pow
 #print axioms CriticalLinePhasor.GlobalHelix.cpsPolynomialStrongFEPair
 #print axioms CriticalLinePhasor.GlobalHelix.cpsPolynomialStrongFEPair_Lambda_eq_carrierMellin
 #print axioms CriticalLinePhasor.GlobalHelix.cpsPolynomialStrongFEPair_dualLambda_eq_carrierMellin
