@@ -259,7 +259,7 @@ multiplicity-balanced structure \emph{is} the mechanism, and the honest
 derivation reproduced rather than assumed it. [Proven on the family;
 \texttt{ResCube.lean}, \texttt{ChannelConstancy.lean}.]
 
-\item \textbf{Nothing is exotic.} Every class in every census is a frozen
+\item \textbf{Nothing surveyed is exotic.} Every class in every census is a frozen
 frequency with a source, an address, and a certificate; the divisor/Weil
 distinction is annihilator \emph{support} --- pairwise versus collective rails
 --- not a difference in kind. The pre-registered no-orphan-occupancy law
@@ -761,6 +761,78 @@ frequency-channel data, and their frequency identification (the
 jet/derivative channels of \S\ref{sec:depthone}) is a named next step. Above
 this rung, CM abelian varieties and the Ceresa data await their bundles.
 
+\emph{The pairing rungs: divisors and sections, exact.}  Two further rungs
+now carry the realization with a genuinely nontrivial pairing layer, both
+fully proven (\texttt{NeronSeveriRung.lean},
+\texttt{MordellWeilE8Rung.lean}; standard footprints).  On the divisor
+rung the group is $\mathrm{NS}(E\times E)$ --- rank three, intersection
+Gram of determinant two --- and \textsc{noKernel} \emph{is} the
+nondegeneracy of the intersection form, proven by integer elimination,
+with the moment-zero readout of layer $l$ equal to the intersection
+number $\langle f_l, z\rangle$ on the nose
+(\texttt{readout\_is\_pairing}): the realization reads the pairing
+exactly.  On the extension rung the group is Shioda's Mordell--Weil
+lattice: for the extremal rational elliptic surface the canonical-height
+pairing \emph{equals} the $E_8$ form over the function field
+\cite{Shioda90} --- exact intersection arithmetic, no analytic gap, the
+height machine not awaited --- and \textsc{noKernel} is unimodularity,
+proven from a kernel-verified integral inverse (\texttt{e8inv\_mul\_e8},
+by \texttt{decide}), with \texttt{readout\_is\_height} the exact
+regulator compatibility, \texttt{regulator\_unimodular} the unit
+determinant, and the executed terminus behind it.  The geometric
+identifications ($\mathrm{NS}(E\times E)$ for non-CM $E$; Shioda's
+$\mathrm{MW}\cong E_8$) are the cited inputs; every realization field is
+a theorem.  The number-field depth-one rung still waits on the library's
+height machine, exactly as priced above --- the function-field rung is
+where the extension layer's regulator is exact today.
+
+The divisor rung, restated in the terminus's own vocabulary: \emph{actual
+rational Hodge classes land in a faithful finite carrier realization, and
+cycles are constructed whose realizations are exactly those classes} ---
+and the discharge is now stated in exactly those words in Lean
+(\texttt{RationalHodgeLanding.lean}; standard footprint).  Every landed
+NS-state is a rational Hodge class in the machine-checked dictionary
+sense --- frequency-zero support with rational amplitudes, hence FIXED by
+the angular Deligne-torus action
+(\texttt{landed\_rational\_hodge}, \texttt{landed\_torus\_fixed}, through
+the dictionary theorem \texttt{modelDC\_iff\_angularFixed}); the
+constructed divisor combinations realize exactly the landed classes with
+the realization injective on classes (\texttt{cycles\_realize\_exactly},
+\texttt{realization\_injective}); and the readout is the intersection
+pairing on the nose (\texttt{readout\_is\_pairing}), all packaged as one
+statement (\texttt{rational\_hodge\_classes\_landed}).  Two boundaries,
+priced honestly: typing the classes as literal
+$H^{1,1}\cap H^2(X,\mathbb Q)$ objects awaits cohomology of varieties in
+the library --- the identification $\mathrm{NS}(E\times E)\cong(\mathbb
+Z^3,G)$ is the cited input, as everywhere in the corpus --- and the same
+demand \emph{above} the known rungs (constructing cycles for the
+sixfold's Weil classes) is the open mathematics itself, where the
+Abel--Prym obstruction calibration has now proven the standard
+propagation route, semiregularity, structurally blind.
+
+\emph{The transcendental rung: the period interface, designed and
+inhabited.}  The Ceresa family bundle isolated the exact misfit of the
+angular form --- a rationality field cannot hold for a
+transcendental-valued readout --- and the designed variant now exists and
+is inhabited (\texttt{PeriodRealization.lean}; standard footprint).
+\texttt{PeriodRational} replaces rational amplitudes by rational
+multiples of channel periods (a rank-one period lattice per channel:
+rationality of ratios, not of values); \texttt{PeriodRealization} carries
+the five conditions with that one substitution, and retention transports
+along it unchanged (\texttt{PeriodRealization.retention}).  The
+Laga--Shnidman Ceresa bundle inhabits it: the depth-three channel of any
+non-torsion member realizes $\mathbb Z$ with period the member's
+Beilinson--Bloch height, \textsc{noKernel} is the bundle's
+no-silent-class theorem, the moment-zero readout \emph{is} the height
+(\texttt{readout\_is\_bb\_height}), and family-level transcendental
+retention flows through the typed interface
+(\texttt{ceresa\_period\_retention}).  The misfit itself is now a
+theorem rather than a register note: if the member's height is
+irrational, the rational-amplitude reading is uninhabitable on the
+generator's image (\texttt{ratCompat\_uninhabitable}) ---
+hypothesis-typed, since irrationality of Beilinson--Bloch heights is
+open --- while the period reading exists unconditionally.
+
 \subsection{Drift: the extension datum as first-order shear}\label{sec:drift}
 
 In the epicycle frame of \S\ref{sec:harmonic}, an extension class is
@@ -1038,9 +1110,12 @@ to five digits across base points --- the non-vanishing reproduced, now with a
 value. Pointed at a curve outside the tables ---
 $y^4=(x-1)(x-2)(x-4)(x-7)$, a generic non-CM genus-three curve whose Ceresa
 cycle has not been computed --- it returns $6.27215$, again base-point-invariant
-and nonzero: \emph{the Ceresa cycle of this curve is non-trivial,
-unconditionally} (\texttt{hv\_exact\_new.py}). Register: the detection is
-numerical (a base-point-invariant nonzero value, not an interval certificate),
+and nonzero: \emph{the instrument reads the Ceresa cycle of this curve as
+non-trivial, by a route with no Beilinson--Bloch input}
+(\texttt{hv\_exact\_new.py}). Register: the detection is numerical (a
+base-point-invariant nonzero value, not an interval certificate ---
+certified nonvanishing modulo periods is the named residue, so the reading
+is not yet a theorem for this curve),
 and the outcome is Ceresa-generic --- a first computation for a named curve,
 not a surprise; the harmonic volume's numerical value is cycle-normalization
 dependent and is not matched to Harris's, whose \emph{theorem}, non-vanishing,
@@ -1202,7 +1277,36 @@ Combined with a typed grade-zero/one constructor, the exhaustive natural-number
 split proves full \textsc{Recognition}
 (\texttt{recognition\_of\_gradeSplit\_sourceConstruction}). These are
 composition theorems: the arithmetic realization maps are data of the package,
-not unnamed assumptions in the conclusion.
+not unnamed assumptions in the conclusion.  The package is now
+\emph{inhabited} (\texttt{SchoenGateRecognition.lean}; standard
+footprint): a finite model at the Schoen gate's exact shape --- an
+angular-blind detected pair with distinct true curves (Faltings Tier~3 as
+a concrete witness), radial separation, the Torelli--Schoen route, and
+the decomposable shortcut closing from angular data alone --- with every
+monument field proven and the certified-source pipeline executing end to
+end (\texttt{gate\_recognition\_executes},
+\texttt{blind\_pair\_recognized},
+\texttt{decomposable\_shortcut\_executes}).  Register: a model inhabitant
+in the \texttt{phantomDial} class --- it proves the architecture composes
+and is consistent.  The arithmetic instantiation with point-counted
+dossiers, previously the named next step, is now landed
+(\texttt{ArithmeticDossierRecognition.lean}; standard footprint): the
+blind pair is the actual isogeny class \texttt{11a} --- members
+\texttt{11a1} and \texttt{11a3}, angular dossiers the Frobenius traces at
+$p=2,3,5,7$ computed \emph{in-kernel} from affine point counts and
+IDENTICAL (\texttt{blind\_pair\_counts}: isogenous curves share every
+trace), radial dossiers the exact $j$-invariants
+$-122023936/161051$ vs $-4096/11$, distinct --- with \texttt{37a1} the
+simple member.  On these counted types the boundary theorem carries real
+content: no function of the $a_p$-stream alone recovers the
+$j$-invariant (\texttt{no\_angular\_recovery}), witnessed by an actual
+isogeny class rather than a model label; the certified-source pipeline
+executes (\texttt{arith\_recognition\_executes}), the genuinely blind
+pair is recognized through the radial channel
+(\texttt{arith\_blind\_pair\_recognized}), and the class-pinned shortcut
+closes from the counted angular data alone.  What upgrades is the TYPE of
+the dossiers --- from finite labels to counted traces and exact
+rationals; the monuments remain in-model form, cited not proven.
 
 \paragraph{The loop closed at grade four, clock-relation regime.} The same
 four arms now run end to end one floor below the frontier
@@ -2387,8 +2491,11 @@ layerwise Vandermonde separation; the dial counts every state as rational DC
 grade-split source packages prove
 recognition, and
 \texttt{generalExtension\_sourceExhaustion\_of\_gradeSplit\_sourceConstruction}
-assembles both into unrestricted \textsc{SourceExhaustion} on the complete
-finite-extension dial. Its scope is exact: arithmetic applications instantiate
+assembles both into \textsc{SourceExhaustion} unrestricted over the model
+dial's states --- where \textsc{DC} and \textsc{Rational} are total by
+construction, so the quantifier ranges over the abstract model and the
+geometric content enters only through the supplied packages. Its scope is
+exact: arithmetic applications instantiate
 the typed source packages and the five-condition faithful realization of
 \S\ref{sec:semisimple} --- itself now a typed Lean structure whose retention
 transport is a theorem (\texttt{FaithfulRealization.retention}), inhabited by
@@ -2513,7 +2620,38 @@ exactly zero (\texttt{lattice\_residual\_exact}), and the threshold is sharp
 (\texttt{threshold\_sharp}). Machine-zero closure of a lattice-weighted cell is
 therefore exactness, not approximation; the real-weight cancellation of the
 path step (\texttt{pathStep2\_exactClosure}) is transport, and is never the
-constraint. Step~three should then \emph{fall out}
+constraint.  The value-classification half is now also a theorem, in two
+layers (\texttt{ZetaSixClosure.lean}, \texttt{GeometricLatticeClosure.lean};
+standard footprints).  \emph{Kronecker at the lattice}: a
+$\mathbb Z[\zeta_6]$-point of norm one is exactly a sixth root of unity
+(\texttt{mu6\_of\_norm\_one}) --- the $\mu_6$ address law is proven, not a
+grid convention --- with Mathlib's Kronecker theorem consumed as the
+general-number-field interface (\texttt{kronecker\_interface}).  And the
+composed geometric statement at the required five-condition shape: given
+the family freeze law --- for the branched cyclic families a theorem of
+Weil's RH for curves and Hasse--Davenport (\S\ref{sec:collective}), the
+point where the actual algebraic class enters --- every rail's
+unit-normalized Frobenius determinant lands in $\mu_6$
+(\texttt{norm\_one\_of\_pow6}), every residual is a lattice point at the
+common per-prime height, and a sub-threshold residual vanishes exactly
+(\texttt{geometric\_lattice\_closure}): simultaneous exact
+$\mathbb Z[\zeta_6]$-closure across all rails, with no Hodge-conjecture
+input anywhere in the chain.  The structure is now also populated and
+family-quantified (\texttt{SupersingularFreezeFamily.lean}; standard
+footprint): on the supersingular locus of $y^2=x^3+1$ the census is
+counted in-kernel --- affine counts at $p=5,11,17,23$ verified by
+\texttt{decide} (\texttt{ssCount\_5}\,\dots\,\texttt{ssCount\_23}), trace
+zero at each, so Cayley--Hamilton with the Weil norm forces the
+unit-normalized Frobenius determinant to exactly $-1\in\mu_6$
+(\texttt{supersingular\_normalized\_det}) --- and where the freeze law
+covers the whole family the no-orphan law upgrades from census evidence
+to a $\forall$-statement: every rail with balanced occupancy weights
+closes exactly, for all rail and reading counts at once
+(\texttt{ss\_no\_orphan}), the concrete census term executing the
+five-condition chain end to end
+(\texttt{ssCensus\_closure\_executes}).  What remains open of step two is the
+closure law for readouts beyond the certified freeze families --- the
+general Green--Griffiths--Kerr landing. Step~three should then \emph{fall out}
 of one and two with the proofs already in hand --- finite generation collapses it
 to a single pairing, the closure of step~two supplies that pairing's
 nondegeneracy, and grade one is unconditional. The load therefore concentrates on
@@ -2744,9 +2882,72 @@ Gauss-nondegenerate threefold. The semiregularity route is thereby specced
 to coordinates: on the abelian sixfold the target $H^4(X,\Omega^2)$
 trivializes, the pairing columns are integrals of constant forms over the
 component, and $H^1(N)$ assembles from the same section spaces through the
-parametrization --- the rung's next named computation, with the
-identification of the component as a translate of $W_3$ the named open
-question beside it.
+parametrization --- the computation executed in the next paragraph; the
+identification of the component as a translate of $W_3$ remains the named
+open question beside it.
+
+\paragraph{The pairing executed: the obstruction calibration and the twist
+law.} The computation just specced has now run, end to end in exact
+arithmetic over $\mathbb Q(\zeta_6)$. The assembly lands as specced:
+$H^1(N)$ is presented by the sixty-dimensional $H^1(\mathcal O_Z)\otimes W$
+modulo the twenty-seven-dimensional image of the tangent coboundary
+$\delta$, the cokernel's thirty-three syzygies graded $(9,12,12)$; generic
+rigidity of the depth-one threefold is \emph{certified} by degeneration ---
+a $(3,3)$-model with prescribed nodes realizes the specimen and its
+Kodaira--Spencer block attains full rank twenty-seven, so rigidity
+propagates to the generic member by semicontinuity; and the Bloch pairing
+against the constant-form columns (the $\Lambda^4W^*$ slice of the
+trivialized $H^4(X,\Omega^2)$) descends to $\operatorname{coker}\delta$
+\emph{exactly} once the Abel--Prym scalars $(1-\zeta^{-j})$ are carried in
+both the coboundary and the restriction, with rank fifteen of thirty-three.
+The calibration then came from a contradiction the geometry itself raised:
+the cycle deforms with the nine-dimensional Weil family, so the family
+directions must be obstruction-free --- their restrictions must lie
+\emph{inside} $\operatorname{im}\delta$ --- yet the pairing measured full
+rank on the naively symmetrized mixed rows while provably killing
+$\operatorname{im}\delta$. The resolution is a law, not a patch: the
+Kodaira--Spencer embedding carries a second Abel--Prym twist on the
+$H^1(\mathcal O_X)$-side of the restriction, and geometry selects it
+uniquely --- of all candidate twist ratios, exactly one places all nine
+equivariant rows inside $\operatorname{im}\delta$ (a
+nine-rows-into-codimension-thirty-three containment, an algebraic identity
+in exact arithmetic), namely $r=3=(1-\zeta_3)(1-\bar\zeta_3)
+=\mathrm{Nm}(1-\zeta_3)$, the norm of the Abel--Prym scalar --- the two
+twists compose to the rational norm. The statement is intrinsic, the ratio
+merely its coordinates: $\operatorname{im}\delta$ meets the mixed
+Kodaira--Spencer span in dimension exactly nine, so \emph{the Weil tangent
+is} $\operatorname{im}\delta\cap(\text{mixed block})$, while the naive
+symmetric frame meets $\operatorname{im}\delta$ in dimension zero --- the
+old frame contained not one obstruction-free direction, which is precisely
+why it contradicted the geometry. With the frame corrected the true polarized Kodaira--Spencer image
+decomposes as the twisted mixed block --- inside
+$\operatorname{im}\delta$: the Weil tangent, obstruction-free --- plus the
+twelve pure-grade directions, every one outside $\operatorname{im}\delta$:
+\textbf{the first-order deformation locus of the Abel--Prym cycle in
+polarized moduli is exactly the Weil family}, certified directly by
+cokernel membership in exact arithmetic. The pairing then delivered a
+second law by refuting this paragraph's own first draft within the day
+(its forward pointer promised ``grade-shifted slices''; none exist): the
+two hundred twenty-five constant-form columns already exhaust the
+Serre-dual target $H^2(X,\Omega^4)$, and on the full twenty-one-dimensional
+polarized image the pairing vanishes \emph{identically}, while on the
+fifteen polarization-breaking directions it is full rank. Far from a
+defect, this is the program's own universal rigidity law acting as oracle:
+the middle Abel--Prym class is $\lambda\Theta^3$, the theta class stays
+$(1,1)$ under every polarized deformation, so the class-variation that
+Bloch's map computes must freeze on the polarized locus and move exactly
+where the polarization breaks --- both measured on the nose ($0$ of $21$;
+$15$ of $15$), a cross-instrument agreement between the cohomological
+rigidity law and a deformation pairing built from independent
+combinatorics. The consequence is the sharpest statement of the rung: the
+twelve transverse obstructions are \emph{cohomologically invisible} ---
+off the Weil family the class $\lambda\Theta^3$ survives, algebraic via
+theta intersections, while the cycle itself cannot follow --- the
+deformation-theoretic shadow of Griffiths-group content, and the reason
+the Abel--Prym cycle's arithmetic lives modulo algebraic equivalence.
+Semiregular detection of those twelve, the original spec of this rung, is
+thereby falsified as specced and replaced by the stronger direct
+certificate; the refuted pointer stays in the record.
 
 \paragraph{The eightfold, constructed.} Dimension eight is where the
 literature's construction stops: the secant-sheaf candidates on abelian
@@ -3045,8 +3246,9 @@ depth-three first visibility, analytic-to-cycle source landing, and the
 certificate anatomy: \texttt{CeresaIdentification.fires\_iff},
 \texttt{landing\_iff\_identification} --- the depth-three firing equivalent
 to the central-derivative nonvanishing, established not supplied),
-\texttt{RequestProject/HodgeSourceExhaustionAssembly.lean} (unrestricted source
-exhaustion on the complete finite-extension dial),
+\texttt{RequestProject/HodgeSourceExhaustionAssembly.lean} (source
+exhaustion over all states of the model finite-extension dial, \textsc{DC}
+and \textsc{Rational} total by construction),
 \texttt{RequestProject/HodgeDial.lean} (\textsc{Retention},
 \textsc{Recognition}, \texttt{hodge\_of\_retention\_recognition},
 \texttt{model\_sourceExhaustion\_of\_recognition}),
@@ -3466,6 +3668,9 @@ for Prym varieties}, Ann.\ Sci.\ \'Ec.\ Norm.\ Sup\'er.\ (4) \textbf{18}
 
 \bibitem{MumfordPrym} D.~Mumford, \emph{Prym varieties I}, in
 Contributions to Analysis, Academic Press (1974), 325--350.
+
+\bibitem{Shioda90} T.~Shioda, \emph{On the Mordell--Weil lattices},
+Comment.\ Math.\ Univ.\ St.\ Pauli \textbf{39} (1990), 211--240.
 
 \bibitem{FarkasDJ} G.~Farkas, \emph{Generalized De Jonqui\`eres divisors on
 generic curves}, arXiv:2210.07843.

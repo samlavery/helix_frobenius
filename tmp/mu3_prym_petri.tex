@@ -1,0 +1,311 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{definition}[theorem]{Definition}
+
+\newcommand{\Nm}{\mathrm{Nm}}
+\newcommand{\Dbar}{\overline{D}}
+\newcommand{\OO}{\mathcal{O}}
+
+\title{A Prym--Petri theorem for \'etale $\mu_3$-covers\\ at the depth-one stratum}
+\author{Samuel Lavery\\ \texttt{sam@sk-labs.com}}
+\date{July 19, 2026 --- v0.1}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\pi:\widetilde C\to C$ be a connected \'etale $\mathbb{Z}/3$-cover of a smooth
+curve of genus $g$, defined by a $3$-torsion class $\varepsilon\neq 0$.  For
+$L\in\Nm^{-1}(\omega_C)$ the Prym--Petri map is the anti-invariant projection of the
+Petri multiplication; its kernel always contains a canonical trace line $T_L$.  We
+prove: at the depth-one stratum $h^0(L)=1$, the reduced map is injective for every
+$L$ and \emph{every} $\varepsilon\neq0$, provided $C$ avoids an explicit
+Brill--Noether-type locus --- unconditionally at $g\le 5$ (in particular $g=4$, the
+genus of sixfold Pryms), and at general $g$ modulo one remaining window.  The method
+is a complete reduction to base-curve divisor geometry: the kernel equals
+$h^0$ of the \emph{collision excess} of the section divisor, and failure occurs
+exactly when that excess moves.  The generality hypothesis is necessary: on any
+curve with a vanishing thetanull the failure is constructed explicitly, and it
+occurs inside the depth-one stratum.  To our knowledge (checked against the
+literature at source, including the full citation graph of Welters' theorem) no
+Prym--Petri statement for cyclic covers of degree $\ge 3$ existed; all prior
+extensions of \cite{welters} are for double covers.  This paper does not assume or
+prove RH/GRH.
+\end{abstract}
+
+\section{Statement}
+
+Throughout, $C$ is a smooth projective curve of genus $g\ge2$ over an algebraically
+closed field of characteristic $\neq 3$, $\varepsilon\in\mathrm{Pic}^0(C)[3]$ is
+nonzero, $\pi:\widetilde C\to C$ the associated connected \'etale cyclic cover with
+deck generator $\sigma$, and $\Nm$ the norm.  Then
+$\omega_{\widetilde C}=\pi^*\omega_C$ and $\widetilde g=3g-2$.  For
+$L\in\Nm^{-1}(\omega_C)$ one has $\deg L=2g-2$, $\chi(L)=1-g$, and
+$L\otimes\sigma^*L\otimes\sigma^{2*}L\cong\pi^*\omega_C$.
+
+The Petri multiplication
+$\alpha_L:H^0(L)\otimes H^0(\omega_{\widetilde C}L^{-1})\to H^0(\omega_{\widetilde C})$
+composed with the projection $\mathrm{pr}$ onto
+$H^0(\omega_C\varepsilon)\oplus H^0(\omega_C\varepsilon^2)$ (the anti-invariant part)
+is the $\mu_3$-Prym--Petri map $\beta_L$.  For $0\neq s\in H^0(L)$ the element
+$s\otimes(\sigma^*s\cdot\sigma^{2*}s)$ maps to the $\sigma$-invariant norm section;
+at $h^0(L)=1$ these span the \emph{trace line} $T_L\subseteq\ker\beta_L$.
+
+\begin{theorem}[$\mu_3$-Prym--Petri, depth one]\label{thm:main}
+Suppose $C$ lies outside the proper closed locus of Lemma~\ref{lem:C} below.  Then
+for every $\varepsilon\neq0$ and every $L\in\Nm^{-1}(\omega_C)$ with $h^0(L)=1$,
+\[ \ker\beta_L \;=\; T_L . \]
+This holds unconditionally (given the cited classical inputs) for $g\le 5$; for
+$g\ge6$ it holds outside the window described in \S\ref{sec:lemmaC}.
+\end{theorem}
+
+\begin{theorem}[Sharpness]\label{thm:sharp}
+Let $C$ carry a vanishing thetanull: $\omega_C=2N$ with $N$ a pencil.  Then for
+every $\varepsilon\neq0$ the conclusion of Theorem~\ref{thm:main} fails: for any
+reduced $E_0\in|N|$, distributing two of the three preimages of each point of
+$E_0$ produces $W$ on $\widetilde C$ with $L=\OO(W)\in\Nm^{-1}(\omega_C)$ and
+$\dim\{t: \alpha_L(s\otimes t)\ \sigma\text{-invariant}\}=h^0(N)=2>1$.
+On the verification curve (\S\ref{sec:register}) these $L$ have $h^0(L)=1$, so the
+failure occurs inside the depth-one stratum.
+\end{theorem}
+
+\begin{remark}
+The statement of Theorem~\ref{thm:main} has no analogue at depth one for
+$\mathbb{Z}/2$: there $\chi(L)=0$, so $h^0(\omega_{\widetilde C}L^{-1})=1$ and the
+reduced domain is zero --- Welters' theorem \cite{welters} begins at $h^0\ge2$.
+The depth-one $\mu_3$ statement, its reduction (Lemma~\ref{lem:A}), and
+Theorem~\ref{thm:sharp} appear to be new; every extension of \cite{welters} we
+located (pointed \cite{tarasca}, two-pointed \cite{jeon}, ramified double
+\cite{bud}) concerns degree-$2$ covers, and the only Brill--Noether study of higher
+cyclic covers \cite{schwarz} contains no Petri-type statement.
+\end{remark}
+
+\section{The reduction to collision geometry}
+
+For an effective divisor $W$ on $\widetilde C$ define the \emph{max-descent}
+$\Dbar=\sum_x \max_{y\in\pi^{-1}(x)}\mathrm{mult}_y(W)\cdot x$ on $C$ and the
+\emph{collision excess} $E=\pi_*W-\Dbar\ge0$, supported in $\mathrm{supp}\,\Dbar$.
+
+\begin{lemma}[Reduction]\label{lem:A}
+Let $h^0(L)=1$ with section $s$, $W=\mathrm{div}(s)$.  Then
+\[
+\dim\ker(\mathrm{pr}\circ\alpha_L)\;=\;h^0(\omega_C-\Dbar),
+\qquad \omega_C-\Dbar\sim E,
+\]
+so $\ker\beta_L= T_L$ if and only if $h^0(\OO_C(E))=1$, i.e.\ iff the collision
+excess does not move.
+\end{lemma}
+
+\begin{proof}
+Every domain element is $s\otimes t$.  Now
+$\mathrm{pr}(\alpha(s\otimes t))=0$ iff $s\cdot t$ lies in the $\sigma$-invariant
+part of $H^0(\pi^*\omega_C)$, which is $\pi^*H^0(\omega_C)$ (\'etale, char
+$\neq3$, averaging).  And $s\cdot t=\pi^*\eta$ iff $t=\pi^*\eta/s$ is regular iff
+$\pi^*\mathrm{div}(\eta)\ge W$ iff $\mathrm{div}(\eta)\ge\Dbar$, the last step
+pointwise on fibers.  Thus $\{t\}\cong H^0(\omega_C-\Dbar)$, which contains the
+norm differential $\eta_s=\Nm(s)$ with $\mathrm{div}(\eta_s)=\pi_*W$; its tensor is
+exactly $T_L$.  Finally $\pi_*W\in|\omega_C|$ gives
+$\omega_C-\Dbar\sim\pi_*W-\Dbar=E$.
+\end{proof}
+
+\begin{corollary}\label{cor:A1}
+Collision-free sections ($E=0$) never lie in a failing kernel.
+\end{corollary}
+
+\begin{lemma}[Collision arithmetic]\label{lem:B}
+Write fiber multiplicities $(a,b,c)$ with $a=\mathrm{mult}_x\Dbar$ maximal and
+$k_x=\mathrm{mult}_xE=b+c$.  Then $b,c\le a$ forces $a\ge\lceil k_x/2\rceil$, so the
+canonical divisor $K=\pi_*W$ satisfies
+$K\ \ge\ E+\lceil E/2\rceil$, where $\lceil E/2\rceil=\sum\lceil k_x/2\rceil x$.
+Conversely any moving $E$ and canonical $K\ge E+\lceil E/2\rceil$ assemble to a
+failing candidate.  (For $\mu_n$: $K\ge E+\lceil E/(n-1)\rceil$.)
+\end{lemma}
+
+Failure at depth one is therefore \emph{equivalent} to: some moving effective $E$
+admits a canonical divisor containing its half-thickening.  All $\mu_3$-structure
+is now consumed; what remains is base-curve Brill--Noether theory, uniform in
+$\varepsilon$.
+
+\section{The base-curve exclusion}\label{sec:lemmaC}
+
+\begin{lemma}[Exclusion]\label{lem:C}
+For $C$ general in $\mathcal M_g$, no moving effective $E$ has
+$h^0(\omega_C-E-\lceil E/2\rceil)>0$.  Status: proven for $g\le5$; for $g\ge6$
+proven outside the window $\tfrac{g+2}2\le e\le\tfrac{2g}3$ (with $e=\deg E$; at
+$g=6$ only the single boundary point $e=4$ remains).
+\end{lemma}
+
+The proof combines three ingredients.
+
+\emph{(Z1) Zone arithmetic.}  Write $E=\sum k_ix_i$ over $r$ points,
+$\delta=e-r$, $c=\sum\lceil k_i/2\rceil$.  Pointwise
+$\lceil k/2\rceil+(k-1)\ge k$, so $c+\delta\ge e$.  In the automatic-speciality
+zone $e+c\le g-1$, membership of a profile-$\delta$ divisor in a pencil costs
+$\delta\le\rho(g,1,e)+1=2e-g-1$ (valid for \emph{all} pencils on a general curve by
+\cite[Thm.~1.1]{farkas} applied at full degree), whence
+$c+\delta\le(g-1-e)+(2e-g-1)=e-2<e$: contradiction.  The zone is empty for all
+profiles and all $g$.
+
+\emph{(Z2) Virtual dimension.}  Outside the zone the bad locus has virtual
+dimension $r-c-2\le-2$, since $c\ge r$.
+
+\emph{(Comparison kill, $\delta=0$.)}  If some pencil $N$ of degree $e$ has
+$s=h^0(\omega-2N)\ge1$, then \emph{every} reduced $E\in|N|$ satisfies
+$K\ge2E$ for some canonical $K$ (a class-level statement), so the de Jonqui\`eres
+locus of the canonical series with profile $(2^e)$ and $f=|\mu|-r$ contains a
+family of dimension $\dim W^1_e+1=2e-g-1$.  By \cite[Thm.~1.1]{farkas} --- whose
+hypotheses we verified at source: closed determinantal locus, no distinctness
+requirement, boundary $f$ allowed, \emph{every} series covered --- each component
+has dimension exactly $g-e-1$.  Hence $2e-g-1\le g-e-1$, i.e.\ $e\le 2g/3$.  Since
+moving $E$ forces $e\ge(g+2)/2>2g/3$ for $g\le5$, the $\delta=0$ case is complete
+there; at $g=4$, every $e\ge3$ exceeds $8/3$.  (At $g=6$, $e=4$ the comparison
+gives equality and does not kill; this boundary point, of Brill--Noether number
+$\rho=0$, has exactly the residual-pair shape of \cite[Thm.~1.1]{ungureanuSec},
+and joins the window.  This correction --- from an earlier ``$g\le6$'' claim ---
+was caught during the Lean formalization; see \S\ref{sec:register}.)
+
+At $g=4$ the remaining $\delta=1$ profiles reduce to finitely many ramification
+coincidences of the trigonal pencils, each a proper closed condition; the
+$\delta=0$ statement at $e=g-1=3$ is classically equivalent to the absence of a
+vanishing thetanull.  A caution for future use: the non-existence theorem of
+\cite[Thm.~1.5]{ungureanuDim} requires the series \emph{general} in $G^r_d$ ---
+the quotation of it in \cite{farkas} omits this hypothesis, and composed series
+such as $|2N|\supseteq 2|N|$ show the unrestricted reading is false.  It is
+therefore not usable against special pencils, and we avoid it entirely.
+
+\begin{proof}[Proof of Theorem~\ref{thm:sharp}]
+$\omega=2N$ makes $K=2E_0$ canonical for every $E_0\in|N|$; the construction of
+Lemma~\ref{lem:B} with $(a,b,c)=(1,1,0)$ over each point gives $W$ with
+$\Dbar=E_0$, and Lemma~\ref{lem:A}'s count is
+$h^0(\omega-E_0)=h^0(N)=2$.
+\end{proof}
+
+\section{The depth-one threefold and the $\mu_3$ parity}\label{sec:threefold}
+
+Let $Y=\Nm^{-1}(\omega_C)$ (a torsor of dimension $2g-2$, tangent space
+$H^1(\varepsilon)\oplus H^1(\varepsilon^2)$) and
+$V^1=\{L\in Y: h^0(L)\ge1\}$.  Theorem~\ref{thm:main} has a geometric
+equivalent.
+
+\begin{theorem}[Tangent lemma]\label{thm:T}
+At a depth-one $L\in V^1$: $T_LV^1=\mathrm{ann}(\mathrm{Im}\,\beta_L)$, and
+$\dim_LV^1=g-1$ always.  Hence $\ker\beta_L=T_L$ if and only if $V^1$ is
+smooth of dimension $g-1$ at $L$; Theorem~\ref{thm:main} says $V^1$ is
+smooth along its whole depth-one locus for $(C,\varepsilon)$ general, and
+Theorem~\ref{thm:sharp} exhibits, on thetanull curves, a singular
+\emph{curve} inside $V^1$ swept by the trigonal-fiber constructions.
+\end{theorem}
+
+\begin{proof}
+First-order deformations preserving the section are cut by $v\cup s$;
+Serre-dually the transpose of $\cup s$ is the $s$-slice of $\alpha_L$, and
+restriction to $T_LY$ replaces $\alpha$ by $\beta$.  The dimension
+statement: the assignment $\eta\in|\omega_C|\rightsquigarrow$ preimage
+splittings $W$ of $\mathrm{div}(\eta)$ $\rightsquigarrow L=\OO(W)$ is a
+surjection onto $V^1$, finite over $|\omega_C|=\mathbb P^{g-1}$, with fiber
+$|L|$ over a depth-one $L$.
+\end{proof}
+
+\begin{theorem}[$\mu_3$ parity]\label{thm:parity}
+$V^1$ has exactly three irreducible components, indexed by the total
+sheet-shift $\Sigma\in\mathbb Z/3$ of the splitting $W$ relative to the
+monodromy: as $\eta$ loops in $|\omega_C|$, the cycle traced by
+$\mathrm{div}(\eta)$ bounds the swept $2$-chain, hence is nullhomologous
+and carries zero $\varepsilon$-holonomy; the monodromy of the $3^{2g-2}$
+splittings is therefore the index-$3$ subgroup
+$\{\sum a_i=0\}\rtimes S_{2g-2}$ of the wreath product, with three orbits.
+This is the $\mathbb Z/3$-analogue of Mumford's parity for classical
+Pryms.  Consequently, for a divisor with closed points of degrees
+$d_1,\dots,d_r$ over $\mathbb F_q$, the rational splittings distribute
+over the components uniformly if some $d_i\not\equiv0 \pmod 3$, and lie
+in a single component if all $d_i\equiv0\pmod3$
+(Lean: \texttt{MuThreePrymParity.uniformity}/\texttt{concentration}).
+\end{theorem}
+
+On the verification curve the parity law is confirmed exactly: the
+$\mathbb F_{49}$ census gives $341552/49^3=2.903$ (three components,
+deficit $0.68\,q^{5/2}$), and all $48$ clean all-split $\mathbb F_7$
+divisors obey the distribution law — degree profiles $(1,2,3)$, $(1,5)$,
+$(2,4)$ split $(9,9,9)$, $(3,3,3)$, $(3,3,3)$; profile $(6)$ concentrates
+$(3,0,0)$, twenty cases.  The Gauss map of $V^1$ at a generic depth-one
+point has full rank $3$ (second-fundamental-form blocks of ranks
+$(2,3,3)$): the components are nondegenerate, theta-like threefolds.
+
+\section{Verification register}\label{sec:register}
+
+All claims above are tiered: Lemmas~\ref{lem:A}, \ref{lem:B} and
+Theorem~\ref{thm:sharp} are complete proofs; Lemma~\ref{lem:C} is proven in the
+stated range on the cited inputs; Theorem~\ref{thm:main} inherits exactly that
+range.  The open window at $g\ge6$ is a genuine gap, named above, localized in the
+Farkas--Ungureanu framework.
+
+\emph{Machine verification} (exact arithmetic over $\mathbb F_{7^6}$ on the tower
+$E_0\!: y^2+2xy+y=x^3$, $C\!: u^3+xu+(y+1)=0$ of genus 4,
+$\widetilde C\!: t^3=y$ of genus 10):
+\texttt{petri\_t1.sage}/\texttt{petri\_t1b.sage} (eigenspace gates $4/3/3$;
+depth-one battery: $\ker\beta=T_L$ exactly, $14/14$);
+\texttt{chain\_occupancy.sage} (twisted limit canonicals on the $\mu_3$-chain:
+flat, tail-nested, $36+$ configurations);
+\texttt{thetanull\_check.sage} (the tower curve is a \emph{cone}: quadric rank 3,
+$\omega=2N$ with $N$ the $u$-map; predicted kernel jump to $h^0(N)=2$ on $u$-fiber
+triples $5/5$, control triples kernel $1$, $5/5$);
+\texttt{hw\_check.sage} ($h^0(\OO(W))=1$ in $10/12$ constructed configurations:
+depth-one failures literal).  The $14/14$ battery is \emph{explained} by
+Corollary~\ref{cor:A1}: random sections are collision-free.
+
+Further instruments for \S\ref{sec:threefold}: \texttt{w2\_specimen.sage}
+(the bielliptic non-thetanull tower, quadric rank certified in closed
+form), \texttt{w2\_battery.sage} ($100$ configs, all $54$ depth-one ones
+smooth points of $V^1$), \texttt{w3\_count.sage}/\texttt{w3\_count2.sage}
+(the $\mathbb F_7$/$\mathbb F_{49}$ censuses), \texttt{w3\_gauss.sage}
+(Gauss rank), \texttt{w3\_parity.sage} (the $48/48$ distribution law).
+The falsification record of \S\ref{sec:threefold}: a first-draft
+irreducibility claim for $V^1$ was refuted by the $\mathbb F_{49}$ census
+within the hour; the corrected monodromy constraint (the nullhomologous
+divisor-motion cycle) \emph{is} the parity mechanism.
+
+\emph{Lean} (\texttt{RequestProject/MuThreePrymPetri.lean} and
+\texttt{MuThreePrymParity.lean}, build clean, axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$):
+\texttt{FiberTriple.canonical\_ge\_three\_half} (Lemma~\ref{lem:B});
+\texttt{Profile.zone\_empty} (Z1); \texttt{Profile.virtual\_dim\_le\_neg\_two}
+(Z2); \texttt{dimension\_comparison}, \texttt{g4\_kill},
+\texttt{delta0\_excluded\_g4} (the comparison kill); and
+\texttt{g6\_boundary\_not\_killed}, the honesty marker recording that $g=6$,
+$e=4$ is \emph{not} covered.
+
+\emph{Provenance.}  The novelty claim was checked before being made: five
+independent sweeps including the complete citation graph of \cite{welters}
+(80 works) found no cyclic-degree-$\ge3$ Prym--Petri statement; residual risk
+(non-arXiv venues, non-citing papers) is acknowledged.  One correction is part of
+this record: an initial ``$g\le6$'' coverage claim for the comparison kill was
+corrected to ``$g\le5$ plus boundary'' when the Lean formalization exposed the
+equality case.
+
+\begin{thebibliography}{9}
+\bibitem{welters} G.~E. Welters, \emph{A theorem of Gieseker--Petri type for Prym
+varieties}, Ann. Sci. \'Ec. Norm. Sup\'er. (4) \textbf{18} (1985), 671--683.
+\bibitem{farkas} G.~Farkas, \emph{Generalized De Jonqui\`eres divisors on generic
+curves}, arXiv:2210.07843.
+\bibitem{ungureanuDim} M.~Ungureanu, \emph{Dimension theory and degenerations of
+de Jonqui\`eres divisors}, arXiv:1612.03141.
+\bibitem{ungureanuSec} M.~Ungureanu, \emph{Geometry of intersections of some
+secant varieties to algebraic curves}, arXiv:1810.05461.
+\bibitem{tarasca} N.~Tarasca, \emph{A pointed Prym--Petri theorem},
+arXiv:2202.05284.
+\bibitem{jeon} M.~Jeon, \emph{Two-pointed Prym--Brill--Noether loci and coupled
+Prym--Petri theorem}, arXiv:2309.02642.
+\bibitem{bud} A.~Bud, \emph{Prym--Brill--Noether theory for ramified double
+covers}, arXiv:2411.00716.
+\bibitem{schwarz} I.~Schwarz, \emph{Brill--Noether theory for cyclic covers},
+arXiv:1603.05084.
+\end{thebibliography}
+
+\end{document}

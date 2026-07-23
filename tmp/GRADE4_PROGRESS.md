@@ -3214,3 +3214,90 @@ NOT BANKED (explicit):
    cycles is a PREDICTION, not a proof; never numerically tested.
 
 STATE: order 3 = classical sign demo + real AFE fix + sharpened still-open frontier.  No overclaim.
+
+## 112. Griffiths grade-ladder: exact rank-1 detections + bank fix + two-wall diagnosis (2026-07-14)
+
+Sam: "whatever is the faster path to some griffiths results" -> sweep the exact-rank (ring/central-
+jet) reading up the psi^m / Q(sqrt-7) grade ladder instead of grinding one transcendental harmonic
+volume.  RESULTS BANKED:
+
+DETECTIONS (exact rank-1 = k* silent at jet0, fires at jet1; each a modified-diagonal cycle,
+grade 3 = Ceresa).  Reliable ladder |phi|~1 (m <= 39), AJ = central jet L'(c):
+  g3  0.82988743 (Ceresa, matches Tadokoro non-torsion)   g23 1.83806636
+  g7  1.65470256 (new higher diagonal)                    g27 6.09318036
+  g11 6.51914234                                          g31 17.01099542
+  g15 8.28867035                                          g35 4.09121126
+  g19 2.40448551                                          g39 1.93206512
+Firing CONFIRMED clean (|phi|~1) out to grade 199 / WEIGHT 200 with the tool fixes below.
+
+CORRECTED SIGN LAW: eps=-1 iff m == 3 mod 4 (fires 3,7,11,15,...).  The recalled
+"eps=+1 iff m==1,2 mod4" (which predicted m==0 mod4 also fires) was WRONG -- even grades
+are eps=+1 (no-fire), robust across the fix + conductor scan.
+
+BANK BUG FIXED (ceresa_lside.bank_hecke_unitary, EDITED): a_{7^j} was 0 for ALL m, but that
+is only right for ODD m (level 49, psi^m RAMIFIED at 7).  EVEN m (level 7, psi^m UNRAMIFIED):
+a_{7^j}=(sqrt-7)^{mj}=(-7)^{mj/2} => lam_7=i^m (verified: m=2 gives a_7=-7 = LMFDB 7.3.b.a).
+
+"DOES IT STAY CLEAN FOREVER?" -> arithmetically YES (sign law = exact CM root number, k*=1
+unbounded); tool has a STACK of numerical walls, each self-flagged by the |phi| self-check,
+each removable:
+  WALL 1 float64 bank overflow (arithmetic a_p~p^{m/2}, m>150) -> FIXED: unitary bank
+     lam_p=2cos(m*theta_p), theta_p=arg(pi0=split_generator(p)), unitary recursion
+     lam_{p^{j+1}}=lam_p lam_{p^j}-lam_{p^{j-1}} (NO p^m).  Validated vs old bank 1e-14
+     (tmp/griffiths_unitary.py).
+  WALL 2 AFE kernel resolution at high weight (|phi| frays from m~75) -> FIXED: scale
+     NODES/M/T with weight (m=99/151/199: |phi| 0.685/2.70/1.56 -> 0.998/1.010/1.004 CLEAN).
+     This was the REAL binding wall the bank fix exposed (bank was never the |phi| problem).
+  WALL 3 (open) Gamma-factor float64 overflow ~m=340 -> fixable log-space/mpmath Gamma.
+  SELF-CHECK WORKED 3x: spurious "no-fire" at m=127 and m=299 both had |phi|~0.09/0.49 ->
+  flagged SHAKY, NEVER mistaken for a real sign-law violation (the discipline that caught the
+  shuffle fumble + AFE bug).
+
+SCOPE (honest): UNCONDITIONAL as the exact-rank analytic fact (jet0=0 forced by eps, jet1!=0,
+rank EXACTLY 1); BB-CONDITIONAL as cycle-nontriviality.  Grade->cycle dictionary is the
+interpretive layer (g3=Ceresa nailed; "g_m = m-th modified diagonal" for high m is dictionary,
+not certified by the L-value).  AJ magnitudes are Gamma-CARRIER-SCALED (non-monotone, min ~m13)
+-- de-project before comparing; the detections (jet1!=0) are what stand.  This is the RING/
+central-jet reading (exact extension, NOT "drift"); ordinary-L helix geometry was the wrong frame.
+Files: tmp/griffiths_ladder.py, griffiths_push.py, griffiths_push2.py, griffiths_ceiling.py,
+griffiths_unitary.py, even_grade_fe.py, even_cond_scan.py, test_even_fix.py.
+
+## 113. A DONE: unconditional archimedean harmonic-volume Ceresa instrument + new-curve detection (2026-07-15)
+
+Sam: "work on A" (the ONLY place a genuinely-new Griffiths result can live) then "finish A + wrap up".
+The archimedean harmonic-volume detector (Harris), built CORRECTLY after three fumbles, each caught
+by a self-check:
+ * FUMBLE 1 open-path base point (deck maps don't match endpoints off a branch point) -> use a
+   GENUINE closed loop, numerically parametrized.
+ * FUMBLE 2 trapezoidal iterated integral double-counts the diagonal -> shuffle-EXACT scheme
+   (half-weight diagonal): iterated(a,b)+iterated(b,a) = Pa*Pb EXACTLY.  [self-check: SHUFFLE]
+ * FUMBLE 3 straight-line paths CROSS collinear real-axis branch points (loop doesn't close) ->
+   upper-half-plane routing.  [self-check: closed=|Y[end]-Y[0]|~0 GATES validity]
+INSTRUMENT (tmp/hv_commutator.py, hv_newcurve2.py): commutator [alpha,beta] of vanishing loops
+around two branch points; continuous nearest-root y-tracking; length-1 periods HOMOTOPY-INVARIANT
+(exact across rho/x0), length-2 antisymmetric iterated integrals A_ab = the Ceresa signal.
+ * FERMAT CALIBRATION x^4+y^4=1: closed=0, shuffle 1e-14, |A|~6-7 ROBUSTLY NONZERO across base
+   points -> reproduces Harris's non-vanishing (the theorem-bound check).
+ * NEW CURVE y^4=(x-1)(x-2)(x-4)(x-7) [generic non-CM genus 3, Ceresa never computed]: closed=0,
+   shuffle 1e-14, |A|~2-8 robustly nonzero across base points AND branch-pair choices
+   -> Ceresa cycle NON-TRIVIAL, unconditional (archimedean AJ, NO Beilinson-Bloch).
+SCOPE (honest): (a) This is the ONLY genuinely-new UNCONDITIONAL Griffiths content in the session
+(the CM psi^m ladder was classical L-values; item 112). (b) The RESULT (non-triviality) is
+Ceresa-GENERIC (expected by Ceresa's theorem for a generic curve) -> a first-COMPUTATION for a
+specific curve, a demonstration the instrument works, not a surprising discovery. (c) DETECTION =
+robust-nonzero (base-point-stable for a fixed cycle, gated by closed=0); the EXACT harmonic-volume
+VALUE (Harris's invariant) needs the base-point-invariant / period-lattice normalization (raw A is
+base-point-dependent because the loop has nonzero periods) -- NOT done; the detection uses
+robust-nonzero-ness, strong numerical evidence not a to-the-epsilon certificate. (d) A SURPRISING
+result (torsion Ceresa, A~0) needs the harder no-fire detection (show 0 mod periods) -- open.
+
+## 114. A EXACT INVARIANT (option 1 done): base-point-invariant harmonic volume (2026-07-15)
+Upgraded item 113 from "robustly nonzero" to a CLEAN EXACT invariant via the BASED-loop commutator
+(alpha=(b1 CCW)(b2 CW) is a genuine based loop y->y; [alpha,beta] is homologically trivial =>
+period EXACTLY 0 => A_ab base-point-INDEPENDENT).  tmp/hv_exact.py, hv_exact_new.py.
+ * Fermat x^4+y^4=1: EXACT HV = 14.88330, invariant to 5 digits across 3 base points; closed=0,
+   |P|=0, off-diag shuffle 1e-14.  Nonzero => Harris non-vanishing, now with a value.
+ * NEW y^4=(x-1)(x-2)(x-4)(x-7): EXACT HV = 6.27215, same invariance + self-checks. Ceresa NONtriv.
+Base-point dependence killed exactly: Delta(A_ab)=(int_delta w_a)P_b - P_a(int_delta w_b) vanishes
+when periods=0. Value depends on cycle choice (not matched to Harris's specific normalization; his
+THEOREM is non-vanishing, reproduced). A is now LaTeX-solid. No Lean (numerical, no exact-form thm).

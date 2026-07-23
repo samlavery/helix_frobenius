@@ -1,0 +1,164 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Pf}{\mathrm{Pf}}
+
+\title{Non-proportionality of Abel--Prym cycles\\ for cyclic \'etale triple covers}
+\author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
+\date{Preprint draft \textsc{v0.1} --- July 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\pi\colon \widetilde C\to C$ be an \'etale cyclic $\Z/3$ cover of a smooth
+projective curve of genus $g\ge 2$, with Prym variety $B$ of dimension
+$2n$, $n=g-1$, and induced polarization $\Theta$.  We prove that the middle
+Abel--Prym cycle class $W_n=(\varphi_n)_*[\mathrm{Sym}^n\widetilde C]$ is never
+proportional to $\Theta^n$; equivalently,
+$\Xi_n = W_n - \Theta^n/(n!\,3^{\,n})$ is a nonzero, $\Theta$-primitive,
+algebraic class in the middle cohomology of $B$, in every dimension at once.
+This contrasts sharply with the classical \'etale double-cover case, where
+Abel--Prym cycles represent twice the minimal class and in particular lie on
+the theta line (Welters, Beauville).  The proof is an integrality argument:
+the intersection numbers $W_k\cdot\Theta^{2n-k}=k!\binom{2n}{k}$ follow from
+an exact lattice-index identity
+$\Pf(sE+tE_V)=s^{\,g}(s+t)^{2(g-1)}$, the induced polarization has type
+$(1^{\,n},3^{\,n})$, and proportionality would force
+$W_n^2=\binom{2n}{n}/3^{\,n}$, contradicting integrality of the
+self-intersection: the $3$-adic valuation of the central binomial coefficient
+equals the number of carries in the base-$3$ addition $n+n$ and is therefore
+always less than $n$.  The lattice inputs are verified by exact machine
+computation on integral models, and the arithmetic core is formalized in Lean~4
+with the dimension as a bound variable.
+\end{abstract}
+
+\section{Introduction}
+
+For an \'etale double cover, the geometry of the Abel--Prym embedding is
+governed by a classical fact: the Abel--Prym curve represents \emph{twice the
+minimal class} $2\,\theta^{p-1}/(p-1)!$ on the principally polarized Prym
+$(P,\theta)$, and Beauville's special subvarieties provide representatives of
+twice the minimal class in every intermediate dimension
+\cite{Beauville82,Welters87}.  In particular all these cycles lie on the theta
+line in rational cohomology: the double-cover Abel--Prym geometry produces no
+primitive algebraic classes.
+
+The purpose of this note is to prove that the cyclic triple-cover situation is
+rigidly different, in every dimension simultaneously.
+
+\begin{theorem}\label{main}
+Let $\pi\colon\widetilde C\to C$ be an irreducible \'etale cyclic $\Z/3$
+covering of a smooth projective complex curve of genus $g\ge 2$.  Let
+$B=\ker(\mathrm{Nm})^0\subset J\widetilde C$ be the Prym variety,
+$\dim B=2n$ with $n=g-1$, and let $\Theta$ denote the polarization induced by
+the canonical principal polarization of $J\widetilde C$.  Let
+$\varphi_n\colon\mathrm{Sym}^n\widetilde C\to B$ be an Abel--Prym map and
+$W_n=(\varphi_n)_*[\mathrm{Sym}^n\widetilde C]\in H^{2n}(B,\Q)$.
+Then $W_n\notin \Q\cdot\Theta^n$.  Equivalently,
+\[
+\Xi_n \;=\; W_n \;-\; \frac{1}{n!\,3^{\,n}}\,\Theta^{n}
+\]
+is a nonzero algebraic class with $\Xi_n\cdot\Theta^{n}=0$.
+\end{theorem}
+
+The proof has three inputs, each elementary once isolated.
+
+\emph{(i) The battery.}  Writing $E$ for the principal symplectic form of
+$H_1(J\widetilde C,\Z)$ and $E_V$ for its restriction-projector to the Prym
+part, an exact lattice-index computation gives the two-variable Pfaffian
+identity
+\[
+\Pf_{\Lambda}(sE+tE_V) \;=\; s^{\,g}\,(s+t)^{2(g-1)},
+\]
+from which, by the Poincar\'e formula on $J\widetilde C$ and the projection
+bookkeeping of the norm map, the intersection numbers
+$q_k := W_k\cdot\Theta^{2n-k} = k!\binom{2n}{k}$ follow; in particular
+$q_n=n!\binom{2n}{n}$ and $\Theta^{2n}=(2n)!\,3^{\,n}$.
+
+\emph{(ii) The type.}  The induced polarization on the $\Z/3$-Prym has type
+$(1^{\,n},3^{\,n})$ (Lange--Ortega \cite{LO11}; verified independently by
+Smith reduction on the integral model below), so $\Pf(E|_B)=3^{\,n}$.
+
+\emph{(iii) The trap.}  If $W_n=\lambda\Theta^n$ then
+$\lambda = q_n/\Theta^{2n} = 1/(n!\,3^{\,n})$ and
+\[
+W_n^2 \;=\; \lambda^2\,\Theta^{2n} \;=\; \frac{(n!\binom{2n}{n})^2}{(2n)!\,3^{\,n}}
+\;=\; \frac{\binom{2n}{n}}{3^{\,n}},
+\]
+using $(n!\binom{2n}{n})^2=\binom{2n}{n}(2n)!$.  But $W_n$ is the class of an
+integral cycle, so $W_n^2\in\Z$, while by Kummer's theorem
+$v_3\!\left(\binom{2n}{n}\right)$ equals the number of carries in the base-$3$
+addition of $n+n$, hence is at most $\lfloor\log_3 2n\rfloor < n$ for all
+$n\ge1$.  Contradiction. \qed
+
+\begin{remark}[Contrast with $\Z/2$]
+For double covers the analogous computation lands exactly on the integer:
+the Abel--Prym classes are the (twice-)minimal classes, and no obstruction
+occurs --- the theta-proportionality of \cite{Welters87,Beauville82} and the
+non-proportionality above are two values of the same lattice computation,
+distinguished by the glue exponent of the induced polarization.  The
+$\mu_3$-harmonic rigidifies the cycle.
+\end{remark}
+
+\begin{remark}[Verification register]
+The identity in (i) and the type in (ii) are verified by exact integer linear
+algebra on the topological cut-and-glue model of the cover
+($n$ sheets of the cut base surface; the model is unique by mapping-class
+transitivity on primitive $\Z/3$-classes): the symbolic Pfaffian
+$\Pf(sE+tE_V)$ and the Smith normal form of $E|_B$ are computed exactly at
+$g=4,5$ (\texttt{tmp/integral\_model.sage},
+\texttt{tmp/integral\_model\_g5.sage}), the model itself is validated against
+Lange--Ortega at both $n=3$ and $n=6$, and the handle-block structure gives
+the general $g$.  The arithmetic of (iii) is formalized in Lean~4 with $n$ a
+bound variable (\texttt{UniversalTrap.lean}:
+\texttt{centralBinom\_three\_adic\_lt},
+\texttt{universal\_integrality\_obstruction},
+\texttt{PrymTrapData.abel\_prym\_rigidity}; axiom footprint
+\{\texttt{propext}, \texttt{Classical.choice}, \texttt{Quot.sound}\}).
+The classical inputs are the Poincar\'e formula and integrality of
+self-intersections of cycle classes.  What is proved is cited by Lean name or
+script name, and nothing else is claimed.  This note is the standalone
+elaboration of the paragraph ``The universal rigidity law'' of the companion
+paper \cite{Companion}, whose registers and falsification record it inherits:
+the trap identity was found while pursuing --- and retracting, against the
+literature --- a stronger claim, and that retraction is part of this note's
+provenance.
+\end{remark}
+
+\begin{remark}[Relation to algebraicity of Weil classes]
+On these Pryms the two-dimensional space of Weil Hodge classes is known to be
+algebraic (Schoen; Patel--Zhang \cite{PZ26} for general abelian covers).
+Theorem~\ref{main} is complementary content: it does not produce the Weil
+classes, but locates the Abel--Prym cycle itself off the theta line ---
+equivalently, it exhibits an explicit nonzero $\Theta$-primitive algebraic
+class with an explicit cycle representative on every such Prym, including on
+members where the Hodge ring is as small as the Weil-type structure allows.
+For \emph{simple} members the statement has independent geometric force;
+explicit simple examples in dimensions $6$ and $8$, certified by irreducible
+Frobenius polynomials at split primes and exact purity, accompany this note
+in the repository, together with the exact integral-model computations.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{Beauville82} A.~Beauville, \emph{Sous-vari\'et\'es sp\'eciales des
+vari\'et\'es de Prym}, Compositio Math.\ \textbf{45} (1982), 357--383.
+\bibitem{Welters87} G.~Welters, \emph{Curves of twice the minimal class on
+principally polarized abelian varieties}, Indag.\ Math.\ \textbf{49} (1987),
+87--109.
+\bibitem{LO11} H.~Lange and A.~Ortega, \emph{Prym varieties of cyclic
+coverings}, Geom.\ Dedicata \textbf{150} (2011), 391--403.
+\bibitem{PZ26} D.~Patel and Y.~Zhang, \emph{Algebraicity of Hodge classes on
+some generalized Prym varieties}, arXiv:2506.13729.
+\bibitem{Companion} S.~Lavery, \emph{The loss ledger and the cycle
+filtration: tower exhaustion on the helix carrier, and a program whose
+terminus is the Hodge conjecture}, preprint draft v0.1, July 2026.
+\end{thebibliography}
+
+\end{document}

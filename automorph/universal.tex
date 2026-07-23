@@ -4033,11 +4033,16 @@ $\operatorname{Hom}$, via \texttt{FDRep.finrank\_hom\_simple\_simple}) and the d
 \texttt{not\_iso\_of\_finrank\_ne}.  Dimension supplies \emph{only} the non-isomorphism; the vanishing
 is Schur with the $G$-action present, never an ordinary vector-space rank bound.  This is the
 representation-theoretic exclusion consumed by the residual calculation. So the entire carrier readout
-\emph{is} $L(s,\Pi_r\times\tau)$: on the initial half-plane the two agree by the coefficient
-identification (Prop.~\ref{prop:localid}), and both continue to entire functions, so they coincide
-everywhere by the identity theorem
+\emph{is} $L(s,\Pi_r\times\tau)$, in the standard pattern of Tate and Godement--Jacquet: on the
+initial half-plane the two agree \emph{as convergent series} by the coefficient identification
+(Prop.~\ref{prop:localid}), so the entire carrier readout is \emph{itself the continuation} of
+$L(s,\Pi_r\times\tau)$ --- exhibiting an entire function agreeing with the series on its half-plane
+is what ``continues to an entire function'' means, and is exactly what the CPS hypothesis asks;
+nothing about the target is presupposed. The identity theorem enters only as uniqueness
+bookkeeping --- any continuation coincides with this one
 (\texttt{CarrierTargetIdentification.carrier\_FE\_transfers\_to\_target}, universal core
-\texttt{entire\_eq\_of\_eqOn\_isOpen}). Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
+\texttt{entire\_eq\_of\_eqOn\_isOpen}, its target-entirety hypothesis instantiated by the carrier
+object itself). Every hypothesis of Theorem~\ref{thm:cps} is met (the ledger above), so $\Pi_r$ is a
 cuspidal automorphic representation of $\mathrm{GL}(r+1)$.
 \end{proof}
 
@@ -4164,6 +4169,19 @@ thesis \cite{Tate} (Godement--Jacquet \cite{GJa} for higher-rank convolution) is
 one-dimensional adelic readout; on the carrier the global equation is already the pointwise
 helix/anti-helix reflection of Theorem~\ref{thm:g8-reflected-completed-readout}.
 
+That the ledger's substantive rows are genuinely substantive is itself compiled, as a
+falsifiability instrument (\texttt{CPSUnconditionalityAudit3D}): an arbitrary group action does
+not make an arbitrary readout invariant
+(\texttt{not\_all\_readouts\_invariant\_under\_all\_group\_moves}), and an integrable unipotent
+kernel need not be cuspidal (\texttt{unitConstantKernel\_not\_cuspidal}) --- the engine's
+hypotheses cannot be discharged by genericity, only by genuine modularity and cuspidality
+content.  The division of labor is equally explicit: on the functoriality route the
+automorphic/cuspidal \emph{output} is delivered by the cited converse theorem at its published
+strength (Theorem~\ref{thm:cps}), consumed exactly as local Langlands and Deligne--Tate are
+consumed; the engine of this section is the internalized generator descent, whose ledger names
+what a full internalization must supply --- an audit of that program, never a second,
+independent proof of the citation.
+
 \begin{remark}[Register: the constructed Lean pair is a carrier-theta object]\label{rem:cps-carrier-register}
 The Lean strong functional-equation pair built for the all-place twisted symmetric-power Satake bank
 (\texttt{GlobalHelix.twistedSymmetricPowerCarrierStrongFEPair}; without self-duality,
@@ -4275,7 +4293,19 @@ specializations are wired directly as
 prescribed coefficient bounds and Gamma completion, rather than an analytic regularity premise
 attached to the source.
 
-The reverse assembly direction is now canonical.  Given an
+The forward geometric assembly is now typed separately from every analytic continuation.  The
+structure \texttt{ArithmeticCPSCarrierSeed3D} carries two independently defined functions on the
+global carrier, one on the helix and one on the anti-helix, together with their global involution
+exchange and the exact positive-height identifications of their completed logarithmic readouts with
+the literal primal and contragredient coefficient/Gamma banks.  The two functions are deliberately
+distinct: inverse radial Satake weights ride the contragredient lane and are not silently replaced by
+complex conjugates.  The theorem \texttt{completedLogTheta\_pair\_one\_div} transports this paired
+carrier exchange through logarithmic inversion and the self-dual envelope.  Consequently
+\texttt{reflection\_of\_carrierSeed} derives the literal off-weld bank reflection, and
+\texttt{ofCarrierSeed} constructs the required \texttt{ArithmeticCPSReflectedThetaSource}; neither
+statement consumes an \texttt{ArithmeticCPSAnalyticCandidate3D} or a pre-existing theta reflection.
+
+The reverse assembly direction is also canonical.  Given an
 \texttt{ArithmeticCPSAnalyticCandidate3D}, its typed
 \texttt{native3DReflection} is already the all-positive-height equality of the literal prescribed
 primal and reciprocal-height contragredient 3D banks, with the candidate's weight and root number.
@@ -4336,6 +4366,170 @@ CPS range, the literal coefficient passport, both initial Euler/completion ident
 entire continuations, both vertical-strip bounds, the functional equation, the native 3D
 reflection, and the derived zero residual.  The theorem has one candidate argument: none of those
 clauses appears as a detached proposition in its signature.
+There is now a forward all-twist entry point as well:
+\texttt{ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds} accepts the independently defined
+paired carrier seed for each twist and constructs every reflected source and analytic candidate
+internally.  Thus the geometric route does not pass through
+\texttt{ofAnalyticCandidate}; its only identification boundary is the explicit equality of the two
+literal arithmetic banks with the helix and anti-helix carrier readouts.  The object-valued endpoint
+\texttt{symmetricPowerFunctoriality3D\_ofCarrierSeeds} then returns the cuspidal symmetric-power
+lift from that same family of paired carrier seeds, the restricted-product representation, the bank
+landing, and the equivariant residual channels; it does not accept a separately supplied analytic
+candidate.
+
+For a genuine level-one GL$(2)$ source, the carrier exchange itself is now constructed directly
+from modularity.  If $f$ has even weight $2n$, write
+$W_{2n}(x)=x^{-n}e^{-x-x^{-1}}$ for the fixed completion envelope and define the normalized
+vertical carrier by
+\[
+ E_f(z)=\frac{f\!\left(i e^{\Im z}\right)}
+ {W_{2n}\!\left(e^{\Im z}\right)}.
+\]
+Mathlib's slash transformation under $S$ gives
+$f(i/x)=(xi)^{2n}f(ix)$, while
+$W_{2n}(x^{-1})=x^{2n}W_{2n}(x)$; hence
+$E_f(\overline z)=i^{2n}E_f(z)$.  This is the compiled theorem
+\texttt{GenuineGL2Carrier.deEnvelopedVerticalCarrier\_exchange}.  Moreover the completion is
+not silently inserted twice:
+\texttt{completedLogTheta\_deEnvelopedVerticalCarrier} proves exactly
+$W_{2n}(x)E_f(i\log x)=f(ix)$ for every $x>0$.
+
+The coupling type this exchange first fed is itself audited at the type level, and the audit is
+a finding: a coupling demanding that the \emph{twisted} bank readout equal the raw modular
+vertical value is \emph{uninhabitable on genuine data} --- the $(r{+}1)m\ge2$-clock tensor
+completion kernel decays like $e^{-c\sqrt x}$ while a cusp form's vertical restriction decays
+like $e^{-2\pi x}$, and the bank's leading coefficient is $1$, so no instance exists at any
+$(r,m)$ (the finding is recorded in the retired structure's docstring,
+\texttt{ArithmeticBankCoupling3D}).  The corrected per-rung obligation is the \emph{theta
+profile pair} (\texttt{BankThetaProfileCoupling3D}): two functions on the positive ray, one
+pointwise weighted reflection between them, and the two identifications of the literal bank
+readouts with those profiles --- nothing else.  Its constructors discharge everything
+downstream: \texttt{toReflectedThetaSource} builds the reflected strong-pair source with
+integrability and rapid decay derived from the polynomial coefficient bounds;
+\texttt{toCarrierSeed} \emph{derives} the seed's conjugation exchange from the pointwise
+reflection and the envelope inversion; \texttt{ArithmeticCPSCarrierSeed3D.toProfileCoupling} is
+the converse, so the seed-typed and profile-typed obligations interconvert and the per-rung
+frontier is exactly one pointwise theta reflection; and \texttt{allProfileCarrierSeeds} packages
+per-twist couplings into the seed family the all-twist constructor
+(\texttt{ofCarrierSeeds}) consumes.
+
+The chain downstream of the coupling is one compiled endpoint
+(\texttt{symmetricPowerFunctoriality3D\_ofProfileCouplings}): from the restricted-product
+representation, the bank bridge, the residual channels, and \emph{one theta-profile coupling per
+CPS twist}, the object-valued cuspidal symmetric-power lift is returned with the carrier seeds,
+reflected sources, and analytic candidates all constructed internally --- the per-rung analytic
+obligation of the entire converse chain is the coupling family and nothing else.  The
+cited-classical entry point into that family is likewise compiled
+(\texttt{BankThetaProfileCoupling3D.ofMellinFE}): a completed Mellin-space functional equation
+between the literal prescribed banks, with the standard Mellin-inversion integrability
+conditions, \emph{derives} the pointwise profile reflection
+(\texttt{theta\_reflection\_of\_mellin\_functionalEquation}) and constructs the coupling ---
+the shape in which the classical low rungs deliver their functional equations
+(Langlands--Shahidi, Kim--Shahidi for $r\le4$ \cite{Shahidi,KimShahidi}), consumed as data
+exactly as local Langlands and Hecke multiplicativity are consumed at their typed fields.
+Four of that converter's six analytic side conditions are themselves discharged from the
+compiled polynomial-decay layer (\texttt{CPSMellinFEDischarge}): primal Mellin convergence at
+every initial-domain weight
+(\texttt{cpsPolynomialFullPrimal3DBankReadout\_mellinConvergent}), continuity of the primal bank
+and of the reflected contragredient readout on the positive ray --- an M-test over the compiled
+rapid decay (\texttt{theta\_continuousAt\_of\_polynomial},
+\texttt{reflectedDualReadout\_continuousAt}) --- and the kernel-continuity input itself for
+every singleton clock (\texttt{conductorScaledCompletionKernelLog\_singleton\_continuousOn}).
+The refined converter (\texttt{BankThetaProfileCoupling3D.ofMellinFE'}) therefore consumes
+exactly the continuation content and nothing else: the completed Mellin functional equation
+between the literal banks, the reflected-side Mellin convergence, and the two vertical
+integrabilities.  The two vertical integrabilities are then themselves \emph{discharged}
+(\texttt{CPSCompletedVerticalIntegrable}): the house tree carries the unconditional two-sided
+vertical Stirling bound $|\Gamma(\sigma+it)|\le C|t|^{\sigma-1/2}e^{-\pi|t|/2}$
+(\texttt{StirlingBound.gamma\_stirling\_bound}), which \texttt{gammaC\_vline\_integrable} turns
+into vertical integrability of the completion's $\Gamma_{\mathbb C}$ factor; along the
+initial-domain line the compiled identification displays the bank's Mellin transform as
+$C^{s}\prod_j\Gamma_{\mathbb C}(s{+}\mu_j)\,D(s)$ with $D$ a bounded Dirichlet series, so
+\texttt{completedPrimal\_verticalIntegrable} integrates the whole readout, and
+(\texttt{mellin\_reflectedDual\_eq\_primal}) the functional equation makes the reflected transform
+literally equal the primal one --- discharging both fields.  The fully-discharged converter
+(\texttt{BankThetaProfileCoupling3D.ofMellinFE''}) thus consumes exactly the completed Mellin
+functional equation and the reflected-ray Mellin convergence: the per-rung obligation is one
+functional equation plus one ray-convergence, with nothing about vertical decay remaining.
+
+The base rung of this corrected type is \emph{inhabited on a genuine automorphic object}.
+\texttt{GenuineGL2Carrier.StandardRungEulerData} is the standard (degree-two) certificate of an
+actual level-one cusp form in the det-one analytic chart --- its one arithmetic field identifies
+the form's canonical Mathlib \texttt{qExpansion} coefficients with the det-one-normalized Euler
+bank at shift $n-\tfrac12$ (Hecke's multiplicativity, a cited classical input typed as a
+consumed field, exactly as local Langlands is consumed by Prop.~\ref{prop:localid}); the
+contragredient-bank equality is \emph{derived}, not certified --- det-one forces the dual weight
+family to be the swap of the primal, and the Euler coefficients are symmetric functions of the
+weights (\texttt{radialLocalEulerCoeff\_comp\_equiv},
+\texttt{cpsPolynomialDualCoeff\_eq\_primal\_of\_detOne}), so the constructor
+\texttt{StandardRungEulerData.ofDetOne} builds the certificate from Hecke multiplicativity and
+the Satake normalization alone.  From that
+certificate alone: \texttt{theta\_standard\_eq} proves the bank's completed coefficient theta
+equals the enveloped modular vertical value (Mathlib's q-expansion convergence plus exact
+$\Gamma$-clock evaluation --- the envelope algebra \emph{forces} the analytic chart: weight one,
+shift $n-\tfrac12$, exchange constant $i^{2n}$); \texttt{standardRung\_reflection} derives the
+literal-bank reflection from \texttt{hecke\_inversion} --- the modular slash law on the vertical
+line --- consuming no analytic candidate, no reflected source, and no supplied theta reflection;
+\texttt{StandardRungEulerData.toReflectedThetaSource} then constructs the complete
+\texttt{StrongFEPair} whose two functions \emph{are} the literal bank readouts (by \texttt{rfl}),
+with entirety of the completed transform and the global functional equation
+$\Lambda(1-s)=i^{2n}\,\Lambda^\vee(s)$ as outputs
+(\texttt{standardRung\_completed\_entire}, \texttt{standardRung\_functional\_equation}); and
+\texttt{toProfileCoupling} places the rung inside the corrected coupling type --- its
+non-vacuity certificate on genuine modularity.  The completion this pair carries is the
+\emph{standard} one, not a synthesized kernel: the rung's clock is the prescribed
+$\Gamma$-clock at conductor one and Deligne shift $n-\tfrac12$, and on the initial half-plane
+the pair's completed transform \emph{is} the literal standard completed readout
+$1^{s}\,\Gamma_{\mathbb C}(s+n-\tfrac12)\,D(s)$ --- Mathlib's own $\Gamma_{\mathbb C}$ ---
+equivalently one half of the classical completed Hecke series
+$\Gamma_{\mathbb C}(s+n-\tfrac12)\sum_m a_f(m)\,m^{-(s+n-1/2)}$ of the actual form
+(\texttt{standardRung\_Lambda\_eq\_standardCompletion},
+\texttt{standardRung\_dualLambda\_eq\_standardCompletion},
+\texttt{standardRung\_Lambda\_eq\_heckeCompletion}, instantiating the general
+prescribed-completion identification
+\texttt{cpsPolynomialFullCompletion3D\_identification}).  Bundled, this is Hecke's classical
+theorem for the form as one compiled statement about one object
+(\texttt{standardRung\_classicalHeckeTheorem}): entirety with entire dual, the classical
+completed Hecke series on the initial half-plane on both legs, and the global functional
+equation with the standard conductor, $\Gamma$-factor, contragredient, and root number ---
+the functional equation of the standard completed automorphic $L$-function of the genuine
+form, not of an auxiliary kernel.  The synthesized-kernel constructor
+(\texttt{CarrierTheta.automaticCoefficientThetaStrongFEPair}) remains the generic,
+hypothesis-free payload; the CPS-facing chain --- the reflected sources, the profile couplings,
+and the all-twist converse candidates --- is typed on the prescribed
+conductor/$\Gamma$-product banks throughout, so no synthesized completion stands in for the
+standard one anywhere on the identification path.  All at the standard footprint, no
+\texttt{sorry}.
+
+At the representation-theoretic layer the symmetric-power action is now constructed rather than
+named.  The Lean file \texttt{RepresentationSymmetricPower3D} descends a linear endomorphism through
+Mathlib's symmetric-tensor quotient, proves preservation of identity and composition, and defines
+\texttt{Representation.symmetricPower}.  Consequently
+\texttt{RestrictedSymmetricPowerRepresentation3D.ofBaseLocalRepresentations} builds every finite
+local $\operatorname{Sym}^r$ component from the corresponding genuine base GL$(2)$ component, while
+\texttt{ofBaseAdelicRepresentation} applies the same functor to the base representation of the
+archimedean-times-restricted-product group and uses the resulting action definitionally on the
+global symmetric carrier.  The remaining assembly is thereby separated cleanly into the adelic
+\texttt{CPSBankBridge} on that carrier and the literal all-twist carrier/Gamma identification.
+
+The representation-side structures are moreover \emph{inhabited}, with every status field proven
+rather than supplied (\texttt{CPSRepresentationInstance3D}).  Three reusable bricks --- any
+representation on a simple module is irreducible
+(\texttt{Representation.isIrreducible\_of\_isSimpleModule}), the trivial representation is
+smooth, and any finite-dimensional representation is admissible --- feed the first compiled term
+of the restricted-product structure: the scalar (Hecke-character-shaped) instance
+\texttt{scalarRestrictedSymmetricPowerRepresentation3D}, polymorphic over every archimedean and
+finite group family, all irreducibility/smoothness/admissibility/compatibility fields theorems.
+The equivariant residual channels exist whenever the Schur data holds
+(\texttt{EquivariantCPSResidual3D.ofSchurData}), and by the compiled
+\texttt{residue\_eq\_zero} the zero intertwiner is their \emph{only} inhabitant, so that
+constructor is exhaustive.  At rank one, where the CPS twist range is empty, these terms
+assemble a complete all-twist converse candidate and the object-valued cuspidal lift compiles
+end-to-end (\texttt{scalarRankOneCuspidalLift}) --- the capstone chain executing on constructed
+terms rather than hypotheses.  Register: a structural inhabitation of the interfaces; the
+arithmetic content of higher ranks enters through the per-twist theta-profile couplings above,
+and the genuine adelic readout remains the named Tate field of \texttt{CPSBankBridge} --- a
+cited classical input (Tate's thesis), not an open claim.
 
 The reflection and analytic package are likewise assembled on one source, rather than inferred by
 identifying unrelated operators.  For every finite tensor--Euler exponent box, the single Lean
@@ -4370,7 +4564,14 @@ $\langle S,T\rangle=\mathrm{SL}(2,\mathbb Z)$), and the composition
 (\texttt{seedReadout\_landing}) is the full converse landing for this object. The hypothesis class
 is inhabited by the level-one Eisenstein series $E_{k}$ ($k\ge3$); no cuspidality is claimed
 ($E_{4}$ is not cuspidal), and none is needed --- the seed's content is Hecke's, that the two
-generators suffice.
+generators suffice.  The cusp-form instance is now compiled as well (\texttt{CPSCuspSeed3D}):
+for an actual level-one \texttt{CuspForm}, full $\mathrm{SL}(2,\mathbb Z)$-invariance of the
+readout lands through the same audited engine (\texttt{cuspSeedReadout\_landing}), and the
+cuspidality-side content is likewise \emph{derived} --- the readout is exponentially small at
+the cusp (\texttt{cuspSeedReadout\_exp\_decay}, from Mathlib's
+\texttt{CuspFormClass.exp\_decay\_atImInfty}).  At the base of the tower both substantive
+inputs of the audit's warning --- invariance and cusp decay --- are theorems of the genuine
+object; higher rank remains the named interface.
 
 \paragraph{The tower, unified as a concrete 3D carrier functor.}  The entire carrier-side CPS
 functoriality chain is now one compiled statement,
@@ -4540,6 +4741,19 @@ Jacquet--Shalika constituent ceiling supplied after automorphy of the rungs.  Th
 \texttt{ArithmeticSatakeTowerAtPrime.strandBlock\_isometry} then derive the arithmetic radius and
 the 3D transverse isometry.  Neither theorem mentions \texttt{UnitaryPrimePhase}; that structure is
 used only for the already-normalized angular shadow.
+
+The non-circularity is moreover a compiled \emph{control}, not only a register sentence
+(\texttt{RadiusLiveSpiralWitness}).  The maximally non-tempered det-one datum
+\texttt{spiralPair} --- strand radius $p$ at every prime, a genuine spiral, never unit-modulus
+(\texttt{spiralPair\_radius}, \texttt{spiralPair\_not\_unitary}) --- passes the entire
+radius-live niceness payload verbatim: entirety and the global functional equation of its every
+CPS twist (\texttt{spiralPair\_twisted\_entire}, \texttt{spiralPair\_twisted\_FE}).  So the
+niceness layer provably encodes no temperedness: it accepts the spiral.  The same spiral
+violates the rank-uniform tower ceiling already at the first rung
+(\texttt{spiralPair\_violates\_towerCeiling}), so the radial capstone
+(\texttt{strand\_radius\_one\_of\_tower\_ceiling}), whose only inputs are the two ceilings,
+correctly refuses it: unit modulus enters the chain exactly once, as the radial-limit
+\emph{conclusion} from the ceilings the automorphic tower supplies, and nowhere as an input.
 \end{remark}
 
 \section{Application: Sato--Tate for Maass forms}\label{sec:cps-satotate}
@@ -5793,6 +6007,25 @@ $\int_{\mathcal D}P\,\mathcal M[\Theta_z-1]=\mathcal M G$ is Fubini and $\mathca
 entire by Mathlib's \texttt{mellin\_differentiableAt\_of\_isBigO\_rpow} --- routine and
 dominant-in-hand, not an open obstruction.
 \end{itemize}
+
+\noindent The averaged bank itself is now a compiled theta profile
+(\texttt{RSAveragedThetaProfile3D}): with
+$\bar\theta_f(t)=\int_{\mathcal D}P(z)\,\Theta_z(t)\,d\mu$ the Petersson average of the general
+lattice bank of the \emph{actual} form, the exact weight-one reflection
+$\bar\theta_f(1/t)=t\,\bar\theta_f(t)$ is derived by integrating the pointwise weld
+\texttt{latticeTheta\_inv} against the Petersson density (\texttt{averagedTheta\_inv} --- no
+candidate, no supplied functional equation); the tail approaches the Petersson mass at the
+saddle rate (\texttt{averagedTheta\_tail\_bound}); and the packaged pair
+(\texttt{rsAveragedWeakFEPair}, weight one, both constant terms the Petersson mass --- the
+profile genuinely carries the $\zeta$-factor constant term, so its home is the \emph{weak} pair,
+the same typing law that retired the raw-vertical coupling above) returns from Mathlib's
+abstract functional-equation machinery the entire part, the global equation
+$\Lambda(1-s)=\Lambda(s)$, and the edge residue equal to the Petersson mass
+(\texttt{rsAveraged\_residue\_one}) --- rank-is-DC-residue at the Rankin--Selberg level, at the
+profile interface.  The named identification steps from this profile to the $\Sym^2$ bank are
+the $\zeta$-peel (\texttt{rankin\_sym2\_transfer}, compiled definitionally) and the coefficient
+certificate against the literal twisted Satake bank --- instantiation points of the closed
+identification layer, not open interfaces.
 
 \paragraph{The one classical input.} What remains is the passage from this continued Dirichlet
 series to the summatory bound. The contour shift past the pole line is itself compiled: the
@@ -7076,29 +7309,46 @@ Ramanujan bound is needed.
 carrier transform is defined at all heights and furnishes the natural continuation of the readout past
 $\sigma_0$. \emph{Unconditional}: the reflection $\Lambda(s;W)=\varepsilon\,\Lambda(1-s;W^\vee)$ (the Lean
 \texttt{localPoly\_reciprocal} on the pair $W\sqcup W^\vee$, duality-stable for any $W$) and $W$'s local factors
-and root number at every place (Prop.~\ref{prop:localid}). \emph{Gated on the cell closure}: entireness and
-vertical-strip boundedness --- the continuation is meromorphic, its only poles the DC coalignment events (none,
-hence entire, for an irreducible parameter; a $\zeta$-factor pole per trivial constituent otherwise,
-\S\ref{sec:cps-decomp}) --- together with any further twist a converse theorem consumes; these hold exactly when
-the adapted warp closes its native cells, \emph{proved} for the finite duality-stable harmonic and Dirichlet
-classes (\texttt{CellClosure}, Lean) and in closed form for every admissible fiber, each closing at its
-own harmonic scale (\texttt{ForcibleClosure.residual\_forcible}).
+and root number at every place (Prop.~\ref{prop:localid}). \emph{Hypothesis-free on the completed
+carrier object}: entireness and vertical-strip boundedness --- the continuation meromorphic, its
+only poles the DC coalignment events (none, hence entire, for an irreducible parameter; a
+$\zeta$-factor pole per trivial constituent otherwise, \S\ref{sec:cps-decomp}) --- together with
+every twist a converse theorem consumes, are supplied by the fixed-completion constructor for
+every admissible (polynomially bounded) fiber
+(\texttt{CarrierTheta.automaticCoefficientThetaStrongFEPair}; on the prescribed
+conductor/$\Gamma$-product banks, \texttt{cpsPolynomial\_twistedNiceness}, with the
+standard-completion identification \texttt{cpsPolynomialFullCompletion3D\_identification}).
+Cell closure is \emph{not} the supply of this niceness and could not be: forcible closure is
+arithmetic-neutral by theorem
+(\texttt{ForcibleClosure.forcible\_nondiscriminating}) --- it closes a random bank exactly as it
+closes a true fiber --- so it contributes the transport half alone; the harmonic and Dirichlet
+classes additionally close their cells outright (\texttt{CellClosure}, Lean), which is what
+grounds their \emph{ordinary} (unwarped) readout continuation end-to-end.
 \item[\textup{(c)}] \emph{Exact focal closure --- complete and exact vanishing.} The primary invariant is finite
 and exact: a source vanishing is realized as \emph{exact focal cancellation} at a harmonic cell boundary,
-$\sum_{k\in C}q_k(\tau)=0$ \emph{exactly} (a closed cell, not a cutoff limit), with zero cell remainder
-(Lemma~\ref{lem:forcible}). Where \emph{(b)} furnishes the continuation, these exact closures are, by the identity
+$\sum_{k\in C}q_k(\tau)=0$ \emph{exactly} (a closed cell, not a cutoff limit).  The realization of vanishing
+is the compiled \emph{zero-detector}, not the forcing: the harmonic-pencil rank drop occurs exactly at the
+readout's zeros (Lemma~\ref{lem:rankgap}; Lean \texttt{focal\_residual\_zero\_iff\_L\_zero},
+\texttt{carrierZero\_iff\_L\_zero}, with the channel-agnostic factorization
+\texttt{HarmonicCell.harmonic\_residual\_no\_independent\_mode}), while forcible closure
+(Lemma~\ref{lem:forcible}) supplies only the per-cell transport remainder and, being arithmetic-neutral
+(\texttt{forcible\_nondiscriminating}), never the vanishing identification.  Where \emph{(b)} furnishes the
+continuation, these detector closures are, by the identity
 theorem, exactly the zeros of the represented function --- \emph{complete} (no zero missed) and \emph{exact} (none
 spurious), the pole locus being the complementary coalignment events. This is exact closure on the carrier bank --- the finite invariant
 $\sum_{k\in C}q_k=0$ --- and faithful representation of the vanishing \emph{set}; it is not an analytic-residue
 claim.
 \end{itemize}
-So admissibility asks only for a convergent Euler product of bounded degree. Niceness is never a hypothesis: the
-reflection and local data come out unconditionally, and continuation, entireness, boundedness, and the complete
-faithful vanishing are the cell-closure output --- machine-checked in Lean for the finite duality-stable harmonic
-and Dirichlet classes (\texttt{CellClosure}) and proved in closed form for \emph{every}
-admissible fiber (\texttt{ForcibleClosure.residual\_forcible}, with the independent pair of
-\texttt{CarrierReachability.reachable\_independent\_stage}), so the closure is discharged, not
-gated on an open per-fiber input.
+So admissibility asks only for a convergent Euler product of bounded degree. Niceness is never a
+hypothesis and never a closure inference: the reflection and local data come out
+unconditionally; entireness, strip bounds, and the functional equation of the completed carrier
+object are the fixed-completion constructor's output, hypothesis-free for every admissible fiber
+(\texttt{cpsPolynomial\_twistedNiceness}); and the complete faithful vanishing is the
+cell-closure content of \textup{(c)}, whose per-cell mechanism
+(\texttt{ForcibleClosure.residual\_forcible} with
+\texttt{CarrierReachability.reachable\_independent\_stage}) is arithmetic-neutral by theorem
+(\texttt{forcible\_nondiscriminating}) and is therefore consumed by transport and adaptation,
+never by niceness.
 \end{theorem}
 
 \emph{Constructive form: synthesis, not assumption.} The representation is not merely posited to exist; it is
@@ -7126,13 +7376,18 @@ makes the phase gaugeable and names the correct cell, which is adapter synthesis
 \emph{Falsifiable content.} Because the load-bearing input is the per-fiber cell closure, the universal claim is
 falsifiable at a single point: a genuine counterexample is not a fiber the dictionary has merely not yet been run
 on, but a fiber $W$ for which \emph{no} harmonization consistent with its intrinsic dynamics closes its cells
-while satisfying the carrier and ledger laws and preserving faithful readout. The $\forall\exists$ shape --- for
-every $W$ a matched, cell-closing adapter suite exists --- is the universal content, and it is proved in
-closed form, not sampled: any nonzero cell residual is forcible to zero once two
+while satisfying the carrier and ledger laws and preserving faithful readout. Two $\forall\exists$
+quantifiers must never be traded for one another, and the proven one is named exactly: for every
+$W$ a \emph{cell-closing} adapter suite exists, in closed form, not sampled --- any nonzero cell
+residual is forcible to zero once two
 $\mathbb R$-independent directions span $\mathbb C$ (\texttt{ForcibleClosure.residual\_forcible},
 Lean), and a continuous non-constant lane phase supplies the independent pair
 (\texttt{CarrierReachability.reachable\_independent\_stage}, Lean), the two composed by direct
-application --- so the enumeration of every $(W,\text{suite})$ pair is not required. The general family
+application --- so the enumeration of every $(W,\text{suite})$ pair is not required.  The
+\emph{recognition} quantifier --- that the synthesized suite reads the fiber's arithmetic rather
+than merely closing its cells --- is precisely what cell closure can never supply
+(\texttt{forcible\_nondiscriminating}) and is the separately registered program of the
+contributions ledger (item~2), with its single clean falsifier stated there. The general family
 ($\Sym^{13}$, the two-parameter $L(\Delta\times E_{11})$, the genuine twisted $L(\Sym^5\Delta\times E_{11})$, the real Maass $\Sym^2$; \S\ref{sec:pipeline})
 is the set of instances where we additionally ran empirical checks --- calibration and independent
 reproduction at the float floor, not the basis of the claim. Two boundaries bound the claim:
@@ -7171,7 +7426,7 @@ root-of-unity checks remain here as source/application evidence.
 
 \begin{corollary}[Universal functoriality in rank]\label{cor:universal}
 Theorem~\ref{thm:universal} carries every admissible fiber faithfully, its reflection and local data
-unconditional and its niceness the cell-closure output; that output is uniform in rank, for the
+unconditional and its niceness the fixed-completion constructor's output; that output is uniform in rank, for the
 construction refers nowhere to the degree $N$, the source group $G$, or the symmetric-power string: the
 reflection (\texttt{localPoly\_reciprocal}), the two-clock completion, the warped-Abel continuation and vertical
 bound, and the Riemann--Hecke entireness (the one carrier-cell theorem) are stated for an \emph{arbitrary} finite
@@ -7793,9 +8048,44 @@ theorem (\texttt{completed\_logDeriv\_not\_tendsto}, from the gamma factor's
 strip nonvanishing) --- so the interface is satisfiable in principle and the
 one remaining closure step is the operator.  (The earlier uncompleted typing
 is retired: \texttt{no\_selfAdjoint\_uncompleted\_capture} shows chart
-artifacts made it uninstantiable by any operator.)  This separation
-preserves the proved carrier geometry and registration results while making
-the zero-set identification boundary explicit.
+artifacts made it uninstantiable by any operator.)  That closure step is now
+itself sharpened to a single named limit.  The genuine (non-costume) operator
+reduction is compiled: for \emph{any} Hermitian tower whose canonical
+eigenvalue resolvent traces converge locally uniformly off the real axis to
+the completed channel, GRH follows --- each stage is off-real holomorphic
+\emph{because} its spectrum is real, Weierstrass carries holomorphy to the
+limit, and the compiled resonance forbids it at any off-line zero's pole
+parameter (\texttt{grh\_of\_hermitian\_traceLimit}; the earlier pointwise
+capture statement is audited in its own file as a re-encoding carrying no
+operator content, \texttt{spectralLimitCaptures\_iff\_grh}).  The canonical
+tower is the compiled window ledger itself --- spectra the on-line zero
+ordinates, one axis per unit of multiplicity, every spectral value an exact
+vanishing, Hermitian-realized by the ledger diagonal --- symmetrized over
+both half-planes by the compiled conjugation transport, with the canonical
+Hadamard offsets $i/\rho$ pinned by the compiled partial-fraction identity.
+Each stage \emph{is} a multiplicity-weighted windowed partial sum of the
+rotated Hadamard ledger (\texttt{symmetrizedTrace\_eq\_windowedLedgerSum}),
+and the capstone
+\texttt{rh\_of\_symmetrizedLineTower\_canonicalTraceLimit} concludes
+Mathlib's \texttt{RiemannHypothesis} outright from the one open box: that
+these windowed partial sums of the compiled ledger converge, locally
+uniformly off the real axis, to its full two-sided sum.  That summation
+exhaustion \emph{is} the coverage wall --- the tower indexes the on-line
+census, so an off-line zero's unmatched term is exactly what would break it
+--- and it is now certified \emph{exactly}: the converse direction is
+compiled.  Under RH the two-sided event index bijects with the full
+nontrivial-zero subtype (surjectivity is precisely where RH enters), each
+stage is the finite two-sided window partial sum of the transported ledger
+family, and on any compact off the real axis the pairing closed form bounds
+the tail against the compiled counting summability, uniformly --- so the
+windowed sums do exhaust the ledger (\texttt{traceLimit\_of\_rh}).  Combined
+with the capstone, the one open box is provably \emph{equivalent} to
+Mathlib's \texttt{RiemannHypothesis}
+(\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit}): the wall neither
+overshoots nor undershoots RH.  This separation preserves the proved carrier
+geometry and registration results while making the zero-set identification
+boundary explicit --- one sentence wide, and certified tight from both
+sides.
 
 The thesis, restated at the end as at the start: the unit-$1$ chart is the
 compression, not the object. Working in the scaled three-dimensional frame

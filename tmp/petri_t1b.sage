@@ -1,0 +1,408 @@
+# T1 stage 1: section-space engine for the v2 tower + THE DIMENSION GATE.
+#
+# Tower: E0: y^2+2xy+y = x^3;  C: u^3 + x*u + (y+1) = 0 (genus 4);  C~: t^3 = y
+# (etale mu_3, genus 10).  sigma: t -> zeta t.
+#
+# H^0(omega_C~) = (+)_j t^j * (g/F_u) * pi^*omega0, F_u = 3u^2+x, omega0 = the
+# invariant differential of E0 (div pi^* omega0 = R = ramification divisor of C/E0;
+# div((1/F_u) pi^*omega0) = 2*(O-fiber) as computed: conditions at O/T/T' fibers ONLY).
+# Eigenspace j condition: div(g) + 2*(O-fiber) + j*(T-fiber) - j*(O-fiber... sign:
+#   eta_j = t^j (g/F_u) omega0 regular <=> for each C~-place P over base place Q:
+#   e*v_series(g at Q-branch) + [shift(P; i-grade of monomial, j)] >= 0,
+#   with shift = i*v(u) + j*v(t) + v(1/F_u * omega0) at that branch.
+# GATE: dims must land 4 / 3 / 3 (total 10 = 2*10 - 2... = g~).
+#
+# Series engine: exact Laurent expansions over F_{7^6} (all branch residues rational)
+# to order NTRUNC; u-branches by Hensel on the cubic; t-branches by cube roots.
+
+F = GF(7^6, 'g')
+NTRUNC = 24
+R.<s> = LaurentSeriesRing(F, default_prec=NTRUNC)
+
+
+def e0_series():
+    """Laurent series of (x, y) at the E0-places O, T, T' with uniformizer s."""
+    out = {}
+    # T = (0,0): uniformizer x = s; y = s^3*(series): y(y+2x+1) = x^3 =>
+    # y = x^3/(1+2x+y): iterate.
+    y = s^3
+    for _ in range(NTRUNC + 2):
+        y = s^3 / (1 + 2*s + y)
+    out['T'] = (s + O(s^NTRUNC), y + O(s^NTRUNC))
+    # T' = (0,-1): x = s; y = -1 + w, w(w-1+2s... ) solve G: (w-1)^2+2s(w-1)+(w-1)
+    # -s^3 = 0 -> w^2 - w + 2sw - 2s - s^3 = 0 => w = (2s + s^3 + w^2 + 2sw... )
+    # iterate w = 2s + s^3 - 2*s*w + ... from w^2 - (1-2s) w + ... rearranged:
+    # w = (2s + s^3 + w^2)/(1 - 2s)?? derive: G(x,-1+w) = (-1+w)^2 + 2x(-1+w)
+    # + (-1+w) - x^3 = 1 - 2w + w^2 - 2x + 2xw - 1 + w - x^3 = w^2 + w(2x - 1)
+    # - 2x - x^3. So w = (2x + x^3 - w^2)/(2x - 1)*(-1)... w(2x-1) = 2x + x^3 - w^2
+    # => w = (2x + x^3 - w^2)/(2x - 1).
+    w = 0*s
+    for _ in range(NTRUNC + 2):
+        w = (2*s + s^3 - w^2) / (2*s - 1)
+    out['Tp'] = (s + O(s^NTRUNC), -1 + w + O(s^NTRUNC))
+    # O: x = s^-2 * X, y = s^-3 * Y with X,Y units; standard: set x = 1/s^2 + a1/s
+    # + ...: iterate curve for y ~ -? choose y-leading: y^2 ~ x^3 => y = ±s^-3(1+..).
+    # Parametrize by z = x/y (uniformizer at O): x = z^-2*(series in z)?? Use:
+    # w = -x/y => y = -x/w; plug: x^2/w^2 - 2x^2/w - x/w = x^3 =>
+    # x/w^2 - 2x/w - 1/w = x^2 => x^2 - x(1/w^2 - 2/w) + 1/w = 0... messy; instead
+    # iterate directly: y = -x/w with w = s (the uniformizer), and curve gives
+    # x = (y^2 + 2xy + y)/x^2 ... choose the classical: at O, u0 = x/y has a simple
+    # zero; x = u0^{-2}*h, y = u0^{-3}*h for SOME common h: from y = x/u0:
+    # x^2/u0^2 + 2x^2/u0 + x/u0 = x^3 => 1/u0^2 + 2x/u0... divide x^2:
+    # (1/u0^2) + (2/u0)x/x... redo: y = x/u0: G: x^2/u0^2 + 2x*x/u0 + x/u0 - x^3 = 0
+    # divide by x: x/u0^2 + 2x/u0*... => x/u0^2 + 2x^2/u0 + 1/u0 = x^2?? checking:
+    # (x/u0)^2 = x^2/u0^2: G = x^2/u0^2 + 2x^2/u0 + x/u0 - x^3 = 0; divide x^2:
+    # 1/u0^2 + 2/u0 + 1/(x u0) = x. So x = 1/u0^2 + 2/u0 + 1/(x*u0): iterate x.
+    xO = s^-2
+    for _ in range(NTRUNC + 4):
+        xO = s^-2 + 2*s^-1 + 1/(xO*s)
+    yO = xO/s
+    out['O'] = (xO + O(s^(NTRUNC-4)), yO + O(s^(NTRUNC-5)))
+    return out
+
+
+def cubic_branches(xs, ys):
+    """Branches of u^3 + x*u + (y+1) = 0 over a base place, as Laurent series:
+    Newton-polygon slopes, leading equation solved over F, then Hensel."""
+    B = ys + 1
+    vx, vB = xs.valuation(), B.valuation()
+    ax = xs.coefficients()[0]
+    aB = B.coefficients()[0]
+    branches = []
+    for v in range(-6, 7):
+        vals = [3*v, v + vx, vB]
+        m = min(vals)
+        idx = [k for k in range(3) if vals[k] == m]
+        if len(idx) < 2:
+            continue
+        P.<cc> = PolynomialRing(F)
+        poly = P(0)
+        if 0 in idx:
+            poly += cc^3
+        if 1 in idx:
+            poly += ax*cc
+        if 2 in idx:
+            poly += aB
+        for c, _ in poly.roots():
+            if c == 0:
+                continue
+            u = c * s^v
+            for _ in range(NTRUNC + 4):
+                fu = u^3 + xs*u + B
+                if fu == 0:
+                    break
+                dfu = 3*u^2 + xs
+                u = u - fu/dfu
+            res = u^3 + xs*u + B
+            if res != 0 and res.valuation() < NTRUNC - 8:
+                continue
+            new = True
+            for b in branches:
+                d = u - b
+                if d == 0 or d.valuation() >= NTRUNC//2:
+                    new = False
+            if new:
+                branches.append(u)
+    return branches
+
+
+def cube_root_series(ys):
+    """One cube root of the series ys over F (leading coeff root via polynomial)."""
+    v = ys.valuation()
+    assert v % 3 == 0
+    lead = ys.coefficients()[0]
+    P.<z> = PolynomialRing(F)
+    rts = (z^3 - lead).roots()
+    if not rts:
+        return None
+    t = rts[0][0] * s^(v//3)
+    for _ in range(NTRUNC + 4):
+        ft = t^3 - ys
+        if ft == 0:
+            break
+        t = t - ft/(3*t^2)
+    return t
+
+
+print("building E0 series...", flush=True)
+E0S = e0_series()
+for pl in ('T', 'Tp', 'O'):
+    xs, ys = E0S[pl]
+    res = ys^2 + 2*xs*ys + ys - xs^3
+    rv = 'exact0' if res == 0 else res.valuation()
+    print(f"  {pl}: v(x)={xs.valuation()} v(y)={ys.valuation()} "
+          f"v(y+1)={(ys+1).valuation()} curve-residual v={rv}", flush=True)
+
+print("u-branches per place (T' via ramified substitution s = sigma^3):", flush=True)
+UB, RAMD = {}, {}
+for pl in ('T', 'Tp', 'O'):
+    xs, ys = E0S[pl]
+    br = cubic_branches(xs, ys)
+    e = 1
+    if len(br) == 0:            # fractional slopes: ramified place, re-expand
+        xs, ys = xs.V(3), ys.V(3)
+        br = cubic_branches(xs, ys)
+        e = 3
+        E0S[pl] = (xs, ys)      # store sigma-level series for this place
+    UB[pl] = br
+    RAMD[pl] = e
+    print(f"  {pl}: e={e}, {len(br)} branch series, v(u) = "
+          f"{[b.valuation() for b in br]}", flush=True)
+
+print("t-branches (cube roots of y):", flush=True)
+TB = {}
+for pl in ('T', 'Tp', 'O'):
+    xs, ys = E0S[pl]
+    tb = cube_root_series(ys)
+    TB[pl] = tb
+    print(f"  {pl}: v(t) = {tb.valuation() if tb is not None else 'IRR'}", flush=True)
+
+# ---------------- stage 2: the dimension gate for H^0(omega_C~) ----------------
+# eta_j = t^j * (g / F_u) * pi^* omega0,  g = sum_i a_i(x,y) u^i.
+# Regularity per branch:  v(g-expansion) >= j*v(t) ... rearranged:
+#   v(g) + j*v(t) - v(F_u) + v(omega0) >= 0.
+# omega0 = dx/(2y+2x+1): v = 0 at T/O-branches; v_sigma = 2 at the ramified T'.
+# function-field basis discipline: K(E0) = span{x^p, y x^p} -- q in {0,1} ONLY
+# (q = 2 monomials reduce via the curve relation and pollute the kernel).
+MONS = [(p, q) for p in range(-3, 5) for q in range(0, 2)]
+
+
+def omega0_val_and_series(pl):
+    xs, ys = E0S[pl]
+    dx = xs.derivative()
+    den = 2*ys + 2*xs + 1
+    return dx/den
+
+
+def gate_dimension(j):
+    rows = []
+    ncols = 3*len(MONS)
+    for pl in ('T', 'Tp', 'O'):
+        xs, ys = E0S[pl]
+        w0 = omega0_val_and_series(pl)
+        tb = TB[pl]
+        for ub in UB[pl]:
+            Fu = 3*ub^2 + xs
+            pref = (tb^j) * w0 / Fu
+            # eta = g * pref must be regular: expansion coefficients of negative
+            # orders vanish.  Collect condition rows down to order -1.
+            colblocks = []
+            minv = 10**9
+            series_list = []
+            for i in range(3):
+                for (p, q) in MONS:
+                    ser = (xs^p) * (ys^q) * (ub^i) * pref
+                    series_list.append(ser)
+                    minv = min(minv, ser.valuation())
+            if minv >= 0:
+                continue
+            for order in range(minv, 0):
+                row = [ser[order] for ser in series_list]
+                rows.append(row)
+    M = matrix(F, rows)
+    return ncols - M.rank()
+
+
+for j in range(3):
+    d = gate_dimension(j)
+    print(f"GATE: dim eigenspace j={j}: {d} (expect {4 if j == 0 else 3})",
+          flush=True)
+
+# ============ stage 3: the mu_3 Prym-Petri rank battery (T1 proper) ============
+# L = O(Dt), Dt supported on the 9 points of C~ over O with pi_* Dt = K_C = 2*sum(O_i):
+# per C-branch i: either one point doubled (3 ways) or two distinct points (3 ways).
+# H^0(L): pool functions g = sum a_{ij} x^p y^q u^i t^j with allowance +m_P at the
+# chosen points, regularity elsewhere.  H^0(omega L^{-1}): omega-pool with >= +Dt
+# vanishing.  Petri products evaluated at random points; coordinates in the
+# omega-basis solved by evaluation; sigma-blocks = t-grade components.
+
+import itertools, random
+random.seed(int(11))
+
+# --- all 9 C~-places over O: (u-branch, t-branch) pairs; t-branches = zeta^k * t0
+zeta = F.zeta(3)
+OPLACES = []
+xsO, ysO = E0S['O']
+t0O = TB['O']
+for ub in UB['O']:
+    for k in range(3):
+        OPLACES.append((ub, zeta^k * t0O))
+
+TPLACES = []
+xsT, ysT = E0S['T']
+t0T = TB['T']
+for ub in UB['T']:
+    for k in range(3):
+        TPLACES.append((ub, zeta^k * t0T))
+
+TpPLACES = []
+xsTp, ysTp = E0S['Tp']
+t0Tp = TB['Tp']
+for ub in UB['Tp']:
+    for k in range(3):
+        TpPLACES.append((ub, zeta^k * t0Tp))
+# note: UB['Tp'] has 3 sigma-conjugate series of ONE geometric place; using one
+# conjugate per t-branch suffices for regularity conditions.
+TpPLACES = [(UB['Tp'][0], zeta^k * t0Tp) for k in range(3)]
+
+FULLMONS = [(p, q, i, j) for (p, q) in MONS for i in range(3) for j in range(3)]
+
+
+def series_of_mon(pl, ub, tb, p, q, i, j, extra=None):
+    xs, ys = E0S[pl]
+    ser = (xs^p) * (ys^q) * (ub^i) * (tb^j)
+    if extra is not None:
+        ser = ser * extra
+    return ser
+
+
+def space_dim_and_basis(allow, omega_twist):
+    """Kernel of the regularity conditions.  allow: dict place-index -> allowance
+    (positive = pole allowed, negative = forced zero) for the 9 O-places.
+    omega_twist: if True, sections are h with eta = h*(1/F_u)*omega0*t^0-graded...
+    for omega-type spaces multiply the prefactor per place."""
+    rows = []
+    sers_cache = []
+    for pidx, (ub, tb) in enumerate(OPLACES):
+        pref = 1
+        if omega_twist:
+            w0 = xsO.derivative()/(2*ysO + 2*xsO + 1)
+            pref = w0/(3*ub^2 + xsO)
+        sers = [series_of_mon('O', ub, tb, p, q, i, j, pref)
+                for (p, q, i, j) in FULLMONS]
+        a = allow.get(pidx, 0)
+        minv = min(s.valuation() for s in sers)
+        for order in range(minv, -a):
+            rows.append([s[order] for s in sers])
+    for (ub, tb) in TPLACES:
+        pref = 1
+        if omega_twist:
+            w0 = xsT.derivative()/(2*ysT + 2*xsT + 1)
+            pref = w0/(3*ub^2 + xsT)
+        sers = [series_of_mon('T', ub, tb, p, q, i, j, pref)
+                for (p, q, i, j) in FULLMONS]
+        minv = min(s.valuation() for s in sers)
+        for order in range(minv, 0):
+            rows.append([s[order] for s in sers])
+    for (ub, tb) in TpPLACES:
+        pref = 1
+        if omega_twist:
+            w0 = xsTp.derivative()/(2*ysTp + 2*xsTp + 1)
+            pref = w0/(3*ub^2 + xsTp)
+        sers = [series_of_mon('Tp', ub, tb, p, q, i, j, pref)
+                for (p, q, i, j) in FULLMONS]
+        minv = min(s.valuation() for s in sers)
+        for order in range(minv, 0):
+            rows.append([s[order] for s in sers])
+    M = matrix(F, rows)
+    K = M.right_kernel().basis_matrix()
+    return K
+
+
+# sanity: recompute H^0(omega_C~) via the unified engine: allowance 2 at all O-places
+# for the FUNCTION h in eta = h*(1/F_u)omega0 -- with omega_twist=True and allow=+...:
+# regularity of eta itself: allow = 0 shifts (the prefactor carries the divisor).
+K_omega = space_dim_and_basis({}, True)
+print("unified engine: dim H^0(omega_C~) =", K_omega.nrows(), "(expect 10)",
+      flush=True)
+
+# --- battery over sampled Dt configurations
+def battery(nsamples=20):
+    results = []
+    configs = []
+    percfg = [(('d', a),) for a in range(3)] + \
+             [(('p', a, b),) for a, b in itertools.combinations(range(3), 2)]
+    # a configuration: for each u-branch i in 0..2 pick doubled point (d,k) or pair
+    # (p,k1,k2) among its 3 t-points
+    choices = []
+    for i in range(3):
+        c = [('d', k) for k in range(3)] + \
+            [('p', k1, k2) for k1, k2 in itertools.combinations(range(3), 2)]
+        choices.append(c)
+    allcfg = list(itertools.product(*choices))
+    random.shuffle(allcfg)
+    for cfg in allcfg[:nsamples]:
+        allowL = {}
+        for i, ch in enumerate(cfg):
+            if ch[0] == 'd':
+                allowL[3*i + ch[1]] = 2
+            else:
+                allowL[3*i + ch[1]] = 1
+                allowL[3*i + ch[2]] = 1
+        KL = space_dim_and_basis(allowL, False)
+        allowW = {k: -v for k, v in allowL.items()}
+        KW = space_dim_and_basis(allowW, True)
+        results.append((cfg, KL.nrows(), KW.nrows(), KL, KW))
+    return results
+
+
+res = battery(20)
+from collections import Counter
+print("h^0(L), h^0(wL^-1) distribution:",
+      Counter((r[1], r[2]) for r in res), flush=True)
+
+# --- Petri block ranks at h^0(L) = 1 samples
+# eta = h*(1/F_u)*omega0; product s*eta = (s*h)*(1/F_u)*omega0: coordinates of s*h
+# against the omega-basis h-parts by evaluation at random points of C~.
+def random_points(n):
+    pts = []
+    tries = 0
+    while len(pts) < n and tries < 4000:
+        tries += 1
+        x0 = F.random_element()
+        # y from E0
+        Ry.<Y> = PolynomialRing(F)
+        yr = (Y^2 + 2*x0*Y + Y - x0^3).roots()
+        if not yr:
+            continue
+        y0 = yr[0][0]
+        ur = (Y^3 + x0*Y + (y0 + 1)).roots()
+        if not ur:
+            continue
+        u0 = ur[0][0]
+        tr = (Y^3 - y0).roots()
+        if not tr:
+            continue
+        t0 = tr[0][0]
+        pts.append((x0, y0, u0, t0))
+    return pts
+
+
+PTS = random_points(40)
+
+
+def evalvec(coeffvec, pt):
+    x0, y0, u0, t0 = pt
+    v = F(0)
+    for c, (p, q, i, j) in zip(coeffvec, FULLMONS):
+        if c:
+            v += c * x0^p * y0^q * u0^i * t0^j
+    return v
+
+
+OMEGA_EVALS = matrix(F, [[evalvec(K_omega.row(r), pt) for pt in PTS]
+                         for r in range(K_omega.nrows())])
+
+print("Petri blocks at h^0(L)=1 samples:", flush=True)
+for (cfg, h0L, h0W, KL, KW) in res:
+    if h0L != 1 or h0W != 4:
+        continue
+    s = KL.row(0)
+    prods = []
+    for r in range(4):
+        h = KW.row(r)
+        pv = [evalvec(s, pt) * evalvec(h, pt) for pt in PTS]
+        prods.append(pv)
+    Mp = matrix(F, prods)
+    sol = OMEGA_EVALS.solve_left(Mp)
+    # sigma-blocks: columns of K_omega grouped by t-grade j of nonzero support
+    jgrade = []
+    for r in range(K_omega.nrows()):
+        js = set(j for c, (p, q, i, j) in zip(K_omega.row(r), FULLMONS) if c)
+        jgrade.append(js.pop() if len(js) == 1 else -1)
+    cols1 = [r for r in range(10) if jgrade[r] == 1]
+    cols2 = [r for r in range(10) if jgrade[r] == 2]
+    full = sol.rank()
+    b12 = sol.matrix_from_columns(cols1 + cols2).rank()
+    print(f"  cfg-hash {hash(cfg) % 10**6}: rank(alpha) = {full}/4, "
+          f"rank(beta) = {b12}/4 (target dim {len(cols1)+len(cols2)})", flush=True)

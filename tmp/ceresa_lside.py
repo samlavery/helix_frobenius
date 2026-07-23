@@ -141,8 +141,9 @@ def sieve_primes(n):
 def bank_hecke_unitary(m, nmax):
     """Unitary lambda_n of L(psi^m): weight k = m+1, lam_n = a_n / n^{(k-1)/2}.
     Multiplicative from a_p via the Hecke recursion a_{p^{j+1}} = a_p a_{p^j}
-    - p^m a_{p^{j-1}} (good split p); inert p: a_{p^2}=-p^m, a_{p^{2j}}=(-p^m)^j,
-    odd powers 0; p=7 ramified in K: odd m (level 49, psi^m ramified) a_{7^j}=0, but
+    - p^m a_{p^{j-1}} (good split p); inert p: a_{p^2}=(-1)^m p^m (nebentypus
+    chi_7(inert)=-1 flips even-m sign to +p^m), a_{p^{2j}}=(a_{p^2})^j, odd
+    powers 0; p=7 ramified in K: odd m (level 49, psi^m ramified) a_{7^j}=0, but
     even m (level 7, psi^m UNRAMIFIED) a_{7^j}=(sqrt-7)^{mj}=(-7)^{mj/2} (lam_7=i^m).
     Returns arithmetic a_n and unitary lam_n."""
     a = np.zeros(nmax + 1)
@@ -158,8 +159,9 @@ def bank_hecke_unitary(m, nmax):
                     c[j] = a7 ** j
             # odd m: level 49, psi^m RAMIFIED at 7 -> a_{7^j}=0 (c stays zero)
         elif p % 7 in (3, 5, 6):                   # inert
-            for j in range(2, kmax + 1, 2):
-                c[j] = (-float(p) ** m) ** (j // 2)
+            isign = -1.0 if m % 2 else 1.0         # a_{p^2}=(-1)^m p^m: nebentypus chi_7(inert)=-1
+            for j in range(2, kmax + 1, 2):        # flips even-m sign to +p^m (odd m unchanged)
+                c[j] = (isign * float(p) ** m) ** (j // 2)
         else:                                      # split
             ap = float(ap_hecke(p, m))
             c[1] = ap
