@@ -1,5 +1,6 @@
-import RequestProject.CPSArithmeticStrongSource3D
+import RequestProject.CPSGenuineGL2CarrierSeed3D
 import RequestProject.CPSLatticeInstance3D
+import RequestProject.RepresentationSymmetricPower3D
 import Mathlib.RepresentationTheory.Invariants
 import Mathlib.RepresentationTheory.Irreducible
 import Mathlib.Topology.Algebra.OpenSubgroup
@@ -21,6 +22,7 @@ cuspidal landing for the same restricted-product action.
 
 open Complex Module MeasureTheory
 open scoped RestrictedProduct
+open scoped TensorProduct
 
 namespace CriticalLinePhasor.ThreeDConverse
 
@@ -247,6 +249,98 @@ structure RestrictedSymmetricPowerRepresentation3D
   restrictedTensor_smooth : Representation.IsSmoothAtOpenSubgroups restrictedTensor
   restrictedTensor_admissible : Representation.IsAdmissibleAtOpenSubgroups restrictedTensor
 
+/-- Construct the finite-place symmetric-power components functorially from genuine base GL(2)
+components.  The induced local representations are definitions, not fields.  Their irreducibility,
+smoothness, and admissibility are stated for those exact induced representations.  The global
+restricted tensor product remains the independently assembled adelic representation on `X`. -/
+noncomputable def RestrictedSymmetricPowerRepresentation3D.ofBaseLocalRepresentations
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {Garch : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    {Vbase : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vbase p)] [∀ p, Module ℂ (Vbase p)]
+    {X : Type*} [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    (baseLocal : ∀ p, Representation ℂ (G p) (Vbase p))
+    (local_irreducible : ∀ p,
+      (Representation.symmetricPower (Fin r) (baseLocal p)).IsIrreducible)
+    (local_smooth : ∀ p, Representation.IsSmoothAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) (baseLocal p)))
+    (local_admissible : ∀ p, Representation.IsAdmissibleAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) (baseLocal p)))
+    (restrictedTensor :
+      Representation ℂ (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X)
+    (restrictedTensor_action : ∀ g x, restrictedTensor g x = g • x)
+    (restrictedTensor_irreducible : restrictedTensor.IsIrreducible)
+    (restrictedTensor_smooth : Representation.IsSmoothAtOpenSubgroups restrictedTensor)
+    (restrictedTensor_admissible : Representation.IsAdmissibleAtOpenSubgroups restrictedTensor) :
+    RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact
+      (fun p ↦ Sym[ℂ]^r (Vbase p)) X where
+  localRepresentation := fun p ↦ Representation.symmetricPower (Fin r) (baseLocal p)
+  local_irreducible := local_irreducible
+  local_smooth := local_smooth
+  local_admissible := local_admissible
+  localSatakeRoot := arithmeticSymmetricPowerRoot r pi
+  local_compatible := fun _ _ ↦ rfl
+  restrictedTensor := restrictedTensor
+  restrictedTensor_action := restrictedTensor_action
+  restrictedTensor_irreducible := restrictedTensor_irreducible
+  restrictedTensor_smooth := restrictedTensor_smooth
+  restrictedTensor_admissible := restrictedTensor_admissible
+
+/-- Construct both the finite-place and global symmetric-power actions from the corresponding
+base GL(2) representations.  The carrier `MulAction` in the result is the action induced by the
+constructed global representation itself. -/
+noncomputable def RestrictedSymmetricPowerRepresentation3D.ofBaseAdelicRepresentation
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {Garch : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    {Vbase : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vbase p)] [∀ p, Module ℂ (Vbase p)]
+    {Xbase : Type*} [AddCommGroup Xbase] [Module ℂ Xbase]
+    (baseLocal : ∀ p, Representation ℂ (G p) (Vbase p))
+    (baseGlobal :
+      Representation ℂ (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) Xbase)
+    (local_irreducible : ∀ p,
+      (Representation.symmetricPower (Fin r) (baseLocal p)).IsIrreducible)
+    (local_smooth : ∀ p, Representation.IsSmoothAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) (baseLocal p)))
+    (local_admissible : ∀ p, Representation.IsAdmissibleAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) (baseLocal p)))
+    (global_irreducible :
+      (Representation.symmetricPower (Fin r) baseGlobal).IsIrreducible)
+    (global_smooth : Representation.IsSmoothAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) baseGlobal))
+    (global_admissible : Representation.IsAdmissibleAtOpenSubgroups
+      (Representation.symmetricPower (Fin r) baseGlobal)) :
+    letI : MulAction
+        (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) (Sym[ℂ]^r Xbase) :=
+      Representation.mulAction (Representation.symmetricPower (Fin r) baseGlobal)
+    RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact
+      (fun p ↦ Sym[ℂ]^r (Vbase p)) (Sym[ℂ]^r Xbase) := by
+  letI : MulAction
+      (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) (Sym[ℂ]^r Xbase) :=
+    Representation.mulAction (Representation.symmetricPower (Fin r) baseGlobal)
+  exact {
+    localRepresentation := fun p ↦ Representation.symmetricPower (Fin r) (baseLocal p)
+    local_irreducible := local_irreducible
+    local_smooth := local_smooth
+    local_admissible := local_admissible
+    localSatakeRoot := arithmeticSymmetricPowerRoot r pi
+    local_compatible := fun _ _ ↦ rfl
+    restrictedTensor := Representation.symmetricPower (Fin r) baseGlobal
+    restrictedTensor_action := fun _ _ ↦ rfl
+    restrictedTensor_irreducible := global_irreducible
+    restrictedTensor_smooth := global_smooth
+    restrictedTensor_admissible := global_admissible
+  }
+
 /-- One base restricted-tensor candidate together with the literal arithmetic analytic candidate
 and equivariant residual channel for every twist in the CPS range. -/
 structure ArithmeticCPSAllTwistsConverseCandidate3D
@@ -324,6 +418,49 @@ noncomputable def ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSour
   bank := bank
   analytic := fun m hm hmr tau D => (source m hm hmr tau D).analyticCandidate
   residual := residual
+
+/-- Construct the all-twists converse candidate directly from geometric carrier seeds.  Each
+literal reflected theta source is built internally by `ofCarrierSeed`, so no reflected source or
+analytic candidate is supplied to this constructor. -/
+noncomputable def ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (representation :
+      RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact Vlocal X)
+    (bank : CPSBankBridge Nat.Primes X Garch P compact U)
+    (seed : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+      (D : GlobalHelix.ArithmeticCPSCompletionData r m) →
+        GlobalHelix.ArithmeticCPSCarrierSeed3D r m pi tau D)
+    (residual : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+        EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m)) :
+    ArithmeticCPSAllTwistsConverseCandidate3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres :=
+  ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+    representation bank
+    (fun m hm hmr tau D =>
+      GlobalHelix.ArithmeticCPSReflectedThetaSource.ofCarrierSeed
+        (lt_of_lt_of_le Nat.zero_lt_one hm) (seed m hm hmr tau D))
+    residual
 
 @[simp] theorem ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources_analytic
     {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
@@ -641,13 +778,55 @@ noncomputable def symmetricPowerFunctoriality3D_ofReflectedThetaSources
   (ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
     representation bank source residual).cuspidalSymmetricPowerLift
 
+/-- One-step symmetric-power landing from the paired geometric carrier seed of every arithmetic
+CPS twist.  Reflected theta sources and analytic candidates are constructed internally. -/
+noncomputable def symmetricPowerFunctoriality3D_ofCarrierSeeds
+    {r : ℕ} {pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)}
+    {X Garch P : Type*} {G : Nat.Primes → Type*} {S : Nat.Primes → Type*}
+    [Group Garch] [TopologicalSpace Garch]
+    [∀ p, Group (G p)] [∀ p, TopologicalSpace (G p)]
+    [∀ p, SetLike (S p) (G p)] [∀ p, SubgroupClass (S p) (G p)]
+    {compact : ∀ p, S p}
+    [TopologicalSpace X] [AddCommGroup X] [Module ℂ X]
+    [MulAction (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    [ContinuousSMul (Garch × (Πʳ p, [G p, (compact p : Set (G p))])) X]
+    {U : P → Type*}
+    [∀ q, MeasurableSpace (U q)] [∀ q, Group (U q)]
+    [∀ q, MeasurableMul (U q)] [∀ q, MeasurableInv (U q)]
+    {Vlocal : Nat.Primes → Type*}
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    {Ares Wres Vres : ℕ → Type*}
+    [∀ m, Ring (Ares m)] [∀ m, Algebra ℂ (Ares m)]
+    [∀ m, AddCommGroup (Wres m)] [∀ m, Module ℂ (Wres m)]
+    [∀ m, Module (Ares m) (Wres m)] [∀ m, IsScalarTower ℂ (Ares m) (Wres m)]
+    [∀ m, AddCommGroup (Vres m)] [∀ m, Module ℂ (Vres m)]
+    [∀ m, Module (Ares m) (Vres m)] [∀ m, IsScalarTower ℂ (Ares m) (Vres m)]
+    (representation :
+      RestrictedSymmetricPowerRepresentation3D r pi Garch G S compact Vlocal X)
+    (bank : CPSBankBridge Nat.Primes X Garch P compact U)
+    (seed : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+      (D : GlobalHelix.ArithmeticCPSCompletionData r m) →
+        GlobalHelix.ArithmeticCPSCarrierSeed3D r m pi tau D)
+    (residual : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : GlobalHelix.PolynomialSatakeDualPair (Fin m)) →
+        EquivariantCPSResidual3D (Ares m) (Wres m) (Vres m)) :
+    ArithmeticSymmetricPowerCuspidalLift3D r pi X Garch P G S compact U Vlocal
+      Ares Wres Vres :=
+  (ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds
+    representation bank seed residual).cuspidalSymmetricPowerLift
+
 end CriticalLinePhasor.ThreeDConverse
 
 #print axioms CriticalLinePhasor.ThreeDConverse.EquivariantCPSResidual3D.residue_eq_zero
+#print axioms CriticalLinePhasor.ThreeDConverse.RestrictedSymmetricPowerRepresentation3D.ofBaseLocalRepresentations
+#print axioms CriticalLinePhasor.ThreeDConverse.RestrictedSymmetricPowerRepresentation3D.ofBaseAdelicRepresentation
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSRestrictedTensorCandidate3D.converseCapstone
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources
+#print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.ofReflectedThetaSources_analytic
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.twistPayload
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.converseCapstone
 #print axioms CriticalLinePhasor.ThreeDConverse.ArithmeticCPSAllTwistsConverseCandidate3D.cuspidalSymmetricPowerLift
 #print axioms CriticalLinePhasor.ThreeDConverse.symmetricPowerFunctoriality3D_ofReflectedThetaSources
+#print axioms CriticalLinePhasor.ThreeDConverse.symmetricPowerFunctoriality3D_ofCarrierSeeds

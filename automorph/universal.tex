@@ -1,3 +1,9 @@
+% ============================================================================
+% Self-contained since 2026-07-26: the GRH worked-example part was split into
+% the standalone companion paper grh_companion.tex (cited as GRHCompanion);
+% a condensed on-ramp remains at \ref{sec:worked-example}.
+% ============================================================================
+
 \documentclass[11pt]{article}
 \usepackage{amsmath,amssymb,amsthm,mathtools}
 \usepackage[margin=1in]{geometry}
@@ -259,27 +265,14 @@ residue-equals-jump theorem all compiled (Lean,
 \texttt{CarrierScaleCompensation}, \texttt{StClockJumpLaw},
 \texttt{ResidueJump}).  The classical strip term additionally contains
 excess line multiplicity and off-line strip multiplicity, stated separately.
-\item \emph{Two conditional GRH routes and carrier geometry}
-(Part~\ref{part:grh}): the midpoint is selected by the unique area-law
-scale balance and no-drift law before \texttt{carrierPoint} is formed.  The
-physical-height readout is
-\(\texttt{carrierPointAtHeight}(Z)=\texttt{carrierPoint}(\log Z)\).
-The local scalar fibre is symmetric, the finite harmonic pencil detects the
-truncated event, and the completed harmonic pencil detects the completed
-\(L\)-fibre crossing exactly.  The harmonic and von Neumann Gram matrices have
-three-coordinate lifts \(G\otimes I_3\), with determinant \((\det G)^3\), so
-spatial lifting preserves and reflects every rank drop.  One fixed symmetric
-operator on the full geometric carrier state space is defined before any
-event, and a completed event embeds as the basis state with eigenvalue
-\(\log Z_e\).  Its two ambient Lean resolvent bundles are
-\texttt{threeDZero\_ambientEigenvector\_resolventTrace} and
-\texttt{oneDZero\_threeDZero\_ambientEigenvector\_resolventTrace}; the latter
-adds the analytic \(L\)-zero equation and the exact chart relation.
-Lean also proves that the older 3D identity
-premise decomposes into GRH plus midpoint-free native coverage, and that the
-older 1D routing proposition is unconditional while its chart-to-kernel
-premise alone supplies the critical-line conclusion.  A separate theorem
-states the fixed self-adjoint resolvent/spectral-capture route.
+\item \emph{The worked example} (\S\ref{sec:worked-example}, condensed): the
+basic configuration --- the \(\pi/3\) carrier with a Dirichlet fiber ---
+built from scratch, exercising every mechanism the rest of the paper
+generalizes; the midpoint arrives as a geometric output (area-law scale
+balance and no-drift), never as a stipulated decimal.  The full development
+--- the carrier geometry evidence, the Gram lifts, the ambient operator, and
+the two conditional GRH routes with their compiler-audited premises --- is
+the companion paper \cite{GRHCompanion}.
 \item \emph{Symmetric-power functoriality} (Part~II): $\Sym^r\pi$ automorphic
 on $\mathrm{GL}(r+1)$ at every rank through the Cogdell--Piatetski-Shapiro
 checklist with niceness discharged on the carrier (Theorem~\ref{thm:func},
@@ -311,19 +304,20 @@ $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ with no
 \texttt{sorry}, built in-tree (\S\ref{app:repro}). \emph{Measured}:
 precision-tracking numerics --- calibration and independent reproduction of
 proven statements, never their proof. \emph{Conditional}: the GRH interfaces
-are displayed with their exact premises, and the compiler audit identifies
-which premise supplies the critical-line conclusion. No claim in this paper
-exceeds its register.
+are displayed with their exact premises in the companion paper
+\cite{GRHCompanion}, and the compiler audit identifies which premise supplies
+the critical-line conclusion. No claim in this paper exceeds its register.
 
 The diversity of the results is unusual for one paper, and the explanation is
 the origin: the work began as an effort to repair a proof in the Langlands
 program --- Altu\u{g}'s Beyond Endoscopy for $\mathrm{GL}(2)$ --- and a repair
 made at the level of the coordinate system propagates. A reader wanting the
-shortest self-contained path should read the worked-example part
-(Part~\ref{part:grh}) first: it builds the basic configuration from scratch,
-states the two decisions, and exercises every mechanism the rest of the paper
-generalizes. A running ledger of contributions and a glossary of the paper's
-vocabulary follow immediately.
+shortest self-contained path should read the condensed worked example
+(\S\ref{sec:worked-example}) first: it builds the basic configuration from
+scratch, names the two decisions, and exercises every mechanism the rest of
+the paper generalizes --- with the full development and the two conditional
+GRH routes in the companion paper \cite{GRHCompanion}. A running ledger of
+contributions and a glossary of the paper's vocabulary follow immediately.
 
 \section*{Our contributions}
 \addcontentsline{toc}{section}{Our contributions}
@@ -441,7 +435,8 @@ identity premise already includes the critical-line conclusion, while the old
 1D routing disjunction is unconditional and its separate chart-to-kernel
 premise supplies that conclusion.  The genuine global operator route is the
 fixed self-adjoint resolvent-capture interface
-\texttt{grh\_of\_selfAdjoint\_resolvent\_capture} (Part~\ref{part:grh}). [Lean]
+\texttt{grh\_of\_selfAdjoint\_resolvent\_capture}, developed in full in the
+companion paper \cite{GRHCompanion}. [Lean]
 \item \textbf{Beyond Endoscopy} --- Langlands' proposal, blocked at Altu\u{g}'s archimedean
 uniformity problem. Root-caused and repaired: the obstruction is a deterministic clock intrinsic
 to the orbital transform, removed by an exact gauge with no oscillation estimate, and the repair
@@ -1888,6 +1883,24 @@ this gives
 \Lambda(s,W)=\varepsilon_W\Lambda(\kappa-s,W^\vee).
 \]
 \end{theorem}
+
+\noindent The completion clock \(K\) supplied to this theorem is not
+independent analytic input.  In dimension one it is furnished upstream by
+the unique scale-balanced Gaussian fixed under the carrier's Fourier
+exchange --- unique \emph{within the Gaussian family}
+\(g_a(x)=e^{-\pi a x^2}\), \(\Re a>0\), where
+\(\widehat{g_a}=a^{-1/2}g_{1/a}\) forces \(a=1\), the coefficient \(\pi\)
+pinned by self-duality rather than by any zeta convention --- and its
+Mellin transform is the completion factor
+\(\tfrac12\pi^{-s/2}\Gamma(s/2)\).  Both statements are Lean theorems at
+the standard footprint
+(\texttt{GaussianClock.gaussianClock\_selfDual\_iff},
+\texttt{GaussianClock.gaussianClock\_mellin};
+\texttt{GaussianClockUniqueness.lean}), and the exact Jacobi
+transformation the clock generates is likewise consumed from Mathlib
+(\texttt{jacobiTheta\_S\_smul}, \texttt{EpsteinThetaI.lean}).  For the
+basic configuration the intertwining hypothesis is thus discharged
+upstream, not assumed.
 
 \begin{proof}
 Compose the two displayed intertwining identities:
@@ -3595,18 +3608,25 @@ The chain is closed on the window:
 }
 \]
 
-\noindent\textbf{The audited frontier.}  Two arrows remain between the
-windowed identity and the full operator statement, named and not assumed:
-(i)~identifying the window's diagonal model with the carrier's retained-mode
-generator \(D_W^{\mathrm c}\) requires the mode dictionary to carry
-multiplicity --- the proven dictionary (the bridge \(R_W=V_W\Phi_W\) of
-Theorem~\ref{thm:g6-mode-bridge} and the on-line real-generator realization)
-is event-level, witnessing one kernel vector per event, and does not yet grade
-the kernel by \(m_\rho\); (ii)~the \(T\to\infty\) limit of the resolvent trace
-requires summability handling --- the raw sum
-\(\sum_\rho m_\rho/(\gamma_\rho-w)\) diverges, and the classical remedies are
-conjugate pairing or differencing at two resolvent points.  Everything on this
-side of those two arrows is unconditional and machine-checked.
+\noindent\textbf{The audited frontier, discharged.}  The two arrows between the
+windowed identity and the full operator statement are now both proven, and we
+record them at exactly their strength.  (i)~The mode dictionary carries
+multiplicity: the event's mode space is the local algebra
+\(\mathbb C[X]/((X-\rho_\gamma)^{m_\gamma})\), whose dimension is the vanishing
+order (\texttt{GradedModeDictionary.finrank\_modeSpace}), so the kernel is
+graded by \(m_\rho\) rather than witnessed one vector per event; the graded
+traces equal the windowed trace and the log-derivative residue sum
+(\texttt{gradedWindowTrace\_eq\_windowedTrace},
+\texttt{gradedResolventTrace\_eq\_residue\_sum}) --- operator traces on genuine
+\(m\)-dimensional local algebras \emph{are} the \(S_{\mathrm{mult}}\) jump
+ledger.  (ii)~The \(T\to\infty\) limit is taken by differencing, exactly as
+anticipated: the raw sum \(\sum_\rho m_\rho/(\gamma_\rho-w)\) diverges, but the
+differenced resolvent \(\sum_\rho m_\rho\bigl((\gamma_\rho-w)^{-1}
+-\gamma_\rho^{-1}\bigr)\) converges absolutely, and the windowed differenced
+trace converges to it (\texttt{DifferencedResolvent.windowedDiffResolvent\_%
+tendsto}), the event windows being a monotone cofinal exhaustion.  Both are
+unconditional; neither asserts where zeros lie --- the limit object is a
+statement about the \emph{sourced} spectrum, the event ledger.
 
 \section{The meta method}\label{sec:meta-method}
 
@@ -4935,7 +4955,46 @@ geometric Galois representation for Newton--Thorne \cite{NT} to act on --- and t
 proves it.
 \end{proof}
 
-\input{grh_worked_example_draft}
+\section{The worked example, condensed}\label{sec:worked-example}
+
+The simplest configuration the machinery admits is the \(\pi/3\) carrier
+with an ordinary Dirichlet \(L\)-function riding it, and every mechanism the
+paper generalizes can be watched there at full resolution.  The carrier is
+the positive number line, rescaled: the integer \(n\) sits at physical
+height \(Z=n\), a unit step advances the winding by \(\pi/3\), six steps
+close a turn, so the finite harmonic cells are the \(\mu_6\) buckets and the
+closure arithmetic is exact in \(\mathbb Z[\zeta_6]\) --- integer
+arithmetic, no limit taken.  The carrier is double-ended --- helix and
+conjugate anti-helix over a common parameter, exchanged by the involution
+\(J\) --- and the functional equation of every readout is that involution
+read phasor by phasor: what the classical theory obtains from Poisson
+summation, the carrier carries as a geometric symmetry fixed before any
+source is attached.  A character \(\chi\bmod q\) attaches its fiber ---
+one phasor per integer per lane, synthesized from \(\chi\)'s finite data
+alone, each phasor born at its own height at zero magnitude and growing
+continuously, with no convergence gate --- and the conductor routes the
+integers into positive, negative, and neutral buckets.  The transport
+between the 3D state and the 1D chart runs in both directions with the
+ledger booked at every stage, both composites the identity
+(Theorem~\ref{thm:g2-ledgered-projection}); the chart ordinate of a
+completed native event at height \(Z\) is \(y=\log Z\).  The midpoint is a
+geometric \emph{output}: the arclength area law derives the unique
+scale-balanced fiber exponent \(\sigma_*=\tfrac12\), and the no-drift law
+fixes the native source modes there --- Riemann's real axis, the classical
+midline, and the carrier's weld axis are one locus in three charts, and
+nowhere is a decimal stipulated.
+
+Two decisions --- and only two --- separate this audited geometry from the
+critical-line statement itself: the \emph{identity reading} (every analytic
+zero is a native carrier event) and the \emph{correlation reading} (a
+pointwise chart-zero-to-kernel correspondence).  Neither is taken in this
+paper.  The full development --- the construction at textbook pace, the
+carrier-geometry evidence dossier, the Gram operators and their spatial
+lifts, the ambient carrier operator, the two conditional GRH routes under
+those two readings with their exact premises compiler-audited, and the
+operator reduction sharpened to a single named limit provably equivalent to
+Mathlib's \texttt{RiemannHypothesis} --- is the companion paper
+\cite{GRHCompanion}.
 
 
 
@@ -5931,8 +5990,12 @@ follows generically at every $r$. What is genuinely per-rung is
 \emph{narrower} than construction-plus-identification: instantiating the geometric bank (the
 Siegel theta on $\mathrm{Sp}(2g,\mathbb Z)$, the Godement--Jacquet $\mathrm{GL}(r{+}1,\mathbb Z)$
 ``$\Sym^r$ engine'' verified to machine zero in the tower-atlas work, \S\ref{sec:carrier}) with its
-\emph{arithmetic input} --- the Satake/Frobenius data $\theta^{e}$ feeding the local factors, the
-arithmetic frontier --- and the residual vanishing E4 (completeness for non-exceptional $\pi$).
+\emph{arithmetic input}: the Satake/Frobenius data $\theta^{e}$ feeding the local factors, which
+is identified on the carrier ---
+\texttt{arithmeticCPS\_localFactor\_identification} and
+\texttt{arithmeticCPS\_globalCoefficient\_identification} equate the carrier bank's local numerator
+and every global Euler coefficient with the literal twisted symmetric-power datum, by
+\texttt{rfl} --- together with the residual vanishing E4 (completeness for non-exceptional $\pi$).
 Perron remains the $r$-uniform gap \emph{of the sharp-cutoff cancellation} --- a projection-side
 de-smoothing, off the functoriality critical path, which closes via niceness and the converse
 theorem (Thm.~\ref{thm:cps}); the summatory bound is that route's shadow, not a gap in the transfer.
@@ -7800,150 +7863,51 @@ two-clock and Poisson completion tied to the exact global $L$-values), governed 
 carrier/fiber rescaling reduces the residue reading to cell arithmetic.
 
 \section{Hodge Connection}\label{sec:hodge-connection}
-\emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence} signature-based cycle detection of \S\ref{sec:general} is preliminary; calibrating it (\texttt{hodge\_%
-layer\_calib.py}) surfaced a structural question out of scope here. The carrier's descent
-$3\mathrm D\!\to\!2\mathrm D\!\to\!1\mathrm D$ books a loss ledger --- height (ordinate), radius, angle ---
-and its leading central jet factors, by BSD/Gross--Zagier~\cite{BSD,GrossZagier}, into three invariants the census resolves
-\emph{independently}: the order $r$ (vanishing multiplicity), the regulator $\mathrm{Reg}$ (the
-height/Abel--Jacobi datum), and $|\Sha|$ (the local--global obstruction). So each of three
-cycle-filtration layers ordinarily invisible to Hodge projection carries a \emph{distinct} retained
-coordinate --- a genuinely different phenomenon from the Hodge-visible detection, and the reason those
-results are marked preliminary. The organising principle is that no layer should remain
-invisible. This is \emph{theorem-level} for semisimple carrier states, where the moment tower is jointly
-faithful (\S\ref{sec:hodge-companion}), and is the \emph{target} for extension classes. Beyond $|\Sha|$, the
-\emph{transcendental} Ceresa/Gross--Schoen class --- the modified diagonal in $\mathrm{CH}^2(C^3)_0$,
-homologically trivial --- is the tensor-cube \emph{test case} for the derivative/height tower, where its
-Beilinson--Bloch height is related, in the relevant theorem-anchored triple-product settings, to a central
-$L$-derivative of $H^1(C)^{\otimes3}$ (Zhang \cite{ZhangGS}; Yuan--Zhang--Zhang \cite{YZZ}); the classical
-hyperelliptic control vanishes, while known nontrivial Ceresa/Gross--Schoen examples provide positive
-level-three controls. Its exact carrier landing and extension-tower faithfulness are developed in the
-companion paper \cite{HodgeCompanion}: the typed Lean capstone consumes the standard height identity
-and exact carrier identification and proves nonzero height, nonzero realized state, first visibility
-at depth three, and an explicit algebraic source. \emph{Initial results appear to affirm} the arithmetic instance
-(\texttt{hodge\_griffiths\_probe.py}, App.~\ref{app:repro}): the regulator/value channel fires for every
-homologically-trivial cycle in the census (no silent cycle), and the recursive tower already shows cycles
-absent at level one appearing at level $\ge2$. The companion paper \cite{HodgeCompanion} carries out the
-formal correspondence: arbitrary finite extension stacks are retained, the radial--Torelli--cycle
-bridge constructs higher-grade certified sources with exact realization, and the grade split assembles
-source exhaustion on the finite-extension dial. At depth three,
-\texttt{CeresaGrossSchoenLanding.complete\_landing} proves the full implication from the standard
-height certificate to the carrier and cycle source. The Klein-quartic computation's measured $L$-side
-is on record --- forced sign $-1$ and central derivative $0.8299\ne0$, matching the known non-torsion
-of the cycle --- while the decimal is not presented as a Lean theorem. The first unnamed rung, grade
-four, is mapped and crossed on the carrier. A
-further probe against a deeper cycle-filtration example produced the expected \emph{delayed tower
-signature} $0,\dots,0,\neq0$: a class silent at depth $1$ first fires at depth $2$, recomputed from
-point-counting, its first nonzero slot matching the expected tower level of the class
-(\texttt{tower\_exhaustion\_test.py}, App.~\ref{app:repro}). Define the \emph{carrier filtration} by
-vanishing of the tower readouts $T_j$,
-\[
-  F_{\mathrm{car}}^{\,d}\ :=\ \{\,z:\ T_0(z)=\dots=T_{d-1}(z)=0\,\},
-\]
-with \emph{no} reference to any Bloch--Beilinson depth (non-circular by construction). On this
-definition the depth correspondence is a \emph{theorem}, machine-checked in Lean
-(\texttt{RequestProject/HodgeLedgerFiltration.lean}:
-$F_{\mathrm{car}}$ is an antitone filtration with $F_{\mathrm{car}}^{\,0}$ everything
-(\texttt{carrierFiltration\_antitone}); the level-$d$ ledger coordinate is faithful, its kernel on
-$F_{\mathrm{car}}^{\,d}$ being \emph{exactly} $F_{\mathrm{car}}^{\,d+1}$ (\texttt{ledger\_kernel},
-\texttt{mem\_carrierFiltration\_succ}); no lower level falsely fires (\texttt{no\_early\_detection},
-direction B) and a genuine grade-$d$ class does fire at level $d$ (\texttt{grade\_visibility},
-direction A); whence
-\[
-  \boxed{\ \text{first nonzero carrier tower depth}\ =\ F_{\mathrm{car}}\text{-filtration depth}\ }
-\]
-(\texttt{firstVisibleDepth\_eq\_grade}), the depth unique (\texttt{isFirstVisible\_unique}) and
-preserved by any faithful carrier transport (\texttt{isFirstVisible\_map\_iff}). We price these statements
-exactly: since $F_{\mathrm{car}}$ is \emph{defined} by vanishing of the tower readouts, the depth
-correspondence is definitional bookkeeping, exact by construction --- their value is that
-transport-invariance and the conditional identification below attach to a non-circular, machine-fixed
-object, not that the correspondence is itself deep. Moreover
-$F_{\mathrm{car}}$ is the \emph{unique} filtration whose graded pieces are cut out by the tower
-(\texttt{carrierFiltration\_unique}); consequently a Bloch--Beilinson filtration coincides with
-$F_{\mathrm{car}}$ \emph{if} its successive steps are cut out by that same tower
-(\texttt{blochBeilinson\_coincides}). We state that corollary at its exact strength: its hypothesis
-is \emph{stronger} than the existence of the (conjectural) Bloch--Beilinson filtration --- it
-already asserts that every successive Bloch--Beilinson step is graded by this very tower --- so the
-corollary is uniqueness bookkeeping (any filtration recursively defined by these tower kernels
-equals the filtration so defined), and the identification content lives in verifying that grading
-hypothesis for an independently constructed Bloch--Beilinson filtration, which remains open. The structural retention input is now carried not only on semisimple values but on every
-finite normalized extension stack: \texttt{GeneralExtensionRetention} stores layers
-$c_{\ell,i}$, pairs a layer $\ell$ with a moment depth $d$, and proves by Vandermonde separation that
-$T_{\langle\ell,d\rangle}=\sum_i c_{\ell,i}\lambda_i^d$ is jointly faithful
-(\texttt{generalExtensionTower\_exhaustive}, \texttt{generalExtension\_retention}).  This theorem
-does not silently identify an arithmetic cycle with such a stack; that identification is the
-typed realization map required at each arithmetic landing (finite support, distinct frequencies,
-correct rational structure, extension/regulator compatibility, and no kernel on the classes at
-issue).  The interface is itself formalized: the five conditions are a Lean structure and
-retention transports along any instance as a theorem
-(\texttt{FaithfulRealization.retention}, \texttt{HodgeRealizationBridge.lean}), so each landing
-reduces to constructing the realization term; the first genuine instances are constructed --- on
-the rational group algebra of $\mathbb Z/n$ the realization, recognition, and source exhaustion
-execute end to end (\texttt{cyclic\_sourceExhaustion}, \texttt{CyclicRealizationInstance.lean}),
-and one dimension up, on the Artin motive of any cyclic Galois number field, recognition is
-Artin descent and source exhaustion again executes (\texttt{galois\_descent\_law},
-\texttt{GaloisRealizationInstance.lean}).  The $H^1$ rung is typed with its classical inputs as
-cited literature hypotheses --- Mordell--Weil finite generation and the N\'eron--Tate height
-pairing --- attached to the Mathlib elliptic-curve point group, with torsion-orthogonality,
-kernel-exactly-torsion, and no-silent-point proven from the bundle alone
-(\texttt{EllipticDepthOneRung.lean}); both hypothesis fields sit on Mathlib's active height
-frontier (Northcott and the approximate parallelogram law are landing) and the rung goes
-unconditional, unchanged, when they do.  The remaining companion-paper input
-is therefore the analytic-to-cycle construction, beginning with the from-scratch triple-product
-central-derivative identity landing the Ceresa/Gross--Schoen height at level three (whose
-derivative-to-height step consumes Zhang \cite{ZhangGS} / Yuan--Zhang--Zhang \cite{YZZ}). Each
-arithmetic landing invoked is theorem-anchored --- Tate and Gross--Zagier--Kolyvagin~\cite{GrossZagier,Kolyvagin} at depth one,
-the Gross--Schoen/Ceresa triple-product bridge at tensor depth three (\cite{ZhangGS,YZZ}). So the
-depth correspondence is a machine-checked theorem for the carrier filtration $F_{\mathrm{car}}$ and,
-for Bloch--Beilinson, an interface conditional on the tower-grading hypothesis. The no-silent-layer input is precisely triviality of the
-\emph{carrier radical} $R:=\bigcap_d\ker T_d$ (\texttt{exhaustive\_of\_radical\_trivial}), which
-reduces gradewise to a nondegeneracy obligation --- a faithful regulator into an anisotropic height
-pairing (\texttt{grade\_visible\_of\_nondegenerate}), discharged by N\'eron--Tate positivity at depth
-one.
-\subsection{Cycle-filtration faithfulness: finite extension retention and the Ceresa frontier}\label{sec:hodge-companion}
-\emph{The structural half is unconditional.} On the \emph{semisimple} carrier state --- the finite
-duality-stable weight fiber, an amplitude state $c$ over distinct clock frequencies $\{\lambda_i\}$ ---
-the symmetric-power/moment tower $T_d(c)=\sum_i c_i\lambda_i^{\,d}$ is a \emph{jointly faithful}
-coordinate system: distinct frequencies make the moment matrix Vandermonde, so $\bigcap_d\ker T_d=0$
-and every nonzero state fires at some finite level (\texttt{CarrierTowerSeparation.momentTower\_%
-exhaustive}, from \texttt{momentTower\_detects} $\to$ \texttt{momentTower\_radical\_trivial} $\to$
-\texttt{exhaustive\_of\_radical\_trivial}; Lean).
-The same separation now holds for arbitrary finite extension order.  For a typed distinct clock bank,
-\texttt{GeneralExtensionData} stores a complete finite jet stack $c_{\ell,i}$; the tower decodes its
-natural index as $(\ell,d)$ and reads $\sum_i c_{\ell,i}\lambda_i^d$.  Silence at every paired index
-therefore kills each layer separately, proving trivial radical, \texttt{Exhaustive}, and
-\textsc{Retention} (\texttt{generalExtensionTower\_detects},
-\texttt{generalExtensionTower\_exhaustive}, \texttt{generalExtension\_retention}; Lean).  Thus the
-finite structural route covers semisimple values and all finite normalized jet layers with no
-Bloch--Beilinson input.  For a homologically-trivial cycle the remaining obligation is precise: construct
-its typed finite extension datum and prove that the arithmetic derivative/height readouts agree with this
-paired tower.  Retention then follows by transport rather than by a new no-silent-layer assumption.
-
-We do \emph{not} place the transcendental (Abel--Jacobi-trivial) Griffiths class in $R$: that
-would require every $T_d$ to \emph{factor through} the conventional Abel--Jacobi realization
-(\texttt{radical\_of\_factorsThrough}). Since the global Gross--Schoen height carries
-\emph{non-archimedean} arithmetic data \\
-(Zhang's admissible/metrized-graph local terms \cite{ZhangGS})
-absent from that single-archimedean realization, factorization through $AJ_{\mathbb C}$ \emph{cannot be
-assumed}, and ruling it out is itself a separate non-factorization theorem, not established here.
-Absent one, homological- and Abel--Jacobi-triviality is an \emph{adversarial} no-silent-layer
-benchmark (\texttt{not\_mem\_radical\_of\_detectedPast}), \emph{not} a proven ceiling. One rung of this
-is \emph{unconditional}: for the Fermat quartic the Ceresa class $[C]-[C^-]$ is homologically trivial
-yet is detected by a nonzero \emph{harmonic volume}, Harris's Abel--Jacobi-type invariant (Harris
-\cite{Harris}; Ceresa \cite{Ceresa} for the generic curve), so
-$\ker(\mathrm{cl})\not\subseteq\ker(AJ_{\mathbb C})$ --- a class closed in the homology readout fires at
-the next retained coordinate, no conjecture. This establishes exactly the
-\emph{first} rung (past $\mathrm{cl}$); it does \emph{not} show the $AJ_{\mathbb C}$-kernel itself is
-penetrated by $T_3$. For that deeper rung the explicit evidence currently cuts the other way: in the
-explicit bielliptic Picard family with a closed-form height, the Beilinson--Bloch height of the
-Ceresa cycle is \emph{proportional to the N\'eron--Tate height of its Abel--Jacobi point}, vanishing
-exactly when that point is torsion (Laga--Shnidman \cite{LagaShnidman}) --- the Beilinson--Bloch height is
-controlled by the associated N\'eron--Tate coordinate there, so it does not penetrate $\ker AJ_{\mathbb C}$. The genuine deeper target
-is therefore a class with $AJ_{\mathbb C}(z)$ zero or torsion yet a nonzero \emph{arithmetic}
-level-three invariant --- necessarily one where the \emph{non-archimedean} local height dominates
-(Zhang's metrized-graph terms) or where the finer $\ell$-adic/Galois Ceresa class, not the archimedean
-height, is the retained coordinate. The companion's typed Ceresa theorem now proves the exact
-analytic-to-cycle implication once this arithmetic certificate is supplied
-(\texttt{CeresaGrossSchoenLanding.complete\_landing}) \cite{HodgeCompanion}. \\
+\emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence.}
+The carrier's descent $3\mathrm D\!\to\!2\mathrm D\!\to\!1\mathrm D$ books a
+loss ledger --- height (ordinate), radius, angle --- and its leading central
+jet factors, by BSD/Gross--Zagier~\cite{BSD,GrossZagier}, into three
+invariants the census resolves \emph{independently}: the vanishing order,
+the regulator, and $|\Sha|$ --- three cycle-filtration layers ordinarily
+invisible to Hodge projection, each carrying a \emph{distinct} retained
+coordinate.  This is theorem-level for semisimple carrier states
+(\S\ref{sec:hodge-companion}) and the \emph{target} for extension classes.
+The instruments corroborate: the regulator/value channel fires for every
+homologically-trivial cycle in the census (no silent cycle), and a class
+silent at depth $1$ first fires at depth $2$ with its first nonzero slot at
+the expected tower level (\texttt{hodge\_griffiths\_probe.py},
+\texttt{tower\_exhaustion\_test.py}, App.~\ref{app:repro}); the
+signature-based cycle detection of \S\ref{sec:general} remains preliminary
+(\texttt{hodge\_layer\_calib.py} surfaced a structural question out of
+scope here).  The full development is the Hodge companion paper
+\cite{HodgeCompanion}: the carrier filtration $F_{\mathrm{car}}$ and the
+depth dictionary at its exact (definitional) pricing, the Bloch--Beilinson
+coincidence priced as an interface, finite-extension retention, the
+five-condition realization interface with its executed rungs (the rational
+group algebra, Artin motives, the divisor and function-field-extension
+pairing rungs), the Klein-quartic $L$-side record, and the typed
+Ceresa/Gross--Schoen landing
+(\texttt{CeresaGrossSchoenLanding.complete\_landing}). \subsection{Cycle-filtration faithfulness: finite extension retention and the Ceresa frontier}\label{sec:hodge-companion}
+\emph{The structural half is unconditional; the frontier is priced.}  On
+semisimple states and on every finite normalized jet stack the
+moment/extension tower is jointly faithful --- trivial radical,
+\textsc{Retention}, no Bloch--Beilinson input
+(\texttt{momentTower\_exhaustive},
+\texttt{generalExtensionTower\_exhaustive}; Lean) --- so for a
+homologically-trivial cycle the remaining obligation is exactly the typed
+realization of its extension datum, and retention then follows by transport
+rather than by a new no-silent-layer assumption.  The Griffiths registers
+--- why the transcendental class is \emph{not} placed in the carrier
+radical, the unconditional Fermat-quartic first rung (Harris \cite{Harris};
+Ceresa \cite{Ceresa}), and the Laga--Shnidman control \cite{LagaShnidman}
+showing the bielliptic Beilinson--Bloch height does not penetrate
+$\ker AJ_{\mathbb C}$ --- are carried at full strength in the companion
+\cite{HodgeCompanion}, together with the named deeper target (a class with
+zero or torsion $AJ_{\mathbb C}$ and a nonzero \emph{arithmetic} level-three
+invariant, where the non-archimedean local height \cite{ZhangGS} or the
+$\ell$-adic Ceresa class is the retained coordinate) and the typed
+analytic-to-cycle implication
+(\texttt{CeresaGrossSchoenLanding.complete\_landing}). \\
 
 
 \hrule\hrule
@@ -7962,130 +7926,22 @@ functoriality holds at every rank with niceness discharged on the carrier, and
 Sato--Tate for Maass forms follows on the Galois-free route. Beyond Endoscopy's
 uniformity problem is reduced to a single magnitude bound and its obstruction
 identified as the orbital transform's own clock, with a repair that scales.
-The worked-example part retains two conditional GRH deductions and now states
-their minimal dependencies explicitly.  The helix midpoint is a geometric
-output of unique area-law scale balance and no drift.  A native 3D zero is a
-completed fibre focal cancellation at physical height \(Z>0\), exactly the
-analytic \(L\)-zero at \(\sigma_*+i\log Z\); its finite-bank detector is
-exactly equivalent to finite harmonic-pencil rank drop.  Both Gram operators
-have \(G\otimes I_3\) spatial lifts that preserve and reflect rank drop.
-The scalar fibre \(\gamma\,\mathrm{id}_{\mathbb C}\) is a valid local
-coordinate detector.  Lean now also defines one fixed symmetric operator on
-the completed 3D event type, proves its explicit event eigenvectors, and
-packages the two resolvent versions: 3D-zero/eigenvector and
-1D-zero/3D-zero/eigenvector.  The compiled
-\texttt{SpectralCarrierKernelCoupling3D} now joins the full analytic zero kernel,
-completed focal event, ambient eigenvector, and real-generator resolvent kernel at
-one identical analytic parameter; the principal contour certificate carries that
-coupling as a field.  This event-space assembly does not by itself
-route an arbitrary analytic zero into the event subtype.  Lean proves that the old 3D identity premise
-is GRH conjoined with midpoint-free native coverage; it also proves that the
-old 1D routing disjunction is automatic and that its pointwise
-chart-to-kernel premise alone implies the critical-line conclusion.
-
-The native carrier registration now precedes every radial comparison.  For
-each genuine analytic zero, \texttt{principalZero\_focalCancellation\_on\_carrier}
-constructs a \texttt{PrincipalZeroNativeCarrierEvent3D} whose analytic phasor
-readout closes and whose independently typed helix state lies at the identical
-physical height.  Its compiled \texttt{.noRadialDrift} theorem follows from
-literal helix membership, while \texttt{.ambient\_eigenvector} places the same
-state in the event-independent 3D carrier operator.  Radius does not construct
-this event and does not prove its no-drift law.  The later magnitude limit is
-only the test that the original analytic parameter and the carrier readout are
-the same chart coordinate; the area law evaluates the balanced carrier
-coordinate only after the native event has been registered.
-
-The completed-reflection geometry is now also explicit before that routing step.  For every
-genuine analytic zero $\rho$, the reflected zero $1-\bar\rho$ has the same physical height
-$Z=\exp(\Im\rho)$ and the same event-independent ambient carrier state
-(\texttt{reflected\_principalZeroAnalyticFiber3D\_sourceHeight\_eq},
-\texttt{reflected\_principalZeroAnalyticFiber3D\_ambientState\_eq}).  Their literal eta-configured
-three-dimensional fibers have the same normalized spin direction at every positive site; their
-Euclidean radial magnitudes are reciprocal about the area unit, with exact product $n^{-1}$
-(\texttt{reflected\_principalZeroAnalyticFiber3D\_plane\_cross\_scaled},
-\texttt{paired\_radialMagnitude\_product}).  After multiplication by the independently derived
-carrier radius, the product of the two normalized magnitudes tends to $1$
-(\texttt{paired\_areaNormalizedRadialMagnitude\_tendsto\_one}).  Equality of the two individual
-radial magnitudes at any one site $n>1$ is then proved equivalent to
-\texttt{CarrierScaleBalanced}; only the area law evaluates that fixed point as the half-unit
-(\texttt{reflected\_radialMagnitude\_eq\_iff\_carrierScaleBalanced}).  Thus neither analytic
-fiber is defined with $1/2$: height and direction agree first, the reciprocal radial pair is
-computed, and the midpoint is the unique no-drift fixed scale.
-
-The zero-ledger operator carries the same reflection, rather than a scalar stand-in.  Lean's
-\texttt{xiZeroReflection} is an involution on the genuine analytic-zero basis, the reflected pole
-parameter is the complex adjoint of the original
-(\texttt{poleParam\_xiZeroReflection}), and the induced state-space operator intertwines the
-analytic zero-ledger operator with its coefficientwise formal adjoint
-(\texttt{xiZeroReflectionOperator\_intertwines\_formalAdjoint}).  This records the full
-functional-equation pair on the analytic zero-ledger state space coupled to the independently
-defined three-dimensional carrier: reflection preserves height and
-reverses radial displacement, while the separately computed Hermitian projection is exactly the
-real carrier-height operator.  No summed trace cancellation can erase the remaining displacement,
-because its residual is computed on each zero basis vector separately.
-
-The global \(S(t)\) coordinate law remains an exact theorem: it carries the
-carrier-scale census to the unit-chart census and matches jumps, residues, and
-multiplicities.  The independent contour census now sharpens it to
-\(S_\Gamma(T)=S_{\mathrm{mult}}(T)+N_{\mathrm{off}}^{\mathrm{mult}}(T)\),
-with positive multiplicity summands and the pointwise line-event-or-coordinate-defect
-theorem above.  The same defect is now exactly the positive multiplicity sum of
-full analytic kernels lacking a parameter-preserving
-\texttt{SpectralCarrierKernelCoupling3D}; consequently the coordinates agree
-exactly when every enclosed kernel is coupled, and uncoupled kernels cannot
-cancel one another in the contour ledger.  Its global native branch now constructs the complete physical-height event,
-ambient eigenvector, harmonic rank drops, and 1D/3D trace relation in
-\texttt{upper\_nontrivialZero\_native3DCertificate\_or\_globalCoordinateDefect}.
-Completing the analytic-coverage route requires proving the
-resolvent/spectral capture for the event-independent ambient carrier operator
-\(A^{(3)}_{p,r}\), or instantiating the same interface with another fixed
-self-adjoint operator, as stated by
-\texttt{grh\_of\_selfAdjoint\_resolvent\_capture}.  The capture interface is
-typed on the carrier-native \emph{completed} function
-(\texttt{grh\_of\_selfAdjoint\_completed\_resolvent\_capture}), whose trace
-is singular exactly at the zero images --- the completed resonance is a
-theorem (\texttt{completed\_logDeriv\_not\_tendsto}, from the gamma factor's
-strip nonvanishing) --- so the interface is satisfiable in principle and the
-one remaining closure step is the operator.  (The earlier uncompleted typing
-is retired: \texttt{no\_selfAdjoint\_uncompleted\_capture} shows chart
-artifacts made it uninstantiable by any operator.)  That closure step is now
-itself sharpened to a single named limit.  The genuine (non-costume) operator
-reduction is compiled: for \emph{any} Hermitian tower whose canonical
-eigenvalue resolvent traces converge locally uniformly off the real axis to
-the completed channel, GRH follows --- each stage is off-real holomorphic
-\emph{because} its spectrum is real, Weierstrass carries holomorphy to the
-limit, and the compiled resonance forbids it at any off-line zero's pole
-parameter (\texttt{grh\_of\_hermitian\_traceLimit}; the earlier pointwise
-capture statement is audited in its own file as a re-encoding carrying no
-operator content, \texttt{spectralLimitCaptures\_iff\_grh}).  The canonical
-tower is the compiled window ledger itself --- spectra the on-line zero
-ordinates, one axis per unit of multiplicity, every spectral value an exact
-vanishing, Hermitian-realized by the ledger diagonal --- symmetrized over
-both half-planes by the compiled conjugation transport, with the canonical
-Hadamard offsets $i/\rho$ pinned by the compiled partial-fraction identity.
-Each stage \emph{is} a multiplicity-weighted windowed partial sum of the
-rotated Hadamard ledger (\texttt{symmetrizedTrace\_eq\_windowedLedgerSum}),
-and the capstone
-\texttt{rh\_of\_symmetrizedLineTower\_canonicalTraceLimit} concludes
-Mathlib's \texttt{RiemannHypothesis} outright from the one open box: that
-these windowed partial sums of the compiled ledger converge, locally
-uniformly off the real axis, to its full two-sided sum.  That summation
-exhaustion \emph{is} the coverage wall --- the tower indexes the on-line
-census, so an off-line zero's unmatched term is exactly what would break it
---- and it is now certified \emph{exactly}: the converse direction is
-compiled.  Under RH the two-sided event index bijects with the full
-nontrivial-zero subtype (surjectivity is precisely where RH enters), each
-stage is the finite two-sided window partial sum of the transported ledger
-family, and on any compact off the real axis the pairing closed form bounds
-the tail against the compiled counting summability, uniformly --- so the
-windowed sums do exhaust the ledger (\texttt{traceLimit\_of\_rh}).  Combined
-with the capstone, the one open box is provably \emph{equivalent} to
-Mathlib's \texttt{RiemannHypothesis}
-(\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit}): the wall neither
-overshoots nor undershoots RH.  This separation preserves the proved carrier
-geometry and registration results while making the zero-set identification
-boundary explicit --- one sentence wide, and certified tight from both
-sides.
+The worked example and its GRH interfaces now live in the companion paper
+\cite{GRHCompanion}, at the same registers they carried here: the helix
+midpoint a geometric output of area-law scale balance and no drift; a
+native 3D zero an exact focal cancellation at physical height \(Z>0\),
+exactly the analytic \(L\)-zero at \(\sigma_*+i\log Z\), its finite-bank
+detector equivalent to harmonic-pencil rank drop; the global \(S(t)\)
+coordinate law carrying the carrier-scale census to the unit chart,
+sharpened by the independent contour census to
+\(S_\Gamma(T)=S_{\mathrm{mult}}(T)+N_{\mathrm{off}}^{\mathrm{mult}}(T)\);
+and the operator route sharpened to a single named limit --- windowed
+exhaustion of the compiled ledger --- proved \emph{equivalent} to Mathlib's
+\texttt{RiemannHypothesis} from both sides
+(\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit}), with the earlier
+uncompleted typing retired by its own impossibility theorem
+(\texttt{no\_selfAdjoint\_uncompleted\_capture}).  Nothing in that
+companion is consumed by the theorems of this paper.
 
 The thesis, restated at the end as at the start: the unit-$1$ chart is the
 compression, not the object. Working in the scaled three-dimensional frame
@@ -8734,6 +8590,10 @@ Ann.\ of Math.\ (2) \textbf{117} (1983), 285--291.
 \bibitem{HodgeCompanion} S.~Lavery, \emph{The loss ledger and the cycle filtration: tower exhaustion
 on the helix carrier, and a program whose terminus is the Hodge conjecture}, companion preprint draft
 (2026); the depth dictionary, the harmonic Hodge frame, the grade-four program, and the Ceresa landing.
+\bibitem{GRHCompanion} S.~Lavery, \emph{The Carrier Geometry of the Critical Line: A Worked Example
+with Two Conditional GRH Routes}, companion preprint draft (2026); the worked example at full
+resolution, the two compiler-audited conditional routes, and the operator reduction certified
+equivalent to Mathlib's \texttt{RiemannHypothesis} from both sides.
 
 \bibitem{LagaShnidman} J.~Laga and A.~Shnidman, \emph{Ceresa cycles of bielliptic Picard curves},
 arXiv:2312.12965 (2024); the Beilinson--Bloch height proportional to the N\'eron--Tate height of an

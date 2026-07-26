@@ -1,25 +1,105 @@
-% ============================================================
-% \part{Worked Example: Two Conditional Proofs of GRH}
-% LIVE: \input into universal.tex at the boundary between the
-% functoriality part and the Beyond Endoscopy part. Edit HERE.
-% Status (2026-07-11): all sections populated from the Lean
-% (HelixResolventCapture.lean, general-modulus GRH + GRHComplete);
-% construction expanded: state space / carrier / fiber /
-% bidirectional transport / z = e^y.
-% Remaining: Sam's two \inst checks (pitch wording, complex-chi
-% buckets); bibitems below; final read.
-% Needed bibitems (currently \cite placeholders): Riemann 1859
-% (Monatsberichte der Berliner Akademie); Montgomery pair
-% correlation; Odlyzko--Polya correspondence; Berry--Keating; Connes.
-% Riemann quote verified against standard reproductions of the
-% 1859 paper.
-% ============================================================
+% ============================================================================
+% grh_companion.tex — standalone companion paper, split from universal.tex
+% on 2026-07-26 (formerly the \input part grh_worked_example_draft.tex; see
+% git history of that file for provenance).  Self-contained: compiles alone.
+% Needed bibitems queued (currently uncited in body, carried for the
+% Hilbert--Polya discussion): Montgomery, OdlyzkoPolya, BerryKeating, Connes.
+% ============================================================================
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathtools}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usetikzlibrary{decorations.pathreplacing,arrows.meta,calc}
 
-\part{Worked Example: Two Conditional GRH Routes and Carrier Geometry}\label{part:grh}
+% --- typography / layout (matches universal.tex) ---
+\usepackage{newpxtext}
+\usepackage[varg]{newpxmath}
+\usepackage{titlesec}
+\titleformat*{\section}{\Large\bfseries}
+\titleformat*{\subsection}{\large\bfseries}
+\titleformat*{\subsubsection}{\normalsize\bfseries}
+\usepackage{enumitem}
+\setlist{itemsep=2pt,topsep=4pt,parsep=0pt,leftmargin=*}
+
+\usepackage{lineno}
+\linenumbers
+
+\usepackage[status=draft,author=]{fixme}
+\usepackage{hyperref}
+\usepackage{microtype}
+
+\FXRegisterAuthor{sam}{asam}{Sam}
+
+\newcommand{\inst}[1]{%
+\samnote{INSTRUCTION: #1}%
+}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\renewcommand{\Re}{\operatorname{Re}}
+
+\title{The Carrier Geometry of the Critical Line:\\
+A Worked Example with Two Conditional GRH Routes}
+\author{Samuel Lavery\\ \texttt{sam.lavery@gmail.com}}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The classical $L$-function is a one-dimensional readout of a
+three-dimensional object.  This paper runs that frame on the simplest
+configuration it admits --- the $\pi/3$ carrier with an ordinary Dirichlet
+$L$-function riding it --- as an exact audit of the geometric midpoint, the
+native focal events, and the interface needed to identify carrier events
+with the analytic zero set.  The unconditional content: the helix midpoint
+is a geometric \emph{output} (the unique area-law scale balance and the
+no-drift law), a completed native 3D zero is an exact focal cancellation at
+physical height $Z>0$ whose chart ordinate is $\log Z$, the finite-bank
+detector is exactly equivalent to harmonic-pencil rank drop, and both Gram
+operators admit spatial lifts $G\otimes I_3$ that preserve and reflect rank
+drop.  Two conditional GRH routes are retained under the identity and the
+correlation readings, each with its exact premises displayed and
+compiler-audited.  The genuine operator reduction is compiled: GRH follows
+for any Hermitian tower whose canonical eigenvalue resolvent traces converge
+locally uniformly off the real axis to the completed channel
+(\texttt{grh\_of\_hermitian\_traceLimit}); the earlier uncompleted typing is
+proved uninstantiable by any operator
+(\texttt{no\_selfAdjoint\_uncompleted\_capture}); and the one open box ---
+windowed exhaustion of the compiled ledger --- is proved \emph{equivalent}
+to Mathlib's \texttt{RiemannHypothesis}
+(\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit}): the wall neither
+overshoots nor undershoots RH.  This paper does not prove RH or GRH; it
+isolates them to a single named limit, machine-checked from both sides.
+\end{abstract}
+
+\medskip
+\noindent Three registers are used and never blended.  \emph{Proven}:
+machine-checked in Lean~4, every named theorem at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ with no
+\texttt{sorry}, built in-tree; the Lean sources live with the main paper
+\cite{UniversalCarrier} and are named at each use.  \emph{Measured}:
+precision-tracking numerics --- calibration and independent reproduction of
+proven statements, never their proof.  \emph{Conditional}: the two GRH
+routes are displayed with their exact premises, and the compiler audit
+identifies which premise supplies the critical-line conclusion.  No claim in
+this paper exceeds its register.  The falsifier posture is inherited from
+the main paper \cite{UniversalCarrier}: the working dichotomy is stated with
+its disconfirmation criteria in print, and searches against the favored
+branch are part of the program, not a threat to it.
+
+\tableofcontents
 
 \section{Overview}\label{sec:grh-overview}
 
-This part runs the machinery of Parts~I--II on the simplest configuration it
+This paper runs the machinery of the main development \cite{UniversalCarrier}
+on the simplest configuration it
 admits --- the \(\pi/3\) carrier with an ordinary Dirichlet \(L\)-function
 riding it.  Its purpose is an exact audit of the geometric midpoint, the
 native focal events, and the additional interface needed to identify those
@@ -55,7 +135,7 @@ area law first proves that the unique scale-balanced fiber exponent is
 there (\S\ref{sec:grh-midpoint-provenance}). Riemann's real axis, the
 classical midline, and the carrier's weld
 axis are one locus in three charts, and we will use whichever name keeps a
-given argument honest. Throughout this part, GRH means: for every modulus
+given argument honest. Throughout this paper, GRH means: for every modulus
 \(q\) and every Dirichlet character \(\chi\bmod q\), all roots of the
 completed \(\xi(t,\chi)\) are real --- equivalently, every nontrivial zero of
 \(L(s,\chi)\) lies on the midline. The principal case \(q=1\) is the Riemann
@@ -388,7 +468,7 @@ boundary rather than asking the reader to infer it from prose.
 
 \section{The carrier construction and its interfaces}\label{sec:grh-construction}
 
-Everything in this section is Part~I machinery specialized to the basic
+Everything in this section is main-development machinery \cite{UniversalCarrier} specialized to the basic
 configuration; every object carries a pointer to its general construction.
 The objects come first --- the state space, the carrier that lives in it, the
 fiber that rides the carrier --- then the maps between scales, then the
@@ -411,7 +491,7 @@ continuously as \(Z\) grows; the operators of \S\ref{sec:grh-operators} read
 it, and the events of \S\ref{sec:grh-focal} are its alignments.
 
 Height is the distinguished coordinate. It is the one coordinate the 1D chart
-retains (\S\ref{sec:grh-projection}), every event in this part is indexed by
+retains (\S\ref{sec:grh-projection}), every event in this paper is indexed by
 the height at which it occurs, and there is no convergence gate anywhere in
 the space: states exist and evolve at every height, and the half-plane
 \(\Re s>1\) of the classical series is a property of the compressed chart,
@@ -421,7 +501,8 @@ not of the state space.
 line}\label{sec:grh-helix}
 
 The carrier is the source-independent geometric object in the state space ---
-fixed, by Theorem~\ref{thm:g1-double-carrier}, before any character is
+fixed, by the source-independent double-carrier theorem of
+\cite{UniversalCarrier}, before any character is
 attached. It is double-ended: two lanes \(C=C_+\sqcup C_-\) over a common raw
 parameter, realized as
 \[
@@ -442,7 +523,8 @@ of the integers advances the winding by \(\pi/3\). Six steps close one full
 turn, so the finite harmonic cells are the \(\mu_6\) buckets, and the natural
 coefficient ring of the closure arithmetic is the Eisenstein ring
 \(\mathbb Z[\zeta_6]\), in which the cancellation at a closed cell is exact
---- integer arithmetic, no limit taken (\S\ref{sec:construct}). Nothing about
+--- integer arithmetic, no limit taken (the primary-construct section of
+\cite{UniversalCarrier}). Nothing about
 any source is encoded in this choice; it is the harmonic scale at which the
 carrier's cells close exactly, and every integer occupies the same carrier
 whether or not any character ever reads it.
@@ -450,7 +532,8 @@ whether or not any character ever reads it.
 The two lanes are not decorative. The functional equation of the readout is
 the involution \(J\) read phasor by phasor: on the weld axis, height inversion
 coincides with conjugation, and \(J\) supplies exactly that exchange
-(Theorem~\ref{thm:carrierreflection}, Lemma~\ref{lem:bankreflection}). What
+(the carrier reflection theorem and bank reflection lemma of
+\cite{UniversalCarrier}). What
 the classical theory obtains from Poisson summation, the carrier carries as a
 geometric symmetry of the state space, fixed before any source is attached.
 The weld axis --- the fixed locus of \(J\) --- is the carrier's copy of
@@ -543,8 +626,8 @@ leg (the \(z<1\) end, conjugate phases on the anti-helix, fiber
 equation is the fold through that weld: height inversion \(z\mapsto1/z\)
 (\(s\mapsto1-s\)) exchanges the legs, and on the weld axis the inversion
 coincides with conjugation, which \(J\) supplies phasor by phasor
-(Theorem~\ref{thm:carrierreflection}, Lemma~\ref{lem:bankreflection},
-step~1) --- no Poisson summation is consumed. The only mismatch the exchange
+(the carrier reflection theorem and bank reflection lemma of
+\cite{UniversalCarrier}, step~1) --- no Poisson summation is consumed. The only mismatch the exchange
 permits is the unimodular offset at the weld,
 \(\varepsilon=\prod_v(-\bar\alpha_v)\), assembled per place in Lean
 (\texttt{StrandExchange.bankProduct\_exchange} from
@@ -560,16 +643,18 @@ The carrier is common; the \emph{fiber} is what a particular source puts on
 it. A Dirichlet character \(\chi\bmod q\) attaches its fiber \(F_\chi\): one
 phasor per integer per lane, with magnitude and phase synthesized from
 \(\chi\)'s finite data alone
-(Theorem~\ref{thm:g3-g4-identity-synthesis}) --- the phasor of \(n\) carries
+(the identity-retention/native-synthesis theorem of
+\cite{UniversalCarrier}) --- the phasor of \(n\) carries
 the character phase \(\chi(n)\) on the carrier's winding at \(n\). The
 carrier \emph{hosts} the fiber; it does not become it: the same carrier point
 under two characters carries two different fiber states, distinguished by the
 retained identity, and neither a shared carrier point nor a shared scalar
 readout identifies two sources
-(Corollary~\ref{cor:g3-complete-state-identity}). The 3D representation of
-\(L(s,\chi)\) referred to throughout this part is the \emph{realized} fiber:
-the complete state of Part~I --- carrier, fiber, native clock, native cells
---- specialized to the basic configuration.
+(its complete-state identity corollary). The 3D representation of
+\(L(s,\chi)\) referred to throughout this paper is the \emph{realized} fiber:
+the complete state of the main development \cite{UniversalCarrier} ---
+carrier, fiber, native clock, native cells --- specialized to the basic
+configuration.
 
 Each phasor enters at its own height and at zero magnitude: the phasor of
 \(n\) is born at height \(Z=n\) and grows continuously with height ---
@@ -577,7 +662,7 @@ there is no convergence gate on the carrier
 (\S\ref{sec:grh-statespace}). The dual copy rides the anti-helix with the
 same height law and conjugate transverse phase, so the two lanes run in
 parallel, heights matching, geometries conjugate
-(Theorem~\ref{thm:g1-double-carrier}).
+(the double-carrier theorem of \cite{UniversalCarrier}).
 
 The conductor decides the buckets. For \(n\) sharing a factor with \(q\) we
 have \(\chi(n)=0\): the phasor is \emph{neutral} (U) --- present on the
@@ -587,7 +672,8 @@ character phase routes the phasor: a real character splits the units into a
 (\(\chi(n)=-1\)); a complex character distributes its phases over the
 \(\mu_6\)-cell directions, and the P/M split is realized as the signed channel
 pair \((A,B)\) --- the \(\operatorname{Re}\)- and \(\operatorname{Im}\)-lanes
-of the reflected readout (Theorem~\ref{thm:g6-mode-bridge}). The same integers
+of the reflected readout (the mode-bridge theorem of
+\cite{UniversalCarrier}). The same integers
 occupy the same carrier for every character; only the bucket assignment
 changes. 
 
@@ -596,7 +682,8 @@ state}\label{sec:grh-projection}
 
 The transport between the 3D state and the 1D chart runs in both directions,
 each direction a named map, and both composites are the identity
-(Theorem~\ref{thm:g2-ledgered-projection}). Neither direction is a metaphor:
+(the ledgered-projection theorem of \cite{UniversalCarrier}). Neither
+direction is a metaphor:
 down is how the classical function is read off the state, and up is how a
 chart event is located back on the carrier.
 
@@ -608,7 +695,8 @@ Write a complete carrier coordinate state as \(\mathsf X=(r,\theta,z)\)
 \]
 recording the two-dimensional carrier image --- in the reflected chart, the
 Cayley/M\"obius image on the unit-circle chart
-(Theorem~\ref{thm:carrierreflection}, item (P)). The second forgets the
+(the carrier reflection theorem of \cite{UniversalCarrier}, item (P)). The
+second forgets the
 phase,
 \[
 \Pi_{21}(\theta,z)=z,
@@ -649,13 +737,13 @@ compression, and provably so --- dropping the radial channel alone already
 makes the projection non-injective (\texttt{ConeProjection.radial\_lost},
 \S\ref{sec:grh-E1}).
 
-The two directions do different work in this part. Downward is
+The two directions do different work in this paper. Downward is
 \emph{reading}: the value of \(L(s,\chi)\) at the represented point
 \(\tfrac12+iy\) is the final verification of a marked event --- the analytic
 function is consulted after the event, never used to build it
 (non-circularity, \S\ref{sec:grh-overview}). Upward is \emph{locating}: a
 chart ordinate \(y\) names the carrier height \(e^{y}\) at which the operator
-reads the bank, and the two reading-hypotheses of this part are statements
+reads the bank, and the two reading-hypotheses of this paper are statements
 about precisely this lift --- the 1D-primary branch of the weak hypothesis is
 the upward lift \(\gamma=\Im\rho\) landing on an eigenstate. The classical
 analytic function is the downward readout \emph{without} the ledger --- the
@@ -663,7 +751,7 @@ ledger stays on the carrier. This is why equality of readouts does not imply
 equality of states: two states share an ordinate whenever their heights
 agree, whatever their radii and phases are doing; the exact criterion is that
 readout \emph{plus ledger} determines the state
-(Corollary~\ref{cor:g2-projected-equality}).
+(the projected-equality corollary of \cite{UniversalCarrier}).
 
 Both decisions of \S\ref{sec:grh-overview} take their teeth from this
 mechanism. The 1D ordinate is the logged trace of the 3D event; the
@@ -817,7 +905,8 @@ descent: radius booked in the loss ledger, Cayley/M\"obius to the 2D unit
 circle, angle booked at the projection to 1D, logarithm to the chart,
 landing the readout at \(y=\log Z\approx 8.0397\), the first zero of
 \(L(s,\chi_3)\), with \(S(t)\) the registration bookkeeping between the two
-scales (\S\ref{sec:carrier-S}). The violet thread is the midline surviving
+scales (the \(S(t)\) carrier-scale analysis of \cite{UniversalCarrier}).
+The violet thread is the midline surviving
 every stage --- weld axis in 3D, on-circle landing in 2D
 (\texttt{midpoint\_entry\_on\_circle}), \(\Re s=\tfrac12\) in the chart
 (\texttt{pipeline\_midpoint\_iff}): the ordinate compresses by a logarithm
@@ -984,7 +1073,8 @@ In general the chart ordinate \(y\) summarizes a bank of
 \(\lfloor e^{y}\rfloor\) phasors in one complex number. The 1D representation
 is not a smaller copy of the 3D representation; it is a logarithmically
 compressed summary of the same function, and the scale mismatch between the
-two charts is itself a theorem-level object (\S\ref{sec:carrier-S}).
+two charts is itself a theorem-level object (the \(S(t)\) carrier-scale
+compensation theorem of \cite{UniversalCarrier}).
 
 The abscissa tells the same story from the other side.  The carrier's
 arclength law first derives the unique scale-balanced exponent
@@ -994,7 +1084,7 @@ radial drift (\S\ref{sec:grh-midpoint-provenance}).  Riemann's substitution
 represented point \(\sigma_*+iy=\tfrac12+iy\) simply reads height along it.
 The ordinate compresses by a logarithm while the abscissa is pinned by a
 geometric scale law and its no-drift conservation --- which is why every
-subsequent argument in this part is an argument about heights.  The midline
+subsequent argument in this paper is an argument about heights.  The midline
 has already been located before the chart is defined.
 
 \subsection{Vanishing is focal alignment}\label{sec:grh-focal}
@@ -1005,7 +1095,8 @@ harmonic cancellation: the P and M lanes balance, the \(\mu_6\) cells close in
 \(\mathbb Z[\zeta_6]\), and the residual carries no independent constant mode
 --- the normalized cell residual factors as \(\det(L^{\mathrm c})/A=
 (\lambda-\mu)B\) with \(\lambda-\mu\neq0\), so the residual vanishes exactly
-when the signed closure channel does (Theorem~\ref{thm:g6-mode-bridge}).
+when the signed closure channel does (the mode-bridge theorem of
+\cite{UniversalCarrier}).
 The event is registered by rank at both exact levels.  At physical helix
 height \(Z>0\), with logarithmic ordinate \(y=\log Z\), the canonical finite
 bank closes exactly iff its spatially lifted harmonic Gram matrix drops rank
@@ -1254,7 +1345,8 @@ The formal home of this part is
 \texttt{RequestProject/HelixResolventCapture.lean} together with the
 supporting files named below; every statement carries axiom footprint
 \(\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}\), no
-\texttt{sorry}, no \texttt{axiom}, built in-tree (App.~\ref{app:repro}).
+\texttt{sorry}, no \texttt{axiom}, built in-tree (\S\ref{sec:grh-repro};
+build instructions in \cite{UniversalCarrier}).
 Below, \(\mathrm{GRH}(\chi)\) abbreviates the formal statement ``every
 nontrivial zero of \(L(s,\chi)\) lies on the midline''
 (\texttt{GRHSpectral.GRH}), stated for every modulus \(N\) and every
@@ -1818,3 +1910,177 @@ instantiate that interface with another fixed operator.  The scalar family
 \(\gamma\,\mathrm{id}_{\mathbb C}\) is correctly used as the local
 diagonal-mode calculator, while \(A^{(3)}_\chi\) is the assembled 3D
 event-space operator.
+
+The status of the assembly, recorded here at the same strength as in the
+main paper's ledger.  Lean defines one fixed symmetric operator on the
+completed 3D event type, proves its explicit event eigenvectors, and
+packages the two resolvent versions: 3D-zero/eigenvector and
+1D-zero/3D-zero/eigenvector.  The compiled
+\texttt{SpectralCarrierKernelCoupling3D} joins the full analytic zero
+kernel, completed focal event, ambient eigenvector, and real-generator
+resolvent kernel at one identical analytic parameter; the principal contour
+certificate carries that coupling as a field.  This event-space assembly
+does not by itself route an arbitrary analytic zero into the event subtype.
+Lean proves that the old 3D identity premise is GRH conjoined with
+midpoint-free native coverage; it also proves that the old 1D routing
+disjunction is automatic and that its pointwise chart-to-kernel premise
+alone implies the critical-line conclusion.
+
+The native carrier registration precedes every radial comparison.  For
+each genuine analytic zero, \texttt{principalZero\_focalCancellation\_on\_carrier}
+constructs a \texttt{PrincipalZeroNativeCarrierEvent3D} whose analytic phasor
+readout closes and whose independently typed helix state lies at the identical
+physical height.  Its compiled \texttt{.noRadialDrift} theorem follows from
+literal helix membership, while \texttt{.ambient\_eigenvector} places the same
+state in the event-independent 3D carrier operator.  Radius does not construct
+this event and does not prove its no-drift law.  The later magnitude limit is
+only the test that the original analytic parameter and the carrier readout are
+the same chart coordinate; the area law evaluates the balanced carrier
+coordinate only after the native event has been registered.
+
+The completed-reflection geometry is explicit before that routing step.  For every
+genuine analytic zero $\rho$, the reflected zero $1-\bar\rho$ has the same physical height
+$Z=\exp(\Im\rho)$ and the same event-independent ambient carrier state
+(\texttt{reflected\_principalZeroAnalyticFiber3D\_sourceHeight\_eq},
+\texttt{reflected\_principalZeroAnalyticFiber3D\_ambientState\_eq}).  Their literal eta-configured
+three-dimensional fibers have the same normalized spin direction at every positive site; their
+Euclidean radial magnitudes are reciprocal about the area unit, with exact product $n^{-1}$
+(\texttt{reflected\_principalZeroAnalyticFiber3D\_plane\_cross\_scaled},
+\texttt{paired\_radialMagnitude\_product}).  After multiplication by the independently derived
+carrier radius, the product of the two normalized magnitudes tends to $1$
+(\texttt{paired\_areaNormalizedRadialMagnitude\_tendsto\_one}).  Equality of the two individual
+radial magnitudes at any one site $n>1$ is then proved equivalent to
+\texttt{CarrierScaleBalanced}; only the area law evaluates that fixed point as the half-unit
+(\texttt{reflected\_radialMagnitude\_eq\_iff\_carrierScaleBalanced}).  Thus neither analytic
+fiber is defined with $1/2$: height and direction agree first, the reciprocal radial pair is
+computed, and the midpoint is the unique no-drift fixed scale.
+
+The zero-ledger operator carries the same reflection, rather than a scalar stand-in.  Lean's
+\texttt{xiZeroReflection} is an involution on the genuine analytic-zero basis, the reflected pole
+parameter is the complex adjoint of the original
+(\texttt{poleParam\_xiZeroReflection}), and the induced state-space operator intertwines the
+analytic zero-ledger operator with its coefficientwise formal adjoint
+(\texttt{xiZeroReflectionOperator\_intertwines\_formalAdjoint}).  This records the full
+functional-equation pair on the analytic zero-ledger state space coupled to the independently
+defined three-dimensional carrier: reflection preserves height and
+reverses radial displacement, while the separately computed Hermitian projection is exactly the
+real carrier-height operator.  No summed trace cancellation can erase the remaining displacement,
+because its residual is computed on each zero basis vector separately.
+
+The global \(S(t)\) coordinate law of the main paper remains the exact
+registration theorem behind the audit of \S\ref{sec:grh-audit}: it carries
+the carrier-scale census to the unit-chart census and matches jumps,
+residues, and multiplicities, and the independent contour census sharpens it
+to \(S_\Gamma(T)=S_{\mathrm{mult}}(T)+N_{\mathrm{off}}^{\mathrm{mult}}(T)\),
+with positive multiplicity summands.  The same defect is exactly the
+positive multiplicity sum of full analytic kernels lacking a
+parameter-preserving \texttt{SpectralCarrierKernelCoupling3D}; consequently
+the coordinates agree exactly when every enclosed kernel is coupled, and
+uncoupled kernels cannot cancel one another in the contour ledger.  Its
+global native branch constructs the complete physical-height event, ambient
+eigenvector, harmonic rank drops, and 1D/3D trace relation in
+\texttt{upper\_nontrivialZero\_native3DCertificate\_or\_globalCoordinateDefect}.
+
+Completing the analytic-coverage route requires proving the
+resolvent/spectral capture for the event-independent ambient carrier operator
+\(A^{(3)}_{p,r}\), or instantiating the same interface with another fixed
+self-adjoint operator, as stated by
+\texttt{grh\_of\_selfAdjoint\_resolvent\_capture}.  The capture interface is
+typed on the carrier-native \emph{completed} function
+(\texttt{grh\_of\_selfAdjoint\_completed\_resolvent\_capture}), whose trace
+is singular exactly at the zero images --- the completed resonance is a
+theorem (\texttt{completed\_logDeriv\_not\_tendsto}, from the gamma factor's
+strip nonvanishing) --- so the interface is satisfiable in principle and the
+one remaining closure step is the operator.  (The earlier uncompleted typing
+is retired: \texttt{no\_selfAdjoint\_uncompleted\_capture} shows chart
+artifacts made it uninstantiable by any operator.)  That closure step is now
+itself sharpened to a single named limit.  The genuine (non-costume) operator
+reduction is compiled: for \emph{any} Hermitian tower whose canonical
+eigenvalue resolvent traces converge locally uniformly off the real axis to
+the completed channel, GRH follows --- each stage is off-real holomorphic
+\emph{because} its spectrum is real, Weierstrass carries holomorphy to the
+limit, and the compiled resonance forbids it at any off-line zero's pole
+parameter (\texttt{grh\_of\_hermitian\_traceLimit}; the earlier pointwise
+capture statement is audited in its own file as a re-encoding carrying no
+operator content, \texttt{spectralLimitCaptures\_iff\_grh}).  The canonical
+tower is the compiled window ledger itself --- spectra the on-line zero
+ordinates, one axis per unit of multiplicity, every spectral value an exact
+vanishing, Hermitian-realized by the ledger diagonal --- symmetrized over
+both half-planes by the compiled conjugation transport, with the canonical
+Hadamard offsets $i/\rho$ pinned by the compiled partial-fraction identity.
+Each stage \emph{is} a multiplicity-weighted windowed partial sum of the
+rotated Hadamard ledger (\texttt{symmetrizedTrace\_eq\_windowedLedgerSum}),
+and the capstone
+\texttt{rh\_of\_symmetrizedLineTower\_canonicalTraceLimit} concludes
+Mathlib's \texttt{RiemannHypothesis} outright from the one open box: that
+these windowed partial sums of the compiled ledger converge, locally
+uniformly off the real axis, to its full two-sided sum.  That summation
+exhaustion \emph{is} the coverage wall --- the tower indexes the on-line
+census, so an off-line zero's unmatched term is exactly what would break it
+--- and it is now certified \emph{exactly}: the converse direction is
+compiled.  Under RH the two-sided event index bijects with the full
+nontrivial-zero subtype (surjectivity is precisely where RH enters), each
+stage is the finite two-sided window partial sum of the transported ledger
+family, and on any compact off the real axis the pairing closed form bounds
+the tail against the compiled counting summability, uniformly --- so the
+windowed sums do exhaust the ledger (\texttt{traceLimit\_of\_rh}).  Combined
+with the capstone, the one open box is provably \emph{equivalent} to
+Mathlib's \texttt{RiemannHypothesis}
+(\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit}): the wall neither
+overshoots nor undershoots RH.  This separation preserves the proved carrier
+geometry and registration results while making the zero-set identification
+boundary explicit --- one sentence wide, and certified tight from both
+sides.
+
+\section{Reproducibility}\label{sec:grh-repro}
+
+Every named Lean theorem in this paper is built in-tree with the main
+paper's development, at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}: the principal files are
+\texttt{HelixResolventCapture.lean} (the general-modulus GRH interfaces and
+\texttt{GRHComplete}), the spectral-coupling and zero-ledger files
+(\texttt{SpectralCarrierKernelCoupling3D}, \texttt{xiZeroReflection}), and
+the trace-limit family
+(\texttt{grh\_of\_hermitian\_traceLimit},
+\texttt{rh\_of\_symmetrizedLineTower\_canonicalTraceLimit},
+\texttt{traceLimit\_of\_rh},
+\texttt{rh\_iff\_symmetrizedLineTower\_traceLimit},
+\texttt{no\_selfAdjoint\_uncompleted\_capture}).  Build instructions,
+toolchain pin, and the instrument scripts are in the reproducibility
+appendix of the main paper \cite{UniversalCarrier}.
+
+\begin{thebibliography}{9}
+\bibitem{UniversalCarrier} S.~Lavery, \emph{Carrier, Fiber, Adapters, and
+Functoriality: A Novel Geometric Transport Framework --- From Repairing
+Beyond Endoscopy To Universality}, companion manuscript (2026); the common
+carrier system (Part~I), the $S(t)$ carrier-scale compensation theorem, the
+symmetric-power tower, and the reproducibility appendix.
+\bibitem{Riemann1859} B.~Riemann, \emph{Ueber die Anzahl der Primzahlen unter einer gegebenen
+Gr\"osse}, Monatsberichte der K\"oniglich Preu{\ss}ischen Akademie der Wissenschaften zu Berlin
+(November 1859), 671--680.
+\bibitem{Weil} A.~Weil, \emph{Sur les courbes alg\'ebriques et les vari\'et\'es qui s'en
+d\'eduisent}, Actualit\'es Sci.\ Ind.\ \textbf{1041}, Hermann, Paris (1948); the Riemann hypothesis
+for curves over a finite field --- the Frobenius eigenvalues on the Jacobian have absolute value
+$q^{1/2}$, placing the zeros of the congruence zeta function on $\Re s=\tfrac12$.
+\bibitem{Deligne} P.~Deligne, \emph{Les constantes des \'equations fonctionnelles des fonctions L},
+in \emph{Modular Functions of One Variable II} (Antwerp), Lecture Notes in Math.\ \textbf{349},
+Springer (1973), 501--597 (the local $L$- and $\varepsilon$-factors of a Weil--Deligne
+representation); \emph{La conjecture de Weil.\ I}, Publ.\ Math.\ IH\'ES \textbf{43} (1974),
+273--307 (the Riemann hypothesis for smooth projective varieties over finite fields); and
+\emph{\ldots\ II}, Publ.\ Math.\ IH\'ES \textbf{52} (1980), 137--252 (purity: the normalized
+Frobenius eigenvalues lie on the unit circle).
+\bibitem{OdlyzkoPolya} A.~M.~Odlyzko, \emph{Correspondence about the origins of the
+Hilbert--P\'olya conjecture} (letters exchanged with G.~P\'olya, 1981--1982),
+\texttt{http://www.dtc.umn.edu/\~{}odlyzko/polya/} --- the written record of the suggestion;
+no canonical formal statement exists.
+\bibitem{Montgomery} H.~L.~Montgomery, \emph{The pair correlation of zeros of the zeta function},
+in: Analytic Number Theory (St.~Louis, 1972), Proc.\ Sympos.\ Pure Math.\ \textbf{24}, Amer.\ Math.\
+Soc.\ (1973), 181--193.
+\bibitem{BerryKeating} M.~V.~Berry and J.~P.~Keating, \emph{The Riemann zeros and eigenvalue
+asymptotics}, SIAM Review \textbf{41} (1999), 236--266.
+\bibitem{Connes} A.~Connes, \emph{Trace formula in noncommutative geometry and the zeros of the
+Riemann zeta function}, Selecta Math.\ (N.S.) \textbf{5} (1999), 29--106.
+\end{thebibliography}
+
+\end{document}

@@ -81,6 +81,22 @@ theorem completedLogTheta_one_div
   simp only [smul_eq_mul]
   ring
 
+/-- The non-self-dual carrier exchange.  A primal carrier function and an independently defined
+dual carrier function may ride the helix and anti-helix lanes.  If the global involution exchanges
+their readouts, logarithmic inversion and the self-dual envelope give the weighted theta reflection
+without identifying inverse radial weights with complex conjugates. -/
+theorem completedLogTheta_pair_one_div
+    (E EDual : ℂ → ℂ) (ε : ℂ)
+    (hE : ∀ z, E ((starRingEnd ℂ) z) = ε * EDual z)
+    (k : ℝ) {x : ℝ} (hx : 0 < x) :
+    completedLogTheta E k (1 / x) =
+      (ε * (x ^ k : ℝ)) • completedLogTheta EDual k x := by
+  unfold completedLogTheta logTheta
+  rw [selfDualEnvelope_one_div k hx, logReadout_one_div, hE]
+  push_cast
+  simp only [smul_eq_mul]
+  ring
+
 /-- The rapidly completed logarithmic theta is continuous on the positive half-line whenever the
 carrier function is continuous. -/
 theorem completedLogTheta_continuousOn (E : ℂ → ℂ) (hE : Continuous E) (k : ℝ) :
@@ -136,6 +152,7 @@ end CriticalLinePhasor.StrandExchange
 #print axioms CriticalLinePhasor.StrandExchange.logTheta_one_div
 #print axioms CriticalLinePhasor.StrandExchange.selfDualEnvelope_one_div
 #print axioms CriticalLinePhasor.StrandExchange.completedLogTheta_one_div
+#print axioms CriticalLinePhasor.StrandExchange.completedLogTheta_pair_one_div
 #print axioms CriticalLinePhasor.StrandExchange.completedLogTheta_continuousOn
 #print axioms CriticalLinePhasor.StrandExchange.completedLogThetaDual_continuousOn
 #print axioms CriticalLinePhasor.StrandExchange.completedBankStage_logTheta_one_div

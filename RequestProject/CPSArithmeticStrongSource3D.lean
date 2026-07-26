@@ -31,6 +31,33 @@ structure ArithmeticCPSReflectedThetaSource
     cpsPolynomialFullDual3DTransformedReadout
       (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts (1 / x)
 
+/-- A geometric, pre-analytic source for the literal arithmetic CPS banks.  The carrier function
+is defined independently of a `StrongFEPair` or an analytic continuation.  Its global helix
+exchange is coupled pointwise to the prescribed primal and contragredient coefficient/Gamma banks.
+Thus the source records the two arithmetic identifications consumed by the carrier involution, not
+the resulting theta reflection. -/
+structure ArithmeticCPSCarrierSeed3D
+    (r m : ℕ) (pi : PolynomialSatakeDualPair (Fin 2))
+    (tau : PolynomialSatakeDualPair (Fin m))
+    (D : ArithmeticCPSCompletionData r m) where
+  primalCarrier : ℂ → ℂ
+  dualCarrier : ℂ → ℂ
+  exchangeConstant : ℂ
+  exchangeConstant_ne_zero : exchangeConstant ≠ 0
+  carrier_exchange : ∀ z : ℂ,
+    primalCarrier ((starRingEnd ℂ) z) = exchangeConstant * dualCarrier z
+  weight : ℝ
+  weight_pos : 0 < weight
+  primal_carrier : ∀ x : ℝ, 0 < x →
+    cpsPolynomialFullPrimal3DBankReadout
+        (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts x =
+      CriticalLinePhasor.StrandExchange.completedLogTheta primalCarrier weight x
+  dual_carrier : ∀ x : ℝ, 0 < x →
+    cpsPolynomialFullDual3DTransformedReadout
+        (arithmeticCPSPolynomialTwist r m pi tau)
+        D.conductor D.tensorShifts (1 / x) =
+      CriticalLinePhasor.StrandExchange.completedLogTheta dualCarrier weight x
+
 /-- The analytic datum consumed by a CPS converse theorem, with the continued functions tied on
 their common initial domain to the literal arithmetic Euler products.  The continuation, its dual,
 the root number, weight, strip bounds, functional equation, and native 3D reflection are fields of
@@ -107,6 +134,73 @@ theorem prescribedDual_locallyIntegrableOn (hm : 0 < m) :
   exact cpsPolynomialFullDual3DReflectedReadout_locallyIntegrableOn
     (arithmeticCPSPolynomialTwist r m pi tau)
     D.conductor D.conductor_pos D.tensorShifts hne
+
+/-- The literal-bank reflection derived from the independently specified global 3D carrier
+exchange and the two carrier/readout identifications.  In particular, this theorem does not consume
+an `ArithmeticCPSAnalyticCandidate3D` or a pre-existing theta reflection. -/
+theorem reflection_of_carrierSeed
+    (G : ArithmeticCPSCarrierSeed3D r m pi tau D) :
+    ∀ x : ℝ, 0 < x →
+      cpsPolynomialFullPrimal3DBankReadout
+          (arithmeticCPSPolynomialTwist r m pi tau)
+          D.conductor D.tensorShifts (1 / x) =
+        (G.exchangeConstant * (x ^ G.weight : ℝ)) •
+          cpsPolynomialFullDual3DTransformedReadout
+            (arithmeticCPSPolynomialTwist r m pi tau)
+            D.conductor D.tensorShifts (1 / x) := by
+  intro x hx
+  calc
+    cpsPolynomialFullPrimal3DBankReadout
+          (arithmeticCPSPolynomialTwist r m pi tau)
+          D.conductor D.tensorShifts (1 / x) =
+        CriticalLinePhasor.StrandExchange.completedLogTheta
+          G.primalCarrier G.weight (1 / x) := G.primal_carrier _ (one_div_pos.mpr hx)
+    _ = (G.exchangeConstant * (x ^ G.weight : ℝ)) •
+          CriticalLinePhasor.StrandExchange.completedLogTheta
+            G.dualCarrier G.weight x :=
+      CriticalLinePhasor.StrandExchange.completedLogTheta_pair_one_div
+        G.primalCarrier G.dualCarrier G.exchangeConstant G.carrier_exchange G.weight hx
+    _ = (G.exchangeConstant * (x ^ G.weight : ℝ)) •
+          cpsPolynomialFullDual3DTransformedReadout
+            (arithmeticCPSPolynomialTwist r m pi tau)
+            D.conductor D.tensorShifts (1 / x) := by
+      rw [G.dual_carrier x hx]
+
+/-- Forward construction of the reflected arithmetic theta source from the geometric 3D carrier
+seed.  The pointwise reflection is derived by `reflection_of_carrierSeed`; all regularity and decay
+fields are derived from the literal prescribed coefficient/Gamma banks. -/
+noncomputable def ofCarrierSeed
+    (hm : 0 < m) (G : ArithmeticCPSCarrierSeed3D r m pi tau D) :
+    ArithmeticCPSReflectedThetaSource r m pi tau D where
+  pair := {
+    toWeakFEPair := {
+      f := cpsPolynomialFullPrimal3DBankReadout
+        (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts
+      g := fun x : ℝ => cpsPolynomialFullDual3DTransformedReadout
+        (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts (1 / x)
+      k := G.weight
+      ε := G.exchangeConstant
+      f₀ := 0
+      g₀ := 0
+      hf_int := prescribedPrimal_locallyIntegrableOn hm
+      hg_int := prescribedDual_locallyIntegrableOn hm
+      hk := G.weight_pos
+      hε := G.exchangeConstant_ne_zero
+      h_feq := reflection_of_carrierSeed G
+      hf_top := fun q => by
+        simpa using cpsPolynomialFullPrimal3DBankReadout_rapid
+          (arithmeticCPSPolynomialTwist r m pi tau)
+          D.conductor D.conductor_pos D.tensorShifts q
+      hg_top := fun q => by
+        simpa using cpsPolynomialFullDual3DReflectedReadout_rapid
+          (arithmeticCPSPolynomialTwist r m pi tau)
+          D.conductor D.conductor_pos D.tensorShifts q
+    }
+    hf₀ := rfl
+    hg₀ := rfl
+  }
+  primal_source := rfl
+  dual_source := rfl
 
 /-- Canonical one-source construction from the assembled arithmetic analytic candidate.  Its
 pointwise native reflection becomes the `StrongFEPair` reflection field, while local integrability
@@ -347,6 +441,8 @@ end CriticalLinePhasor.GlobalHelix
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.primal_initialIdentification
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.prescribedPrimal_locallyIntegrableOn
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.prescribedDual_locallyIntegrableOn
+#print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.reflection_of_carrierSeed
+#print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.ofCarrierSeed
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.ofAnalyticCandidate
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.ofAnalyticCandidate_prescribed3D_reflection
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.dual_initialIdentification
