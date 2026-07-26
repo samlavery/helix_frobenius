@@ -603,7 +603,20 @@ over a genuine model rational-$(p,p)$ locus). The harmonic dictionary's central
 entry is likewise a theorem on the model: a state is DC exactly when the
 angular part of the Deligne torus action fixes it
 (\texttt{modelDC\_iff\_angularFixed}) --- the dictionary at dictionary
-strength, constructing nothing. What remains open per arithmetic landing is
+strength, constructing nothing.  The classical-Hodge column of that
+dictionary is now complete (\texttt{ModelGreenOperator.lean}; standard
+footprint): the model Laplacian acts by \texttt{freq}$^2$ per channel, its
+kernel is EXACTLY the DC locus --- so harmonic $\Leftrightarrow$
+$(p,p)$-DC $\Leftrightarrow$ torus-fixed is a proven chain
+(\texttt{modelHarmonic\_iff\_angularFixed}) --- and the Green operator is
+its Moore--Penrose pseudoinverse with the model Hodge decomposition
+$z = P_{\mathrm{harm}}z + \Delta(Gz)$, the Moore--Penrose identities, and
+uniqueness of the harmonic part all theorems
+(\texttt{hodge\_decomposition}, \texttt{laplacian\_green\_laplacian},
+\texttt{green\_laplacian\_green}, \texttt{harmonic\_part\_unique}).  Same
+register: this completes the classical column; the pencil whose rank
+behavior detects algebraic classes is the channel-constancy Gram, a
+different object.  What remains open per arithmetic landing is
 exactly the construction of the \texttt{FaithfulRealization} term for the cycle
 data at issue: a single typed object, not a prose promise.
 
