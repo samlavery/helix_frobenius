@@ -159,6 +159,22 @@ Jung–van der Kulk frame says no for automorphisms; the question is
 whether non-injective det-const candidates are structurally excluded or
 merely absent at low degree.
 
+## Campaign-2 telemetry discovery (2026-07-28): Lehmer bimodality
+
+The arch/gap² ratio across the harvested close-pair sites is BIMODAL,
+five to eight orders apart: ordinary pairs at ~2.4–2.6 (d = −5108,
+−3288) vs ultra-suppressed at 10⁻⁵–10⁻⁸ (d = 8113, 4737, −7691, 3061),
+with intermediates (−8103, −2999 at ~2·10⁻²). The quadratic law alone
+does not predict two populations — at the suppressed sites the curvature
+|Λ''| collapses along with the gap (near-double-zero shape). Hypothesis,
+pre-registered NOT asserted: selection effect (scan-missed pairs are
+biased toward locally-flat |Λ|). Falsification test, designed: an
+unbiased control — systematic fine scan (step 0.01) over a fresh
+conductor band, ALL pairs in the same gap range regardless of
+coarse-scan visibility; bimodality persisting = a new Lehmer-class law,
+ordinary population dominating = selection artifact, retract. Full
+numbers in memory: lehmer-bimodality.
+
 ## Order of execution
 
 1. Campaign 1 tonight-scale sweep (existing instrument, new driver).

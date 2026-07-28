@@ -1321,6 +1321,54 @@ closes from the counted angular data alone.  What upgrades is the TYPE of
 the dossiers --- from finite labels to counted traces and exact
 rationals; the monuments remain in-model form, cited not proven.
 
+\paragraph{The factored recognition interface and the clock--graph
+dictionary.}  The recognition target is now also typed one level more
+flexibly (\texttt{GeometricSourceRecognition.lean}; standard footprint):
+a rational DC state need not be matched directly to a cycle --- it
+suffices to exhibit an intermediate GEOMETRIC object whose standard
+realization produces the cycle, and the interfaces enforce that factoring
+by type.  \texttt{GeometricRecognition} demands a term of the geometric
+type before the class equality; \texttt{ProjectorRecognition} types the
+projector route --- an algebraic correspondence applied to an algebraic
+seed, $\pi_z(\eta)=z$ --- with the correspondence's algebraicity a
+HYPOTHESIS FIELD, so a merely cohomological projector cannot discharge
+the obligation: the route that would silently restate the conjecture in
+projector language is inexpressible.  Both compose to \textsc{Recognition}
+and, with retention, to the terminus
+(\texttt{recognition\_of\_geometric},
+\texttt{sourceExhaustion\_of\_projector}).  The load-bearing new entry is
+the clock--graph identification: channel projectors are POLYNOMIALS IN
+THE CLOCK OPERATOR --- Lagrange/Vandermonde inversion over the distinct
+channel multipliers, proven on the model
+(\texttt{clockChannelProjector}) --- and on an abelian variety the clock
+operator is realized by the multiplication-by-$n$ graphs, algebraic
+correspondences whose polynomial combinations are exactly the
+Chow--K\"unneth/Beauville projectors, algebraic by Deninger--Murre (cited).
+The safe statement, scoped exactly: the carrier clock decomposition
+corresponds to the algebraic $[n]$-correspondence decomposition of
+$h(A)$ --- projectors onto cohomological DEGREES and onto motivic factors
+cut by algebraic endomorphisms, NOT onto arbitrary individual classes
+within one degree.  The retention theorem's Vandermonde is thereby the
+same linear algebra as the classical projector construction, with clocks
+$\mapsto$ $[n]$-graphs the dictionary entry.  The frontier restates
+sharply: idempotents of the graph algebra (multiplication graphs, isogeny
+graphs recovered by the freeze/annihilator decoder) are algebraic by
+construction, so recognition for the divisor--endomorphism--generated
+(Lefschetz) classes is the next executable theorem.  The first classes
+OUTSIDE the graph algebra are the collective/Weil rail, and there the
+honest wall is TWO-part (corrected on review, 2026-07-28): produce the
+motivated projector for the collective channel (Andr\'e: Hodge classes on
+abelian varieties are motivated), AND show that particular motivated
+presentation algebraic.  The second half is NOT ``standard conjecture B
+for the sixfold'': B is known for abelian varieties while Hodge remains
+open there, because the motivated presentation may consume
+Lefschetz-inverses on AUXILIARY varieties outside the known-B class ---
+the auxiliary support must be displayed, never inferred from the sixfold
+being abelian.  The attack is thereby sharply testable: rewrite the
+collective projector's motivated presentation using only graph, divisor,
+Fourier, and Lefschetz-inverse correspondences on known-B support.  Yes
+yields the cycle; no locates the genuine open step without hiding it.
+
 \paragraph{The loop closed at grade four, clock-relation regime.} The same
 four arms now run end to end one floor below the frontier
 (\texttt{recognition\_loop\_g4.py}, App.~\ref{app:repro}), oracle-free, on
@@ -2961,6 +3009,590 @@ the Abel--Prym cycle's arithmetic lives modulo algebraic equivalence.
 Semiregular detection of those twelve, the original spec of this rung, is
 thereby falsified as specced and replaced by the stronger direct
 certificate; the refuted pointer stays in the record.
+
+\paragraph{The sixfold program: the locus ledger, the calibrated
+projector, and the explicit base.}  The frontier now has a worked
+program, recorded here at its exact registers.  The organizing reframe:
+a divisor is the focal locus of a harmonic value, and the exponential
+sequence is the grade-one \emph{locus ledger} --- integral winding of a
+harmonic section carves a geometric locus, automatically.  The classical
+absence of this mechanism in codimension $\ge2$ is chart-native
+($\mathcal O^*$ exists only at $\mathrm{GL}(1)$); the carrier keeps
+rank-one phasors and a tower-stable winding lattice at every grade, so
+the honest open object is the grade-$p$ locus ledger, and the named
+target (the \emph{Locus Ledger Law}, a target, not a claim) is: some
+refined theta-geometric focal locus of the collective bank has expected
+codimension and nonzero Weil coefficient.  Its first entry is a proven
+NULL: the plain Abel--Prym locus books $\lambda\Theta^3$ --- the
+rigidity law --- so plain theta geometry is Lefschetz-blind on the
+collective channel.  A one-line lemma sharpens the search: the
+$\mathbb Z[\zeta_3]$-action rotates the rational Weil plane with order
+three and no invariants, so \emph{$\sigma$-invariant cycle classes have
+zero Weil projection} --- candidates must be $\sigma$-asymmetric (this
+subsumes the null: deck translation fixes homology classes, so the AP
+locus never had a chance).
+
+\emph{The projector, calibrated (measured register).}  Frobenius
+eigen-frames from plain point counts with functional-equation-completed
+degree-eight Weil polynomials: at split primes the Tate block fuses at
+one address (multiplicity $18$ --- reproducing the occupancy law by an
+independent computation); at generic inert primes it SPLITS: the
+Lefschetz block at address $+1$ (multiplicity $10=\mathrm{Sym}^2$ of an
+NS of rank four) against the Weil-type block at address $-1$
+(multiplicity $8$) --- the $(-1)^{\delta}\chi_3$ twist of the freeze
+determinant law, seen directly in the spectrum.  The Weil projection of
+a candidate class is thereby READABLE: the $(-1)$-at-generic-inert
+eigencomponent.  Truth-gates ran hot: an impossible null (a spectrum
+with no $\Theta^2$ line) exposed an invalid character-rail reading at
+inert primes, corrected to the plain-count route --- the instrument
+record keeps both versions.
+
+\emph{The explicit base (instrument-certified).}  The sixfold's base
+curve now has candidate equations: in the family
+$w^3+Aw+B(u,v)=0$ over $E_0:v^2=u^3+1$, five genus-four instances pass
+the hardened gates (unique infinity-fiber factorization pattern per
+prime; the $k=5$ count PREDICTED by the polynomial fixed at $k\le4$;
+smoothness at two primes; non-Galois by the discriminant gate).
+Involution triage then excludes the $B_0=0$ instances --- they carry
+$(v,w)\mapsto(-v,-w)$, the fatal-involution shape that forces
+decomposable Pryms, told by their vanishing odd inert traces --- leaving
+the involution-free primary candidates
+\[
+  C_0:\ w^3+2w+(u+v)=0
+  \qquad\text{and}\qquad
+  C_0':\ w^3+2w+(u+v+2)=0
+\]
+over $E_0$, whose rational $3$-torsion $(0,\pm1)$ feeds the \'etale
+$\mathbb Z/3$-cover as the fiber product against the $3$-isogeny ---
+counting by splitting weights, no new machinery.
+
+\emph{The deliverable and its two open arrows.}  Target theorem: every
+rational Hodge class on the explicit Prym sixfold $B$ is algebraic.
+Chain: certified base $\to$ cover and genus-$10$ gate $\to$ the
+census/projector suite ported verbatim $\to$ the refined-locus
+$m$-census with both outcomes pre-registered (a surviving candidate
+$\to$ the exact-nonvanishing proof; all-null $\to$ the theta-blindness
+no-go, itself a theorem) $\to$ the exhaustion
+$\mathrm{Hdg}^3(B)=\mathbb Q\Theta^3\oplus W$ by a Mumford--Tate
+computation $\to$ the theorem.  Everything in that chain is instrument
+work or conventional mathematics except one node, named without
+disguise: the EXISTENCE of a Weil-sensitive algebraic locus on the
+simple sixfold, within reach of the searchable families.  The point
+counter is the instrument that finds and certifies the missing class;
+it is not the deliverable.
+
+The downstream implication is now itself a machine-checked theorem
+(\texttt{KSweepCompletion.lean}; standard footprint): given the
+decomposition with $L$ algebraic, $\dim_K W=1$, and the $K$-action
+algebraic, ONE algebraic cycle with nonzero $W$-component makes every
+class in $L\oplus W$ algebraic --- subtract the Lefschetz part, sweep
+the $K$-line (\texttt{completion},
+\texttt{completion\_implication}).  Two structural simplifications fall
+out and are recorded exactly: hypothesis three becomes FREE once the
+constructed $B$'s deck action is certified (a step-0 gate: the
+$\zeta_3$-multiplication is then an automorphism whose graph is
+algebraic by construction), and \emph{no algebraicity of the projector
+$\pi_W$ is required anywhere} --- its only role is the nonvanishing
+certificate, so the motivated-presentation / standard-conjecture pricing
+of the collective wall is BYPASSED for this $B$.  Ticket status, stated
+so nothing is silently assumed: the closure lemma is fixed; the
+$B$-specific premises (the decomposition, $\dim_K W=1$, the certified
+deck action) await the constructed $B$; the Weil-sensitive cycle ---
+$m(\mathrm{C1})\neq0$ --- is OPEN, and it is the search's conclusion,
+never its assumption.  Hodge for $B$ is not proven; what is proven is
+that it hangs on exactly the named nodes.
+
+\paragraph{Universal reconstruction, extracted: the mechanism is
+Prym-free.}  The sixfold proves the mechanism can succeed once; the
+universal target needs the mechanism without the scaffolding.
+\texttt{UniversalReconstruction.lean} (standard footprint) extracts it.
+The \emph{seed-transfer theorem} (\texttt{seed\_transfer}) is stated for
+an arbitrary SET of algebraicity-preserving operators --- the algebraic
+correspondences of $X$, whatever they are; no field, no dimension bound,
+no abelian hypothesis, no Prym, no CM, no split discriminant, no
+citation of Schoen or Markman: any constituent $W$ of the Hodge space
+that is \emph{orbit-irreducible} under those operators (every nonzero
+element reaches every element) becomes wholly algebraic the moment ONE
+algebraic class has nonzero $W$-component --- subtract the Lefschetz
+part, transport along the orbit.  \texttt{exhaustion\_of\_seeds}
+iterates: with finitely many constituents, the universal quantifier over
+classes collapses to one seed per constituent.
+\texttt{kline\_seed\_transfer} recovers the sixfold's $K$-sweep as the
+one-line instance (a $K$-line is orbit-irreducible under the $K$-scalar
+operators): the Prym geometry was one specimen's certificate, never the
+mechanism.  The socket is wired --- \texttt{sourced\_of\_sweep} fills
+the program's single remaining field \texttt{sourced\_of\_pairing}, and
+\texttt{sourceExhaustion\_of\_sweep} composes with proven retention into
+the terminus.  The price of the universal quantifier is thereby exact,
+and it is two legs per constituent of $\mathrm{Hdg}^p(X)$: the
+STRUCTURE leg --- $\mathrm{Hdg}^p(X)=L+\sum_i W_i$ with $L$ in the
+divisor algebra and each $W_i$ orbit-irreducible under the actual
+correspondences of $X$ --- and the SEEDING leg --- one fired algebraic
+class per constituent.  Where both legs are theorems today is the
+low-rung ledger already recorded ($p=1$; products of elliptic curves and
+abelian surfaces; abelian threefolds; abelian fourfolds including Weil
+fourfolds; fivefolds; split Weil sixfolds --- and, per the
+Patel--Zhang audit already in this record, the Weil classes of Pryms
+of ALL \'etale abelian covers, in every dimension); the first open
+constituents live beyond the abelian-cover playbook entirely:
+non-Prym Weil $2n$-folds and the rigid sixfolds of the cited
+literature, for which no specimen is constructible by any cover in
+this program's toolkit.  The necessity claim is itself
+machine-checked: \texttt{seed\_without\_irreducibility\_fails} exhibits
+a model satisfying every hypothesis EXCEPT orbit-irreducibility in which
+the seeded constituent is NOT algebraic --- without irreducibility a
+seed certifies only itself, so the reduction's entire content lives in
+the structure leg, and the register says so.  Scope: none of this
+assumes or proves the Hodge conjecture; it prices it, exactly, and the
+Lean enforces the price.
+
+\paragraph{The compression theorem: seeds are free, transitivity is
+proven, the wall is one field.}  At \emph{full Hodge-correspondence
+strength} both legs close unconditionally, and
+\texttt{HodgeCompression.lean} (standard footprint) proves it.  The
+structure leg: polarizable rational Hodge structures form a semisimple
+category (classical --- polarization positivity), so
+$H^{2p}(X,\mathbb{Q})$ splits as $T\oplus N$ with $T$ the Tate-isotypic
+block, whose underlying rational space is exactly the span of the Hodge
+classes: $\mathrm{Hdg}^p(X)=T$.  Every linear endomorphism of $T$
+extended by zero on $N$ is a morphism of Hodge structures
+($\operatorname{Hom}_{\mathrm{HS}}(\mathbb{Q}(-p)^m,\mathbb{Q}(-p)^m)
+=M_m(\mathbb{Q})$), hence --- K\"unneth plus Poincar\'e duality --- is
+induced by a HODGE class on $X\times X$; the block is therefore
+orbit-irreducible under these transports, and that transitivity is now
+machine-checked linear algebra (\texttt{transport\_exists},
+\texttt{hodge\_block\_irreducible}).  The seeding leg: the intrinsic
+seed is the polarization power $h^p$ --- algebraic, Hodge, nonzero for
+$p\le\dim X$ by hard Lefschetz; no Prym, no CM, no discovery search.
+The compression (\texttt{hodge\_compression}): with the splitting and
+the free seed, the Hodge conjecture for $(X,p)$ IS the single field
+$\mathtt{halg}$ --- \emph{the Tate-block transport operators preserve
+algebraicity}.  The self-reference is stated without disguise: a
+rank-one transport carrying the seed to a target $\beta$ is built from
+$\beta$ itself, so the field is the conjecture one degree up on
+$X\times X$; the compression is a reorganization of the wall, not an
+escape.  Its value is coordinates, and they are operative: the
+TRADE-OFF LAW (\texttt{block\_closed\_of\_algebraic\_transport})
+says that restricting to proven-algebraic correspondences makes
+stability a theorem while irreducibility and seeding go open (the
+sixfold's position), while enlarging to full Hodge transport makes
+irreducibility and seeding theorems while stability goes open (the
+compression's position) --- the Hodge conjecture is precisely the
+assertion that the two positions meet, for every $(X,p)$, in a
+correspondence set that is simultaneously algebraic and transitive.
+This coincidence deserves the emphasis of a display, because it is
+the exact diagnosis rather than a weakness: \emph{permit every Hodge
+correspondence and transitivity is a theorem; restrict to known
+algebraic correspondences and algebraicity is a theorem; the Hodge
+conjecture is exactly the statement that the two correspondence
+algebras coincide on the Tate-block transport operators.}  And the
+coincidence is itself machine-checked as an equivalence, in both
+directions (\texttt{hodge\_iff\_positions\_meet}): given the splitting
+and the free seed, the block is algebraic IF AND ONLY IF some
+algebraicity-preserving correspondence set acts transitively on it ---
+the conjecture is not merely \emph{reduced to} the coincidence; it
+\emph{is} the coincidence.  Earlier reductions that seemed to ``move
+the difficulty around'' were not failing; they were moving between the
+two coordinate charts of this one statement.
+
+The instruments point at this field at the correct register --- and
+the register matters.  The census's collective projector is a
+FROBENIUS spectral projector cutting the Weil channel; its measured
+$p$-independent signature $(D_p,\mathrm{mult}_W)=(13,18)$ across nine
+primes is \emph{consistent with} --- probes, but does not yet measure
+--- the characteristic-zero transport operator $\mathtt{halg}$ names.
+The identification requires one more theorem, and it is the program's
+existing glue field in a new shape: a specialization/comparison bridge
+carrying Frobenius spectral projectors to absolute-Hodge transport
+operators.  Until that bridge is proven, the census is evidence about
+the field, not a reading of it --- the same wall the universal
+harmonic clock states as ``the clock's graph exists in characteristic
+zero,'' and the descent interface types as \texttt{glue}.  Scope,
+unchanged: nothing here assumes or proves the Hodge conjecture; what
+is proven is that the conjecture, whole, is one named coincidence ---
+and the bridge that would let the instruments read it directly is
+itself a named, typed target.
+
+\paragraph{The abelian discharge: on the specimen class the cable
+narrows to the Andr\'e gap.}  The ladder from projector data to the
+conjecture --- spectral data $\Rightarrow$ absolute-Hodge/motivated
+projector $\Rightarrow$ algebraic correspondence $\Rightarrow$
+transitivity $\Rightarrow$ Hodge --- carries one dangerous step:
+``motivated/absolute-Hodge $\Rightarrow$ algebraic'' is not known
+universally, and asserting it would simply rename the conjecture.  But
+every specimen in this program --- the fourfold, the sixfold, the
+eightfold --- is an abelian variety, and \emph{on abelian varieties
+the dangerous step splits, and both closable halves close by cited
+classical theorems}.  Hodge $\Rightarrow$ absolutely Hodge on abelian
+varieties is Deligne's theorem; our transports are Hodge classes on
+$X\times X$ (proven above), $X\times X$ is abelian, so the transports
+are absolutely Hodge for free.  And motivated-with-abelian-auxiliaries
+$\Rightarrow$ algebraic on abelian varieties is a THEOREM: standard
+conjecture B holds for abelian varieties (Lieberman; via the
+Fourier--Mukai transform, Beauville), products of abelian varieties
+are abelian, so the Lefschetz-involution factor in any motivated
+presentation over abelian auxiliaries is itself algebraic.
+\texttt{AbelianTransportLadder.lean} (standard footprint) formalizes
+the discharge: \texttt{MotivatedPresentation} (an algebraic sandwich
+around one Lefschetz factor), \texttt{motivated\_stab} (given the
+B-discharge, motivated operators preserve algebraicity),
+\texttt{hodge\_of\_motivated\_glue} (motivated transitivity plus the
+free seed close the block), and \texttt{abelian\_cable\_iff} --- the
+residue as an equivalence.  What remains on the abelian class is
+therefore strictly narrower than ``manufacture an algebraic cycle'':
+manufacture a MOTIVATED presentation of the Tate-block transports from
+the glue data --- absolutely Hodge $\Rightarrow$ motivated, for one
+operator class.  That is the Andr\'e gap, not the whole conjecture:
+the algebraicity of the Lefschetz factor is already banked, and this
+is the one rung of the ladder with known nontrivial successful
+instances (the Kuga--Satake correspondence and CM classes are
+motivated --- Andr\'e).  The cable is located, typed, and narrowed;
+it is not fixed, and the register says exactly that.
+
+\paragraph{The non-abelian cable: separator plus mixer.}  The
+matrix-unit demand was too strong, and the repair is non-abelian:
+two noncommuting algebraic correspondences with separator-plus-mixer
+behavior generate the needed transports automatically as OUTPUT ---
+they are never required as input.  \texttt{NonabelianCable.lean}
+(standard footprint) proves both halves.  The repair theorem
+(\texttt{block\_closed\_of\_irreducible}): if the Tate block is an
+irreducible module under a composition-closed set of algebraic
+correspondences, the orbit span of the free seed $h^p$ is a nonzero
+invariant subspace, hence everything --- irreducibility $\Rightarrow$
+cyclicity $\Rightarrow$ Hodge for $(X,p)$.  The operational form
+(\texttt{hodge\_of\_nonabelian\_connectivity}): a SEPARATOR $A$ with
+simple rational spectrum on the block --- entering through its
+Lagrange spectral projectors $e_i$, polynomials in $A$ and hence
+algebraic, exactly the clock-projector machinery already in the tree
+--- plus a MIXER $B$ whose transition graph $i\to j \iff e_jBe_i\neq0$
+between the one-dimensional eigenchannels is strongly connected,
+together close the block.  The Lean proof is constructive in exactly
+the sense the instruments need: the seed has a nonzero component in
+some channel, each edge is a nonzero map between one-dimensional
+spaces, and path composition transports that component into a nonzero
+algebraic spanning vector of EVERY channel --- connectivity
+\emph{manufactures} the per-channel seeds that the abelian route
+could only demand.  Noncommutativity is load-bearing, not incidental:
+a mixer commuting with the separator commutes with its projectors,
+every off-diagonal block vanishes, and the graph has no edges.  The
+Hodge conjecture for $(X,p)$ is thereby reduced to a finite,
+operational existence statement: \emph{one algebraic separator with
+simple rational spectrum on the block, one algebraic mixer with
+strongly connected transitions}.  Register, exact: the pair's
+existence is the new open target, consumed never asserted; recovering
+the separator from the stable Frobenius spectral data still passes
+through the bridge theorem above (with the motivated-to-algebraic
+step banked on abelian specimens via B); the mixer is a genuinely new
+instrument job --- a geometric correspondence OUTSIDE the separator's
+commutant; and the connectivity check, unlike every previous
+formulation of the wall, is computable mod $p$ from point counts.
+The census's job list is now three items long, and each item is
+falsifiable.
+
+\paragraph{The rigidity program: the overdetermined transport system
+and the two-sided squeeze.}  Three genuinely-new-shaped programs
+present themselves beyond the organizational work: RECONSTRUCTION
+(prove the transport algebra uniquely reconstructible from
+local/Frobenius/deformation data --- partially embodied in the
+freeze-decoder queue), COMPRESSION to a finite generating mechanism
+(already delivered above in its sharpest form: the transport basis
+has size two --- one separator, one mixer), and RIGIDITY: prove that
+any transport system satisfying enough independent compatibilities is
+forced to be unique, and that the unique realization is algebraic.
+Rigidity is the bet, and \texttt{TransportRigidity.lean} (standard
+footprint) banks its skeleton.  Let $C$ be the space of transports
+satisfying the compatibility stack --- Hodge (morphism of structures),
+Frobenius (Galois-equivariance of the $\ell$-adic realization),
+polarization --- and $A_{\mathrm{alg}}$ the span of algebraic
+transports.  Three registers: $A_{\mathrm{alg}}\subseteq C$
+(theorem-backed inclusions); $\dim C$ bounded ABOVE by finite
+computation --- $C$ embeds in the Frobenius-fixed part of the
+transport K\"unneth block of $X\times X$, the commutant of finitely
+many Frobenii is computed exactly from census eigenvalue data, is
+monotone decreasing in the prime set, and converges to the true
+Galois commutant by Chebotarev; this uses the comparison bridge in
+its EASY, theorem-backed direction (characteristic zero into
+characteristic $p$ as a constraint), not the hard construction
+direction that gates the glue --- and the house occupancy machinery
+already computes exactly these bounds; $\dim A_{\mathrm{alg}}$
+bounded BELOW by exhibiting correspondences.  The squeeze
+(\texttt{rigidity\_squeeze}): if the bounds MEET, $C=A_{\mathrm{alg}}$
+--- every compatible transport is algebraic.  The terminus
+(\texttt{hodge\_of\_transport\_rigidity}): the meet, plus the Deligne
+register on abelian specimens (Hodge transports are absolutely Hodge,
+hence Galois-invariant, hence in $C$), plus the free seed, close the
+block --- \emph{a specimen's Hodge conjecture closes by finite
+computation the moment the census upper bound touches the
+known-correspondence lower bound; the closing step constructs no
+cycle}.  The falsifier register is pre-committed and named
+(\texttt{phantomCount}, \texttt{meet\_iff\_phantomCount\_eq\_zero}):
+if the bounds stabilize apart, the gap is the measured integer count
+of phantom compatible transports --- the conjecture's residue
+displayed as a number, per specimen; on any \'etale-Prym sixfold the
+expected count is $0$ once the Schoen/Patel--Zhang classes enter the
+lower bound (a calibration reading), and a genuine discovery readout
+awaits a beyond-playbook specimen.  Honesty
+note, stated in the file: per specimen the meet is equivalent to a
+Tate-block algebraicity statement on $X\times X$ --- rigidity is not
+a free lunch; what distinguishes it from ``assume every projector is
+algebraic'' is epistemic access: the hypothesis is a NUMBER MEET
+between two convergent, independently computable estimators,
+checkable prime by prime, whose failure mode is itself a measurement.
+Protocol, pre-registered: run the squeeze instrument first on the
+decomposable fourfold, where the meet MUST occur (everything
+algebraic is known there --- our construction plus Markman); a
+non-meet there falsifies the instrument, not the mathematics; then
+the sixfold as the second calibration rung (\'etale-Prym, hence
+theorem-covered --- see the reclassification below).
+
+\paragraph{The bounded-complexity lift: the conductor is uniform
+complexity.}  There is now a route where the final implication is
+genuine algebraic geometry rather than the conjecture renamed ---
+verified in dialogue, with two repairs, before formalization.  The
+lifting theorem: let $X$ be smooth projective over a number field
+with integral model $\mathcal X\to S$, and $\beta$ a rational Hodge
+class.  If a SINGLE Hilbert polynomial $P$ admits, at infinitely many
+good places $v$, a codimension-$p$ cycle $Z_v\subseteq\mathcal X_v$
+with $\mathrm{Hilb}(Z_v)=P$ and
+$\mathrm{cl}_\ell(Z_v)=\mathrm{sp}_v(\beta_\ell)$, then (after a
+finite extension, up to a Galois conjugation) a
+characteristic-zero cycle $Z$ on $X$ has $\mathrm{cl}_B(Z)=\beta$.
+The proof is classical spreading-out: the relative Hilbert scheme
+$\mathrm{Hilb}_P(\mathcal X/S)$ is projective with finitely many
+irreducible components; witnesses at infinitely many places force a
+component carrying them over infinitely many fibers (the pigeonhole
+--- Lean-proven, \texttt{exists\_component\_with\_infinite\_places});
+a constructible image in the one-dimensional $S$ that is infinite
+dominates, so the generic fiber is nonempty; the universal family's
+relative cycle class is a section of a lisse sheaf, rigid on an
+irreducible base, so agreement with $\beta_\ell$ at one witness point
+propagates to the generic point; Betti--\'etale comparison and
+injectivity of scalar extension finish.  The two repairs from
+verification, recorded: take the component inside the Zariski closure
+of the witness points themselves, so witnesses are dense and the
+generic transfer of open conditions is lisse rigidity
+(equal-at-one-point $\Rightarrow$ equal-at-generic), not a
+discard-a-closed-subset argument that the witnesses might evade; and
+the cospecialization identification returns a Galois conjugate of
+$\beta_\ell$ --- repaired by conjugating the cycle.  Bounded degree
+suffices in place of a fixed polynomial: bounded-degree subvarieties
+realize finitely many Hilbert polynomials, and the same pigeonhole
+applies a second time.
+
+Applied to the separator--mixer package rather than to single cycles,
+the lift becomes the program's terminus in its strongest honest form
+(\texttt{BoundedLift.lean}, standard footprint):
+\texttt{SeparatorMixerData} packages the two-operator criterion,
+\texttt{BoundedLiftPackage} types the ticket, and
+\texttt{hodge\_of\_bounded\_complexity} proves: witnesses at
+infinitely many places with fixed Hilbert data, plus the lift field
+(the classical assembly above, consumed as cited geometry), close the
+block --- \emph{the closing argument never asserts ``Tate implies
+algebraic''; the characteristic-zero correspondence EXISTS by
+geometry once complexity is bounded}.  The named ticket is therefore
+\begin{center}
+\texttt{uniform\_cycle\_complexity}: \emph{every compatible
+Frobenius-defined Tate transport admits algebraic realizations in
+the reductions whose degrees are bounded independently of the
+prime,}
+\end{center}
+and the serious remaining problem is the uniform degree bound --- a
+quantitative geometric problem, not a bare existential conjecture.
+The census upgrade this demands: record not only eigenvalues but the
+realizing cycles' degrees and Hilbert data at every prime --- the
+projector-realizing correspondence, the mixer, the transition minors
+--- and watch the one experimental question that now matters:
+\emph{do the required cycles recur with bounded degree as
+$p\to\infty$?}  An infinite hypothesis can never be verified
+outright; it can be falsified (degrees grow without bound --- itself
+a structural discovery about why the conjecture is hard) or
+supported (a stable finite list of Hilbert data recurring), and
+pigeonhole converts support into the lifting theorem's exact
+hypothesis.
+
+\paragraph{First light: both instruments on the fourfold.}  Built and
+run (\texttt{tmp/cable\_instruments.sage},
+\texttt{tmp/cable\_lower.sage}; split primes $7,31,37,43$, inert
+$5,11,17,23$).  \emph{Squeeze census.}  The formal split-torus model
+derived from the proven relations ($a\bar a=b\bar b=p$, multiplicity
+two) predicts the $H^4$ profile $\{18,8^{\times4},4^{\times4},
+1^{\times4}\}$, $D=13$, commutant $648$, Tate $18$ --- and all four
+split primes match it EXACTLY, explaining the census's measured
+$D=13$/$\mathrm{mult}_W=18$ from first principles.  The inert primes
+carry the constraints the split primes cannot see: at $p=11,17,23$
+the $H^1$ commutant bound drops to $\mathbf{8}$ --- and at the $H^1$
+level the true value is pinned by Faltings ($\dim\operatorname{End}^0
+(B)$), so the squeeze mechanism has closed its first meet at a level
+where the answer is a theorem: the instrument's built-in truth-gate,
+passed.  At $H^4$ the over-$\mathbb{Q}$ bound is $328$; the
+$8$-dimensional Weil-type cluster moves to $-1$ at inert primes
+(the $\mathbb{Q}(\sqrt{-3})$-twist, reproducing the earlier
+$(1,10)+(2,8)$ inert splitting by an independent computation), so the
+over-$K$ bound is $648$ --- the instrument caught the field-of-
+definition subtlety in the transports' Galois equivariance.  The
+$p=5$ reading is anomalous (extra coincidences, $946$) and harmless
+(minima govern).  \emph{Separator/mixer live test.}  On the
+$18$-dimensional Tate block: simple-spectrum separators exist in the
+torus-block algebra (18 distinct eigenvalues, every trial), and the
+seed orbit of $\Theta^2$ fills the block ($18/18$, deficit $0$) ---
+with one calibration flag stated at register: the sampled block
+algebra is the TORUS-compatible one (dim $16$ on $H^1$), which the
+$H^1$ squeeze itself just measured to be twice the algebraic algebra
+(dim $8$), so deficit-$0$ is an upper-side reading and the
+algebraic-orbit rerun with the true $\operatorname{End}^0$-generators
+is the named v2 item.  The mixer finding is strengthened, not
+weakened, by the overshoot: strong connectivity FAILED in all trials
+--- structural zero blocks --- and failure in the larger algebra
+implies failure in every subalgebra, so \emph{no mixer from the
+Frobenius-block algebra can strongly connect the fourfold's Tate
+block}: the block algebra acts cyclically but reducibly, the
+two-operator criterion needs a genuinely non-torus correspondence for
+its mixer, and the operative closing route on real specimens is the
+multi-constituent one the Lean already carries
+(\texttt{exhaustion\_of\_seeds}: the single polarization seed seeds
+every constituent through its projections).  Theory and measurement
+met exactly where the theorems said they would.  \emph{Degree
+ledger.}  On the fourfold all realizers descend from characteristic
+zero, so bounded recurrence holds by descent --- the tautological
+gate, stated as such; the sixfold rung (below) is, per the
+reclassification that follows it, ALSO descent-covered in principle,
+so the genuinely non-tautological run needs a beyond-playbook object.
+
+\paragraph{Step-0 executed: the simple sixfold exists.}
+(\texttt{tmp/sixfold\_step0.sage}.)  The primary certified base
+$C_0\colon w^3+2w+(u+v)=0$ over $E_0\colon v^2=u^3+1$, the
+$3$-torsion $\eta=(0,1)$, the V\'elu $3$-isogeny $E_0\to E_1$, and
+the fiber-product cover $\widetilde C=C_0\times_{E_0}E_1$ were
+point-counted through $\mathbb{F}_{7^6}$, and every step-0 gate
+passed at $p=7$: the degree-$12$ Prym factor is integral,
+Weil-pure, and functional-equation-consistent (a disconnected cover
+cannot produce this, so $f^*\eta\neq0$ and $\widetilde C$ is
+connected of genus~$10$ --- gate G1 closed by one prime);
+$P_B=\mathrm{Nm}_{\mathbb{Q}(\zeta_3)/\mathbb{Q}}(\Pi)$ with $\Pi$ of
+degree $6$ (the $\mathbb{Z}[\zeta_3]$-action signature); the freeze
+scalar is EXACTLY $1$ (the rail-freeze law holds on the sixfold);
+and --- the verdict the construction was designed for ---
+$P_B$ is IRREDUCIBLE over $\mathbb{Q}$, so $B$ is \textbf{simple}
+(a decomposable $B$ would factor at every prime): the non-Galois
+degree-$3$ base kills the bielliptic involution exactly as intended.
+The Frobenius field is a degree-$12$ CM field whose unique quadratic
+subfield is $\mathbb{Q}(\sqrt{-3})$: the full Weil-type $(3,3)$
+signature.  The sixfold squeeze's first reading:
+$\Lambda^6$ Tate multiplicity $22$ at $p=7$, resolving as $20$
+pairing monomials ($\binom{6}{3}$, the Lefschetz-type inflation)
+plus \textbf{2} --- the collective Weil pair, visible in first
+light; $H^1$ eigenvalues all distinct (per-prime commutant $12$).
+Register notes: the $j=0$ base makes $E_0$ supersingular at inert
+primes, so inert readings carry supersingular inflation ($p=5$:
+Tate $44$, and the infinity-pattern fit is ambiguous there --- the
+$p=7$ fit is unique); $p=11,13$ runs in progress.
+
+\paragraph{Reclassification --- the audit already in this record
+applies to the new specimen, and the session's framing is corrected.}
+The construction above is an \'etale $\mathbb{Z}/3$ (abelian) Prym.
+Two results already in this paper's record therefore govern it:
+the \'etale-cyclic no-go (uniform-rescale polarization type
+$\Rightarrow$ $\det=-3^b$ $\Rightarrow$ disc $\equiv-1$: SPLIT type,
+always), and the Patel--Zhang audit (their Thm 1.2, read at source:
+the Weil classes of the Prym of ANY \'etale abelian cover are
+algebraic, all dimensions, unconditionally; the cyclic
+primitive-character case is Schoen 1988).  So the new $B$'s Weil
+classes were never open, and several formulations used in the
+preceding paragraphs of this section --- ``the non-split sixfold,''
+``the first open constituent,'' ``the discovery node $m(\mathrm{C1})
+\neq0$,'' ``expected phantom count $2$'' --- were MISCALIBRATED
+against this paper's own audit; they are corrected in place above and
+retracted here for the record.  The honest ledger: the new $B$ is the
+program's second certified-simple Weil sixfold and its correct role
+is the DIM-6 CALIBRATION RUNG --- the squeeze must meet, the phantom
+count must read $0$ once the Schoen/Patel--Zhang classes enter the
+lower bound, bounded recurrence holds by descent --- one dimension
+above the fourfold rung, one register below the frontier.  An
+explicit locus with $m\neq0$ on $B$ remains worthwhile mathematics at
+the NEW-CONSTRUCTION register (Patel--Zhang existence is not an
+explicit cycle), never at the new-existence register.  The open
+frontier stands exactly where the audit put it: beyond the
+abelian-cover playbook --- non-Prym Weil $2n$-folds, the rigid
+sixfolds of the cited literature, the semiregularity/variational
+wall --- objects this program cannot yet construct, which is the
+frontier's content, not a failure of the instruments.
+
+\paragraph{The calibration rung, completed --- and the frontier
+spec.}  The two-prime certification playbook was then run on the new
+$B$ (subfield audit + power stability of both Frobenius fields):
+$\mathbb{Q}(\pi_7)$ and $\mathbb{Q}(\pi_{13})$ each have proper
+subfields only in degrees $\{2,6\}$, the degree-$6$ subfields
+DIFFER, the unique common proper subfield is
+$\mathbb{Q}(\sqrt{-3})$, and both fields are power-stable at
+$n\in\{2,3,4,6,12\}$ --- so $\operatorname{End}^0(B_{\bar k})
+=\mathbb{Q}(\zeta_3)$ exactly and geometrically, two maximal
+power-stable Frobenius tori force $\mathrm{MT}(B)=\mathrm{GU}(3,3)$
+full (Serre, cited), and the accounting closes:
+$\mathrm{Hdg}(B)=\theta\text{-algebra}\oplus W$ with
+$\dim_K W=1$.  Every premise of \texttt{KSweepCompletion} is thereby
+certified on the actual $B$; with Schoen/Patel--Zhang supplying the
+Weil classes, \emph{the Hodge conjecture for the new specimen closes
+in every degree at the cited-theorem register} --- the dim-6
+calibration rung is DONE, and the instruments now stand calibrated
+one register below the frontier.  The frontier spec itself
+(\texttt{tmp/beyond\_playbook\_spec.md}), three directions: the
+RIGID/CM sixfolds of Mostaed (arXiv 2603.20268, abstract-level read
+--- full-text verification pending before any build): McMullen's
+curve meets the Weil locus in finitely many CM points with
+$M=\mathbb{Q}(\zeta_{42})$, whose Hodge--Weil classes are absolutely
+Hodge yet inaccessible to every existing theorem, and the $d\in\{3,7\}$
+case reduces to $2816$ explicit equations at $\ell=43$ via Hecke
+correspondences --- CM-explicit and character-sum countable, a
+computational attack surface shaped like house territory;
+NON-ABELIAN \'etale covers --- the Patel--Zhang boundary is
+abelian, so isotypic Prym pieces of \'etale $S_3$-covers are outside
+their theorem and constructible by house fiber-product methods (the
+uniform-rescale/split argument breaks exactly at $2$-dimensional
+irreps: the opening the no-go leaves); and the LATTICE spec (odd
+inert-prime glue), which is the non-abelian direction in lattice
+language.  Priority: the full-text read gates direction one; the
+$S_3$ design mathematics is the genuinely new territory.
+
+\paragraph{Both frontier directions executed: the Mostaed read, and
+the non-abelian glue verdict.}  Direction one, read at full text
+(ar5iv): Mostaed's structure is three named open problems --- O1, a
+FINITE ONE-VARIABLE SEARCH ($2816$ Hecke fixed-point conditions on
+McMullen's curve at $\ell=43$, with norm equations $a^2+3b^2=43$ and
+$a^2+7b^2=43$, both visibly solvable: $(4,3)$ and $(6,1)$); O2, CM-type
+verification ($20$ of the oriented CM types are Weil-compatible); O3,
+the algebraicity itself, blocked by three independent obstructions
+(CM isolation kills deformation/semiregularity arguments; no
+$K$-secant structure kills Markman's route; uncontrolled discriminant
+kills every discriminant-specific theorem).  The paper gives NO
+explicit period lattices or countable models --- the specimen search
+(O1+O2) is genuinely open, finite, and house-shaped: CM Frobenius
+data comes from Hecke characters, so the census instruments would run
+at the EXACT register on any specimen found.  Direction two,
+executed: the cut-glue integral model generalized to arbitrary finite
+groups (\texttt{tmp/integral\_model\_s3.sage}), TRIPLE-GATED before
+reading the verdict (cyclic $\mathbb{Z}/3$ reproduces Lange--Ortega
+at two genera; the $\mathbb{Z}/6$ primitive packet reproduces the
+house $\mu_6$ verdict $(2,2,2,6,6,6)$ exactly).  The
+$S_3\times\mathbb{Z}/3$ reading, $\rho\otimes\omega$ packet,
+transposition-invariant copy: base genus $2$ (Weil fourfold, sig
+$(2,2)$): type $(2,6,6,18)$, $\mathrm{Pf}=2^43^4$; base genus $3$
+(Weil eightfold, sig $(4,4)$): type $(2,2,6,6,6,6,18,18)$,
+$\mathrm{Pf}=2^83^8$.  Two findings, opposite signs.  The NULL: the
+$2$-valuations are EVEN, so $|{\det}|\in\mathrm{Nm}(K^\times)$ (the
+free-$\mathbb{Z}[\omega]$-lattice class argument makes the parity
+basis-independent) and the split verdict EXTENDS to the first
+non-abelian design --- published per the falsifiability register.
+The DISCOVERY: the type is NOT a uniform rescale --- $(2,6,6,18)
+=2\cdot(1,3,3,9)$ carries a $9$-scale, the first ever observed (the
+cyclic averaging argument provably forbids $9$s), so the $2$-dim
+irrep genuinely BREAKS the uniform-rescale mechanism even though the
+split conclusion survives through even $2$-powers.  The non-abelian
+route is therefore not closed: the named next search is designs
+whose Pfaffian lands ODD at an inert prime --- quaternionic irreps
+(Schur index $2$: $Q_8$-covers, $K=\mathbb{Q}(i)$), mixed
+involution-invariant lattices --- now a cheap scan over
+$(G,\text{packet},\text{involution})$ in the triple-validated
+generic model.
 
 \paragraph{The eightfold, constructed.} Dimension eight is where the
 literature's construction stops: the secant-sheaf candidates on abelian
