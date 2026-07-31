@@ -1,0 +1,89 @@
+DETUNED-RUNG SEPARATION CONTROL -- probe A of the separation step
+aggregate: rungs r in {1,3,5}, eps = (+1,-1,-1), sites (1,1),(3,2),
+           elliptic p=2 k=1 master-formula terms, xi in {1,2,3,4}
+======================================================================================
+ANCHOR  on-instrument Bessel resummation I_r = pi sum a_n (-i)^n J_n(z)
+    (l,f)=(1,1) r=1: rel err 1.686e-16
+    (l,f)=(1,1) r=3: rel err 1.394e-16
+    (l,f)=(1,1) r=5: rel err 3.738e-16
+    (l,f)=(3,2) r=1: rel err 3.300e-16
+    (l,f)=(3,2) r=3: rel err 2.681e-16
+    (l,f)=(3,2) r=5: rel err 8.923e-16
+    worst = 8.923e-16  -> PASS
+P1  baseline aggregate pair-reality (max_xi |Im agg| / max_xi |agg|)
+    xi=1: agg = +5.133189e-16 +0.000000e+00i
+    xi=2: agg = -3.663051e-16 +0.000000e+00i
+    xi=3: agg = +9.848291e-17 +0.000000e+00i
+    xi=4: agg = -1.066171e-15 +0.000000e+00i
+    viol_P1 = 0.000e+00 (max |agg| = 1.066e-15)  -> PASS
+P2a weight-side detune of rung 3 (U_3 -> U_4; Kl, pref, eps kept)
+    viol_P2a = 0.000e+00 (max |agg| = 3.507e-01); rise over P1 floor = 0.000e+00x  -> FAIL (reality channel weight-BLIND)
+P2b kernel-side detune of rung 3 (Bessel order shift J_n -> J_{n+1},
+    coefficients and quarter-turn phases kept)
+    viol_P2b = 1.000e+00 (max |agg| = 3.409e-01); rise over P1 floor = 1.000e+16x  -> PASS (>= 6 orders)
+P3i jet band at site (1,1): exact moment jets m=0..11 of the
+    archimedean aggregate A(z) = sum_r eps_r I_r
+    |jet_m|: m:              0         1         2         3         4         5         6         7         8         9        10        11
+    baseline:        2.220e-16 1.362e+00 3.816e-17 7.124e-02 0.000e+00 1.230e-03 4.819e-21 9.152e-06 4.518e-22 1.427e-08 1.912e-24 3.024e-10
+    weight-detuned:  2.579e-01 8.418e-01 1.049e-01 7.136e-02 1.795e-03 1.763e-03 1.609e-05 2.195e-05 6.854e-07 1.666e-07 8.493e-09 8.484e-10
+    kernel-detuned:  0.000e+00 8.418e-01 1.301e-01 7.136e-02 2.696e-03 1.763e-03 6.366e-07 2.195e-05 4.949e-07 1.666e-07 7.027e-09 8.484e-10
+    even/odd jet mass: baseline 1.814e-16  weight-det 3.985e-01  kernel-det 1.451e-01  -> PASS
+P3ii loading localization on full master-formula samples, site (1,1),
+     xi grid = 24 pts in [0.02, 0.40]
+    basis condition numbers: weight-basis 4.839e+05, kernel-basis 3.675e+06 (criterion <= 1e8)
+    baseline fit residuals: 3.840e-16 / 2.583e-16
+    baseline loadings (weight basis):
+    P1   r=1: |c|=1.000000000 |d|=4.531e-13  dev-from-P1 = 0.000e+00
+    P1   r=3: |c|=1.000000000 |d|=3.019e-12  dev-from-P1 = 0.000e+00
+    P1   r=5: |c|=1.000000000 |d|=2.445e-11  dev-from-P1 = 0.000e+00
+    weight-side detuned aggregate, fit in weight basis:
+    P2a  r=1: |c|=1.000000000 |d|=4.774e-13  dev-from-P1 = 8.210e-13
+    P2a  r=3: |c|=0.000000000 |d|=1.000e+00  dev-from-P1 = 1.000e+00  FLAGGED
+    P2a  r=5: |c|=1.000000000 |d|=2.592e-11  dev-from-P1 = 3.766e-12
+      fit residual 6.746e-16; flagged rungs: [3]
+    kernel-side detuned aggregate, fit in kernel basis:
+    P2b  r=1: |c|=1.000000000 |d|=6.246e-11  dev-from-P1 = 4.176e-11
+    P2b  r=3: |c|=0.000000000 |d|=1.000e+00  dev-from-P1 = 1.000e+00  FLAGGED
+    P2b  r=5: |c|=1.000000000 |d|=3.092e-10  dev-from-P1 = 2.018e-10
+      fit residual 2.676e-16; flagged rungs: [3]
+    localization: flags weight=[3] kernel=[3]; spectator max dev 3.766e-12 / 2.018e-10  -> PASS
+P4  reality-preserving control: global phase e^{i phi} (phi=0.7) on +xi,
+    e^{-i phi} on -xi, every pair, every rung; must NOT flag
+    pair-reality under gauge: viol = 0.000e+00 (criterion <= 1e-10)
+    P4   r=1: |c|=1.000000000 |d|=3.390e-13  dev-from-P1 = 2.797e-12
+    P4   r=3: |c|=1.000000000 |d|=2.284e-12  dev-from-P1 = 7.620e-12
+    P4   r=5: |c|=1.000000000 |d|=1.840e-11  dev-from-P1 = 1.840e-11
+    gauge-invariant loading deviation max = 1.840e-11; flagged: []  -> PASS
+======================================================================================
+ANCHOR PASS (8.923e-16)   P1 PASS (0.000e+00)   P2a FAIL (0.000e+00)   P2b PASS (1.000e+00)
+P3i PASS   P3ii PASS   P4 PASS
+VERDICT: separation is ARITHMETICALLY SENSITIVE, with a structural
+  split: pair-reality is WEIGHT-BLIND (P2a null, the pre-registered
+  conjugation-symmetry expectation: T(-xi) = conj T(xi) for any real
+  weight) but maximally sensitive to order-phase misregistration
+  (P2b), and the jet/order ladder localizes the detuned rung and only
+  it (P3) without false positives (P4).  A separation mechanism can
+  exist: reality certifies the order<->phase<->conjugation
+  registration; per-rung weight identity is carried by the jet band.
+
+POST-HOC ADDENDUM (observations after first run; criteria unchanged)
+A. Measured lattice support of the arithmetic weight (disc -4p^k = -8):
+    Kl_(1,1)(xi,-8), xi=1..48 live points: xi=4: +4.0-1.5e-15i, xi=8: +4.0-2.9e-15i, xi=12: +4.0-4.4e-15i, xi=16: +4.0-5.9e-15i, ...
+    Kl_(3,2)(xi,-8), xi=1..48 live points: NONE (site identically dead on the integer lattice)
+    => every live integer-lattice weight is REAL (Kl = 4 on 4Z at (1,1));
+       site (3,2) contributes nothing at any integer xi.
+B. The baseline PAIRED aggregate nulls (max |agg| = 1.066e-15 above): for
+   odd r, I_r is purely imaginary and every live Kl is real, so each
+   +xi/-xi pair cancels EXACTLY -- the on-instrument appearance of the
+   proven odd-rank lattice closure (RankLadderParity.latticeSum_eq_zero_odd
+   / rank_ladder_closure odd-r closure).  P1's PASS is therefore trivial
+   (0 over roundoff); the load-bearing reality facts are the phases of
+   the DETUNED aggregates (P2a real, P2b imaginary), and BOTH detunes are
+   visible at O(1) in aggregate MAGNITUDE (closure break):
+     max|agg|: baseline 1.066e-15 -> weight-det 3.507e-01 (3.3e+14x), kernel-det 3.409e-01 (3.2e+14x)
+C. Replication of P1/P2 on the LIVE sublattice xi in {4,8,12,16}
+   (all points live, Kl = 4; same pre-registered criteria):
+    P1  viol = 0.000e+00 (max|agg| = 1.066e-15)  -> PASS
+    P2a viol = 0.000e+00 (max|agg| = 3.507e-01); rise = 0.000e+00x  -> FAIL (weight-blind, replicated)
+    P2b viol = 1.000e+00 (max|agg| = 3.409e-01); rise = 1.000e+16x  -> PASS
+[done] 3s -- results in /Users/samuellavery/work/helix_frobenius/tmp/detuned_rung_separation_results.txt

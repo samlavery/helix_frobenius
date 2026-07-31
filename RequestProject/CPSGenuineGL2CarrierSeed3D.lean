@@ -135,9 +135,9 @@ The readout fields below demand that the twisted bank readout — whose `(r+1)·
 completion kernel has Bessel-type decay `e^{-c√x}` — equal the raw vertical value of a cusp form,
 which decays like `e^{-2πx}`; and the bank's leading coefficient is `1`, so the zero form fails
 too.  No instance can exist at any `(r, m)`.  The corrected obligation types the identification
-against a theta profile pair; the genuine standard-rung instance is
+against a theta profile pair; the standard-rung instance is
 `StandardRungEulerData.toProfileCoupling` (`CPSGenuineGL2StandardRung3D.lean`).  The modular
-exchange remains deliberately absent here: `toCarrierSeed` derives it from the slash law. -/
+exchange is not a field here: `toCarrierSeed` derives it from the slash law. -/
 structure ArithmeticBankCoupling3D
     (n r m : ℕ) (pi : PolynomialSatakeDualPair (Fin 2))
     (tau : PolynomialSatakeDualPair (Fin m))

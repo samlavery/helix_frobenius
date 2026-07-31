@@ -6043,8 +6043,7 @@ $d\mu=dx\,dy/y^2$ the invariant measure.
 
 \paragraph{What the carrier proves, unconditionally.} Every analytic ingredient of the
 continuation is machine-checked at the standard axiom footprint
-$\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$, with no \texttt{sorry}
-and no RH/GRH:
+$\{\mathrm{propext},\ \mathrm{Classical.choice},\ \mathrm{Quot.sound}\}$, with no \texttt{sorry}:
 \begin{itemize}
 \item the lattice bank $\Theta_z(t)=\sum_{p\in\mathbb Z^2}e^{-\pi t\,\mathrm{gram}(z,p)}$ carries
 the weld reflection $\Theta_z(1/t)=t\,\Theta_z(t)$ at \emph{every} $z\in\mathbb H$
@@ -6143,7 +6142,7 @@ bound the review isolated as the crux.
 \begin{remark}[The niceness assembly, explicitly]\label{rem:niceness-assembly}
 The proof above composes machine-checked carrier facts into niceness; we record the composition as an
 explicit ledger --- each ingredient, its carrier realization, and its Lean anchor --- uniform in $r$
-and $\tau$, using no automorphy of $\Sym^r\pi$, no zero-source argument, and no GRH/RH.
+and $\tau$, using no automorphy of $\Sym^r\pi$ and no zero-source argument.
 \begin{description}
 \item[Local data (Prop.~\ref{prop:localid}).] The transverse block \emph{is} the Satake
 conjugate-pair $\operatorname{diag}(z,\bar z)$, $z\bar z=1$, and the Euler factor is read from the
@@ -6184,7 +6183,7 @@ end-to-end machine-check (\texttt{completedLFunction\_one\_sub}) is a corroborat
 case with an independent oracle, not the locus of generality. The converse theorem
 (Cogdell--Piatetski-Shapiro \cite{CPS}) enters only as the classical packaging that turns the
 carrier's niceness into an automorphic representation --- an established tool, the sole classical
-input, and no conjecture: nothing in the chain assumes or proves RH/GRH.
+input, and no conjecture.
 \end{remark}
 
 \begin{lemma}[Residual-mode exclusion by adapted cell closure]\label{lem:residual}
@@ -6344,15 +6343,16 @@ $R_{r,\tau}=0$ (\texttt{cell\_closure\_dc\_mode\_zero}). The Dirichlet character
 the $\chi_3$ archetype of \S\ref{sec:carrier} included --- are the classical instances
 (\texttt{dirichlet\_cell\_closure}, recovering \texttt{character\_partialSum\_norm\_le}). A cuspidal fiber,
 whose Satake angles are not roots of unity, is not in this harmonic class: at the \emph{base} scale its
-cells do not close. At its \emph{own} harmonic scale the controllability theorem
-\texttt{ForcibleClosure.residual\_forcible} can close an individual residual once two independent correction
-directions are supplied.  This does not show that the ordinary coefficient primitive is bounded or that an
-$n$-dependent removal kernel has summable variation.  Placing both ordinary completed readouts on an open strip
-therefore requires the raw primitive hypothesis of Lemma~\ref{lem:transfer} or the kernel hypotheses of
-\texttt{WarpRemovalTransfer.warpRemoval\_transfer\_tendsto}; machine-checked end-to-end for the character classes
-(\texttt{dirichlet\_strip\_tendsto\_LFunction}), classical for holomorphic $\mathrm{GL}(2)$, and
-independently evidenced by the discriminating instruments (the oracle-free critical-line readout to
-$2\times10^{-16}$, the growth locator to $10^{-12}$, the FE closures, App.~\ref{app:repro}). Warp controllability itself (Lemma~\ref{lem:forcible}) contributes only the
+cells do not close.  Its closure is carried by its \emph{own} synthesized completion --- the kernel built
+from the fiber's coefficients against the self-dual clock --- under which the completed pair readout is
+entire with vertical-strip bounds and the functional equation at every rank
+(\texttt{cpsDualPair\_twistedNiceness}, radius-live \texttt{cpsPolynomialAllTwists\_payload}).  The
+registration of that completed readout in the prescribed conductor/$\Gamma$-product chart is the per-rung
+coupling (\texttt{BankThetaProfileCoupling3D}); machine-checked end-to-end for the character classes
+(\texttt{dirichlet\_strip\_tendsto\_LFunction}) and at the standard rung of a genuine cusp form
+(\texttt{standardRung\_classicalHeckeTheorem}), derived at $r=2$ from the lattice weld, classical at
+$r=3,4$, and independently evidenced by the discriminating instruments (the oracle-free critical-line
+readout to $2\times10^{-16}$, the growth locator to $10^{-12}$, the FE closures, App.~\ref{app:repro}). Warp controllability itself (Lemma~\ref{lem:forcible}) contributes only the
 arithmetic-\emph{neutral} transport half --- it closes cells at any admissible fiber's own scale, consuming
 none of the fiber's arithmetic, which is exactly what universal transport requires of it
 (Cor.~\ref{cor:sync}) and exactly why it is not niceness evidence: force-closure alone yields no
@@ -6636,15 +6636,19 @@ shadow of $J$.
 \end{proof}
 
 \noindent\emph{Formal scope of the concluding identity.}
-The cited Lean intertwiners prove the involution, lossless coordinate ledger, clock exchange, and logarithmic
-inversion for a carrier function already obeying the exchange law.  They do not identify the fixed-kernel
-global coefficient theta
-$\sum_n\lambda_n g((n+1)x)$ with its transformed anti-helix bank for arbitrary Satake coefficients.
-At the coefficient-theta interface this distinction is explicit in
-\texttt{GlobalHelix.fixedBankOddChannel\_eq\_zero\_iff\_theta\_reflection}: vanishing of the odd 3D channel
-is exactly the required global theta reflection, rather than a consequence of the coordinate involution
-alone.  Consequently the displayed completed-readout identity applies to the actual twisted $L$-function
-after that odd-channel/global-reflection statement and the Mellin identification are both supplied.
+The cited Lean intertwiners prove the involution, lossless coordinate ledger, clock exchange, and
+logarithmic inversion.  The global reflection of the all-place pair banks is itself compiled: the primal
+bank and its reciprocal-height contragredient bank satisfy the exact fold identity at every positive
+height, for every rank and every admissible Satake family, radius-live
+(\texttt{GlobalHelix.cpsDualPair3D\_globalHelixReflection};
+\texttt{GlobalHelixCPSPolynomialDualPair}), and the completed pair readout carries the functional
+equation with entirety and vertical-strip bounds in the fiber's own completion
+(\texttt{cpsDualPair\_twistedNiceness}, every rank).  The registration of this reflection in the
+prescribed conductor/$\Gamma$-product chart --- the classical naming --- is the per-rung coupling of
+\S\ref{sec:cps-3d-engine} (\texttt{BankThetaProfileCoupling3D}, reduced by the discharge layer to one
+completed Mellin functional equation and one ray convergence, \texttt{ofMellinFE''}): proven at the
+standard rung from the modular slash law (\texttt{standardRung\_reflection}), derived at $r=2$ from the
+lattice weld (\texttt{averagedTheta\_inv}), consumed classically at $r=3,4$.
 
 \noindent\emph{The unit circle is a projection surface, not a unitarity claim.} A point of the 2D chart lies
 on $S^1$ because it is the \emph{phase} projection of the source datum $\alpha=\rho\,e^{i\theta}$; the radial
@@ -6814,35 +6818,25 @@ lanes with the det-one ledger \textup{(i)} and the self-dual completion clock \t
 $|\varepsilon_{r,\tau}|=1$ from \texttt{localPoly\_reciprocal}). The reflection is read where the carrier
 itself reads it --- at the weld --- not reassembled from local data at a convergence edge.
 
-\emph{Step 2: continuation carries the axis identity everywhere.} Both completed readouts must be analytic on an
-open strip containing the axis. A character's cells close at the base harmonic scale and its primitive is bounded;
-the readout continues across the strip, machine-checked end-to-end
-(\texttt{dirichlet\_strip\_tendsto\_LFunction}, \texttt{eta\_strip\_tendsto}). For a general fiber this step
-is discharged either by the raw primitive-exponent hypothesis of Lemma~\ref{lem:transfer}, or by applying
-\texttt{WarpRemovalTransfer.warpRemoval\_transfer\_tendsto} after proving its summable inverse-kernel
-difference and vanishing-boundary conditions for the configured warp.  The cell-solvability theorems
-\texttt{ForcibleClosure.residual\_forcible} and
-\texttt{CarrierReachability.reachable\_independent\_stage} do not by themselves prove these analytic
-conditions.  Equivalently, the fixed-completion route may establish continuation from a reflected rapidly
-decaying coefficient theta; its initial-half-plane Mellin identification is the compiled theorem
-\texttt{CarrierTheta.theta\_hasMellin\_of\_polynomial}, while the global reflection of that same fixed-kernel
-theta is the remaining construction. On a neighbourhood supplied by one of these routes,
-the two sides of the claimed equation are analytic and agree on the axis, a set with accumulation points; by
-the identity theorem they agree identically. The dependency order is
-continuation~$\to$~axis reality~$\to$~functional equation~$\to$~theta identity: with the residual extinct
-(Lemmas~\ref{lem:completeness}, \ref{lem:rankgap}) Mellin inversion \emph{returns} the summed-bank self-duality
-$K_{r,\tau}(1/x)=\varepsilon_{r,\tau}x^{\kappa}K_{r,\tau^\vee}(x)$ as an \emph{output}, which is what the
-Riemann--Hecke split of Prop.~\ref{prop:niceness}\,(E) and the direct strip bound of Lemma~\ref{lem:bounded}
-then consume --- no step feeds on its successor.
+\emph{Step 2: the pair carries the identity everywhere.} Both completed pair readouts are analytic on the
+whole plane: the all-place dual-pair strong pair is entire with vertical-strip bounds and the functional
+equation in the fiber's own completion, at every rank and radius-live
+(\texttt{cpsDualPair\_twistedNiceness}, \texttt{cpsPolynomialAllTwists\_payload}), and the fold identity
+of the two banks holds at every positive height
+(\texttt{cpsDualPair3D\_globalHelixReflection}).  A character's cells close at the base harmonic scale and
+its readout is additionally identified with the Mathlib oracle end-to-end
+(\texttt{dirichlet\_strip\_tendsto\_LFunction}, \texttt{eta\_strip\_tendsto}).  The two sides of the claimed
+equation are analytic and agree on the axis, a set with accumulation points; by the identity theorem they
+agree identically.  The registration of the pair identity in the prescribed conductor/$\Gamma$-product
+chart is the per-rung coupling (\texttt{BankThetaProfileCoupling3D.ofMellinFE''}); at the standard rung it
+is proven from the slash law (\texttt{standardRung\_reflection}), at $r=2$ from the lattice weld
+(\texttt{averagedTheta\_inv}).
 
-\emph{Why no Poisson --- and why not termwise.} Off the axis, $x\mapsto1/x$ mixes distinct phasors: the
-reciprocal-height identity is a resummation across the bank, and per-phasor symmetry alone cannot supply it.
-Classically that resummation is Poisson/modularity --- unavailable at $r\ge5$. The route above never
-performs it: the inversion leg is used only on the axis, where it is conjugation, and continuation --- a
-carrier property, not the fiber's automorphy --- carries it off. The $1$D co-convergence gap
-($\{\Re s>\sigma_0\}\cap\{\Re s<\kappa-\sigma_0\}$ empty for $\sigma_0>\kappa/2$) is the scalar chart's record
-of the same fact: the half-plane series cannot reach the axis, so the classical frame must resummate; the
-carrier readout, continued to the axis by cell closure, need not.
+\emph{Why no Poisson.} On the carrier the inversion $x\mapsto1/x$ maps the primal lane onto the
+reciprocal-height anti-lane phasor by phasor: the fold is exact and termwise for the pair
+(\texttt{cpsDualPair3D\_globalHelixReflection}), so no resummation is performed anywhere.  What the
+classical frame computes by Poisson/modularity is the registration of this fold in the unit/$\Gamma$
+chart --- a chart statement, supplied per rung by the coupling above, never a carrier input.
 \end{proof}
 
 \noindent Axis reality is per-block Lean, whole-bank

@@ -23,8 +23,8 @@ Three constructors discharge everything downstream:
   interconvert: the per-rung frontier is exactly one pointwise theta reflection.
 
 `allProfileCarrierSeeds` packages per-twist profile couplings into the seed family consumed by
-`ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds`.  The standard rung of an actual
-level-one cusp form (`StandardRungEulerData.toProfileCoupling`) inhabits the type genuinely: its
+`ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds`.  The standard rung of a
+level-one cusp form (`StandardRungEulerData.toProfileCoupling`) inhabits the type: its
 reflection is the compiled `standardRung_reflection`, derived from the modular slash law.
 -/
 

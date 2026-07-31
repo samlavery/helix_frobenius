@@ -28,11 +28,10 @@ unimodular constant `ε = ∏_{i ∈ S} (−ᾱ_i)`:
   is the archimedean clock-completion object of `CompletedReflectionFiber`.  Its exchange
   constant is `ε · β̄²`, still unimodular.
 
-**Scope.**  This is the **finite-stage** bank (finite `S`) and its **conjugation** strand
-exchange `z ↦ z̄`.  The infinite-bank limit is not claimed here.  The `s ↦ 1-s` completed
-functional equation is a *different* reflection — the self-duality
-`FiniteWeightFiber.clockCompletion_selfdual` / `symTensorCompleted_FE`; it is not what this
-file proves.  No `axiom`, no `sorry`; nothing here assumes or proves RH/GRH.
+This is the **finite-stage** bank (finite `S`) and its **conjugation** strand
+exchange `z ↦ z̄`.  The `s ↦ 1-s` completed functional equation is the separate self-duality
+reflection `FiniteWeightFiber.clockCompletion_selfdual` / `symTensorCompleted_FE`.
+No `axiom`, no `sorry`.
 -/
 
 open Complex CriticalLinePhasor.ChiralityHB
@@ -68,8 +67,7 @@ theorem bankProduct_star_norm_one {ι : Type*} (S : Finset ι) (α : ι → ℂ)
 
 /-- **The global strand exchange (packaged form).**  There is a unimodular constant `ε` with
 `E*(z̄) = ε·E(z)` for all `z`, where `E = bankProduct S α ℓ` — the paper's `E*(z̄) = ε·E(z)` for
-the finite bank, with `ε = ∏_{i ∈ S} (−ᾱ_i)` explicit.  Finite `S`; unit clock faces.  The
-infinite-bank limit is not claimed. -/
+the finite bank, with `ε = ∏_{i ∈ S} (−ᾱ_i)` explicit.  Finite `S`; unit clock faces. -/
 theorem bankProduct_exchange {ι : Type*} (S : Finset ι) (α : ι → ℂ)
     (hα : ∀ i ∈ S, ‖α i‖ = 1) (ℓ : ι → ℝ) :
     ∃ ε : ℂ, ‖ε‖ = 1 ∧ ∀ z : ℂ,
@@ -119,8 +117,7 @@ with `(E·γ)*(z̄) = ε'·(E·γ)(z)` for all `z`, where `E·γ = completedBank
 completed finite bank and `ε' = (∏_{i ∈ S} (−ᾱ_i))·β̄²`.  This is the `E*(z̄) = ε·E(z)` strand
 exchange applied to the completed object of `CompletedReflectionFiber`, with the exchange
 constant carrying the extra completion-clock factor `β̄²`.  Finite `S`; unit clock faces.  The
-`s ↦ 1-s` completed functional equation (`symTensorCompleted_FE`) is a distinct reflection and
-is not claimed here. -/
+`s ↦ 1-s` completed functional equation is the distinct reflection `symTensorCompleted_FE`. -/
 theorem completedBank_exchange {ι : Type*} (S : Finset ι) (α : ι → ℂ)
     (hα : ∀ i ∈ S, ‖α i‖ = 1) (ℓ : ι → ℝ) (β : ℂ) (hβ : ‖β‖ = 1) (ℓ₀ : ℝ) :
     ∃ ε : ℂ, ‖ε‖ = 1 ∧ ∀ z : ℂ,

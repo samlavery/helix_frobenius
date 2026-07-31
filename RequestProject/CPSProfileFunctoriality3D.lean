@@ -23,8 +23,6 @@ Two strengthenings of the converse chain's typing.
   $r\le4$, cited): the per-rung obligation converts from a pointwise theta identity to a
   Mellin-space functional equation plus integrability — consumed as data, exactly as local
   Langlands and Hecke multiplicativity are consumed at their typed fields.
-
-No RH/GRH anywhere.
 -/
 
 open Complex MeasureTheory

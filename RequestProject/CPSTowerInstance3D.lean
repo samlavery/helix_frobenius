@@ -11,21 +11,20 @@ Satake family type `κ`.
 **The mechanism: two charts welded at the self-dual point.**  A state is a position vector on the
 finite carrier plane together with a Satake configuration.  The readout is chart-branching: on the
 hyperplane (position coordinate `i₀` zero) it reads the **primal** bank at the self-dual point;
-off the hyperplane it reads the **contragredient** bank there.  General-linear moves genuinely
+off the hyperplane it reads the **contragredient** bank there.  General-linear moves
 cross the chart boundary, so invariance of the readout is exactly the statement that the two
 charts agree — `cpsDualPair_selfDualPointIdentity`, the payload reflection evaluated at the weld.
 
-**Non-vacuity is compiled, not prose.**  `chartReadout_not_invariant_of_ne` shows the same
+**Non-vacuity is compiled.**  `chartReadout_not_invariant_of_ne` shows the same
 construction on any chart pair whose values differ at some configuration is *not* invariant: a
-single unit transvection crosses the weld and separates the values.  The landing therefore
-genuinely consumes the reflection.  This is the difference from the finite model of
+single unit transvection crosses the weld and separates the values.  The landing
+consumes the reflection.  This is the difference from the finite model of
 `CPSLatticeInstance3D`, whose invariance held for arbitrary functions by reindexing; here the
 invariance fails without the arithmetic identity.  The readout is also non-constant across
 configurations.
 
-Register: the conclusion is carrier readout invariance for the bank states; the classical
-discrimination lives in the identification layer as recorded in the manuscript.  This file does
-not assume or prove RH/GRH.
+The conclusion is carrier readout invariance for the bank states; the classical
+discrimination lives in the identification layer.
 -/
 
 open Matrix
@@ -74,7 +73,7 @@ noncomputable def chartReadout (i₀ : n) {B : Type*} (P D : B → ℂ)
 
 /-- **The compiled falsifier.**  If the two charts disagree at some configuration, the chart
 readout is not invariant: a single unit transvection crosses the weld and separates the values.
-The tower landing below therefore genuinely consumes the chart-agreement identity. -/
+The tower landing below consumes the chart-agreement identity. -/
 theorem chartReadout_not_invariant_of_ne
     {B : Type*} (i₀ j₀ : n) (hne : i₀ ≠ j₀) (P D : B → ℂ) (b : B)
     (hPD : P b ≠ D b) :

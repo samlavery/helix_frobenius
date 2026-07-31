@@ -21,13 +21,13 @@ terms.
   residual channels exist whenever the Schur data holds; by `residue_eq_zero` the zero intertwiner
   is the only inhabitant, so this constructor is exhaustive.
 * `zeroReadoutBankBridge` — a degenerate witness that the `Nat.Primes`-typed `CPSBankBridge` is
-  inhabited: zero readout, every Tate field `rfl`.  **Register:** structural, not arithmetic — the
-  meaningful finite-model witness is `latticeBridge`; the genuine adelic bridge is the named Tate
+  inhabited: zero readout, every Tate field `rfl`.  The
+  finite-model witness is `latticeBridge`; the adelic bridge is the Tate
   formalization boundary.
 * `scalarConverseCandidateRankOne` and `scalarRankOneCuspidalLift` — at rank `r = 1` the CPS twist
   range is empty, so the representation and bank terms alone assemble a complete
   `ArithmeticCPSAllTwistsConverseCandidate3D`, and the capstone and object-valued lift fire
-  end-to-end on compiled terms.  **Register:** a structural smoke test of the full capstone chain
+  end-to-end on compiled terms.  A structural smoke test of the full capstone chain
   at the representation layer; the arithmetic content of higher ranks enters through the twist
   families.
 -/
@@ -161,8 +161,8 @@ variable (Garch : Type*) (G : Nat.Primes → Type*) (S : Nat.Primes → Type*)
 
 /-- **A degenerate witness that the `Nat.Primes`-typed bank bridge is inhabited.**  The readout is
 zero, both Tate fields are `rfl`, the single channel carries the zero measure, and the eigenvalue
-`2 ≠ 1` is honest because the descended readout vanishes identically.  Register: structural — the
-meaningful finite-model witness is `latticeBridge`; the genuine adelic readout is the named Tate
+condition `2 ≠ 1` holds because the descended readout vanishes identically.  The
+finite-model witness is `latticeBridge`; the adelic readout is the Tate
 formalization boundary. -/
 noncomputable def zeroReadoutBankBridge :
     CPSBankBridge Nat.Primes X Garch PUnit compact (fun _ => ZeroChannel) where
@@ -197,7 +197,7 @@ variable (pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2))
 
 /-- At rank one the CPS twist range `1 ≤ m < 1` is empty, so the scalar representation and the
 degenerate bridge assemble a complete all-twist converse candidate with no analytic or residual
-family supplied.  Register: a structural smoke test that the full candidate type is inhabited and
+family supplied.  A structural smoke test that the full candidate type is inhabited and
 the capstone chain executes; arithmetic content enters at higher rank through the twist
 families. -/
 noncomputable def scalarConverseCandidateRankOne :

@@ -154,8 +154,7 @@ The culminating scale-tier statement.  For **every** admissible object, rescalin
 self-compatible lattice **scale** (a constant carrier reparametrization on the object's own integer
 lattice — *not* a warp) preserves the readout, so **vanishing preserves the readout**,
 unconditionally.  A zero cannot be moved by an invertible scale.  (This is the zero/vanishing tier;
-the continuation tier — entireness / pole-absence — is a separate per-object input and is
-deliberately not claimed here.) -/
+the continuation tier — entireness / pole-absence — is a separate per-object input.) -/
 
 /-- An **admissible object** on the carrier: a coefficient bank `a` together with its
 *self-compatible lattice scale* `scale : I ≃ I` — the invertible carrier reparametrization on the

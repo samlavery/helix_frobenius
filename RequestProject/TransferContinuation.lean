@@ -177,8 +177,8 @@ converge to `F s` at every such `s`.  This is exactly the pointwise-to-analytic 
 realised as the Abel-summed series
 `s ↦ 0 − ∑_i ((i+2)^{-s} − (i+1)^{-s})·(∑_{k<i+1} a k)`, whose terms are entire and which
 converges normally on every closed ball inside the half-plane (Weierstrass M-test through
-`Complex.differentiableOn_tsum_of_summable_norm`), hence is holomorphic there.  Does not assume
-or prove RH/GRH; no automorphy, functional equation or Poisson summation is consumed. -/
+`Complex.differentiableOn_tsum_of_summable_norm`), hence is holomorphic there.  Inputs: the
+primitive bound alone — no automorphy, functional equation, or Poisson summation. -/
 theorem transfer_analytic (a : ℕ → ℂ) (C θ : ℝ) (hθ : 0 ≤ θ)
     (hA : ∀ n : ℕ, ‖∑ k ∈ range n, a k‖ ≤ C * (n : ℝ) ^ θ) :
     ∃ F : ℂ → ℂ,

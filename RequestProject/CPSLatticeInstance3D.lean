@@ -7,16 +7,16 @@ import Mathlib.MeasureTheory.Measure.Count
 # First instantiation of the 3D CPS landing theorem on a finite model bank
 
 This file instantiates the assembled converse engine `cpsConverse3D_landing` on a concrete
-*finite model bank*: complex-valued functions on the plane `𝔽₃²`, carried by a genuine nontrivial
+*finite model bank*: complex-valued functions on the plane `𝔽₃²`, carried by a nontrivial
 continuous action of the archimedean-times-restricted-product move group.  Every hypothesis of the
-landing theorem is discharged by an honest argument, so `cpsLatticeInstance_landing` fires with no
+landing theorem is discharged, so `cpsLatticeInstance_landing` fires with no
 remaining hypotheses.
 
 The three non-vacuity requirements are preserved:
 
-* the readout `∑ over 𝔽₃² of F` is genuinely **non-constant** on the state space, and its move
-  invariance is proved by **reindexing** (`Equiv.sum_comp`), never assumed;
-* the unipotent cuspidal channel carries a **genuine finite Fourier cancellation**: the eigenmove
+* the readout `∑ over 𝔽₃² of F` is **non-constant** on the state space, and its move
+  invariance is proved by **reindexing** (`Equiv.sum_comp`);
+* the unipotent cuspidal channel carries a **finite Fourier cancellation**: the eigenmove
   is the primitive additive character `ZMod.stdAddChar` of `𝔽₃`, whose value on a generator is
   `≠ 1`, so the constant term really is `∑_{u} χ(u) · c = 0`.
 
@@ -34,9 +34,8 @@ Scope: this file instantiates the 3D CPS engine on a finite model bank, demonstr
 landing composes with zero hypotheses on a genuine object.  It does **not** instantiate the twisted
 symmetric-power Satake bank: that instantiation additionally consumes adelic Poisson summation /
 theta invariance — Tate's thesis (*Fourier analysis in number fields and Hecke's zeta-functions*),
-classical and unconditional, cited not formalized (adelic Poisson is not yet in Mathlib) — plus the
-bank readout identifications.  These remain the named formalization boundary --- cited classical
-inputs, not open mathematics.  It also does not assume or prove RH/GRH.
+classical and unconditional, cited (adelic Poisson is not yet in Mathlib) — plus the
+bank readout identifications.
 
 The final section wires this boundary into the kernel: `CPSBankBridge` carries the adelic
 generator laws as a distinguished **Tate field**, and `CPSBankBridge.landing` shows the bank

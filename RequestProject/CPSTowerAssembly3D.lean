@@ -11,7 +11,7 @@ block entirely.
 The one-dimensional route to transvection invariance (the converse-theorem route of
 `CPSFiniteQuotientLocalUnit3D`) needs the full Mellin-inversion package — convergence, vertical
 integrability, continuity — because the projected chart only holds the completed functional
-equation of the `L`-readout.  The carrier holds more: the **pointwise theta reflection itself**
+equation of the `L`-readout.  The carrier holds the **pointwise theta reflection itself**
 (`cpsDualPair3D_globalHelixReflection`, proven unconditionally for every CPS twist degree and
 every unitary Satake family by `cpsAllTwists_unconditional3DAnalyticPayload`).  Evaluating that
 reflection at the self-dual point `x = 1` gives the twisted primal/dual profile equality directly,
@@ -30,11 +30,9 @@ prime phase, and unitary Satake family, the primal and contragredient bank reado
 self-dual point.  This is the exact value the package's reflection field consumes on the twisted
 symmetric-power bank.
 
-Scope: what remains for the tower bank is the carrier state space realizing the two orbit-readout
-identifications (`primal_readout`/`dual_readout`) for the Satake data — a named construction, not
-open mathematics.  This file does not assume or prove RH/GRH, and it asserts no classical
-automorphy: the conclusion is carrier readout invariance, with the classical discrimination living
-in the identification layer as recorded in the manuscript.
+The remaining input for the tower bank is the carrier state space realizing the two orbit-readout
+identifications (`primal_readout`/`dual_readout`) for the Satake data.  The conclusion is carrier
+readout invariance; the classical discrimination lives in the identification layer.
 -/
 
 namespace CriticalLinePhasor.ThreeDConverse

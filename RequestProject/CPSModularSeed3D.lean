@@ -2,22 +2,20 @@ import RequestProject.CPSConverse3DReadout
 import Mathlib.NumberTheory.ModularForms.EisensteinSeries.Basic
 
 /-!
-# The GL(2)/level-one carrier seed: a genuine automorphic landing
+# The GL(2)/level-one carrier seed: an automorphic landing
 
 This file instantiates the three-dimensional converse **engine** of `ThreeDConverse`
-(`readoutStabilizer`, `SpecialLinearGroup.SL2Z_generators`) on a **genuine automorphic object**,
+(`readoutStabilizer`, `SpecialLinearGroup.SL2Z_generators`) on an automorphic object,
 non-vacuously.
 
-The state space is `UpperHalfPlane`, with its native `SL(2,ℤ)`-action (Möbius transformations ---
-genuinely nontrivial, not a placeholder action).  The readout is the weight-zero invariant
+The state space is `UpperHalfPlane`, with its native `SL(2,ℤ)`-action (Möbius transformations).
+The readout is the weight-zero invariant
 `seedReadout k f z = z.im ^ k * ‖f z‖²` attached to a level-one slash-invariant form `f` of
 weight `k`.  Its `SL(2,ℤ)`-invariance is Mathlib's *real modular transformation law*
 (`SlashInvariantForm.slash_action_eqn_SL''`: `f (γ • z) = denom γ z ^ k * f z`) combined with
-`ModularGroup.im_smul_eq_div_normSq` --- genuine automorphy arithmetic, **not** a synthesized
-carrier completion.  This is the distinction that answers the over-proving litmus recorded in the
-paper: the automatic (synthesized) carrier niceness applies to *every* polynomially-bounded
-coefficient bank, so it cannot supply automorphy; the modularity used here is a property of the
-actual form.
+`ModularGroup.im_smul_eq_div_normSq`.  The automatic (synthesized) carrier niceness applies to
+*every* polynomially-bounded coefficient bank, so it cannot supply automorphy; the modularity
+used here is a property of the form.
 
 `seedReadout_invariant_of_ST` is the audited generator engine, exercised here: invariance under the
 two modular generators `S` and `T` (each discharged from the modularity) forces invariance under all

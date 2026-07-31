@@ -18,8 +18,6 @@ the house Stirling bound; it is not a Mathlib boundary.
 * `dirichlet_vline_continuous`, `dirichlet_vline_isBigO_one` — Weierstrass M-test for the
   Dirichlet factor on the line of absolute convergence.
 * `completedPrimal_vline_integrable` — the completed readout is integrable along the line.
-
-No RH/GRH.
 -/
 
 open Complex Filter Topology Asymptotics MeasureTheory Real

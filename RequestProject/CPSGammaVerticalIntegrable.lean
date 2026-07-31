@@ -13,8 +13,6 @@ Mathlib boundary, the bound lives in `StirlingBound.lean`.
 * `gammaC_vertical_isBigO_atTop` / `_atBot` — the Stirling exponential decay repackaged as
   `IsBigO` against `e^{∓(π/4)y}`.
 * `gammaC_vertical_integrable` — `Integrable (fun y => Γ_ℂ(w + iy))` for `0 < w.re`.
-
-No RH/GRH.
 -/
 
 open Complex Filter Topology Asymptotics MeasureTheory Real

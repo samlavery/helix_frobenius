@@ -1,0 +1,67 @@
+EPS-FROM-PARITY PROBE -- certifier route (b): the seed crossing lattice
+mechanism: rank moves only the Bessel order/quarter-turn; lattice fixed;
+           root number multiplicative over seed-clock covers
+======================================================================================
+A0  [anchor] int sqrt(1-x^2) U_r e^{-izx} dx = pi (-i)^r (r+1) J_{r+1}(z)/z
+    r=0..13, z in [0.7, 2.3, 7.1, 19.5]: worst rel err = 6.758e-16  -> PASS
+A1  [measured, kill-test] real profile, (l,f)=(1,1), c=0.707107
+    r= 0: resum rel err 1.146e-16  off-parity 4.122e-15  quarter-turn 5.091e-17  ncut=400  PASS
+    r= 1: resum rel err 1.557e-16  off-parity 1.907e-15  quarter-turn 7.197e-17  ncut=399  PASS
+    r= 2: resum rel err 1.342e-16  off-parity 3.881e-15  quarter-turn 3.335e-17  ncut=400  PASS
+    r= 3: resum rel err 1.700e-16  off-parity 1.100e-15  quarter-turn 4.366e-17  ncut=399  PASS
+    r= 4: resum rel err 1.934e-16  off-parity 2.383e-15  quarter-turn 6.997e-17  ncut=400  PASS
+    r= 5: resum rel err 3.738e-16  off-parity 1.169e-15  quarter-turn 9.249e-17  ncut=399  PASS
+    r= 6: resum rel err 1.468e-16  off-parity 3.091e-15  quarter-turn 5.488e-17  ncut=400  PASS
+    r= 7: resum rel err 2.862e-16  off-parity 1.004e-15  quarter-turn 4.861e-17  ncut=399  PASS
+    r= 8: resum rel err 1.412e-16  off-parity 3.018e-15  quarter-turn 3.498e-17  ncut=400  PASS
+    r= 9: resum rel err 1.995e-16  off-parity 1.114e-15  quarter-turn 8.839e-17  ncut=399  PASS
+    r=10: resum rel err 2.569e-16  off-parity 2.603e-15  quarter-turn 6.293e-17  ncut=400  PASS
+    r=11: resum rel err 2.628e-16  off-parity 7.611e-16  quarter-turn 8.595e-17  ncut=399  PASS
+    r=12: resum rel err 5.080e-16  off-parity 2.828e-15  quarter-turn 1.883e-16  ncut=400  PASS
+    r=13: resum rel err 1.598e-16  off-parity 9.037e-16  quarter-turn 6.368e-17  ncut=399  PASS
+    CONTROL order-shift: min rel mismatch over ranks = 1.187e-01  -> load-bearing (breaks)
+A1  [measured, kill-test] real profile, (l,f)=(3,2), c=0.058926
+    r= 0: resum rel err 1.522e-16  off-parity 4.049e-15  quarter-turn 3.692e-17  ncut=397  PASS
+    r= 1: resum rel err 2.649e-16  off-parity 1.231e-15  quarter-turn 1.668e-16  ncut=390  PASS
+    r= 2: resum rel err 2.177e-16  off-parity 4.069e-15  quarter-turn 1.360e-17  ncut=397  PASS
+    r= 3: resum rel err 2.790e-16  off-parity 1.231e-15  quarter-turn 2.785e-16  ncut=390  PASS
+    r= 4: resum rel err 1.082e-16  off-parity 3.168e-15  quarter-turn 1.349e-17  ncut=397  PASS
+    r= 5: resum rel err 4.459e-16  off-parity 1.240e-15  quarter-turn 2.264e-16  ncut=390  PASS
+    r= 6: resum rel err 3.026e-16  off-parity 3.387e-15  quarter-turn 7.564e-17  ncut=397  PASS
+    r= 7: resum rel err 6.625e-16  off-parity 1.172e-15  quarter-turn 1.289e-15  ncut=377  PASS
+    r= 8: resum rel err 5.740e-16  off-parity 3.883e-15  quarter-turn 3.177e-16  ncut=390  PASS
+    r= 9: resum rel err 7.950e-15  off-parity 1.174e-15  quarter-turn 6.510e-15  ncut=381  PASS
+    r=10: resum rel err 9.681e-15  off-parity 3.859e-15  quarter-turn 1.935e-15  ncut=390  PASS
+    r=11: resum rel err 5.439e-14  off-parity 7.409e-16  quarter-turn 4.381e-14  ncut=379  PASS
+    r=12: resum rel err 3.851e-14  off-parity 3.594e-15  quarter-turn 2.434e-14  ncut=390  PASS
+    r=13: resum rel err 2.572e-13  off-parity 8.364e-16  quarter-turn 1.289e-13  ncut=381  PASS
+    CONTROL order-shift: min rel mismatch over ranks = 5.733e-01  -> load-bearing (breaks)
+B   [exact + cross-check] eps(Sym^r Delta) channel assembly (k=12)
+    r= 1: kappa=1  i^-(k(11k+1)) = +1  measured +1  PASS
+    r= 3: kappa=2  i^-(k(11k+1)) = -1  measured -1  PASS   recursion eps_r/eps_(r-2) = -1 vs i^-(11r+1) = -1 PASS
+    r= 5: kappa=3  i^-(k(11k+1)) = -1  measured -1  PASS   recursion eps_r/eps_(r-2) = +1 vs i^-(11r+1) = +1 PASS
+    r= 7: kappa=4  i^-(k(11k+1)) = +1  measured +1  PASS   recursion eps_r/eps_(r-2) = -1 vs i^-(11r+1) = -1 PASS
+    r= 9: kappa=5  i^-(k(11k+1)) = +1  measured +1  PASS   recursion eps_r/eps_(r-2) = +1 vs i^-(11r+1) = +1 PASS
+    r=11: kappa=6  i^-(k(11k+1)) = -1  measured -1  PASS   recursion eps_r/eps_(r-2) = -1 vs i^-(11r+1) = -1 PASS
+    r=13: kappa=7  i^-(k(11k+1)) = -1  measured -1  PASS   recursion eps_r/eps_(r-2) = +1 vs i^-(11r+1) = +1 PASS
+    channel-multiplicative root-number ladder: CONFIRMED
+D   [measured] standing wave on the BE lattice: Im(dual_xi + dual_-xi) = 0
+    (l,f)=(1,1) r=2: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(1,1) r=3: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(1,1) r=4: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(1,1) r=5: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(1,1) r=7: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(3,2) r=2: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(3,2) r=3: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(3,2) r=4: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(3,2) r=5: max |Im(pair)|/|pair| = 0.000e+00  PASS
+    (l,f)=(3,2) r=7: max |Im(pair)|/|pair| = 0.000e+00  PASS
+======================================================================================
+A0 anchor: PASS   A1 resummation: PASS (controls break: True)   B eps ladder: PASS   D pair reality: PASS
+VERDICT: route (b) SURVIVES the kill-test. On the real trace-formula
+  terms the dual kernel IS its exact Bessel-order-ladder resummation
+  (rank = order, quarter-turn (-i)^n per order, lattice rank-fixed);
+  the paired lattice terms are real (standing wave present termwise);
+  and the measured root-number ladder is exactly channel-multiplicative
+  over seed-clock covers.  The registration skeleton is on the lattice.
+[done] 7s -- results in /Users/samuellavery/work/helix_frobenius/tmp/eps_from_parity_results.txt

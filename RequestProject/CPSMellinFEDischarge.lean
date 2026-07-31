@@ -22,7 +22,7 @@ completion kernel is continuous on the positive ray:
 The refined converter `BankThetaProfileCoupling3D.ofMellinFE'` then consumes exactly the
 remaining content: the completed Mellin functional equation, the reflected-side Mellin
 convergence, and the two vertical integrabilities — the continuation-across-the-strip data,
-which is precisely where the per-rung arithmetic lives.  No RH/GRH.
+which is where the per-rung arithmetic lives.
 
 **Vertical integrabilities discharged (2026-07-21, `CPSCompletedVerticalIntegrable`).**  The two
 `VerticalIntegrable` fields are *not* a Mathlib boundary — the house tree already carries the

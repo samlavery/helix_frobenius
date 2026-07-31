@@ -1,0 +1,252 @@
+==============================================================================
+Sym^r-pullback weld probe  (numerics probe B)  2026-07-30 10:44
+==============================================================================
+
+[S0] exact tau(n), n <= 20000 (eta^3 pentagonal -> 3 exact Kronecker squarings)
+  tau spot-check (known values + Hecke relations at 6,24,25,32,63): PASS
+  Deligne bound |tau(p)| <= 2 p^{11/2} on all 2262 primes <= 20000: violations = 0
+  max |lambda(p)/2| = 0.986848  (Satake angles well-defined)
+  elapsed 6.1s
+
+[S1] representation checks
+  r=2 gamma=S : rho_MONOMIAL integer-dev 0.00e+00 (det +1) | rho_SCALED integer-dev 0.000
+  r=2 gamma=T : rho_MONOMIAL integer-dev 0.00e+00 (det +1) | rho_SCALED integer-dev 0.414
+  r=3 gamma=S : rho_MONOMIAL integer-dev 0.00e+00 (det +1) | rho_SCALED integer-dev 0.000
+  r=3 gamma=T : rho_MONOMIAL integer-dev 0.00e+00 (det +1) | rho_SCALED integer-dev 0.268
+  -> rho_scaled(T) r=2 matrix:
+       [+1.000000  +1.414214  +1.000000]
+       [+0.000000  +1.000000  +1.414214]
+       [+0.000000  +0.000000  +1.000000]
+  r=2 rho_scaled(SO(2), th=0.7345) orthogonality |R R^T - I|_max = 2.22e-16
+  r=2 det Q_scaled(z0) - 1 = -5.55e-16 ; det Q_mon(z0) = 2.000000000000 (prod C(r,i) = 2)
+  r=3 rho_scaled(SO(2), th=0.7345) orthogonality |R R^T - I|_max = 2.22e-16
+  r=3 det Q_scaled(z0) - 1 = -9.99e-16 ; det Q_mon(z0) = 9.000000000000 (prod C(r,i) = 9)
+
+[S2] Epstein machinery validation
+  upper_gamma vs mpmath.gammainc over a in [-4.4, 5.65], x in [3e-4, 40]: max rel err = 6.91e-10
+  r=2 enumeration vs brute box (B=25): 370 pts, match=True
+  r=3 enumeration vs brute box (B=25): 1014 pts, match=True
+  r=1 E(z0,s=6.1): formula=4.218545552332e+00 direct=4.218545552332e+00  rel diff=2.74e-15 (tail est 6.2e-20)
+  r=2 E(z0,s=6.1): formula=5.494112901303e+00 direct=5.494112901303e+00  rel diff=1.49e-14 (tail est 1.4e-14)
+  r=3 E(z0,s=6.1): formula=8.036267074554e+00 direct=8.036267074453e+00  rel diff=1.25e-11 (tail est 1.3e-11)
+  elapsed 6.1s
+
+[S3] V1: SL2(Z)-invariance of E_r(z,s)  (s=3.3, two z test points)
+  r=2 z=+0.13+0.77i [monomial]  relΔ(S)=6.62e-16  relΔ(T)=0.00e+00
+  r=2 z=+0.13+0.77i [scaled  ]  relΔ(S)=7.89e-16  relΔ(T)=3.26e-01
+  r=2 z=-0.21+1.13i [monomial]  relΔ(S)=1.13e-15  relΔ(T)=1.13e-15
+  r=2 z=-0.21+1.13i [scaled  ]  relΔ(S)=7.98e-16  relΔ(T)=1.63e-02
+  r=3 z=+0.13+0.77i [monomial]  relΔ(S)=9.96e-16  relΔ(T)=2.39e-14
+  r=3 z=+0.13+0.77i [scaled  ]  relΔ(S)=2.31e-16  relΔ(T)=3.39e-01
+  r=3 z=-0.21+1.13i [monomial]  relΔ(S)=3.71e-15  relΔ(T)=3.71e-15
+  r=3 z=-0.21+1.13i [scaled  ]  relΔ(S)=3.03e-15  relΔ(T)=4.02e-03
+  (r=1 control) both framings coincide:
+  r=1 relΔ(S)=6.23e-16 relΔ(T)=6.23e-15
+
+[S3] V2: Poisson duality of theta_Q(t) = sum exp(-pi t v^T Q v)
+  r=1 t=0.73 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 0.00e+00
+  r=1 t=0.73 MONOMIAL (det 1): naive self-dual dev 0.00e+00 ; det^-1/2-twisted dual dev 0.00e+00
+  r=1 t=1.41 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 3.01e-16
+  r=1 t=1.41 MONOMIAL (det 1): naive self-dual dev 3.01e-16 ; det^-1/2-twisted dual dev 3.01e-16
+  r=2 t=0.73 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 0.00e+00
+  r=2 t=0.73 MONOMIAL (det 2): naive self-dual dev 1.43e-01 ; det^-1/2-twisted dual dev 4.20e-16
+  r=2 t=1.41 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 1.24e-16
+  r=2 t=1.41 MONOMIAL (det 2): naive self-dual dev 1.81e-01 ; det^-1/2-twisted dual dev 2.98e-16
+  r=3 t=0.73 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 1.99e-16
+  r=3 t=0.73 MONOMIAL (det 9): naive self-dual dev 2.89e-01 ; det^-1/2-twisted dual dev 2.08e-16
+  r=3 t=1.41 SCALED (det 1):    theta(1/t) vs t^{n/2} theta(t): rel dev 0.00e+00
+  r=3 t=1.41 MONOMIAL (det 9): naive self-dual dev 4.50e-01 ; det^-1/2-twisted dual dev 1.53e-16
+  r=2 structural: Q_scaled^-1 = rho_scaled(J) Q_scaled rho_scaled(J)^T, max dev 1.11e-16 (J = signed permutation)
+  r=3 structural: Q_scaled^-1 = rho_scaled(J) Q_scaled rho_scaled(J)^T, max dev 2.22e-16 (J = signed permutation)
+  elapsed 6.2s
+
+[PRE-REGISTRATION]  (fixed before the main run)
+  s-grid: [3.1, 3.6, 4.1, 4.6, 5.1, 5.6]  (+0.05 partners for log-derivatives)
+  main-run lattice framing: MONOMIAL (the SL2(Z)-invariant one; the
+  integral over F is only well-defined for the invariant object).
+  Notation: Z(w)=zeta(w); G(w)=(4pi)^-w Gamma(w); L2/L3/LD = analytic-
+  normalized L(Sym^2 Delta, w), L(Sym^3 Delta, w), L(Delta, w) via Satake
+  Euler products p <= 1e4; D(w) = Z(w) L2(w)/Z(2w) = sum lam(n)^2 n^-w.
+  r=1 SANITY: I_1(s) = 2 Z(2s) G(s+11) D(s) exactly (classical unfolding);
+    criterion: ratio constant AND equal to 1 to 1e-6 over the 6 s-values.
+  r=2 candidate list (identification iff ratio dev <= 1e-5):
+    2A: Z(2s) G(2s+11) D(2s)
+    2B: Z(2s-1) G(2s+10) D(2s-1)
+    2C: Z(2s) G(2s+11) L2(2s)
+    2D: Z(2s-1) G(2s+10) L2(2s-1)
+    2E: Z(2s) Z(2s-1) G(2s+10) L2(2s-1)
+    2F: Z(2s-1) G(s+11) (Gamma(s-1/2)/Gamma(s)) L2(2s-1)
+    2G: Z(2s-1) G(s+11) L2(s)
+    2H: Z(2s) G(s+11) L2(s+1/2)
+    2I: measured I_1(s)  (pure rung-1 proportionality)
+    2J: Z(2s) Z(2s-1) G(2s+11) D(2s)
+  r=3 candidate list (identification iff ratio dev <= 1e-5):
+    3A: Z(2s) G(2s+11) L3(2s)
+    3B: Z(2s-1) G(2s+10) L3(2s-1)
+    3C: Z(2s) G(2s+11) LD(2s) LD(2s-1)
+    3D: Z(2s-1) G(2s+10) LD(2s-1)^2
+    3E: Z(2s) Z(2s-2) G(2s+10) L3(2s-1)
+    3F: Z(2s-1) G(s+11) L3(s+1/2)
+    3G: Z(2s-2) G(2s+10) D(2s-1)
+    3H: measured I_1(s)
+    3I: measured I_2(s)
+    3J: Z(2s) G(2s+11) D(2s)
+  dev metric: (max R - min R)/|mean R| over the 6 base s-values.
+
+[S4] MAIN RUN
+  [grid primary] nx=36 ny=48 ymax=6 B=36  nodes=1728  <Delta,Delta>_quad=1.035362056804e-06
+  elapsed 71.1s
+
+[S5] D(4.1): direct tau-sum (N=20000) = 1.023212170918e+00 ; Euler zL2/z = 1.023212170918e+00 ; rel diff = 2.21e-14
+[S5] D(5.6): direct tau-sum (N=20000) = 1.006858217727e+00 ; Euler zL2/z = 1.006858217727e+00 ; rel diff = 1.54e-15
+
+[S5] r=1 SANITY (instrument certification)
+  s=3.10  I_1=5.5082561555e-06  target=5.5082561555e-06  ratio=1.0000000000
+  s=3.60  I_1=5.6161741224e-06  target=5.6161741224e-06  ratio=1.0000000000
+  s=4.10  I_1=5.9042294169e-06  target=5.9042294169e-06  ratio=1.0000000000
+  s=4.60  I_1=6.3571799714e-06  target=6.3571799714e-06  ratio=1.0000000000
+  s=5.10  I_1=6.9853781733e-06  target=6.9853781733e-06  ratio=1.0000000000
+  s=5.60  I_1=7.8166897458e-06  target=7.8166897458e-06  ratio=1.0000000000
+  ratio constancy dev = 2.439e-12 ; |mean ratio - 1| = 3.947e-13
+  r=1 SANITY: PASS (criterion: dev <= 1e-6)
+
+[S5] r=2 ratio tests against pre-registered candidates
+  I_2(s) at base grid: 1.047462e-05  1.328290e-05  1.856899e-05  2.791904e-05  4.456108e-05  7.494698e-05
+  dlog I_2/ds        : +0.36476  +0.59312  +0.75571  +0.88442  +0.99452  +1.09367
+  cand 2A : ratio dev = 1.224e-01 ; slope gap (dlogI-dlogC) = [-0.1831 -0.0850 -0.0386 -0.0170 -0.0072 -0.0029]
+  cand 2B : ratio dev = 1.731e-01 ; slope gap (dlogI-dlogC) = [-0.0280 +0.0452 +0.0776 +0.0901 +0.0931 +0.0919]
+  cand 2C : ratio dev = 1.374e-01 ; slope gap (dlogI-dlogC) = [-0.2035 -0.0948 -0.0434 -0.0194 -0.0084 -0.0035]
+  cand 2D : ratio dev = 1.542e-01 ; slope gap (dlogI-dlogC) = [-0.0712 +0.0248 +0.0677 +0.0853 +0.0907 +0.0908]
+  cand 2E : ratio dev = 1.613e-01 ; slope gap (dlogI-dlogC) = [-0.0503 +0.0348 +0.0726 +0.0876 +0.0919 +0.0913]
+  cand 2F : ratio dev = 1.923e+00 ; slope gap (dlogI-dlogC) = [+0.5080 +0.6554 +0.7542 +0.8288 +0.8911 +0.9468]
+  cand 2G : ratio dev = 1.570e+00 ; slope gap (dlogI-dlogC) = [+0.2600 +0.4493 +0.5807 +0.6808 +0.7629 +0.8342]
+  cand 2H : ratio dev = 1.579e+00 ; slope gap (dlogI-dlogC) = [+0.2569 +0.4529 +0.5857 +0.6853 +0.7666 +0.8370]
+  cand 2I : ratio dev = 1.661e+00 ; slope gap (dlogI-dlogC) = [+0.3597 +0.5177 +0.6279 +0.7134 +0.7855 +0.8499]
+  cand 2J : ratio dev = 9.076e-02 ; slope gap (dlogI-dlogC) = [-0.1379 -0.0641 -0.0287 -0.0122 -0.0049 -0.0018]
+  BEST: 2J with dev = 9.076e-02 -> NO identification (all candidates fail 1e-5)
+
+[S5] r=3 ratio tests against pre-registered candidates
+  I_3(s) at base grid: 3.060415e-05  6.139247e-05  1.410292e-04  3.604438e-04  1.013015e-03  3.109002e-03
+  dlog I_3/ds        : +1.23481  +1.55603  +1.78590  +1.98393  +2.16544  +2.33533
+  cand 3A : ratio dev = 2.461e+00 ; slope gap (dlogI-dlogC) = [+0.6945 +0.8824 +0.9940 +1.0838 +1.1644 +1.2391]
+  cand 3B : ratio dev = 2.666e+00 ; slope gap (dlogI-dlogC) = [+0.8522 +1.0157 +1.1123 +1.1921 +1.2653 +1.3343]
+  cand 3C : ratio dev = 2.447e+00 ; slope gap (dlogI-dlogC) = [+0.6557 +0.8619 +0.9834 +1.0784 +1.1616 +1.2377]
+  cand 3D : ratio dev = 2.647e+00 ; slope gap (dlogI-dlogC) = [+0.7952 +0.9847 +1.0960 +1.1836 +1.2610 +1.3321]
+  cand 3E : ratio dev = 2.685e+00 ; slope gap (dlogI-dlogC) = [+0.9305 +1.0500 +1.1281 +1.1996 +1.2690 +1.3360]
+  cand 3F : ratio dev = 3.681e+00 ; slope gap (dlogI-dlogC) = [+1.2180 +1.4787 +1.6601 +1.8162 +1.9597 +2.0944]
+  cand 3G : ratio dev = 2.674e+00 ; slope gap (dlogI-dlogC) = [+0.8995 +1.0324 +1.1187 +1.1947 +1.2665 +1.3348]
+  cand 3H : ratio dev = 3.678e+00 ; slope gap (dlogI-dlogC) = [+1.2298 +1.4806 +1.6581 +1.8129 +1.9564 +2.0916]
+  cand 3I : ratio dev = 2.508e+00 ; slope gap (dlogI-dlogC) = [+0.8700 +0.9629 +1.0302 +1.0995 +1.1709 +1.2417]
+  cand 3J : ratio dev = 2.458e+00 ; slope gap (dlogI-dlogC) = [+0.6869 +0.8779 +0.9915 +1.0825 +1.1637 +1.2387]
+  BEST: 3C with dev = 2.447e+00 -> NO identification (all candidates fail 1e-5)
+  elapsed 71.1s
+
+[S6] stability battery (each knob doubled; report max rel shift of I_r)
+  [grid lattice-B x2] nx=36 ny=48 ymax=6 B=72  nodes=1728  <Delta,Delta>_quad=1.035362056804e-06
+  [grid quadrature x~1.8] nx=48 ny=64 ymax=6 B=36  nodes=3072  <Delta,Delta>_quad=1.035362056804e-06
+  [grid ymax 6->9] nx=36 ny=56 ymax=9 B=36  nodes=2016  <Delta,Delta>_quad=1.035362056804e-06
+  lattice cutoff B 36 -> 72   : max rel shift = 0.00e+00
+  quadrature 36x48 -> 48x64   : max rel shift = 2.58e-14
+  ymax 6 -> 9                 : max rel shift = 3.82e-12
+  Petersson <Delta,Delta> quad vs refined: rel shift = 3.52e-14
+  Euler p-cutoff 1e4 -> 2e4 on all candidates: max rel shift = 2.52e-12
+  elapsed 185.0s
+
+[S6b] POST-HOC: two invariant framings + exact stratum decomposition
+  (labelled POST-HOC: framing-2 analysis designed after the primary nulls)
+  r=2  Q_mon^-1 = rho(J)^T Q_dual rho(J): max dev = 1.11e-16  (rho(J) integer, det +1); det Q_dual = 0.500000 (1/prod C = 0.500000)
+  r=2  framing-2 V1: relΔ(S)=1.49e-16 relΔ(T)=7.47e-16
+  r=3  Q_mon^-1 = rho(J)^T Q_dual rho(J): max dev = 2.22e-16  (rho(J) integer, det +1); det Q_dual = 0.111111 (1/prod C = 0.111111)
+  r=3  framing-2 V1: relΔ(S)=3.75e-16 relΔ(T)=7.51e-15
+  power law N(u^2) vs (Sym^1 norm)^2 at u=(1,2): framing-1 67.296705 vs 32.614863 (FAILS); framing-2 32.614863 vs 32.614863 (rel dev 2.18e-16)
+  r=2 framing-2 pointwise stratum identity (s=4.6, B=400, 174 pts): direct=4.650614000356e+00 target=4.650614000383e+00 rel diff=5.76e-12
+      (framing-1 control: direct=4.626931396909e+00, rel diff to power-law target = 5.09e-03 -- the law fails there, as predicted)
+  r=3 framing-2 pointwise stratum identity (s=4.6, B=400, 116 pts): direct=5.959925288391e+00 target=5.959925288406e+00 rel diff=2.53e-12
+      (framing-1 control: direct=5.957384692575e+00, rel diff to power-law target = 4.26e-04 -- the law fails there, as predicted)
+  framing-2 main run (same grid/candidates; run AFTER stratum analysis):
+  I^(2)_2(s): 2.847587e-05  3.521733e-05  4.626047e-05  6.363251e-05  9.128356e-05  1.367055e-04
+  I^(2)_3(s): 1.925557e-04  3.069190e-04  5.471088e-04  1.067560e-03  2.290368e-03  5.485118e-03
+  framing-2 r=2 dlogI/ds: +0.35507  +0.49830  +0.59865  +0.68415  +0.76809  +0.85757
+  framing-2 r=2 BEST frozen candidate: 2B dev=2.236e-01 -> null
+  framing-2 r=3 dlogI/ds: +0.79731  +1.06900  +1.25677  +1.43733  +1.64188  +1.88080
+  framing-2 r=3 BEST frozen candidate: 3C dev=1.302e+00 -> null
+  framing-2 remainders R_r(s) = I^(2)_r(s) - Pdeg_r(s)
+    [Pdeg exact for framing-2; R_2 = nondegenerate-orbit sum exactly;
+     R_3 still contains the double-root stratum]
+  r=2:  s, Pdeg/I, R, R/I, cancellation digits lost:
+    s=3.10  Pdeg/I=0.325933  R=1.919463e-05  R/I=6.7407e-01  lost=0.2
+    s=3.60  Pdeg/I=0.357161  R=2.263909e-05  R/I=6.4284e-01  lost=0.2
+    s=4.10  Pdeg/I=0.391936  R=2.812934e-05  R/I=6.0806e-01  lost=0.2
+    s=4.60  Pdeg/I=0.434348  R=3.599383e-05  R/I=5.6565e-01  lost=0.2
+    s=5.10  Pdeg/I=0.486156  R=4.690548e-05  R/I=5.1384e-01  lost=0.3
+    s=5.60  Pdeg/I=0.547352  R=6.187951e-05  R/I=4.5265e-01  lost=0.3
+  r=3:  s, Pdeg/I, R, R/I, cancellation digits lost:
+    s=3.10  Pdeg/I=0.152152  R=1.632579e-04  R/I=8.4785e-01  lost=0.1
+    s=3.60  Pdeg/I=0.198008  R=2.461467e-04  R/I=8.0199e-01  lost=0.1
+    s=4.10  Pdeg/I=0.257170  R=4.064086e-04  R/I=7.4283e-01  lost=0.1
+    s=4.60  Pdeg/I=0.337459  R=7.073029e-04  R/I=6.6254e-01  lost=0.2
+    s=5.10  Pdeg/I=0.442245  R=1.277464e-03  R/I=5.5775e-01  lost=0.3
+    s=5.60  Pdeg/I=0.566794  R=2.376184e-03  R/I=4.3321e-01  lost=0.4
+  framing-2 lattice cutoff B 36 -> 72: max rel shift = 0.00e+00
+
+  POST-HOC ratio tests of R_2 against candidates (NOT pre-registered):
+    dlog R_2/ds : +0.26116  +0.39769  +0.47149  +0.51569  +0.54450  +0.56466
+    cand 2A : ratio dev = 8.653e-01 ; slope gap = [-0.2867 -0.2804 -0.3229 -0.3857 -0.4572 -0.5320]
+    cand 2B : ratio dev = 5.900e-01 ; slope gap = [-0.1316 -0.1502 -0.2066 -0.2787 -0.3569 -0.4371]
+    cand 2C : ratio dev = 8.810e-01 ; slope gap = [-0.3071 -0.2903 -0.3277 -0.3881 -0.4584 -0.5325]
+    cand 2D : ratio dev = 6.213e-01 ; slope gap = [-0.1748 -0.1706 -0.2165 -0.2835 -0.3593 -0.4382]
+    cand 2E : ratio dev = 6.060e-01 ; slope gap = [-0.1539 -0.1607 -0.2116 -0.2811 -0.3581 -0.4377]
+    cand 2F : ratio dev = 1.100e+00 ; slope gap = [+0.4044 +0.4599 +0.4700 +0.4601 +0.4411 +0.4178]
+    cand 2G : ratio dev = 7.131e-01 ; slope gap = [+0.1564 +0.2538 +0.2965 +0.3121 +0.3129 +0.3052]
+    cand 2H : ratio dev = 7.220e-01 ; slope gap = [+0.1533 +0.2575 +0.3015 +0.3166 +0.3165 +0.3080]
+    cand X2a Z(2s-1)^2 G(2s+10) D(2s-1) : ratio dev = 5.581e-01 ; slope gap = [-0.0864 -0.1293 -0.1967 -0.2738 -0.3546 -0.4359]
+    cand X2b Z(4s-2) G(2s+10) D(2s-1) : ratio dev = 6.213e-01 ; slope gap = [-0.1748 -0.1706 -0.2165 -0.2835 -0.3593 -0.4382]
+    POST-HOC BEST for R_2: X2a Z(2s-1)^2 G(2s+10) D(2s-1) dev = 5.581e-01
+  POST-HOC ratio tests of R_3 against candidates (NOT pre-registered):
+    dlog R_3/ds : +0.69579  +0.93989  +1.06796  +1.15229  +1.21651  +1.26997
+    cand 3A : ratio dev = 5.890e-01 ; slope gap = [+0.1555 +0.2663 +0.2761 +0.2522 +0.2155 +0.1737]
+    cand 3B : ratio dev = 8.645e-01 ; slope gap = [+0.3132 +0.3996 +0.3944 +0.3604 +0.3164 +0.2689]
+    cand 3C : ratio dev = 5.631e-01 ; slope gap = [+0.1166 +0.2458 +0.2655 +0.2467 +0.2127 +0.1723]
+    cand 3D : ratio dev = 8.284e-01 ; slope gap = [+0.2562 +0.3685 +0.3780 +0.3520 +0.3121 +0.2667]
+    cand 3E : ratio dev = 9.027e-01 ; slope gap = [+0.3915 +0.4338 +0.4101 +0.3679 +0.3200 +0.2707]
+    cand 3F : ratio dev = 2.227e+00 ; slope gap = [+0.6790 +0.8625 +0.9422 +0.9845 +1.0108 +1.0291]
+    cand 3G : ratio dev = 8.829e-01 ; slope gap = [+0.3604 +0.4163 +0.4008 +0.3631 +0.3175 +0.2694]
+    cand X3a Z(2s-1) G(3s+10) D(3s-1) : ratio dev = 1.452e+00 ; slope gap = [-0.4779 -0.4887 -0.5851 -0.7050 -0.8298 -0.9532]
+    cand X3b Z(2s) Z(2s-1) G(2s+11) D(2s) : ratio dev = 6.093e-01 ; slope gap = [+0.1931 +0.2827 +0.2836 +0.2557 +0.2171 +0.1745]
+    POST-HOC BEST for R_3: 3C dev = 5.631e-01
+  elapsed 315.7s
+
+==============================================================================
+[S7] SUMMARY
+  V1 (as stated, scaled basis): rho_scaled(T) is NOT integral for r>=2
+      (sqrt-binomial entries); E_r on the scaled lattice breaks under T.
+      Repaired framing: monomial lattice, Q = rho_mon diag(C(r,i)) rho_mon^T
+      -> exact SL2(Z)-invariance (measured above).
+  V2: exact rank-uniform Poisson SELF-duality holds on the SCALED lattice
+      (det 1; dual Gram = signed-permutation conjugate).  The invariant
+      monomial lattice obeys the det^{-1/2}-twisted duality instead
+      (det = prod C(r,i)).  For r>=2 no single Z^{r+1} framing carries both.
+  r=1 sanity: dev = 2.439e-12, mean ratio-1 = 3.947e-13 -> PASS
+  r=2: best candidate 2J dev 9.076e-02 -> NULL vs pre-registered list
+  r=3: best candidate 3C dev 2.447e+00 -> NULL vs pre-registered list
+
+  POST-HOC two-framing structure: the two invariant transports Q_mon and
+      Q_dual = D^-1 Q_mon D^-1 are EXCHANGED by Poisson duality
+      (Q_mon^-1 = rho(J)^T Q_dual rho(J), rho(J) integer unimodular);
+      only the non-arithmetic scaled frame is Poisson self-fixed.
+  framing-2 frozen-candidate tests: r=2 best 2B dev 2.236e-01; r=3 best 3C dev 1.302e+00.
+  POST-HOC stratum decomposition (framing-2, exact):
+      I^(2)_r = 2 Z(2s) G(rs+11) D(rs) + R_r, first term = EXACT disc-0
+      (power-orbit) stratum = rung-1 content at argument rs; best post-hoc
+      match for R_2: X2a Z(2s-1)^2 G(2s+10) D(2s-1) (dev 5.581e-01); for R_3: 3C (dev 5.631e-01).
+[POST-HOC / ANALYSIS NOTES]  (not pre-registered; labelled per protocol)
+  - Orbit structure of the invariant lattice: SL2(Z)-orbits on Z^{r+1} are
+    binary quadratic forms (r=2, disc invariant) / binary cubic forms (r=3,
+    Shintani prehomogeneous space).  Definite-disc orbits unfold I_2 into
+    CM-point evaluations of a Poincare-convolved |Delta|^2 y^12; indefinite
+    orbits into closed-geodesic periods.  This predicts a spectral-sum
+    (Katok-Sarnak/Waldspurger-type) object, NOT a finite product of
+    standard L-values -- consistent with the measured verdicts above.
+  - measured dlog I_r/ds tables are printed in [S5] for downstream use.
+
+total elapsed 315.7s

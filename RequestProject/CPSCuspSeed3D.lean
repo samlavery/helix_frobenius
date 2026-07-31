@@ -15,10 +15,10 @@ alone, **both** substantive engine inputs at the base of the tower:
 * `cuspSeedReadout_exp_decay` — the readout decays exponentially at the cusp
   (`CuspFormClass.exp_decay_atImInfty`): the cuspidality-side content, derived, not supplied.
 
-Register: this is the base-rung discharge of the audit's own warning
+This is the base-rung discharge of the audit's warning
 (`CPSUnconditionalityAudit3D`: arbitrary actions do not give invariance; integrable kernels
-need not be cuspidal) — at GL(2) level one the substantive inputs are Mathlib theorems of the
-genuine object.  Higher rank remains the named interface.  No RH/GRH.
+need not be cuspidal) — at GL(2) level one the inputs are Mathlib theorems of the
+object.  Higher rank remains the named interface.
 -/
 
 open Complex UpperHalfPlane Matrix.SpecialLinearGroup Matrix Filter

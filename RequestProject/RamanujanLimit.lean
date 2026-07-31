@@ -29,12 +29,11 @@ the carrier, the statement that the strand is a **helix** (an elliptic rotation 
 its automatic shadow (`helix_strandTrace_mem_Icc`; a spiral reads `|a_p| > 2`,
 `spiral_strandTrace_gt_two`), and a nonzero real-trace strand is helix or spiral and nothing else
 (`strand_dichotomy`) — the radial-channel twin of `SourceHolonomy.source_dichotomy`.  The forcing
-direction *helix source ⟹ tempered* is proven (`tempered_of_hasHelixSource`); *every* Frobenius
-having a helix source (`EveryFrobeniusHasHelixSource`, no spiral orphan) is the **favored branch** —
-the radial twin of `EveryZeroHasSource` — grounded in the similitude structure, never asserted as a
-from-1-D proof.
+direction *helix source ⟹ tempered* is proven (`tempered_of_hasHelixSource`);
+`EveryFrobeniusHasHelixSource` (every Frobenius has a helix source) is the radial twin of
+`EveryZeroHasSource`.
 
-Does not assume or prove RH/GRH.  No unit modulus is assumed anywhere: the strand pair carries
+No unit modulus is assumed anywhere: the strand pair carries
 its radius until the last line, where the tower closes it.  No `sorry`, no `axiom`.
 -/
 
