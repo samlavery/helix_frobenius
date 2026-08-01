@@ -28,9 +28,8 @@ proven here:
 
 The composition chain: algebraic class → (cited, proven family law)
 sixth-root lane values → (proven here) norm one → μ₆ → lattice residual →
-(proven threshold) exact closure.  Scope: does not assume or prove RH/GRH
-or the Hodge conjecture; the sole geometric input is the family freeze
-law, itself a theorem of Weil's RH for curves.
+(proven threshold) exact closure.  The sole geometric input is the family
+freeze law, itself a theorem of Weil's RH for curves.
 -/
 
 namespace ZetaSixClosure

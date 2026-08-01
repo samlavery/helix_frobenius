@@ -35,8 +35,8 @@ derivative step on the ladder), and `xi_zero_count_disk_bound` with `xi_bound_in
 (`ZeroCountJensen.lean`) supply the Jensen census machinery — origin-centered `N(R) ≤ C·R·log R`
 compiled outright; the per-window form re-runs the same circle-average argument on height-centered
 disks using the strip bound.  The remaining work of this tier is that gluing — assembly of
-compiled pieces, not new analysis.  Nothing in this file assumes or proves RH/GRH; both targets
-are unconditional classical statements in the 1D chart, restated natively.
+compiled pieces, not new analysis.  Both targets are unconditional classical statements in the
+1D chart, restated natively.
 -/
 
 namespace CriticalLinePhasor.CarrierScale

@@ -142,12 +142,32 @@ completed \(\xi(t,\chi)\) are real --- equivalently, every nontrivial zero of
 zeta function, and each proof specializes there to the Riemann Hypothesis.
 
 The fibre is the three-dimensional representation of its configured
-$L$-function, not a surrogate for it.  In Lean,
-\texttt{spectralFiber\_readout\_tendsto\_LFunction} proves that throughout
-$\Re s>0$ the spin-plane readout of the non-principal 3D fibre converges to
-the analytic $L$-function; \texttt{etaSpectralFiber\_readout\_recovers\_zeta}
-is the principal-character form.  The state is three-dimensional, while its
-analytic readout is complex-valued.
+$L$-function, not a surrogate for it --- and this is now a packaged
+\emph{relational-equality theorem}, not a pair of convergence statements.
+The capstone family
+(\texttt{DirichletFiberEquivalence}, \texttt{UniversalFiberEquivalence},
+\texttt{PrincipalFiberEquivalence}) proves, unconditionally: for every
+nonprincipal character the fibre readout converges throughout $\Re s>0$ to
+the analytically \emph{continued} $L(s,\chi)$, and the classical
+$L$-function is \emph{the unique entire extension} of that readout --- any
+entire function reading the fibre on the strip equals $L(\cdot,\chi)$ on all
+of $\mathbb C$ (\texttt{dirichletFiberEquivalence}, packaging
+\texttt{spectralFiber\_readout\_tendsto\_LFunction} with the
+identity-theorem core \texttt{entire\_eq\_of\_eqOn\_isOpen}).  The
+uniqueness core is class-free: \emph{any} coefficient bank admits at most
+one entire reading (\texttt{entire\_readings\_unique} --- no character, no
+growth condition, no functional equation consumed).  The principal character
+rides the eta conduction: $\zeta$ is recovered from the rescaled fibre
+readout wherever $1-2^{1-s}\neq0$, with the pole booked as the conduction
+factor's zero at $s=1$ and the alternating window cancelling exactly per
+adjacent pair (\texttt{principalFiberEquivalence}, packaging
+\texttt{etaSpectralFiber\_readout\_recovers\_zeta}).  Alongside: conduction
+is lossless, the ledgered projection exact, and vanishing transports exactly
+--- the completed focal residual vanishes at height $Z$ iff the represented
+$L$-value does.  The state is three-dimensional, while its analytic readout
+is complex-valued; the equivalence eliminates \emph{representation} as an
+interface question --- what remains between the fibre and the analytic zero
+set is coverage, never identity of the represented function.
 
 The Lean development then separates three coordinates and statements that
 must not be conflated.  First, the unit-gauge Archimedean area law has a unique
@@ -1909,6 +1929,15 @@ operator \(A^{(3)}_\chi\) then assembles all completed crossings into one
 symmetric event-state space with explicit basis eigenvectors.  Third,
 identifying the analytic zero set with those native events requires a
 pointwise coverage or spectral-capture theorem.
+
+Representation itself is no longer an interface question: the
+relational-equality capstones prove the fibre and its classical
+\(L\)-function are equivalent representations --- unique entire reading of
+the fibre readout, lossless conduction, exact ledger --- for every
+character, principal included (\texttt{DirichletFiberEquivalence},
+\texttt{UniversalFiberEquivalence}, \texttt{PrincipalFiberEquivalence}).
+The residual interface between fibre and analytic zero set is coverage
+alone.
 
 The global \(S(t)\) coordinate map supplies exact census, jump, residue, and
 multiplicity registration between carrier and chart scales.  The proved

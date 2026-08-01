@@ -43,7 +43,7 @@ DC lane carries the trivial weight `1` (`dc_channel_weight_trivial`,
 sign-vector parity and the resulting weight-product identities on the finite fiber, nothing
 more.  No Hodge-theoretic claim is made — the identification of the DC lane with algebraic
 classes in the `(m, m)` block is the Hodge conjecture's territory and is neither assumed nor
-proven; likewise nothing here assumes or proves RH/GRH.  (The converse of
+proven.  (The converse of
 `dc_channel_weight_trivial` — trivial weight only on the DC lane — holds for `α` of infinite
 order and is not needed or claimed.)  No `axiom`, no `sorry`.
 -/

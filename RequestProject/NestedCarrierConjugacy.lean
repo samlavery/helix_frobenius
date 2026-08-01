@@ -36,7 +36,7 @@ retention:
 
 "Nearly definitional — but importantly, not vacuous": the theorem is the
 license to apply the entire existing carrier theorem suite to the
-nested-sphere geometry verbatim.  Scope: does not assume or prove RH/GRH.
+nested-sphere geometry verbatim.
 -/
 
 namespace CriticalLinePhasor.NestedConjugacy

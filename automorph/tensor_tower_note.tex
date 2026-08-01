@@ -1,0 +1,245 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\mathrm{Sym}}
+\newcommand{\eps}{\varepsilon}
+\title{The root number of the tensor tower of an elliptic curve:\\
+a closed form, a Kummer criterion, and odd-order central vanishing\\
+at the Fermat grades}
+\author{Samuel Lavery\thanks{With machine-checked components in Lean~4
+(\texttt{RootNumberLaw.lean}, \texttt{TensorTowerGlobalSign.lean}); axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}.}}
+\date{July 31, 2026 --- draft}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $E/\mathbb Q$ be an elliptic curve and $M_g=H^1(E)^{\otimes g}$ the $g$-fold tensor
+motive.  We give the archimedean epsilon factor of the tower in closed form: with
+$A(g)=2^{\,g-1}+g\binom{g-1}{\lfloor (g-1)/2\rfloor}$ one has
+$\eps_\infty(M_g)=i^{A(g)}$, the exponent $A(g)$ is even at every grade (the sign is
+real), $\eps_\infty=+1$ at every even grade, and for odd $g\ge3$
+\[
+\eps_\infty(M_g)=-1 \iff g=2^k+1 ,
+\]
+by Kummer's carry criterion for the $2$-adic valuation of a central binomial
+coefficient.  For semistable $E$ we then assemble the \emph{global} root number of
+$L(M_g,s)$ across the Clebsch--Gordan decomposition and prove that at every Fermat
+grade $g=2^k+1$ $(k\ge2)$ the global sign is $-1$ \emph{for both parities of}
+$\eps(E)$: $L(M_g,s)$ vanishes at $s=(g+1)/2$ to \emph{odd} order at least
+$M(g,\eps(E))$, an explicitly computed ledger ($9$ and $1$ at $g=5$ for the two
+parities; $91$ and $35$ at $g=9$; $\approx1.9\times10^{18}$ by $g=65$).  At $g=3$
+the ledger recovers the Gross--Schoen grade ($M=3$ for $\eps(E)=-1$), matching the
+sign of the triple-product $L$-function (Gross--Kudla); above $g=3$ the tensor
+tower's sign appears not to have been computed before.  The combinatorial laws are
+machine-checked (exact ledger values through $g=9$ and sign parities through
+$g=25$ in the kernel); the arithmetic inputs are the classical local--global sign
+computations of Deligne, Martin--Watkins, Dummigan--Martin--Watkins and Saito, and
+the functional equations are unconditional by symmetric-power functoriality
+(Newton--Thorne).
+\end{abstract}
+
+\section{The object and what is known}
+
+Write $V=H^1(E)$, a motive of weight $1$ with $\det V=\mathbb Q(-1)$, and
+$M_g=V^{\otimes g}$, of weight $g$ and rank $2^g$.  Its $L$-function factors through
+the Clebsch--Gordan decomposition
+\begin{equation}\label{eq:cg}
+V^{\otimes g}\;=\;\bigoplus_{j=0}^{\lfloor g/2\rfloor}
+\bigl(\Sym^{\,g-2j}V\bigr)(-j)^{\oplus m_{g,j}},\qquad
+m_{g,j}=\binom gj-\binom g{j-1},
+\end{equation}
+the multiplicities being the ballot numbers (the decomposition holds at
+Chow-motive level \cite{Cao}), so that
+$L(M_g,s)=\prod_j L(\Sym^{g-2j}E,\,s-j)^{m_{g,j}}$.  Every twisted factor's completed
+functional equation reflects about the same axis: the center of the piece
+$\Sym^{g-2j}(-j)$ sits at $s=\frac{g-2j+1}2+j=\frac{g+1}2$, the center of the tensor
+motive.  By symmetric-power functoriality for holomorphic newforms
+\cite{NewtonThorne} (non-CM; the CM case is classical via Hecke characters) each
+factor is automorphic, so $L(M_g,s)$ has entire continuation (odd $g$) and its
+functional equation is a theorem, not a hypothesis.
+
+The literature on the \emph{sign} of the tower stops at $g=3$.  At $g=1$ the sign
+theory is classical.  At even $g$ the sign is $+1$: for $g=2$ by the
+symplectic$\times$symplectic mechanism (Prasad--Ramakrishnan \cite[Prop.~2.1]{PR},
+the argument due to Rohrlich \cite{RohrlichWD}; cf.\ \cite[Prop.~6.1]{PR} for
+$\Sym^2\!\otimes\Sym^2$), and for even $g\ge4$ via \eqref{eq:cg} from the local
+$+1$ at every even symmetric power \cite[Prop.~7.1]{DMW} with Saito's global
+theorem \cite{Saito}.  At $g=3$ the global sign of the triple product is computed
+by Gross--Kudla \cite{GrossKudla} for newforms of common square-free level (their
+(1.9) is exactly the Hodge multiset of $V^{\otimes3}$, and the leading $-1$ of
+their sign formula is the archimedean factor), with the local archimedean
+dichotomy in Prasad \cite{PrasadTri}.  For $g\ge4$ we are not aware of any
+computation of the sign of the tensor tower, nor of any appearance of $2$-adic
+binomial criteria in the root-number literature.
+
+\section{The archimedean law}
+
+Deligne's theory of local constants \cite{DeligneLNM}, in the form of the
+archimedean recipe \cite[\S5.3]{DeligneAnvers}, assigns to a Hodge structure its
+archimedean epsilon factor through the Hodge types.  Applied to \eqref{eq:cg} --- or
+directly to the Hodge diamond of $M_g$, whose type-$(p,q)$ multiplicity is
+$\binom gp$ with $p+q=g$ --- the exponent of $i$ is
+\[
+A(g)\;=\;\sum_{p<g/2}\,(q-p+1)\binom gp\;+\;\tfrac12\binom g{g/2}\Big|_{g\ \mathrm{even}} .
+\]
+For odd $g$ no $(p,p)$ block occurs, so everything below is independent of the
+convention for the balanced middle block.
+
+\begin{theorem}[archimedean sign law; machine-checked]\label{thm:arch}
+For all $g\ge1$:
+\emph{(i)} $A(g)=2^{\,g-1}+g\binom{g-1}{\lfloor(g-1)/2\rfloor}$;
+\emph{(ii)} $A(g)$ is even, so $\eps_\infty(M_g)=i^{A(g)}\in\{\pm1\}$;
+\emph{(iii)} $\eps_\infty=+1$ for every even $g$; and for odd $g\ge3$,
+\[
+\eps_\infty(M_g)=-1\iff A(g)\equiv2\ (\mathrm{mod}\ 4)\iff g=2^k+1,\ k\ge1 .
+\]
+\end{theorem}
+
+\begin{proof}[Proof (sketch; full proof in Lean)]
+(i) The deviation part $\sum_p (g-2p)\binom gp$ telescopes to
+$g\binom{g-1}{\lfloor(g-1)/2\rfloor}$ and the flat part is a half row, $2^{g-1}$.
+(ii) is the parity of a central binomial.  (iii) For odd $g=2m+1$ the condition
+$A\equiv2\ (4)$ reduces to $v_2\binom{2m}m=1$, and by Legendre's formula
+$v_2\binom{2m}m=s_2(m)$, the binary digit sum; $s_2(m)=1$ iff $m$ is a power of
+two, i.e.\ $g=2^k+1$.  This is Kummer's carry criterion: the sign flips exactly
+when adding $m+m$ in base $2$ carries once.  The Lean formalisation
+(\texttt{RootNumberLaw.lean}) proves (i)--(iii) unconditionally as statements about
+$A$; the identification of $A$ with Deligne's exponent is the cited classical
+recipe.  As an independent check, assembling the per-piece archimedean signs
+$\eps_\infty(\Sym^m)=-\bigl(\tfrac{-2}m\bigr)$ \cite[\S5.3]{DeligneAnvers} across
+\eqref{eq:cg} reproduces $i^{A(g)}$ at $g=3,5,7$ and the closed form through
+$g=11$.
+\end{proof}
+
+The even half of Theorem~\ref{thm:arch} recovers what the Stiefel--Whitney mechanism
+knows \cite{PR,RohrlichWD}; the odd half is, to our knowledge, new above $g=3$, where
+it recovers Gross--Kudla's $-1$.
+
+\section{The global law for semistable curves}
+
+For semistable $E/\mathbb Q$ and odd $m$ the global sign of $L(\Sym^mE,s)$ is
+\begin{equation}\label{eq:symsign}
+w_m=\Bigl(\tfrac{-2}m\Bigr)\,\eps(E),
+\end{equation}
+assembled from Deligne's archimedean factor and $w_m(p)=w_1(p)^m$ at multiplicative
+$p$ \cite[\S4.3]{MartinWatkins}, \cite{DMW}; even powers have sign $+1$
+\cite{Saito}.  The sign of a factor is unchanged by the shift to the common
+center (the Hodge gaps $q-p$ are unchanged, and the unramified twist scales the
+finite epsilon factors by a positive real), so the global sign of the tensor
+tower is the ballot-weighted product of
+\eqref{eq:symsign}, and each factor with $w=-1$ vanishes to odd order at the common
+center.  Define the \emph{forced multiplicity ledger}
+\[
+M(g,\eps_E)\;=\;\sum_{j\,:\,w_{g-2j}=-1} m_{g,j},
+\qquad\text{so}\qquad
+\mathrm{ord}_{s=\frac{g+1}2}\,L(M_g,s)\;\ge\;M(g,\eps_E),
+\]
+and the global sign is $(-1)^{M(g,\eps_E)}$.
+
+\begin{theorem}[Fermat grades force vanishing for every semistable curve]\label{thm:global}
+Let $E/\mathbb Q$ be semistable and $g=2^k+1$ with $k\ge2$.  Then $M(g,+1)$ and
+$M(g,-1)$ are both odd: the global root number of $L(M_g,s)$ is $-1$ regardless of
+$\eps(E)$, and $L(M_g,s)$ vanishes at $s=(g+1)/2$ to order at least
+$M(g,\eps(E))\ge1$.
+\end{theorem}
+
+\begin{proof}
+Write $S_-=\sum_{(\frac{-2}{g-2j})=-1}m_{g,j}$ and $S_+$ for the complementary sum,
+so $M(g,+1)=S_-$, $M(g,-1)=S_+$, and by the telescoping of the ballot numbers
+$S_++S_-=\binom g{(g-1)/2}$.  For $k\ge3$ we have $g\equiv1\ (\mathrm{mod}\ 8)$, and
+as $j$ increases the class of $g-2j$ mod $8$ cycles $(1,7,5,3)$, so the
+$(\frac{-2}\cdot)=-1$ residues occupy the consecutive pairs $j\equiv1,2\
+(\mathrm{mod}\ 4)$.  Within each pair the ballot numbers telescope:
+$m_{g,4t+1}+m_{g,4t+2}=\binom g{4t+2}-\binom g{4t}$, and since
+$(g-1)/2=2^{k-1}\equiv0\ (\mathrm{mod}\ 4)$ the pairs are complete.  Hence
+\[
+S_-\;\equiv\;\sum_{\substack{0\le j\le 2^{k-1}-2\\ j\ \mathrm{even}}}\binom gj
+\pmod 2 .
+\]
+By Lucas' theorem at $p=2$, $\binom{2^k+1}j$ is odd iff the binary digits of $j$
+are dominated by $10\cdots01_2$, i.e.\ $j\in\{0,1,2^k,2^k+1\}$; in the range only
+$j=0$ contributes, so $S_-\equiv1$.  The total $\binom g{2^{k-1}}$ is even by
+Kummer (adding $2^{k-1}$ and $2^{k-1}+1$ carries at bit $k-1$), so
+$S_+=\binom g{2^{k-1}}-S_-$ is odd as well.  The case $k=2$ ($g=5$) is a direct
+kernel check.  Each sign-$(-1)$ factor $L(\Sym^{g-2j}E,s-j)$ vanishes to odd order
+$\ge1$ at the common center and occurs $m_{g,j}$ times.
+\end{proof}
+
+The sign behaviour is sharp.  Central vanishing itself is generic here:
+$M(g,\eps_E)>0$ for every odd $g\ge5$ and both parities.  What distinguishes the
+Fermat grades is \emph{odd-order} vanishing --- global sign $-1$ --- for both
+parities at once (sign parities kernel-checked through $g\le25$; the grades
+$g=33,65$ are covered by Theorem~\ref{thm:global}):
+
+\begin{center}
+\begin{tabular}{c|c c|l}
+$g$ & $M(g,-1)$ & $M(g,+1)$ & global sign $-1$ for\\ \hline
+$3$ & $3$ & $0$ & $\eps(E)=-1$ only (Gross--Schoen grade)\\
+$5$ & $9$ & $1$ & both (Fermat) --- incl.\ curves with no\\
+& & & \quad sign-forced vanishing below $\Sym^5$\\
+$7$ & $28$ & $7$ & $\eps(E)=+1$ only\\
+$9$ & $91$ & $35$ & both (Fermat)\\
+$13$ & $1078$ & $638$ & neither\\
+$17$ & $14179$ & $10131$ & both (Fermat)\\
+$25$ & $2848366$ & $2351934$ & neither\\
+$33$ & $623067171$ & $543735939$ & both (Fermat)\\
+$65$ & $1863283301142158627$ & $1746430915865974243$ & both (Fermat)
+\end{tabular}
+\end{center}
+
+\begin{corollary}
+For every semistable $E/\mathbb Q$ and every $k\ge2$, the tensor-tower
+$L$-function $L(H^1(E)^{\otimes(2^k+1)},s)$ vanishes at its center to \emph{odd}
+order: the global root number is $-1$ regardless of $\eps(E)$.  Since central
+vanishing of even order occurs generically at odd grades, the Fermat grades are
+exactly the displayed grades where the sign forces vanishing for every semistable
+curve at once.  Under the Beilinson--Bloch philosophy each forced odd-order zero
+predicts null-homologous cycles on $E^{2^k+1}$ generalising the Gross--Schoen
+modified diagonal (the $g=3$ row, where the forcing occurs for $\eps(E)=-1$ and
+$M=3$ matches the classical triple-product case \cite{GrossKudla}).
+\end{corollary}
+
+\begin{remark}[what is new, what is cited]
+The closed form of Theorem~\ref{thm:arch}, the Kummer characterisation, the ballot
+assembly of Theorem~\ref{thm:global} and its Fermat-parity law appear to be new; the
+per-piece signs \eqref{eq:symsign}, Deligne's recipe, Saito's even-power theorem and
+the Newton--Thorne functional equations are the cited inputs.  The combinatorial
+statements are machine-checked in Lean~4 at standard axiom footprint: the closed
+form, the parity and digit laws, the ballot telescoping, the exact ledger values at
+$g=3,5,9$, and the sign parities at $g=7,13,17,25$ are kernel (\texttt{decide})
+theorems.  The parities at $g=33,65$ require no computation --- they are Fermat
+grades, covered by Theorem~\ref{thm:global} --- and the displayed magnitudes at
+$g=13,25,17,33,65$ are evaluator outputs of the same compiled definition (the
+$g=13$ values independently hand-verified in audit).  The forced multiplicities are lower bounds from
+sign parity alone; no part of this note assumes any conjecture.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{Cao} J. Cao, \emph{Motives for an elliptic curve}, arXiv:1708.08092.
+\bibitem{DeligneLNM} P. Deligne, \emph{Les constantes des \'equations
+fonctionnelles des fonctions $L$}, LNM 349 (1973), 501--597.
+\bibitem{DeligneAnvers} P. Deligne, \emph{Valeurs de fonctions $L$ et p\'eriodes
+d'int\'egrales}, PSPM 33.2 (1979), 313--346.
+\bibitem{DMW} N. Dummigan, P. Martin, M. Watkins, \emph{Euler factors and local root
+numbers for symmetric powers of elliptic curves}, Pure Appl. Math. Q. 5 (2009),
+1311--1341.
+\bibitem{GrossKudla} B. Gross, S. Kudla, \emph{Heights and the central critical
+values of triple product $L$-functions}, Compositio Math. 81 (1992), 143--209.
+\bibitem{MartinWatkins} P. Martin, M. Watkins, \emph{Symmetric powers of elliptic
+curve $L$-functions}, ANTS-VII, LNCS 4076 (2006), 377--392.
+\bibitem{NewtonThorne} J. Newton, J. Thorne, \emph{Symmetric power functoriality
+for holomorphic modular forms}, Publ. Math. IH\'ES 134 (2021), 1--116, 117--152.
+\bibitem{PrasadTri} D. Prasad, \emph{Trilinear forms for representations of
+$\mathrm{GL}(2)$ and local $\eps$-factors}, Compositio Math. 75 (1990), 1--46.
+\bibitem{PR} D. Prasad, D. Ramakrishnan, \emph{On the global root numbers of
+$\mathrm{GL}(n)\times\mathrm{GL}(m)$}, PSPM 66.2 (1999), 311--330.
+\bibitem{RohrlichWD} D. Rohrlich, \emph{Galois theory, elliptic curves, and root
+numbers}, Compositio Math. 100 (1996), 311--349.
+\bibitem{Saito} T. Saito, \emph{The sign of the functional equation of the
+$L$-function of an orthogonal motive}, Invent. Math. 120 (1995), 119--142.
+\end{thebibliography}
+\end{document}

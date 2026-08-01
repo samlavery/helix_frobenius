@@ -24,13 +24,11 @@ readout reads the transform only along one vertical line of the chart.
   `WeakBankThetaProfileCoupling3D` is inhabited.  Bank-side side conditions are the compiled
   discharge layer (`cpsPolynomialFullPrimal3DBankReadout_mellinConvergent`, `_continuousAt`,
   `mellinPrimal_verticalIntegrable`); the dual side's vertical integrability transfers along
-  the line from the compiled primal one.  The line agreement itself — Γ-chart registration
-  and coefficient identification — is not proven in this file.  The profile-side Mellin
-  convergence and positive-ray continuity and the dual-side Mellin convergence are inputs
-  (`hprofConv`, `hprofCont`, `hdualConv`): the planned supplier files `RSPairInterface.lean`
-  and `RSAveragedContinuity.lean` are not present in `RequestProject/` at the time of
-  writing (checked by directory listing), so those regularity facts are not proven in this
-  file either.
+  the line from the compiled primal one.  The profile-side Mellin convergence and
+  positive-ray continuity are supplied by the compiled `rsAveraged_mellinConvergent`
+  (RSPairInterface) and `averagedThetaC_continuousAt` (RSAveragedContinuity).  Not proven
+  in this file: the two line agreements themselves — Γ-chart registration and coefficient
+  identification (`hlineP`, `hlineD`) — and the dual-side Mellin convergence (`hdualConv`).
 
 `Re s = σ` is the chart's readout line; every input lives at the Mellin-line or regularity
 level — none restates the pointwise identification being concluded.
@@ -116,12 +114,12 @@ Petersson-averaged lattice profile `θ̄_f − ‖f‖²`, both pointwise readou
 weak coupling.  Bank-side Mellin convergence, continuity, and vertical integrability are
 the compiled discharge layer; the dual side's vertical integrability transfers along the
 line from the primal one, so every hypothesis lives at the Mellin-line or regularity level
-and none restates the pointwise identification.  The line agreement itself (Γ-chart
-registration + coefficient identification) is not proven in this file; the profile-side
-Mellin convergence and continuity (`hprofConv`, `hprofCont`) and the dual-side Mellin
-convergence (`hdualConv`) are likewise inputs — their planned suppliers
-`RSPairInterface.lean` / `RSAveragedContinuity.lean` are not present in `RequestProject/`
-at the time of writing. -/
+and none restates the pointwise identification.  The profile-side Mellin convergence and
+continuity are derived in the proof from the compiled suppliers
+`rsAveraged_mellinConvergent` (RSPairInterface) and `averagedThetaC_continuousAt`
+(RSAveragedContinuity).  Not proven in this file: the line agreements themselves (Γ-chart
+registration + coefficient identification, `hlineP`/`hlineD`) and the dual-side Mellin
+convergence (`hdualConv`). -/
 noncomputable def rsCoupling_of_lineAgreement
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι)
     (C : ℝ) (hC : 0 < C) (μs : List ℂ) (hne : μs ≠ [])
@@ -154,6 +152,15 @@ noncomputable def rsCoupling_of_lineAgreement
     unfold Complex.VerticalIntegrable at hbankV ⊢
     exact hbankV.congr (Filter.Eventually.of_forall fun τ =>
       (hlineP τ).trans (hlineD τ).symm)
+  have h1σ : (1 : ℝ) < σ := by
+    have h0 : (0 : ℝ) ≤ ((Fintype.card ι + W.primalExponent : ℕ) : ℝ) := Nat.cast_nonneg _
+    linarith
+  have hprofConv : MellinConvergent
+      (fun t : ℝ => averagedThetaC k f t - ((peterssonMass k f : ℝ) : ℂ)) σ :=
+    rsAveraged_mellinConvergent f hk (by simpa using h1σ)
+  have hprofCont : ∀ x : ℝ, 0 < x →
+      ContinuousAt (fun t : ℝ => averagedThetaC k f t - ((peterssonMass k f : ℝ) : ℂ)) x :=
+    fun x hx => (averagedThetaC_continuousAt f hk hx).sub continuousAt_const
   exact rsAveragedProfileCoupling W C μs f
     (fun x hx =>
       eqOn_pos_of_mellin_eqOn_line hbankConv hprofConv hbankV hlineP hx

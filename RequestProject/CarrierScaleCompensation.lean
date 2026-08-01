@@ -119,11 +119,10 @@ no hypothesis parameters.  `N(t)` (`zeroEventCount`) is the zero-counting proces
 3-D system over its **entire** event space — the height ray (the on-line ordinate census),
 whose exhaustion is proven and consumed in §6.  The
 gap proven here is *fundamental*: the scale-registration gap between the incommensurable
-`π/3` and unit-`1` placements of one arithmetic procession.  As an identity between the two
-carrier registrations of the line ledger, no statement in this file assumes or proves
-RH/GRH.  What RH-strength *would* add is the **identification** of this file's `S` with the
-classical strip-count `S(t)` (see the scope paragraph above): that identification is exactly
-the `EveryZeroHasSource` branch, is not made here, and no theorem below depends on it.  The
+`π/3` and unit-`1` placements of one arithmetic procession.  What RH-strength *would* add
+is the **identification** of this file's `S` with the classical strip-count `S(t)` (see the
+scope paragraph above): that identification is exactly the `EveryZeroHasSource` branch, is
+not made here, and no theorem below depends on it.  The
 strip of the 1-D chart is a projection device with no 3-D counterpart; it enters only through
 that named identification, never through a proof.
 -/

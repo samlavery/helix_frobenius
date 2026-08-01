@@ -25,7 +25,6 @@ Register: dictionary strength only.  This completes the classical-Hodge
 column of the harmonic dictionary; it constructs no cycle and says
 nothing about algebraicity — the pencil whose rank behavior detects
 algebraic classes is the channel-constancy Gram, a different object.
-Scope: does not assume or prove RH/GRH or the Hodge conjecture.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

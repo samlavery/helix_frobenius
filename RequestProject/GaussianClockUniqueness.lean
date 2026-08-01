@@ -23,7 +23,6 @@ Everything is consumed from Mathlib's exact identities
 (`fourier_gaussian_pi`, `mellin_comp_rpow`, `mellin_comp_mul_left`,
 `Complex.Gamma_eq_integral`); the numerical theta verifications in the
 papers are thereby calibration of proven statements, never their proof.
-Scope: does not assume or prove RH/GRH.
 -/
 
 open Complex Real MeasureTheory

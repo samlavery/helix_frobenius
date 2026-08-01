@@ -28,8 +28,6 @@ channels of a surface), one pairing coordinate per layer:
 * retention, depth preservation, and the executed terminus then transport
   through the proven bridge theorems; recognition on this rung is the
   statement that NS-classes are divisor classes — algebraic by provenance.
-
-Scope: does not assume or prove RH/GRH or the Hodge conjecture.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

@@ -114,7 +114,7 @@ theorem healing_limit :
   rw [Real.log_one] at h
   simpa using h.neg
 
-/-- **The 4D compact-clock conjecture's shape** (a `Prop`, stated, never assumed): a
+/-- **The 4D compact-clock conjecture's shape**: a
 defect curve never heals — `D β < 1` at every coupling.  Measured support: SU(2) at 8⁴
 (max D = 0.85, monotone falling); the abelian control HEALS at its known transition
 (D: 0.33 → 0.93 across β_c ≈ 1.01).  The continuum statement is the Clay problem and

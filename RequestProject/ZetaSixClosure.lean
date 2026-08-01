@@ -17,10 +17,9 @@ closure theorem the architecture needs:
 * the general-number-field interface consumes Mathlib's Kronecker theorem
   (`NumberField.Embeddings.pow_eq_one_of_norm_eq_one`).
 
-Scope: does not assume or prove RH/GRH or the Hodge conjecture.  The
-algebraicity of a lane enters through the freeze certificate (integrality
-+ purity + house-field membership); the theorem converts that certificate
-into exact ℤ[ζ₆]-closure at the common height.
+The algebraicity of a lane enters through the freeze certificate
+(integrality + purity + house-field membership); the theorem converts that
+certificate into exact ℤ[ζ₆]-closure at the common height.
 -/
 
 namespace ZetaSixClosure

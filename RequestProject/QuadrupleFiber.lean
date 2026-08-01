@@ -41,8 +41,8 @@ the quadruple is *not* claimed — the infinite-bank limit and the arithmetic id
 (`prop:localid` for this fiber: conductor `(11·37·53·61)⁸`, the global root number `ε = +1`,
 provisional in the ledger) are the campaign's separate targets, not consumed and not proven
 here.  The coefficient-level continuation input is fiber-independent
-(`TransferContinuation.transfer_analytic`) and needs no quadruple instance.  Nothing here
-assumes or proves RH/GRH, Beilinson–Bloch, or the Hodge conjecture.  No `axiom`, no `sorry`.
+(`TransferContinuation.transfer_analytic`) and needs no quadruple instance.  No `axiom`,
+no `sorry`.
 -/
 
 open Complex Finset

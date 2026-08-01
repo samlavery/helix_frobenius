@@ -29,8 +29,6 @@ Proven here, no hypothesis fields beyond the cited identification:
   tower readout of layer `l` IS the canonical height pairing `⟨P_l, z⟩`;
 * retention, recognition (sections are algebraic cycles by provenance),
   and the executed terminus.
-
-Scope: does not assume or prove RH/GRH or the Hodge conjecture.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

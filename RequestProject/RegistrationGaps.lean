@@ -29,7 +29,7 @@ partition the unit cell into gaps of at most three distinct lengths) is not in M
 classical, provable, and queued — the gap trichotomy of the registration marks is stated here
 only in the docstring register.
 
-This file does not assume or prove RH/GRH; it concerns the deterministic lattice layer only.
+This file concerns the deterministic lattice layer only.
 -/
 
 open Real

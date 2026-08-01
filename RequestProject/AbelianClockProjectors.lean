@@ -30,8 +30,7 @@ not conjecture.  In-kernel content:
   `ProjectorRecognition` for degree-graded factors.
 
 Rational coefficients throughout — the ℚ-linearity of the Chow groups is
-respected, no real limits taken.  Scope: does not assume or prove RH/GRH
-or the Hodge conjecture; degree scope only.
+respected, no real limits taken.  Degree scope only.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

@@ -31,8 +31,7 @@ The theorems, at the review's exact demands:
 The carrier instance: `D = 6` is the μ₆/`ℤ[ζ₆]` angle lattice — the
 `π/3` method-law is exactly this lattice's harmonic scale, and
 `ZetaSixClosure` is its closure arithmetic; tower stability is WHY the
-μ₆ cells survive the entire `Sym^r`/tensor tower unrescaled.  Scope:
-does not assume or prove RH/GRH or the Hodge conjecture.
+μ₆ cells survive the entire `Sym^r`/tensor tower unrescaled.
 -/
 
 namespace CriticalLinePhasor.HarmonicLattice

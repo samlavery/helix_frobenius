@@ -47,7 +47,7 @@ the forced-vanishing criterion it produces: the closed form, the parity of `A(g)
 `ε`-exponent for the tensor motive — hence of `i^{A(g)}` with the actual archimedean root
 number — is the cited classical input (Deligne, *Les constantes des équations
 fonctionnelles des fonctions L*, LNM 349), used to name the object, not claimed here.
-Nothing here assumes or proves RH/GRH.  No `axiom`, no `sorry`.
+No `axiom`, no `sorry`.
 -/
 
 open Finset

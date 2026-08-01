@@ -28,9 +28,7 @@ Honest register: a `FaithfulRealization` term is deliberately NOT
 constructed here — the model's rationality field cannot hold for a
 transcendental-valued readout, and that misfit is precisely the open
 obligation the review names.  What IS proven: the retention half at
-family level, from the two cited inputs and nothing else.  Scope: does
-not assume or prove RH/GRH, the Hodge conjecture, or Beilinson–Bloch
-nondegeneracy beyond the cited family theorem.
+family level, from the two cited inputs and nothing else.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

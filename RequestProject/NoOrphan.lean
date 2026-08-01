@@ -44,7 +44,7 @@ unconditional lane-zero freeze of divisors, and the exhaustive divisor/collectiv
 = ∅ by construction).  Whether reality's measured occupancy matches the model — i.e. whether every
 measured invariant carries a rail-freeze certificate — is the **instruments' job** (the `weil_rails`
 detectors), gated on the named `det(Frob)` bridge above; that is where a genuine orphan could, in
-principle, appear.  Nothing here assumes or proves RH/GRH.  No `axiom`, no `sorry`.
+principle, appear.  No `axiom`, no `sorry`.
 -/
 
 open Finset

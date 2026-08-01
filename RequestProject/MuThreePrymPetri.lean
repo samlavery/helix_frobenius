@@ -16,10 +16,9 @@ every L ∈ Nm⁻¹(ω_C) with h⁰(L) = 1 has injective reduced Prym–Petri ma
   pipeline case g = 4, and the HONESTY MARKER that g = 6, e = 4 is a
   boundary case the comparison does NOT kill.
 
-Scope: does not assume or prove RH/GRH.  The function-theoretic content
-(Lemma A's descent equivalence; Farkas' dimension theorem) enters only
-through hypotheses of the typed statements; this file proves the arithmetic
-that combines them, nothing more.
+The function-theoretic content (Lemma A's descent equivalence; Farkas'
+dimension theorem) enters only through hypotheses of the typed statements;
+this file proves the arithmetic that combines them, nothing more.
 -/
 
 namespace MuThreePrymPetri

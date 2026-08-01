@@ -46,8 +46,8 @@ inversion, with the house cases (full group ⇒ DC, diagonal ⇒ balanced) insta
 carries no arithmetic input (Sato–Tate is what makes the arithmetic subgroup `H` the isogeny-
 diagonal — not modelled here) and makes no Hodge/Tate claim: the identification of frozen
 lanes with algebraic cycle classes is the Hodge/Tate conjectures' territory (a theorem on
-products of elliptic curves, open beyond) and is neither assumed nor proven.  Nothing here
-assumes or proves RH/GRH.  No `axiom`, no `sorry`.
+products of elliptic curves, open beyond) and is neither assumed nor proven.  No `axiom`,
+no `sorry`.
 -/
 
 open scoped BigOperators

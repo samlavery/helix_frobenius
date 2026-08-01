@@ -16,9 +16,8 @@ degrees d₁,…,d_r (machine-confirmed 48/48 over F₇, tmp/w3_parity.sage):
   parity class);
 * if all dᵢ ≡ 0 mod 3, all lifts have the SAME parity (concentration).
 
-Scope: does not assume or prove RH/GRH.  The geometric inputs (monodromy
-invariance of Σ, the component count) are cited context; this file proves
-the counting law the instrument tested.
+The geometric inputs (monodromy invariance of Σ, the component count) are
+cited context; this file proves the counting law the instrument tested.
 -/
 
 namespace MuThreePrymParity

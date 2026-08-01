@@ -36,7 +36,7 @@ char-0 graph algebra is the cited geometric input (decomposability +
 Markman); the composition from there to the executed terminus is theorem;
 the census constants are measured data recorded as literals.  On the
 sixfold the same file shape awaits with `glue := none` — the named open
-field.  Scope: does not assume or prove RH/GRH or the Hodge conjecture.
+field.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

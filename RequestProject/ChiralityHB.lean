@@ -34,8 +34,7 @@ and the zero locus obeys an exact law:
 Honesty tier: this closes the MULTIPLICATIVE side (the carrier/medium — where the
 spectroscopy lives).  The additive interference (the fiber's closures, the L-vanishings)
 is the de Branges completion question (`conj_axis_is_membership_boundary`,
-`DeBranges.hb_no_zero_upper`), still open and named.  Nothing here assumes or proves
-classical RH/GRH.
+`DeBranges.hb_no_zero_upper`), still open and named.
 -/
 
 open Complex

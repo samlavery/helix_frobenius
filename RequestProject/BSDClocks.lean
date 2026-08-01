@@ -27,7 +27,7 @@ Proven here, unconditional at model level:
   face, re-exported from the hinge parity kernels: the functional-equation involution
   forces the parity of the first live jet at the center.
 
-The program frame (stated, never assumed): BSD is **EveryCentralJetHasSource** — every
+The program frame: BSD is **EveryCentralJetHasSource** — every
 order of central vanishing paid for by a rational-point direction (heights = cup
 regulators, the measured 38/38 arc).  Gross–Zagier–Kolyvagin is the proven `ord ≤ 1`
 island — the center's analogue of our on-weld bridge-iff.  What remains open is jet
@@ -188,7 +188,7 @@ theorem regulator_ne_zero {r : ℕ} {H : Matrix (Fin r) (Fin r) ℝ} (hH : H.Pos
     H.det ≠ 0 :=
   ne_of_gt hH.det_pos
 
-/-- **THE BSD TARGET, named** (a `Prop`, stated, never assumed): every central jet has
+/-- **THE BSD TARGET, named**: every central jet has
 a source — the order of central vanishing equals the number of independent source
 directions.  Gross–Zagier–Kolyvagin is the proven `ord ≤ 1` island; measured in-house:
 |Ш| landed at ranks 1–3 (`tmp/jet_census_results.txt`).  The open content is jet

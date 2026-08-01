@@ -29,10 +29,6 @@ its Ceresa-family instantiation:
   the rationality field of `FaithfulRealization` is uninhabitable at this
   layer while `periodCompat` holds.  (Irrationality of Beilinson–Bloch
   heights is open; the statement is hypothesis-typed on purpose.)
-
-Scope: does not assume or prove RH/GRH, the Hodge conjecture, or
-Beilinson–Bloch nondegeneracy beyond the cited family theorem carried by
-`CeresaFamilyData`.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

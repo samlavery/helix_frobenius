@@ -37,7 +37,7 @@ about sign vectors, with the single-clock moments as scalar inputs.  It carries 
 that `m` is the genuine Sato–Tate moment sequence (so the measured `E|T_k|²` equals this sum)
 is the equidistribution theorem's territory (Sato–Tate for the constituent curves, joint
 independence for distinct conductors), cited in the atlas and neither assumed nor proven here.
-Nothing here assumes or proves RH/GRH.  No `axiom`, no `sorry`.
+No `axiom`, no `sorry`.
 -/
 
 open scoped BigOperators symmDiff

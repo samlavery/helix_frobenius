@@ -23,8 +23,7 @@ The two remaining inputs are named with compiled anchors: the branch-log existen
 (`Mathlib.Analysis.Complex.BranchLogRoot`, the ball being simply connected and `Γℝ` nonvanishing
 on `0 < Re`), and the strip modulus bound `M = O(log t)` from the Stirling ladder
 (`StirlingBound.lean`: `stirling_at_half`, `norm_Gamma_step`).  Discharging them yields `hclock`
-and, with `carrierJensenBound_of_clockBound`, the chart form of the clock target.  Nothing here
-assumes or proves RH/GRH.
+and, with `carrierJensenBound_of_clockBound`, the chart form of the clock target.
 -/
 
 open Metric Complex

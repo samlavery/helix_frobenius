@@ -28,9 +28,8 @@ hierarchy this feeds:
   is supplied.  On the fourfold the field is inhabited (cited
   construction); on the sixfold it is THE open step, one field wide.
 
-Scope: does not assume or prove RH/GRH or the Hodge conjecture; the model
-theorems are exact finite linear algebra, the geometric instantiations
-carry their citations.
+Scope: the model theorems are exact finite linear algebra, the geometric
+instantiations carry their citations.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

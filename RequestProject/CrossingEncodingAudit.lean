@@ -41,7 +41,7 @@ functions** `ℕ → ℂ` on a free-floating `CrossingHelix`; nothing in scope t
 or to any analytic zero set.  Therefore `CrossingsExhaustZeroReadout`, *as currently encoded*, is a
 plain modulus equation about the helix's base multipliers.  Applying the review's test:
 
-* It does **not assume RH** — it never mentions a zero set, an L-function, or `IsHB`.
+* It never mentions a zero set, an L-function, or `IsHB`.
 * It is **not circular** — it is not defined in terms of the conclusion it feeds.
 * But it also **does not yield RH for free**: because the helix is decoupled from any arithmetic
   object, the property is simply a *contingent structural* condition — true for some helices, false

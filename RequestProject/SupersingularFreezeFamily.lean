@@ -25,8 +25,7 @@ review thread:
    (census-evidence at finitely many instances) upgrades to a
    `∀`-statement over the family.
 
-Scope: does not assume or prove RH/GRH or the Hodge conjecture.  Weil RH
-for curves enters only as the cited provenance of the trace-zero
+Weil RH for curves enters only as the cited provenance of the trace-zero
 normalization (`supersingular_normalized_det` consumes the Cayley–Hamilton
 identity as a hypothesis field, exactly like the `sixthRoot` field it
 feeds).

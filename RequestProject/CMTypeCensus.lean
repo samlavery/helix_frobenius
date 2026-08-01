@@ -51,7 +51,7 @@ primitive `K`-balanced type with a *simple abelian variety of Weil type* (and of
 Shimura–Taniyama CM theory and the Moonen–Zarhin classification of Hodge classes on abelian
 fourfolds; it is cited, not re-proven here.  In particular no claim is made about the
 algebraicity of those classes (settled in dimension 4 by Markman, transcendentally; open in
-general at dimension 6), and nothing here assumes or proves RH/GRH.  The DC/even-weight
+general at dimension 6).  The DC/even-weight
 reading of the balanced middle block — the `(2,2)` lane existing because the weight `4` is
 even — is the companion parity law of `EvenWeightDC.lean`.  No `axiom`, no `sorry`; the
 enumerations carry no axiom footprint.

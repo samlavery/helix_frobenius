@@ -36,8 +36,7 @@ Deninger–Murre.  The model theorem here is the Vandermonde half of that
 construction; the identification clocks ↦ `[n]`-graphs is the dictionary
 entry, and the algebraicity of projectors BEYOND the graph algebra (the
 collective/Weil rail) is the named open wall, not a field of any
-structure below.  Scope: does not assume or prove RH/GRH or the Hodge
-conjecture.
+structure below.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

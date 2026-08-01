@@ -30,8 +30,7 @@ classes with the NS lattice is the cited classical input
 literal `H^{1,1} ∩ H²(X, ℚ)` objects awaits cohomology of varieties in
 Mathlib.  The same demand ABOVE the known rungs — constructing cycles for
 the sixfold's Weil classes — is the open mathematics itself, not a
-formalization gap.  Scope: does not assume or prove RH/GRH or the Hodge
-conjecture above the divisor grade.
+formalization gap.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration

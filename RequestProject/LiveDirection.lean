@@ -36,8 +36,7 @@ vectors `dir` of the three partitions.
 and the freeze/live bookkeeping of the three grade-4 partitions.  It carries no arithmetic — that
 the equidistribution subgroup `H` of a degenerate motive *is* the isogeny partition (so the
 measured freeze pattern realises this model) is Sato–Tate / Hodge–Tate territory, cited in the
-atlas and neither assumed nor proven here.  Nothing here assumes or proves RH/GRH.  No `axiom`,
-no `sorry`.
+atlas and neither assumed nor proven here.  No `axiom`, no `sorry`.
 -/
 
 open ChannelConstancy Finset

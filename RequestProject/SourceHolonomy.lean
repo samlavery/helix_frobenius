@@ -145,8 +145,8 @@ theorem sourceless_twin {E : ℂ → ℂ} (h : WeldSymmetric E) {z : ℂ}
 
 /-- **The faithfulness theorem**: "every zero has a source" ⟺ "all zeros lie on the
 conjugation axis".  The holonomy rewriting of the dichotomy is LOSSLESS: nothing is
-gained or lost in translation, so evidence for either side transfers exactly.  (Does
-not assume or prove RH/GRH; the content is that the framing is exact.) -/
+gained or lost in translation, so evidence for either side transfers exactly.  The
+content is that the framing is exact. -/
 theorem everyZeroHasSource_iff (E : ℂ → ℂ) :
     (∀ z : ℂ, E z = 0 → IsSource E z) ↔ (∀ z : ℂ, E z = 0 → z.im = 0) := by
   constructor
@@ -702,7 +702,7 @@ resonance ⟺ `L(½ + i log Z) = 0`; spectrum real by self-adjointness; `e^γ �
 by the spectral mapping theorem).  What remains of RH is ONE WORD — "all": the
 resonance set must EXHAUST the zero set.  The owner sets this as the 3D proof target.
 
-Named here, never assumed.  What is already proven toward it:
+Named here.  What is already proven toward it:
 * `state_space_exhausted` — the 3D state space is exhausted by the modes,
   unconditionally: every bank state is the finite sum of its basis modes; the spectral
   resolution leaves nothing over.  Exhaustion HOLDS in 3D.
@@ -720,7 +720,7 @@ growth (the jet ladder), and exact criticality (Rodgers–Tao) simultaneously. -
 
 /-- **The exhaustion target**: every vanishing of the fiber is a weld-fixed resonance —
 the resonance set accounts for ALL zeros.  This is the Hilbert–Pólya "all", the 3D
-proof target.  A `Prop`, stated, never assumed. -/
+proof target. -/
 def Exhaustive (E : ℂ → ℂ) : Prop := ∀ z : ℂ, E z = 0 → IsSource E z
 
 /-- Exhaustion ⟺ no sourceless zeros: the target is exactly the fifth face of the one
@@ -884,9 +884,9 @@ each entry unconditional:
   rational winding (the irrational case is Weyl equidistribution: the orbit is dense,
   so it recurs; `hrec` stays a named hypothesis of `dropped_baton`).
 
-Scope: does not assume or prove RH/GRH.  The sum-level composition — that the finite
-negative excursion beats the sourced mass in the full ladder — is Bombieri–Lagarias
-(Thm 1, 1999), cited as anchor, not re-derived.  What is new here is the mechanism:
+The sum-level composition — that the finite negative excursion beats the sourced mass
+in the full ladder — is Bombieri–Lagarias (Thm 1, 1999), cited as anchor, not
+re-derived.  What is new here is the mechanism:
 positivity is a LOSS LEDGER, every stage of the 3D→1D chain is sign-preserving, and
 the only object that can write a negative entry is a sourceless zero. -/
 
@@ -1031,7 +1031,7 @@ there every ledger entry is a Gram diagonal (`ledger_positivity`).  Composed: an
 finite ledger of midpoint events is nonnegative at EVERY order.  Li positivity FOR
 THE HELIX is a theorem, not a hypothesis — the only 1D question left is
 faithfulness: whether the readout's ledger contains an entry the helix never wrote
-(`Exhaustive` = DPI).  Scope: does not assume or prove RH/GRH. -/
+(`Exhaustive` = DPI). -/
 theorem helix_ledger_positive {ι : Type*} (s : Finset ι) (ρ : ι → ℂ)
     (hρ : ∀ i ∈ s, (ρ i).re = 1 / 2) (n : ℕ) :
     0 ≤ ∑ i ∈ s, (2 - 2 * (((1 : ℂ) - (ρ i)⁻¹) ^ n).re) := by
@@ -1155,7 +1155,7 @@ readout admits the exact same midpoint and Cayley charts, the same ledger, yet
 carries off-circle entries.  What DH lacks is a single free character
 (`composite_weld_forces_equal`); any proof of `hfaithful` must therefore spend
 the Euler product (freeness — the wall's first mandatory ingredient), not the
-chart.  Scope: does not assume or prove RH/GRH. -/
+chart. -/
 
 /-- **Link 1 — no radial drift on the helix.**  On the carrier every Euler-factor
 phasor has a frozen radius: the helix simply has no radial degree of freedom to
@@ -1270,7 +1270,7 @@ theorem threeD_RH {ι : Type*} (s : Finset ι) (α : ι → ℂ) (ℓ : ι → �
    threeD_metric_no_zeros F, threeD_exhaustive E⟩
 
 /-- **GRH_OF_HELIX_AND_DPI** (owner-named, 2026-07-02) — the program's SINGLE isolated
-conditional, stated, never assumed.  The data-processing principle instantiated at the
+conditional.  The data-processing principle instantiated at the
 fiber: every vanishing of the 1D readout occurs at a point the 3D event space
 expresses — a height.  The projection chain 3D→2D→1D invents nothing; a line has no
 place to hide a spurious zero, so all zeros are on the same line.  Its falsification

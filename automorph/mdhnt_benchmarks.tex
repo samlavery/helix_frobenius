@@ -1,0 +1,100 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=1.15in]{geometry}
+\title{MDHNT Level-1 Benchmarks\\ \large Version 1 --- five questions, pre-registered grading}
+\author{}
+\date{August 2026}
+\begin{document}
+\maketitle
+
+\noindent These questions accompany \emph{Multi-Dimensional Harmonic Number
+Theory, for Dummies}.  They are answerable with that document, general
+mathematics, and standard software.  Some have known answers (they grade the
+\emph{transmission} of the toolkit); some have answers nobody yet knows (they
+grade the \emph{toolkit}).  Each states its own success and failure conditions
+in advance.  Report format for all: verdict with numbers, your derivations,
+your code, and a build log of every definition you had to supply yourself.
+
+\section*{Q1 --- The invariant (calibration; answer known)}
+Build the four-line ledger instrument of the guide's clock-chart recipe.  Derive
+the general $k$-event cell residue, and from it an \emph{occupancy-free
+invariant}: a quantity built from the residue and the event phases that is
+confined to a lattice in every cell, regardless of occupancy or history.
+Verify it numerically over at least $10^3$ cells.
+\emph{Grading:} the invariant is exact; any deviation beyond quadrature error in
+any cell is a fail --- of your build, or of the guide, and your report should
+say which.
+
+\section*{Q2 --- The pair question (measurement; answer unknown, and the
+question is which \emph{mechanism} survives)}
+For cells containing exactly two events: recover the unordered phase pair from
+ledger moments alone (no zero locations), and measure the distributions of the
+separation $D=|\tau_1-\tau_2|$ and the barycenter, over every two-event cell
+available to you.  Then decide between three pre-registered hypotheses ---
+and note carefully that the second is \emph{not} established mathematics:
+\begin{itemize}
+\item[(a)] \emph{Independence}: phases i.i.d.\ uniform.  Triangular $D$-density,
+$\rho(0)=2$, $\mathbb E[D^2]=1/6$.
+\item[(b)] \emph{Interaction (``repulsion'')}: sine-kernel--like local
+statistics, $\rho(D)\propto D^2$ as $D\to0$.  This is the random-matrix
+conjecture; it is supported numerically in the literature and \emph{proven
+nowhere} beyond a band-limited regime.
+\item[(c)] \emph{Registration displacement}: a two-event cell is a bookkeeping
+event --- one native occupant plus one member displaced across a boundary from
+an adjacent cell --- so close pairs are rare and gaps large \emph{without any
+interaction at all}.  This hypothesis makes predictions (b) does not:
+two-event cells should be adjacent to event-free cells with the correlation
+forced by the ledger (the census identity $\#\text{empty}=\#\text{double}
++2\cdot\#\text{triple}$ is exact by telescoping --- verify it), and,
+conditional on such adjacency, the pair member nearer the shared boundary is
+the displaced one, so its phase should hug that boundary.
+\end{itemize}
+\emph{Grading:} the small-$D$ exponent with error bars, the barycenter
+distribution reported as found, and above all the \emph{adjacency statistic}:
+it is the discriminator, since (b) and (c) fit the same gap histogram but only
+(c) ties pair geometry to neighboring cells' occupancy.  A verdict for (c)
+would demote ``repulsion,'' for this ledger, from phenomenon to chart-name for
+registration --- which is why the question is worth asking.
+
+\section*{Q3 --- The sharp null (design $+$ measurement; answer unknown)}
+The guide pre-registers a two-tier calibration and admits nobody has run the
+sharp tier: a random \emph{completely multiplicative} model (Steinhaus:
+independent uniform phases on the primes, extended multiplicatively), which
+keeps the multiplicative skeleton and destroys only the arithmetic.  Design a
+defensible ledger instrument for this model --- the design is graded, and the
+central difficulty (what plays the role of the event set for a model with no
+functional equation) is yours to resolve and defend --- and measure $B_N$.
+\emph{Grading:} either verdict is publishable.  Bounded $B_N$ means the
+boundedness claim is about multiplicativity, not arithmetic, and the guide's
+calibration section gets rewritten.  Growing $B_N$ sharpens the claim that
+registration is arithmetic.  An honest ``the question is ill-posed as stated,
+and here is why'' with a repaired statement also passes.
+
+\section*{Q4 --- Dimension parity (pencil and paper; answer derivable)}
+The guide's carry-counting example computes the archimedean exponent $A(g)$ of
+the tensor tower of $H^1(E)$, $E$ an elliptic curve, from its Hodge diamond.
+Do the same, directly, for an abelian surface $A$ ($h^{1,0}=h^{0,1}=2$) at
+$g=3$: compute the exponent from the diamond of $H^1(A)^{\otimes3}$, compare
+with the elliptic value, and state --- with proof --- the sign conclusion for
+the tensor tower of an abelian variety of \emph{any} dimension $d$ at every odd
+grade.  \emph{Grading:} the $d$-scaling law and the parity dichotomy it forces;
+a normalization subtlety that breaks the naive scaling, if you find one, is
+worth more than the confirmation.
+
+\section*{Q5 --- The mechanism (structural; answer unknown)}
+The zeta ledger's running cell-residue sum $B_N$ is empirically flat across
+thousands of cells.  Locate the cancellation: quantify how much of the
+per-cell residue variance is carried by within-cell phase configurations
+versus by the sequence of integer boundary values $s_m$, and identify a
+measurable property of the $s_m$ sequence sufficient to account for the
+flatness.  Propose and test at least one statistic of your own design.
+\emph{Grading:} a decomposition with numbers, a named sufficient property, and
+a pre-registered test of it.  ``The variance lives here, and here is the
+correlation structure that cancels it'' is a pass; a mechanism that would also
+make the null flat is an automatic fail (it proves too much).
+
+\bigskip
+\noindent\emph{Protocol note.}  Attempt any one question cold, from the guide
+and this sheet alone.  Your build log --- what the documents failed to give you
+--- is data of equal value to your verdict, and will be treated as such.
+\end{document}

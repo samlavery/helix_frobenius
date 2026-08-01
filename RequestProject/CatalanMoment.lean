@@ -34,8 +34,7 @@ its odd moments vanish; the Fourier picture is that the measure kills every harm
 **Scope.**  This is the measure-theoretic content: the moments of the one-dimensional Sato–Tate law
 `dST`.  That `2 cos θ` is genuinely `dST`-distributed for the constituent curves (Sato–Tate) and
 that distinct legs are jointly independent (distinct conductors) are the equidistribution theorems'
-territory — cited in the atlas, neither assumed nor proven here.  Nothing here assumes or proves
-RH/GRH.  No `axiom`, no `sorry`.
+territory — cited in the atlas, neither assumed nor proven here.  No `axiom`, no `sorry`.
 -/
 
 open scoped Real

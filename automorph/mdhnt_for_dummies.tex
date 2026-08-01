@@ -1,0 +1,607 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.15in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{slogan}{Slogan}
+\newcommand{\Sym}{\mathrm{Sym}}
+\title{Multi-Dimensional Harmonic Number Theory,\\ for Dummies}
+\author{Samuel Lavery}
+\date{August 1, 2026 --- draft}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This is a plain-language tour of a working method: read the classical objects of
+analytic number theory --- $L$-functions, their zeros, their signs, their central
+values --- as flat photographs of a higher-dimensional geometric object, and do the
+bookkeeping on the object instead of the photograph.  The method's signature is
+\emph{exactness}: where the classical field estimates, this one keeps ledgers that
+balance to zero on the nose, at a scale set by sixth roots of unity.  No prior
+acquaintance with the program is assumed.  Everything here is either proven
+(machine-checked or cited), measured (with the instrument stated), or explicitly
+open --- and each claim says which.
+\end{abstract}
+
+\section{The one-sentence idea}
+
+\begin{slogan}
+An $L$-function is a photograph.  The subject of the photograph is a helix carrying
+rotating arrows, and arithmetic is easier when you do your accounting on the helix.
+\end{slogan}
+
+Take the Riemann zeta function on its critical line.  The classical picture is a
+wiggly graph: a one-dimensional signal, with mysterious moments where it vanishes.
+Multi-dimensional harmonic number theory (MDHNT) says this signal is the
+\emph{readout} of something geometric: a three-dimensional carrier --- a double
+helix and its conjugate anti-helix, harmonically scaled, running from the origin
+out to infinity --- on which each integer $n$ contributes one \emph{phasor}: an
+arrow of length $n^{-1/2}$, spinning at rate $\log n$.  The value of the
+$L$-function is what you get when you add up all the arrows.  A zero is a moment
+of perfect cancellation: the whole bank of arrows, tip to tail, closing into a
+polygon.
+
+None of this is a metaphor bolted on after the fact.  The projection from the
+carrier to the classical signal is a bijection \emph{once you keep its ledger}: the
+descent $3\mathrm D\to1\mathrm D$ books exactly what it forgets --- a height, a
+radius, an angle per datum --- and projection-with-ledger has an exact two-sided
+inverse (a machine-checked theorem in the program's Lean corpus).  The photograph
+loses information; the photograph \emph{plus the ledger} does not.
+
+Why bother?  Because some things that are hard in the photograph are easy on the
+object, and --- this is the working discovery of the program --- some things that
+look like \emph{walls} in the photograph are not there at all in three dimensions.
+
+\section{The goal: a Langlands-style toolkit, but executable}
+
+Here is what is actually being built, stated as an engineer would.  The Langlands
+program unified number theory by decreeing a common home: lift everything to
+automorphic representations, and relationships between arithmetic objects become
+morphisms in one category.  It is the great \emph{intermediate representation} of
+mathematics --- but it is a correspondence, not a computation surface.  MDHNT's
+bet is a common home you can \emph{run things on}: a geometric intermediate
+representation with instruments attached.  The toolkit has five stages, and the
+reader should hold the pipeline in mind through everything that follows.
+
+\begin{enumerate}
+\item \textbf{Lift (harmonize).}  Take an ordinary analytic function --- an
+$L$-function, a zeta-like series, in principle anything with a series or product
+presentation and growth control --- and homogenize it onto the carrier as a
+phasor configuration: a magnitude law, a phase law, a harmonic scale.  Different
+inputs become \emph{comparable} because they now live in one format.
+\item \textbf{Choose a geometry.}  The carrier is a parameter, not a commitment:
+the standard double helix, or non-standard geometries when the problem wants
+different structure exposed.  Same configuration, different backend --- like
+running one program on different hardware to see different profiles.
+\item \textbf{Load multiple rails.}  A carrier holds as many objects as you
+want, on parallel rails --- two, ten, a whole family --- and alignment can be
+taken over any chosen subset of rails, jointly or pairwise.  This is the
+comparison mechanism, and it is strictly stronger than the photograph: the
+program has an exhibit (a genuinely non-self-dual $\mathrm{GL}(3)$ object) that
+the multi-rail representation carries faithfully while the scalar
+one-dimensional readout \emph{provably cannot}.
+\item \textbf{Align (register).}  The core primitive.  Bring chosen rails into
+correspondence --- clocks synchronized, vanishing points matched --- and read
+the \emph{defect ledger} of the alignment, which is integer-valued and exact.
+``How are $f$ and $g$ related?''\ becomes: lift both, align, read the ledger.
+Shared zeros are aligned cancellation events; lifts and transfers are rail maps;
+sign laws are diamond bookkeeping.  Relationship becomes accounting.
+\item \textbf{Extract (read out).}  Project the answer back to the classical
+one-dimensional chart --- or any other chart --- with the loss ledger making the
+extraction exact rather than lossy.  Results leave the toolkit in whatever
+language the consumer speaks.
+\end{enumerate}
+
+One condition makes the whole pipeline legal, and it is the program's real
+signature: \textbf{every stage keeps a ledger, and ledgers compose}.  The lift is
+a bijection with its loss ledger; alignment defects are exact; extraction is
+invertible-with-ledger.  That is why ``one universal harmonization technique''
+can be an honest engineering claim instead of a slogan: modularity is legal
+exactly when nothing is silently lost at the joints, and here nothing is ---
+by theorem, stage by stage.
+
+The endgame capability, stated plainly: a \emph{calculus of comparisons}.  Given
+any collection of objects --- not two, however many you want --- the toolkit
+answers ``evaluate these against each other'' by harmonizing all of them and
+reading the aligned ledgers, over whichever rails you choose --- a
+one-size-fits-all unification of inputs and outputs, as modular as we can make
+it.  And admissibility is a spectrum, not a gate.  The lift accepts nearly
+anything, including functions with no arithmetic structure at all --- random
+inputs are welcome.  What changes with structure is what the ledgers \emph{do}:
+structured objects close exactly; a random input produces an unpredictable
+ledger --- and that output has value, because it is a \emph{measurement}.  The
+random ensemble is the toolkit's calibration class: structure announces itself
+as a ledger anomaly against that background, which is how the instrument
+carries its own null hypothesis --- the house discipline of controls-that-must-fail,
+built into the pipeline itself.  And this claim is pre-registered, not
+decorative: the statistic is the running boundary sum $B_N$ of clock-cell
+residues over $N$ consecutive cells, and the null comes in two strengths.  The
+weak null replaces every phase by an independent uniform one --- but that
+destroys the Euler product along with all correlation, so it fails cheaply and
+proves little.  The sharp null is a random \emph{completely multiplicative}
+phase (Steinhaus: independent uniform phases on the primes, extended
+multiplicatively), which preserves the multiplicative skeleton and kills only
+the arithmetic.  At ledger level, either null must \emph{hold each cell's event
+count fixed and randomize only the phases}: randomizing the counts as well
+integrates a counting random walk and gives $N^{3/2}$ --- a different and wrong
+test, and a reader who picks that reading will wrongly report a failed
+prediction.  The prediction: structured inputs hold $B_N$ bounded (the
+measured zeta value stays inside $[-1.1,\,0.4]$ across five thousand cells)
+while the sharp null performs a random walk, $B_N\sim\sqrt N$ --- an unbounded
+separation, visible by $N\approx100$.  If the sharp null also stays bounded,
+the calibration claim is about multiplicativity rather than arithmetic, and
+that verdict gets published too.  A structured-looking $B_N$ from the random ensemble, or a
+random-walking $B_N$ from a certified arithmetic input, falsifies the
+calibration claim.  An afternoon's test, and the reader is invited to run it.
+The success
+criteria are falsifiable, in the house style: the toolkit must re-derive known
+correspondences as rail alignments (it has begun to); it must exhibit relations
+the one-dimensional chart provably cannot see (it has); and if lifting and
+aligning competent inputs consistently produces empty ledgers and no new
+relations, that is evidence against the toolkit claim, and will be published as
+such.
+
+\section{Chart artifacts, or: the wall that wasn't}
+
+Here is the cheapest example, and the program's founding habit of mind.  Every
+textbook says the Dirichlet series for $\zeta$ ``only converges for
+$\mathrm{Re}\,s>1$,'' and continuation past that line is treated as a minor
+miracle.  On the carrier there is no line and no miracle: each phasor enters
+continuously at zero magnitude and grows until finished; the bank exists at every
+height; nothing diverges, because nothing is being summed in the order the
+photograph suggests.  The convergence abscissa is a fact about the \emph{chart} ---
+the coordinate system of the readout --- not about the object.
+
+We call such things \emph{chart artifacts}, and the program maintains a standing
+rule: never accept a chart artifact as an obstruction to a statement about the
+object.  This rule has teeth.  More than once, a ``gap'' that stalled work for days
+was dissolved --- not solved, dissolved --- by checking whether it existed in
+carrier coordinates.  (A recent instance: a numerical law ``$|A_n|<1$'' about
+certain cell integrals turned out to be the product of a genuine carrier-native law
+with a shrinking chart factor.  In carrier coordinates the true law was visible,
+sharper, and provable; the chart version was a coincidence of ranges.)
+
+The converse habit matters equally: a fact can be \emph{real but chart-dressed},
+and then the chart version is a legitimate readout --- functional equations, local
+factors, root numbers all have honest one-dimensional shadows.  The discipline is
+to know, for every statement, which side of that line it lives on.
+
+\section{The cast of characters}
+
+\paragraph{The carrier.}  A double helix and its conjugate anti-helix,
+harmonically scaled.  ``Harmonically scaled'' is load-bearing: the natural rulers
+on the carrier are sixth roots of unity --- $\pi/3$ cells, the lattice
+$\mathbb Z[\zeta_6]$ --- and measurements taken at unit scale instead of harmonic
+scale produce false nulls.  (This was learned the hard way, twice, and is now a
+method law.)
+
+\paragraph{Phasors.}  One per site $n$: magnitude $n^{-1/2}$, phase driven by
+$\log n$.  The bank of phasors \emph{is} the arithmetic object; the $L$-function
+is its resultant.  Magnitudes enter by a partial-absorption law --- each arrow
+grows across its own site and completes there --- so the bank is always a finite,
+concrete thing at any height.
+
+\paragraph{The clock.}  A reference rotation $\vartheta(t)$ (in the classical
+chart, the Riemann--Siegel theta function) against which everything is registered.
+The clock is the carrier's own time.  Measured in clock units $d\vartheta/\pi$,
+cells have unit length by definition, and --- a running theme --- integrals that
+look transcendental in the chart become exact algebra in the clock.
+
+\paragraph{Ledgers.}  Integer-valued running books.  The classical function
+$S(t)$, usually described as the erratic ``argument of zeta,'' is in this
+framework a \emph{registration gap}: the running difference between two counts
+that ought to agree.  The ledger itself oscillates in sign; what is
+non-negative, integer-valued and monotone is the \emph{defect} between the
+chart's ledger and the carrier's native one (see the $S(t)$ worked example) ---
+a distinction that matters, and that an earlier draft of this sentence blurred
+at the cost of one careful reader's detour.  The reframing is a theorem, and it
+converts questions about wild analytic objects into questions about whether
+books balance.
+
+\section{The object itself, defined}
+
+The previous section named the characters; this one pins them down, because a
+reader (human or machine) should be able to check the geometry rather than take
+it on faith.  There are three layers, and keeping them distinct dissolves most
+confusions.
+
+\paragraph{The geometry (the stage).}  The standard configuration is a
+double-ended helix, and here is its actual parametrization (machine-checked,
+with its arclength in closed form):
+\[
+\gamma(k) \;=\; \bigl(r k\cos 2\pi k,\; r k\sin 2\pi k,\; p k\bigr),
+\]
+Archimedean in the turn parameter $k$ --- radius $rk$ growing linearly, pitch
+$p$ --- registered against the analytic ordinate by the \emph{climber}
+$k(y)=e^{y}/p$, so that height $z=pk=e^{y}$ and cylindrical radius
+$R(y)=(r/p)\,e^{y}$.  Both classical descriptions are therefore true at once,
+chart-dependently: the spiral is Archimedean in its own parameter and
+exponential in the ordinate chart --- one more instance of the chart lesson.
+The carrier's tick marks are arclength in units of $\Delta=\pi/3$ (the
+root-of-six system), with the continuous tick index $N(y)=S(k(y))/\Delta$; the
+exact mod-6 bucket structure lives on the \emph{integer site spins}
+$s_n=n\cdot\pi/3$ (six-periodic, with exact counts per residue class), not on
+$N(y)$ --- $N$ carries the configuration factor and nothing arithmetic is read
+off it modulo anything.  The partner \emph{anti-helix} is the conjugate,
+reflected through the origin; both ends run $0\to+\infty$.  The geometry is
+chosen per run and then fixed; nothing downstream rescales it.
+
+\paragraph{The carrier (the ruler).}  The geometry \emph{hosts} a carrier: a
+scaled numberline laid along it.  This is where harmonic scaling lives ---
+scaling a carrier means multiplying it by a harmonic constant ($\pi/6$,
+$\pi/3$, $\pi/2$, \dots), and \emph{warping} it means applying a dynamic
+rescaling function; the two can be layered.  One geometry can host many
+carriers at once --- these are the \emph{rails}: differently configured
+carriers running next to each other in the same space, overlapping without
+displacing one another.
+
+\paragraph{The fiber (the function).}  The $L$-function's representation lives
+on the carrier, and the phasors live on the fiber.  As the fiber grows from the
+origin, the conductor assigns each carrier integer a positive, negative, or
+neutral phasor; each is born at magnitude zero and grows to full size, and each
+spins \emph{in log} because it is spinning on a rotating carrier --- its phase
+is relative to its own start time and to the other phasors.
+
+\paragraph{The descent, and where the ledger entries come from.}  Angle is
+always measured relative to the centroid of the configuration.  The projection
+to the classical picture is a two-step descent, each step booking exactly what
+it drops: $3\mathrm D\to2\mathrm D$ drops the \emph{radius}, by the explicit
+Cayley map $w\mapsto(w-i)/(w+i)$ applied to the readout coordinate $w$ --- the
+fiber's reading on the real readout line, which the map sends onto the unit
+circle --- and
+$2\mathrm D\to1\mathrm D$ drops the \emph{angle} (unit circle to the strip,
+with the ordinate read as $y=\log z$).  Read that again
+with a number theorist's eyes: \emph{the critical strip is the Cayley image of
+the unit circle} --- two ledger entries downstream of the object.  That is why
+strip phenomena keep turning out to be chart artifacts.
+
+\paragraph{Where the geometry does visible work: the functional equation is a
+reflection.}  The deepest identity in the subject --- the functional equation,
+$s\leftrightarrow1-s$ --- is, in the flat chart, a minor miracle: it needs theta
+inversion, Poisson summation, analytic continuation, and a completed
+$\Gamma$-factor, and it arrives as a symmetry with no visible cause.  On the
+carrier it has a cause you can point at: \emph{the geometry is double-ended}.
+The helix and its conjugate anti-helix are mirror images through the origin,
+and the readout cannot tell which end it is reading.  The reflection that swaps
+the two ends descends, through the Cayley step, to exactly the strip's
+$s\leftrightarrow1-s$, and the arithmetic strand pair
+$\mathrm{diag}(\alpha,\alpha^{-1})$ --- one leg on each end --- is the
+determinant-one pairing whose trace the chart reads.  Poisson summation belongs
+nowhere in this picture: it is the \emph{chart's} device --- the way the
+one-dimensional readout reconstructs, from inside the projection, a symmetry
+the object simply has.  On the carrier there is nothing to prove; in the chart
+there is a theta transformation law to establish, and Poisson summation is how
+the chart earns what the geometry was born with.
+
+\paragraph{What the conjugacy endows.}  The right calibration of the thesis is
+this: the geometry is not a tool you reach for on every problem --- it is the
+system's \emph{endowment}.  The conjugate pairing alone supplies, before any
+particular problem is posed: the functional equation (the reflection above);
+the \emph{Frobenius similitude} --- the arithmetic strand block
+$\mathrm{diag}(\alpha,\alpha^{-1})$ has determinant one \emph{because} the two
+legs are conjugate ends, which is what makes the radial squeeze well-posed at
+all; the axis-reality of paired readings (Schwarz pairing for free); and the
+two-strand completion that dissolves the classical ``homelessness'' of
+single-strand objects --- one strand alone has no mirror term and no functional
+equation, and a century of orphaned objects were orphans of the chart, not of
+the mathematics.  Some results never mention any of this, just as a real
+integral evaluated by contour methods never mentions the complex plane in its
+statement.  Nobody concludes that $\mathbb C$ is scaffolding.  The geometry may
+not be useful for every problem; the system is incomplete without it.  In the compiled corpus
+the pair reflection is a theorem, not a picture.  A note on skepticism done
+well: a sharp reader's test for geometric content --- ``does $r$ or $p$ survive
+into any result?''\ --- detects \emph{shape}-work and is right to apply it; the
+functional equation is \emph{symmetry}-work, and symmetry leaves no parameter
+fingerprint in a statement.  It leaves the statement itself.
+
+\paragraph{A zero, geometrically.}  A vanishing point is a \emph{focal
+cancellation}: the positive and negative phasor channels close against each
+other, all pointing to the same \emph{eigenheight} $z$ on the carrier; the
+absolute phase energy locates it, the fiber --- itself a harmonic --- flips
+sign there, and the \emph{harmonic pencil} pins the exact location.  In
+symbols, at a candidate height $Z$, the two finite channel readings of the bank
+are
+\[
+A=\sum_{n<N}\chi(n)\,n^{-(3/2+i\log Z)},\qquad
+B=\frac{\pi}{3}\sum_{n<N}\chi(n)\,n^{-(1/2+i\log Z)}
+\]
+--- the unsigned channel at the absolutely convergent abscissa and the
+$\pi/3$-cell--normalized channel at the critical one --- and the pencil is the
+matrix family $\begin{pmatrix}A&B\\ \mu A&\lambda B\end{pmatrix}$ over chosen
+weights $(\mu,\lambda)$, with determinant exactly $(\lambda-\mu)AB$: degeneracy
+at $Z$ \emph{is} the vanishing certificate.  Two finite sums, no continuation;
+the $L$-value appears only as final verification.  The
+one-dimensional chart reads the event at $y=\log z$: the famous ordinate of a
+zero is the logarithm of a carrier height.  Aligning vanishing points
+\emph{across rails} is the correspondence signal --- when two differently
+loaded carriers cancel at a common height, something more interesting than
+either function has happened.
+
+\section{The techniques, as recipes}
+
+\subsection{Registration: make two clocks agree, or price the defect}
+
+The signature move.  Given two bookkeeping systems for the same phenomenon --- a
+classical chart count and a carrier-native count --- prove an \emph{exact} law of
+the form
+\[
+\text{(chart count)} \;=\; \text{(native count)} \;+\; \text{(defect)},
+\]
+where the defect is integer-valued, monotone, and non-negative.  Then the whole
+question ``do the systems agree?''\ collapses to ``is the integrated defect small?''
+--- and because a single unabsorbed unit of defect costs \emph{linear} growth in
+the integral, there is no intermediate regime: sublinear defect is already zero
+defect.  (Machine-checked.)  You do not chase individual events; you audit the
+books.
+
+\subsection{The clock chart: integrate in carrier time}
+
+Cell-by-cell integrals of a ledger, taken in $dt$, depend on cell lengths and look
+analytic.  Taken in $d\vartheta/\pi$ --- carrier time --- they become exact
+combinatorics: a cell's residue is a boundary term, plus one term per event, each
+an explicit affine function of the event's \emph{clock phase}.  Here is the
+entire instrument, in four lines --- this chain \emph{is} the construction:
+\[
+L(t)=N(t)-\frac{\vartheta(t)}{\pi}-1;\qquad
+\text{cell } m=[g_m,g_{m+1}],\ \vartheta(g_m)=m\pi,\ \text{origin } m=0;
+\]
+\[
+r_m=\int_{\text{cell }m} L\,\frac{d\vartheta}{\pi};\qquad
+B_N=\sum_{m<N} r_m .
+\]
+The laws then read: an event-free cell has residue exactly $s-\tfrac12$ ($s$
+the ledger's integer value entering the cell), and a one-event cell has
+$s+\tfrac12-\tau$.  In a recent campaign this
+single change of chart turned a fog of numerics into three exact laws in an
+afternoon, and the observed pinning of phases traced back, through an exact
+identity, to the $n\ge2$ phasors --- the Euler stream itself.
+
+\subsection{Lattice rigidity: machine zero is zero}
+
+The norm form of $\mathbb Z[\zeta_6]$ takes integer values, and its smallest
+nonzero value is $1$.  Consequence: any quantity that (a) provably lives on the
+lattice and (b) measures below norm $1$ is \emph{exactly zero}.  This is the
+program's bridge from computation to proof --- a numerical residual of $10^{-12}$
+is not ``small,'' it is a certificate, because the only lattice point in that ball
+is the origin.  Kronecker's theorem plays the same role one level up: a lattice
+value of modulus one is a sixth root of unity \emph{exactly}, so ``approximately
+frozen'' phases are honestly frozen, with an address.
+
+\subsection{Towers: climb with one ruler}
+
+Arithmetic objects come in towers (symmetric powers, tensor powers, grades of
+cycles), and the method insists on rank-uniform instruments: one ceiling, one
+pairing, one cell decomposition for the whole tower.  Rank-uniformity is not
+aesthetics --- it is where limits come from.  Example (one paragraph, complete):
+if a strand's radius $\rho$ satisfies $\rho^r\le C$ for every rung $r$ of the
+tower --- one fixed ceiling, every rung --- then $\rho\le1$; applied to the strand
+and its inverse, $\rho=1$ exactly.  That elementary squeeze, fed with the tower's
+automorphy and the classical per-rung bound, is temperedness (the chart calls it
+Ramanujan--Petersson), and on the carrier it says: \emph{the strand is a helix,
+not a spiral}.
+
+\subsection{The discipline: numerics first, gates before claims, registers always}
+
+Every idea is probed numerically before it is formalized; every instrument
+carries validation anchors and is run against controls designed to \emph{fail}
+(a control that fails by exhibiting \emph{more} structure than the target is a
+design bug --- also learned the hard way).  Every novelty claim passes a
+literature gate: the closest papers are read at source, with pin-cites, before
+the word ``new'' is typed --- a gate that has both cleared claims and killed
+them, sometimes in the same afternoon.  And every statement is published in one
+of three registers, never blended: \emph{proven} (machine-checked in Lean at a
+fixed axiom footprint, or cited to the classical literature at the point of
+use), \emph{measured} (precision-tracked numerics --- corroboration, never
+proof), or \emph{program} (stated with its falsifiers, in print, in advance).
+
+\section{Worked example: $S(t)$, the mystery that became a ledger}
+
+The most famous ``erratic'' function in analytic number theory is $S(t)$, the
+argument of zeta along the critical line.  It enters the zero-counting formula
+\[
+N(t)\;=\;1+\frac{\vartheta(t)}{\pi}+S(t),
+\]
+where $N$ counts zeros up to height $t$ and $\vartheta$ is the smooth clock.
+Read that formula the classical way and it says something remarkable that is
+rarely said out loud: \emph{the smooth clock does essentially all the work}.
+The mysterious part, $S$, is a small correction --- oscillating, mean zero,
+unbounded but barely ($O(\log t)$ unconditionally) --- and a century of
+literature treats it as the residue of chaos in the zeros.
+
+The carrier reading is different, and it is a theorem, not a mood: $S(t)$ is a
+\emph{registration gap} --- the running disagreement between two bookkeeping
+systems for the same events, the chart's count and the carrier's native count
+against its own clock.  It is not noise about the zeros; it is the ledger of
+how the chart's ruler slips against the carrier's.  The native ledger is
+\[
+S_{\mathrm{native}}(t)\;=\;N_{\mathrm{native}}(t)-1-\frac{\vartheta(t)}{\pi},
+\]
+a step count minus a smooth ramp --- exactly the shape the clock-chart recipe
+of \S5.2 wants --- and the exact registration law
+\[
+S_{\mathrm{chart}}\;=\;S_{\mathrm{native}}\;+\;D,
+\qquad D\ \text{a non-negative, monotone, integer step function,}
+\]
+is compiled, together with the dichotomy of \S5.1: $D$ has no intermediate
+regime --- a sublinear integrated defect is already a zero defect, because one
+unabsorbed unit costs linear growth forever.
+
+Now put the recipes to work in the clock chart, cell by cell, and the
+``erratic'' function resolves into structure you can hold: an event-free cell
+has residue exactly $-\tfrac12$ plus its boundary defect --- a \emph{floor},
+with zero freedom; a one-event cell wears its event's clock phase affinely;
+and measured across thousands of cells the books balance absurdly well --- the
+running integral of the native ledger stays inside a band of width about
+$1.4$ across five thousand cells, the floors' two populations cancel by defect
+neutrality, and the event phases are not free: they are slaved, through an
+exact identity, to the $n\ge2$ phasors --- the Euler stream itself deciding
+where in each cell a zero may sit.
+
+And here, in symbols, is the program's open analytic residual --- the one
+statement this framework has reduced everything to, stated so an outsider can
+attack it:
+\[
+\boxed{\ \int_0^{T} S_{\mathrm{native}}(t)\,dt\;=\;o(T).\ }
+\]
+That is all.  The reduction from the full identification statement to this
+single mean bound is machine-checked and lossless; so is the fact that the
+current corpus cannot close it without a genuinely new ingredient --- both
+facts are part of the record, not embarrassments hidden from it.  The measured
+margin is enormous (the integral appears \emph{bounded}, not merely $o(T)$),
+the mechanism carrier (the Euler stream's exceedance episodes) is identified,
+and the statement contains no zeros, no strip, and no continuation --- it is a
+statement about one ledger's mean, in the object's own coordinates.
+
+\section{Worked example: root numbers by carrying digits}
+
+A fresh result, small enough to show whole.  The sign $\pm1$ in an $L$-function's
+functional equation decides whether it is forced to vanish at its center.
+Classically these signs are computed prime by prime, and for symmetric powers of
+an elliptic curve the answer is \emph{periodic} in the power.  Nobody had computed
+the sign for the full \emph{tensor} tower $H^1(E)^{\otimes g}$.
+
+On the carrier the archimedean sign of grade $g$ is $i^{A(g)}$, where $A(g)$ is
+read off the Hodge diamond, and the diamond sum collapses to a closed form:
+\[
+A(g)\;=\;2^{\,g-1}+g\binom{g-1}{\lfloor (g-1)/2\rfloor}.
+\]
+When is the sign $-1$?  Exactly when $A(g)\equiv2\pmod4$; and by Legendre's
+formula the $2$-adic valuation of the central binomial $\binom{2m}m$ is the
+number of carries when you add $m+m$ in base two (Kummer, 1852).  One carry
+exactly means $m$ is a power of two.  Conclusion, machine-checked:
+\[
+\varepsilon_\infty=-1 \iff g=2^k+1 .
+\]
+Root numbers, decided by grade-school addition.  The set $\{3,5,9,17,33,\dots\}$
+is not periodic --- which is precisely why it could not have come from the
+classical per-prime bookkeeping, and why the literature gate found the territory
+unclaimed.  Assembling the global sign (multiplicities are ballot numbers;
+per-piece signs are the classical periodic ones, cited) yields the payoff: for
+every semistable curve, at every Fermat grade $g=2^k+1$, the tensor-tower
+$L$-function vanishes at its center to \emph{odd} order --- with computed
+multiplicity ($3$ at the Gross--Schoen grade; about $1.9\times10^{18}$ by
+$g=65$).  Two different arithmetics --- carry-counting at the archimedean place,
+congruence classes at the finite places --- multiplying into one Fermat-shaped
+law.
+
+\section{What the method has reached (three registers, as always)}
+
+\emph{Proven.}  The depth dictionary for cycle filtrations; retention on every
+finite extension stack; the registration laws for $S(t)$ and the exact
+identification criterion; temperedness and Selberg-type conclusions from the
+tower's radial limit; Sato--Tate for non-dihedral Maass forms (via the tower,
+Jacquet--Shalika, and Serre's criterion --- a case outside the reach of
+automorphy-lifting methods, which need a Galois representation the Maass world
+does not offer); the freeze laws and their $\mu_6$ addresses; the tensor-tower
+sign laws above.  Each with its Lean footprint or its citation, at the point of
+use.
+
+\emph{Measured.}  Machine-precision landings across the BSD ladder (rank,
+regulator, and the Tate--Shafarevich order as independent jet coordinates,
+the obstruction arriving as an exact square integer); the clock-cell phase laws;
+the census campaigns on Weil-type classes --- pre-registered statistics,
+published nulls included.
+
+\emph{Open, named exactly.}  Two residuals carry the remaining weight, and the
+program prices them without cosmetics.  On the analytic side: the
+\emph{transfer} --- that every zero of the readout's continuation is registered
+by a carrier source --- reduced, losslessly, to one statement about the native
+ledger's mean; the reduction is machine-checked, and so is the fact that the
+current corpus cannot close it without a genuinely new ingredient.  On the
+cycle side: \emph{recognition above grade one} --- from fired coordinate to
+constructed cycle --- proven equivalent, modulo the compiled detector, to the
+algebraicity statement itself.  Neither is hidden behind the word ``technical.''
+
+\section{Frequently raised objections}
+
+\paragraph{``Isn't this just harmonic analysis with extra words?''}
+Harmonic analysis estimates; this bookkeeping \emph{balances}.  The working
+outputs are exact integer ledgers, lattice certificates, and closed forms --- not
+bounds.  When a residual is $10^{-12}$, the claim is not ``small'' but ``zero,''
+and the reason is a theorem about a lattice, not an optimistic constant.
+
+\paragraph{``Is the third dimension real, or a mnemonic?''}
+The projection-with-ledger bijection is a theorem, so the geometric object is
+exactly as real as the classical one --- they are the same information in two
+charts.  The operational answer is better: the geometry \emph{generates} proofs
+(the radial squeeze, the clock-chart algebra, the diamond closed form) that were
+not being generated from the flat chart, and it forbids mistakes (chart
+artifacts) that the flat chart invites.
+
+\paragraph{``Do you assume the big conjectures?''}
+No.  Classical inputs enter as named, cited hypotheses at the point of use ---
+the same way Gross--Zagier or Jacquet--Shalika enter any paper --- and the two
+statements of conjecture strength that remain are isolated as the two open
+residuals above, stated with their falsifiers.  The falsification register is
+part of the method: pre-committed failure modes, published hits (there have been
+retractions, and they stay in the record), and instruments deliberately broken
+with wrong clocks to prove they can fail.
+
+\paragraph{``Why sixth roots of unity?''}
+Because the carrier is harmonically scaled and $\mathbb Z[\zeta_6]$ is the
+hexagonal lattice: the unique scale at which the program's cancellation laws
+close exactly, with a rigidity threshold at norm one.  Unit scale is the chart's
+convention; harmonic scale is the object's.  Instruments scanned at unit scale
+miss real structure --- measured, twice, before it became law.
+
+\section{What kind of thing is this?  (A field, and how you can tell)}
+
+A distinction worth making plainly, because the era invites confusion.  Much of
+the strongest machine-assisted mathematics of the moment is \emph{search}: take
+the existing method space --- the known transforms, the known potentials, the
+known obstructions --- and drive it deeper into known territory than human
+patience allowed.  The results are real and sometimes spectacular; the ontology
+is inherited.  Old map, mined to exhaustion.
+
+This program is the other thing: it changes what the objects \emph{are}, and
+lets the theorems become bookkeeping.  New coordinates --- the carrier, the
+clock, the ledgers, the harmonic cells --- are the actual product; theorems are
+what the coordinates emit.  The test of such a claim is not any single result
+but a set of symptoms, and we state them so the reader can check for them:
+
+\begin{enumerate}
+\item \textbf{The questions come from inside.}  A frame is alive when it
+generates its own questions faster than it imports them.  The cell-phase laws of
+\S4.2 were not asked by anyone; the clock chart produced them the moment
+integration moved to carrier time.  The Fermat-grade sign law of \S5 was on no
+problem list; the Hodge diamond emitted it.
+\item \textbf{The bricks consume each other.}  A bag of tricks does not
+compose; a field does.  In the program's recent history, a lattice
+classification proven in a morning was load-bearing for a
+temperedness--freeze junction by afternoon, which fed a closure theorem, which
+fed the sign law.  Results as inputs to results, at a rate outpacing external
+input.
+\item \textbf{Failure is metabolized, not survived.}  A cancellation
+hypothesis tested \emph{anti}-null became a design law about controls.  A
+mechanism prediction died cleanly at the data and the corrected mechanism was
+sharper.  A vocabulary collision with the classical literature nearly killed a
+result and instead produced a better theorem than the one first sought.  The
+falsification machinery is part of the engine, not the brakes --- and the
+failures stay in the record.
+\item \textbf{Someone who is not us runs the machine.}  The decisive symptom,
+and the one this document exists to test.  Self-sustainment is complete when an
+outsider --- human or machine --- picks up the recipes of \S4 and obtains
+something we did not: a derivation we have not written, an application we have
+not tried.  We register this as a falsifier, in print: if competent readers,
+given these tools, consistently obtain nothing, that is evidence \emph{against}
+the claim that this is a field, and it will be reported as such.
+\end{enumerate}
+
+\noindent Reader: the fourth symptom is you.  A concrete starter exercise: \S4.2
+gives the clock-chart residue of an event-free cell ($-\tfrac12$ plus the
+boundary defect) and describes the one-event case; derive the two-event cell,
+then tell us something about pair-phases we do not already know.
+
+\section{How to read the program's papers}
+
+Start anywhere; every paper declares its registers.  When you meet a claim,
+ask the three questions the program asks itself: \emph{which chart is this
+in?} (carrier-native, or a readout, or an artifact); \emph{what is the
+ledger?} (what exact bookkeeping identity is doing the work); \emph{what would
+falsify it?} (pre-registered, in print).  If the answer to any of the three is
+missing, that is a bug --- report it, and expect the report to be published.
+
+\bigskip
+\noindent\emph{This exposition accompanies the main development (the universal
+paper and its companions), where every statement above appears at full strength
+with its Lean pointer or citation.}
+\end{document}

@@ -50,7 +50,7 @@ model rather than the direct `(ℤ/N)ˣ` model of this framework; that enumerati
 remaining brick (the "composite degree-12" section below).  The identification of a balanced
 primitive type with a simple abelian variety of Weil type is the classical Shimura–Taniyama /
 Moonen–Zarhin dictionary of `CMTypeCensus.lean`, cited not re-proven.  No `axiom`, no `sorry`,
-no `native_decide`; nothing assumes or proves RH/GRH.
+no `native_decide`.
 -/
 
 open List

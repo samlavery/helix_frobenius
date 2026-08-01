@@ -20,8 +20,7 @@ class as the paper's `phantomDial`/`sourcelessDial` — it proves the
 package is consistent and composes end to end, with the two-regime
 structure (simple route vs decomposable shortcut) genuinely realized;
 the arithmetic instantiation with point-counted dossiers remains the
-named next step.  Scope: does not assume or prove RH/GRH or the Hodge
-conjecture.
+named next step.
 -/
 
 namespace CriticalLinePhasor.HodgeLedgerFiltration
