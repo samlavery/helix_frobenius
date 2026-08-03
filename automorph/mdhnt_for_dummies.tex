@@ -113,25 +113,33 @@ random ensemble is the toolkit's calibration class: structure announces itself
 as a ledger anomaly against that background, which is how the instrument
 carries its own null hypothesis --- the house discipline of controls-that-must-fail,
 built into the pipeline itself.  And this claim is pre-registered, not
-decorative: the statistic is the running boundary sum $B_N$ of clock-cell
-residues over $N$ consecutive cells, and the null comes in two strengths.  The
-weak null replaces every phase by an independent uniform one --- but that
-destroys the Euler product along with all correlation, so it fails cheaply and
-proves little.  The sharp null is a random \emph{completely multiplicative}
-phase (Steinhaus: independent uniform phases on the primes, extended
-multiplicatively), which preserves the multiplicative skeleton and kills only
-the arithmetic.  At ledger level, either null must \emph{hold each cell's event
-count fixed and randomize only the phases}: randomizing the counts as well
-integrates a counting random walk and gives $N^{3/2}$ --- a different and wrong
-test, and a reader who picks that reading will wrongly report a failed
-prediction.  The prediction: structured inputs hold $B_N$ bounded (the
-measured zeta value stays inside $[-1.1,\,0.4]$ across five thousand cells)
-while the sharp null performs a random walk, $B_N\sim\sqrt N$ --- an unbounded
-separation, visible by $N\approx100$.  If the sharp null also stays bounded,
-the calibration claim is about multiplicativity rather than arithmetic, and
-that verdict gets published too.  A structured-looking $B_N$ from the random ensemble, or a
-random-walking $B_N$ from a certified arithmetic input, falsifies the
-calibration claim.  An afternoon's test, and the reader is invited to run it.
+decorative --- and it has now been \emph{run}, blind, by a cold reader, with
+the pre-registration corrected by the data, which is how this method is meant
+to work.  The sharp null is a random \emph{completely multiplicative} phase
+(Steinhaus: independent uniform phases on the primes, extended
+multiplicatively), preserving the multiplicative skeleton and killing only the
+arithmetic.  The null must generate \emph{its own events}: load the null fiber
+on the double-ended carrier and take the real zeros of the conjugate-pair
+completion $2\,\mathrm{Re}\bigl[e^{i\vartheta(t)}F_f(\tfrac12+it)\bigr]$ ---
+the reflection symmetry manufactures the functional equation the model lacks.
+(An earlier surrogate --- freeze the arithmetic event counts, randomize
+phases --- is question-begging: the occupancy sequence is precisely what
+carries the signal.)  Verdict, at $128{,}000$ cells and $16$ realizations: six
+arithmetic inputs (zeta and five Dirichlet $L$-functions, each on its own
+clock) show \emph{zero} registration defects --- not small; zero --- while
+the sharp null mis-registers at $\approx0.9\%$ of cells, so its running sum
+grows like $N^{1.78}$ by the dichotomy (an unabsorbed defect costs linear
+growth; a defect \emph{rate} costs more).  The original $\sqrt N$ prediction
+survives exactly where it belonged: the null's pure phase content
+random-walks at $N^{0.54}$.  And the measured discriminator is sharper than
+anything pre-registered: \emph{the turning-point exclusion zone}.  Arithmetic
+banks backtrack as often and as deeply as the null, but keep their turning
+points a hard margin ($\approx0.09\pi$) from the clock's level set, where the
+null's turning points graze it freely --- an exclusion of probability
+$\sim10^{-46}$ under a uniform model.  Registration is arithmetic in the
+literal sense: same excursions, different placement against the clock.  (The
+weak null --- all phases independent --- fails by \emph{drift}, not random
+walk: a cheap control, now for the honest reason.)
 The success
 criteria are falsifiable, in the house style: the toolkit must re-derive known
 correspondences as rail alignments (it has begun to); it must exhibit relations
@@ -337,7 +345,7 @@ books.
 
 Cell-by-cell integrals of a ledger, taken in $dt$, depend on cell lengths and look
 analytic.  Taken in $d\vartheta/\pi$ --- carrier time --- they become exact
-combinatorics: a cell's residue is a boundary term, plus one term per event, each
+combinatorics: a cell's ledger entry is a boundary term, plus one term per event, each
 an explicit affine function of the event's \emph{clock phase}.  Here is the
 entire instrument, in four lines --- this chain \emph{is} the construction:
 \[
@@ -348,9 +356,23 @@ L(t)=N(t)-\frac{\vartheta(t)}{\pi}-1;\qquad
 r_m=\int_{\text{cell }m} L\,\frac{d\vartheta}{\pi};\qquad
 B_N=\sum_{m<N} r_m .
 \]
-The laws then read: an event-free cell has residue exactly $s-\tfrac12$ ($s$
-the ledger's integer value entering the cell), and a one-event cell has
-$s+\tfrac12-\tau$.  In a recent campaign this
+Conventions, so no reader ever reconstructs them again: cells are half-open
+$[g_m,g_{m+1})$, a boundary event belongs to the cell on its right, events are
+counted with multiplicity, the entering ledger is $s_m=N(g_m)-m-1$, and an
+event at $t_i$ in cell $m$ has clock phase $\tau_i=\vartheta(t_i)/\pi-m\in[0,1)$.
+The chart's whole content is integer boundary data: the ledger enters cell
+$m$ at the integer $s_m$ and exits at the integer $s_{m+1}=s_m+k-1$ --- no
+halves anywhere.  Between endpoints, in carrier time, the drift is exactly
+linear --- down one unit per cell, up one at each event --- so the integral
+$r_m$ is the \emph{average} of that drift, and averaging is where halves are
+manufactured, as midpoints of unit descents: an event-free cell books
+$s-\tfrac12$, a one-event cell $s+\tfrac12-\tau$, and in general
+$r_m=s_m+k-\tfrac12-\sum_i\tau_i$.  The $\tfrac12$ is mean-of-drift ---
+$B_1$, the sawtooth's offset --- an averaging artifact that belongs to the
+trapezoid, never to the cell.  Carrying the mean back to the boundary
+recovers the integers:
+$r_m+\sum_i\tau_i+\tfrac12=s_m+k=s_{m+1}+1$ in every cell --- the sharpest
+free check any implementation of this instrument can run.  In a recent campaign this
 single change of chart turned a fog of numerics into three exact laws in an
 afternoon, and the observed pinning of phases traced back, through an exact
 identity, to the $n\ge2$ phasors --- the Euler stream itself.
@@ -426,9 +448,12 @@ regime --- a sublinear integrated defect is already a zero defect, because one
 unabsorbed unit costs linear growth forever.
 
 Now put the recipes to work in the clock chart, cell by cell, and the
-``erratic'' function resolves into structure you can hold: an event-free cell
-has residue exactly $-\tfrac12$ plus its boundary defect --- a \emph{floor},
-with zero freedom; a one-event cell wears its event's clock phase affinely;
+``erratic'' function resolves into structure you can hold.  Its true content
+is integer boundary data --- the ledger walks from integer to integer, cell
+by cell; the halves in the cell means are averaging midpoints of the
+interior drift, not properties of the cells.  So an event-free cell's mean
+sits at a \emph{floor} --- $-\tfrac12$ plus its boundary defect, with zero
+freedom; a one-event cell wears its event's clock phase affinely;
 and measured across thousands of cells the books balance absurdly well --- the
 running integral of the native ledger stays inside a band of width about
 $1.4$ across five thousand cells, the floors' two populations cancel by defect
@@ -587,7 +612,7 @@ the claim that this is a field, and it will be reported as such.
 \end{enumerate}
 
 \noindent Reader: the fourth symptom is you.  A concrete starter exercise: \S4.2
-gives the clock-chart residue of an event-free cell ($-\tfrac12$ plus the
+gives the clock-chart ledger entry of an event-free cell ($-\tfrac12$ plus the
 boundary defect) and describes the one-event case; derive the two-event cell,
 then tell us something about pair-phases we do not already know.
 

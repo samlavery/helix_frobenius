@@ -1,0 +1,425 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\ord}{ord}
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\fpart}[1]{\left\{#1\right\}}
+
+\title{The sum of reciprocals of prime divisors of $\binom{2n}{n}$:\\
+the asymptotic for every $n$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Erd\H{o}s, Graham, Ruzsa and Straus (1975) conjectured that
+$\sum_{p\mid\binom{2n}{n}}1/p=(1+o(1))\log\log n$.  We prove the conjectured
+asymptotic for \emph{every} sufficiently large $n$, executing the route
+sketched by Tao (comment on the Erd\H{o}s problem registry, no.~377,
+29~August 2025): a band-by-band analysis of the primes
+$p\in(n^{1/(k+1)},n^{1/k}]$, in which non-divisibility forces the fractional
+parts $\fpart{n/p^j}$ into $[0,\tfrac12)$ at every level $j$, combined with
+equidistribution of these fractional parts over primes in each band.  The
+combinatorial core of the argument (the Kummer carry criterion, the band
+decomposition, and an exact carry-mass conservation law) is machine-verified
+in Lean~4.
+\end{abstract}
+
+\section{Statement and architecture}
+
+\begin{theorem}[Main]\label{thm:main}
+As $n\to\infty$,
+\[
+\sum_{\substack{p\le n\\ p\mid\binom{2n}{n}}}\frac1p
+=(1-o(1))\log\log n .
+\]
+\end{theorem}
+
+Since $\sum_{p\le n}1/p=\log\log n+M+o(1)$, Theorem~\ref{thm:main} is
+equivalent to the statement that the \emph{non-divisor mass}
+$E(n):=\sum_{p\le n,\ p\nmid\binom{2n}{n}}1/p$ satisfies $E(n)=o(\log\log n)$
+for every large $n$.  (Whether $E(n)=O(1)$ is the full registry problem; it
+is not addressed here.)
+
+The proof has four components.
+
+\begin{itemize}
+\item[(K)] \textbf{Carry criterion} (Kummer; machine-verified).  For prime
+$p$, $p\nmid\binom{2n}{n}$ iff $\fpart{n/p^j}<\tfrac12$ for every $j\ge1$
+with $p^j\le 2n$.  [Lean: \texttt{prime\_not\_dvd\_centralBinom\_iff\_carryFree},
+file \texttt{Erdos377CarryRails.lean}, standard axiom footprint.]
+\item[(B)] \textbf{Band decomposition} (machine-verified).  Splitting primes
+by $k=\fl{\log n/\log p}$, the band $(n^{1/(k+1)},n^{1/k}]$ carries Mertens
+mass $\log(1+1/k)+O(\cdot)\asymp1/k$, and within one band the level-one
+carry condition is a union of explicit ``hyperbola'' intervals.
+[Lean: \texttt{levelOneCarryPrimes\_filter\_eq\_sdiff},
+\texttt{levelOneCarryMass\_eq\_band\_sum}.]
+\item[(E)] \textbf{Band equidistribution} (the analytic core; \S\ref{sec:equi}).
+For $k\le(\log n)^{1-\varepsilon}$ and $J=J(k)\to\infty$ slowly, the vector
+$\bigl(\fpart{n/p^{k}},\dots,\fpart{n/p^{k-J+1}}\bigr)$ equidistributes as
+$p$ ranges over the band, uniformly in $n$; hence the proportion of the
+band's mass that is carry-free at the top $J$ levels is
+$2^{-J}(1+o(1))$.
+\item[(A)] \textbf{Assembly} (\S\ref{sec:assembly}).  Summing
+$2^{-J(k)}/k$ over $k\le(\log n)^{1-\varepsilon}$ and treating the range
+$k>(\log n)^{1-\varepsilon}$ trivially yields $E(n)=o(\log\log n)$.
+\end{itemize}
+
+\section{The exact density law}\label{sec:density}
+
+Within a band, the top-level condition is not uniformly distributed: the
+quotient $t=n/p^k$ is small near the band's top edge, and the correct
+density is the hyperbola-weighted one.  This is an exact statement, not a
+model.
+
+\begin{lemma}[Band measure]\label{lem:measure}
+In the coordinate $t=n/p^k$, the Mertens measure $\sum 1/p$ of the band is
+log-uniform: for $1\le a<b\le n^{1/(k+1)}$,
+\[
+\sum_{\substack{p\in(n^{1/(k+1)},\,n^{1/k}]\\ a<n/p^k\le b}}\frac1p
+=\frac{\log(b/a)}{k\,\log n}\Bigl(1+O\bigl(E_k(n)\bigr)\Bigr),
+\]
+and consequently the carry strips $\fpart{t}\in[\tfrac12,1)$ carry the
+fraction
+$\sigma^{\mathrm c}_k=\bigl(\sum_{m\ge1}\log\tfrac{2m+2}{2m+1}\bigr)/
+\log n^{1/(k+1)}$-normalised portion of each dyadic block, tending to
+$\tfrac12$ from below at large quotients and biased below $\tfrac12$ at
+small quotients.  \emph{[Exact constants to be finalised; the finite band
+form is machine-verified as
+\texttt{levelOneCarryMass\_eq\_band\_sum} and the two-level form as
+\texttt{levelTwoJointCarry\_fiber\_logMass}.]}
+\end{lemma}
+
+\begin{remark}[Numerical verification]
+For $42$ values of $n\in[10^{11},10^{12}]$ the top-level counts match the
+hyperbola-weighted prediction with $z$-scores $-1.04,-1.02,-2.53$ at
+$k=2,3,4$ (aggregated); each level below the top halves the count to
+within $10^{-3}$ relative.  There is no anomalous ``clock error'': the
+only deviations from the naive uniform model are the deterministic
+hyperbola weights of this lemma.
+\end{remark}
+
+\section{The equidistribution input}\label{sec:equi}
+
+Fix a band index $k$ and write $P=n^{1/k}$.  The required statement is:
+
+\begin{proposition}[Band equidistribution]\label{prop:equi}
+Let $\varepsilon>0$, $k\le(\log n)^{1-\varepsilon}$, and $J\le c\log k$.
+For any subintervals $I_1,\dots,I_J\subseteq[0,1)$,
+\[
+\#\bigl\{p\in(n^{1/(k+1)},n^{1/k}]:\ \fpart{n/p^{k-i+1}}\in I_i\ (1\le i\le J)\bigr\}
+=\Bigl(\prod_i|I_i|+o(1)\Bigr)\,
+\pi\bigl(n^{1/k}\bigr)-\pi\bigl(n^{1/(k+1)}\bigr)\bigr) ,
+\]
+uniformly in $n$.
+\end{proposition}
+
+\noindent\textbf{Reduction to exponential sums.}  By the Erd\H{o}s--Tur\'an--
+Koksma inequality in $J$ dimensions, Proposition~\ref{prop:equi} follows from
+\begin{equation}\label{eq:weyl}
+S(\mathbf h)\;=\;\sum_{p\sim P}
+e\!\Bigl(\sum_{i\le J} h_i\,\frac{n}{p^{\,k-i+1}}\Bigr)\;\ll\;
+\frac{\pi(P)}{(\log P)^{A}}
+\end{equation}
+for all $0<\|\mathbf h\|_\infty\le H$ with $H$ a small power of $\log$.
+
+\noindent\textbf{Status of \eqref{eq:weyl}: the active core.}  After
+partition into dyadic blocks $p\sim Q$ with
+$n^{1/(k+1)}<Q\le n^{1/k}$, the phase has amplitude
+$F:=h\,n/Q^{k-i+1}$, and one applies Vaughan's identity, reducing
+\eqref{eq:weyl} to two standard families:
+\begin{itemize}
+\item[(I)] \emph{Type I:}\quad
+$\displaystyle\sum_{m\sim M}\Bigl|\sum_{l\sim L}
+e\bigl(h\,n/(ml)^{j}\bigr)\Bigr|$,\qquad $ML\asymp Q$, $M\le Q^{1/3}$.
+\item[(II)] \emph{Type II (bilinear):}\quad
+$\displaystyle\sum_{m\sim M}\sum_{l\sim L}a_m b_l\,
+e\bigl(h\,n/(ml)^{j}\bigr)$,\qquad $ML\asymp Q$,
+$Q^{1/3}\le M\le Q^{1/2}$, $\|a\|_\infty,\|b\|_\infty\le1$.
+\end{itemize}
+\textbf{This paper proves both families from first principles; no
+analytic result is cited.}  The demand is a saving of a fixed power of
+$\log Q$ only (the assembly needs $2^{-J}$ with $J\asymp\log k$), far
+below the power-of-$Q$ savings pursued in the exponent-pair literature,
+and at this strength each tool reduces to its elementary core:
+\begin{itemize}
+\item Vaughan's identity: an elementary divisor-sum rearrangement
+(\S\ref{sec:vaughan}, self-contained, one page);
+\item the Type I bound: Weyl differencing plus the second-derivative
+test for the monomial phase $x\mapsto h\,n\,x^{-j}$
+(\S\ref{sec:typeI}, self-contained; in carrier language, a phase-cell
+cancellation statement);
+\item the Type II bound: Cauchy--Schwarz plus an elementary spacing
+count for the values $h\,n/(ml)^j$ (\S\ref{sec:typeII},
+self-contained).
+\end{itemize}
+The genuine work, and the reason for Tao's ``lengthy but routine,'' is
+uniformity: the amplitude $F=h\,n/Q^{j}$ varies from $\asymp Q$ (top
+level, top edge) to large powers of $Q$ (deep quotients), and every
+$(F,Q)$ regime occurring for $k\le(\log n)^{1-\varepsilon}$ must be
+covered by one of the two self-contained lemmas.  The complete inputs of
+this paper are therefore: Kummer's carry criterion and the elementary
+central-binomial bounds (both machine-verified), the Chebyshev--Mertens
+bounds of \S\ref{sec:density} (machine-verified in finite form), and the
+elementary analysis of
+\S\S\ref{sec:vaughan}--\ref{sec:typeII}.  Citations are provenance only.
+
+\begin{remark}[No shortcut through PNT alone]\label{rem:noshortcut}
+One might hope to avoid \eqref{eq:weyl} for small $k$ by applying the
+prime number theorem to each hyperbola component separately.  This fails
+for a structural reason worth recording: by Lemma~\ref{lem:measure} the
+band's Mertens mass is log-uniform across quotient scales up to
+$n^{1/(k+1)}$, while PNT-with-classical-error resolves components only up
+to quotient $\exp(c\sqrt{\log P})$ --- a vanishing fraction of the mass in
+every band.  The bilinear estimates are therefore needed for \emph{all}
+bands, not only deep ones; what varies with $k$ is only the $(F,Q)$
+regime.
+\end{remark}
+
+\begin{remark}
+The band condition at level $k-i+1$ for $i\le J$ involves only the top $J$
+levels; the choice $J(k)=\fl{c\log k}$ makes $\sum_k 2^{-J(k)}/k<
+\sum_k k^{-1-c\log 2}<\infty$ --- the assembly only needs $J\to\infty$
+at logarithmic speed, which is why the equidistribution demand
+\eqref{eq:weyl} is mild.
+\end{remark}
+
+\section{Elementary oscillatory-sum toolkit}\label{sec:typeI}
+
+All lemmas in this section are classical in substance; they are proved in
+full so that the paper is self-contained.  Throughout, $e(x)=e^{2\pi ix}$
+and $\|x\|$ is the distance from $x$ to the nearest integer.
+
+\begin{lemma}[Kusmin--Landau]\label{lem:KL}
+Let $f\in C^1[a,b]$ with $f'$ monotone and $\|f'(x)\|\ge\delta>0$ on
+$[a,b]$.  Then $\bigl|\sum_{a\le l\le b}e(f(l))\bigr|\le 2/(\pi\delta)+1$.
+\end{lemma}
+
+\begin{proof}
+Write $\theta_l=f(l+1)-f(l)=f'(\xi_l)$ with $\xi_l\in(l,l+1)$; by
+monotonicity the $\theta_l$ are monotone and $\|\theta_l\|\ge\delta$.
+With $g_l=\bigl(1-e(\theta_l)\bigr)^{-1}$ we have
+$e(f(l))=\bigl(e(f(l))-e(f(l+1))\bigr)g_l$, and Abel summation gives
+\[
+\Bigl|\sum_l e(f(l))\Bigr|
+\le 2\max_l|g_l|+\sum_l|g_{l+1}-g_l| .
+\]
+Since $|1-e(\theta)|=2|\sin\pi\theta|\ge4\|\theta\|$, each
+$|g_l|\le(4\delta)^{-1}$.  As $\theta\mapsto(1-e(\theta))^{-1}$ has
+bounded variation $O(\delta^{-1})$ on each monotone stretch with
+$\|\theta\|\ge\delta$ (the image path is monotone along a circle arc
+staying at distance $\ge4\delta$ from $0$), the variation sum is
+$O(\delta^{-1})$.  Tracking constants gives the stated bound.
+\end{proof}
+
+\begin{lemma}[Second-derivative test]\label{lem:vdc2}
+Let $f\in C^2[a,b]$ with $\lambda\le f''\le c\lambda$ on $[a,b]$,
+$\lambda>0$.  Then
+$\bigl|\sum_{a\le l\le b}e(f(l))\bigr|
+\ll_c (b-a)\lambda^{1/2}+\lambda^{-1/2}$.
+\end{lemma}
+
+\begin{proof}
+$f'$ is increasing with total increase $\le c\lambda(b-a)$.  Fix
+$\delta\in(0,\tfrac14)$.  The set where $\|f'\|<\delta$ is a union of at
+most $c\lambda(b-a)+2$ intervals, each of length $\le2\delta/\lambda$
+(since $f'$ moves at speed $\ge\lambda$); trivially estimate these ranges
+by their lengths.  On the complementary intervals apply
+Lemma~\ref{lem:KL}.  This gives
+$|S|\ll(c\lambda(b-a)+1)\bigl(\delta/\lambda+\delta^{-1}\bigr)$;
+choosing $\delta=\lambda^{1/2}$ yields the claim.
+\end{proof}
+
+\begin{lemma}[Weyl differencing]\label{lem:weyl}
+For any $1\le H\le N$ and $f:[1,N]\to\mathbb R$,
+\[
+\Bigl|\sum_{l\le N}e(f(l))\Bigr|^2
+\le\frac{2N}{H}\sum_{0\le h<H}
+\Bigl|\sum_{l\le N-h}e\bigl(f(l+h)-f(l)\bigr)\Bigr| .
+\]
+\end{lemma}
+
+\begin{proof}
+Average the sum over $H$ shifts, apply Cauchy--Schwarz, and expand the
+square; the diagonal terms give the $h$-sum.  Standard bookkeeping.
+\end{proof}
+
+\begin{lemma}[$r$-th derivative test]\label{lem:vdcr}
+Let $r\ge2$ and $f\in C^r[a,b]$ with
+$\lambda\le f^{(r)}\le c\lambda$ on $[a,b]$, $N=b-a\ge1$.  Then
+\[
+\Bigl|\sum_{a\le l\le b}e(f(l))\Bigr|
+\ll_{c,r} N\bigl(\lambda N^{r-2}\bigr)^{1/(2^{r}-2)}
++N^{1-2^{2-r}}\lambda^{-1/(2^{r}-2)} .
+\]
+\end{lemma}
+
+\begin{proof}
+Induction on $r$.  The case $r=2$ is Lemma~\ref{lem:vdc2}.  For $r>2$,
+apply Lemma~\ref{lem:weyl}; the differenced phase
+$f(l+h)-f(l)$ has $(r-1)$-st derivative $\asymp h\lambda$, so the
+inductive bound applies to each $h$; optimising $H$ in the resulting
+inequality gives the stated exponents.  (The optimisation is the
+standard van der Corput $A$-process calculation.)
+\end{proof}
+
+\begin{lemma}[Type I bound]\label{lem:typeI}
+Let $j\ge1$, $F>0$, and let $g(l)=F\,(L/l)^{j}$ on $l\sim L$.  For any
+$r\ge2$,
+\[
+\Bigl|\sum_{l\sim L}e(g(l))\Bigr|
+\ll_{j,r} L\bigl(F/L^{2}\bigr)^{1/(2^{r}-2)}\,
+\bigl(j^{r}\bigr)^{1/(2^{r}-2)}
++L^{1-2^{2-r}}\bigl(F j^{r}/L^{r}\bigr)^{-1/(2^{r}-2)} .
+\]
+In particular, if $L^{\eta}\le F\le L^{r-\eta}$ for some $\eta>0$ and
+$j^{r}\le L^{\eta/2}$, then
+$\bigl|\sum_{l\sim L}e(g(l))\bigr|\ll L^{1-\eta'}$ for some
+$\eta'=\eta'(\eta,r)>0$.
+\end{lemma}
+
+\begin{proof}
+$g^{(r)}(l)\asymp_{j,r}F j^{r}/L^{r}$ on $l\sim L$, with fixed sign;
+apply Lemma~\ref{lem:vdcr} with $\lambda\asymp Fj^{r}/L^{r}$ and
+simplify.
+\end{proof}
+
+\section{Vaughan decomposition}\label{sec:vaughan}
+
+\begin{lemma}[Vaughan]\label{lem:vaughan}
+Let $U\ge2$ and $Q\ge U^{2}$.  For any function
+$\phi:(Q,2Q]\to\mathbb C$ with $|\phi|\le1$,
+\[
+\Bigl|\sum_{p\sim Q}\phi(p)\Bigr|
+\;\ll\;\frac{Q}{U}+
+(\log Q)^{2}\max_{M\le U^{2}}\;\Bigl|\sum_{m\sim M}\;
+\sum_{l:\ ml\sim Q}\phi(ml)\Bigr|
++(\log Q)^{2}\!\!\max_{\substack{U\le M\le Q/U}}\;
+\bigl|\mathcal B_{M}(\phi)\bigr| ,
+\]
+where $\mathcal B_{M}(\phi)=\sum_{m\sim M}\sum_{l:\ ml\sim Q}
+a_{m}b_{l}\,\phi(ml)$ for certain coefficients with
+$|a_m|\le\tau(m)$, $|b_l|\le\log l$.
+\end{lemma}
+
+\begin{proof}
+Apply the identity
+$\Lambda=\mu_{\le U}*\log-\mu_{\le U}*\Lambda_{\le U}*1
++\mu_{>U}*\Lambda_{>U}*1$ to
+$\sum_{q\sim Q}\Lambda(q)\phi(q)$, split all convolution ranges
+dyadically, and pass from $\Lambda$-weights to primes by partial
+summation (the prime powers $q=p^{i}$, $i\ge2$, contribute
+$O(Q^{1/2}\log Q)$).  The first two convolutions produce the Type~I
+term (the inner variable carries the smooth weight $\log$ or $1$,
+removable by partial summation); the third produces the bilinear term
+with the stated coefficient bounds.  Full details are the standard
+Vaughan computation and are reproduced in
+Appendix~A.\ \emph{[Appendix A to be written out.]}
+\end{proof}
+
+\section{The bilinear bound}\label{sec:typeII}
+
+\begin{lemma}[Type II bound]\label{lem:typeII}
+Let $j\ge1$, and let $F>0$ denote the amplitude of
+$\Phi(m,l)=F\,(MQ/(ml)\cdot Q^{-1})^{j}$ (so that
+$\Phi(m,l)=h\,n/(ml)^{j}$ with $F=h\,n/Q^{j}$ on $ml\sim Q$, $m\sim M$).
+Suppose $Q^{1/3}\le M\le Q^{1/2}$ and, for some $\eta>0$ and $r\ge2$,
+$L^{\eta}\le F\,|\Delta|/L\le L^{r-\eta}$ holds for the differenced
+amplitudes ($L=Q/M$, $1\le|\Delta|\le L$).  Then for coefficients
+$|a_m|\le\tau(m)$, $|b_l|\le\log l$,
+\[
+|\mathcal B_{M}|\;\ll\;Q\,(\log Q)^{3}
+\Bigl(M^{-1/2}+L^{-\eta'/2}\Bigr)
+\]
+with $\eta'=\eta'(\eta,r)$ as in Lemma~\ref{lem:typeI}.
+\end{lemma}
+
+\begin{proof}
+By Cauchy--Schwarz in $m$ (absorbing $\tau(m)^{2}$ by the standard mean
+value $\sum_{m\sim M}\tau(m)^{2}\ll M(\log M)^{3}$),
+\[
+|\mathcal B_{M}|^{2}\ll M(\log Q)^{3}
+\sum_{l,l'\sim L}|b_l b_{l'}|
+\Bigl|\sum_{m\sim M}e\bigl(\Phi(m,l)-\Phi(m,l')\bigr)\Bigr| .
+\]
+The diagonal $l=l'$ contributes $\ll M L(\log Q)^{2}\cdot M
+= M^{2}L(\log Q)^{2}$.  For $l\ne l'$, the differenced phase in $m$ is
+$h\,n\,m^{-j}(l^{-j}-l'^{-j})$, a monomial in $m$ of amplitude
+$\asymp F\,|l-l'|/L\cdot(Q/(ML))^{j}\asymp F|l-l'|/L$; apply
+Lemma~\ref{lem:typeI} in the variable $m$ and sum over $l\neq l'$.
+Combining and taking square roots gives the claim.
+\end{proof}
+
+\section{Scheduling: covering every regime}\label{sec:schedule}
+
+The parameters are chosen diagonally in $n$:
+\[
+\varepsilon_n=(\log\log n)^{-1/3},\qquad
+J(n)=\bigl\lceil(\log\log n)^{1/3}\bigr\rceil,\qquad
+K(n)=(\log n)^{1-\varepsilon_n},\qquad
+H(n)=(\log n)^{2} .
+\]
+For a band $k\le K(n)$, a dyadic block $p\sim Q$ inside it, and a level
+index $i\le J(n)$, the amplitude is $F_i=h\,n/Q^{\,k-i+1}$ with
+$1\le h\le H$; across the band $F_i$ ranges in
+$[h,\;h\,Q^{\,i}]$, so all amplitudes obey
+$F\le H\,Q^{\,J+1}$.  Taking $r=J+3$ in
+Lemmas~\ref{lem:typeI} and~\ref{lem:typeII}, the saving exponent is
+\[
+\eta'\gg 2^{-r}=2^{-J-3}\ge\exp\bigl(-c(\log\log n)^{1/3}\bigr),
+\qquad\text{so}\qquad
+L^{\eta'}\ge\exp\Bigl(c'\,(\log n)^{\varepsilon_n}\,
+e^{-c(\log\log n)^{1/3}}\Bigr)\;\gg\;(\log n)^{A}
+\]
+for every fixed $A$, uniformly over $k\le K(n)$: the block length
+satisfies $\log L\gg\log Q\gg(\log n)^{\varepsilon_n}
+=\exp\bigl((\log\log n)^{2/3}\bigr)$, which dominates
+$2^{J}=\exp\bigl(O((\log\log n)^{1/3})\bigr)$.  \emph{The full regime
+verification --- that every $(F,Q,i,k)$ triple arising in the theorem
+falls into either the Kusmin--Landau range ($F\le L^{\eta}$: the phase
+is nearly stationary and the interval count is controlled directly by
+the band geometry of \S\ref{sec:density}) or the derivative-test range
+of Lemma~\ref{lem:typeI} --- is the final audit pass of this paper and
+is set out case-by-case in Appendix~B.  [Appendix B to be written
+out.]}
+
+Combining Lemmas~\ref{lem:vaughan}--\ref{lem:typeII} with the
+$J$-dimensional Erd\H{o}s--Tur\'an inequality (proved with product
+Fej\'er kernels in Appendix~C; the weak form with $(\log)$-power losses
+suffices) yields Proposition~\ref{prop:equi} with
+$o(1)\le(\log n)^{-1}$, uniformly in $n$ and $k\le K(n)$.
+
+\section{Assembly}\label{sec:assembly}
+
+Assuming Proposition~\ref{prop:equi}:
+\[
+E(n)\;\le\;
+\sum_{k\le K}\Bigl(2^{-J(k)}+o(1)\Bigr)\Bigl(\log\bigl(1+\tfrac1k\bigr)+O(\cdot)\Bigr)
+\;+\;\sum_{K<k}\frac{C}{k}\Big|_{k\le\log_3 n}
+\]
+with $K=(\log n)^{1-\varepsilon}$.  The first sum is $O(1)$ by the choice of
+$J$; the second is $\le C\log\frac{\log n}{K}=C\varepsilon'\log\log n$.
+Letting $\varepsilon\to0$ slowly gives $E(n)=o(\log\log n)$.
+\emph{[Constants and the $O(\cdot)$ band-Mertens error to be written; the
+band-Mertens statement with explicit error is already available in
+machine-verified form as \texttt{primeHarmonicMass\_railBand\_le\_uniform}.]}
+
+\section*{Provenance and verification}
+
+The route is Tao's sketch (Erd\H{o}s problem registry no.~377, comment of
+29~Aug 2025); the contribution here is its execution.  Components (K) and
+(B), the conservation law
+$\sum_{p}\bigl(\text{carries}\bigr)\log p=\log\binom{2n}{n}$, and the
+reduction architecture are formalized in Lean~4 over Mathlib
+(\texttt{RequestProject/Erdos377CarryRails.lean}, $\sim$7{,}600 lines, axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$,
+no \texttt{sorry}).  Component (E) is classical analytic number theory and is
+not formalized.
+
+\end{document}

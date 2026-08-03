@@ -1,0 +1,318 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.15in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\eps}{\varepsilon}
+\title{The least non-divisor of the middle binomial coefficient\\
+\large On Erd\H{o}s problem \#731: a lower bound of shape $\exp(c\sqrt{\log n})$,\\
+and the program for the matching upper bound}
+\author{Samuel Lavery}
+\date{August 1, 2026 --- working draft}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $L(n)$ denote the least positive integer not dividing $\binom{2n}{n}$.
+Erd\H{o}s asked (\#731 in the Erd\H{o}s problem catalogue, from
+Erd\H{o}s--Graham--Ruzsa--Straus 1975) for a ``reasonable'' $f(n)$ with
+$L(n)\sim f(n)$ for almost all $n$.  We prove unconditionally that for every
+$\eps>0$, for almost all $n$,
+\[
+L(n)\;>\;\exp\bigl((c-\eps)\sqrt{\log n}\bigr),\qquad
+c=\sqrt{\log 2}=0.8325\dots,
+\]
+with a power-of-$\exp(\sqrt{\log})$ saving in the exceptional count, and the
+constant is sharp for the method: the first-moment threshold for the dominant
+mechanism sits at the same $c$, so the union bound meets the first-moment
+threshold.  In
+particular $L(n)$ is \emph{sub-polynomial but super-polylogarithmic} almost
+always: proved from below at the sharp constant, and conjecturally
+$\exp\bigl((\sqrt{\log2}+o(1))\sqrt{\log n}\bigr)$ --- a function of the
+shape $\exp(\Theta(\sqrt{\log n}))$, not a power of $n$.  Deep-scan numerics
+(exhaustive to $10^8$, sampled to $10^{35}$) verify the law with the sharp
+constant: after removing the explicit second-order term
+$\tfrac12\log\sqrt a$ ($\approx\tfrac14\log\log n$)
+the measured constant descends $0.935,\,0.894,\,0.859,\,0.843$ toward
+$\sqrt{\log2}=0.8326$, and a parameter-free independent-rail model predicts
+the median and the $5$th/$95$th percentiles prime-for-prime in $14$ of $15$
+decades.  The matching upper bound reduces to a \emph{pairwise}
+decorrelation statement about balanced primes and is conjectured with the
+same constant.  The dominant mechanism is not the prime-power channel one
+might expect: for $81$--$89\%$ of $n$ the minimum is achieved by a
+\emph{balanced prime} --- a prime $p$ with every base-$p$ digit of $n$ below
+$p/2$, so that $p\nmid\binom{2n}{n}$ by Kummer's theorem and $L(n)\le p$.
+\end{abstract}
+
+\section{Setup: the two channels}
+
+Throughout, $p$ is prime, and for $n\ge1$ we write the base-$p$ expansion
+$n=\sum_{i<D}d_ip^i$ with $D=D_p(n)=\lfloor\log n/\log p\rfloor+1$ digits.
+By Kummer's theorem \cite{Kummer}, $v_p\bigl(\binom{2n}{n}\bigr)$ equals the
+number of carries in the base-$p$ addition $n+n$.  Two elementary
+consequences frame everything:
+
+\begin{itemize}
+\item[(i)] (\emph{Balanced primes.})  Call $n$ \emph{$p$-balanced} if every
+base-$p$ digit satisfies $d_i\le\frac{p-1}2$.  Doubling a balanced expansion
+produces no carries, and conversely a digit $\ge\frac{p+1}2$ forces a carry;
+hence $p\nmid\binom{2n}{n}$ iff $n$ is $p$-balanced (odd $p$).  If $n$ is
+$p$-balanced then $L(n)\le p$.
+\item[(ii)] (\emph{Digit sandwich.})  Writing $B^+(n,p)=\#\{i:d_i\ge\frac{p+1}2\}$
+and $B^-(n,p)=\#\{i:d_i\ge\frac{p-1}2\}$, every carry requires an incoming
+digit $\ge\frac{p-1}2$ and every digit $\ge\frac{p+1}2$ creates a carry, so
+\[
+B^+(n,p)\;\le\;v_p\Bigl(\tbinom{2n}{n}\Bigr)\;\le\;B^-(n,p).
+\]
+\end{itemize}
+
+The least non-divisor of any integer is a prime power, so
+$L(n)=\min_p p^{\,v_p(\binom{2n}{n})+1}$, and $L(n)\le T$ forces one of:
+\begin{itemize}
+\item[(I)] some prime $p\le T$ has $v_p=0$: $n$ is $p$-balanced
+(\emph{balanced channel});
+\item[(II)] some prime power $p^a\le T$ with $a\ge2$ has $v_p\le a-1$, hence
+by (ii) at most $a-1$ digits of $n$ base $p$ lie in the top range
+$\{\frac{p+1}2,\dots,p-1\}$ (\emph{valuation channel}).
+\end{itemize}
+
+\section{The lower bound}
+
+\begin{lemma}[balanced count, leading-digit form]\label{lem:bal}
+For odd $p$ and $N\ge p$,
+\[
+\#\{1\le n\le N:\ n\ \text{$p$-balanced}\}\;\le\;4\,N^{1-\beta_p},
+\qquad
+\beta_p:=\frac{\log\frac{2p}{p+1}}{\log p}.
+\]
+\end{lemma}
+
+\begin{proof}
+Let $k=\lfloor\log N/\log p\rfloor$ and let $D\ge1$ be the leading base-$p$
+digit of $N$, so $N\ge D\,p^{k}$.  A balanced $n\le N$ has at most
+$\min\bigl(D+1,\tfrac{p+1}2\bigr)$ choices for its digit at position $k$ and
+at most $\tfrac{p+1}2$ for each of the $k$ lower positions.  If
+$D+1\le\tfrac{p+1}2$ the count is at most
+$(D+1)\bigl(\tfrac{p+1}2\bigr)^{k}\le2D\,p^{k}\bigl(\tfrac{p+1}{2p}\bigr)^{k}
+\le2N\bigl(\tfrac{p+1}{2p}\bigr)^{k}$; otherwise the count is at most
+$\bigl(\tfrac{p+1}2\bigr)^{k+1}\le 2D\bigl(\tfrac{p+1}2\bigr)^{k}\le
+2N\bigl(\tfrac{p+1}{2p}\bigr)^{k}$ again.  Finally
+$\bigl(\tfrac{p+1}{2p}\bigr)^{k}\le\tfrac{2p}{p+1}\,N^{-\beta_p}\le2N^{-\beta_p}$
+since $k\ge\log N/\log p-1$.  The point of the leading-digit truncation is
+that the loss is an absolute constant --- \emph{not} a factor of $p$ --- and
+this is what makes the union bound sharp.
+\end{proof}
+
+\begin{lemma}[few big digits]\label{lem:big}
+For odd $p$, $N\ge p$, and $m\ge0$,
+\[
+\#\{1\le n\le N:\ B^+(n,p)\le m\}\;\le\;
+\frac{p+1}2\,N^{1-\beta_p}\,(D+1)^m,\qquad D=\lceil\log N/\log p\rceil .
+\]
+\end{lemma}
+
+\begin{proof}
+A string with at most $m$ digits in the top range (of size $\frac{p-1}2$) and
+the rest in the bottom range (of size $\frac{p+1}2$) is counted by
+$\sum_{j\le m}\binom{D}{j}\bigl(\tfrac{p-1}2\bigr)^{j}
+\bigl(\tfrac{p+1}2\bigr)^{D-j}
+\le\bigl(\tfrac{p+1}2\bigr)^{D}\sum_{j\le m}\binom Dj
+\le\bigl(\tfrac{p+1}2\bigr)^{D}(D+1)^m$,
+and $\bigl(\tfrac{p+1}2\bigr)^{D}\le\frac{p+1}2 N^{1-\beta_p}$ as in
+Lemma~\ref{lem:bal}.  (This is the counting genre of the proof of Lemma~3.1
+in \cite{Pomerance26}.)
+\end{proof}
+
+\begin{theorem}[lower bound, sharp constant]\label{thm:lower}
+Let $c=\sqrt{\log2}$.  For every $\eps\in(0,c/2)$ there is
+$\delta=\delta(\eps)>0$ such that
+\[
+\#\Bigl\{n\le N:\ L(n)\le\exp\bigl((c-\eps)\sqrt{\log N}\bigr)\Bigr\}
+\;\ll\;N\exp\bigl(-\delta\sqrt{\log N}\bigr).
+\]
+In particular $L(n)>\exp\bigl((c-\eps)\sqrt{\log n}\bigr)$ for almost all
+$n$.
+\end{theorem}
+
+\begin{proof}
+Set $a=\log2\cdot\log N$ (so $c^2\log N=a$), $t=(c-\eps)\sqrt{\log N}$, and
+$T=e^{t}$.
+
+\emph{Channel (I).}  By Lemma~\ref{lem:bal} and
+$\beta_p\log p=\log2-\log(1+\tfrac1p)\ge\log2-\tfrac1p$, the exceptional
+count is at most
+\[
+\sum_{3\le p\le T}4\,N^{1-\beta_p}
+\;\le\;4\,\pi(T)\cdot N\cdot
+\max_{3\le p\le T}\exp\bigl(-\beta_p\log N\bigr)
+\;\le\;4\,T\,N\exp\Bigl(-\tfrac{(\log2-\frac1T)\log N}{t}\Bigr),
+\]
+using $\beta_p\log N\ge(\log2-\tfrac1p)\log N/\log p
+\ge(\log2-\tfrac1T)\log N/t$ for all $p\le T$ (the map
+$p\mapsto(\log2-\tfrac1p)/\log p$ increases only on $[3,3.2)$ and decreases
+thereafter, so its minimum on $[3,T]$ is attained at $p=T$ once $T\ge9$).
+The exponent is
+\[
+t-\frac{a}{t}+\frac{\log N}{T\,t}
+=\frac{t^{2}-a}{t}+o(1)
+=-\frac{(2c\eps-\eps^{2})\log N}{(c-\eps)\sqrt{\log N}}+o(1)
+\;\le\;-\,3\delta\sqrt{\log N}
+\]
+for $\delta=\delta(\eps)>0$ and $N$ large.  Note the single power of $T$
+from $\pi(T)$: Lemma~\ref{lem:bal}'s constant loss (rather than a factor
+$p$) is exactly what permits the sharp threshold $t^2=a$, i.e.\
+$c=\sqrt{\log2}$.
+
+\emph{Channel (II).}  A pair $(p,a)$ with $a\ge2$, $p^{a}\le T$ forces
+$p\le T^{1/2}$, i.e.\ $u:=\log p\le t/2$, and $m:=a-1\le t/u$.  By
+Lemma~\ref{lem:big} the count for one pair is at most
+$\frac{p+1}2N^{1-\beta_p}(D+1)^{m}$ with $D\le1+\log N/\log3$, so, per pair,
+the exponent relative to $N$ is at most
+\[
+u\;+\;\frac{2t\log\log N}{u}\;-\;\Bigl(\log2-\frac1p\Bigr)\frac{\log N}{u}
+\;=\;u+\frac{2t\log\log N}{u}-\frac{a}{u}+\frac{\log N}{p\,u}.
+\]
+For $p\ge3$ one has $\frac{\log N}{p\,u}\le\frac13\cdot\frac{\log N}{u}
+\le\frac{a}{2u}$, using simply $\frac1p\le\frac13\le\frac{\log2}2$, so the
+saving retains at least $\frac{a}{2u}$.  Since $u\le t/2$,
+\[
+\frac{a}{2u}\;\ge\;\frac{a}{t}\;=\;\frac{c^{2}}{c-\eps}\sqrt{\log N}
+\;\ge\;(c+\eps)\sqrt{\log N},
+\]
+while the positive terms total at most
+$\tfrac t2+\tfrac{2t\log\log N}{u}\le
+\tfrac{c-\eps}2\sqrt{\log N}+O\bigl(\sqrt{\log N}\,\tfrac{\log\log N}{u}\bigr)$.
+For $u\ge(\log\log N)^{2}$ the second term is $o(\sqrt{\log N})$ and the
+margin is $\ge\bigl(c+\eps-\tfrac{c-\eps}2\bigr)\sqrt{\log N}(1-o(1))
+\ge\tfrac c2\sqrt{\log N}$; for $u<(\log\log N)^{2}$ the saving
+$\frac{a}{2u}\ge\frac{a}{2(\log\log N)^{2}}$ dwarfs every other term
+outright.  Hence each pair contributes at most
+$N\exp\bigl(-\tfrac c2(1-o(1))\sqrt{\log N}\bigr)$, and here the pair count
+must \emph{not} be relaxed to $T$: the true count is
+$\pi(T^{1/2})\cdot\tfrac{t}{\log3}\le e^{t/2}\,t$, and since
+$t/2=\tfrac{c-\eps}2\sqrt{\log N}$ the total is at most
+$N\,t\exp\bigl(\tfrac{t}2-\tfrac c2(1-o(1))\sqrt{\log N}\bigr)
+\le N\exp\bigl(-(\tfrac\eps2-o(1))\sqrt{\log N}\bigr)$, which closes with
+$\delta=\eps/6$.  (The relaxation to $T$ was harmless at weaker constants and
+fails exactly at the sharp one, where channel (II)'s margin is thinner than
+$\log T$.)
+
+Finally, pairs with $p=2$: by Kummer $v_2\bigl(\binom{2n}n\bigr)=s_2(n)$, the
+binary digit sum, so $v_2\le a-1\le t/\log2$ forces
+$s_2(n)=O(\sqrt{\log N})$, and
+$\#\{n\le N:s_2(n)\le m\}\le\sum_{j\le m}\binom Dj\le(D+1)^{m}
+=\exp\bigl(O(\sqrt{\log N}\,\log\log N)\bigr)=N^{o(1)}$, absorbed.
+
+Summing the two channels gives the stated bound; replacing $\log N$ by
+$\log n$ costs only the dyadic decomposition $n\in(N/2,N]$.
+\end{proof}
+
+\begin{remark}
+The constant is sharp: the expected number of balanced primes
+$p\le e^{t}$ for a random $n\le N$ crosses $1$ at $t=\sqrt{a}$, the same
+threshold, so the union bound meets the first moment and no further constant
+improvement is possible in Theorem~\ref{thm:lower}.  A crude version of
+Lemma~\ref{lem:bal} with the ceiling $\lceil\log N/\log p\rceil$ loses a
+factor as large as $p$ and caps the method at $\sqrt{\log2/2}$; the
+leading-digit truncation is the entire difference.
+\end{remark}
+
+\begin{remark}[unconditional facts for every $n$, and the fluctuation
+picture]
+(i) $L(n)\ge3$ always, and $L(n)=3$ exactly when $2n$ has only digits
+$0,2$ in base $3$; such $n$ number $2^{k}-1$ below $3^{k}$, so
+$\liminf L(n)=3$ on a set of counting dimension $\log2/\log3$.
+(ii) For every large $n$, every prime in $(\tfrac{2n}3,n]$ is a
+non-divisor, so $L(n)\le n^{1+o(1)}$ trivially; using primes in the
+intervals $(\tfrac{2n}{2k+1},\tfrac nk]$ together with primes in short
+intervals \cite{BHP} gives $L(n)\le n^{1/(2-\theta)+o(1)}=n^{0.678\dots}$
+for all large $n$, with $\theta=0.525$ the short-interval exponent.
+(iii) Around the almost-all law the fluctuations do not vanish: the
+independent-rail model gives a minimum-type (Gumbel) limit for
+$\log L(n)-\sqrt{a}-\tfrac12\log\sqrt a$ with bounded scale --- $L(n)$ is
+pinned within a bounded multiplicative window of the law on that model, with
+the $5$th--$95$th percentile span a constant factor $\approx9$ across
+fifteen measured decades.
+\end{remark}
+
+\section{The matching upper bound: program and conjecture}
+
+\begin{conjecture}\label{conj:upper}
+For every $\eps>0$, almost all $n$ possess a balanced prime
+$p\le\exp\bigl((c+\eps)\sqrt{\log n}\bigr)$; consequently
+$L(n)=\exp\bigl((c+o(1))\sqrt{\log n}\bigr)$ for almost all $n$,
+with $c=\sqrt{\log2}$.
+\end{conjecture}
+
+The first moment matches the lower bound: the expected number of balanced
+primes $p\le e^{t}$ for random $n\le N$ is governed by the endpoint of
+$\int(e^{u}/u)\exp(-a/u)\,du$, tending to $0$ below $t=\sqrt a$ and to
+$\infty$ above --- the same threshold constant $c=\sqrt{\log2}$ from both
+sides.  What remains for the second moment is
+pairwise decorrelation of balancedness at threshold depth:
+\[
+\#\{n\le N:\ n\in G_p\cap G_q\}\;\le\;(1+o(1))\,
+\frac{|G_p\cap[1,N]|\;|G_q\cap[1,N]|}{N},\qquad p\ne q\ \text{near }e^{t}.
+\]
+This is a \emph{finite-depth} two-base statement --- far weaker than the
+uniform multi-base transversality that governs the companion problem
+\#377 --- and the empirical version holds with a bounded constant: the
+measured independence ratio for the pair $(3,5)$ oscillates in
+$[0.94,\,1.82]$ over twelve scales with no trend, and for threshold-scale
+primes the digit depth is only $\Theta(\sqrt{\log n})$, opening the CRT
+window route (joint equidistribution of $(n\bmod p^{i},\,n\bmod q^{j})$ is
+exact while $p^iq^j\le N$).  One register note: a bounded constant in place
+of $(1+o(1))$ yields, via Chebyshev, only a \emph{positive proportion} of
+$n$ with a near-threshold balanced prime; the almost-all conclusion needs
+the full asymptotic.
+
+\section{Numerical state}
+
+Instruments anchored on Kummer ($v_2=s_2(n)$ exactly; $300$ brute-force
+evaluations of $L(n)$ agree with the carry formula).  Over $n\le4\times10^5$:
+the na\"ive exponent $\log L/\log n$ drifts downward
+($0.364,\ 0.311,\ 0.293,\ 0.285,\ 0.271$ across dyadic ranges) while
+$\log L(n)/\sqrt{\log n}$ holds steady --- the $\sqrt{\log}$ shape is clean.
+Deep scans (exhaustive to $10^{8}$; $2\times10^{5}$ samples per decade to
+$10^{35}$ via $128$-bit arithmetic) settle the constant: after removing the
+explicit second-order term $\tfrac12\log\sqrt a$ of the law, the measured
+constant descends $0.935,\ 0.894,\ 0.859,\ 0.843$ toward
+$\sqrt{\log2}=0.8326$, and the three-term form of the law predicts the raw
+mean at $\log n=80.6$ to four decimals ($0.9551$ vs.\ $0.9550$).  A
+parameter-free independent-rail model (exact digit densities, product over
+rails) reproduces the median and the $5$th/$95$th percentiles of the least
+balanced prime \emph{prime-for-prime} in $14$ of $15$ decades --- a joint
+test of rail independence far stronger than any marginal statistic.  The
+minimum is achieved via the balanced channel in $81$--$89\%$ of cases, by
+moderate primes ($p>10$ in $74\%$, $p>100$ in $1\%$), and the balanced
+channel dominates asymptotically (the $a\ge2$ channels first fire at
+$\exp(2\sqrt a)$-scale).
+
+\section{Relation to \#377}
+
+Both problems are governed by the balanced sets $G_p$.  Problem \#377 sums
+$1/p$ over balanced rails and needs uniform multi-base transversality;
+\#731's answer is set by the \emph{least} balanced rail and needs only
+finite-depth pairwise decorrelation --- the entry-level case of the same
+phenomenon.  A proof of Conjecture~\ref{conj:upper} is therefore both a
+resolution of \#731 and the first rigorous transversality brick for the
+harder problem.
+
+\begin{thebibliography}{9}
+\bibitem{EGRS} P. Erd\H{o}s, R. L. Graham, I. Z. Ruzsa, E. G. Straus,
+\emph{On the prime factors of $\binom{2n}{n}$}, Math. Comp. 29 (1975),
+83--92.
+\bibitem{Kummer} E. Kummer, \emph{\"Uber die Erg\"anzungss\"atze zu den
+allgemeinen Reciprocit\"atsgesetzen}, J. reine angew. Math. 44 (1852),
+93--146.
+\bibitem{Pomerance26} C. Pomerance, \emph{Remarks on the middle binomial
+coefficient}, note (two circulated versions, January 2026),
+math.dartmouth.edu/\textasciitilde carlp; journal reference to be confirmed.
+\bibitem{ErdosProblems} T. F. Bloom, \emph{Erd\H{o}s problem \#731},
+erdosproblems.com/731 (accessed August 1, 2026).
+\bibitem{BHP} R. C. Baker, G. Harman, J. Pintz, \emph{The difference between
+consecutive primes, II}, Proc. London Math. Soc. (3) 83 (2001), 532--562.
+\end{thebibliography}
+\end{document}

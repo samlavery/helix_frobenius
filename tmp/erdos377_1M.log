@@ -1,0 +1,48 @@
+N = 1000000, primes up to N: 78498
+
+gamma0 = 0.507834   empirical mean f(n), n in [N/2, N]: 0.478150
+max f(n) = 1.17924 at n = 3250
+loglog N = 2.6258;  max f / loglog n = 0.5642  (EGRS: c < 1)
+record-setters (last 12):
+  n =       3   f = 0.33333   f/loglog n = 3.5443
+  n =       7   f = 0.34286   f/loglog n = 0.5150
+  n =       9   f = 0.47619   f/loglog n = 0.6049
+  n =      10   f = 0.67619   f/loglog n = 0.8107
+  n =      27   f = 0.79728   f/loglog n = 0.6685
+  n =     120   f = 0.80902   f/loglog n = 0.5166
+  n =     121   f = 0.89993   f/loglog n = 0.5740
+  n =     255   f = 0.93436   f/loglog n = 0.5457
+  n =     364   f = 0.98744   f/loglog n = 0.5565
+  n =     756   f = 1.07698   f/loglog n = 0.5694
+  n =    3160   f = 1.11552   f/loglog n = 0.5346
+  n =    3250   f = 1.17924   f/loglog n = 0.5642
+
+champions' small balanced rails (p <= 60):
+  n =     121: [3, 7, 11, 17, 19, 23, 29, 37, 53, 59]
+  n =     255: [3, 5, 11, 23, 31, 41, 47, 59]
+  n =     364: [3, 7, 11, 13, 17, 19, 43, 59]
+  n =     756: [3, 5, 7, 13, 41, 47, 53]
+  n =    3160: [3, 5, 7, 11, 37, 47]
+  n =    3250: [3, 5, 7, 13, 19, 23, 47, 53]
+
+cross-rail alignment  r = P(bal_p & bal_q)/(P_p P_q)  (n >= 1000):
+  marginals: {2: np.float64(0.0), 3: np.float64(0.0081), 5: np.float64(0.0195), 7: np.float64(0.0244), 11: np.float64(0.0465), 13: np.float64(0.0502), 17: np.float64(0.0588), 19: np.float64(0.0798)}
+            2      3      5      7     11     13     17     19
+  p= 2           nan    nan    nan    nan    nan    nan    nan
+  p= 3                0.956  0.623  1.293  1.148  1.275  0.803
+  p= 5                       1.264  0.968  1.337  0.978  1.244
+  p= 7                              0.867  0.992  1.027  1.368
+  p=11                                     1.057  1.037  1.023
+  p=13                                            0.856  1.008
+  p=17                                                   1.101
+  p=19                                                        
+
+k-band contributions (p in (n^{1/(k+1)}, n^{1/k}]) at n = argmax:
+  k =  1: contribution 0.28987   band 1/p-budget 0.6931   heuristic 2^-k * budget 0.34657
+  k =  2: contribution 0.13625   band 1/p-budget 0.4055   heuristic 2^-k * budget 0.10137
+  k =  3: contribution 0.07692   band 1/p-budget 0.2877   heuristic 2^-k * budget 0.03596
+  k =  4: contribution 0.14286   band 1/p-budget 0.2231   heuristic 2^-k * budget 0.01395
+  k =  5: contribution 0.20000   band 1/p-budget 0.1823   heuristic 2^-k * budget 0.00570
+  k =  7: contribution 0.33333   band 1/p-budget 0.1335   heuristic 2^-k * budget 0.00104
+
+done.
