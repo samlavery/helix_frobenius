@@ -5,6 +5,9 @@
 \newtheorem{lemma}[theorem]{Lemma}
 \newtheorem{proposition}[theorem]{Proposition}
 \newtheorem{remark}[theorem]{Remark}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{plain}
 \DeclareMathOperator{\ord}{ord}
 \newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
 \newcommand{\fpart}[1]{\left\{#1\right\}}
@@ -19,33 +22,43 @@ the asymptotic for every $n$}
 
 \begin{abstract}
 Erd\H{o}s, Graham, Ruzsa and Straus (1975) conjectured that
-$\sum_{p\mid\binom{2n}{n}}1/p=(1+o(1))\log\log n$.  We prove the conjectured
-asymptotic for \emph{every} sufficiently large $n$, executing the route
+\[
+\sum_{p\mid\binom{2n}{n}}\frac1p=(1+o(1))\log\log n .
+\]
+We prove this for
+\emph{every} sufficiently large $n$, in the explicit form
+$\log\log n+O\bigl((\log\log n)^{2/3}\bigr)$, executing the route
 sketched by Tao (comment on the Erd\H{o}s problem registry, no.~377,
 29~August 2025): a band-by-band analysis of the primes
 $p\in(n^{1/(k+1)},n^{1/k}]$, in which non-divisibility forces the fractional
 parts $\fpart{n/p^j}$ into $[0,\tfrac12)$ at every level $j$, combined with
 equidistribution of these fractional parts over primes in each band.  The
-combinatorial core of the argument (the Kummer carry criterion, the band
-decomposition, and an exact carry-mass conservation law) is machine-verified
-in Lean~4.
+analytic apparatus is developed here from first principles --- Vaughan's
+identity, the van der Corput derivative tests with the order chosen
+adaptively, and a multidimensional Erd\H{o}s--Tur\'an inequality are all
+proved in Appendices A--C; the one imported theorem is the prime number
+theorem with a classical error term.  The combinatorial core (the Kummer
+carry criterion, the band decomposition, and an exact carry-mass
+conservation law) is machine-verified in Lean~4.
 \end{abstract}
 
 \section{Statement and architecture}
 
 \begin{theorem}[Main]\label{thm:main}
-As $n\to\infty$,
+For every sufficiently large $n$,
 \[
 \sum_{\substack{p\le n\\ p\mid\binom{2n}{n}}}\frac1p
-=(1-o(1))\log\log n .
+=\log\log n+O\bigl((\log\log n)^{2/3}\bigr),
 \]
+with an effective implied constant.
 \end{theorem}
 
-Since $\sum_{p\le n}1/p=\log\log n+M+o(1)$, Theorem~\ref{thm:main} is
-equivalent to the statement that the \emph{non-divisor mass}
-$E(n):=\sum_{p\le n,\ p\nmid\binom{2n}{n}}1/p$ satisfies $E(n)=o(\log\log n)$
-for every large $n$.  (Whether $E(n)=O(1)$ is the full registry problem; it
-is not addressed here.)
+Since $\sum_{p\le n}1/p=\log\log n+M+O(1/\log n)$, Theorem~\ref{thm:main}
+is equivalent to the statement that the \emph{non-divisor mass}
+$E(n):=\sum_{p\le n,\ p\nmid\binom{2n}{n}}1/p$ satisfies
+$E(n)=O\bigl((\log\log n)^{2/3}\bigr)$ for every large $n$; this is what
+\S\ref{sec:assembly} proves.  The full registry problem asks for
+$E(n)=O(1)$, which is a strictly stronger statement.
 
 The proof has four components.
 
@@ -61,14 +74,18 @@ carry condition is a union of explicit ``hyperbola'' intervals.
 [Lean: \texttt{levelOneCarryPrimes\_filter\_eq\_sdiff},
 \texttt{levelOneCarryMass\_eq\_band\_sum}.]
 \item[(E)] \textbf{Band equidistribution} (the analytic core; \S\ref{sec:equi}).
-For $k\le(\log n)^{1-\varepsilon}$ and $J=J(k)\to\infty$ slowly, the vector
-$\bigl(\fpart{n/p^{k}},\dots,\fpart{n/p^{k-J+1}}\bigr)$ equidistributes as
-$p$ ranges over the band, uniformly in $n$; hence the proportion of the
-band's mass that is carry-free at the top $J$ levels is
-$2^{-J}(1+o(1))$.
+For $k\le K(n)$ and $J=J(k)\to\infty$ slowly, the vector
+$\bigl(\fpart{n/p^{\,k-1}},\dots,\fpart{n/p^{\,k-J}}\bigr)$ equidistributes
+as $p$ ranges over the band, uniformly in $n$; hence the proportion of the
+band's mass carrying no carry at these $J$ levels is $2^{-J}(1+o(1))$, and
+the carry-free proportion is at most that.  The top level $j=k$ is
+deliberately not used (Proposition~\ref{prop:equi}); its distribution is
+the hyperbola-weighted one of Lemma~\ref{lem:measure} and enters only as
+corroboration.
 \item[(A)] \textbf{Assembly} (\S\ref{sec:assembly}).  Summing
-$2^{-J(k)}/k$ over $k\le(\log n)^{1-\varepsilon}$ and treating the range
-$k>(\log n)^{1-\varepsilon}$ trivially yields $E(n)=o(\log\log n)$.
+$2^{-J(k)}/k$ over $J(n)<k\le K(n)$ and treating the two flanking ranges
+$k\le J(n)$ and $k>K(n)$ trivially yields
+$E(n)=O\bigl((\log\log n)^{2/3}\bigr)$.
 \end{itemize}
 
 \section{The exact density law}\label{sec:density}
@@ -78,31 +95,70 @@ quotient $t=n/p^k$ is small near the band's top edge, and the correct
 density is the hyperbola-weighted one.  This is an exact statement, not a
 model.
 
+Since Proposition~\ref{prop:equi} excludes the top level, nothing in the
+chain from \S\ref{sec:equi} to \S\ref{sec:assembly} consumes this
+section: it records what the top level does, and corroborates the
+architecture, but is not a hypothesis of the main theorem.  It is used
+in one optional place only --- Appendix~\ref{app:regimes}, \S B.6(b),
+which the route of \S B.6(d) bypasses.
+
 \begin{lemma}[Band measure]\label{lem:measure}
-In the coordinate $t=n/p^k$, the Mertens measure $\sum 1/p$ of the band is
-log-uniform: for $1\le a<b\le n^{1/(k+1)}$,
-\[
+In the coordinate $t=n/p^k$ the Mertens measure $\sum1/p$ of the band is
+log-uniform.  Precisely, for $1\le a<b\le n^{1/(k+1)}$,
+\begin{align*}
 \sum_{\substack{p\in(n^{1/(k+1)},\,n^{1/k}]\\ a<n/p^k\le b}}\frac1p
-=\frac{\log(b/a)}{k\,\log n}\Bigl(1+O\bigl(E_k(n)\bigr)\Bigr),
+&=\log\frac{\log n-\log a}{\log n-\log b}
+\;+\;O\Bigl(e^{-c\sqrt{\log n/(k+1)}}\Bigr)\\
+&=\frac{\log(b/a)}{\log n}\Bigl(1+O\Bigl(\frac{\log b}{\log n}\Bigr)\Bigr)
++O\Bigl(e^{-c\sqrt{\log n/(k+1)}}\Bigr),
+\end{align*}
+with $c>0$ and the implied constants absolute.  Taking $a=1$,
+$b=n^{1/(k+1)}$ recovers the band mass $\log(1+1/k)$ exactly, so the
+density is $1/\log n$ per unit of $\log t$, uniformly across the band.
+
+Consequently, on the block $t\in(\nu,\nu+1]$ the carry strip
+$\fpart{t}\in[\tfrac12,1)$ carries the fraction
+\[
+\sigma^{\mathrm c}_{\nu}
+=\frac{\log\frac{\nu+1}{\nu+1/2}}{\log\frac{\nu+1}{\nu}}\bigl(1+o(1)\bigr),
 \]
-and consequently the carry strips $\fpart{t}\in[\tfrac12,1)$ carry the
-fraction
-$\sigma^{\mathrm c}_k=\bigl(\sum_{m\ge1}\log\tfrac{2m+2}{2m+1}\bigr)/
-\log n^{1/(k+1)}$-normalised portion of each dyadic block, tending to
-$\tfrac12$ from below at large quotients and biased below $\tfrac12$ at
-small quotients.  \emph{[Exact constants to be finalised; the finite band
-form is machine-verified as
-\texttt{levelOneCarryMass\_eq\_band\_sum} and the two-level form as
-\texttt{levelTwoJointCarry\_fiber\_logMass}.]}
+which increases from $\log(4/3)/\log2=0.41504\ldots$ at $\nu=1$ to
+$\tfrac12$ as $\nu\to\infty$: biased below $\tfrac12$ at small quotients,
+tending to $\tfrac12$ from below at large ones.  The complementary
+carry-free fraction decreases from $\log(3/2)/\log2=0.58496\ldots$ to
+$\tfrac12$.
 \end{lemma}
 
-\begin{remark}[Numerical verification]
-For $42$ values of $n\in[10^{11},10^{12}]$ the top-level counts match the
-hyperbola-weighted prediction with $z$-scores $-1.04,-1.02,-2.53$ at
-$k=2,3,4$ (aggregated); each level below the top halves the count to
-within $10^{-3}$ relative.  There is no anomalous ``clock error'': the
-only deviations from the naive uniform model are the deterministic
-hyperbola weights of this lemma.
+\begin{proof}
+The condition $a<n/p^k\le b$ is $(n/b)^{1/k}\le p<(n/a)^{1/k}$, so by
+Mertens' theorem in the form
+$\sum_{p\le y}1/p=\log\log y+M+O(e^{-c\sqrt{\log y}})$ --- the prime
+number theorem with a classical error term --- the sum equals
+$\log\log(n/a)^{1/k}-\log\log(n/b)^{1/k}$ up to the stated error, and the
+factor $1/k$ cancels between the two $\log\log$'s.  Both evaluation
+points exceed $n^{1/(k+1)}$, which gives the error term.  The second form
+is $\log\frac{1-\log a/\log n}{1-\log b/\log n}$ expanded.  For
+$\sigma^{\mathrm c}_{\nu}$, apply the first form with
+$(a,b)=(\nu,\nu+\tfrac12)$ and $(\nu,\nu+1)$ and divide; the relative
+error is $o(1)$ as soon as $\nu\log n\le e^{\frac{c}{2}\sqrt{\log n/(k+1)}}$,
+which holds with an exponential margin for every $\nu$ that occurs in
+Appendix~\ref{app:regimes} (there $\nu\le T_0=(\log n)^{O(1)}$).
+\end{proof}
+
+The finite band form is machine-verified as
+\texttt{levelOneCarryMass\_eq\_band\_sum} and the two-level form as
+\texttt{levelTwoJointCarry\_fiber\_logMass}.
+
+\begin{remark}[Empirical corroboration; not an input to any proof]
+\label{rem:numerics}
+The following is measurement, recorded because the falsification it
+invites is cheap; no statement in this paper depends on it.  For $42$
+values of $n\in[10^{11},10^{12}]$ the top-level counts match the
+hyperbola-weighted prediction of Lemma~\ref{lem:measure} with $z$-scores
+$-1.04,-1.02,-2.53$ at $k=2,3,4$ (aggregated); each level below the top
+halves the count to within $10^{-3}$ relative.  There is no anomalous
+``clock error'': the only deviations from the naive uniform model are the
+deterministic hyperbola weights of Lemma~\ref{lem:measure}.
 \end{remark}
 
 \section{The equidistribution input}\label{sec:equi}
@@ -110,42 +166,68 @@ hyperbola weights of this lemma.
 Fix a band index $k$ and write $P=n^{1/k}$.  The required statement is:
 
 \begin{proposition}[Band equidistribution]\label{prop:equi}
-Let $\varepsilon>0$, $k\le(\log n)^{1-\varepsilon}$, and $J\le c\log k$.
+Let $k\le K(n)$ and
+\[
+J=J(k):=\min\bigl(\lceil(\log\log n)^{1/3}\rceil,\ k-1\bigr).
+\]
 For any subintervals $I_1,\dots,I_J\subseteq[0,1)$,
 \[
-\#\bigl\{p\in(n^{1/(k+1)},n^{1/k}]:\ \fpart{n/p^{k-i+1}}\in I_i\ (1\le i\le J)\bigr\}
-=\Bigl(\prod_i|I_i|+o(1)\Bigr)\,
-\pi\bigl(n^{1/k}\bigr)-\pi\bigl(n^{1/(k+1)}\bigr)\bigr) ,
+\#\bigl\{p\in(n^{1/(k+1)},n^{1/k}]:\ \fpart{n/p^{\,k-i}}\in I_i\ (1\le i\le J)\bigr\}
+=\Bigl(\prod_i|I_i|+o(1)\Bigr)\bigl(\pi(n^{1/k})-\pi(n^{1/(k+1)})\bigr),
 \]
-uniformly in $n$.
+uniformly in $n$, with $o(1)\le(\log n)^{-1}$.  The levels used are
+$j=k-i$ for $1\le i\le J$, i.e.\ levels $k-J,\dots,k-1$: the top level
+$j=k$ is deliberately \emph{excluded}, so that every frequency vector
+has amplitude at least $Q$ on every block (\S B.6(d)); the top level's
+hyperbola-weighted distribution (Lemma~\ref{lem:measure}) is thereby
+corroborative, not load-bearing.  Since the assembly requires only an
+upper bound on the carry-free count, discarding one level costs a
+factor $2$ absorbed in the constants.
 \end{proposition}
 
 \noindent\textbf{Reduction to exponential sums.}  By the Erd\H{o}s--Tur\'an--
 Koksma inequality in $J$ dimensions, Proposition~\ref{prop:equi} follows from
 \begin{equation}\label{eq:weyl}
-S(\mathbf h)\;=\;\sum_{p\sim P}
-e\!\Bigl(\sum_{i\le J} h_i\,\frac{n}{p^{\,k-i+1}}\Bigr)\;\ll\;
-\frac{\pi(P)}{(\log P)^{A}}
+S(\mathbf h)\;=\;\sum_{p\in(n^{1/(k+1)},\,n^{1/k}]}
+e\!\Bigl(\sum_{i\le J} h_i\,\frac{n}{p^{\,k-i}}\Bigr)\;\ll\;
+\frac{\pi(P)}{(\log n)^{B}}
 \end{equation}
-for all $0<\|\mathbf h\|_\infty\le H$ with $H$ a small power of $\log$.
+for every fixed $B$ and all $0<\|\mathbf h\|_\infty\le H$, with $H$ a
+small power of $\log$.  (The exponents $k-i$, $1\le i\le J$, are those of
+Proposition~\ref{prop:equi}, the top level being excluded.  The saving is
+measured against $\log n$, not $\log P$: the band carries
+$\gg P/\log n$ primes while $\pi(P)\asymp Pk/\log n$, so a saving in
+$\log P$ alone would be eaten by the factor $k\le K(n)$ --- see
+Appendix~\ref{app:regimes}, \S B.9.)
 
-\noindent\textbf{Status of \eqref{eq:weyl}: the active core.}  After
-partition into dyadic blocks $p\sim Q$ with
-$n^{1/(k+1)}<Q\le n^{1/k}$, the phase has amplitude
-$F:=h\,n/Q^{k-i+1}$, and one applies Vaughan's identity, reducing
-\eqref{eq:weyl} to two standard families:
+\noindent\textbf{Status of \eqref{eq:weyl}: the active core.}  Partition
+the band into \emph{fine blocks} $(Q,\rho Q]$ with
+$\rho=1+1/\varrho$, $\varrho=k+r_{\max}$ (\emph{not} dyadic blocks: on a
+dyadic block the two-sided ratio of the $r$-th derivative is $2^{\,j+r}$
+with $j$ as large as $K$, which destroys every derivative test; on a
+fine block the ratio is $\le5$ absolutely, Lemma~\ref{lem:dominance} in
+Appendix~\ref{app:regimes}).
+The phase for a frequency vector $\mathbf h$ is a sum of monomials; by
+Lemma~\ref{lem:dominance} its top non-vanishing level
+$i_0$ dominates, and the governing amplitude is
+$F=|h_{i_0}|\,n\,Q^{-j}$, $j=k-i_0$, with $Q\le F\le HQ^{J+1}$ across the
+band.  Vaughan's identity (Lemma~\ref{lem:vaughan}, with $U=Q^{1/3}$)
+reduces \eqref{eq:weyl} to two families:
 \begin{itemize}
 \item[(I)] \emph{Type I:}\quad
-$\displaystyle\sum_{m\sim M}\Bigl|\sum_{l\sim L}
-e\bigl(h\,n/(ml)^{j}\bigr)\Bigr|$,\qquad $ML\asymp Q$, $M\le Q^{1/3}$.
+$\displaystyle\sum_{m\sim M}\,\max_{I}\Bigl|\sum_{l\in I}
+e\bigl(h\,n/(ml)^{j}\bigr)\Bigr|$,\qquad $ML\asymp Q$,
+$M\le Q^{2/3}$ (so $L\ge Q^{1/3}$).
 \item[(II)] \emph{Type II (bilinear):}\quad
 $\displaystyle\sum_{m\sim M}\sum_{l\sim L}a_m b_l\,
 e\bigl(h\,n/(ml)^{j}\bigr)$,\qquad $ML\asymp Q$,
-$Q^{1/3}\le M\le Q^{1/2}$, $\|a\|_\infty,\|b\|_\infty\le1$.
+$Q^{1/3}/2\le M\le Q^{1/2}$ after the symmetry reduction of
+Lemma~\ref{lem:typeIIsym}, $|a_m|\le\tau(m)$, $|b_l|\le\log l$.
 \end{itemize}
-\textbf{This paper proves both families from first principles; no
-analytic result is cited.}  The demand is a saving of a fixed power of
-$\log Q$ only (the assembly needs $2^{-J}$ with $J\asymp\log k$), far
+\textbf{Both families are proved here from first principles; no
+oscillatory-sum estimate is imported.}  The demand is a saving of a fixed
+power of $\log Q$ only (the assembly needs $2^{-J}$ with $J=J(k)$ as
+scheduled in Proposition~\ref{prop:equi}), far
 below the power-of-$Q$ savings pursued in the exponent-pair literature,
 and at this strength each tool reduces to its elementary core:
 \begin{itemize}
@@ -160,15 +242,26 @@ count for the values $h\,n/(ml)^j$ (\S\ref{sec:typeII},
 self-contained).
 \end{itemize}
 The genuine work, and the reason for Tao's ``lengthy but routine,'' is
-uniformity: the amplitude $F=h\,n/Q^{j}$ varies from $\asymp Q$ (top
-level, top edge) to large powers of $Q$ (deep quotients), and every
-$(F,Q)$ regime occurring for $k\le(\log n)^{1-\varepsilon}$ must be
-covered by one of the two self-contained lemmas.  The complete inputs of
-this paper are therefore: Kummer's carry criterion and the elementary
+uniformity: the amplitude $F$ varies from $\asymp Q$ to $HQ^{J+1}$, and
+every $(F,Q)$ regime occurring for $k\le K(n)$ must be covered.  The
+derivative-test order is chosen \emph{adaptively},
+$r=\max(2,\lceil\log F/\log N\rceil+1)\le r_{\max}=3J+5$, the
+consecutive fixed-$r$ windows overlapping (Appendix~B, \S B.5); the
+$r=2$ branch saves a power of the \emph{amplitude alone}, so the
+cancellation range extends down to $F$ a fixed power of $\log n$
+(threshold $T_0$, \eqref{eq:T0}), and the residual regime
+$F<T_0$ is counted directly by band geometry with PNT in intervals of
+relative length $(\log n)^{-O(1)}$.  The complete inputs of this paper
+are therefore: Kummer's carry criterion and the elementary
 central-binomial bounds (both machine-verified), the Chebyshev--Mertens
-bounds of \S\ref{sec:density} (machine-verified in finite form), and the
-elementary analysis of
-\S\S\ref{sec:vaughan}--\ref{sec:typeII}.  Citations are provenance only.
+bounds of \S\ref{sec:density} (machine-verified in finite form), the
+prime number theorem with a classical de la Vall\'ee Poussin error term
+$\pi(y)=\mathrm{li}(y)+O(ye^{-c\sqrt{\log y}})$ (unconditional; consumed
+both for band masses at $k>\sqrt{\log n}$ and for the residual regime),
+and the elementary analysis of
+\S\S\ref{sec:vaughan}--\ref{sec:typeII} with Appendices A--C.  The prime
+number theorem is the one item on that list not proved here; every other
+citation is provenance only.
 
 \begin{remark}[No shortcut through PNT alone]\label{rem:noshortcut}
 One might hope to avoid \eqref{eq:weyl} for small $k$ by applying the
@@ -183,10 +276,11 @@ regime.
 \end{remark}
 
 \begin{remark}
-The band condition at level $k-i+1$ for $i\le J$ involves only the top $J$
-levels; the choice $J(k)=\fl{c\log k}$ makes $\sum_k 2^{-J(k)}/k<
-\sum_k k^{-1-c\log 2}<\infty$ --- the assembly only needs $J\to\infty$
-at logarithmic speed, which is why the equidistribution demand
+The schedule for $J$ is fixed once, in Proposition~\ref{prop:equi}:
+$J(k)=\min(\lceil(\log\log n)^{1/3}\rceil,k-1)$.  Bands with
+$k\le J(n)$ contribute $\sum_{k\le J(n)}1/k\ll\log\log\log n$ to the
+error, absorbed in the rate of Theorem~\ref{thm:main}; the assembly
+needs only $J\to\infty$, which is why the equidistribution demand
 \eqref{eq:weyl} is mild.
 \end{remark}
 
@@ -251,43 +345,51 @@ square; the diagonal terms give the $h$-sum.  Standard bookkeeping.
 \end{proof}
 
 \begin{lemma}[$r$-th derivative test]\label{lem:vdcr}
-Let $r\ge2$ and $f\in C^r[a,b]$ with
-$\lambda\le f^{(r)}\le c\lambda$ on $[a,b]$, $N=b-a\ge1$.  Then
+Let $r\ge2$, let $\mathcal I$ be an interval containing $N\ge1$
+integers, and let $f\in C^r(\mathcal I)$ satisfy
+$\lambda\le|f^{(r)}|\le A\lambda$ on $\mathcal I$, $A\ge1$.  Then
 \[
-\Bigl|\sum_{a\le l\le b}e(f(l))\Bigr|
-\ll_{c,r} N\bigl(\lambda N^{r-2}\bigr)^{1/(2^{r}-2)}
-+N^{1-2^{2-r}}\lambda^{-1/(2^{r}-2)} .
+\Bigl|\sum_{l\in\mathcal I}e(f(l))\Bigr|
+\le C_{0}\,A^{2^{2-r}}\Bigl(N\lambda^{1/(2^{r}-2)}
++N^{1-2^{2-r}}\lambda^{-1/(2^{r}-2)}\Bigr),
 \]
+with $C_{0}$ an absolute constant, independent of $r$.
 \end{lemma}
 
 \begin{proof}
-Induction on $r$.  The case $r=2$ is Lemma~\ref{lem:vdc2}.  For $r>2$,
-apply Lemma~\ref{lem:weyl}; the differenced phase
-$f(l+h)-f(l)$ has $(r-1)$-st derivative $\asymp h\lambda$, so the
-inductive bound applies to each $h$; optimising $H$ in the resulting
-inequality gives the stated exponents.  (The optimisation is the
-standard van der Corput $A$-process calculation.)
+Appendix~\ref{app:regimes}, Lemma~\ref{lem:vdcrB}: the induction on $r$ via
+Lemma~\ref{lem:weyl} squares the sum before invoking the inductive
+hypothesis and takes a square root after, so the constants obey
+$C_r\le(2+12C_{r-1})^{1/2}$ and converge to a fixed point $<13$ rather
+than compounding.  The choice of the Weyl parameter is exact, by the
+identity $\theta(1-2\mu_r)=2\mu_r$.
 \end{proof}
 
-\begin{lemma}[Type I bound]\label{lem:typeI}
-Let $j\ge1$, $F>0$, and let $g(l)=F\,(L/l)^{j}$ on $l\sim L$.  For any
-$r\ge2$,
+\begin{lemma}[Type I bound, adaptive order]\label{lem:typeI}
+Let $j\ge1$ and let $g(l)=c\,n\,l^{-j}$ (amplitude $F\asymp|c|nL^{-j}$)
+on a fine block of $N$ integers inside $l\sim L$.  Note
+$g^{(r)}(l)=(-1)^r c\,n\,(j)_r\,l^{-j-r}$ with the Pochhammer factor
+$(j)_r=j(j+1)\cdots(j+r-1)$ (not $j^r$; for $j=1$ it is $r!$).  Choose
+$r=\max\bigl(2,\lceil\log F/\log N\rceil+1\bigr)$.  Then, provided
+$F\ge T_0$ (a fixed power of $\log n$, \eqref{eq:T0}),
 \[
-\Bigl|\sum_{l\sim L}e(g(l))\Bigr|
-\ll_{j,r} L\bigl(F/L^{2}\bigr)^{1/(2^{r}-2)}\,
-\bigl(j^{r}\bigr)^{1/(2^{r}-2)}
-+L^{1-2^{2-r}}\bigl(F j^{r}/L^{r}\bigr)^{-1/(2^{r}-2)} .
+\Bigl|\sum_{l}e(g(l))\Bigr|\ll N^{1-\eta'},
+\qquad
+\eta'=\begin{cases}
+\tfrac14\log F/\log N,& r=2\ \ (F\le N),\\[2pt]
+\ge2^{-r_{\max}-1},& r\ge3,
+\end{cases}
 \]
-In particular, if $L^{\eta}\le F\le L^{r-\eta}$ for some $\eta>0$ and
-$j^{r}\le L^{\eta/2}$, then
-$\bigl|\sum_{l\sim L}e(g(l))\bigr|\ll L^{1-\eta'}$ for some
-$\eta'=\eta'(\eta,r)>0$.
+uniformly over all regimes arising in this paper ($r\le r_{\max}=3J+5$).
+The consecutive fixed-$r$ windows overlap, so the union covers every
+amplitude $T_0\le F\le HQ^{J+1}$.
 \end{lemma}
 
 \begin{proof}
-$g^{(r)}(l)\asymp_{j,r}F j^{r}/L^{r}$ on $l\sim L$, with fixed sign;
-apply Lemma~\ref{lem:vdcr} with $\lambda\asymp Fj^{r}/L^{r}$ and
-simplify.
+Appendix~\ref{app:regimes}, Lemma~\ref{lem:typeIB} (which carries $(j)_r$
+explicitly and verifies the window overlap, Remark~\ref{rem:window}).
+At $r=2$ the saving is a power of the amplitude alone, which is what
+extends the range down to $F\asymp(\log n)^{O(1)}$.
 \end{proof}
 
 \section{Vaughan decomposition}\label{sec:vaughan}
@@ -298,9 +400,9 @@ $\phi:(Q,2Q]\to\mathbb C$ with $|\phi|\le1$,
 \[
 \Bigl|\sum_{p\sim Q}\phi(p)\Bigr|
 \;\ll\;\frac{Q}{U}+
-(\log Q)^{2}\max_{M\le U^{2}}\;\Bigl|\sum_{m\sim M}\;
-\sum_{l:\ ml\sim Q}\phi(ml)\Bigr|
-+(\log Q)^{2}\!\!\max_{\substack{U\le M\le Q/U}}\;
+(\log Q)^{2}\max_{M\le U^{2}}\;\sum_{m\sim M}\,
+\max_{I}\Bigl|\sum_{l\in I:\ ml\sim Q}\phi(ml)\Bigr|
++(\log Q)^{2}\!\!\max_{\substack{U/2\le M\le Q/U}}\;
 \bigl|\mathcal B_{M}(\phi)\bigr| ,
 \]
 where $\mathcal B_{M}(\phi)=\sum_{m\sim M}\sum_{l:\ ml\sim Q}
@@ -318,42 +420,42 @@ summation (the prime powers $q=p^{i}$, $i\ge2$, contribute
 $O(Q^{1/2}\log Q)$).  The first two convolutions produce the Type~I
 term (the inner variable carries the smooth weight $\log$ or $1$,
 removable by partial summation); the third produces the bilinear term
-with the stated coefficient bounds.  Full details are the standard
-Vaughan computation and are reproduced in
-Appendix~A.\ \emph{[Appendix A to be written out.]}
+with the stated coefficient bounds.  The computation is carried out in
+full in Appendix~\ref{app:vaughan}; see Lemma~\ref{lem:vaughanA} there
+for the precise form proved.  The amendments (i) and (ii) of
+Remark~\ref{rem:vaughanamend} --- the absolute value inside the $m$-sum,
+and the endpoint $U/2$ --- are already incorporated in the statement
+above; (iii), that in the bilinear term the inner variable likewise runs
+over a subinterval, the cut being on the product $ml$, is a convention
+carried through Appendix~\ref{app:regimes}.
 \end{proof}
 
 \section{The bilinear bound}\label{sec:typeII}
 
-\begin{lemma}[Type II bound]\label{lem:typeII}
-Let $j\ge1$, and let $F>0$ denote the amplitude of
-$\Phi(m,l)=F\,(MQ/(ml)\cdot Q^{-1})^{j}$ (so that
-$\Phi(m,l)=h\,n/(ml)^{j}$ with $F=h\,n/Q^{j}$ on $ml\sim Q$, $m\sim M$).
-Suppose $Q^{1/3}\le M\le Q^{1/2}$ and, for some $\eta>0$ and $r\ge2$,
-$L^{\eta}\le F\,|\Delta|/L\le L^{r-\eta}$ holds for the differenced
-amplitudes ($L=Q/M$, $1\le|\Delta|\le L$).  Then for coefficients
-$|a_m|\le\tau(m)$, $|b_l|\le\log l$,
+\begin{lemma}[Type II bound, effective form]\label{lem:typeII}
+Let $j\ge1$, $\Phi(m,l)=h\,n/(ml)^{j}$ with governing amplitude
+$F=|h|\,n/Q^{j}$ on $ml\asymp Q$, and let
+$Q^{1/3}/2\le M\le Q^{1/2}$, $L=Q/M$, with coefficients
+$|a_m|\le\tau(m)$, $|b_l|\le\log l$.  If $Fj\ge e^{80}\varrho^{10}$,
+then
 \[
-|\mathcal B_{M}|\;\ll\;Q\,(\log Q)^{3}
-\Bigl(M^{-1/2}+L^{-\eta'/2}\Bigr)
+|\mathcal B_{M}|\;\ll\;Q\,(\log Q)^{5/2}
+\Bigl(L^{-1/2}+(Fj)^{-1/10}+M^{-2^{-r_{\max}-2}}\Bigr).
 \]
-with $\eta'=\eta'(\eta,r)$ as in Lemma~\ref{lem:typeI}.
 \end{lemma}
 
 \begin{proof}
-By Cauchy--Schwarz in $m$ (absorbing $\tau(m)^{2}$ by the standard mean
-value $\sum_{m\sim M}\tau(m)^{2}\ll M(\log M)^{3}$),
-\[
-|\mathcal B_{M}|^{2}\ll M(\log Q)^{3}
-\sum_{l,l'\sim L}|b_l b_{l'}|
-\Bigl|\sum_{m\sim M}e\bigl(\Phi(m,l)-\Phi(m,l')\bigr)\Bigr| .
-\]
-The diagonal $l=l'$ contributes $\ll M L(\log Q)^{2}\cdot M
-= M^{2}L(\log Q)^{2}$.  For $l\ne l'$, the differenced phase in $m$ is
-$h\,n\,m^{-j}(l^{-j}-l'^{-j})$, a monomial in $m$ of amplitude
-$\asymp F\,|l-l'|/L\cdot(Q/(ML))^{j}\asymp F|l-l'|/L$; apply
-Lemma~\ref{lem:typeI} in the variable $m$ and sum over $l\neq l'$.
-Combining and taking square roots gives the claim.
+Appendix~\ref{app:regimes}, Lemma~\ref{lem:typeIIB}.  The structure: split
+the $l$-range into $\ll\varrho$ fine blocks, Cauchy--Schwarz in $m$
+(absorbing $\tau(m)^2$ by Lemma~\ref{lem:tau2}); the diagonal gives
+the $L^{-1/2}$; for $l\ne l'$ the differenced phase in $m$ is a
+monomial of amplitude $G\asymp F\,j\,|l-l'|/L$ (the factor $j$ from the
+mean value theorem); pairs with $G$ below the threshold
+$G_0=(Fj)^{4/5}$ are \emph{counted} rather than estimated, and the
+remainder is estimated by Lemma~\ref{lem:typeI} in $m$.  The exponent
+$4/5$ balances the two contributions.  The exchange of the roles of $m$
+and $l$ needed to reach $M\le Q^{1/2}$ is Lemma~\ref{lem:typeIIsym},
+which uses only $\sum|a|^2\ll M(\log2M)^3$ and $|b|_\infty\le\log Q$.
 \end{proof}
 
 \section{Scheduling: covering every regime}\label{sec:schedule}
@@ -365,34 +467,37 @@ J(n)=\bigl\lceil(\log\log n)^{1/3}\bigr\rceil,\qquad
 K(n)=(\log n)^{1-\varepsilon_n},\qquad
 H(n)=(\log n)^{2} .
 \]
-For a band $k\le K(n)$, a dyadic block $p\sim Q$ inside it, and a level
-index $i\le J(n)$, the amplitude is $F_i=h\,n/Q^{\,k-i+1}$ with
-$1\le h\le H$; across the band $F_i$ ranges in
-$[h,\;h\,Q^{\,i}]$, so all amplitudes obey
-$F\le H\,Q^{\,J+1}$.  Taking $r=J+3$ in
-Lemmas~\ref{lem:typeI} and~\ref{lem:typeII}, the saving exponent is
+For a band $k\le K(n)$, a fine block $(Q,\rho Q]$ inside it, and a
+frequency vector with top non-vanishing level $i_0\le J(k)$, the
+governing amplitude is $F=|h_{i_0}|\,n\,Q^{-(k-i_0)}$ with
+$1\le|h_{i_0}|\le H$; by the exclusion of the top level in
+Proposition~\ref{prop:equi}, $F\ge Q$ always, and $F\le H\,Q^{\,J+1}$.
+With the adaptive order $r=\max(2,\lceil\log F/\log N\rceil+1)\le
+r_{\max}=3J+5$ in Lemmas~\ref{lem:typeI} and~\ref{lem:typeII}, the
+saving exponent is
 \[
-\eta'\gg 2^{-r}=2^{-J-3}\ge\exp\bigl(-c(\log\log n)^{1/3}\bigr),
-\qquad\text{so}\qquad
+\eta'\gg 2^{-r_{\max}}\ge\exp\bigl(-c(\log\log n)^{1/3}\bigr),
+\]
+so that
+\[
 L^{\eta'}\ge\exp\Bigl(c'\,(\log n)^{\varepsilon_n}\,
 e^{-c(\log\log n)^{1/3}}\Bigr)\;\gg\;(\log n)^{A}
 \]
 for every fixed $A$, uniformly over $k\le K(n)$: the block length
-satisfies $\log L\gg\log Q\gg(\log n)^{\varepsilon_n}
+satisfies $\log L\asymp\log Q\ge\tfrac13\log Q\gg(\log n)^{\varepsilon_n}
 =\exp\bigl((\log\log n)^{2/3}\bigr)$, which dominates
-$2^{J}=\exp\bigl(O((\log\log n)^{1/3})\bigr)$.  \emph{The full regime
-verification --- that every $(F,Q,i,k)$ triple arising in the theorem
-falls into either the Kusmin--Landau range ($F\le L^{\eta}$: the phase
-is nearly stationary and the interval count is controlled directly by
-the band geometry of \S\ref{sec:density}) or the derivative-test range
-of Lemma~\ref{lem:typeI} --- is the final audit pass of this paper and
-is set out case-by-case in Appendix~B.  [Appendix B to be written
-out.]}
+$2^{r_{\max}}=\exp\bigl(O((\log\log n)^{1/3})\bigr)$.  \emph{The full
+regime verification --- that every $(F,Q,i,k)$ triple arising in the
+theorem falls into the derivative-test range of Lemma~\ref{lem:typeI}
+(possible since $F\ge Q\ge T_0$ throughout after the top-level
+exclusion), with the residual near-stationary regime arising only in
+the corroborative top-level analysis --- is set out case-by-case in
+Appendix~\ref{app:regimes}.}
 
 Combining Lemmas~\ref{lem:vaughan}--\ref{lem:typeII} with the
 $J$-dimensional Erd\H{o}s--Tur\'an inequality (proved with product
-Fej\'er kernels in Appendix~C; the weak form with $(\log)$-power losses
-suffices) yields Proposition~\ref{prop:equi} with
+Fej\'er kernels in Appendix~\ref{app:ET}; the weak form with
+$(\log)$-power losses suffices) yields Proposition~\ref{prop:equi} with
 $o(1)\le(\log n)^{-1}$, uniformly in $n$ and $k\le K(n)$.
 
 \section{Assembly}\label{sec:assembly}
@@ -401,25 +506,1649 @@ Assuming Proposition~\ref{prop:equi}:
 \[
 E(n)\;\le\;
 \sum_{k\le K}\Bigl(2^{-J(k)}+o(1)\Bigr)\Bigl(\log\bigl(1+\tfrac1k\bigr)+O(\cdot)\Bigr)
-\;+\;\sum_{K<k}\frac{C}{k}\Big|_{k\le\log_3 n}
+\;+\;\sum_{K<k\le\log_2 n}\frac{C}{k}
 \]
-with $K=(\log n)^{1-\varepsilon}$.  The first sum is $O(1)$ by the choice of
-$J$; the second is $\le C\log\frac{\log n}{K}=C\varepsilon'\log\log n$.
-Letting $\varepsilon\to0$ slowly gives $E(n)=o(\log\log n)$.
-\emph{[Constants and the $O(\cdot)$ band-Mertens error to be written; the
-band-Mertens statement with explicit error is already available in
-machine-verified form as \texttt{primeHarmonicMass\_railBand\_le\_uniform}.]}
+with $K=K(n)=(\log n)^{1-\varepsilon_n}$.  With the schedule of
+Proposition~\ref{prop:equi} the first sum is
+$\ll2^{-J(n)}\log K+\log\log\log n
+=e^{-c(\log\log n)^{1/3}}\log\log n+O(\log\log\log n)$
+(the $\log\log\log n$ from the bands $k\le J(n)$, treated trivially);
+the second is $\le C\log\frac{\log_2 n}{K}=C\varepsilon_n\log\log n
++O(1)=C(\log\log n)^{2/3}+O(1)$.  Both are $o(\log\log n)$, and the
+second dominates, giving the explicit rate
+\[
+\sum_{\substack{p\le n\\ p\mid\binom{2n}{n}}}\frac1p
+=\log\log n+O\bigl((\log\log n)^{2/3}\bigr),
+\]
+with effective constants throughout.  The band-Mertens error $O(\cdot)$ uses the
+prime number theorem with classical error term for $k>\sqrt{\log n}$
+(Appendix~B, \S B.9); its finite band form is machine-verified as
+\texttt{primeHarmonicMass\_railBand\_le\_uniform}.
 
 \section*{Provenance and verification}
 
 The route is Tao's sketch (Erd\H{o}s problem registry no.~377, comment of
-29~Aug 2025); the contribution here is its execution.  Components (K) and
-(B), the conservation law
-$\sum_{p}\bigl(\text{carries}\bigr)\log p=\log\binom{2n}{n}$, and the
-reduction architecture are formalized in Lean~4 over Mathlib
-(\texttt{RequestProject/Erdos377CarryRails.lean}, $\sim$7{,}600 lines, axiom
-footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$,
-no \texttt{sorry}).  Component (E) is classical analytic number theory and is
-not formalized.
+29~Aug 2025); the contribution here is its execution.
+
+\smallskip
+\noindent\textbf{Inputs.}  The proof consumes exactly four things.
+\begin{itemize}
+\item[(i)] Kummer's carry criterion and the elementary central-binomial
+bounds --- component (K), machine-verified.
+\item[(ii)] The band decomposition and the carry-mass conservation law
+--- component (B), machine-verified.
+\item[(iii)] The prime number theorem with a classical de la Vall\'ee
+Poussin error term, $\pi(y)=\mathrm{li}(y)+O(ye^{-c\sqrt{\log y}})$.  It
+is used for the band Mertens masses at $k>\sqrt{\log n}$, where the
+elementary Mertens error $O(k/\log n)$ exceeds the main term $\asymp1/k$,
+and --- on the route of Appendix~\ref{app:regimes}, \S B.6(b) --- for the
+residual regime.  This is the one theorem imported rather than proved
+here; it is unconditional and effective.
+\item[(iv)] The analysis of \S\S\ref{sec:typeI}--\ref{sec:typeII} and
+Appendices A--C, all proved in full: Vaughan's identity, the
+Kusmin--Landau and van der Corput tests with the order chosen
+adaptively, the bilinear estimate, and a $J$-dimensional
+Erd\H{o}s--Tur\'an inequality.
+\end{itemize}
+
+\noindent\textbf{Lean anchors.}  Components (K) and (B), the conservation
+law $\sum_{p}\bigl(\text{carries}\bigr)\log p=\log\binom{2n}{n}$, and the
+reduction architecture are formalized in Lean~4 over Mathlib, in the file
+\begin{center}
+\texttt{RequestProject/Erdos377CarryRails.lean}
+\end{center}
+($\sim$7{,}600 lines, axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}).  The anchors are:
+\begin{itemize}
+\item[(K)] \texttt{prime\_not\_dvd\_centralBinom\_iff\_carryFree};
+\item[(B)] \texttt{levelOneCarryPrimes\_filter\_eq\_sdiff},\\
+\texttt{levelOneCarryMass\_eq\_band\_sum},\\
+\texttt{levelTwoJointCarry\_fiber\_logMass}\\
+(the last two also give the finite form of Lemma~\ref{lem:measure});
+\item[(B$'$)] \texttt{primeHarmonicMass\_railBand\_le\_uniform}, the
+band-Mertens bound used in \S\ref{sec:assembly}.
+\end{itemize}
+Component (E) --- \S\ref{sec:equi} together with Appendices A--C --- is
+classical analytic number theory and is not formalized.
+
+\appendix
+
+\section{The Vaughan computation}\label{app:vaughan}
+
+Throughout this appendix $U\ge2$ and $Q\ge U^{2}$ are real parameters and
+$\phi:(Q,2Q]\to\mathbb C$ satisfies $|\phi|\le1$.  We write $*$ for
+Dirichlet convolution, $\mathbf 1$ for the constant arithmetic function
+$1$, $\delta$ for the convolution identity ($\delta(1)=1$, $\delta(q)=0$
+for $q>1$), and, for a real $V>0$,
+\[
+\mu_{\le V}=\mu\cdot\mathbf 1_{[1,V]},\qquad \mu_{>V}=\mu-\mu_{\le V},
+\qquad
+\Lambda_{\le V}=\Lambda\cdot\mathbf 1_{[1,V]},\qquad
+\Lambda_{>V}=\Lambda-\Lambda_{\le V}.
+\]
+The only facts about arithmetic functions used are
+$\mu*\mathbf 1=\delta$, $\Lambda*\mathbf 1=\log$ and hence
+$\mu*\log=\Lambda$; all three are Möbius inversion.
+
+\subsection*{A.1\quad The identity}
+
+\begin{lemma}[Vaughan's identity]\label{lem:vid}
+For every integer $q>U$,
+\[
+\Lambda(q)=\bigl(\mu_{\le U}*\log\bigr)(q)
+-\bigl(\mu_{\le U}*\Lambda_{\le U}*\mathbf 1\bigr)(q)
++\bigl(\mu_{>U}*\Lambda_{>U}*\mathbf 1\bigr)(q).
+\]
+\end{lemma}
+
+\begin{proof}
+Expand the last convolution using
+$\mu_{>U}=\mu-\mu_{\le U}$ and $\Lambda_{>U}=\Lambda-\Lambda_{\le U}$.
+Convolution is commutative and bilinear, so
+\begin{align*}
+\mu_{>U}*\Lambda_{>U}*\mathbf 1
+&=\mu*\Lambda*\mathbf 1-\mu*\Lambda_{\le U}*\mathbf 1
+-\mu_{\le U}*\Lambda*\mathbf 1+\mu_{\le U}*\Lambda_{\le U}*\mathbf 1\\
+&=\mu*\log-\Lambda_{\le U}*(\mu*\mathbf 1)
+-\mu_{\le U}*\log+\mu_{\le U}*\Lambda_{\le U}*\mathbf 1\\
+&=\Lambda-\Lambda_{\le U}-\mu_{\le U}*\log
++\mu_{\le U}*\Lambda_{\le U}*\mathbf 1 ,
+\end{align*}
+where the second line used $\Lambda*\mathbf 1=\log$ twice and the third
+used $\mu*\mathbf 1=\delta$ and $\mu*\log=\Lambda$.  Rearranging,
+\[
+\Lambda=\mu_{\le U}*\log-\mu_{\le U}*\Lambda_{\le U}*\mathbf 1
++\mu_{>U}*\Lambda_{>U}*\mathbf 1+\Lambda_{\le U},
+\]
+an identity of arithmetic functions.  The final term vanishes at every
+$q>U$.
+\end{proof}
+
+\subsection*{A.2\quad The divisor moment}
+
+The Type~II proof (Lemma~\ref{lem:typeII}) consumes the following mean
+value; we prove it from Mertens' theorem only.
+
+\begin{lemma}\label{lem:tau2}
+For $x\ge2$, $\sum_{m\le x}\tau(m)^{2}\ll x(\log x)^{3}$.
+Consequently $\sum_{m\sim M}\tau(m)^{2}\ll M(\log 2M)^{3}$ for $M\ge1$.
+\end{lemma}
+
+\begin{proof}
+Define $h:=\tau^{2}*\mu$, so that $\tau^{2}=h*\mathbf 1$; as a
+convolution of multiplicative functions $h$ is multiplicative, and
+\[
+h(p^{a})=\tau(p^{a})^{2}-\tau(p^{a-1})^{2}=(a+1)^{2}-a^{2}=2a+1>0 .
+\]
+Hence $h\ge0$ and, exchanging the order of summation,
+\[
+\sum_{m\le x}\tau(m)^{2}=\sum_{d\le x}h(d)\fl{x/d}
+\le x\sum_{d\le x}\frac{h(d)}{d}
+\le x\prod_{p\le x}\Bigl(1+\sum_{a\ge1}\frac{2a+1}{p^{a}}\Bigr),
+\]
+the last step because every $d\le x$ has all its prime factors $\le x$ and
+all terms are non-negative.  For $0<x_{0}\le\tfrac12$,
+\[
+\sum_{a\ge1}(2a+1)x_{0}^{a}
+=\frac{2x_{0}}{(1-x_{0})^{2}}+\frac{x_{0}}{1-x_{0}}
+=\frac{x_{0}(3-x_{0})}{(1-x_{0})^{2}} ,
+\]
+and multiplying out,
+\[
+(1-x_{0})^{3}+x_{0}(3-x_{0})(1-x_{0})
+=(1-3x_{0}+3x_{0}^{2}-x_{0}^{3})+(3x_{0}-4x_{0}^{2}+x_{0}^{3})
+=1-x_{0}^{2}\le1 ,
+\]
+so $1+x_{0}(3-x_{0})(1-x_{0})^{-2}\le(1-x_{0})^{-3}$.  Taking
+$x_{0}=1/p\le\tfrac12$ gives
+\[
+\sum_{m\le x}\tau(m)^{2}\le x\prod_{p\le x}\Bigl(1-\frac1p\Bigr)^{-3}.
+\]
+Finally $\log\prod_{p\le x}(1-1/p)^{-1}
+=\sum_{p\le x}\bigl(1/p+O(1/p^{2})\bigr)=\log\log x+O(1)$ by Mertens'
+theorem $\sum_{p\le x}1/p=\log\log x+M+O(1/\log x)$ (elementary; the
+finite form used elsewhere in this paper is machine-verified), whence
+$\prod_{p\le x}(1-1/p)^{-3}\ll(\log x)^{3}$.  The dyadic form follows by
+$\sum_{m\sim M}\tau(m)^{2}\le\sum_{m\le 2M}\tau(m)^{2}$, the case
+$M<2$ being trivial.
+\end{proof}
+
+\subsection*{A.3\quad The three sums}
+
+For $Q<T\le2Q$ set
+\[
+S(T):=\sum_{Q<q\le T}\Lambda(q)\phi(q).
+\]
+Every $q$ occurring satisfies $q>Q\ge U^{2}\ge U$, so Lemma~\ref{lem:vid}
+applies termwise and $S(T)=\Sigma_{1}(T)-\Sigma_{2}(T)+\Sigma_{3}(T)$
+with
+\begin{align}
+\Sigma_{1}(T)&=\sum_{d\le U}\mu(d)\!\!\sum_{l:\ Q<dl\le T}\!\!
+\phi(dl)\,\log l ,\label{eq:S1}\\
+\Sigma_{2}(T)&=\sum_{m}c_{m}\!\!\sum_{l:\ Q<ml\le T}\!\!\phi(ml),
+\qquad c_{m}:=\!\!\sum_{\substack{de=m\\ d\le U,\ e\le U}}\!\!\mu(d)\Lambda(e),
+\label{eq:S2}\\
+\Sigma_{3}(T)&=\sum_{\substack{Q<ml\le T}}w(m)\,\Lambda_{>U}(l)\,\phi(ml),
+\qquad w(m):=\sum_{\substack{d\mid m,\ d>U}}\mu(d).\label{eq:S3}
+\end{align}
+Here \eqref{eq:S1} is the convolution $\mu_{\le U}*\log$ written out with
+$q=dl$ (so that the inner variable carries the weight $\log l$);
+\eqref{eq:S2} collects the two inner variables of
+$\mu_{\le U}*\Lambda_{\le U}*\mathbf 1$ into $m=de$, the third variable
+becoming $l$; and \eqref{eq:S3} writes
+$\mu_{>U}*\Lambda_{>U}*\mathbf 1$ with $m$ carrying $\mu_{>U}*\mathbf 1$
+and $l$ carrying $\Lambda_{>U}$.
+
+Three elementary properties of the coefficients:
+
+\begin{itemize}
+\item $c_{m}$ is supported on $m\le U^{2}$ and
+$|c_{m}|\le\sum_{de=m}\Lambda(e)=\log m\le2\log U\le\log Q$.
+\item $|w(m)|\le\sum_{d\mid m}1=\tau(m)$, and $w$ is supported on $m>U$:
+for $m\le U$ every divisor of $m$ is $\le U$, so
+$w(m)=\delta(m)-\sum_{d\mid m}\mu(d)=\delta(m)-\delta(m)=0$.
+\item $\Lambda_{>U}(l)$ is supported on $l>U$ and
+$0\le\Lambda_{>U}(l)\le\log l$.
+\end{itemize}
+
+\subsection*{A.4\quad Removing the smooth weight from $\Sigma_{1}$}
+
+Only $\Sigma_{1}$ carries a weight depending on the inner variable.  Fix
+$d\le U$ and put $A(u):=\sum_{Q/d<l\le u}\phi(dl)$ for
+$u\in[Q/d,T/d]$.  Partial summation (Riemann--Stieltjes, or the finite
+Abel identity, applied to $\log$ which is $C^{1}$) gives
+\[
+\sum_{Q/d<l\le T/d}\phi(dl)\log l
+=A(T/d)\log(T/d)-\int_{Q/d}^{T/d}A(u)\,\frac{du}{u},
+\]
+whence, since $\int_{Q/d}^{T/d}du/u=\log(T/Q)\le\log2$,
+\begin{equation}\label{eq:remove-log}
+\Bigl|\sum_{Q/d<l\le T/d}\phi(dl)\log l\Bigr|
+\le\bigl(\log(2Q)+\log 2\bigr)\sup_{u}|A(u)|
+\le2\log(2Q)\max_{I}\Bigl|\sum_{l\in I}\phi(dl)\Bigr| ,
+\end{equation}
+the maximum being over subintervals $I\subseteq(Q/d,T/d]$.  (Only
+$A$ itself, not $|A|$, occurs, so no divisor-type loss is incurred.)
+
+It is this appearance of a maximum over subintervals --- forced by the
+removal of $\log l$, and independently by the cutoff at $T$ --- that
+makes the Type~I object below an inner sum over an \emph{interval} rather
+than over a full dyadic block; the van der Corput estimates of
+\S\ref{sec:typeI} are stated on an arbitrary $[a,b]$ and are insensitive
+to this.
+
+\subsection*{A.5\quad Dyadic splitting}
+
+Define, for $M\ge1$ and $Q<T\le 2Q$,
+\[
+\mathcal T_{M}(T):=\sum_{m\sim M}\ \max_{I\subseteq(Q/m,\,T/m]}
+\Bigl|\sum_{l\in I}\phi(ml)\Bigr| ,
+\]
+\[
+\mathcal B_{M}(T):=\max_{I}\Bigl|\sum_{m\sim M}\sum_{l\in I_{m}}
+a_{m}b_{l}\,\phi(ml)\Bigr| ,
+\]
+where in $\mathcal B_{M}$ the coefficients satisfy $|a_{m}|\le\tau(m)$,
+$|b_{l}|\le\log l$, and the inner range is $I_{m}=\{l: Q<ml\le T'\}$ for
+a single $T'\in(Q,T]$ (i.e.\ the constraint is a cut on the product
+$ml$, uniform in $m$).
+
+\emph{$\Sigma_{1}$.}  Split $d\le U$ into the $\le\log_{2}U+1$ dyadic
+ranges $d\sim D$, $D=U2^{-i}$, $0\le i\le\log_{2}U$.  By $|\mu|\le1$ and
+\eqref{eq:remove-log},
+\begin{equation}\label{eq:S1bd}
+|\Sigma_{1}(T)|\le2\log(2Q)\,(\log_{2}U+1)\max_{D\le U}\mathcal T_{D}(T)
+\ll(\log Q)^{2}\max_{M\le U^{2}}\mathcal T_{M}(T).
+\end{equation}
+
+\emph{$\Sigma_{2}$.}  Split $m\le U^{2}$ dyadically into
+$\le\log_{2}(U^{2})+1$ ranges and use $|c_{m}|\le\log Q$:
+\begin{equation}\label{eq:S2bd}
+|\Sigma_{2}(T)|\le\log Q\,\bigl(2\log_{2}U+1\bigr)
+\max_{M\le U^{2}}\mathcal T_{M}(T)
+\ll(\log Q)^{2}\max_{M\le U^{2}}\mathcal T_{M}(T).
+\end{equation}
+
+\emph{$\Sigma_{3}$.}  Here $m>U$ and $l>U$; since $ml\le T\le 2Q$ we get
+$m<2Q/U$.  Cover $(U,2Q/U]$ by the blocks $(M_{i},2M_{i}]$ with
+$M_{i}=(Q/U)2^{-i}$, $0\le i\le I:=\lceil\log_{2}(Q/U^{2})\rceil$; the
+top block reaches $2Q/U$ and the bottom one has
+$M_{I}\in[U/2,U]$, so all $M_{i}$ lie in $[U/2,\,Q/U]$ and
+$I+1\ll\log Q$.  With $a_{m}:=w(m)$ ($|a_{m}|\le\tau(m)$) and
+$b_{l}:=\Lambda_{>U}(l)$ ($|b_{l}|\le\log l$),
+\begin{equation}\label{eq:S3bd}
+|\Sigma_{3}(T)|\ll\log Q\max_{U/2\le M\le Q/U}\mathcal B_{M}(T).
+\end{equation}
+
+\subsection*{A.6\quad Prime powers and passage to primes}
+
+Let $W(T):=\sum_{Q<p\le T}\phi(p)\log p$.  Then
+$S(T)-W(T)=\sum_{Q<p^{i}\le T,\,i\ge2}\phi(p^{i})\log p$, and
+\[
+\Bigl|\sum_{\substack{Q<p^{i}\le2Q\\ i\ge2}}\phi(p^{i})\log p\Bigr|
+\le\sum_{2\le i\le\log_{2}(2Q)}\ \sum_{p\le(2Q)^{1/i}}\log p
+\ll Q^{1/2}+Q^{1/3}\log Q\ll Q^{1/2}\log Q ,
+\]
+using only Chebyshev's bound $\sum_{p\le y}\log p\ll y$ (elementary) and
+the fact that there are $\ll\log Q$ values of $i$.  Hence
+\begin{equation}\label{eq:pp}
+\sup_{Q<T\le2Q}|W(T)|\le\sup_{Q<T\le2Q}|S(T)|+O\bigl(Q^{1/2}\log Q\bigr).
+\end{equation}
+Removing the weight $\log p$ by partial summation,
+\[
+\sum_{p\sim Q}\phi(p)=\frac{W(2Q)}{\log 2Q}
++\int_{Q}^{2Q}\frac{W(T)}{T\log^{2}T}\,dT ,
+\]
+so that, since $\int_{Q}^{2Q}dT/(T\log^{2}T)\le\log2/\log^{2}Q$,
+\begin{equation}\label{eq:toprimes}
+\Bigl|\sum_{p\sim Q}\phi(p)\Bigr|
+\le\frac{2}{\log Q}\sup_{Q<T\le2Q}|W(T)| .
+\end{equation}
+
+\subsection*{A.7\quad Conclusion}
+
+\begin{lemma}[Vaughan, appendix form]\label{lem:vaughanA}
+Let $U\ge2$, $Q\ge U^{2}$, and $\phi:(Q,2Q]\to\mathbb C$ with
+$|\phi|\le1$.  Then
+\[
+\Bigl|\sum_{p\sim Q}\phi(p)\Bigr|
+\ \ll\ \frac{Q}{U}
++(\log Q)^{2}\max_{M\le U^{2}}\ \sup_{Q<T\le2Q}\mathcal T_{M}(T)
++(\log Q)^{2}\max_{U/2\le M\le Q/U}\ \sup_{Q<T\le2Q}\mathcal B_{M}(T),
+\]
+with $\mathcal T_{M},\mathcal B_{M}$ as in \S A.5 and coefficient bounds
+$|a_{m}|\le\tau(m)$, $|b_{l}|\le\log l$.
+\end{lemma}
+
+\begin{proof}
+Combine \eqref{eq:S1bd}, \eqref{eq:S2bd}, \eqref{eq:S3bd} into
+$|S(T)|\ll(\log Q)^{2}\max_{M\le U^{2}}\mathcal T_{M}(T)
++(\log Q)\max_{M}\mathcal B_{M}(T)$, insert into \eqref{eq:pp} and
+\eqref{eq:toprimes}, and divide by $\log Q$ (which only helps).  The
+prime-power term contributes $O(Q^{1/2})$, and $Q^{1/2}\le Q/U$ because
+$U\le Q^{1/2}$.
+\end{proof}
+
+\begin{remark}[Amendments to Lemma~\ref{lem:vaughan}]\label{rem:vaughanamend}
+Two features of Lemma~\ref{lem:vaughanA} differ from the statement of
+Lemma~\ref{lem:vaughan} in the main text, and
+Lemma~\ref{lem:vaughan} should be read as amended.
+
+\emph{(i) The Type~I term carries the absolute value inside the
+$m$-sum.}  Lemma~\ref{lem:vaughan} displays
+$\bigl|\sum_{m\sim M}\sum_{l}\phi(ml)\bigr|$; the computation above
+delivers $\sum_{m\sim M}\bigl|\sum_{l}\phi(ml)\bigr|$.  The two differ
+essentially: the coefficients $\mu(d)$ in \eqref{eq:S1} and $c_{m}$ in
+\eqref{eq:S2} depend on $m$ and are not of constant sign, so they cannot
+be removed from inside the $m$-sum by partial summation, only pulled out
+in absolute value at the cost of the factor $\log Q$ already present.
+The amended form is the one the paper uses: item~(I) of
+\S\ref{sec:equi} already writes the Type~I family as
+$\sum_{m\sim M}\bigl|\sum_{l\sim L}e(\cdot)\bigr|$.
+
+\emph{(ii) Ranges.}  The Type~I range $M\le U^{2}$ is exactly as stated.
+The bilinear range is $U/2\le M\le Q/U$ rather than $U\le M\le Q/U$: with
+$m\sim M$ meaning $M<m\le2M$, a dyadic ladder inside $(U,2Q/U]$ cannot
+have all its base points $\ge U$ and simultaneously reach $2Q/U$.  The
+half is harmless --- Lemma~\ref{lem:typeII} is applied in
+Appendix~\ref{app:regimes} only for $M$ exceeding a fixed power of
+$\log Q$.
+
+\emph{(iii) Inner range.}  In both terms the inner variable runs over a
+subinterval, not a full dyadic block; see \S A.4.
+\end{remark}
+
+\section{Regime verification}\label{app:regimes}
+
+This appendix is the audit pass announced in \S\ref{sec:schedule}.  It
+does four things: it sharpens Lemma~\ref{lem:vdcr} to the form the
+application actually needs and tracks the constant in $r$ (\S B.1--B.2);
+it replaces the dyadic block by the block scale on which the
+implied constants are absolute (\S B.3); it re-derives the Type~I and
+Type~II inputs on that scale, with the choice of $r$ made adaptively
+(\S B.4--B.5); and it enumerates every $(F,Q,i,k)$ regime, verifying
+coverage (\S B.6--B.8).  Ten statements of the main text required
+amendment; each is flagged \textbf{[A$n$]} at the point where it arises
+and collected in \S B.9.
+
+\begin{remark}[Reading this appendix against the amended main text]
+\label{rem:bridge}
+The notation of the audit is retained verbatim, because the flags
+\textbf{[A1]}--\textbf{[A10]} are the record of what had to change.  Two
+conventions must be aligned when reading it beside
+\S\S\ref{sec:equi}--\ref{sec:schedule} as they now stand.
+
+\emph{Level index.}  Here levels are indexed by $i$ with exponent
+$j_{i}=k-i+1$, so $i=1$ is the top level $j=k$.  The amended
+Proposition~\ref{prop:equi} indexes the same levels by $i'$ with exponent
+$k-i'$, that is $i'=i-1$, and runs $i'=1,\dots,J(k)$.  Its level set is
+therefore $i=2,\dots,J(k)+1$ in the notation of this appendix --- exactly
+the route of \S B.6(d).  Accordingly \eqref{eq:Jk} sets
+$J(k)=\min\{J,k-1\}$, which is what makes $j_{i}\ge1$ hold on that level
+set, and \eqref{eq:Frange} and \eqref{eq:rmax} are stated for
+$i_{0}\le J+1$: $F\le HQ^{J+1}$ and $r_{\max}=3J+5$.
+
+\emph{What that excludes.}  Every case with $i_{0}=1$ --- rows 2 and 3 of
+the table in \S B.7, the threshold $T_{0}$ of \eqref{eq:T0}, and all of
+\S B.6(a)--(c) --- then lies outside the main line, and serves only the
+corroborative top-level analysis of \S\ref{sec:density}.  Row 1 alone
+carries the theorem.
+
+\emph{Flag status.}  All ten flags are discharged in the main text as it
+now stands: \textbf{[A1]} by the schedule in
+Proposition~\ref{prop:equi}; \textbf{[A2]} by the amplitude convention of
+\S\ref{sec:equi}; \textbf{[A3]} by Lemmas~\ref{lem:vdcr}
+and~\ref{lem:typeI}; \textbf{[A4]} by the fine-block partition of
+\S\ref{sec:equi}; \textbf{[A5]} by the Pochhammer factor in
+Lemma~\ref{lem:typeI}; \textbf{[A6]} by Lemma~\ref{lem:typeII} and the
+adaptive order of \S\ref{sec:schedule}; \textbf{[A7]} by the top-level
+exclusion; \textbf{[A8]}, \textbf{[A8$'$]} and \textbf{[A9]} by
+\S\ref{sec:schedule}; \textbf{[A10]} by the input list of
+\S\ref{sec:equi}.  Two further items raised by the re-indexing ---
+the amplitude range with its knock-on to $r_{\max}$, and the exponent
+against which the target of \eqref{eq:weyl} is measured --- are recorded
+as \textbf{[B1]} and \textbf{[B2]} at the end of \S B.9 and are likewise
+resolved in the text.
+\end{remark}
+
+\subsection*{B.0\quad Notation and the parameters}
+
+Throughout, $n$ is large, and
+\[
+\varepsilon_n=(\log\log n)^{-1/3},\quad
+J=\bigl\lceil(\log\log n)^{1/3}\bigr\rceil,\quad
+K=(\log n)^{1-\varepsilon_n},\quad
+H=(\log n)^{2},
+\]
+as in \S\ref{sec:schedule}.  Fix a band index $k\le K$ and put
+\[
+P:=n^{1/k},\qquad P_{0}:=n^{1/(k+1)},\qquad
+\text{band}=(P_{0},P].
+\]
+For $p$ in the band write $t=t(p):=n/p^{k}$; then $t$ decreases from
+$P_{0}$ (at $p=P_{0}$, since $n/P_{0}^{k}=P_{0}^{k+1-k}=P_{0}$) to $1$
+(at $p=P$), so
+\begin{equation}\label{eq:trange}
+1\le t\le P_{0}\le Q\qquad\text{for every }p\text{ in the band.}
+\end{equation}
+Levels are indexed by $i$ with exponent $j_{i}:=k-i+1$; the level-$i$
+coordinate is $\{n/p^{j_{i}}\}$.  We set
+\begin{equation}\label{eq:Jk}
+J(k):=\min\{J,k-1\},
+\end{equation}
+so that $j_{i}\ge1$ for every $i\le J(k)+1$ --- the level set
+$i=2,\dots,J(k)+1$ being the operative one, by
+Remark~\ref{rem:bridge}.  \textbf{[A1]}
+Proposition~\ref{prop:equi} and \S\ref{sec:schedule} must be read with
+$J(k)$ in place of $J$: for $k<J$ the band has only $k$ levels and the
+coordinate $\{n/p^{k-i+1}\}$ is undefined for $i>k$.  (This costs
+nothing: in \S\ref{sec:assembly} the terms $k<J$ contribute
+$\sum_{k<J}2^{-k}/k=O(1)$.)  The hypothesis ``$J\le c\log k$'' of
+Proposition~\ref{prop:equi} is likewise inconsistent with the schedule
+$J=\lceil(\log\log n)^{1/3}\rceil$ of \S\ref{sec:schedule} and with
+$J(k)=\fl{c\log k}$ of the remark following
+Remark~\ref{rem:noshortcut}; see \textbf{[A6]}.
+
+Finally set
+\begin{equation}\label{eq:rmax}
+r_{\max}:=3J+5,\qquad \varrho:=k+r_{\max}=k+3J+5,\qquad
+\rho:=1+\frac1\varrho .
+\end{equation}
+
+For a frequency vector
+$\mathbf h=(h_{1},\dots,h_{J(k)+1})\in\mathbb Z^{J(k)+1}$
+with $0<\|\mathbf h\|_{\infty}\le H$ the phase is
+\begin{equation}\label{eq:phase}
+\Psi_{\mathbf h}(x)=\sum_{i\le J(k)+1}h_{i}\,n\,x^{-j_{i}},
+\end{equation}
+and $S(\mathbf h)=\sum_{p\in\text{band}}e(\Psi_{\mathbf h}(p))$ is the sum
+of \eqref{eq:weyl}.  We write
+\begin{equation}\label{eq:i0}
+i_{0}=i_{0}(\mathbf h):=\max\{i:h_{i}\ne0\},\qquad
+j:=j_{i_{0}}=k-i_{0}+1,\qquad
+F:=|h_{i_{0}}|\,n\,Q^{-j},
+\end{equation}
+$Q$ being the left endpoint of the block under consideration.  By
+\eqref{eq:trange},
+\begin{equation}\label{eq:Frange}
+F=|h_{i_{0}}|\,t\,Q^{\,i_{0}-1},\qquad\text{so}\qquad
+1\le F\le H\,Q^{\,J+1},\qquad\text{and}\qquad
+F\ge Q\ \text{ whenever }i_{0}\ge2 .
+\end{equation}
+\textbf{[A2]}  \S\ref{sec:schedule} speaks of ``the amplitude
+$F_{i}=hn/Q^{k-i+1}$'' as though each level contributed its own regime.
+The phase \eqref{eq:phase} is a \emph{sum} of monomials, and what governs
+every derivative test is the single amplitude $F$ of the \emph{highest}
+non-vanishing level, \eqref{eq:i0}; Lemma~\ref{lem:dominance} below shows
+that the lower levels are dominated by a factor $Q^{-1}e^{r}$ and never
+interfere.  Read this way the sentence is correct, and the range
+$F\in[h,hQ^{i}]$ displayed there is \eqref{eq:Frange}.
+
+\subsection*{B.1\quad The $r$-th derivative test with a constant uniform in $r$}
+
+Lemma~\ref{lem:vdcr} as displayed carries $N^{r-2}$ inside the first
+term.  That statement is true --- it is implied by the one below, since
+$N\ge1$ --- but it is too weak to support the ``in particular'' clause of
+Lemma~\ref{lem:typeI}: with $\lambda N^{r-2}=Fj^{r}/L^{2}$ and
+$F\le L^{r-\eta}$ the first term is $\ge L$ as soon as $r\ge3$, so no
+saving results.  \textbf{[A3]}  The correct first term is
+$N\lambda^{1/(2^{r}-2)}$, and Lemma~\ref{lem:vdcr} should be restated
+as follows.
+
+\begin{lemma}[$r$-th derivative test, sharp form]\label{lem:vdcrB}
+Let $r\ge2$, let $\mathcal I$ be an interval containing $N\ge1$ integers,
+and let $f\in C^{r}(\mathcal I)$ satisfy
+$\lambda\le|f^{(r)}|\le A\lambda$ on $\mathcal I$ with $\lambda>0$,
+$A\ge1$.  Then
+\[
+\Bigl|\sum_{l\in\mathcal I}e(f(l))\Bigr|
+\le C_{0}\,A^{2^{2-r}}\Bigl(N\lambda^{1/(2^{r}-2)}
++N^{1-2^{2-r}}\lambda^{-1/(2^{r}-2)}\Bigr),
+\]
+where $C_{0}$ is an absolute constant --- in particular independent
+of $r$.
+\end{lemma}
+
+\begin{proof}
+Write $\mu_{r}=1/(2^{r}-2)$, $\beta_{r}=2^{2-r}$, and
+$B_{r}(N,\lambda):=N\lambda^{\mu_{r}}+N^{1-\beta_{r}}\lambda^{-\mu_{r}}$.
+Since $\lambda\le|f^{(r)}|$ and $f^{(r)}$ is continuous, $f^{(r)}$ has
+constant sign on $\mathcal I$.
+
+If $N\le2$ the claim is trivial: the left side is $\le2$, while
+$B_{r}\ge2\sqrt{N\cdot N^{1-\beta_{r}}}=2N^{1-\beta_{r}/2}\ge2$ by
+AM--GM, so $C_{0}\ge1$ suffices.  Assume $N\ge2$.
+
+\emph{Case $r=2$.}  This is Lemma~\ref{lem:vdc2} with $c=A$; the proof
+given there yields $|S|\le c_{2}A(N\lambda^{1/2}+\lambda^{-1/2})$ with
+$c_{2}$ absolute, and $A^{2^{2-2}}=A$, $\mu_{2}=1/2$, $\beta_{2}=1$.
+
+\emph{Case $r\ge3$, granting the statement for $r-1$.}  Two degenerate
+ranges first.  If $\lambda\ge1$ then $|S|\le N\le N\lambda^{\mu_{r}}$.  If
+$\lambda^{-2\mu_{r}}\ge N$, then
+$\lambda\le N^{-1/(2\mu_{r})}=N^{-(2^{r-1}-1)}\le N^{-(4-2^{3-r})}
+=N^{-\beta_{r}/\mu_{r}}$
+(the middle inequality because $2^{r-1}-1\ge4-2^{3-r}$ for $r\ge3$, with
+equality at $r=3$), whence
+$N^{1-\beta_{r}}\lambda^{-\mu_{r}}\ge N$ and again $|S|\le N$ suffices.
+
+So assume $1\le\lambda^{-2\mu_{r}}<N$ and set
+$\mathcal H:=\lceil\lambda^{-2\mu_{r}}\rceil$, so $1\le\mathcal H\le N$ and
+$\lambda^{-2\mu_{r}}\le\mathcal H\le2\lambda^{-2\mu_{r}}$.  Apply
+Lemma~\ref{lem:weyl} with $H=\mathcal H$.  The term $h=0$ contributes
+$(2N/\mathcal H)\cdot N$.  For $1\le h<\mathcal H$ put
+$f_{h}(x)=f(x+h)-f(x)$; by the mean value theorem
+$f_{h}^{(r-1)}(x)=h\,f^{(r)}(\xi)$ for some $\xi\in(x,x+h)$, so
+$h\lambda\le|f_{h}^{(r-1)}|\le Ah\lambda$.  The inductive hypothesis
+(with $\theta:=\mu_{r-1}$, $\beta_{r-1}=2\beta_{r}$) gives
+\[
+\Bigl|\sum_{l}e(f_{h}(l))\Bigr|
+\le C_{0}A^{2\beta_{r}}\Bigl(N(h\lambda)^{\theta}
++N^{1-2\beta_{r}}(h\lambda)^{-\theta}\Bigr).
+\]
+Since $r\ge3$ we have $\theta=1/(2^{r-1}-2)\le\tfrac12$, so
+$\sum_{1\le h<\mathcal H}h^{\theta}\le2\mathcal H^{1+\theta}$ and
+$\sum_{1\le h<\mathcal H}h^{-\theta}\le2\mathcal H^{1-\theta}$.  Therefore
+\[
+|S|^{2}\le\frac{2N^{2}}{\mathcal H}
++4C_{0}A^{2\beta_{r}}\Bigl(N^{2}(\lambda\mathcal H)^{\theta}
++N^{2-2\beta_{r}}(\lambda\mathcal H)^{-\theta}\Bigr).
+\]
+Now the arithmetic identity that makes the choice of $\mathcal H$ exact:
+\[
+\theta\,(1-2\mu_{r})
+=\frac{1}{2^{r-1}-2}\cdot\frac{2^{r}-4}{2^{r}-2}
+=\frac{1}{2^{r-1}-2}\cdot\frac{2(2^{r-1}-2)}{2^{r}-2}
+=\frac{2}{2^{r}-2}=2\mu_{r}.
+\]
+With $\lambda\mathcal H\in[\lambda^{1-2\mu_{r}},2\lambda^{1-2\mu_{r}}]$
+this gives $(\lambda\mathcal H)^{\theta}\le2\lambda^{2\mu_{r}}$ and
+$(\lambda\mathcal H)^{-\theta}\le\lambda^{-2\mu_{r}}$, while
+$2N^{2}/\mathcal H\le2N^{2}\lambda^{2\mu_{r}}$.  Since
+$N^{2-2\beta_{r}}=(N^{1-\beta_{r}})^{2}$,
+\[
+|S|^{2}\le(2+12C_{0}A^{2\beta_{r}})
+\Bigl(N^{2}\lambda^{2\mu_{r}}+\bigl(N^{1-\beta_{r}}\bigr)^{2}
+\lambda^{-2\mu_{r}}\Bigr)
+\le\bigl(2+12C_{0}\bigr)A^{2\beta_{r}}\,B_{r}(N,\lambda)^{2},
+\]
+using $A\ge1$ and $u^{2}+v^{2}\le(u+v)^{2}$.  Taking square roots,
+$|S|\le(2+12C_{0})^{1/2}A^{\beta_{r}}B_{r}(N,\lambda)$.  Thus the
+constant obeys the recursion $C_{r}\le(2+12C_{r-1})^{1/2}$, whose map
+$u\mapsto(2+12u)^{1/2}$ is increasing with unique fixed point
+$u^{*}=6+\sqrt{38}<13$; hence $C_{r}\le\max(c_{2},13)=:C_{0}$ for every
+$r$.
+\end{proof}
+
+\begin{remark}[Trap check 1: the constant in $r$]\label{rem:trap1}
+The concern that the $r$-th derivative test carries a factor
+$2^{O(r)}$, with $r$ growing in $n$, does not materialise: the induction
+step \emph{squares} the sum before applying the inductive hypothesis and
+then takes a square root, so the constants satisfy
+$C_{r}=(2+12C_{r-1})^{1/2}$ and converge rather than compound.  The
+constant is absolute.
+
+What does compound is the \emph{ratio} $A$, through the factor
+$A^{2^{2-r}}$.  This factor is harmless only if $A=O(1)$, and on a
+\emph{dyadic} block $A$ is not $O(1)$: for the phase $x\mapsto n x^{-j}$
+on $x\sim Q$ one has
+$|f^{(r)}(2Q)|/|f^{(r)}(Q)|=2^{-(j+r)}$, so $A=2^{\,j+r}$ with $j$ as
+large as $k\le K=(\log n)^{1-\varepsilon_{n}}$.  Then
+$A^{2^{2-r}}=\exp\bigl(4(j+r)2^{-r}\log2\bigr)$, which for
+$r\le r_{\max}=3J+5$ and $j\asymp K$ is
+$\exp\bigl(\Omega\bigl(K\,2^{-3J}\bigr)\bigr)
+=\exp\bigl(\Omega\bigl((\log n)^{1-\varepsilon_{n}}
+e^{-O((\log\log n)^{1/3})}\bigr)\bigr)$
+--- larger than any power of $\log n$, and larger than the saving.  This
+is the real content of the trap, and it is why \S B.3 replaces the dyadic
+block by the block of ratio $\rho=1+1/\varrho$.  \textbf{[A4]}
+
+For completeness we also record the verification demanded of the
+$2^{O(r)}$ form, which holds a fortiori: with $r\le r_{\max}=3J+5$,
+$2^{O(r)}=\exp\bigl(O((\log\log n)^{1/3})\bigr)$, whereas the saving
+factor established in \S B.7 is
+$\exp\bigl(c\,(\log n)^{\varepsilon_{n}}2^{-3J-6}\bigr)
+=\exp\bigl(\exp\bigl((\log\log n)^{2/3}(1+o(1))\bigr)\bigr)$; the
+logarithm of the saving already exceeds the logarithm of $2^{O(r)}$ by
+an exponential factor.
+\end{remark}
+
+\subsection*{B.2\quad Band phases and dominance}
+
+For $r\ge1$ write $(j)_{r}:=j(j+1)\cdots(j+r-1)$, so that
+$\frac{d^{r}}{dx^{r}}x^{-j}=(-1)^{r}(j)_{r}x^{-j-r}$.  Note $(j)_{r}$,
+not $j^{r}$, is the exact factor; the two agree only up to
+$e^{O(r^{2}/j)}$, and for $j=1$ one has $(1)_{r}=r!$.  \textbf{[A5]}
+Lemma~\ref{lem:typeI} writes $g^{(r)}(l)\asymp_{j,r}Fj^{r}/L^{r}$ and
+then carries $j^{r}$ through the displayed bound; the correct factor is
+$(j)_{r}$.  Since Lemma~\ref{lem:typeI} declares its implied constant to
+depend on $j$ and $r$ the statement is not false, but $j$ and $r$ both
+grow with $n$ here, so the dependence must be made explicit; \S B.4 does
+this.
+
+\begin{lemma}[Dominance]\label{lem:dominance}
+Let $\mathbf h$, $i_{0}$, $j$, $F$ be as in \eqref{eq:i0}, let $2\le r\le
+r_{\max}$, and let $\mathcal Q=(Q,\rho Q]$ with $Q\ge8e\,H\,e^{r_{\max}}$.
+Then for all $x\in\mathcal Q$,
+\[
+\frac{3}{4e}\,\frac{F\,(j)_{r}}{Q^{r}}
+\ \le\ \bigl|\Psi_{\mathbf h}^{(r)}(x)\bigr|
+\ \le\ \frac{5}{4}\,\frac{F\,(j)_{r}}{Q^{r}} .
+\]
+In particular $\Psi_{\mathbf h}^{(r)}$ has constant sign on $\mathcal Q$ and
+$\lambda\le|\Psi_{\mathbf h}^{(r)}|\le A\lambda$ there with
+$\lambda:=\frac{3}{4e}F(j)_{r}Q^{-r}$ and $A\le\frac{5e}{3}<5$.
+\end{lemma}
+
+\begin{proof}
+By \eqref{eq:phase},
+$\Psi_{\mathbf h}^{(r)}(x)=(-1)^{r}\sum_{i\le i_{0}}h_{i}n(j_{i})_{r}
+x^{-j_{i}-r}$.  Write $x^{-j_{i}-r}=Q^{-j_{i}-r}\theta_{i}(x)$ with
+$\theta_{i}(x)=(x/Q)^{-j_{i}-r}$.  Since $1\le x/Q\le\rho$ and
+$j_{i}+r\le k+r_{\max}=\varrho$,
+\[
+\rho^{-\varrho}=\Bigl(1+\tfrac1\varrho\Bigr)^{-\varrho}\ge e^{-1}
+\quad\Longrightarrow\quad \theta_{i}(x)\in[e^{-1},1].
+\]
+Put $G_{i}:=|h_{i}|\,n\,(j_{i})_{r}Q^{-j_{i}}$, so
+$G_{i_{0}}=F(j)_{r}$.  For $i<i_{0}$ we have $j_{i}>j$ and
+\[
+\frac{(j_{i})_{r}}{(j)_{r}}=\prod_{s=0}^{r-1}\frac{j_{i}+s}{j+s}
+\le\Bigl(\frac{j_{i}}{j}\Bigr)^{r}
+=\Bigl(1+\frac{i_{0}-i}{j}\Bigr)^{r}\le e^{\,r(i_{0}-i)/j}
+\le e^{\,r(i_{0}-i)},
+\]
+using that $s\mapsto(a+s)/(b+s)$ decreases for $a\ge b>0$.  Also
+$|h_{i}|n Q^{-j_{i}}=|h_{i}|\,t\,Q^{i-1}\le H\,t\,Q^{i-1}$ and
+$|h_{i_{0}}|nQ^{-j}=|h_{i_{0}}|tQ^{i_{0}-1}\ge tQ^{i_{0}-1}$, so
+\[
+\sum_{i<i_{0}}\frac{G_{i}}{G_{i_{0}}}
+\le H\sum_{s\ge1}\Bigl(\frac{e^{r}}{Q}\Bigr)^{s}
+\le\frac{2He^{r}}{Q}\le\frac{1}{4e},
+\]
+the last step by the hypothesis $Q\ge8eHe^{r_{\max}}$ (which also gives
+$e^{r}\le Q/2$, justifying the geometric sum).  Consequently
+\[
+\bigl|\Psi^{(r)}_{\mathbf h}(x)\bigr|Q^{r}
+\ \ge\ e^{-1}G_{i_{0}}-\sum_{i<i_{0}}G_{i}
+\ \ge\ \Bigl(e^{-1}-\tfrac{1}{4e}\Bigr)G_{i_{0}}
+=\tfrac{3}{4e}F(j)_{r},
+\]
+and $\le(1+\tfrac{1}{4e})G_{i_{0}}\le\tfrac54F(j)_{r}$.
+\end{proof}
+
+The hypothesis $Q\ge8eHe^{r_{\max}}$ is satisfied for every block of every
+band with $k\le K$: $\log\bigl(8eHe^{r_{\max}}\bigr)
+=r_{\max}+2\log\log n+O(1)=O(\log\log n)$, whereas
+\begin{equation}\label{eq:logQ}
+\log Q\ \ge\ \log P_{0}=\frac{\log n}{k+1}\ \ge\
+\frac{\log n}{(\log n)^{1-\varepsilon_{n}}+1}\ \ge\
+\tfrac12(\log n)^{\varepsilon_{n}}
+=\tfrac12\exp\bigl((\log\log n)^{2/3}\bigr).
+\end{equation}
+
+\subsection*{B.3\quad Fine blocks}
+
+\begin{definition}
+A \emph{fine block} of the band is an interval $\mathcal Q=(Q,\rho Q]$
+contained in $(P_{0},P]$, with $\rho=1+1/\varrho$ as in \eqref{eq:rmax}.
+\end{definition}
+
+The band is covered by
+\[
+\mathcal N_{\mathrm{bl}}
+=\Bigl\lceil\frac{\log(P/P_{0})}{\log\rho}\Bigr\rceil
+\ \le\ 1+2\varrho\,\frac{\log n}{k(k+1)}
+\]
+fine blocks (using $\log\rho\ge\frac{1}{2\varrho}$), and every fine block
+contains $\asymp Q/\varrho$ integers.  All estimates below are proved for
+one fine block and are \emph{proportional to the block length}, so
+summing over blocks reproduces the band with no loss:
+if $|S_{\mathcal Q}(\mathbf h)|\le|\mathcal Q|\,\Xi$ for every fine block
+with a saving factor $\Xi$ independent of the block, then
+\begin{equation}\label{eq:blocksum}
+|S(\mathbf h)|\le\sum_{\mathcal Q}|\mathcal Q|\,\Xi\le P\,\Xi .
+\end{equation}
+Since $P\le\pi(P)\log P$, a saving
+$\Xi\ll(\log n)^{-B-1}$ gives
+$|S(\mathbf h)|\ll\pi(P)\log P\,(\log n)^{-B-1}\ll\pi(P)(\log n)^{-B}$,
+which is \eqref{eq:weyl}.  The saving is measured against $\log n$ and
+not $\log Q$ or $\log P$; \S B.8 supplies it in that form, and \S B.9
+shows why the weaker $\log P$-form would not close the argument
+(\textbf{[B2]}).
+
+\subsection*{B.4\quad Type I on a fine block: the adaptive choice of $r$}
+
+\begin{lemma}[Type I, effective form]\label{lem:typeIB}
+Let $\mathcal Q=(Q,\rho Q]$ be a fine block, $m\ge1$, and let
+$\mathcal L$ be an interval of $l$ with $ml\in\mathcal Q$, containing
+$N\ge2$ integers; put $L:=Q/m$.  Let $\mathbf h$, $j$, $F$ be as in
+\eqref{eq:i0} and let $g(l):=\Psi_{\mathbf h}(ml)$.  Put
+\[
+x:=\frac{\log F}{\log N},\qquad
+r:=\max\bigl(2,\lceil x\rceil+1\bigr),\qquad
+\varsigma:=\frac{r\log\varrho+8r}{\log N}.
+\]
+Assume $2\le r\le r_{\max}$ and $\varsigma\le\min\bigl(\tfrac1{16},x/4\bigr)$
+--- the latter holds as soon as $F\ge e^{64}\varrho^{8}$.  Then
+\[
+\Bigl|\sum_{l\in\mathcal L}e(g(l))\Bigr|\ \ll\ N^{\,1-\eta'},
+\qquad
+\eta':=
+\begin{cases}
+x/4, & r=2,\\[4pt]
+\dfrac{1}{2(2^{r}-2)}\ \ge\ 2^{-r_{\max}-1}, & r\ge3,
+\end{cases}
+\]
+with an absolute implied constant.  For $r=2$ the conclusion reads
+\[
+\Bigl|\sum_{l\in\mathcal L}e(g(l))\Bigr|\ \ll\ N\,F^{-1/4}:
+\]
+the saving is a power of the amplitude alone, independent of $N$.  This
+is the point that determines where the nearly stationary regime really
+begins; see \S B.6.
+\end{lemma}
+
+\begin{proof}
+Since $ml\in\mathcal Q$ and $m$ is fixed, $\mathcal L\subseteq(L,\rho L]$,
+and $g(l)=\sum_{i}(h_{i}nm^{-j_{i}})l^{-j_{i}}$ is a phase of the shape
+\eqref{eq:phase} with $n$ replaced by $nm^{-j_{i}}$ at level $i$ and $Q$
+replaced by $L$.  The amplitude of the top level is unchanged:
+$|h_{i_{0}}|nm^{-j}L^{-j}=|h_{i_{0}}|n(mL)^{-j}=|h_{i_{0}}|nQ^{-j}=F$;
+likewise every ratio $G_{i}/G_{i_{0}}$ in the proof of
+Lemma~\ref{lem:dominance} is unchanged, because $m^{-j_{i}}L^{-j_{i}}
+=Q^{-j_{i}}$ for every $i$.  Hence Lemma~\ref{lem:dominance} applies
+verbatim on $\mathcal L$ and gives
+\[
+\lambda\le|g^{(r)}|\le A\lambda\ \text{ on }\mathcal L,\qquad
+\lambda=\tfrac{3}{4e}F(j)_{r}L^{-r},\qquad A<5 .
+\]
+Set $\kappa:=\lambda N^{r}$.  Since $\mathcal L\subseteq(L,\rho L]$ we
+have $N\le L/\varrho+1\le2L/\varrho$ and $N\ge1$, so
+$(N/L)^{r}\in[\,L^{-r},\,(2/\varrho)^{r}]$, and since
+$1\le(j)_{r}\le(k+r)^{r}\le\varrho^{r}$,
+\[
+\kappa=\tfrac{3}{4e}F\,(j)_{r}\,(N/L)^{r}
+\quad\Longrightarrow\quad
+\bigl|\log\kappa-\log F\bigr|\le r\log\varrho+8r,
+\quad\text{i.e.}\quad
+\bigl|\log_{N}\kappa-x\bigr|\le\varsigma\le\tfrac1{16}.
+\]
+Apply Lemma~\ref{lem:vdcrB}.  With $\mu_{r}=1/(2^{r}-2)$ and
+$\eta'=\mu_{r}/2$ the two terms are $\le N^{1-\eta'}$ provided
+\begin{align}
+N\lambda^{\mu_{r}}\le N^{1-\eta'}
+&\iff \kappa\le N^{\,r-\eta'/\mu_{r}}=N^{\,r-1/2},
+\label{eq:condU}\\
+N^{1-2^{2-r}}\lambda^{-\mu_{r}}\le N^{1-\eta'}
+&\iff \kappa\ \ge\ N^{\,r-(2^{2-r}-\eta')/\mu_{r}}
+=N^{\,r-4+2^{3-r}+1/2}. \label{eq:condL}
+\end{align}
+By the displayed slack it suffices that
+$x\le r-\tfrac12-\varsigma$ and $x\ge r-\tfrac72+2^{3-r}+\varsigma$.
+
+If $r=2$ (so $x\le1$), take $\eta':=x/4$; then \eqref{eq:condU} and
+\eqref{eq:condL} read $\kappa\le N^{2-x/2}$ and $\kappa\ge N^{x/2}$, both
+implied by $|\log_{N}\kappa-x|\le\varsigma\le x/4$ together with $x\le1$.
+Here $N^{1-\eta'}=N\,N^{-x/4}=N\,F^{-1/4}$, which is the second displayed
+form.
+
+If $r\ge3$, then $r=\lceil x\rceil+1$ gives $x\le r-1$ and $x\ge r-2$.
+The upper condition needs $x\le r-\tfrac12-\varsigma$: true since
+$x\le r-1$.  The lower condition needs
+$x\ge r-\tfrac72+2^{3-r}+\varsigma$; for $r=3$ this is
+$x\ge-\tfrac12+1+\varsigma=\tfrac12+\varsigma$, and $x\ge r-2=1$; for
+$r\ge4$, $2^{3-r}\le\tfrac12$ so it is $x\ge r-3+\varsigma$, and
+$x\ge r-2$.  Both hold.  Finally $\eta'=\mu_{r}/2\ge2^{-r_{\max}-1}$ for
+$r\le r_{\max}$.
+\end{proof}
+
+\begin{remark}[The window structure]\label{rem:window}
+The mechanism is worth stating separately, since it is what the ``in
+particular'' clause of Lemma~\ref{lem:typeI} was reaching for.  For fixed
+$r$ the derivative test saves exactly on the window
+\[
+\kappa\in\bigl[N^{\,r-4+2^{3-r}+\frac12},\;N^{\,r-\frac12}\bigr],
+\]
+of width $3.5-2^{3-r}$ in the exponent.  Consecutive windows overlap
+($r$ and $r+1$ share an exponent range of length $\ge2.5$), and their
+union over $2\le r\le r_{\max}$ is
+$[N^{\eta},N^{\,r_{\max}-1/2}]$ for any fixed $\eta>0$ and $n$ large.
+\textbf{[A3, continued]}  Lemma~\ref{lem:typeI} asserts a saving on
+$L^{\eta}\le F\le L^{r-\eta}$ \emph{for a fixed $r$}; that is false for
+$r\ge5$, where the lower edge of the window is at $F\asymp L^{r-3.5}$,
+not $L^{\eta}$.  The correct statement is: $r$ must be chosen as a
+function of $F$ and $L$, namely $r=\max(2,\lceil\log F/\log L\rceil+1)$,
+and then the saving exponent is $\eta'\asymp2^{-r}$.  The paper's
+$r=J+3$ is the \emph{maximum} $r$ needed, not a fixed choice; see
+\textbf{[A6]}.
+\end{remark}
+
+\subsection*{B.5\quad Type II on a fine block: the differenced amplitude}
+
+\begin{lemma}[Trap check 2: the differenced amplitude]\label{lem:diffamp}
+Let $j\ge1$, let $\mathcal L\subseteq(L,\rho L]$ with
+$\rho=1+1/\varrho$, $\varrho\ge j$, and let $l,l'\in\mathcal L$,
+$\Delta:=l'-l\ne0$.  Then
+\[
+\bigl|l^{-j}-l'^{-j}\bigr|\ \asymp\ \frac{j\,|\Delta|}{L}\,L^{-j},
+\]
+with absolute implied constants.  If instead $l,l'$ are allowed to range
+over a full dyadic block $(L,2L]$, then
+$|l^{-j}-l'^{-j}|\asymp\min(l,l')^{-j}\min\bigl(1,j|\Delta|/L\bigr)$,
+and the two sides of the first display differ by a factor as large as
+$2^{j}$.
+\end{lemma}
+
+\begin{proof}
+By the mean value theorem $l^{-j}-l'^{-j}=j\Delta\,\xi^{-j-1}$ for some
+$\xi$ between $l$ and $l'$.  On a fine block $\xi\in(L,\rho L]$ and
+$\rho^{-(j+1)}\ge\rho^{-\varrho}\ge e^{-1}$, so
+$\xi^{-j-1}\asymp L^{-j-1}$, giving the first claim.  On a dyadic block
+write $l^{-j}-l'^{-j}=l^{-j}\bigl(1-(1+\Delta/l)^{-j}\bigr)$ with
+$|\Delta/l|\le1$; the bracket is $\asymp j|\Delta|/l$ when
+$j|\Delta|/l\le1$ and $\asymp1$ otherwise, while $l^{-j}$ ranges over
+$[(2L)^{-j},L^{-j}]$.
+\end{proof}
+
+\textbf{[A6]}  Lemma~\ref{lem:typeII} states that the differenced phase
+$h\,n\,m^{-j}(l^{-j}-l'^{-j})$ is ``a monomial in $m$ of amplitude
+$\asymp F|l-l'|/L$''.  Two corrections are needed.  \emph{(a) The factor
+$j$ is missing}: by Lemma~\ref{lem:diffamp} the amplitude is
+$\asymp F\,j|l-l'|/L$.  \emph{(b) The estimate is a fine-block
+statement}: over the dyadic $l$-range that Lemma~\ref{lem:typeII}
+allows, it is false by a factor up to $2^{j}$, and $2^{j}$ can be as
+large as $2^{K}$.  Both corrections are incorporated below.  A third
+point: \emph{(c)} the proof applies Lemma~\ref{lem:typeI} \emph{in the
+variable $m$}, so the saving is a power of $M$, not of $L$; the displayed
+conclusion $Q(\log Q)^{3}(M^{-1/2}+L^{-\eta'/2})$ should read
+$Q(\log Q)^{3}(L^{-1/2}+M^{-\eta'/2})$.  (The first summand as printed is
+weaker than what the proof gives, hence harmless; the second as printed
+is \emph{stronger}, hence an error.  In the application both are far
+below the target.)  Finally \emph{(d)}: the hypothesis
+``$L^{\eta}\le F|\Delta|/L$ for $1\le|\Delta|\le L$'' forces
+$F\ge L^{1+\eta}$, which fails throughout the shallow part of every band;
+Lemma~\ref{lem:typeIIB} replaces it by a count of the exceptional pairs.
+
+\begin{lemma}[Type II, effective form]\label{lem:typeIIB}
+Let $\mathcal Q=(Q,\rho Q]$ be a fine block, let $M\ge2$ with
+$L:=Q/M\ge Q^{1/3}$, and let
+\[
+\mathcal B=\sum_{m\sim M}\ \sum_{\substack{l\,:\,ml\in\mathcal Q}}
+a_{m}b_{l}\,e\bigl(\Psi_{\mathbf h}(ml)\bigr),\qquad
+|a_{m}|\le\tau(m),\ |b_{l}|\le\log l .
+\]
+Let $\mathbf h,j,F$ be as in \eqref{eq:i0} and assume
+$Fj\ge e^{80}\varrho^{10}$, and $r\le r_{\max}$ for every $r$ arising
+below.  Then
+\[
+|\mathcal B|\ \ll\ Q(\log Q)^{5/2}
+\Bigl(L^{-1/2}+(Fj)^{-1/10}+M^{-2^{-r_{\max}-2}}\Bigr),
+\]
+with an absolute implied constant.
+\end{lemma}
+
+\begin{proof}
+The $l$'s occurring satisfy $l\in(Q/(2M),\rho Q/M]$, a range of
+multiplicative width $2\rho\le3$.  Split it into
+$\nu_{\max}\le1+\varrho\log3\ll\varrho$ fine blocks
+$\mathcal L_{\nu}=(L_{\nu},\rho L_{\nu}]$ with $L_{\nu}\asymp L$, and write
+$\mathcal B=\sum_{\nu}\mathcal B_{\nu}$ accordingly.  Fix $\nu$.  Given
+$l\in\mathcal L_{\nu}$ and $ml\in\mathcal Q$, the variable $m$ lies in
+$\mathcal M_{\nu}:=(Q/(\rho L_{\nu}),\rho Q/L_{\nu}]$, of multiplicative
+width $\rho^{2}$; put $N_{m}:=\#(\mathcal M_{\nu}\cap\mathbb Z)\asymp
+M/\varrho$.  By Cauchy--Schwarz in $m$ and Lemma~\ref{lem:tau2},
+\[
+|\mathcal B_{\nu}|^{2}
+\le\Bigl(\sum_{m\sim M}\tau(m)^{2}\Bigr)
+\sum_{m\in\mathcal M_{\nu}}\Bigl|\sum_{\substack{l\in\mathcal L_{\nu}\\
+ml\in\mathcal Q}}b_{l}e(\Psi_{\mathbf h}(ml))\Bigr|^{2}
+\ll M(\log 2M)^{3}\,\Sigma,
+\]
+where, expanding the square,
+\[
+\Sigma=\sum_{l,l'\in\mathcal L_{\nu}}b_{l}\overline{b_{l'}}
+\sum_{m\in\mathcal M_{\nu}(l,l')}
+e\bigl(\Psi_{\mathbf h}(ml)-\Psi_{\mathbf h}(ml')\bigr),
+\]
+and $\mathcal M_{\nu}(l,l')=\{m\in\mathcal M_{\nu}:ml,ml'\in\mathcal Q\}$
+is an interval.  Since $|b_{l}|\le\log(2L)\le\log Q$, the diagonal
+$l=l'$ contributes $\ll(\log Q)^{2}|\mathcal L_{\nu}|N_{m}
+\ll(\log Q)^{2}Q/\varrho^{2}$.
+
+For $l\ne l'$ the inner phase is
+$\Psi_{\mathbf h}(ml)-\Psi_{\mathbf h}(ml')
+=\sum_{i}h_{i}n(l^{-j_{i}}-l'^{-j_{i}})m^{-j_{i}}$, a phase of the shape
+\eqref{eq:phase} in $m$ whose level-$i$ coefficient is
+$h_{i}n(l^{-j_{i}}-l'^{-j_{i}})$.  By Lemma~\ref{lem:diffamp}, the
+top-level amplitude at scale $M$ is
+\[
+G:=\bigl|h_{i_{0}}\bigr|\,n\,\bigl|l^{-j}-l'^{-j}\bigr|
+\Bigl(\frac{Q}{L_{\nu}}\Bigr)^{-j}\asymp F\,\frac{j|l-l'|}{L},
+\]
+and the dominance estimate of Lemma~\ref{lem:dominance} holds with the
+same proof (the ratios $G_{i}/G_{i_{0}}$ pick up the extra factor
+$\bigl|l^{-j_{i}}-l'^{-j_{i}}\bigr|/\bigl|l^{-j}-l'^{-j}\bigr|\cdot
+L^{j_{i}-j}\le j_{i}/j\le k$, absorbed by the margin
+$Q\ge8eHKe^{r_{\max}}$, which \eqref{eq:logQ} again grants).
+
+Put $G_{0}:=(Fj)^{4/5}$ and call a pair $(l,l')$ \emph{good} if
+$G\ge G_{0}$.  For a good pair, Lemma~\ref{lem:typeIB} applied in the
+variable $m$ (with $F$ replaced by $G$, $L$ by $M$, $N$ by $N_{m}$) gives
+$|\sum_{m}e(\cdot)|\ll N_{m}\Xi$, where
+\[
+\Xi:=G_{0}^{-1/4}+N_{m}^{-2^{-r_{\max}-1}} :
+\]
+if the resulting exponent $x$ is $\le1$ the saving is
+$G^{-1/4}\le G_{0}^{-1/4}$, and otherwise it is $N_{m}^{-\eta'}$ with
+$\eta'\ge2^{-r_{\max}-1}$.  The hypothesis $G\ge e^{64}\varrho^{8}$ of
+Lemma~\ref{lem:typeIB} holds because
+$G\ge G_{0}=(Fj)^{4/5}\ge(e^{80}\varrho^{10})^{4/5}=e^{64}\varrho^{8}$.
+For a bad pair we use the trivial bound $N_{m}$; by
+Lemma~\ref{lem:diffamp} a pair is bad only if
+$|l-l'|\ll G_{0}L/(Fj)$, so the number of bad pairs is
+$\ll|\mathcal L_{\nu}|\bigl(1+G_{0}L/(Fj)\bigr)$.  Hence
+\[
+\Sigma\ll(\log Q)^{2}\Bigl[\frac{Q}{\varrho^{2}}
++\frac{L^{2}}{\varrho^{2}}N_{m}\Xi
++\frac{L}{\varrho}\Bigl(1+\frac{G_{0}L}{Fj}\Bigr)N_{m}\Bigr],
+\]
+and therefore, using $N_{m}\asymp M/\varrho$ and $ML=Q$,
+\[
+|\mathcal B_{\nu}|^{2}\ll M(\log Q)^{5}
+\Bigl[\frac{Q}{\varrho^{2}}+\frac{Q^{2}}{M\varrho^{3}}\Xi
++\frac{Q}{\varrho^{2}}\Bigl(1+\frac{G_{0}L}{Fj}\Bigr)\Bigr].
+\]
+Taking square roots, summing over the $\ll\varrho$ values of $\nu$, and
+using $(MQ)^{1/2}=QL^{-1/2}$,
+\[
+|\mathcal B|\ll(\log Q)^{5/2}\,Q\Bigl[L^{-1/2}+\Xi^{1/2}
++\Bigl(\frac{G_{0}}{Fj}\Bigr)^{1/2}\Bigr].
+\]
+The exponent $4/5$ is chosen to balance the last two: both
+$G_{0}^{-1/8}$ and $(G_{0}/(Fj))^{1/2}$ equal $(Fj)^{-1/10}$.  Finally
+$N_{m}^{-2^{-r_{\max}-2}}\le2M^{-2^{-r_{\max}-2}}$ because
+$2^{-r_{\max}-2}\log\varrho=o(1)$.
+\end{proof}
+
+\begin{remark}\label{rem:typeIIreach}
+The bound is $\ll Q(\log Q)^{-A}$ as soon as
+\[
+Fj\ge(\log Q)^{10A+40}
+\qquad\text{and}\qquad
+M\ge(\log Q)^{(A+3)2^{r_{\max}+2}},
+\]
+the second being automatic in
+\S B.7 by \eqref{eq:logQ}.  \emph{The bilinear estimate therefore reaches
+down to amplitudes that are a fixed power of $\log Q$}, not merely to
+$F\ge L^{1+\eta}$ as the hypothesis of Lemma~\ref{lem:typeII} would
+require, nor to $F\ge L^{\eta}$ as \S\ref{sec:schedule} suggests.  This
+is what makes \S B.6 possible.
+\end{remark}
+
+\begin{lemma}[Symmetric range]\label{lem:typeIIsym}
+Lemma~\ref{lem:typeIIB} holds verbatim with the roles of $m$ and $l$
+exchanged, i.e.\ for $|a_{m}|\le\log m$, $|b_{l}|\le\tau(l)$, with $M$
+and $L$ exchanged throughout.  Consequently the bilinear range
+$U/2\le M\le Q/U$ of Lemma~\ref{lem:vaughanA} may be reduced to
+$U/2\le M\le Q^{1/2}$.
+\end{lemma}
+
+\begin{proof}
+The proof of Lemma~\ref{lem:typeIIB} uses about $a$ only
+$\sum_{m\sim M}|a_{m}|^{2}\ll M(\log 2M)^{3}$ and about $b$ only
+$|b_{l}|\le\log Q$; both hold after the exchange, the first by
+Lemma~\ref{lem:tau2} applied in $l$ and the second because
+$|a_{m}|\le\log m\le\log Q$.  The phase $\Psi_{\mathbf h}(ml)$ is
+symmetric in $m$ and $l$.  For the reduction: if $M>Q^{1/2}$ then
+$L=Q/M<Q^{1/2}$, and applying the exchanged form to $\mathcal B$ with
+outer variable $l$ gives the bound with $M$ and $L$ interchanged.
+\end{proof}
+
+\subsection*{B.6\quad Where the nearly stationary regime really begins}
+
+By \eqref{eq:Frange}, $F\ge Q$ whenever $i_{0}\ge2$.  Small amplitudes
+therefore occur only for frequency vectors supported at level one, where
+$F=|h_{1}|\,t$ with $1\le t\le P_{0}$.  Fix the target saving
+$(\log n)^{-B}$ of \eqref{eq:weyl} and set
+\begin{equation}\label{eq:T0}
+T_{0}:=e^{80}\varrho^{10}(\log n)^{10B+40}.
+\end{equation}
+Since $\varrho=k+r_{\max}\le3\log n$, we have
+$T_{0}\le(\log n)^{10B+50}$, a fixed power of $\log n$.
+
+\smallskip
+\noindent\textbf{(a) $F\ge T_{0}$ is covered by the derivative tests.}
+For Type~I, $F\ge T_{0}\ge e^{64}\varrho^{8}$ so Lemma~\ref{lem:typeIB}
+applies; if $x\le1$ its saving is $F^{-1/4}\le(\log n)^{-(10B+40)/4}
+\le(\log n)^{-B-2}$, and if $x>1$ the saving is $N^{-\eta'}$ with
+$\eta'\ge2^{-r_{\max}-1}$, which is $\le(\log n)^{-B-2}$ by \S B.8.  For
+Type~II, $Fj\ge F\ge e^{80}\varrho^{10}$ so Lemma~\ref{lem:typeIIB}
+applies, and $(Fj)^{-1/10}\le T_{0}^{-1/10}\le(\log n)^{-B-4}$ by
+\eqref{eq:T0}.
+
+\textbf{[A8$'$]}  Hence \emph{the nearly stationary regime is
+$F<T_{0}=(\log n)^{O_{B}(1)}$, not $F\le L^{\eta}$}, and the difference
+is decisive rather than cosmetic.  The mechanism is the last display of
+Lemma~\ref{lem:typeIB}: at $r=2$ the second-derivative test saves
+$F^{-1/4}$, a power of the amplitude that does not degrade as the
+interval lengthens, so a saving of a fixed power of $\log Q$ --- all this
+paper asks for --- is already available at $F$ a fixed power of $\log Q$.
+Were the threshold really $L^{\eta}$, the direct count of part~(b) would
+require primes counted in intervals of relative length $P^{-\eta/3}$,
+which is not available unconditionally; at $T_{0}$ it is routine.
+
+\smallskip
+\noindent\textbf{(b) $F<T_{0}$: the direct count.}  Here $i_{0}=1$ and,
+since $|h_{1}|\ge1$, also $t\le F<T_{0}$.  The map $p\mapsto t=n/p^{k}$
+is a decreasing bijection of the band onto $[1,P_{0}]$, and the level-one
+phase $h_{1}n/p^{k}=h_{1}t$ is monotone in $p$ with total variation
+$|h_{1}|T_{0}\ll F+1$ over $\{t\le T_{0}\}$.  Consequently, for any
+target arc $I_{1}$, the condition $\{n/p^{k}\}\in I_{1}$ meets
+$\{t\le T_{0}\}$ in $O(F+1)$ intervals of $p$ --- this is the interval
+count referred to in \S\ref{sec:schedule}.  Writing
+$\mathcal R_{\nu}:=\{p:t(p)\in(\nu,\nu+1]\}$ for
+$\nu\le\lceil T_{0}\rceil$, each $\mathcal R_{\nu}$ is an interval of $p$
+of multiplicative width $(1+1/\nu)^{1/k}$, hence of length
+\begin{equation}\label{eq:Rnu}
+|\mathcal R_{\nu}|\asymp\frac{P}{k\nu}\ \ge\ \frac{P}{kT_{0}}
+\ \ge\ P\,(\log n)^{-10A-51}.
+\end{equation}
+On $\mathcal R_{\nu}$ the level-one coordinate is $\{t\}=t-\nu$, monotone
+in $p$, so $\{n/p^{k}\}\in I_{1}$ cuts $\mathcal R_{\nu}$ into one
+subinterval $\mathcal R_{\nu}(I_{1})$, and by Lemma~\ref{lem:measure}
+(log-uniformity of the Mertens measure in the coordinate $t$)
+\begin{equation}\label{eq:hyperbola}
+\frac{\sum_{p\in\mathcal R_{\nu}(I_{1})}1/p}
+{\sum_{p\in\mathcal R_{\nu}}1/p}
+=\sigma_{\nu}(I_{1})\bigl(1+o(1)\bigr),
+\qquad
+\sigma_{\nu}(I_{1}):=\frac{\log\frac{\nu+\beta}{\nu+\alpha}}
+{\log\frac{\nu+1}{\nu}},\quad I_{1}=[\alpha,\beta).
+\end{equation}
+Within $\mathcal R_{\nu}(I_{1})$ the remaining coordinates
+$i=2,\dots,J(k)$ have $F\ge Q$ by \eqref{eq:Frange} and are therefore
+covered by part~(a); by \eqref{eq:Rnu} that interval still has
+$\log Q\asymp\log P$, so \eqref{eq:logQ} is unaffected.
+
+\smallskip
+\noindent\textbf{(c) What (b) costs, and the one input the paper does not
+list.}  Statement \eqref{eq:hyperbola}, and the band-Mertens statement
+$\sum_{p\in\text{band}}1/p=\log(1+1/k)(1+o(1))$ of component~(B), both
+require the prime number theorem with the classical error term
+$\pi(y)=\operatorname{li}(y)+O\bigl(y\,e^{-c\sqrt{\log y}}\bigr)$.  They
+do \emph{not} follow from Chebyshev--Mertens alone: Mertens' theorem with
+its elementary error gives
+\[
+\sum_{p\in\text{band}}\frac1p=\log\Bigl(1+\frac1k\Bigr)
++O\Bigl(\frac{k}{\log n}\Bigr),
+\]
+whose error exceeds the main term $\asymp1/k$ as soon as
+$k>\sqrt{\log n}$, whereas the schedule runs to
+$K=(\log n)^{1-\varepsilon_{n}}\gg\sqrt{\log n}$.  With the classical
+error term the relative error in \eqref{eq:Rnu}--\eqref{eq:hyperbola} is
+$\ll kT_{0}\,e^{-c\sqrt{\log P}}$, and by \eqref{eq:logQ}
+$\sqrt{\log P}\ge(\log n)^{\varepsilon_{n}/2}
+=\exp\bigl(\tfrac12(\log\log n)^{2/3}\bigr)$ while
+$\log(kT_{0})=O(\log\log n)$; the margin is overwhelming.
+
+\textbf{[A10]}  The input list of \S\ref{sec:equi} --- ``Kummer's carry
+criterion \dots, the Chebyshev--Mertens bounds of \S\ref{sec:density}
+(machine-verified in finite form), and the elementary analysis of
+\S\S\ref{sec:vaughan}--\ref{sec:typeII}'' --- is therefore incomplete: it
+must also name the prime number theorem with a classical error term.
+This is an internal inconsistency rather than a new hypothesis:
+Remark~\ref{rem:noshortcut} already reasons with
+``PNT-with-classical-error'', and that theorem is unconditional.  It is
+not, however, elementary in the sense the input list suggests, and it is
+not among the machine-verified components.
+
+\smallskip
+\noindent\textbf{(d) A route that avoids (b) and (c) entirely.}  The
+theorem needs only an \emph{upper} bound on the carry-free mass, so any
+one of the $J(k)$ level conditions may be discarded.  Discarding level
+one and using the levels $i=2,\dots,J(k)+1$ instead, every frequency
+vector has $i_{0}\ge2$, hence $F\ge Q$ by \eqref{eq:Frange}: part~(b)
+never arises, \eqref{eq:hyperbola} is not needed, and the carry-free
+proportion of the band is $\le2^{-J(k)}(1+o(1))$ as before.  The only
+cost is the requirement $J(k)+1\le k$, absorbed into \eqref{eq:Jk}.  The
+band-Mertens input of (c) is still needed --- it is what gives the band
+its mass $\asymp1/k$ --- but no statement about primes in short intervals
+is.
+
+\smallskip
+\textbf{[A7]}  Independently of which route is taken,
+\emph{Proposition~\ref{prop:equi} is false as stated at level one}: its
+conclusion asserts the density $\prod_{i}|I_{i}|$, whereas
+\eqref{eq:hyperbola} --- which is Lemma~\ref{lem:measure}, confirmed
+numerically in the remark following it, and asserted in
+\S\ref{sec:density} to be ``an exact statement, not a model'' --- gives
+$\sigma_{\nu}(I_{1})\ne|I_{1}|$ at bounded $\nu$.  The two statements of
+the paper contradict each other.  The correct form is
+\[
+\#\{p\in\mathcal R_{\nu}:\{n/p^{k-i+1}\}\in I_{i}\ (1\le i\le J(k))\}
+=\Bigl(\sigma_{\nu}(I_{1})\!\!\prod_{2\le i\le J(k)}\!\!|I_{i}|+o(1)\Bigr)
+\#\mathcal R_{\nu},
+\]
+uniformly for $\nu\le T_{0}$, together with Proposition~\ref{prop:equi}
+unmodified for $t>T_{0}$.  For \S\ref{sec:assembly} only the upper bound
+matters, and $\sigma_{\nu}([0,\tfrac12))\le\sigma_{1}
+=\log(3/2)/\log2=0.5850\ldots<1$ (decreasing to $\tfrac12$), so the
+carry-free proportion is $\le1.171\cdot2^{-J(k)}$ --- a change of
+absolute constant only.
+
+\subsection*{B.7\quad The case table}
+
+Fix a band $k\le K$, a fine block $\mathcal Q=(Q,\rho Q]$, a level index
+$i\le J(k)$, and a frequency $\mathbf h$ with $0<\|\mathbf h\|_{\infty}\le
+H$.  Set $U:=Q^{1/3}$ in Lemma~\ref{lem:vaughanA}, so that the Type~I
+range is $M\le U^{2}=Q^{2/3}$, i.e.\ $L=Q/M\ge Q^{1/3}$, and the
+bilinear range is $Q^{1/3}/2\le M\le Q^{2/3}$, reduced by
+Lemma~\ref{lem:typeIIsym} to $Q^{1/3}/2\le M\le Q^{1/2}$.  Then
+$x=\log F/\log N$ with $\log N\ge\tfrac13\log Q(1-o(1))$ in both
+families, so by \eqref{eq:Frange}
+\begin{equation}\label{eq:xrange}
+0\ <\ x\ \le\ \frac{\log H+(J+1)\log Q}{\tfrac13\log Q(1-o(1))}
+\ \le\ 3J+4,
+\qquad\text{hence}\qquad r=\max(2,\lceil x\rceil+1)\le3J+5=r_{\max}.
+\end{equation}
+Both hypotheses on the slack parameter
+$\varsigma=r(\log\varrho+8)/\log N$ hold.  For $r\ge3$,
+$\varsigma\le\dfrac{r_{\max}(\log\varrho+8)}{\tfrac13\log Q(1-o(1))}
+\ll\dfrac{(\log\log n)^{4/3}}{(\log n)^{\varepsilon_{n}}}=o(1)\le
+\tfrac1{16}$ by \eqref{eq:logQ}.  For $r=2$ the requirement
+$\varsigma\le x/4$ is exactly $\log F\ge8\log\varrho+64$, i.e.\
+$F\ge e^{64}\varrho^{8}$, which holds throughout the range $F\ge T_{0}$
+of \S B.6(a) by \eqref{eq:T0}.
+
+Under the top-level exclusion of Proposition~\ref{prop:equi} --- the
+route of \S B.6(d), and the one the paper takes --- only row~1 of the
+table below arises, since every frequency vector then has $i_{0}\ge2$ in
+the indexing of \S B.0 (Remark~\ref{rem:bridge}).  Rows~2 and~3 are
+retained for two reasons: the enumeration is exhaustive only with them,
+and they are what the corroborative top-level analysis of
+\S\ref{sec:density} requires.
+
+\begin{center}
+\footnotesize
+\setlength{\tabcolsep}{2.5pt}
+\begin{tabular}{|c|l|l|l|l|}
+\hline
+\# & regime & amplitude $F$ & $r$ used & covering statement\\
+\hline
+1 & $i_{0}\ge2$, any $t$ & $Q\le F\le HQ^{J+1}$ & $\max(2,\lceil x\rceil+1)\le3J+5$
+& Lem.~\ref{lem:typeIB}, \ref{lem:typeIIB}\\
+2 & $i_{0}=1$, $F\ge T_{0}$ & $T_{0}\le F\le HQ$ & $2\le r\le5$
+& Lem.~\ref{lem:typeIB}, \ref{lem:typeIIB}\\
+3 & $i_{0}=1$, $F<T_{0}$ & $1\le F<(\log n)^{10B+50}$ & ---
+& \S B.6(b), or void by (d)\\
+\hline
+\multicolumn{5}{|l|}{\emph{sub-cases of 1--2, by the window of Remark~\ref{rem:window}:}}\\
+\hline
+1a & $x\in(0,1]$ & $F\le N$ & $r=2$ & $\eta'=x/4$, saving $F^{-1/4}$\\
+1b & $x\in(1,2]$ & $N<F\le N^{2}$ & $r=3$ & $\eta'=\tfrac1{12}$\\
+1c & $x\in(2,3]$ & $N^{2}<F\le N^{3}$ & $r=4$ & $\eta'=\tfrac1{28}$\\
+1d & $x\in(s-1,s]$, $4\le s\le3J{+}4$ & $N^{s-1}<F\le N^{s}$ & $r=s+1$
+& $\eta'=\frac{1}{2(2^{s+1}-2)}$\\
+\hline
+\multicolumn{5}{|l|}{\emph{Type~II only:} replace $F$ by
+$G\asymp Fj|l-l'|/L$ and $N$ by $N_{m}\asymp M/\varrho$; pairs with}\\
+\multicolumn{5}{|l|}{$G<G_{0}=(Fj)^{4/5}$ are counted, not estimated
+(Lem.~\ref{lem:typeIIB}).}\\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent\emph{Verification that cases 1--3 exhaust and overlap.}  Case 1
+is $i_{0}\ge2$; cases 2 and 3 are $i_{0}=1$ with $F\ge T_{0}$ and
+$F<T_{0}$ respectively.  These are disjoint and exhaustive.  Case 2 has
+$F=|h_{1}|t\le HP_{0}\le HQ$ by \eqref{eq:trange}, so
+$x\le3(1+\log H/\log Q)=3+o(1)$ and $r=\max(2,\lceil x\rceil+1)\le5$
+suffices.  Case 1 has $F\ge Q$, so
+$x\ge1$, and $F\le HQ^{J+1}$, so $x\le3J+4$.  Sub-cases 1a--1d are the
+windows of Remark~\ref{rem:window}; by \eqref{eq:xrange} they cover every
+$x>0$ arising in cases 1--2 with $r\le3J+5$, and the hypothesis
+$\varsigma\le x/4$ needed in 1a is supplied by $F\ge T_{0}$.
+\emph{No regime is uncovered.}
+
+\noindent\emph{The Kusmin--Landau range.}  \textbf{[A8]}
+\S\ref{sec:schedule} describes the alternative to the derivative-test
+range as ``the Kusmin--Landau range ($F\le L^{\eta}$: the phase is nearly
+stationary\ldots)''.  Lemma~\ref{lem:KL} requires $\|f'\|\ge\delta>0$,
+which is exactly what a nearly stationary phase does not provide: for
+$F\le L^{\eta}$ one has $|g'|\asymp Fj/L\ll1$, so
+$\|g'\|=|g'|$ is small and Lemma~\ref{lem:KL} gives a bound
+$\gg L$, i.e.\ nothing.  Kusmin--Landau enters this paper only as the
+engine inside the proof of Lemma~\ref{lem:vdc2}, and it is
+Lemma~\ref{lem:measure} --- the parenthetical's own content --- that
+covers the nearly stationary regime.  The sentence should name the band
+geometry, not Kusmin--Landau; and, by \textbf{[A8$'$]}, it should name
+the threshold $T_{0}$ of \eqref{eq:T0} rather than $L^{\eta}$.
+
+\subsection*{B.8\quad The two displayed inequalities of \S\ref{sec:schedule}}
+
+\emph{First display.}  With $r=r_{\max}=3J+5$ and
+$J=\lceil(\log\log n)^{1/3}\rceil$, Lemma~\ref{lem:typeIB} gives
+\[
+\eta'\ \ge\ 2^{-r_{\max}-1}=\exp\bigl(-(3J+6)\log2\bigr)
+\ \ge\ \exp\bigl(-c(\log\log n)^{1/3}\bigr),\qquad c:=5\log 2,
+\]
+the last step being the inequality
+$(3J+6)\log2\le c(\log\log n)^{1/3}$, i.e.\
+$3J+6\le5(\log\log n)^{1/3}$, which holds for $n$ large because
+$J\le(\log\log n)^{1/3}+1$ gives $3J+6\le3(\log\log n)^{1/3}+9$.
+\textbf{Verified}, with $2^{-J-3}$ replaced by
+$2^{-3J-6}$; only the constant $c$ changes.  \textbf{[A6]}
+\S\ref{sec:schedule} takes ``$r=J+3$''.  The correct bound is
+$r\le3J+5$: the Type~I family runs down to $L=Q^{1/3}$ (Vaughan with
+$U=Q^{1/3}$ delivers $M\le U^{2}=Q^{2/3}$), so
+$x=\log F/\log N$ can be three times
+$\log F/\log Q\le J+1+o(1)$, not once.
+The schedule is unaffected because $2^{-3J}$ and $2^{-J}$ are both
+$\exp(-O((\log\log n)^{1/3}))$.
+
+\emph{Second display.}  For $k\le K$, \eqref{eq:logQ} gives
+$\log Q\ge\tfrac12(\log n)^{\varepsilon_{n}}$, and $L\ge Q^{1/3}$ gives
+$\log L\ge\tfrac16(\log n)^{\varepsilon_{n}}$.  Hence
+\[
+L^{\eta'}\ \ge\ \exp\Bigl(\tfrac16(\log n)^{\varepsilon_{n}}
+e^{-c(\log\log n)^{1/3}}\Bigr),
+\]
+which is the displayed inequality with $c'=\tfrac16$.  For the second
+half, $(\log n)^{\varepsilon_{n}}
+=\exp(\varepsilon_{n}\log\log n)=\exp\bigl((\log\log n)^{2/3}\bigr)$,
+so
+\[
+\log\bigl(L^{\eta'}\bigr)\ \ge\
+\tfrac16\exp\Bigl((\log\log n)^{2/3}-c(\log\log n)^{1/3}\Bigr)
+\ =\ \exp\bigl((\log\log n)^{2/3}(1+o(1))\bigr),
+\]
+whereas $\log\bigl((\log n)^{A}\bigr)=A\log\log n$.  Since
+$\exp\bigl((\log\log n)^{2/3}(1+o(1))\bigr)/\log\log n\to\infty$, we get
+$L^{\eta'}\gg(\log n)^{A}$ for every fixed $A$, uniformly in $k\le K$.
+\textbf{Verified.}
+
+\emph{The trailing claim.}  ``$\log L\gg\log Q\gg(\log
+n)^{\varepsilon_{n}}=\exp((\log\log n)^{2/3})$, which dominates
+$2^{J}=\exp(O((\log\log n)^{1/3}))$.''  The second $\gg$ and the identity
+are correct (\eqref{eq:logQ} and the computation just made).  The first
+$\gg$ is a typo: $\log L\le\log Q$ always, and what holds is
+$\log L\ge\tfrac13\log Q$, i.e.\ $\log L\asymp\log Q$.  \textbf{[A9]}
+With that reading the sentence is correct, and it is the inequality that
+makes the whole schedule work: $\log Q$ is doubly exponential in
+$\log\log\log n$ while $2^{J}$ is only singly exponential in
+$(\log\log n)^{1/3}$.
+
+\subsection*{B.9\quad Assembly of the appendix, and the flag list}
+
+Collecting: fix $k\le K$ and $\mathbf h$ with
+$0<\|\mathbf h\|_{\infty}\le H$.  On every fine block $\mathcal Q$ on
+which $F\ge T_{0}$ (cases 1--2 of \S B.7),
+Lemma~\ref{lem:vaughanA} with $U=Q^{1/3}$ reduces
+$\sum_{p\in\mathcal Q}e(\Psi_{\mathbf h}(p))$ to
+\[
+\frac{Q}{U}+(\log Q)^{2}\max_{M\le Q^{2/3}}\mathcal T_{M}
++(\log Q)^{2}\max_{Q^{1/3}/2\le M\le Q^{1/2}}\mathcal B_{M},
+\]
+the last range by Lemma~\ref{lem:typeIIsym}.  The first term is
+$\le|\mathcal Q|\cdot\varrho Q^{-1/3}\ll|\mathcal Q|(\log n)^{-B-1}$ by
+\eqref{eq:logQ}.  For the second, Lemma~\ref{lem:typeIB} bounds each
+inner sum by $N^{1-\eta'}$ with $N\asymp L/\varrho$, so
+$\mathcal T_{M}\ll M\,(L/\varrho)^{1-\eta'}
+\ll|\mathcal Q|\,N^{-\eta'}$.  For the third,
+Lemma~\ref{lem:typeIIB} gives
+$\mathcal B_{M}\ll Q(\log Q)^{5/2}\bigl(L^{-1/2}+(Fj)^{-1/10}
++M^{-2^{-r_{\max}-2}}\bigr)$; here $L^{-1/2}\le Q^{-1/6}$,
+$(Fj)^{-1/10}\le T_{0}^{-1/10}\le(\log n)^{-B-4}$ by \eqref{eq:T0}, and
+$M^{-2^{-r_{\max}-2}}\le(\log n)^{-B-4}$ by \S B.8 together with
+$M\ge Q^{1/3}/2$.  By \eqref{eq:logQ} every one of these is
+$\ll(\log n)^{-B-1}$, hence
+$|\sum_{p\in\mathcal Q}e(\Psi_{\mathbf h}(p))|\ll|\mathcal Q|
+(\log n)^{-B-1}$, and \eqref{eq:blocksum} yields \eqref{eq:weyl}.  Where
+$F<T_{0}$, \S B.6(b) applies instead --- or, on the route of \S B.6(d),
+that case does not occur.
+
+Feed this into the Erd\H{o}s--Tur\'an inequality of
+Appendix~\ref{app:ET} in dimension $J(k)$ with $H=(\log n)^{2}$
+(Theorem~\ref{thm:ET} and Remark~\ref{rem:ETuse}).  Its first term is
+\[
+\ll\ \pi(P)\,J\epsilon_{H}
+\ \ll\ \pi(P)(\log\log n)^{4/3}(\log n)^{-2}
+\ \ll\ \pi(P)(\log n)^{-1};
+\]
+its outer factor $J$ on the exponential-sum term is
+$\exp\bigl(O(\log\log\log n)\bigr)$; and the sum
+over $\mathbf h$ carries the weight
+\[
+\sum_{0<\|\mathbf h\|_{\infty}\le H}\ \prod_{i}(1+|h_{i}|)^{-1}
+\ \ll\ (3\log H)^{J}
+=\exp\bigl(O((\log\log n)^{1/3}\log\log\log n)\bigr),
+\]
+which is dominated by the saving
+$\exp\bigl(-\exp((\log\log n)^{2/3}(1+o(1)))\bigr)$ of \S B.8 with
+overwhelming margin.
+
+It remains to check that $B=2$ in \eqref{eq:weyl} already suffices.  The
+band contains $N\gg P/\log n$ primes while $\pi(P)\asymp Pk/\log n$, so
+$\pi(P)/N\ll k\le K=(\log n)^{1-\varepsilon_{n}}$, and the
+exponential-sum term of Theorem~\ref{thm:ET}, measured relative to $N$,
+is at most
+\[
+J\,(3\log H)^{J}\,\frac{\pi(P)}{N}\,(\log n)^{-B}
+\ \ll\ \exp\bigl(u-u^{2/3}-Bu+O(u^{1/3}\log u)\bigr),
+\qquad u:=\log\log n,
+\]
+using $K=e^{u-u^{2/3}}$ and $J(3\log H)^{J}=e^{O(u^{1/3}\log u)}$.  This
+is $\le e^{-u}=(\log n)^{-1}$ precisely when
+$(2-B)u\le u^{2/3}-O(u^{1/3}\log u)$, which at $B=2$ reads
+$0\le u^{2/3}-O(u^{1/3}\log u)$ and holds for $n$ large because
+$u^{1/3}\gg\log u$.  Together with the first term this gives
+Proposition~\ref{prop:equi} --- as amended by \textbf{[A7]} --- with
+$o(1)\le(\log n)^{-1}$, uniformly in $k\le K$.
+
+\medskip
+\noindent\textbf{Flags.}
+\textbf{[A1]} $J$ must be $J(k)=\min(J,k-1)$ (\S B.0).
+\textbf{[A2]} the amplitude is that of the top non-vanishing level, not
+one per level (\S B.0).
+\textbf{[A3]} Lemma~\ref{lem:vdcr}'s first term, and the ``in
+particular'' range of Lemma~\ref{lem:typeI} (\S B.1,
+Remark~\ref{rem:window}).
+\textbf{[A4]} dyadic blocks must be refined to ratio $1+1/\varrho$
+(Remark~\ref{rem:trap1}).
+\textbf{[A5]} $(j)_{r}$, not $j^{r}$ (\S B.2).
+\textbf{[A6]} the differenced amplitude, the Type~II saving variable, its
+hypothesis, and $r=J+3\to r\le3J+5$ (\S B.5, \S B.8).
+\textbf{[A7]} Proposition~\ref{prop:equi} versus
+Lemma~\ref{lem:measure} at level one (\S B.6).
+\textbf{[A8]} the ``Kusmin--Landau range'' is not one, and
+\textbf{[A8$'$]} its threshold is $T_{0}=(\log n)^{O(1)}$, not $L^{\eta}$
+(\S B.6(a), \S B.7).
+\textbf{[A9]} $\log L\gg\log Q$ should be $\log L\asymp\log Q$ (\S B.8).
+\textbf{[A10]} the input list of \S\ref{sec:equi} must also name the
+prime number theorem with a classical error term (\S B.6(c)).
+
+\medskip
+\noindent\textbf{Two further items, raised by the re-indexing and now
+resolved in the text.}
+
+\textbf{[B1] The amplitude range under the top-level exclusion.}
+\emph{Resolved:} the operative level set is $i=2,\dots,J(k)+1$
+(Remark~\ref{rem:bridge}), so \eqref{eq:Frange} carries
+$F\le H\,Q^{\,J+1}$ and \eqref{eq:rmax} carries $r_{\max}=3J+5$, with
+$\varrho=k+3J+5$, $\eta'\ge2^{-3J-6}$ and $c=5\log2$ in \S B.8 --- the
+choice recorded in the last sentence of \eqref{eq:Jk} and propagated
+through \eqref{eq:xrange}, row~1 of the table, and \S\S\ref{sec:equi},
+\ref{sec:schedule}.
+
+\textbf{[B2] The target exponent in \eqref{eq:weyl}.}
+\emph{Resolved:} the saving is measured against $\log n$, not $\log P$
+--- \eqref{eq:weyl} now reads $S(\mathbf h)\ll\pi(P)(\log n)^{-B}$ for
+every fixed $B$, with $(\log n)$ likewise in \eqref{eq:T0}, in the
+closing sentence of \S B.3 and in the bookkeeping above, and $B=2$ shown
+sufficient there.  A saving in $\log P$ alone would not close the
+argument: with $\log P=(\log n)^{\varepsilon_{n}}=e^{u^{2/3}}$,
+$u=\log\log n$, and $\pi(P)/N\ll k\le K=e^{u-u^{2/3}}$, the relative
+error from $(\log P)^{-A}$ is
+$\exp\bigl(u-(A+1)u^{2/3}+O(u^{1/3}\log u)\bigr)$, which reaches
+$(\log n)^{-1}$ only for $A\ge2u^{1/3}-1$ --- no \emph{fixed} $A$
+suffices.  What \S B.8 proves,
+$N^{\eta'}\ge\exp\bigl(\exp(u^{2/3}(1+o(1)))\bigr)$, is the
+$\log n$-measured form, so no estimate changes under the substitution.
+
+\emph{No regime arising for $k\le K$, $i\le J(k)$, $\|\mathbf h\|_\infty\le
+H$ is left uncovered by \S B.7; the flags above are corrections to
+statements, not gaps in coverage.}
+
+\section{A weak $J$-dimensional Erd\H{o}s--Tur\'an inequality}\label{app:ET}
+
+The inequality proved here is the weak one: log-power losses are
+tolerated, and the sharp Beurling--Selberg extremal functions are not
+used.  What is proved is enough for \S\ref{sec:schedule}, where the
+losses are absorbed with room to spare (\S B.9).
+
+Throughout, $\|y\|$ denotes distance to the nearest integer,
+$e(y)=e^{2\pi iy}$, functions on $\mathbb R/\mathbb Z$ are identified with
+$1$-periodic functions on $\mathbb R$, and for $f\in L^{1}(\mathbb
+R/\mathbb Z)$ we write $\hat f(h)=\int_{0}^{1}f(y)e(-hy)\,dy$.  An
+\emph{arc} is a set $I=[\alpha,\beta)\subseteq\mathbb R/\mathbb Z$ of
+length $|I|=\beta-\alpha\in[0,1]$.
+
+\subsection*{C.1\quad The one-dimensional approximants}
+
+\begin{lemma}\label{lem:fourier1}
+For every arc $I$ and every $h\in\mathbb Z$,
+$\bigl|\widehat{\mathbf 1_{I}}(h)\bigr|\le\dfrac{1}{1+|h|}$.
+\end{lemma}
+
+\begin{proof}
+For $h=0$ the left side is $|I|\le1$.  For $h\ne0$,
+$\widehat{\mathbf 1_{I}}(h)=\int_{\alpha}^{\beta}e(-hy)dy
+=\dfrac{e(-h\alpha)-e(-h\beta)}{2\pi ih}$, so the left side is
+$\le\dfrac{1}{\pi|h|}$; and $\pi|h|\ge1+|h|$ because
+$(\pi-1)|h|\ge\pi-1>1$.
+\end{proof}
+
+\begin{lemma}[Fej\'er-type kernel]\label{lem:kernel}
+Let $\theta>0$, $s\in\mathbb Z_{\ge1}$, and let
+$\phi_{\theta}:=\theta^{-1}\mathbf 1_{[-\theta/2,\theta/2]}$ on
+$\mathbb R$.  Put $\Phi:=\phi_{\theta}^{*2s}$ (the $2s$-fold convolution).
+Then $\Phi\ge0$, $\int_{\mathbb R}\Phi=1$,
+$\operatorname{supp}\Phi\subseteq[-s\theta,s\theta]$, and
+\[
+\hat\Phi(\xi)=\Bigl(\frac{\sin\pi\theta\xi}{\pi\theta\xi}\Bigr)^{2s},
+\qquad\text{so}\qquad
+0\le\hat\Phi(\xi)\le\min\bigl(1,(\pi\theta|\xi|)^{-2s}\bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Non-negativity, total mass and support are immediate from the
+corresponding properties of $\phi_{\theta}$ and the fact that
+convolution adds supports.  The Fourier transform of $\phi_{\theta}$ is
+$\int_{-\theta/2}^{\theta/2}\theta^{-1}e(-\xi u)du
+=\frac{\sin\pi\theta\xi}{\pi\theta\xi}$, and convolution multiplies
+transforms.  The final bound uses $|\sin|\le1$ and $|\sin z/z|\le1$.
+\end{proof}
+
+The case $s=1$ is the classical Fej\'er kernel (its transform is the
+triangle $(1-|\theta\xi|)_{+}$ up to rescaling); $s>1$ is used only to
+make the transform decay fast enough that truncation at level $H$ costs
+$O(1/H)$.
+
+\begin{proposition}[One-dimensional one-sided approximants]
+\label{prop:onesided}
+Let $H\ge3$ be an integer and set
+\[
+s:=\lceil\log H\rceil,\qquad \theta:=\frac{2}{\pi H},\qquad
+w:=s\theta=\frac{2s}{\pi H},\qquad
+\epsilon_{H}:=2w+\frac1H\le\frac{4\log H+6}{H}.
+\]
+Assume $H$ is large enough that $w\le\tfrac18$.  Then for every arc $I$
+there are real trigonometric polynomials $\chi^{\pm}_{I}$ of degree
+$\le H$ with
+\begin{enumerate}
+\item[(i)] $\chi^{-}_{I}\le\mathbf 1_{I}\le\chi^{+}_{I}$ pointwise on
+$\mathbb R/\mathbb Z$ (hence also $\chi^{+}_{I}\ge0$);
+\item[(ii)] $\bigl|\hat\chi^{\pm}_{I}(0)-|I|\bigr|\le\epsilon_{H}$;
+\item[(iii)] $\bigl|\hat\chi^{\pm}_{I}(h)\bigr|\le\dfrac{1}{1+|h|}$ for
+$0<|h|\le H$.
+\end{enumerate}
+\end{proposition}
+
+\begin{proof}
+Let $\Phi$ be as in Lemma~\ref{lem:kernel} with these $\theta,s$, and
+periodize it; since $2w\le\tfrac14$ its periodization is supported in
+$[-w,w]$ modulo $1$.
+
+\emph{Majorant.}  If $|I|+2w\ge1$ put $\chi^{+}_{I}:=1$; then (i) holds,
+(iii) is vacuous, and $\hat\chi^{+}(0)=1\le|I|+2w$, giving (ii).
+Otherwise let $I^{+}:=[\alpha-w,\beta+w)$, an arc of length $|I|+2w<1$,
+and $T^{+}:=\mathbf 1_{I^{+}}*\Phi$.  Then $0\le T^{+}\le1$; and for
+$y\in I$ we have $y-u\in I^{+}$ whenever $|u|\le w$, so
+$T^{+}(y)=\int\Phi=1$.  Thus $T^{+}\ge\mathbf 1_{I}$.  Also
+$\hat T^{+}(h)=\widehat{\mathbf 1_{I^{+}}}(h)\hat\Phi(h)$, so
+$\hat T^{+}(0)=|I|+2w$ and, by Lemma~\ref{lem:fourier1} and
+Lemma~\ref{lem:kernel}, for $h\ne0$
+\[
+|\hat T^{+}(h)|\le\frac{1}{\pi|h|}\,(\pi\theta|h|)^{-2s}.
+\]
+In particular $|\hat T^{+}(h)|\ll|h|^{-2s-1}$, so the Fourier series of
+the continuous function $T^{+}$ converges absolutely to it.  Put
+\[
+\tau:=\sum_{|h|>H}|\hat T^{+}(h)|
+\le\frac{2}{\pi(\pi\theta)^{2s}}\sum_{h>H}h^{-2s-1}
+\le\frac{2}{\pi(\pi\theta)^{2s}}\cdot\frac{1}{2s\,H^{2s}}
+=\frac{1}{\pi s}\,(\pi\theta H)^{-2s}=\frac{4^{-s}}{\pi s}\le\frac1H,
+\]
+the last step because $\pi\theta H=2$ and
+$4^{-s}\le4^{-\log H}=H^{-\log4}\le H^{-1}$.  Now set
+$\chi^{+}_{I}:=\sum_{|h|\le H}\hat T^{+}(h)e(hy)+\tau$.  It is a real
+trigonometric polynomial of degree $\le H$; it satisfies
+$\chi^{+}_{I}\ge T^{+}\ge\mathbf 1_{I}$ because the omitted part of the
+series is at most $\tau$ in absolute value; $\hat\chi^{+}(0)=|I|+2w+\tau$,
+which gives (ii); and $\hat\chi^{+}(h)=\hat T^{+}(h)$ for $0<|h|\le H$,
+so (iii) follows from $|\hat T^{+}(h)|\le|\widehat{\mathbf 1_{I^{+}}}(h)|$
+and Lemma~\ref{lem:fourier1}.
+
+\emph{Minorant.}  If $|I|\le2w$ put $\chi^{-}_{I}:=0$; then (i) and (iii)
+are clear and $|\hat\chi^{-}(0)-|I||=|I|\le2w\le\epsilon_{H}$.  Otherwise
+let $I^{-}:=[\alpha+w,\beta-w)$ and $T^{-}:=\mathbf 1_{I^{-}}*\Phi$.  Then
+$0\le T^{-}\le1$ and $\operatorname{supp}T^{-}\subseteq I$, so
+$T^{-}\le\mathbf 1_{I}$; and $\hat T^{-}(0)=|I|-2w$.  With $\tau^{-}$
+defined as $\tau$ was, and by the same estimate $\tau^{-}\le1/H$, set
+$\chi^{-}_{I}:=\sum_{|h|\le H}\hat T^{-}(h)e(hy)-\tau^{-}$.  Then
+$\chi^{-}_{I}\le T^{-}\le\mathbf 1_{I}$, $\hat\chi^{-}(0)=|I|-2w-\tau^{-}$,
+and (iii) holds as before.
+\end{proof}
+
+\subsection*{C.2\quad Products}
+
+\begin{lemma}[Telescoping]\label{lem:telescope}
+Let $a_{\nu},b_{\nu},c_{\nu}$ be reals with $0\le a_{\nu}\le c_{\nu}$ and
+$b_{\nu}\le a_{\nu}$ for $1\le\nu\le J$.  Then
+\[
+\prod_{\nu}c_{\nu}\ \ge\ \prod_{\nu}a_{\nu}
+\ \ge\ \prod_{\nu}c_{\nu}-\sum_{\nu}(c_{\nu}-b_{\nu})
+\prod_{\mu\ne\nu}c_{\mu}.
+\]
+\end{lemma}
+
+\begin{proof}
+The first inequality is monotonicity of the product of non-negative
+numbers.  For the second, telescope:
+\[
+\prod_{\nu}c_{\nu}-\prod_{\nu}a_{\nu}
+=\sum_{\nu=1}^{J}\Bigl(\prod_{\mu<\nu}a_{\mu}\Bigr)(c_{\nu}-a_{\nu})
+\Bigl(\prod_{\mu>\nu}c_{\mu}\Bigr).
+\]
+Every factor is non-negative, and $\prod_{\mu<\nu}a_{\mu}\le
+\prod_{\mu<\nu}c_{\mu}$, $c_{\nu}-a_{\nu}\le c_{\nu}-b_{\nu}$.
+\end{proof}
+
+\subsection*{C.3\quad The inequality}
+
+\begin{theorem}[Weak $J$-dimensional Erd\H{o}s--Tur\'an]\label{thm:ET}
+Let $J\ge1$ and let $H\ge3$ be an integer with $w\le\tfrac18$ and
+$J\epsilon_{H}\le1$, notation as in
+Proposition~\ref{prop:onesided}.  Let
+$x_{1},\dots,x_{N}\in[0,1)^{J}$ and let
+$B=\prod_{\nu\le J}I_{\nu}$ be a box, each $I_{\nu}$ an arc.  Then
+\[
+\Bigl|\#\{i\le N:x_{i}\in B\}-N\operatorname{vol}(B)\Bigr|
+\ \le\ C\Bigl(N J\,\epsilon_{H}
++J\!\!\sum_{0<\|\mathbf h\|_{\infty}\le H}\ \prod_{\nu\le J}
+\frac{1}{1+|h_{\nu}|}\ \Bigl|\sum_{i\le N}e(\langle\mathbf h,x_{i}\rangle)
+\Bigr|\Bigr)
+\]
+with $C$ absolute.  Since $\epsilon_{H}\ll(\log H)/H$, this is the
+asserted inequality up to the two log-power losses $\log H$ and $J$.
+\end{theorem}
+
+\begin{proof}
+Write $\chi^{\pm}_{\nu}:=\chi^{\pm}_{I_{\nu}}$,
+$A:=\#\{i:x_{i}\in B\}=\sum_{i}\prod_{\nu}\mathbf 1_{I_{\nu}}(x_{i,\nu})$,
+and for $\mathbf h\in\mathbb Z^{J}$,
+$\Sigma(\mathbf h):=\sum_{i\le N}e(\langle\mathbf h,x_{i}\rangle)$,
+$W(\mathbf h):=\prod_{\nu}(1+|h_{\nu}|)^{-1}$,
+$\mathcal E:=\sum_{0<\|\mathbf h\|_{\infty}\le H}W(\mathbf h)|\Sigma(\mathbf h)|$.
+
+\emph{A product expansion.}  Let $g_{1},\dots,g_{J}$ be real
+trigonometric polynomials of degree $\le H$ with
+$|\hat g_{\nu}(h)|\le\gamma_{\nu}/(1+|h|)$ for all $|h|\le H$ and some
+$\gamma_{\nu}\ge0$.  Then
+$\prod_{\nu}g_{\nu}(y_{\nu})
+=\sum_{\|\mathbf h\|_{\infty}\le H}\bigl(\prod_{\nu}\hat g_{\nu}(h_{\nu})
+\bigr)e(\langle\mathbf h,\mathbf y\rangle)$, so
+\begin{equation}\label{eq:expand}
+\Bigl|\sum_{i\le N}\prod_{\nu}g_{\nu}(x_{i,\nu})
+-N\prod_{\nu}\hat g_{\nu}(0)\Bigr|
+\le\Bigl(\prod_{\nu}\gamma_{\nu}\Bigr)\,\mathcal E .
+\end{equation}
+
+\emph{Upper bound.}  Apply this with $g_{\nu}=\chi^{+}_{\nu}$.  By
+Proposition~\ref{prop:onesided}(iii) and, at $h=0$,
+$\hat\chi^{+}_{\nu}(0)=|I_{\nu}|+O(\epsilon_{H})\le1+\epsilon_{H}$, we may
+take $\gamma_{\nu}=1+\epsilon_{H}$, so
+$\prod\gamma_{\nu}\le(1+\epsilon_{H})^{J}\le e^{J\epsilon_{H}}\le e$.
+Also
+\[
+\Bigl|\prod_{\nu}\hat\chi^{+}_{\nu}(0)-\operatorname{vol}(B)\Bigr|
+=\Bigl|\prod_{\nu}\bigl(|I_{\nu}|+\delta_{\nu}\bigr)
+-\prod_{\nu}|I_{\nu}|\Bigr|
+\le J\epsilon_{H}(1+\epsilon_{H})^{J-1}\le e\,J\epsilon_{H},
+\]
+where $|\delta_{\nu}|\le\epsilon_{H}$, by the same telescoping as in
+Lemma~\ref{lem:telescope} (each factor is at most $1+\epsilon_{H}$).
+Since $\mathbf 1_{B}\le\prod_{\nu}\chi^{+}_{\nu}$ by
+Proposition~\ref{prop:onesided}(i) and Lemma~\ref{lem:telescope},
+\[
+A\le\sum_{i}\prod_{\nu}\chi^{+}_{\nu}(x_{i,\nu})
+\le N\operatorname{vol}(B)+e\,NJ\epsilon_{H}+e\,\mathcal E .
+\]
+
+\emph{Lower bound.}  By Lemma~\ref{lem:telescope} applied pointwise with
+$a_{\nu}=\mathbf 1_{I_{\nu}}(y_{\nu})$, $c_{\nu}=\chi^{+}_{\nu}(y_{\nu})$,
+$b_{\nu}=\chi^{-}_{\nu}(y_{\nu})$,
+\[
+A\ \ge\ \sum_{i}\prod_{\nu}\chi^{+}_{\nu}(x_{i,\nu})
+-\sum_{\nu=1}^{J}\ \sum_{i}\bigl(\chi^{+}_{\nu}-\chi^{-}_{\nu}\bigr)
+(x_{i,\nu})\prod_{\mu\ne\nu}\chi^{+}_{\mu}(x_{i,\mu}).
+\]
+The first sum was bounded from below in the previous paragraph by
+$N\operatorname{vol}(B)-e\,NJ\epsilon_{H}-e\,\mathcal E$.  For each
+$\nu$, the inner sum is of the form treated by \eqref{eq:expand} with
+$g_{\nu}=\chi^{+}_{\nu}-\chi^{-}_{\nu}$ and $g_{\mu}=\chi^{+}_{\mu}$ for
+$\mu\ne\nu$; here $|\hat g_{\nu}(h)|\le2/(1+|h|)$ for $0<|h|\le H$ by
+Proposition~\ref{prop:onesided}(iii), and
+$\hat g_{\nu}(0)=\hat\chi^{+}_{\nu}(0)-\hat\chi^{-}_{\nu}(0)
+\le2\epsilon_{H}\le2$, so $\gamma_{\nu}=2$ and
+$\prod_{\mu}\gamma_{\mu}\le2e$.  Hence
+\[
+\sum_{i}\bigl(\chi^{+}_{\nu}-\chi^{-}_{\nu}\bigr)(x_{i,\nu})
+\prod_{\mu\ne\nu}\chi^{+}_{\mu}(x_{i,\mu})
+\le N\cdot2\epsilon_{H}(1+\epsilon_{H})^{J-1}+2e\,\mathcal E
+\le 2e\,N\epsilon_{H}+2e\,\mathcal E .
+\]
+Summing over $\nu$ and combining,
+$A\ge N\operatorname{vol}(B)-3e\,NJ\epsilon_{H}-3e\,J\,\mathcal E$.
+Together with the upper bound this gives the theorem with $C=3e$.
+\end{proof}
+
+\begin{remark}\label{rem:ETuse}
+Two remarks on the two losses.  (a) The factor $\log H$ inside
+$\epsilon_{H}$ comes from taking $s=\lceil\log H\rceil$ convolutions, which
+is what makes the truncation tail $\tau$ drop below $1/H$; with $s$
+bounded the tail is bounded below by an absolute constant and the
+construction fails.  It is removed by Vaaler's polynomials, which we do
+not need.  (b) The factor $J$ on the exponential-sum term comes from the
+minorant, which is not non-negative and so is handled by
+Lemma~\ref{lem:telescope} rather than by a product.  In
+\S\ref{sec:schedule} both losses are absorbed: $J\ll(\log\log n)^{1/3}$
+and $\log H\ll\log\log n$, while $H=(\log n)^{2}$, so
+$NJ\epsilon_{H}\ll N(\log n)^{-1}$ and the factor $J$ is dominated by the
+saving of \S B.8 with room to spare.
+\end{remark}
 
 \end{document}
