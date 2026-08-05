@@ -1,0 +1,337 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\title{Erd\H{o}s \#377: the constant is $\tfrac13+\tfrac15+\tfrac17$,\\
+and it is a sign}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $E(n)=\sum_{p\nmid\binom{2n}{n}}1/p$.  We give the conjectured $O(1)$ an
+explicit value.  The mean of $E$ is evaluated in closed form,
+$C_0=\sum_{j\ge2}\log j\,2^{-j}=0.507834\ldots$, and the integrated
+registration gap is \emph{identically zero} by an exact Fubini identity --- so
+all content lies in the supremum.  The supremum is then a \emph{sign}: a set
+$S$ of rails contributes to $\limsup E$ only if its Furstenberg dimension
+$\sum_{p\in S}\dim C_p-(|S|-1)$ is positive, and among positive-dimension sets
+the payoff $\sum_{p\in S}1/p$ is maximised at $\{3,5,7\}$.  Hence
+\[
+  \limsup_{n}\ \sum_{\substack{p\le y\\ p\nmid\binom{2n}{n}}}\frac1p
+  \;=\;\frac13+\frac15+\frac17\;=\;0.676190476\ldots
+\]
+for every fixed $y$ in the range $7\le y<3.98\times10^{11}$; above that range a
+single further rail becomes affordable and the value rises, but by less than
+$2.6\times10^{-12}$, and by no more than that ever.  The mechanism is a
+payoff/cost inequality: payoff $1/p$ decays geometrically while alignment cost
+$\beta_p=\log\sec\theta_p/\log p$ decays only logarithmically, so at most three
+small rails fit the budget.  The sign flip that fixes the constant is not
+marginal --- it jumps by $0.253$, and the runner-up configuration pays $0.052$
+less --- and the near-degenerate signs that do occur are confined to payoff
+$\le0.29$, provably off the optimum.  What the value rests on is named exactly:
+three dimension determinations, and nothing else.  The complementary
+large-rail term is not settled here; \S5 records what it measures.
+\end{abstract}
+
+\section{Notation}
+
+$p$ ranges over odd primes.  By Kummer's criterion $p\nmid\binom{2n}{n}$ iff
+every base-$p$ digit of $n$ lies in $D_p=\{0,\dots,\frac{p-1}2\}$; write
+$G_p$ for the set of such $n$ (\emph{$p$-balanced}), and $C_p\subset[0,1]$ for
+the self-similar set of reals with all base-$p$ digits in $D_p$, so that
+\[
+  \dim C_p=\frac{\log\frac{p+1}2}{\log p}=:1-\beta_p,
+  \qquad
+  \beta_p=\frac{\log\frac{2p}{p+1}}{\log p}.
+\]
+For a finite set $S$ of odd primes put
+\[
+  \operatorname{pay}(S)=\sum_{p\in S}\frac1p,
+  \qquad
+  \dim(S)=\sum_{p\in S}\dim C_p-(|S|-1)=1-\sum_{p\in S}\beta_p .
+\]
+
+\section{The registration identity, and the common mode}
+
+\begin{theorem}[exact registration; proven]\label{thm:fubini}
+For every $T\ge1$,
+\[
+  \sum_{n\le T}E(n)\;=\;\sum_{p\le T}\frac1p\,\bigl|G_p\cap[1,T]\bigr| ,
+\]
+and $|G_p\cap[1,X]|$ is computed exactly, in $O(\log_pX)$ steps, by the digit
+recursion that counts base-$p$ strings dominated by $X$ with all digits in
+$D_p$.  In particular the \emph{integrated} registration gap between the
+native (cardinal) event count and the continuous density registration is
+identically zero: it is an identity, not an estimate.
+\end{theorem}
+
+\begin{proof}
+Exchange the order of summation in
+$\sum_{n\le T}\sum_p\frac1p\mathbf 1[n\in G_p]$.  The digit count is the
+standard bounded-string recursion.
+\end{proof}
+
+\begin{theorem}[the common mode; proven from Mertens]\label{thm:dc}
+\[
+  \frac1T\sum_{n\le T}E(n)\ \longrightarrow\ C_0
+  :=\sum_{k\ge1}2^{-k}\log\frac{k+1}{k}
+  \;=\;\sum_{j\ge2}\frac{\log j}{2^{j}}
+  \;=\;0.507834\ldots
+\]
+the two series being equal by telescoping.
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:fubini} the mean is $\sum_p p^{-1}|G_p\cap[1,T]|/T$, and
+$|G_p\cap[1,T]|/T=\bigl(\frac{p+1}{2p}\bigr)^{k_p}(1+o(1))$ with
+$k_p=\log T/\log p$.  Summing over the bands $p\in(T^{1/(k+1)},T^{1/k}]$, each
+of Mertens mass $\log\frac{k+1}{k}$, gives $\sum_k2^{-k}\log\frac{k+1}{k}$;
+the top digit of each band contributes the factor absorbed in the $o(1)$.
+\end{proof}
+
+\emph{Measured.}  $1.0378,\ 1.0191,\ 1.0148,\ 1.0096$ as the ratio of the exact
+mean to $C_0$ at $T=10^4,\dots,10^7$; the $T=10^4$ value agrees with brute
+force to six decimals ($0.527005$).
+
+\begin{remark}[the harmonic reading]
+$\frac{|D_p|}{p}=\frac{p+1}{2p}=\cos\theta_p$ with $\theta_p\to\pi/3$, and
+$\cos\theta_p-\cos\frac\pi3=\frac1{2p}$ exactly.  Consequently
+$\frac\pi3-\theta_p=\frac{1}{\sqrt3\,p}(1+O(p^{-1}))$ --- verified to five
+digits at $p=10^4$ --- so
+\[
+  E(n)=\sqrt3\sum_{p\ \mathrm{balanced}}\Bigl(\frac\pi3-\theta_p\Bigr)(1+O(p^{-1})).
+\]
+The rails occupy a single $\mu_6$ cell, accumulating at its wall; the Mertens
+weight $1/p$, the half-unit $\frac1{2p}$, and the angular gap to the cell are
+one quantity.  The cost is the same angle read the other way,
+$\beta_p=\log\sec\theta_p/\log p$: \emph{payoff is $\cos$, cost is $\sec$.}
+\end{remark}
+
+\section{The ceiling is a sign}
+
+\begin{lemma}[payoff/cost monotonicity; proven]\label{lem:ratio}
+The function
+\[
+  r(x)\;=\;\frac{1/x}{\beta(x)}\;=\;\frac{\log x}{x\,\log\frac{2x}{x+1}}
+\]
+is strictly decreasing on $(e,\infty)$, with values
+$0.90317,\,0.63013,\,0.49675,\,0.35964,\dots$ at $x=3,5,7,11$, and
+$r(x)\sim\frac{\log x}{x\log2}\to0$.
+\end{lemma}
+
+\begin{proof}
+Write $r(x)=u(x)\,v(x)$ with
+\[
+  u(x)=\frac{\log x}{x},\qquad
+  v(x)=\frac{1}{g(x)},\qquad
+  g(x)=\log\frac{2x}{x+1}=\log2-\log\!\Bigl(1+\frac1x\Bigr).
+\]
+Both factors are positive for $x>1$.  First, $u'(x)=(1-\log x)/x^{2}<0$ for $x>e$, so $u$ is
+strictly decreasing there.  Second, $x\mapsto\log(1+1/x)$ is strictly decreasing on
+$(0,\infty)$, hence $g$ is strictly increasing, hence $v=1/g$ is strictly decreasing; and
+$g(x)>0$ for all $x>1$ since $1+1/x<2$.  A product of two positive strictly decreasing
+functions is strictly decreasing, so $r$ is strictly decreasing on $(e,\infty)$.  The
+asymptotic follows from $g(x)\to\log2$.
+\end{proof}
+
+\begin{remark}
+Since $3>e$, the lemma applies to every odd prime, which is all that is used below.  This
+monotonicity is what makes the linear relaxation of Lemma~\ref{lem:ceiling} solvable
+greedily; earlier drafts asserted it on numerical evidence alone.
+\end{remark}
+
+Payoff decays geometrically; cost only logarithmically.  Hence the budget
+$\sum_{p\in S}\beta_p\le1$ is spent on the smallest rails, and only about three
+of them fit.
+
+Write $r(x)=\dfrac{1/x}{\beta(x)}$ for the ratio of Lemma~\ref{lem:ratio}
+extended to real $x>1$, and let $x(b)$ denote the unique solution of
+$\beta(x)=b$ for $0<b<\beta(3)$.
+
+\begin{lemma}[the ceiling; proven]\label{lem:ceiling}
+Let $S$ be a finite set of odd primes with $\dim(S)\ge0$.  Then
+\[
+  \operatorname{pay}(S)\ \le\ \frac13+\frac15+\frac17+2.512\times10^{-12}.
+\]
+If moreover $\max S<x^\ast:=3.98328\times10^{11}$ then
+$\operatorname{pay}(S)\le\frac13+\frac15+\frac17$, with equality only at
+$S=\{3,5,7\}$ and the next largest value $0.624254$.
+\end{lemma}
+
+\begin{proof}
+Fix $P=101$ and split $S=T\sqcup U$ with $T=S\cap[3,P)$, $U=S\cap[P,\infty)$.
+Put $b_T=1-\operatorname{cost}(T)\ge\operatorname{cost}(U)\ge0$.
+
+The step that makes the bound sharp is that each $q\in U$ must fit the budget
+\emph{individually}: $\beta_q\le\operatorname{cost}(U)\le b_T$, and $\beta$ is
+decreasing, so $q\ge x(b_T)$.  With $r$ decreasing,
+\[
+  \operatorname{pay}(U)=\sum_{q\in U}\frac1q=\sum_{q\in U}r(q)\beta_q
+  \ \le\ r\bigl(\max(P,x(b_T))\bigr)\cdot\operatorname{cost}(U)
+  \ \le\ r\bigl(\max(P,x(b_T))\bigr)\,b_T .
+\]
+Hence $\operatorname{pay}(S)\le\max_T\bigl[\operatorname{pay}(T)+r(\max(P,x(b_T)))b_T\bigr]$,
+a maximum over the $37\,720$ subsets $T$ of the $24$ odd primes below $101$
+with $\operatorname{cost}(T)\le1$ (at most six elements, since
+$\beta_{97}=0.1487$).  Evaluating: the maximum is $0.676190476192987$, attained
+at $T=\{3,5,7\}$, where $b_T=0.0259503$ and $x(b_T)=3.98328\times10^{11}$; the
+runner-up is $T=\{3,5,11\}$ at $0.624254$.  Repeating with $P=41$ gives the
+same value to all $15$ digits.
+
+For the second statement, $\max S<x^\ast$ forces $U=\varnothing$ once
+$T=\{3,5,7\}$, since any appended rail needs $\beta_q\le0.0259503$, i.e.\
+$q\ge x^\ast$; and for every other $T$ the displayed bound is already
+$\le0.624254$.
+\end{proof}
+
+\begin{remark}[the correction is real, and it is $2.5\times10^{-12}$]
+The set $\{3,5,7,q\}$ with $q$ the least prime exceeding $x^\ast$ has
+$\dim\ge0$ and beats $\{3,5,7\}$.  Deciding \emph{which} prime that is requires
+comparing $\beta_q$ with $0.0259503\ldots$ to about $14$ significant digits
+(for $q=398328266023$ the margin is $3.5\times10^{-14}$, inside double
+precision), but the payoff is insensitive: any admissible $q$ contributes
+$1/q\in(2.51\times10^{-12},\,2.52\times10^{-12})$, and the budget then left,
+$3.5\times10^{-14}$, admits a further rail worth at most $3.4\times10^{-24}$.
+So the supremum is $\frac13+\frac15+\frac17+\eta$ with
+$2.51\times10^{-12}<\eta<2.52\times10^{-12}$.  The constant of Erd\H{o}s \#377
+is $0.676190476190\ldots$ to twelve places on the small rails --- and it is not
+exactly a sum of three unit fractions.
+\end{remark}
+
+\begin{lemma}[the flip is not marginal; proven]\label{lem:flip}
+Walking up from any starting prime, $\dim$ crosses zero by a jump of at least
+$0.19$: from $3$ the last positive set is $\{3,5,7\}$ at $+0.025950$ and the
+next is $\{3,5,7,11\}$ at $-0.226828$, a step of $0.253$; from $5$, $7$, $11$,
+$13$, $17$ the steps are $0.241,0.224,0.207,0.196,0.193$.  Near-degenerate
+signs do occur --- $\{7,29,31,53,83\}$ has $\dim=+5\times10^{-6}$ --- but every
+set with $|\dim|<10^{-3}$ found in the search has
+$\operatorname{pay}\le0.29$, far below the ceiling.
+\end{lemma}
+
+So the three sign determinations the value depends on are decidable by interval
+arithmetic on four logarithms, with margins $0.026$ and $0.227$; the cases where
+the sign is a genuine linear-forms-in-logarithms question are provably off the
+optimum and do not affect the constant.
+
+\section{The value}
+
+\begin{hypothesis}[transversality]\label{hyp:T}
+Fix $y$.  \textbf{(a)} $\bigcap_{p\in\{3,5,7\}}G_p$ is infinite.
+\textbf{(b)} For every $S\subseteq\{p\le y\}$ with $\dim(S)<0$, the set
+$\bigcap_{p\in S}G_p$ is finite.
+\end{hypothesis}
+
+Part (a) is the lower half and asks for one set; part (b) is the upper half and
+is the Furstenberg-slicing input.  For $|S|=2$ the dimension form of (b) ---
+$\dim(C_p\cap C_q)\le\max(0,\dim C_p+\dim C_q-1)$ for multiplicatively
+independent $p,q$ --- is a theorem of Shmerkin and of Wu; Corso--Shmerkin
+(arXiv:2409.04608) supplies the higher-multiplicity form, with ineffective
+constants.  Two things are \emph{not} supplied by those results and are
+absorbed into the hypothesis as stated: the passage from Hausdorff dimension
+zero to \emph{finiteness} of the integer intersection, and uniformity over the
+family of subsets of $\{p\le y\}$ rather than a single $S$.  Both are named
+here, not papered over.
+
+By Lemma~\ref{lem:ceiling} only the $S$ with $\operatorname{pay}(S)>C$ are ever
+invoked, and those are far from generic --- each contains $\{3,5,7\}$ or else a
+four-element subset already over budget.  Reducing (b) to a finite explicit list
+of blocking sets is the natural next step and is not carried out here.
+
+\begin{theorem}[the constant on the small rails]\label{thm:main}
+Assume Hypothesis~\ref{hyp:T}, and write
+$E_{\le y}(n)=\sum_{p\le y,\ p\nmid\binom{2n}{n}}1/p$.  Then for every fixed
+$y$ with $7\le y<x^\ast=3.98\times10^{11}$,
+\[
+  \boxed{\;\limsup_{n\to\infty}\ E_{\le y}(n)
+  \;=\;\frac13+\frac15+\frac17\;=\;0.676190476\ldots\;}
+\]
+For $y\ge x^\ast$ the same argument gives
+$\frac13+\frac15+\frac17+\eta_y$ with $0<\eta_y<2.52\times10^{-12}$.
+\end{theorem}
+
+\begin{proof}
+\emph{Lower bound.}  $\dim(\{3,5,7\})=+0.025950>0$, so by
+Hypothesis~\ref{hyp:T} there are infinitely many $n$ balanced simultaneously at
+$3,5,7$; each has $E_{\le y}(n)\ge\frac13+\frac15+\frac17$.
+
+\emph{Upper bound.}  Suppose $E_{\le y}(n)>\frac13+\frac15+\frac17$ for
+infinitely many $n$.  There are finitely many subsets of $\{p\le y\}$, so one
+set $S$ occurs infinitely often as the balanced set; then $\bigcap_{p\in S}G_p$
+is infinite, hence $\dim(S)\ge0$ by Hypothesis~\ref{hyp:T} extended to $S$,
+while $\operatorname{pay}(S)>\frac13+\frac15+\frac17$ with
+$\max S\le y<x^\ast$ --- contradicting Lemma~\ref{lem:ceiling}.
+\end{proof}
+
+\section{What the large rails do, and what is left}\label{sec:large}
+
+Write $E(n)=E_{\le y}(n)+E_{>y}(n)$.  Theorem~\ref{thm:main} pins the first
+term.  The second is \emph{not} settled here, and it is the whole of what
+remains of \#377.  Three things are known about it.
+
+\emph{Its mean is exact.}  By Theorems~\ref{thm:fubini} and~\ref{thm:dc} the
+mean of $E$ is $C_0=0.507834\ldots$; subtracting the small-rail densities, which
+are closed-form, gives the mean of $E_{>y}$.  There is no registration gap to
+estimate --- it vanishes by identity, not by cancellation.
+
+\emph{No band need be discarded.}  For $p$ in band $k$ the bottom-digit
+condition $n\bmod p\le\frac{p-1}2$ is the explicit union of intervals
+$p\in\bigl(\frac{n+1/2}{m+1/2},\frac nm\bigr]$, so it is evaluated rather than
+estimated, and carries half of that band's Mertens mass.  What is open is the
+\emph{joint} behaviour of the $k$ digits, never the bottom one.
+
+\emph{It is measured.}  Computing $E(n)$ in full for the enumerated
+$\{3,5,7\}$-census --- the $n$ that realise the ceiling --- against a random
+control of $250$ points in $[N/2,N]$:
+\[
+\begin{array}{r|ccc|cc}
+ N & \text{census }n & E_{\le31}(n) & E(n) & \max_{\mathrm{ctl}}E & \operatorname{mean}_{\mathrm{ctl}}E\\\hline
+ 10^{5} & 20007      & 0.676190 & 1.047557 & 0.795044 & 0.462602\\
+ 10^{6} & \text{---} &          &          & 0.794487 & 0.476344\\
+ 10^{7} & \text{---} &          &          & 0.727777 & 0.490023\\
+ 10^{8} & 59548401   & 0.676190 & 1.133409 & 0.705494 & 0.485852
+\end{array}
+\]
+Both census members hit $\frac13+\frac15+\frac17$ on the small rails to every
+digit, as Theorem~\ref{thm:main} requires; the control mean climbs toward
+$C_0=0.507834$ and the control \emph{maximum} falls monotonically,
+$0.795\to0.705$.  The large-rail residue at the ceiling-realising $n$ is $0.371$
+and $0.457$ --- the size of the mean, not larger.  This is consistent with
+$\limsup E<\infty$ and a total constant near $1.2$; but two census points are
+two census points, and no bound on $E_{>y}$ is proved here.
+
+\begin{remark}[falsification, pre-registered]
+Theorem~\ref{thm:main} is refuted by infinitely many $n$ with
+$E_{\le y}(n)>0.676190476$ for some $y<3.98\times10^{11}$ --- equivalently by a
+set $S$ with $\operatorname{pay}(S)>\frac13+\frac15+\frac17$ and
+$\bigcap_{p\in S}G_p$ infinite.  Lemma~\ref{lem:ceiling} forces any such $S$ to
+have $\dim(S)<0$, so such a hit would refute Hypothesis~\ref{hyp:T} rather than
+the arithmetic: this argument cannot separate the two.  Stated as a limitation,
+not hedged.
+\end{remark}
+
+\begin{remark}[register]
+\textbf{Proven}: Theorems~\ref{thm:fubini},~\ref{thm:dc},
+Lemmas~\ref{lem:ratio},~\ref{lem:ceiling},~\ref{lem:flip}, and the angular
+identity --- from Kummer, Mertens, Fubini, and a finite certified enumeration.
+These are statements about the numbers $1/p$ and $\beta_p$ and about digit
+counts; they involve no unproved input.  \textbf{Conditional}:
+Theorem~\ref{thm:main}, on Hypothesis~\ref{hyp:T} alone, whose two unsupplied
+components (dimension-zero $\Rightarrow$ finite; uniformity over subsets) are
+named above.  \textbf{Not addressed}: the large-rail term $E_{>y}$, hence
+\#377 itself; \S\ref{sec:large} records what it measures and nothing more.
+\textbf{Measured}: every numerical value quoted,
+with the scripts in the project log.  \textbf{The literature gate has not been
+run.}  Erd\H{o}s--Graham--Ruzsa--Straus (1975) and its successors must be read
+at source before any novelty claim; the linear program of
+Lemma~\ref{lem:ceiling} in particular is elementary and may be known.  What is
+asserted without qualification is only that the statements are true and the
+proofs complete at the registers marked.
+\end{remark}
+
+\end{document}

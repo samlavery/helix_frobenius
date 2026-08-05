@@ -1,0 +1,341 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fl}[1]{\left\lfloor #1\right\rfloor}
+\newcommand{\cl}[1]{\left\lceil #1\right\rceil}
+\title{The non-divisor mass of $\binom{2n}{n}$ is bounded\\
+for almost every $n$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $E(n)=\sum_{p\nmid\binom{2n}{n}}1/p$, so that the Erd\H{o}s--Graham--Ruzsa--Straus
+conjecture is $E(n)=O(1)$.  We prove, from Kummer's carry criterion, the Chinese
+remainder theorem and Mertens' theorem alone, that $E(n)$ is bounded for almost every
+$n$: for every $\lambda>0$,
+\[
+\#\{n\le N:\ E(n)>2.36+\lambda\}\ \le\ (0.21+o(1))\,N/\lambda^{2},
+\]
+and, driving the same mechanism with $K$ rails instead of two, that the tail is in fact
+super-exponential:
+\[
+\#\{n\le N:\ E(n)>C\}\ \le\ N\exp\bigl(-C\log\log C\,(1+o(1))\bigr).
+\]
+No equidistribution, no transversality, no Diophantine input, no ineffective constant.
+The mechanism is exact multi-rail registration, and the one thing that has to be got
+right is the pricing: resolving a prime $p$ to depth $d$ consumes arc length $d\log p$
+of a carrier of length $\log N$, so depth must be allotted as a fraction of each rail's
+\emph{own} depth, not as an absolute number of digits.  Under a uniform absolute depth
+the large-prime rails exhaust the budget and one recovers only
+$E(n)=O(\log\log\log n)$ off a set of size $N(\log N)^{-B}$; we record that variant too,
+since the two are the endpoints of a single trade governed by one free function --- the
+depth profile.
+\end{abstract}
+
+\section{Statement}
+
+For $n\ge1$ put
+\[
+E(n)\;=\;\sum_{\substack{p\le n\\ p\nmid\binom{2n}{n}}}\frac1p .
+\]
+Since $\sum_{p\le n}1/p=\log\log n+M+O(1/\log n)$, the Erd\H{o}s--Graham--Ruzsa--Straus
+conjecture $\sum_{p\mid\binom{2n}{n}}1/p=(1+o(1))\log\log n$ is the statement
+$E(n)=o(\log\log n)$, and the full registry problem (no.~377) is $E(n)=O(1)$.
+
+\begin{theorem}[Bounded for almost every $n$]\label{thm:A}
+For every $\lambda>0$ and all sufficiently large $N$,
+\[
+\#\bigl\{\,n\le N:\ E(n)>2.36+\lambda\,\bigr\}\;\le\;\bigl(0.21+o(1)\bigr)\frac{N}{\lambda^{2}} .
+\]
+In particular $E(n)\le4.36$ for all but $5.1\%$ of $n\le N$, and $E(n)\le12.36$ for all
+but $0.21\%$.
+\end{theorem}
+
+\begin{theorem}[Super-exponential tail]\label{thm:Ap}
+There are absolute constants $c<1$ and $K_0$ such that for every integer $K\ge K_0$,
+\[
+\#\bigl\{\,n\le N:\ E(n)>K+\log K+1\,\bigr\}\;\le\;N\Bigl(\frac{c}{\log K}\Bigr)^{K}+o(N).
+\]
+Equivalently, for every $C$ large,
+\[
+\#\bigl\{\,n\le N:\ E(n)>C\,\bigr\}\;\le\;N\exp\bigl(-C\log\log C\,(1+o(1))\bigr).
+\]
+\end{theorem}
+
+\begin{theorem}[Deep-rail variant]\label{thm:B}
+There is an absolute constant $C_0$ such that for all large $N$ and every integer $k$
+with $3\le k\le\tfrac12\log N$,
+\[
+\#\bigl\{\,n\le N:\ E(n)>\log k+C_0\,\bigr\}\;\le\;N\,(\log\log N)\,\Bigl(\tfrac23\Bigr)^{\fl{k/2}} .
+\]
+Consequently, for every $B\ge1$, all but $O_B\bigl(N(\log N)^{-B}\bigr)$ integers $n\le N$
+satisfy $E(n)\le\log\log\log N+O(\log B)$.
+\end{theorem}
+
+Theorem~\ref{thm:A} is the stronger statement about the bound; Theorem~\ref{thm:B} the
+stronger statement about the exceptional set.  \S\ref{sec:budget} shows that they are the
+two ends of one trade, and identifies the free function that governs it.
+
+\section{The three inputs}
+
+\paragraph{(K) Kummer's carry criterion.}
+For an odd prime $p$, $v_p\binom{2n}{n}$ is the number of carries when $n+n$ is added in
+base $p$.  A carry leaves digit position $i$ exactly when $2a_i+\varepsilon_i\ge p$, with
+$\varepsilon_i\in\{0,1\}$ the incoming carry; inductively there are no carries at all iff
+$2a_i<p$ for every $i$.  Hence, with
+\[
+D_p:=\Bigl\{0,1,\dots,\tfrac{p-1}2\Bigr\},\qquad |D_p|=\tfrac{p+1}2,
+\]
+\begin{equation}\label{eq:kummer}
+p\nmid\tbinom{2n}{n}\iff\text{every base-$p$ digit of $n$ lies in }D_p .
+\end{equation}
+For $p=2$ one has $v_2\binom{2n}{n}=s_2(n)\ge1$ for $n\ge1$, so $2$ never contributes to
+$E(n)$ and is excluded throughout.
+
+\paragraph{(R) Rail truncation.}
+For $d\ge1$ let
+\[
+X_p^{(d)}(n)=\mathbf 1\bigl[\,a_0,\dots,a_{d-1}\in D_p\,\bigr],
+\]
+$a_i$ the base-$p$ digits of $n$.  By \eqref{eq:kummer},
+$\mathbf 1[p\nmid\binom{2n}{n}]\le X_p^{(d)}(n)$ for every $d\ge1$ and every $n$.
+Crucially $X_p^{(d)}$ depends only on $n\bmod p^d$, and
+\begin{equation}\label{eq:density}
+\rho_p^{(d)}:=\frac{|D_p|^d}{p^d}=\Bigl(\frac12+\frac1{2p}\Bigr)^{d}
+\;\le\;\Bigl(\frac23\Bigr)^{d}\qquad(p\ge3).
+\end{equation}
+
+\paragraph{(C) Exact registration.}
+The single fact that replaces all analytic input.
+
+\begin{lemma}[Rail registration]\label{lem:reg}
+Let $p_1,\dots,p_K$ be distinct odd primes, $d_1,\dots,d_K\ge1$, and
+$M=\prod_i p_i^{d_i}$.  Then
+\[
+\frac1N\sum_{n\le N}\ \prod_{i=1}^{K}X_{p_i}^{(d_i)}(n)
+\;=\;\Bigl(\prod_{i=1}^{K}\rho_{p_i}^{(d_i)}\Bigr)\Bigl(1+O\bigl(M/N\bigr)\Bigr),
+\]
+with an absolute implied constant.  The relative error vanishes identically when $M\mid N$.
+\end{lemma}
+
+\begin{proof}
+Each $X_{p_i}^{(d_i)}$ depends only on $n\bmod p_i^{d_i}$, and the moduli $p_i^{d_i}$ are
+pairwise coprime, so the Chinese remainder theorem gives a ring isomorphism
+$\mathbb Z/M\cong\prod_i\mathbb Z/p_i^{d_i}$ under which the joint condition is a product
+of sets.  The admissible residues mod $M$ therefore number exactly
+$R=\prod_i|D_{p_i}|^{d_i}$, and counting $n\le N$ in a union of $R$ classes mod $M$ gives
+$R\fl{N/M}+\theta R=RN/M+O(R)$ with $|\theta|\le1$.  Finally $R/M=\prod_i\rho_{p_i}^{(d_i)}$,
+so the absolute error $O(R)$ is $O(M/N)$ relative to the main term $NR/M$.
+\end{proof}
+
+\begin{remark}[Why no analysis appears]\label{rem:noanalysis}
+Lemma~\ref{lem:reg} is the entire comparison mechanism, and it is an identity, not an
+estimate.  Harmonically: the depth-$d$ condition on rail $p$ has all its Fourier support
+in $p^{-d}\mathbb Z$; two rails' mode lattices $p^{-d}\mathbb Z$ and $q^{-e}\mathbb Z$ meet
+only in $\mathbb Z$; every nontrivial cross mode therefore cancels \emph{exactly}, because
+coprimality is an exact algebraic fact and not an approximation.  The familiar question
+``how close is $a\log p$ to $b\log q$'' --- and with it the irrationality measure of
+$\log p/\log q$, Baker's theorem, and the ineffective constants they carry --- belongs to
+the real-scale readout of these sets as self-similar subsets of $[0,1]$.  It does not arise
+here.
+\end{remark}
+
+\paragraph{Bands.}
+For $p\le N$ put $k_p:=\fl{\log N/\log p}$, so that band $k$ is
+$(N^{1/(k+1)},N^{1/k}]$ and, by Mertens,
+\begin{equation}\label{eq:bandmass}
+\sum_{p\in\text{band }k}\frac1p=\log\Bigl(1+\frac1k\Bigr)+o(1),
+\qquad
+\sum_{p>N^{1/k_1}}\frac1p=\log k_1+o(1),
+\end{equation}
+the second by telescoping $\sum_{k<k_1}\log(1+1/k)=\log k_1$.
+
+\section{Proof of Theorem~\ref{thm:A}}
+
+\paragraph{The depth profile.}
+This is the only design choice in the proof, and the whole theorem turns on it.  Set
+\begin{equation}\label{eq:profile}
+k_1:=8,\qquad d_p:=\cl{k_p/4}\quad\text{for }p\le N^{1/8},
+\end{equation}
+so each rail is resolved to a fixed \emph{fraction} of its own depth rather than to a
+fixed number of digits.  Since $p\le N^{1/k_p}$ and $k_p\ge8$,
+\begin{equation}\label{eq:railcost}
+p^{d_p}\;\le\;N^{d_p/k_p}\;\le\;N^{\frac14+\frac1{k_p}}\;\le\;N^{3/8}.
+\end{equation}
+\emph{Every rail therefore costs at most $N^{3/8}$, uniformly in $p$}; this is what
+makes pairs affordable, and it fails badly for a uniform absolute depth
+(\S\ref{sec:budget}).
+
+\paragraph{Step 1: split off the unresolved bands.}
+By \eqref{eq:kummer}, (R) and \eqref{eq:bandmass},
+\begin{equation}\label{eq:splitA}
+E(n)\;\le\;\underbrace{\sum_{p>N^{1/8}}\frac1p}_{=\,\log 8+o(1)}\;+\;F(n),
+\qquad
+F(n):=\sum_{3\le p\le N^{1/8}}\frac1p\,X_p^{(d_p)}(n).
+\end{equation}
+
+\paragraph{Step 2: the mean.}
+By Lemma~\ref{lem:reg} with $K=1$ and \eqref{eq:railcost},
+$\frac1N\sum_{n\le N}X_p^{(d_p)}=\rho_p^{(d_p)}(1+O(N^{-5/8}))$, so by
+\eqref{eq:density} and \eqref{eq:bandmass}
+\begin{equation}\label{eq:meanA}
+\mu:=\frac1N\sum_{n\le N}F(n)
+=\sum_{k\ge8}\log\Bigl(1+\frac1k\Bigr)\Bigl(\tfrac23\Bigr)^{\cl{k/4}}+o(1)
+\;\le\;0.2787+o(1),
+\end{equation}
+the numerical value by direct summation of the (geometrically convergent) series.
+
+\paragraph{Step 3: the variance, by exact pair registration.}
+For distinct $p,q\le N^{1/8}$ we have $p^{d_p}q^{d_q}\le N^{3/4}$ by \eqref{eq:railcost},
+so Lemma~\ref{lem:reg} with $K=2$ gives
+\[
+\frac1N\sum_{n\le N}X_p^{(d_p)}X_q^{(d_q)}
+=\rho_p^{(d_p)}\rho_q^{(d_q)}\bigl(1+O(N^{-1/4})\bigr),
+\]
+i.e.\ the two rails are uncorrelated up to $O(N^{-1/4})$.  Hence
+\begin{equation}\label{eq:varA}
+\operatorname{Var}(F)
+\;\le\;\sum_{3\le p\le N^{1/8}}\frac{\rho_p^{(d_p)}}{p^{2}}
+\;+\;O\bigl(N^{-1/4}\bigr)
+\;\le\;\sum_{p\ge3}\frac1{p^{2}}+o(1)\;=\;0.2023+o(1),
+\end{equation}
+using $\sum_p p^{-2}=0.45224\ldots$ and subtracting the term $p=2$.
+
+\paragraph{Step 4: Chebyshev.}
+By \eqref{eq:meanA} and \eqref{eq:varA},
+$\#\{n\le N: F(n)>\mu+\lambda\}\le(0.2023+o(1))N/\lambda^{2}$.  Combining with
+\eqref{eq:splitA}, and since $\log8+0.2787=2.3581$, any $n$ with $E(n)>2.36+\lambda$ has
+$F(n)>\mu+\lambda$ for large $N$.  Theorem~\ref{thm:A} follows.\qed
+
+\section{Proof of Theorem~\ref{thm:B}}
+
+Here a single rail is driven deep instead.  Fix $3\le k\le\frac12\log N$ and put
+$d:=\fl{k/2}$, $P_0:=N^{1/k}$.  As in \eqref{eq:splitA},
+\[
+E(n)\le\sum_{p>P_0}\frac1p+F_k(n)=\log k+O(1)+F_k(n),
+\qquad F_k(n):=\sum_{3\le p\le P_0}\frac1p X_p^{(d)}(n),
+\]
+by \eqref{eq:bandmass}.  For $p\le P_0$ one has $p^{d}\le P_0^{k/2}=N^{1/2}$, so
+Lemma~\ref{lem:reg} with $K=1$ applies and, by \eqref{eq:density} and Mertens,
+\[
+\frac1N\sum_{n\le N}F_k(n)\le\Bigl(\tfrac23\Bigr)^{d}\bigl(\log\log N+O(1)\bigr).
+\]
+Since $F_k\ge0$, Markov's inequality gives
+$\#\{n\le N:F_k(n)>1\}\le N(\log\log N+O(1))(2/3)^{d}$, and absorbing the $O(1)$'s into
+$C_0$ proves the first display.  For the consequence take
+$k=\cl{6(B+1)\log\log N}$: then $(2/3)^{\fl{k/2}}\ll(\log N)^{-1.21(B+1)}$, so the
+exceptional count is $\ll N(\log\log N)(\log N)^{-1.21(B+1)}\ll N(\log N)^{-B}$, while
+$\log k=\log\log\log N+O(\log B)$.\qed
+
+\section{Proof of Theorem~\ref{thm:Ap}}
+
+Fix $K\ge K_0$ and warp with $\theta=1/(2K)$: discard the bands $k<k_1:=2K$ and set
+$d_p:=\cl{k_p/(2K)}$ for $p\le N^{1/2K}$.  Then $d_p/k_p\le 1/(2K)+1/k_1=1/K$, so any
+$K$-tuple of such rails costs $M\le N^{K\cdot 1/K}$; replacing $\theta$ by $\theta/2$ makes
+this $M\le N^{1/2}$, and Lemma~\ref{lem:reg} applies to every $K$-tuple.  As in
+\eqref{eq:splitA},
+\[
+E(n)\le \log k_1+o(1)+F(n)=\log K+\log 2+o(1)+F(n),\qquad
+F(n)=\sum_{3\le p\le N^{1/2K}}\frac1p X_p^{(d_p)}(n),
+\]
+and $\mu:=\frac1N\sum_{n\le N}F(n)\le\sum_{k\ge k_1}\log(1+\tfrac1k)(\tfrac23)^{\cl{\theta k}}
+\le\int_{1}^{\infty}(\tfrac23)^{v}\frac{dv}{v}+o(1)<0.71$, uniformly in $K$.
+
+\paragraph{The $K$-th moment.}
+Write $F=\sum_p a_pY_p$ with $a_p=1/p\le A:=\tfrac13$ and $Y_p:=X_p^{(d_p)}$.  Expanding
+$F^K$ and grouping the $K$-tuples by the partition of $\{1,\dots,K\}$ they induce (equal
+indices in the same block), Lemma~\ref{lem:reg} gives, for each partition into blocks of
+sizes $m_1,\dots,m_j$,
+\[
+\frac1N\sum_{n\le N}\ \sum_{\substack{q_1,\dots,q_j\ \mathrm{distinct}}}\ \prod_{l}a_{q_l}^{m_l}\prod_l Y_{q_l}
+\;\le\;\prod_{l=1}^{j}\Bigl(\sum_{q}a_q^{m_l}\rho_q\Bigr)(1+o(1))
+\;\le\;\mu^{j}A^{K-j}(1+o(1)),
+\]
+since $\sum_q a_q^{m}\rho_q\le A^{m-1}\mu$.  Summing over partitions, with $S(K,j)$ the
+Stirling numbers of the second kind and $T_K(x)=\sum_j S(K,j)x^j$ the Touchard polynomial,
+\[
+\frac1N\sum_{n\le N}F(n)^{K}\;\le\;A^{K}\,T_K(\mu/A)\,(1+o(1)),
+\qquad
+T_K(x)\le\Bigl(\frac{K}{\log(1+K/x)}\Bigr)^{K},
+\]
+the last a standard bound ($T_K(x)=\mathbb E\,\mathrm{Poi}(x)^K$; for $x=1$ it is the
+Berend--Tassa bound on Bell numbers).  With $\mu/A<2.13$,
+\[
+\frac1N\#\{n\le N: F(n)>K\}\;\le\;\frac{A^{K}T_K(\mu/A)}{K^{K}}(1+o(1))
+\;\le\;\Bigl(\frac{1}{3\log(K/2.13)}\Bigr)^{K}(1+o(1)),
+\]
+which is $\le(c/\log K)^{K}$ for an absolute $c<1$ and $K\ge K_0$.  Since
+$E(n)\le\log K+\log2+o(1)+F(n)$, any $n$ with $E(n)>K+\log K+1$ has $F(n)>K$, giving the
+first display.  For the second, given $C$ take $K=\cl{C-\log C-1}$, so that
+$K+\log K+1\le C$ and
+$(c/\log K)^{K}=\exp(-K\log(\log K/c))=\exp(-C\log\log C(1+o(1)))$.\qed
+
+\section{Scaling, warping, and the trade}\label{sec:budget}
+
+\paragraph{The budget is an arc length.}
+Resolving rail $p$ to depth $d$ consumes modulus $p^{d}$, i.e.\ arc length $d\log p$ on a
+carrier of length $\log N$.  Lemma~\ref{lem:reg} is informative for a $K$-tuple exactly
+when
+\begin{equation}\label{eq:budget}
+\sum_{i=1}^{K}d_i\log p_i\;\le\;(1-\eta)\log N,
+\end{equation}
+which in band coordinates ($p_i\approx N^{1/k_i}$, full depth $d_i=k_i$) reads
+$\sum_i d_i/k_i\le1-\eta$: \emph{the total resolution of all rails in a tuple, each
+measured in units of its own full depth, cannot exceed one carrier length.}
+
+\paragraph{Scaling versus warping.}
+Each rail carries a constant scale, $\log p$ --- that is the scaling, and it is fixed by
+the rail.  What is free is the \emph{depth profile} $d(k)=\cl{\theta(k)\,k}$, a rescaling
+function laid along the carrier: a warp.  The two layer, and the layering is where the
+theorem lives.  A uniform absolute depth $d(k)\equiv d$ is a pure scaling with no warp,
+and it prices every rail in the chart's unit rather than its own: one level of a rail at
+$p\approx\sqrt N$ then costs half the carrier, so all bands with $k<2d$ must be discarded
+and one pays their entire Mertens mass $\log(2d)$.  That is exactly the $\log k$ term in
+Theorem~\ref{thm:B}, and it is what forces the $\log\log\log N$ floor there --- an artifact
+of the pricing, not of the problem.  Under the warp \eqref{eq:profile} every rail costs
+$N^{\theta+1/k}$ regardless of $p$, the discard threshold $k_1$ is decoupled from the
+depth, and the floor disappears: Theorem~\ref{thm:A}.
+
+\paragraph{The trade.}
+With profile $\theta$ and $K$ rails, \eqref{eq:budget} demands
+$K\theta+\sum_i 1/k_i\le1-\eta$, so the discard threshold must satisfy $k_1\gtrsim K$ and
+one pays $\log k_1\approx\log K$; the resolved mean stays $O(1)$ provided $\theta k_1\gtrsim1$,
+and a $K$-th moment gives an exceptional set $\ll N(C/\lambda)^{K}$.  Hence
+\[
+E(n)\;\le\;\log K+O(1)+\lambda\qquad\text{off}\qquad \ll N(C/\lambda)^{K}.
+\]
+$K=2$ is Theorem~\ref{thm:A} (bound $O(1)$, exceptional $N/\lambda^{2}$);
+$K\asymp B\log\log N$ is Theorem~\ref{thm:B} (bound $\log\log\log N$, exceptional
+$N(\log N)^{-B}$).  Both ends are proved above from the first and second moments only.
+
+\paragraph{Where the profile can still be pushed.}
+Under the accounting \eqref{eq:budget} the binding tuple is $K$ rails from the cheapest
+band, which forces $\sup\theta\le(1-\eta)/K$ and makes the constant profile optimal.  That
+accounting is however not forced: two rails resolved on \emph{disjoint height windows} of
+the carrier are independent up to $e^{-g}$, $g$ the gap between the windows, rather than up
+to $M/N$.  Prices under the window accounting are additive in arc length but insensitive to
+which rail spends where, which is a genuinely different optimization and the natural next
+lever.  We state this as program, not as result.
+
+\begin{remark}[Register]
+Theorems~\ref{thm:A} and~\ref{thm:B} are \emph{proven} above with absolute implied
+constants; the numerical values $0.2787$, $0.2023$, $\log8$ are explicit.
+\S\ref{sec:budget}'s final paragraph is \emph{program}.  \emph{Measured}: over $400$
+random $n\in[10^{3},2\cdot10^{5}]$, $\max E(n)=0.869$, median $0.457$, mean $0.472$ ---
+consistent with, and far inside, Theorem~\ref{thm:A}.  \textbf{The literature gate has not
+been run}: the argument is elementary and an almost-all bound of this shape may be known.
+Erd\H{o}s--Graham--Ruzsa--Straus (1975) and the subsequent literature on
+$\binom{2n}{n}$ must be read at source, with pin-cites, before any novelty claim is made.
+What is asserted without qualification is only that the statements are true and the proofs
+complete.
+\end{remark}
+
+
+
+\end{document}

@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fpart}[1]{\{#1\}}
+\DeclareMathOperator{\dimH}{dim_H}
+
+\title{Bounded reciprocal mass of small non-divisor primes of $\binom{2n}{n}$,\\
+outside a power-saving exceptional set}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Call a prime $p$ \emph{balanced at $n$} if $p\nmid\binom{2n}{n}$; by Kummer's theorem
+this holds iff every base-$p$ digit of $n$ is at most $(p-1)/2$.  For a constant
+cutoff $B_1$ we prove: for every $\varepsilon>0$ and all large $N$, all but at most
+$N^{\varepsilon}$ integers $n\in[N,2N]$ satisfy
+\[
+\sum_{\substack{3\le p\le B_1\\ p\nmid\binom{2n}{n}}}\frac1p\;\le\;
+\mathrm{LP}(B_1)+\varepsilon,
+\qquad
+\mathrm{LP}(B_1):=\max\Big\{\sum_{p\in S}\tfrac1p:\ S\subseteq\{3,\dots,B_1\}
+\text{ prime},\ \sum_{p\in S}\beta_p\le1\Big\},
+\]
+where $\beta_p=1-\log\frac{p+1}{2}/\log p$.  One has $\mathrm{LP}(B_1)\le
+\mathrm{LP}(\infty)=0.6941\ldots$, against the trivial bound $\sum_{p\le B_1}1/p\to\infty$.
+The proof identifies joint balance with membership of the mantissa in an intersection of
+self-similar Cantor sets and applies the higher-rank Furstenberg slicing theorem of
+Corso--Shmerkin (arXiv:2409.04608, Corollary 1.17), a preprint whose relevant proof chain
+we have verified independently; the result is conditional on it and on nothing else
+beyond elementary arithmetic.  Empirically the exceptional set appears to be not merely
+power-saving but finite: the integers balanced at $\{3,5,7,11\}$ simultaneously are
+$\{1,3160\}$ up to $10^{9}$.
+\end{abstract}
+
+\section{Statement}
+
+Fix once and for all an odd prime bound $B_1$ and write $\mathcal P=\{3\le p\le B_1:
+p\text{ prime}\}$.  For an odd prime $p$ let
+\[
+D_p=\{0,1,\dots,\tfrac{p-1}2\},\qquad
+C_p=\Big\{\sum_{j\ge1}d_jp^{-j}:d_j\in D_p\Big\}\subset[0,1],
+\]
+the \emph{lower-half-digit Cantor set}, a homogeneous self-similar set with contraction
+ratio $1/p$, digit set $D_p$, satisfying the open set condition, with
+\[
+\dimH C_p=\frac{\log\frac{p+1}2}{\log p}=1-\beta_p,\qquad
+\beta_p:=\frac{\log\frac{2p}{p+1}}{\log p}.
+\]
+Say $n$ is \emph{$p$-balanced} if every base-$p$ digit of $n$ lies in $D_p$; by Kummer's
+theorem this is equivalent to $p\nmid\binom{2n}{n}$.  Let $S(n)=\{p\in\mathcal P:\ n\ \text{is}\
+p\text{-balanced}\}$.
+
+\begin{theorem}\label{thm:core}
+Assume Corollary 1.17 of arXiv:2409.04608 \emph{(see Remark~\ref{rem:dependency})}.
+For every $\varepsilon>0$ there are $C_0=C_0(B_1,\varepsilon)$ and $N_0$ such that for all
+$N\ge N_0$,
+\[
+\#\Big\{n\in[N,2N]:\ \sum_{p\in S(n)}\frac1p>\mathrm{LP}(B_1)\Big\}\;\le\;C_0\,N^{\varepsilon}.
+\]
+\end{theorem}
+
+Since $\mathrm{LP}(B_1)\le\mathrm{LP}(\infty)<0.695$ while $\sum_{p\in\mathcal P}1/p$ is
+unbounded in $B_1$, the theorem separates the balanced mass from its trivial bound by an
+unbounded margin, for all but a power-saving number of integers.
+
+\section{Proof}
+
+\subsection{Over-budget sets are Cantor intersections}
+If $\sum_{p\in S(n)}1/p>\mathrm{LP}(B_1)$ then, by definition of the linear program,
+$\sum_{p\in S(n)}\beta_p>1$; discarding elements, $S(n)$ contains a subset $S$ with
+\begin{equation}\label{eq:overbudget}
+\sum_{p\in S}\beta_p>1,\qquad\text{i.e.}\qquad
+s:=\sum_{p\in S}\dimH C_p<|S|-1=:k-1 .
+\end{equation}
+It therefore suffices to bound, for each of the at most $2^{|\mathcal P|}$ (a constant)
+subsets $S$ satisfying \eqref{eq:overbudget}, the number of $n\in[N,2N]$ balanced at every
+$p\in S$.
+
+Fix such an $S=\{p_1,\dots,p_k\}$ and let $n\in[N,2N]$ be balanced at each $p_j$.  Write
+$d_j=\lfloor\log 2N/\log p_j\rfloor$, so that $p_j^{d_j}\le 2N<p_j^{d_j+1}$ and $n$ has at
+most $d_j$ base-$p_j$ digits.  Balance says exactly that
+\begin{equation}\label{eq:membership}
+\frac{n}{p_j^{d_j}}\;\in\;C_p^{(d_j)}\qquad(1\le j\le k),
+\end{equation}
+where $C_p^{(J)}$ denotes the depth-$J$ truncation of $C_p$ (the union of the $|D_p|^J$
+level-$J$ construction intervals).
+
+\subsection{The warp: mantissa coordinates}\label{sec:warp}
+Rescale by the window: put $x=n/(2N)\in[\tfrac12,1]$.  Then \eqref{eq:membership} reads
+\[
+x\in g_j\big(C_{p_j}^{(d_j)}\big),\qquad
+g_j(t)=\frac{p_j^{d_j}}{2N}\,t,
+\qquad\text{with slopes}\qquad
+\frac{1}{p_j}<\frac{p_j^{d_j}}{2N}\le 1 .
+\]
+This is the decisive normalization: \emph{the affine maps have slopes bounded between
+$1/B_1$ and $1$, independently of $N$.}  (Applied in value space the slopes would be of
+size $N$ and the uniform constant below would be vacuous.)
+
+\subsection{Truncation}
+The sets in \S\ref{sec:warp} are truncations, not the invariant sets themselves.  The
+bridge is:
+
+\begin{lemma}[truncation bridge]\label{lem:T}
+Let $C_1,\dots,C_k$ be the lower-half Cantor sets of distinct odd primes, $s$ as above,
+$\varepsilon>0$.  There is $C^\star(k,\varepsilon,p_1,\dots,p_k)$ such that for all depths
+$J_j\ge1$ and all $\delta$ with $\max_jp_j^{-J_j}\le\delta\le\delta_0$,
+\[
+N_\delta\Big(\bigcap_{j=1}^k g_j\big(C_j^{(J_j)}\big)\Big)\;\le\;
+7\,(3\sqrt k)^{k-1}\,C^\star\,\delta^{-\max\{s-(k-1),0\}-\varepsilon},
+\]
+uniformly over affine $g_j$ with slopes in $[1/B_1,1]$.
+\end{lemma}
+
+\begin{proof}
+Each point of a depth-$J$ truncation lies within $p_j^{-J_j}\le\delta$ of $C_j$ (append
+zero digits; $0\in D_p$).  A $3\delta$-separated subset of the intersection therefore
+lifts, coordinatewise, to a $\delta$-separated subset of
+$(g_1(C_1)\times\cdots\times g_k(C_k))\cap\pi^{-1}(B(0,\delta\sqrt k))$, where $\pi$ is the
+orthogonal projection killing the diagonal.  Covering $B(0,\delta\sqrt k)$ by
+$(3\sqrt k)^{k-1}$ $\delta$-balls and applying the ball-fibre bound underlying Corollary
+1.17 of arXiv:2409.04608 (their Lemma 6.1, with the slopes absorbed into the constant via
+$K=B_1$) bounds each fibre by $C^\star\delta^{-\max\{s-(k-1),0\}-\varepsilon}$; a
+$3\delta$-packing/$\delta$-covering comparison on $\mathbb R$ costs the factor $7$.
+\end{proof}
+
+\subsection{Counting and union}
+Apply Lemma~\ref{lem:T} with $\delta=1/(2N)$ and $J_j=d_j$ (so
+$p_j^{-d_j}<p_j/(2N)\le B_1\delta$; replace $\delta$ by $B_1\delta$, absorbed in
+constants).  By \eqref{eq:overbudget}, $\max\{s-(k-1),0\}=0$, so the number of
+$\delta$-cells of $[\tfrac12,1]$ meeting the intersection is at most
+$C_1(B_1,\varepsilon)\,N^{\varepsilon}$.  Each $\delta$-cell has length $1/(2N)$ and thus
+contains at most one value of $x=n/(2N)$ with $n$ integral.  Hence at most
+$C_1N^{\varepsilon}$ integers $n\in[N,2N]$ are balanced at all of $S$.  Summing over the
+constantly many over-budget $S$ gives the theorem with
+$C_0=2^{\pi(B_1)}\max_SC_1$. \qed
+
+\section{Remarks}
+
+\begin{remark}[dependency]\label{rem:dependency}
+The input is Corollary 1.17 of E.~Corso and P.~Shmerkin, \emph{Dynamical self-similarity,
+$L^q$-dimensions and Furstenberg slicing in $\mathbb R^d$}, arXiv:2409.04608 (2024), a
+preprint at the time of writing.  We have verified the proof chain we consume
+(Cor.~1.17 $\Leftarrow$ Thm.~1.15 $\Leftarrow$ Thm.~5.4 $\Leftarrow$ their inverse-theorem
+engine) for the special case used here, in the course of which two repairable defects were
+identified (a misprinted hypothesis (P1) of their \S5, whose intended form is confirmed by
+their Remark 1.16, and an omitted almost-everywhere injectivity verification in the last
+step of Theorem 5.4, which we supply for our projection); details in the project's
+verification ledger.  No other non-elementary input occurs.
+\end{remark}
+
+\begin{remark}[what is and is not proved]
+The theorem bounds the balanced mass of primes up to a \emph{constant} $B_1$, for all $n$
+outside a power-saving exceptional set.  It does not bound the mass over the growing range
+$p\le(\log n)^{O(1)}$ (which requires a base-uniform, effective form of the slicing
+theorem), and it does not empty the exceptional set (a rigidity question).  Empirically
+the exceptional sets appear finite and tiny: the integers balanced simultaneously at
+$\{3,5,7,11\}$ --- the smallest over-budget set, $\sum\beta=1.227$ --- are $\{1,3160\}$
+up to $10^9$, and at $\{3,5,7,13\}$ are $\{1,756,757,3250\}$ up to $10^8$.
+\end{remark}
+
+\begin{remark}[context]
+$\mathrm{LP}(\infty)=0.6941\ldots$ matches, to the accuracy of measurement, the empirical
+ceiling of the balanced mass located by exhaustive search in earlier stages of this
+programme ($\approx0.69$--$0.83$ across normalizations), suggesting the linear program is
+the true extremal mechanism.  The theorem is a step in a programme to prove
+$\sum_{p\nmid\binom{2n}{n}}1/p=O(1)$ for all $n$ (the bounded form of Erd\H os problem
+377); the asymptotic form is treated in a companion paper.
+\end{remark}
+
+\end{document}

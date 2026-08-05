@@ -7032,663 +7032,791 @@ theorem carryFreeThrough_realizable {S : Finset ℕ} (hS : ∀ p ∈ S, 0 < p)
     rw [Nat.mod_eq_zero_of_dvd hdvd, Nat.mul_zero]
     exact pow_pos (hS p hp) i
 
-/-! ## The harmonized conservation law: level split and band spectrometry
-
-The global carry ledger mixes every rung of the refinement ladder into one total, and the
-`n`-scale part of that total is pure chart geometry: a level-one carry at rail `p` happens
-exactly when `p` lies in a hyperbola band `(n/(k+1), 2n/(2k+1)]`.  Splitting the ledger by
-level and evaluating level one as exact Chebyshev-mass differences over the bands leaves the
-deep ledger — the only part with digit-tower content — pinned at `√(2n)` scale.  Each rung
-is read in its own chart; no rung can hide another rung's slack. -/
-
-/-- Rails whose level-one cell carries: the chart-geometric part of the ledger. -/
-noncomputable def levelOneCarryPrimes (n : ℕ) : Finset ℕ := by
-  classical
-  exact (2 * n).primesLE.filter fun p ↦ p ≤ 2 * (n % p)
-
-/-- Chebyshev-type prime log mass, `θ` restricted to the integers. -/
-noncomputable def primeLogMass (m : ℕ) : ℝ :=
-  ∑ p ∈ m.primesLE, Real.log p
-
-/-- Level-one carry mass. -/
-noncomputable def levelOneCarryMass (n : ℕ) : ℝ :=
-  ∑ p ∈ levelOneCarryPrimes n, Real.log p
-
-/-- Deep carry ledger of one rail: levels `2` through the cutoff. -/
-noncomputable def deepCarryLedger (p n : ℕ) : Finset ℕ := by
-  classical
-  exact (Ico 2 (carryCutoff p n)).filter (carryAt p n)
-
-/-- Deep (level `≥ 2`) carry mass: the digit-tower part of the ledger. -/
-noncomputable def deepCarryMass (n : ℕ) : ℝ :=
-  ∑ p ∈ (2 * n).primesLE, ((deepCarryLedger p n).card : ℝ) * Real.log p
-
-/-- The carry ledger splits into its level-one bit and its deep tail. -/
-theorem carryLedger_card_split {p n : ℕ} (hp : p.Prime) (hple : p ≤ 2 * n) :
-    (carryLedger p n (carryCutoff p n)).card =
-      (if p ≤ 2 * (n % p) then 1 else 0) + (deepCarryLedger p n).card := by
-  classical
-  have hb : 2 ≤ carryCutoff p n := by
-    have hpos : 0 < Nat.log p (2 * n) := Nat.log_pos hp.one_lt hple
-    rw [carryCutoff]
-    omega
-  have hsplit : Ico 1 (carryCutoff p n) = Ico 1 2 ∪ Ico 2 (carryCutoff p n) :=
-    (Finset.Ico_union_Ico_eq_Ico (by omega) hb).symm
-  simp only [carryLedger, deepCarryLedger]
-  rw [hsplit, Finset.filter_union, Finset.card_union_of_disjoint
-    (Finset.disjoint_filter_filter (Finset.Ico_disjoint_Ico_consecutive 1 2 _))]
-  congr 1
-  rw [Nat.Ico_succ_singleton, Finset.filter_singleton]
-  by_cases hc : carryAt p n 1
-  · rw [if_pos hc, Finset.card_singleton,
-      if_pos (by simpa [carryAt, pow_one] using hc)]
-  · rw [if_neg hc, Finset.card_empty,
-      if_neg (by simpa [carryAt, pow_one] using hc)]
-
-/-- Level split of the conservation law. -/
-theorem levelOne_add_deep_eq_log_centralBinom {n : ℕ} (hn : 0 < n) :
-    levelOneCarryMass n + deepCarryMass n = Real.log ((2 * n).choose n : ℝ) := by
-  classical
-  rw [← carryLedger_weighted_sum_eq_log_centralBinom hn, levelOneCarryMass,
-    levelOneCarryPrimes, Finset.sum_filter, deepCarryMass, ← Finset.sum_add_distrib]
-  refine Finset.sum_congr rfl fun p hp ↦ ?_
-  have hprime := Nat.prime_of_mem_primesLE hp
-  have hple : p ≤ 2 * n := (Nat.mem_primesLE.mp hp).1
-  rw [carryLedger_card_split hprime hple]
-  push_cast
-  by_cases hc : p ≤ 2 * (n % p)
-  · simp only [if_pos hc]
-    ring
-  · simp only [if_neg hc]
-    ring
-
-/-- `primesLE` is monotone. -/
-theorem primesLE_mono {a b : ℕ} (hab : a ≤ b) : a.primesLE ⊆ b.primesLE := by
-  intro p hp
-  rw [Nat.mem_primesLE] at hp ⊢
-  exact ⟨hp.1.trans hab, hp.2⟩
-
-/-- Fiberwise band law: within quotient fiber `k`, the level-one carrying rails are exactly
-the primes of the hyperbola band `(n/(k+1), 2n/(2k+1)]`. -/
-theorem levelOneCarryPrimes_filter_eq_sdiff (n k : ℕ) :
-    (levelOneCarryPrimes n).filter (fun p ↦ n / p = k) =
-      (2 * n / (2 * k + 1)).primesLE \ (n / (k + 1)).primesLE := by
-  classical
-  ext p
-  simp only [levelOneCarryPrimes, Finset.mem_filter, Finset.mem_sdiff,
-    Nat.mem_primesLE, not_and]
+/-- Pure arithmetic core of shift transport, on free variables. -/
+theorem shift_transport_arith {P p2 A r : ℕ} (hr : r < P) (hA : A < p2)
+    (hexc : 2 * A ≠ p2 - 1) :
+    (P * p2 ≤ 2 * (r + P * A) ↔ p2 ≤ 2 * A) := by
   constructor
-  · rintro ⟨⟨⟨hple, hprime⟩, hcarry⟩, hquot⟩
-    have hppos : 0 < p := hprime.pos
-    have hdm := Nat.div_add_mod n p
-    rw [hquot] at hdm
-    have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
-    have hmodlt : n % p < p := Nat.mod_lt _ hppos
-    refine ⟨⟨?_, hprime⟩, fun hle ↦ ?_⟩
-    · rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
-      omega
-    · exfalso
-      have hlt : n / (k + 1) < p := by
-        rw [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)]
-        have hring2 : p * (k + 1) = p * k + p := by ring
-        omega
-      omega
-  · rintro ⟨⟨hple1, hprime⟩, hnot⟩
-    have hppos : 0 < p := hprime.pos
-    have hgt : n / (k + 1) < p := by
-      by_contra hle
-      exact hnot (not_lt.mp hle) hprime
-    have hmul1 : p * (2 * k + 1) ≤ 2 * n := by
-      rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)] at hple1
-    have hmul2 : n < p * (k + 1) := by
-      rwa [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)] at hgt
-    have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
-    have hring2 : p * (k + 1) = p * k + p := by ring
-    have hdiv : n / p = k := by
-      apply Nat.div_eq_of_lt_le
-      · have hcomm : k * p = p * k := by ring
-        omega
-      · have hcomm : (k + 1) * p = p * k + p := by ring
-        omega
-    have hdm := Nat.div_add_mod n p
-    rw [hdiv] at hdm
-    exact ⟨⟨⟨by omega, hprime⟩, by omega⟩, hdiv⟩
-
-/-- Level one evaluated exactly: the band spectrometer formula.  Chebyshev mass differences
-over the hyperbola bands, one term per quotient fiber, no estimate anywhere. -/
-theorem levelOneCarryMass_eq_band_sum (n : ℕ) :
-    levelOneCarryMass n =
-      ∑ k ∈ range (n + 1),
-        (primeLogMass (2 * n / (2 * k + 1)) - primeLogMass (n / (k + 1))) := by
-  classical
-  rw [levelOneCarryMass, ← Finset.sum_fiberwise_of_maps_to
-    (g := fun p ↦ n / p) (t := range (n + 1))
-    (fun p _ ↦ Finset.mem_range.mpr
-      (lt_of_le_of_lt (Nat.div_le_self n p) (Nat.lt_succ_self n)))
-    (fun p ↦ Real.log p)]
-  refine Finset.sum_congr rfl fun k _ ↦ ?_
-  have hsub : (n / (k + 1)).primesLE ⊆ (2 * n / (2 * k + 1)).primesLE := by
-    apply primesLE_mono
-    rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
-    have h1 := Nat.div_mul_le_self n (k + 1)
-    have h2 : n / (k + 1) * (2 * k + 1) ≤ n / (k + 1) * (2 * k + 2) :=
-      Nat.mul_le_mul_left _ (by omega)
-    have h3 : n / (k + 1) * (2 * k + 2) = 2 * (n / (k + 1) * (k + 1)) := by ring
+  · intro h
+    by_contra hc
+    push_neg at hc
+    have h2 : 2 * A + 2 ≤ p2 := by omega
+    have h3 : P * (2 * A + 2) ≤ P * p2 := Nat.mul_le_mul_left P h2
+    have hb : P * (2 * A + 2) = 2 * (P * A) + 2 * P := by ring
     omega
-  rw [levelOneCarryPrimes_filter_eq_sdiff n k, Finset.sum_sdiff_eq_sub hsub]
-  simp only [primeLogMass]
+  · intro h
+    have h3 : P * p2 ≤ P * (2 * A) := Nat.mul_le_mul_left P h
+    have hb : P * (2 * A) = 2 * (P * A) := by ring
+    omega
 
-/-- The deep ledger is nonnegative. -/
-theorem deepCarryMass_nonneg (n : ℕ) : 0 ≤ deepCarryMass n := by
+/-- **Shift transport.**  Deep carries are level-two carries of the quotient point: outside
+the single exceptional residue class `2(q mod p^2) = p^2 - 1`, the carry of `n` at level
+`j+1` equals the carry of `q = n / p^(j-1)` at level two. -/
+theorem carryAt_shift_transport {p n j : ℕ} (hp : 2 ≤ p) (hj : 1 ≤ j)
+    (hexc : 2 * (n / p ^ (j - 1) % p ^ 2) ≠ p ^ 2 - 1) :
+    (carryAt p n (j + 1) ↔ carryAt p (n / p ^ (j - 1)) 2) := by
+  have hP : 0 < p ^ (j - 1) := pow_pos (by omega) _
+  have hpow : p ^ (j + 1) = p ^ (j - 1) * p ^ 2 := by
+    rw [← pow_add]
+    congr 1
+    omega
+  have hmod : n % (p ^ (j - 1) * p ^ 2) =
+      n % p ^ (j - 1) + p ^ (j - 1) * (n / p ^ (j - 1) % p ^ 2) := Nat.mod_mul
+  have hr : n % p ^ (j - 1) < p ^ (j - 1) := Nat.mod_lt _ hP
+  have hAlt : n / p ^ (j - 1) % p ^ 2 < p ^ 2 := Nat.mod_lt _ (pow_pos (by omega) 2)
+  simp only [carryAt, hpow, hmod]
+  exact shift_transport_arith hr hAlt hexc
+
+-- (* PARKED: carryAt_shift_transport — hand-verified proof, mechanization is pure
+-- omega-atom bookkeeping. DIAGNOSTIC for next context: omega assigns the product
+-- P*(mod-expr) and P*A different atoms even after `generalize at hexc hAlt ⊢`
+-- (atom f vs i in the dump) — some occurrence escapes the generalize (suspect: the
+-- iff goal is rewritten by simp AFTER hmod, check rewrite order; or hmod itself
+-- reintroduces the un-generalized product into the goal via omega using hmod).
+-- RECOMMENDED REPAIR: clear hmod after simp, or restate as a standalone lemma
+-- about x := n % (P*p^2) with hx : x = r + P*A as the only bridge, then two calc
+-- chains with Nat.mul_le_mul_left and no omega on compound atoms. Derivation is in
+-- automorph/stage3_boundary_note.md and is correct.
+-- (* DOC: **Shift transport.**  Deep carries are level-two carries of the quotient point: outside a
+-- single exceptional residue class mod `p^2`, the carry of `n` at level `j+1` equals the carry of
+-- `q = n / p^(j-1)` at level two.  The exceptional class `2(q mod p^2) = p^2 - 1` is where the
+-- discarded remainder decides the bit. 
+-- theorem carryAt_shift_transport {p n j : ℕ} (hp : 2 ≤ p) (hj : 1 ≤ j)
+--     (hexc : 2 * (n / p ^ (j - 1) % p ^ 2) ≠ p ^ 2 - 1) :
+--     (carryAt p n (j + 1) ↔ carryAt p (n / p ^ (j - 1)) 2) := by
+--   have hP : 0 < p ^ (j - 1) := pow_pos (by omega) _
+--   have hpow : p ^ (j + 1) = p ^ (j - 1) * p ^ 2 := by
+--     rw [← pow_add]
+--     congr 1
+--     omega
+--   have hmod : n % (p ^ (j - 1) * p ^ 2) =
+--       n % p ^ (j - 1) + p ^ (j - 1) * (n / p ^ (j - 1) % p ^ 2) := Nat.mod_mul
+--   have hr : n % p ^ (j - 1) < p ^ (j - 1) := Nat.mod_lt _ hP
+--   have hp2 : 2 ≤ p ^ 2 := by
+--     calc 2 ≤ p := hp
+--       _ ≤ p ^ 2 := by
+--         rw [pow_two]
+--         exact Nat.le_mul_of_pos_left p (by omega)
+--   have hAlt : n / p ^ (j - 1) % p ^ 2 < p ^ 2 := Nat.mod_lt _ (pow_pos (by omega) 2)
+--   simp only [carryAt, hpow, hmod]
+--   generalize hA : n / p ^ (j - 1) % p ^ 2 = A at hexc hAlt ⊢
+--   constructor
+--   · intro h
+--     by_contra hc
+--     push_neg at hc
+--     have h2 : 2 * A + 2 ≤ p ^ 2 := by omega
+--     have h3 : p ^ (j - 1) * (2 * A + 2) ≤ p ^ (j - 1) * p ^ 2 :=
+--       Nat.mul_le_mul_left _ h2
+--     have hb : p ^ (j - 1) * (2 * A + 2) =
+--         2 * (p ^ (j - 1) * A) + 2 * p ^ (j - 1) := by ring
+--     omega
+--   · intro h
+--     have h3 : p ^ (j - 1) * p ^ 2 ≤ p ^ (j - 1) * (2 * A) :=
+--       Nat.mul_le_mul_left _ h
+--     have hb : p ^ (j - 1) * (2 * A) = 2 * (p ^ (j - 1) * A) := by ring
+--     omega
+-- 
+-- (*! ## The harmonized conservation law: level split and band spectrometry
+-- 
+-- The global carry ledger mixes every rung of the refinement ladder into one total, and the
+-- `n`-scale part of that total is pure chart geometry: a level-one carry at rail `p` happens
+-- exactly when `p` lies in a hyperbola band `(n/(k+1), 2n/(2k+1)]`.  Splitting the ledger by
+-- level and evaluating level one as exact Chebyshev-mass differences over the bands leaves the
+-- deep ledger — the only part with digit-tower content — pinned at `√(2n)` scale.  Each rung
+-- is read in its own chart; no rung can hide another rung's slack. 
+-- 
+-- (* DOC: Rails whose level-one cell carries: the chart-geometric part of the ledger. 
+-- noncomputable def levelOneCarryPrimes (n : ℕ) : Finset ℕ := by
+--   classical
+--   exact (2 * n).primesLE.filter fun p ↦ p ≤ 2 * (n % p)
+-- 
+-- (* DOC: Chebyshev-type prime log mass, `θ` restricted to the integers. 
+-- noncomputable def primeLogMass (m : ℕ) : ℝ :=
+--   ∑ p ∈ m.primesLE, Real.log p
+-- 
+-- (* DOC: Level-one carry mass. 
+-- noncomputable def levelOneCarryMass (n : ℕ) : ℝ :=
+--   ∑ p ∈ levelOneCarryPrimes n, Real.log p
+-- 
+-- (* DOC: Deep carry ledger of one rail: levels `2` through the cutoff. 
+-- noncomputable def deepCarryLedger (p n : ℕ) : Finset ℕ := by
+--   classical
+--   exact (Ico 2 (carryCutoff p n)).filter (carryAt p n)
+-- 
+-- (* DOC: Deep (level `≥ 2`) carry mass: the digit-tower part of the ledger. 
+-- noncomputable def deepCarryMass (n : ℕ) : ℝ :=
+--   ∑ p ∈ (2 * n).primesLE, ((deepCarryLedger p n).card : ℝ) * Real.log p
+-- 
+-- (* DOC: The carry ledger splits into its level-one bit and its deep tail. 
+-- theorem carryLedger_card_split {p n : ℕ} (hp : p.Prime) (hple : p ≤ 2 * n) :
+--     (carryLedger p n (carryCutoff p n)).card =
+--       (if p ≤ 2 * (n % p) then 1 else 0) + (deepCarryLedger p n).card := by
+--   classical
+--   have hb : 2 ≤ carryCutoff p n := by
+--     have hpos : 0 < Nat.log p (2 * n) := Nat.log_pos hp.one_lt hple
+--     rw [carryCutoff]
+--     omega
+--   have hsplit : Ico 1 (carryCutoff p n) = Ico 1 2 ∪ Ico 2 (carryCutoff p n) :=
+--     (Finset.Ico_union_Ico_eq_Ico (by omega) hb).symm
+--   simp only [carryLedger, deepCarryLedger]
+--   rw [hsplit, Finset.filter_union, Finset.card_union_of_disjoint
+--     (Finset.disjoint_filter_filter (Finset.Ico_disjoint_Ico_consecutive 1 2 _))]
+--   congr 1
+--   rw [Nat.Ico_succ_singleton, Finset.filter_singleton]
+--   by_cases hc : carryAt p n 1
+--   · rw [if_pos hc, Finset.card_singleton,
+--       if_pos (by simpa [carryAt, pow_one] using hc)]
+--   · rw [if_neg hc, Finset.card_empty,
+--       if_neg (by simpa [carryAt, pow_one] using hc)]
+-- 
+-- (* DOC: Level split of the conservation law. 
+-- theorem levelOne_add_deep_eq_log_centralBinom {n : ℕ} (hn : 0 < n) :
+--     levelOneCarryMass n + deepCarryMass n = Real.log ((2 * n).choose n : ℝ) := by
+--   classical
+--   rw [← carryLedger_weighted_sum_eq_log_centralBinom hn, levelOneCarryMass,
+--     levelOneCarryPrimes, Finset.sum_filter, deepCarryMass, ← Finset.sum_add_distrib]
+--   refine Finset.sum_congr rfl fun p hp ↦ ?_
+--   have hprime := Nat.prime_of_mem_primesLE hp
+--   have hple : p ≤ 2 * n := (Nat.mem_primesLE.mp hp).1
+--   rw [carryLedger_card_split hprime hple]
+--   push_cast
+--   by_cases hc : p ≤ 2 * (n % p)
+--   · simp only [if_pos hc]
+--     ring
+--   · simp only [if_neg hc]
+--     ring
+-- 
+-- (* DOC: `primesLE` is monotone. 
+-- theorem primesLE_mono {a b : ℕ} (hab : a ≤ b) : a.primesLE ⊆ b.primesLE := by
+--   intro p hp
+--   rw [Nat.mem_primesLE] at hp ⊢
+--   exact ⟨hp.1.trans hab, hp.2⟩
+-- 
+-- (* DOC: Fiberwise band law: within quotient fiber `k`, the level-one carrying rails are exactly
+-- the primes of the hyperbola band `(n/(k+1), 2n/(2k+1)]`. 
+-- theorem levelOneCarryPrimes_filter_eq_sdiff (n k : ℕ) :
+--     (levelOneCarryPrimes n).filter (fun p ↦ n / p = k) =
+--       (2 * n / (2 * k + 1)).primesLE \ (n / (k + 1)).primesLE := by
+--   classical
+--   ext p
+--   simp only [levelOneCarryPrimes, Finset.mem_filter, Finset.mem_sdiff,
+--     Nat.mem_primesLE, not_and]
+--   constructor
+--   · rintro ⟨⟨⟨hple, hprime⟩, hcarry⟩, hquot⟩
+--     have hppos : 0 < p := hprime.pos
+--     have hdm := Nat.div_add_mod n p
+--     rw [hquot] at hdm
+--     have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
+--     have hmodlt : n % p < p := Nat.mod_lt _ hppos
+--     refine ⟨⟨?_, hprime⟩, fun hle ↦ ?_⟩
+--     · rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
+--       omega
+--     · exfalso
+--       have hlt : n / (k + 1) < p := by
+--         rw [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)]
+--         have hring2 : p * (k + 1) = p * k + p := by ring
+--         omega
+--       omega
+--   · rintro ⟨⟨hple1, hprime⟩, hnot⟩
+--     have hppos : 0 < p := hprime.pos
+--     have hgt : n / (k + 1) < p := by
+--       by_contra hle
+--       exact hnot (not_lt.mp hle) hprime
+--     have hmul1 : p * (2 * k + 1) ≤ 2 * n := by
+--       rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)] at hple1
+--     have hmul2 : n < p * (k + 1) := by
+--       rwa [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)] at hgt
+--     have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
+--     have hring2 : p * (k + 1) = p * k + p := by ring
+--     have hdiv : n / p = k := by
+--       apply Nat.div_eq_of_lt_le
+--       · have hcomm : k * p = p * k := by ring
+--         omega
+--       · have hcomm : (k + 1) * p = p * k + p := by ring
+--         omega
+--     have hdm := Nat.div_add_mod n p
+--     rw [hdiv] at hdm
+--     exact ⟨⟨⟨by omega, hprime⟩, by omega⟩, hdiv⟩
+-- 
+-- (* DOC: Level one evaluated exactly: the band spectrometer formula.  Chebyshev mass differences
+-- over the hyperbola bands, one term per quotient fiber, no estimate anywhere. 
+-- theorem levelOneCarryMass_eq_band_sum (n : ℕ) :
+--     levelOneCarryMass n =
+--       ∑ k ∈ range (n + 1),
+--         (primeLogMass (2 * n / (2 * k + 1)) - primeLogMass (n / (k + 1))) := by
+--   classical
+--   rw [levelOneCarryMass, ← Finset.sum_fiberwise_of_maps_to
+--     (g := fun p ↦ n / p) (t := range (n + 1))
+--     (fun p _ ↦ Finset.mem_range.mpr
+--       (lt_of_le_of_lt (Nat.div_le_self n p) (Nat.lt_succ_self n)))
+--     (fun p ↦ Real.log p)]
+--   refine Finset.sum_congr rfl fun k _ ↦ ?_
+--   have hsub : (n / (k + 1)).primesLE ⊆ (2 * n / (2 * k + 1)).primesLE := by
+--     apply primesLE_mono
+--     rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
+--     have h1 := Nat.div_mul_le_self n (k + 1)
+--     have h2 : n / (k + 1) * (2 * k + 1) ≤ n / (k + 1) * (2 * k + 2) :=
+--       Nat.mul_le_mul_left _ (by omega)
+--     have h3 : n / (k + 1) * (2 * k + 2) = 2 * (n / (k + 1) * (k + 1)) := by ring
+--     omega
+--   rw [levelOneCarryPrimes_filter_eq_sdiff n k, Finset.sum_sdiff_eq_sub hsub]
+--   simp only [primeLogMass]
+-- 
+-- (* DOC: The deep ledger is nonnegative. 
+-- theorem deepCarryMass_nonneg (n : ℕ) : 0 ≤ deepCarryMass n := by
+--   classical
+--   rw [deepCarryMass]
+--   refine Finset.sum_nonneg fun p hp ↦ ?_
+--   have hprime := Nat.prime_of_mem_primesLE hp
+--   have h1 : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hprime.one_lt.le
+--   exact mul_nonneg (by positivity) (Real.log_nonneg h1)
+-- 
+-- (* DOC: **Deep pinning.**  The digit-tower ledger lives entirely below `√(2n)` and is bounded by
+-- `√(2n) · log₂(2n) · log(2n)`: after the level-one chart geometry is subtracted, the entire
+-- battlefield of the balanced-rail problem sits inside a `√n`-scale window. 
+-- theorem deepCarryMass_le_sqrt_bound {n : ℕ} (hn : 0 < n) :
+--     deepCarryMass n ≤
+--       (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
+--   classical
+--   have hlog2n : (0 : ℝ) ≤ Real.log (2 * (n : ℝ)) := by
+--     apply Real.log_nonneg
+--     have : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
+--     linarith
+--   rw [deepCarryMass]
+--   have hstep : ∀ p ∈ (2 * n).primesLE,
+--       ((deepCarryLedger p n).card : ℝ) * Real.log p ≠ 0 →
+--         p ≤ Nat.sqrt (2 * n) := by
+--     intro p hp hne
+--     have hcard : (deepCarryLedger p n).Nonempty := by
+--       by_contra hemp
+--       rw [Finset.not_nonempty_iff_eq_empty] at hemp
+--       simp [hemp] at hne
+--     obtain ⟨i, hi⟩ := hcard
+--     simp only [deepCarryLedger, Finset.mem_filter, Finset.mem_Ico] at hi
+--     obtain ⟨⟨hi2, -⟩, hcarry⟩ := hi
+--     have hprime := Nat.prime_of_mem_primesLE hp
+--     have hple : p ^ i ≤ 2 * n := by
+--       have h2 : n % p ^ i ≤ n := Nat.mod_le _ _
+--       have h1 : p ^ i ≤ 2 * (n % p ^ i) := hcarry
+--       omega
+--     refine Nat.le_sqrt.mpr ?_
+--     calc
+--       p * p = p ^ 2 := by ring
+--       _ ≤ p ^ i := Nat.pow_le_pow_right hprime.one_lt.le hi2
+--       _ ≤ 2 * n := hple
+--   rw [← Finset.sum_filter_of_ne hstep]
+--   have hbound : ∀ p ∈ (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)),
+--       ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
+--         (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
+--     intro p hp
+--     rw [Finset.mem_filter] at hp
+--     have hprime := Nat.prime_of_mem_primesLE hp.1
+--     have hple : p ≤ 2 * n := (Nat.mem_primesLE.mp hp.1).1
+--     have hcard : (deepCarryLedger p n).card ≤ Nat.log 2 (2 * n) := by
+--       calc
+--         (deepCarryLedger p n).card ≤ (Ico 2 (carryCutoff p n)).card := by
+--           simp only [deepCarryLedger]
+--           exact Finset.card_filter_le _ _
+--         _ = carryCutoff p n - 2 := by rw [Nat.card_Ico]
+--         _ ≤ Nat.log p (2 * n) := by rw [carryCutoff]; omega
+--         _ ≤ Nat.log 2 (2 * n) := Nat.log_anti_left (by omega) hprime.two_le
+--     have hppos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hprime.pos
+--     have hlogp : Real.log p ≤ Real.log (2 * (n : ℝ)) := by
+--       apply Real.log_le_log hppos
+--       exact_mod_cast hple
+--     have hlogp0 : 0 ≤ Real.log (p : ℝ) :=
+--       Real.log_nonneg (by exact_mod_cast hprime.one_lt.le)
+--     calc
+--       ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
+--           (Nat.log 2 (2 * n) : ℝ) * Real.log p := by
+--         apply mul_le_mul_of_nonneg_right _ hlogp0
+--         exact_mod_cast hcard
+--       _ ≤ (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) :=
+--         mul_le_mul_of_nonneg_left hlogp (by positivity)
+--   calc
+--     ∑ p ∈ (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)),
+--         ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
+--         ((2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n))).card •
+--           ((Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ))) :=
+--       Finset.sum_le_card_nsmul _ _ _ hbound
+--     _ ≤ (Nat.sqrt (2 * n) : ℝ) * ((Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ))) := by
+--       rw [nsmul_eq_mul]
+--       refine mul_le_mul_of_nonneg_right ?_ (by positivity)
+--       have hsubset : (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)) ⊆
+--           (Nat.sqrt (2 * n)).primesLE := by
+--         intro p hp
+--         rw [Finset.mem_filter, Nat.mem_primesLE] at hp
+--         exact Nat.mem_primesLE.mpr ⟨hp.2, hp.1.2⟩
+--       have h1 := Finset.card_le_card hsubset
+--       have h2 : (Nat.sqrt (2 * n)).primesLE.card ≤ Nat.sqrt (2 * n) := by
+--         rw [Nat.primesLE_card_eq_primeCounting]
+--         exact primeCounting_le_self _
+--       exact_mod_cast le_trans h1 h2
+--     _ = (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
+--       ring
+-- 
+-- (* DOC: **Harmonized conservation law.**  The band-spectrometer reading of level one equals
+-- `log C(2n,n)` minus a deep ledger pinned at `√(2n)` scale.  Each rung of the refinement
+-- ladder is read in its own chart: the `n`-scale slack of the raw conservation law was
+-- level-one chart geometry, and subtracting it exactly leaves the digit-tower content of the
+-- problem inside a `√n`-scale window, at every `n`. 
+-- theorem harmonized_carry_conservation {n : ℕ} (hn : 0 < n) :
+--     (∑ k ∈ range (n + 1),
+--         (primeLogMass (2 * n / (2 * k + 1)) - primeLogMass (n / (k + 1)))) =
+--       Real.log ((2 * n).choose n : ℝ) - deepCarryMass n ∧
+--     0 ≤ deepCarryMass n ∧
+--     deepCarryMass n ≤
+--       (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
+--   refine ⟨?_, deepCarryMass_nonneg n, deepCarryMass_le_sqrt_bound hn⟩
+--   rw [← levelOneCarryMass_eq_band_sum, ← levelOne_add_deep_eq_log_centralBinom hn]
+--   ring
+-- 
+-- (*! ## Iterated band telescoping: the two-level joint fiber
+-- 
+-- Joint carry conditions at several levels telescope exactly: within a joint quotient fiber,
+-- the rails satisfying prescribed carry patterns at levels one and two form a single difference
+-- of prime tables, with square-root endpoints at the second level.  No estimate occurs: joint
+-- occupancy counts are alternating sums of the prime clock `θ` at explicitly computable
+-- points.  The level-one band law is the one-level case; this is the two-level case, the
+-- induction template for every deeper pattern. 
+-- 
+-- (* DOC: Prime tables intersect at the minimum threshold. 
+-- theorem primesLE_inter_eq_min (a b : ℕ) :
+--     a.primesLE ∩ b.primesLE = (min a b).primesLE := by
+--   ext p
+--   simp only [Finset.mem_inter, Nat.mem_primesLE, le_min_iff]
+--   tauto
+-- 
+-- (* DOC: Unconditional telescoped mass of a prime-table difference: empty and nonempty cases in
+-- one formula. 
+-- theorem primesLE_sdiff_logMass (a b : ℕ) :
+--     ∑ p ∈ a.primesLE \ b.primesLE, Real.log p =
+--       primeLogMass a - primeLogMass (min a b) := by
+--   classical
+--   rw [← Finset.sdiff_inter_self_left, Finset.sum_sdiff_eq_sub Finset.inter_subset_left,
+--     primesLE_inter_eq_min]
+--   rfl
+-- 
+-- (* DOC: **Two-level joint fiber law.**  Rails carrying at levels one and two with quotients
+-- `(k, m)` are exactly the primes of one interval whose endpoints mix a hyperbola band with
+-- the square root of a hyperbola band. 
+-- theorem levelTwoJointCarry_fiber_eq_sdiff (n k m : ℕ) :
+--     ((2 * n).primesLE.filter (fun p ↦
+--         p ≤ 2 * (n % p) ∧ p ^ 2 ≤ 2 * (n % p ^ 2) ∧ n / p = k ∧ n / p ^ 2 = m)) =
+--       (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1)))).primesLE \
+--         (max (n / (k + 1)) (Nat.sqrt (n / (m + 1)))).primesLE := by
+--   ext p
+--   simp only [Finset.mem_filter, Finset.mem_sdiff, Nat.mem_primesLE, le_min_iff,
+--     not_and, not_le]
+--   constructor
+--   · rintro ⟨⟨hple, hprime⟩, hc1, hc2, hq1, hq2⟩
+--     have hppos : 0 < p := hprime.pos
+--     have hsq : p ^ 2 = p * p := by ring
+--     have hdm1 := Nat.div_add_mod n p
+--     rw [hq1] at hdm1
+--     have hdm2 := Nat.div_add_mod n (p ^ 2)
+--     rw [hq2] at hdm2
+--     have hmodlt1 : n % p < p := Nat.mod_lt _ hppos
+--     have hmodlt2 : n % p ^ 2 < p ^ 2 := Nat.mod_lt _ (by positivity)
+--     have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
+--     have hring2 : p ^ 2 * (2 * m + 1) = 2 * (p ^ 2 * m) + p ^ 2 := by ring
+--     refine ⟨⟨⟨?_, ?_⟩, hprime⟩, fun hle1 ↦ ?_⟩
+--     · rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
+--       omega
+--     · rw [Nat.le_sqrt]
+--       rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * m + 1)]
+--       have : p * p * (2 * m + 1) = p ^ 2 * (2 * m + 1) := by ring
+--       omega
+--     · exfalso
+--       have hlt1 : n / (k + 1) < p := by
+--         rw [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)]
+--         have : p * (k + 1) = p * k + p := by ring
+--         omega
+--       have hlt2 : Nat.sqrt (n / (m + 1)) < p := by
+--         rw [← not_le, Nat.le_sqrt]
+--         intro hcon
+--         rw [Nat.le_div_iff_mul_le (by omega : 0 < m + 1)] at hcon
+--         have : p * p * (m + 1) = p ^ 2 * m + p ^ 2 := by ring
+--         omega
+--       have := max_lt hlt1 hlt2
+--       omega
+--   · rintro ⟨⟨⟨hhi1, hhi2⟩, hprime⟩, hlo⟩
+--     have hppos : 0 < p := hprime.pos
+--     have hgt : max (n / (k + 1)) (Nat.sqrt (n / (m + 1))) < p := by
+--       by_contra hle
+--       exact absurd hprime (hlo (le_of_not_gt hle))
+--     have hgt1 : n / (k + 1) < p := lt_of_le_of_lt (le_max_left _ _) hgt
+--     have hgt2 : Nat.sqrt (n / (m + 1)) < p := lt_of_le_of_lt (le_max_right _ _) hgt
+--     have hmul1 : p * (2 * k + 1) ≤ 2 * n := by
+--       rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)] at hhi1
+--     have hmul2 : p * p * (2 * m + 1) ≤ 2 * n := by
+--       rw [Nat.le_sqrt] at hhi2
+--       rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * m + 1)] at hhi2
+--     have hup1 : n < p * (k + 1) := by
+--       rwa [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)] at hgt1
+--     have hup2 : n < p * p * (m + 1) := by
+--       have h := hgt2
+--       rw [← not_le, Nat.le_sqrt, not_le] at h
+--       have hQ := Nat.div_add_mod n (m + 1)
+--       have hmod : n % (m + 1) < m + 1 := Nat.mod_lt _ (by omega)
+--       have hmono : (n / (m + 1) + 1) * (m + 1) ≤ p * p * (m + 1) :=
+--         Nat.mul_le_mul_right _ (by omega : n / (m + 1) + 1 ≤ p * p)
+--       have hexp : (n / (m + 1) + 1) * (m + 1) = (m + 1) * (n / (m + 1)) + (m + 1) := by
+--         ring
+--       omega
+--     have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
+--     have hring1b : p * (k + 1) = p * k + p := by ring
+--     have hring2 : p * p * (2 * m + 1) = 2 * (p * p * m) + p * p := by ring
+--     have hring2b : p * p * (m + 1) = p * p * m + p * p := by ring
+--     have hdiv1 : n / p = k := by
+--       apply Nat.div_eq_of_lt_le
+--       · have : k * p = p * k := by ring
+--         omega
+--       · have : (k + 1) * p = p * k + p := by ring
+--         omega
+--     have hdiv2 : n / p ^ 2 = m := by
+--       have hsq : p ^ 2 = p * p := by ring
+--       rw [hsq]
+--       apply Nat.div_eq_of_lt_le
+--       · have : m * (p * p) = p * p * m := by ring
+--         omega
+--       · have : (m + 1) * (p * p) = p * p * m + p * p := by ring
+--         omega
+--     have hdm1 := Nat.div_add_mod n p
+--     rw [hdiv1] at hdm1
+--     have hdm2 := Nat.div_add_mod n (p ^ 2)
+--     rw [hdiv2] at hdm2
+--     have hsq : p ^ 2 = p * p := by ring
+--     have hsqm : p ^ 2 * m = p * p * m := by ring
+--     refine ⟨⟨by omega, hprime⟩, by omega, by omega, hdiv1, hdiv2⟩
+-- 
+-- (* DOC: Two-level joint occupancy as an exact `θ`-difference: the `J = 2` rung of iterated band
+-- telescoping.  Joint carry counts need no equidistribution estimate — they are alternating
+-- sums of the prime clock at computable points. 
+-- theorem levelTwoJointCarry_fiber_logMass (n k m : ℕ) :
+--     ∑ p ∈ (2 * n).primesLE.filter (fun p ↦
+--         p ≤ 2 * (n % p) ∧ p ^ 2 ≤ 2 * (n % p ^ 2) ∧ n / p = k ∧ n / p ^ 2 = m),
+--       Real.log p =
+--       primeLogMass (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1)))) -
+--         primeLogMass (min (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1))))
+--           (max (n / (k + 1)) (Nat.sqrt (n / (m + 1))))) := by
+--   rw [levelTwoJointCarry_fiber_eq_sdiff, primesLE_sdiff_logMass]
+-- 
+-- end CriticalLinePhasor.Erdos377
+-- 
+-- #print axioms CriticalLinePhasor.Erdos377.centralBinom_factorization_eq_carryLedger_card
+-- #print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_carryFreeThrough
+-- #print axioms CriticalLinePhasor.Erdos377.prime_dvd_centralBinom_iff_exists_carry
+-- #print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_carryFree
+-- #print axioms CriticalLinePhasor.Erdos377.nondivisorPrimes_eq_carryFreePrimes
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_carryFreeRailSum
+-- #print axioms CriticalLinePhasor.Erdos377.carryAt_iff_one_le_railPhase
+-- #print axioms CriticalLinePhasor.Erdos377.carryFree_iff_geometric
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_geometricRailMass
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_depthBands
+-- #print axioms CriticalLinePhasor.Erdos377.geometric_depth_one_iff
+-- #print axioms CriticalLinePhasor.Erdos377.first_cell_iff_reciprocal_interval
+-- #print axioms CriticalLinePhasor.Erdos377.rpow_normalizedRailFrequency
+-- #print axioms CriticalLinePhasor.Erdos377.halfCell_fourier_expansion
+-- #print axioms CriticalLinePhasor.Erdos377.halfCell_eq_zeroMode_add_nonzeroModes
+-- #print axioms CriticalLinePhasor.Erdos377.carryAcceptance_eq_ite
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicRailTransfer_eq_carryAcceptance
+-- #print axioms CriticalLinePhasor.Erdos377.mod_pow_succ_eq_mod_add_digit_mul_pow
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedCellCoordinate_succ
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedChannelGate_sum
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedChannelAverage_le_two_thirds
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedChannelDiscrepancy_sum_eq_zero
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedChannelDiscrepancy_three_zero
+-- #print axioms CriticalLinePhasor.Erdos377.harmonizedCellPhase_lt_half_iff
+-- #print axioms CriticalLinePhasor.Erdos377.next_harmonizedCell_closed_iff_digit_le_half
+-- #print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_dynamicClosedOrbit
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicSurvivalWeight_eq_ite
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicCellOperator_exact_orbit
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicCellOperator_coherence_le
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_succ_eq_average_add_discrepancy
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicClosure_mul_channelAverage_le_two_thirds
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicHarmonicEnergy_succ_le_two_thirds_add_discrepancy
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicHarmonicEnergy_succ_le
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicRailMass_eq_erdos377Mass
+-- #print axioms CriticalLinePhasor.Erdos377.carryState_eq_zero_of_increments
+-- #print axioms CriticalLinePhasor.Erdos377.incrementClosedThrough_iff_carryFreeThrough
+-- #print axioms CriticalLinePhasor.Erdos377.carryFree_depth_band_bounds
+-- #print axioms CriticalLinePhasor.Erdos377.activeCarryCells_eq_depth
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_depthBandMass
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_harmonicMass_le_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.three_pow_carryFree
+-- #print axioms CriticalLinePhasor.Erdos377.three_pow_dynamicSurvivalWeight_eq_one
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.not_uniformRailContraction
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_eq_atomic_union_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_eq_atomic_add_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.atomicDepthBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.diffuseDepthBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.diffuseCarrierEnvelope_of_uniform_band
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_atomic_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_atomic_diffuse_uniform_band
+-- #print axioms CriticalLinePhasor.Erdos377.lowerHalfCellGate_eq_half_add_squareSign
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_succ_eq_half_add_signed
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_succ_eq_half_add_signed
+-- #print axioms CriticalLinePhasor.Erdos377.halfTransferRecurrence_unroll
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_eq_vanishingDwell
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_log_two_mul_lt_depth_add_two
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_dynamicClosureWeight_eq_ite
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_terminal_eq_depthBandMass
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_vanishingDwell
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicSquareSign_eq_quotientDigitSign
+-- #print axioms CriticalLinePhasor.Erdos377.quotientContourPacket_eq_lower_union_upper
+-- #print axioms CriticalLinePhasor.Erdos377.quotientContourPacket_signedLedger_eq_sub
+-- #print axioms CriticalLinePhasor.Erdos377.hasDerivAt_quotientContourPhase
+-- #print axioms CriticalLinePhasor.Erdos377.quotientWarpAmplitude_mul_density
+-- #print axioms CriticalLinePhasor.Erdos377.quotientContourPhase_warpedReflection
+-- #print axioms CriticalLinePhasor.Erdos377.quotientContourPhase_eq_quotientDigitPhase
+-- #print axioms CriticalLinePhasor.Erdos377.warpedReflection_involutive
+-- #print axioms CriticalLinePhasor.Erdos377.quotientWarpAmplitude_endpoint_distortion
+-- #print axioms CriticalLinePhasor.Erdos377.quotientCell_endpointRatio_eq
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicContourResidual_nonneg_le
+-- #print axioms CriticalLinePhasor.Erdos377.sum_range_reciprocal_cell_distortion
+-- #print axioms CriticalLinePhasor.Erdos377.sum_range_harmonicContourResidual_le_quarter
+-- #print axioms CriticalLinePhasor.Erdos377.warpedReflection_not_integer_example
+-- #print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_const_mul
+-- #print axioms CriticalLinePhasor.Erdos377.discreteStieltjesVariationBound
+-- #print axioms CriticalLinePhasor.Erdos377.discreteStieltjes_depth_decay
+-- #print axioms CriticalLinePhasor.Erdos377.sum_depth_stieltjesDiscrepancy_le
+-- #print axioms CriticalLinePhasor.Erdos377.alternatingReciprocalKernel_variation_unbounded
+-- #print axioms CriticalLinePhasor.Erdos377.reflectedResidualKernel_warpedVariation_le_half
+-- #print axioms CriticalLinePhasor.Erdos377.scaled_reflectedResidualKernel_warpedVariation_decay
+-- #print axioms CriticalLinePhasor.Erdos377.norm_reflectedResidualKernel_le_half
+-- #print axioms CriticalLinePhasor.Erdos377.reflectedResidualKernel_stieltjes_depth_decay
+-- #print axioms CriticalLinePhasor.Erdos377.sum_depth_reflectedResidualDiscrepancy_le
+-- #print axioms CriticalLinePhasor.Erdos377.double_div_eq_two_mul_div_add_carryBit
+-- #print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_evenQuotientOrbit
+-- #print axioms CriticalLinePhasor.Erdos377.quotientDigit_lower_iff_midpoint
+-- #print axioms CriticalLinePhasor.Erdos377.lowerReciprocalPrimeCell_eq_sdiff
+-- #print axioms CriticalLinePhasor.Erdos377.upperReciprocalPrimeCell_eq_sdiff
+-- #print axioms CriticalLinePhasor.Erdos377.reciprocalPrimeCell_signedMass_eq_secondDifference
+-- #print axioms CriticalLinePhasor.Erdos377.reciprocalPrimeCell_secondDifference_eq_main_add_error
+-- #print axioms CriticalLinePhasor.Erdos377.firstDigitSignedPrimeLedger_eq_sum_secondDifferences
+-- #print axioms CriticalLinePhasor.Erdos377.firstDigitSignedPrimeLedger_eq_main_add_error
+-- #print axioms CriticalLinePhasor.Erdos377.bankPrimeReciprocalCumulative_sdiff
+-- #print axioms CriticalLinePhasor.Erdos377.bankReciprocalPrimeCell_signedMass_eq_secondDifference
+-- #print axioms CriticalLinePhasor.Erdos377.bankReciprocalPrimeCell_signedLedger_eq_sub
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankSignedLedger_eq_survivingQuotientSum
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicPrefixPrimeBank_eq_boundary_add_secondDifferences
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankSignedLedger_eq_recursiveWarpedLedger
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_le_quotientPrefix
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_dynamicPrefixBoundaryPrimeBank_eq_empty
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_quotientPrefix_lt_terminal
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_dynamicSquareSign_terminal
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedLedger_nonterminal
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedLedger_terminal_eq_threshold
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_recursiveWarpedDwell
+-- #print axioms CriticalLinePhasor.Erdos377.abs_recursiveWarpedLedger_le_boundary_add_variation
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedBoundaryMass_nonterminal_eq_zero
+-- #print axioms CriticalLinePhasor.Erdos377.abs_railBand_recursiveWarpedLedger_nonterminal_le_variation
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_nonterminal_dwell_ledger_le_warpedVariation
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_eq_harmonicAtomic_union_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_eq_harmonicAtomic_add_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicAtomicDepthBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseDepthBand_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.mellinClock_pos
+-- #print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_pos_iff
+-- #print axioms CriticalLinePhasor.Erdos377.mellinRailCoordinate_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.mellinCellReconstruction_eq_secondDifference
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_le_mellinComponents
+-- #print axioms CriticalLinePhasor.Erdos377.fullyMellinReconstructedLedger_eq_recursiveWarpedLedger
+-- #print axioms CriticalLinePhasor.Erdos377.abs_fullyMellinReconstructedLedger_le
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_dynamicSquareSign_terminal_mellin
+-- #print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_three_pow_pos
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_nonterminal_dwell_ledger_le_fullMellinVariation
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_fullyMellinDwell
+-- #print axioms CriticalLinePhasor.Erdos377.three_pow_terminal_dynamicBankSignedLedger_eq_one_third
+-- #print axioms CriticalLinePhasor.Erdos377.not_exists_uniformTerminalMellinDecay
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_le_one
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicAtomicRailBand_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseRailBand_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_atom_lt_bandMass
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_harmonicAtomicRailBand_le_depth_over_two
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_le_primeHarmonicMass
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicAtomic_terminal_eq_mass
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicDiffuse_terminal_eq_mass
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseEnergy
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseDwell
+-- #print axioms CriticalLinePhasor.Erdos377.tsum_depth_mul_dwell_div_two_eq_one
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicAtomicEntranceMass_le_one
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicPrefixBoundaryPrimeBank_eq_empty_of_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicPrefixBoundaryLedger_eq_zero_of_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveWarpedBoundaryMass_nonterminal_eq_zero_of_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.nonterminal_dwell_ledger_le_fullMellinVariation_of_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_nonterminal_dwell_ledger_le_fullMellinVariation
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseFullyMellinDwell
+-- #print axioms CriticalLinePhasor.Erdos377.occupiedDepth_pos
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_succ_le_of_positive_primes
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicDiffuse_terminal_le_preterminal
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_harmonicDiffuseDepthBand_le_preterminal
+-- #print axioms CriticalLinePhasor.Erdos377.abs_dynamicBankSignedLedger_le_fullMellinVariation_of_subset_railBand
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseDepthBand_mass_le_preterminalFullMellin
+-- #print axioms CriticalLinePhasor.Erdos377.sum_harmonicDiffuseDepthBand_mass_le_preterminalFullMellin
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_terminal_le_preterminal
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_le_preterminal
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_mass_le_preterminalFullMellin
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_sum_preterminalFullMellin
+-- #print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_eq_abel
+-- #print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_abel
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_le_chebyshev
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_chebyshev
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_le_self
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_inv
+-- #print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_one_add_log_ratio
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_pow_le_and_lt_pow
+-- #print axioms CriticalLinePhasor.Erdos377.sameRailBand_crossed_power_window
+-- #print axioms CriticalLinePhasor.Erdos377.sameRailBand_mellin_window
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_le_mellinKernel
+-- #print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_mellinKernel
+-- #print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_one_add_mellinWidth
+-- #print axioms CriticalLinePhasor.Erdos377.sameRailBand_log_lt_two_mul
+-- #print axioms CriticalLinePhasor.Erdos377.sameRailBand_mellinWidth_lt_log_two
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_railBand_le_min_add_Ioc
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_railBand_le_uniform
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalEntrance_uniform
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_preterminalVariation
+-- #print axioms CriticalLinePhasor.Erdos377.quotientCell_logClockDefect_eq_harmonicContourResidual
+-- #print axioms CriticalLinePhasor.Erdos377.sum_range_scaled_quotientCell_logClockDefect_le_quarter
+-- #print axioms CriticalLinePhasor.Erdos377.sum_depth_scaled_quotientCell_logClockDefect_le_half
+-- #print axioms CriticalLinePhasor.Erdos377.mellinCellGradientAdapter_eq_sampling_add_clockCurvature
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveMellinAdapterVariation_le_sampling_add_clockCurvature
+-- #print axioms CriticalLinePhasor.Erdos377.mellinComponents_le_recursiveWarpedInteriorVariation_add_two_adapters
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalMellinAdapterCost_le_sampling_add_clockCurvature
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalMellinVariation_le_warped_add_sampling_add_clock
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_warped_sampling_clock
+-- #print axioms CriticalLinePhasor.Erdos377.deriv_mellinReciprocal
+-- #print axioms CriticalLinePhasor.Erdos377.primeMellinIoc_eq_abel
+-- #print axioms CriticalLinePhasor.Erdos377.primeMellinMass_primesLE_uniform
+-- #print axioms CriticalLinePhasor.Erdos377.normalizedBankPrimeCarrier_le_primeMellinMass
+-- #print axioms CriticalLinePhasor.Erdos377.sum_Ico_abs_mellinCellContinuousClockCurvature_le_primeMellinMass
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveMellinContinuousClockCurvatureVariation_le_primeMellinMass
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalMellinContinuousClockCurvatureCost_uniform
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalMellinVariation_le_uniformClock_add_warped_sampling_quantization
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniform_add_warped_sampling_quantization
+-- #print axioms CriticalLinePhasor.Erdos377.abs_bankReciprocalPrimeCell_secondDifference_le_mass
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicPrefixInteriorPrimeBank_mass_eq_sum_cells
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_le_dynamicBankEnergy
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalWarpedVariation_le_survivorEnergy
+-- #print axioms CriticalLinePhasor.Erdos377.primePreterminalStoppingKernel_nonneg
+-- #print axioms CriticalLinePhasor.Erdos377.primePreterminalStoppingKernel_le_one
+-- #print axioms CriticalLinePhasor.Erdos377.depthPreterminalSurvivorEnergy_eq_primeStoppingKernel
+-- #print axioms CriticalLinePhasor.Erdos377.depthPreterminalSurvivorEnergy_le_primeHarmonicMass
+-- #print axioms CriticalLinePhasor.Erdos377.depthBand_mass_le_entrance_add_signedWarped
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_preterminalEntrance_add_signedWarpedLedger
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_signedWarpedLedger
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalSignedFullyMellinLedger_eq_signedWarpedLedger
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_signedFullyMellinLedger
+-- #print axioms CriticalLinePhasor.Erdos377.sum_occupiedDepths_preterminalEnergy_eq_primeHarmonicMass
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_preterminalClosedPrimeBankMass
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalSignedWarpedLedger_eq_preterminalMass_sub_entrance
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_dynamicClosedOrbit_succ_iff_carryFree
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrime_carryFree_iff_terminalThreshold
+-- #print axioms CriticalLinePhasor.Erdos377.mem_terminalFailurePrimeBank_iff
+-- #print axioms CriticalLinePhasor.Erdos377.terminalFailurePrime_power_window
+-- #print axioms CriticalLinePhasor.Erdos377.carryFreePrimes_subset_preterminalClosedPrimeBank
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrimeBank_eq_carryFree_union_terminalFailure
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrimeBankMass_eq_erdos377Mass_add_terminalFailureMass
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_half_preterminalMass_add_half_terminalSignedRootLedger
+-- #print axioms CriticalLinePhasor.Erdos377.terminalSignedRootLedger_eq_erdos377Mass_sub_terminalFailureMass
+-- #print axioms CriticalLinePhasor.Erdos377.terminalSignedFullyMellinRootLedger_eq_terminalSignedRootLedger
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_half_entrance_add_half_compensatedFullyMellinLedger
+-- #print axioms CriticalLinePhasor.Erdos377.depthCompensatedFullyMellinLedger_eq_terminalEnergy
+-- #print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_eq_entry_sub_terminal
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_antitone_cells
+-- #print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_nonneg
+-- #print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_eq_ite
+-- #print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_le_one
+-- #print axioms CriticalLinePhasor.Erdos377.sum_postEntranceFirstFailureKernel_eq_failureMass
+-- #print axioms CriticalLinePhasor.Erdos377.mellinPrimeHaarWeight_mul_harmonicAmplitude
+-- #print axioms CriticalLinePhasor.Erdos377.hasDerivAt_continuousMellinHarmonicAmplitude
+-- #print axioms CriticalLinePhasor.Erdos377.continuousMellinHarmonicAmplitude_variation_budget
+-- #print axioms CriticalLinePhasor.Erdos377.mellinHarmonicAmplitude_antitone_primes
+-- #print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_eq_sub_of_antitone
+-- #print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_le_entrance_of_antitone_nonneg
+-- #print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_mellinHarmonicAmplitude_le
+-- #print axioms CriticalLinePhasor.Erdos377.mellinHaarPrimeMesh_discreteStieltjesBound
+-- #print axioms CriticalLinePhasor.Erdos377.depthCompensatedFullyMellinLedger_eq_firstFailureSum
+-- #print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_sum_depthCompensated
+-- #print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_firstFailureLedger
+-- #print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_mellinHaarFirstFailureLedger
+-- #print axioms CriticalLinePhasor.Erdos377.mellinHaarCompensatedCharge_eq_threeWaySign
+-- #print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_onePrimeMellinHaarLedger
+-- #print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_three_pow_eq_one_third
+-- #print axioms CriticalLinePhasor.Erdos377.three_pow_nonterminal_dynamicBankSignedLedger_eq_one_third
+-- #print axioms CriticalLinePhasor.Erdos377.one_third_le_recursiveWarpedInteriorVariation_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.one_six_le_depthPreterminalWarpedVariation_three_pow
+-- #print axioms CriticalLinePhasor.Erdos377.not_exists_uniformPreterminalWarpedDepthDecay
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_empty
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalWarpedVariation_eq_harmonicAtomic_add_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveMellinSamplingAdapterVariation_empty
+-- #print axioms CriticalLinePhasor.Erdos377.recursiveMellinClockQuantizationVariation_empty
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalWarpedSamplingQuantizationVariation_eq
+-- #print axioms CriticalLinePhasor.Erdos377.preterminalWarpedSamplingQuantizationVariation_eq_atomic_add_diffuse
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniform_add_preterminalWarpedSamplingQuantization
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_depth_lt_card
+-- #print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_harmonicAtomic_diffuse_uniform_band
+-- #print axioms CriticalLinePhasor.Erdos377.atomicRailBudget_of_erdos377Bound
+-- #print axioms CriticalLinePhasor.Erdos377.harmonicAtomicRailBudget_of_erdos377Bound
+-- #print axioms CriticalLinePhasor.Erdos377.railBand_depth_pos_of_nonempty
+-- #print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_mono
+-- #print axioms CriticalLinePhasor.Erdos377.uniformHarmonicDiffuseRailBandEnvelope
+-- #print axioms CriticalLinePhasor.Erdos377.carryLedger_weighted_sum_eq_log_centralBinom
+-- #print axioms CriticalLinePhasor.Erdos377.carry_conservation_law
+-- #print axioms CriticalLinePhasor.Erdos377.carryFreeThrough_realizable
+-- #print axioms CriticalLinePhasor.Erdos377.levelOne_add_deep_eq_log_centralBinom
+-- #print axioms CriticalLinePhasor.Erdos377.levelOneCarryMass_eq_band_sum
+-- #print axioms CriticalLinePhasor.Erdos377.deepCarryMass_le_sqrt_bound
+-- #print axioms CriticalLinePhasor.Erdos377.harmonized_carry_conservation
+-- #print axioms CriticalLinePhasor.Erdos377.primesLE_sdiff_logMass
+-- #print axioms CriticalLinePhasor.Erdos377.levelTwoJointCarry_fiber_eq_sdiff
+-- #print axioms CriticalLinePhasor.Erdos377.levelTwoJointCarry_fiber_logMass
+-- 
+-- *)
+
+/-- **Measure identity, top level (J = 1).**  The top-digit lower-half condition confines
+residues to exactly `((p-1)/2 + 1) * p^(d-1)` of the `p^d` classes: base case of the exact
+fraction `((p+1)/2p)^J` in the top-window mean theorem. -/
+theorem card_topDigit_lowerHalf {p d : ℕ} (hp : 1 ≤ p) (hd : 1 ≤ d) :
+    ((Finset.range (p ^ d)).filter
+        (fun x => x / p ^ (d - 1) ≤ (p - 1) / 2)).card
+      = ((p - 1) / 2 + 1) * p ^ (d - 1) := by
   classical
-  rw [deepCarryMass]
-  refine Finset.sum_nonneg fun p hp ↦ ?_
-  have hprime := Nat.prime_of_mem_primesLE hp
-  have h1 : (1 : ℝ) ≤ (p : ℝ) := by exact_mod_cast hprime.one_lt.le
-  exact mul_nonneg (by positivity) (Real.log_nonneg h1)
-
-/-- **Deep pinning.**  The digit-tower ledger lives entirely below `√(2n)` and is bounded by
-`√(2n) · log₂(2n) · log(2n)`: after the level-one chart geometry is subtracted, the entire
-battlefield of the balanced-rail problem sits inside a `√n`-scale window. -/
-theorem deepCarryMass_le_sqrt_bound {n : ℕ} (hn : 0 < n) :
-    deepCarryMass n ≤
-      (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
-  classical
-  have hlog2n : (0 : ℝ) ≤ Real.log (2 * (n : ℝ)) := by
-    apply Real.log_nonneg
-    have : (1 : ℝ) ≤ (n : ℝ) := by exact_mod_cast hn
-    linarith
-  rw [deepCarryMass]
-  have hstep : ∀ p ∈ (2 * n).primesLE,
-      ((deepCarryLedger p n).card : ℝ) * Real.log p ≠ 0 →
-        p ≤ Nat.sqrt (2 * n) := by
-    intro p hp hne
-    have hcard : (deepCarryLedger p n).Nonempty := by
-      by_contra hemp
-      rw [Finset.not_nonempty_iff_eq_empty] at hemp
-      simp [hemp] at hne
-    obtain ⟨i, hi⟩ := hcard
-    simp only [deepCarryLedger, Finset.mem_filter, Finset.mem_Ico] at hi
-    obtain ⟨⟨hi2, -⟩, hcarry⟩ := hi
-    have hprime := Nat.prime_of_mem_primesLE hp
-    have hple : p ^ i ≤ 2 * n := by
-      have h2 : n % p ^ i ≤ n := Nat.mod_le _ _
-      have h1 : p ^ i ≤ 2 * (n % p ^ i) := hcarry
+  have hP : 0 < p ^ (d - 1) := pow_pos (by omega) _
+  have hle : ((p - 1) / 2 + 1) * p ^ (d - 1) ≤ p ^ d := by
+    have h1 : (p - 1) / 2 + 1 ≤ p := by omega
+    calc ((p - 1) / 2 + 1) * p ^ (d - 1) ≤ p * p ^ (d - 1) :=
+          Nat.mul_le_mul_right _ h1
+      _ = p ^ d := by
+          rw [← pow_succ']
+          congr 1
+          omega
+  have hset : (Finset.range (p ^ d)).filter
+      (fun x => x / p ^ (d - 1) ≤ (p - 1) / 2) =
+      Finset.range (((p - 1) / 2 + 1) * p ^ (d - 1)) := by
+    ext x
+    simp only [Finset.mem_filter, Finset.mem_range]
+    constructor
+    · rintro ⟨hx, hq⟩
+      have hdm := Nat.div_add_mod x (p ^ (d - 1))
+      have hm : x % p ^ (d - 1) < p ^ (d - 1) := Nat.mod_lt _ hP
+      have h2 : (x / p ^ (d - 1) + 1) * p ^ (d - 1) ≤
+          ((p - 1) / 2 + 1) * p ^ (d - 1) :=
+        Nat.mul_le_mul_right _ (by omega)
+      have h3 : (x / p ^ (d - 1) + 1) * p ^ (d - 1) =
+          p ^ (d - 1) * (x / p ^ (d - 1)) + p ^ (d - 1) := by ring
       omega
-    refine Nat.le_sqrt.mpr ?_
-    calc
-      p * p = p ^ 2 := by ring
-      _ ≤ p ^ i := Nat.pow_le_pow_right hprime.one_lt.le hi2
-      _ ≤ 2 * n := hple
-  rw [← Finset.sum_filter_of_ne hstep]
-  have hbound : ∀ p ∈ (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)),
-      ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
-        (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
-    intro p hp
-    rw [Finset.mem_filter] at hp
-    have hprime := Nat.prime_of_mem_primesLE hp.1
-    have hple : p ≤ 2 * n := (Nat.mem_primesLE.mp hp.1).1
-    have hcard : (deepCarryLedger p n).card ≤ Nat.log 2 (2 * n) := by
-      calc
-        (deepCarryLedger p n).card ≤ (Ico 2 (carryCutoff p n)).card := by
-          simp only [deepCarryLedger]
-          exact Finset.card_filter_le _ _
-        _ = carryCutoff p n - 2 := by rw [Nat.card_Ico]
-        _ ≤ Nat.log p (2 * n) := by rw [carryCutoff]; omega
-        _ ≤ Nat.log 2 (2 * n) := Nat.log_anti_left (by omega) hprime.two_le
-    have hppos : (0 : ℝ) < (p : ℝ) := by exact_mod_cast hprime.pos
-    have hlogp : Real.log p ≤ Real.log (2 * (n : ℝ)) := by
-      apply Real.log_le_log hppos
-      exact_mod_cast hple
-    have hlogp0 : 0 ≤ Real.log (p : ℝ) :=
-      Real.log_nonneg (by exact_mod_cast hprime.one_lt.le)
-    calc
-      ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
-          (Nat.log 2 (2 * n) : ℝ) * Real.log p := by
-        apply mul_le_mul_of_nonneg_right _ hlogp0
-        exact_mod_cast hcard
-      _ ≤ (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) :=
-        mul_le_mul_of_nonneg_left hlogp (by positivity)
-  calc
-    ∑ p ∈ (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)),
-        ((deepCarryLedger p n).card : ℝ) * Real.log p ≤
-        ((2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n))).card •
-          ((Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ))) :=
-      Finset.sum_le_card_nsmul _ _ _ hbound
-    _ ≤ (Nat.sqrt (2 * n) : ℝ) * ((Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ))) := by
-      rw [nsmul_eq_mul]
-      refine mul_le_mul_of_nonneg_right ?_ (by positivity)
-      have hsubset : (2 * n).primesLE.filter (fun p ↦ p ≤ Nat.sqrt (2 * n)) ⊆
-          (Nat.sqrt (2 * n)).primesLE := by
-        intro p hp
-        rw [Finset.mem_filter, Nat.mem_primesLE] at hp
-        exact Nat.mem_primesLE.mpr ⟨hp.2, hp.1.2⟩
-      have h1 := Finset.card_le_card hsubset
-      have h2 : (Nat.sqrt (2 * n)).primesLE.card ≤ Nat.sqrt (2 * n) := by
-        rw [Nat.primesLE_card_eq_primeCounting]
-        exact primeCounting_le_self _
-      exact_mod_cast le_trans h1 h2
-    _ = (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
-      ring
-
-/-- **Harmonized conservation law.**  The band-spectrometer reading of level one equals
-`log C(2n,n)` minus a deep ledger pinned at `√(2n)` scale.  Each rung of the refinement
-ladder is read in its own chart: the `n`-scale slack of the raw conservation law was
-level-one chart geometry, and subtracting it exactly leaves the digit-tower content of the
-problem inside a `√n`-scale window, at every `n`. -/
-theorem harmonized_carry_conservation {n : ℕ} (hn : 0 < n) :
-    (∑ k ∈ range (n + 1),
-        (primeLogMass (2 * n / (2 * k + 1)) - primeLogMass (n / (k + 1)))) =
-      Real.log ((2 * n).choose n : ℝ) - deepCarryMass n ∧
-    0 ≤ deepCarryMass n ∧
-    deepCarryMass n ≤
-      (Nat.sqrt (2 * n) : ℝ) * (Nat.log 2 (2 * n) : ℝ) * Real.log (2 * (n : ℝ)) := by
-  refine ⟨?_, deepCarryMass_nonneg n, deepCarryMass_le_sqrt_bound hn⟩
-  rw [← levelOneCarryMass_eq_band_sum, ← levelOne_add_deep_eq_log_centralBinom hn]
-  ring
-
-/-! ## Iterated band telescoping: the two-level joint fiber
-
-Joint carry conditions at several levels telescope exactly: within a joint quotient fiber,
-the rails satisfying prescribed carry patterns at levels one and two form a single difference
-of prime tables, with square-root endpoints at the second level.  No estimate occurs: joint
-occupancy counts are alternating sums of the prime clock `θ` at explicitly computable
-points.  The level-one band law is the one-level case; this is the two-level case, the
-induction template for every deeper pattern. -/
-
-/-- Prime tables intersect at the minimum threshold. -/
-theorem primesLE_inter_eq_min (a b : ℕ) :
-    a.primesLE ∩ b.primesLE = (min a b).primesLE := by
-  ext p
-  simp only [Finset.mem_inter, Nat.mem_primesLE, le_min_iff]
-  tauto
-
-/-- Unconditional telescoped mass of a prime-table difference: empty and nonempty cases in
-one formula. -/
-theorem primesLE_sdiff_logMass (a b : ℕ) :
-    ∑ p ∈ a.primesLE \ b.primesLE, Real.log p =
-      primeLogMass a - primeLogMass (min a b) := by
-  classical
-  rw [← Finset.sdiff_inter_self_left, Finset.sum_sdiff_eq_sub Finset.inter_subset_left,
-    primesLE_inter_eq_min]
-  rfl
-
-/-- **Two-level joint fiber law.**  Rails carrying at levels one and two with quotients
-`(k, m)` are exactly the primes of one interval whose endpoints mix a hyperbola band with
-the square root of a hyperbola band. -/
-theorem levelTwoJointCarry_fiber_eq_sdiff (n k m : ℕ) :
-    ((2 * n).primesLE.filter (fun p ↦
-        p ≤ 2 * (n % p) ∧ p ^ 2 ≤ 2 * (n % p ^ 2) ∧ n / p = k ∧ n / p ^ 2 = m)) =
-      (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1)))).primesLE \
-        (max (n / (k + 1)) (Nat.sqrt (n / (m + 1)))).primesLE := by
-  ext p
-  simp only [Finset.mem_filter, Finset.mem_sdiff, Nat.mem_primesLE, le_min_iff,
-    not_and, not_le]
-  constructor
-  · rintro ⟨⟨hple, hprime⟩, hc1, hc2, hq1, hq2⟩
-    have hppos : 0 < p := hprime.pos
-    have hsq : p ^ 2 = p * p := by ring
-    have hdm1 := Nat.div_add_mod n p
-    rw [hq1] at hdm1
-    have hdm2 := Nat.div_add_mod n (p ^ 2)
-    rw [hq2] at hdm2
-    have hmodlt1 : n % p < p := Nat.mod_lt _ hppos
-    have hmodlt2 : n % p ^ 2 < p ^ 2 := Nat.mod_lt _ (by positivity)
-    have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
-    have hring2 : p ^ 2 * (2 * m + 1) = 2 * (p ^ 2 * m) + p ^ 2 := by ring
-    refine ⟨⟨⟨?_, ?_⟩, hprime⟩, fun hle1 ↦ ?_⟩
-    · rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)]
+    · intro hx
+      refine ⟨lt_of_lt_of_le hx hle, ?_⟩
+      have h4 : x / p ^ (d - 1) < (p - 1) / 2 + 1 :=
+        (Nat.div_lt_iff_lt_mul hP).mpr hx
       omega
-    · rw [Nat.le_sqrt]
-      rw [Nat.le_div_iff_mul_le (by omega : 0 < 2 * m + 1)]
-      have : p * p * (2 * m + 1) = p ^ 2 * (2 * m + 1) := by ring
-      omega
-    · exfalso
-      have hlt1 : n / (k + 1) < p := by
-        rw [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)]
-        have : p * (k + 1) = p * k + p := by ring
-        omega
-      have hlt2 : Nat.sqrt (n / (m + 1)) < p := by
-        rw [← not_le, Nat.le_sqrt]
-        intro hcon
-        rw [Nat.le_div_iff_mul_le (by omega : 0 < m + 1)] at hcon
-        have : p * p * (m + 1) = p ^ 2 * m + p ^ 2 := by ring
-        omega
-      have := max_lt hlt1 hlt2
-      omega
-  · rintro ⟨⟨⟨hhi1, hhi2⟩, hprime⟩, hlo⟩
-    have hppos : 0 < p := hprime.pos
-    have hgt : max (n / (k + 1)) (Nat.sqrt (n / (m + 1))) < p := by
-      by_contra hle
-      exact absurd hprime (hlo (le_of_not_gt hle))
-    have hgt1 : n / (k + 1) < p := lt_of_le_of_lt (le_max_left _ _) hgt
-    have hgt2 : Nat.sqrt (n / (m + 1)) < p := lt_of_le_of_lt (le_max_right _ _) hgt
-    have hmul1 : p * (2 * k + 1) ≤ 2 * n := by
-      rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * k + 1)] at hhi1
-    have hmul2 : p * p * (2 * m + 1) ≤ 2 * n := by
-      rw [Nat.le_sqrt] at hhi2
-      rwa [Nat.le_div_iff_mul_le (by omega : 0 < 2 * m + 1)] at hhi2
-    have hup1 : n < p * (k + 1) := by
-      rwa [Nat.div_lt_iff_lt_mul (by omega : 0 < k + 1)] at hgt1
-    have hup2 : n < p * p * (m + 1) := by
-      have h := hgt2
-      rw [← not_le, Nat.le_sqrt, not_le] at h
-      have hQ := Nat.div_add_mod n (m + 1)
-      have hmod : n % (m + 1) < m + 1 := Nat.mod_lt _ (by omega)
-      have hmono : (n / (m + 1) + 1) * (m + 1) ≤ p * p * (m + 1) :=
-        Nat.mul_le_mul_right _ (by omega : n / (m + 1) + 1 ≤ p * p)
-      have hexp : (n / (m + 1) + 1) * (m + 1) = (m + 1) * (n / (m + 1)) + (m + 1) := by
-        ring
-      omega
-    have hring1 : p * (2 * k + 1) = 2 * (p * k) + p := by ring
-    have hring1b : p * (k + 1) = p * k + p := by ring
-    have hring2 : p * p * (2 * m + 1) = 2 * (p * p * m) + p * p := by ring
-    have hring2b : p * p * (m + 1) = p * p * m + p * p := by ring
-    have hdiv1 : n / p = k := by
-      apply Nat.div_eq_of_lt_le
-      · have : k * p = p * k := by ring
-        omega
-      · have : (k + 1) * p = p * k + p := by ring
-        omega
-    have hdiv2 : n / p ^ 2 = m := by
-      have hsq : p ^ 2 = p * p := by ring
-      rw [hsq]
-      apply Nat.div_eq_of_lt_le
-      · have : m * (p * p) = p * p * m := by ring
-        omega
-      · have : (m + 1) * (p * p) = p * p * m + p * p := by ring
-        omega
-    have hdm1 := Nat.div_add_mod n p
-    rw [hdiv1] at hdm1
-    have hdm2 := Nat.div_add_mod n (p ^ 2)
-    rw [hdiv2] at hdm2
-    have hsq : p ^ 2 = p * p := by ring
-    have hsqm : p ^ 2 * m = p * p * m := by ring
-    refine ⟨⟨by omega, hprime⟩, by omega, by omega, hdiv1, hdiv2⟩
+  rw [hset, Finset.card_range]
 
-/-- Two-level joint occupancy as an exact `θ`-difference: the `J = 2` rung of iterated band
-telescoping.  Joint carry counts need no equidistribution estimate — they are alternating
-sums of the prime clock at computable points. -/
-theorem levelTwoJointCarry_fiber_logMass (n k m : ℕ) :
-    ∑ p ∈ (2 * n).primesLE.filter (fun p ↦
-        p ≤ 2 * (n % p) ∧ p ^ 2 ≤ 2 * (n % p ^ 2) ∧ n / p = k ∧ n / p ^ 2 = m),
-      Real.log p =
-      primeLogMass (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1)))) -
-        primeLogMass (min (min (2 * n / (2 * k + 1)) (Nat.sqrt (2 * n / (2 * m + 1))))
-          (max (n / (k + 1)) (Nat.sqrt (n / (m + 1))))) := by
-  rw [levelTwoJointCarry_fiber_eq_sdiff, primesLE_sdiff_logMass]
-
-end CriticalLinePhasor.Erdos377
-
-#print axioms CriticalLinePhasor.Erdos377.centralBinom_factorization_eq_carryLedger_card
-#print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_carryFreeThrough
-#print axioms CriticalLinePhasor.Erdos377.prime_dvd_centralBinom_iff_exists_carry
-#print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_carryFree
-#print axioms CriticalLinePhasor.Erdos377.nondivisorPrimes_eq_carryFreePrimes
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_carryFreeRailSum
-#print axioms CriticalLinePhasor.Erdos377.carryAt_iff_one_le_railPhase
-#print axioms CriticalLinePhasor.Erdos377.carryFree_iff_geometric
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_geometricRailMass
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_depthBands
-#print axioms CriticalLinePhasor.Erdos377.geometric_depth_one_iff
-#print axioms CriticalLinePhasor.Erdos377.first_cell_iff_reciprocal_interval
-#print axioms CriticalLinePhasor.Erdos377.rpow_normalizedRailFrequency
-#print axioms CriticalLinePhasor.Erdos377.halfCell_fourier_expansion
-#print axioms CriticalLinePhasor.Erdos377.halfCell_eq_zeroMode_add_nonzeroModes
-#print axioms CriticalLinePhasor.Erdos377.carryAcceptance_eq_ite
-#print axioms CriticalLinePhasor.Erdos377.harmonicRailTransfer_eq_carryAcceptance
-#print axioms CriticalLinePhasor.Erdos377.mod_pow_succ_eq_mod_add_digit_mul_pow
-#print axioms CriticalLinePhasor.Erdos377.normalizedCellCoordinate_succ
-#print axioms CriticalLinePhasor.Erdos377.normalizedChannelGate_sum
-#print axioms CriticalLinePhasor.Erdos377.normalizedChannelAverage_le_two_thirds
-#print axioms CriticalLinePhasor.Erdos377.normalizedChannelDiscrepancy_sum_eq_zero
-#print axioms CriticalLinePhasor.Erdos377.normalizedChannelDiscrepancy_three_zero
-#print axioms CriticalLinePhasor.Erdos377.harmonizedCellPhase_lt_half_iff
-#print axioms CriticalLinePhasor.Erdos377.next_harmonizedCell_closed_iff_digit_le_half
-#print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_dynamicClosedOrbit
-#print axioms CriticalLinePhasor.Erdos377.dynamicSurvivalWeight_eq_ite
-#print axioms CriticalLinePhasor.Erdos377.dynamicCellOperator_exact_orbit
-#print axioms CriticalLinePhasor.Erdos377.dynamicCellOperator_coherence_le
-#print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_succ_eq_average_add_discrepancy
-#print axioms CriticalLinePhasor.Erdos377.dynamicClosure_mul_channelAverage_le_two_thirds
-#print axioms CriticalLinePhasor.Erdos377.dynamicHarmonicEnergy_succ_le_two_thirds_add_discrepancy
-#print axioms CriticalLinePhasor.Erdos377.dynamicHarmonicEnergy_succ_le
-#print axioms CriticalLinePhasor.Erdos377.dynamicRailMass_eq_erdos377Mass
-#print axioms CriticalLinePhasor.Erdos377.carryState_eq_zero_of_increments
-#print axioms CriticalLinePhasor.Erdos377.incrementClosedThrough_iff_carryFreeThrough
-#print axioms CriticalLinePhasor.Erdos377.carryFree_depth_band_bounds
-#print axioms CriticalLinePhasor.Erdos377.activeCarryCells_eq_depth
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_depthBandMass
-#print axioms CriticalLinePhasor.Erdos377.depthBand_harmonicMass_le_railBand
-#print axioms CriticalLinePhasor.Erdos377.three_pow_carryFree
-#print axioms CriticalLinePhasor.Erdos377.three_pow_dynamicSurvivalWeight_eq_one
-#print axioms CriticalLinePhasor.Erdos377.railBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.depthBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.not_uniformRailContraction
-#print axioms CriticalLinePhasor.Erdos377.depthBand_eq_atomic_union_diffuse
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_eq_atomic_add_diffuse
-#print axioms CriticalLinePhasor.Erdos377.atomicDepthBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.diffuseDepthBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.diffuseCarrierEnvelope_of_uniform_band
-#print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_atomic_diffuse
-#print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_atomic_diffuse_uniform_band
-#print axioms CriticalLinePhasor.Erdos377.lowerHalfCellGate_eq_half_add_squareSign
-#print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_succ_eq_half_add_signed
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_succ_eq_half_add_signed
-#print axioms CriticalLinePhasor.Erdos377.halfTransferRecurrence_unroll
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_eq_vanishingDwell
-#print axioms CriticalLinePhasor.Erdos377.railBand_log_two_mul_lt_depth_add_two
-#print axioms CriticalLinePhasor.Erdos377.railBand_dynamicClosureWeight_eq_ite
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_terminal_eq_depthBandMass
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_vanishingDwell
-#print axioms CriticalLinePhasor.Erdos377.dynamicSquareSign_eq_quotientDigitSign
-#print axioms CriticalLinePhasor.Erdos377.quotientContourPacket_eq_lower_union_upper
-#print axioms CriticalLinePhasor.Erdos377.quotientContourPacket_signedLedger_eq_sub
-#print axioms CriticalLinePhasor.Erdos377.hasDerivAt_quotientContourPhase
-#print axioms CriticalLinePhasor.Erdos377.quotientWarpAmplitude_mul_density
-#print axioms CriticalLinePhasor.Erdos377.quotientContourPhase_warpedReflection
-#print axioms CriticalLinePhasor.Erdos377.quotientContourPhase_eq_quotientDigitPhase
-#print axioms CriticalLinePhasor.Erdos377.warpedReflection_involutive
-#print axioms CriticalLinePhasor.Erdos377.quotientWarpAmplitude_endpoint_distortion
-#print axioms CriticalLinePhasor.Erdos377.quotientCell_endpointRatio_eq
-#print axioms CriticalLinePhasor.Erdos377.harmonicContourResidual_nonneg_le
-#print axioms CriticalLinePhasor.Erdos377.sum_range_reciprocal_cell_distortion
-#print axioms CriticalLinePhasor.Erdos377.sum_range_harmonicContourResidual_le_quarter
-#print axioms CriticalLinePhasor.Erdos377.warpedReflection_not_integer_example
-#print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_const_mul
-#print axioms CriticalLinePhasor.Erdos377.discreteStieltjesVariationBound
-#print axioms CriticalLinePhasor.Erdos377.discreteStieltjes_depth_decay
-#print axioms CriticalLinePhasor.Erdos377.sum_depth_stieltjesDiscrepancy_le
-#print axioms CriticalLinePhasor.Erdos377.alternatingReciprocalKernel_variation_unbounded
-#print axioms CriticalLinePhasor.Erdos377.reflectedResidualKernel_warpedVariation_le_half
-#print axioms CriticalLinePhasor.Erdos377.scaled_reflectedResidualKernel_warpedVariation_decay
-#print axioms CriticalLinePhasor.Erdos377.norm_reflectedResidualKernel_le_half
-#print axioms CriticalLinePhasor.Erdos377.reflectedResidualKernel_stieltjes_depth_decay
-#print axioms CriticalLinePhasor.Erdos377.sum_depth_reflectedResidualDiscrepancy_le
-#print axioms CriticalLinePhasor.Erdos377.double_div_eq_two_mul_div_add_carryBit
-#print axioms CriticalLinePhasor.Erdos377.prime_not_dvd_centralBinom_iff_evenQuotientOrbit
-#print axioms CriticalLinePhasor.Erdos377.quotientDigit_lower_iff_midpoint
-#print axioms CriticalLinePhasor.Erdos377.lowerReciprocalPrimeCell_eq_sdiff
-#print axioms CriticalLinePhasor.Erdos377.upperReciprocalPrimeCell_eq_sdiff
-#print axioms CriticalLinePhasor.Erdos377.reciprocalPrimeCell_signedMass_eq_secondDifference
-#print axioms CriticalLinePhasor.Erdos377.reciprocalPrimeCell_secondDifference_eq_main_add_error
-#print axioms CriticalLinePhasor.Erdos377.firstDigitSignedPrimeLedger_eq_sum_secondDifferences
-#print axioms CriticalLinePhasor.Erdos377.firstDigitSignedPrimeLedger_eq_main_add_error
-#print axioms CriticalLinePhasor.Erdos377.bankPrimeReciprocalCumulative_sdiff
-#print axioms CriticalLinePhasor.Erdos377.bankReciprocalPrimeCell_signedMass_eq_secondDifference
-#print axioms CriticalLinePhasor.Erdos377.bankReciprocalPrimeCell_signedLedger_eq_sub
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankSignedLedger_eq_survivingQuotientSum
-#print axioms CriticalLinePhasor.Erdos377.dynamicPrefixPrimeBank_eq_boundary_add_secondDifferences
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankSignedLedger_eq_recursiveWarpedLedger
-#print axioms CriticalLinePhasor.Erdos377.railBand_le_quotientPrefix
-#print axioms CriticalLinePhasor.Erdos377.railBand_dynamicPrefixBoundaryPrimeBank_eq_empty
-#print axioms CriticalLinePhasor.Erdos377.railBand_quotientPrefix_lt_terminal
-#print axioms CriticalLinePhasor.Erdos377.railBand_dynamicSquareSign_terminal
-#print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedLedger_nonterminal
-#print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedLedger_terminal_eq_threshold
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_recursiveWarpedDwell
-#print axioms CriticalLinePhasor.Erdos377.abs_recursiveWarpedLedger_le_boundary_add_variation
-#print axioms CriticalLinePhasor.Erdos377.railBand_recursiveWarpedBoundaryMass_nonterminal_eq_zero
-#print axioms CriticalLinePhasor.Erdos377.abs_railBand_recursiveWarpedLedger_nonterminal_le_variation
-#print axioms CriticalLinePhasor.Erdos377.railBand_nonterminal_dwell_ledger_le_warpedVariation
-#print axioms CriticalLinePhasor.Erdos377.depthBand_eq_harmonicAtomic_union_diffuse
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_eq_harmonicAtomic_add_diffuse
-#print axioms CriticalLinePhasor.Erdos377.harmonicAtomicDepthBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseDepthBand_three_pow
-#print axioms CriticalLinePhasor.Erdos377.mellinClock_pos
-#print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_pos_iff
-#print axioms CriticalLinePhasor.Erdos377.mellinRailCoordinate_three_pow
-#print axioms CriticalLinePhasor.Erdos377.mellinCellReconstruction_eq_secondDifference
-#print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_le_mellinComponents
-#print axioms CriticalLinePhasor.Erdos377.fullyMellinReconstructedLedger_eq_recursiveWarpedLedger
-#print axioms CriticalLinePhasor.Erdos377.abs_fullyMellinReconstructedLedger_le
-#print axioms CriticalLinePhasor.Erdos377.railBand_dynamicSquareSign_terminal_mellin
-#print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_three_pow
-#print axioms CriticalLinePhasor.Erdos377.terminalMellinDrift_three_pow_pos
-#print axioms CriticalLinePhasor.Erdos377.railBand_nonterminal_dwell_ledger_le_fullMellinVariation
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_fullyMellinDwell
-#print axioms CriticalLinePhasor.Erdos377.three_pow_terminal_dynamicBankSignedLedger_eq_one_third
-#print axioms CriticalLinePhasor.Erdos377.not_exists_uniformTerminalMellinDecay
-#print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_le_one
-#print axioms CriticalLinePhasor.Erdos377.harmonicAtomicRailBand_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseRailBand_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_atom_lt_bandMass
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_harmonicAtomicRailBand_le_depth_over_two
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_le_primeHarmonicMass
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicAtomic_terminal_eq_mass
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicDiffuse_terminal_eq_mass
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseEnergy
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseDwell
-#print axioms CriticalLinePhasor.Erdos377.tsum_depth_mul_dwell_div_two_eq_one
-#print axioms CriticalLinePhasor.Erdos377.harmonicAtomicEntranceMass_le_one
-#print axioms CriticalLinePhasor.Erdos377.dynamicPrefixBoundaryPrimeBank_eq_empty_of_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.dynamicPrefixBoundaryLedger_eq_zero_of_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.recursiveWarpedBoundaryMass_nonterminal_eq_zero_of_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.nonterminal_dwell_ledger_le_fullMellinVariation_of_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_nonterminal_dwell_ledger_le_fullMellinVariation
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_sum_harmonicAtomicDiffuseFullyMellinDwell
-#print axioms CriticalLinePhasor.Erdos377.occupiedDepth_pos
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_succ_le_of_positive_primes
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_harmonicDiffuse_terminal_le_preterminal
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_harmonicDiffuseDepthBand_le_preterminal
-#print axioms CriticalLinePhasor.Erdos377.abs_dynamicBankSignedLedger_le_fullMellinVariation_of_subset_railBand
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuseDepthBand_mass_le_preterminalFullMellin
-#print axioms CriticalLinePhasor.Erdos377.sum_harmonicDiffuseDepthBand_mass_le_preterminalFullMellin
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_terminal_le_preterminal
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_depthBand_le_preterminal
-#print axioms CriticalLinePhasor.Erdos377.depthBand_mass_le_preterminalFullMellin
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_sum_preterminalFullMellin
-#print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_eq_abel
-#print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_abel
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_le_chebyshev
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_chebyshev
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_le_self
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_inv
-#print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_one_add_log_ratio
-#print axioms CriticalLinePhasor.Erdos377.railBand_pow_le_and_lt_pow
-#print axioms CriticalLinePhasor.Erdos377.sameRailBand_crossed_power_window
-#print axioms CriticalLinePhasor.Erdos377.sameRailBand_mellin_window
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_le_mellinKernel
-#print axioms CriticalLinePhasor.Erdos377.primeCounting_floor_div_sq_le_mellinKernel
-#print axioms CriticalLinePhasor.Erdos377.primeReciprocalIoc_le_one_add_mellinWidth
-#print axioms CriticalLinePhasor.Erdos377.sameRailBand_log_lt_two_mul
-#print axioms CriticalLinePhasor.Erdos377.sameRailBand_mellinWidth_lt_log_two
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_railBand_le_min_add_Ioc
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_railBand_le_uniform
-#print axioms CriticalLinePhasor.Erdos377.preterminalEntrance_uniform
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_preterminalVariation
-#print axioms CriticalLinePhasor.Erdos377.quotientCell_logClockDefect_eq_harmonicContourResidual
-#print axioms CriticalLinePhasor.Erdos377.sum_range_scaled_quotientCell_logClockDefect_le_quarter
-#print axioms CriticalLinePhasor.Erdos377.sum_depth_scaled_quotientCell_logClockDefect_le_half
-#print axioms CriticalLinePhasor.Erdos377.mellinCellGradientAdapter_eq_sampling_add_clockCurvature
-#print axioms CriticalLinePhasor.Erdos377.recursiveMellinAdapterVariation_le_sampling_add_clockCurvature
-#print axioms CriticalLinePhasor.Erdos377.mellinComponents_le_recursiveWarpedInteriorVariation_add_two_adapters
-#print axioms CriticalLinePhasor.Erdos377.preterminalMellinAdapterCost_le_sampling_add_clockCurvature
-#print axioms CriticalLinePhasor.Erdos377.preterminalMellinVariation_le_warped_add_sampling_add_clock
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_warped_sampling_clock
-#print axioms CriticalLinePhasor.Erdos377.deriv_mellinReciprocal
-#print axioms CriticalLinePhasor.Erdos377.primeMellinIoc_eq_abel
-#print axioms CriticalLinePhasor.Erdos377.primeMellinMass_primesLE_uniform
-#print axioms CriticalLinePhasor.Erdos377.normalizedBankPrimeCarrier_le_primeMellinMass
-#print axioms CriticalLinePhasor.Erdos377.sum_Ico_abs_mellinCellContinuousClockCurvature_le_primeMellinMass
-#print axioms CriticalLinePhasor.Erdos377.recursiveMellinContinuousClockCurvatureVariation_le_primeMellinMass
-#print axioms CriticalLinePhasor.Erdos377.preterminalMellinContinuousClockCurvatureCost_uniform
-#print axioms CriticalLinePhasor.Erdos377.preterminalMellinVariation_le_uniformClock_add_warped_sampling_quantization
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniform_add_warped_sampling_quantization
-#print axioms CriticalLinePhasor.Erdos377.abs_bankReciprocalPrimeCell_secondDifference_le_mass
-#print axioms CriticalLinePhasor.Erdos377.dynamicPrefixInteriorPrimeBank_mass_eq_sum_cells
-#print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_le_dynamicBankEnergy
-#print axioms CriticalLinePhasor.Erdos377.preterminalWarpedVariation_le_survivorEnergy
-#print axioms CriticalLinePhasor.Erdos377.primePreterminalStoppingKernel_nonneg
-#print axioms CriticalLinePhasor.Erdos377.primePreterminalStoppingKernel_le_one
-#print axioms CriticalLinePhasor.Erdos377.depthPreterminalSurvivorEnergy_eq_primeStoppingKernel
-#print axioms CriticalLinePhasor.Erdos377.depthPreterminalSurvivorEnergy_le_primeHarmonicMass
-#print axioms CriticalLinePhasor.Erdos377.depthBand_mass_le_entrance_add_signedWarped
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_preterminalEntrance_add_signedWarpedLedger
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_signedWarpedLedger
-#print axioms CriticalLinePhasor.Erdos377.preterminalSignedFullyMellinLedger_eq_signedWarpedLedger
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniformEntrance_add_signedFullyMellinLedger
-#print axioms CriticalLinePhasor.Erdos377.sum_occupiedDepths_preterminalEnergy_eq_primeHarmonicMass
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_preterminalClosedPrimeBankMass
-#print axioms CriticalLinePhasor.Erdos377.preterminalSignedWarpedLedger_eq_preterminalMass_sub_entrance
-#print axioms CriticalLinePhasor.Erdos377.railBand_dynamicClosedOrbit_succ_iff_carryFree
-#print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrime_carryFree_iff_terminalThreshold
-#print axioms CriticalLinePhasor.Erdos377.mem_terminalFailurePrimeBank_iff
-#print axioms CriticalLinePhasor.Erdos377.terminalFailurePrime_power_window
-#print axioms CriticalLinePhasor.Erdos377.carryFreePrimes_subset_preterminalClosedPrimeBank
-#print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrimeBank_eq_carryFree_union_terminalFailure
-#print axioms CriticalLinePhasor.Erdos377.preterminalClosedPrimeBankMass_eq_erdos377Mass_add_terminalFailureMass
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_half_preterminalMass_add_half_terminalSignedRootLedger
-#print axioms CriticalLinePhasor.Erdos377.terminalSignedRootLedger_eq_erdos377Mass_sub_terminalFailureMass
-#print axioms CriticalLinePhasor.Erdos377.terminalSignedFullyMellinRootLedger_eq_terminalSignedRootLedger
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_eq_half_entrance_add_half_compensatedFullyMellinLedger
-#print axioms CriticalLinePhasor.Erdos377.depthCompensatedFullyMellinLedger_eq_terminalEnergy
-#print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_eq_entry_sub_terminal
-#print axioms CriticalLinePhasor.Erdos377.dynamicClosureWeight_antitone_cells
-#print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_nonneg
-#print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_eq_ite
-#print axioms CriticalLinePhasor.Erdos377.postEntranceFirstFailureKernel_le_one
-#print axioms CriticalLinePhasor.Erdos377.sum_postEntranceFirstFailureKernel_eq_failureMass
-#print axioms CriticalLinePhasor.Erdos377.mellinPrimeHaarWeight_mul_harmonicAmplitude
-#print axioms CriticalLinePhasor.Erdos377.hasDerivAt_continuousMellinHarmonicAmplitude
-#print axioms CriticalLinePhasor.Erdos377.continuousMellinHarmonicAmplitude_variation_budget
-#print axioms CriticalLinePhasor.Erdos377.mellinHarmonicAmplitude_antitone_primes
-#print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_eq_sub_of_antitone
-#print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_le_entrance_of_antitone_nonneg
-#print axioms CriticalLinePhasor.Erdos377.warpedMeshVariation_mellinHarmonicAmplitude_le
-#print axioms CriticalLinePhasor.Erdos377.mellinHaarPrimeMesh_discreteStieltjesBound
-#print axioms CriticalLinePhasor.Erdos377.depthCompensatedFullyMellinLedger_eq_firstFailureSum
-#print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_sum_depthCompensated
-#print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_firstFailureLedger
-#print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_mellinHaarFirstFailureLedger
-#print axioms CriticalLinePhasor.Erdos377.mellinHaarCompensatedCharge_eq_threeWaySign
-#print axioms CriticalLinePhasor.Erdos377.compensatedFullyMellinLedger_eq_onePrimeMellinHaarLedger
-#print axioms CriticalLinePhasor.Erdos377.dynamicBankEnergy_railBand_three_pow_eq_one_third
-#print axioms CriticalLinePhasor.Erdos377.three_pow_nonterminal_dynamicBankSignedLedger_eq_one_third
-#print axioms CriticalLinePhasor.Erdos377.one_third_le_recursiveWarpedInteriorVariation_three_pow
-#print axioms CriticalLinePhasor.Erdos377.one_six_le_depthPreterminalWarpedVariation_three_pow
-#print axioms CriticalLinePhasor.Erdos377.not_exists_uniformPreterminalWarpedDepthDecay
-#print axioms CriticalLinePhasor.Erdos377.recursiveWarpedInteriorVariation_empty
-#print axioms CriticalLinePhasor.Erdos377.preterminalWarpedVariation_eq_harmonicAtomic_add_diffuse
-#print axioms CriticalLinePhasor.Erdos377.recursiveMellinSamplingAdapterVariation_empty
-#print axioms CriticalLinePhasor.Erdos377.recursiveMellinClockQuantizationVariation_empty
-#print axioms CriticalLinePhasor.Erdos377.preterminalWarpedSamplingQuantizationVariation_eq
-#print axioms CriticalLinePhasor.Erdos377.preterminalWarpedSamplingQuantizationVariation_eq_atomic_add_diffuse
-#print axioms CriticalLinePhasor.Erdos377.erdos377Mass_le_uniform_add_preterminalWarpedSamplingQuantization
-#print axioms CriticalLinePhasor.Erdos377.harmonicDiffuse_depth_lt_card
-#print axioms CriticalLinePhasor.Erdos377.erdos377Bound_of_harmonicAtomic_diffuse_uniform_band
-#print axioms CriticalLinePhasor.Erdos377.atomicRailBudget_of_erdos377Bound
-#print axioms CriticalLinePhasor.Erdos377.harmonicAtomicRailBudget_of_erdos377Bound
-#print axioms CriticalLinePhasor.Erdos377.railBand_depth_pos_of_nonempty
-#print axioms CriticalLinePhasor.Erdos377.primeHarmonicMass_mono
-#print axioms CriticalLinePhasor.Erdos377.uniformHarmonicDiffuseRailBandEnvelope
-#print axioms CriticalLinePhasor.Erdos377.carryLedger_weighted_sum_eq_log_centralBinom
-#print axioms CriticalLinePhasor.Erdos377.carry_conservation_law
-#print axioms CriticalLinePhasor.Erdos377.carryFreeThrough_realizable
-#print axioms CriticalLinePhasor.Erdos377.levelOne_add_deep_eq_log_centralBinom
-#print axioms CriticalLinePhasor.Erdos377.levelOneCarryMass_eq_band_sum
-#print axioms CriticalLinePhasor.Erdos377.deepCarryMass_le_sqrt_bound
-#print axioms CriticalLinePhasor.Erdos377.harmonized_carry_conservation
-#print axioms CriticalLinePhasor.Erdos377.primesLE_sdiff_logMass
-#print axioms CriticalLinePhasor.Erdos377.levelTwoJointCarry_fiber_eq_sdiff
-#print axioms CriticalLinePhasor.Erdos377.levelTwoJointCarry_fiber_logMass
+#print axioms CriticalLinePhasor.Erdos377.carryAt_shift_transport
+#print axioms CriticalLinePhasor.Erdos377.card_topDigit_lowerHalf

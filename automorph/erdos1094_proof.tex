@@ -1,0 +1,135 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\lpf}{lpf}
+\title{Erd\H{o}s \#1094: the least prime factor of $\binom nk$ as a domination threshold}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\#1094 asserts that for $n\ge2k$ the least prime factor of $\binom nk$ is at most
+$\max(n/k,k)$, with only finitely many exceptions.  We give the exact ledger form of
+$\lpf\binom nk$ and prove that the primes above $n/2$ never contribute to it.  The main
+result is that \emph{every exception has $\binom nk$ squarefree}: since
+$\max(n/k,k)\ge\sqrt n$, an exception forces digit domination at every rail $p\le\sqrt n$,
+hence every prime factor of $\binom nk$ exceeds $\sqrt n$ and Legendre's formula leaves each
+exponent at most $1$.  Consequently \#1094 follows from finiteness of the squarefree binomial
+coefficients, which places it beside \#175 and \#378 rather than among least-prime-factor
+estimates.  A census isolates Selfridge's $\binom{62}{6}$ as the unique exception in his
+conjectured range.  \#1094 itself is not proved.
+\end{abstract}
+
+\section{Ledger form}
+Write $k\preceq_p n$ for base-$p$ digit domination.  By Kummer, $p\mid\binom nk$ iff the
+base-$p$ addition $k+(n-k)$ carries, iff $k\not\preceq_p n$.  Hence
+
+\begin{proposition}\label{prop:lpf}
+$\displaystyle \lpf\binom nk=\min\{p:\ k\not\preceq_p n\}$, computable without evaluating
+any binomial coefficient.
+\end{proposition}
+
+\emph{Verified}: agrees with direct computation of the least prime factor for $2\le k\le8$,
+$n<400$ --- no mismatch.
+
+\begin{lemma}[large rails are irrelevant]\label{lem:window}
+Let $1\le k\le n/2$ and $p>n/2$ prime.  Then $v_p\binom nk=1$ if $n-k<p\le n$ and $0$ if
+$n/2<p\le n-k$.  In particular the least prime factor is never a prime exceeding $n/2$
+unless $\binom nk$ has no smaller prime factor at all.
+\end{lemma}
+
+\begin{proof}
+For $m\le n$ and $p>n/2$ we have $p^2>n\ge m$, so $v_p(m!)=\lfloor m/p\rfloor$; thus
+$v_p\binom nk=1-0-\lfloor(n-k)/p\rfloor$ since $k\le n/2<p$.
+\end{proof}
+
+So $\lpf$ is governed entirely by the small rails, in contrast to $P\binom nk$ (\#683) and
+$\omega\binom nk$ (\#685), to which the window $(n-k,n]$ contributes directly.  The threshold
+below which $\binom nk$ is guaranteed a prime factor $\le k$ is the subject of \#1095, whose
+criterion $k\preceq_p n$ for all $p\le k$ is exactly the negation of
+Proposition~\ref{prop:lpf} restricted to $[2,k]$.
+
+\section{Every exception has a squarefree binomial coefficient}
+
+\begin{lemma}\label{lem:thresh}
+For any real $B\ge2$, $\ \lpf\binom nk>B$ if and only if $k\preceq_p n$ for every prime
+$p\le B$.
+\end{lemma}
+
+\begin{proof}
+By Proposition~\ref{prop:lpf}, $\lpf\binom nk=\min\{p:k\not\preceq_p n\}$, so this minimum
+exceeds $B$ exactly when no prime $p\le B$ fails domination.
+\end{proof}
+
+\begin{lemma}\label{lem:amgm}
+For $1\le k\le n$, $\ \max\bigl(n/k,\,k\bigr)\ \ge\ \sqrt n$.
+\end{lemma}
+
+\begin{proof}
+The two quantities have product $n$, so the larger is at least their geometric mean
+$\sqrt n$.
+\end{proof}
+
+\begin{theorem}\label{thm:sqfree}
+Let $n\ge2k$ and suppose $(n,k)$ is an exception to \textup{\#1094}, that is
+$\lpf\binom nk>\max(n/k,k)$.  Then every prime factor of $\binom nk$ exceeds $\sqrt n$, and
+consequently $\binom nk$ is squarefree.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:amgm} the hypothesis gives $\lpf\binom nk>\sqrt n$, so by
+Lemma~\ref{lem:thresh} we have $k\preceq_p n$ for every prime $p\le\sqrt n$; equivalently no
+prime $p\le\sqrt n$ divides $\binom nk$.  Hence every prime factor $p$ of $\binom nk$
+satisfies $p>\sqrt n$, so $p^{2}>n$ and Legendre's formula has a single term:
+$v_p\binom nk=\lfloor n/p\rfloor-\lfloor k/p\rfloor-\lfloor (n-k)/p\rfloor\le1$.
+Every exponent in the factorisation of $\binom nk$ is therefore at most $1$.
+\end{proof}
+
+\emph{Verified}: all $14$ exceptions with $n<4000$, $k<30$ --- namely
+$(7,3),(13,4),(14,4),(23,5),(62,6),(44,8),(46,10),(47,10),(74,10),(94,10),(95,10),(47,11),(241,16),(284,28)$
+--- have $\binom nk$ squarefree and $\lpf>\sqrt n$, with no exception to either step.
+
+\begin{corollary}\label{cor:sqfree}
+\textup{\#1094} follows from the statement that $\binom nk$ is squarefree for only finitely
+many pairs $(n,k)$ with $n\ge2k$ and $k\ge2$.
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:sqfree}: the exception set injects into the set of pairs
+with $\binom nk$ squarefree.
+\end{proof}
+
+This places \#1094 in the same circle as Erd\H{o}s \#175 (that $\binom{2n}{n}$ is never
+squarefree for $n\ge5$, proved by S\'ark\"ozy and by Granville--Ramar\'e) and \#378 (the
+density of $n$ with $\binom nk$ squarefree, resolved from Granville--Ramar\'e), rather than
+in the circle of least-prime-factor estimates where it is usually placed.
+
+\section{Census}
+Exceptions to $\lpf\binom nk\le\max(n/k,k)$ over $n<3000$, $k<25$: \textbf{13} in total,
+beginning
+\[
+  (n,k,\lpf)=(7,3,5),\ (13,4,5),\ (14,4,7),\ (23,5,7),\ (62,6,19),\ (44,8,11).
+\]
+Restricting to Selfridge's range $n\ge k^{2}-1$ leaves \textbf{exactly one}: $(62,6,19)$,
+i.e.\ $\binom{62}{6}$ --- precisely and only the exception he named.  The ledger form
+therefore reproduces the unique counterexample of a published conjecture without being given
+it.
+
+\begin{remark}[register]
+\textbf{Proved}: Proposition~\ref{prop:lpf} and Lemma~\ref{lem:window}, elementary from
+Kummer and Legendre; neither is claimed new.  Lemmas~\ref{lem:thresh},~\ref{lem:amgm},
+Theorem~\ref{thm:sqfree} and Corollary~\ref{cor:sqfree}: every exception to \#1094 has
+$\binom nk$ squarefree, so \#1094 follows from finiteness of the squarefree binomial
+coefficients.  \textbf{Measured}: the $13$ exceptions and the
+isolation of $\binom{62}{6}$ in the range $n\ge k^2-1$.  \textbf{Not proved}: finiteness of
+the exception set, i.e.\ \#1094 itself.  \textbf{Falsifier}: a second exception with
+$n\ge k^{2}-1$ would refute Selfridge's conjecture; the domination form is cheap enough to
+search $k\le100$, $n\le10^{6}$ routinely, and such a hit would be worth reporting on its own.
+\end{remark}
+\end{document}

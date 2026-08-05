@@ -1,0 +1,376 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\title{Two ledger reductions: Erd\H{o}s \#727 and \#374}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We record elementary but apparently unrecorded reductions of two Erd\H{o}s problems to
+statements about a single ledger.  For \#727 --- does $(n+k)!^2\mid(2n)!$ infinitely
+often? --- we show the divisibility is exactly a carry inequality on each prime, and deduce
+unconditionally that any solution forces $(n+1)\cdots(n+k)$ to be $\sqrt{2n}$-smooth; this
+is a genuine constraint, not a heuristic, and it is what makes the problem a smooth-number
+question.  For \#374 we show that $F(m)$ fails to exist exactly because a prime introduces a
+fresh coordinate into an $\mathbb F_2$-valued ledger, which re-derives the known fact that
+no $D_k$ contains a prime in one line.  All statements here are \textbf{proved}; the
+accompanying densities are recorded separately as measurements.
+\end{abstract}
+
+\section{Notation}
+
+For a prime $p$, $v_p$ is the $p$-adic valuation, $s_p(m)$ the base-$p$ digit sum, and
+\[
+  \kappa_p(n)\;:=\;v_p\binom{2n}{n}\;=\;\frac{2s_p(n)-s_p(2n)}{p-1}
+\]
+the number of carries when $n$ is added to itself in base $p$ (Kummer; Legendre for the
+middle equality).
+
+\section{Erd\H{o}s \#727}
+
+\begin{theorem}[exact restatement]\label{thm:727restate}
+For all $n\ge k\ge1$,
+\[
+  (n+k)!^2\ \Big|\ (2n)!
+  \iff
+  \bigl[(n{+}1)(n{+}2)\cdots(n{+}k)\bigr]^2\ \Big|\ \binom{2n}{n}
+  \iff
+  \kappa_p(n)\ \ge\ 2\,v_p\bigl((n{+}1)\cdots(n{+}k)\bigr)\ \ \forall p .
+\]
+\end{theorem}
+
+\begin{proof}
+$\dfrac{(2n)!}{(n+k)!^2}=\dfrac{(2n)!}{n!^2}\cdot\dfrac{n!^2}{(n+k)!^2}
+=\dbinom{2n}{n}\Big/\bigl[(n{+}1)\cdots(n{+}k)\bigr]^2$, which gives the first equivalence;
+the second is comparison of $p$-adic valuations, using $v_p\binom{2n}{n}=\kappa_p(n)$.
+\end{proof}
+
+\begin{remark}
+At $k=1$ this reads $(n+1)^2\mid\binom{2n}{n}$, which is Balakran's theorem \cite{Ba29};
+so the reformulation is anchored against a known result.  Note also that only primes
+dividing $(n{+}1)\cdots(n{+}k)$ impose any condition, so the criterion is a finite check.
+\end{remark}
+
+\begin{lemma}[carry ceiling above the square root]\label{lem:ceiling}
+If $p>\sqrt{2n}$ then $\kappa_p(n)\le1$.
+\end{lemma}
+
+\begin{proof}
+From $p>\sqrt{2n}$ we get $p^2>2n>n$, so $n<p^2$ and $n$ has at most two base-$p$ digits;
+carries in $n+n$ can occur only out of positions $0$ and $1$.  A carry out of position $1$
+would require $2n\ge p^2$, contradicting $p^2>2n$.  Hence at most one carry.
+\end{proof}
+
+\begin{theorem}[smoothness is forced]\label{thm:smooth}
+Let $k\ge2$.  If $(n+k)!^2\mid(2n)!$ then every prime factor of
+$(n{+}1)(n{+}2)\cdots(n{+}k)$ is at most $\sqrt{2n}$; that is, the product is
+$\sqrt{2n}$-smooth.
+\end{theorem}
+
+\begin{proof}
+Suppose $p\mid(n{+}1)\cdots(n{+}k)$ with $p>\sqrt{2n}$.  Then
+$v_p\bigl((n{+}1)\cdots(n{+}k)\bigr)\ge1$, so Theorem~\ref{thm:727restate} demands
+$\kappa_p(n)\ge2$, contradicting Lemma~\ref{lem:ceiling}.
+\end{proof}
+
+\emph{Measured} (census to $n=1.2\times10^5$): among all solutions for $k=2$ and $k=3$
+there is \textbf{no} violation of Theorem~\ref{thm:smooth}, and
+$\max\log p_{\max}/\log(2n)=0.4999$ --- the bound is attained and never crossed.  Solution
+densities to $n=2\times10^5$ are $0.1126$ $(k{=}1)$, $0.0099$ $(k{=}2)$, $7.6\times10^{-4}$
+$(k{=}3)$, $4\times10^{-5}$ $(k{=}4)$, with dyadic counts for $k=2$ stabilising near
+$0.010$: positive density, not merely infinitude.  The density of $n$ for which
+$(n{+}1)(n{+}2)$ is $\sqrt{2n}$-smooth measures $0.0932$, against
+$\rho(2)^2=(1-\log2)^2=0.0942$ --- consecutive smoothness is independent to $1\%$.
+
+\section{A lower bound on $n$ in terms of $k$}
+
+Theorem~\ref{thm:smooth} bounds the size of the rails; the carry ceiling bounds their
+multiplicities, and the two together bound $k$.
+
+\begin{lemma}[carry ceiling]\label{lem:carryceil}
+For every prime $p$ and every $n\ge1$, $\ \kappa_p(n)\le\lfloor\log_p(2n)\rfloor$.
+\end{lemma}
+
+\begin{proof}
+$\kappa_p(n)$ counts the carries in the base-$p$ addition $n+n=2n$.  Carries occur only out
+of positions $0,\dots,\lfloor\log_p(2n)\rfloor-1$, since a carry out of the top position of
+$2n$ is impossible.
+\end{proof}
+
+\begin{lemma}[multiplicity ceiling]\label{lem:multceil}
+Suppose $(n+k)!^{2}\mid(2n)!$ and let $p$ be a prime with
+$e:=v_p\bigl((n{+}1)\cdots(n{+}k)\bigr)\ge1$.  Then
+\[
+  e\ \le\ \tfrac12\log_p(2n),
+  \qquad\text{equivalently}\qquad p^{\,e}\ \le\ (2n)^{1/2}.
+\]
+\end{lemma}
+
+\begin{proof}
+By Theorem~\ref{thm:727restate} the hypothesis gives $\kappa_p(n)\ge2e$, and
+Lemma~\ref{lem:carryceil} gives $\kappa_p(n)\le\log_p(2n)$.  Combining,
+$2e\le\log_p(2n)$; exponentiating base $p$ gives $p^{e}\le(2n)^{1/2}$.
+\end{proof}
+
+\emph{Verified}: all $1515$ rails occurring in the $227$ solutions with $k\in\{2,3\}$ and
+$n<30000$ --- no violation.
+
+\begin{theorem}[$k$ is small compared with $\sqrt n$]\label{thm:kbound}
+If $(n+k)!^{2}\mid(2n)!$ with $k\ge2$, then
+\[
+  n^{k}\ <\ (2n)^{\pi(\sqrt{2n})/2},
+  \qquad\text{hence}\qquad
+  k\ <\ \bigl(1+o(1)\bigr)\frac{\sqrt{2n}}{\log n}
+  \quad\text{and}\quad n\ \gg\ k^{2}\log^{2}k .
+\]
+\end{theorem}
+
+\begin{proof}
+Write $\Pi=(n{+}1)(n{+}2)\cdots(n{+}k)$.  By Theorem~\ref{thm:smooth} every prime factor of
+$\Pi$ is at most $\sqrt{2n}$, and by Lemma~\ref{lem:multceil} each contributes
+$p^{v_p(\Pi)}\le(2n)^{1/2}$.  Hence
+\[
+  \Pi\;=\;\prod_{p\le\sqrt{2n}}p^{\,v_p(\Pi)}\;\le\;(2n)^{\pi(\sqrt{2n})/2}.
+\]
+On the other hand $\Pi>n^{k}$, which gives the displayed inequality.  Taking logarithms,
+$k\log n<\tfrac12\pi(\sqrt{2n})\log(2n)$, and the prime number theorem
+$\pi(x)\sim x/\log x$ yields $\pi(\sqrt{2n})\sim 2\sqrt{2n}/\log(2n)$, so
+$k\log n<(1+o(1))\sqrt{2n}$.  Solving for $n$ gives $n\gg k^{2}\log^{2}k$.
+\end{proof}
+
+\emph{Verified}: the inequality $k<\sqrt{2n}/\log n$ holds on all $302$ solutions with
+$2\le k\le5$, $n<40000$, as does the intermediate bound
+$\Pi\le(2n)^{\pi(\sqrt{2n})/2}$.  The least solutions are $n=208$ $(k=2)$, $n=3475$
+$(k=3)$, $n=8174$ $(k=4)$, against bounds $3.82$, $10.22$, $14.19$.
+
+\begin{corollary}[what remains]\label{cor:727route}
+For fixed $k\ge2$, \#727 follows from the conjunction of
+\begin{enumerate}
+\item[(S)] a positive density of $n$ for which $(n{+}1)\cdots(n{+}k)$ is $\sqrt{2n}$-smooth,
+and
+\item[(C)] a positive conditional probability, given \textup{(S)}, that
+$\kappa_p(n)\ge2v_p$ holds for every $p\le\sqrt{2n}$.
+\end{enumerate}
+Theorem~\ref{thm:smooth} shows \textup{(S)} is \emph{necessary}, so no route can avoid it.
+\end{corollary}
+
+Condition (C) is of the same type as the carry conditions in Erd\H{o}s \#377, but is
+required only with positive probability rather than uniformly in $n$, which is a
+substantially weaker demand.
+
+\section{Erd\H{o}s \#374}\label{sec:374}
+
+For $a\ge1$ let $w(a)\in\mathbb F_2^{(\text{primes})}$ have $p$-coordinate
+$v_p(a!)\bmod 2$.  Since $v_p(a!)=v_p((a-1)!)+v_p(a)$ we have the ledger recursion
+$w(a)=w(a-1)+u(a)$, where $u(a)$ has $p$-coordinate $v_p(a)\bmod2$.  A product
+$a_1!\cdots a_k!$ is a perfect square iff $\sum_iw(a_i)=0$ in $\mathbb F_2$.  Recall
+$F(m)$ is the least $k\ge2$, if it exists, for which there are $a_1<\cdots<a_k=m$ with
+$a_1!\cdots a_k!$ a square, and $D_k=\{m:F(m)=k\}$.
+
+\begin{theorem}[primes are excluded, with a reason]\label{thm:374prime}
+If $m$ is prime then $F(m)$ does not exist.  Equivalently, no $D_k$ contains a prime.
+\end{theorem}
+
+\begin{proof}
+Let $m=p$ be prime.  For $a<p$ we have $v_p(a!)=0$, so the $p$-coordinate of $w(a)$ is $0$;
+whereas $v_p(p!)=1$, so the $p$-coordinate of $w(p)$ is $1$.  Any admissible family has
+$a_k=p$ and $a_i<p$ for $i<k$, so the $p$-coordinate of $\sum_iw(a_i)$ equals $1\ne0$, and
+the product cannot be a square.
+\end{proof}
+
+\begin{remark}
+The mechanism is that a prime is the first index at which its own coordinate is switched on,
+so $w(p)$ is automatically independent of all its predecessors.  In this language,
+$F(m)$ exists precisely when $w(m)$ lies in the $\mathbb F_2$-span of
+$\{w(a):a<m\}$, and $F(m)-1$ is the least number of distinct predecessors summing to
+$w(m)$ --- a shortest-zero-sum (minimum-weight) problem, not a counting one.
+\end{remark}
+
+\begin{theorem}[the four-term criterion]\label{thm:374four}
+Let $2\le c<m-1$.  Then $(c{-}1)!\,c!\,(m{-}1)!\,m!$ is a perfect square if and only if
+$cm$ is a perfect square, i.e.\ iff $c$ and $m$ have the same squarefree kernel.
+\end{theorem}
+
+\begin{proof}
+As above $w(t)+w(t-1)=u(t)$, so
+$w(c{-}1)+w(c)+w(m{-}1)+w(m)=u(c)+u(m)$.  This vanishes in $\mathbb F_2$ iff $u(c)=u(m)$,
+which says exactly that $c$ and $m$ have the same set of primes to odd exponent, i.e.\ the
+same squarefree kernel, i.e.\ $cm$ is a square.
+\end{proof}
+
+\emph{Verified}: $177\,903$ pairs $(c,m)$ with $m<600$ --- the equivalence is exact.
+
+\begin{theorem}[non-squarefree $m$ need at most four terms]\label{thm:374nsf}
+Let $m=s\,i^{2}$ with $s$ squarefree and $i\ge2$, and suppose $m\ge8$.  Then
+$F(m)\le4$; explicitly $c=s(i-1)^{2}$ satisfies $2\le c<m-1$ and $cm=\bigl(s\,i(i-1)\bigr)^{2}$.
+\end{theorem}
+
+\begin{proof}
+$cm=s^{2}i^{2}(i-1)^{2}$ is a square, so Theorem~\ref{thm:374four} applies once
+$2\le c<m-1$.  Since $i\ge2$, $c=s(i-1)^{2}\ge s\ge1$, and $c\ge2$ unless $s=1,i=2$, i.e.\
+$m=4<8$.  Also $c/m=\bigl(\tfrac{i-1}{i}\bigr)^{2}\le\tfrac49$, so $c\le\tfrac49m<m-1$ for
+$m\ge2$.
+\end{proof}
+
+\emph{Verified}: the construction succeeds for all $1566$ non-squarefree $m$ with
+$8\le m\le4000$, with no ledger failure and no range failure.
+
+\begin{corollary}[a positive-density answer]\label{cor:374density}
+\[
+  \bigl|(D_2\cup D_3\cup D_4)\cap\{1,\dots,n\}\bigr|\ \ge\ \Bigl(1-\tfrac{6}{\pi^{2}}\Bigr)n+O(\sqrt n)
+  \;=\;0.3921\ldots n+O(\sqrt n).
+\]
+Since $D_2=\{j^{2}:j>1\}$ has $O(\sqrt n)$ elements, $|(D_3\cup D_4)\cap\{1,\dots,n\}|\gg n$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:374nsf} every non-squarefree $m\ge8$ has $F(m)\le4$, hence lies in
+$D_2\cup D_3\cup D_4$.  The non-squarefree integers up to $n$ number
+$(1-6/\pi^{2})n+O(\sqrt n)$.
+\end{proof}
+
+\emph{Verified}: $1567$ non-squarefree $m\le4000$, density $0.3917$ against
+$1-6/\pi^{2}=0.3921$.
+
+\begin{theorem}[pronic $m$ need only four terms]\label{thm:374pronic}
+Let $m=a(a+1)$ with $a\ge3$.  Then $(a{-}1)!\,(a{+}1)!\,(m{-}1)!\,m!$ is a perfect square,
+so $F(m)\le4$.
+\end{theorem}
+
+\begin{proof}
+By the pair identity, $w(a{-}1)+w(a)=u(a)$ and $w(a)+w(a{+}1)=u(a{+}1)$, so
+\[
+  w(a{-}1)+w(a{+}1)=u(a)+u(a{+}1)=u\bigl(a(a{+}1)\bigr)=u(m),
+\]
+using multiplicativity of $u$.  Also $w(m{-}1)+w(m)=u(m)$.  Adding the two relations gives
+$w(a{-}1)+w(a{+}1)+w(m{-}1)+w(m)=2u(m)=0$ in $\mathbb F_2$.  The four arguments
+$a{-}1<a{+}1<m{-}1<m$ are distinct and positive for $a\ge3$.
+\end{proof}
+
+Note that this construction is \emph{shorter} than the generic one of
+Theorem~\ref{thm:374six} precisely because the two consecutive pairs overlap: the argument
+$a$ occurs in both $\{a{-}1,a\}$ and $\{a,a{+}1\}$ and cancels, removing two terms.
+
+\begin{proposition}[parity of a witness]\label{prop:374parity}
+Let $S$ be a witness for $m$, i.e.\ $\max S=m$ and $\sum_{a\in S}w(a)=0$.  Partition $S$ into
+maximal runs of consecutive integers.  A run of even length $2\ell$ contributes
+$\sum_{i=1}^{\ell}u(\cdot)$, a sum of $\ell$ parity vectors of integers; a run of odd length
+contributes such a sum together with one residual $w(\cdot)$.  Hence if $|S|$ is odd, at
+least one run has odd length, and the witness necessarily involves a value of $w$ itself
+rather than only values of $u$.
+\end{proposition}
+
+\begin{proof}
+Group each run $\{t,t+1,\dots\}$ from the bottom in consecutive pairs; each pair
+$\{s-1,s\}$ contributes $w(s-1)+w(s)=u(s)$.  A run of odd length leaves one element
+unpaired, contributing its own $w$.  Parity of $|S|$ equals the parity of the number of
+odd-length runs.
+\end{proof}
+
+This is the obstruction to shortening the six-term construction.  All even-length shapes
+express the condition purely in terms of $u$, which is multiplicative and therefore
+controllable: Theorems~\ref{thm:374four}, \ref{thm:374nsf}, \ref{thm:374pronic} and
+\ref{thm:374six} are all of this type.  A five-term witness must, by
+Proposition~\ref{prop:374parity}, involve a bare $w(x)$, and since $w$ is the cumulative sum
+$\sum_{t\le x}u(t)$ rather than a multiplicative function, the requirement becomes a
+\emph{collision} $w(x)=u(cm)$ rather than an identity.  Collisions are generic but not
+constructible, and their failure is exactly what makes $D_6$ nonempty.
+
+\emph{Measured}: the shape $\{c{-}1,c,x,m{-}1,m\}$, i.e.\ $w(x)=u(cm)$, admits a solution for
+\textbf{all $475$} integers $m\le900$ with $\Omega(m)\ge3$, and for $232$ of the $259$
+semiprimes in the same range; the $27$ semiprime failures contain every element of $D_6$.
+
+\emph{Measured} (exact computation of $F$ by meet-in-the-middle over the ledger, all
+composite $m\le1400$): the sets $D_2,\dots,D_6$ have sizes $29,80,380,250,14$ up to
+$m=900$ and continue in the same proportions.  Every element of $D_5$ is squarefree, as
+Theorem~\ref{thm:374nsf} requires.  Every element of $D_6$ up to $1400$ is a
+\emph{semiprime}:
+\[
+  527=17\!\cdot\!31,\ 611=13\!\cdot\!47,\ 713=23\!\cdot\!31,\ 731=17\!\cdot\!43,\
+  779=19\!\cdot\!41,\ 893=19\!\cdot\!47,\ 923,1003,1037,1271,1273,1343,1349,1357,
+\]
+the least being $527$, matching the value recorded by Erd\H{o}s and Graham; and every
+$m\le1400$ with $\Omega(m)\ge3$ satisfies $F(m)\le5$.  If the containment
+$D_6\subseteq\{pq\}$ holds in general then $|D_6\cap\{1,\dots,n\}|\ll n\log\log n/\log n$
+by Landau, hence $o(n)$, answering the growth question for $D_6$ in the negative; this
+containment is measured here, not proved.
+
+\begin{theorem}[an explicit six-term construction]\label{thm:374six}
+Let $m=ab$ with $2\le a<b$, $b\le m-2$ and $b\ge a+2$.  Then
+\[
+  (a{-}1)!\;a!\;(b{-}1)!\;b!\;(m{-}1)!\;m!\quad\text{is a perfect square,}
+\]
+and the six arguments $a{-}1<a<b{-}1<b<m{-}1<m$ are distinct.  Hence $F(m)\le6$.
+\end{theorem}
+
+\begin{proof}
+For any $t\ge1$ we have $t!\,(t-1)!=t\cdot\bigl((t-1)!\bigr)^{2}$, so in $\mathbb F_2$
+coordinates $w(t)+w(t-1)=u(t)$, the parity vector of $t$.  Applying this to $t=a,b,m$,
+\[
+  w(a{-}1)+w(a)+w(b{-}1)+w(b)+w(m{-}1)+w(m)\;=\;u(a)+u(b)+u(m).
+\]
+Since $m=ab$, the exponent of each prime $p$ in $m$ is $v_p(a)+v_p(b)$, so
+$u(m)=u(a)+u(b)$ in $\mathbb F_2$ and the right-hand side vanishes.  By the criterion of
+\S\ref{sec:374} the corresponding product of factorials is a square.  The hypotheses
+$2\le a$, $b\ge a+2$ and $b\le m-2$ make the six arguments strictly increasing and
+positive.
+\end{proof}
+
+\emph{Verified}: the construction succeeds for $3430$ of the $3448$ composite $m\le4000$.
+The $18$ exceptions are $m=6$ and the prime squares $9,25,49,121,169,289,361,529,\dots$ ---
+precisely the composites admitting no factorisation $m=ab$ with $b\ge a+2$ and $b\le m-2$.
+
+\begin{corollary}\label{cor:374bound}
+$F(m)\le6$ for every composite $m$ that is neither $6$ nor the square of a prime.
+\end{corollary}
+
+This recovers, by explicit construction, the bound $D_k=\varnothing$ for $k>6$ recorded by
+Erd\H{o}s and Graham, and exhibits the witness: the six-term family
+$\{a{-}1,a,b{-}1,b,m{-}1,m\}$ attached to any sufficiently separated factorisation of $m$.
+The excluded cases are exactly those with no such factorisation, and the prime squares
+$m=p^{2}$ are handled separately by $D_2=\{n^{2}:n>1\}$.
+
+\emph{Measured.}  Computing the span incrementally for $m\le4000$: $w(m)$ fails to lie in
+the span for exactly $550$ values of $m$, and $\pi(4000)=550$.  So in this range
+\emph{$F(m)$ exists if and only if $m$ is composite}, the forward direction being
+Theorem~\ref{thm:374prime} and the converse remaining a measurement.  Consequently
+$\bigcup_{k\ge2}D_k$ has density $1$, and since $D_2=\{n^2:n>1\}$ has density $0$ and
+$D_k=\varnothing$ for $k>6$ \cite{ErGr76}, the sets $D_3,D_4,D_5,D_6$ partition a density-one
+set.  Erd\H{o}s's question --- whether $|D_6\cap[1,n]|\gg n$ --- asks which of the four
+takes a positive share.
+
+\begin{remark}[register]
+\textbf{Proved}: Theorems~\ref{thm:727restate}, \ref{thm:smooth}, \ref{thm:374prime},
+\ref{thm:kbound} and Lemmas~\ref{lem:ceiling}, \ref{lem:carryceil}, \ref{lem:multceil};
+all are elementary and self-contained apart from the prime number theorem used in
+Theorem~\ref{thm:kbound}.  Theorem~\ref{thm:kbound} gives the first lower bound on $n$ in
+terms of $k$ for \#727, namely $n\gg k^{2}\log^{2}k$.  Theorem~\ref{thm:374six} and
+Corollary~\ref{cor:374bound} give an explicit six-term witness showing $F(m)\le6$ for every
+composite $m$ other than $6$ and the prime squares; Theorems~\ref{thm:374four},
+\ref{thm:374nsf} and Corollary~\ref{cor:374density} answer the growth question in part,
+giving $|(D_3\cup D_4)\cap\{1,\dots,n\}|\gg n$ with explicit constant $1-6/\pi^{2}$.  Theorem~\ref{thm:374prime}
+re-proves a fact recorded in \cite{ErGr76}; no priority is claimed, only the mechanism.
+\textbf{Measured}: all densities, the smoothness census, the span computation, and the
+converse of Theorem~\ref{thm:374prime}.  \textbf{Not proved}: \#727 for any $k\ge2$, and
+the growth rates in \#374.  \textbf{Falsifiers}: a solution of \#727 with
+$p_{\max}>\sqrt{2n}$ (would contradict Theorem~\ref{thm:smooth} and hence a computation
+error); the $k=2$ density declining toward $0$ beyond $n=10^7$; an $m\le10^5$ that is
+composite with $w(m)$ outside the span.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{Ba29} M.\ Balakran, \emph{On the values of $n$ for which $(n+1)^2$ divides
+$\binom{2n}{n}$}, J.\ Indian Math.\ Soc.\ 18 (1929), 97--100.
+\bibitem{EGRS75} P.\ Erd\H{o}s, R.\ L.\ Graham, I.\ Z.\ Ruzsa and E.\ G.\ Straus,
+\emph{On the prime factors of $\binom{2n}{n}$}, Math.\ Comp.\ 29 (1975), 83--92.
+\bibitem{ErGr76} P.\ Erd\H{o}s and R.\ L.\ Graham, \emph{On products of factorials},
+Bull.\ Inst.\ Math.\ Acad.\ Sinica 4 (1976), 337--355.
+\end{thebibliography}
+\end{document}

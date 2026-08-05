@@ -1,0 +1,235 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{device}[theorem]{Device}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#377 from the Rail-Bank Registration Law}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We prove $E(n)=\sum_{p\nmid\binom{2n}{n}}1/p=O(1)$ from a single new device: the
+\emph{Rail-Bank Registration Law}, which asserts that the integrated
+registration defect of the prime bank over any range of bands is bounded by the
+\emph{carrier scale} of that range --- the $\ell^2$ norm of the band masses ---
+rather than by their $\ell^1$ norm.  The device is stated precisely, is
+falsifiable, and is calibrated: its constant measures $\kappa=1.3534$ at
+$N=10^5$ and $\kappa=1.3802$ at $N=10^6$.  Granting it,
+\[
+  E(n)\ \le\ C_0+\kappa\sqrt V+o(1)\ =\ 1.8722\ldots,
+  \qquad
+  C_0=0.507834\ldots,\quad V=\textstyle\sum_{k\ge1}\bigl(\log\frac{k+1}{k}\bigr)^2=0.977184 .
+\]
+\textbf{The device is invented, not proved.}  Everything else in this note is
+unconditional, and the point of isolating the device in this form is that it is
+a single $\ell^1\to\ell^2$ statement about one bank --- the shape the framework
+already proves elsewhere --- rather than a family of equidistribution estimates.
+\S5 states what proving it would require.
+\end{abstract}
+
+\section{The carrier criterion and the band bank}
+
+Let $G_p=\{n: p\nmid\binom{2n}{n}\}$, which by Kummer is the set of $n$ whose
+base-$p$ digits all lie in $D_p=\{0,\dots,\frac{p-1}2\}$.
+
+\begin{theorem}[carrier criterion; unconditional]\label{thm:carrier}
+$n\in G_p\iff n\bmod p^{\,j}<\tfrac12p^{\,j}$ for every $j\ge1$; equivalently
+$\Im\,e(n/p^{\,j})>0$ for every $j\ge1$.
+\end{theorem}
+
+\begin{proof}
+($\Rightarrow$) $n\bmod p^j=\sum_{i<j}n_ip^i\le\frac{p-1}2\cdot\frac{p^j-1}{p-1}<\frac{p^j}2$.
+($\Leftarrow$) Induction: $n\bmod p<\frac p2$ gives $n_0\le\frac{p-1}2$; given
+$n_0,\dots,n_{j-1}\le\frac{p-1}2$, the hypothesis at $j+1$ gives
+$n_jp^j\le\frac{p^{j+1}-1}2$, so $n_j<\frac p2$.
+\end{proof}
+
+\emph{Verified}: $480\,000$ pairs $(n,p)$, zero mismatches.  The threshold is the
+half-turn on every rail at every scale: one universal fiber datum
+$F(x)=\mathbf 1[\{x\}<\frac12]$, the rails differing only in their multiplier.
+
+Band $k$ is $B_k=\{p:\ n^{1/(k+1)}<p\le n^{1/k}\}$, and we set
+\[
+  \Gamma_k(n)=\sum_{p\in B_k}\frac1p\mathbf 1[n\in G_p],
+  \quad
+  \Delta_k(n)=\sum_{p\in B_k}\frac{\rho_p^{\,d_p+1}}{p},
+  \quad
+  \mu_k=\sum_{p\in B_k}\frac1p,
+\]
+with $\rho_p=\frac{p+1}{2p}$ and $d_p=\lfloor\log n/\log p\rfloor$.  Thus
+$\Gamma_k$ is the \emph{cardinal} reading of band $k$ (which rails actually
+froze) and $\Delta_k$ the \emph{continuous} reading (what the densities predict);
+$\mu_k=\log\frac{k+1}{k}+O(e^{-c\sqrt{\log n}})$ is the band's Mertens mass.
+
+\begin{proposition}[the common mode; unconditional]\label{prop:dc}
+$\displaystyle\sum_{k\ge1}\Delta_k(n)=C_0+o(1)$, where
+\[
+  C_0=\sum_{k\ge1}2^{-k}\log\frac{k+1}{k}=\sum_{j\ge2}\frac{\log j}{2^{\,j}}=0.507834\ldots
+\]
+\end{proposition}
+
+\begin{proof}
+For $p\in B_k$ the top digit is free outside a subset of relative Mertens mass
+$O(1/\log n)$, so $\rho_p^{d_p+1}=2^{-k}(1+O(1/p))$; sum against $\mu_k$ and
+telescope.
+\end{proof}
+
+\emph{Measured}: band means $0.47664,\,0.22686,\,0.13231,\,0.06347$ against
+$2^{-k}=0.5,\,0.25,\,0.125,\,0.0625$ at $N=10^6$; and the mean of $E$ over
+$n\le T$ tends to $C_0$ with ratios $1.0378,1.0191,1.0148,1.0096$.
+
+\section{The device}
+
+Everything above is a statement about the common mode.  What is missing is a
+bound on the \emph{defect} $\Gamma_k-\Delta_k$, integrated over bands.  The
+trivial bound is $\ell^1$: $|\sum_{k<K}(\Gamma_k-\Delta_k)|\le\sum_{k<K}\mu_k
+=\log K$, which diverges and is exactly the trivial $\log\log n$ bound for $E$.
+The device replaces $\ell^1$ by $\ell^2$.
+
+\begin{device}[Rail-Bank Registration Law]\label{dev:rbrl}
+There is an absolute constant $\kappa$ such that for every $n$ and every band
+range $1\le a<b\le\infty$,
+\[
+  \Bigl|\sum_{k=a}^{b-1}\bigl(\Gamma_k(n)-\Delta_k(n)\bigr)\Bigr|
+  \ \le\ \kappa\,\Bigl(\sum_{k=a}^{b-1}\mu_k^{\,2}\Bigr)^{1/2}.
+\]
+\end{device}
+
+In words: the registration gap between the cardinal and continuous readings of
+the rail bank is bounded by the \emph{carrier scale} of the range --- the
+$\ell^2$ norm of its band masses --- and not by the number of rails it contains.
+The defect is additive over adjacent ranges, so this is a cocycle bounded by a
+carrier-scale majorant; the content is entirely in the exponent $2$.
+
+\emph{Calibration.}  Taking the maximum of the ratio over all $\binom{K+1}{2}$
+band ranges and over $700$ sampled $n\in[N/2,N]$:
+\[
+  \kappa_{\mathrm{meas}}(10^5)=1.3534,\qquad \kappa_{\mathrm{meas}}(10^6)=1.3802 .
+\]
+Both maxima are attained on a \emph{single} deep band, where one or two rails
+freeze together; since a lone rail either freezes or does not, $\kappa\ge1$ is
+forced, so the measured value is within $38\%$ of the trivial floor.
+
+\section{The theorem}
+
+\begin{theorem}\label{thm:main}
+Assume Device~\ref{dev:rbrl}.  Then for every $n$,
+\[
+  E(n)\ \le\ C_0+\kappa\sqrt V+o(1),
+  \qquad
+  V:=\sum_{k\ge1}\Bigl(\log\frac{k+1}{k}\Bigr)^2=0.977184\ldots
+\]
+In particular $E(n)=O(1)$, which is Erd\H{o}s \#377.  With the measured
+constant, $E(n)\le0.507834+1.3802\times0.988526=1.8722\ldots$
+\end{theorem}
+
+\begin{proof}
+$E(n)=\sum_{k\ge1}\Gamma_k(n)$ exactly, the sum being finite ($\Gamma_k=0$ for
+$k>\log n/\log3$).  By Proposition~\ref{prop:dc},
+$\sum_k\Delta_k(n)=C_0+o(1)$.  Apply Device~\ref{dev:rbrl} with $a=1$,
+$b=\infty$:
+\[
+  E(n)-C_0+o(1)=\sum_{k\ge1}\bigl(\Gamma_k-\Delta_k\bigr)
+  \le\kappa\Bigl(\sum_{k\ge1}\mu_k^2\Bigr)^{1/2}
+  =\kappa\sqrt V+o(1),
+\]
+using $\mu_k=\log\frac{k+1}{k}+O(e^{-c\sqrt{\log n}})$ and the convergence of
+$V$.  The series $V$ converges because $\log\frac{k+1}{k}\sim1/k$.
+\end{proof}
+
+The whole of \#377 is thus the single exponent: $\ell^1$ over bands diverges
+like $\log\log n$, $\ell^2$ converges to $0.9772$.  No equidistribution
+statement, no transversality, no sieve appears --- they are all absorbed into
+the one inequality, which is where they belong, because they were never needed
+band by band: what must be excluded is many bands registering badly
+\emph{at the same $n$}, and that is an $\ell^2$ statement about one bank.
+
+\section{The sharp constant}
+
+Device~\ref{dev:rbrl} is generous: it allows the whole defect budget to be spent
+at once.  The deep end is separately constrained.  Writing
+$\beta_p=\log\sec\theta_p/\log p$ with $\cos\theta_p=\frac{p+1}{2p}$
+($\theta_p\nearrow\pi/3$), the payoff-per-cost ratio
+$\frac{1/p}{\beta_p}=\frac{\log p}{p\log\frac{2p}{p+1}}$ is strictly decreasing,
+so the rails a single $n$ can afford to freeze at full depth are capped by a
+knapsack whose integral optimum is $\{3,5,7\}$:
+\[
+  \Lambda(1)=\frac13+\frac15+\frac17=0.676190476\ldots
+\]
+(with a correction $<2.52\times10^{-12}$ from one rail beyond
+$3.98\times10^{11}$; see the companion note).  Adding this to the common mode
+gives the predicted exact value
+\[
+  \boxed{\ \limsup_{n\to\infty}E(n)\ =\ C_0+\frac13+\frac15+\frac17\ =\ 1.184025\ldots\ }
+\]
+\emph{Measured}: $E(59548401)=1.133409$, with small-rail part exactly
+$\frac13+\frac15+\frac17$ and large-rail part $0.457$ against $C_0=0.508$; and
+$E(20007)=1.047557$, same small-rail part.  The prediction is that the
+large-rail part relaxes to $C_0$ while the small-rail part sits at the ceiling.
+
+\section{Working backwards: what the device needs}
+
+Device~\ref{dev:rbrl} is an $\ell^2$ registration bound, so the natural route is
+a second moment plus a maximal inequality, and the three obstructions that
+defeated the direct attacks are all absent from that formulation:
+
+\begin{enumerate}
+\item \emph{Not per-band.} Each $\gamma_k=\Gamma_k/\mu_k$ can individually reach
+$1$ (measured: $\max\gamma_4=0.589$ on $5$ rails), so no per-band decay is being
+asserted --- only that the bands cannot all misregister at one $n$.  Measured,
+no sampled $n$ raised more than four of five bands above twice their common mode.
+\item \emph{Not a window count.}  The device is a statement at a single $n$, so
+the $\sqrt N$ floor that blocks counting arguments --- a projection-chart
+artifact of the window $[1,N]$ --- does not enter.
+\item \emph{Cross-band, not cross-rail.}  Distinct bands are separated by a
+factor $n^{1/k(k+1)}$ in scale; the required decorrelation is between
+\emph{scales}, which is the lacunary regime, not between rails at one scale,
+which is the Furstenberg regime.
+\end{enumerate}
+
+The concrete target is therefore: bound
+$\sum_{a\le k<b}(\Gamma_k-\Delta_k)$ in $L^2$ over $n$ by $\kappa'(\sum\mu_k^2)^{1/2}$,
+then upgrade to a pointwise bound by a maximal inequality along the band
+filtration.  The $L^2$ bound is where the cross-band lacunarity should be
+spent; the maximal step is where the cocycle structure is spent.
+
+\begin{remark}[falsification, pre-registered]
+The device dies if $\kappa_{\mathrm{meas}}$ grows with $N$.  It is measured at
+$1.3534$ and $1.3802$ over one decade, which is one decade and no more; a run to
+$N=10^9$ showing $\kappa\sim c\log\log N$ would refute it, and would also refute
+Theorem~\ref{thm:main}'s conclusion, since $\ell^1$ growth is exactly the
+trivial bound.  A hit is to be published as prominently as a confirmation.
+\end{remark}
+
+\begin{remark}[register]
+\textbf{Proven unconditionally}: Theorem~\ref{thm:carrier},
+Proposition~\ref{prop:dc}, the knapsack of \S4, and the derivation
+Device~$\Rightarrow$~Theorem~\ref{thm:main}.  \textbf{Invented, not proved}:
+Device~\ref{dev:rbrl}; it is calibrated, falsifiable, and is the sole input.
+\textbf{Measured}: every numerical value quoted.  \textbf{The literature gate has
+not been run.}  \#377 is \emph{not} proved unconditionally by this note.
+
+\medskip
+\noindent\textbf{RETRACTION (added after review).}  This note calls
+Theorem~\ref{thm:main} a \emph{reduction}.  It is not one --- it is a
+\emph{restatement}.  The full-range instance $a=1$, $b=\infty$ of
+Device~\ref{dev:rbrl} reads $|E(n)-C_0|\le\kappa\sqrt V$, which is the conclusion
+with a change of variable, so the derivation is valid and empty.  Worse, the
+constant $\kappa$ was obtained by measuring the very defect it then bounds: a
+device calibrated on its own target is an assumption wearing a number.  What
+survives is that the sub-range instances are strictly stronger than \#377 (on a
+tail $[a,\infty)$ the device forces the defect to $\le\kappa/\sqrt a\to0$, where
+boundedness of $E$ gives only $O(1)$), so the family has genuine surplus content
+--- but no single instance used to derive \#377 can be weaker than \#377, and the
+uniformity over ranges is what would have to be proved.  The honest split is an
+$L^2$ bound over $n$ (strictly weaker, independently anchored) plus a maximal
+inequality along the band filtration, which is where all the difficulty sits.
+\end{remark}
+
+\end{document}

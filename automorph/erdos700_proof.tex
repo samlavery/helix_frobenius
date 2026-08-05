@@ -1,0 +1,156 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\rad}{rad}
+\title{Erd\H{o}s \#700: the capped carry ledger for
+$\min_k\gcd\bigl(n,\binom nk\bigr)$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For $f(n)=\min_{1<k\le n/2}\gcd\bigl(n,\binom nk\bigr)$ we give the exact form of the
+minimand as a product of per-prime carry counts \emph{capped} at $v_p(n)$, deduce
+$f(n)\mid n$ and $f(n)\le\rad(n)$, and explain from the cap why the measured set
+$\{n:f(n)>\sqrt n\}$ is squarefree-dominated.  \#700 is not proved.
+\end{abstract}
+
+\section{The capped ledger}
+Let $\kappa_p(k,n-k)$ denote the number of carries in the base-$p$ addition $k+(n-k)$, so
+that $v_p\binom nk=\kappa_p$ by Kummer.
+
+\begin{proposition}\label{prop:capped}
+For $n$ composite and $1<k\le n/2$,
+\[
+  \gcd\!\left(n,\binom nk\right)=\prod_{p^{a}\,\|\,n}p^{\min\left(a,\ \kappa_p(k,\,n-k)\right)},
+  \qquad
+  f(n)=\min_{1<k\le n/2}\ \prod_{p^{a}\,\|\,n}p^{\min(a,\,\kappa_p)} .
+\]
+In particular $f(n)\mid n$, and $f(n)\le\rad(n)$ when $n$ is squarefree.
+\end{proposition}
+
+\begin{proof}
+The valuation of a gcd is the minimum of the valuations, and $v_p(n)=a$,
+$v_p\binom nk=\kappa_p$.  Each exponent is at most $a$, so the product divides $n$.  If $n$
+is squarefree every $a=1$ and each factor is $p^{0}$ or $p^{1}$.
+\end{proof}
+
+\emph{Verified}: $f(n)\mid n$ with no exception for all composite $n<300$.
+
+\begin{remark}[why the cap matters]
+This is the one member of the $\binom nk$ domination cluster whose rails \emph{saturate}:
+rail $p$ contributes at most $v_p(n)$ however many carries occur.  Elsewhere in the cluster
+(\#683, \#685, \#1094, \#1095) the relevant statistic is unbounded in the carry count, and
+the analysis is driven by which rails carry at all; here it is driven by which rails can be
+made \emph{not} to carry, simultaneously, by a single choice of $k$.
+\end{remark}
+
+\begin{corollary}\label{cor:upper}
+For composite $n$, taking $k=p^{a}$ with $p^{a}\,\|\,n$ gives
+$\gcd\bigl(n,\binom{n}{p^{a}}\bigr)=n/p^{a}$, whence $f(n)\le n/P(n)$ where $P(n)$ is the
+largest prime factor, and therefore $f(n)\le(1+o(1))n/\log n$.
+\end{corollary}
+
+This is the bound recorded by Erd\H{o}s and Szekeres; it is included because
+Proposition~\ref{prop:capped} makes it a one-line valuation computation.
+
+\section{Prime powers, and the correct divisor}
+
+Erd\H{o}s and Szekeres record $f(n)\le n/P(n)$ from the choice $k=p^{a}$ with $p^{a}\|n$.
+That choice is legitimate only when $p^{a}\le n/2$, and tracking the restriction determines
+the prime-power case completely.
+
+\begin{theorem}\label{thm:pp}
+Let $p$ be prime and $a\ge2$.  Then $f(p^{a})=p$.
+\end{theorem}
+
+\begin{proof}
+Put $n=p^{a}$ and let $1<k\le n/2$.  Since $s_p(n)=1$, Legendre and Kummer give
+\[
+  v_p\!\binom nk=\kappa_p=\frac{s_p(k)+s_p(n-k)-1}{p-1},
+\]
+and $n$ has the single nonzero digit $1$ in position $a$, so any addition $k+(n-k)=p^{a}$
+with $0<k<p^{a}$ carries at least once; hence $\kappa_p\ge1$ and $p\mid\binom nk$ for every
+such $k$.  As $p$ is the only prime dividing $n$, this gives
+$\gcd\bigl(n,\binom nk\bigr)=p^{\min(a,\kappa_p)}\ge p$, so $f(p^{a})\ge p$.
+
+For the reverse, take $k=p^{a-1}$, which satisfies $1<k\le n/2$ because $a\ge2$ and
+$p\ge2$.  Then $s_p(k)=1$ and $n-k=p^{a-1}(p-1)$ has the single digit $p-1$, so
+$s_p(n-k)=p-1$ and
+\[
+  \kappa_p=\frac{1+(p-1)-1}{p-1}=1 .
+\]
+Hence $\gcd\bigl(n,\binom{n}{p^{a-1}}\bigr)=p^{\min(a,1)}=p$, so $f(p^{a})\le p$.
+\end{proof}
+
+\emph{Verified}: all prime powers $p^{a}\le2500$ with $p\le13$, $a\ge2$.
+
+\begin{proposition}\label{prop:qbound}
+Let $n$ be composite and let $q=p^{v_p(n)}$ be any prime power exactly dividing $n$ with
+$q\le n/2$.  Then $f(n)\le n/q$.  Consequently
+\[
+  f(n)\ \le\ \frac{n}{Q'(n)},\qquad
+  Q'(n):=\max\bigl\{p^{v_p(n)}\ :\ p^{v_p(n)}\le n/2\bigr\}.
+\]
+\end{proposition}
+
+\begin{proof}
+Take $k=q$ in the minimum defining $f(n)$; the constraint $1<k\le n/2$ holds by hypothesis.
+Writing $q=p^{a}$ with $a=v_p(n)$, Kummer gives $\kappa_p(q,n-q)=a$, since adding $q$ to
+$n-q$ in base $p$ carries out of each of the positions $0,\dots,a-1$ and no further, while
+for $\ell\ne p$ one has $\kappa_\ell\ge0$.  Hence
+$\gcd\bigl(n,\binom nq\bigr)=n/q$, and $f(n)$, being a minimum, is at most this.
+\end{proof}
+
+\emph{Verified}: $1095$ pairs $(n,q)$ with $n<600$.
+
+\begin{corollary}\label{cor:necessity}
+If $n$ is composite, is not the square of a prime, and satisfies $f(n)=n/P(n)$, then
+$P(n)=Q'(n)$: the largest prime factor of $n$ is also its largest admissible prime power.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:qbound}, $f(n)\le n/Q'(n)\le n/P(n)$ whenever $P(n)\le n/2$, which
+holds for composite $n$ other than $n=p^{2}$.  Equality $f(n)=n/P(n)$ therefore forces
+$Q'(n)\le P(n)$, and $Q'(n)\ge P(n)$ always, since $P(n)$ itself is an admissible prime
+power in that range.
+\end{proof}
+
+\emph{Verified}: the exceptions to $P=Q'$ among $n<600$ with $f(n)=n/P(n)$ are exactly the
+prime squares $4,9,25,49,121,169,289,361,529$, and no others.
+
+\section{Measurement}
+Census over composite $n<600$:
+\begin{itemize}
+\item $f(n)=n/P(n)$ for $307$ values, beginning
+      $4,6,9,10,14,15,20,21,22,25,26,28,30,33$ --- consistent with the known cases
+      (products of two primes, and $n=30$).
+\item $f(n)>\sqrt n$ for $30$ values: $30,70,84,105,132,140,154,165,168,182,\dots$ with
+      $f=6,10,12,15,12,14,14,15,21,14$.  The count is still growing at the top of the range.
+\end{itemize}
+The second list is squarefree-dominated, which Proposition~\ref{prop:capped} explains: for
+$f(n)$ to be large every rail must reach its cap for \emph{every} $k$, and a squarefree $n$
+with several small prime factors is the configuration in which all caps are $1$ and can be
+attained together.
+
+\begin{remark}[register]
+\textbf{Proved}: Proposition~\ref{prop:capped} and Corollary~\ref{cor:upper}, elementary from
+Legendre and Kummer; neither is claimed new (Corollary~\ref{cor:upper} is Erd\H{o}s--Szekeres).
+Theorem~\ref{thm:pp} determines $f$ on prime powers, $f(p^{a})=p$ for $a\ge2$;
+Proposition~\ref{prop:qbound} replaces $P(n)$ by the largest \emph{admissible prime power}
+$Q'(n)$; and Corollary~\ref{cor:necessity} gives a necessary condition,
+$P(n)=Q'(n)$, for the equality $f(n)=n/P(n)$ that Erd\H{o}s asks to characterise, with the
+prime squares as the exact exceptions.
+\textbf{Measured}: the two censuses.  \textbf{Not proved}: the characterisation of
+$\{n:f(n)=n/P(n)\}$, the infinitude of $\{n:f(n)>\sqrt n\}$, or the bound
+$f(n)\ll_A n/(\log n)^{A}$.  \textbf{Falsifier}: $\{n:f(n)>\sqrt n\}$ terminating at larger
+$n$ would contradict the apparent growth.  \textbf{Next}: census to $n=10^{5}$ and test
+whether that set has positive density; and characterise $\{f(n)=n/P(n)\}$ by $\Omega(n)$ and
+squarefreeness, where the data suggests a clean statement is available.
+\end{remark}
+\end{document}

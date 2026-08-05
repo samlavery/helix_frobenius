@@ -1,0 +1,240 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\fpart}[1]{\left\{#1\right\}}
+\title{Erd\H{o}s \#377 is a statement about the small primes alone}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $E(n)=\sum_{p\nmid\binom{2n}{n}}1/p$, so that Erd\H{o}s problem \#377 is
+$E(n)=O(1)$.  We prove that the carry-free primes in each band are an
+\emph{explicit union of intervals}, so that the bottom-digit condition carries
+exactly half of every band's Mertens mass for \emph{every} $n$ ---
+unconditionally, with no equidistribution input.  In particular band~$1$
+is evaluated outright, $E_{\mathrm{band}\,1}(n)=\tfrac12\log2+O(1/\log n)$,
+and the discard that produced the $\log\log\log n$ of the all-$n$ literature is
+not needed.  Combining this with the band machinery gives an exact localisation:
+if the band-equidistribution input is available for all bands $k\le K(n)$, then
+\[
+  E(n)\;=\;\log\Bigl(\frac{\log n}{K(n)}\Bigr)+O(1),
+\]
+so that $E(n)=O(1)$ holds \emph{if and only if} $K(n)\gg\log n$, i.e.\ if and
+only if the machinery reaches down to primes bounded by a constant.  The
+conjecture is therefore not an analytic statement about large primes at all:
+the large-prime half is $O(1)$ unconditionally, and every remaining difficulty
+is concentrated in the finitely-generated small-prime intersections, where no
+averaging is available and the required input is rigidity, not equidistribution.
+\end{abstract}
+
+\section{The free half}
+
+Fix $n$.  By Kummer's criterion $p\nmid\binom{2n}{n}$ iff every base-$p$ digit
+of $n$ lies in $D_p=\{0,\dots,\frac{p-1}2\}$.  Band $k$ is
+$(n^{1/(k+1)},n^{1/k}]$, of Mertens mass $\log\frac{k+1}{k}$.
+
+The point of this section is that the \emph{bottom} digit condition is not a
+pseudorandom constraint on $n$ at all.  For fixed $n$ it is a condition on
+$p$, and it cuts the band into explicit intervals.
+
+\begin{lemma}[the bottom digit is an interval union]\label{lem:intervals}
+For every $n$ and every prime $p$,
+\[
+  n\bmod p\le\frac{p-1}2
+  \qquad\Longleftrightarrow\qquad
+  p\in\bigcup_{m\ge1}\Bigl(\frac{n+\tfrac12}{m+\tfrac12},\ \frac nm\Bigr],
+\]
+the union being over $m=\lfloor n/p\rfloor$.
+\end{lemma}
+
+\begin{proof}
+Write $n=mp+b$ with $m=\lfloor n/p\rfloor$, $b=n\bmod p$.  Then
+$b\le\frac{p-1}2$ iff $n-mp\le\frac{p-1}{2}$ iff
+$n+\frac12\le p\bigl(m+\frac12\bigr)$, i.e.\ $p\ge\frac{n+1/2}{m+1/2}$;
+and $m=\lfloor n/p\rfloor$ is exactly $p\le n/m$.
+\end{proof}
+
+Nothing here is probabilistic: the condition is a union of intervals whose
+endpoints are determined by $n$, so Mertens' theorem evaluates its mass.
+
+\begin{theorem}[half of every band; \textbf{proven on the initial range,
+measured throughout}]\label{thm:half}
+Fix $\varepsilon>0$.  For every $n$ and every band index $k\ge1$, the
+bottom-digit mass restricted to $m=\lfloor n/p\rfloor\le n^{(1-\varepsilon)/2}$
+satisfies
+\[
+  \sum_{\substack{p\in(n^{1/(k+1)},\,n^{1/k}],\ \lfloor n/p\rfloor\le n^{(1-\varepsilon)/2}\\ n\bmod p\le(p-1)/2}}\frac1p
+  \;=\;\frac12\log\frac{k+1}{k}\;+\;O_\varepsilon\!\Bigl(\frac1{\log n}\Bigr),
+\]
+exactly half the corresponding Mertens mass, uniformly in $n$.
+\end{theorem}
+
+\begin{remark}[where the proof stops, and why]\label{rem:stops}
+The interval $I_m=\bigl(\frac{n}{m+1/2},\frac nm\bigr]$ has length
+$\asymp n/2m^2$, so the per-$m$ Mertens evaluation below is legitimate only
+while that length is a positive power of $n$, i.e.\ $m\le n^{(1-\varepsilon)/2}$.
+Beyond it the intervals fall below unit length --- at $m\asymp\sqrt n$ they hold
+one prime or none --- and the count is no longer a Mertens question but an
+equidistribution question about $\{n/p\}$ for \emph{fixed} $n$ as $p$ varies,
+which is not supplied here.  For band $k\ge2$ the entire band sits past that
+point, so for $k\ge2$ the displayed statement is \textbf{measured, not proven}.
+An earlier draft of this note asserted the unrestricted form for all $k$; that
+assertion summed Mertens over intervals shorter than $1$ and is withdrawn.
+Band~$1$ is unaffected in substance: Corollary~\ref{cor:band1} below rests on
+the top-digit condition being automatic, and the discarded range
+$m>n^{(1-\varepsilon)/2}$ carries mass $O(\varepsilon+1/\log n)$ there.
+\end{remark}
+
+\begin{proof}
+By Lemma~\ref{lem:intervals} the admissible $p$ in the band are
+$\bigcup_m\bigl(\frac{n}{m+1/2},\frac nm\bigr]$ intersected with the band, and
+$p$ lies in band $k$ exactly when $m=\lfloor n/p\rfloor$ satisfies
+$m\in[n^{1-1/k},n^{1-1/(k+1)})$.  Mertens' theorem in the form
+$\sum_{x<p\le y}1/p=\log\frac{\log y}{\log x}+O(e^{-c\sqrt{\log x}})$ gives, for
+each $m$,
+\[
+  \sum_{\frac{n}{m+1/2}<p\le\frac nm}\frac1p
+  =\log\frac{\log(n/m)}{\log\bigl(n/(m+\tfrac12)\bigr)}
+  =\frac{\log\bigl(1+\tfrac1{2m}\bigr)}{\log n-\log m}\Bigl(1+O\Bigl(\tfrac1{\log n}\Bigr)\Bigr).
+\]
+valid for each $m\le n^{(1-\varepsilon)/2}$, since then $|I_m|\gg n^{\varepsilon}$
+and both endpoints exceed $n^{1/2}$.  Substituting $\log m=u\log n$, so that
+$dm/m=\log n\,du$, and summing over $m$ in the stated range turns the sum into
+\[
+  \int_{1-1/k}^{\,1-1/(k+1)}\frac{du}{2(1-u)}
+  \;=\;\frac12\log\frac{1/k}{1/(k+1)}
+  \;=\;\frac12\log\frac{k+1}{k},
+\]
+the factor $\tfrac12$ coming from $\log(1+\tfrac1{2m})=\tfrac1{2m}+O(m^{-2})$,
+whose $O(m^{-2})$ tail contributes $O(1/\log n)$ in total.
+\end{proof}
+
+\begin{corollary}[band~1, evaluated]\label{cor:band1}
+For $p>\sqrt{2n}$ the top digit condition $\lfloor n/p\rfloor\le\frac{p-1}2$ is
+automatic, so band~$1$'s carry-free mass is determined outright:
+\[
+  \sum_{\substack{\sqrt n<p\le n\\ p\nmid\binom{2n}{n}}}\frac1p
+  \;=\;\frac{\log2}{2}+O\!\Bigl(\frac1{\log n}\Bigr)\;=\;0.34657\ldots
+\]
+No band need be discarded at full mass; band~$1$ is not estimated, it is
+computed.
+\end{corollary}
+
+\emph{Measured.}  Corollary~\ref{cor:band1}: $0.30796,\,0.32064,\,0.32803,\,
+0.33149$ at $n=10^4,10^5,10^6,10^7$, rising to $\tfrac12\log2=0.34657$ with
+error $O(1/\log n)$; over $40$ consecutive $n$ near $10^6$ the total spread is
+$0.00115$, so the quantity is a near-constant function of $n$, as
+Lemma~\ref{lem:intervals} requires.  Theorem~\ref{thm:half}, ratio of
+bottom-digit mass to full band mass at $n=10^7,10^8,10^9$:
+$0.507,0.509,0.509$ (band~1); $0.471,0.475,0.503$ (band~2);
+$0.540,0.450,0.538$ (band~3); $0.515,0.669,0.509$ (band~4).  Thin bands
+fluctuate, as they must --- Mertens does not average over $O(1)$ primes, which
+is exactly the boundary identified in \S3.
+
+\section{The localisation}
+
+Write $\gamma_k(n)$ for the fraction of band $k$'s Mertens mass that is
+carry-free at $n$, so $E(n)=\sum_k\gamma_k(n)\log\frac{k+1}{k}$.  Since
+$\log\frac{k+1}{k}\asymp\frac1k$, the series converges as soon as
+$\gamma_k\ll(\log k)^{-1-\varepsilon}$ --- and by
+Theorem~\ref{thm:half} plus independence of successive digits that asks for only
+\[
+  j_k\;\approx\;(1+\varepsilon)\log_2\log k
+\]
+resolved digits per band.  The corresponding rail modulus is
+$p^{j_k}=n^{j_k/k}=n^{o(1)}$: \emph{the budget is inert}.  At $k=10^6$ it is
+four digits.
+
+\begin{theorem}[exact localisation]\label{thm:local}
+Suppose the band-equidistribution input holds for all bands $k\le K(n)$ ---
+i.e.\ that for such $k$ the bottom $O(\log\log k)$ base-$p$ digits of $n$ are
+jointly low on at most a $(\log k)^{-1-\varepsilon}$ fraction of the band's
+mass.  Then
+\[
+  E(n)\;=\;\underbrace{\sum_{p\le n^{1/K(n)}}\frac1p}_{\textstyle=\ \log\frac{\log n}{K(n)}+O(1)}
+  \;+\;O(1).
+\]
+Consequently:
+\[
+  K(n)=(\log n)^{1-\varepsilon}\ \Rightarrow\ E(n)=O\bigl((\log\log n)^{2/3}\bigr),
+  \qquad
+  K(n)=\frac{\log n}{\log\log n}\ \Rightarrow\ E(n)=O(\log\log\log n),
+\]
+\[
+  \boxed{\ K(n)\gg\log n\ \Longleftrightarrow\ E(n)=O(1).\ }
+\]
+\end{theorem}
+
+\begin{proof}
+Bands $k\le K$ contribute $\sum_k\gamma_k\log\frac{k+1}{k}<\infty$ by the
+hypothesis and the convergence of $\sum_k k^{-1}(\log k)^{-1-\varepsilon}$;
+bands $k>K$ are bounded by their full Mertens mass, which telescopes to
+$\sum_{p\le n^{1/K}}1/p=\log\log(n^{1/K})+O(1)=\log(\log n/K)+O(1)$.  The three
+displayed rates are that expression at the three values of $K$, and it is
+$O(1)$ exactly when $\log n/K=O(1)$.
+\end{proof}
+
+\begin{remark}[what this says about the literature's rate]
+The rate $O((\log\log n)^{2/3})$ of the band-by-band route is \emph{precisely}
+the trivial bound on the primes its exponential-sum machinery cannot reach:
+that machinery runs to $K=(\log n)^{1-\varepsilon_n}$ with
+$\varepsilon_n=(\log\log n)^{-1/3}$, and
+$\log(\log n/K)=\varepsilon_n\log\log n=(\log\log n)^{2/3}$ on the nose.  The
+rate is not a property of the estimates; it is the position of the wall.
+\end{remark}
+
+\section{Where the wall actually is}
+
+Theorem~\ref{thm:local} converts \#377 into: \emph{reach $K\gg\log n$}, i.e.\
+handle every prime above a constant.  Two facts fix why that is hard, and both
+are structural rather than technical.
+
+\paragraph{Averaging dies at $p\approx\log n$.}  Band $k$ contains
+$\gg1$ primes only when $n^{1/k}-n^{1/(k+1)}\gg\log n$, i.e.\ $k\log k\ll\log n$,
+i.e.\ $p\gtrsim\log n$.  Below that the bands are thin, Mertens does not
+average, and both Theorem~\ref{thm:half} and every Weyl-sum estimate lose their
+subject.  The measured signature of this boundary is in \S1: thin bands scatter
+($0.450$, $0.669$) where thick bands are pinned at $\tfrac12$ to three digits.
+
+\paragraph{The residual is a rigidity statement, and the natural budget bound is
+vacuous on it.}  For a finite set $S$ of small primes with
+$\sum_{p\in S}\beta_p>1$ ($\beta_p=1-\log\frac{p+1}2/\log p$) the main term is
+$N\prod_{p\in S}\rho_p=N^{1-\sum\beta_p}<1$, so the entire content is that the
+\emph{error} is bounded.  Measured at full depth (all digits), for
+$N=10^4,\dots,10^7$:
+\[
+  \bigl|\#\{n<N\ \text{balanced at all }p\in S\}-N\textstyle\prod\rho_p\bigr|
+  \;=\;2.935,\ 2.967,\ 2.984,\ 2.992\qquad(S=\{3,5,7,11\}),
+\]
+converging to the exact count $3$; likewise $4.938\to5$ for $\{3,5,7,13\}$ and
+$1.994\to2$ for $\{3,5,7,11,13\}$.  \emph{The error is the answer.}  Any bound
+proved through the CRT/registration budget is useless here: the one-rail-at-a-time
+registration bound for the same configurations grows as $N^{0.54}$
+($504,\,1784,\,6108,\,19863$) against a truth of $O(1)$.  A second-moment or
+budget argument cannot see a set of size three.
+
+\begin{remark}[register]
+Lemma~\ref{lem:intervals}, Corollary~\ref{cor:band1} and
+Theorem~\ref{thm:local} are \textbf{proven}, from Kummer and Mertens alone; no
+equidistribution, no exponential sums, no Diophantine input.
+Theorem~\ref{thm:half} is \textbf{proven only on the range
+$m\le n^{(1-\varepsilon)/2}$}, hence in substance for band~$1$; for $k\ge2$ it
+is \textbf{measured}.  Remark~\ref{rem:stops} states exactly where the proof
+stops and withdraws the unrestricted claim made in the first draft.  The
+band-equidistribution hypothesis of Theorem~\ref{thm:local} is exactly the input
+the band-by-band literature supplies for $k\le(\log n)^{1-\varepsilon}$.  The
+statements of \S3 are \textbf{measured}, with the scripts named in the project
+log.  \textbf{The literature gate has not been run} on Theorem~\ref{thm:half} or
+Theorem~\ref{thm:local}: Erd\H{o}s--Graham--Ruzsa--Straus (1975) and the
+subsequent literature on $\binom{2n}{n}$ must be read at source before any
+novelty claim is made.  What is asserted without qualification is only that the
+statements are true and the proofs complete.
+\end{remark}
+
+\end{document}

@@ -1,0 +1,2548 @@
+                                          DYNAMICAL SELF-SIMILARITY, Lq -DIMENSIONS AND FURSTENBERG
+                                                                SLICING IN Rd
+
+                                                                         EMILIO CORSO AND PABLO SHMERKIN
+
+                                                 Abstract. We extend a theorem of the second author on the Lq -dimensions of dynamically
+                                                 driven self-similar measures from the real line to arbitrary dimension. Our approach provides
+                                                 a novel, simpler proof even in the one-dimensional case. As consequences, we show that, under
+                                                 mild separation conditions, the Lq -dimensions of homogeneous self-similar measures in Rd take
+                                                 the expected values, and we derive higher rank slicing theorems in the spirit of Furstenberg’s
+                                                 slicing conjecture.
+
+
+
+
+arXiv:2409.04608v1 [math.CA] 6 Sep 2024
+                                                                                         Contents
+                                            1. Introduction                                                                                        1
+                                            1.1. The setup: models and dynamically driven self-similar measures                                    1
+                                            1.2. Lq -dimensions of a model                                                                         3
+                                            1.3. Projected models, unsaturation on lines, and exponential separation                               4
+                                            1.4. Main result                                                                                       5
+                                            1.5. Homogeneous self-similar measures and their projections                                           5
+                                            1.6. Furstenberg-type slicing                                                                          8
+                                            1.7. Overview of the argument                                                                          9
+                                            1.8. Notation and conventions                                                                         11
+                                            2. Preliminaries                                                                                      13
+                                            2.1. An inverse theorem for the Lq -norm of convolutions                                              13
+                                            2.2. The structure of dynamically driven self-similar measures                                        14
+                                            2.3. A sub-multiplicative cocycle                                                                     18
+                                            3. An Lq -smoothening theorem and the proof of Theorem 1.9                                            21
+                                            3.1. On the unsaturation condition                                                                    21
+                                            3.2. Exponential flattening of the Lq -norm under convolution                                         26
+                                            3.3. Proof of Theorem 3.7                                                                             27
+                                            3.4. Conclusion of the proof of Theorem 1.9                                                           30
+                                            4. Homogeneous self-similar measures and their projections                                            31
+                                            4.1. On exponential separation and unsaturation on lines                                              31
+                                            4.2. Lq -dimensions of homogeneous self-similar measures and their projections                        32
+                                            5. Products of self-similar measures and their projections                                            35
+                                            6. Furstenberg-type slicing results                                                                   39
+                                            6.1. From Lq -dimension to dimension of slices                                                        39
+                                            6.2. Higher rank Furstenberg slicing                                                                  40
+                                            6.3. Slices of self-similar sets                                                                      41
+                                            References                                                                                            42
+
+
+                                                                                    1. Introduction
+                                          1.1. The setup: models and dynamically driven self-similar measures. In this paper,
+                                          we generalize to higher dimensions the framework of dynamically driven self-similar measures on
+                                          the line developed by the second author in [18]. In particular, under suitable natural conditions
+                                            Date: September 10, 2024.
+                                                                                               1
+2                                   E. CORSO AND P. SHMERKIN
+
+we establish a formula for the Lq -dimension of dynamically driven self-similar measures: see
+Theorem 1.9. This directly generalizes the one-dimensional result in [18], whose relevance is
+given by its many applications, including to the resolution of Furstenberg’s slicing conjecture,
+and to the smoothness of self-similar measures. In this article, we obtain similar applications
+in higher dimensions.
+   We now formally introduce the main objects of study in this paper. We define a topological
+system to be a pair (X, T) where X is a non-empty compact metrizable topological space and
+T : X → X is a continuous map. If (X, T) is a topological system, a Borel probability measure P
+on X is said to be invariant under T if TP = P; here and throughout, the notation f µ indicates
+the push-forward of a measure µ under a measurable map f . A topological system (X, T) is
+called uniquely ergodic if there exists a unique T-invariant Borel probability measure P on X;
+in this case, we refer to the triple (X, T, P) as a uniquely ergodic system. The ergodic-theoretic
+background required in this article can be mostly found in Einsiedler-Ward’s textbook [4].
+   Let Ad denote the set of all Borel probability measures on Rd with finite support; we endow
+Ad with the weak∗ topology. For every λ ∈ R, we let Sλ : Rd → Rd be the scaling map
+Sλ (x) = λx.
+Definition 1.1 (Pleasant model, dynamically driven self-similar measures). A pleasant model
+in Rd is a quintuple X = (X, T, P, ∆, λ) where (X, T, P) is a uniquely ergodic system, λ is a
+real number in the interval (0, 1) and ∆ : X → Ad is a Borel-measurable, P-almost everywhere
+continuous map satisfying the following property: there exist an integer M ≥ 1 and a bounded
+set B ⊂ Rd such that, for every x ∈ X, the support of ∆(x) consists of at most M points and
+is contained in B.
+                                                                         (X ) 
+   A pleasant model X = (X, T, P, ∆, λ) in Rd generates a collection µx x∈X of dynamically
+driven self-similar measures, which are Borel probability measures on Rd defined as the infinite
+convolution product
+                                         ∞
+                                µ(X
+                                 x
+                                    )
+                                      = ∗ Sλn ∆(Tn x) ,     x ∈ X.
+                                        n=0
+
+  Since the measure P is uniquely determined by the pair (X, T), we sometimes omit it from
+the notation. When the model X is clear from the context, we suppress the superscript and
+simply write (µx )x∈X for the dynamically driven self-similar measures generated by X . Observe
+that, owing to the uniform boundedness of the supports of the measures in the image of ∆,
+each measure µx is well-defined as weak⋆ limit, as n tends to infinity, of the finite convolution
+products
+                                              n−1
+                                     µx,n := ∗ Sλi ∆(Ti x) ,
+                                              i=0
+                                                                          P∞ n
+and is the law of the random, almost surely convergent infinite sum         n=0 λ Zn (x) where
+(Zn (x))n≥0 is a sequence of independent R -valued random variables, Zn (x) having law ∆(Tn x)
+                                          d
+
+for every n ≥ 0.
+   Observe that the relation
+                                      µx = µx,n ∗ Sλn µTn x                               (1.1)
+holds for every n ∈ N∗ and x ∈ X. This is a dynamical self-similarity property: each measure
+µx is a convex combination, determined by µx,n , of copies of µTn x , each scaled down by λn .
+Remark 1.2. The assumptions we place on a pleasant model are amenable to relaxation, pro-
+vided that the results are appropriately reformulated. Most significantly in view of applications,
+it is possible to just assume ergodicity of the measure P instead of unique ergodicity, and to
+                                                              (X )
+replace the scalingQby λn in the definition of the measures µx with a scaling by a multiplicative
+                      n−1
+cocycle λ(n, x) = i=0 λ(Ti x), where λ : X → (0, 1) is a measurable function. In a companion
+article we plan to pursue this greater level of generality, which allows, for instance, to deal with
+random self-similar measures in addition.
+                               DYNAMICAL SELF-SIMILARITY IN Rd                                   3
+
+1.2. Lq -dimensions of a model. Let µ be a compactly supported Borel probability measure
+on Rd , q > 1 a real number. For every integer m ≥ 1, let
+                            Yd                                              
+                                 −m      −m
+                                                                          d
+                      Dm =       2 ki , 2 (ki + 1) : (k1 , . . . , kd ) ∈ Z
+                              i=1
+                                                                                     P
+be the standard partition of Rd into half-open 2−m -mesh cubes. The q-th moment Q∈Dm µ(Q)q
+of µ at scale 2−m , with the sum involving only a finite number of non-zero terms, quantifies
+how spread out µ is among cubes of side-length 2−m ; assuming indeed, upon rescaling, that µ
+is supported inside the unit cube [0, 1)d , it is straightforward to verify (cf. Lemma 2.2) that
+                                                  X
+                                  2−md(q−1) ≤          µ(Q)q ≤ 1 ,
+                                                 Q∈Dm
+
+the sum in the middle being close to the upper bound when µ is highly concentrated on a
+small number of cubes of the generation Dm , and approaching, on the other hand, the lower
+bound when the mass of µ is close to being uniformly distributed among such cubes. The last
+displayed inequality amounts to
+                                         P
+                                      log Q∈Dm µ(Q)q
+                                0≤−                     ≤d,                           (1.2)
+                                          (q − 1)m
+where here and throughout the article all logarithms are taken to the base 2. The asymptotic
+behavior, as m tends to infinity, of the quantity in the middle of (1.2) provides therefore a
+reasonable notion of dimension for the measure µ.
+Definition 1.3 (Lq -spectrum and Lq -dimensions of a measure). Let µ be a Borel probability
+measure on Rd . The Lq -spectrum of µ is the function τµ : R>1 → R≥0 given by
+                                                   P
+                                                log Q∈Dm µ(Q)q
+                             τµ (q) = lim inf −                 .                    (1.3)
+                                       m→∞            m
+The Lq -dimension of µ is defined as
+                                                 τµ (q)
+                                    dimµ (q) =          ,   q>1.
+                                                 q−1
+At times we write τ (µ, q) and dim(µ, q) instead of τµ (q) and dimµ (q), respectively.
+   The Lq -spectrum can be defined for all real values of q; however, its values for q ≤ 1 are not
+relevant for the purposes of the present article.
+   The reader is referred to Falconer’s monograph [5, Chap. 11] for an introduction to Lq -spectra
+and their role in multifractal analysis; here we focus on a handful of informative properties.
+It is known that the function q 7→ τµ (q) is concave, whence q 7→ dimµ (q) is continuous and
+decreasing on the half-line R>1 . Recall now that, given a finite positive Borel measure µ on a
+metric space (X, dX ), its Hausdorff dimension is defined as
+                      dimH (µ) = inf{dimH (A) : A ⊂ X Borel, µ(A) > 0}
+where dimH (A) denotes the Hausdorff dimension of a set A, a classical notion in fractal geometry
+for which we refer to [5, Chap. 10]. Given a real number s ≥ 0, we say that µ has Frostman
+exponent s if there exists C > 0 such that µ(B(x, r)) ≤ Cr s for every x ∈ X and r > 0, where
+B(x, r) is the closed ball of radius r centered at x. In loose terms, Lq -dimensions interpolate
+between Frostman exponents and the Hausdorff dimension of µ; to be precise, we have on the
+one hand that dimH (µ) ≥ limq→1+ dimµ (q) (see [7, Theorem 1.4]), and on the other that the
+inequality dimµ (q) > s for certain q > 1 and s > 0 implies that µ has Frostman exponent
+(1 − 1/q)s (see [18, Lemma 1.7]).
+   We now extend the notion of Lq -spectrum and Lq -dimension to dynamically driven self-similar
+measures; the case d = 1 was treated in [18].
+4                                  E. CORSO AND P. SHMERKIN
+
+Definition 1.4 (Lq -spectrum and Lq -dimensions of a model). Let X = (X, T, P, ∆, λ) be a
+pleasant model in Rd . The Lq -spectrum of X is the function TX : R>1 → R≥0 given by
+                                           Z                   !
+                                         1         X
+                      TX (q) = lim inf −     log        µx (Q)q dP(x).
+                                m→∞      m X      Q∈D     m
+
+       q
+The L -dimension of X is defined as
+                                               TX (q)
+                                    DX (q) =          ,   q > 1.
+                                               q−1
+  The following lemma shows that, for pleasant models, this average notion of Lq -spectrum
+coincides with the standard Lq -spectrum of typical measures generated by the model.
+Lemma 1.5. Let X = (X, T, P, ∆, λ) be a pleasant model. Then the limit in the definition of
+TX (q) exists for every q > 1. Moreover, there is a set X0 of full P-measure such that τµx = TX
+for all x ∈ X0 .
+    See Proposition 2.12 for the proof of this lemma.
+1.3. Projected models, unsaturation on lines, and exponential separation. Our goal
+is to state Theorem 1.9, which provides a formula for the Lq -dimension of dynamically driven
+self-similar measures generated by a pleasant model. To this end, we introduce two key notions
+in this theorem: unsaturation on lines and exponential separation.
+   We denote by G(d, k) the Grassmanian of k-dimensional linear subspaces of Rd , and by
+G(d) = ∪dk=0 G(d, k) the collection of all subspaces of Rd .
+   We will always identify a plane in G(d, k) with the orthogonal projection on that plane. In
+particular, G(d, 0) consists either of the trivial subspace or of the trivial map, according to the
+context, and G(d, d) is a singleton containing either Rd or the identity map.
+Definition 1.6. Let X = (X, T, P, ∆, λ) be a pleasant model in Rd , and let π ∈ G(d, k). We
+define the projected model
+                                 πX = (X, T, P, π∆, λ) .
+   A moment’s thought reveals that πX is also a pleasant model and, since projections commute
+                                                                                  (X )
+with scalings and addition, the measures generated by the projected model are (πµx )x∈X. Note
+that, as defined, these measures are supported on π. Sometimes it is convenient to apply a
+linear change of coordinates to π∆, and hence to the generated measures, so that πX becomes
+a pleasant model on Rk instead. Of course, this can be done so that the change of coordinates
+depends smoothly on π.
+Definition 1.7 (Unsaturation on lines). We say that a model X = (X, T, P, ∆, λ) on Rd is
+q-unsaturated on lines for some q > 1 if
+                          DX (q) < DπX (q) + 1 for all π ∈ G(d, d − 1).
+   This definition can be seen as an Lq -analog of Hochman’s dimensional unsaturation condition
+in [12, Theorem 1.5]. It is easy to see that DX (q) ≤ DπX (q) + 1 for all π ∈ G(d, d − 1); equality
+for some π indicates that, in an Lq -sense, the measures µx are a product of πµx and the
+renormalized Lebesgue measure on an interval in the orthogonal complement of π, though we
+emphasize that this is not literally true. This is the reason for the terminology “unsaturation”.
+It turns out that this notion of unsaturation implies a pointwise uniform version that a priori
+may appear to be much stronger; see Corollary 3.3 below.
+   Observe also that unsaturation precludes maximal dimension. For a model Y on Rk , we
+always have DY (q) ≤ k for all q > 1, which ultimately follows from the concavity of t 7→ tq as
+explained in the proof of Proposition 2.9. Therefore, if DX (q) = d, then we necessarily have
+DπX (q) = d − 1 for all π ∈ G(d, d − 1), so that the model is not q-unsaturated on lines. In fact,
+for d = 1, the condition DX (q) < 1 is equivalent to the model being q-unsaturated on lines.
+                                     DYNAMICAL SELF-SIMILARITY IN Rd                                    5
+
+   We now turn to the condition of exponential separation. Given a vector y = (yj )1≤j≤d ∈ Rd ,
+we write |y|∞ = sup1≤j≤d |yj | for its ℓ∞ -norm, which is particularly suited to our purposes as we
+work with partitions of Rd into cubes. For a positive measure ν, the notation supp ν indicates
+its support. If (∆i )i∈I is a finite collection of finitely supported Borel probability measures on
+Rd , µ = ∗i∈I ∆i is their convolution and η > 0 is a real number, we say by a mild abuse of
+terminology that the atoms of µ are η-separated if
+                  X            X                                                      Y
+                        xi −         yi       ≥η     for all (xi )i∈I 6= (yi )i∈I ∈         supp ∆i .
+                  i∈I          i∈I        ∞                                           i∈I
+
+Observe that the notion is tailored to counting the elements of supp µ with multiplicity.
+Definition 1.8 (Exponential separation). Let X = (X, T, P, ∆, λ) be a pleasant model in
+Rd , generating a collection (µx )x∈X of dynamically driven self-similar measures. We say that
+X satisfies exponential separation if, for P-almost every x ∈ X, there exists R ∈ N∗ and a
+subsequence (nj )j≥1 such that the atoms of µx,nj are λRnj -separated for every j ≥ 1.
+  The notions of unsaturation on lines and exponential separation will be discussed in more
+detail in Section 4.1.
+
+1.4. Main result. We can now state the main result of the article.
+Theorem 1.9. Let X = (X, T, P, ∆, λ) be a pleasant model in Rd , generating a collection
+(µx )x∈X of dynamically driven self-similar measures. Assume that X satisfies exponential sepa-
+ration and is q-unsaturated on lines for some q ∈ R>1 . Then,
+                                           R
+                                            X
+                                              log k∆(y)kqq dP(y)
+                                DX (q) =                         ,                        (1.4)
+                                                (q − 1) log λ
+and                                                  P               q
+                                               log     Q∈Dm µx (Q)
+                                      lim −                              = DX (q)
+                                     m→∞              m(q − 1)
+uniformly in x ∈ X. In particular, the limit in the definition of the Lq -dimension of µx exists
+and equals the constant value on the right-hand side of (1.4) for all x ∈ X.
+   The case d = 1 of the above theorem is [18, Theorem 1.11]. As we explain below, the proof
+of Theorem 1.9 adapts many of the ideas in the one-dimensional case, but also entails some
+substantial differences.
+   We note that the right-hand side of (1.4) may a priori be larger than d, but this cannot
+happen under the assumptions of the theorem. In fact, even DX (q) = d is not possible: else,
+q-unsaturation would be violated, since DπX (q) ≤ d − 1 for all π ∈ G(d, d − 1). Nevertheless,
+Theorem 1.9 can be used to find the Lq -dimension of dynamically driven self-similar measures
+also in the critical and supercritical regime (where one expects DX (q) = d), simply by arguing
+by contradiction.
+   In the subsequent two subsections we present, for illustrative purposes, a number of applica-
+tions of our main result, Theorem 1.9; further consequences are exposed in detail in §4, §5 and
+§6.
+
+1.5. Homogeneous self-similar measures and their projections. Our first application,
+one of the main motivations behind the present work, concerns the Lq -dimension theory of ho-
+mogeneous self-similar measures and their orthogonal projections. Consider an iterated function
+system, henceforth abbreviated as IFS, on Rd : by definition, this is a finite set Φ = {fi }i∈I of
+maps fi : Rd → Rd which are contractions for the Euclidean metric. Given a probability vector
+                  I P
+p = (pi )i∈I ∈ R≥0 , i∈I pi = 1, it is well known, and was first proven by Hutchinson [14] in
+6                                  E. CORSO AND P. SHMERKIN
+
+this level of generality, that there is a unique Borel probability measure µ on Rd which is the
+p-weighted average of its images under the fi ’s, namely
+                                               X
+                                           µ=     pi fi µ ;
+                                             i∈I
+
+the topological support of µ is contained in the unique non-empty compact set K ⊂ Rd satisfying
+                                               [
+                                          K=       fi (K) ,
+                                              i∈I
+
+and coincides with K if p is a positive vector, that is, if pi > 0 for all i ∈ I.
+   If the maps in Φ are similarities, we shall say that Φ is a self-similar IFS and that µ is the
+self-similar measure determined by the pair (Φ, p). By the well known Mazur-Ulam theorem,
+under such a circumstance the maps in Φ are affine; if they share the same linear part, we shall
+say that Φ and µ are homogeneous, and we refer to h as the orthogonal part of Φ. In this case
+we assume that the common similarity ratio does not vanish, else µ is finitely supported and
+there is not much else to be investigated about it.
+   Let thus Φ = {fi }i∈I be a homogeneous self-similar IFS; there exist λ ∈ (0, 1), h ∈ Od (R),
+the orthogonal group in d dimensions, and a collection {ai }i∈I of vectors in Rd such that, for
+all i ∈ I,
+                                 fi (x) = λh(x) + ai , x ∈ Rd .
+Let µ be the homogeneous self-similar measure generated by Φ and a probabiliy vector p =
+(pi )i∈I . Then it is an elementary verification that µ admits the following expression as an
+infinite convolution products of finitely supported measures: if
+                                               X
+                                         ∆0 =     pi δai ,
+                                              i∈I
+
+where δx indicates the Dirac mass at a point x ∈ Rd , then
+                                        µ = ∗ Sλn hn ∆0 .
+                                            n≥0
+
+It is now apparent how to view µ as a dynamically-driven self-similar measure generated by
+a pleasant model. Let X be the closure of the cyclic subgroup hhi of Od (R) generated by h;
+it is a compact abelian metrizable topological group. Let T : X → X be the translation map
+g 7→ hg, which is obviously continuous, and let P be the unique probability Haar measure on
+X. By construction, h generates a dense cyclic subgroup of X, whence the system (X, T, P) is
+uniquely ergodic; see, for instance, [4, Theorem 4.14]. Define a map
+                                   ∆ : X → Ad ,     g 7→ g∆0 ;
+∆ is ostensibly continuous with respect to the given topology on Ad , the supports of the
+measures g∆0 have all the same cardinality, and they are all contained in the closed ball
+centered at the origin with radius supi∈I |ai |. The model X = (X, T, P, ∆, λ) is thus pleasant;
+the dynamically-driven self-similar measures it generates are
+                                                                
+           µg = ∗ Sλn ∆(h g) = ∗ Sλn h g∆0 = g ∗ Sλn h ∆0 = gµ , g ∈ X,
+                            n              n                  n
+                 n≥0              n≥0                  n≥0
+
+where in the third equality we used the fact that g commutes with all hn and Sλn , and that
+g(∗n≥0 ρn ) = ∗n≥0 gρn for any sequence (ρn ) of finitely supported measures, which is a conse-
+quence of continuity and linearity of g.
+   Therefore the pleasant model X generates the self-similar measure µ together with all its
+isometric images gµ, g ∈ X. Under the appropriate assumptions of exponential separation and
+q-unsaturation on lines, which is sufficient to formulate for the single measure µ, Theorem 1.9
+results at once in an Lq -dimension formula for µ; this is the content of Corollary 4.2.
+                                DYNAMICAL SELF-SIMILARITY IN Rd                                      7
+
+   Verifying explicitly the q-unsaturation condition in concrete instances of self-similar measure
+is, however, a rather intricate matter. Accordingly, we provide an elementarily checkable con-
+dition on the isometric part h, which in conjunction with the following “projected” version of
+exponential separation, yields the sought after Lq -dimension formula for µ as well as for all its
+orthogonal projections.
+Definition 1.10 (Projected exponential separation). Let X = (X, T, P, ∆, λ) be a pleasant
+model in Rd , and let π ∈ G(d, k). We say that the projected model πX satisfies projected
+exponential separation, abdridged as the PES property, if it satisfies exponential separation
+and, additionally, the restriction of π to the support of ∆(x) is injective for P-almost all x ∈ X.
+Theorem 1.11. Let µ be a homogeneous self-similar measure generated by an iterated function
+system Φ = {fi }i∈I with orthogonal part h ∈ Od (R) and similarity ratio λ ∈ (0, 1), and by
+a probabilty vector p = (pi )i∈I . Assume that h has distinct complex eigenvalues, and that the
+closed subgroup of Od (R) generated by h is connected.
+   Let π1 , . . . , πℓ be the minimal real h-invariant subspaces, and suppose that πj µ satisfies pro-
+jected exponential separation for all 1 ≤ j ≤ ℓ. Then, for every integer k ∈ {1, . . . , d}, every
+subspace π ∈ G(d, k) and every q > 1,
+                                                   (                 )
+                                                        log kpkqq
+                                   dimπµ (q) = min                 ,k .
+                                                     (q − 1) log λ
+  Observe that any h as in the assumption of the theorem has at most one real eigenvalue,
+equal to 1; therefore dim πj = 2 for all but at most one j ∈ {1, . . . , ℓ}, for which dim πj = 1.
+  Specifying Theorem 1.11 to the case d = 2 yields the following corollary.
+Corollary 1.12. Let µ be a homogeneous self-similar measure in R2 , generated by an iterated
+function system Φ with orthogonal part h ∈ SO2 (R) and similarity ratio λ ∈ (0, 1), and by
+a probabiity vector p. Suppose that h is an irrational rotation and Φ satisfies exponential
+separation. Then, for every q > 1,
+                                                               
+                                                 log kpkqq
+                              dimµ (q) = min                 ,2
+                                               (q − 1) log λ
+and, for every line π ⊂ R2 through the origin,
+                                                              
+                                                 log kpkqq
+                             dimπµ (q) = min                 ,1 .
+                                               (q − 1) log λ
+  Notice that the assumption h ∈ SO2 (R) is unrestrictive since, if µ is generated by Φ = {fi }i∈I ,
+then it is also generated by Φ2 = {fi ◦ fj }i,j∈I .
+Remark 1.13. In the case where the IFS consists only of two maps of the form x 7→ λh(x) + 1,
+x 7→ λh(x) − 1, the self-similar measures from Corollary 1.12 are known
+                                                                    P∞ as n(biased) complex
+Bernoulli convolutions: these are the laws of random infinite sums n=0 ±ρ , where ρ is the
+complex number λe2πiα for α the rotation angle of h, and the signs ± are chosen independently
+with probability weight (p, 1 − p) for some p ∈ (0, 1).
+  As another corollary, we obtain the following improvement of [20, Theorem B]. Let BR2 (0, 1)
+be the open unit ball in R2 .
+Corollary 1.14. Fix a collection a = {ai }i∈I of vectors in R2 . For any complex number
+ρ ∈ BR2 (0, 1), let Φρ,a be the iterated function system consisting of the maps
+                                     fi (z) = ρz + ai ,   z∈C
+for i ∈ I. Then there is a set E ⊂ BR2 (0, 1) of zero Hausdorff dimension such that, for any
+ρ = λe2πiα ∈ BR2 (0, 1) \ E with α ∈
+                                   / Q, and for any probability vector p = (pi )i∈I satisfying
+                                         X q
+                                            pi < λq−1 ,
+                                           i∈I
+8                                      E. CORSO AND P. SHMERKIN
+
+the homogeneous self-similar measure generated by Φρ,a and p is absolutely continuous with a
+density in Lq .
+  The proof aligns with the one of [20, Theorem B], except that we now appeal to Corollary
+1.12 instead of Hochman’s theorem [12, Theorem 1.5] on the Hausdorff dimension of self-similar
+measures.
+
+1.6. Furstenberg-type slicing. For any integer p ≥ 2, let Tp (x) = px denote multiplication
+by p on the torus T = R/Z. Whenever appropriate, we identify T with [0, 1) ⊂ R. In [9],
+H. Furstenberg proposed the following “transversality” conjecture: if p, q ≥ 2 are multiplica-
+tively independent, that is, log p/ log q ∈
+                                          / Q, and if A and B are closed subsets of T which are
+invariant1 under the maps Tp and Tq , respectively, then
+                        dimH (A ∩ g(B)) ≤ max{dimH (A) + dimH (B) − 1, 0}                             (1.5)
+for all affine maps g : R → R. This conjecture was confirmed independently by the second
+author [18, Theorem 1.2] and by M. Wu [21]. Subsequently, H. Yu [22] refined and simplified
+part of Wu’s approach, and T. Austin [2] found a remarkably streamlined proof of the conjecture
+based upon Furstenberg’s original insights from [9].
+   Yu [22, Corollary 9.1] also established the following partial generalization of (1.5). If p1 , . . . , pd
+are integers such that the family (log p1 / log pj )1≤j≤d is linearly independent over Q, and if
+A1 , . . . , Ad are closed subsets of T invariant under the maps Tp1 , . . . , Tpd , respectively, then
+                                                                              
+                                   dimH g1 (A1 ) ∩ g2 (A2 ) ∩ · · · ∩ gd (Ad ) = 0
+                                                       P
+for all affine maps gj : R → R, provided that dj=1 dimH (Aj ) ≤ d − 1. Unfortunately, for d ≥ 3,
+there is no known d-tuple (p1 , . . . , pd ) which satisfies the linear independence condition; in many
+natural cases, such as for the triple (2, 3, 5), linear independence of the logarithm ratios is a
+special case of Schanuel’s conjecture (which can be found in the historical note to Chapter III
+of Lang’s transcendental number theory textbook [17]). Due to its reliance on Marstrand’s
+slicing theorem, the approach pursued in [21, 22, 2] seems ill-suited to dispense with the linear
+independence condition, as well as to get estimates for the Hausdorff dimension of intersections
+with affine subspaces of intermediate dimension. The newly developed machinery of restricted
+projections might provide a way to do so, with significant additional work; see the work of
+Gan, Guo and Wang [10], and the references therein, for restricted projections, and the second
+author’s work [1] with Algom for an application of restricted projections to projections of
+self-similar measures.
+   The approach in [18] does not depend on any projection or slicing theorem; instead, it
+combines the one-dimensional version of Theorem 1.9 with an elementary lemma relating Lq -
+dimensions of measures to box dimensions of fibers of Lipschitz maps via Frostman exponents;
+see Lemma 6.1 and the related discussion. Here we resort to the same approach to prove the
+following generalization of (1.5) to higher dimensions. Given any π ∈ G(d, k), 1 ≤ k ≤ d, let
+Z(π) denote the largest number of zero coordinates of a unit vector contained in π. We also
+introduce an approximate version of this quantity as follows: given any real η > 0 and a vector
+v = (v1 , . . . , vd ) ∈ S d−1 , the unit (d − 1)-sphere, let
+                                Zη (v) = |{j ∈ {1, . . . , d} : |vj | < η}| .
+For π ∈ G(d, k), we then define
+                                Zη (π) = max{Zη (v) : v ∈ π ∩ S d−1 } .
+Note that Z(π) = Zη (π) if η > 0 is small enough (depending on π).
+   We have the following generalization of (1.5). If P ⊂ Rd is an affine subspace with associated
+linear space V , then P ⊥ denotes the linear subspace orthogonal to V .
+    1Here we mean forward invariance: T (A) ⊂ A and T (B) ⊂ B.
+                                       p               q
+                                 DYNAMICAL SELF-SIMILARITY IN Rd                                           9
+
+Theorem 1.15. Let p1 , . . . , pd ≥ 2 be pairwise multiplicatively independent integers. Let
+A1 , . . . , Ad ⊂ T be closed sets which are invariant under the maps Tp1 , . . . , Tpd , respectively.
+Write
+                                             Xd
+                                         s=     dimH (Aj ) .
+                                                j=1
+
+Then, for any 1 ≤ k ≤ d and any (d − k)-dimensional affine subspace P ⊂ Rd with Z(P ⊥ ) ≤
+k − 1,                                              
+                         dimB A1 × · · · × Ad ∩ P ≤ max {s − k, 0} .
+  Moreover, the previous holds uniformly in the following sense. Fix ε > 0 and η > 0; then
+there is Cd,kε,η > 0 such that, for all π ∈ G(d, k) with Zη (π) ≤ k − 1 and all affine subspaces P
+orthogonal to π, the inequality
+                                           
+                           A1 × · · · × Ad ∩ P δ ≤ Cd,k,ε,η δ − max{s−k,0}−ε
+holds for all 0 < δ ≤ 1.
+Remark 1.16. As will emerge clearly from the proof of the theorem, presented in §6.2, the
+sets Aj can be replaced by homogeneous self-similar sets with contraction ratios λj , under the
+assumption log λi / log λj ∈
+                           / Q for all i 6= j, where the generating IFS satisfies the open set
+condition. In fact, the open set condition can be weakened to exponential separation using the
+argument in the proof of Theorem 6.2, which illustrates a further application of our results to
+the dimension of slices of self-similar sets.
+   Instrumental to the proof of Theorem 1.15 is an Lq -dimension formula for projections of
+products of self-similar measures, which is the content of Theorem 5.4.
+   The case k = d − 1 of Theorem 1.15 provides a substantive generalization of the aforemen-
+tioned result of Yu [22, Corollary 9.1].
+Corollary 1.17. Let p1 , . . . , pd , A1 , . . . , Ad and s be as in Theorem 1.15. Then, for all affine
+maps g1 , . . . , gd : R → R,
+                                                          
+                          dimB g1 (A1 ) ∩ · · · ∩ gd (Ad ) ≤ max {s − (d − 1), 0} .
+Moreover, for any ε > 0 and K ≥ 1, there is Cε,K > 0 such that, if the slopes of the gj ’s are
+bounded above by K, then
+                         |g1 (A1 ) ∩ · · · ∩ gd (Ad )|δ ≤ Cε,K δ − max{s−(d−1),0}−ε
+for all 0 < δ ≤ 1.
+  The (rather straightforward) deduction of the corollary from Theorem 1.15 is given in §6.2.
+1.7. Overview of the argument. Let us now provide an overview of the proof of Theorem
+1.9.
+  For every a ∈ R and B ⊂ Rd , we let aB = {av : v ∈ B}. For any finite Borel measure µ on
+Rd and any integer m ≥ 0, define the 2−m -discretization of µ as the measure µ(m) , supported
+inside the lattice 2−m Zd = {2−m k : k ∈ Zd }, given by
+                           µ(m) (2−m k) = µ(2−m k + 2−m [0, 1)d ) ,         k ∈ Zd .
+         P                                                d                 q
+If ν =    x∈Rd ν(x)δx is a finitely supported measure on R , we define the L -norm of ν                  as
+         P            
+                     q 1/q
+kνkq =     x∈Rd ν(x)       .
+  Fix now q > 1 and x ∈ X. We may express the inferior limit defining τµx (q) using Lq -
+                                                                     q
+                                                               (n)
+norms of discretized measures, as lim inf n→∞ − n1 log µx                . As is often the case in dimension
+                                                                     q
+computations arising in fractal geometry, the upper bound
+                                               R
+                                                 X
+                                                   log k∆kqq dP
+                                 dim(µx , q) ≤                                                         (1.6)
+                                                 (q − 1) log λ
+10                                   E. CORSO AND P. SHMERKIN
+
+is straightforward to establish and holds for every x ∈ X without any additional assumption on
+the pleasant model X . See Proposition 2.9.
+   Considerably more delicate is the proof of the lower bound
+                                               R
+                                                  log k∆kqq dP
+                                  dim(µx , q) ≥ X              .
+                                                 (q − 1) log λ
+Let m(n) be chosen so that λn+1 < 2−m(n) ≤ λn . The first observation is that the dynamical
+                                                                                               q
+                                                                                      (m(n))
+self-similarity relation in (1.1) implies that the sequence of functions x 7→ µx                   , n ∈ N, is
+                                                                                               q
+sub-multiplicative, up to a constant depending only on λ and q (see Proposition 2.11). By the
+sub-additive ergodic theorem, there is a non-negative real number TX (q) such that
+                                                                q
+                                                         m(n)
+                                               log µx
+                                                                q
+                                   lim inf −                        = TX (q)                            (1.7)
+                                    n→∞             m(n)
+for P-almost every x ∈ X. Crucially, unique ergodicity and a variant of the sub-additive ergodic
+theorem (see Lemma 3.1) yield that
+                                                     q
+                                             m(n)
+                                        log µx
+                                                     q
+                  τµx (q) = lim inf −                    ≥ TX (q) uniformly in x ∈ X,
+                             n→∞           m(n)
+cf. Proposition 2.12.
+   In order to complete the proof of Theorem 1.9, it suffices then to show that
+                                            R
+                                             X
+                                               log k∆kqq dP
+                                   TX (q) =                  .                                          (1.8)
+                                                  log λ
+Note that, even though TX (q) is defined as a P-almost everywhere limit, thanks to unique
+ergodicity (1.8) is sufficient to deduce the claim for every x ∈ X.
+   The key, and most difficult, step in the proof of (1.8) is the following Lq -smoothening property
+of the discretized measures µx,n, which holds assuming q-unsaturation: suppose ν ∈ Ad is not
+too close to a single atom at scale λn ∼ 2−m(n) , in the quantitative form
+                                           kν (m(n)) kq ≤ 2−σm
+for some σ > 0, which we think of as very small. Then ν ∗ µx,n is much smoother, in the Lq
+sense, than µx,n itself:
+                                kν ∗ µx,nkq ≤ 2−(T (q)+ε)m ,                          (1.9)
+where ε > 0 depends only on σ and q. This is the content of Theorem 3.7.
+   Equipped with this flattening property, the rest of the proof follows very closely that of
+[18, Theorem 1.11], as well as the overarching strategy in [11]. The first consequence is that,
+for P-almost every x ∈ X, the Lq -norm of the measure µx,n at scale r stays roughly constant
+between the natural scale λn and much finer scales λRn , where R is a fixed but arbitrarily large
+parameter. This is the content of Proposition 3.8. It should be interpreted as saying that, in
+an Lq -sense, the measure µx,n has very few atoms that are at distance between λRn and λn
+apart. Roughly speaking, this follows from (1.9) as follows: if there were many such atoms,
+then locally (at scale λn ) the measure µx would look like a convolution of µTnx with a measure
+ν arising from these atoms. But then from Lq -flattening one would get
+                                kµx(R−1)m(n) kqq ≤ 2−(T (q)+ε)(R−1)m(n) ,
+which contradicts (1.7) (for P-almost every x).
+  So far the exponential separation assumption has not been used. It now comes into play in
+the following form: for P-almost every x ∈ X, there is R ≥ 1 and arbitrarily large n such that
+                  kµx,n kqq = kµ(Rm(n))
+                                x,n
+                                               (m(n)) q
+                                        kq ≈ kµx,n   kq ≈ kµx(m(n)) kqq ≈ 2−T (q)m(n) ,
+                                DYNAMICAL SELF-SIMILARITY IN Rd                                    11
+
+where the equality is simply exponential separation, the first approximation is due to the
+previous step, and the second approximation is an elementary fact that reflects that, at scale
+λn , the measures µx and µx,n are almost indistinguishable. However, kµx,n kqq can be easily
+computed as an ergodic sum, yielding the desired expression (1.8) and completing the proof.
+   The overall strategy stays close to that of [18], which in turn was inspired by [11]. However,
+the proof of the key flattening property (1.9) is substantially different from the corresponding
+one in [18]. Both arguments use an inverse theorem for the Lq -norm of convolutions, which
+delivers a certain multiscale structure for the convolution factors ν and µx,n if (1.9) does not
+hold. In the case d = 1, this structure is of the following form: in a multiscale decomposition
+of µx,n and ν, at “almost all” scales one of two things happens: either the measure µx,n is
+locally “almost uniform” or the measure ν is locally “almost atomic” (the actual statement
+is far more involved). But the measure ν cannot be “almost atomic” at “almost all” scales,
+because then ν would be globally “almost atomic”, contradicting the assumption. Hence, µx,n
+has to be “almost uniform” at “positively many” scales. In [18], the dynamical self-similarity
+of µx,n together with ideas from multifractal analysis are used to rule this out, provided that
+the derivative TX′ (q) exists (a condition that is known to hold for almost all q).
+   In higher dimensions, we appeal to the more involved inverse theorem in [19], in turn inspired
+by a conceptually similar inverse theorem for the entropy of convolutions in [12]. Assuming
+again that (1.9) does not hold, the structure is now of the following more complicated form: for
+“almost all” scales, there is a dimension 0 ≤ k ≤ d (depending on the scale) such that, locally,
+the measure µx,n is roughly the product of a uniform measure on a k-plane and some other
+arbitrary measure, and ν is supported inside a k-plane. Since k ∈ {0, 1} in dimension 1, this is
+a generalization of the one-dimensional case. The issue is that knowing that ν is globally far
+from atomic no longer implies that µx,n is “almost uniform” at positively many scales; in order
+to deduce this, we would need to know instead that ν is locally not concentrated in hyperplanes,
+a piece of information we lack. Thus, the proof in [18] breaks down.
+   To circumvent this issue, we introduce a new idea. What does follow from the inverse
+theorem is that there are positively many scales at which µx,n looks roughly like the product of
+a uniform measure on a line and some other measure. But this is the kind of structure ruled
+out by q-unsaturation on lines. There are many challenges in implementing this idea. For one,
+unsaturation is a global and non-uniform condition; as a consequence, part of the work towards
+(1.9) is deriving pointwise, local, uniform versions; see Corollary 3.3 and Proposition 3.6. These
+use dynamical self-similarity in a crucial way. Even then, there is no immediate contradiction
+to the inverse theorem - rather, we have to use a refining technique to eventually conclude that
+there is a set that simultaneously carries too much and too little of the Lq -norm of µx,n , which
+is the desired contradiction.
+   This novel approach has the advantage of dispensing with the need for TX′ (q) to exist, which
+seemed like an artificial condition in the one-dimensional case, as well as with the associated
+multifractal estimates. A more detailed sketch of the argument is provided after the statement
+of Theorem 3.7.
+
+1.8. Notation and conventions. We conclude this introduction by collecting some relevant
+notation and terminology to be adopted throughout the manuscript.
+
+1.8.1. General notation. We let N be the set of natural numbers, N∗ = N \ {0}.
+  If I is a finite set, |I| denotes its cardinality.
+                                I                               I
+PA probability vector in R is an element p = (pi )i∈I ∈ R with pi ≥ 0 for every i ∈ I and
+   i∈I pi = 1; we call it positive if pi > 0 for every i ∈ I.
+  If q > 1 is a real number, q ′ denotes its Hölder conjugate, defined by the relation 1q + q1′ = 1.
+  If A, B are subsets of an abelian group (G, +), we let A + B = {a + b : a ∈ A, b ∈ B}. When
+A = {a}, we write a + B. If λ ∈ R and A is a subset of Rd , then we indicate with λA the set
+{λa : a ∈ A}.
+12                                          E. CORSO AND P. SHMERKIN
+
+   If (X, dX ) is a metric space (implicit from context), we indicate with B(x, r) the closed ball
+of radius r > 0 centered at a point x ∈ X.
+   We will always use d ≥ 1 to denote the ambient (Euclidean) dimension. The Euclidean norm
+of a vector z ∈ Rd is denoted by |z|.
+   For every λ ∈ R, Sλ : Rd → Rd is the scaling map x 7→ λx.
+   For every integer k ∈ {0, . . . , d}, the Grassmannian of k-dimensional vector subspaces of
+Rd is denoted G(d, k), and the affine Grassmannian of k-dimensional affine subspaces of Rd is
+denoted A(d, k). We also write G(d) for the the disjoint union of the G(d, k) for 1 ≤ k ≤ d2.
+If π ∈ G(d, ℓ) for some 0 ≤ ℓ ≤ d and k ∈ {0, . . . , ℓ}, we indicate with G(π, k) the subset of
+G(d.k) whose elements are the k-dimensional subspaces of π.
+   We avail ourselves of Landau’s notation with the following meaning. If X is an arbitrary set
+and f, g : X → R are two functions, we write f = O(g) if there exists a real number C > 0,
+referred to as the implicit constant, such that f (x) ≤ Cg(x) for every x ∈ X. Whenever
+there are several functions (O(g))1, . . . , (O(g))k appearing in the course of a proof, we omit
+the subscripts 1, . . . , k to lighten notation. When g is the function constantly equal to 1, we
+simply write f = O(1). If β1 , . . . , βs are real numbers, then we write f = Oβ1 ,...,βs (g) if the
+implicit constant C depends on β1 , . . . , βs and nothing else. Analogous conventions we adopt
+for the symbols f = Ω(g), equivalent to g = O(f ), and f = Θ(g), equivalent to f = O(g) and
+g = O(f ).
+   At times we shall also employ Vinogradov’s notation A ≪ B for two real quantities A and
+B, meaning that there is some implicit constant C > 0 such that A ≤ CB.
+1.8.2. Dyadic cubes. For every m ∈ N, we let Dm denote the partition of Rd into half-open
+2−m -mesh cubes, that is,
+            Y d                                       
+                   ki ki + 1
+       Dm =          m
+                       , m     : (k1 , . . . , kd ) ∈ Z = {2−m (k + [0, 1)d ) : k ∈ Zd } .
+                                                       d
+                                                                                           (1.10)
+              i=1
+                   2      2
+If A is a subset of Rd and m ∈ N, we indicate with Dm (A) the collection of cubes Q ∈ Dm such
+that Q ∩ A 6= ∅, and we let Nm (A) = |Dm (A)| be the box-counting number of A at scale 2−m .
+   As we confine ourselves to the consideration of cubes of side length 2−m , we adopt the
+convenient convention that all logarithms appearing in the manuscript are to the base 2.
+   If Q is a cube and C > 0 is a constant, by C · Q we denote the cube with the same center as
+Q and side length C · ℓ(Q), where ℓ(Q) is the side length of Q.
+1.8.3. Measures and their discretizations. A measure on a measurable space (X, A) is always
+meant to be positive and finite. If f : (X, A) → (Y, B) is a measurable map and µ is a measure
+on (X, A), we indicate with f µ the push-forward of µ under f .
+  If µ is a Borel measure on a topological space X, supp µ denotes its topological support. If
+x is a point in X, the notation δx stands for the Dirac mass at x.
+  For every Borel measure µ on Rd and every n ∈ N, we define the 2−n -discretization of µ as
+the following sum of weighted Dirac masses:
+                                     X                        
+                             µ(n) =       µ 2−n (k + [0, 1)d ) δ2−n k ;                 (1.11)
+                                              k∈Zd
+
+in other words, µ(n) is obtained by concentrating all the mass of µ lying inside the 2−n -cube
+2−n (k + [0, 1)d ) on the single point 2−n k, for every k ∈ Zd .
+  We let Ad be the set of finitely supported Borel probability measures on Rd equipped with
+the weak∗ topology. In particular, the natural map
+                                                                                   N
+                                                                                   X +1
+                               ((x1 , . . . , xN +1 ), (p1 , . . . , pN +1 )) 7→          pi δxi .
+                                                                                   i=1
+
+     2We do not include the zero subspace as it is ruled out in any statements where such shorthand notation will
+be convenient.
+                                DYNAMICAL SELF-SIMILARITY IN Rd                                    13
+
+is continuous for all N ∈ N.
+   If Y is a set and f : Y → R≥0 is a function, we write
+                                             X           1/q
+                                                        q
+                                     kf kq =      f (y)
+                                                y∈Y
+
+for its (somewhat non-standard, possibly infinite) Lq -norm, for every real q ≥ 1. If ν is a
+discrete measure on Rd , that is, if every element of its support is an atom, then we identify
+it canonically with a function Rd → R≥0 , and employ the previously defined notation kνkq
+accordingly.
+
+                                        2. Preliminaries
+2.1. An inverse theorem for the Lq -norm of convolutions. In this section we present a
+corollary of the inverse theorem for the Lq -norm of convolutions, which is the main result of
+[19]. This will be one of the key ingredients in the proof of Theorem 1.9. Let us introduce some
+terminology and notation first.
+      • If S ≥ 1 is an integer, we let [S] = {0, . . . , S − 1}.
+      • If m ≥ 1 is an integer, a 2−m -measure is a probability measure whose support is con-
+        tained in the lattice 2−m Zd ∩ [0, 1)d .
+      • For any x ∈ [0, 1)d and any m ∈ N, we let Dm (x) be the unique element of Dm containing
+        the point x.
+      • If E is a subset of Rd and r > 0, we indicate by E (r) the open r-neighborhood of E.
+   We can now state the inverse theorem, in the form that will be required in our application.
+Theorem 2.1 (Inverse theorem for Lq -norms). Fix real numbers q > 1 and δ > 0. There is a
+positive integer L0 = L0 (q, δ) such that, for all L ≥ L0 , there is ε = ε(q, δ, L) > 0 such that the
+following holds for every integer S ≥ S0 (q, δ, L):
+   Let m = SL, and let µ, ν be 2−m -measures on [0, 1)d such that
+                                      kµ ∗ νkq ≥ 2−εm kµkq .
+Then, there exist subsets A ⊂ supp µ, B ⊂ supp ν such that the following properties hold:
+ (A1) kµ|A kq ≥ 2−δm kµkq ;
+ (A2) µ(x) ≤ 2µ(y) for every x, y ∈ A;
+ (A3) for every s ∈ [S] there exists an integer Rs′ such that, for every Q ∈ DsL (A),
+                                      N(s+1)L (A ∩ Q) = Rs′ ;
+  (B1) ν(B) ≥ 2−δm ;
+  (B2) ν(x) ≤ 2ν(y) for any x, y ∈ B;
+  (B3) for every s ∈ [S] there exists an integer Rs′′ such that, for every Q ∈ DsL (B),
+                                      N(s+1)L (B ∩ Q) = Rs′′ ;
+   If supp µ ∪ supp ν ⊂ [1/3, 2/3)d then, upon translating the supports of µ and ν by appropriate
+elements in 2−m Zd ∩ [−1/3, 1/3]d, we may additionally assume that
+  (C1) x ∈ 21 · DsL (x) for every x ∈ A ∪ B and s ∈ [S].
+   Furthermore, for each s ∈ [S], at least one of the following two alternatives holds:
+     (i) Rs′′ = 1;
+    (ii) for each Q ∈ DsL (A) there is a projection πQ ∈ G(d, d − 1) such that
+                    N(s+1)L (πQ (A ∩ Q)) ≤ Cd 2(δ−1)L NsL (A ∩ Q) = 2(δ−1)L Rs′                (2.1)
+       where Cd > 0 only depends on d.
+14                                         E. CORSO AND P. SHMERKIN
+
+     Finally, if S0 = {s ∈ [S] : Rs′′ = 1}, then
+                                                              ′
+                                           − log kνkqq − q ′ (δm + 1)
+                            |[S] \ S0 |L ≥                            .                     (2.2)
+                                                       d
+Proof. All claims are given by [19, Theorem 1.2] except for the dichotomy (i)–(ii) and the lower
+bound (2.2), which we set out to prove.
+   By [19, Theorem 1.2] there is a sequence (ks )s∈[S] of nonnegative integers such that the
+following two properties are satisfied.
+    (a) For each s ∈ [S] and each Q ∈ DsL (A), there is πQ ∈ G(d, d − ks ) such that
+                                      N(s+1)L (πQ (A ∩ Q)) ≤ 2(δ−ks )L Rs′ .
+                                                                               S
+   (b) For each s and each Q ∈ DsL (B), there is VQ ∈ A(d, ks ) such that Q∩B ⊂ D(s+1)L (VQ ).
+  If ks = 0, then (b) yields that Rs′′ = 1, that is, (i) holds. If ks ≥ 1, then we can write
+ΠQ = ΠQ Π′Q for some projection Π′Q ∈ G(d, d − 1) (take an arbitrary Π′Q ⊂ ΠQ , identifying
+projections with their images). Then
+                                 N(s+1)L (ΠQ (A′ )) ≥ Cd 2−(ks −1)L N(s+1)L (A′ )
+for each A′ ⊂ Π′Q , for some Cd > 0 only depending on d. Applying this to A′ = Π′Q (A ∩ Q) and
+combining it with (a), we see that (ii) must hold.
+   To show (2.2), we start by noting that
+                               Y       Y           Y
+                         |B| =    Rs′′      Rs′′ =      Rs′′ ≤ 2dL|[S]\S0 | ,             (2.3)
+                                    s∈S0     s∈[S]\S0       s∈[S]\S0
+
+where the last inequality follows from the trivial bound Rs′′ ≤ 2dL , holding for any s ∈ [S].
+Moreover, from (B1)–(B2) we infer that
+                                                              
+                        −δm
+                      2     |B| ≤ ν(B)|B| ≤ |B| sup ν(x) |B|1/q
+                               1/q          1/q
+                                                       x∈B
+                                                 
+                                   ≤ 2|B| inf ν(x) |B|1/q ≤ 2|B| kνkq ,
+                                                    x∈B
+
+that is,
+                                                        ′              ′
+                                            |B| ≥ 2−q (δm+1) kνkq−q ,
+which combined with (2.3) yields
+                                            log |B|  1            ′
+                           |[S] \ S0 |L ≥           ≥ (− log kνkqq − q ′ (δm + 1)).
+                                               d     d
+                                                                                                               
+2.2. The structure of dynamically driven self-similar measures. For the remainder of
+the section, we fix a pleasant model X = (X, T, P, ∆, λ) in Rd , generating a family (µx )x∈X of
+dynamically driven self-similar measures.
+   We highlight that the results of this section are valid without any separation or unsaturation
+assumption on the model, and are straightforward variants of results from [18], when not
+completely elementary. Furthermore, we adopt the convention that all implicit constants are
+allowed to depend on the ambient dimension d. Any other dependencies will be made explicit.
+   Scaling and translating a measure does not affect its Lq -spectrum; therefore, upon rescaling
+the measures ∆(x), x ∈ X by a common factor and translating them by a common vector3, we
+may and shall assume, hereinafter, that B = [0, 1 − λ)d , where B is as in Definition 1.1. With
+this assumption, the support of every measure µx is contained in the half-open cube [0, 1)d .
+     3Observe that this procedure does not alter the right-hand side of (1.4) either, since the latter only gauges
+how the masses of the measures ∆(y), y ∈ X are distributed among the respective atoms.
+                                     DYNAMICAL SELF-SIMILARITY IN Rd                                    15
+
+2.2.1. Auxiliary lemmas. We collect some elementary lemmas that will be used throughout the
+rest of the paper.
+Lemma 2.2. Let t1 , . . . , tk be non-negative real numbers, q > 1. Then
+                      k −(q−1) (t1 + · · · + tk )q ≤ tq1 + · · · + tqk ≤ (t1 + · · · + tk )q ,       (2.4)
+where equality holds on the left-hand side if and only if t = (ti )1≤i≤k is a uniform vector, and
+on the right-hand side if and only if ti = 0 for all but one 1 ≤ i ≤ k.
+  As a consequence, for every finite Borel measure µ with finite support on Rd and every n ∈ N,
+we have
+                                               q
+                                          µ(n) q ≥ kµkqq .                                   (2.5)
+Furthermore, if ν is a second finite Borel measure with finite support on Rd , then
+                                                 kµ ∗ νkqq ≥ kµkqq kνkqq ,                           (2.6)
+with equality if and only if supp µ ∗ ν has maximal cardinality | supp µ|| supp ν|.
+Proof. This is elementary analysis.                                                                     
+  The next lemma will allow us to pass between “comparable” families of cubes.
+Lemma 2.3. Let (Y, B, µ) be a probability space, P and S subsets of B. Suppose that there
+exists an integer M0 ≥ 1 such that every element of P can be covered by at most M0 elements of
+S, and every element of S intersects non-trivially at most M0 elements of P. Then, for every4
+q > 1,
+                                  X                X
+                                      µ(P )q ≤ M0q     µ(S)q .                           (2.7)
+                                           P ∈P                  S∈S
+
+  We refer to [18, Lemma 4.1] for the short proof, consisting of an elementary application of
+Hölder’s inequality.
+  We let Dr denote, for every r > 0, the collection of r-mesh cubes in Rd , that is,
+                                                  
+                               Dr = r k + [0, 1)d : k ∈ Zd .
+With our earlier notation, we have D2−n = Dn for every n ∈ N.
+Lemma 2.4. Let µ be a compactly supported Borel probability measure on Rd . Let (rn )n∈N be
+a strictly decreasing sequence in (0, 1) such that rn → 0 as n → ∞. If
+                                                     log rn+1
+                                                   lim        =1,                                    (2.8)
+                                                  n→∞ log rn
+
+then, for every q > 1,
+                                                 P           q
+                                                                       P                  q
+                                           log     Q∈Dr µ(Q)     log         Q∈Drn µ(Q)
+                     lim     sup                               −                              = 0.
+                    n→∞ r∈[r
+                               n+1 ,rn ]
+                                                   log r                     log rn
+In particular,
+                                       P        q
+                                                                P            q
+                                 log Q∈Dr  µ(Q)             log   Q∈Drn µ(Q)
+                        lim inf                   = lim inf                    ,
+                          r→0        log r            n→∞         log rn
+                                   P                            P                                    (2.9)
+                                log Q∈Dr µ(Q)q               log Q∈Drn µ(Q)q
+                       lim sup                    = lim sup                      .
+                          r→0        log r            n→∞          log rn
+Proof. The statement is a straightforward consequence of Lemma 2.3; we omit the details. 
+  The next lemma, again a corollary of Hölder’s inequality, is [18, Lemma 4.2].
+  4Both the left-hand and the right-hand side of (2.7) are allowed to be infinite.
+16                                   E. CORSO AND P. SHMERKIN
+
+Lemma
+P          2.5. Let (µj )j∈J be a family of finite measures of finite support on Rd , and let µ =
+                                                                                  d
+  j∈J µj . Suppose that there exists an integer N ≥ 1 such that each point x ∈ R belongs to the
+support of at most N elements of the collection (supp µj )j∈J . Then, for every q > 1,
+                                                   X
+                                     kµkqq ≤ N q−1    kµj kqq .
+                                                          j∈J
+
+  The following lemma expresses the fact that, as far as Lq -norms are concerned, discretization
+commutes with convolution up to some uniform multiplicative factor.
+Lemma 2.6. Let µ, ν be compactly supported Borel measures on Rd . Then, for every n ∈ N,
+                                            q                                q
+                                 (µ ∗ ν)(n) q = Θq (1) µ(n) ∗ ν (n) q .
+
+  The case d = 1 is [18, Lemma 4.3], and the general case follows with the same proof, relying
+on Lemma 2.3.
+
+2.2.2. General upper bound for the Lq -dimensions. We set
+                                    m(n) = ⌈n log λ−1 ⌉,        n ∈ N,
+so that λn+1 < 2−m(n) ≤ λn for all n. The following lemma quantifies the intuitively obvious fact
+that, since a rescaled measure Sλn µTn x lives at scale λn , which is roughly 2−m(n) , its contribution
+to the Lq -norm of the 2−m(n) -discretized version of µx = µx,n ∗ Sλn µTn x is negligible. The case
+d = 1 is [18, Lemma 4.4], and the general case is identical.
+Lemma 2.7. For every x ∈ X and n ∈ N,
+                                            q                            q
+                                   µx(m(n)) q = Θλ,q (1) µx,n
+                                                          (m(n))
+                                                                 q
+                                                                   .
+
+     The chief aim of this subsection is to prove the easier inequality in (1.4), namely that
+                                             R                         
+                                                X
+                                                  log k∆(y)kqq dP(y)
+                             dimµx (q) ≤ min                         ,d
+                                                    log (q − 1)λ
+for every q > 1 and every x ∈ X; this holds without any further assumption on the pleasant
+model. In light of Lemmas 2.4 and 2.7, we shall reduce matters to the investigation of the
+                              q
+                       (m(n))
+asymptotics of log µx,n         as n → ∞, which in turn we will relate to the Birkhoff sum
+                              q
+Pn−1            i   q
+   i=0 log k∆(T x)kq by virtue of the convolution structure of µx,n .
+   As we pointed out earlier, it is well known that in the setting of uniquely ergodic systems
+(see §1.1), time averages of a continuous observable converge uniformly to its space average. It
+turns out that in the sub-additive setting this fails to hold, as shown by Furman in [8]. This
+pathological behavior notwithstanding, it is possible to retain a one-sided inequality, holding
+uniformly in the case of uniquely ergodic systems. We express the latter in the following
+proposition, which is formulated in the more general case of almost-everywhere continuous
+observables, in accordance with the needs of our argument.
+Proposition 2.8. Let (X, T, P) be a uniquely ergodic system, (ψn )n≥1 a sequence of bounded
+measurable functions ψn : X → R satisfying the following properties:
+  (a) for every n ≥ 1, ψn is continuous P-almost everywhere;
+   (b) there exists c ≥ 0 such that, for every n, n′ ≥ 1 and every x ∈ X,
+                                 ψn′ +n (x) ≤ ψn′ (Tn x) + ψn (x) + c .                         (2.10)
+Let                                              Z
+                                             1
+                                     L = inf             (ψn + c) dP .
+                                         n≥1 n       X
+Then the following hold:
+                                   DYNAMICAL SELF-SIMILARITY IN Rd                                                  17
+
+   (1)                                                   Z
+                                                  1
+                                          L = lim                ψn dP ;
+                                              n→∞ n          X
+   (2) for P-almost every x ∈ X,
+                                                 1
+                                              lim  ψn (x) = L ;
+                                             n→∞ n
+   (3) the upper bound
+                                                    1
+                                             lim sup ψn (x) ≤ L                                                 (2.11)
+                                               n→∞ n
+         holds uniformly in x ∈ X.
+  The first two assertions do not necessitate the continuity requirement, and are simply a
+consequence of Kingman’s subadditive ergodic theorem [16, Theorem 1] applied to the sequence
+(ψn − c)n≥1 . The last assertion is [18, Corollary 4.8], again applied to the same sequence (it is
+a consequence of Lemma 3.1 stated below).
+  Proposition 2.8 shall be equally relevant in the course of the proof of lower bounds for Lq -
+dimensions (see the proof Proposition 2.12); for the moment, it yields our sought after upper
+bound, which is the main result of the present subsection.
+Proposition 2.9. For any q > 1,
+                             P                   R                        
+                          log Q∈Dn µx (Q)q         X
+                                                     log k∆(y)kqq dP(y)
+                lim sup −                  ≤ min                        ,d
+                  n→∞         (q − 1)n                 (q − 1) log λ
+uniformly in x ∈ X.
+Proof. The proof is nearly identical to the case d = 1, presented in [18, §5.3]; we include it for
+the sake of completeness. Fix q > 1 and x ∈ X. First, applying Lemma 2.4 to the sequences
+(2−n )n≥1 and (2−m(n) )n≥1 gives
+                               P                              P
+                            log Q∈Dn µx (Q)q               log Q∈Dm(n) µx (Q)q
+                 lim sup −                     = lim sup −
+                   n→∞           (q − 1)n          n→∞         (q − 1)m(n)
+Secondly, in view of Lemma 2.7, we have
+                                                                           q
+                                  P                                   m(n)
+                                                                log µx,n
+                              log Q∈Dm(n) µx (Q)q                          q
+                    lim sup −                       = lim sup −              .
+                      n→∞          (q − 1)m(n)          n→∞     (q − 1)m(n)
+                                                                                                    q
+                                                                                           (m(n))
+We have thus reduced matters to estimating from below the quantity µx,n                                 .
+                                                                                                    q
+  To begin with, recall that the support of µx,n is contained in [0, 1)d , whence its discretization
+ (m(n))
+µx,n    has at most 2m(n)d atoms. By (2.4),
+                                                     q
+                                           (m(n))
+                                          µx,n    q
+                                                    ≥ 2−m(n)(q−1)d
+for every n ≥ 1, so that
+                                                                    q
+                                                         m(n)
+                                                    log µx,n
+                                                                    q
+                                      lim sup −       ≤d.
+                                        (q − 1)m(n)
+                                         n→∞
+  Furthermore, Lemma 2.2 allows us to estimate, for every n ≥ 1,
+                                                                 n−1
+                                                                 Y                         n−1
+                                                                                           Y
+          (m(n)) q                                  q                                q                      q
+         µx,n    q
+                   ≥ kµx,n kqq =    n−1
+                                   ∗i=0 Sλi ∆(Ti x) q ≥                        i
+                                                                        Sλi ∆(T x)   q
+                                                                                       =         ∆(Ti x) q .
+                                                                  i=0                      i=0
+It follows that
+                                              q
+                                    (m(n))
+                              log µx,n                                  n−1
+                                              q             1 X                  q
+                  lim sup −                       ≤ lim sup        − log ∆(Ti x) q .                            (2.12)
+                    n→∞            m(n)               n→∞ m(n)
+                                                               i=0
+18                                           E. CORSO AND P. SHMERKIN
+
+Since X is a pleasant model, there is M ∈ N∗ such that the support of each measure ∆(y),
+y ∈ X has at most M elements. Lemma 2.2 then gives M −(q−1) ≤ k∆(y)kqq ≤ 1, whence
+0 ≤ − log k∆(y)kqq ≤ (q − 1) log M. Therefore, the sequence of orbital sums
+
+                                             n−1
+                                             X                                q
+                                      y 7→         − log ∆(Ti y) q ,                  n≥1
+                                             i=0
+
+satisfies the hypothesis of Proposition 2.8 (equality holds in (2.10) with c = 0). The latter thus
+delivers
+                               n−1                     Z
+                             1X                   q
+                    lim sup                   i
+                                   − log ∆(T x) q ≤        − log k∆(y)kqq dP(y)
+                      n→∞    n i=0                       X
+
+for every x ∈ X. Combining this with (2.12), we conclude that
+                                                                q
+                                        log µx,n
+                                                   (m(n))               R
+                                                                q        X
+                                                                             log k∆(y)kqq dP(y)
+                            lim sup −                               ≤
+                             n→∞         (q − 1)m(n)                           (q − 1) log λ
+
+for every x ∈ X. An inspection of the argument shows that all the inequalities are in fact
+uniform in x ∈ X. The proof is concluded.
+                                                                                        
+
+2.3. A sub-multiplicative cocycle. The next lemma is a simple but key application of dy-
+namical self-similarity. It is implicit in the proof of [18, Proposition 4.13], but we include the
+proof since it will be a key step in the proof of Theorem 1.9.
+
+Lemma 2.10. Fix q > 1. For any s, m ∈ N, Q ∈ Ds , D ⊂ Ds+m (Q) and x ∈ X the following
+holds: denoting n = ⌈(s + 2)/ log(λ−1 )⌉, there exist points zj ∈ Q − [0, λn )d and real numbers
+                               P
+pj > 0 for 1 ≤ j ≤ J such that Jj=1 pj ≤ µx (2 · Q) and
+
+                   X                                        J
+                                                            X               X
+                                ′ q
+                           µx (Q ) ≤ µx (2 · Q)      q−1
+                                                                    pj            µTn x (λ−n (Q′ − zj ))q .
+                   Q′ ∈D                                    j=1          Q′ ∈D
+
+In particular,
+                    X                                                    X
+                           µx (Q′ )q ≤ µx (2 · Q)q · max                          µTn x (λ−n (Q′ − zj ))q .
+                                                            1≤j≤J
+                   Q′ ∈D                                                Q′ ∈D
+
+             e = Q − [0, λn )d , and let
+Proof. Write Q
+                                                      J
+                                                      X
+                                         µx,n |Qe =             pj δzj ,      pj > 0.
+                                                          j=1
+
+
+Note that the points zj are the atoms of µx,n such that (zj +[0, λn )d )∩Q 6= ∅. Since δz ∗Sλn µTn x
+is supported on z + [0, λn )d , it follows from the self-similarity relation µx = µx,n ∗ Sλn µTn x that
+
+                                         µx |Q = (µx,n |Qe ∗ Sλn µTn x )|Q .                                  (2.13)
+
+Observe now that
+                                                     X
+                                              p :=          pj ≤ µx (2 · Q),                                  (2.14)
+                                                      j
+                                       DYNAMICAL SELF-SIMILARITY IN Rd                                                          19
+
+using the fact that the supp µx,n ⊂ supp µx −[0, λn )d , and that 4λn ≤ 2−s . We can then conclude
+that
+                                                                       !q
+                  X             (2.13) X  X
+                       µx (Q′ )q =            pj δzj ∗ Sλn µTn x (Q′ )
+                   Q′ ∈D                        Q′ ∈D         j
+                                                                                                       !q
+                                          X             X
+                                      =                       pj µTnx (λ−n (Q′ − zj ))
+                                          Q′ ∈D           j
+                                          X                   X
+                                                        q−1
+                                      ≤             p                     pj µTn x (λ−n (Q′ − zj ))q
+                                          Q′ ∈D               j
+                                      (2.14)                               X            X
+                                        ≤ µx (2 · Q)q−1                            pj           µTn x (λ−n (Q′ − zj ))q ,
+                                                                             j          Q′ ∈D
+                                                q
+where we used convexity of t 7→ t in the third line. The last claim is now immediate, since
+P J
+  j=1 pj ≤ µx (2 · Q).                                                                   
+  As a first application, we deduce that, for every q > 1, the sequence of measurable functions
+ (q)
+φn : X → R>0 given by the assignment
+                                                (m(n))                       q
+                                      φ(q)
+                                       n (x) = µx      q
+                                                         ,                              x ∈ X, n ≥ 1                        (2.15)
+is sub-multiplicative.
+                                                                                                 (q)
+Proposition 2.11. Let q > 1, and define the sequence (φn )n≥1 as above. There is Cλ,q > 1,
+depending smoothly on (λ, q), such that, for every n, n′ ≥ 1 and x ∈ X,
+                                          (q)                                (q)
+                                        φn+n′ (x) ≤ Cλ,q φn′ (Tn x) φ(q)
+                                                                     n (x) .
+
+Proof. Fix q > 1, x ∈ X and n, n′ ≥ 1. Let n0 satisfy
+                                                λ−n0 ≥ 4 · 2m(n) > λ1−n0 .
+For each Q ∈ Dm(n) , we apply Lemma 2.10 to D = Dm(n+n′ ) (Q) to get that
+            X                                    X
+                     µx (Q′ )q ≤ µx (2 · Q)q max         µTn x (λ−n0 (Q′ − zj ))q                                           (2.16)
+                                                                  j
+        Q′ ∈Dm(n+n′ ) (Q)                                                  Q′ ∈Dm(n+n′ ) (Q)
+
+for some points zj ∈ Q0 − [0, λn0 )d . A short calculation shows that
+                                                                      ′                            ′
+                                          λ−n0 2−m(n+n ) = Θλ (1)2−m(n ) ,
+and therefore Lemma 2.3 yields that, for each j,
+                        X                                          m(n′ )
+                                 µTn x (λ−n0 (Q′ − zj ))q ≤ Cλ,q kµTn(x) kqq .                                              (2.17)
+                            Q′ ∈Dm(n+n′ ) (Q)
+
+We emphasize that the constant Cλ,q is independent of Q and j, and can be taken to be smooth
+on λ, q. On the other hand, another application of Lemma 2.3 yields that
+                               X
+                                     µx (2 · Q)q ≤ Cλ,q kµm(n)
+                                                          x    kqq .                   (2.18)
+                                        Q∈Dm(n)
+
+Combining (2.16), (2.17) and (2.18) completes the proof.                                                                        
+   It is now natural to invoke Kingman’s subadditive ergodic theorem to show almost sure
+existence of the limit in the definition (1.3) of the Lq -spectrum. To be precise, since we are
+interested in results holding for every x ∈ X, we shall resort to the refined version of the
+sub-additive ergodic theorem for almost surely continuous cocycles framed in Proposition 2.8.
+   The result reads as follows.
+Proposition 2.12. The following assertions hold for every q > 1.
+20                                       E. CORSO AND P. SHMERKIN
+
+      (1) The limit in the definition of the Lq -spectrum TX (q) exists; moreover, setting
+                                                  Z
+                                (n)          1                   q
+                              TX (q) = −            log µx(m(n)) q dP(x)
+                                           m(n)
+                                   ′
+          for all n ≥ 1, there is Cλ,q > 0, depending continuously on (λ, q), such that
+                                                     ′  
+                                            (n)     Cλ,q            (n)
+                           TX (q) = sup TX (q) −            = lim TX (q) .                                       (2.19)
+                                     n≥1            m(n)      n→∞
+
+      (2) For P-almost every x ∈ X,
+                                                                   q
+                                                         (m(n))
+                                                log µx
+                                                                   q
+                                     lim −                                = TX (q) .                             (2.20)
+                                    n→∞             m(n)
+      (3) The lower bound
+                                                                          q
+                                                             (m(n))
+                                                 log µx
+                                                                          q
+                                    lim inf −                                 ≥ TX (q)                           (2.21)
+                                     n→∞                m(n)
+       holds uniformly in x ∈ X.
+Furthermore, for P-almost every x ∈ X, it holds that τµx (q) = TX (q) for all q > 1.
+                                                                                                           (q)
+Proof. Fix q > 1. By virtue of Proposition 2.11, the sequence of measurable functions ψn : X →
+R≥0 defined by
+                                                   (m(n)) q
+                    ψn(q) (x) = log φ(q)
+                                     n (x) = log µx       q
+                                                            , x ∈ X, n ≥ 1
+fulfills the weak subadditivity condition in (2.10) with c = log Cλ,q . Also, since the model is
+             (q)                                                                 (q)
+pleasant, ψn is continuous P-almost everywhere, for every n ≥ 1. Finally, all ψn are bounded
+and hence integrable with respect to P: for every x ∈ X, the inclusion supp µx ⊂ [0, 1)d implies
+                      (m(n))
+that the support of µx       consists of at most 2m(n)d elements, so that Lemma 2.2 yields
+                                                                                   q
+                                −d(q − 1)m(n) ≤ log µx(m(n)) q ≤ 0 .
+     Since n/m(n) → log11/λ as n → ∞, the first three assertions follow directly from Proposi-
+                                          (q)
+tion 2.8 applied to the sequence (ψn )n≥1 .
+   As to the last assertion, it follows from Lemma 2.4 applied to the sequences (2−n )n≥1 and
+   −m(n)
+(2       )n≥1 that
+                                                             q                                     q
+                                                       (n)                                (m(n))
+                                            log µx                                  log µx
+                                                             q                                     q
+                      τµx (q) = lim inf −                        = lim inf −                           ,
+                                 n→∞               n                   n→∞               m(n)
+the latter quantity being equal to
+                                                                      q
+                                                         (m(n))
+                                                 log µx
+                                                                      q
+                                         lim −                                = TX (q)
+                                     n→∞               m(n)
+whenever x ∈ X satisfies (2.20). Hence, for every fixed q > 1, equality τµx (q) = TX (q) holds for
+P-almost every x ∈ X. Standard measure theory allows to upgrade the previous statement to
+the following: there is N ⊂ X with P(N) = 0 such that, for every x ∈
+                                                                   / N, equality τµx (q) = TX (q)
+holds on a countable dense subset of R>1 . Now convexity of every function of the form R ∋ q 7→
+aq ∈ R, a > 0 readily yields, together with (2.20), that TX is concave, and thus continuous on
+R>1 . We deduce that τµx (q) = TX (q) holds for every q > 1 and x ∈
+                                                                  / N, as claimed.              
+Corollary 2.13. For all δ > 0 there is an integer m0 = m0 (X , δ) such that the following holds:
+for all integers s ≥ 0 and m ≥ m0 , and for all x ∈ X and Q ∈ Ds ,
+                           X
+                                µx (Q′ )q ≤ Cλ,q µx (2 · Q)q 2−(Tχ (q)−δ)m .
+                          Q′ ∈Ds+m (Q)
+                                DYNAMICAL SELF-SIMILARITY IN Rd                               21
+
+Proof. Applying Lemma 2.10 as in the proof of Proposition 2.11, we get
+                          X                                      (m)
+                                  µx (Q′ )q ≤ Cλ,q µx (2 · Q)q kµTnx kqq
+                           Q′ ∈Ds+m (Q)
+
+where n is such that λ−n = Θλ (2m ). Combining this with (2.21) yields the claim.             
+  Combining Proposition 2.9 and Proposition 2.12 (for the latter, to be precise, we take the
+inequality in (2.21) together with Lemma 2.4), we draw the conclusion that, for every q > 1
+and every x ∈ X,                                     R
+                                                         log k∆(y)kqq dP(y)
+                        Tχ (q) ≤ (q − 1) dimµx (q) ≤ X                      .
+                                                              log λ
+In fact, this holds uniformly, in the sense that both inequalities hold uniformly in the limits
+implicit in the definition of TX (q) and dimµx (q). Therefore, in order to complete the proof of
+Theorem 1.9, it suffices to show that
+                                           R
+                                            X
+                                              log k∆(y)kqq dP(y)
+                                  Tχ (q) ≥                         .                      (2.22)
+                                                    log λ
+This is the crux of the whole argument, in particular it is the place where the assumptions of
+exponential separation and unsaturation on lines of the model are instrumental to our approach.
+
+          3. An Lq -smoothening theorem and the proof of Theorem 1.9
+  This section contains the proof of the lower bound for TX (q) in (2.22), and thereby achieves
+the proof of Theorem 1.9. The main stepping stone is a smoothening theorem for Lq -dimensions,
+which is the content of Theorem 3.7. In particular, it is in the proof of this theorem that the
+argument diverges sharply from the one-dimensional situation treated in [18].
+  Throughout this section, unless otherwise stated, we work with a pleasant model X =
+(X, T, P, ∆, λ) in Rd which is q-unsaturated on lines for some fixed real q > 1, generating
+a family (µx )x∈X of dynamically driven self-similar measures. We emphasize that we do not
+assume exponential separation at this stage.
+
+3.1. On the unsaturation condition. We begin by recording an estimate for subadditive
+cocycles going back at least to [15]. In the statement, a measure-preserving system is a triple
+(X, T, P) where X is a measurable space, T : X → X is a measurable map and P is a T-invariant
+probability measure on X. If f : X → R is a measurable function, we adopt the notation
+                                           n−1
+                                        1X
+                           A(f, x, n) =       f (Tj x) ,   x ∈ X, n ≥ 1
+                                        n j=0
+
+for its ergodic averages, and kf k∞ for its essential supremum.
+Lemma 3.1. Let (X, T, P) be a measure-preserving system, (ψn )n≥1 a sequence of bounded
+measurable functions X → R satisfying
+                   ψn+n′ (x) ≤ ψn (x) + ψn′ (Tn x) for all n, n′ ≥ 1 and x ∈ X.
+Then, for every n ≥ N ≥ 1 and x ∈ X,
+                           1         1              2
+                             ψn (x) ≤ A(ψN , x, n) + max kψi k∞ .
+                           n         N              n 1≤i≤N
+Proof. See [15, p. 294].                                                                      
+  In the sequel, we adopt the convention that π ∈ G(d, d − 1) is a projection onto Rd−1 with a
+choice of dyadic grid in Rd−1 which is smooth in π.
+  The next proposition does not hinge on any q-unsaturation assumption on the model.
+22                                    E. CORSO AND P. SHMERKIN
+
+Proposition 3.2. Fix q > 1 and k ∈ {1, . . . , d − 1}. The function
+                                    G(d, k) → R≥0 ,      π 7→ TπX (q)
+is lower semicontinuous. Moreover, for every π ∈ G(d, k) and ε > 0 there is a neighborhood U
+of π in G(d, k) such that
+                                     1
+                            lim inf − log k(π ′ µx )(m) kqq ≥ TπX (q) − ε
+                             m→∞     m
+                          ′
+uniformly in x ∈ X and π ∈ U.
+Proof. We begin by introducing more regular versions of the functions (x, π) 7→ log k(πµx )(m) kqq .
+For every n ≥ 1, let ψn : Rd−1 → [0, 1] be a smooth bump function vanishing outside the cube
+[−2m(n) , 2m(n) ]d−1 and taking the constant value 1 on [−2m(n)+1 , 2m(n)+1 ]d−1 . We define
+                                    X       Z                              q 
+                       π                                   −m(n)
+                      Ψn (x) = log               ψn (t + 2       k) dπµx (t)     .
+                                    k∈[2m(n) ]d−1
+
+An elementary calculation using Lemma 2.3 shows that
+                                 log k(πµx )(m(n)) kqq − Ψπn (x) = Oλ,q (1)                          (3.1)
+where the quantity Oλ,q (1) is, crucially for the sequel, independent of π. By Propositions 2.11
+and 2.12, applied to the projected models, this implies that, for any x ∈ X, π ∈ G(d, k) and
+n, n′ ≥ 1,
+                                Ψπn+n′ (x) ≤ Ψπn (x) + Ψπn′ (Tn x) + Oλ,q (1) ,                       (3.2)
+and                                    Z                                        Z
+                                1            π                              1
+           TπX (q) = sup                  (Ψn (x) + Cq,λ ) dP(x) = lim             Ψπn (x) dP(x)      (3.3)
+                         n n log λ                                 n→∞  n log λ
+   Since the model is pleasant, the function (x, π) → Ψπn (x) is bounded, almost everywhere
+continuous in x, and uniformly continuous in π. By a well known compactness argument (see
+e.g. the proof of [18, Lemma 4.7]), there exists a continuous function Ψ        e n : X × G(d, d − 1) → R
+such that, writing Ψ  e π (x) = Ψ e n (x, π), we have
+                        n
+                  e πn (x) for all x ∈ X and π ∈ G(d, d − 1),
+    (a) Ψπn (x) ≤ Ψ
+        R π                   R
+    (b) Ψ  e (x) dP(x) ≤ Ψπ (x) dP(x) + 1 for all π ∈ G(d, d − 1).
+            n                   n
+Note that (3.3) continues to hold with Ψ  e π in place of Ψπ (and a different constant Cλ,q ).
+                                            n               n
+This shows that TπX (q) is a supremum of continuous functions of π, and hence is lower semi-
+continuous in π.
+  Now fix π ∈ G(d, d − 1) and ε > 0. Using (3.3) and property (b) of Ψ e π , we find that there
+                                                                         n
+exists N = N(π, q, ε) such that
+                            Z
+                                  1 eπ                         ε
+                                       ΨN (x) dP(x) ≥ TπX (q) − .
+                               N log λ                         4
+Since eΨN is continuous and X is compact, there is a neighborhood U of π such that
+                             1        ′               ε
+                                   ΨπN (x) − ΨπN (x) ≤ ,        π ′ ∈ U, x ∈ X .                     (3.4)
+                         N| log λ|                    4
+In particular,           Z
+                         1 e π′                          ε
+                              ΨN (x) dP(x) ≥ TπX (q) − , π ′ ∈ U .                                   (3.5)
+                      N log λ                            2
+ By Lemma 3.1, the subadditivity (3.2) implies that, for n ≥ N, and x ∈ X,
+                1 π        1                 2                1
+                  Ψn (x) ≤ A(ΨπN , x, n) + max kΨπi k∞ + Oλ,q (1) .                                  (3.6)
+                n          N                n 1≤i≤N           n
+Write
+                             C = 2 max kΨπj k∞ + Oλ,q (1).
+                                            1≤j≤N
+                                    DYNAMICAL SELF-SIMILARITY IN Rd                               23
+
+It follows from (3.6) and property (a) that, for all n ≥ N,
+                        1 π′       1  e π′         C
+                         Ψn (x) ≤ A Ψ     N , x, n   + , π′ ∈ U , x ∈ X .                   (3.7)
+                       n           N                  n
+It follows from (3.4) that
+                     1        ′                         ε
+                               e π               e π
+                           A ΨN , x, n − A ΨN , x, n ≤ , π ′ ∈ U, x ∈ X .                   (3.8)
+                 N| log λ|                                  4
+By the unique ergodicity of (X, T, P),
+                                  Z
+                          e π
+                 lim A ΨN , x, n = Ψ   e π (x) dP(x) uniformly in x ∈ X .                   (3.9)
+                                         N
+                   n→∞
+
+Combining (3.7), (3.8), and (3.9), we deduce that if n is large enough, then for all π ′ ∈ U and
+all x ∈ X,                                Z
+                            1     π′           1 e π′               ε
+                                 Ψn (x) ≥           ΨN (x) dP(x) − .
+                         n log λ            N log λ                 2
+Recalling (3.5) and property (b) above, we conclude that
+                                     1       ′
+                             lim inf      Ψπn (x) ≥ TπX (q) − ε ,       π′ ∈ U .
+                              n→∞ n log λ
+
+In light of (3.1), this finishes the proof.                                                       
+  As an immediate corollary of the above proposition and of compactness of G(d, d − 1), we
+obtain the following uniform pointwise improvement of q-unsaturation on lines.
+Corollary 3.3. Assume that X is q-unsaturated on lines for some q > 1. Then there is
+η = η(X , q) > 0 such that
+                                            1
+                   lim inf      inf     −     log k(πµx )(m) kqq ≥ TX (q) − (q − 1) + η,
+                    m→∞ π∈G(d,d−1)          m
+uniformly in x ∈ X.
+ We deduce the following “box-counting” consequence of unsaturation on lines. Recall that
+DX (q) = TX (q)/(q − 1) denotes the Lq -dimension of the model X .
+Proposition 3.4. There exist η > 0 and an integer, m0 ≥ 1, both depending on X and q, such
+that the following holds for all m ≥ m0 . Let D ⊂ Dm be a family of cubes such that, for some
+x ∈ X,
+         −j
+   (a) 2P   < µx (Q) ≤ 21−j for all Q ∈ D and some integer j ≥ 1 and
+    (b) Q∈D µx (Q)q ≥ 2−(DX (q)+η)(q−1)m .
+Then, for all projections π ∈ G(d, d − 1),
+                                        Nm (π(∪D)) ≥ 2(η−1)m |D| .
+  Notice that, in the case d = 1, the left-hand side of the last displayed inequality equals 1.
+Proof. . Set
+                   ψnπ (x) = log k(πµx )m(n) kqq ,    π ∈ G(d, d − 1), n ≥ 1, x ∈ X.
+Corollary 3.3 provides η = η(X , q) > 0 and an integer n0 = n0 (X , q) such that
+                                     1
+                                −       ψ π (x) > (DX (q) − 1 + 2η)(q − 1)
+                                    m(n) n
+for all x ∈ X, n ≥ n0 and π ∈ G(d, d − 1). Fix x ∈ X and m = m(n) for some n ≥ n0 . Using
+that m(n) has bounded gaps, it is enough to establish the claim for such m. Then
+                         log k(πµx )(m) kqq ≤ −(DX (q) − 1 + 2η)(q − 1)m .                 (3.10)
+24                                        E. CORSO AND P. SHMERKIN
+
+Now let D ⊂ Dm be as in the statement. Using both assumptions on D, we get
+                                     X
+                       2(1−j)q |D| ≥   µx (Q)q ≥ 2−(DX (q)+η)(q−1)m .                           (3.11)
+                                               Q∈D
+
+Fix π ∈ G(d, d − 1). For each 2−m -dyadic cube R in π (identified with its range), let NR be the
+number of dyadic cubes in D whose π-projection intersects R. Note that there is a constant C
+such that if Q ∈ D, π(Q) ∩ R 6= ∅, then π(Q) ⊂ C · R. Then, using Lemma 2.3 and the first
+assumption on D, we get
+                                                  X
+                          k(πµx )(m) kqq ≥ Θq (1)   πµx (C · R)q
+                                                              R
+                                                   X                 q             X           (3.12)
+                                               ≥            2−j NR         = 2−jq       NRq .
+                                                    R                               R
+
+Using Hölder’s inequality, and noting that Nm (πD) = |{R : NR > 0}|, we see that
+                                   X      q           q−1 X q
+                           |D|q ≤      NR ≤ Nm (πD)            NR .
+                                           R                                        R
+
+We conclude that
+                                   1−q              X            (3.12)
+                         Nm (πD)          |D|q ≤            NRq ≤ Oq (1)2jq k(πµx )(m) kqq
+                                                        R
+                                               (3.10)
+                                                   ≤ Oq (1)2jq · 2−(DX (q)−1+2η)(q−1)m
+                                               (3.11)
+                                                   ≤ Oq (1) |D| 2(1−η)(q−1)m .
+Rearranging the terms of the previous inequality appropriately gives the claim.                     
+Corollary 3.5. There exist η > 0 and an integer m0 ≥ 1, both depending on X and q, such
+that the following holds for all x ∈ X and all m ≥ m0 . Let D ⊂ Dm be a family of cubes such
+that, for some projection π ∈ G(d, d − 1),
+                                              
+                                   Nm π(∪D) < 2(η−1)m |D| .                           (3.13)
+Then there exists a subfamily D ′ ⊂ D with |D \ D ′ | ≤ 2−ηm |D| and
+                               X
+                                    µx (Q)q ≤ 2−(DX (q)+η)(q−1)m .
+                                    Q∈D ′
+
+Proof. Fix an integer m ≥ 1, a collection D ⊂ Dm and a projection π ∈ G(d, d − 1) satisfy-
+ing (3.13), and let x ∈ X. Let
+                                    J = ⌈(q − 1)(DX (q) + 1) + d⌉ ,
+and note that
+             X
+                    {µ(Q)q : Q ∈ D, µ(Q) < 2−Jm } ≤ 2dm 2−Jmq ≤ 2−(DX (q)+1)(q−1)m .            (3.14)
+
+     For each j ∈ N, let Dj = {Q ∈ D : µx (Q) ∈ (2−j , 21−j ]}. Let
+                                                                                  
+                                      X                  1                        
+                  J = 1 ≤ j ≤ Jm :          µx (Q)q ≥          · 2−(DX (q)+η)(q−1)m .
+                                                       2Jm                        
+                                       Q∈D         j
+
+
+By Proposition 3.4, if η = η(X , q) is sufficiently small and m0 = m0 (X , q) is sufficiently large,
+then
+                                       
+                          Nm π(∪Dj ) > 22ηm · 2(η−1)m |Dj |, j ∈ J ,
+                                           DYNAMICAL SELF-SIMILARITY IN Rd                                                     25
+
+and so, by the assumption (3.13), |Dj | ≤ 2−2ηm |D| for each j ∈ J , and therefore
+                                           [
+                                               Dj ≤ Jm · 2−2ηm |D| ≤ 2−ηm |D|,
+                                         j∈J
+
+if m is large enough. Setting D ′ = D \ ∪j∈J Dj , we conclude from (3.14) and the definition of
+the set J that
+            X                                   1
+                  µX (Q)q ≤ 2−(Dx (q)+1)(q−1)m + · 2−(DX (q)+η)(q−1)m ≤ 2−(DX (q)+η)(q−1)m ,
+                ′
+                                                2
+                Q∈D
+
+as claimed.                                                                                                                    
+  The next proposition can be seen as a local version of Corollary 3.5.
+Proposition 3.6. There exist η = η(X , q) > 0 and m0 = m0 (X , q) such that the following
+holds for all s ∈ N, m ∈ N≥m0 , Q ∈ Ds and x ∈ X.
+  Let D ⊂ Ds+m (Q) be a family such that
+                                 
+                    Ns+m π(∪D) ≤ 2(η−1)m |D| for some π ∈ G(d, d − 1).              (3.15)
+Then there is a collection D ′ ⊂ D such that |D \ D ′ | ≤ 2−η m|D| and
+                           X
+                                µx (Q′ )q ≤ 2−(DX (q)+η)(q−1)m µx (2 · Q)q .
+                                  Q′ ∈D ′
+                                                                                               P
+Proof. We apply Lemma 2.10 to obtain numbers pj > 0 with                                         j pj   ≤ µx (2 · Q) and points
+zj ∈ Q (in both cases for 1 ≤ j ≤ J) such that
+                      X                                       J
+                                                              X            X
+                                   ′ q
+                              µx (Q ) ≤ µx (2 · Q)      q−1
+                                                                      pj           µTn (x) (λ−n (Q′ − zj ))q ,             (3.16)
+                      Q′ ∈D                                   j=1          Q′ ∈D
+
+where n is such that 2−s = Θλ (1)λn . Fix j for the time being. For each cube Q′ ∈ D and
+each j, let Rj (Q′ ) be the collection of cubes in Dm that intersect λ−n (Q′ − zj ); note that
+|Rj (Q′ )| = Oλ (1). Write              n[                   o
+                                  ej =
+                                  D         Rj (Q′ ) : Q′ ∈ D .
+Note that |Dej | ≤ Θλ (1)|D|. Upon rescaling by 2s = Θ1 (λ−n ), we deduce from the assumption
+(3.15) that, for some π ∈ G(d, d − 1) that we fix from now on,
+                                             
+                                Nm π(∪D  ej ) ≤ Cλ 2(η−1)m |D
+                                                            ej |.
+Now Corollary 3.5 ensures that if η, m0 are taking respectively small and large enough in terms
+of X , q only, then there are families D ej′ ⊂ Dej with |D ej \ Dej′ | ≤ 2−ηm |D
+                                                                               ej | and such that
+                           X
+                                µTn (x) (Q′′ )q ≤ 2−(Dx (q)+η)(q−1)m , x ∈ X .                    (3.17)
+                                     e′
+                                Q′′ ∈D j
+
+Let                                             n         [               o
+                                           Dj′ = Q′ ∈ D :              ej′ .
+                                                            Rj (Q′ ) ⊂ D                                                   (3.18)
+Since the families {Rj (Q′ ) : Q ∈ Ds+m } have Oλ (1) overlapping, we have that
+                                                                                       1
+                                     |D \ Dj′ | ≤ Oλ (1) 2−ηm |D| ≤ 2− 2 ηm |D| ,                                          (3.19)
+for m large enough. For each j, appealing to Lemma 2.3 once gain, we have
+     X                                     X  X
+          µTn (x) (λ−n (Q′ − zj ))q ≤ Cλ,q        µTn x (Q′′ )q
+      Q′ ∈Dj′                                         Q′ ∈Dj′ Q′′ ∈Rj (Q′ )
+
+                                             (3.18)        X                          (3.17)                               (3.20)
+                                                                               ′′ q                −(DX (q)+η)(q−1)m
+                                               ≤ Cλ,q                 µTnx (Q )        ≤ Cλ,q 2                        ,
+                                                              e
+                                                         Q′′ ∈D   j
+26                                                      E. CORSO AND P. SHMERKIN
+
+for all x ∈ X.
+   We also assume that m0 is large enough in terms of η, q and X that, invoking (2.21) followed
+by yet another application of Lemma 2.3,
+                   X                                          η
+                        µTn(x) (λ−n (Q′ − zj ))q ≤ 2−(DX (q)− 8 )(q−1)m , x ∈ X .         (3.21)
+                               Q′ ∈D
+
+     Next, for each Q′ ∈ D let
+                                                                    X
+                                                      p(Q′ ) =             {pj : Q′ ∈ D \ Dj′ }.                                                (3.22)
+                    PJ
+Writing p =            j=1 pj ≤ µx (2 · Q), we have
+
+                                         X                      J
+                                                                X                      (3.19)           η
+                                                 p(Q ) =′
+                                                                          pj |D \ Dj′ | ≤ p 2− 2 m |D|,
+                                        Q′ ∈D                   j=1
+
+and so, by Markov’s inequality,
+                                        η                              n                     η             o
+                |D \ D ′ | ≤ 2− 4 m |D|,                    where D ′ = Q′ ∈ D : p(Q′ ) ≤ 2− 4 m µx (2 · Q) .
+
+We split the sum we want to control as
+                                                                                                                
+         J
+         X           X                                                    J
+                                                                          X            X             X                  J
+                                                                                                                        X
+               pj             µTn (x) (λ   −n     ′
+                                                (Q − zj )) ≤    q
+                                                                                pj           +                   =:         pj Aj + pj Bj .
+         j=1        Q′ ∈D ′                                               j=1       Q′ ∈Dj′       Q′ ∈D ′ \Dj′          j=1
+
+
+To control the first sum, we use (3.20) to get
+                                J
+                                X                           J
+                                       pj Aj ≤ p max Aj ≤ µx (2 · Q) Cλ,q 2−(DX (q)+η)(q−1)m .
+                                                        j=1
+                                j=1
+
+For the second sum, we estimate
+                              J
+                              X                        X                   J
+                                                                           X
+                                            (3.22)
+                                                                      ′
+                                    pj Bj ≤                     p(Q )            µTn(x) (λ−n (Q′ − zj ))q
+                              j=1               Q′ ∈D ′       j=1
+                                                 η               J                  X
+                                            ≤ 2− 4 m µx (2 · Q) max                        µTn (x) (λ−n (Q′ − zj ))q
+                                                                j=1
+                                                                    Q′ ∈D ′
+                                            (3.21)
+                                                                      η
+                                                             − DX (q)+   (q−1)m
+                                              ≤ µx (2 · Q) 2           8        .
+ Combining these estimates with (3.16) finishes the proof (with η/10 in place of η and making
+m0 even larger in terms of λ, q if needed).                                                
+
+3.2. Exponential flattening of the Lq -norm under convolution. The following theorem,
+to which we shall appeal crucially in the proof of Proposition 3.8, asserts that convolving with
+dynamically driven self-similar measures, discretized at finite scales, increases regularity. Recall
+that a 2−m -measure (m ≥ 1 an integer) is a probability measure with finite support contained
+in 2−m Zd . Also, q ′ indicates the Hölder conjugate of q.
+Theorem 3.7. For every σ > 0 there exist η > 0 and m0 ∈ N (both depending on X , q and
+σ) such that, for every x ∈ X, every m ≥ m0 and every 2−m -measure ν supported inside [0, 1)d
+                    ′
+and satisfying kνkqq ≤ 2−σm ,
+                                                                           q′
+                                                            ν ∗ µx(m) q ≤ 2−(TX (q)+ε)m .                                                       (3.23)
+                               DYNAMICAL SELF-SIMILARITY IN Rd                                    27
+
+   In a nutshell, here is the overarching strategy of the proof. If the inequality in (3.23) is
+violated, then the hypotheses of Theorem 2.1 are satisfied. The latter yields, combined with the
+unsaturation assumption on the model, a dyadic multiscale decomposition of the 2−m -measures
+                                                                        (m)
+ν and µx of the following type: a huge portion of the Lq -norm of µx and the L1 -norm (that
+is, the mass) of ν are captured by subsets A and B of the respective supports verifying that,
+at each intermediate scale, there is either no branching for B or line saturation for A. The
+                ′
+inequality kνkqq ≤ 2−σm implies that, for a positive proportion of scales, there must be some
+non-trivial branching for B, which thus corresponds to line saturation for A. Using Proposition
+3.6 we will show that, after refining the set A to a “dense” set A′ , each such scale entails a loss
+of Lq norm for A′ , and because there is a positive proportion of such scales, A′ carries only a
+                                                          (m)
+small (in exponential sense) part of the Lq dimension µx . But on the other hand, A′ , being
+a large subset of A on which µ is roughly constant, should capture a large part of the Lq norm
+     (m)
+of µx . This contradiction demonstrates that (3.23) must hold.
+3.3. Proof of Theorem 3.7.
+3.3.1. Setup and counter-assumption. Throughout the proof, we shall keep track of the in-
+terdependencies between the various parameters through round brackets, e.g. we shall write
+δ = δ(α, β, γ) if δ depends on α, β, γ.
+   Assume 0 < DX (q) < d. Fix σ > 0, an integer m ≥ 1 and a point x ∈ X, and let ν be a
+                               ′
+2 -measure satisfying kνkqq ≤ 2−σm . During the proof, we drop the X subscript from DX (q)
+ −m
+
+and TX (q) for brevity.
+   The statement of Theorem 3.7 is plainly invariant under dilation of any involved measure
+by a common scaling factor, and also by translation; therefore, it suffices to prove it assuming
+that every measure µx (x ∈ X), as well as ν, are supported inside [0, 1)d .
+   In the course of the proof, we shall preliminarily choose parameters in order to be in a position
+to apply the needed results from previous sections, and impose restrictions on them according
+to the successive needs emerging from the argument. To avert circularity in such a selection
+process, we will collect all the mutual dependencies between the various parameters at the end
+of the proof.
+   Fix δ > 0 (to be determined later), and let
+                                        L0 = L0 (δ, q) ∈ N,                                  (3.24)
+be the parameters given by Theorem 2.1. Let
+                                           L ≥ L0 (δ, q)                                     (3.25)
+be another to parameter to be determined during the proof, and let
+                                         ε = ε(δ, q, L) > 0                                  (3.26)
+be the value provided by Theorem 2.1. Further, let
+                                      S0 = S0 (q, δ, L, ε) ≥ 1
+be again given by Theorem 2.1.
+  We shall prove the theorem with the value
+                                              ε′ = εq/3                                      (3.27)
+in place of ε. For the sake of contradiction, assume therefore that, for some x ∈ X,
+                                                q               ′
+                                     ν ∗ µx(m) q > 2−(T (q)+ε )m .                           (3.28)
+  By Proposition 2.12(3) and Lemma 2.4,
+                                                          q
+                                                    (m)
+                                              log µy
+                                                          q
+                                  lim inf −                   ≥ T (q),
+                                   m→∞              m
+28                                  E. CORSO AND P. SHMERKIN
+
+uniformly in y ∈ X. Hence, there is an integer m1 = m1 (q, ε) ≥ 1 such that, for every integer
+m ≥ m1 ,
+                                                 q
+                         2−(T (q)+εq/2)m < µx(m) q < 2−(T (q)−εq/2)m .                  (3.29)
+The left-hand side inequality follows from our counter-assumption (3.28), Lemma 2.6 and
+                                  (m)          (m)
+Young’s inequality, in the form kµx ∗ νkq ≤ kµx kq kνk1 .
+   From now on, m is always assumed to satisfy m ≥ m1 . Combining the right-most inequality
+in (3.29) with (3.28), we get
+                         q                                                         q
+               ν ∗ µx(m) q > 2−(T (q)+εq/3)m > 2−εqm2−(T (q)−εq/2)m > 2−εqm µx(m) q ,
+that is,
+                                    ν ∗ µx(m) q > 2−εm µx(m) q .                             (3.30)
+
+3.3.2. Application of the Inverse Theorem. We aim to apply Theorem 2.1 to the 2−m -measures
+        (m)
+ν and µx , with δ as above. Observe that we may assume without loss of generality that m is
+an integer multiple of L. Thus, we assume from now on that
+                                            m = LS ≥ LS0 .                                   (3.31)
+We now deduce from Theorem 2.1, which is indeed applicable by (3.30), the existence of subsets
+          (m)
+A ⊂ supp µx , B ⊂ supp ν satisfying all the properties listed in Theorem 2.1. Let
+                             S0 = {s ∈ [S] : Rs′′ = 1},       S1 = [S] \ S0
+be the sets of scales at which B has no branching and some branching, respectively. (Recall
+from §2.1 that the notation [S] stands for the set {0, . . . , S −1}.) We deduce from the hypothesis
+     ′
+kνkqq ≤ 2−σm and from (2.2) in Theorem 2.1 that
+                                       ′
+                           − log kνkqq − q ′ (δm + 1)    σ − q ′ δ − q ′ /m
+                   |S1 | ≥                            S≥                    S.               (3.32)
+                                      dm                          d
+In the sequel, suppose that m ≥ δ −1 . From (3.32) we obtain the lower bound
+                                                     σ − 2δq ′
+                                           |S1 | ≥             S.                            (3.33)
+                                                        d
+Suppose now δ is chosen so that
+                                                σ     σ(q − 1)
+                                       δ<           =          ;                             (3.34)
+                                               4q ′      4q
+then (3.33) leads to the lower bound
+                                                  σ
+                                              |S1 | ≥S.                                   (3.35)
+                                                  2d
+Recall that the line saturation property (2.1) holds for all scales s ∈ S1 ; we have seen this is
+the case for a positive proportion of all scales.
+
+3.3.3. Refinement of the set A. We will now use Proposition 3.6 to refine A to a subset A′ from
+which we will eventually extract a contradiction.
+  We trim the tree from the top. Set A′(0) = A. Suppose A′(s) has been defined for some
+s ∈ [S − 1], as a union of sets Q ∩ A, Q ∈ DsL (A′(s) ); in particular, if Q ∈ DsL (A′(s) ), then
+                                           Q ∩ A′(s) = Q ∩ A.                                (3.36)
+If s ∈ S0 , then we set A′(s+1) = A′(s) . Otherwise, if s ∈ S1 , we proceed as follows. For each
+Q ∈ DsL (A′(s) ), we know from (3.36) and (2.1) that there exists πQ ∈ G(d, d − 1) such that
+                                                
+                         N(s+1)L πQ (Q ∩ A′(s) ) . 2(δ−1)L NsL (Q ∩ A′(s) ).
+                                    DYNAMICAL SELF-SIMILARITY IN Rd                                   29
+
+This shows that the saturation assumption (3.15) of Proposition 3.6 is satisfied, with sL in place
+of s and L in place of m. In order to be able to apply the proposition, we assume henceforth
+that
+                                                                 (q − 1)ση
+                         L ≥ m0 (X , q) , η = η(X , q) , δ ≤               ,                  (3.37)
+                                                                    14d
+where η(X , q), m0 (X , q) are the thresholds from Proposition 3.6. Now the proposition yields,
+for each Q ∈ DsL (A′(s) ), a set A′Q ⊂ A′(s) ∩ Q, which is a union of cubes in D(s+1)L , such that
+                                             1                  R′
+                             N(s+1)L (A′Q ) ≥ N(s+1)L A′(s) ∩ Q = s ,                             (3.38)
+                                             2                    2
+and                             X
+                                               µx (Q′ )q ≤ 2−(D(q)+η)(q−1)L µx (2 · Q)q .         (3.39)
+                        Q′ ∈D            ′
+                                (s+1)L (AQ )
+
+We define                                         [
+                                    A′(s+1) =       A′Q : Q ∈ DsL (A′(s) ) .                      (3.40)
+We stop the construction when s = S − 1 and set A′ = A′(S−1) .
+  It follows from (3.38) that for each s ∈ [S] and each Q ∈ DsL (A′ ), the branching number
+N(s+1)L (A′ ∩ Q) is at least Rs /2. From this a simple induction in s shows that |A′ | ≥ 2−S |A|.
+Using properties (A1)–(A2) of A from Theorem 2.1, we deduce that
+                   X
+                         µx (Q)q ≥ min ′ µx (Q)q |A′ | ≥ 2−q max µx (Q)q |A′ |
+                                         Q∈Dm (A )                           Q∈Dm (A)
+                Q∈Dm (A′ )
+
+                                      ≥ 2−(S+q)         max µx (Q)q |A|
+                                                      Q∈Dm (A)
+
+                                      ≥ 2−(L+q) kµx(m) |A kqq
+                                      (A1)
+                                       ≥ 2−(S+q+δm) kµx(m) kqq
+                                      (3.29)              −1 +qm−1 +δ+εq/2)m
+                                        ≥ 2−(T (q)+L                           .
+By taking
+                            ε ≤ (2/q)δ , S0 ≥ qδ −1 , L−1 < δ ,                                   (3.41)
+the above bound simplifies to
+                                       (m)
+                                  kµx |A′ kqq ≥ 2−(T (q)+4δ)m .                                   (3.42)
+                                                                                            (m)
+That is, the refinement A′ still captures a substantial part of the Lq norm of µx . In the
+remainder of the proof we will invoke Proposition 3.6 (in the form of (3.39) above) to show this
+cannot in fact happen.
+3.3.4. Loss of Lq -norm: obtaining a contradiction. For s ∈ [S], let
+                                                                  (sL) q
+                                                   Ks = µ x | A ′      q
+                                                                         .
+We will estimate Ks inductively, starting with L0 ≤ 1. For s ∈ S0 , we aim to apply Corollary
+2.13 with Ls in place of s and L in place of m; this will ensure that the loss at these scales is
+sufficiently small compared to the gain for the scales in S1 . In order for this to be valid, we
+further assume that
+                                           L ≥ m0 (X , δ),                                (3.43)
+                                                                                          ′
+where m0 (X , δ) is as in Corollary 2.13. Now invoking the corollary for each Q ∈ DsL (A ) and
+then adding up over all such Q, we get
+                                             X
+                  Ks+1 ≤ Cλ,q 2−(T (q)−δ)L         µ(2 · Q)q .λ,q 2−(T (q)−δ)L Ks ,       (3.44)
+                                                    Q∈DsL (A′ )
+30                                      E. CORSO AND P. SHMERKIN
+
+where we used Lemma 2.3 to replace 2 · Q by Q in the last inequality (at the price of a
+multiplicative constant that we absorbed into .λ,q ).
+  Suppose now that s ∈ S1 , and fix Q ∈ DsL (A′ ). By (3.39) and (3.40), we have that
+                             X
+                                     µ(Q′ )q ≤ 2−(T (q)+(q−1)η)L µ(2 · Q)q .
+                       Q′ ∈D(s+1)L (A′ ∩Q)
+
+Adding up over all Q ∈ DsL (A′ ) and using Lemma 2.3 once again, we deduce that
+                                      Ks+1 .λ,q 2−(T (q)+(q−1)η)L Ks .                     (3.45)
+Combining L0 ≤ 1, (3.44) and (3.45), we finally bound
+                            (m) q
+                       µ x | A′ q
+                                  = LS ≤ Oλ,q (1)S 2(|S0 |δ−|S1 |(q−1)η)L 2−T (q)m .
+
+Taking S0 large enough in terms of X and δ, we can bound Oλ,q (1)S ≤ 2δm , while obviously
+|S0 |L ≤ m, so we can further infer
+                                       (m) q
+                                  µ x | A′ q
+                                             ≤ 22δm 2−|S1 |(q−1)ηL 2−T (q)m .
+
+Now recall from (3.35) and (3.37) that
+                                                         σ(q − 1)η
+                                  |S1 |(q − 1)ηL ≥                 m ≥ 7δm
+                                                            2d
+The last two estimates allow us to conclude
+                                                  (m) q
+                                             µ x | A′ q
+                                                        ≤ 2−(T (q)+5δ)m .
+
+This, however, contradicts (3.42). Thus the counter-assumption (3.28) cannot hold, and this
+completes the proof.
+
+3.3.5. Recapitulating the selection of parameters. As previously announced, we conclude this
+subsection by checking the consistency of our successive choices of parameters. We start by
+the given data in the hypotheses of Theorem 3.7, namely the model X = (X, T, P, ∆, λ), the
+real numbers q > 1 and σ > 0 and the ambient dimension d. All subsequent parameters can
+depend on this data, without further mention; parameters that depend only on the given data
+are taken as absolute.
+   The parameter η is defined in (3.37), so it is absolute. Next, δ must satisfy the inequalities
+(3.34) and (3.37), so that δ = δ(η). The integer L0 is defined in (3.24); thus L0 = L0 (δ). Next,
+L must satisfy (3.25), (3.37), (3.41), and (3.43), and therefore L = L(L0 , δ). The parameter
+ε is determined by (3.26) and (3.41), thus ε = ε(δ, L). Then ε′, which is the outcome of the
+theorem and is defined in (3.27), satisfies ε′ = ε′ (ε) and so ultimately depends only on the data
+in the statement, as desired.
+   Finally, m = LS ≥ LS0 or, equivalently, S0 , is at many places taken large enough in terms
+of all the previously mentioned parameters.
+
+3.4. Conclusion of the proof of Theorem 1.9. The remaining of the proof of Theorem 1.9
+is virtually identical to the one-dimensional case treated in [18].
+    We continue working with a pleasant model X = (X, T, P, ∆, λ) in Rd , generating a collection
+(µx )x∈X of dynamically driven self-similar measures. We assume X is q-unsaturated on lines for
+some fixed q ∈ R>1 . Recall that this implies that DX (q) < d.
+    The next proposition states that there is no loss in the exponential rate of decay of the
+  q
+L -norms of the discretizations, when looking at exponentially finer scales. The case d = 1 is
+[18, Proposition 5.2]. The same proof applies to the general case, appealing to Theorem 3.7
+instead of [18, Theorem 5.1].
+                               DYNAMICAL SELF-SIMILARITY IN Rd                                  31
+
+Proposition 3.8. Let x ∈ X be such that
+                                                        q
+                                               (m(n))
+                                         log µx
+                                                        q
+                                 lim −                      = TX (q) .                     (3.46)
+                                 n→∞         m(n)
+Then, for every integer R ≥ 1,
+                                                        q
+                                              (Rm(n))
+                                         log µx,n
+                                                        q
+                                 lim −                      = TX (q) .
+                                 n→∞         m(n)
+   With this proposition in hand, the proof of (2.22) and therefore of Theorem 1.9 is completed
+exactly as in [18, §5.3]. We emphasize that exponential separation is only used in this very
+last step, in the following way: if x ∈ X, n ∈ N and R ≥ 1 are such that the atoms of µx,n are
+λRn -separated, then
+                                       kµ(Rm(n))
+                                         x,n     kqq = kµx,nkqq                          (3.47)
+Exponential separation ensures that this happens for P-almost all x, some R = R(x) ≥ 1, and
+infinitely many n (depending on x). In particular, Proposition 2.12(ii) ensures that we can fix
+x ∈ X so that (3.46) holds, and (3.47) holds for infinitely many n, and some fixed R ≥ 1. The
+claim (2.22) is now a consequence of (3.47) and Proposition 3.8.
+
+           4. Homogeneous self-similar measures and their projections
+4.1. On exponential separation and unsaturation on lines. Given q > 1 and a pleasant
+model X = (X, T, P, ∆, λ) in Rd , we denote by
+                                         R
+                                            log k∆(y)kqq dP(y)
+                                DXs (q) = X
+                                                (q − 1)λ
+the “symbolic” or “expected” Lq -dimension of the measures generated by X . Theorem 1.9 then
+asserts that, if the model is q-unsaturated on lines and has exponential separation, then
+                                         DX (q) = DXs (q) ,                                  (4.1)
+and hence the Lq -dimension of the measures generated by X takes the “expected” value. We
+begin this section by making some general comments on how to verify exponential separation
+and q-unsaturation in practice.
+   As mentioned earlier, the exponential separation condition is a variant of the fundamental
+notion introduced by M. Hochman [11, 12], and a natural higher-dimensional analog of the
+notion introduced in [18]. The main difference with Hochman’s definition is that the latter
+applies to single self-similar measures, whereas ours contemplates more generally dynamically
+driven self-similar measures. For several models of interest, the requirement of exponential
+separation holding only for almost all measures makes the verification of the condition far
+easier. We will see examples in the proof of Theorem 1.11 and in Lemma 5.2 below.
+   We now discussF the q-unsaturation condition. As remarked in the introduction, for any
+projection π ∈ 0≤k≤d G(d, k), the projected model πX is pleasant whenever X is. It will be
+crucial to understand how exponential separation behaves under projections. To this effect, the
+variant of exponential separation for projected models πX introduced in Definition 1.10, which
+we termed projected exponential separation (PES property, in short) and postulates, in addition
+to exponential separation, that π|supp ∆(x) is injective for P-almost every x ∈ X, is particularly
+suited in that it takes into account that the model arises from a projection.
+   Note that knowledge of exponential separation for πX does not provide useful information
+about the original model X when π fails to be injective on supp ∆(x) for a positive P-measure
+set of x ∈ X. On the other hand, we will shortly see that a lot of information about X can be
+extracted from the projected model when operating under the PES property.
+   We record two direct and yet important consequences of projected exponential separation.
+32                                 E. CORSO AND P. SHMERKIN
+
+   (a) If πX has the PES property, then kπ∆(x)kqq = k∆(x)kqq for P-almost all x ∈ X, and
+                   s
+       therefore DπX  (q)F= DXs (q).
+   (b) If π ⊂ Π are in 0≤k≤d G(d, k) and πX has the PES property, then so does ΠX .
+  Projected exponential separation does not follow, in general, from exponential separation;
+however, as we shall shortly see, it often does - sometimes for all π, sometimes for all π outside
+some sparse set. This affords a sort of “project and induct” strategy for verifying q-unsaturation,
+which is summarized in the next lemma. Recall the notation G(d) and G(π, k) from §1.8.1.
+Lemma 4.1. X = (X, T, P, ∆, λ) be a pleasant model in Rd . Let
+              E = {π ∈ G(d, 1) : πX satisfies projected exponential separation} .
+Then, for all π ∈ G(d) such that G(π, 1) ⊂ E,
+                           DπX (q) = min {k, DXs (q)}    for all q > 1.                       (4.2)
+In particular, if E = G(d, 1), then (4.2) holds for all π ∈ G(d).
+Proof. Fix q > 1, and call s = DXs (q). By Proposition 2.9, the inequality
+                                       DπX (q) ≤ min{k, s}                                    (4.3)
+holds for all π ∈ G(d); hence, we need to show the opposite inequality.
+  We proceed by induction on k. Consider the base case k = 1. Let π ∈ E. If DπX (q) = 1, we
+are done. Otherwise, DπX is q-unsaturated on lines (recall that in dimension 1 this is equivalent
+to DπX (q) < 1), and therefore DπX (q) = s by virtue of (a) and Theorem 1.9.
+  Assume the claim holds for some 1 ≤ k < d. Let π ∈ G(d, k + 1) satisfy G(π, 1) ⊂ E.
+Since π ′ X satisfies projected exponential separation for π ′ ∈ G(π, 1), then so does πX . If
+DπX (q) = k + 1 then we are done, so assume otherwise. Note that if π ′ ∈ G(π, k), then π ′
+satisfies G(π ′ , 1) ⊂ E as well. By (4.3) and the inductive hypothesis, for all π ′ ∈ G(π, k) we
+have
+                          dimπ′ X (q) + 1 = min{k + 1, s + 1} > dimπX (q) .
+It follows that πX is q-unsaturated on lines, and we can apply Theorem 1.9 to conclude that
+DπX (q) = s.                                                                             
+
+4.2. Lq -dimensions of homogeneous self-similar measures and their projections. In
+this section, we apply Theorem 1.9 to establish the Lq -spectrum of self-similar measures and
+their projections, under suitable conditions.
+   There has been great interest in computing the dimension of self-similar sets and measures
+with overlaps in higher dimensions. The most general results for the Hausdorff dimension
+are due to Hochman [12, Theorems 1.4 and 1.5], who showed that under a suitable notion
+of exponential separation, if there is no proper non-trivial linear subspace invariant under all
+orthogonal parts of the similarities, then the Hausdorff dimension of the self-similar set, and of
+all the self-similar measures it supports, takes the expected value. The more classical transver-
+sality method can be used to show that, in many parametrized families of self-similar measures
+satisfying the so-called transversality conditions, the Lq -dimension takes the expected value for
+almost all values, but only for the range 1 < q ≤ 2. We refer to the recent monograph [3,
+Chapter 6] by Bárány, Simon and Solomyak for an introduction to the transversality method.
+   Computing the dimension of projections of self-similar sets and measures is also an active
+area of inquiry. For general Borel sets and measures, the transversality method provides the
+Hausdorff and Lq -dimension, when 1 < q ≤ 2, for Lebesgue-almost all projections; in the case
+of self-similar measures, we expect to be able to say something about all projections. Assum-
+ing the strong separation condition and transitivity of the action of the orthogonal parts on
+the Grassmannian, M. Hochman and the second author [13, Theorem 1.6] proved preservation
+of Hausdorff dimension for all projections. K. Falconer and X. Jin [6] removed all separation
+conditions, under the assumption that the orthogonal parts generate a dense subgroup of the
+                                      DYNAMICAL SELF-SIMILARITY IN Rd                                                             33
+
+special orthogonal group SOd (R). Very recently, A. Algom and the second author [1] sub-
+stantially weakened the transitivity assumption, in particular finding sharp conditions on the
+group generated by the orthogonal parts that ensure preservation of Hausdorff dimension for
+all projections to lines and hyperplanes. All these results apply only to Hausdorff dimension.
+For Lq -dimensions, [18] has some rather complete results, but only for projections from R2 to
+lines.
+   In this section, we compute the Lq -dimensions of many self-similar measures in Rd , as well as
+of their projections; our method, however, can only handle the case of homogeneous self-similar
+measures (the class defined in §1.5), so we focus on this case from now on.
+   As discussed in §1.5, any homogenoeus self-similar measure in Rd admits the following de-
+scription. Let h ∈ Od (R), λ ∈ (0, 1), (ai )i∈Rd a collection of vectors in Rd , p = (pi )i∈I a
+probability vector; set
+                                              X
+                                         ∆0 =     pi δai .
+                                                            i∈I
+Then the infinite convolution product
+                                                        ∞
+                                                 µ = ∗ Sλn hn ∆0 .                                                            (4.4)
+                                                       n=0
+
+is a homogeneous self-similar measure, and any such (infinitely supported, in view of the con-
+dition λ > 0) measure can be obtained in this way.
+   To avoid trivialities, we assume that the support of ∆0 is not a singleton. We have already
+established that µ arises as a dynamically driven self-similar measure generated by the pleasant
+model X = (X, T, P, ∆, λ) where X is the closed subgroup of Od (R) generated by h, T : X → X
+is the translation map by h, P is the probability Haar measure on X and ∆(g) = g∆0 for all
+g ∈ X. The measures generated by X are µg = gµ, g ∈ X.
+   We now formulate the conditions of q-unsaturation and exponential separation directly in
+terms of µ and of the IFS generating it; the latter is, we recall, the collection of similarities
+Φ = {fi }i∈I on Rd given by
+                                  fi (x) = λh(x) + ai , i ∈ I.
+The IFS Φ satisfies exponential separation if there is c > 0 and an increasing sequence of integers
+(nj )j≥1 such that, for all j ≥ 1,
+    |fi1 ◦ · · · ◦ finj (0) − fi′1 ◦ · · · ◦ fi′nj (0)| ≥ cnj     for all (i1 , . . . , inj ) 6= (i′1 , . . . , i′nj ) ∈ I nj .
+Given q > 1, we say that the measure µ is q-unsaturated on lines if
+                                           dim(πµ, q) > dim(µ, q) − 1
+for all π ∈ G(d, d − 1).
+   We are now in a position to phrase the following corollary of Theorem 1.9.
+Corollary 4.2. Let µ be a homogeneous self-similar measure in Rd generated, as above, by an
+iterated function system Φ and a probability vector p. Suppose Φ satisfies exponential separation,
+and µ is q-unsaturated on lines for some q > 1. Then
+                                                         log kpkqq
+                                           dim(µ, q) =               .
+                                                       (q − 1) log λ
+Proof. It is a straightforward consequence of Theorem 1.9. Since all measures µg are isometric
+images of µ, and likewise for the approximations µg,n , exponential separation and q-unsaturation
+on lines for the model X generating µ are inherited from the corresponding assumptions on µ.
+Finally,
+                                                          q
+                                            X
+                                       q
+                                k∆(g)kq =       pi δg(ai ) = kpkqq
+                                                        i∈I              q
+34                                  E. CORSO AND P. SHMERKIN
+
+for all g ∈ X, from which it follows that
+                                                    log kpkqq
+                                      DXs (q) =                 .
+                                                  (q − 1) log λ
+Theorem 1.9 delivers the conclusion.                                                               
+   If the orthogonal part h has repeated complex eigenvalues, then some projections will always
+fail to have the PES property; it may happen that π fails to be injective on supp ∆(x) for all
+x ∈ X. As a matter of fact, the conclusion of Corollary 4.2 may fail. See [12, Example 1.2],
+which discusses Hausdorff dimension of self-similar sets, but the same phenomenon occurs for
+Lq -dimensions of self-similar measures. Hence, verifying q-unsaturation is delicate and should
+be done on a case-by-case basis.
+   Under the assumption that h has distinct complex eigenvalues and generates a subgroup
+with connected closure, Theorem 1.11, whose proof occupies us for almost the entirety of
+the remainder of this section, gives a mild condition on the self-similar measure so that the
+assumptions of Corollary 4.2 are satisfied.
+   Before proceeding to the proof of Theorem 1.11, we make some remarks.
+Remark 4.3. The condition that h has distinct complex eigenvalues and generates a group
+with connected closure can be formulated explicitly in terms of the eigenvalues of h. Since h is
+orthogonal, its eigenvalues are of the form e2πiαi , i = 1, . . . , d, where αi ∈ R. The condition is
+then that αi and αi − αj are irrational for all i 6= j. In particular, there are no real eigenvalues
+if d is even, and 1 is a simple eigenvalue if d is odd.
+Remark 4.4. We do not know what happens when h has distinct complex eigenvalues but
+the closure of the group generated by h is not connected. This includes, for instance, the case
+of rational rotations on the plane. Exponential separation for πX is not guaranteed in this
+case, and yet it may still hold true that µ is q-unsaturated whenever it satisfies exponential
+separation and has Lq -dimension less than d.
+Remark 4.5. In view of [12, Lemma 6.30], if all entries of the matrix of h (in the standard
+basis of Rd ), as well as the entries of the elements of supp ∆0 , are algebraic over Q, then
+the projections πj µ satisfy projected exponential separation if and only if they have no exact
+overlaps, that is, if and only if the support of
+                                            n−1
+                                            ∗ Sλ πj hi ∆0
+                                            i=0
+                                                   i
+
+
+
+has maximal cardinality for all n ≥ 1 and 1 ≤ j ≤ ℓ.
+   Likewise, under mild transversality conditions, projected exponential separation holds in
+parametrized families of self-similar measures, all of which have the same minimal invariant
+subspaces, outside a set of parameters of Hausdorff (and even packing) co-dimension at least
+1. For this we refer to [12, Theorem 1.10], which is applicable to each of the projections πj µt
+for t in the parameter space.
+     Let us now delve into the proof of Theorem 1.11.
+Proof of Theorem 1.11. By Lemma 4.1, it is enough to verify that πX has PES for all π ∈
+G(d, 1), where X is the pleasant model generating µ.
+   Fix, then, π ∈ G(d, 1). Let Π the smallest h-invariant subspace containing π. Note that Πµ
+is also a self-similar measure satsfying the assumptions of the theorem. Moreover, ΠX has the
+PES property (since the projection to any πj ⊂ Π does), and hence the value of k∆kqq does not
+change. Therefore, we may and do assume that Π = Rd .
+   Note that X satisfies exponential separation, since π1 X satisfies PES. This is the point
+where the hypothesis is used (because we have replaced h by h|Π , we may now be working with
+h|πj ).Thus, there exist R > 0 and an infinite set of n such that
+                         |a − b| ≥ e−Rn   for all distinct a, b ∈ supp µId,n .                 (4.5)
+                               DYNAMICAL SELF-SIMILARITY IN Rd                               35
+
+Recall that the measures generated by X are all rotations of each other, so it is indeed enough
+to consider µId,n .
+  Let g be the Lie algebra of X. Since X is connected by hypothesis, the exponential map
+exp : g → X is surjective. Let A ∈ g be such that eA = h. Since by assumption π does not
+belong to any proper h-invariant subspace, the same is true for A, and therefore we have
+                               hetA Aj π : j = 0, . . . , d − 1i = Rd ,                   (4.6)
+for all t ∈ R. Given v ∈ S d−1 , consider the curve γv (t) = πetA v ⊂ R. Note that
+                                       γv(j) (t) = πetA Aj v .
+It follows from (4.6) that γv vanishes to order at most d − 1, uniformly in v, that is,
+                                  
+                              max |γv(j) (t)| : j = 0, . . . , d − 1 ≥ c ,
+for all v ∈ S d−1 and some constant c > 0. Indeed, for each v there is 0 ≤ j ≤ d − 1 such that
+etA Aj π makes an angle bounded away from 0 with v ⊥ , uniformly in t and v by compactness.
+   Denoting the Lebesgue measure on [0, 1] by L, it follows from, e.g., [11, Lemma 5.8] that
+                                               −d
+                      L t : |πetA gv| ≤ δ ≤ C δ 2 , g ∈ X , v ∈ S d−1 ,
+for all δ > 0 and some C > 0 independent of v and g. Note that the push-forward of P×L under
+(g, t) 7→ etA g is a translation-invariant Borel probability measure on X, and thus necessarily
+equals P. Applying Fubini’s Theorem, we deduce that
+                                                      −d
+                              P g : |πgv| ≤ δ ≤ C δ 2 , δ > 0 .
+We apply this to each v = |a − b|−1 (a − b), where a, b ∈ supp µId,n are distinct. There are at
+most |I|2n such pairs, and using (4.5) we deduce that, for any κ ∈ (0, 1),
+                                                                              −d
+           P g : |πga − πgb| ≤ κn for some a, b ∈ supp µId,n ≤ C|I|2n eRn κ2 n .
+                      2d
+Taking κ < |I|−2 e−R , we see that the above probability is summable in n, and therefore by
+Borel-Cantelli there are infinitely many n such that
+                      |πga − πgb| ≥ κn     for all distinct a, b ∈ supp µId,n .
+Since the measures generated by πX are µπX
+                                         g  = πgµId , we conclude that πX satisfies projected
+exponential separation, as we wanted to show.                                              
+  We conclude this section by observing that the proof of Theorem 1.11 yields the following
+statement.
+Proposition 4.6. Let µ and h satisfy all the assumptions of Theorem 1.11 with the exception
+of projected exponential separation. Fix π ∈ G(d, 1), and let Π be the smallest h-invariant
+subspace containing π. If Πµ satisfies projected exponential separation, then so does πµ.
+   Note that the subspace Π in the proposition equals Rd for a Zariski open (thus, analytically
+open and dense) subset of G(d, 1). Therefore, under the given algebraic assumptions on h,
+exponential separation for the original measure µ implies projected exponential separation for
+all projections to 1-dimensional subspaces outside a sparse set of exceptions.
+
+           5. Products of self-similar measures and their projections
+   We now investigate projections of products of homogeneous self-similar measures on the real
+line. In one dimension, the orthogonal part h of a homogeneous self-similar IFS Φ = {fi }i∈I is
+±id, and upon replacing Φ with Φ2 = {fi ◦ fj }i,j∈I , which generates any self-similar measure
+which is geneated by Φ, we may and shall assume throughout this section that h = id.
+   Consider a collection of d self-similar measures
+                                 µ(j) = ∗ Sλnj ∆j ,      1≤j≤d                            (5.1)
+                                         n≥0
+36                                          E. CORSO AND P. SHMERKIN
+
+on the real line. To begin with, we show that the product measure µ(1) × · · · × µ(d) can be
+recast as a dynamically driven self-similar measure. The argument runs along similar lines to
+the appearing in the proof of [18, Theorem 7.5], which concerns one-dimensional linear images
+of such products. Slightly abusing notation, we write a · ν for the scaling of a measure ν by
+a factor a > 0, i.e., a · ν = Sa ν. The d-torus Td = Rd /Zd is identified canonically with the
+half-open cube [0, 1)d .
+Lemma 5.1. Let (µ(j) )1≤j≤d be as above, ordered so that λd = maxj=1,...,d λj . There exists a
+pleasant model X = (X, T, P, ∆, λd ) in Rd such that:
+    (1) X is a closed subgroup of Td−1 , the map T is a translation on X, and P is the unique
+        probability Haar measure on X;
+    (2) the generated measures are given by
+                                                                   −x
+                             µx = λ1−x1 · µ(1) × · · · × λd−1d−1 · µ(d−1) × µ(d)
+          for all x = (x1 , . . . , xd−1 ) ∈ X. In particular, for the identity element we obtain
+                                              µ0 = µ(1) × · · · × µ(d) .
+Proof. We write aj = | log λj |. Let T : Td−1 → Td−1 be the translation given by
+                                                                          
+                                                    ad                 ad
+                        T(x1 , . . . , xd−1 ) = x1 + , . . . , xd−1 +        .
+                                                    a1                ad−1
+Let X ⊂ Td be the closure of the orbit of 0 under T, and let P be the Haar measure on X.
+Given x ∈ X, we let                                             
+                                                               ad
+                       J(x) = j ∈ {1, . . . , d − 1} : xj ∈ 0,       ,
+                                                               aj
+and define ∆ : X → Ad as
+                                                !              !
+                           ∆(x) =       ×λ
+                                        j∈J(x)
+                                                  −xj
+                                                  j   · ∆j         × × δ ×∆ ,
+                                                                         j/
+                                                                          ∈J(x)
+                                                                                   0             d
+
+
+where δ0 is the Dirac mass at 0 ∈ R. The model X = (X, T, P, ∆, λ) is now readily checked to
+be pleasant (unique ergodicity follows from the density of the orbit of 0 in X).
+  Let Tj be translation by ad /aj on the 1-torus. For 1 ≤ j ≤ d − 1, y ∈ [0, 1) and n ∈ N, let
+                                                               
+                             ′                     i         ad
+                           nj (y) = i ∈ [1, n] : Tj (y) ∈ [0, )
+                                                             aj
+be the number of times the orbit of y under Tj wraps around the circle. Then,
+                                            ad
+                             Tnj (y) = y + n − n′ (y) ∈ [0, 1) ,
+                                            aj
+so that
+                                              −Tn
+                                                j (y) n         n′ (y)
+                                            λj       λd = λ−y
+                                                           j · λj      .
+Therefore,                          "                                     !#
+                                       d−1             n′j (xj )
+                                                                                                        
+                     ∗ ∆(T x) = ×
+                      n
+
+                     i=1
+                              i
+
+                                        j=1
+                                               −x
+                                              λj j ·    ∗
+                                                        i=1
+                                                            ·Sλ ∆j  i
+                                                                    j           ×∗     i=1
+                                                                                           n
+                                                                                               Sλnd ∆d       .   (5.2)
+
+The claim follows by convolving with ∆(x) to get µn+1,x, and then letting n → ∞.                                    
+   If each of the IFS’s generating the measures µ(j) satisfies exponential separation, then [18,
+Theorem 6.2] already delivers the dimension formula for dim(µ(j) , q). Using the fact that the
+limit in the definition of Lq dimension exists, a simple calculation shows that
+                                                                        d
+                                                                        X
+                                      (1)              (d)
+                                                               
+                              dim µ         × ···× µ ,q =                     dim(µ(j) , q) .
+                                                                        j=1
+                                 DYNAMICAL SELF-SIMILARITY IN Rd                                    37
+
+Unlike the case of self-similar measures, it is not thus the Lq -dimension of the product measure
+that we are after, but rather of its projections. The motivation for this quest is given by
+Furstenberg-type slicing results, which we discuss in the next section.
+   Further contrasting with the case of self-similar measures is the presence here of exact over-
+laps, resulting from the non-injectivity of every coordinate projection π restricted to the sup-
+port ∆(x); as a consequence, the strategy of verifying q-unsaturation by proving projected
+exponential separation of all one-dimensional projections is not available. However, the prod-
+uct structure, together with an induction argument in the dimension, can be used to verify
+q-unsaturation.
+   Note that if all the λj ’s are equal, then the product measure is itself a homogeneous self-
+similar measure on Rd and, as discussed previously, such measures may fail to be unsaturated
+on lines, and may have projections with Lq -dimension drop. In fact, this is the case as soon
+as λi = λj for some i 6= j, or even just λi /λj ∈ Q for some i 6= j (the latter condition
+being, upon suitable iterations of the corresponding models, equivalent to the former); such
+pathology occurs for the very same reason it can emerge for self-similar measures with repeated
+eigenvalues.
+   For the rest of this section, we fix q > 1, and let µ(1) , . . . , µ(d) be homogeneous self-similar
+measures on R, described as in (5.1), with the following properties:
+  (P1) λi /λj is irrational for all 1 ≤ i 6= j ≤ d;
+  (P2) the IFS generating µ(j) satisfies exponential separation for all 1 ≤ j ≤ d.
+Let X be the pleasant model provided by Lemma 5.1. For a line π ∈ G(d, 1), we write Z(π)
+for the maximal number of vanishing coordinates of a unit vector in π.
+Lemma 5.2. If π ∈ G(d, 1) satisfies Z(π) = 0, then πX satisfies projected exponential separa-
+tion.
+Remark 5.3. The assumption Z(π) = 0 is necessary in general: if π is contained in the
+hyperplane {x = (xi )1≤i≤d ∈ Rd : xj = 0} for some 1 ≤ j ≤ d, then π fails to be injective
+on the support ∆(x) for all x ∈ X, due to the exact overlaps coming from the j-th coordinate.
+Moreover, in this case we have, appealing for instance to Proposition 2.9,
+                                             X
+                               DπX (q) ≤             dim(µ(k) ) ,                       (5.3)
+                                               k∈{1,...,d}\{j}
+
+and thus DπX (q) < DXs (q) whenever the right-hand side of (5.3) is strictly smaller than 1.
+Proof of Lemma 5.2. By the irrationality assumption (P1), the phase space X given by Lemma
+5.1 is a sub-torus of Td . Let ℓ = dim X. After rearranging the Sj , we may assume that
+                                         
+                                    X = (y, L(y)) : y ∈ Tℓ ,
+for some linear map L ∈ Zd−ℓ×ℓ . Moreover, P is the push forward of Haar measure mℓ on Tℓ
+under y 7→ (y, Ly).
+   Let v be a unit vector in direction π; since Z(π) = 0, we have vi 6= 0 for all 1 ≤ i ≤ d. By
+the assumption (P2), the measure µ(1) satisfies exponential separation. Hence, there are R and
+an infinite set of n such that
+                       |a1 − b1 | ≥ e−Rn     for all distinct a1 , b1 ∈ supp µ(1)
+                                                                              n .               (5.4)
+Now the atoms of µx,n (referring to the measures generated by X ) are of the form
+                                                                     
+                                                      −x
+                                  λ1−x1 a1 , . . . , λd−1d−1 ad−1 , ad ,
+                (j)
+for aj ∈ supp µn , and therefore the atoms of πµx,n are of the form
+                                                             −x
+                      p((aj ), x) := λ1−x1 a1 v1 + · · · + λd−1d−1 ad−1 vd−1 + ad vd ,
+38                                   E. CORSO AND P. SHMERKIN
+
+                    (j)                                                         (j)
+where aj ∈ supp µn . The key observation is that, for fixed aj , bj ∈ supp µn and y2 , . . . , yℓ ∈ Tℓ ,
+the function                                                              
+                          φ(y1 ) = p (aj ), (y, L(y)) − p (bj ), (y, L(y))
+is smooth on [0, 1) with derivative bound below by
+                                                                       (5.4)
+                              φ′ (y1 ) ≥ log(1/λ1 )v1 (a1 − b1 ) ≫ e−Rn ,
+allowing the implicit constant to depend on λ1 , v1 (but not on yj or n). Then
+          n                                                                              o
+       m1 y1 : p (aj ), (y, L(y)) − p (bj ), (y, L(y)) ≤ κn for some aj 6= bj ∈ supp(µjn )
+               ≪ eRn (| supp ∆1 | · · · | supp ∆d |)2n κn .
+               Q
+Take κ < e−R dj=1 | supp ∆j |−2 . Combining this with Borel-Cantelli and Fubini applied to
+m1 × mℓ−1 , we deduce that for mℓ -almost all y = (y1 , . . . , yd ),
+                                                  
+           p (aj ), (y, L(y)) − p (bj ), (y, L(y)) ≥ κn for all aj 6= bj ∈ supp(µ(j)
+                                                                                 n ) .
+
+This is what we wanted to show.                                                                       
+     For π ∈ G(d), let us define
+                                      
+                            Z(π) = sup Z(π0 ) : π0 ∈ G(d, 1), π0 ⊂ π ,
+that is, Z(π) is the largest number of zero coordinates of a unit vector contained in π. We are
+now able to state the main result of this section.
+Theorem 5.4. Let k ∈ {1, . . . , d}, and suppose π ∈ G(d, k) satisfies Z(π) ≤ k − 1. Then,
+                                                    (     d
+                                                                         )
+                                                        X
+                DπX (q) = min {k, DX (q)} = min k,          dim(µ(j) , q) .
+                                                                      j=1
+
+Remark 5.5. It is easy to check that one always has Z(π) ≥ k−1. The assumption Z(π) ≤ k−1
+is necessary in general: consider the case in which π is contained in a coordinate hyperplane,
+say {xd = 0}, which implies Z(π) ≥ k. Then πX does not see the self-similar measure µ(d) ,
+whence a formula for DπX (q) cannot involve it.
+Remark 5.6. The assumption Z(π) ≤ k−1 can be restated as follows: every (d−k)-dimensional
+coordinate subspace V (i.e., any subspace V which is spanned by d − k of the standard basis
+vectors), intersects π in the trivial subspace. Thus, this can be seen as a transversality condition
+with respect to the coordinate directions.
+Proof of Theorem 5.4. We will prove a more general statement that is better suited to induction.
+Let                                  (                            )
+                                       X
+                         s(ℓ) = min       dim(µ(j) , q) : |J| = ℓ   .
+                                            j∈J
+                                            Pd                (j)
+Note that s(ℓ) is increasing in ℓ, s(d) =         j=1 dim(µ         , q), and
+                                         s(ℓ) ≤ s(ℓ − 1) + 1,                                     (5.5)
+since dim(ν, q) ≤ 1 for any ν ∈ P(R).
+   We will show that, for any π ∈ G(d, k),
+                                                              
+                          DπX (q) ≥ min k, s d + (k − 1) − Z(π) .                                 (5.6)
+Note that this clearly implies the claim of the theorem.
+   We prove (5.6) by induction in k. For the base case k = 1, let ℓ = Z(π), and assume without
+loss of generality that the direction vector v of π satisfies
+                                    
+                                       6= 0 for 1 ≤ j ≤ d − ℓ
+                               vj =                                .
+                                       = 0 for d − ℓ + 1 ≤ j ≤ d
+                               DYNAMICAL SELF-SIMILARITY IN Rd                                    39
+
+Then πX can be identified with π  eXe, where Xe is the model on Rd−ℓ associated to the tuple
+ (1)     (d−ℓ)
+µ ,...,µ             e ∈ G(d − ℓ, 1) is the line with direction (v1 , . . . , vd−ℓ ). Applying Lemma
+               , and π
+5.2 and Theorem 1.9 to πeXe, we deduce that
+                                                d−ℓ
+                                                X
+                        DπX (q) = DπeXe (q) =         dim(µ(j) , q) ≥ s(d − ℓ) ,
+                                                j=1
+
+which is the case k = 1 of (5.6).
+  Assume now that the claim (5.6) has been verified for k − 1 ∈ {1, . . . , d − 1}, and let
+π ∈ G(d, k). Assume, for the sake of contradiction, that
+                                                              
+                          DπX (q) < min k, s d + (k − 1) − Z(π) .                     (5.7)
+Similar to the case k = 1, let Π be the smallest coordinate subspace (i.e., the smallest subspace
+generated by canonical basis vectors) containing π. Upon replacing Rd by Π, the latter identified
+with Rdim Π , and π by π|Π , we may assume that Π = Rd . Note that this change has the effect
+of reducing both d and Z(π) by d − dim(Π) while preserving k, so (5.6) is unchanged.
+   Since, after this reduction, π is not contained in any proper coordinate hyperplane, there is
+π0 ∈ G(π, 1) which is also not contained in any coordinate hyperplane. By Lemma 5.2, π0 X
+satisfies projected exponential separation, and hence so does πX .
+   Fix an arbitrary π ′ ∈ G(π, k − 1). Since, trivially, Z(π ′ ) ≤ min{k − 2, Z(π)}, the inductive
+hypothesis yields                                                     
+                         Dπ′ X (q) ≥ min k − 1, s d + (k − 2) − Z(π) .
+Applying inequality (5.5) with ℓ = d + (k − 1) − Z(π), we deduce from the counter-assumption
+(5.7) that πX is q-unsaturated on lines.
+   We have verified that πX satisfies the assumptions of Theorem 1.9. Therefore, DπX (q) =
+min{k, s(d)}, which, however, contradicts (5.7). We conclude that (5.6) holds also for k, achiev-
+ing the induction.
+                                                                                                
+                           6. Furstenberg-type slicing results
+6.1. From Lq -dimension to dimension of slices. There is a simple connection between
+the Lq -dimension of projections and the box dimension of fibers, which runs via Frostman
+exponents. For the reader’s convenience, we restate a minor variant of [18, Lemma 1.8]. Given
+a metric space X and a real number δ > 0, the notation |X|δ stands for the δ-packing number
+of X, that is, the largest cardinality of a δ-separated subset of X. When X ⊂ Rd is bounded,
+it is well known that Nm (X) = Θd (1)|X|2−m for all integers m ≥ 1. Recall that the upper box
+dimension of a totally bounded set X in a metric space is defined as
+                                                        log |X|δ
+                                  dimB (X) = lim sup −            .                         (6.1)
+                                                 δ→0      log δ
+We refer, for instance, to [5, §2.1] for the main properties of the upper box dimension. Here we
+simply recall that
+                                        dimH (X) ≤ dimB (X)
+for any totally bounded set X in a metric space.
+Lemma 6.1. Let (X, d) be a metric space. Suppose π : X → Rk is an L-Lipschitz map, L > 0.
+Let µ be a Borel probability measure on X with the following property: there are real numbers
+0 ≤ t ≤ s, C1 , C2 > 0 and an integer m0 ≥ 1 such that
+                                        µ(B(x, r)) ≥ C1 r s
+for all x ∈ X and 0 < r ≤ 2−m0 and
+                                        πµ(Q) ≤ C2 2−mt
+for all m ≥ m0 and all Q ∈ Dm .
+40                                      E. CORSO AND P. SHMERKIN
+
+     Then, for any m ≥ m0 and any closed Euclidean ball B ⊂ Rk of radius 2−m ,
+                                      π −1 (B) 2−m = Ok,L,C (1) 2m(s−t)
+for C = C2 /C1 . In particular, for any y ∈ Rk ,
+                                                       
+                                          dimB π −1 (y) ≤ s − t .
+Proof. Fix an integer m ≥ m0 and a closed Euclidean ball B = B(y, 2−m), y ∈ Rk . Let
+{xj }j∈J be a maximal 2−m -separated subset of π −1 (B), so that |J| = |π −1 (B)|2−m . Using the
+assumption on µ, we estimate
+                                                 G               
+                             −ms −1                           −m
+                        C1 2    |π (B)|2−m ≤ µ        B(xj , 2 ) .                         (6.2)
+                                                               j∈J
+
+Suppose now x ∈ X is contained in the last displayed disjoint union, say y ∈ B(xj , 2−m ); then
+           |π(x) − y| ≤ |π(x) − π(xj )| + |π(xj ) − y| ≤ Ld(x, xj ) + 2−m ≤ (L + 1)2−m ,
+using in the second-to-last step the fact that π(xj ) ∈ B. It follows from (6.2) that
+                                                                                    
+          C1 2−ms |π −1 (B)|2−m ≤ µ π −1 B(y, (L + 1)2−m ) = πµ B(y, (L + 1)2−m ) ;
+the last displayed Euclidean ball can be covered by Ok,L (1) cubes in Dm ; combining this with
+the assumption on πµ, we deduce that
+                                C1 2−ms |π −1(B)|2−m = Ok,L (1)C2 2−mt ,
+from which the first assertion of the lemma follows.
+   The upper bound on the box dimension of π-fibers is then an automatic consequence, taking
+into account that the superior limit in the definition (6.1) can be equivalently taken over the
+subsequence (2−m ).                                                                          
+6.2. Higher rank Furstenberg slicing. We are now in a position to establish Theorem 1.15
+and Corollary 1.17.
+Proof of Theorem 1.15. Firstly, any compact Tp -invariant set of dimension s can be embedded
+into a Tpj -invariant self-similar set of dimension < s + ε, where j = j(ε); see, e.g., the proof of
+[18, Theorem 1.2] for this standard fact. Therefore, after replacing pj by suitable powers, we
+may assume that the Aj ’s are restricted-digits sets, i.e.,
+                                    (                ∞
+                                                                                 )
+                                                     X
+               Aj = Aj (pj , Dj ) = x ∈ [0, 1) : x =     an p−n
+                                                             j  for some an ∈ Dj ,
+                                                              n=1
+
+for some Dj ⊂ {0, . . . , pj − 1} with |Dj | ≥ 2. In what follows, we use some standard facts about
+iterated function systems satisfying the open set condition, for which we refer, e.g., to [14]. Let
+µ(j) be the natural uniform self-similar measure on Aj , that is,
+                                                           
+                                              1 X
+                           µ = ∗ Sp−n
+                             (j)
+                                                       δa/pj := ∗ Sp−n  ∆j .
+                                  n≥0   j    |Dj | a∈D          n≥0   j
+                                                         j
+
+The associated IFS {x 7→ (x + j)/pj : j ∈ Dj } satisfies the open set condition with open set
+(0, 1); as a consequence, the measure µ(j) satisfies the Ahlfors regularity condition
+               r dimH (Aj ) ≪ µ(j) (B(x, r)) ≪ r dimH (Aj )    for all x ∈ Aj and 0 < r ≤ 1 ,
+the implicit constants not depending on x nor r, and
+                                                 log |Dj |
+                                    dimH (Aj ) =           ,
+                                                  log pj
+where the last quantity equals
+                                          log k∆j kqq
+                                       (q − 1) log p−1j
+                                  DYNAMICAL SELF-SIMILARITY IN Rd                                    41
+
+for all q > 1. Let X = (X, T, P, ∆, λ) be the product model provided by Lemma 5.1. In
+particular,
+                                 µ0 = µ(1) × · · · × µ(d) .
+Then, for any q > 1 we have DX (q) = s, and
+                   r s ≪ µ0 (B(y, r)) ≪ r s   for all y ∈ supp µ0 and 0 < r ≤ 1 .                (6.3)
+Here the implicit constants depend on the pj ’s, but not on y, r.
+  Set
+                                      
+                          G′η (d, k) = π ∈ G(d, k) : Zη (π) ≤ k − 1 .
+Note that this is a compact subset of G(d, k). Theorem 5.4 implies that DπX (q) = min{k, s}
+for all q > 1 and π ∈ G′η (d, k). Take q large enough that 1/q ′ < ε/(3d). By Proposition 3.2, for
+large enough n (depending on η but not on π) and all Q0 ∈ Dm(n) , we have
+                           X
+            πµ0 (Q0 )q ≤         µ(Q)q ≤ 2−m(n)(q−1)(min{k,s}−ε/3) for all π ∈ G′η (d, k) .
+                        Q∈Dm(n)
+
+Therefore, by our choice of q,
+                  πµ0 (Q0 ) ≤ 2−m(n)(min{k,s}−2ε/3) ,   Q0 ∈ Dm(n) , π ∈ G′η (d, k).
+Since m(n) has bounded gaps, this extends to all m (using 2mε/3 to absorb the constant factor).
+Combining this with (6.3) and Lemma 6.1 applied with t = min{k, s} − ε, we conclude that for
+all affine subspaces P orthogonal to some π ∈ G′η (d, k),
+                                       
+                        A1 × · · · × Ad ∩ P δ = Od,k,ε,η (1) δ − max{s−k,0}−ε .
+This is what we wanted to prove.                                                                     
+Proof of Corollary 1.17. If some gj is constant, the claim is trivial, so assume otherwise. Up to
+an affine change of coordinates depending smoothly on the gj ,
+                           g(A1) ∩ · · · ∩ gd (Ad ) = (A1 × · · · × Ad ) ∩ P,
+where P is the affine line {(g1−1 (y), . . . , gd−1(y)) : y ∈ R}. Since each gj has non-zero slope, the
+hyperplane π = P ⊥ satisfies Z(π) ≤ d − 2. Replacing gj (x) by gj (pℓj x) for a suitable ℓ ∈ N,
+we may assume that all the slopes of the gj ’s are ≥ 1. The claim now follows from Theorem
+1.15.                                                                                                
+
+6.3. Slices of self-similar sets. To conclude, we note that the same argument in the proof
+of Theorem 1.15 can be applied to obtain slicing results for self-similar sets, using the results
+from Section 4. We state just one such result, which is a generalization of [18, Corollary 8.3].
+Theorem 6.2. Suppose h ∈ Od (R) has distinct complex eigenvalues and generates a subgroup
+with connected closure. Let a1 , . . . , aℓ ∈ Rd and λ ∈ (0, 1). Denote the associated self-similar
+set by A, that is,
+                                               [ℓ
+                                           A=     λhA + aj .
+                                              j=1
+
+   Suppose that for all minimal h-invariant subspaces π, the self-similar set in π with contrac-
+tion ratio λ, orthogonal part h|π and translation vectors π(a1 ), . . . , π(aℓ ) satisfies exponential
+separation.
+   Then, for each k ≥ 1 and ε > 0 there is Cd,k,ε > 0 such that, for all k-dimensional affine
+subspaces P ≤ Rd , the inequality
+                               |A ∩ P |δ ≤ Cd,k,ε δ − max{dimH (A)−k,0}−ε
+holds for all 0 < δ ≤ 1.
+42                                        E. CORSO AND P. SHMERKIN
+
+Proof. If the IFS {x 7→ λhx + aj : 1 ≤ j ≤ ℓ} satisfies the open set condition, then the same
+argument from the proof of Theorem 1.15 applies. In fact, the situation is slightly easier because
+G(d, d − k) is already compact.
+  In the general case, instead of considering π we consider the maps π ◦ Ψ : {1, . . . , ℓ}N → Rd ,
+where Ψ is the coding map for the given IFS, that is,
+                               ∞
+                               X
+                       Ψ(ω) =      λn hn aωn , ω = (ωn )n≥0 ∈ {1, . . . , ℓ}N .
+                                    n=0
+                          N
+If we endow {1, . . . , ℓ} with the uniform Bernoulli measure µ and the metric
+                                                                      ′
+                                          d(ω, ω ′) = λmin{n∈N:ωn 6=ωn } ,
+then
+                              r dimH (A) ≪ µ(B(ω, r)) ≪ r dimH (A)
+for all ω and 0 < r ≤ 1. Applying Lemma 6.1 to the map π ◦ Ψ, rather than to π itself, we get
+that for any π ∈ G(d, d − k) and any y ∈ π,
+                      Ψ−1 π −1 (y) δ ≤ Cd,k,ε δ − min{k,dimH (A)}−ε       for all 0 < δ ≤ 1.
+But Ψ is Lipschitz onto supp µ, so it increases the δ-packing number by at most a constant
+factor. This gives the claim.                                                           
+
+                                                 References
+ [1] Amir Algom and Pablo Shmerkin. On the dimension of orthogonal projections of self-similar measures.
+     Preprint, arXiv:2407.16262, 2024. 8, 33
+ [2] Tim Austin. A new dynamical proof of the Shmerkin-Wu theorem. Journal of Modern Dynamics, 18:1–11,
+     2021. 8
+ [3] Balázs Bárány, Károly Simon, and Boris Solomyak. Self-similar and self-affine sets and measures, volume
+     276 of Mathematical Surveys and Monographs. American Mathematical Society, Providence, RI, 2023. 32
+ [4] Manfred Einsiedler and Thomas Ward. Ergodic theory with a view towards number theory, volume 259 of
+     Graduate Texts in Mathematics. Springer-Verlag London, Ltd., London, 2011. 2, 6
+ [5] Kenneth Falconer. Techniques in fractal geometry. John Wiley & Sons, Ltd., Chichester, 1997. 3, 39
+ [6] Kenneth J. Falconer and Xiong Jin. Exact dimensionality and projections of random self-similar measures
+     and sets. J. Lond. Math. Soc. (2), 90(2):388–412, 2014. 32
+ [7] Ai-Hua Fan, Ka-Sing Lau, and Hui Rao. Relationships between different dimensions of a measure. Monatsh.
+     Math., 135(3):191–201, 2002. 3
+ [8] Alex Furman. On the multiplicative ergodic theorem for uniquely ergodic systems. Ann. Inst. H. Poincaré
+     Probab. Statist., 33(6):797–815, 1997. 16
+ [9] Harry Furstenberg. Intersections of Cantor sets and transversality of semigroups. In Problems in analysis
+     (Sympos. Salomon Bochner, Princeton Univ., Princeton, N.J., 1969), pages 41–59. Princeton Univ. Press,
+     Princeton, N.J., 1970. 8
+[10] Shengwen Gan, Shaoming Guo, and Hong Wang. A restricted projection problem for fractal sets in Rn .
+     Cambridge Journal of Mathematics, 2024. Accepted for publication. 8
+[11] Michael Hochman. On self-similar sets with overlaps and inverse theorems for entropy. Ann. of Math. (2),
+     180(2):773–822, 2014. 10, 11, 31, 35
+[12] Michael Hochman. On self-similar sets with overlaps and inverse theorems for entropy in Rd . Mem. Amer.
+     Math. Soc., in press, 2017. 4, 8, 11, 31, 32, 34
+[13] Michael Hochman and Pablo Shmerkin. Local entropy averages and projections of fractal measures. Ann.
+     of Math. (2), 175(3):1001–1059, 2012. 32
+[14] John E. Hutchinson. Fractals and self-similarity. Indiana Univ. Math. J., 30(5):713–747, 1981. 5, 40
+[15] Yitzhak Katznelson and Benjamin Weiss. A simple proof of some ergodic theorems. Israel J. Math.,
+     42(4):291–296, 1982. 21
+[16] John F. C. Kingman. The ergodic theory of subadditive stochastic processes. J. Roy. Statist. Soc. Ser. B,
+     30:499–510, 1968. 17
+[17] Serge Lang. Introduction to transcendental numbers. Addison-Wesley Publishing Co,. Reading, Mass.-
+     London-Don Mills, Ont., 1966. 8
+[18] Pablo Shmerkin. On Furstenberg’s intersection conjecture, self-similar measures, and the Lq norms of
+     convolutions. Ann. of Math. (2), 189(2):319–391, 2019. 1, 2, 3, 5, 8, 10, 11, 14, 15, 16, 17, 18, 21, 22, 30,
+     31, 33, 36, 39, 40, 41
+                                  DYNAMICAL SELF-SIMILARITY IN Rd                                       43
+
+[19] Pablo Shmerkin. Inverse theorems for discretized sums and Lq norms of convolutions in Rd . Preprint,
+     arXiv:2308.09846, 2023. 11, 13, 14
+[20] Pablo Shmerkin and Boris Solomyak. Absolute continuity of complex Bernoulli convolutions. Math. Proc.
+     Cambridge Philos. Soc., 161(3):435–453, 2016. 7, 8
+[21] Meng Wu. A proof of Furstenberg’s conjecture on the intersections of ×p- and ×q-invariant sets. Annals
+     of Mathematics, 189(3):707–751, 2019. 8
+[22] Han Yu. An improvement on Furstenberg’s intersection problem. Transactions of the American Mathemat-
+     ical Society, 374:6583–6610, 2021. 8, 9
+
+  (E. C.) Pennsylvania State University Mathematics Department, 203 McAllister Building,
+University Park, State College, PA 16802
+  Email address: corsoemilio2@gmail.com
+
+ (P.S.) Department of Mathematics, The University of British Columbia, Room 121, 1984
+Mathematics Road, Vancouver, BC, Canada V6T 1Z2
+ Email address: pshmerkin@math.ubc.ca
+

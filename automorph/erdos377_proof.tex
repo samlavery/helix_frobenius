@@ -1,0 +1,392 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#377: the carrier criterion, the carry conservation law,\\
+and the exact location of the remaining difficulty}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\textbf{\#377 is not proved here.}  What is proved: the balance condition is an
+exact statement about a single phasor on the carrier --- $n$ is $p$-balanced iff
+$\{n/p^{\,i}\}<\cos\theta_p$ for every $i\ge1$, with $\cos\theta_p=\frac{p+1}{2p}$
+--- so that payoff and alignment cost are one angle read two ways, and the cost
+of freezing rail $p$ at $n$ is exactly $\beta_p\log n$.  From Kummer's carry
+count we obtain an exact conservation law, $\sum_p\kappa_p(n)\log p
+=\log\binom{2n}{n}$, and from it an unconditional evaluation valid for
+\emph{every} $n$: the $\theta$-weighted mass of balanced primes above
+$\sqrt{2n}$ equals $2n(1-\log2)+o(n)$.  We then show this law is
+\emph{orthogonal} to \#377 --- its support on small primes is $O(\sqrt n)$ out of
+$2n\log2$, measured share $0.0127\to0.00066$ --- so it cannot bound $E$.  Two
+candidate reductions are tested and one is refuted: the entropy budget
+$\sum_{p\in S(n)}\beta_p\le1$ is \textbf{false} for every fixed truncation
+(measured maximum $7.03$), holding only as $d_p\to\infty$.  What survives is a
+clean reduction with an explicit constant, and a difficulty localised to a
+single range of primes, stated in \S6.
+\end{abstract}
+
+\section{The carrier criterion}
+
+For an odd prime $p$ let $D_p=\{0,\dots,\frac{p-1}2\}$, and call $n$
+\emph{$p$-balanced} ($n\in G_p$) if every base-$p$ digit of $n$ lies in $D_p$;
+by Kummer this is exactly $p\nmid\binom{2n}{n}$.  Write
+\[
+  \cos\theta_p=\frac{|D_p|}{p}=\frac{p+1}{2p},\qquad \theta_p\nearrow\frac\pi3,
+  \qquad \frac\pi3-\theta_p=\frac{1}{\sqrt3\,p}\bigl(1+O(p^{-1})\bigr).
+\]
+
+\begin{theorem}[carrier criterion: the universal half-turn]\label{thm:carrier}
+Let $F(x)=\mathbf 1[\{x\}<\tfrac12]$.  For every $n\ge1$ and every odd prime
+$p$,
+\[
+  n\in G_p
+  \iff
+  n\bmod p^{\,j}<\tfrac12p^{\,j}\ \ \forall j\ge1
+  \iff
+  F\!\Bigl(\frac{n}{p^{\,j}}\Bigr)=1\ \ \forall j\ge1
+  \iff
+  \Im\, e\!\Bigl(\frac{n}{p^{\,j}}\Bigr)>0\ \ \forall j\ge1 .
+\]
+\end{theorem}
+
+\begin{proof}
+($\Rightarrow$) If every digit is $\le\frac{p-1}2$ then
+$n\bmod p^{j}=\sum_{i<j}n_ip^i\le\frac{p-1}2\cdot\frac{p^j-1}{p-1}
+=\frac{p^j-1}2<\frac{p^j}2$.
+($\Leftarrow$) Induct on $j$.  From $n\bmod p<\frac p2$ we get
+$n_0\le\frac{p-1}2$.  Given $n_0,\dots,n_{j-1}\le\frac{p-1}2$, the hypothesis
+$n\bmod p^{j+1}\le\frac{p^{j+1}-1}2$ gives
+$n_jp^j\le\frac{p^{j+1}-1}2$, so $n_j\le\frac{p^{j+1}-1}{2p^j}<\frac p2$, i.e.\
+$n_j\le\frac{p-1}2$.  The last two equivalences are
+$\{x\}<\frac12\iff\sin2\pi x>0$.
+\end{proof}
+
+\emph{Verified}: $480\,000$ pairs $(n,p)$, $p\in\{3,\dots,1009\}$, zero
+mismatches against the digit criterion.
+
+The condition has no digits in it and, more to the point, \emph{no per-rail
+constant}: one universal function $F$, threshold exactly the half-turn, applied
+at the scales $p^{\,j}$.  The rails differ only in their multiplier.  Since
+$F=\frac12+\frac2\pi\sum_{k\ \mathrm{odd}}\frac{\sin2\pi kx}{k}$ carries odd
+harmonics only, each with $1/k$ decay, the second (even, non-decaying) lane
+seen in the residue-wise reading is the aliasing of that tail onto
+$\mathbb Z/p$, not a feature of the carrier --- though it is \emph{not} removed
+by the reformulation: the two readings give literally the same subset of
+$\mathbb Z/p$, hence identical Fourier coefficients, checked to eight places.
+
+Writing $\cos\theta_p=\frac{p+1}{2p}$ for the density of $D_p$
+(so $\theta_p\nearrow\frac\pi3$ and $\cos\theta_p-\cos\frac\pi3=\frac1{2p}$
+exactly), payoff and cost are one angle:
+\[
+  \frac1p=\frac{2}{p}\Bigl(\cos\theta_p-\cos\tfrac\pi3\Bigr)\cdot 1,
+  \qquad
+  \beta_p:=1-\frac{\log|D_p|}{\log p}=\frac{\log\sec\theta_p}{\log p}.
+\]
+
+\begin{proposition}[cost identity]\label{prop:cost}
+Let $d_p=\lfloor\log n/\log p\rfloor$.  The density of $G_p$ among the residues
+mod $p^{\,d_p+1}$ is $\cos^{d_p+1}\theta_p$, so the cost of freezing rail $p$ at
+height $n$ is
+\[
+  -\log\bigl(\text{density}\bigr)=(d_p+1)\log\sec\theta_p=\beta_p\log n+O(\log p).
+\]
+\end{proposition}
+
+Write $S(n)=\{p\le n:\ n\in G_p\}$ and
+$E(n)=\sum_{p\in S(n)}1/p=\operatorname{pay}(S(n))$.
+
+\section{Band truncation (unconditional)}
+
+\begin{theorem}\label{thm:trunc}
+For every $n$ and every integer $K\ge1$,
+\[
+  E(n)\ \le\ \log(K+1)\ +\ \sum_{p\le n^{1/K}}\frac1p\mathbf 1[n\in G_p]
+  \ +\ O\!\Bigl(\frac1{\log n}\Bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Bound band $k=\{p\in(n^{1/(k+1)},n^{1/k}]\}$ for $k<K$ by its full Mertens mass
+$\log\frac{k+1}{k}+O(e^{-c\sqrt{\log n}})$; the sum telescopes to $\log K$, and
+the band containing $n^{1/K}$ contributes at most $\log\frac{K+1}{K}$.
+\end{proof}
+
+No equidistribution enters, and no band is discarded.  The whole of \#377 is
+therefore the deep sum $\sum_{p\le n^{1/K}}\frac1p\mathbf1[n\in G_p]$.
+
+\section{What a budget would buy}
+
+\begin{lemma}[payoff/cost monotonicity]\label{lem:ratio}
+With $\beta(x)=\log\frac{2x}{x+1}/\log x$, the ratio
+$r(x)=\frac{1/x}{\beta(x)}=\frac{\log x}{x\log\frac{2x}{x+1}}$ is strictly
+decreasing on $(e,\infty)$ --- in particular on the odd primes --- and
+$r(x)\sim\frac{\log x}{x\log2}\to0$.
+\end{lemma}
+
+\begin{proof}
+Write $r=uv$ with $u(x)=\frac{\log x}{x}$ and $v(x)=1/g(x)$, where
+$g(x)=\log\frac{2x}{x+1}=\log2-\log(1+\frac1x)$.  Both are positive for $x>1$,
+since $1+\frac1x<2$ gives $g>0$.  Now $u'(x)=(1-\log x)/x^2<0$ for $x>e$, so
+$u$ strictly decreases there; and $x\mapsto\log(1+\frac1x)$ strictly decreases,
+so $g$ strictly increases and $v=1/g$ strictly decreases.  A product of two
+positive strictly decreasing functions strictly decreases.  The asymptotic
+follows from $g(x)\to\log2$.
+\end{proof}
+
+\begin{theorem}[LP reduction]\label{thm:lp}
+Let $\Lambda(B)=\sup\{\operatorname{pay}(S):\ S\ \text{a finite set of odd primes},\
+\sum_{p\in S}\beta_p\le B\}$.  If for some $K$ and some $B<\infty$
+\[
+  \sum_{p\in S(n),\ p\le n^{1/K}}\beta_p\ \le\ B
+  \qquad\text{for all sufficiently large }n,
+  \tag{$\mathrm B_{K,B}$}
+\]
+then $\limsup_n E(n)\le\log(K+1)+\Lambda(B)$; in particular \#377 holds.
+Because $\frac{1/p}{\beta_p}=\frac{\log p}{p\log\frac{2p}{p+1}}$ is strictly
+decreasing, $\Lambda$ is computed greedily; the integral values are
+$\Lambda(1)=0.676190$ (rails $3,5,7$), $\Lambda(2.5)=1.033439$ (rails up to
+$29$), $\Lambda(7)=1.417404$ (rails up to $173$), against the fractional
+relaxation $\Lambda^{\mathrm{LP}}(1)=0.685523$.
+\end{theorem}
+
+\begin{proof}
+The bound $\limsup E\le\log(K+1)+\Lambda(B)$ is immediate from
+Theorem~\ref{thm:trunc} and the definition of $\Lambda$.  For the greedy
+evaluation, consider the fractional relaxation
+\[
+  \Lambda^{\mathrm{LP}}(B)=\max\Bigl\{\sum_p\frac{x_p}{p}\ :\
+  \sum_px_p\beta_p\le B,\ x_p\in[0,1]\Bigr\}\ \ge\ \Lambda(B),
+\]
+and write $r(p)=\frac{1/p}{\beta_p}$, strictly decreasing by
+Lemma~\ref{lem:ratio}.  Let $x$ be feasible and suppose it is not greedy: there
+are primes $p<q$ with $x_p<1$ and $x_q>0$.  For small $\delta>0$ set
+$x_q'=x_q-\delta$ and $x_p'=x_p+\delta\beta_q/\beta_p$, leaving all other
+coordinates fixed.  This is again feasible (the budget used is unchanged, and
+$x_p'\le1$, $x_q'\ge0$ for $\delta$ small), and the objective changes by
+\[
+  \frac{\delta\beta_q}{\beta_p}\cdot\frac1p-\frac{\delta}{q}
+  \;=\;\delta\beta_q\Bigl(\frac{1/p}{\beta_p}-\frac{1/q}{\beta_q}\Bigr)
+  \;=\;\delta\beta_q\bigl(r(p)-r(q)\bigr)\;>\;0 ,
+\]
+strictly, since $r$ is strictly decreasing and $\beta_q>0$.  Hence no
+non-greedy point is optimal, so the optimum fills the coordinates in increasing
+order of $p$ until the budget is exhausted --- which is the greedy rule.  The
+integral values follow by evaluating the greedy solution and rounding down at
+the last prime.
+\end{proof}
+
+\begin{theorem}[$\mathrm B_{K,1}$ is false]\label{thm:budgetfalse}
+For every fixed $K$, $(\mathrm B_{K,1})$ fails.  Over the dyadic window
+$[N/2,N]$ the maximum of $\sum_{p\le z,\ n\in G_p}\beta_p$ is
+\[
+\begin{array}{r|cccc}
+ & z=7 & z=31 & z=101 & z=1009\\\hline
+ N=10^6    & 0.686 & 1.261 & 1.879 & 6.803\\
+ N=10^7    & 0.657 & 1.133 & 1.735 & 7.031\\
+ N=4\times10^7 & 0.686 & 1.283 & 1.637 & 6.575
+\end{array}
+\]
+and the $90$th percentile at $z=1009$ is already $4.06$--$5.05$.
+\end{theorem}
+
+The reason is structural and worth stating, because it says where the budget
+\emph{does} live.  The cost identity (Proposition~\ref{prop:cost}) charges
+$\beta_p\log n$ per rail only when the rail is asked to freeze at every one of
+its $d_p+1$ scales.  For $p$ near $n^{1/K}$ with $K$ fixed, $d_p=K$ is bounded,
+the freeze is cheap, and the number of such rails is large: their costs add
+without any of them being individually improbable.  The budget binds only as
+$d_p\to\infty$, i.e.\ for $p\le n^{o(1)}$.  Correspondingly the exceptional set
+at fixed $z$ is \emph{finite}: at $z=31$ the count of $n$ in the window with
+cost $>1$ is $44,\ 39,\ 28$ while the window grows by a factor $40$.
+
+\section{Band one is an exact union of intervals}
+
+Above $\sqrt n$ the balanced condition is not merely an interval union in principle: the
+endpoints are explicit rational functions of $n$ and $m=\lfloor n/p\rfloor$.
+
+\begin{theorem}[exact interval criterion]\label{thm:interval}
+Let $p>\sqrt n$ be prime and put $m=\lfloor n/p\rfloor$.  Then
+\[
+  n\in G_p
+  \qquad\Longleftrightarrow\qquad
+  p\,(2m+1)\ \ge\ 2n+1 \quad\text{and}\quad p\ \ge\ 2m+1 .
+\]
+\end{theorem}
+
+\begin{proof}
+Since $p>\sqrt n$ we have $p^{2}>n$, so $n$ has exactly the two base-$p$ digits
+$n=mp+r$ with $r=n-mp$ and $0\le m<p$.  By Kummer, $n\in G_p$ iff both digits are at most
+$\tfrac{p-1}{2}$.  The bottom digit condition $r\le\frac{p-1}{2}$ reads $2(n-mp)\le p-1$,
+i.e.\ $2n+1\le p(2m+1)$.  The top digit condition $m\le\frac{p-1}{2}$ reads $p\ge2m+1$.
+\end{proof}
+
+\emph{Verified}: $1\,134\,661$ pairs $(n,p)$ with $n<4000$ and $p>\sqrt n$ --- no mismatch.
+
+\begin{corollary}[the band-one mass, exactly]\label{cor:band1exact}
+For each $m\ge1$ the balanced primes $p$ with $\lfloor n/p\rfloor=m$ are exactly the primes
+of
+\[
+  I_m(n)\;=\;\Bigl[\ \max\Bigl(\tfrac{2n+1}{2m+1},\,2m+1\Bigr),\ \tfrac nm\ \Bigr],
+  \qquad\text{so}\qquad
+  \sum_{\substack{\sqrt n<p\le n\\ n\in G_p}}\frac1p\;=\;\sum_{m\ge1}\sum_{p\in I_m(n)}\frac1p .
+\]
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:interval}: $\lfloor n/p\rfloor=m$ is equivalent to
+$\frac{n}{m+1}<p\le\frac nm$, and the first condition cuts that range at
+$\frac{2n+1}{2m+1}$, which lies inside it.
+\end{proof}
+
+\emph{Verified}: the interval formula reproduces the direct sum to machine precision at
+$n=500,1000,2000,4000$, giving $0.273946$, $0.291506$, $0.337442$, $0.301129$.
+
+\begin{remark}
+The endpoints $\frac nm$ and $\frac{2n+1}{2m+1}$ are consecutive mediants, so the balanced
+fraction of the $m$-th interval is
+$\log\frac{\log(n/m)}{\log((2n+1)/(2m+1))}$, which tends to $\tfrac12\log\frac{m+1}{m}$ for
+fixed $m$ as $n\to\infty$: exactly half the band, because the mediant bisects the interval
+logarithmically.  The top-digit condition $p\ge2m+1$ binds only for $m\gtrsim\sqrt{n/2}$,
+i.e.\ only at the very bottom of the band.
+\end{remark}
+
+\section{The carry conservation law}
+
+Kummer's criterion in its quantitative form is $v_p\binom{2n}{n}=\kappa_p(n)$,
+the number of carries in the base-$p$ addition $n+n$; equivalently
+$\kappa_p(n)=\frac{2s_p(n)-s_p(2n)}{p-1}\ge0$, and $n\in G_p\iff\kappa_p(n)=0$.
+Unlike the indicator, $\kappa_p$ is \emph{one-signed and additive}, and it obeys
+an exact global identity.
+
+\begin{theorem}[conservation]\label{thm:cons}
+For every $n\ge1$,
+\[
+  \sum_{p\le2n}\kappa_p(n)\log p=\log\binom{2n}{n}.
+\]
+Consequently, for every $n$,
+\[
+  \sum_{\substack{\sqrt{2n}<p\le2n\\ p\,\nmid\,\binom{2n}{n}}}\log p
+  \;=\;2n\,(1-\log 2)\;+\;O\!\bigl(\sqrt n\,\log n\bigr)
+  \;=\;0.613706\ldots\,n\;+\;o(n).
+\]
+\end{theorem}
+
+\begin{proof}
+The identity is Legendre's formula summed over $p$.  For $p>\sqrt{2n}$ the
+addition has at most two digits, so $\kappa_p\in\{0,1\}$; for $p\le\sqrt{2n}$,
+$\kappa_p\le\log(2n)/\log p$, whence
+$\sum_{p\le\sqrt{2n}}\kappa_p\log p\le\psi(\sqrt{2n})=O(\sqrt n)$.  Therefore
+$\sum_{\sqrt{2n}<p\le2n}\mathbf1[\kappa_p\ge1]\log p=\log\binom{2n}{n}+O(\sqrt n)
+=2n\log2+O(\sqrt n\log n)$, and subtracting from
+$\theta(2n)-\theta(\sqrt{2n})=2n+o(n)$ gives the display.
+\end{proof}
+
+\emph{Measured}, ratio of the left side to $2n(1-\log2)$ at
+$n=10^4,10^5,10^6,3\times10^6$: $0.9771,\ 0.9939,\ 0.9979,\ 0.9985$.
+
+This is a genuine common-mode evaluation: exact, uniform in $n$, and free of any
+equidistribution input.  It also settles the question it raises.
+
+\begin{proposition}[the law is orthogonal to \#377]\label{prop:orth}
+The share of $\log\binom{2n}{n}$ carried by primes $p\le\sqrt{2n}$ is
+$O(\sqrt n/n)\to0$ --- measured $0.01268,\ 0.00373,\ 0.00106,\ 0.00066$ at
+$n=10^4,10^5,10^6,3\times10^6$.  Hence Theorem~\ref{thm:cons} constrains only
+the range $p>\sqrt{2n}$, where by Theorem~\ref{thm:trunc} the Mertens mass is
+already at most $\log2$ unconditionally.  It gives \emph{no} information about
+$p\le n^{1/K}$, which by Theorem~\ref{thm:trunc} is the whole problem.
+\end{proposition}
+
+The law is stated and proved here rather than suppressed, because a
+conservation identity of exactly this shape is what the method calls for, and
+knowing that it is inert is worth more than not having looked: the $\log p$
+weight of the identity and the $1/p$ weight of $E$ are dual, and the identity's
+mass sits where $E$'s does not.
+
+\section{Falsification register}
+
+Pre-committed, and all currently \emph{unhit}: (i) an $n$ with
+$E_{\le y}(n)>\frac13+\frac15+\frac17$ for $y<3.98\times10^{11}$ and infinitely
+many such $n$; (ii) a failure of Theorem~\ref{thm:cons}'s ratio to approach $1$;
+(iii) a fixed $z$ at which $\#\{n\le N:\operatorname{cost}_{\le z}(n)>1\}$ grows
+with $N$.  Hit and retracted this session: the entropy budget
+$(\mathrm B_{K,1})$, refuted by Theorem~\ref{thm:budgetfalse}; and an earlier
+maximum of $E$ attained at $n=0$, which is balanced at every rail and is an
+artifact of an unrestricted range, not a wall.
+
+\section{Where the difficulty is, exactly}
+
+Let $\gamma_k(n)$ be the fraction of band $k$'s Mertens mass that is balanced,
+so $E(n)=\sum_k\gamma_k(n)\log\frac{k+1}{k}+O(1/\log n)$.  Band $k$ imposes
+$k+1$ conditions, of which the top one is free for all but a $O(1/\log n)$
+fraction of the band (Theorem~\ref{thm:carrier} with $i=k+1$ reads
+$n/p^{k+1}<\cos\theta_p$, one cut).  Hence the band common mode is
+\[
+  \mathbb E\,\gamma_k=\cos^{k}\theta_p+o(1)=2^{-k}+o(1),
+  \qquad
+  \sum_{k\ge1}2^{-k}\log\frac{k+1}{k}=C_0=0.507834\ldots,
+\]
+which is the mean of $E$ --- the band decomposition and the global common mode
+agree exactly.  \emph{Measured} at $N=10^6$ over $1500$ sampled
+$n\in[N/2,N]$:
+\[
+\begin{array}{r|rrrrr}
+ k & \#p & \text{band mass} & \operatorname{mean}\gamma_k & 2^{-k} & \max\gamma_k\\\hline
+ 1 & 78330 & 0.68925 & 0.47664 & 0.5 & 0.49747\\
+ 2 & 143 & 0.39526 & 0.22686 & 0.25 & 0.36799\\
+ 3 & 14 & 0.23712 & 0.13231 & 0.125 & 0.44554\\
+ 4 & 5 & 0.22167 & 0.06347 & 0.0625 & 0.58912
+\end{array}
+\]
+Band~$1$ is concentrated to $\pm0.02$ over the whole sample; $\max_n\gamma_k$
+rises toward $1$ only as the band's prime count falls.  No sampled $n$ raised
+more than four of five bands above twice their common mode, and
+$\max_n\sum_{k\le6}\gamma_k\log\frac{k+1}{k}=0.6806$ against the trivial
+$1.7111$.  \textbf{Boundedness of $E$ is therefore a joint constraint across
+near-independent channels, not a per-band decay:} each $\gamma_k$ can
+individually approach $1$, and what fails is doing so at many $k$ for one $n$.
+
+The prime count of band $k$ is $\asymp k\,n^{1/k}/\log n$, which is large
+exactly when $p\gtrsim\log n$.  This splits \#377 into two halves, and both are
+open:
+\[
+  \boxed{\ \text{(a) } p\le\log n:\ \pi(\log n)\ \text{rails, mass }\log\log\log n\ }
+  \qquad
+  \boxed{\ \text{(b) } p>\log n:\ \text{concentration of }\gamma_k\ }
+\]
+Half (a) is where the budget binds ($d_p\ge\log n/\log\log n$), and the ceiling
+of the companion note caps it at $\Lambda(1)=0.676190$ --- conditional on
+transversality for subsets of $\{p\le\log n\}$, a growing family.  Half (b)
+needs $\gamma_k(n)\ll1/(\log k)^{1+\delta}$ uniformly in $n$, which is far
+weaker than the truth $2^{-k}$ but still an equidistribution statement: for
+fixed $n$, the points $\bigl(\{n/p\},\dots,\{n/p^{\,k}\}\bigr)$ must
+equidistribute in $[0,1)^{k}$ as $p$ ranges over the band.  Condition $i$ has
+period $t^{\,i+1}/(in)$ in $t$, which exceeds $1$ only for $i\ge k-1$; so at
+most two of the $k$ conditions are resolvable at the integer scale, and the rest
+are questions about primes in intervals shorter than unit length.  Band~$1$ is
+the exception and is proved (companion note, on $m\le n^{(1-\varepsilon)/2}$),
+giving $\gamma_1=\frac12+O(\varepsilon)$ --- one band out of infinitely many.
+
+That is the gap, in both halves, named and not papered over.  Nothing in this
+note assumes either, and nothing in \S1--\S5 depends on them.
+
+\begin{remark}[register]
+\textbf{Proven unconditionally}: Theorems~\ref{thm:carrier},~\ref{thm:interval},
+~\ref{thm:trunc}, \ref{thm:lp} (as an implication), \ref{thm:cons};
+Corollary~\ref{cor:band1exact}; Propositions~\ref{prop:cost}, \ref{prop:orth}.
+Theorem~\ref{thm:interval} and Corollary~\ref{cor:band1exact} give band one exactly: the
+balanced primes above $\sqrt n$ are precisely the primes of the explicit intervals
+$I_m(n)$, so the ``free half'' of band one is computed rather than estimated.  \textbf{Refuted}: $(\mathrm B_{K,1})$, by measurement.
+\textbf{Not proved}: Erd\H{o}s \#377.  \textbf{The literature gate has not been
+run}: Erd\H{o}s--Graham--Ruzsa--Straus (1975) and successors must be read at
+source before any novelty claim; Theorem~\ref{thm:cons} in particular is an
+immediate consequence of Legendre's formula and should be presumed known.
+\end{remark}
+
+\end{document}

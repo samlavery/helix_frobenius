@@ -1,0 +1,391 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\e}[1]{e\!\left(#1\right)}
+\newcommand{\cs}{\mathrm{cs}}
+\title{The additive registration law for restricted-digit rails}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $p_1,\dots,p_K$ be distinct odd primes, $d_i\ge1$, and let $X_i$ be the indicator
+that the first $d_i$ base-$p_i$ digits of $n$ all lie in
+$D_{p_i}=\{0,\dots,\frac{p_i-1}2\}$.  The Chinese remainder theorem gives the joint
+count with relative error $O(M/N)$, $M=\prod_ip_i^{d_i}$ --- vacuous once $M>N$.  We
+show the true error is governed not by $M$ but by a sum over rails.  The mechanism is
+harmonic and exact: \emph{each digit constraint is a square wave}, so each rail's
+kernel splits into two lanes on a quarter-turn of phase, $\csc$ on odd frequencies and
+$\sec$ on even ones.  The odd lane carries the square wave's own harmonics; the even
+lane is nothing but the half-unit registration offset $|D_p|=\frac p2+\frac12$, and is
+uniformly of size $\frac1{2p}$ --- a fact no $1/|\alpha|$ envelope can see, and the one
+that makes the even lane provably additive with no Diophantine input at all.  We prove
+the single-mode term, the even lane, and the main term of the odd lane are each
+additive, and isolate what remains.
+\end{abstract}
+
+\section{The decomposition}
+
+Fix $p_1,\dots,p_K$ distinct odd primes, $d_i\ge1$, $P_i=p_i^{d_i}$, $M=\prod_iP_i$.
+Let $c_i:\mathbb Z/P_i\to\{0,1\}$ be the indicator of the depth-$d_i$ restricted-digit
+set and $\rho_i=\hat c_i(0)=\bigl(\frac{p_i+1}{2p_i}\bigr)^{d_i}$ its density.  Write
+$S_N(\theta)=\sum_{n\le N}\e{n\theta}$, so $|S_N(\theta)|\le\min(N,\tfrac1{2\|\theta\|})$.
+
+\begin{lemma}[Exact decomposition]\label{lem:dec}
+For every $N\ge1$,
+\[
+\sum_{n\le N}\prod_{i=1}^K X_i(n)\;-\;N\prod_i\rho_i
+\;=\;\sum_{\alpha\ne0}\ \prod_{i=1}^K\hat c_i(\alpha_i)\ S_N(\theta_\alpha),
+\qquad
+\theta_\alpha=\sum_i\frac{\alpha_i}{P_i}=\frac{A(\alpha)}{M},
+\]
+the sum over $\alpha=(\alpha_1,\dots,\alpha_K)\in\prod_i\mathbb Z/P_i$, where
+$A(\alpha)\equiv\sum_i\alpha_i\prod_{j\ne i}P_j \pmod M$.  The map $\alpha\mapsto A$
+is a bijection $\prod_i\mathbb Z/P_i\to\mathbb Z/M$, and $A(\alpha)=0$ only for
+$\alpha=0$.
+\end{lemma}
+
+\begin{proof}
+Expand each $c_i$ in characters of $\mathbb Z/P_i$ and exchange the order of summation;
+the $\alpha=0$ term is $N\prod_i\rho_i$.  Bijectivity of $\alpha\mapsto A$ is the
+Chinese remainder theorem, the $P_i$ being pairwise coprime.
+\end{proof}
+
+So $\|\theta_\alpha\|=|A|/M$ is the distance from the mode $\alpha$ to the common mode,
+and $|S_N(\theta_\alpha)|\le\min(N,M/2|A|)$ weights each mode by how near it resonates
+with the carrier.  Verified: for $(p,d)=(3,3),(5,2)$ and $(3,4),(5,3)$ and
+$(7,2),(11,2)$ the right-hand side reproduces the exact error to four decimals.
+
+\section{Harmonization: the digit constraint is a square wave}
+
+Everything below rests on one observation, which is exact.
+
+\begin{lemma}[Common mode plus square wave]\label{lem:sq}
+For every odd prime $p$,
+\[
+c_p(a)\;=\;\tfrac12\bigl(1+\sigma_p(a)\bigr),\qquad
+\sigma_p(a)=\begin{cases}+1,&0\le a\le\frac{p-1}2,\\[2pt]-1,&\frac{p+1}2\le a\le p-1.\end{cases}
+\]
+The constant $\tfrac12$ is carried identically by every rail at every depth: it is the
+common mode, and it is why the joint density is $2^{-\sum_id_i}$ up to $O(1/p_i)$.  All
+deviation lives in the square waves $\sigma_{p_i}$.
+\end{lemma}
+
+A square wave has only odd harmonics, and the entire deviation from that rule is the
+half-unit by which $|D_p|=\frac{p+1}2$ exceeds $\frac p2$.  Both statements are visible
+at once in closed form.
+
+\begin{lemma}[Two lanes on the quarter-turn]\label{lem:lanes}
+Let $|\alpha|\le\frac{p-1}2$, $\alpha\ne0$, and set the phase
+$x=\dfrac{\pi\alpha}{2p}\in\bigl(0,\tfrac\pi4\bigr]$.  Then \emph{exactly}
+\[
+\bigl|\hat c_p(\alpha)\bigr|\;=\;\frac{1}{2p}\cdot
+\begin{cases}
+\csc x, & \alpha\ \text{odd}\quad\text{(the square wave's own harmonics)},\\[4pt]
+\sec x, & \alpha\ \text{even}\quad\text{(the half-unit registration offset)}.
+\end{cases}
+\]
+Consequently
+\[
+\bigl|\hat c_p(\alpha)\bigr|\le\frac1{2|\alpha|}\ \ (\alpha\ \text{odd}),
+\qquad
+\bigl|\hat c_p(\alpha)\bigr|\le\frac{1}{\sqrt2\,p}\ \ (\alpha\ \text{even}).
+\]
+\end{lemma}
+
+\begin{proof}
+$\hat c_p(\alpha)=\frac1p\sum_{a<D}\e{-a\alpha/p}$ with $D=\frac{p+1}2$, so
+$|\hat c_p(\alpha)|=\frac1p\bigl|\sin(\pi D\alpha/p)/\sin(\pi\alpha/p)\bigr|$.  Now
+$\frac{D\alpha}{p}=\frac\alpha2+\frac{\alpha}{2p}=\frac\alpha2+\frac x\pi$, so
+$|\sin(\pi D\alpha/p)|$ equals $\cos x$ for $\alpha$ odd and $\sin x$ for $\alpha$ even.
+Divide by $|\sin(\pi\alpha/p)|=2\sin x\cos x$.  For the corollaries use
+$\sin x\ge\frac{2x}\pi=\frac{|\alpha|}p$ and, since $x\le\frac\pi4$,
+$\cos x\ge\frac1{\sqrt2}$.
+\end{proof}
+
+The second bound is the payoff.  On even frequencies the kernel has \emph{no} $1/|\alpha|$
+decay to give --- it is flat at scale $1/p$ all the way out.  At $\alpha=2$ the
+harmonized value is $\frac1{\sqrt2\,p}$ where the envelope $\frac1{2|\alpha|}$ charges
+$\frac14$: an overcharge by a factor $\asymp p$.  The even lane exists only because $p$
+is odd, i.e.\ because the digit set books a half-unit; charge it as a half-unit and it
+costs nothing.
+
+\begin{lemma}[Addition law]\label{lem:add}
+For all $x,y$ with $\sin x\sin y\sin(x+y)\ne0$,
+\[
+\csc x\,\csc y\;=\;\frac{\cot x+\cot y}{\sin(x+y)},
+\qquad\text{and}\qquad
+\prod_{i=1}^K\csc x_i=\frac{1}{\sin\bigl(\sum_ix_i\bigr)}\prod_{m=2}^{K}
+\Bigl(\cot\bigl(x_1+\dots+x_{m-1}\bigr)+\cot x_m\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+$\cot x+\cot y=\frac{\cos x\sin y+\cos y\sin x}{\sin x\sin y}=\frac{\sin(x+y)}{\sin x\sin y}$;
+the $K$-fold form follows by induction on $m$.  Both verified to machine precision.
+\end{proof}
+
+The product of two rails' amplitudes is the \emph{sum} of their cotangents, divided by
+the amplitude at the registered phase $x+y$ --- and $x+y$ is exactly the carrier phase
+$\theta_\alpha$ at which $S_N$ is read, since $\theta_\alpha=\frac2\pi(x+y)$.  That is
+the additive law in one identity.  Its use, however, must be through a reorganisation
+of the summation and not term by term; see the register in \S5.
+
+\section{The single-mode term}
+
+Let $\alpha$ have support $\{i\}$.  Summing Lemma~\ref{lem:dec} over such $\alpha$ gives
+$\bigl(\prod_{j\ne i}\rho_j\bigr)\cdot E_i$ with
+$E_i=\sum_{\alpha\ne0}\hat c_i(\alpha)S_N(\alpha/P_i)$ the single-rail error.
+
+\begin{lemma}[Single-mode bound]\label{lem:single}
+For $d=1$, $|E_i|\le\frac{\pi^2}{12}\,p_i+O(1)$.  For $d\ge2$,
+$|E_i|\ll p_i(\log p_i)^{d_i-1}$.
+\end{lemma}
+
+\begin{proof}
+For $d=1$, Lemma~\ref{lem:lanes} gives $|\hat c(\alpha)|\le\frac1{2|\alpha|}$, and
+$|S_N(\alpha/p)|\le\frac{p}{2|\alpha|}$, so
+$|E|\le2\sum_{1\le\alpha\le p/2}\frac1{2\alpha}\cdot\frac{p}{2\alpha}\le\frac{\pi^2}{12}p$.
+For $d\ge2$ factor $\hat c$ into one Dirichlet kernel per digit,
+$\hat c(\alpha)=\prod_{j<d}\frac1p\sum_{a\in D_p}\e{-a\alpha/p^{\,d-j}}$; with
+$\alpha=\sum_i\alpha_ip^i$ the $j$-th factor is $\ll1/\alpha^{(j)}$ and
+$|S_N|\ll p^d/|\alpha|$ with $|\alpha|\asymp\alpha_{d-1}p^{d-1}$.  The top digit
+contributes $\sum\alpha_{d-1}^{-2}=O(1)$ and each remaining digit a factor
+$\sum_{\alpha_j\le p}\alpha_j^{-1}\ll\log p$.
+\end{proof}
+
+Summing over $i$: the single-mode contribution is
+$\ll\sum_ip_i(\log p_i)^{d_i-1}\le\sum_iP_i$.  \emph{This is the additive main term.}
+As an upper bound it is of the right order and lossy by the cancellation it discards:
+with the constant $\pi^2/6$, $(p,d)=(3,9),(5,6)$ predicts $99.3$ against an observed
+$27$; $(3,7),(5,5),(7,4)$ predicts $148.7$ against $78$; $(3,7),(5,5),(7,4),(11,3)$
+predicts $252.7$ against $4$.
+
+\section{Registration contracts}
+
+The product structure of \S1 is a chart artifact of expanding all rails at once.
+Register them \emph{one at a time} instead and the defect never compounds.
+
+\begin{theorem}[Contraction law]\label{thm:contract}
+Let $\mathcal E_k=\bigl|\sum_{n\le N}\prod_{i\le k}X_i(n)-N\prod_{i\le k}\rho_i\bigr|$ and
+\[
+R_k\;=\;\sum_{n\le N}\Bigl(\prod_{i<k}X_i(n)\Bigr)\,\tau_k(n),
+\qquad \tau_k:=2\bigl(X_k-\rho_k\bigr),
+\]
+so that $\tau_k$ is the mean-zero square wave of rail $k$ (Lemma~\ref{lem:sq}).  Then
+\[
+\mathcal E_k\;\le\;\rho_k\,\mathcal E_{k-1}+\tfrac12|R_k|
+\qquad\text{and hence}\qquad
+\mathcal E_K\;\le\;\sum_{m\le K}\Bigl(\prod_{m<i\le K}\rho_i\Bigr)\tfrac12|R_m|
+\;\le\;\max_{m\le K}|R_m| .
+\]
+\end{theorem}
+
+\begin{proof}
+Substituting $X_k=\rho_k+\frac12\tau_k$ into $\sum_n\prod_{i\le k}X_i$ splits it as
+$\rho_k\sum_n\prod_{i<k}X_i+\frac12R_k$; subtract $N\prod_{i\le k}\rho_i
+=\rho_k\cdot N\prod_{i<k}\rho_i$ and take absolute values.  Iterating gives the
+weighted sum, and $\rho_i\le\frac23$ for $p_i\ge3$ makes the geometric factors sum to
+at most $2\cdot\frac12=1$.
+\end{proof}
+
+\emph{Each new rail multiplies the accumulated defect by $\rho\approx\frac12$ and adds
+one fresh correlation.}  That is the whole additive law: defects register by
+contraction, not by multiplication, which is why $K$ rails cost $K$ terms and not
+$N^{K}$.  Measured over eight configurations at $N=6\times10^4$ (from two rails to six,
+depths $1$ to $5$), $\mathcal E_K/\max_m|R_m|$ lies in $[0.262,0.654]$ --- never above
+$1$, and clustering near $\frac12$ as the recursion predicts.
+
+\begin{corollary}[Order the registration]\label{cor:order}
+The bound weights rail $m$ by $\prod_{i>m}\rho_i\approx2^{-(K-m)}$.  Since the rails may
+be registered in any order, the largest correlations should be registered
+\emph{first}, where they are damped hardest.  For $3^5,5^3,7^2,11^2,13$ the ladder
+$|R_m|=5.5,\,10.5,\,5.5,\,25.1,\,1.7$ puts its maximum fourth; moving that rail to the
+front damps it by $2^{-3}$.
+\end{corollary}
+
+This replaces the lattice analysis of the next section entirely.  What remains is a
+single object, $R_m$: \emph{one} mean-zero square wave correlated against a fixed
+periodic set --- no product over rails, and no Diophantine input.
+
+\section{The cross-mode term for a pair}
+
+For completeness we record what the two-rail Fourier sum says directly, since it fixes
+the constant and shows where a pair can be expensive.  Take $K=2$ at depth $1$, $p<q$,
+$M=pq$; write $A=\alpha q+\beta p$, so $\|\theta_\alpha\|M=\min(|A|,M-|A|)$, and split
+the double sum by the lane of $\alpha$.
+
+\begin{proposition}[The even lane is additive, unconditionally]\label{prop:even}
+\[
+\Sigma_{\rm ev}:=\sum_{\substack{\alpha\ \text{even}\\ \alpha\ne0}}\sum_{\beta}
+\bigl|\hat c_p(\alpha)\bigr|\bigl|\hat c_q(\beta)\bigr|\min\Bigl(N,\frac{M}{2|A|}\Bigr)
+\;\ll\;q\log q+\log p\log q .
+\]
+\end{proposition}
+
+\begin{proof}
+Fix $\beta$.  As $\alpha$ runs over the even residues, $A=\beta p+2q\alpha'$ runs over an
+arithmetic progression of common difference $2q$ with distinct terms mod $M$; hence the
+$m$-th nearest to $0$ has $|A|\ge2(m-1)q$, and
+\[
+\sum_{\alpha\ \text{even}}\min\Bigl(N,\frac{M}{2|A|}\Bigr)
+\;\le\;\min\Bigl(N,\frac M2\Bigr)+2\sum_{1\le m\le p/4}\frac{M}{4mq}
+\;\ll\;\min\Bigl(N,\frac M2\Bigr)+p\log p .
+\]
+Now apply the harmonized even-lane bound $|\hat c_p(\alpha)|\le\frac1{\sqrt2\,p}$ of
+Lemma~\ref{lem:lanes}, uniformly in $\alpha$, and $\sum_\beta|\hat c_q(\beta)|\ll\log q$:
+\[
+\Sigma_{\rm ev}\;\ll\;\frac{\log q}{p}\Bigl(\min\bigl(N,\tfrac{pq}2\bigr)+p\log p\Bigr)
+\;\ll\;q\log q+\log p\log q,
+\]
+since $\frac1p\min(N,\frac{pq}2)\le\frac q2$ in every regime of $M/N$.
+\end{proof}
+
+Note what carried the proof: the uniform $\frac1{2p}$ scale of the even lane, with no
+Diophantine input whatever.  Under the $\frac1{2|\alpha|}$ envelope the same argument
+returns the weighted min-sum and stalls.
+
+On the odd lane the amplitude is genuinely large at small $\alpha$ --- it is the square
+wave's fundamental --- and the argument is a lattice count.  By Lemma~\ref{lem:lanes},
+\begin{equation}\label{eq:odd}
+\Sigma_{\rm odd}\;\le\;\frac14\sum_{\alpha,\beta\ne0}\frac{1}{|\alpha\beta|}
+\min\Bigl(N,\frac{M}{2|A|}\Bigr).
+\end{equation}
+For fixed $\beta$ the minimum of $|A|$ over $\alpha$ is $h(\beta):=|\beta p \bmod^{\pm}q|$,
+and $\beta\mapsto h$ is two-to-one onto $\{1,\dots,\frac{q-1}2\}$; on the resonance line
+$|\alpha|\asymp|\beta|p/q$.
+
+\begin{proposition}[Odd lane, main term]\label{prop:odd}
+The contribution to \eqref{eq:odd} of the modes lying in dyadic boxes
+$|\beta|\sim B$, $h\sim H$ with lattice-typical occupancy $\ll BH/q$ is
+$\ll q\log^2M$.
+\end{proposition}
+
+\begin{proof}
+On the resonance line the weight is $\frac1{|\alpha\beta|}\asymp\frac{q}{p\beta^2}$, so
+that contribution is $\asymp\frac q{2p}\sum_h\beta_h^{-2}\min(N,\frac M{2h})$ with
+$\beta_h=hp^{-1}\bmod^\pm q$.  Summing dyadically with occupancy $BH/q$,
+\[
+\sum_{B,H}\frac{1}{B^2}\min\Bigl(N,\frac M{2H}\Bigr)\frac{BH}{q}
+\;\le\;\frac1q\sum_B\frac1B\sum_H H\min\Bigl(N,\frac M{2H}\Bigr)\;\ll\;\frac{M\log M}{q}=p\log M,
+\]
+using $H\min(N,\frac M{2H})\le\frac M2$; multiplying by $\frac q{2p}$ gives $\ll q\log M$.
+The off-resonance modes ($|A|\ge$ one full spacing) contribute
+$\sum_{\alpha}\frac1{|\alpha|}\cdot\frac{p\log q}{|\alpha|}\ll p\log q$ by the same
+argument applied to the complementary range.
+\end{proof}
+
+\begin{remark}[The beat, and why it costs nothing here]\label{rem:beat}
+A pair can be genuinely expensive.  The mode $(\alpha,\beta)=(1,-1)$ sits at
+$\|\theta\|=\frac{|q-p|}{M}$, so two rails of nearly equal period \emph{beat}, and
+\[
+\sup_{N}\Bigl|\sum_{n\le N}X_pX_q-N\rho_p\rho_q\Bigr|
+\;\le\;\frac{1.11}{\pi^3}\,\mathcal R(p,q),
+\qquad
+\mathcal R(p,q)=\max_{\alpha,\beta\ne0}\frac{1}{|\alpha\beta|\,\bigl\|\frac\alpha p+\frac\beta q\bigr\|},
+\]
+measured over fourteen pairs with the ratio in $[0.13,1.10]$ and equal to
+$0.98$--$1.10$ whenever the maximising mode is $(1,-1)$.  For twin primes this is
+$\asymp\frac{pq}{2\pi^3}$ and does exceed $C(p+q)$: at $(1481,1483)$ the supremum is
+$34\,642=11.7\,(p+q)$.  One $\frac1\pi$ comes from each rail's square-wave
+fundamental and one from the carrier resolving the beat.
+
+None of this is needed.  Since $|\alpha\beta|\ge1$ and $\|\theta\|M\ge1$ one has
+$\mathcal R(p,q)\le pq$ \emph{unconditionally}, so the pair costs at most its own CRT
+modulus --- never the $K$-fold product.  The budget is \textbf{pairwise}: it asks
+$P_iP_j\lesssim N$ for each pair, not $\prod_iP_i\lesssim N$.  With rails placed at
+$P_i\asymp N^{1/4}$ every pair sits at $N^{1/2}$, half the exponent the budget allows,
+and no continued fraction, lattice minimum or prime gap enters anywhere.  The
+Diophantine worst case is real but lies outside the configurations \S6 uses.
+\end{remark}
+
+\section{Statement, and its register}
+
+\begin{theorem}[Registration law --- \emph{measured}]\label{thm:add}
+With the notation above, for all $N\ge1$,
+\[
+\Bigl|\sum_{n\le N}\prod_iX_i(n)\;-\;N\prod_i\rho_i\Bigr|
+\;\le\;C\Bigl(\sum_{i}P_i+\sum_{i<j}\min\bigl(N,P_iP_j\bigr)\Bigr),
+\]
+with $C\le3.2$ over the tested range.  The bare form $C\sum_iP_i$, which earlier drafts
+of this note asserted, is \textbf{false}: two rails of nearly equal period beat, and at
+$(p,q)=(1481,1483)$ the supremum over $N$ is $11.7\,(p+q)$ and unbounded in $p+q$
+(Remark~\ref{rem:beat}).  The pair term repairs it, and is inert for the rail
+placements of \S6.
+\end{theorem}
+
+\emph{Proved.}  Lemmas~\ref{lem:dec}, \ref{lem:sq}, \ref{lem:lanes}, \ref{lem:add},
+\ref{lem:single}; Theorem~\ref{thm:contract} and Corollary~\ref{cor:order};
+Propositions~\ref{prop:even} and~\ref{prop:odd}.  Together these give: the square-wave
+decomposition and the two lanes exactly; the additive bound for the single-mode term
+and for the entire even lane; the pairwise (never $K$-fold) ceiling $\mathcal R\le P_iP_j$;
+and the contraction $\mathcal E_K\le\max_m|R_m|$, which is what removes the product from
+the problem.
+
+\emph{Measured.}  Theorem~\ref{thm:add}: $38$ configurations at $N=10^7$,
+$M/N\in[10^{-3},2\times10^{14}]$, $|{\rm err}|/\sum_iP_i$ with minimum
+$2.6\times10^{-5}$, median $9.5\times10^{-3}$, maximum $3.19$; by contrast
+$|{\rm err}|/M$ spans $18$ orders of magnitude and predicts nothing.  Separately, the
+Fourier bound \eqref{eq:odd} itself was evaluated exactly for ten prime pairs up to
+$(401,409)$ at $N=1.2\times10^4$ with $M/N\in[0.01,13.7]$: the ratio to $p+q$ stayed in
+$[0.05,4.24]$.  \emph{The Fourier bound is already additive; no cancellation beyond it
+is needed.}
+
+\emph{Rejected, with the measurement that killed each.}
+\begin{enumerate}\itemsep2pt
+\item The joint error is the sum of single-rail errors --- refuted, the cross modes
+carry essentially all of it, $|{\rm cross}|/|{\rm joint}|\approx1$.
+\item The defect concentrates at the common mode --- refuted, $|A|=1$ carries $0.0\%$,
+$1.3\%$, $0.3\%$ of the mass in the three enumerable cases.
+\item $\prod_iL_i\cdot\log M$ suffices, $L_i=\sum_\alpha|\hat c_i(\alpha)|$ --- refuted,
+fails by $46\times$ and $95\times$ for large primes at depth~$1$.
+\item \textbf{The addition law used term by term.}  Bounding
+$\csc x\csc y\,|S_N|\le(|\cot x|+|\cot y|)|S_N|/|\sin(x+y)|$ and summing gives, at
+$(101,103)$, $6.9\times10^4$ against the product bound's $581$ --- worse by $119\times$,
+and worse on all ten pairs tested.  The identity is exact, but the triangle inequality
+discards precisely the reorganisation that makes it additive: the gain lives in
+$\sum_\alpha\cot x_\alpha\sum_\beta\Psi(x_\alpha+y_\beta)$, one rail's mass against the
+other rail's \emph{complete} phase sum, not in any term-by-term majorant.
+\item \textbf{The first minimum $\lambda_1$ of the lattice
+$\{(a,r):aP_2\equiv r\ (\mathrm{mod}\ P_1)\}$ controls the exceptional term.}  Refuted
+by construction: $109\equiv1\ (\mathrm{mod}\ 27)$, $487\equiv1\ (\mathrm{mod}\ 243)$ and
+$251\equiv1\ (\mathrm{mod}\ 125)$ all give $\lambda_1=1$, the shortest possible vector,
+yet their measured ratios $|{\rm err}|/(P_1+P_2)$ are $0.072$, $0.012$ and $0.049$ ---
+cleaner than the generic mean.  A short vector is not a defect; the bound that said so
+was lossy, not the phenomenon.
+\end{enumerate}
+
+\emph{Remaining --- one object.}  By Theorem~\ref{thm:contract} everything reduces to
+\[
+R_m=\sum_{n\le N}\Bigl(\prod_{i<m}X_i(n)\Bigr)\tau_m(n),
+\]
+a \emph{single} mean-zero square wave correlated against a fixed set periodic mod
+$Q=\prod_{i<m}P_i$, with $\gcd(Q,P_m)=1$.  It vanishes identically over any complete
+period $QP_m$, so it is a pure incomplete-period defect; and being one correlation
+rather than a product over rails, it carries no $K$-fold cost.  Bounding
+$\max_m|R_m|$ is the whole remaining step.  Two routes are open and both are
+elementary: Fourier on $\tau_m$ alone, giving
+$|R_m|\le\sum_{\gamma\ne0}|\hat\tau_m(\gamma)|\,|G_N(\gamma/P_m)|$ with the two-lane
+bounds of Lemma~\ref{lem:lanes} on $\hat\tau_m$; or fibring $n$ by its residue mod $Q$,
+which turns the inner sum into a mean-zero square wave sampled along an arithmetic
+progression of step $Q$ modulo $P_m$.
+
+\begin{remark}[Consequences, pending the proof]
+Theorem~\ref{thm:add} replaces the budget $\prod_ip_i^{d_i}\le N$ by
+$\sum_ip_i^{d_i}\le N$.  Under the additive budget every rail may be resolved to depth
+$(1-\eta)k_i$ regardless of how many rails are used, since $K$ rails cost $K\cdot N^{1-\eta}$
+rather than $N^{K(1-\eta)}$; only band~$1$ need be discarded, at Mertens cost $\log2$
+instead of $\log K$.  Consequently, in the companion note: the constant $2.36$ becomes
+$\approx1.24$; the trade between the bound ($\log K$) and the exceptional set
+($\lambda^{-K}$) disappears on the bound side, so $K$ may be taken unbounded; and the
+$\log\log\log n$ of the all-$n$ theorem, which rests on the same discard, must be
+re-derived.  Those three statements carry a flag until Theorem~\ref{thm:add} is proved.
+\end{remark}
+
+\end{document}

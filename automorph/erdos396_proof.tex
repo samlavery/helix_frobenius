@@ -1,0 +1,259 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#396: the antipodal law for shifted windows of
+$\binom{2n}{n}$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\#396 asks whether for every $k$ there is an $n$ with
+$\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$.  We give an exact digit-sum criterion for
+this divisibility, valid for every $n$ and $k$, and use it to prove an
+\emph{antipodal law}: for every prime $p>\max(2k,\sqrt{2n})$ the residue $n\bmod p$ decides
+both the divisor condition and the carry condition, and the two conditions occupy
+complementary half-turns of the clock $\mathbb Z/p$.  Consequently a \emph{negative} shift
+$n-i$ forces $p\nmid\binom{2n}{n}$, while a \emph{positive} shift $n+i$ forces
+$p\mid\binom{2n}{n}$.  This proves that every solution of \#396 has all of
+$n,n-1,\dots,n-k$ free of prime factors above $\max(2k,\sqrt{2n})$, and it explains why
+Pomerance's companion problem for $\prod_{1\le i\le k}(n+i)$ has density $1$ while \#396
+does not.  Two unconditional lower bounds on the least solution follow.
+\#396 itself is not proved.
+\end{abstract}
+
+\section{Ledger form}
+
+Throughout $p$ is prime, $s_p(m)$ is the sum of the base-$p$ digits of $m$, and
+$v_p$ is the $p$-adic valuation.  We use Legendre's formula
+$v_p(m!)=\bigl(m-s_p(m)\bigr)/(p-1)$ and Kummer's theorem in the form
+\[
+  v_p\binom{2n}{n}\;=\;\sum_{j\ge1}\Bigl(\bigl\lfloor 2n/p^{j}\bigr\rfloor
+      -2\bigl\lfloor n/p^{j}\bigr\rfloor\Bigr)
+  \;=\;\#\Bigl\{\,j\ge1:\ \bigl\{\,n/p^{j}\,\bigr\}\ \ge\ \tfrac12\,\Bigr\},
+\]
+each summand being $0$ or $1$.  We call the indicator $\{n/p^{j}\}\ge\frac12$ the
+\emph{half-turn at level $j$}: it says that the point $n/p^{j}$ lies in the upper half of
+the clock of circumference $1$, equivalently that $n\bmod p^{j}\ge p^{j}/2$.
+
+\begin{theorem}[exact criterion]\label{thm:crit}
+Let $n\ge k+1\ge1$.  Then
+\[
+  \prod_{0\le i\le k}(n-i)\ \Bigm|\ \binom{2n}{n}
+  \qquad\Longleftrightarrow\qquad
+  3\,s_p(n)\ \ge\ (k+1)+s_p(n-k-1)+s_p(2n)\ \ \text{for every prime }p .
+\]
+\end{theorem}
+
+\begin{proof}
+Since $\prod_{0\le i\le k}(n-i)=n!/(n-k-1)!$, Legendre's formula gives
+\[
+  v_p\!\left(\prod_{0\le i\le k}(n-i)\right)
+  =\frac{\bigl(n-s_p(n)\bigr)-\bigl((n-k-1)-s_p(n-k-1)\bigr)}{p-1}
+  =\frac{(k+1)-s_p(n)+s_p(n-k-1)}{p-1},
+\]
+and, again by Legendre,
+\[
+  v_p\binom{2n}{n}=\frac{\bigl(2n-s_p(2n)\bigr)-2\bigl(n-s_p(n)\bigr)}{p-1}
+  =\frac{2s_p(n)-s_p(2n)}{p-1}.
+\]
+Divisibility holds if and only if the first quantity is at most the second for every $p$;
+clearing the common positive denominator $p-1$ and rearranging gives the stated
+inequality.
+\end{proof}
+
+\emph{Verified}: Theorem~\ref{thm:crit} agrees with direct evaluation of
+$\binom{2n}{n}\bmod\prod_{0\le i\le k}(n-i)$ for all $1792$ pairs with $n<260$ and
+$k\le6$ --- no mismatch.
+
+The criterion is exact and involves no estimate: the whole of the divisibility is the
+comparison of three digit sums against the window length $k+1$.  Note that at $p=2$ one has
+$s_2(2n)=s_2(n)$ and the criterion collapses to a two-term inequality; this is exploited in
+Corollary~\ref{cor:binary}.
+
+\section{The antipodal law}
+
+Fix $k$ and $n$ and put
+\[
+  y\ :=\ \max\bigl(2k,\ \sqrt{2n}\bigr).
+\]
+For a prime $p>y$ the entire ledger at $p$ is determined by the single residue
+$n\bmod p$, because $p^{2}>2n$ kills every level $j\ge2$.  The following three statements
+are then exact descriptions of three arcs of the clock $\mathbb Z/p$.
+
+\begin{lemma}[the three arcs]\label{lem:arcs}
+Let $p>y$ and write $\rho=n\bmod p$.  Then
+\begin{enumerate}
+\item[(a)] $p$ divides $\prod_{0\le i\le k}(n-i)$ if and only if $\rho\in[0,k]$, and then
+      $v_p\bigl(\prod_{0\le i\le k}(n-i)\bigr)=1$;
+\item[(b)] $p$ divides $\prod_{1\le i\le k}(n+i)$ if and only if $\rho\in[p-k,p-1]$, and
+      then $v_p\bigl(\prod_{1\le i\le k}(n+i)\bigr)=1$;
+\item[(c)] $p$ divides $\binom{2n}{n}$ if and only if $\rho\ge p/2$, and then
+      $v_p\binom{2n}{n}=1$.
+\end{enumerate}
+\end{lemma}
+
+\begin{proof}
+(a) $p\mid n-i$ for some $0\le i\le k$ means $n\equiv i\pmod p$; as $0\le i\le k<p$ this is
+exactly $\rho\in[0,k]$, and the $i$ is unique since $p>k$.  Moreover $p^{2}>2n>n-i$, so
+$v_p(n-i)=1$.  (b) Likewise $p\mid n+i$ with $1\le i\le k$ means $\rho=p-i$, and
+$p^{2}>2n\ge n+i$ gives $v_p(n+i)=1$.  (c) By Kummer, $v_p\binom{2n}{n}$ counts the levels
+$j\ge1$ with $\{n/p^{j}\}\ge\frac12$.  For $j\ge2$ we have $p^{j}\ge p^{2}>2n>n$, so
+$\{n/p^{j}\}=n/p^{j}<\frac12$ and the level contributes $0$.  Only $j=1$ survives, and
+$\{n/p\}=\rho/p\ge\frac12$ is $\rho\ge p/2$.
+\end{proof}
+
+Since $p>2k$ we have $k<p/2$, so the arc $[0,k]$ of (a) and the arc $[p/2,p)$ of (c) are
+\emph{disjoint}, while the arc $[p-k,p-1]$ of (b) is \emph{contained} in the arc of (c).
+The two shift directions sit at antipodal phases of the same clock.  This is the whole
+content of the next two theorems.
+
+\begin{theorem}[negative shifts: extinction]\label{thm:neg}
+Let $p>\max(2k,\sqrt{2n})$ be prime.  If $p$ divides $n-i$ for some $0\le i\le k$, then
+$v_p\binom{2n}{n}=0$.  Consequently, if $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$ then
+no prime exceeding $\max(2k,\sqrt{2n})$ divides any of $n,n-1,\dots,n-k$.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:arcs}(a) the hypothesis gives $\rho=n\bmod p\in[0,k]$, and $k<p/2$ because
+$p>2k$; so $\rho<p/2$ and Lemma~\ref{lem:arcs}(c) gives $v_p\binom{2n}{n}=0$.  If the
+divisibility held we would need $1=v_p(n-i)\le v_p\binom{2n}{n}=0$, a contradiction.
+\end{proof}
+
+\begin{corollary}[the smooth-window requirement]\label{cor:smooth}
+If $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$ then every one of the $k+1$ consecutive
+integers $n-k,\;n-k+1,\;\dots,\;n$ is $y$-smooth, where $y=\max\bigl(2k,\sqrt{2n}\bigr)$.
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:neg}: a prime factor of any $n-i$ exceeding $y$ is
+excluded.
+\end{proof}
+
+\emph{Verified}: over all solutions $(n,k)$ with $n<400$ and $k\le7$, all $111$ prime
+factors of the $k+1$ window entries are $\le y$ --- no exception.  Separately, over
+$n<1500$ and $k\le8$, all $42\,112$ prime factors exceeding $y$ of window entries $n-i$
+occur at non-solutions and every one of them satisfies $v_p\binom{2n}{n}=0$, as
+Theorem~\ref{thm:neg} requires.
+
+\begin{theorem}[positive shifts: automatic]\label{thm:pos}
+Let $p>\max(2k,\sqrt{2n})$ be prime and let $1\le i\le k$.  If $p$ divides $n+i$ then
+$v_p(n+i)=1\le v_p\binom{2n}{n}$.  Consequently the divisibility
+$\prod_{1\le i\le k}(n+i)\mid\binom{2n}{n}$ imposes no condition whatsoever at primes above
+$\max(2k,\sqrt{2n})$: it is decided entirely by the primes $p\le\max(2k,\sqrt{2n})$, and in
+particular it places no smoothness requirement on the window.
+\end{theorem}
+
+\begin{proof}
+By Lemma~\ref{lem:arcs}(b), $\rho=n\bmod p=p-i$ and $v_p(n+i)=1$.  Since $i\le k<p/2$ we
+get $\rho=p-i>p/2$, so Lemma~\ref{lem:arcs}(c) gives $v_p\binom{2n}{n}=1$.
+\end{proof}
+
+\emph{Verified}: over $n<1500$ and $k\le8$ there are $33\,752$ pairs $(n+i,p)$ with
+$p>y$ and $p\mid n+i$; in every one $v_p(n+i)=1$ and $v_p\binom{2n}{n}=1$ --- no exception.
+
+Theorems~\ref{thm:neg} and~\ref{thm:pos} are the same computation read at two antipodal
+phases, and together they account for the asymmetry in the literature.  Pomerance showed
+that the set of $n$ with $\prod_{1\le i\le k}(n+i)\mid\binom{2n}{n}$ has density $1$; by
+Theorem~\ref{thm:pos} that statement is a statement about the finitely many primes below
+$\max(2k,\sqrt{2n})$ only, where the digit-sum criterion of Theorem~\ref{thm:crit} is
+satisfied for almost all $n$.  By contrast Corollary~\ref{cor:smooth} shows that \#396
+cannot be attacked prime by prime at all: it demands a block of $k+1$ consecutive integers
+with no prime factor above $\sqrt{2n}$, an event of density $\asymp\rho(2)^{k+1}$ in the
+Dickman function, and this --- not any local carry condition --- is what makes \#396 hard.
+
+\section{Two unconditional lower bounds on a solution}
+
+\begin{corollary}[binary bound]\label{cor:binary}
+If $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$ then
+\[
+  2\,s_2(n)\ \ge\ (k+1)+s_2(n-k-1),
+  \qquad\text{hence}\qquad
+  s_2(n)\ \ge\ \Bigl\lceil\tfrac{k+1}{2}\Bigr\rceil
+  \quad\text{and}\quad n\ \ge\ 2^{(k-1)/2}.
+\]
+\end{corollary}
+
+\begin{proof}
+Apply Theorem~\ref{thm:crit} at $p=2$ and use $s_2(2n)=s_2(n)$ to cancel one copy of
+$s_2(n)$.  The second inequality drops the nonnegative term $s_2(n-k-1)$, and the third
+follows from $s_2(n)\le\lfloor\log_2 n\rfloor+1$.
+\end{proof}
+
+\emph{Verified}: all $329$ solutions with $n<3000$, $k\le7$ satisfy the two-term
+inequality --- no exception.
+
+\begin{corollary}[prime-count bound]\label{cor:picount}
+If $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$ and $y=\max(2k,\sqrt{2n})$ then
+\[
+  \pi(y)\ \ge\ (k+1)\,\frac{\log(n-k)}{\log(2n)} .
+\]
+In particular $\pi(y)\ge k$ once $n\ge(2n)^{k/(k+1)}+k$, so $y$ is at least the $k$-th
+prime; when the maximum defining $y$ is attained by $\sqrt{2n}$ this gives
+$n\ge\frac12 p_k^{2}$.
+\end{corollary}
+
+\begin{proof}
+By Corollary~\ref{cor:smooth} the product $\prod_{0\le i\le k}(n-i)$ is $y$-smooth, and it
+divides $\binom{2n}{n}$, so it divides $\prod_{p\le y}p^{\,v_p\binom{2n}{n}}$.  Kummer's
+theorem bounds each carry count by $v_p\binom{2n}{n}\le\lfloor\log_p(2n)\rfloor$, i.e.\
+$p^{\,v_p\binom{2n}{n}}\le 2n$.  Hence
+\[
+  (n-k)^{k+1}\ <\ \prod_{0\le i\le k}(n-i)\ \le\ (2n)^{\pi(y)} ,
+\]
+and taking logarithms gives the claim.
+\end{proof}
+
+\emph{Verified}: at the least solution for $k=4$, namely $n=45153$, one has $y=300$,
+$\pi(300)=62$ and the right-hand side is $4.70$.
+
+\section{Census}
+
+Let $n_k$ denote the least $n$ with $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$
+(OEIS A375077).  Searching by the criterion of Theorem~\ref{thm:crit}, with the window
+prefiltered by Corollary~\ref{cor:smooth}, gives
+\[
+  n_0=2,\quad n_1=210,\quad n_2=2480,\quad n_3=8178,\quad n_4=45153,
+  \qquad n_5>3\times10^{6}.
+\]
+Every one of these has its whole window $y$-smooth, as Corollary~\ref{cor:smooth} forces:
+for instance at $k=1$, $n_1=210=2\cdot3\cdot5\cdot7$ and $209=11\cdot19$, with
+$y=\max(2,\lfloor\sqrt{420}\rfloor)=20$, and indeed $19\le20$.  The growth of $n_k$ is far
+faster than the bounds of Corollaries~\ref{cor:binary} and~\ref{cor:picount}
+($2^{(k-1)/2}$ is $2.8$ at $k=4$, against $45153$), which is consistent with
+Corollary~\ref{cor:smooth}: the binding constraint is the smooth window, not any local
+carry budget.
+
+\begin{remark}[harmonic content]
+The object's own scale is the clock $\mathbb Z/p^{j}$, never unit $1$; the DC mode is the
+Legendre digit-sum identity, which is evaluated \emph{exactly} in Theorem~\ref{thm:crit}
+with no remainder to estimate, and the entire AC content at a prime $p>y$ is the single
+half-turn indicator $\mathbf 1[\,\rho\ge p/2\,]$.  The difficulty of \#396 lives on the
+carrier --- the requirement that a whole window of length $k+1$ be $\sqrt{2n}$-smooth ---
+and not in any chart readout.
+\end{remark}
+
+\begin{remark}[register]
+\textbf{Proved}: Theorem~\ref{thm:crit} (exact digit-sum criterion, all $n,k$);
+Lemma~\ref{lem:arcs}; Theorem~\ref{thm:neg} and Corollary~\ref{cor:smooth} (every solution
+of \#396 has a $\max(2k,\sqrt{2n})$-smooth window); Theorem~\ref{thm:pos} (the positive-shift
+problem has no large-prime condition at all); Corollaries~\ref{cor:binary}
+and~\ref{cor:picount}.  All are elementary consequences of Legendre and Kummer, and all
+were checked against direct computation before being written down.
+\textbf{Measured}: $n_0,\dots,n_4$ and $n_5>3\times10^{6}$; the verification counts
+recorded after each statement.
+\textbf{Not proved}: \#396 itself.  What Corollary~\ref{cor:smooth} leaves is the
+existence, for every $k$, of $k+1$ consecutive $\sqrt{2n}$-smooth integers additionally
+satisfying the digit-sum criterion at every prime below $\sqrt{2n}$; no construction of
+such blocks is given here, and none is claimed.
+\textbf{Falsifier}: a solution $(n,k)$ with a prime factor of some $n-i$ exceeding
+$\max(2k,\sqrt{2n})$ would refute Theorem~\ref{thm:neg}; none was found in
+$42\,112$ tested large-prime incidences.
+\end{remark}
+\end{document}

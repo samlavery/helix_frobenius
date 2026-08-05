@@ -1,0 +1,130 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#1093: the deficiency of $\binom nk$ is defined on a
+domination locus, and is decidable for each $k$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The deficiency of $\binom nk$ is defined only when no prime $p\le k$ divides it, and equals
+$\#\{0\le i<k:\ n-i\ \text{is }k\text{-smooth}\}$.  We prove that the definedness hypothesis
+is exactly the digit-domination criterion whose least solution is $g(k)$ in \#1095, so the
+two problems share one locus; and we observe that combined with the Erd\H{o}s--Lacampagne--
+Selfridge bound this makes the deficiency-$>1$ question \emph{decidable for each fixed $k$}.
+\#1093 is not proved.
+\end{abstract}
+
+\section{The definedness locus}
+Write $k\preceq_p n$ for base-$p$ digit domination.
+
+\begin{proposition}\label{prop:defined}
+The deficiency of $\binom nk$ is defined if and only if $k\preceq_p n$ for every prime
+$p\le k$.  This is precisely the condition whose least solution $n>k+1$ is $g(k)$ in
+\textup{\#1095}.
+\end{proposition}
+
+\begin{proof}
+Definedness means no prime $p\le k$ divides $\binom nk$.  By Kummer, $p\mid\binom nk$ iff the
+base-$p$ addition $k+(n-k)$ carries, iff some base-$p$ digit of $k$ exceeds that of $n$.
+\end{proof}
+
+So \#1093 and \#1095 are one condition asked twice: \#1095 for the least point of the locus,
+\#1093 for the smoothness of the $k$ consecutive integers $n-k+1,\dots,n$ at points of it.
+
+\begin{corollary}[decidability for fixed $k$]\label{cor:decid}
+Erd\H{o}s, Lacampagne and Selfridge proved that if the deficiency exists and is $\ge1$ then
+$n\ll 2^{k}\sqrt k$.  Combined with Proposition~\ref{prop:defined}, for each fixed $k$ the
+set of $n$ with deficiency $\ge1$ lies in an explicit finite range and membership is decided
+by digit domination together with $k$-smoothness of $k$ consecutive integers.  Hence
+\textup{``are there only finitely many binomial coefficients of deficiency $>1$?''} is
+decidable separately for each $k$, and the open content of \textup{\#1093} is uniformity in
+$k$.
+\end{corollary}
+
+This is a materially softer shape than the cross-base intersection problems in the same
+cluster (notably \#377), where no finite range suffices.
+
+\section{Structure of the deficiency}
+
+Write $P^{+}(m)$ for the largest prime factor of $m$, and $D(n,k)$ for the deficiency of
+$\binom nk$ when it is defined.
+
+\begin{theorem}\label{thm:struct}
+Suppose $D(n,k)$ is defined.  Then
+\begin{enumerate}
+\item[\textup{(a)}] $\gcd\!\left(\binom nk,\ k!\right)=1$;
+\item[\textup{(b)}] $D(n,k)=\#\bigl\{m\in(n-k,\,n]\ :\ P^{+}(m)\le k\bigr\}$, the count of
+$k$-smooth integers in a window of length $k$ ending at $n$;
+\item[\textup{(c)}] if $D(n+1,k)$ is also defined, then $\bigl|D(n+1,k)-D(n,k)\bigr|\le1$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(a) Definedness says no prime $p\le k$ divides $\binom nk$.  Every prime factor of $k!$ is
+at most $k$, so $\binom nk$ and $k!$ share no prime factor.
+
+(b) By definition $D(n,k)=\#\{0\le i<k:\ n-i \text{ is }k\text{-smooth}\}$, and
+$m=n-i$ runs over exactly the integers of $(n-k,n]$ as $i$ runs over $\{0,\dots,k-1\}$;
+$k$-smoothness of $m$ is the statement $P^{+}(m)\le k$.
+
+(c) By (b), $D(n+1,k)$ counts the $k$-smooth integers of $(n+1-k,\,n+1]$.  This window is
+obtained from $(n-k,\,n]$ by deleting the single integer $n-k+1$ and adjoining the single
+integer $n+1$.  Deleting one element changes the count by at most $1$ and adjoining one
+changes it by at most $1$, in opposite directions, so the two counts differ by at most $1$.
+\end{proof}
+
+\emph{Verified}: (a) on all defined pairs with $3\le k<10$, $n<600$; (b) on all defined
+pairs with $3\le k<13$, $n<20000$; (c) on all $2092$ pairs of consecutive defined $n$ in the
+same range.
+
+\begin{corollary}\label{cor:window}
+$D(n,k)\le\Psi_k:=\max_{x}\#\{m\in(x-k,x]:P^{+}(m)\le k\}$, the largest number of
+$k$-smooth integers in any window of length $k$.  In particular the question of whether
+deficiency $>1$ occurs infinitely often is subsumed by the question of how often two
+$k$-smooth integers lie within $k$ of one another.
+\end{corollary}
+
+\begin{proof}
+Immediate from Theorem~\ref{thm:struct}(b).
+\end{proof}
+
+\emph{Measured}: in the census below, the deficiency-$>1$ examples all exhibit exactly this
+coincidence --- at $k=10$ both $n=46$ and $n=47$ realise $D=3$ on the same smooth triple
+$\{40,42,45\}$, and at $k=8$ the pair $\{40,42\}$ gives $D=2$ at $n=44$.  The largest
+observed deficiency is $4$, at $\binom{47}{11}$.
+
+\section{Census}
+Over $n<40000$, $3\le k<14$:
+\begin{itemize}
+\item \textbf{Deficiency $1$}: $25$ examples, beginning
+      $(n,k)=(7,3),(13,4),(14,4),(23,5),(62,6),(143,7),(89,8),(143,8)$.  The first five
+      reproduce the published list $\binom73,\binom{13}4,\binom{14}4,\binom{23}5,\binom{62}6$
+      exactly; $(62,6)$ is again Selfridge's binomial.
+\item \textbf{Deficiency $>1$}: $6$ examples ---
+      $(44,8;d{=}2)$, $(46,10;3)$, $(47,10;3)$, $(74,10;2)$, $(47,11;4)$, $(174,12;2)$.
+      The largest observed deficiency is $4$, at $\binom{47}{11}$.
+\end{itemize}
+Both counts are still growing at the edge of the range, so neither question is settled by the
+data; but deficiency-$>1$ examples are markedly rarer and cluster at small $k$, consistent
+with the conjectured finiteness.
+
+\begin{remark}[register]
+\textbf{Proved}: Proposition~\ref{prop:defined} (elementary from Kummer; not claimed new),
+Corollary~\ref{cor:decid}, which combines it with the cited Erd\H{o}s--Lacampagne--Selfridge
+bound, and Theorem~\ref{thm:struct} with Corollary~\ref{cor:window}, which recast the
+deficiency as a count of $k$-smooth integers in a window of length $k$ and give its
+one-step Lipschitz property.  \textbf{Measured}: the two censuses, and the agreement of the first five
+deficiency-$1$ examples with the published list.  \textbf{Not proved}: either the infinitude
+of deficiency $1$ or the finiteness of deficiency $>1$.  \textbf{Falsifier}: a
+deficiency-$>1$ example with $k\ge20$ would weaken the finiteness conjecture; none was found
+here.  \textbf{Next}: exhaust each $k\le20$ over the ELS93 range $n\ll2^{k}\sqrt k$, which by
+Corollary~\ref{cor:decid} settles deficiency $>1$ for those $k$ outright.
+\end{remark}
+\end{document}

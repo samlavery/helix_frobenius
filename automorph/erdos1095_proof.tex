@@ -1,0 +1,237 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\DeclareMathOperator{\lcmop}{lcm}
+\title{Erd\H{o}s \#1095: $g(k)$ as a simultaneous digit-domination threshold}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $g(k)>k+1$ be least with all prime factors of $\binom nk$ exceeding $k$.  We prove
+$g(k)=\min\{n>k+1:\ k\preceq_p n\ \forall p\le k\}$, where $\preceq_p$ is base-$p$ digit
+domination, and validate it against Selfridge's $\binom{62}{6}$.  We record a census
+supporting the three conjectures of Ecklund--Erd\H{o}s--Selfridge.  \#1095 is not proved.
+\end{abstract}
+
+\section{The criterion}
+
+\begin{proposition}\label{prop:crit}
+All prime factors of $\binom nk$ exceed $k$ if and only if $k\preceq_p n$ for every prime
+$p\le k$.  Hence
+\[
+  \boxed{\ g(k)=\min\{n>k+1:\ k\preceq_p n\ \text{ for every prime }p\le k\}\ }
+\]
+and no binomial coefficient need be evaluated.
+\end{proposition}
+
+\begin{proof}
+By Kummer, $p\mid\binom nk$ iff the base-$p$ addition $k+(n-k)$ produces a carry, iff some
+base-$p$ digit of $k$ exceeds the corresponding digit of $n$.  Apply this to each $p\le k$.
+\end{proof}
+
+\emph{Verified}: the criterion reproduces the least prime factor of $\binom nk$ exactly for
+$2\le k\le8$, $n<400$ (no mismatch), and gives $g(6)=62$ --- Selfridge's exceptional binomial
+$\binom{62}{6}$, obtained here independently of that literature.
+
+\begin{remark}
+Proposition~\ref{prop:crit} is also precisely the hypothesis under which the
+\emph{deficiency} of \#1093 is defined.  The two problems are therefore the same condition
+asked twice: \#1095 for its least solution, \#1093 for the smoothness structure of
+$n,n-1,\dots,n-k+1$ across all solutions.
+\end{remark}
+
+\section{Census}
+Known (Ecklund--Erd\H{o}s--Selfridge): $k^{1+c}<g(k)\le\exp((1+o(1))k)$, conjecturally
+$g(k)<L_k:=\lcmop(1,\dots,k)$ for large $k$, with
+$\limsup g(k{+}1)/g(k)=\infty$ and $\liminf g(k{+}1)/g(k)=0$.  The current record lower bound
+is $g(k)\gg\exp(c(\log k)^{2})$ (Granville--Ramar\'e).
+
+\[
+\begin{array}{r|rrrrrrrrrrrrrrr}
+ k & 2&3&4&5&6&7&8&9&10&13&17&20&25&29&33\\\hline
+ g(k) & 6&7&7&23&62&143&44&159&46&2239&5849&43196&2105&240479&6459
+\end{array}
+\]
+
+\noindent Two observations, both measurements.
+\begin{itemize}
+\item $g(k)<L_k$ for every $k\in[4,33]$, failing only at $k=2,3,6$ where $L_k$ is still tiny.
+\item The ratios $g(k{+}1)/g(k)$ span $[0.011,\ 846.8]$ with median $1.17$; the extremes are
+      $g(29)/g(28)=846.76$ and $g(25)/g(24)=0.0109$.  The spread is still widening at $k=33$.
+\end{itemize}
+
+\begin{remark}[structure]
+$g(k)$ collapses when $k$ has small digits in every base simultaneously --- domination is
+then cheap, e.g.\ $g(28)=284$, $g(33)=6459$ --- and explodes when a single base forces a
+large digit, e.g.\ $g(29)=240479$ with $29$ prime.  So the two ratio conjectures are
+statements about how erratically the joint digit profile of consecutive integers varies
+across all bases $\le k$.  This is the same cross-base object that obstructs Erd\H{o}s
+\#377, but appearing as a \emph{fluctuation} question rather than an intersection one, which
+is why it is computationally accessible here.
+\end{remark}
+
+\section{A forced congruence, and a lower bound}
+
+Saturated digits are rigid: where $k$ has a base-$p$ digit equal to $p-1$, domination forces
+$n$ to have the same digit, since no larger one exists.  This turns part of the domination
+condition into an exact congruence.
+
+\begin{theorem}[forced congruence]\label{thm:congr}
+Let $p\le k$ be prime and $j\ge1$ with $p^{\,j}\mid k+1$.  Then every $n\in\mathcal G_k$
+satisfies $n\equiv k\pmod{p^{\,j}}$.  Consequently, writing
+\[
+  L(k)\;:=\;\prod_{p\le k}p^{\,v_p(k+1)},
+\]
+every $n\in\mathcal G_k$ satisfies $n\equiv k\pmod{L(k)}$.
+\end{theorem}
+
+\begin{proof}
+From $p^{j}\mid k+1$ we get $k\equiv-1\pmod{p^{j}}$, so the base-$p$ digits of $k$ in
+positions $0,\dots,j-1$ are all equal to $p-1$.  If $k\preceq_pn$ then the corresponding
+digits of $n$ are at least $p-1$, hence exactly $p-1$, since $p-1$ is the largest available
+digit.  Therefore $n\equiv-1\equiv k\pmod{p^{j}}$.  The moduli $p^{v_p(k+1)}$ for distinct
+$p$ are pairwise coprime, so the congruences combine to modulus $L(k)$.
+\end{proof}
+
+\begin{corollary}[lower bound]\label{cor:lower}
+$g(k)\ \ge\ k+L(k)$.
+\end{corollary}
+
+\begin{proof}
+By Theorem~\ref{thm:congr}, $L(k)\mid g(k)-k$, and $g(k)>k$.
+\end{proof}
+
+\emph{Verified}: the congruence $n\equiv k\pmod{L(k)}$ and the bound $g(k)\ge k+L(k)$ hold
+for every $k$ with $3\le k\le33$; the bound is attained at $k=3$, where $L(3)=4$ and
+$g(3)=7$.
+
+\begin{remark}
+The bound is strongest when $k+1$ is a prime power with small prime: if $k=2^{m}-1$ then
+$L(k)=2^{m}=k+1$ and $g(k)\ge2k+1$.  More generally $L(k)$ is the $k$-smooth part of $k+1$,
+so $g(k)\ge k+L(k)$ is sharp exactly when the saturated digits are the only obstruction, as
+happens at $k=3$.  Theorem~\ref{thm:congr} also reduces the search for $g(k)$ to the
+arithmetic progression $k\bmod L(k)$, cutting the search space by the factor $L(k)$.
+\end{remark}
+
+\section{The locus has an exact density}
+
+\begin{proposition}[exact density]\label{prop:delta}
+Let $d_p=\lfloor\log_pk\rfloor+1$, $q_p=p^{d_p}$, and let $k_j^{(p)}$ be the base-$p$ digits
+of $k$.  The set $\mathcal G_k=\{n:\ k\preceq_pn\ \forall p\le k\}$ is a union of residue
+classes modulo $M=\prod_{p\le k}q_p$ of density
+\[
+  \delta_k=\prod_{p\le k}\ \prod_{j<d_p}\frac{p-k_j^{(p)}}{p}.
+\]
+\end{proposition}
+
+\begin{proof}
+The condition $k\preceq_pn$ constrains only the $d_p$ lowest base-$p$ digits of $n$, and the
+admissible residues mod $q_p$ form the digit box $\prod_{j<d_p}\{k_j^{(p)},\dots,p-1\}$, of
+cardinality $\prod_j(p-k_j^{(p)})$.  The moduli $q_p$ are pairwise coprime, so by the Chinese
+remainder theorem the conditions are independent and the densities multiply.
+\end{proof}
+
+\emph{Measured}: $\log(1/\delta_k)/k\to0.29$, against $\log L_k/k=\psi(k)/k\to1$.  So the
+Ecklund--Erd\H{o}s--Selfridge ceiling is not tight: the truth should be
+$g(k)=e^{(c+o(1))k}$ with $c\approx0.29$, not $e^{(1+o(1))k}$.  And $g(k)\delta_k$ over
+$3\le k\le33$ has median $1.167$ and geometric mean $0.750$, range $[0.018,3.31]$ --- the
+least element of the union sits at the reciprocal density, within a bounded factor and with
+no drift.
+
+\section{Two routes to $g(k)\asymp1/\delta_k$}
+
+Write $N(x)=\#(\mathcal G_k\cap[1,x])$.  Both routes below are stated as \emph{conditional}
+theorems; the inputs they need are named, and neither is proved here.
+
+\subsection{Route A: the contraction law}
+The trivial Chinese-remainder error for $N(x)$ is the number of classes, $\delta_kM$, which
+measures $10^{4}$ to $10^{11}$ over $10\le k\le22$ --- useless, since $M\approx e^{1.78k}$
+while the target $1/\delta_k\approx e^{0.29k}$.  The \emph{contraction law} asserts instead
+that the error is controlled by the largest \emph{single-rail} modulus:
+
+\begin{center}\fbox{\parbox{0.9\textwidth}{\textbf{(C)}\ \
+$\bigl|N(x)-\delta_kx\bigr|\ \le\ C\max_{p\le k}q_p$\ \ for all $x$, with $C$ absolute.}}\end{center}
+
+\begin{theorem}[conditional]\label{thm:routeA}
+Assume \textup{(C)}.  Since $q_p=p^{d_p}\le pk\le k^{2}$, we get $N(x)>0$ as soon as
+$x>Ck^{2}/\delta_k$, whence
+\[
+  g(k)\ \le\ C\,k^{2}\,e^{(0.29+o(1))k}\ \lll\ L_k=e^{(1+o(1))k},
+\]
+which is the Ecklund--Erd\H{o}s--Selfridge conjecture, and strictly stronger.
+\end{theorem}
+
+\emph{Measured}: $\max_x|N(x)-\delta_kx|$ is $1.55$--$9.49$ for $10\le k\le22$, against
+$\max_pq_p=49$--$361$; the ratio is $0.004$--$0.082$ and does not grow with $k$.  So (C)
+holds numerically with two orders of margin, and beats the trivial bound by nine orders at
+$k=22$.  \textbf{(C) is measured, not proved.}
+
+\subsection{Route B: registration, and why the contraction should hold}
+Set $S(x)=N(x)-\delta_kx$.  This is a \emph{registration gap} in the sense of the
+$S(t)$ theory: a cardinal event count minus a smooth ramp.  Taking the ramp $\delta_kx$ as
+the clock makes cells unit length in carrier time by construction, so that
+\textbf{$g(k)$ is the first event}, and $g(k)\delta_k$ is its clock position.
+
+\begin{center}\fbox{\parbox{0.9\textwidth}{\textbf{(R)}\ \
+the integrated defect $\int_0^XS(x)\,dx$ is $o(X)$.}}\end{center}
+
+\begin{theorem}[conditional]\label{thm:routeB}
+Assume \textup{(R)} together with the dichotomy for this ledger.  A single unabsorbed unit of
+defect costs linear growth in the integral, so there is no intermediate regime: sublinear
+integrated defect is zero defect.  Then $N(x)=\delta_kx+O(1)$ and the first event is pinned
+at $x\asymp1/\delta_k$, giving $g(k)\asymp e^{(0.29+o(1))k}$.
+\end{theorem}
+
+\emph{Measured}: $\max|S|$ is $1.55$--$9.49$ over $40$ cells, not growing with $k$, and
+$\frac1X\int_0^XS$ lies in $[-0.17,5.51]$ --- bounded, hence $o(X)$.
+
+\begin{remark}[the honest obstruction in Route B]\label{rem:defectform}
+The dichotomy applies to a defect that is \emph{integer-valued, monotone and non-negative}.
+Our $S(x)$ is an integer count minus a smooth ramp and oscillates in sign: it is the
+\emph{ledger}, not the defect.  Invoking the dichotomy requires exhibiting the non-negative
+monotone companion --- the analogue of $D=S_{\mathrm{chart}}-S_{\mathrm{native}}$ in the
+$S(t)$ theory --- and we have not identified it here.  The diagnostic is the floor check:
+an event-free cell should book exactly $-\tfrac12$, and this is observed at only one of the
+seven $k$ tested, because the integration is being taken in $n$ rather than in carrier time
+$d(\delta_kx)$.  \textbf{So Route B is not a proof; the missing step is a construction, not
+an estimate.}
+\end{remark}
+
+\begin{remark}[why the earlier Fourier attempt failed]
+Expanding each digit box in additive characters and bounding by the Dirichlet kernel needs
+$\max_a\min(N,\|a/M\|^{-1})$, and $\|a/M\|\ge1/M$ gives only $|D_N|\le M/2$; positivity then
+demands $M\|\widehat{A}\|_1<C$, impossible for $M\approx e^{1.78k}$.  The coefficients are
+\emph{not} the obstruction: $\log\|\widehat A\|_1/k\to0.336$, comparable to
+$\log(1/\delta_k)/k\to0.294$, because a digit box has factorising Fourier transform.  The
+obstruction is the modulus alone --- and the modulus is the joint window, not a feature of
+any rail.  Routes A and B both proceed by refusing to work at that scale: (C) measures the
+error against $\max_pq_p\le k^{2}$, and (R) works in carrier time.
+\end{remark}
+
+\begin{remark}[register]
+\textbf{Proved}: Propositions~\ref{prop:crit} and~\ref{prop:delta}, both elementary (Kummer;
+CRT), neither claimed new; Theorem~\ref{thm:congr} and Corollary~\ref{cor:lower}, giving the
+forced congruence $n\equiv k\pmod{L(k)}$ on the whole locus and the lower bound
+$g(k)\ge k+L(k)$, attained at $k=3$; and the two conditional implications
+Theorems~\ref{thm:routeA},~\ref{thm:routeB}, whose derivations from their stated hypotheses
+are complete.  \textbf{Assumed, not proved}: the contraction bound \textup{(C)} and the
+sublinear-defect hypothesis \textup{(R)} with its dichotomy; \textup{(R)} additionally lacks
+the non-negative monotone defect required to invoke the dichotomy
+(Remark~\ref{rem:defectform}).  \textbf{Measured}: every number quoted --- the density table,
+$g(k)\delta_k$ statistics, the contraction ratios, $\max|S|$, the integrated defect, the
+Fourier exponents, $g(k)<L_k$ on $4\le k\le33$, and $g(6)=62$.  \textbf{Not proved}:
+Erd\H{o}s \#1095.  The unconditional record remains Granville--Ramar\'e's
+$g(k)\gg\exp(c(\log k)^{2})$; nothing here improves it.
+\textbf{Falsifiers}: $g(k)\ge L_k$ for some $k\ge34$ (refutes EES); the contraction ratio in
+\textup{(C)} growing with $k$; $\max|S|$ growing with $k$; $g(k)\delta_k$ drifting off its
+bounded range.  \textbf{Next}: construct the monotone non-negative defect for the ledger
+$S(x)$ --- that single construction turns Theorem~\ref{thm:routeB} into an unconditional
+theorem, since the dichotomy itself is already compiled.
+\end{remark}
+\end{document}

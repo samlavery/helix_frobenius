@@ -1,0 +1,174 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#683: reduction to prime-free intervals,\\ and identification with the
+Sylvester--Erd\H{o}s problem}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\#683 asks whether $P\binom nk\ge\min(n-k+1,k^{1+c})$ for some $c>0$, where $P$ denotes the
+largest prime factor.  We prove that the inequality holds automatically --- for every $c>0$
+--- whenever $(n-k,n]$ contains a prime, so the problem reduces entirely to prime-free
+intervals; by Baker--Harman--Pintz this leaves only $k<n^{0.525+\varepsilon}$.  We further
+show that in its main range \#683 \emph{is} the Sylvester--Erd\H{o}s problem on the largest
+prime factor of a product of consecutive integers.  \#683 itself is not proved.
+\end{abstract}
+
+\section{Setup}
+By Kummer, $v_p\binom nk$ is the number of carries in the base-$p$ addition $k+(n-k)$; the
+set of primes dividing $\binom nk$ is $\mathcal D(n,k)=\{p:k\not\preceq_p n\}$, where
+$k\preceq_p n$ means every base-$p$ digit of $k$ is at most that of $n$.  \#683 asks for
+$\max\mathcal D$.  Throughout $1\le k\le n/2$.
+
+\section{The window}
+
+\begin{lemma}[window]\label{lem:window}
+Let $p>n/2$ be prime.  Then $v_p\binom nk=1$ if $n-k<p\le n$, and $v_p\binom nk=0$ if
+$n/2<p\le n-k$.
+\end{lemma}
+
+\begin{proof}
+For $p>n/2$ and $m\le n$ we have $p^2>n\ge m$, so $v_p(m!)=\lfloor m/p\rfloor$.  Hence
+$v_p\binom nk=\lfloor n/p\rfloor-\lfloor k/p\rfloor-\lfloor(n-k)/p\rfloor$, in which
+$\lfloor n/p\rfloor=1$, $\lfloor k/p\rfloor=0$ (as $k\le n/2<p$), and
+$\lfloor(n-k)/p\rfloor$ is $1$ or $0$ according as $p\le n-k$ or not.
+\end{proof}
+
+\emph{Verified}: no exception, in either direction, for $4\le n<420$ and all $k\le n/2$.
+
+\begin{theorem}[reduction]\label{thm:reduction}
+If $(n-k,n]$ contains a prime then $P\binom nk\ge n-k+1$, so the inequality of \#683 holds
+for every $c>0$.  Consequently \#683 is equivalent to its restriction to pairs $(n,k)$ for
+which $(n-k,n]$ is prime-free.
+\end{theorem}
+
+\begin{proof}
+A prime $q\in(n-k,n]$ divides $\binom nk$ by Lemma~\ref{lem:window}, so $P\binom nk\ge q>n-k$,
+and the minimum is attained by its first branch or exceeded.
+\end{proof}
+
+\emph{Measured}: among the $2\,248\,480$ pairs with $10\le n<3000$, $1\le k\le n/2$, the
+interval $(n-k,n]$ is prime-free for $13\,909$ --- a proportion of $0.0062$.  So
+Theorem~\ref{thm:reduction} settles $99.38\%$ of the range unconditionally.
+
+\begin{corollary}[unconditional range]\label{cor:bhp}
+Fix $\varepsilon>0$.  For $n$ large and $n^{0.525+\varepsilon}\le k\le n/2$, the interval
+$(n-k,n]$ contains a prime by Baker--Harman--Pintz, so \#683 holds there for every $c>0$.
+Only $k<n^{0.525+\varepsilon}$ remains.
+\end{corollary}
+
+\emph{Measured}: the longest prime-free $(n-k,n]$ below $n=2\times10^{4}$ has length $51$,
+against $n^{0.525}=181$.
+
+\section{Identification with Sylvester--Erd\H{o}s}
+
+\begin{theorem}[refined window]\label{thm:refined}
+Let $p>\sqrt n$ be prime with $p>k$.  Then $p\mid\binom nk$ if and only if $p$ has a multiple
+in $(n-k,n]$.
+\end{theorem}
+
+\begin{proof}
+$p^2>n$ gives $v_p(m!)=\lfloor m/p\rfloor$ for $m\le n$, and $k<p$ gives
+$\lfloor k/p\rfloor=0$; so $v_p\binom nk=\lfloor n/p\rfloor-\lfloor(n-k)/p\rfloor$, the
+number of multiples of $p$ in $(n-k,n]$.
+\end{proof}
+
+\emph{Verified}: $7\,327\,302$ triples $(n,k,p)$ with $n<700$ --- no mismatch.
+
+\begin{corollary}\label{cor:sylvester}
+If $P^{+}\bigl(\prod_{m=n-k+1}^{n}m\bigr)>\max(\sqrt n,k)$ then
+$P\binom nk=P^{+}\bigl(\prod_{m=n-k+1}^{n}m\bigr)$.  Hence in its main range \#683 is
+exactly the Sylvester--Erd\H{o}s problem on the largest prime factor of a product of $k$
+consecutive integers near $n$.
+\end{corollary}
+
+\emph{Verified}: equality with no mismatch for $20\le n<500$, all $k\le n/2$ with the set
+nonempty.  \emph{Measured}: over $n<1200$, $3\le k<60$, restricted to pairs where the binding
+branch is $k^{1+c}$, the least admissible exponent is $c=0.4650$, at $(n,k)=(10,3)$ with
+$P\binom{10}{3}=P(120)=5$; the extremal case is not drifting upward with $n$.
+
+\section{A ledger bound forcing $P\gg k\log k$}
+
+The reduction of \S2 disposes of the range where $(n-k,n]$ contains a prime.  On the
+complementary range the size of $\binom nk$ and the ledger bound each rail's contribution,
+and the two together bound $P$ from below.
+
+\begin{lemma}[rail ceiling]\label{lem:railceil}
+For every prime $p$ and $1\le k\le n$,
+\[
+  v_p\binom nk\ \le\ \Bigl\lfloor \frac{\log n}{\log p}\Bigr\rfloor+1 .
+\]
+\end{lemma}
+
+\begin{proof}
+By Kummer, $v_p\binom nk$ is the number of carries in the base-$p$ addition $k+(n-k)=n$.
+Carries occur only out of positions $0,1,\dots,\lfloor\log_pn\rfloor$, since $n$ has
+$\lfloor\log_pn\rfloor+1$ base-$p$ digits and no carry leaves the top position.
+\end{proof}
+
+\emph{Verified}: $660\,046$ triples $(n,k,p)$ with $n<260$ --- no violation.
+
+\begin{theorem}[the smoothness inequality]\label{thm:smoothineq}
+Let $2\le k\le n/2$ and put $y=P\bigl(\binom nk\bigr)$.  Then
+\[
+  \frac{k\,\log(n/k)}{\log y}\ \le\ \Omega\!\left(\binom nk\right)\ \le\
+  \log n\sum_{p\le y}\frac{1}{\log p} .
+\]
+\end{theorem}
+
+\begin{proof}
+For the left inequality, $\binom nk\ge(n/k)^{k}$, and any integer $N>1$ all of whose prime
+factors are at most $y$ satisfies $N\le y^{\Omega(N)}$, whence
+$\Omega(N)\ge\log N/\log y$.
+
+For the right inequality, every prime factor of $\binom nk$ is at most $y$, so by
+Lemma~\ref{lem:railceil}
+\[
+  \Omega\!\left(\binom nk\right)=\sum_{p\le y}v_p\binom nk
+  \ \le\ \sum_{p\le y}\Bigl(\frac{\log n}{\log p}+1\Bigr),
+\]
+and the term $\pi(y)$ is absorbed since $\log n/\log p\ge1$ for every $p\le n$.
+\end{proof}
+
+\emph{Verified}: $16\,510$ pairs $(n,k)$ with $n<260$ --- both inequalities hold throughout.
+
+\begin{corollary}\label{cor:klogk}
+For $k\le\sqrt n$ one has $P\bigl(\binom nk\bigr)\gg k\log k$.
+\end{corollary}
+
+\begin{proof}
+By the prime number theorem $\sum_{p\le y}1/\log p\sim y/(\log y)^{2}$.  Substituting into
+Theorem~\ref{thm:smoothineq} and using $\log(n/k)\ge\tfrac12\log n$ for $k\le\sqrt n$ gives
+\[
+  \frac{k\log n}{2\log y}\ \le\ (1+o(1))\,\frac{y\log n}{(\log y)^{2}},
+  \qquad\text{i.e.}\qquad y\ \ge\ (1+o(1))\,\tfrac12\,k\log y .
+\]
+Since $y>k$ by Sylvester--Schur, $\log y>\log k$, and the claim follows.
+\end{proof}
+
+This recovers Erd\H{o}s's bound $P\binom nk\gg k\log k$ from the ledger alone, with no input
+beyond Kummer, Legendre and the prime number theorem.  The gap to \#683 is the passage from
+$k\log k$ to $k^{1+c}$: Theorem~\ref{thm:smoothineq} is sharp in the exponent of $y$, so any
+improvement must come from a better upper bound on $\Omega\binom nk$ than the rail ceiling
+of Lemma~\ref{lem:railceil}, which is attained only when every position carries.
+
+\begin{remark}[register]
+\textbf{Proved}: Lemmas and Theorems above, all elementary consequences of Legendre and
+Kummer; Corollary~\ref{cor:bhp} additionally cites Baker--Harman--Pintz, and
+Corollary~\ref{cor:klogk} the prime number theorem.  Lemma~\ref{lem:railceil},
+Theorem~\ref{thm:smoothineq} and Corollary~\ref{cor:klogk} recover Erd\H{o}s's
+$P\binom nk\gg k\log k$ from the ledger alone.  None is claimed to
+be new --- Lemma~\ref{lem:window} is surely folklore.  What is recorded is the reduction to
+prime-free intervals and the identification in Corollary~\ref{cor:sylvester}.
+\textbf{Measured}: the $0.62\%$ proportion, $c=0.4650$, the length-$51$ window.
+\textbf{Not proved}: \#683.  \textbf{Falsifier}: the least admissible $c$ declining with the
+range would indicate no fixed $c$ works; it did not.
+\end{remark}
+\end{document}

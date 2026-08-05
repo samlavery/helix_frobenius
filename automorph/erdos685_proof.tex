@@ -1,0 +1,216 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{remark}[theorem]{Remark}
+\title{Erd\H{o}s \#685: two-sided bounds for
+$\omega\bigl(\binom nk\bigr)$}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+\#685 asks whether $\omega\binom nk=(1+o(1))\,k\sum_{k<p<n}1/p$ for
+$n^{\varepsilon}<k\le n^{1-\varepsilon}$.  Pushing the Legendre window from $n/2$ down to
+$\sqrt n$ gives an exact description of which primes above $T=\max(\sqrt n,k)$ divide
+$\binom nk$ --- precisely those with a multiple in $(n-k,n]$ --- and hence an exact split
+$\omega=B+S$ into large and small rails.  Bounding the two parts separately yields the
+two-sided estimate
+\[
+  \#\bigl\{m\in(n-k,n]:P^{+}(m)>T\bigr\}\ \le\ \omega\!\left(\binom nk\right)\ \le\ k+\pi(T),
+\]
+whose left side already attains the conjectured order.  At $k=\lfloor\sqrt n\rfloor$ the
+lower bound has expected size $(\log2)k$, exactly the conjectured value, and the upper bound
+is $(1+o(1))k$, so the conjecture is bracketed between its own prediction and $1/\log2$
+times it.  \#685 itself is not proved.
+\end{abstract}
+
+\section{Setup}
+By Kummer, $p\mid\binom nk$ iff some base-$p$ digit of $k$ exceeds the corresponding digit of
+$n$; writing $k\preceq_p n$ for digit domination,
+\[
+  \omega\!\left(\binom nk\right)=\#\{p\le n:\ k\not\preceq_p n\}.
+\]
+No binomial need be evaluated.  Throughout $1\le k\le n/2$.
+
+\section{The bound}
+
+\begin{lemma}[window]\label{lem:window}
+For prime $p>n/2$: $v_p\binom nk=1$ if $n-k<p\le n$, and $v_p\binom nk=0$ if $n/2<p\le n-k$.
+\end{lemma}
+
+\begin{proof}
+$p^2>n\ge m$ for $m\le n$, so $v_p(m!)=\lfloor m/p\rfloor$ and
+$v_p\binom nk=\lfloor n/p\rfloor-\lfloor k/p\rfloor-\lfloor(n-k)/p\rfloor
+=1-0-\lfloor(n-k)/p\rfloor$, using $k\le n/2<p$.
+\end{proof}
+
+\begin{theorem}\label{thm:685}
+For $1\le k\le n/2$,
+\[
+  \omega\!\left(\binom nk\right)\ \ge\ \pi(n)-\pi(n-k).
+\]
+\end{theorem}
+
+\begin{proof}
+By the first case of Lemma~\ref{lem:window} every prime of $(n-k,n]$ divides $\binom nk$.
+\end{proof}
+
+\emph{Verified}: no exception for $4\le n<500$ and all $k\le n/2$.
+
+\begin{remark}[strength of Theorem~\ref{thm:685}]
+By the prime number theorem $\pi(n)-\pi(n-k)=(1+o(1))k/\log n$, whereas the conjectured value
+$k\sum_{k<p<n}1/p$ has size $k\log(\log n/\log k)$.  So Theorem~\ref{thm:685} is sharp in
+$k$ but loses the logarithmic factor.  The window can, however, be pushed from $n/2$ down to
+$\sqrt n$, and doing so recovers the right order.
+\end{remark}
+
+\section{The refined window, and a bound of the conjectured order}
+
+\begin{theorem}[refined window]\label{thm:refined}
+Let $p>\sqrt n$ be prime with $p>k$.  Then $p\mid\binom nk$ if and only if $p$ has a multiple
+in $(n-k,n]$.
+\end{theorem}
+
+\begin{proof}
+Since $p^{2}>n$, Legendre's formula has one term: $v_p(m!)=\lfloor m/p\rfloor$ for $m\le n$.
+As $k<p$, $\lfloor k/p\rfloor=0$, so
+$v_p\binom nk=\lfloor n/p\rfloor-\lfloor(n-k)/p\rfloor$, the number of multiples of $p$ in
+$(n-k,n]$.
+\end{proof}
+
+\emph{Verified}: $7\,327\,302$ triples $(n,k,p)$ with $n<700$ --- no mismatch.
+
+\begin{theorem}\label{thm:sharp}
+Write $P^{+}(m)$ for the largest prime factor of $m$ and put $T=\max(\sqrt n,k)$.  Then for
+$1\le k\le n/2$,
+\[
+  \omega\!\left(\binom nk\right)\ \ge\ \#\bigl\{m\in(n-k,n]:\ P^{+}(m)>T\bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+Let $m\in(n-k,n]$ with $p:=P^{+}(m)>T$.  Then $p>\sqrt n$ and $p>k$, and $p$ has the multiple
+$m$ in $(n-k,n]$, so $p\mid\binom nk$ by Theorem~\ref{thm:refined}.  Distinct such $m$ give
+distinct $p$: an interval of length $k<p$ contains at most one multiple of $p$, so $m$ is
+recovered from $p$.  The map $m\mapsto P^{+}(m)$ is therefore injective into
+$\mathcal D(n,k)$.
+\end{proof}
+
+\begin{corollary}\label{cor:order}
+For $k=n^{\theta}$ with $\tfrac12\le\theta<1$, the right-hand side of
+Theorem~\ref{thm:sharp} has expected size $\rho\!\left(1/\theta\right)k$, where $\rho$ is the
+Dickman function, since $T=k$ and the density of $m\le n$ with $P^{+}(m)>n^{\theta}$ is
+$1-\rho(1/\theta)+o(1)$.  At $\theta=\tfrac12$ this is $(\log 2)\,k$, which is exactly the
+order of the conjectured $k\sum_{k<p<n}1/p=(1+o(1))(\log2)k$.  So
+Theorem~\ref{thm:sharp} attains the conjectured order of magnitude, in contrast with
+Theorem~\ref{thm:685}.
+\end{corollary}
+
+The remaining content of \#685 is therefore the passage from an inequality of the right order
+to the asymptotic constant, and --- separately --- the small-$k$ range $k<\sqrt n$, where
+$T=\sqrt n$ and Theorem~\ref{thm:sharp} counts only the $m\in(n-k,n]$ with a prime factor
+exceeding $\sqrt n$.
+
+\begin{remark}
+Lemma~\ref{lem:window} shows no prime of $(n/2,n-k]$ divides $\binom nk$, so the prime set
+above $n/2$ is \emph{exactly} the primes of $(n-k,n]$; Theorem~\ref{thm:refined} extends the
+exact description down to $\sqrt n$.  Any further progress on \#685 must come from
+$p\le\sqrt n$, where carries of depth $\ge2$ occur and the description is no longer a single
+floor difference.
+\end{remark}
+
+\section{An exact split, and a matching upper bound}
+
+Theorem~\ref{thm:refined} determines membership of $\mathcal D(n,k)$ above
+$T:=\max(\sqrt n,k)$ completely, which splits $\omega$ into two parts that can be bounded
+separately.
+
+\begin{theorem}[exact split]\label{thm:split}
+For $1\le k\le n/2$ put $T=\max(\sqrt n,k)$.  Then
+\[
+  \omega\!\left(\binom nk\right)\;=\;B(n,k)\;+\;S(n,k),
+\]
+where
+\[
+  B(n,k)=\#\bigl\{p>T:\ p\ \text{has a multiple in }(n-k,n]\bigr\},\qquad
+  S(n,k)=\#\bigl\{p\le T:\ k\not\preceq_p n\bigr\}.
+\]
+\end{theorem}
+
+\begin{proof}
+The primes dividing $\binom nk$ are exactly $\{p:k\not\preceq_pn\}$.  Split this set at $T$.
+Above $T$ we have $p>\sqrt n$ and $p>k$, so Theorem~\ref{thm:refined} identifies membership
+with having a multiple in $(n-k,n]$, giving $B$; below $T$ the definition gives $S$.
+\end{proof}
+
+\emph{Verified}: $39\,780$ pairs $(n,k)$ with $n<400$ --- the split is exact throughout.
+
+\begin{theorem}[upper bound]\label{thm:upperbd}
+For $1\le k\le n/2$ and $T=\max(\sqrt n,k)$,
+\[
+  \omega\!\left(\binom nk\right)\ \le\ k+\pi(T).
+\]
+\end{theorem}
+
+\begin{proof}
+By Theorem~\ref{thm:split} it suffices to bound each part.  For $B$: any $p>T\ge\sqrt n$ has
+at most one multiple in an interval of length $k<p$, so $p$ determines a unique
+$m_p\in(n-k,n]$ with $p\mid m_p$.  The map $p\mapsto m_p$ is injective, since $m_p\le n<p^2$
+forces $p$ to be the unique prime factor of $m_p$ exceeding $\sqrt n$.  Hence $B$ is at most
+the number of integers in $(n-k,n]$, namely $k$.  For $S$: trivially $S\le\pi(T)$.
+\end{proof}
+
+\emph{Verified}: $201\,960$ pairs $(n,k)$ with $n<900$ --- no violation.
+
+\begin{corollary}[two-sided at $k=\sqrt n$]\label{cor:twosided}
+Taking $k=\lfloor\sqrt n\rfloor$, Theorems~\ref{thm:sharp} and~\ref{thm:upperbd} give
+\[
+  \#\bigl\{m\in(n-k,n]:P^{+}(m)>\sqrt n\bigr\}\ \le\ \omega\!\left(\binom nk\right)
+  \ \le\ k+\pi(\sqrt n)\;=\;k\Bigl(1+\tfrac{2}{\log n}(1+o(1))\Bigr).
+\]
+The left side has expected size $(\log2)\,k$ by Dickman, which is exactly the conjectured
+value $k\sum_{k<p<n}1/p=(1+o(1))(\log2)k$; the right side is $(1+o(1))k$.  So at
+$k=\sqrt n$ the conjecture is bracketed between its own predicted value and
+$1/\log2=1.4427$ times it.
+\end{corollary}
+
+\emph{Measured}: at $n=10^{2},10^{4},4\times10^{4},10^{5}$ with $k=\lfloor\sqrt n\rfloor$
+the triple (lower, $\omega$, upper) is $(33,39,58)$, $(75,86,125)$, $(149,171,246)$,
+$(229,264,381)$, with upper/conjectured ratio $2.02,\ 1.84,\ 1.83,\ 1.77$ --- decreasing
+towards the predicted $1/\log2$.
+
+\section{Measurement}
+
+With $\omega$ computed by digit domination and the prediction $k\sum_{k<p<n}1/p$:
+\[
+\begin{array}{r r r r r}
+ n & k & \omega\binom nk & \text{predicted} & \text{ratio}\\\hline
+ 5000 & 20 & 26 & 19.0 & 1.369\\
+ 5000 & 70 & 61 & 47.3 & 1.288\\
+ 5000 & 300 & 166 & 117.7 & 1.410\\
+ 20000 & 50 & 53 & 44.7 & 1.187\\
+ 20000 & 140 & 120 & 94.5 & 1.270\\
+ 20000 & 900 & 456 & 334.4 & 1.364
+\end{array}
+\]
+The ratio sits in $[1.19,1.41]$ with no visible trend toward $1$.  This does not refute a
+statement with an $o(1)$, but the excess is systematic --- every entry above $1$, none
+approaching it.  Its size is comparable to $\pi(k)$, the small rails the prediction omits
+(at $n=5000$, $k=300$: $\pi(k)=62$ against an excess of $48$), which suggests testing the
+variant $\omega=\pi(k)+(1+o(1))k\sum_{k<p<n}1/p$.
+
+\begin{remark}[register]
+\textbf{Proved}: Lemma~\ref{lem:window}, Theorem~\ref{thm:685}, Theorem~\ref{thm:refined},
+Theorem~\ref{thm:sharp}, Theorem~\ref{thm:split}, Theorem~\ref{thm:upperbd} and
+Corollary~\ref{cor:twosided}, all elementary from Legendre.  The split and the upper bound
+bracket $\omega\binom{n}{\lfloor\sqrt n\rfloor}$ between the conjectured value and
+$1/\log2$ times it.  \textbf{Measured}: the table and the systematic excess.
+\textbf{Not proved}: \#685.  \textbf{Falsifier, pre-registered}: the ratio failing to
+approach $1$ along $k=n^{1/2}$ as $n\to\infty$ would be evidence against the conjecture as
+stated; the domination formulation makes that test cheap to $n\sim10^{7}$.
+\end{remark}
+\end{document}
