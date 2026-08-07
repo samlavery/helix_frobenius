@@ -1,0 +1,150 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\newcommand{\Gr}{\Gamma_{\mathbb R}}
+\title{Pole detection at the carrier:\\
+the beyond-endoscopy dichotomy for transported representation data}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/PoleDetection.lean}, 4 named declarations, each at axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a
+subset, no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Langlands' beyond-endoscopy principle detects functorial origin through poles:
+$L(s,\pi,r)$ has one at $s=1$ exactly when $r$ contains the trivial
+representation.  This note compiles that detection for transported data
+$\rho=\oplus_i\Sym^{r_i}$ of the level-one seed at the mechanism's package level.
+Unconditionally, a trivial constituent splits a $\zeta$-factor off the
+datum bank, explicit in the $L$-readout on the joint half-plane.  The detection
+theorem: \emph{a datum containing the trivial representation admits no strict theta
+reflection} --- from the strict joint identity the mechanism yields an entire
+completed transform, while the $\zeta$-constituent forces the simple pole at $s=1$;
+analytic continuation across $\{\operatorname{Re}s>1\}$ and a ray limit against the
+residue collide the two, unless the completed erased factor vanishes at the edge,
+which is the named classical input.  Contrapositive: a datum satisfying the strict,
+mass-free reflection has no trivial constituent.  The masses of the weak reflection
+pair are the carrier avatar of the pole: $\zeta$-containing objects reflect only with
+mass terms.
+\end{abstract}
+
+\section{The $\zeta$-factorization}
+
+Fix the level-one eigenform seed with Hecke data, and a representation datum
+$\rho=[r_1,\dots,r_m]$ with $0\in\rho$.  Both statements are unconditional:
+
+\begin{lemma}[\texttt{repBank\_zeta\_factor},
+\texttt{LSeries\_repBank\_zeta\_factor}; machine-checked]\label{lem:zeta}
+The datum bank splits as
+\[
+c_\rho=\zeta\star c_{\rho\smallsetminus\{0\}},
+\]
+the rank-zero clock being the unit system
+(\texttt{symrBank\_zero\_eq\_zeta}); on the joint half-plane
+\[
+L(\rho,s)=\zeta(s)\cdot L(\rho\smallsetminus\{0\},s),
+\]
+with $\zeta$ the Riemann zeta function of Mathlib
+(\texttt{LSeries\_zeta\_eq\_riemannZeta}).
+\end{lemma}
+
+\section{The detection theorem}
+
+\begin{theorem}[\texttt{trivial\_constituent\_detection}; machine-checked]
+\label{thm:detect}
+Let $0\in\rho$.  Suppose, at some general Deligne chart $(\delta s,\mu s)$ with
+nonnegative shifts:
+\begin{enumerate}
+\item the \emph{strict} joint theta identity of the prescribed $\rho$-readouts
+(the input of the mechanism, with zero masses);
+\item a package $Q$ for the erased datum $\rho\smallsetminus\{0\}$ at the same chart
+(entire $\Lambda_Q$, functional equation, chart identification); and
+\item edge nonvanishing: $\Lambda_Q(1)\neq0$.
+\end{enumerate}
+Then \textbf{False}.
+\end{theorem}
+
+The proof is the collision of two compiled facts.  From (1),
+\texttt{rep\_general\_package\_of\_theta} yields an \emph{entire} $\Lambda_P$ with
+$\Lambda_P(s)=G(s)\,L(\rho,s)$ on the joint half-plane; by Lemma~\ref{lem:zeta} and
+the chart of $Q$,
+\[
+\Lambda_P(s)=\zeta(s)\cdot\Lambda_Q(s)
+\qquad(\operatorname{Re}s\ \text{large}),
+\]
+and both sides are analytic on the connected open half-plane
+$\{\operatorname{Re}s>1\}$, so the identity persists there
+(\texttt{AnalyticOnNhd.eqOn\_of\_preconnected\_of\_eventuallyEq}).  Along the real
+ray $s=1+t$, $t\to0^+$:
+\[
+(s-1)\,\Lambda_P(s)\longrightarrow 0
+\qquad\text{while}\qquad
+(s-1)\,\zeta(s)\,\Lambda_Q(s)\longrightarrow \Lambda_Q(1)
+\]
+(Mathlib's \texttt{riemannZeta\_residue\_one} and continuity of the entire factors),
+whence $\Lambda_Q(1)=0$, contradicting (3).
+
+\begin{corollary}[contrapositive register]
+A representation datum of the seed satisfying the strict theta reflection at an
+admissible chart --- together with an erased-datum package nonvanishing at the edge
+--- contains no trivial constituent.  Equivalently: the trivial constituent is
+\emph{detected by the reflection type} --- $\zeta$-containing objects reflect only
+with mass terms, never strictly.  The masses $f_0,g_0$ of the weak reflection pair
+are the carrier-side avatar of the pole.
+\end{corollary}
+
+\section{Register}
+
+\begin{remark}[register]
+\textbf{Proved (machine-checked).}  The $\zeta$-factorization of the datum bank and
+its $L$-readout; the threshold bound; the detection theorem exactly as stated, with
+its three inputs typed in the signature.
+
+\textbf{Consumed from the corpus.}  The mechanism at the general chart
+(\texttt{mechanismG} via \texttt{rep\_general\_package\_of\_theta}), datum
+self-duality, the compiled bank calculus.  From Mathlib: the residue of $\zeta$ at
+$s=1$, differentiability of $\zeta$ off $s=1$, analytic-continuation uniqueness.
+
+\textbf{Cited, not formalized.}  The classical discharge of input (3) --- edge
+nonvanishing of the completed erased factor --- is the Jacquet--Shalika class of
+nonvanishing theorems \cite{JS}; for symmetric-power factors of low rank it is known
+unconditionally through the Kim--Shahidi lifts \cite{KimShahidi}.  Input (2) is the
+mechanism's own output given the erased datum's identity.
+
+\textbf{Not claimed.}  No trace formula, no orbital integrals, no general
+automorphic $\pi$: the scope is the transported data of the level-one
+$\mathrm{GL}(2)$ seed, and ``beyond endoscopy'' names the \emph{detection principle}
+compiled here --- pole $\leftrightarrow$ trivial constituent $\leftrightarrow$
+reflection type --- not Langlands' full program \cite{Langlands}.
+
+\textbf{Falsifier.}  Exhibiting a datum with a trivial constituent that satisfies
+the strict identity, together with a nonvanishing erased package, would make the
+compiled theorem produce \textbf{False} --- an inconsistency of the corpus with
+Mathlib.  Classically, the constant term of the theta function of any
+$\zeta$-containing object is nonzero, which is why no such datum exists; the theorem
+is the compiled form of exactly that obstruction.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{Langlands} R.~P.~Langlands,
+\emph{Beyond endoscopy}, in: Contributions to automorphic forms, geometry, and
+number theory, Johns Hopkins Univ.\ Press, 2004, 611--697.
+\bibitem{JS} H.~Jacquet, J.~A.~Shalika,
+\emph{A non-vanishing theorem for zeta functions of $\mathrm{GL}_n$},
+Invent.\ Math.\ \textbf{38} (1976/77), 1--16.
+\bibitem{KimShahidi} H.~Kim, F.~Shahidi,
+\emph{Functorial products for $\mathrm{GL}_2\times\mathrm{GL}_3$ and the symmetric
+cube for $\mathrm{GL}_2$}, Ann.\ of Math.\ (2) \textbf{155} (2002), 837--893.
+\end{thebibliography}
+
+\end{document}

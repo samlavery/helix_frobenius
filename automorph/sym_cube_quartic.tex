@@ -1,0 +1,153 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\title{The symmetric cube and quartic:\\ tensor decompositions, Euler determinations,
+and reflection transport}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/SymCubeQuartic.lean}, 14 named declarations, each at axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a
+subset, no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Rungs 4--5 of the benchmark ladder at the layer the transport-closure calculus reaches
+exactly, for a level-one holomorphic Hecke eigenform with no temperedness input.  The two
+tensor laws $\mathrm{std}\otimes\Sym^2=\Sym^3\oplus\mathrm{std}$ and
+$\Sym^2\otimes\Sym^2=\Sym^4\oplus\Sym^2\oplus\mathbf 1$ are proven as finite
+weight-multiset identities and assembled globally: the tensor banks factor as Dirichlet
+convolutions of the compiled $\Sym^r$ banks.  Every $\Sym^r$ bank is shown
+L-series-summable beyond an explicit polynomial threshold, whence the Euler
+determinations $L(\mathrm{std}\otimes\Sym^2,s)=L(\Sym^3,s)L(\mathrm{std},s)$ and
+$L(\Sym^2\otimes\Sym^2,s)=L(\Sym^4,s)L(\Sym^2,s)\zeta(s)$ hold on explicit half-planes:
+the symmetric cube and quartic $L$-series are the cofactors of compiled objects inside
+compiled tensor banks.  A division-free transport lemma carries a self-dual reflection of
+the completed tensor object to the cofactor, locating each rung's remaining analytic
+obligation in exactly one typed slot --- the same slot the $r=2$ rung's lattice route
+discharged.  Everything stated is proven unconditionally and machine-checked.
+\end{abstract}
+
+\section{The tensor laws}
+
+Fix an eigenform seed with Satake parameters $\alpha_p$ and recall the clock systems
+$\Sym^r\!: (\alpha^{r},\alpha^{r-2},\dots,\alpha^{-r})$.
+
+\begin{theorem}[$\mathrm{std}\otimes\Sym^2=\Sym^3\oplus\mathrm{std}$]\label{thm:t23}
+The six pairwise products of the standard clock $(\alpha,\alpha^{-1})$ with the $\Sym^2$
+clock $(\alpha^2,1,\alpha^{-2})$ form the multiset
+$\{\alpha^3,\alpha,\alpha^{-1},\alpha^{-3}\}\sqcup\{\alpha,\alpha^{-1}\}$: the $\Sym^3$
+clock together with the standard clock.  (\texttt{tensor23\_products},
+\texttt{tensor23\_decomposition} via the explicit relabeling \texttt{split23}.)
+\end{theorem}
+
+\begin{theorem}[$\Sym^2\otimes\Sym^2=\Sym^4\oplus\Sym^2\oplus\mathbf 1$]\label{thm:t33}
+The nine pairwise products of two $\Sym^2$ clocks form
+$\{\alpha^4,\alpha^2,1,\alpha^{-2},\alpha^{-4}\}\sqcup\{\alpha^2,1,\alpha^{-2}\}
+\sqcup\{1\}$.  (\texttt{tensor33\_products}, \texttt{tensor33\_decomposition} via
+\texttt{split33}.)
+\end{theorem}
+
+Both are finite identities in $\alpha^{\pm1}$, verified channel by channel.
+
+\section{Global assembly}
+
+Through the closure law (banks of direct sums convolve) and the rank-uniform clock-bank
+identification (\texttt{bankArithmetic\_symClock} --- the compiled all-ranks join),
+the weight-level laws become bank-level factorizations:
+
+\begin{theorem}[tensor banks factor]\label{thm:banks}
+$c_{\mathrm{std}\otimes\Sym^2}=c_{\Sym^3}\star c_{\mathrm{std}}$ and
+$c_{\Sym^2\otimes\Sym^2}=c_{\Sym^4}\star c_{\Sym^2}\star\zeta$, as multiplicative
+arithmetic functions.  (\texttt{tensor23\_bank}, \texttt{tensor33\_bank}.)
+\end{theorem}
+
+\section{Summability and the Euler determinations}
+
+Hecke's coefficient bound alone gives a single-power Satake estimate
+$\|\alpha_p\|,\|\alpha_p^{-1}\|\le p^{E}$ uniformly in $p$
+(\texttt{satake\_single\_bound}), whence every clock channel obeys
+$\|\alpha_p^{r-2i}\|\le p^{Er}$ (\texttt{symClock\_norm\_bound}) and the rank-$r$ clock
+system is a polynomial Satake pair at every rank (\texttt{symrSatakePair}).  The generic
+coefficient machinery then bounds the bank, $\|c_{\Sym^r}(n)\|\le n^{B_r}$ with
+$B_r=(r{+}1)+Er$ explicit, and:
+
+\begin{theorem}[summability at every rank]\label{thm:summ}
+$L(c_{\Sym^r},s)$ converges absolutely for $\Re s>B_r+1$ --- with no temperedness
+input.  (\texttt{symrBank\_LSeriesSummable}.)
+\end{theorem}
+
+\begin{theorem}[Euler determinations]\label{thm:euler}
+On the common half-plane of absolute convergence,
+\[
+  L(\mathrm{std}\otimes\Sym^2,s)=L(\Sym^3,s)\,L(\mathrm{std},s),\qquad
+  L(\Sym^2\otimes\Sym^2,s)=L(\Sym^4,s)\,L(\Sym^2,s)\,\zeta(s).
+\]
+The symmetric cube and quartic $L$-series are thereby determined as the cofactors of
+compiled objects inside the compiled tensor banks.
+(\texttt{sym3\_euler\_determination}, \texttt{sym4\_euler\_determination}.)
+\end{theorem}
+
+\section{Reflection transport, and where the wall sits}
+
+\begin{lemma}[division-free transport]\label{lem:transport}
+If $T=Z\cdot Q$ pointwise and $T(1-s)=T(s)$ for all $s$, then
+$Z(1-s)\,Q(1-s)=Z(s)\,Q(s)$ for all $s$ --- the cofactor's functional equation in
+cross-multiplied form, no division, no zero-set condition.  (\texttt{FE\_transport}.)
+\end{lemma}
+
+Applied with $T$ the completed tensor object and $Z$ the compiled cofactor
+($L(\mathrm{std})$-completed for the cube; $\zeta\cdot L(\Sym^2)$-completed for the
+quartic, both of whose functional equations are compiled --- the seed's and the
+symmetric-square companion's), Lemma~\ref{lem:transport} shows: \emph{the entire
+remaining analytic content of rung 4 (resp.\ 5) is one self-dual reflection for the
+explicitly presented degree-8 (resp.\ degree-9) tensor bank}.  That is the same typed
+slot which, at $r=2$, the lattice route discharged (the symmetric-square companion); the
+classical discharge at $r=3,4$ is Kim--Shahidi \cite{KimShahidi}, consumed at published
+strength where cited.
+
+\emph{Addendum --- the collapse compiled.}  Mining the corpus dissolved the composite
+walls to their irreducible cores: the standard rung of
+\texttt{CPSGenuineGL2StandardRung3D} derives its reflection from Hecke's inversion (the
+modular slash law), and its Euler certificate is discharged at the eigenform seed
+(\texttt{SeedStandardRung.seedRungData} --- the first inhabitant), giving the compiled
+completed Hecke equation $\Lambda(1-s)=(-1)^n\Lambda(s)$ with $\Lambda$ entire and equal
+to $\Gm(s+(n-\tfrac12))\,D(s)$ on the initial half-plane
+(\texttt{seed\_selfdual\_FE}, \texttt{seed\_symm\_Lambda\_eq}).  With this and the
+compiled $\Lambda_\zeta\cdot\bar\Lambda$ reflections, the generic scalar-cancellation
+equivalence (\texttt{wall\_collapse}) proves: the degree-6 tensor equation is
+\emph{equivalent} to the $\Sym^3$ single-object self-duality, and the degree-9 tensor
+equation to the $\Sym^4$ one (\texttt{sym3\_wall\_collapse},
+\texttt{sym4\_wall\_collapse}) --- every cofactor reflection now a compiled theorem, the
+wall reduced to exactly one self-dual identity per rung with nothing else left standing.
+
+\begin{remark}[register and falsifiers]
+Proven and machine-checked, unconditionally: both tensor laws, both bank factorizations,
+summability at every rank from Hecke's bound alone, both Euler determinations, and the
+transport lemma.  Cited, not re-proved: the classical analytic continuation of the
+tensor objects (Kim--Shahidi), which occupies exactly the one typed slot per rung
+identified above.  A counterexample would be a prime at which the six (resp.\ nine)
+products fail the stated splits, a rank at which the bank escapes its polynomial bound,
+or a point of the common half-plane violating either Euler determination --- each
+formally stated, so a counterexample would require a kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{KimShahidi} H.~Kim and F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}(2)\times\mathrm{GL}(3)$ and the symmetric cube for $\mathrm{GL}(2)$},
+Ann.\ of Math.\ \textbf{155} (2002), 837--893; H.~Kim, \emph{Functoriality for the
+exterior square of $\mathrm{GL}_4$ and the symmetric fourth of $\mathrm{GL}_2$},
+J.\ Amer.\ Math.\ Soc.\ \textbf{16} (2003), 139--183.
+\bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic
+representations of $\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS
+\textbf{11} (1978), 471--542.
+\end{thebibliography}
+
+\end{document}

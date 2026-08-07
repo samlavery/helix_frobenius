@@ -1,23 +1,23 @@
-import RequestProject.CarrierLatticeWeld
+import RequestProject.CarrierLatticePoisson
 
 /-!
 # The rank-uniform completed FE family: the matrix bank as a weak FE-pair at every rank
 
 Certifier (a) of the standing wave, second brick — the analytic packaging of the
-carrier-lattice weld.  The rank-`r` matrix bank `θ_r(t) = ∑_{A ∈ M_{r+1}(ℤ)} e^{-πt‖A‖²}`
-(the compiled `matrixTheta` of `CarrierLatticeWeld`, cast to `ℂ`) is here packaged as a
+carrier-lattice Poisson identity.  The rank-`r` matrix bank `θ_r(t) = ∑_{A ∈ M_{r+1}(ℤ)} e^{-πt‖A‖²}`
+(the compiled `matrixTheta` of `CarrierLatticeLattice`, cast to `ℂ`) is here packaged as a
 Mathlib `WeakFEPair` at EVERY rank simultaneously — weight `k = (r+1)²/2`, root number `1`,
 both constant terms the DC mode `1` of the matrix bank.  Mathlib's abstract
 functional-equation machinery then returns, uniformly in `r`:
 
-* the entire part `Λ₀` (`matrixWeld_entirePart_differentiable`);
+* the entire part `Λ₀` (`matrixLattice_entirePart_differentiable`);
 * the completed functional equation `Λ((r+1)²/2 - s) = Λ^∨(s)`
-  (`matrixWeld_functional_equation`);
+  (`matrixLattice_functional_equation`);
 * the two poles, at `s = (r+1)²/2` and `s = 0`, with residues `+1` and `-1` — the DC mode
-  of the matrix bank entering and leaving the chart (`matrixWeld_residue_k`,
-  `matrixWeld_residue_zero`).
+  of the matrix bank entering and leaving the chart (`matrixLattice_residue_k`,
+  `matrixLattice_residue_zero`).
 
-The analytic inputs are proved here from the compiled weld and nothing else:
+The analytic inputs are proved here from the compiled lattice transformation law and nothing else:
 
 * the bank is antitone in the carrier height (`matrixTheta_antitoneOn`), hence locally
   integrable on the positive carrier axis (`matrixThetaC_locallyIntegrableOn`);
@@ -38,9 +38,9 @@ profile — is not done in this file.
 
 open Real Filter Set MeasureTheory Asymptotics Topology
 
-namespace CriticalLinePhasor.CarrierWeldPair
+namespace CriticalLinePhasor.CarrierLatticePair
 
-open CriticalLinePhasor.CarrierLatticeWeld
+open CriticalLinePhasor.CarrierLatticePoisson
 
 /-! ## Monotonicity of the bank in the carrier height -/
 
@@ -155,14 +155,14 @@ lemma pow_sub_one_le_of_le {S B : ℝ} (hS : 1 ≤ S) (hSB : S ≤ B) (N : ℕ) 
 
 /-- The explicit rank-`r` tail constant:
 `C_r = (r+1)²·S(1)^{(r+1)²-1}·2/(1 - e^{-π})`. -/
-noncomputable def weldTailConst (r : ℕ) : ℝ :=
+noncomputable def latticeTailConst (r : ℕ) : ℝ :=
   (((r + 1) * (r + 1) : ℕ) : ℝ) * strandTheta 1 ^ ((r + 1) * (r + 1) - 1) *
     (2 / (1 - Real.exp (-π)))
 
 /-- **The rank-`r` tail bound**: above carrier height one the matrix bank approaches its
-DC mass `1` at the rate `e^{-πt}`, with the explicit constant `weldTailConst r`. -/
+DC mass `1` at the rate `e^{-πt}`, with the explicit constant `latticeTailConst r`. -/
 theorem matrixTheta_sub_one_le (r : ℕ) {t : ℝ} (ht : 1 ≤ t) :
-    matrixTheta r t - 1 ≤ weldTailConst r * Real.exp (-π * t) := by
+    matrixTheta r t - 1 ≤ latticeTailConst r * Real.exp (-π * t) := by
   have ht0 : (0 : ℝ) < t := lt_of_lt_of_le one_pos ht
   have hS1 : 1 ≤ strandTheta t := one_le_strandTheta ht0
   have hSB : strandTheta t ≤ strandTheta 1 := strandTheta_anti one_pos ht
@@ -179,8 +179,8 @@ theorem matrixTheta_sub_one_le (r : ℕ) {t : ℝ} (ht : 1 ≤ t) :
     _ ≤ (((r + 1) * (r + 1) : ℕ) : ℝ) * strandTheta 1 ^ ((r + 1) * (r + 1) - 1) *
           (2 / (1 - Real.exp (-π)) * Real.exp (-π * t)) :=
         mul_le_mul_of_nonneg_left htail hc
-    _ = weldTailConst r * Real.exp (-π * t) := by
-        unfold weldTailConst
+    _ = latticeTailConst r * Real.exp (-π * t) := by
+        unfold latticeTailConst
         ring
 
 /-! ## Superpolynomial decay at the top of the carrier -/
@@ -193,7 +193,7 @@ lemma matrixThetaC_sub_one_isBigO (r : ℕ) (p : ℝ) :
     (isLittleO_exp_neg_mul_rpow_atTop Real.pi_pos p).isBigO
   refine IsBigO.trans ?_ hexp
   rw [Asymptotics.isBigO_iff]
-  refine ⟨weldTailConst r, ?_⟩
+  refine ⟨latticeTailConst r, ?_⟩
   filter_upwards [eventually_ge_atTop (1 : ℝ)] with t ht
   have ht0 : (0 : ℝ) < t := lt_of_lt_of_le one_pos ht
   have h1 := one_le_matrixTheta r ht0
@@ -206,13 +206,13 @@ lemma matrixThetaC_sub_one_isBigO (r : ℕ) (p : ℝ) :
 
 /-! ## The packaged weak functional-equation pair, at every rank -/
 
-/-- **The rank-uniform weld pair.**  The matrix bank of rank `r`, packaged as a Mathlib
+/-- **The rank-uniform lattice FE-pair.**  The matrix bank of rank `r`, packaged as a Mathlib
 `WeakFEPair`: weight `(r+1)²/2`, root number `1`, both constant terms the DC mode `1`,
-reflection from the compiled carrier-lattice weld `matrixTheta_inv`, decay from the
+reflection from the compiled carrier-lattice Poisson identity `matrixTheta_inv`, decay from the
 explicit tail bound.  Mathlib's abstract machinery then returns the entire part, both
 poles with residues `±1`, and the completed functional equation — uniformly in the
 rank.  Fiber-free: no cusp form, no automorphy, no L-function enters. -/
-noncomputable def matrixWeldPair (r : ℕ) : WeakFEPair ℂ where
+noncomputable def matrixLatticePair (r : ℕ) : WeakFEPair ℂ where
   f := matrixThetaC r
   g := matrixThetaC r
   k := (((r : ℝ) + 1) ^ 2) / 2
@@ -234,40 +234,40 @@ noncomputable def matrixWeldPair (r : ℕ) : WeakFEPair ℂ where
 
 /-! ## The continuation, poles, and functional equation — read off the pair -/
 
-/-- The weight of the rank-`r` weld pair is `(r+1)²/2`. -/
-@[simp] lemma matrixWeldPair_k (r : ℕ) :
-    (matrixWeldPair r).k = (((r : ℝ) + 1) ^ 2) / 2 := rfl
+/-- The weight of the rank-`r` lattice FE-pair is `(r+1)²/2`. -/
+@[simp] lemma matrixLatticePair_k (r : ℕ) :
+    (matrixLatticePair r).k = (((r : ℝ) + 1) ^ 2) / 2 := rfl
 
-/-- The root number of the rank-`r` weld pair is one. -/
-@[simp] lemma matrixWeldPair_ε (r : ℕ) : (matrixWeldPair r).ε = 1 := rfl
+/-- The root number of the rank-`r` lattice FE-pair is one. -/
+@[simp] lemma matrixLatticePair_ε (r : ℕ) : (matrixLatticePair r).ε = 1 := rfl
 
-/-- The constant term of the rank-`r` weld pair is the DC mode `1`. -/
-@[simp] lemma matrixWeldPair_f₀ (r : ℕ) : (matrixWeldPair r).f₀ = 1 := rfl
+/-- The constant term of the rank-`r` lattice FE-pair is the DC mode `1`. -/
+@[simp] lemma matrixLatticePair_f₀ (r : ℕ) : (matrixLatticePair r).f₀ = 1 := rfl
 
-/-- The dual constant term of the rank-`r` weld pair is the DC mode `1`. -/
-@[simp] lemma matrixWeldPair_g₀ (r : ℕ) : (matrixWeldPair r).g₀ = 1 := rfl
+/-- The dual constant term of the rank-`r` lattice FE-pair is the DC mode `1`. -/
+@[simp] lemma matrixLatticePair_g₀ (r : ℕ) : (matrixLatticePair r).g₀ = 1 := rfl
 
-/-- The entire part of the completed rank-`r` weld transform. -/
-theorem matrixWeld_entirePart_differentiable (r : ℕ) :
-    Differentiable ℂ (matrixWeldPair r).Λ₀ :=
-  (matrixWeldPair r).differentiable_Λ₀
+/-- The entire part of the completed rank-`r` transformation law transform. -/
+theorem matrixLattice_entirePart_differentiable (r : ℕ) :
+    Differentiable ℂ (matrixLatticePair r).Λ₀ :=
+  (matrixLatticePair r).differentiable_Λ₀
 
 /-- **The completed functional equation at every rank**,
-`Λ((r+1)²/2 - s) = Λ^∨(s)`: read off the packaged weld pair, uniformly in the rank. -/
-theorem matrixWeld_functional_equation (r : ℕ) (s : ℂ) :
-    (matrixWeldPair r).Λ ((((r : ℂ) + 1) ^ 2) / 2 - s) = (matrixWeldPair r).symm.Λ s := by
-  have h := (matrixWeldPair r).functional_equation s
-  rw [matrixWeldPair_k, matrixWeldPair_ε, one_smul] at h
+`Λ((r+1)²/2 - s) = Λ^∨(s)`: read off the packaged lattice FE-pair, uniformly in the rank. -/
+theorem matrixLattice_functional_equation (r : ℕ) (s : ℂ) :
+    (matrixLatticePair r).Λ ((((r : ℂ) + 1) ^ 2) / 2 - s) = (matrixLatticePair r).symm.Λ s := by
+  have h := (matrixLatticePair r).functional_equation s
+  rw [matrixLatticePair_k, matrixLatticePair_ε, one_smul] at h
   push_cast at h
   exact h
 
 /-- **The pole at `s = (r+1)²/2` carries the DC mode**: the residue of the completed
-rank-`r` weld transform at the weight is `+1`. -/
-theorem matrixWeld_residue_k (r : ℕ) :
-    Tendsto (fun s : ℂ => (s - (((r : ℂ) + 1) ^ 2) / 2) * (matrixWeldPair r).Λ s)
+rank-`r` transformation law transform at the weight is `+1`. -/
+theorem matrixLattice_residue_k (r : ℕ) :
+    Tendsto (fun s : ℂ => (s - (((r : ℂ) + 1) ^ 2) / 2) * (matrixLatticePair r).Λ s)
       (𝓝[≠] ((((r : ℂ) + 1) ^ 2) / 2)) (𝓝 1) := by
-  have h := (matrixWeldPair r).Λ_residue_k
-  rw [matrixWeldPair_k, matrixWeldPair_ε, matrixWeldPair_g₀, one_smul] at h
+  have h := (matrixLatticePair r).Λ_residue_k
+  rw [matrixLatticePair_k, matrixLatticePair_ε, matrixLatticePair_g₀, one_smul] at h
   have hcast : (((((r : ℝ) + 1) ^ 2) / 2 : ℝ) : ℂ) = (((r : ℂ) + 1) ^ 2) / 2 := by
     push_cast
     ring
@@ -275,30 +275,30 @@ theorem matrixWeld_residue_k (r : ℕ) :
   simpa [smul_eq_mul] using h
 
 /-- **The pole at `s = 0` carries the negative DC mode**: the residue of the completed
-rank-`r` weld transform at the origin is `-1`. -/
-theorem matrixWeld_residue_zero (r : ℕ) :
-    Tendsto (fun s : ℂ => s * (matrixWeldPair r).Λ s) (𝓝[≠] 0) (𝓝 (-1)) := by
-  have h := (matrixWeldPair r).Λ_residue_zero
-  rw [matrixWeldPair_f₀] at h
+rank-`r` transformation law transform at the origin is `-1`. -/
+theorem matrixLattice_residue_zero (r : ℕ) :
+    Tendsto (fun s : ℂ => s * (matrixLatticePair r).Λ s) (𝓝[≠] 0) (𝓝 (-1)) := by
+  have h := (matrixLatticePair r).Λ_residue_zero
+  rw [matrixLatticePair_f₀] at h
   simpa [smul_eq_mul] using h
 
-end CriticalLinePhasor.CarrierWeldPair
+end CriticalLinePhasor.CarrierLatticePair
 
-#print axioms CriticalLinePhasor.CarrierWeldPair.strandTheta_anti
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixTheta_antitoneOn
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixThetaC
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixThetaC_locallyIntegrableOn
-#print axioms CriticalLinePhasor.CarrierWeldPair.strandTheta_sub_one_le
-#print axioms CriticalLinePhasor.CarrierWeldPair.pow_sub_one_le_of_le
-#print axioms CriticalLinePhasor.CarrierWeldPair.weldTailConst
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixTheta_sub_one_le
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixThetaC_sub_one_isBigO
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeldPair
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeldPair_k
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeldPair_ε
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeldPair_f₀
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeldPair_g₀
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeld_entirePart_differentiable
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeld_functional_equation
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeld_residue_k
-#print axioms CriticalLinePhasor.CarrierWeldPair.matrixWeld_residue_zero
+#print axioms CriticalLinePhasor.CarrierLatticePair.strandTheta_anti
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixTheta_antitoneOn
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixThetaC
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixThetaC_locallyIntegrableOn
+#print axioms CriticalLinePhasor.CarrierLatticePair.strandTheta_sub_one_le
+#print axioms CriticalLinePhasor.CarrierLatticePair.pow_sub_one_le_of_le
+#print axioms CriticalLinePhasor.CarrierLatticePair.latticeTailConst
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixTheta_sub_one_le
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixThetaC_sub_one_isBigO
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLatticePair
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLatticePair_k
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLatticePair_ε
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLatticePair_f₀
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLatticePair_g₀
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLattice_entirePart_differentiable
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLattice_functional_equation
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLattice_residue_k
+#print axioms CriticalLinePhasor.CarrierLatticePair.matrixLattice_residue_zero

@@ -1,0 +1,101 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\title{Uniform transport of arbitrary representation data}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/UniformTransport.lean}, 8 named declarations, each at axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a
+subset, no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The transport half of the seventh benchmark rung, completed in one uniform package.  A
+representation datum of a level-one eigenform seed is a finite direct sum of symmetric
+powers $\rho=\bigoplus_i\Sym^{r_i}$ --- the general finite algebraic representation of the
+dual group at level one, determinant twists being trivial at det-one normalization.  For
+\emph{every} such $\rho$ simultaneously: the transported coefficient bank is the
+Dirichlet product of the constituent $\Sym^{r}$ banks; the datum is a polynomial Satake
+pair with one explicit exponent; its $L$-series converges absolutely beyond one explicit
+polynomial threshold with no temperedness input; the $L$-series factors as the product of
+the constituent $L$-series on the common half-plane; and transport of a direct sum is the
+product of the transports.  No per-representation argument occurs anywhere --- one
+induction over the transport-closure calculus carries all of it.  Everything is
+unconditional and machine-checked.
+\end{abstract}
+
+\section{The datum and the transport}
+
+Fix a level-one holomorphic Hecke eigenform seed with Satake parameters $\alpha_p$, and
+let $\rho=(r_1,\dots,r_m)$ be a finite list of symmetric-power ranks.  The \emph{channel
+type} of $\rho$ is built by recursion --- one block $\{0,\dots,r_i\}$ per constituent ---
+and the \emph{weight system} of $\rho$ assigns to each prime the disjoint union of the
+constituent clocks $(\alpha_p^{r_i},\alpha_p^{r_i-2},\dots,\alpha_p^{-r_i})$
+(\texttt{repIndex}, \texttt{repWeight}).  Because the recursion makes each step
+\emph{definitionally} a direct sum, the closure calculus applies with no reindexing.
+
+\begin{theorem}[uniform bank law]\label{thm:bank}
+For every $\rho$, the transported bank of the datum is the Dirichlet convolution of the
+constituent banks: $c_\rho=c_{\Sym^{r_1}}\star\cdots\star c_{\Sym^{r_m}}$.
+(\texttt{repBank\_eq}: one induction; the empty datum carries the convolution identity
+$\delta$, and each constituent step is the closure law with the rank-uniform clock-bank
+identification.)
+\end{theorem}
+
+\begin{theorem}[uniform admissibility and summability]\label{thm:summ}
+Every datum is a polynomial Satake pair with the single exponent $E\cdot\sum_i r_i$
+(\texttt{repSatakePair}, bounds inherited from the constituent pairs), and its $L$-series
+converges absolutely for $\Re s>B_\rho+1$ with
+$B_\rho=\#\mathrm{channels}(\rho)+E\cdot\sum_i r_i$ explicit
+(\texttt{repBank\_LSeriesSummable}) --- with no temperedness input, uniformly over all
+representation data.
+\end{theorem}
+
+\begin{theorem}[uniform $L$-factorization]\label{thm:fact}
+On the common half-plane,
+$L(\rho,s)=\prod_i L(\Sym^{r_i},s)$.  (\texttt{LSeries\_repBank},
+\texttt{prodBank\_summable}.)
+\end{theorem}
+
+\begin{theorem}[composition is automatic]\label{thm:comp}
+$c_{\rho_1\oplus\rho_2}=c_{\rho_1}\star c_{\rho_2}$ for all data $\rho_1,\rho_2$ ---
+the closure rung's law at the level of arbitrary representation data.
+(\texttt{repBank\_append}.)
+\end{theorem}
+
+\begin{theorem}[rung 7, one theorem]\label{thm:rung7}
+For every representation datum $\rho$, the conclusions of
+Theorems~\ref{thm:bank}--\ref{thm:comp} hold simultaneously.
+(\texttt{uniform\_transport}.)
+\end{theorem}
+
+\begin{remark}[register, scope, falsifiers]
+Proven and machine-checked, unconditionally: everything above, with the datum class the
+finite direct sums of symmetric powers of the GL(2) seed --- the finite algebraic
+representations of its dual group at level one; local factors and per-place reciprocity
+for arbitrary finite duality-stable weight multisets are the compiled
+\texttt{FiniteWeightFiber} layer of the main paper.  The reflection at every rank is the
+carrier's own, with the global identification proven at all places
+(\texttt{prop:localid} of the main paper); per-rank registration of that reflection under
+its classical name in the prescribed chart is the corroboration currency of the companion
+notes (five instances landed).  A counterexample would be a datum whose bank differs from
+the convolution of its constituent banks at some prime power, or violates its summability
+threshold, or whose $L$-series escapes the factorization on the common half-plane ---
+each formally stated, so a counterexample would require a kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{L} R.~P.~Langlands, \emph{Problems in the theory of automorphic forms}, in:
+Lectures in Modern Analysis and Applications III, Lecture Notes in Math.\ \textbf{170},
+Springer (1970), 18--61.
+\end{thebibliography}
+
+\end{document}

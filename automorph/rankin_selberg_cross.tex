@@ -1,0 +1,137 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\title{The general Rankin--Selberg pair by polarization}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/RankinSelbergCross.lean}, 13 named declarations, each at axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For an arbitrary pair $f, g$ of level-one cusp forms of one weight $k$, the completed
+Rankin--Selberg transform is constructed and its full analytic package proven --- global
+self-dual functional equation, polar structure with residue the polarized Petersson
+pairing, entire part, Deligne-chart identification, and literal cross Hecke coefficients
+--- by \emph{polarization}: the cross object is
+$\frac14\bigl[\Lambda_{f+g}-\Lambda_{f-g}+i\,\Lambda_{f+ig}-i\,\Lambda_{f-ig}\bigr]$, and
+the compiled single-form engine (the averaged lattice pair with its reflection from the
+theta transformation law) applies to each of the four diagonal forms verbatim.  No new
+analytic input enters; everything is unconditional and machine-checked.
+\end{abstract}
+
+\section{Polarization}
+
+\begin{lemma}[sesquilinear polarization]\label{lem:pol}
+For $x,y\in\mathbb C$:
+$x\bar y=\tfrac14\bigl[(\|x+y\|^2-\|x-y\|^2)+i(\|x+iy\|^2-\|x-iy\|^2)\bigr]$.
+(\texttt{polarization}.)
+\end{lemma}
+
+Write $h_1=f+g$, $h_2=f-g$, $h_3=f+ig$, $h_4=f-ig$ --- cusp forms of the same weight
+(\texttt{polForm}$_{1\ldots4}$).  Since $q$-expansion is linear
+(the compiled expansion-linearity at level one), Lemma~\ref{lem:pol} applied
+coefficientwise gives
+$a_f(n)\overline{a_g(n)}
+=\tfrac14[\,\|a_{h_1}(n)\|^2-\|a_{h_2}(n)\|^2+i\|a_{h_3}(n)\|^2-i\|a_{h_4}(n)\|^2\,]$
+(\texttt{cross\_coeff\_polarization}).
+
+\section{The cross pair}
+
+Let $\bar\theta_h$ be the compiled averaged lattice profile of a cusp form $h$ and
+$m_h=\|h\|^2$ its Petersson mass.  Define the \emph{cross profile} and \emph{cross mass}
+\[
+  \Theta_{f,g}=\tfrac14\bigl[(\bar\theta_{h_1}-\bar\theta_{h_2})
+    +i(\bar\theta_{h_3}-\bar\theta_{h_4})\bigr],\qquad
+  m_{f,g}=\tfrac14\bigl[(m_{h_1}-m_{h_2})+i(m_{h_3}-m_{h_4})\bigr],
+\]
+the second being the Petersson pairing $\langle f,g\rangle$ in polarized form.  Each
+$\bar\theta_{h_j}$ satisfies the weight-one reflection
+$\bar\theta_{h_j}(1/t)=t\,\bar\theta_{h_j}(t)$ --- the lattice theta transformation law
+carried through the Petersson average, form by form --- so the combination satisfies it
+too, and each carries the compiled saddle decay and local integrability.  Hence the data
+assemble into a Mathlib weak functional-equation pair with weight $1$, root number $1$,
+and both constant terms $m_{f,g}$ (\texttt{crossPair}), every field inherited from the
+four compiled diagonal pairs.
+
+\begin{theorem}[the analytic package]\label{thm:pkg}
+Let $\Lambda$ be the completed transform of the cross pair.  Then, unconditionally:
+$\Lambda(1-s)=\Lambda(s)$ for every $s\in\mathbb C$; $(s-1)\Lambda(s)\to m_{f,g}$ as
+$s\to1$; and $\Lambda$ minus its two booked polar terms is entire.
+(\texttt{cross\_selfdual\_FE}, \texttt{cross\_residue}, \texttt{cross\_entire}.)
+\end{theorem}
+
+\section{Chart and coefficients}
+
+Define the cross Rankin bank as the polarized combination of the four diagonal rank-4
+banks, $c_{f,g}=\tfrac14[(c_{h_1}-c_{h_2})+i(c_{h_3}-c_{h_4})]$
+(\texttt{crossRankinBank}).
+
+\begin{theorem}[chart identification]\label{thm:chart}
+On $2<\Re s$:
+$\Lambda(s)=2^{-k}\,\Gm(s)\,\Gm(s+k-1)\,L(c_{f,g},s)$.
+\end{theorem}
+\begin{proof}
+The pair's transform is the Mellin transform of $\Theta_{f,g}-m_{f,g}$; Mellin linearity
+(\texttt{mellin\_add$'$}, \texttt{mellin\_sub$'$}, with the four compiled convergences)
+splits it into the four diagonal tails; the compiled unpeeled landing evaluates each as
+$2^{-k}\Gm(s)\Gm(s+k-1)L(c_{h_j},s)$ --- valid for \emph{arbitrary} cusp forms, no
+eigenform input --- and L-series linearity reassembles the combination.
+(\texttt{cross\_mellin\_split}, \texttt{LSeries\_crossRankinBank},
+\texttt{cross\_lambda\_eq}.)
+\end{proof}
+
+\begin{theorem}[coefficient identification]\label{thm:coeff}
+$c_{f,g}=\mathbf 1_{\square}\star b_{f,g}$, where
+$b_{f,g}(n)=a_f(n)\overline{a_g(n)}\,n^{-(k-1)}$ is the literal cross Hecke datum in
+Deligne normalization.
+\end{theorem}
+\begin{proof}
+Each diagonal bank factors as $c_h=\mathbf 1_{\square}\star b_h$ (Möbius inversion
+$\zeta\star\mu=\delta$ inside the compiled convolution presentation,
+\texttt{rankinBank\_eq\_sqIndicator\_mul}); convolution is bilinear, so the combination
+is $\mathbf 1_{\square}\star b_{f,g}$ with $b_{f,g}$ the polarized combination of the
+$b_h$ --- which is the stated pointwise datum by coefficient polarization.
+(\texttt{crossSquare}, \texttt{crossSquare\_apply}, \texttt{crossRankinBank\_eq\_sq}.)
+\end{proof}
+
+\begin{theorem}[rung 6, one theorem]\label{thm:rung6}
+For every pair $f,g$ of level-one cusp forms of weight $k\ge0$: the functional equation,
+polar structure, entire part, chart identification, and coefficient identification of
+Theorems~\ref{thm:pkg}--\ref{thm:coeff} hold simultaneously.
+(\texttt{rankin\_selberg\_rung}.)
+\end{theorem}
+
+\begin{remark}[register and falsifiers]
+Proven and machine-checked: everything above, for arbitrary pairs --- no eigenform
+hypothesis anywhere in this note; the diagonal $f=g$ recovers the symmetric-square
+companion's pair.  Cited, not re-proved: that the object so constructed is the
+automorphic Rankin--Selberg convolution of the classical theory (Rankin, Selberg;
+Jacquet for $\mathrm{GL}(2)\times\mathrm{GL}(2)$) --- the identification of coefficients,
+chart, functional equation and poles with the classical normalization is exactly what the
+theorems state.  A counterexample would be a pair violating $\Lambda(1-s)=\Lambda(s)$, or
+a level at which $c_{f,g}$ differs from
+$\mathbf 1_\square\star(a_f\bar a_g\,n^{-(k-1)})$ --- each formally stated, so a
+counterexample would require a kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{R} R.~A.~Rankin, \emph{Contributions to the theory of Ramanujan's function
+$\tau(n)$ I, II}, Proc.\ Camb.\ Phil.\ Soc.\ \textbf{35} (1939), 351--372.
+\bibitem{S} A.~Selberg, \emph{Bemerkungen über eine Dirichletsche Reihe, die mit der
+Theorie der Modulformen nahe verbunden ist}, Arch.\ Math.\ Naturvid.\ \textbf{43} (1940),
+47--50.
+\bibitem{J} H.~Jacquet, \emph{Automorphic forms on $\mathrm{GL}(2)$, Part II}, Lecture
+Notes in Math.\ \textbf{278}, Springer (1972).
+\end{thebibliography}
+
+\end{document}

@@ -102,8 +102,7 @@ theorem dualIntegral_neg (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
           exact intervalIntegral.integral_const_mul _ _
     _ = ((-1 : ℂ) ^ r) * ∫ x in (-1 : ℝ)..1, dualKernel Φ r c ξ x := by
           congr 1
-          simpa using intervalIntegral.integral_comp_neg
-            (a := (-1 : ℝ)) (b := 1) (fun x => dualKernel Φ r c ξ x)
+          simp
 
 /-- Odd ranks: the dual channel is antisymmetric. -/
 theorem dualIntegral_neg_odd (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
@@ -178,7 +177,7 @@ complete signed dual sum over `ℤ` vanishes — DC included, since the odd DC
 term is itself zero. -/
 theorem tsum_eq_zero_odd (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
     {r : ℕ} (hr : Odd r) (c : ℝ) (w : ℤ → ℂ) (hw : ∀ ξ : ℤ, w (-ξ) = w ξ)
-    (hsum : Summable fun ξ : ℤ => w ξ * dualIntegral Φ r c (ξ : ℝ)) :
+    (_hsum : Summable fun ξ : ℤ => w ξ * dualIntegral Φ r c (ξ : ℝ)) :
     (∑' ξ : ℤ, w ξ * dualIntegral Φ r c (ξ : ℝ)) = 0 := by
   set g : ℤ → ℂ := fun ξ => w ξ * dualIntegral Φ r c (ξ : ℝ) with hg
   have hgodd : ∀ ξ : ℤ, g (-ξ) = -g ξ := by
@@ -200,6 +199,56 @@ theorem tsum_eq_zero_odd (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
       _ = -(∑' ξ : ℤ, g ξ) := tsum_neg
   exact self_eq_neg_eq_zero h
 
+/-! ## The conjugation clock: the μ₄ structure of the dual channel -/
+
+/-- Conjugating the dual kernel reverses the frequency: the kernel's amplitude is real
+and its phase is the pure carrier exponential. -/
+theorem dualKernel_conj (Φ : ℝ → ℝ) (r : ℕ) (c ξ x : ℝ) :
+    (starRingEnd ℂ) (dualKernel Φ r c ξ x) = dualKernel Φ r c (-ξ) x := by
+  unfold dualKernel
+  rw [map_mul, Complex.conj_ofReal, ← Complex.exp_conj]
+  congr 1
+  simp only [map_mul, map_neg, map_ofNat, Complex.conj_I, Complex.conj_ofReal]
+  push_cast
+  ring
+
+/-- **Conjugation is frequency reversal**: `conj I_r(ξ) = I_r(−ξ)`, for every real
+profile — no parity or integrability hypotheses. -/
+theorem dualIntegral_conj (Φ : ℝ → ℝ) (r : ℕ) (c ξ : ℝ) :
+    (starRingEnd ℂ) (dualIntegral Φ r c ξ) = dualIntegral Φ r c (-ξ) := by
+  unfold dualIntegral
+  rw [← intervalIntegral_conj]
+  exact intervalIntegral.integral_congr fun x _ => dualKernel_conj Φ r c ξ x
+
+/-- The μ₄ law of the dual channel: conjugation composed with the parity clock —
+`conj I_r(ξ) = (−1)^r · I_r(ξ)` for even profiles. -/
+theorem dualIntegral_conj_eq (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
+    (r : ℕ) (c ξ : ℝ) :
+    (starRingEnd ℂ) (dualIntegral Φ r c ξ) = ((-1 : ℂ) ^ r) * dualIntegral Φ r c ξ := by
+  rw [dualIntegral_conj, dualIntegral_neg Φ hΦ r c ξ]
+
+/-- **Every even-rank dual term is real** — the reality half of the axis condition,
+compiled at every even rank, every frequency, every even profile. -/
+theorem dualIntegral_real_even (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
+    {r : ℕ} (hr : Even r) (c ξ : ℝ) :
+    (dualIntegral Φ r c ξ).im = 0 := by
+  have h := dualIntegral_conj_eq Φ hΦ r c ξ
+  rw [hr.neg_one_pow, one_mul] at h
+  exact Complex.conj_eq_iff_im.mp h
+
+/-- **Every odd-rank dual term is purely imaginary** — the quarter-turn: the odd ladder
+lives on the imaginary axis, at every frequency, every even profile. -/
+theorem dualIntegral_imaginary_odd (Φ : ℝ → ℝ) (hΦ : ∀ x, Φ (-x) = Φ x)
+    {r : ℕ} (hr : Odd r) (c ξ : ℝ) :
+    (dualIntegral Φ r c ξ).re = 0 := by
+  have h := dualIntegral_conj_eq Φ hΦ r c ξ
+  rw [hr.neg_one_pow] at h
+  have h2 : (starRingEnd ℂ) (dualIntegral Φ r c ξ) = -dualIntegral Φ r c ξ := by
+    rw [h]; ring
+  have := congrArg Complex.re h2
+  simp only [Complex.conj_re, Complex.neg_re] at this
+  linarith
+
 end CriticalLinePhasor.RankLadderParity
 
 #print axioms CriticalLinePhasor.RankLadderParity.chebU_neg
@@ -207,3 +256,6 @@ end CriticalLinePhasor.RankLadderParity
 #print axioms CriticalLinePhasor.RankLadderParity.dualIntegral_zero_odd
 #print axioms CriticalLinePhasor.RankLadderParity.latticeSum_eq_zero_odd
 #print axioms CriticalLinePhasor.RankLadderParity.tsum_eq_zero_odd
+#print axioms CriticalLinePhasor.RankLadderParity.dualIntegral_conj
+#print axioms CriticalLinePhasor.RankLadderParity.dualIntegral_real_even
+#print axioms CriticalLinePhasor.RankLadderParity.dualIntegral_imaginary_odd

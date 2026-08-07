@@ -1,0 +1,197 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\title{Transport closure:\\ direct sums of weight systems compose exactly}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/TransportClosure.lean}, 19 named declarations, each at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset, no
+\texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.  Every argument below is given in the
+text; the Lean names locate the corresponding formal statement.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+A single functorial lift is one theorem; a transport calculus is a system.  This note proves
+the closure property of the carrier-transport machinery: when two weight systems are combined
+by direct sum, every layer of the arithmetic passport composes exactly --- local Euler
+coefficients by Cauchy product, global coefficient banks by Dirichlet convolution, prescribed
+completions by multiplication at the product conductor and concatenated shift list, and
+self-dual functional equations by multiplication.  The abstract composition laws (identity,
+associativity, faithfulness under composition, base-change degrees multiplying) are compiled
+separately.  Two arithmetic instances tie the calculus to a live eigenform: the tensor-square
+decomposition $\mathrm{std}\otimes\mathrm{std}=\Sym^2\oplus\mathbf 1$, whose bank is the rank-4
+Rankin bank $\zeta\star\mathrm{sym2Bank}$, and the plethysm
+$\Sym^2\!\circ\Sym^2=\Sym^4\oplus\mathbf 1$, whose bank is $\zeta\star(\Sym^4\text{-bank})$ ---
+both derived from the closure law, not verified numerically.  Everything is unconditional and
+machine-checked.
+\end{abstract}
+
+\section{Setup}
+
+A \emph{weight system} of rank $d$ is a family $w=(w_i)_{i\in I}$ of $d$ nonzero complex
+numbers, one family per prime in the global setting.  Its \emph{local Euler coefficient} at
+level $j$ is the complete homogeneous symmetric function
+\[
+  h_j(w)\;=\;\sum_{\substack{(l_i)\ge0\\ \sum l_i=j}}\ \prod_{i\in I}w_i^{\,l_i},
+\]
+the $p^j$-coefficient of $\prod_i(1-w_ip^{-s})^{-1}$.  Its \emph{global bank} is the
+multiplicative arithmetic function assembled from the local coefficients over the prime
+factorization,
+$c_w(n)=\prod_{p\mid n}h_{v_p(n)}(w_p)$; formally the shift-by-one of the all-place
+coefficient sequence (\texttt{coefficientArithmetic} of
+\texttt{radialGlobalSatakeCoeff}).  Its \emph{prescribed completion} at conductor $C>0$ and
+shift list $(\mu_j)$ is $C^s\prod_j\Gm(s+\mu_j)\cdot\sum_n c_w(n)n^{-s}$.
+
+Two conventions used throughout: banks are compared as arithmetic functions (so ``the bank of
+$w$'' means the shifted sequence), and a \emph{direct sum} $u\oplus v$ of weight systems is the
+disjoint union of the two families at every prime.
+
+\section{The closure laws}
+
+\begin{theorem}[local closure: the Cauchy law]\label{thm:cauchy}
+For weight systems $u$ of rank $d_1$ and $v$ of rank $d_2$ and every level $j$,
+\[
+  h_j(u\oplus v)\;=\;\sum_{a+b=j}h_a(u)\,h_b(v).
+\]
+\end{theorem}
+\begin{proof}
+Fiber the exponent vectors of the union over the total exponent $a$ carried by the
+$u$-channels.  The slice with $u$-total $a$ is the product of the $u$-antidiagonal at level
+$a$ and the $v$-antidiagonal at level $j-a$, and the monomial factors accordingly:
+$\prod_{i}(u\oplus v)_i^{l_i}=\bigl(\prod u_i^{l_i}\bigr)\bigl(\prod v_i^{l_i}\bigr)$.
+Summing slices gives the Cauchy product.  The bijection is
+$l\mapsto(a,\,l|_u,\,l|_v)$ with inverse gluing, and both roundtrips are identities
+coordinate by coordinate.  (\texttt{TransportClosure.radialLocalEulerCoeff\_sumElim}.)
+\end{proof}
+
+Two degenerate values calibrate the law: the local coefficient is invariant under relabeling
+of channels (\texttt{radialLocalEulerCoeff\_equiv}), and the unit system --- one channel of
+weight $1$ --- has $h_j=1$ for every $j$ (\texttt{radialLocalEulerCoeff\_unit}), i.e.\ its bank
+is $\zeta$.
+
+\begin{theorem}[global closure: banks convolve]\label{thm:bank}
+The global bank of any weight system is multiplicative
+(\textup{\texttt{isMultiplicative\_bankArithmetic}}), its prime-power values are the local
+coefficients (\textup{\texttt{bankArithmetic\_prime\_pow}}), and the bank of a direct sum is
+the Dirichlet convolution of the banks:
+\[
+  c_{u\oplus v}\;=\;c_u\star c_v .
+\]
+\end{theorem}
+\begin{proof}
+Multiplicativity: at coprime $m,n$ the prime factors split and the factorization exponents
+restrict, so the defining product splits.  Both sides of the convolution identity are then
+multiplicative, so they agree once they agree at prime powers; there the convolution is the
+Cauchy product of prime-power values, $(c_u\star c_v)(p^j)=\sum_{a+b=j}c_u(p^a)c_v(p^b)$
+(divisors of $p^j$ are the $p^a$; \texttt{mul\_apply\_prime\_pow}), which is
+Theorem~\ref{thm:cauchy}.  (\texttt{bankArithmetic\_sumElim}.)
+\end{proof}
+
+\begin{theorem}[completion and functional-equation closure]\label{thm:completion}
+Polynomial Satake dual pairs are closed under direct sum
+(\textup{\texttt{sumPair}}; exponent the maximum of the two), with coefficient closure
+\textup{(\texttt{sumPair\_primalCoeff})}.  On any common point of absolute convergence the
+prescribed completion of the sum, at the product conductor and the concatenated shift list, is
+the product of the two prescribed completions:
+\[
+  (C_1C_2)^s\!\!\prod_{\mu\in\mu_1\mathbin{+\!\!+}\mu_2}\!\!\Gm(s+\mu)\cdot L(c_{u\oplus v},s)
+  \;=\;\Bigl(C_1^s\prod_{\mu_1}\Gm\cdot L(c_u,s)\Bigr)
+        \Bigl(C_2^s\prod_{\mu_2}\Gm\cdot L(c_v,s)\Bigr),
+\]
+and self-dual functional equations multiply: if $F(1-s)=F(s)$ and $G(1-s)=G(s)$ then
+$(FG)(1-s)=(FG)(s)$.
+\end{theorem}
+\begin{proof}
+The conductor factor splits since both conductors are nonnegative reals; the $\Gamma$-product
+splits over the concatenation; and $L(c_u\star c_v,s)=L(c_u,s)L(c_v,s)$ where both factors
+converge absolutely (Dirichlet-series multiplication, with the shift-by-one bookkeeping
+handled by the bridge \texttt{dirichlet\_shift\_eq\_LSeries}).  The functional-equation clause
+is immediate.  (\texttt{completedReadout\_sumPair}, \texttt{FE\_mul}.)
+\end{proof}
+
+\begin{remark}[the abstract layer]
+Identity, associativity, closure of faithfulness under composition, and the base-change
+instance $\mathrm{bc}_p\circ\mathrm{bc}_q=\mathrm{bc}_{pq}$ are compiled separately
+(\texttt{CarrierFunctoriality.faithful\_comp}, \texttt{comp\_assoc}, \texttt{id\_comp},
+\texttt{comp\_id}, \texttt{bc\_comp}, \texttt{bc\_one}).  Together with
+Theorems~\ref{thm:cauchy}--\ref{thm:completion} the transports form a composition calculus in
+which every layer of the arithmetic passport is preserved --- the systems property, as opposed
+to any single lift.
+\end{remark}
+
+\section{Two live instances at an eigenform}
+
+Let $f$ be a level-one holomorphic Hecke eigenform of weight $k$ with Satake parameters
+$\alpha_p$, and recall from the $\Sym^2$ companion the clock systems
+$\Sym^2\!:(\alpha^2,1,\alpha^{-2})$ and $\Sym^4\!:(\alpha^4,\alpha^2,1,\alpha^{-2},\alpha^{-4})$,
+the $\Sym^2$ convolution bank, and the rank-4 Rankin bank
+$c=\zeta\star\mathrm{sym2Bank}$.
+
+\begin{theorem}[tensor-square decomposition]\label{thm:tensor}
+The direct sum of the $\Sym^2$ clock system and the unit system carries the rank-4 Rankin
+bank:
+\[
+  c_{\Sym^2\oplus\mathbf 1}\;=\;\zeta\star\mathrm{sym2Bank}\;=\;c .
+\]
+This is $\mathrm{std}\otimes\mathrm{std}=\Sym^2\oplus\mathbf 1$ at the bank level: the
+closure law converts the direct-sum decomposition of the tensor square into the Euler-product
+factorization $L(f\times f,s)=\zeta(s)\,L(\Sym^2\!f,s)$ of the $\Sym^2$ companion.
+\end{theorem}
+\begin{proof}
+By Theorem~\ref{thm:bank}, $c_{\Sym^2\oplus\mathbf 1}=c_{\Sym^2}\star c_{\mathbf 1}$.  The
+clock bank of $\Sym^2$ is the convolution bank (the coefficient identification of the
+companion), and the unit bank is $\zeta$
+(\texttt{bankArithmetic\_symClock\_eq\_sym2Bank}, \texttt{bankArithmetic\_unit\_eq\_zeta}).
+(\texttt{tensorSquare\_bank}.)
+\end{proof}
+
+\begin{theorem}[plethysm: $\Sym^2\circ\Sym^2=\Sym^4\oplus\mathbf 1$]\label{thm:plethysm}
+The $\Sym^2\!\circ\Sym^2$ weight system --- the six pairwise products
+$w_iw_j$, $i\le j$, of the $\Sym^2$ clock --- decomposes as the $\Sym^4$ clock together with
+one trivial channel, and consequently its bank is
+\[
+  c_{\Sym^2\circ\Sym^2}\;=\;\zeta\star c_{\Sym^4}.
+\]
+\end{theorem}
+\begin{proof}
+The six products are $\alpha^4,\alpha^2,1,1,\alpha^{-2},\alpha^{-4}$
+(\texttt{sym2CompWeight\_products}); relabeling by the explicit bijection that sends the
+second trivial channel to the unit summand exhibits the multiset as
+$\Sym^4$-clock $\sqcup\{1\}$ (\texttt{sixSplit}, \texttt{sym2CompWeight\_decomposition}).
+Apply relabeling invariance, Theorem~\ref{thm:bank}, the rank-uniform clock-bank
+identification at $r=4$, and the unit bank.  (\texttt{plethysm\_bank}.)
+\end{proof}
+
+\begin{remark}[register and falsifiers]
+Everything above is proven and machine-checked; nothing is conditional, and no automorphy is
+consumed --- the two instances read only the compiled Satake seed of the eigenform.  The
+classical content recovered: the Clebsch--Gordan/plethysm decompositions of $\mathrm{GL}(2)$
+weight systems and the corresponding Euler-product factorizations, realized as instances of
+one closure law rather than case-by-case identities.  A counterexample would be a pair of
+weight systems whose union bank differs from the convolution of their banks at some prime
+power, contradicting Theorem~\ref{thm:bank}; or a level at which the six $\Sym^2\circ\Sym^2$
+products fail the $\Sym^4\oplus\mathbf 1$ split, contradicting
+Theorem~\ref{thm:plethysm}.  Each is formally stated, so a counterexample would require a
+kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic representations
+of $\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS \textbf{11} (1978), 471--542.
+\bibitem{KimShahidi} H.~Kim and F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}(2)\times\mathrm{GL}(3)$ and the symmetric cube for $\mathrm{GL}(2)$}, Ann.\ of
+Math.\ \textbf{155} (2002), 837--893.
+\bibitem{Langlands} R.~P.~Langlands, \emph{Beyond endoscopy}, in: Contributions to automorphic
+forms, geometry, and number theory, Johns Hopkins Univ.\ Press (2004), 611--697.
+\end{thebibliography}
+
+\end{document}

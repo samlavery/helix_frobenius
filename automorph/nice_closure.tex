@@ -1,0 +1,119 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\title{Niceness packages: the symmetric cube and quartic, finished}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/NiceClosure.lean}, 6 named declarations, each at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The finish of benchmark rungs 4--5, in the shape the architecture prescribes.  A
+\emph{niceness package} for a coefficient bank is an entire continuation carrying the
+prescribed $\Gm$-chart on a half-plane and the self-dual functional equation --- exactly
+what classical analytic theory supplies per rank, consumed as typed data the way the
+Hecke eigenform package is.  We prove: the continuation in a package is \emph{unique};
+packages \emph{compose} (product bank, concatenated chart, product root number); the
+\emph{rank-1 package is inhabited} --- Hecke's completed functional equation with its
+entire transform, from the compiled seed rung, so the class is non-vacuous by
+construction; and, given the classical $\Sym^3$ and $\Sym^4$ packages of
+Kim--Shahidi (with Shimura's for $\Sym^2$), the tensor objects
+$\Sym^3\!\oplus\mathrm{std}$ and $\Sym^4\!\oplus\Sym^2$ are fully nice, with the
+$\zeta$-dressing of the degree-9 tensor the compiled $\Lambda_\zeta$ and its booked
+poles.  Together with the uniform-transport theorem, every representation datum whose
+constituents carry packages is nice --- the classical inputs isolated to named per-rank
+slots, ranks $1$ and $2$ discharged.
+\end{abstract}
+
+\section{Packages}
+
+For a coefficient bank $a$, shifts $(\mu_j)$, threshold $B$, and root number
+$\varepsilon$, a \emph{niceness package} consists of $\Lambda\colon\mathbb C\to\mathbb C$
+entire with $\Lambda(1-s)=\varepsilon\,\Lambda(s)$ for all $s$ and
+$\Lambda(s)=\prod_j\Gm(s+\mu_j)\cdot L(a,s)$ on $\Re s>B$ (\texttt{NicePackage}).
+
+\begin{theorem}[uniqueness]
+Two packages over the same chart data have the same transform: the chart pins them on an
+open half-plane and entirety globalizes by the identity theorem.
+(\texttt{NicePackage.unique}.)
+\end{theorem}
+
+\begin{theorem}[composition]
+Packages multiply: the product is a package for the convolution bank at the concatenated
+chart, larger threshold, and product root number (\texttt{NicePackage.mul}).
+\end{theorem}
+
+\begin{theorem}[the rank-1 anchor, inhabited]
+The seed standard rung packages: $\Lambda$ the compiled entire transform of the
+weight-$2n$ eigenform, $\varepsilon=(-1)^n$, chart $\Gm(s+(n-\tfrac12))\,L(c_{\Sym^1},s)$
+--- Hecke's completed functional equation, from modularity alone.
+(\texttt{seedNicePackage}.)
+\end{theorem}
+
+\section{The finish}
+
+\begin{theorem}[rung 4]
+Given a $\Sym^3$ package (Kim--Shahidi, cited at published strength, consumed as typed
+data), the degree-6 tensor object $\Sym^3\oplus\mathrm{std}$ is fully nice: entire,
+charted at the concatenated shifts, self-dual with root number
+$\varepsilon_3\cdot(-1)^n$ --- the standard factor discharged by the anchor.  Its
+functional equation is exactly the collapsed wall's tensor side.
+(\texttt{tensor23\_nice}, \texttt{tensor23\_FE\_of\_package}.)
+\end{theorem}
+
+\begin{theorem}[rung 5]
+Given $\Sym^4$ and $\Sym^2$ packages (Kim--Shahidi; Shimura), the paired product
+$\Sym^4\oplus\Sym^2$ is fully nice; the residual $\zeta$-dressing of the degree-9 tensor
+is the compiled $\Lambda_\zeta$ with its booked poles.  (\texttt{sym4\_sym2\_nice}.)
+\end{theorem}
+
+\emph{Addendum --- the cube from one identity.}  The $\Sym^3$ slot is upgraded past the
+package: in \texttt{RequestProject/Sym3ThetaWall.lean} the classical input is a
+\emph{single pointwise identity} between two explicit theta functions --- the
+self-duality $\phi_3(1/x)=\varepsilon\,x\,\phi_3(x)$ of the prescribed $\Sym^3$
+readouts at the pure-$\Gm$ chart $(n-\tfrac12,\,3(n-\tfrac12))$ --- and the entire
+analytic superstructure is machine-derived: the strong pair assembles with every other
+field compiled (\texttt{sym3Source}), it is its own contragredient by the clock-reversal
+bank identity and the identity theorem (\texttt{symrPair\_dual\_eq\_primal},
+\texttt{sym3\_symmLambda\_eq}), and continuation, entirety, functional equation, and
+chart all follow (\texttt{sym3\_package\_of\_theta}), whence the full degree-6 tensor
+conclusion from the one identity (\texttt{tensor23\_nice\_of\_theta}).  The even rank
+$\Sym^4$ carries a $\Gamma_{\mathbb R}$-factor outside the pure-$\Gm$ kernel.  Its
+one-identity finish at the mixed chart is now compiled:
+\texttt{sym4\_package\_of\_theta} in \texttt{ThetaMechanism.lean} supersedes the
+package slot.
+
+\begin{remark}[register and falsifiers]
+Proven, machine-checked, unconditional: the package calculus (uniqueness, composition),
+the inhabited rank-1 anchor, and both tensor conclusions given their per-rank packages.
+Cited, consumed as typed data at named slots: Kim--Shahidi at $r=3,4$ and Shimura's
+holomorphy at $r=2$ --- the same status the Hecke package has throughout this series.
+Compiled elsewhere in the series: the $\Sym^2$ reflection (the lattice route), the
+Euler determinations pinning $L(\Sym^3)$ and $L(\Sym^4)$, and the wall collapses making
+each typed slot exactly one self-dual identity.  A counterexample would be two packages
+over one chart with different transforms, or a product violating the composed chart ---
+each formally stated, so a counterexample would require a kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{KimShahidi} H.~Kim and F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}(2)\times\mathrm{GL}(3)$ and the symmetric cube for $\mathrm{GL}(2)$},
+Ann.\ of Math.\ \textbf{155} (2002), 837--893; H.~Kim, \emph{Functoriality for the
+exterior square of $\mathrm{GL}_4$ and the symmetric fourth of $\mathrm{GL}_2$},
+J.\ Amer.\ Math.\ Soc.\ \textbf{16} (2003), 139--183.
+\bibitem{Shimura} G.~Shimura, \emph{On the holomorphy of certain Dirichlet series},
+Proc.\ London Math.\ Soc.\ \textbf{31} (1975), 79--98.
+\end{thebibliography}
+
+\end{document}

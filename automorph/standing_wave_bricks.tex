@@ -1,0 +1,212 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\title{The standing-wave bricks: certifier (a)'s instrument set,\\
+with the weak-side pipeline closed at every rank}
+\author{Samuel Lavery\thanks{Machine-checked companions: five files in
+\texttt{RequestProject/}, named per section below, carrying 58 named declarations in
+total; every declaration at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Five bricks for certifier (a) of the rank-uniform registration program — the
+derivation of each rung's standing wave from the carrier-lattice Poisson identity.  (1)~The $\mu_4$
+conjugation clock of the dual trace channel: conjugation is frequency reversal, so
+every even-rank dual term is real and every odd-rank dual term is purely imaginary, at
+every frequency.  (2)~The arithmetic unfolding of the compiled rank-uniform lattice FE-pair:
+the completed transform of the rank-$r$ matrix bank is
+$\Lambda_r(s)=\pi^{-s}\Gamma(s)\sum_{n\ge1}r_{(r+1)^2}(n)\,n^{-s}$ on the half-plane —
+the completed Epstein zeta of the carrier lattice, every rank, with its functional
+equation already compiled.  (3)~The weighted strand transformation law: the degree-one harmonically
+modulated strands exchange at shifted weight $3/2$ — the two-kernel, nontrivial-root
+shape that even-rank rungs require, imported from the compiled odd Hurwitz pair.
+(4)~\textbf{The standing wave of the lattice family}: the completed transform is real on
+the central axis $\operatorname{Re}s=(r+1)^2/4$ at every rank — gate 2's exact shape,
+derived from global Schwarz reality and the self-dual functional equation.  The
+weak-side pipeline (geometric Poisson identity $\Rightarrow$ completed FE $\Rightarrow$ standing
+wave) is thereby executed end-to-end on a genuine arithmetic family, uniformly in the
+rank.  The remaining wall of certifier (a) is located exactly — the amplitude exchange,
+one condition per rung, between two compiled endpoints — and is typed and
+\emph{executed at} $\mathrm{GL}(1)$: the Dirichlet rung inhabits the exchange in
+full, gate, continuation, standing wave, and functional equation all compiled.
+\end{abstract}
+
+\section{The $\mu_4$ conjugation clock}
+
+The carrier-native dual channel at rank $r$
+(\texttt{RankLadderParity.lean}) is
+\[
+I_r(\xi)=\int_{-1}^{1}\Phi(x)\,U_r(x)\,e^{-2\pi i x\xi c}\,dx,
+\]
+with $\Phi$ the even orbital profile and $U_r$ the Chebyshev Satake character.  The compiled parity clock
+$I_r(-\xi)=(-1)^rI_r(\xi)$ now composes with the new conjugation clock
+(\texttt{dualIntegral\_conj}: $\overline{I_r(\xi)}=I_r(-\xi)$, no hypotheses) into the
+$\mu_4$ law $\overline{I_r(\xi)}=(-1)^r\,I_r(\xi)$: every even-rank dual
+term is \emph{real} (\texttt{dualIntegral\_real\_even}) and every odd-rank dual
+term is \emph{purely imaginary} (\texttt{dualIntegral\_imaginary\_odd}) — at every
+rank, frequency, scale, and even profile.  The reality half of
+the axis condition is compiled on the dual channel.
+
+\section{The arithmetic unfolding of the lattice bank}
+
+The rank-$r$ matrix bank
+\[
+\theta_r(t)=\sum_{A\in M_{r+1}(\mathbb Z)}e^{-\pi t\|A\|^2}
+\]
+carries a compiled completed FE at every rank (the lattice FE-pair,
+\texttt{CarrierLatticePair.lean}).\\
+\texttt{LatticeThetaUnfolding.lean} identifies its chart.  The grouping identity
+\texttt{bankGauss\_eq\_repSum} regroups the lattice sum by norm fibers, with finite
+fibers and polynomial growth $r_N(n)\le(2n+1)^N$ of the representation numbers, so
+the bank is the coefficient theta of $r_N$ against the exponential clock, whose
+Mellin transform is $\pi^{-s}\Gamma(s)$.  On the half-plane, at every rank
+(\texttt{matrixLattice\_arithmetic\_chart}):
+\[
+\Lambda_r(s)\;=\;\pi^{-s}\,\Gamma(s)\sum_{n\ge1}r_{(r+1)^2}(n)\,n^{-s},
+\qquad
+\Lambda_r\!\left(\tfrac{(r+1)^2}{2}-s\right)=\Lambda_r(s),
+\]
+the second equation already compiled.  This is the completed Epstein zeta of
+$\mathbb Z^{(r+1)^2}$, produced by the house lattice transformation law with its arithmetic readout attached
+— a genuine arithmetic family of completed functional equations, uniform in the rank,
+fiber-free.
+
+\section{The weighted strand}
+
+The unweighted strand transforms to itself at weight $1/2$ with root number $1$.  The
+degree-one harmonically modulated strands — the compiled odd Hurwitz pair — transform to
+\emph{each other} at shifted weight $3/2$
+(\texttt{WeightedStrandTransformation.lean}: \texttt{sinKernel\_inv},
+\texttt{oddKernel\_inv}):
+\[
+\mathrm{sin}_a(1/t)=t^{3/2}\,\mathrm{odd}_a(t),
+\qquad
+\mathrm{odd}_a(1/t)=t^{3/2}\,\mathrm{sin}_a(t).
+\]
+Two different kernels, exchange closing only after two reflections, weight shifted by
+the harmonic degree: the $d=1$ rung of the Hecke modulation ladder
+$\widehat{P\cdot\mathrm{gauss}}=i^{-d}P\cdot\mathrm{gauss}$, and the exact geometric
+shape of nontrivial root structure.  The $\Gamma_{\mathbb R}(s+1)$-completed Mellin
+side and its functional equations are compiled upstream.
+
+\section{The standing wave of the lattice family}
+
+\begin{theorem}[the standing wave; machine-checked]
+At every rank $r$, the completed transform of the matrix bank satisfies, on the
+central axis $\operatorname{Re}s=(r+1)^2/4$:
+\[
+\Lambda_r(s)=\overline{\Lambda_r(s)}
+\]
+— gate 2's FE-on-axis shape with root number $1$; equivalently the transform is real
+on the axis (\texttt{matrixLattice\_axis\_im\_zero}), and its entire part carries the
+same standing wave.  The proof composes global Schwarz reality
+$\Lambda_r(\bar s)=\overline{\Lambda_r(s)}$ (\texttt{matrixLattice\_schwarz}: the Mellin
+transform of a real profile is Schwarz-real on the half-plane, globalized through the
+entire part by the identity theorem) with the self-dual completed functional equation
+(\texttt{matrixLattice\_FE}; the pair is its own reflection,
+\texttt{matrixLatticePair\_symm\_eq}).  No new analytic input.
+\end{theorem}
+
+The weak-side pipeline of certifier (a) — geometric Poisson identity $\Rightarrow$ completed FE
+$\Rightarrow$ standing wave — is thereby closed, end-to-end, on a genuine arithmetic
+family, at every rank simultaneously.  Home: \texttt{LatticeStandingWave.lean}, theorem
+\texttt{matrixLattice\_standingWave}, capstone \texttt{lattice\_weak\_rung}.
+
+\section{The exchange, executed at $\mathrm{GL}(1)$}
+
+The wall is now a type (\texttt{AmplitudeExchange.lean}): an \texttt{ExchangedRung}
+is a cancellation-gated rung together with its standing wave, and
+\texttt{ExchangedRung.fe} runs the compiled reduction, so inhabiting the type at a
+profile \emph{is} that profile's functional equation on the strip.  The first full
+inhabitant is compiled:
+
+\begin{theorem}[the Dirichlet rung; machine-checked]
+Let $\chi$ be a nontrivial Dirichlet character mod $q$.  Then:
+(i)~its partial sums are bounded by $q$ --- full windows vanish exactly --- so $\chi$
+inhabits the cancellation gate at weight $1$ with exponent $0$ (\texttt{chiGate});
+(ii)~the gate's Abel continuation \emph{is} the entire Dirichlet L-function on
+$\operatorname{Re}s>0$ (\texttt{abelContinuation\_eq\_LFunction}, identity theorem
+from the convergence region);
+(iii)~the conjugate amplitude is the inverse character
+(\texttt{conj\_chi\_apply}: unit values have modulus one), so the compiled Schwarz
+pairing exchanges $\chi$ and $\chi^{-1}$;
+(iv)~for the conductor-completed chart $q^{s/2}\gamma(\chi,s)$
+(\texttt{chiRungC}), if $\chi^{-1}$ is primitive with nonvanishing root number, the
+rung's \textbf{standing wave holds} (\texttt{chiRungC\_standingWave}): on the axis
+$\bar s=1-s$, the Schwarz pairing and the compiled completed functional equation
+collide, the conductor powers recombine as
+$q^{(1-s)/2}\,q^{s-1/2}=q^{s/2}$, and the readout is $\varepsilon$-real with the
+\emph{constant} $\varepsilon=W(\chi^{-1})^{-1}$.
+Hence \texttt{chiExchangedRung} inhabits the exchange, and \texttt{chi\_fe} delivers
+the completed Dirichlet functional equation on the critical strip through the
+reduction.
+\end{theorem}
+
+The pipeline gate $\Rightarrow$ continuation $\Rightarrow$ standing wave
+$\Rightarrow$ FE is thereby executed end-to-end on a genuinely cancellation-gated
+arithmetic amplitude — the $\mathrm{GL}(1)$ prototype of the amplitude exchange.  The
+inputs consumed are compiled Mathlib theorems (the completed functional equation for
+primitive characters, itself machine-checked, plus one nonvanishing datum: the
+primitive Gauss sum), not citations.
+
+\section{Register}
+
+\begin{remark}[register]
+\textbf{Proved (machine-checked).}  All five bricks, as named above — including
+the $\mathrm{GL}(1)$ exchange, whose only unconsumed datum is the nonvanishing of the
+primitive root number (with primitivity of $\chi^{-1}$ carried as a hypothesis).
+
+\textbf{The obstruction, measured.}  The rank-uniform reduction's cuspidal gate
+(\texttt{TransferGate}) demands sub-axis primitive cancellation
+$\|\sum_{k<n}a_k\|\le Cn^{\theta}$ with $\theta<\kappa/2$.  The lattice family cannot
+supply it: its partial sums grow at the full abscissa — the two poles of
+$\Lambda_r$, residues $\pm1$, are exactly the measured non-cancellation of the DC
+mode.  The weak side is therefore the lattice family's home, and the standing wave above
+is its gate-2 statement.
+
+\textbf{The remaining wall, located.}  Certifier (a)'s outstanding input is the
+\emph{amplitude exchange}: replace the representation-number amplitude by a rung
+profile carrying the cancellation gate, while keeping the lattice transformation law.
+One condition per rung, now positioned between two compiled endpoints — the geometric
+Poisson identity with its standing wave on one side, the gate-and-reduction machinery
+(\texttt{RankUniformReduction}) on the other.
+
+\textbf{Cited, not formalized.}  The classical discharge of the exchanged rungs'
+functional equations is symmetric-power automorphy: Kim--Shahidi at $r=3,4$
+\cite{KimShahidi,Kim} and Newton--Thorne in general \cite{NT}; nothing here consumes
+them.
+
+\textbf{Not claimed.}  No rung's standing wave beyond the lattice family is claimed; the
+dead coupling routes recorded in the program ledger (strand modulation, kernel
+telescoping, Veronese folding, aligned bilateral summation) remain dead.
+
+\textbf{Falsifier.}  A rank at which the lattice family's transform fails axis reality
+would refute the standing wave and, through it, the compiled Schwarz or FE bricks; a
+rung amplitude satisfying the cancellation gate whose completed readout fails the
+reduction's FE would refute the gate capstone.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{KimShahidi} H.~Kim, F.~Shahidi,
+\emph{Functorial products for $\mathrm{GL}_2\times\mathrm{GL}_3$ and the symmetric
+cube for $\mathrm{GL}_2$}, Ann.\ of Math.\ (2) \textbf{155} (2002), 837--893.
+\bibitem{Kim} H.~Kim,
+\emph{Functoriality for the exterior square of $\mathrm{GL}_4$ and the symmetric
+fourth of $\mathrm{GL}_2$}, J.\ Amer.\ Math.\ Soc.\ \textbf{16} (2003), 139--183.
+\bibitem{NT} J.~Newton, J.~A.~Thorne,
+\emph{Symmetric power functoriality for holomorphic modular forms, I--II},
+Publ.\ Math.\ IH\'ES \textbf{134} (2021), 1--116 and 117--152.
+\end{thebibliography}
+
+\end{document}

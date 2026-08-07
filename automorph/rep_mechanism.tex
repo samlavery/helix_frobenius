@@ -1,0 +1,215 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\newcommand{\Gr}{\Gamma_{\mathbb R}}
+\title{The mechanism at every transported bank:\\
+self-duality of arbitrary representation data and the general Deligne chart}
+\author{Samuel Lavery\thanks{Machine-checked companions:
+\texttt{RequestProject/GlobalHelixGeneralChartCompletion.lean} (the general kernel and
+its 3D bank layer, 26 named declarations) and \texttt{RequestProject/RepMechanism.lean}
+(datum self-duality, the general mechanism, and the named instances, 28 named
+declarations), each declaration at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The transported banks of rung 7 --- one bank per finite representation datum
+$\rho=\oplus_i\Sym^{r_i}$ of the level-one seed, with compiled summability and
+$L$-factorization --- receive their analytic packages.  Two inputs make this uniform.
+First, \emph{every} transported pair is self-dual: inverting every channel of a datum
+is the blockwise clock reversal, so the contragredient coefficients equal the primal
+coefficients at every $\rho$ --- one recursion, no per-datum argument.  Second, the
+archimedean chart generalizes to the full Deligne form: an arbitrary finite list of
+real clocks convolved in signed-log height onto the complex-pair kernel, with Mellin
+multiplier exactly $\prod_j\Gr(s+\delta_j)\cdot\prod_i\Gm(s+\mu_i)$.  The mechanism
+then holds at every datum and every chart type: one pointwise theta identity of the
+prescribed $\rho$-readouts yields entirety, the functional equation, and the chart
+identification for $L(\rho,s)=\prod_iL(\Sym^{r_i},s)$.  Named instances land the
+remaining ladder banks at their classical charts: the degree-6 tensor
+$\mathrm{std}\otimes\Sym^2$ at datum $[3,1]$, the degree-9 tensor
+$\Sym^2\otimes\Sym^2$ at datum $[4,2,0]$, and split base change at datum $[1,1]$ ---
+each from \emph{one} identity on its joint bank, with no per-factor input.
+\end{abstract}
+
+\section{Self-duality of every transported datum}
+
+Rung 7's transport (\texttt{UniformTransport.lean}) assigns to every finite list
+$\rho=[r_1,\dots,r_m]$ the channel type $\bigoplus_i\mathrm{Fin}(r_i{+}1)$, the
+disjoint-union clock system, and the polynomial Satake pair
+\texttt{repSatakePair}, whose bank is the Dirichlet product
+$\prod_i c_{\Sym^{r_i}}$ (\texttt{repBank\_eq}).  The new input is that this pair is
+its own contragredient at the coefficient level, for every datum:
+
+\begin{theorem}[\texttt{RepMechanism.repPair\_dual\_eq\_primal}; machine-checked]
+\label{thm:selfdual}
+For every datum $\rho$ and every $j$, the contragredient radial Euler coefficients of
+\texttt{repSatakePair} equal the primal ones.  The proof is one recursion: the channel
+reversal $\sigma_\rho=\bigoplus_i\mathrm{rev}_{\,\mathrm{Fin}(r_i+1)}$
+(\texttt{repPerm}) satisfies $w(x)^{-1}=w(\sigma_\rho x)$ on every channel
+(\texttt{repWeight\_inv\_eq}: $\alpha^{-(r-2k)}=\alpha^{r-2(r-k)}$ blockwise), and
+symmetric functions are permutation-invariant
+(\texttt{radialGlobalSatakeCoeff\_comp\_equiv}).
+\end{theorem}
+
+Because the recursive channel type makes each step \emph{definitionally} a direct sum,
+the induction consumes no reindexing: the case split is the case split of
+\texttt{Sum.elim}.
+
+\section{The general Deligne chart}
+
+The complex-pair kernel ($\prod_i\Gm$) and the single-real mixed kernel
+($\Gr\cdot\prod_i\Gm$) generalize by one list recursion
+(\texttt{GlobalHelixGeneralChartCompletion.lean}):
+\[
+\texttt{generalKernelLog}\;[\,]\;\mu s=\texttt{completionKernelLog}\;\mu s,
+\]
+\[
+\texttt{generalKernelLog}\;(\delta{::}\,\delta s)\;\mu s
+=g_{\mathbb R}^{(\delta)}\ast_{\mathrm M}\texttt{generalKernelLog}\;\delta s\;\mu s,
+\]
+so the empty list is definitionally the complex kernel and a singleton the mixed
+kernel --- both subsumptions are \emph{compiled}, at the kernel and at the 3D banks
+(\texttt{generalKernelLog\_nil}, \texttt{generalKernelLog\_singleton}, and the
+corresponding readout identifications, the definitional ones by \texttt{rfl}).
+The three kernel facts hold at every real-shift list and every nonempty
+complex-shift list: uniform boundedness at every admissible weight, decay faster than
+every power, and the exact multiplier
+\[
+\texttt{generalKernelLog\_hasMellin}:\qquad
+\widetilde g(s)=\prod_j\Gr(s+\delta_j)\cdot\prod_i\Gm(s+\mu_i)
+\]
+--- the general Deligne factor at the archimedean place.  The full 3D bank layer
+(primal and reciprocal-height contragredient readouts, theta identifications, local
+integrability, rapid decay, and both initial-half-plane identifications) is compiled
+on this kernel, uniformly in the two shift lists.
+
+\section{The mechanism at every datum and every chart}
+
+\begin{theorem}[\texttt{RepMechanism.mechanismG}; machine-checked]\label{thm:mechG}
+For every self-dual-multiset bank, every real-shift list with nonnegative real parts,
+every nonempty complex-shift list with nonnegative real parts, and every
+$\varepsilon\neq0$: one pointwise theta identity between the prescribed general
+readouts yields the general package (\texttt{GeneralNicePackage}) --- entire $\Lambda$,
+$\Lambda(1-s)=\varepsilon\Lambda(s)$, and
+$\Lambda(s)=\prod_j\Gr(s+\delta_j)\prod_i\Gm(s+\mu_i)\cdot L(s)$ on
+$\operatorname{Re}s>B$ --- with uniqueness of the continuation
+(\texttt{GeneralNicePackage.unique}), specialization to the complex and mixed packages
+at empty and singleton real-shift lists (\texttt{toNice}, \texttt{toMixed}), and the
+product law (\texttt{GeneralNicePackage.mul}: product bank, concatenated real and
+complex shift lists, product root number).
+\end{theorem}
+
+\begin{corollary}[the datum corollaries; machine-checked]\label{cor:rep}
+\begin{center}
+\texttt{rep\_package\_of\_theta},\quad \texttt{rep\_mixed\_package\_of\_theta},\\
+\texttt{rep\_general\_package\_of\_theta}
+\end{center}
+For every representation datum $\rho$ of the seed and every admissible chart ---
+complex, mixed, or general --- one theta identity of the prescribed $\rho$-readouts
+yields the complete package for the compiled product bank
+$L(\rho,s)=\prod_iL(\Sym^{r_i},s)$, at the uniform threshold of the datum.  The
+self-duality input is Theorem~\ref{thm:selfdual}; nothing is assumed per datum.
+\end{corollary}
+
+\section{The remaining banks, at their classical charts}
+
+Three named instances land the ladder's remaining banks.  In each, the entire
+analytic superstructure of the \emph{joint} object comes from one identity on the
+joint bank --- no per-factor package, no seed input:
+
+\begin{corollary}[\texttt{tensor23\_package\_of\_theta}; machine-checked]
+Datum $[3,1]$ --- the degree-6 tensor $\mathrm{std}\otimes\Sym^2$, whose bank is
+$c_{\Sym^3}\!\star c_{\mathrm{std}}$ (the Clebsch--Gordan factorization compiled at
+rung 4).  Chart: the pure-complex
+$\Gm(s+\tfrac{k-1}2)\Gm(s+\tfrac{3(k-1)}2)\Gm(s+\tfrac{k-1}2)$ at weight $k=2n$ ---
+the $\Sym^3$ pair and the seed shift.  One identity yields the package.  (The previous
+finish of rung 4 consumed one identity \emph{and} the compiled seed rung; this
+instance needs only the identity.)
+\end{corollary}
+
+\begin{corollary}[\texttt{tensor33\_package\_of\_theta}; machine-checked]
+Datum $[4,2,0]$ --- the degree-9 tensor $\Sym^2\otimes\Sym^2$, bank
+$c_{\Sym^4}\star c_{\Sym^2}\star\zeta$ (rung 5's decomposition; the rank-zero
+constituent is $\zeta$ by \texttt{symrBank\_zero\_eq\_zeta}, compiled).  Chart: the general
+form with complex shifts pinned to the exponent pairs $k{-}1,\,2(k{-}1)$ (from
+$\Sym^4$) and $k{-}1$ (from $\Sym^2$), and the real-shift list parametric with
+nonnegative real parts --- classically three real clocks, one per even constituent
+($\Sym^4$, $\Sym^2$, $\Sym^0$), with shifts fixed by the middle-line parities;
+whichever admissible $(\delta s,\varepsilon)$ satisfies the identity yields the
+package.  This is the first finish of the degree-9 object as one object: rung 5
+end-to-end from a single equation.
+\end{corollary}
+
+\begin{corollary}[\texttt{bc\_split\_package\_of\_theta}; machine-checked]
+Datum $[1,1]$, the split quadratic base-change bank
+$c_{\mathrm{std}}\star c_{\mathrm{std}}$ --- rung 1's split factorization
+\[
+L(\mathrm{BC}\,\pi)=L(\pi)\,L(\pi\otimes\chi)\qquad(\chi\ \text{split}),
+\]
+at the doubled seed chart $\Gm(s+\tfrac{k-1}2)^2$.
+\end{corollary}
+
+\section{Register}
+
+\begin{remark}[register]
+\textbf{Proved (machine-checked).}  Everything named above: datum self-duality at
+every $\rho$; the general kernel's bounds, decay, and multiplier; the general 3D bank
+layer; the general mechanism with uniqueness; the datum corollaries at all three chart
+types; the three named instances.  All at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}.
+
+\textbf{Consumed from the corpus.}  Rung 7's transport (channel recursion, bank,
+summability), the mechanism engine of the companion note, the real and complex clocks,
+and the theta/Mellin layer --- all compiled.
+
+\textbf{Cited, not formalized.}  The classical discharges of the per-object identity:
+Gelbart--Jacquet \cite{GJ} and Shimura \cite{Shimura} at $\Sym^2$, Kim--Shahidi
+\cite{KimShahidi} and Kim \cite{Kim} at $\Sym^3,\Sym^4$ (hence at the tensor data
+$[3,1]$, $[4,2,0]$), Langlands \cite{Langlands} at base change.  Named for scope, not
+consumed.
+
+\textbf{Not claimed.}  The truth of the theta identity for any datum beyond the seed
+is not claimed; it is the isolated input, one pointwise equation per bank.  The
+real-shift values of the degree-9 chart are not asserted; the theorem is uniform in
+them.  Inert base change and automorphic induction keep their landed coefficient
+identities (rungs 1--2) and are not datum instances: their twisted components are not
+symmetric powers of the seed.
+
+\textbf{Falsifier.}  A transported datum whose contragredient coefficients differ from
+its primal coefficients at any index would refute Theorem~\ref{thm:selfdual}; a
+general kernel whose Mellin multiplier deviates from $\prod\Gr\cdot\prod\Gm$ at an
+admissible point, or a datum satisfying the identity whose $L$-readout fails the
+package, would refute the mechanism.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{GJ} S.~Gelbart, H.~Jacquet,
+\emph{A relation between automorphic representations of $\mathrm{GL}(2)$ and
+$\mathrm{GL}(3)$}, Ann.\ Sci.\ \'Ec.\ Norm.\ Sup\'er.\ (4) \textbf{11} (1978), 471--542.
+\bibitem{Shimura} G.~Shimura,
+\emph{On the holomorphy of certain Dirichlet series},
+Proc.\ London Math.\ Soc.\ (3) \textbf{31} (1975), 79--98.
+\bibitem{KimShahidi} H.~Kim, F.~Shahidi,
+\emph{Functorial products for $\mathrm{GL}_2\times\mathrm{GL}_3$ and the symmetric cube
+for $\mathrm{GL}_2$}, Ann.\ of Math.\ (2) \textbf{155} (2002), 837--893.
+\bibitem{Kim} H.~Kim,
+\emph{Functoriality for the exterior square of $\mathrm{GL}_4$ and the symmetric fourth
+of $\mathrm{GL}_2$}, J.\ Amer.\ Math.\ Soc.\ \textbf{16} (2003), 139--183.
+\bibitem{Langlands} R.~P.~Langlands,
+\emph{Base change for $\mathrm{GL}(2)$}, Annals of Mathematics Studies \textbf{96},
+Princeton University Press, 1980.
+\end{thebibliography}
+
+\end{document}

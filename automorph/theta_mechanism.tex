@@ -1,0 +1,249 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\newcommand{\Gr}{\Gamma_{\mathbb R}}
+\title{The mechanism: one theta identity yields the complete analytic package,\\
+at every rank and at both archimedean chart types}
+\author{Samuel Lavery\thanks{Machine-checked companions:
+\texttt{RequestProject/GlobalHelixRealClockCompletion.lean} (the real clock and the mixed
+kernel, 24 named declarations) and \texttt{RequestProject/ThetaMechanism.lean} (the
+mechanism and its instances, 15 named declarations), each declaration at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Rung 9 of the benchmark ladder, stated as compiled theorems rather than a register
+claim.  For every self-dual-multiset Satake bank and every admissible archimedean chart
+--- pure complex $\prod_i\Gm(s+\mu_i)$ or mixed $\Gr(s+\delta)\prod_i\Gm(s+\mu_i)$ ---
+a \emph{single pointwise identity} between the two prescribed theta readouts of the 3D
+bank machine-yields the complete analytic package: entire continuation, functional
+equation $\Lambda(1-s)=\varepsilon\,\Lambda(s)$, and the chart identification on the
+initial half-plane.  Every other input is compiled: local integrability, rapid decay at
+both ends, the Mellin identification, the contragredient comparison, and the identity
+theorem globalization.  The mixed case is powered by a new compiled clock: the Gaussian
+$2x^{\delta}e^{-\pi x^2}$ with Mellin transform exactly Deligne's real factor
+$\Gr(s+\delta)$, convolved in signed-log height with the complex-pair kernel.
+Instantiating at the symmetric powers of a level-one eigenform seed --- the self-duality
+input is the compiled clock reversal --- gives the mechanism at \emph{every rank}
+$\Sym^r$ and, at $r=4$, finishes rung 5: the $\Sym^4$ package from one identity at its
+mixed chart $\Gr(s+\delta)\,\Gm(s+(k-1))\,\Gm(s+2(k-1))$, weight $k=2n$.
+\end{abstract}
+
+\section{The mechanism at a complex chart}
+
+Fix a finite channel type $\iota$ and a polynomial Satake dual pair $W$ on $\iota$: a
+primal weight system and its contragredient, with radial Euler coefficients
+$c_j=h_j(\text{weights})$ and $c^\vee_j$ (complete homogeneous symmetric functions), and
+polynomial growth exponents.  The two prescribed 3D readouts are the theta banks of
+these coefficients against the completion kernel of a shift list $\mu s$: the primal
+bank $\Theta(x)=\sum_n c_{n}\,\phi_{n}(x)\,g(h_n(x))$ read on the carrier, and the
+reciprocal-height contragredient bank.  These are the objects
+\texttt{cpsPolynomialFullPrimal3DBankReadout} and
+\texttt{cpsPolynomialFullDual3DTransformedReadout} of the corpus; their local
+integrability, rapid decay, and initial-half-plane Mellin identification with
+$\prod_i\Gm(s+\mu_i)\cdot D(s)$ are compiled facts, not hypotheses.
+
+\begin{theorem}[the mechanism; \texttt{ThetaMechanism.mechanism}; machine-checked]
+\label{thm:mech}
+Let $W$ be any polynomial Satake dual pair whose contragredient coefficients equal its
+primal coefficients ($c^\vee_j=c_j$ for all $j$ --- the self-dual-multiset condition).
+Let $\mu s\neq\varnothing$ be any shift list with $\operatorname{Re}\mu\ge 0$, and
+$\varepsilon\neq 0$.  Suppose the \emph{one identity}
+\[
+\Theta\!\left(\tfrac1x\right)
+=\varepsilon\,x\cdot\Theta^\vee\!\left(\tfrac1x\right)
+\qquad(x>0)
+\]
+between the prescribed primal readout and the reciprocal-height contragredient readout.
+Then the niceness package exists over the shifted bank: an entire $\Lambda$ with
+$\Lambda(1-s)=\varepsilon\,\Lambda(s)$ and
+$\Lambda(s)=\prod_i\Gm(s+\mu_i)\cdot L(s)$ for
+$\operatorname{Re}s>B_W$, where $B_W$ is the uniform threshold
+$\#\iota+\max(\text{exponents})+1$ (\texttt{ThetaMechanism.mechB}).
+\end{theorem}
+
+The proof consumes nothing beyond the identity: the strong reflection pair assembles
+with every analytic field compiled; the contragredient transform equals the primal
+transform by the coefficient equality on the open half-plane and the identity theorem
+(\texttt{entire\_eq\_of\_eqOn\_isOpen}); the functional equation and chart follow.  The
+threshold, the summability of the shifted bank beyond it
+(\texttt{ThetaMechanism.bankArithmetic\_summable}), and the half-plane conditions on
+the shifts are all uniform in the data --- there is no per-instance analytic input
+anywhere.
+
+\section{The real clock and the mixed kernel}
+
+Every completion kernel so far was built from the complex-place clock
+$2x^{\mu}e^{-2\pi x}$ with Mellin multiplier $\Gm(s+\mu)$.  The even symmetric powers
+require the real place.\\
+\texttt{GlobalHelixRealClockCompletion.lean} adds it:
+
+\begin{lemma}[\texttt{gammaRClock\_mellin}; machine-checked]\label{lem:clock}
+The Gaussian clock $g_{\mathbb R}^{(\delta)}(x)=2\,x^{\delta}e^{-\pi x^2}$ has
+\[
+\int_0^\infty g_{\mathbb R}^{(\delta)}(x)\,x^{s}\,\frac{dx}{x}
+=\pi^{-(s+\delta)/2}\,\Gamma\!\left(\tfrac{s+\delta}2\right)=\Gr(s+\delta),
+\qquad \operatorname{Re}(s+\delta)>0,
+\]
+exactly Deligne's real factor.  The convergence half-plane is
+\texttt{gammaRClock\_mellinConvergent}; the uniform signed-log weighted profile bound
+is \texttt{weightedGammaRLogProfile\_bounded}.
+\end{lemma}
+
+The proof substitutes $u=x^2$ in the carrier coordinate and lands on the
+$\Gamma$-integral; the $2$ in the clock absorbs the Jacobian $\tfrac12$.
+The \emph{mixed kernel} is then one real clock convolved in signed-log height with the
+complex-pair completion kernel,
+\[
+\texttt{mixedKernelLog}
+=g_{\mathbb R}^{(\delta)}\ast_{\mathrm M}\bigstar_i\,2x^{\mu_i}e^{-2\pi x},
+\]
+and the three kernel facts that power everything are compiled at every $\delta$ and
+every finite list: uniform boundedness at every admissible weight (an $L^1$ profile
+convolved with a bounded profile is bounded), decay faster than every power, and the
+exact multiplier ---
+\[
+\texttt{weightedMixedKernelLog\_bounded},\;\;
+\texttt{mixedKernelLog\_rapid},\;\;
+\texttt{mixedKernelLog\_hasMellin}:
+\]
+\[
+\widetilde{g}(s)=\Gr(s+\delta)\cdot\prod_i\Gm(s+\mu_i).
+\]
+On this kernel the full 3D bank layer is rebuilt verbatim: the banks
+\texttt{mixedPrimal3DBankReadout} and \texttt{mixedDual3DTransformedReadout}, their
+theta identifications, local integrability, rapid decay, and the two initial-half-plane
+identifications \texttt{mixedPrimal3D\_initialIdentification} and
+\texttt{mixedDual3D\_initialIdentification}.
+
+\section{The mechanism at a mixed chart}
+
+\begin{theorem}[\texttt{ThetaMechanism.mechanismR}; machine-checked]\label{thm:mechR}
+Let $W$ be self-dual-multiset as in Theorem~\ref{thm:mech}, let $\delta$ have
+$\operatorname{Re}\delta\ge0$, and let $\mu s\neq\varnothing$ have nonnegative real
+parts, $\varepsilon\neq 0$.  One pointwise identity between the mixed primal readout
+and the mixed reciprocal-height contragredient readout yields the mixed package
+(\texttt{MixedNicePackage}): entire $\Lambda$,
+$\Lambda(1-s)=\varepsilon\,\Lambda(s)$, and
+\[
+\Lambda(s)=\Gr(s+\delta)\cdot\prod_i\Gm(s+\mu_i)\cdot L(s)
+\qquad(\operatorname{Re}s>B_W).
+\]
+The continuation in a mixed package is unique
+(\texttt{MixedNicePackage.unique}).
+\end{theorem}
+
+Theorems~\ref{thm:mech} and~\ref{thm:mechR} are \emph{one} mechanism at the two
+archimedean chart types in classical use.  Neither knows anything about modular forms:
+the inputs are a self-dual finite weight multiset, a chart, and one reflection.
+
+\section{Every rank of the eigenform seed; the $\Sym^4$ finish}
+
+For the $\Sym^r$ clock of a level-one weight-$2n$ eigenform seed the self-duality
+input is not a hypothesis: the contragredient of the $\Sym^r$ weight system is its own
+clock reversal, so $c^\vee_j=c_j$ at \emph{every} rank
+(\texttt{Sym3ThetaWall.symrPair\_dual\_eq\_primal}, consumed here), and the shifted
+radial coefficients are the $\Sym^r$ bank
+(\texttt{symrCoefficientArithmetic\_eq}).  Instantiating:
+
+\begin{corollary}[\texttt{symr\_package\_of\_theta},
+\texttt{symr\_mixed\_package\_of\_theta}; machine-checked]
+For every rank $r$, every admissible chart of either type, and every
+$\varepsilon\neq0$: one theta identity of the prescribed $\Sym^r$ readouts yields the
+complete package for $L(\Sym^r\!,s)$ over the compiled $\Sym^r$ bank, at the uniform
+threshold.
+\end{corollary}
+
+\begin{corollary}[rung 5's finish; \texttt{sym4\_package\_of\_theta}; machine-checked]
+\label{cor:sym4}
+Weight $k=2n$, $n\ge1$.  With the exponent-pair shifts
+$\mu_1=k-1$, $\mu_2=2(k-1)$ (\texttt{sym4Shifts}) and any admissible real shift
+$\delta$: one pointwise identity of the mixed $\Sym^4$ readouts yields entirety, the
+functional equation, and
+\[
+\Lambda(s)=\Gr(s+\delta)\,\Gm(s+(k-1))\,\Gm(s+2(k-1))\cdot L(\Sym^4\!,s)
+\]
+on the initial half-plane.
+\end{corollary}
+
+The complex shifts are pure representation theory --- the nonzero exponent pairs
+$\pm(k-1),\pm2(k-1)$ of $\Sym^4$ of the discrete-series parameter --- and match the
+classical completions (for $k=12$: $\Gm(s+11)\,\Gm(s+22)$, the $\Sym^4\Delta$ chart;
+compare Shimura's $\Sym^2$ chart $\Gr(s+1)\Gm(s+k-1)$ \cite{Shimura}, whose complex
+shift is the $i=1$ case of the same law $\mu_i=i(k-1)$).  The real shift $\delta$ is
+carried parametrically: the middle exponent of $\Sym^{2m}$ is $0$ and contributes
+$\Gr(s+\delta)$ with $\delta\in\{0,1\}$ fixed by the archimedean parity of the middle
+line; the theorem consumes whichever $(\delta,\varepsilon)$ satisfies the identity ---
+the identity itself pins the chart, no table is consulted.  This mirrors the corpus's
+own register at the identification proposition: one $\Gr(s+\delta)$ adjoined for even
+$r$ (\texttt{universal.tex}, Theorem \texttt{prop:localid} --- the global
+identification of the candidate with $\Sym^r\pi$).
+
+With this, the ladder state is: rung 4 ($\Sym^3$) finished from one identity at its
+pure-complex chart (previous note); rung 5 ($\Sym^4$) finished from one identity at its
+mixed chart (Corollary~\ref{cor:sym4}); and rung 9 --- \emph{a new mechanism} ---
+stated and proven as the two generic theorems above, of which every per-rank finish is
+a two-line instance.
+
+\section{Register}
+
+\begin{remark}[register]
+\textbf{Proved (machine-checked).}  Everything named above: the real clock and its
+Mellin identification; the mixed kernel's bounds, decay, and multiplier; the mixed 3D
+bank layer; the two mechanism theorems; uniqueness; the all-rank and $\Sym^4$
+instances.  All at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}.
+
+\textbf{Consumed from the corpus.}  The compiled theta/Mellin engine (theta banks of
+polynomial coefficients, identification, decay); the compiled clock-reversal
+self-duality of $\Sym^r$; the compiled seed data of the eigenform
+(\texttt{HeckeEigenData}).
+
+\textbf{Cited, not formalized.}  The classical discharge of the one remaining identity
+per even rung --- automorphy of $\Sym^4$ (Kim \cite{Kim}, Kim--Shahidi
+\cite{KimShahidi}) implies the reflection classically; $\Sym^2$ is Gelbart--Jacquet
+\cite{GJ} with Shimura's chart \cite{Shimura}.  These are named for scope, not
+consumed.
+
+\textbf{Not claimed.}  The truth of the theta identity for any $r\ge2$ is not claimed
+here; it is the isolated input, exactly one pointwise equation per rung.  The value of
+$\delta$ for a given even rank is not asserted; the theorem is uniform in it.
+
+\textbf{Falsifier.}  Any self-dual-multiset bank with a chart of nonnegative shifts
+satisfying the one identity whose $L$-readout fails entirety, the functional equation,
+or the chart identification on the stated half-plane would refute the mechanism; so
+would a mixed kernel whose Mellin multiplier deviates from
+$\Gr(s+\delta)\prod_i\Gm(s+\mu_i)$ at any admissible point.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{GJ} S.~Gelbart, H.~Jacquet,
+\emph{A relation between automorphic representations of $\mathrm{GL}(2)$ and
+$\mathrm{GL}(3)$}, Ann.\ Sci.\ \'Ec.\ Norm.\ Sup\'er.\ (4) \textbf{11} (1978), 471--542.
+\bibitem{Shimura} G.~Shimura,
+\emph{On the holomorphy of certain Dirichlet series},
+Proc.\ London Math.\ Soc.\ (3) \textbf{31} (1975), 79--98.
+\bibitem{Kim} H.~Kim,
+\emph{Functoriality for the exterior square of $\mathrm{GL}_4$ and the symmetric fourth
+of $\mathrm{GL}_2$}, J.\ Amer.\ Math.\ Soc.\ \textbf{16} (2003), 139--183.
+\bibitem{KimShahidi} H.~Kim, F.~Shahidi,
+\emph{Functorial products for $\mathrm{GL}_2\times\mathrm{GL}_3$ and the symmetric cube
+for $\mathrm{GL}_2$}, Ann.\ of Math.\ (2) \textbf{155} (2002), 837--893.
+\bibitem{Deligne} P.~Deligne,
+\emph{Valeurs de fonctions $L$ et p\'eriodes d'int\'egrales},
+Proc.\ Sympos.\ Pure Math.\ \textbf{33} (1979), part 2, 313--346.
+\end{thebibliography}
+
+\end{document}

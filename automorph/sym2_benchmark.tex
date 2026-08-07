@@ -1,0 +1,501 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\Gm}{\Gamma_{\mathbb C}}
+\title{The symmetric-square carrier pair:\\
+niceness without temperedness, and the prescribed completion}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/Sym2Benchmark.lean}, 24 named declarations, each at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset, no
+\texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}. Every argument below is given in the
+text; the Lean names locate the corresponding formal statement.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+For the symmetric square of a $\mathrm{GL}(2)$ Satake datum we prove, unconditionally: the
+degree-three weight fiber and its determinant ledger; the per-place functional equation
+$P(X)=(-X)^3P(X^{-1})$; the identification of the carrier bank's local numerator and every global
+Euler coefficient with the arithmetic $\Sym^2\!\times\tau$ Euler datum; entirety, entire
+contragredient, boundedness on every vertical strip, and the functional equation of the completed
+carrier pair, for every $\mathrm{GL}(1)$ twist; and the identification of the prescribed
+conductor/$\Gamma$-product Mellin projection with the completed Dirichlet readout on the initial
+half-plane. \emph{No temperedness is assumed}: only a polynomial Satake bound is used, so
+non-tempered data is covered on the same footing. A degree-three simple parameter is shown to carry
+no trivial constituent.
+\end{abstract}
+
+\section{Setup}
+
+Let $\pi$ be a $\mathrm{GL}(2)$ Satake datum with local class
+$\operatorname{diag}(\alpha_v,\beta_v)$, $\alpha_v\beta_v=1$. Then
+\[
+  \Sym^2\operatorname{diag}(\alpha_v,\beta_v)
+   =\operatorname{diag}\bigl(\alpha_v^{2},\,\alpha_v\beta_v,\,\beta_v^{2}\bigr)
+   =\operatorname{diag}\bigl(\alpha_v^{2},\,1,\,\alpha_v^{-2}\bigr),
+\]
+the degree-three datum of $\Sym^2\pi$ on $\mathrm{GL}(3)$.
+
+The $\mathrm{GL}(3)$ converse theorem of Jacquet--Piatetski-Shapiro--Shalika \cite{JPSS} consumes
+niceness of the twists by Hecke characters; the general-$n$ form of
+Cogdell--Piatetski-Shapiro \cite{CPS} has twist range $1\le m<n-1$.
+
+\begin{lemma}[twist range]\label{lem:range}
+For $n=3$ the admissible twist degrees are exactly $m=1$.
+\end{lemma}
+\begin{proof}
+The range is $1\le m<2$, whose only integer member is $1$.
+\end{proof}
+
+So both formulations demand twists by $\mathrm{GL}(1)$ alone, and everything below is stated for
+that. (\texttt{sym2TwistDegree\_eq\_one}.)
+
+\section{The object: lift, carrier, projection, and the registration gap}
+
+Everything below is a statement about a three-dimensional object; the Dirichlet series is its
+readout. Stating this first is not decoration --- several of the apparent obstructions in the
+classical presentation are features of the readout, and treating them as properties of the object
+is a category error.
+
+\paragraph{The carrier.} Before any function is attached there is a double-ended
+three-dimensional state space
+\[
+  C=C_+\sqcup C_-,\qquad J:C_+\leftrightarrow C_-,\quad J^2=\operatorname{id},
+\]
+a helix and its conjugate anti-helix over a common parameter, Archimedean, of constant pitch, with
+$J$ the global involution exchanging the two lanes. The carrier is source-independent: it is
+constructed before, and does not depend on, whatever rides it.
+
+\paragraph{The lift.} A source with a finite structural presentation --- a finite local parameter
+family, a bounded local-factor degree, an Euler assembly, a convergence datum --- is realised as a
+\emph{fiber}: a bank of phasors on the carrier. Index $n$ sits at height $z_n=n$, carries weight
+$a_n$, magnitude $n^{-\sigma}$ and unit-modulus spin $e^{-iy\log n}$, and \emph{enters the bank at
+zero magnitude and grows continuously}. Nothing is withheld for a convergence threshold. The
+$\log n$ in the spin is the analytic readout of the phasor's own height on the helix; the $1$D
+writing $n^{-s}=e^{-s\log n}$ is its shadow, not its source. The source's dual rides the
+anti-helix.
+
+\paragraph{The projection, and what it books.} The readout is reached in two steps:
+\[
+  3\mathrm D\ \xrightarrow{\ \text{drop radius}\ }\ 2\mathrm D\
+    \xrightarrow{\ \text{drop angle}\ }\ 1\mathrm D ,
+\]
+the first a M\"obius/Cayley map to the unit circle, the second the logarithmic readout to the
+strip, with the discarded radial and angular coordinates recorded in a loss ledger. Projection
+paired with its ledger is a \emph{bijection}: the fiber is recovered from its retained height
+together with the ledger, so the descent discards nothing. A completed event at physical height
+$Z>0$ has chart ordinate $y=\log Z$.
+
+Two consequences are used repeatedly. First, the functional equation is a property of the
+\emph{carrier}, not of the fiber: it is the involution $J$ read through the projection, so it
+holds for every fiber that rides the carrier and there is no per-$L$-function equation to derive.
+The classical theta identity is the $1$D shadow of $J$; no Poisson summation is consumed anywhere
+below. Second, the abscissa $\Re s>1$ is where the \emph{projected series} stops converging. On
+the carrier the bank exists at every height, having grown continuously from $0$; there is no gate.
+This is why the entirety argument of Theorem~\ref{thm:nice} needs no cancellation between poles
+and zeros: $\Lambda$ is directly the Mellin transform of a function on the whole positive ray, and
+rapid decay at one end with the reflection controlling the other makes that integral converge for
+every $s$. The factorisation $\Lambda=\gamma\cdot L$, and with it the bookkeeping of
+$\Gamma$-poles against trivial zeros, is a decomposition of an object that was already entire.
+
+\paragraph{The registration gap.} The carrier is harmonically scaled --- the working scale is
+$\pi/3$, where six unit steps close a turn and the integers land on the $\mu_6$ cell --- while the
+conventional readout uses unit scale. The two scales represent the same arithmetic procession but
+do not register the same crossings in the same units: the lattices $\{k\pi/3\}$ and $\{m\}$ meet
+only at the origin. The accumulated discrepancy is exactly the classical oscillatory term,
+\[
+  N_{\pi/3}(e^{t})-R_{1}(e^{t})=S_{\mathrm{ev}}(t),
+  \qquad S_{\mathrm{ev}}(t)=N_{\mathrm{ev}}(t)-1-\vartheta(t)/\pi,
+\]
+a cardinal-valued native event count minus a real-valued continuous phase registration. So
+$S(t)$ is not an additional oscillatory feature of the arithmetic: it is the chart's registration
+defect, and it is relative --- a gap between two registrations, obeying the cocycle law
+$S_{H,L}=S_{H,K}+S_{K,L}$, never intrinsic. The present note takes its measurements at complete
+native cells, so no registration correction enters any statement below.
+
+\section{The local algebra}
+
+The carrier consumes a \emph{finite duality-stable weight fiber}: a finite family
+$(\lambda_i)_{i\in I}$ in $\mathbb C^\times$ with an involution $\iota$ of $I$ satisfying
+$\lambda_{\iota(i)}=\lambda_i^{-1}$, and $\lambda_i=1$ whenever $\iota(i)=i$. No unit-modulus
+condition is imposed.
+
+\begin{lemma}[$\Sym^r$ is such a fiber; the ledger]\label{lem:ledger}
+Let $\alpha\in\mathbb C^\times$, $I=\{0,\dots,r\}$, $\lambda_k=\alpha^{\,r-2k}$, $\iota(k)=r-k$.
+Then $\iota$ is an involution, $\lambda_{\iota(k)}=\lambda_k^{-1}$, a fixed point carries
+$\lambda=1$, and $\prod_k\lambda_k=1$. For $r=2$ the channels are $\alpha^{2},1,\alpha^{-2}$ and
+the degree is $3$.
+\end{lemma}
+\begin{proof}
+$\iota(\iota(k))=k$, and
+$\lambda_{\iota(k)}=\alpha^{\,r-2(r-k)}=\alpha^{\,2k-r}=(\alpha^{\,r-2k})^{-1}=\lambda_k^{-1}$.
+If $\iota(k)=k$ then $r=2k$, so $\lambda_k=\alpha^0=1$. Partitioning $I$ into $\iota$-orbits, a
+two-element orbit contributes $\lambda_k\lambda_k^{-1}=1$ and a fixed point contributes $1$; hence
+the product is $1$. At $r=2$: $\alpha^2\cdot1\cdot\alpha^{-2}=1$.
+\end{proof}
+
+(\texttt{sym2Fiber\_weight\_zero/\_one/\_two}, \texttt{sym2Fiber\_card},
+\texttt{sym2Fiber\_det\_one}; the ledger is \texttt{fiber\_det\_one}, proved by
+\texttt{Finset.prod\_involution} --- the orbit partition above.)
+
+\begin{theorem}[per-place functional equation]\label{thm:localFE}
+Let $(\lambda_i)_{i\in I}$ be a finite duality-stable weight fiber, $|I|=d$, and
+$P(X)=\prod_i(1-\lambda_iX)$. Then $P(X)=(-X)^{d}P(X^{-1})$ for every $X\ne0$. For $\Sym^2$,
+$d=3$.
+\end{theorem}
+\begin{proof}
+Reindexing by the bijection $\iota$ and using $\lambda_{\iota(i)}=\lambda_i^{-1}$ gives
+$P(X)=\prod_i(1-\lambda_i^{-1}X)$. Each factor equals $\lambda_i^{-1}(\lambda_i-X)$, so
+$P(X)=\bigl(\prod_i\lambda_i\bigr)^{-1}\prod_i(\lambda_i-X)=\prod_i(\lambda_i-X)$ by the ledger.
+For $X\ne0$ write $\lambda_i-X=(-X)(1-\lambda_iX^{-1})$ and multiply over the $d$ indices.
+\end{proof}
+
+The proof uses only duality-stability and the ledger --- $\|\lambda_i\|=1$ is never invoked --- and
+is preserved by any unit-modulus per-channel warp respecting $\iota$, since such a warp preserves
+both hypotheses. So the reflection holds across the entire twist family.
+(\texttt{sym2\_localPoly\_reciprocal}, \texttt{sym2Fiber\_warp\_det\_one}.)
+
+\section{The bank}
+
+The arithmetic $\Sym^r\!\times\tau$ bank is \emph{defined} by its local roots: at a prime $p$ and
+channel $(j,k)$,
+\begin{equation}\label{eq:roots}
+  \varrho_{p,(j,k)}=\alpha_p^{\,r-j}\,\beta_p^{\,j}\,\gamma_{p,k}.
+\end{equation}
+At $r=2$ with $\beta_p=\alpha_p^{-1}$ these are $\alpha_p^{2}\gamma_p$, $\gamma_p$,
+$\alpha_p^{-2}\gamma_p$: the Satake data of $\Sym^2\!\times\tau$.
+
+\begin{proposition}[coefficient identification]\label{prop:ident}
+The carrier's local numerator, and every global Euler coefficient of both the primal and the
+contragredient bank, coincide with the arithmetic $\Sym^2$ twisted Euler datum.
+\end{proposition}
+\begin{proof}
+Both sides are literally \eqref{eq:roots}: the bank is defined by those roots, and the arithmetic
+datum is that root family. The identification is therefore definitional, not a matching argument.
+(\texttt{sym2\_localFactor\_identification},
+\texttt{sym2\_globalCoefficient\_identification},
+\texttt{sym2\_globalDualCoefficient\_identification}, all closing by \texttt{rfl};
+\eqref{eq:roots} is \texttt{sym2TensorRoot\_apply}.)
+\end{proof}
+
+\section{Niceness of the carrier pair, without temperedness}
+
+Let $P$ denote the completed carrier pair of the arithmetic $\Sym^2\!\times\tau$ bank --- the
+strong pair built from the bank's primal and contragredient coefficient banks against the
+carrier's self-dual completion clock --- with weight $k_P$ and root number $\varepsilon_P$.
+
+\begin{theorem}[niceness]\label{thm:nice}
+Let $\pi$ be any $\mathrm{GL}(2)$ Satake pair with nonzero radial magnitudes under a polynomial
+prime bound $\|\alpha_p\|\le p^{\,e_\pi}$, and $\tau$ any $\mathrm{GL}(1)$ twist of the same kind.
+Then
+\begin{enumerate}
+\item[(i)] $\Lambda_P$ is entire;
+\item[(ii)] $\Lambda_{P^\vee}$ is entire;
+\item[(iii)] for all $u\le v$ there is $B$ with $\|\Lambda_P(s)\|\le B$ on $u\le\Re s\le v$;
+\item[(iv)] the same for $P^\vee$;
+\item[(v)] $\Lambda_P(k_P-s)=\varepsilon_P\Lambda_{P^\vee}(s)$ for every $s$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+\emph{(a) Polynomial bound.} By \eqref{eq:roots} each root is a product of $r$ base roots and one
+twist root, so $\|\varrho_{p,(j,k)}\|\le p^{\,re_\pi+e_\tau}$; the tensor bank is again a
+polynomial Satake pair with exponent $re_\pi+e_\tau$, its contragredient the pointwise inverse.
+This is the only use of a Satake bound, and a polynomial one suffices: the trivial Hecke bound
+$e_\pi=1$ serves, as does Jacquet--Shalika \cite{JS}.
+
+\emph{(b) Reciprocal-height reflection.} The coefficient theta $\Theta(x)=\sum_{n\ge1}a_ng(nx)$,
+with $g$ the self-dual completion clock, satisfies $\Theta(1/x)=x\,\Theta^{\vee}(x)$ for all
+$x>0$. This is the helix/anti-helix exchange of the double-ended carrier read phasor by phasor:
+the inversion $x\mapsto1/x$ carries the primal lane onto the reciprocal-height contragredient
+lane termwise, so it is an identity of summands and no resummation occurs.
+
+\emph{(c) Entirety and strip bounds.} Split $\int_0^\infty\Theta(x)x^{s}\frac{dx}{x}$ at $x=1$ and
+substitute $x\mapsto1/x$ below; by (b) this rewrites $\Lambda_P$ as one integral over
+$[1,\infty)$ of $\Theta$ against $x^{s}+\varepsilon x^{k_P-s}$. For $x\ge1$ the integrand is
+entire in $s$; by (a) the coefficients are polynomially bounded and $g$ decays faster than every
+power, so $\Theta$ decays rapidly on $[1,\infty)$ and the integral converges locally uniformly:
+$\Lambda_P$ is entire. On $u\le\Re s\le v$ one has $|x^{it}|=1$, so the integral is dominated by
+$\int_1^\infty\|\Theta(x)\|(x^{v}+x^{k_P-u})\frac{dx}{x}$, finite and independent of $\Im s$.
+The same computation on the contragredient bank gives (ii) and (iv).
+
+\emph{(d)} Clause (v) is (b) transported through the Mellin projection, which carries
+$x\mapsto1/x$ to $s\mapsto k_P-s$.
+\end{proof}
+
+\noindent(\texttt{sym2\_GL3ConverseAnalyticInput\_radiusLive}; the tempered specialisation over
+unit-modulus phase families is \texttt{sym2\_GL3ConverseAnalyticInput}.) The functional equation
+is the carrier's own reflection: it comes from the double-ended helix, and no Poisson summation is
+consumed. Temperedness is not used --- $\|\alpha_p\|=1$ is Deligne's theorem for holomorphic data
+but the open Ramanujan--Petersson conjecture for Maass data, and only the polynomial bound of (a)
+appears.
+
+\begin{proposition}[the hypothesis class]\label{prop:nonvac}
+Every $\mathrm{GL}(2)$ Satake datum $\{\alpha_p,\alpha_p^{-1}\}$ with $\alpha_p\ne0$ obeying the
+trivial Hecke bound in both directions lies in the class of Theorem~\ref{thm:nice}; every family
+$\alpha_p=e^{i\theta_p}$ lies in that of the tempered specialisation.
+\end{proposition}
+\begin{proof}
+Take primal roots $(\alpha_p,\alpha_p^{-1})$ and dual roots $(\alpha_p^{-1},\alpha_p)$ with
+exponent $1$: the dual is the pointwise inverse since $(\alpha_p^{-1})^{-1}=\alpha_p$,
+nonvanishing is the hypothesis, and both bounds are the assumed $\|\alpha_p^{\pm1}\|\le p$. For
+the tempered case $\|e^{i\theta}\|=1$.
+(\texttt{gl2SatakePair}; \texttt{phaseOfAngles}, \texttt{twistOfAngles}.)
+\end{proof}
+
+\section{The prescribed completion}
+
+Theorem~\ref{thm:nice} concerns the carrier's own completed pair. Alongside it sits the
+prescribed completion: a conductor $C>0$ and a nonempty list of shifts $(\mu_j)$, giving
+$C^{s}\prod_j\Gm(s+\mu_j)$. Call $s$ a \emph{point of the initial half-plane} when
+$\Re(s+\mu_j)>0$ for all $j$ and $\Re s$ exceeds $d+e^{+}+1$ and $d+e^{-}+1$, where $d$ is the
+bank's degree and $e^{\pm}$ its primal and dual exponents.
+
+\begin{lemma}[such points exist]\label{lem:point}
+For every bank and clock the initial half-plane is nonempty.
+\end{lemma}
+\begin{proof}
+All three conditions are lower bounds on $\Re s$: take $s=R$ real with
+$R>\max\bigl(d+e^{+}+1,\ d+e^{-}+1,\ \max_j(-\Re\mu_j)\bigr)$.
+(\texttt{completionPointOfReal}.)
+\end{proof}
+
+\begin{theorem}[the prescribed Mellin identification]\label{thm:std}
+With $\pi,\tau$ as in Theorem~\ref{thm:nice}, a completion clock $(C,(\mu_j))$, and $s$ any point
+of the initial half-plane: the Mellin projection of the prescribed conductor/$\Gamma$-product
+primal $3$D bank readout at $s$ equals the completed primal Dirichlet readout at $s$, and the same
+holds for the reciprocal-height contragredient bank.
+\end{theorem}
+\begin{proof}
+The prescribed kernel $\kappa$ is the inverse Mellin of $C^{s}\prod_j\Gm(s+\mu_j)$, and the
+prescribed readout at height $x$ is $\sum_n a_n\kappa(nx)$. On the initial half-plane the double
+integral converges absolutely: $\|a_n\|\ll n^{d+e^{+}}$ by step (a) of Theorem~\ref{thm:nice} and
+$\Re s>d+e^{+}+1$ make $\sum_n\|a_n\|n^{-\Re s}$ converge, while $\Re(s+\mu_j)>0$ places $s$
+inside the strip of holomorphy of each $\Gm(s+\mu_j)$, so
+$\int_0^\infty\|\kappa(x)\|x^{\Re s}\frac{dx}{x}<\infty$. Fubini permits termwise integration, and
+$x\mapsto x/n$ in the $n$-th term produces $n^{-s}$ times the kernel's Mellin transform; summing,
+\[
+  \int_0^\infty\Bigl(\sum_n a_n\kappa(nx)\Bigr)x^{s}\frac{dx}{x}
+   =C^{s}\prod_j\Gm(s+\mu_j)\sum_n a_nn^{-s},
+\]
+the completed primal Dirichlet readout. The contragredient case is the same computation on the
+dual coefficients applied to the reciprocal-height transformed readout, using $\Re s>d+e^{-}+1$.
+\end{proof}
+
+\noindent(\texttt{sym2\_standardCompletion\_and\_niceness}, whose three clauses are these two
+identifications together with Theorem~\ref{thm:nice} over the same Satake datum.)
+
+\section{Pole-freeness at degree three}
+
+\begin{proposition}\label{prop:pole}
+Let $V$ be a simple three-dimensional representation of a group $G$ over an algebraically closed
+field. Then every morphism from the trivial representation to $V$ is zero.
+\end{proposition}
+\begin{proof}
+A nonzero morphism between simple objects is an isomorphism, so it would force $V\cong\mathbf 1$;
+but $\dim V=3\ne1=\dim\mathbf 1$, so no isomorphism exists, and the morphism is zero. Dimension
+enters only to certify non-isomorphism; the vanishing is Schur's lemma with the group action
+present. (\texttt{sym2\_no\_trivial\_constituent}.)
+\end{proof}
+
+Applied to an irreducible $\Sym^2\varphi_\pi$, which has dimension three by
+Lemma~\ref{lem:ledger}, this says the parameter carries no trivial constituent --- the algebraic
+side of the absence of a $\zeta$-factor pole.
+
+\section{The eigen-datum instance: the coupling discharged}\label{sec:eigen}
+
+The two preceding sections quantified over abstract Satake data.  This section runs the same
+machinery at an actual arithmetic object and closes the loop: for a level-one holomorphic
+Hecke eigenform, the completed Rankin--Selberg transform of the \emph{literal} Satake bank is
+constructed, its functional equation and polar structure are proved, and the two completed
+objects --- the geometric one carrying the reflection and the arithmetic one carrying the
+Euler product --- are identified on a common half-plane by Mellin uniqueness.  Nothing about
+the target ($\Sym^2$ automorphy, or any property of $L(\Sym^2 f)$) is consumed.
+
+Fix a cusp form $f$ of level one and weight $k\ge2$ with normalized Hecke eigenvalues: writing
+$a_n$ for its Fourier coefficients, the package consists of $a_1=1$, coprime multiplicativity,
+the prime-power recursion $a_{p^{j+2}}=a_p\,a_{p^{j+1}}-p^{\,k-1}a_{p^j}$, and reality.  (In the
+formalization this package is the typed structure defining ``eigenform''; classically it is
+Hecke's theory.)  Solving the quadratic $\alpha_p+\alpha_p^{-1}=a_p\,p^{-(k-1)/2}$ gives the
+Satake parameter $\alpha_p\ne0$ at every prime.
+
+\begin{lemma}[uniform polynomial bound on the Satake parameter]\label{lem:satbound}
+There is a single $E\in\mathbb N$ with $\|\alpha_p\|^2\le p^{E}$ and
+$\|\alpha_p^{-1}\|^2\le p^{E}$ at every prime $p$.
+\end{lemma}
+\begin{proof}
+Hecke's bound gives $\|a_n\|^2\le Mn^{k}$ for some $M\ge0$ (the pointwise bound of the cusp form
+at height $1/n$).  Hence $\|\alpha_p+\alpha_p^{-1}\|=\|a_p\|p^{-(k-1)/2}\le\sqrt{M}\,\sqrt p$.
+From $\alpha+\alpha^{-1}=t$ one has $\|\alpha\|\le\|t\|+1$ and $\|\alpha^{-1}\|\le\|t\|+1$: if
+$\|\alpha\|\le1$ this is trivial, otherwise $\|\alpha^{-1}\|\le1$ and
+$\|\alpha\|=\|t-\alpha^{-1}\|\le\|t\|+1$; symmetrically for $\alpha^{-1}$.  So both norms are at
+most $(\sqrt M+2)\sqrt p$, whence both squares are at most $(\sqrt M+2)^2p$.  Choosing
+$E_0$ with $(\sqrt M+2)^2<2^{E_0}\le p^{E_0}$ and setting $E=E_0+1$ finishes.
+(\texttt{Sym2Rankin.satake\_uniform\_bound}.)
+\end{proof}
+
+\paragraph{The rank-4 Rankin bank.}  Let $b_n=\|a_n\|^2 n^{-(k-1)}$ be the Deligne-normalized
+Rankin square, $\mathrm{sym2Bank}=\mathbf 1_{\square}\star\mu\star b$ the $\Sym^2$ bank of
+\S4, and
+\[
+  c \;=\; \zeta\star\mathrm{sym2Bank}
+   \;=\;\mathbf 1_{\square}\star b ,
+\]
+the divisor-sum dressing --- the coefficients of $L(f\times f,s)=\zeta(2s)\sum_n b_n n^{-s}$ in
+Deligne normalization.  (The second equality is $\zeta\star\mu=\delta$.)  Its local roots are
+the rank-4 multiset $(\alpha_p^2,1,\alpha_p^{-2},1)$:
+
+\begin{lemma}[partial-sum law]\label{lem:partial}
+$h_j(\alpha^2,1,\alpha^{-2},1)=\sum_{u\le j}h_u(\alpha^2,1,\alpha^{-2})$, and consequently
+$c_{p^j}=\sum_{u\le j}h_u(\alpha_p^2,1,\alpha_p^{-2})$ at every prime power.
+\end{lemma}
+\begin{proof}
+Fiber the four-variable antidiagonal $\{l_0+l_1+l_2+l_3=j\}$ over the value of $l_3$: the
+fourth weight is $1$, so the $l_3=j-u$ slice contributes exactly
+$h_u(\alpha^2,1,\alpha^{-2})$.  The second claim: $(\zeta\star g)(p^j)=\sum_{u\le j}g(p^u)$,
+and $\mathrm{sym2Bank}_{p^u}=h_u(\alpha_p^2,1,\alpha_p^{-2})$ from \S4.
+(\texttt{Sym2Rankin.radialLocalEulerCoeff\_rankinWeight},
+\texttt{Sym2Rankin.rankinBank\_prime\_pow}.)
+\end{proof}
+
+With Lemma~\ref{lem:satbound} the pair $(\alpha_p^2,1,\alpha_p^{-2},1)$ with its pointwise
+inverse family is a polynomial Satake dual pair of degree four, and both of its all-place
+coefficient banks are \emph{literally} $c$: multiplicativity of $c$ (each convolution factor
+is multiplicative) reduces the identification to prime powers, where it is
+Lemma~\ref{lem:partial}; the dual multiset is the multiset at $\alpha_p^{-1}$, and
+$h_u$ is inversion-invariant by the triangle swap $(a,c)\mapsto(c,a)$.
+(\texttt{Sym2Rankin.rankinSatakePair}, \texttt{rankinPrimalCoeff\_eq},
+\texttt{rankinDualCoeff\_eq}, \texttt{sym2Coeff\_inv}.)
+
+\paragraph{The profile and the landing.}  Let $\bar\theta_f(t)$ be the Petersson average of the
+lattice theta over the modular surface, weighted by the Petersson density of $f$; its constant
+mode is the Petersson mass $\|f\|^2$, and its reflection
+$\bar\theta_f(1/t)=t\,\bar\theta_f(t)$ is the lattice theta transformation law carried through
+the average --- geometry, not target automorphy.  The compiled peeled landing of \S4, re-dressed
+by the Euler line $\zeta(s)L(\mathrm{sym2Bank},s)=L(c,s)$ (valid on $\Re s>2$, where all three
+series converge absolutely), gives the \emph{unpeeled} landing: on $\Re s>2$,
+\[
+  \int_0^\infty\bigl(\bar\theta_f(t)-\|f\|^2\bigr)t^{s}\frac{dt}{t}
+   \;=\;2^{-k}\,\Gm(s)\,\Gm(s+k-1)\,L(c,s).
+\]
+(\texttt{Sym2Rankin.LSeries\_rankinBank}, \texttt{rankin\_readout\_gammaC}.)
+
+\paragraph{The coupling.}  Take the prescribed completion of \S6 with conductor $1$ and shift
+list $(0,\,k-1)$ --- the Deligne chart of $L(f\times f)$.  Its kernel is the signed-log
+convolution of two $\Gamma_{\mathbb C}$-clocks; the weight-zero clock is bounded and continuous,
+the $(k-1)$-clock is integrable in the log coordinate, so the kernel is continuous on the ray by
+dominated convergence in the swapped convolution orientation
+(\texttt{Sym2Rankin.completionKernelLog\_pair\_continuousOn}).  On the engine line
+$\Re s=\sigma$ (any $\sigma$ beyond the initial-domain bound), Theorem~\ref{thm:std} evaluates
+the Mellin transforms of both prescribed readouts as
+$\Gm(s)\Gm(s+k-1)L(c,s)$ --- the dual side because the dual bank has the same coefficients ---
+and the landing evaluates the Mellin transform of $2^{k}(\bar\theta_f-\|f\|^2)$ as the same
+function.  Line-restricted Mellin uniqueness (inversion reads the transform only on the line)
+then recovers the \emph{pointwise} identities on $t>0$:
+\[
+  \Theta_{\mathrm{primal}}(t)\;=\;2^{k}\bar\theta_f(t)-2^{k}\|f\|^2
+  \;=\;\widetilde\Theta^{\vee}(1/t),
+\]
+so the prescribed rank-4 bank, coupled to the $2^{k}$-scaled averaged profile with both masses
+$2^{k}\|f\|^2$, root number $1$ and weight $1$, is an inhabitant of the weak coupling type ---
+the two identification hypotheses that \S\,\texttt{CPSWeakProfileCoupling3D} names as the
+rung's frontier, both discharged.  (\texttt{Sym2Rankin.sym2\_primal\_line},
+\texttt{sym2\_dual\_line}, \texttt{sym2RankinCoupling}.)
+
+\begin{theorem}[the $r=2$ rung at the eigen-datum]\label{thm:rung}
+Let $f$ be a level-one holomorphic Hecke eigenform of weight $k\ge2$, $c=\zeta\star
+\mathrm{sym2Bank}$ its rank-4 Rankin bank, and $\Lambda$ the completed transform of the coupled
+pair.  Then, simultaneously and unconditionally:
+\begin{enumerate}
+\item \textup{(coefficients)} the rank-uniform clock bank at $r=2$ is the convolution bank,
+  $\mathrm{symrBank}\,H\,2=\mathrm{sym2Bank}\,f$, and both all-place banks of the rank-4 pair
+  are $c$;
+\item \textup{(Euler lines)} $L(c,s)=\zeta(s)L(\mathrm{sym2Bank},s)$ and
+  $\zeta(2s)L(\mu\star b,s)=L(\mathrm{sym2Bank},s)$ on $\Re s>2$;
+\item \textup{(chart)} $\Lambda(s)=\Gm(s)\,\Gm(s+k-1)\,L(c,s)$ on $\Re s>2$;
+\item \textup{(functional equation)} $\Lambda(1-s)=\Lambda(s)$ for every $s\in\mathbb C$;
+\item \textup{(poles)} $(s-1)\Lambda(s)\to2^{k}\|f\|^2$ as $s\to1$, and $\Lambda$ minus its two
+  booked polar terms is entire;
+\item \textup{(the peeled $\Sym^2$ equation)}
+  $\Lambda_\zeta(s)\,\bar\Lambda(1-s)=\Lambda_\zeta(1-s)\,\bar\Lambda(s)$ globally, with edge
+  regularity $\zeta(s)^{-1}\bar\Lambda(s)\to\|f\|^2$.
+\end{enumerate}
+\end{theorem}
+\begin{proof}
+Clause 1 is the multiplicative assembly above together with the antidiagonal/triangle reindex
+of the clock bank; clause 2 the convolution identities; clause 3 the Mellin identification of
+the coupled pair's profile through the landing; clause 4 Mathlib's abstract functional equation
+for the weak pair, whose reflection field is the averaged lattice law and which is its own
+contragredient (equal profiles, equal masses, root number $1$); clause 5 the abstract pair's
+polar structure with the masses as residues; clause 6 the compiled peeled equation of \S4's
+chain combined with the reflection of $\Lambda_\zeta$, with Rankin's edge regularity.
+(\texttt{Sym2Rankin.sym2\_rankin\_rung}, one quantified conclusion.)
+\end{proof}
+
+\begin{remark}[automorphy, in register]\label{rem:auto}
+Three registers, kept separate.  \emph{(i) Proven here:} every analytic and arithmetic clause of
+Theorem~\ref{thm:rung} --- the completed Rankin--Selberg functional equation of the literal
+Satake bank of an eigenform, its polar structure, and the $\Sym^2$ (peeled) functional
+equation, all machine-checked, no automorphy consumed.  \emph{(ii) Cited:} from these, the
+classical route to the Gelbart--Jacquet lift \cite{GJ} proceeds by the twisted family and the
+$\mathrm{GL}(3)$ converse theorem \cite{JPSS}; the twisted functional equations and the
+converse step are classical literature, consumed at their published strength, not re-proved.
+\emph{(iii) The carrier register:} in the framework this paper instantiates, automorphy is the
+carrier's self-dual involution together with invariance under the group generated by its
+completion clocks; the reflection clause 4 \emph{is} that involution at the $r=2$ rung, and the
+generator-descent engine is compiled separately.  The three registers agree on every overlap
+and none is presented as another.
+\end{remark}
+
+\begin{remark}[inputs and formal status]
+The only classical inputs used above are a polynomial Satake bound, for which the trivial Hecke
+bound suffices and \cite{JS} is sharper, and --- where a specific $\pi$ is to supply the Satake
+datum --- local Langlands for $\mathrm{GL}(2)$.  For \S\ref{sec:eigen}, the typed Hecke
+eigenform package (Hecke's theory) defines the object.  Temperedness is not among the inputs
+anywhere.
+
+Lemmas~\ref{lem:range}, \ref{lem:ledger}, \ref{lem:point}, \ref{lem:satbound},
+\ref{lem:partial}, Theorems~\ref{thm:localFE}, \ref{thm:nice}, \ref{thm:std}, \ref{thm:rung},
+and Propositions~\ref{prop:ident}, \ref{prop:nonvac}, \ref{prop:pole} are machine-checked: 56
+declarations across \texttt{Sym2Benchmark}, \texttt{Sym2LocalJoin}, \texttt{Sym2GlobalJoin},
+\texttt{Sym2GammaChart}, \texttt{Sym2RankinBank}, \texttt{Sym2RankinCoupling},
+\texttt{Sym2RankinCapstone}, and \texttt{CPSSynthesizedKernelControl}, at axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset, no
+\texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.
+
+A counterexample would be a degree-three finite duality-stable multiset whose local numerator is
+not self-reciprocal, contradicting Theorem~\ref{thm:localFE}; or an arithmetic
+$\Sym^2\!\times\tau$ bank under a polynomial Satake bound whose completed carrier pair has a pole
+or is unbounded on a vertical strip, contradicting Theorem~\ref{thm:nice}; or one whose prescribed
+Mellin projection differs from the completed Dirichlet readout on the initial half-plane,
+contradicting Theorem~\ref{thm:std}; or a level-one eigenform of weight at least two whose
+completed rank-4 transform violates $\Lambda(1-s)=\Lambda(s)$ or whose edge residue differs from
+$2^{k}\|f\|^2$, contradicting Theorem~\ref{thm:rung}. Each is stated formally, so a
+counterexample would require a kernel failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{GJ} S.~Gelbart and H.~Jacquet, \emph{A relation between automorphic representations of
+$\mathrm{GL}(2)$ and $\mathrm{GL}(3)$}, Ann.\ Sci.\ \'ENS \textbf{11} (1978), 471--542.
+\bibitem{JPSS} H.~Jacquet, I.~I.~Piatetski-Shapiro, and J.~A.~Shalika, \emph{Automorphic forms on
+$\mathrm{GL}(3)$, I and II}, Ann.\ of Math.\ \textbf{109} (1979), 169--212 and 213--258; the
+$\mathrm{GL}(3)$ converse theorem, twisting by $\mathrm{GL}(1)$.
+\bibitem{CPS} J.~W.~Cogdell and I.~I.~Piatetski-Shapiro, \emph{Converse theorems for
+$\mathrm{GL}_n$}, Publ.\ Math.\ IH\'ES \textbf{79} (1994), 157--214; \emph{II}, J.\ reine angew.\
+Math.\ \textbf{507} (1999), 165--188.
+\bibitem{JS} H.~Jacquet and J.~A.~Shalika, \emph{On Euler products and the classification of
+automorphic representations}, Amer.\ J.\ Math.\ \textbf{103} (1981); the unconditional local
+bound $|\alpha_p|<p^{1/2}$.
+\bibitem{KimShahidi} H.~Kim and F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}(2)\times\mathrm{GL}(3)$ and the symmetric cube for $\mathrm{GL}(2)$}, Ann.\ of Math.\
+\textbf{155} (2002), 837--893.
+\end{thebibliography}
+
+\end{document}

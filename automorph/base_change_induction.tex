@@ -1,0 +1,181 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\Sym}{\operatorname{Sym}}
+\newcommand{\AI}{\operatorname{AI}}
+\newcommand{\BC}{\operatorname{BC}}
+\title{Base change and automorphic induction:\\ the quadratic rungs on one parity law}
+\author{Samuel Lavery\thanks{Machine-checked companion:
+\texttt{RequestProject/BaseChangeInduction.lean}, 12 named declarations, each at axiom
+footprint $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ or a subset,
+no \texttt{sorry}, no \texttt{axiom}, zero \texttt{sorryAx}.  Every argument below is given
+in the text; the Lean names locate the corresponding formal statement.}}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Quadratic base change and quadratic automorphic induction, at the level of local Euler data
+and global coefficient banks, both reduce to one finite combinatorial identity — the parity
+law $h_j\bigl(w\oplus(-w)\bigr)=[\,2\mid j\,]\cdot h_{j/2}(w^2)$, difference of squares for
+complete homogeneous symmetric functions.  We prove the parity law at every rank by
+induction over the transport-closure Cauchy law, derive the split/inert dichotomy of the
+base-change bank (the two local shapes of the Artin factorization
+$L(\BC_{E/\mathbb Q}\pi,s)=L(\pi,s)\,L(\pi\otimes\chi,s)$), construct the induced rank-2
+bank of a quadratic rank-1 datum with its inert dilation law, and prove the recognition law
+$\AI(\psi)\otimes\chi=\AI(\psi)$ — the classical fingerprint of induced representations —
+as a bank identity.  An eigenform instance reads off the Frobenius-squared Satake data of
+$\BC_{E/\mathbb Q}(f)$ at inert primes.  Everything is unconditional and machine-checked.
+\end{abstract}
+
+\section{The parity law}
+
+Notation as in the transport-closure note: $h_j(w)$ is the level-$j$ complete homogeneous
+symmetric function of a finite weight system $w$, and banks are the multiplicative
+arithmetic functions assembled from local $h$-values over prime factorizations.  Two
+preliminary laws, both immediate from the antidiagonal: \emph{homogeneity}
+$h_j(c\,w)=c^j\,h_j(w)$ (each monomial has total degree $j$;
+\texttt{radialLocalEulerCoeff\_smul}), and the \emph{single channel}
+$h_j(\alpha)=\alpha^j$ (\texttt{radialLocalEulerCoeff\_single}).
+
+\begin{theorem}[parity law]\label{thm:parity}
+For every weight system $w$ of any rank and every level $j$,
+\[
+  h_j\bigl(w\oplus(-w)\bigr)\;=\;
+  \begin{cases} h_{j/2}(w^2), & 2\mid j,\\ 0, & \text{otherwise,}\end{cases}
+\]
+where $w^2$ is the channel-wise squared system.  Equivalently, at the local-factor level:
+$\prod_i(1-w_iX)^{-1}\prod_i(1+w_iX)^{-1}=\prod_i(1-w_i^2X^2)^{-1}$.
+\end{theorem}
+\begin{proof}
+Induction on the rank $d$.  Rank $0$ is the empty system.  Rank $1$: by the Cauchy law of
+the closure note, $h_j(\alpha\oplus(-\alpha))=\sum_{a+b=j}\alpha^a(-\alpha)^b
+=\alpha^j\sum_{b\le j}(-1)^b$, and the alternating sum is $1$ for even $j$, $0$ for odd
+(\texttt{parity\_rank\_one}).  Rank $d+1$: write $w=w'\oplus\alpha$ (one channel split
+off).  Regrouping the doubled system through the relabeling
+$(w\oplus -w)\simeq(w'\oplus -w')\oplus(\alpha\oplus-\alpha)$ and applying the Cauchy law,
+\[
+  h_j\bigl(w\oplus(-w)\bigr)=\sum_{a+b=j}h_a\bigl(w'\oplus(-w')\bigr)\,
+    h_b\bigl(\alpha\oplus(-\alpha)\bigr).
+\]
+By the inductive hypothesis and rank one, both factors are supported on even levels with
+half-level values $h_{a/2}(w'^2)$ and $(\alpha^2)^{b/2}$; the even-supported Cauchy sum
+contracts to the half-level Cauchy sum (\texttt{sum\_even\_pairs}), which by the Cauchy law
+again is $h_{j/2}(w'^2\oplus\alpha^2)=h_{j/2}(w^2)$ (\texttt{radialLocalEulerCoeff\_snoc}).
+(\texttt{parity\_law}.)
+\end{proof}
+
+\section{Rung 1: quadratic base change}
+
+Fix a quadratic sign $\chi$ on primes ($\chi(p)\in\{\pm1\}$; the character of the quadratic
+extension $E/\mathbb Q$, ramified primes set aside).  For a weight-system family $w$ define
+the \emph{base-change bank}
+\[
+  \mathrm{bcBank}(w,\chi)\;=\;c_w\star c_{\chi w},
+\]
+the coefficients of $L(\pi,s)\,L(\pi\otimes\chi,s)$ — classically $L(\BC_{E/\mathbb Q}\pi,s)$,
+the Artin factorization.  Its local shape is the split/inert dichotomy:
+
+\begin{theorem}[split law]\label{thm:split}
+At a split prime ($\chi(p)=1$): $\mathrm{bcBank}(p^j)=h_j(w_p\oplus w_p)$ — the doubled
+system: two places above $p$, each carrying the original parameter.
+(\texttt{bcBank\_split}.)
+\end{theorem}
+
+\begin{theorem}[inert law]\label{thm:inert}
+At an inert prime ($\chi(p)=-1$): $\mathrm{bcBank}(p^j)=[\,2\mid j\,]\cdot h_{j/2}(w_p^2)$
+— supported on even levels, carrying the Frobenius-squared system: the local factor of the
+single place above $p$, with parameter $w_p^2$ at the norm $p^2$.
+(\texttt{bcBank\_inert}.)
+\end{theorem}
+\begin{proof}
+The convolution at $p^j$ is the Cauchy product of the two prime-power sequences.  Split:
+$\chi(p)=1$ makes the twisted factor the original, and the Cauchy product is
+$h_j(w_p\oplus w_p)$ by the closure law.  Inert: $\chi(p)=-1$ makes the twisted factor
+$h(\,-w_p)$, the Cauchy product is $h_j(w_p\oplus(-w_p))$, and Theorem~\ref{thm:parity}
+finishes.
+\end{proof}
+
+These are exactly the local factors of quadratic base change: the $\mathbb Q$-side product
+$L(\pi)L(\pi\otimes\chi)$ carries, prime by prime, the $E$-side Euler data of
+$\BC_{E/\mathbb Q}\pi$.
+
+\section{Rung 2: quadratic automorphic induction}
+
+A rank-1 quadratic datum consists of split-place pairs $(\gamma_1(p),\gamma_2(p))$ and, at
+inert primes, a square root $\beta(p)$ of the single place's parameter.  The \emph{induced
+rank-2 system} is
+\[
+  \AI\text{-weight at }p\;=\;\begin{cases}(\gamma_1(p),\gamma_2(p)), & \chi(p)=1,\\
+  (\beta(p),\,-\beta(p)), & \chi(p)=-1,\end{cases}
+\]
+with bank $\mathrm{aiBank}$ (\texttt{aiWeight}, \texttt{aiBank}).
+
+\begin{theorem}[inert dilation]\label{thm:aiinert}
+At an inert prime, $\mathrm{aiBank}(p^j)=[\,2\mid j\,]\cdot(\beta(p)^2)^{j/2}$: the induced
+local factor is $\bigl(1-\beta^2p^{-2s}\bigr)^{-1}$ — the rank-1 factor of the quadratic
+place, read at the norm grading.  The value depends only on $\beta^2$, and the bank is
+invariant under the choice of square root $\beta\mapsto-\beta$.
+(\texttt{aiBank\_inert}, \texttt{aiBank\_root\_choice}.)
+\end{theorem}
+
+\begin{theorem}[recognition: $\AI(\psi)\otimes\chi=\AI(\psi)$]\label{thm:recog}
+Twisting the induced system by the quadratic sign fixes the bank exactly:
+\[
+  c_{\chi\cdot\AI\text{-weight}}\;=\;\mathrm{aiBank}.
+\]
+\end{theorem}
+\begin{proof}
+Per prime: at split places $\chi(p)=1$ and the twist is trivial; at inert places
+$\chi(p)=-1$ sends $(\beta,-\beta)$ to $(-\beta,\beta)$ — the same multiset, exhibited by
+the transposition, and the local coefficient is relabeling-invariant.
+(\texttt{aiBank\_twist\_invariant}.)
+\end{proof}
+
+Self-twist invariance is the classical criterion for a $\mathrm{GL}(2)$ representation to
+be induced from the quadratic extension; here it is a one-line multiset identity — the
+recognition side of rung 2, complementing the construction side of Theorem~\ref{thm:aiinert}.
+
+\section{The eigenform instance}
+
+For a level-one holomorphic Hecke eigenform $f$ with Satake parameters $\alpha_p$, the seed
+system $(\alpha_p,\alpha_p^{-1})$ carries the Deligne-normalized coefficient bank of $f$
+itself (\texttt{seedSystem}, \texttt{bankArithmetic\_seedSystem} — through the rank-uniform
+clock-bank identification at $r=1$).  Consequently, at every inert prime of a quadratic
+extension,
+\[
+  \mathrm{bcBank}(\text{seed},\chi)(p^j)\;=\;[\,2\mid j\,]\cdot
+    h_{j/2}\bigl(\alpha_p^2,\alpha_p^{-2}\bigr)
+\]
+(\texttt{bcBank\_seed\_inert}): the local data of $\BC_{E/\mathbb Q}(f)$ — the
+Frobenius-squared Satake pair at the single place above $p$ — read off the $\mathbb Q$-side product
+$L(f,s)L(f\otimes\chi,s)$, unconditionally.
+
+\begin{remark}[register and falsifiers]
+Proven and machine-checked: the parity law at every rank, the split/inert dichotomy of the
+base-change bank, the induced bank's inert dilation, root-choice invariance, the
+recognition law, and the eigenform instance.  Cited, not re-proved: that these coefficient
+identities are the local data of the automorphic $\BC_{E/\mathbb Q}\pi$ and $\AI(\psi)$ of
+Langlands and Arthur--Clozel \cite{AC} --- consumed exactly as local Langlands is consumed
+elsewhere in this series.  Scope: quadratic extensions; the cyclic degree-$d$ case replaces
+the sign by a $d$-th root of unity and the parity law by the corresponding $d$-section law,
+over the same closure engine.  A counterexample would be a weight system and level at which
+the signed double violates the parity law, or an inert prime at which the base-change bank
+escapes even support --- each formally stated, so a counterexample would require a kernel
+failure.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{AC} J.~Arthur and L.~Clozel, \emph{Simple algebras, base change, and the advanced
+theory of the trace formula}, Ann.\ of Math.\ Studies \textbf{120}, Princeton (1989).
+\bibitem{L} R.~P.~Langlands, \emph{Base change for $\mathrm{GL}(2)$}, Ann.\ of Math.\
+Studies \textbf{96}, Princeton (1980).
+\end{thebibliography}
+
+\end{document}

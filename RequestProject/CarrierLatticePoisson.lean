@@ -1,7 +1,7 @@
 import Mathlib
 
 /-!
-# The carrier-lattice weld at every rank: rank-uniform self-duality
+# The carrier-lattice Poisson identity at every rank: rank-uniform self-duality
 
 Certifier (a) of the standing wave, first brick.  The carrier bank of the rank-`r` rung
 lives on the matrix lattice `M_{r+1}(ℤ)`; at carrier height `t` (the scalar slice
@@ -11,7 +11,7 @@ lives on the matrix lattice `M_{r+1}(ℤ)`; at carrier height `t` (the scalar sl
 
 factorizes through the `(r+1)²` coordinate strands: `θ_r(t) = S(t)^{(r+1)²}`, with `S`
 the one-strand theta.  One application of the compiled Gaussian Poisson identity to the
-single strand then yields the weld at EVERY rank simultaneously:
+single strand then yields the transformation law at EVERY rank simultaneously:
 
   `θ_r(1/t) = t^{(r+1)²/2} · θ_r(t)`     (`matrixTheta_inv`)
 
@@ -19,7 +19,7 @@ single strand then yields the weld at EVERY rank simultaneously:
 * fiber-free: no cusp form, no automorphy, no L-function enters — classical Poisson on
   a vector space is the only analytic input (through Mathlib's
   `Real.tsum_exp_neg_mul_int_sq`);
-* the exact analog, at every rank, of the compiled `latticeTheta_inv` weld that drives
+* the exact analog, at every rank, of the compiled `latticeTheta_inv` transformation law that drives
   the r = 2 Rankin–Selberg box: this is the self-dual profile the house pairs with the
   bank — in the *weak* coupling shape (`WeakBankThetaProfileCoupling3D`), since the DC
   mode below is nonzero; only the profile-reflection field shape is shared with the
@@ -38,7 +38,7 @@ half is the coupling of this self-dual bank to the rung's arithmetic profile.
 
 open Real Finset
 
-namespace CriticalLinePhasor.CarrierLatticeWeld
+namespace CriticalLinePhasor.CarrierLatticePoisson
 
 /-! ## The single strand -/
 
@@ -65,7 +65,7 @@ lemma summable_gaussInt {a : ℝ} (ha : 0 < a) :
 /-- The one-strand theta at height `a`. -/
 noncomputable def strandTheta (a : ℝ) : ℝ := ∑' n : ℤ, Real.exp (-π * a * (n : ℝ) ^ 2)
 
-/-- The one-strand weld, read off Mathlib's Gaussian Poisson identity:
+/-- The one-strand transformation law, read off Mathlib's Gaussian Poisson identity:
 `S(1/t) = t^{1/2}·S(t)`. -/
 theorem strandTheta_inv {t : ℝ} (ht : 0 < t) :
     strandTheta t⁻¹ = t ^ ((1 : ℝ) / 2) * strandTheta t := by
@@ -180,7 +180,7 @@ theorem bankGauss_eq_pow (ι : Type*) [Fintype ι] {a : ℝ} (ha : 0 < a) :
   rw [tsum_congr heq]
   exact bankGaussFin_eq ha (Fintype.card ι)
 
-/-- **The rank-uniform weld over any strand set**: `bank(1/t) = t^{card ι / 2}·bank(t)`. -/
+/-- **The rank-uniform lattice transformation law over any strand set**: `bank(1/t) = t^{card ι / 2}·bank(t)`. -/
 theorem bankGauss_inv (ι : Type*) [Fintype ι] {t : ℝ} (ht : 0 < t) :
     bankGauss ι t⁻¹ = t ^ ((Fintype.card ι : ℝ) / 2) * bankGauss ι t := by
   rw [bankGauss_eq_pow ι (inv_pos.mpr ht), bankGauss_eq_pow ι ht, strandTheta_inv ht,
@@ -195,7 +195,7 @@ theorem bankGauss_inv (ι : Type*) [Fintype ι] {t : ℝ} (ht : 0 < t) :
 noncomputable def matrixTheta (r : ℕ) (t : ℝ) : ℝ :=
   bankGauss (Fin (r + 1) × Fin (r + 1)) t
 
-/-- **The carrier-lattice weld at every rank** — the scalar-height slice of
+/-- **The carrier-lattice Poisson identity at every rank** — the scalar-height slice of
 `θ(Y⁻¹) = det(Y)^{1/2}·θ(Y)` on `M_{r+1}(ℤ)`:
 
   `θ_r(1/t) = t^{(r+1)²/2} · θ_r(t)`.
@@ -224,11 +224,11 @@ theorem one_le_matrixTheta (r : ℕ) {t : ℝ} (ht : 0 < t) : 1 ≤ matrixTheta 
   rw [matrixTheta_eq_pow r ht]
   exact one_le_pow₀ (one_le_strandTheta ht)
 
-end CriticalLinePhasor.CarrierLatticeWeld
+end CriticalLinePhasor.CarrierLatticePoisson
 
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.strandTheta_inv
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.bankGauss_eq_pow
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.bankGauss_inv
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.matrixTheta_inv
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.matrixTheta_eq_pow
-#print axioms CriticalLinePhasor.CarrierLatticeWeld.one_le_matrixTheta
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.strandTheta_inv
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.bankGauss_eq_pow
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.bankGauss_inv
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.matrixTheta_inv
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.matrixTheta_eq_pow
+#print axioms CriticalLinePhasor.CarrierLatticePoisson.one_le_matrixTheta
