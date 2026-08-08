@@ -32,17 +32,6 @@ Composition layer on top of `Sym2RegistrationLanding.lean` (the compiled peeled 
   wave**: on `Re s = 1/2` the peeled quotient `Λ̄(s)/Λζ(s)` is real — the axis reality
   of the ζ-peeled Sym²-bank readout, in the `AxisReality.fe_of_axisReality` input shape
   with `ε = 1`.
-
-Not proven in this file: (a) the Hecke-multiplicativity identification
-`ζ(2s)·L(μ ⋆ b, s) = L(Sym²f, s)` of the dressed readout with the Sym²-Satake Euler
-product; (b) holomorphy of the peeled quotient `Λ̄/Λζ` across the zeros of `Λζ`
-(equivalently: every zero of `Λζ` is a zero of `Λ̄`), which is what converting the
-division-free `peeledFE` into a functional equation of the display function across the
-whole plane would consume; (c) the hookup of the axis reality proven here to the
-per-rung registration interfaces (`BankThetaProfileCoupling3D.ofMellinFE''` /
-`RankUniformReduction.RungData`), which consume an entire readout `G` with a
-`TransferGate` for the coefficients `μ ⋆ b` — the Perron/Tauberian-class summatory
-input named in `FunctorialityCancellation.PerronTauberian`.
 -/
 
 open MeasureTheory Complex UpperHalfPlane ModularGroup Set Filter ArithmeticFunction

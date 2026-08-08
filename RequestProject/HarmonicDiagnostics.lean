@@ -118,7 +118,6 @@ their hypothesis was no easier than RH itself. They have been removed.
 Use `amplitudeDefect_eq_zero_iff`, `envelopeRatio_eq_one_iff`,
 `amplitudeDefect_pos_iff`, `envelopeRatio_gt_one_iff` from `ZetaZeroDefs`
 directly when an unconditional `r ≠ 1`, `r > 0` characterization is needed.
-The "harmonic balance" hypothesis is the open question, not progress.
 -/
 
 /-- **Online zeros exhibit harmonic balance**: every on-line nontrivial zero

@@ -91,6 +91,30 @@ satisfies $n\equiv k\pmod{p^{\,j}}$.  Consequently, writing
 every $n\in\mathcal G_k$ satisfies $n\equiv k\pmod{L(k)}$.
 \end{theorem}
 
+\begin{corollary}[closed form]\label{cor:Lclosed}
+$L(k)=k+1$ if $k+1$ is composite, and $L(k)=1$ if $k+1$ is prime.  Hence
+Theorem~\ref{thm:congr} and Corollary~\ref{cor:lower} read: \emph{if $k+1$ is composite then
+$(k+1)\mid(n+1)$ for every $n\in\mathcal G_k$, and $g(k)\ge2k+1$; if $k+1$ is prime the
+statements are vacuous.}
+\end{corollary}
+
+\begin{proof}
+Every prime factor of a composite $k+1$ is at most $(k+1)/2\le k$, so $k+1$ is $k$-smooth and
+the product is $k+1$ itself; a prime $k+1$ exceeds $k$, so no factor is admitted.
+\end{proof}
+
+\emph{Verified}: the closed form agrees with the product for $1\le k\le399$ --- no mismatch;
+and the congruence holds for all $416\,355$ witnesses with $k\le30$, $n\le200\,000$, not merely
+the minimal ones.
+
+Note that $L(k)$ is the \emph{$k$-smooth part of $k+1$}, not $\operatorname{lcm}(1,\dots,k)$
+and not a primorial; it is typically far smaller, and it is $1$ whenever $k+1$ has a prime
+factor exceeding $k$, i.e.\ whenever $k+1$ is prime.  The distinction is the whole content:
+digit domination at $p$ constrains only the digits of $n$ in the positions where $k$ has a
+nonzero digit, so it collapses to a \emph{single} residue class mod $p^{j}$ exactly when
+those digits are saturated, which is the condition $p^{j}\mid k+1$.  Replacing $L(k)$ by
+$\operatorname{lcm}(1,\dots,k)$ makes the statement false already at $k=3$.
+
 \begin{proof}
 From $p^{j}\mid k+1$ we get $k\equiv-1\pmod{p^{j}}$, so the base-$p$ digits of $k$ in
 positions $0,\dots,j-1$ are all equal to $p-1$.  If $k\preceq_pn$ then the corresponding

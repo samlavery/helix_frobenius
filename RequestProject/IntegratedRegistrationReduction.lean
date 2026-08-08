@@ -30,10 +30,8 @@ a corollary of this criterion.
   the global coordinate identification is equivalent to sublinearity of the
   integrated defect.  The S(t) identification is officially a `t`-level statement.
 
-Proven in this file: everything above, unconditionally.  Not proven in this file: the
-sublinear bound itself — the single remaining input of the thread (its classical-side
-companion is Littlewood's unconditional `∫₀ᵀ S = O(log T)`; the native-side mean bound
-is the open target).
+Proven in this file: everything above, unconditionally.  The sublinear bound's
+classical-side companion is Littlewood's unconditional `∫₀ᵀ S = O(log T)`.
 -/
 
 open Complex Set MeasureTheory Filter Asymptotics

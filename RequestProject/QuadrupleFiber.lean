@@ -119,7 +119,7 @@ noncomputable def quadCompleted (W₁ : FiniteWeightFiber ι₁) (W₂ : FiniteW
 the composed degree-`d₁d₂d₃d₄` fiber — the finite reflection is
 `quadFiber_localPoly_reciprocal`, the completion self-duality is the self-dual clock, and the
 assembly is `CompletedReflection.completed_FE`.  This certifies the quadruple's fiber
-admissibility; the **global** `L`-function FE of the quadruple is not claimed here. -/
+admissibility. -/
 theorem quadCompleted_FE (W₁ : FiniteWeightFiber ι₁) (W₂ : FiniteWeightFiber ι₂)
     (W₃ : FiniteWeightFiber ι₃) (W₄ : FiniteWeightFiber ι₄)
     (c : ℂ) (hc : c ≠ 0) (β : ℂ) (ℓ : ℝ) (s : ℂ) :

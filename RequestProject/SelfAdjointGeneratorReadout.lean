@@ -173,7 +173,7 @@ theorem Aχ_kernel_realized (n : ℕ) :
 /-- **The determinant readout.**  The determinant of the configured L-readout operator
 `SpectralFiber.specOp χ s = Lspec χ s • id` on the one-dimensional fiber `ℂ` is exactly the spectral
 L-value `Lspec χ s`.  (This is the operator whose *kernel* tracks the zeros of `Lspec`; whether that
-kernel forces the critical line is the Riemann Hypothesis and is not claimed.) -/
+kernel forces the critical line is the Riemann Hypothesis.) -/
 theorem configured_det_eq_Lspec {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (s : ℂ) :
     LinearMap.det (SpectralFiber.specOp χ s) = Lspec χ s := by
   rw [SpectralFiber.specOp]

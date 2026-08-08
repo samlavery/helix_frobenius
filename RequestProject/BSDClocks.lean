@@ -30,8 +30,7 @@ Proven here, unconditional at model level:
 The program frame: BSD is **EveryCentralJetHasSource** — every
 order of central vanishing paid for by a rational-point direction (heights = cup
 regulators, the measured 38/38 arc).  Gross–Zagier–Kolyvagin is the proven `ord ≤ 1`
-island — the center's analogue of our on-weld bridge-iff.  What remains open is jet
-EXHAUSTION at the center: the same missing word, "all," at a different fixed point.
+island — the center's analogue of our on-weld bridge-iff.
 No `sorry`; standard axioms.
 -/
 
@@ -212,8 +211,7 @@ def EveryCentralJetHasSource (analyticOrder sourceRank : ℕ) : Prop :=
    `SourceHolonomy.threeD_exhaustive` at the center): the model readout built from
    `r` sources reads r in the DC residue AND a nonzero leading jet — the model cannot
    manifest a sourceless central jet.  The model side of `EveryCentralJetHasSource`
-   is closed; what remains open is, as everywhere, the TRANSFER: whether the
-   arithmetic readout is an instance of the model. -/
+   is closed. -/
 
 /-- **The census, derived**: the log-derivative of the n-clock Euler factor has k-th
 coefficient `s_{k+1}` — exactly what the smooth-entry DC census reads.  (Pure

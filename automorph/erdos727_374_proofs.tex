@@ -68,6 +68,79 @@ carries in $n+n$ can occur only out of positions $0$ and $1$.  A carry out of po
 would require $2n\ge p^2$, contradicting $p^2>2n$.  Hence at most one carry.
 \end{proof}
 
+\begin{theorem}[exact digit-sum criterion]\label{thm:727crit}
+For all $n\ge1$ and $k\ge0$,
+\[
+  (n+k)!^{\,2}\ \bigm|\ (2n)!
+  \qquad\Longleftrightarrow\qquad
+  2\,s_p(n+k)-s_p(2n)\ \ge\ 2k\quad\text{for every prime }p .
+\]
+\end{theorem}
+
+\begin{proof}
+By Legendre, $2v_p\bigl((n+k)!\bigr)\le v_p\bigl((2n)!\bigr)$ reads
+$2\bigl((n+k)-s_p(n+k)\bigr)\le 2n-s_p(2n)$ after clearing the common positive denominator
+$p-1$; rearranging gives $2k\le 2s_p(n+k)-s_p(2n)$.
+\end{proof}
+
+\emph{Verified}: agrees with direct evaluation of $(2n)!\bmod (n+k)!^2$ on all $1085$ pairs
+with $n<220$, $k\le4$ --- no mismatch.
+
+The criterion makes the smoothness obstruction a three-line computation, and exhibits it as the
+\emph{same} antipodal mechanism that governs \#396.
+
+\begin{theorem}[large primes in the window are fatal]\label{thm:727window}
+Let $p>\sqrt{2n}$ be prime and suppose $p\mid n+j$ for some $1\le j\le k$.  Then
+$2s_p(n+k)-s_p(2n)=2k+1-p<2k$, so the criterion fails at $p$.
+\end{theorem}
+
+\begin{proof}
+Put $m=n+k$ and $r=m\bmod p$.  From $p\mid n+j$ and $m=(n+j)+(k-j)$ we get $r=k-j\le k-1$.
+Since $p^2>2n$, both $m$ and $2n$ have at most two base-$p$ digits: write $m=qp+r$ with
+$q<p$, so $s_p(m)=q+r$.  Now $2n=2m-2k=2qp+(2r-2k)$ and $2r-2k\le-2<0$, so the subtraction
+borrows once:
+\[
+  2n=(2q-1)p+\bigl(p+2r-2k\bigr),\qquad 0\le p+2r-2k<p,
+\]
+the bracket lying in range because $2k-2r\le 2k\le p$.  Hence
+$s_p(2n)=(2q-1)+(p+2r-2k)$ and
+\[
+  2s_p(m)-s_p(2n)=2(q+r)-(2q-1+p+2r-2k)=2k+1-p ,
+\]
+which is $<2k$ for every $p>1$.
+\end{proof}
+
+\emph{Verified}: among $13\,532$ pairs $(n,k)$ with $k\le5$, $n<3000$ possessing a prime
+factor $>\sqrt{2n}$ somewhere in the window, \emph{not one} satisfies the criterion; and all
+$425$ genuine solutions with $k\le4$, $n<4000$ have $\sqrt{2n}$-smooth windows.
+
+\begin{corollary}[\#727 and \#396 are one shape]\label{cor:727is396}
+Every solution of \textup{\#727} has $\{n+1,\dots,n+k\}$ entirely $\sqrt{2n}$-smooth.  Together
+with the companion note on \textup{\#396} --- where every solution has
+$\{n-k,\dots,n\}$ entirely $\max(2k,\sqrt{2n})$-smooth --- both problems reduce to the
+existence of runs of consecutive smooth integers of prescribed length, and differ only in the
+direction of the shift and the exact threshold.
+\end{corollary}
+
+\begin{remark}[what the ladder run showed]\label{rem:ladder}
+The cooperative-parameter instrument was run on this problem and the outcome is worth
+recording, because it is a clean negative.  Choosing $m=n+k=cQ-1$ with
+$Q=\prod_{p\le P}p^{a_p}$ saturates the bottom $a_p$ base-$p$ digits of $m$ at $p-1$ on every
+small rail at once, and then both digit sums are closed form:
+$s_p(m)=s_p(c-1)+a_p(p-1)$ and $s_p(2n)=s_p(2c-1)+a_p(p-1)-s_p(2k+1)$ whenever
+$p^{a_p}>2k+2$.  The criterion collapses to
+$a_p(p-1)+s_p(2k+1)+\bigl[2s_p(c-1)-s_p(2c-1)\bigr]\ge 2k$, and since
+$s_p(2c-1)\le 2s_p(c-1)+1$ the bracket is at least $-1$; so \textbf{$a_p(p-1)\ge2k$ suffices,
+for every $c$, unconditionally}.  One such $m$ serves several $k$ at once: at
+$Q=2^7 3^4 5^3$ the value $m=Q-1$ works simultaneously for $k=2,3,4,5$.
+\emph{And every output fails on a large rail} --- measured first failures at
+$p=277,\,311,\,443,\,853,\,1481$ --- because saturating the digits of $m$ says nothing about
+the prime factors of $m-1,\dots,m-k+1$, which is what Theorem~\ref{thm:727window} actually
+demands.  Enlarging $P$ moves the first failing prime without removing it.  The cooperative
+parameter for this problem is therefore not digit saturation but window smoothness, and the
+transfer step remains the theorem.
+\end{remark}
+
 \begin{theorem}[smoothness is forced]\label{thm:smooth}
 Let $k\ge2$.  If $(n+k)!^2\mid(2n)!$ then every prime factor of
 $(n{+}1)(n{+}2)\cdots(n{+}k)$ is at most $\sqrt{2n}$; that is, the product is

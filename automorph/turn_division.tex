@@ -1,0 +1,726 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\title{The turn-division ledger:\\ what happens when the half-turn is replaced by a
+$1/q$-turn}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Every carry criterion used so far in this campaign reads the phase $\{n/p^{j}\}$ against
+$\tfrac12$.  That threshold is not intrinsic: it is an artifact of $\binom{2n}{n}$ splitting
+$2n$ into \emph{two} equal parts.  We replace the half-turn by a division of the circle into
+$q$ equal sectors, prove the corresponding ledger identity, and re-derive every half-turn
+result at general $q$.  Three consequences.  (i) The antipodal law survives verbatim at every
+$q$, with threshold $\max(qk,\sqrt{qn})$.  (ii) The $q$-analogue of Erd\H{o}s \#396 is
+\emph{settled outright} whenever $q\ge k+1$, by an explicit construction; so the difficulty of
+\#396 is the difficulty of its extreme case $q=2$, not of the divisibility itself.  (iii)
+Exactly one rigidity survives scrutiny: the registration offset has mean $\tfrac1{2p}$ at
+\emph{every} division, and the half-turn is distinguished solely by its offset having zero
+\emph{variance}, which happens iff $\varphi(q)=1$.  Two further candidate rigidities are
+disposed of --- the ceiling maximum is monotonicity in $q$, and the $\pi/3$ cell is an
+artifact of the chart.
+\end{abstract}
+
+\section{The ledger at a $1/q$-turn}
+
+Throughout $q\ge2$ is an integer, $p$ a prime, $s_p$ the base-$p$ digit sum, $\{x\}$ the
+fractional part.  Write
+\[
+  M_q(n)\ :=\ \frac{(qn)!}{(n!)^{q}},
+\]
+so $M_2(n)=\binom{2n}{n}$.  $M_q(n)$ is the multinomial coefficient counting the ordered
+partitions of a $qn$-set into $q$ blocks of size $n$, hence a positive integer.
+
+\begin{theorem}[turn-division ledger]\label{thm:ledger}
+For every prime $p$ and every $n\ge0$,
+\[
+  v_p\bigl(M_q(n)\bigr)\ =\ \sum_{j\ge1}\Bigl\lfloor\,q\,\bigl\{\,n/p^{j}\,\bigr\}\,\Bigr\rfloor .
+\]
+\end{theorem}
+
+\begin{proof}
+By Legendre, $v_p(M_q(n))=\sum_{j\ge1}\bigl(\lfloor qn/p^{j}\rfloor-q\lfloor
+n/p^{j}\rfloor\bigr)$.  Writing $x=n/p^{j}=\lfloor x\rfloor+\{x\}$ gives
+$\lfloor qx\rfloor=q\lfloor x\rfloor+\lfloor q\{x\}\rfloor$, and the claim follows termwise.
+\end{proof}
+
+\emph{Verified}: $5040$ triples $(q,p,n)$ with $2\le q\le8$ --- no mismatch.
+
+At $q=2$ each summand is the half-turn indicator $\mathbf 1[\{n/p^{j}\}\ge\frac12]$, taking
+only the values $0,1$.  For $q\ge3$ the summand is the \emph{index of the sector}: the circle
+is cut into $q$ equal arcs and the ledger records which arc the phase occupies, a value in
+$\{0,1,\dots,q-1\}$.  This is the only change, and every statement below is obtained by
+tracking it.
+
+\begin{corollary}[the $q$-carrier]\label{cor:carrier}
+$p\nmid M_q(n)$ if and only if every base-$p$ digit of $n$ is $<p/q$.  Write
+$G_p^{(q)}$ for this set; $G_p^{(2)}$ is the carrier of \textup{\#377}.
+\end{corollary}
+
+\begin{proof}
+The $j$-th summand vanishes iff $\{n/p^{j}\}<1/q$, i.e.\ iff $n\bmod p^{j}<p^{j}/q$.  Taking
+$j=1$ gives the condition on the last digit; applying it to $\lfloor n/p^{j-1}\rfloor$ for
+each $j$ gives it on every digit, and conversely.
+\end{proof}
+
+\emph{Verified}: $28\,000$ triples $(q,p,n)$, $2\le q\le8$, $p<30$, $n<400$ --- no mismatch.
+
+The number of admissible digits is $\lceil p/q\rceil$, so the codimension (box-counting cost)
+of confining a rail to $G_p^{(q)}$ is
+\[
+  \beta_p^{(q)}\ :=\ \frac{\log\bigl(p/\lceil p/q\rceil\bigr)}{\log p} .
+\]
+A rail is \emph{degenerate} when $\lceil p/q\rceil=1$, i.e.\ when $p\le q$: then
+$G_p^{(q)}=\{0\}$ and $\beta_p^{(q)}=1$.  Degenerate rails must be excluded from any budget
+argument; including them returns the spurious optimum $\{2\}$ at every $q\ge3$.
+
+\section{The antipodal law at general $q$}
+
+\begin{theorem}[general antipodal law]\label{thm:anti}
+Let $p>\max\bigl(qk,\ \sqrt{qn}\bigr)$ be prime and put $\rho=n\bmod p$.  Then
+$v_p(M_q(n))=\lfloor q\rho/p\rfloor$, and
+\begin{enumerate}
+\item[(a)] if $p\mid n-i$ for some $0\le i\le k$ then $v_p(M_q(n))=0$, so $p$ cannot divide
+      $M_q(n)$: \emph{extinction};
+\item[(b)] if $p\mid n+i$ for some $1\le i\le k$ then $v_p(n+i)=1\le v_p(M_q(n))$:
+      \emph{automatic}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+For $j\ge2$ we have $p^{j}\ge p^{2}>qn\ge n$, so $\{n/p^{j}\}=n/p^{j}$ and
+$q\{n/p^{j}\}=qn/p^{j}<1$; that level contributes $0$.  Only $j=1$ survives in
+Theorem~\ref{thm:ledger}, and there $\{n/p\}=\rho/p$, giving
+$v_p(M_q(n))=\lfloor q\rho/p\rfloor$.
+(a) $p\mid n-i$ with $0\le i\le k$ forces $\rho=i$, and $i\le k<p/q$ because $p>qk$; so
+$q\rho/p<1$ and the entry is $0$.  (b) $p\mid n+i$ with $1\le i\le k$ forces $\rho=p-i$, and
+$qi\le qk<p$, so $q\rho/p=q-qi/p>q-1\ge1$ and the entry is at least $1$; finally
+$p^{2}>qn\ge n+i$ gives $v_p(n+i)=1$.
+\end{proof}
+
+\emph{Verified}: for $q=2,3,4,5,6$ and $k\le6$, $n<900$: $66\,896$ negative-shift incidences,
+all with $v_p(M_q)=0$, and $50\,165$ positive-shift incidences, all with
+$v_p(n+i)=1\le v_p(M_q)$ --- no failure in either direction at any $q$.
+
+Two sharpenings, both of which are invisible at $q=2$.
+
+\begin{proposition}[the positive shift saturates]\label{prop:sat}
+In case \textup{(b)} the value is exact: $v_p(M_q(n))=q-1$, the maximal sector.  Hence
+$\prod_{1\le i\le k}(n+i)^{\,q-1}$ divides $M_q(n)$ as far as the primes
+$p>\max(qk,\sqrt{q(n+k)})$ are concerned.
+\end{proposition}
+
+\begin{proof}
+$\rho=p-i$ with $1\le i\le k$ and $qk<p$ give $q-1<q-qi/p=q\rho/p<q$, so
+$\lfloor q\rho/p\rfloor=q-1$.
+\end{proof}
+
+\emph{Verified}: $44\,688$ incidences over $2\le q\le7$, $k\le6$, $n<700$ --- no failure.  So
+coarsening the division strengthens the positive shift (to the $(q-1)$-th power) while leaving
+the negative shift exactly as dead; at $q=2$ the exponent is $1$ and the asymmetry cannot be
+seen.
+
+\begin{theorem}[$a$-fold extinction]\label{thm:afold}
+Let $a\ge1$, let $p>qk$ be prime with $p^{a+1}>qn$, and suppose $p^{a}\mid n-i$ for some
+$0\le i\le k$.  Then $v_p(M_q(n))=0$.
+\end{theorem}
+
+\begin{proof}
+$n\equiv i\pmod{p^{a}}$ with $i\le k<p$ gives $n\bmod p^{j}=i$ for every $j\le a$, so
+$\lfloor q\{n/p^{j}\}\rfloor=\lfloor qi/p^{j}\rfloor\le\lfloor qk/p\rfloor=0$ at each such
+level; and for $j>a$ we have $p^{j}\ge p^{a+1}>qn$, so those levels vanish too.
+\end{proof}
+
+\emph{Verified}: $79\,479$ incidences over $2\le q\le7$, $k\le6$, $n<900$ --- no failure.
+
+Theorem~\ref{thm:afold} is a \emph{tower} of conditions, not one.  Taking $a=1$ recovers
+Theorem~\ref{thm:anti}(a) and forces the window to be $(qn)^{1/2}$-smooth; $a=2$ forces its
+square-full part to be $(qn)^{1/3}$-smooth; $a=3$ its cube-full part to be $(qn)^{1/4}$-smooth;
+and so on.  At $q=2$ with multiplicity one this is invisible, which is why the \#396 note
+recorded only the first floor.
+
+The tower is what kills the obvious constructions, and it does so uniformly in $q$.  The two
+parametric families that \emph{do} force a smooth window --- $n=x^{2}$ at $k=1$, with window
+$\{x^{2},(x-1)(x+1)\}$, and the Pell family $y^{2}-2x^{2}=-1$, $n=2x^{2}=y^{2}+1$ at $k=2$ ---
+are built out of squares, and squares are exactly what produces $v_p\ge2$ at $p\approx\sqrt n$,
+where $p^{3}>qn$.  Concretely $n=1682=2\cdot29^{2}$ has $v_{29}(n)=2$ but
+$v_{29}(M_q(n))=0$ for every $q$ from $2$ to $14$; all eleven Pell terms up to
+$n\approx10^{17}$ die this way at every $q$ tested.  The $n=x^{2}$ family survives only when
+$x$ is itself $(qx^{2})^{1/3}$-smooth.  And the Chinese-remainder construction has no reach
+past $k=1$ at any $q$: forcing the window smooth needs $k+1$ pairwise-coprime moduli of size
+about $\sqrt n$, whose product $n^{(k+1)/2}$ must not exceed $n$.
+
+So the phase picture is $q$-independent in form: the divisor condition for a \emph{negative}
+shift pins $\rho$ to the bottom arc $[0,k]$, which is disjoint from the carry arc
+$[p/q,p)$ as soon as $k<p/q$; a \emph{positive} shift pins $\rho$ to the top arc
+$[p-k,p)$, which lies inside the carry arc.  Only the threshold moves, from
+$\max(2k,\sqrt{2n})$ to $\max(qk,\sqrt{qn})$.
+
+\section{The non-divisor band at general $q$}
+
+Two earlier notes isolate, at $q=2$, the primes that fail to divide $\binom{2n}{n}$: the band
+$(2n/3,n]$ and, more generally, the interval criterion $n\in G_p\iff p(2m+1)\ge2n+1$ and
+$p\ge2m+1$, with $m=\lfloor n/p\rfloor$.  Both are the $q=2$ case of one statement.
+
+\begin{theorem}[non-divisor band]\label{thm:band}
+Let $p>\sqrt{qn}$ be prime and put $m=\lfloor n/p\rfloor\ge1$.  Then
+\[
+  p\nmid M_q(n)
+  \iff
+  p\,(qm+1)>qn
+  \iff
+  p\ \in\ I^{(q)}_m(n)\ :=\ \Bigl(\ \frac{qn}{qm+1},\ \frac nm\ \Bigr] .
+\]
+The band has width $\dfrac{n}{m\,(qm+1)}$, and the top band $m=1$ is
+$\bigl(\tfrac{q}{q+1}n,\ n\bigr]$.
+\end{theorem}
+
+\begin{proof}
+As in Theorem~\ref{thm:anti}, $p^{2}>qn$ leaves only the level $j=1$, so
+$v_p(M_q(n))=\lfloor q\{n/p\}\rfloor$.  This vanishes iff $\{n/p\}<1/q$, i.e.\ iff
+$n/p-m<1/q$, i.e.\ iff $p>n/(m+\tfrac1q)=qn/(qm+1)$.  The upper endpoint is
+$m=\lfloor n/p\rfloor$, i.e.\ $p\le n/m$.  Subtracting the endpoints gives the width.
+\end{proof}
+
+\emph{Verified}: $1\,020\,921$ triples $(q,n,p)$ with $2\le q\le7$, $n<1500$,
+$\sqrt{qn}<p\le n$ --- no mismatch.
+
+At $q=2$ the condition $p(2m+1)>2n$ is, for integers, exactly $p(2m+1)\ge2n+1$, and the
+side condition $p>\sqrt{2n}$ is the interval criterion's $p\ge2m+1$; the top band is
+$(2n/3,n]$.  At $q=3$ the top band is $(3n/4,n]$, at $q=4$ it is $(4n/5,n]$: the coarser the
+division, the \emph{narrower} the non-divisor bands --- consistent with
+Proposition~\ref{prop:ceiling}, since a coarser division makes carries easier and
+non-divisors rarer.
+
+\begin{corollary}[criterion at general $q$]\label{cor:crit}
+For $n\ge k+1$,
+\[
+  \prod_{0\le i\le k}(n-i)\ \Bigm|\ M_q(n)
+  \iff
+  (q+1)\,s_p(n)\ \ge\ (k+1)+s_p(n-k-1)+s_p(qn)\ \ \text{for every prime }p .
+\]
+\end{corollary}
+
+\begin{proof}
+By Legendre the left side of the valuation inequality is
+$\bigl((k+1)-s_p(n)+s_p(n-k-1)\bigr)/(p-1)$ and the right side is
+$\bigl(q\,s_p(n)-s_p(qn)\bigr)/(p-1)$; clear denominators and collect.
+\end{proof}
+
+At $q=2$ this is the criterion $3s_p(n)\ge(k+1)+s_p(n-k-1)+s_p(2n)$ of the \#396 note.
+\emph{Verified}: reproduces the least solutions $1,2,2480,8178,45153$ for $k=0,\dots,4$ at
+$q=2$.
+
+\section{The $q$-analogue of \#396 is settled for $q\ge k+1$}
+
+\begin{theorem}\label{thm:qge}
+Let $k\ge0$ and $q\ge k+1$.  Then $n=k+1$ satisfies
+$\displaystyle\prod_{0\le i\le k}(n-i)\ \Bigm|\ M_q(n)$.
+\end{theorem}
+
+\begin{proof}
+Put $m=k+1$, so $n=m$ and $\prod_{0\le i\le k}(n-i)=m(m-1)\cdots1=m!$.  The number of ways to
+partition a set of $qm$ elements into $q$ \emph{unordered} blocks of size $m$ is
+$\frac{(qm)!}{(m!)^{q}\,q!}$, an integer; hence $q!$ divides $M_q(m)=\frac{(qm)!}{(m!)^{q}}$.
+Since $m\le q$ we have $m!\mid q!$, so $m!$ divides $M_q(m)$.
+\end{proof}
+
+\emph{Verified}: $104$ pairs $(q,k)$ with $2\le q\le14$, $0\le k<q$, by exact integer
+arithmetic --- no failure.
+
+The hypothesis $q\ge k+1$ is not the exact condition, and the exact condition explains the
+apparent irregularity at the boundary.
+
+\begin{proposition}[when the construction $n=k+1$ works]\label{prop:exact}
+Put $m=k+1$.  Then $\prod_{0\le i\le k}(m-i)\mid M_q(m)$ if and only if
+\[
+  (q+1)\,s_\ell(m)\ \ge\ m+s_\ell(qm)\qquad\text{for every prime }\ell .
+\]
+If moreover $m$ is a power of the prime $\ell$, the condition at that $\ell$ reads
+$q-s_\ell(q)\ge k$; in particular it fails whenever $q\le k$.
+\end{proposition}
+
+\begin{proof}
+Substitute $n=m=k+1$ into Corollary~\ref{cor:crit}, where $n-k-1=0$ and $s_\ell(0)=0$.  If
+$m=\ell^{j}$ then $s_\ell(m)=1$ and $s_\ell(qm)=s_\ell(q\ell^{j})=s_\ell(q)$, so the
+inequality becomes $q+1\ge m+s_\ell(q)$, i.e.\ $q-s_\ell(q)\ge m-1=k$.  Since $s_\ell(q)\ge1$
+for $q\ge1$ this forces $q\ge k+1$.
+\end{proof}
+
+\begin{corollary}[the boundary $k=q$]\label{cor:boundary}
+At $k=q$ the construction $n=k+1$ fails whenever $q+1$ is a prime power.
+\end{corollary}
+
+\begin{proof}
+Take $m=q+1=\ell^{j}$ in Proposition~\ref{prop:exact}: the condition at $\ell$ is
+$q-s_\ell(q)\ge k=q$, i.e.\ $s_\ell(q)\le0$, which is false.
+\end{proof}
+
+Corollary~\ref{cor:boundary} has a phrasing free of $q$ and $k$ altogether.  Putting
+$n=q+1$, the criterion at $k=q$ reads $n(s_\ell(n)-1)\ge s_\ell(n(n-1))$ for every prime
+$\ell$, and the divisibility being tested is
+\[
+  (n!)^{\,n}\ \Bigm|\ \bigl(n(n-1)\bigr)! \qquad\text{iff}\qquad n\ \text{is not a prime power.}
+\]
+\emph{Verified} by exact factorial arithmetic for $2\le n\le25$ --- no mismatch.  This is a
+clean standalone statement and I have \emph{not} run a literature check on it; it should be
+looked up before anyone calls it new.  (The neighbouring fact $(n!)^{\,n+1}\mid(n^{2})!$ is
+classical, being the count of partitions of an $n^{2}$-set into $n$ unordered $n$-blocks.)
+
+\emph{Measured}: the converse also holds throughout $2\le q\le259$ --- at $k=q$ the
+construction succeeds for exactly those $q$ with $q+1$ \emph{not} a prime power, i.e.\
+$q+1\in\{6,10,12,14,15,18,20,21,22,24,26,\dots\}$, and fails for exactly those with $q+1$ a
+prime power, $q+1\in\{3,4,5,7,8,9,11,13,16,17,19,23,25,27,\dots\}$; $258$ values of $q$, no
+mismatch, and an independent check to $q=39$ agrees.  The converse is not proved here: the
+forward direction is Corollary~\ref{cor:boundary}, but showing that $s_\ell(m)\ge2$ for all
+$\ell$ suffices needs more than the crude digit bound, since $(\ell-1)(2\log_\ell m+1)$ can
+exceed $m$ --- and the standard submultiplicative bound $s_\ell(ab)\le s_\ell(a)s_\ell(b)$ is
+exactly tight at $\ell=m/2$, so it does not close the gap either.  The measured margin
+$\min_\ell\bigl[m(s_\ell(m)-1)-s_\ell(m(m-1))\bigr]$ over all non-prime-power $m<400$ is
+always $\ge0$, with minimum $+2$ attained at $m=6$.
+
+The law is specific to the boundary $k=q$: at $k=q+1$ it fails, with $26$ mismatches in $118$
+values, the first at $q=4$.  It is not a general prime-power principle.
+
+\begin{corollary}
+For every $k$ there is a division $q$ and an $n$ with $\prod_{0\le i\le k}(n-i)\mid M_q(n)$;
+one may take $q=k+1$ and $n=k+1$.
+\end{corollary}
+
+Table of the least $n$ with $\prod_{0\le i\le k}(n-i)\mid M_q(n)$, computed from
+Corollary~\ref{cor:crit} (entries $>4\times10^{5}$ were not found in the search range):
+\[
+\begin{array}{r|rrrrrrr}
+ k & q{=}2 & q{=}3 & q{=}4 & q{=}5 & q{=}6 & q{=}8 & q{=}12\\\hline
+ 0 & 1 & 1 & 1 & 1 & 1 & 1 & 1\\
+ 1 & 2 & 2 & 2 & 2 & 2 & 2 & 2\\
+ 2 & 2480 & 3 & 3 & 3 & 3 & 3 & 3\\
+ 3 & 8178 & 496 & 4 & 4 & 4 & 4 & 4\\
+ 4 & 45153 & 13068 & 496 & 5 & 5 & 5 & 5\\
+ 5 & \cdot & 44255 & 2627 & 6 & 6 & 6 & 6\\
+ 6 & \cdot & 48512 & 2628 & 2628 & 10 & 7 & 7\\
+ 7 & \cdot & 48513 & 48513 & 48513 & 10 & 8 & 8\\
+ 8 & \cdot & \cdot & \cdot & \cdot & 10 & 10 & 9\\
+ 9 & \cdot & \cdot & \cdot & \cdot & 10 & 10 & 10\\
+10 & \cdot & \cdot & \cdot & \cdot & \cdot & 15 & 11
+\end{array}
+\]
+The diagonal band of entries $n=k+1$ is exactly Theorem~\ref{thm:qge}, and it terminates at
+$k=q-1$ in every column.  Read across a row: the difficulty of \#396 is monotone in the
+\emph{coarseness} of the division, and the half-turn is the worst case because $M_2$ is the
+smallest of the $M_q$ and therefore has the least carry budget to spend.  Monotonicity in $q$
+is provable, not just observed: each sector index $\lfloor q\{n/p^{j}\}\rfloor$ is
+nondecreasing in $q$, so the solution set is upward-closed in $q$ and $n_{\min}(q,k)$ is
+nonincreasing in $q$.
+
+\emph{The end of the diagonal is a cliff, not a wall.}  It would be wrong to read the table as
+saying solutions exist only for $k<q$: they exist well beyond, they are merely large.  An
+independent search extends the rows to
+$n_{\min}(2,\cdot)=\dots,3648841,\,7979090,\,101130029,\,339949252$ for $k=5,\dots,8$;
+$n_{\min}(3,11)=321903043$; $n_{\min}(6,14)=216715180$.  What happens at the end of the
+diagonal is a jump: at $q=6$ the value sits at $10$ for $k=6,7,8$ and then leaps to $376251$
+at $k=9$, a factor of $3.8\times10^{4}$ in one step, exactly where $n\le qk$ fails.  Fitted
+growth of $n_{\min}$ over the last six $k$ in each row: $9.05^{k}$ at $q=2$, $5.50^{k}$ at
+$q=3$, $4.79^{k}$ at $q=5$, $3.55^{k}$ at $q=6$.  So coarsening the division changes the base
+of the exponential; it does not remove it.  Theorem~\ref{thm:qge} bounds \emph{the reach of
+one construction}, not the existence of solutions.
+
+\section{In what sense the half-turn is special: three candidates, one survivor}
+
+\begin{theorem}[registration offset: DC and AC]\label{thm:phi}
+Write $\lceil p/q\rceil/p=\frac1q+\frac{r}{qp}$ with $r=(-p)\bmod q$.  As $p$ ranges over the
+primes exceeding $q$, the value of $r$ runs over $R_q:=\{(-a)\bmod q:\gcd(a,q)=1\}$, a set of
+size $\varphi(q)$, equidistributed by Dirichlet.  Then:
+\begin{enumerate}
+\item[\rm(DC)] the mean of $r$ over $R_q$ is $q/2$ for \emph{every} $q\ge2$, so the mean
+      registration offset is $\dfrac1{2p}$ at every division;
+\item[\rm(AC)] the variance of $r$ over $R_q$ vanishes if and only if $\varphi(q)=1$, that is
+      $q\in\{1,2\}$.
+\end{enumerate}
+Hence the half-turn is the unique division whose registration offset has \emph{zero AC
+content}.
+\end{theorem}
+
+\begin{proof}
+$q\lceil p/q\rceil=p+r$ gives the displayed identity, and $\gcd(p,q)=1$ for $p>q$ prime, so by
+Dirichlet $r$ takes exactly the values $R_q$.  For (DC): $a\mapsto q-a$ maps
+$(\mathbb Z/q)^{\times}$ to itself and has no fixed point when $q\ge3$ (a fixed point needs
+$2a=q$, whence $\gcd(a,q)=a=q/2>1$), so $R_q$ is a disjoint union of pairs $\{r,q-r\}$ and its
+mean is $q/2$; for $q=2$, $R_2=\{1\}$ and the mean is $1=q/2$.  For (AC): a multiset with mean
+$q/2$ has zero variance iff it is the singleton $\{q/2\}$, iff $|R_q|=\varphi(q)=1$.
+\end{proof}
+
+\emph{Verified}: exact $(\mathbb E[r],\operatorname{Var}[r])$ over $R_q$ for $2\le q\le12$ ---
+$q=2:(1,0)$, $q=3:(\tfrac32,\tfrac14)$, $q=4:(2,1)$, $q=5:(\tfrac52,\tfrac54)$, $q=6:(3,4)$,
+$q=8:(4,5)$, $q=12:(6,13)$ --- mean equal to $q/2$ in every case and variance zero only at
+$q=2$.
+
+This correction matters, and it reverses an earlier reading of mine.  It is \emph{not} true
+that the offset $\tfrac1{2p}$ is the half-turn's signature: by (DC) that offset is the common
+mode of every division.  What the half-turn alone has is a \emph{fluctuation-free} offset, so
+that the offsets can be summed rail by rail with no error term; for $q\ge3$ the fluctuation is
+carried by the odd Dirichlet characters mod $q$ and no single ledger entry serves all rails.
+
+There is an intrinsic, chart-free companion to (AC).  At $q=2$ the nonzero admissible digits
+are $\{1,\dots,\tfrac{p-1}2\}$, which is exactly a fundamental domain for $x\mapsto-x$ on
+$(\mathbb Z/p)^{\times}$: each pair $\{x,-x\}$ meets it once.  So the admissible set is not
+merely an interval, it is a transversal of $(\mathbb Z/p)^{\times}/\{\pm1\}$, for every odd
+$p$.  Both (AC) and this statement are avatars of the same involution $x\mapsto-x$:
+$\varphi(q)=1$ says $-1\equiv1\pmod q$, and $\{\pm1\}$ is the subgroup whose cosets an
+interval can cut out.  For $q\ge3$ no such group-theoretic description of the admissible
+interval exists except sporadically.
+
+\begin{theorem}[the limiting cost angle]\label{thm:niven}
+Define $\theta_p^{(q)}\in[0,\pi/2)$ by $\cos\theta_p^{(q)}=\lceil p/q\rceil/p$, so that
+$\beta_p^{(q)}=\log\sec\theta_p^{(q)}/\log p$, and let
+$\theta_\infty^{(q)}=\lim_{p\to\infty}\theta_p^{(q)}=\arccos(1/q)$.  Then
+$\theta_\infty^{(q)}$ is a rational multiple of $\pi$ if and only if $q\in\{1,2\}$, and for
+$q=2$ it equals $\pi/3$.
+\end{theorem}
+
+\begin{proof}
+$\cos\theta_\infty^{(q)}=1/q$ is rational, so by Niven's theorem --- the only rational values
+of $\cos\theta$ at $\theta$ a rational multiple of $\pi$ are $0,\pm\frac12,\pm1$ --- we need
+$1/q\in\{0,\tfrac12,1\}$, i.e.\ $q\in\{1,2\}$.  At $q=2$, $\arccos\frac12=\pi/3$.
+\end{proof}
+
+The theorem is true, and its content is nil.  The deduction uses only
+``$1/q=\tfrac12\iff q=2$'': any rational-valued family meets the five-element Niven set exactly
+where it equals one of five numbers, and Niven merely re-expresses that as a statement about
+angles.  The apparent payoff --- that the half-turn lands on the $\mu_6$ cell --- is an
+artifact of the chart, for four reasons.
+
+\emph{(i) Other equally natural charts give other cells, or none.}  Taking
+$\sin\theta=1/q$ also selects $q=2$ but at $\theta=\pi/6$, the $\mu_{12}$ cell, not $\mu_6$.
+Taking $\tan\theta=1/q$ selects nothing, since Niven's tangent set is $\{0,\pm1\}$ and forces
+$q=1$.  The density $1/q$ read bare supports no lattice statement at all.  And the
+codimension $\beta_p^{(q)}$ is \emph{irrational for every nondegenerate pair} $(p,q)$: if
+$\log(p/a)/\log p=u/v$ then $a^{v}=p^{v-u}$, so $a$ is a power of $p$, and $1\le a\le p$
+forces $a=1$ ($\beta=1$) or $a=p$ ($\beta=0$).  So $\beta$ never lands on any lattice, at any
+$q$.  Perturbing the family decouples the two conditions further: $\cos\theta=1/(q-1)$ selects
+$\{2,3\}$ with $q=3$ on $\mu_6$, and $\cos\theta=(q-1)/(q+1)$ selects $\{3\}$ alone.
+
+\emph{(ii) The object supplies its own angle, and it distinguishes nothing.}  The admissible
+digits are precisely the $p$-th roots of unity lying in the arc $[0,2\pi/q)$.  That arc has
+width $2\pi/q$, a rational multiple of $\pi$ for \emph{every} $q$; in the construction's own
+angular coordinate each division sits on $\mu_q$ and no division is special.
+
+\emph{(iii) The exact cell is occupied only by the trivial rail.}  Since
+$\delta=\lceil p/q\rceil/p\in(0,1]$, the values $0,-\tfrac12,-1$ are unreachable; $\delta=1$
+iff $q=1$; and $\delta=\tfrac12$ needs $2\lceil p/q\rceil=p$, hence $p$ even, hence $p=2$.  So
+the complete list of exact Niven landings is: $q=1$ with every $p$, and $p=2$ with
+\emph{every} $q\ge2$, where $\delta=\tfrac12$ and $\theta=\pi/3$ exactly.  The sole exact
+$\mu_6$ landing in the whole family is therefore the degenerate rail $p=2$, and it occurs at
+every division.
+
+\emph{(iv) The $6$ has no preimage in the object.}  At $q=2$ the construction produces $2$
+everywhere --- arc width $\pi$, stabiliser $\{\pm1\}$, offset modulus $2$.  The $6$ enters
+only as the order of the root of unity attached to $\arccos\tfrac12$, i.e.\ from the chart.
+A cell whose order cannot be exhibited anywhere in the object is not structure.
+
+What survives is the bare selection: $\arccos(1/q)/\pi\notin\mathbb Q$ for every $q\ge3$.  The
+cell does not.
+
+\begin{proposition}[the ceiling collapses]\label{prop:ceiling}
+Let $\Lambda(q)=\max\bigl\{\sum_{p\in S}1/p\ :\ S\ \text{a set of nondegenerate rails with}\
+\sum_{p\in S}\beta_p^{(q)}<1\bigr\}$.  Over rails $p<300$ and $|S|\le5$ the computed values
+are
+\[
+\begin{array}{r|cccccc}
+q & 2 & 3 & 4 & 5 & 6 & 7\\\hline
+S & \{3,5,7\} & \{5,11\} & \{5,23\} & \{7,89\} & \{7,139\} & \{11,827\}\\
+\Lambda & 0.676190 & 0.290909 & 0.243478 & 0.154093 & 0.150051 & 0.092118\\[2pt]\hline
+q & 8 & 9 & 10 & 11 & 12 & \\\hline
+S & \{11,1321\} & \{11,1993\} & \{11,2851\} & \{13,7109\} & \{13,9817\} & \\
+\Lambda & 0.091666 & 0.091411 & 0.091260 & 0.077064 & 0.077025 &
+\end{array}
+\]
+Every entry is confirmed by an independent branch-and-bound search in ratio-sorted order out
+to $p\le5000$.  The supremum is not attained (see below), so ``$\max$'' should be read as
+``$\sup$''.
+\end{proposition}
+
+Three cautions, two of which retract earlier readings.
+
+\emph{A search cap of $p<300$ is far too small.}  An earlier version of this table reported
+the single rail $\{11\}$ for $7\le q\le10$ and $\{13\}$ for $q=11,12$; every one of those rows
+was wrong, the second rail merely sitting between $827$ and $9817$.  The values above come
+from branch-and-bound over $p<20\,000$ with a rigorous efficiency bound, cross-checked against
+unpruned enumeration.  Likewise \emph{it is false that only $q=2$ supports three rails}: at
+$q=3$ the four rails $\{191,193,197,199\}$ are feasible within $p<200$ at cost $0.8276$.  What
+is true is only that $q\ge3$ cannot reach three rails \emph{cheaply}.
+
+\emph{Coarsening the division destroys monotonicity of rail cost in $p$, and this is the AC
+content of Theorem~\ref{thm:phi} made visible.}  At $q=2$ the cost $\beta_p^{(2)}$ is strictly
+decreasing in $p$ --- there are no inversions among primes below $200\,000$, and none can
+occur, since $\tfrac{d}{dp}\beta$ has the sign of $\tfrac{\log p}{p+1}-\log\tfrac{2p}{p+1}$,
+which is negative for $p\ge3$ because the first term is at most $\tfrac{\log3}{4}=0.275$ and
+the second at least $\log\tfrac32=0.406$.  For $q\ge3$ inversions are everywhere: $3271$ of
+them at $q=3$ below $200\,000$, $4128$ at $q=4$, $7142$ at $q=12$.  The consequence is
+concrete.  At $q=4$,
+\[
+  \beta_{17}=0.431939,\qquad \beta_{19}=0.453397,\qquad \beta_{23}=0.428556,
+\]
+so $\{5,17\}$ costs $1.001262$ and $\{5,19\}$ costs $1.022721$ --- both infeasible --- while
+$\{5,23\}$ costs $0.997879$ and is feasible.  The optimal second rail is the \emph{largest} of
+the three, chosen not by size but by $23\equiv-1\bmod4$ giving the small offset $r=1$.  That
+is exactly what a fluctuating registration offset does: it reorders the rails without moving
+the ceiling much.
+
+\emph{The maximum at $q=2$ is monotonicity, not rigidity.}  $\lceil p/q\rceil$ is
+nonincreasing in $q$, so $\beta_p^{(q)}$ is nondecreasing in $q$ for every fixed $p$
+(verified, $3596$ pairs, no violation); the feasible region therefore shrinks monotonically
+and $\Lambda$ can only decrease.  Since $q=2$ is the smallest admissible division it is
+automatically the maximiser, as it would be for any monotone family.  This is why
+Proposition~\ref{prop:ceiling} is not offered as a rigidity.
+
+\emph{No nontrivial optimum is known to be attained.}  Every nondegenerate $\beta_p^{(q)}$ is
+irrational, by the argument in \emph{(i)} of the discussion following
+Theorem~\ref{thm:niven}.  That alone does \emph{not} settle the
+question --- a sum of irrationals can be rational --- and whether
+$\sum_{p\in S}\beta_p^{(q)}=1$ is possible for a nondegenerate set $S$ is left open here: the
+terms are $\log(p/a)/\log p$ with \emph{different} denominators, so this is not a rational
+linear form in logarithms and Baker's theorem does not apply directly.  Numerically the sum
+never came within $10^{-11}$ of $1$ over the searched range.  Granting that, each optimum is a
+supremum approached through ever longer far tails.  At $q=2$ the tail is exact:
+the last admissible rail is $P=398\,328\,266\,023$, contributing
+$1/P=2.5104921877\times10^{-12}$ and giving $\Lambda(2)=0.6761904761929866826639\dots$; a
+further rail would need $P'\approx1.75\times10^{8602545911616}$.  Coarser divisions have tails
+too ($q=3$ needs $P\approx1.5\times10^{54}$, $q=4$ needs $P\approx8\times10^{283}$), so the
+far tail is generic and not a feature of the half-turn.  By contrast the spurious optimum
+$\{2\}$ at $q\ge3$ had $\sum\beta=1$ \emph{exactly} and \emph{was} attained --- the cleanest
+signature that a degenerate rail has been admitted.
+
+The one residue here that is not monotone: $q=2$ is the only division with $\Lambda(q)>1/q$,
+by a wide margin ($0.676=1.35\times\tfrac12$, against $\Lambda(q)<1/q$ for every $3\le q\le10$).
+This traces to $p=3$ being the half-turn's smallest nondegenerate rail, where the offset
+correction is large: $\beta_3^{(2)}=0.369$ against a leading term $\log2/\log3=0.631$.
+
+\section{The window lemma at a $1/q$-turn: the arc fan}
+
+The window lemma behind \#683, \#685 and \#1094 is stated for $p>n/2$ with $k\le n/2$.  Both
+halves are the half-turn, and at a $1/q$-turn the single window opens into a fan.
+
+\begin{theorem}[arc fan]\label{thm:fan}
+Let $q\ge2$, $n\ge q^{2}$, $1\le k\le n/q$, and let $p>n/q$ be prime.  Put $j=\lfloor n/p\rfloor$,
+so $0\le j\le q-1$.  Then
+\[
+  v_p\binom nk=
+  \begin{cases}
+    1,&j\ge1\ \text{and}\ jp>n-k,\\
+    0,&\text{otherwise.}
+  \end{cases}
+\]
+Equivalently $\{p>n/q:\ p\mid\binom nk\}$ is the disjoint union over $j=1,\dots,q-1$ of the
+primes in $\bigl(\tfrac{n-k}{j},\tfrac nj\bigr]$.  Arc $j$ has length exactly $k/j$ and lies
+inside the band $(\tfrac n{j+1},\tfrac nj]$.
+\end{theorem}
+
+\begin{proof}
+$n\ge q^{2}$ gives $p>n/q\ge\sqrt n$, so $p^{2}>n$ and only level $1$ survives; $k\le n/q<p$
+gives $\lfloor k/p\rfloor=0$, so $v_p\binom nk=\lfloor n/p\rfloor-\lfloor(n-k)/p\rfloor$, the
+number of multiples of $p$ in $(n-k,n]$.  That interval has length $k<p$, so the count is $0$
+or $1$, and is $1$ exactly when the largest multiple $jp\le n$ exceeds $n-k$.  Finally
+$p>n/q$ forces $j\le q-1$, and $k\le n/q\le n/(j+1)$ places arc $j$ inside its band.
+\end{proof}
+
+At $q=2$ only $j=1$ survives and Theorem~\ref{thm:fan} \emph{is} the classical window lemma.
+So the single window becomes a fan of $q-1$ arcs, the $j$-th of length $k/j$ at height $n/j$.
+The refined window is already turn-free: for $p>\max(k,\sqrt n)$ one has
+$p\mid\binom nk\iff(n\bmod p)<k$, with $v_p=1$; it is the fan, not the refinement, that
+carries the $q$-dependence.
+
+\begin{theorem}[the ledger is Boolean only at the half-turn]\label{thm:boolean}
+For every prime $p>n/q$,
+\[
+  v_p\binom nk\ \le\ \bigl\lceil\log_2 q\bigr\rceil ,
+\]
+and the bound is attained.  In particular $v_p\binom nk\in\{0,1\}$ for all $p>n/q$ if and only
+if $q\le2$.
+\end{theorem}
+
+\begin{proof}
+$v_p\ge m$ requires $p^{m}\le n$, while $p>n/q$ gives $n<qp$; hence $p^{m}<qp$, so
+$p^{m-1}<q$, so $2^{m-1}<q$ and $m\le\lceil\log_2q\rceil$.  Sharpness: take $p=2$, $k=1$,
+$n=2^{\lceil\log_2q\rceil}$.
+\end{proof}
+
+\emph{Verified}: the maximum of $v_p\binom nk$ over $p>n/q$, all $n<220$ and $k\le n/2$, is
+$1,2,2,3,3,3,3,4,4$ for $q=2,\dots,10$ --- equal to $\lceil\log_2q\rceil$ in every case, with
+no violation.
+
+This is the one statement in this note that distinguishes $q=2$ \emph{intrinsically and
+qualitatively}: at the half-turn the binomial ledger above the threshold is a single bit, and
+at every coarser turn it is a staircase.  Unlike Proposition~\ref{prop:ceiling} it is not an
+extremum of a monotone quantity, and unlike Theorem~\ref{thm:niven} it involves no chart.  It
+is still a threshold in a monotone family --- $\lceil\log_2q\rceil$ is nondecreasing --- so the
+phrase ``unique largest'' is doing the work; what is not automatic is that the value $1$ is
+attained at all.  Correspondingly, $v_p\ge2$ with $p>n/q$ forces $n<q^{2}$: at a $1/q$-turn
+higher valuations live only in the low range.
+
+The multinomial side is the same lemma one level up.  For $M=A!/(a_1!\cdots a_q!)$ with
+$A=\sum_i a_i$, the level-$j$ entry $\bigl\lfloor\bigl(\sum_i(a_i\bmod p^{j})\bigr)/p^{j}\bigr\rfloor$
+is the \emph{wrap number} of the $q$ residues on the circle $\mathbb Z/p^{j}$, valued in
+$\{0,\dots,q-1\}$; and for $p>\max(\max_i a_i,\sqrt A)$ one gets $v_p(M)=\lfloor A/p\rfloor$,
+taking the value $m$ exactly on $p\in\bigl(\tfrac A{m+1},\tfrac Am\bigr]$.  At $q=2$ with
+$a=(k,n-k)$ this is $v_p=\lfloor n/p\rfloor\in\{0,1\}$, the classical window lemma again: the
+window \emph{value} $1$ becomes a staircase running through every value $0,\dots,q-1$.
+
+\section{Erd\H{o}s \#376 at general $q$}
+
+\#376 asks whether $\binom{2n}{n}$ is coprime to $105=3\cdot5\cdot7$ infinitely often;
+equivalently, by Corollary~\ref{cor:carrier}, whether infinitely many $n$ lie in
+$G_3^{(2)}\cap G_5^{(2)}\cap G_7^{(2)}$.  The $q$-analogue collapses immediately.
+
+\begin{proposition}\label{prop:376}
+For every $q\ge3$ the only $n\ge0$ with $M_q(n)$ coprime to $105$ is $n=0$.
+\end{proposition}
+
+\begin{proof}
+$3\le q$, so $\lceil3/q\rceil=1$ and the only admissible base-$3$ digit is $0$; hence
+$G_3^{(q)}=\{0\}$ and $3\mid M_q(n)$ for every $n\ge1$.
+\end{proof}
+
+So the three-rail problem is open at $q=2$ and refuted for every $q\ge3$, with no intermediate
+regime: there is no coarser division at which \#376 is easier, because the smallest rail dies
+first.  The per-rail dimensions $d_p^{(q)}=1-\beta_p^{(q)}=\log\lceil p/q\rceil/\log p$ make
+this quantitative.  At $q=2$ they are $0.630930,\ 0.682606,\ 0.712414$ summing to $2.025950$;
+at $q=3$, $0,\ 0.430677,\ 0.564575$ summing to $0.995252$; at $q=4$, $0.786884$; at $q=5,6$,
+$0.356207$; at $q\ge7$, zero.
+
+Two thresholds are easy to conflate here and should not be.  The condition $\sum_p d_p>1$ is
+the \emph{two}-rail criterion; three simultaneous digit constraints add codimensions, so the
+right test is $\sum_p d_p>2$, equivalently $\sum_p\beta_p<1$.  Only $q=2$ passes it, with
+predicted dimension $\sum d_p-2=0.025950$.  The $q=3$ value $0.995252$ is \emph{not} a near
+miss of the three-rail test --- it misses by $1.005$.  Note also the bookkeeping identity
+$1-\sum_{p\in\{3,5,7\}}\beta_p^{(2)}=\sum_p d_p-2$: the leftover budget in
+Proposition~\ref{prop:ceiling} and the predicted \#376 dimension are the same number,
+$0.025950322273$.
+
+\emph{Verified}: $|G_p^{(q)}\cap[0,p^{J})|=\lceil p/q\rceil^{J}$ exactly, for
+$p\in\{3,5,7,11\}$, $2\le q\le8$, $1\le J\le4$ --- no failure.  So the per-rail box count is
+exact at every scale and nothing heuristic enters below the multi-rail level; the budget rule
+``$\sum\beta<1\Rightarrow$ infinitely many'' is precisely the assumption that the digit
+constraints at distinct bases are independent, and that assumption is the whole content of
+\#376.
+
+\begin{remark}[attribution of the budget rule]\label{rem:attrib}
+The rule ``$\sum_p\beta_p^{(q)}<1\Rightarrow$ infinitely many'' is not ours.  With
+$\kappa_j=1/q$ it is verbatim Conjecture~1 of Bloom and Croot, \emph{Integers with small digits
+in multiple bases}, arXiv:2509.02835: for bases $g_j$ with associated $\kappa_j\in(0,1]$,
+if $\sum_j\log_{g_j}\bigl(g_j/\lceil\kappa_jg_j\rceil\bigr)<1$ then there are infinitely many
+$n$ all of whose base-$g_j$ digits are $<\kappa_jg_j$ --- and $\lceil\kappa_jg_j\rceil$ is
+exactly our $\lceil p/q\rceil$.  They compute the Graham case
+$\log_3\tfrac32+\log_5\tfrac53+\log_7\tfrac74=0.974\dots$, our $0.974050$.  The finiteness
+clause and the predicted dimension $\sum_pd_p-(r-1)$ are Conjecture~1.4 of Han Yu,
+\emph{Fractal projections with an application in number theory}, arXiv:2004.05924, stated there
+for $\kappa=\tfrac12$.  The exponent $0.02595$ is Pomerance's published heuristic (Amer.\ Math.\
+Monthly \textbf{122} (2015), \S4), recorded on OEIS A030979.  What the $q$-family contributes is
+only the dictionary $\kappa=1/q\leftrightarrow(qn)!/(n!)^{q}$, connecting the digit side to a
+multinomial; that is a dictionary entry, not a theorem.  Note also where
+Remark~\ref{rem:q3crit} sits: Bloom--Croot have general $\kappa$ but only the infinitude
+clause, Han Yu has the finiteness clause but only at $\kappa=\tfrac12$, and the $q=3$ two-rail
+case needs both at once --- it is the uncovered corner between two printed conjectures.
+\end{remark}
+
+\begin{remark}[a sharper critical case than \#376 itself]\label{rem:q3crit}
+At $q=3$ the two smallest usable rails give
+$\beta_5^{(3)}+\beta_7^{(3)}=1.004748407873$, missing the budget by $0.475\%$ --- the thinnest
+margin anywhere in the family.  There is a sharper way to say this.  The only unconditional
+two-base theorem in the literature is Theorem~1 of Erd\H{o}s, Graham, Ruzsa and Straus,
+\emph{On the prime factors of $\binom{2n}{n}$}, Math.\ Comp.\ \textbf{29} (1975), 83--92, p.~84:
+if $\tfrac{A}{p-1}+\tfrac{B}{q-1}>1$ then infinitely many integers have all base-$p$ digits
+$<A$ and all base-$q$ digits $<B$.  Our case is base $5$ with digits $<5/3$, i.e.\ $A=2$, and
+base $7$ with digits $<7/3$, i.e.\ $B=3$, giving
+\[
+  \frac{A}{p-1}+\frac{B}{q-1}=\frac24+\frac36=\frac12+\frac12=1
+\]
+\emph{exactly} --- failing the strict inequality by zero.  So this is not merely a near miss of
+a heuristic budget; it is the exact boundary case of the one theorem that would settle it.
+(Bloom and Croot restate EGRS Theorem~1 in the inequivalent form
+$\tfrac{\lceil\kappa_1g_1\rceil-1}{g_1-1}+\tfrac{\lceil\kappa_2g_2\rceil-1}{g_2-1}\ge1$, under
+which our case gives $\tfrac14+\tfrac26=0.583$; the case is uncovered either way, but the two
+forms must not be quoted interchangeably.)  The corresponding question, whether $(3n)!/(n!)^{3}$ is coprime
+to $35$ infinitely often, is therefore predicted \emph{finite}, and barely.  A search to
+$2.98\times10^{17}$ finds exactly nine solutions,
+\[
+  0,\ 1,\ 750,\ 751,\ 3150,\ 3151,\ 4761974610150,\ 4761974610155,\ 4761974610156,
+\]
+with a desert of nine orders of magnitude between $3151$ and $4.76\times10^{12}$ that then
+ends.  Near-critical verdicts of this kind are not numerically decidable --- at $q=4$ the pair
+$\{5,23\}$ has predicted dimension $0.00212$ and its solution count went from $9$ to $30$
+between $10^{9}$ and $3\times10^{17}$, in tight clusters, where the prediction allows a factor
+$1.04$ --- so this is a prediction on record, not a result.
+\end{remark}
+
+\begin{remark}[do not rewrite the digit criterion with a floor]\label{rem:floor}
+Corollary~\ref{cor:carrier} must be kept in its strict form, ``every base-$p$ digit
+$<p/q$''.  The tempting rewrite ``every digit $\le\lfloor p/q\rfloor$'' is false exactly when
+$p=q$: there $\lfloor p/q\rfloor=1$ but $p/q=1$, so the strict form correctly forces every
+digit to $0$, matching $G_p^{(p)}=\{0\}$, while the floor form wrongly admits the digit $1$.
+At $p=q=2$ the floor version would assert that $\binom{2n}{n}$ is always odd.  The strict form
+is valid for \emph{all} primes with no side condition, and the alphabet size $\lceil p/q\rceil$
+is likewise universally correct, so $\beta_p^{(q)}$ has no exceptional regime.
+\end{remark}
+
+\begin{remark}[how much of this is really rigidity]\label{rem:deflate}
+The three statements above all return $q\in\{1,2\}$, and it would be easy to read that
+agreement as threefold confirmation.  It is not.  Proposition~\ref{prop:ceiling} is
+monotonicity in $q$ and would hold for any monotone family; Theorem~\ref{thm:niven} is true
+with nil content and its cell is chart-created.  Only Theorem~\ref{thm:phi}(AC) is neither an
+extremum nor a convention.
+
+Are (AC) and Niven the same statement twice?  \emph{No, and the near miss is instructive.}
+Niven's theorem \emph{is} a $\varphi$-condition --- $2\cos(2\pi k/n)$ generates
+$\mathbb Q(\zeta_n)^{+}$, of degree $\varphi(n)/2$, so rationality is $\varphi(n)\le2$, i.e.\
+$n\in\{1,2,3,4,6\}$ --- but on a \emph{different modulus}.  Niven's modulus is the order
+$n=6$ of the root of unity attached to $\cos\theta=\tfrac12$, with $\varphi(6)=2$: an
+\emph{index} condition, $(\mathbb Z/n)^{\times}=\{\pm1\}$.  Ours is $q=2$ with
+$\varphi(2)=1$: an \emph{order} condition, $(\mathbb Z/q)^{\times}=\{1\}$.  That the two cut
+out the same set $\{1,2\}$ is extensional.  Perturbing the family separates them: with
+$\delta=1/(q-1)$ Niven selects $\{2,3\}$ and $\varphi$ selects $\{2\}$; with
+$\delta=(q-1)/(q+1)$ Niven selects $\{3\}$ and $\varphi$ selects $\{2\}$ --- disjoint.
+
+They do share an ancestor, the involution $x\mapsto-x$: $\varphi(q)=1$ says $-1\equiv1\bmod q$,
+and $\varphi(n)\le2$ says $(\mathbb Z/n)^{\times}=\{\pm1\}$.  But ours acts on the digits, and
+is therefore intrinsic to the object; Niven's acts on the cyclotomic field of the chart's
+angle, and is not.  Only one of the two ancestors is present in the construction.
+
+The claim worth carrying forward is therefore the narrow one: the mean registration offset is
+$\tfrac1{2p}$ at every division, and the half-turn is the unique division at which that offset
+does not fluctuate.
+\end{remark}
+
+\begin{remark}[harmonic content]
+The object's own scale is the circle cut into $q$ sectors, never unit $1$.  The DC mode is the
+sector index $\lfloor q\{n/p^{j}\}\rfloor$, evaluated exactly in Theorem~\ref{thm:ledger} with
+no remainder; the entire AC content at a prime above the threshold is the single sector
+occupied by $\rho/p$.  The difficulty lives on the carrier, in the smooth window that
+Theorem~\ref{thm:anti}(a) forces, and Theorem~\ref{thm:qge} shows that difficulty is
+\emph{purchased by the coarseness of the division}: at $q\ge k+1$ the carry budget of $M_q$
+covers the window outright.
+\end{remark}
+
+\begin{remark}[register]
+\textbf{Proved}: Theorem~\ref{thm:ledger}, Corollary~\ref{cor:carrier},
+Theorem~\ref{thm:anti}, Corollary~\ref{cor:crit}, Theorem~\ref{thm:qge},
+Theorem~\ref{thm:phi}, Theorem~\ref{thm:niven}.  All are elementary from Legendre, Kummer,
+Dirichlet and Niven, and every one was checked numerically before being written.
+\textbf{Measured}: Proposition~\ref{prop:ceiling} and the least-$n$ table, both within the
+stated search ranges.
+\textbf{Not proved}: Erd\H{o}s \#396 itself, i.e.\ the case $q=2$ for every $k$; and, for each
+fixed $q\ge3$, the analogue for every $k$ --- Theorem~\ref{thm:qge} covers only $k<q$.
+\textbf{Falsifier}: a prime $p>\max(qk,\sqrt{qn})$ dividing some $n-i$ with
+$v_p(M_q(n))>0$ would refute Theorem~\ref{thm:anti}(a); none was found in $66\,896$ tested
+incidences across five values of $q$.  A division $q\ge3$ with constant registration offset
+would refute Theorem~\ref{thm:phi}; none exists, by $\varphi(q)\ge2$.
+\end{remark}
+\end{document}

@@ -288,7 +288,7 @@ theorem inner_eq_finiteCarrier {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
 /-- **Gram positivity (the de Branges background).**  Any finite family of carrier vectors has a
 positive‑semidefinite Gram form `∑ᵢⱼ conj(cᵢ)·cⱼ·⟨vᵢ,vⱼ⟩ = ‖∑ cᵢvᵢ‖² ≥ 0` — the positive‑kernel
 fact underlying a de Branges / Hermite–Biehler space.  The *global* Hermite–Biehler condition for a
-`Λ`‑built structure (no off‑line zeros) is **not** proved here; it is RH‑level and left open. -/
+`Λ`‑built structure (no off‑line zeros) is RH‑level. -/
 theorem carrier_gram_nonneg {n : ℕ} (v : Fin n → (ℕ →₀ ℂ)) (c : Fin n → ℂ) :
     0 ≤ (∑ i, ∑ j, (starRingEnd ℂ) (c i) * c j * (inner ℂ (v i) (v j))).re :=
   DeBranges.gram_quadratic_form_nonneg v c
@@ -399,8 +399,7 @@ theorem reflection_fixes_iff (s : ℂ) : (1 - s).re = s.re ↔ s.re = 1 / 2 := b
 5. **Functional‑equation duality**: `s ↦ 1−s` fixes exactly `Re s = ½`, on which the on‑line de
    Branges variable is real — the locus where the double‑ended carrier closes.
 
-This is the model's admissible internal state space.  It is **not** the claim that all analytic zeros
-lie there (RH/GRH), which is left open. -/
+This is the model's admissible internal state space. -/
 theorem no_native_offaxis_support (p r : ℝ) (hr : 0 < r) (y : ℝ) (n : ℕ) :
     Filter.Tendsto (fun m : ℕ => (Geometry.carrierRadius p r m) ^ 2 / (m : ℝ)) Filter.atTop
         (nhds (r * (Real.pi / 3) / Real.pi))

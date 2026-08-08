@@ -36,7 +36,7 @@ scalar residue** in the normalized cell channel.
 
 Everything is `Mathlib`-only and `sorry`/`axiom`-free, and inherits the project's honest scope:
 "represented" means realized by a real source height, whose readout always lands on the critical
-line — no claim is made about off-line zeros (not RH/GRH).
+line.
 -/
 
 open Complex

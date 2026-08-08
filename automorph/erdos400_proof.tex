@@ -220,6 +220,31 @@ $2p-1-T$ otherwise.
 
 \emph{Verified} against brute force for all $A<180$ and $p\in\{2,3,5,7\}$.
 
+\begin{remark}[attribution: this is Holte's carries matrix]\label{rem:holte}
+The unconditioned version of this automaton --- the Markov chain on carries when $k$ uniform
+base-$p$ digits are added --- is not new.  It is the ``amazing matrix'' of Holte, \emph{Carries,
+combinatorics, and an amazing matrix}, Amer.\ Math.\ Monthly \textbf{104} (1997), 138--149,
+revisited by Diaconis and Fulman, \emph{Carries, shuffling, and an amazing matrix}, Amer.\ Math.\
+Monthly \textbf{116} (2009), 788--803.  Two of its properties are worth importing here, and both
+were verified directly for $k\in\{2,3,4\}$ and $p\in\{2,3,5\}$ to machine zero:
+\begin{enumerate}
+\item[(i)] the transition matrix has eigenvalues exactly
+      $1,\ p^{-1},\ p^{-2},\ \dots,\ p^{-(k-1)}$;
+\item[(ii)] its stationary distribution is the Eulerian distribution
+      $\pi(j)=A(k,j)/k!$ on $j=0,\dots,k-1$ --- and is \emph{independent of $p$}
+      ($\tfrac12,\tfrac12$ at $k=2$; $\tfrac16,\tfrac23,\tfrac16$ at $k=3$;
+      $\tfrac1{24},\tfrac{11}{24},\tfrac{11}{24},\tfrac1{24}$ at $k=4$).
+\end{enumerate}
+So the \emph{typical} carry per position is Eulerian with mean $(k-1)/2$, in closed form and
+with no dynamic programming.  What Proposition~\ref{prop:dp} adds is the conditioning on a
+prescribed sum $A$, which the classical chain does not carry; the digit-pair weight
+$T+1$ or $2p-1-T$ is the conditioned transition.  The distinction matters for
+$g_k$: the constant $c_k=(k-1)/\log2$ corresponds to \emph{saturating} every base-$2$
+position at the maximal carry $k-1$, not to the Eulerian mean $(k-1)/2$.  The DC of this
+problem is therefore known exactly and is not what $g_k$ measures --- $g_k$ is a maximum over
+tuples, which is why the extremal reading is the right one here.
+\end{remark}
+
 Writing $R_p=\lceil(G-(s_p(A)-s_p(n)))/(p-1)\rceil$ for the carry demand on rail $p$ and
 $\mathrm{surv}_p(G)$ for the DP probability that $\kappa_p\ge R_p$, the first-moment
 estimator is

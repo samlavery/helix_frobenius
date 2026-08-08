@@ -22,15 +22,13 @@ lower Jensen target of `CarrierJensen.lean` (`N_off(t) ≤ C·log t`) would not 
 it.  `CarrierJensen.lean` types the two-sided ledger bound and registers its lower
 side as "quantitative zero-set exhaustion, far beyond classical knowledge";
 `SpectralExhaustion.lean` isolates unrestricted spectral exhaustion as its own named
-input ("not asserted here"); `HingeKernel.lean` records the per-cell crossing rate as
+input; `HingeKernel.lean` records the per-cell crossing rate as
 measured ("no zero-location claims").  Littlewood's classical bound stays cited, not
 formalized (per direction, 2026-07-31).
 
 Proven in this file: every equivalence, unconditionally — composition of the
 compiled criterion (`IntegratedRegistrationReduction`) with the compiled equivalence
 web (`ZetaContourGlobalIdentification3D`, `ZetaContourXiReceiverIdentification3D`).
-Not proven in this file: `IntegratedDefectSublinear` itself — the thread's one
-residual, equivalent to every face above.
 -/
 
 open Complex MeasureTheory Filter Asymptotics Topology

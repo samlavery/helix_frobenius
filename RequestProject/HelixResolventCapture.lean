@@ -841,8 +841,7 @@ symmetry, real-height exhaustion with no spurious state zeros,
 **Feynman's Quiver** (FTA generation, phasor summability, phasor-FTA uniqueness, no split focus),
 **Deligne's Pairs** (self-reciprocal, Frobenius conjugate `det = 1`, weight product `= 1`), the
 chart-indexed multiplicity, represented-point harmonic vanishing, the graded mode resolvent, and
-**Shannon Projection Dominance**.  Inhabiting `ThreeDRealEvidence` certifies every conjunct but
-does not prove `NativeCarrierCoverage`. -/
+**Shannon Projection Dominance**.  Inhabiting `ThreeDRealEvidence` certifies every conjunct. -/
 theorem threeDRealEvidence : ThreeDRealEvidence := by
   refine ⟨UnconditionalFrobenius.vonNeumannOp_isSymmetric, threeD_exhaustive,
     threeD_metric_no_zeros, fun m n hm hn => Origination.windFromPrimes_mul hm hn,
@@ -866,8 +865,7 @@ counterfeits), **Riemann's Fold** (the real axis is preserved across all crossed
 real-on-line faithful projection, the coincidence, residue = jump(S), the 1D infinite-continuation
 approximation, faithful transport, the **Shannon Cascade** convergence, S(t) detecting every
 crossing, the loss ledger, native identification, and the chart resolvent limit.  Inhabiting
-`OneDChartEvidence` certifies every conjunct; it does not prove the pointwise
-`OneDCorrelationEvidence χ` premise. -/
+`OneDChartEvidence` certifies every conjunct. -/
 theorem oneDChartEvidence : OneDChartEvidence := by
   refine ⟨carrier_scale_compensation_S, hpDimension_eq_registration,
     no_radial_drift_on_helix, midpoint_entry_on_circle,

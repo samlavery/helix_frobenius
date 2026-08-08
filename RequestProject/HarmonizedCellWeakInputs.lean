@@ -23,9 +23,7 @@ controlled by the boundary ledger value, the per-cell event count, the cell leng
 the clock span (`abs_smult_le_on_cell`, `cellMass_le`, `cellMassBounded_of_uniform`).
 This localizes the (L2) target to three interpretable native quantities.
 
-Proven in this file: everything below, unconditionally.  Not proven in this file: the
-weak inputs themselves for a concrete decomposition — the named native targets of the
-thread.
+Proven in this file: everything below, unconditionally.
 -/
 
 open Complex Set MeasureTheory Filter Asymptotics

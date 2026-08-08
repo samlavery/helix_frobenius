@@ -49,9 +49,8 @@ a decidable enumeration over the units of `ℤ/N`, nothing more.  The identifica
 primitive `K`-balanced type with a *simple abelian variety of Weil type* (and of the balanced
 `(g/2, g/2)` block with the exceptional Weil/Hodge classes) is the classical dictionary of
 Shimura–Taniyama CM theory and the Moonen–Zarhin classification of Hodge classes on abelian
-fourfolds; it is cited, not re-proven here.  In particular no claim is made about the
-algebraicity of those classes (settled in dimension 4 by Markman, transcendentally; open in
-general at dimension 6).  The DC/even-weight
+fourfolds; it is cited.  The algebraicity of those classes is settled in dimension 4 by
+Markman, transcendentally.  The DC/even-weight
 reading of the balanced middle block — the `(2,2)` lane existing because the weight `4` is
 even — is the companion parity law of `EvenWeightDC.lean`.  No `axiom`, no `sorry`; the
 enumerations carry no axiom footprint.

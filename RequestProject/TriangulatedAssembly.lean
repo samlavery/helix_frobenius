@@ -17,9 +17,8 @@ occupancy, and exact integer landings).  This file types the assembly: a
 supplies).  `ReconstructionData.ofTriangulated` assembles a triangulated family, the group
 closure of the cycle map, and the Torelli leg into a `ReconstructionData`, and
 `sourceExhaustion_of_triangulated` executes the terminus from it.  Register: the structure
-does not manufacture certificates — it refuses generators without them; the open frontier is
-exactly the families whose specimens the census has not yet landed (the simple Weil sixfold,
-with its named genus-3 obstacle).  No `sorry`, no `axiom`.
+does not manufacture certificates — it refuses generators without them.
+No `sorry`, no `axiom`.
 -/
 
 open scoped BigOperators

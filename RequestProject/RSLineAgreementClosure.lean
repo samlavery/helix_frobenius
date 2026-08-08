@@ -117,9 +117,7 @@ line from the primal one, so every hypothesis lives at the Mellin-line or regula
 and none restates the pointwise identification.  The profile-side Mellin convergence and
 continuity are derived in the proof from the compiled suppliers
 `rsAveraged_mellinConvergent` (RSPairInterface) and `averagedThetaC_continuousAt`
-(RSAveragedContinuity).  Not proven in this file: the line agreements themselves (Γ-chart
-registration + coefficient identification, `hlineP`/`hlineD`) and the dual-side Mellin
-convergence (`hdualConv`). -/
+(RSAveragedContinuity). -/
 noncomputable def rsCoupling_of_lineAgreement
     {ι : Type*} [Fintype ι] (W : PolynomialSatakeDualPair ι)
     (C : ℝ) (hC : 0 < C) (μs : List ℂ) (hne : μs ≠ [])

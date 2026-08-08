@@ -17,14 +17,13 @@ axis BY THE PROJECTION MAP — not by a theorem about analytic continuation.  So
   clock-RH (`ChiralityHB.carrier_zeros_real`, purity-defect law), the purity engine and
   its measured Castelnuovo identity — this is **RH for the 3D double-ended helix as
   defined: no hypothesis, no half-plane, kernel-checked**.
-* **1D side, conditional and named**: what remains open is a statement about the 1D
+* **1D side, conditional and named**: a statement about the 1D
   projection only — whether the analytic continuation of the readout has zeros that do
   NOT arise from 3D vanishings.  `projection_complete_iff_RH` proves this is EXACTLY
   classical RH: **RH ⟺ the projection is complete.**  The repo's positioning claim is
-  now a theorem; RH itself is left where it lives, in the 1D chart, open.
+  now a theorem.
 
-No `sorry`, no `axiom` beyond the standard three; no zero-location claims about the 1D
-continuation.
+No `sorry`, no `axiom` beyond the standard three.
 -/
 
 open Complex

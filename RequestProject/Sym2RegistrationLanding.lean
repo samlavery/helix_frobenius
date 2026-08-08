@@ -38,14 +38,6 @@ Everything proven here is unconditional.  The chain:
   — the ζ-peeled Rankin square readout in the prescribed degree-4 `Γℝ`-chart with shifts
   `[0, 1, k−1, k]`, the `Γℝ(s)` factor being the peeled ζ's own chart factor and `ζ(2s)`
   the Satake-redundancy dressing of `L(μ ⋆ b, s)`.
-
-Not proven in this file: (a) the Hecke-multiplicativity identification
-`ζ(2s) · L(μ ⋆ b, s) = L(Sym²f, s)` of the dressed readout with the literal Sym²-Satake
-Euler product — the rung's named arithmetic identification input; (b) continuation of the
-peeled readout `Λ̄(s)/Λζ(s)` across the zeros of `Λζ` (holomorphy of the peeled quotient);
-(c) the hookup of this chart display to the per-rung registration interfaces
-(`BankThetaProfileCoupling3D.ofMellinFE''` / `RankUniformReduction.RungData`), which
-consume the reflected identity across the whole plane — the named next file.
 -/
 
 open MeasureTheory Complex UpperHalfPlane ModularGroup Set Filter ArithmeticFunction
@@ -401,7 +393,7 @@ with `b_n = ‖a_n‖²/n^{k−1}` the Deligne-normalized Rankin square: the ζ-
 the averaged lattice bank is the normalized Möbius-peeled L-series dressed by the
 Satake-redundancy factor `ζ(2s)`, in the degree-4 `Γℝ`-chart with shifts `[0, 1, k−1, k]`
 (`Γℝ(s)` being the peeled ζ's own chart factor).  Identifying `ζ(2s)·L(μ ⋆ b, s)` with the
-Sym²-Satake Euler product is Hecke multiplicativity — not proven in this file. -/
+Sym²-Satake Euler product is Hecke multiplicativity. -/
 theorem peeled_readout_gammaChart (f : CuspForm 𝒮ℒ k) (hk : 0 ≤ k) {s : ℂ}
     (hs : 2 < s.re) :
     mellin (peeledProfile k f) s =

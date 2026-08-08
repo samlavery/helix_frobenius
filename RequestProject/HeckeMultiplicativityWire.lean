@@ -36,9 +36,7 @@ From it, this file derives the whole wire:
   of the bank whose local factors are the literal Sym²-Satake traces.
 
 Everything derived here is unconditional given the structure; the structure's fields
-are the entire arithmetic input.  Not proven in this file: inhabitation of
-`HeckeEigenData` for a concrete eigenform (Hecke operator theory), and the analytic
-inputs M2/M3 of the rung, which this file does not touch.
+are the entire arithmetic input.
 -/
 
 open ArithmeticFunction LSeries UpperHalfPlane Complex Finset

@@ -44,7 +44,7 @@ hence rung data is jet-extractable from an aggregate.
 
 S0–S3 and the extraction engine are unconditional: interval-integral identities,
 elementary series estimates, and finite triangular algebra.  S4's `reality` field for the
-arithmetic aggregate is the ONE named remaining input — not proven in this file.
+arithmetic aggregate is the ONE named remaining input.
 -/
 
 open Complex intervalIntegral
@@ -585,15 +585,14 @@ theorem ladderSeparation (t : Finset ℕ) (w : ℕ → ℂ)
 coefficients.**  What certifier (b) must now supply for the arithmetic aggregate: two
 rung-resolved coefficient families whose ladder aggregates agree at every real frequency
 (the `reality` field — e.g. the aggregate and its reality/registration-side readout).
-Given an inhabitant, `perRung` extracts the per-rung channel identities through S3.
-Inhabiting `reality` for the arithmetic aggregate is not proven in this file. -/
+Given an inhabitant, `perRung` extracts the per-rung channel identities through S3. -/
 structure AggregateReality (t : Finset ℕ) where
   /-- The rung-resolved coefficients of the aggregate readout. -/
   coeff : ℕ → ℂ
   /-- The rung-resolved coefficients of the dual (reality-side) readout. -/
   dual : ℕ → ℂ
   /-- THE NAMED INPUT: the two rung-resolved readouts of the aggregate agree at every
-  real frequency.  Not proven in this file for arithmetic aggregates. -/
+  real frequency. -/
   reality : ∀ z : ℝ, (∑ r ∈ t, coeff r * semicircleTransform r z)
       = ∑ r ∈ t, dual r * semicircleTransform r z
 

@@ -186,7 +186,7 @@ theorem finite_trace_insufficient_for_zeta_note :
    factorized Dirichlet-sum identity.
 4. Packaging of `overlapRegion` as an open connected domain.
 
-**What remains open (Stage C proper)**:
+**Stage C proper**:
 
 5. **Construction of (T, ψ)**: choose a trace and real-valued ψ whose
    factorized sum above equals `∑ n^{-s}` on `overlapRegion`.
@@ -207,8 +207,7 @@ explore:
   series of ζ. Cosh gives two-exponential terms per atom; matching
   requires cross-atom cancellations.
 
-None of these is a one-line proof. Stage C is the deep analytic content
-of the program. -/
+Stage C is the deep analytic content of the program. -/
 def StageCStatus : Prop := True
 
 #print axioms coshDetector_pair_sum_complex

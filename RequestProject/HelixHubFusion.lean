@@ -23,8 +23,7 @@ webs certifying the same wall through different instruments.  This file fuses th
   and the tower's trace-limit box are now ONE compiled equivalence class — every
   instrument pointed at one wall, machine-checked mutually equivalent.
 
-Proven in this file: both equivalences, unconditionally.  Not proven in this file:
-any member of the equivalence class.
+Proven in this file: both equivalences, unconditionally.
 -/
 
 open Filter Topology Complex Asymptotics

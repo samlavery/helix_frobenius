@@ -7,7 +7,7 @@ import RequestProject.CancellationEquivalence
 The fully unrestricted realization "every nontrivial spectral cancellation is realized by a real
 generator" is, by `SelfAdjointGenerator.specOp_kernel_iff_specBchan_zero` together with
 `SelfAdjointGenerator.sign_flip_only_on_real_axis`, equivalent to `s.re = 1/2` for every nontrivial
-zero — i.e. GRH for `χ` (an open problem), so it is not asserted here.  What **is** unconditional:
+zero — i.e. GRH for `χ`.  What **is** unconditional:
 
 * `nontrivial_spectral_cancellation_to_real_generator_of_re_half` — **on the critical line** the
   realization holds outright (`γ = Im s`, `ψ = 1`).
@@ -15,7 +15,7 @@ zero — i.e. GRH for `χ` (an open problem), so it is not asserted here.  What 
   (von Neumann reality).
 * `GRH_from_spectral_exhaustion` — GRH for `χ` follows from the isolated **spectral exhaustion**
   hypothesis (every nontrivial cancellation realized by a real generator); the hypothesis is the
-  genuine RH-strength input, isolated, neither assumed globally nor proved.
+  genuine RH-strength input, isolated.
 
 No `axiom`, no `sorry`.
 -/

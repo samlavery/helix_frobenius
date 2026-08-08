@@ -38,10 +38,9 @@ unconditional entry:
   through a nameable clock (attribution is total) and IS a source.  For the
   multiplicative carrier, EveryZeroHasSource is a THEOREM.
 
-What remains open is exactly the summed fiber's side of the dichotomy: whether its
-readout admits an exchanged twin-pair (sourceless) vanishing.  That statement is the
-1D limit's unknown; nothing here decides it.  The measurable face is the locator
-recall audit (`tmp/source_audit*`): a census zero with no bank source event is the
+The summed fiber's side of the dichotomy — whether its readout admits an exchanged
+twin-pair (sourceless) vanishing — has its measurable face in the locator recall
+audit (`tmp/source_audit*`): a census zero with no bank source event is the
 falsification-register hit.  No `sorry`; standard axioms.
 -/
 

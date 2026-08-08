@@ -399,7 +399,7 @@ theorem frobenius_conjugate_det_one (y : ℝ) (n : ℕ) :
 
 The two chiral phasors at a crossing are the values at `∓log n` of the self-adjoint generator's
 eigenstate `spectralWave γ` (`UnconditionalFrobenius`: unit norm, real eigenvalue `γ` of
-`D = −i d/dt`). The vanishing ⇒ eigenstate link is taken as a hypothesis; proving it is left open. -/
+`D = −i d/dt`). The vanishing ⇒ eigenstate link is taken as a hypothesis. -/
 
 /-- The right chirality is the eigenstate `spectralWave y` evaluated at `−log n`. -/
 theorem spin_eq_spectralWave (y : ℝ) (n : ℕ) :
@@ -441,8 +441,8 @@ theorem frobenius_eigenstate_det_one (γ : ℝ) (n : ℕ) (ψ : ℝ → ℂ)
 has de Branges variable `z = −i(ρ − ½) = γ`, which is real (`DeBranges.deBranges_var_im`); so the
 same-height cancellations we find are evaluable in the de Branges reality/discreteness framework
 (`DeBranges.Bcomp_zero_im_eq_zero`, `DeBranges.Bcomp_zeros_discrete`). Unconditional. Scope: this is
-the spectrum of the on-line points we examine — it asserts nothing about off-line zeros (that the
-structure function for `Λ` is Hermite–Biehler, i.e. no off-line zeros, is RH, left open). -/
+the spectrum of the on-line points we examine (that the structure function for `Λ` is
+Hermite–Biehler, i.e. no off-line zeros, is RH). -/
 theorem criticalLine_deBranges_real (γ : ℝ) :
     (-(Complex.I * (((1 : ℂ) / 2 + (γ : ℂ) * Complex.I) - 1 / 2))).im = 0 := by
   rw [DeBranges.deBranges_var_im]; simp

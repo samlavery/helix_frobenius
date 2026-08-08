@@ -77,6 +77,29 @@ comparison of three digit sums against the window length $k+1$.  Note that at $p
 $s_2(2n)=s_2(n)$ and the criterion collapses to a two-term inequality; this is exploited in
 Corollary~\ref{cor:binary}.
 
+\section{Attribution}
+
+Before anything below is read as new: it is not.  Both halves of the law proved in \S3 are the
+proof mechanisms of Pomerance, \emph{Divisors of the middle binomial coefficient}, Amer.\ Math.\
+Monthly \textbf{122} (2015), no.~7, 636--644.  His \S5 opens by announcing ``an important
+cleavage between the cases when $k\ge2$ and the cases when $k\le0$'' --- the sign asymmetry ---
+and the two arcs appear as follows.  The positive half is display~(4) in his proof of Theorem~2:
+for $p\ge2k$, $v_p\binom{2n}{n}\ge v_p(n+k)$, because if $v_p(n+k)=j>0$ then the $j$ least
+significant base-$p$ digits of $n+k$ vanish, so those of $n$ are at least $p-k\ge p/2$.  The
+negative half is his proof of Theorem~3, at the same threshold as ours: if $k\ge0$, $n>2k^{2}$
+and $m=n-k$ has a prime factor $p>\sqrt{2n}$, then both base-$p$ digits of $n$ are below $p/2$,
+so by Kummer $p\nmid\binom{2n}{n}$.  The smooth-window consequence of \S3 is one application of
+that per prime factor and is therefore also essentially in print.  Section~1's criterion is
+Legendre and Kummer, in the form Pomerance himself gives in his \S3.
+
+What follows is written up because the arc formulation makes the mechanism reusable at other
+turn-divisions --- see the companion note on the turn-division ledger --- and because the
+digit-sum criterion of Theorem~\ref{thm:crit} is a convenient exact form.  No priority is
+claimed for any of it.  See also Pomerance, \emph{Remarks on the middle binomial coefficient},
+Integers \textbf{26} (2026), \#A47, whose \S2 gives the positive-shift statement in full
+prime-power form; and Ford--Konyagin, Trans.\ Amer.\ Math.\ Soc.\ \textbf{374} (2021), 923--953,
+who proved Pomerance's conjecture that $\{m:m\mid\binom{2m}{m}\}$ has a positive density.
+
 \section{The antipodal law}
 
 Fix $k$ and $n$ and put
@@ -215,13 +238,21 @@ $\pi(300)=62$ and the right-hand side is $4.70$.
 
 \section{Census}
 
-Let $n_k$ denote the least $n$ with $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$
-(OEIS A375077).  Searching by the criterion of Theorem~\ref{thm:crit}, with the window
-prefiltered by Corollary~\ref{cor:smooth}, gives
+Let $n_k$ denote the least $n$ with $\prod_{0\le i\le k}(n-i)\mid\binom{2n}{n}$.  Searching by
+the criterion of Theorem~\ref{thm:crit}, with the window prefiltered by
+Corollary~\ref{cor:smooth}, gives
 \[
-  n_0=2,\quad n_1=210,\quad n_2=2480,\quad n_3=8178,\quad n_4=45153,
-  \qquad n_5>3\times10^{6}.
+  n_0=1,\quad n_1=2,\quad n_2=2480,\quad n_3=8178,\quad n_4=45153,\quad n_5=3648841 .
 \]
+\emph{Correction.} An earlier version of this note recorded $n_0=2$ and $n_1=210$.  Both were
+wrong, and for the same reason: the search had been started at $n=2k+2$, a floor that \#396 does
+not impose.  With the search begun at $n=k+1$ one finds $n_0=1$ (as $1\mid\binom21$) and
+$n_1=2$ (as $2\cdot1=2$ divides $\binom42=6$); $210$ is a solution for $k=1$ but not the least
+one.  The sequence $n_1,n_2,\dots$ is OEIS A375077, which is known to sixteen terms ---
+$2,\,2480,\,8178,\,45153,\,3648841,\,7979090,\,101130029,\,339949252,\dots$ up to
+$2.0\times10^{19}$ --- with minimality of several terms certified by a formally verified
+argument.  The computational frontier on \#396 is far ahead of anything here, and no
+computational contribution is claimed.
 Every one of these has its whole window $y$-smooth, as Corollary~\ref{cor:smooth} forces:
 for instance at $k=1$, $n_1=210=2\cdot3\cdot5\cdot7$ and $209=11\cdot19$, with
 $y=\max(2,\lfloor\sqrt{420}\rfloor)=20$, and indeed $19\le20$.  The growth of $n_k$ is far

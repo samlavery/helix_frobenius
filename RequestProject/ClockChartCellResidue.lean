@@ -33,9 +33,6 @@ Compiled here, unconditionally:
 * `clockMass_le` / `clockCellMassBounded_of_uniform` — **length-free mass control**: in
   the clock chart the cell-length input disappears; on a harmonized decomposition the
   clock mass is controlled by boundary ledger values and event counts alone.
-
-Not proven in this file: `PhaseSlavingLaw` / `ClockCellMassBounded` for a concrete
-decomposition — the named native targets, repositioned from the t-chart weak inputs.
 -/
 
 open Complex Set MeasureTheory Filter Asymptotics

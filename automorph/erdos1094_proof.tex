@@ -96,19 +96,66 @@ $(7,3),(13,4),(14,4),(23,5),(62,6),(44,8),(46,10),(47,10),(74,10),(94,10),(95,10
 --- have $\binom nk$ squarefree and $\lpf>\sqrt n$, with no exception to either step.
 
 \begin{corollary}\label{cor:sqfree}
-\textup{\#1094} follows from the statement that $\binom nk$ is squarefree for only finitely
-many pairs $(n,k)$ with $n\ge2k$ and $k\ge2$.
+The exception set of \textup{\#1094} injects into the set of pairs $(n,k)$ with $n\ge2k$ for
+which $\binom nk$ is squarefree \emph{and} $\lpf\binom nk>\sqrt n$.  Hence \textup{\#1094}
+follows from finiteness of \emph{that} set.
 \end{corollary}
 
 \begin{proof}
-Immediate from Theorem~\ref{thm:sqfree}: the exception set injects into the set of pairs
-with $\binom nk$ squarefree.
+Immediate from Theorem~\ref{thm:sqfree}, which supplies both properties.
 \end{proof}
 
-This places \#1094 in the same circle as Erd\H{o}s \#175 (that $\binom{2n}{n}$ is never
-squarefree for $n\ge5$, proved by S\'ark\"ozy and by Granville--Ramar\'e) and \#378 (the
-density of $n$ with $\binom nk$ squarefree, resolved from Granville--Ramar\'e), rather than
-in the circle of least-prime-factor estimates where it is usually placed.
+The second condition cannot be dropped.  For $k=2$ the coefficient $\binom n2=n(n-1)/2$ is
+squarefree for infinitely many $n$ (already $\binom72=21$), so the unrestricted set of pairs
+with $\binom nk$ squarefree is infinite and finiteness of \emph{it} is not available as an
+input.  The condition $\lpf>\sqrt n$ is what carries the weight, and it is exactly what the
+scarcity results of Granville--Ramar\'e (used for \#175, and by Aggarwal and Cambie for
+\#378) do not supply: those bound how often $\binom nk$ is squarefree, not how often it is
+squarefree with every prime factor above $\sqrt n$.
+
+At $k=2$ there is in fact no exception at all: for even $n\ge4$ the divisor $n/2\ge2$ of
+$\binom n2$ gives $\lpf\binom n2\le n/2$, and for odd $n\ge5$ the divisor $(n-1)/2\ge2$
+gives $\lpf\binom n2<n/2$.  So \#1094 begins at $k=3$, with $\binom73$.
+
+\section{The bridge to \#1095}
+
+The threshold $B=\max(n/k,k)$ splits the problem at the AM--GM point $k=\sqrt n$, and on one
+side of it \#1094 \emph{is} \#1095.
+
+\begin{proposition}[sector I]\label{prop:bridge}
+Suppose $k^{2}\ge n$.  Then $B=k$, and $(n,k)$ is an exception to \textup{\#1094} if and only
+if every prime factor of $\binom nk$ exceeds $k$ --- that is, if and only if $n$ is a witness
+for $k$ in the sense of \textup{\#1095}.
+\end{proposition}
+
+\begin{proof}
+$k^{2}\ge n$ gives $k\ge n/k$, so $B=\max(n/k,k)=k$ and the defining inequality
+$\lpf\binom nk>B$ reads $\lpf\binom nk>k$.
+\end{proof}
+
+\begin{corollary}\label{cor:bridge}
+Let $g(k)$ be the least $n\ge2k$ all of whose $\binom nk$ has prime factors exceeding $k$.
+Then \textup{\#1094} restricted to the range $k^{2}\ge n$ is exactly the assertion that
+$g(k)>k^{2}$ for all sufficiently large $k$.
+\end{corollary}
+
+\begin{proof}
+By Proposition~\ref{prop:bridge} a sector-I exception with parameter $k$ exists iff some
+witness $n\le k^{2}$ exists, iff $g(k)\le k^{2}$.
+\end{proof}
+
+\emph{Verified}: the equivalence of Proposition~\ref{prop:bridge} holds on all $2\,140\,509$
+pairs $(n,k)$ with $n<3000$, $2\le k\le n/2$ and $k^{2}\ge n$ --- no mismatch; and the
+sector-I exceptions in that range are exactly thirteen, namely the fourteen of the census with
+$\binom{62}{6}$ removed, $6^{2}=36<62$ placing it in the complementary sector.
+
+\emph{Measured}: among $k\le20$ the values with $g(k)\le k^{2}$ are $k=3,4,5,8,10,11,16$,
+and extending the $g$-table one more step adds $k=28$; these eight $k$ carry witness sets
+$\{7\}$, $\{13,14\}$, $\{23\}$, $\{44\}$, $\{46,47,74,94,95\}$, $\{47\}$, $\{241\}$,
+$\{284\}$ --- thirteen pairs in all.  The remaining exception, $\binom{62}{6}$, has
+$k^{2}=36<62$ and lies in the complementary sector, where $B=n/k>k$ makes the condition
+strictly stronger than \#1095.  So the fourteen split as $13+1$ across the AM--GM point, and
+the sector-I half of \#1094 is a lower-bound question about \#1095's own function.
 
 \section{Census}
 Exceptions to $\lpf\binom nk\le\max(n/k,k)$ over $n<3000$, $k<25$: \textbf{13} in total,

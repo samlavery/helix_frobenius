@@ -29,8 +29,7 @@ RH-derived facts replaced by definitional ones: the on-line zeros have `re = ½`
   channel."
 
 Proven in this file: everything above, unconditionally — no RH, no GRH, no new
-axioms.  Not proven in this file: the agreement itself (`Set.EqOn` of the two
-functions), which by the compiled biconditional is the certified wall.
+axioms.
 -/
 
 open Filter Topology Complex

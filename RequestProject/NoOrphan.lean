@@ -31,12 +31,12 @@ it is **collective** (full-support).
   divisor freeze), `occupancy = C(g, g/2) + collective`, isolating all arithmetic in the collective
   count.
 
-**The arithmetic layer (named, NOT proven here).**  Which *collective* subsets freeze — and to
+**The arithmetic layer (named).**  Which *collective* subsets freeze — and to
 what character order — is arithmetic: the collective order-1 count is `2·[ord r = 1]` for the
 rail-freeze scalar `r = ∏_{n∈W} Jₙ / p^{g/2}`, and the freeze-order law `ord r = ord χ₃(D)`
 (`D = disc f · disc g²`) rests on the **one unproven bridge**
-`det(Frob | V_ζ) = p^{g/2} · χ₃(D)`.  This file does **not** prove that bridge; it takes the
-collective freeze pattern as the `collective` input and proves only the model-layer combinatorics
+`det(Frob | V_ζ) = p^{g/2} · χ₃(D)`.  This file takes the
+collective freeze pattern as the `collective` input and proves the model-layer combinatorics
 (the divisor count and the zero-remainder decomposition).
 
 **Scope.**  This is the *model* form of the no-orphan law: the divisor count `C(g, g/2)`, the

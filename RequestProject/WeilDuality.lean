@@ -109,9 +109,9 @@ The two theorems below are the engine, unconditional:
 `tensor_power_purity` is Weil I's square-root trick — a positive-pairing bound on every
 even amplitude power caps the amplitude at the half-unit; `duality_forces_purity` is the
 functional-equation endgame — det 1 plus the two one-sided caps forces EQUALITY.
-`purity_engine` chains them.  **What remains open, now as a single named input**: that the
-model's cup form supplies the hypothesis `hcup` on the vanishing classes — the helix's own
-Castelnuovo inequality.  That is not assumed and not claimed here. -/
+`purity_engine` chains them.  **The single named input**: that the model's cup form
+supplies the hypothesis `hcup` on the vanishing classes — the helix's own Castelnuovo
+inequality. -/
 
 /-- **Weil I's square-root trick.**  If every even amplitude power is dominated by a
 positive-pairing bound `C · B^k` — what cup positivity + amplitude multiplicativity

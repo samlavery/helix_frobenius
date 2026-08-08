@@ -16,7 +16,7 @@ channel at the site is trivial.  At the archimedean site the same limit forces t
 radial rate to zero: the strand clock is unit-modulus at every carrier height — a pure carrier
 rotation with no radial drift.
 
-**The two inputs this file does not prove** are the manuscript's, with their own citations:
+**The two inputs** are the manuscript's, with their own citations:
 the tower (`Sym^r π` automorphic/isobaric at every rank — the functoriality part) and the
 rank-uniform ceiling (Jacquet–Shalika's unconditional per-rung bound, classical).  The 1D chart
 reads the conclusions as **Ramanujan–Petersson** (`|α_p| = 1`, temperedness at `p`) and

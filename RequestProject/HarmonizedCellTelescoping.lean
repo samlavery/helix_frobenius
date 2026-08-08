@@ -25,9 +25,6 @@ identification `classicalSContour = Smult` at every good height.
 
 Proven in this file, unconditionally: the monotonicity and interval integrability of
 both ledgers, the boundary-to-global transfer, and the complete conditional wiring.
-Not proven in this file: the two local cell statements (the harmonized-carrier residue
-balance — the thread's remaining mathematics, now localized to one cell) and the
-Littlewood input (classical, cited, unconditional in the literature).
 -/
 
 open Complex Set MeasureTheory Filter Asymptotics

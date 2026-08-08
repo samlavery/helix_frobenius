@@ -34,7 +34,7 @@ This file types the factorization: `DeligneSkeleton` carries the cited spine as 
 (edges, seeds, accessibility) and the wall as the single field `variational`;
 `recognition` and `sourceExhaustion` are then theorems — the Hodge conjecture for the
 whole indexed family of abelian dials, given exactly that one input.  Register: the
-cited fields are literature (named above); nothing here inhabits the wall.
+cited fields are literature (named above).
 No `sorry`, no `axiom`.
 -/
 

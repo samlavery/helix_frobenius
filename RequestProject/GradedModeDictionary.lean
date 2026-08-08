@@ -43,10 +43,9 @@ nilpotent (`sub_residueChar_isNilpotent`).  Hence the **master trace lemma**
 
       zero order = source event weight = spectral multiplicity.
 
-Scope: unconditional; no RH/GRH is assumed or proved.  Each mode space's spectral
-parameter is the event's line point; nothing here asserts where zeros lie — the file
-turns the ledger into an operator dictionary, multiplicity included.  No `sorry`, no
-`axiom` beyond the standard three.
+Scope: unconditional.  Each mode space's spectral parameter is the event's line point;
+the file turns the ledger into an operator dictionary, multiplicity included.  No
+`sorry`, no `axiom` beyond the standard three.
 -/
 
 open Complex Polynomial CriticalLinePhasor.ResidueJump CriticalLinePhasor.CarrierScale

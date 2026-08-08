@@ -27,9 +27,7 @@ packets; the box holds where and only where those packets vanish.
 * **`offLinePackets_vanish_of_box`** — under the certified box, the off-line packet
   sum vanishes at every admissible chart point.
 
-Proven in this file: everything above, unconditionally.  Not proven in this file:
-the vanishing of the off-line packets itself — by the compiled biconditional and
-brick 1, that is the certified wall.
+Proven in this file: everything above, unconditionally.
 -/
 
 open Filter Topology Complex

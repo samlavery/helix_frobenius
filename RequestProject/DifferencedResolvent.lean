@@ -28,9 +28,8 @@ Chain:
 
 With `GradedModeDictionary` (arrow 1) this completes Stage 1: the native operator's
 graded blocks realize the ledger, and their differenced resolvent trace has an honest
-`T → ∞` limit.  Everything is unconditional; no RH/GRH is assumed or proved; the limit
-object is a statement about the *sourced* spectrum (the event ledger), and nothing here
-asserts where zeros lie.  No `sorry`, no `axiom` beyond the standard three.
+`T → ∞` limit.  Everything is unconditional; the limit object is a statement about the
+*sourced* spectrum (the event ledger).  No `sorry`, no `axiom` beyond the standard three.
 -/
 
 open Complex Filter Topology CriticalLinePhasor.ResidueJump CriticalLinePhasor.CarrierScale ZD

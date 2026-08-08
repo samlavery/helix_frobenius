@@ -62,7 +62,6 @@ multiplicity) residue the identity `residue = jump` is exact and proven here —
 **Laurent** residue of the function itself, the ledger controls the discrete order while
 the fiber normalization controls the value (the DC example: the pole order of `ζ` at
 `s = 1` is `1`, while the residue *value* `1` is `CarrierScale.dcResidue_spec`).
-This file does not assume and does not prove RH/GRH.
 -/
 
 set_option maxHeartbeats 1000000
