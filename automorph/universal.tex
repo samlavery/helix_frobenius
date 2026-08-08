@@ -8107,6 +8107,25 @@ The fork is Sato--Tate's own non-Galois-type hypothesis, typed at the seed and
 now two-sided: rational data freeze and provably do not drift; generic data
 drift.
 
+\emph{The shadow detector at every order.}  The $\mu_6$ certificate is one
+instance of the structure that actually matters --- a \emph{monomial} (induced,
+CM-type, Galois-type) shadow of \emph{any} finite order --- and the detector
+covers them all at once (\texttt{ShadowDetector}).  The general common mode is
+exact: for $\alpha^N=1$ the rank-$N$ symmetric-power trace collapses to a
+geometric sum in $\alpha^{-2}$ of period $N$ and equals
+\emph{exactly} $1$, or $N+1$ in the degenerate case $\alpha^2=1$
+(\texttt{trace\_root\_of\_unity\_re}) --- in particular its real part is $\ge 1$
+with a gap independent of the datum.  Hence a family carrying one common finite
+order at every prime (\texttt{MonomialShadow}) has rank-$N$ prime average $\ge 1$
+at every stage, its rank-$N$ cancellation fails, and it provably does not
+equidistribute (\texttt{shadow\_not\_equidistributed}); contrapositively, a
+drifting family admits \emph{no} finite-order shadow at any order
+(\texttt{no\_shadow\_of\_equidistributed}).  A single bounded-rank moment
+separates the branches, with constant gap --- no moment matrix, no compactness.
+These are rigidity and detectability statements about the trace family; they
+carry no computational-cost content and say nothing about recovering an inducing
+datum.
+
 \medskip
 \emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence.}
 The carrier's descent $3\mathrm D\!\to\!2\mathrm D\!\to\!1\mathrm D$ books a
