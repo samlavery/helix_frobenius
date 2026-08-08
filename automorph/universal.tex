@@ -7931,11 +7931,23 @@ q-expansion: exact $1$-periodicity and the $S$-law on all of $\mathbb H$.
 
 Since $S$ and $T$ generate $\mathrm{SL}(2,\mathbb Z)$ --- machine-checked in Mathlib
 (\texttt{SpecialLinearGroup.SL2Z\_generators}) --- these are the complete generator set
-of level-one modularity.  Packaging the resulting multiplier system as a typed
-slash-invariant form (the weight/multiplier bookkeeping along the closure induction)
-is a named extension; the level-$N$ statement --- finitely many twisted functional
-equations sufficing for $\Gamma_0(N)$-automorphy --- is Weil's lemma, consumed at the
-cited converse-theorem layer of \S\ref{sec:cps-thm} exactly as before.
+of level-one modularity, and the multiplier packaging is itself compiled: the set of
+$\gamma$ under which a function is a weight-$k$ slash eigenvector is a subgroup (the
+slash-action axioms are the cocycle; \texttt{slashEigenSubgroup}), the two laws place
+$S$ and $T$ in it, and the closure argument delivers
+
+\begin{theorem}[Hecke modularity;
+\texttt{MultiplierPackaging.hecke\_modularity}]\label{thm:hecke-modularity}
+The q-expansion of an entire BV-package at the $\Gamma_{\mathbb C}$ chart is a
+weight-$1$ slash eigenform at \emph{every} $\gamma\in\mathrm{SL}(2,\mathbb Z)$: for
+each $\gamma$ there is a nonzero multiplier $v(\gamma)$ with
+$f\,|_{1}\,\gamma=v(\gamma)\cdot f$, in Mathlib's own slash action ($v(T)=1$,
+$v(S)=-i\,\varepsilon^{-1}$).
+\end{theorem}
+
+\noindent The level-$N$ statement --- finitely many twisted functional equations
+sufficing for $\Gamma_0(N)$-automorphy --- is Weil's lemma, consumed at the cited
+converse-theorem layer of \S\ref{sec:cps-thm} exactly as before.
 
 \subsection*{The exchange instrument at $\Sym^r$}
 
@@ -8008,8 +8020,9 @@ to end at the same footprint: the coefficient-level mechanism and its instances
 \texttt{RealChainCompletion}), the converse with its contour shift and
 Phragm\'en--Lindel\"of discharge (\texttt{WeilConverse},
 \texttt{StirlingLineDischarge}, \texttt{PhragmenBV},
-\texttt{ChainKernelContinuity}), the Hecke identification
-(\texttt{WeilIdentification}), and the $\Sym^r$ exchange interface
+\texttt{ChainKernelContinuity}), the Hecke identification and its multiplier
+packaging (\texttt{WeilIdentification}, \texttt{MultiplierPackaging},
+Theorem~\ref{thm:hecke-modularity}), and the $\Sym^r$ exchange interface
 (\texttt{ExchangeInstrument}).  The classical inputs consumed there remain exactly
 two, both cited at typed fields: the completed package with bounded vertical strips
 per rung, and Weil's finite-twist lemma at level $N$.
