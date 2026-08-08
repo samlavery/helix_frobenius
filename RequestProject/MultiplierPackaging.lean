@@ -1,4 +1,4 @@
-import RequestProject.WeilIdentification
+import RequestProject.ExchangeInstrument
 import Mathlib.NumberTheory.ModularForms.SlashActions
 import Mathlib.LinearAlgebra.Matrix.FixedDetMatrices
 
@@ -30,6 +30,7 @@ namespace CriticalLinePhasor.MultiplierPackaging
 
 open CriticalLinePhasor.RamifiedMechanism CriticalLinePhasor.PhragmenBV
 open CriticalLinePhasor.WeilIdentification CriticalLinePhasor.CarrierTheta
+open CriticalLinePhasor.ExchangeInstrument CriticalLinePhasor.GeneralSeed
 
 /-! ## The eigen subgroup -/
 
@@ -141,6 +142,45 @@ theorem hecke_modularity (P : CoefficientSurface)
       qForm_S_eigen P.a ε hε hS⟩
     ⟨1, one_ne_zero, qForm_T_eigen P.a hT⟩
 
+/-! ## Universal automorphy: the named instances
+
+`hecke_modularity` quantifies over an arbitrary self-dual coefficient surface, so
+its instances are the entire compiled bank family.  The two below make the
+universality visible: every symmetric power of every seed, and every self-dual
+rank-varying (level-`N`) bank. -/
+
+/-- **Universal automorphy, `Sym^r` instance**: for any seed and any rank, an entire
+BV-package of the `Sym^r` bank at the `Γℂ` chart makes its q-expansion a weight-`1`
+slash eigenform at every element of `SL(2,ℤ)`. -/
+theorem symr_automorphy (S : SatakeSeed) (r : ℕ) (ε : ℂ) (hε : ε ≠ 0)
+    (pkg : KNicePackage (coefficientArithmetic (symrSurface S r).a)
+      (gammaCKernel 0 (by simp)).G
+      (max (gammaCKernel 0 (by simp)).B0 (((symrSurface S r).A : ℝ) + 1)) ε)
+    (σ : ℝ)
+    (hσ : max (gammaCKernel 0 (by simp)).B0 (((symrSurface S r).A : ℝ) + 1) < σ)
+    (C : ℝ) (hBV : ∀ z : ℂ, 1 - σ ≤ z.re → z.re ≤ σ → ‖pkg.lam z‖ ≤ C) :
+    ∀ γ : SL(2, ℤ), ∃ v : ℂ, v ≠ 0 ∧
+      qForm (symrSurface S r).a ∣[(1 : ℤ)] γ = v • qForm (symrSurface S r).a :=
+  hecke_modularity (symrSurface S r) (symrSurface_dual_eq S r) ε hε pkg σ hσ C hBV
+
+/-- **Universal automorphy, level-`N` instance**: any self-dual rank-varying bank —
+ramified degree drops included — with an entire BV-package at the `Γℂ` chart has a
+fully modular q-expansion. -/
+theorem ramified_automorphy (R : RamifiedWeightFamily)
+    (prm : ∀ p : Nat.Primes, Equiv.Perm (Fin (R.rank p)))
+    (hprm : ∀ (p : Nat.Primes) (i : Fin (R.rank p)), (R.w p i)⁻¹ = R.w p (prm p i))
+    (ε : ℂ) (hε : ε ≠ 0)
+    (pkg : KNicePackage (coefficientArithmetic R.surface.a)
+      (gammaCKernel 0 (by simp)).G
+      (max (gammaCKernel 0 (by simp)).B0 ((R.surface.A : ℝ) + 1)) ε)
+    (σ : ℝ)
+    (hσ : max (gammaCKernel 0 (by simp)).B0 ((R.surface.A : ℝ) + 1) < σ)
+    (C : ℝ) (hBV : ∀ z : ℂ, 1 - σ ≤ z.re → z.re ≤ σ → ‖pkg.lam z‖ ≤ C) :
+    ∀ γ : SL(2, ℤ), ∃ v : ℂ, v ≠ 0 ∧
+      qForm R.surface.a ∣[(1 : ℤ)] γ = v • qForm R.surface.a :=
+  hecke_modularity R.surface
+    (fun n => ramifiedDual_eq_primal R.rank R.w prm hprm n) ε hε pkg σ hσ C hBV
+
 end CriticalLinePhasor.MultiplierPackaging
 
 #print axioms CriticalLinePhasor.MultiplierPackaging.slashEigenSubgroup
@@ -148,3 +188,5 @@ end CriticalLinePhasor.MultiplierPackaging
 #print axioms CriticalLinePhasor.MultiplierPackaging.qForm_T_eigen
 #print axioms CriticalLinePhasor.MultiplierPackaging.qForm_S_eigen
 #print axioms CriticalLinePhasor.MultiplierPackaging.hecke_modularity
+#print axioms CriticalLinePhasor.MultiplierPackaging.symr_automorphy
+#print axioms CriticalLinePhasor.MultiplierPackaging.ramified_automorphy
