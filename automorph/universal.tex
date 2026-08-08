@@ -7951,10 +7951,24 @@ holomorphic chart is universal over it: $\Sym^r$ of every seed and every self-du
 rank-varying level-$N$ bank are named instances
 (\texttt{symr\_automorphy}, \texttt{ramified\_automorphy}).  The register per chart:
 at the Maass chart the converse input is equally compiled
-(\texttt{maass\_converse\_of\_BV}) and the remaining identification is the
-real-analytic wave-form step (the Hecke--Maass analogue of the q-expansion argument;
-the holomorphic identity theorem does not apply, so it is a named extension, its
-reflection input already compiled); at higher rank the identification is the cited
+(\texttt{maass\_converse\_of\_BV}) and the wave-form identification is now compiled
+up to exactly one typed field: the wave form
+$\sqrt y\,\sum_n a_n\cos(2\pi(n{+}1)x)\,K((n{+}1)y)$ on the abstract radial kernel
+has exact $T$-periodicity and evenness, its axis value is the compiled theta
+readout, the axis $S$-law is the compiled reflection, and \emph{both halves of the
+Cauchy data on the axis match unconditionally} (an even function has vanishing
+transversal derivative, no differentiability hypothesis needed);
+\texttt{maass\_modularity\_of\_BV} then gives full weight-$0$
+$\mathrm{SL}(2,\mathbb Z)$-modularity of the wave form from package + one
+boundedness constant + the typed Cauchy-uniqueness field --- the classical elliptic
+step (both functions are eigenfunctions of the hyperbolic Laplacian; eigenfunctions
+with equal Cauchy data on a curve coincide), consumed at its exact strength since
+Bessel functions and elliptic unique continuation are not yet in Mathlib.  The
+kernel itself needs no Bessel API: the chain kernel at the chart $(it,-it)$ has
+Mellin transform $\Gamma_{\mathbb R}(s+it)\Gamma_{\mathbb R}(s-it)$, and kernels
+with equal Mellin transforms on a line agree on the ray
+(\texttt{eqOn\_pos\_of\_mellin\_eq}), so it \emph{is} the classical
+$\sqrt y\,K_{it}$-kernel.  At higher rank the identification is the cited
 converse-theorem layer.  The level-$N$ statement --- finitely many twisted functional
 equations sufficing for $\Gamma_0(N)$-automorphy --- is Weil's lemma, consumed at the
 cited converse-theorem layer of \S\ref{sec:cps-thm} exactly as before.
@@ -8032,7 +8046,8 @@ Phragm\'en--Lindel\"of discharge (\texttt{WeilConverse},
 \texttt{StirlingLineDischarge}, \texttt{PhragmenBV},
 \texttt{ChainKernelContinuity}), the Hecke identification and its multiplier
 packaging (\texttt{WeilIdentification}, \texttt{MultiplierPackaging},
-Theorem~\ref{thm:hecke-modularity}), and the $\Sym^r$ exchange interface
+Theorem~\ref{thm:hecke-modularity}), the Maass wave-form identification
+(\texttt{MaassIdentification}), and the $\Sym^r$ exchange interface
 (\texttt{ExchangeInstrument}).  The classical inputs consumed there remain exactly
 two, both cited at typed fields: the completed package with bounded vertical strips
 per rung, and Weil's finite-twist lemma at level $N$.
