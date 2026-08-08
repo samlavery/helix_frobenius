@@ -4858,6 +4858,31 @@ at any finite order (\texttt{maass\_no\_shadow\_of\_ST}), and conversely every
 finite-order seed provably fails the drift --- the exclusion and the fork are
 the same theorem pair.
 
+\smallskip
+\noindent\emph{The closure, and its exactness.}  The corollary is now one
+compiled implication (\texttt{maass\_satoTate}: polynomial ceiling and per-rank
+cancellation in, temperedness and carrier equidistribution out), and the
+assembly is terminal (\texttt{maass\_satoTate\_exact}): each input is
+individually \emph{equivalent} to the conclusion it feeds --- the ceiling exists
+iff the seed is tempered (\texttt{temperedness\_iff\_polyCeiling}), and the
+cancellation is equivalent to the equidistribution (the compiled biconditional).
+The interface has zero slack; reducing it further is proving the theorem's own
+conclusion.  Toward discharging it, the Rankin--Selberg positivity that powers
+both classical engines is extracted at the surface (\texttt{RSPositivity}): the
+unit-strand trace is real, so the diagonal Rankin--Selberg weights are
+nonnegative; the Rankin--Selberg square of a real self-dual surface is again a
+surface with nonnegative Dirichlet readout at every real point --- Landau-ready
+--- and the de la Vall\'ee-Poussin/Hoffstein--Lockhart positivity is exact in
+trace coordinates: $2+2\,(S_1)_{\mathrm{re}}+(S_2)_{\mathrm{re}}
+=(1+2\,\mathrm{Re}\,\alpha)^2$.  The Tauberian half exists in Lean elsewhere
+(the \texttt{PrimeNumberTheoremAnd} project's \texttt{Wiener.lean}; its
+supporting decay lemmas were still \texttt{sorry}d at the time of writing) and
+its one-line theory covers $\zeta$ and Dirichlet $L$ only; the per-rank
+one-line theory of $L(\Sym^r)$ for a Maass form is the open frontier itself ---
+beyond $r=4$ even meromorphic continuation is classically unavailable, which is
+precisely where the carrier tower's compiled all-rank structure is the
+program's leverage.
+
 \medskip
 \begin{remark}[The Sato--Tate law on the native 3D carrier]
 Lean defines
