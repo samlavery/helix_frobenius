@@ -7811,6 +7811,145 @@ exhaustion, and loss-ledger recovery --- are machine-checked in Lean (Mathlib), 
 \fi
 \end{comment}
 
+\section{The mechanism and its converse: the analytic ring closed at every chart}\label{sec:mechanism-converse}
+
+The completed analytic package of a carrier bank --- entire continuation, functional
+equation, chart identification --- and the pointwise theta reflection of its prescribed
+readouts are \emph{the same data}, in both directions, machine-checked.  This section
+registers the compiled ring: the mechanism (identity $\Rightarrow$ package) at its true
+generality, its converse (package $\Rightarrow$ identity) with the classical
+boundedness hypothesis alone, and the identification carrying the reflection to the
+modular transformation laws.  Every declaration cited here carries the standard axiom
+footprint and no \texttt{sorry} (App.~\ref{app:repro}).
+
+\subsection*{The coefficient surface and the mechanism}
+
+Everything the chart engines consume from a bank is two coefficient sequences with one
+polynomial bound: the surface \texttt{CoefficientSurface} $(a,a^\vee,A)$ with
+$\|a_n\|,\|a^\vee_n\|\le (n+1)^A$.  A chart is packaged as a kernel
+\texttt{MellinKernel} $(K,G,B_0)$: a positive-ray kernel with rapid decay whose Mellin
+transform equals the multiplier $G$ beyond the bar $B_0$.  The compiled kernel families
+instantiate it: the $\Gamma_{\mathbb C}$ clock (\texttt{gammaCKernel}, the holomorphic
+chart type), the general Deligne chart $\prod\Gamma_{\mathbb R}\cdot\prod\Gamma_{\mathbb C}$
+(\texttt{generalMellinKernel}), and the pure-$\Gamma_{\mathbb R}$ chain
+(\texttt{realChainMellinKernel}, the Maass chart type, purely imaginary shifts
+admissible).
+
+\begin{theorem}[The mechanism, coefficient-level and kernel-generic;
+\texttt{RamifiedMechanism.mechanismK}]\label{thm:mechanismK}
+Let $P$ be a self-dual coefficient surface ($a^\vee=a$) and $\kappa$ a packaged chart
+kernel.  One pointwise theta identity of the prescribed readouts,
+$\Theta_P(1/x)=\varepsilon\,x\,\Theta_P^\vee(1/x)$ for all $x>0$, yields the complete
+package: an entire $\Lambda$ with $\Lambda(1-s)=\varepsilon\Lambda(s)$ and
+$\Lambda(s)=G(s)\,L(a,s)$ on $\Re s>\max(B_0,A+1)$.  The continuation is unique
+(\texttt{KNicePackage.unique}).
+\end{theorem}
+
+The fixed-rank mechanisms are instances through
+\texttt{PolynomialSatakeDualPair.surface}: every finite-rank bank of
+\S\ref{sec:transport-machine} feeds the theorem, and the seed layer supplies the
+arithmetic instances --- $\Sym^r$ of the holomorphic level-one eigenform
+(\texttt{SatakeSeed.ofHecke}), of the typed Maass--Hecke package
+(\texttt{MaassEigenData}, \texttt{SatakeSeed.ofMaass}), at every rank over every seed
+(\texttt{symr\_package\_of\_theta\_of}), with the Maass spectral chart named
+(\texttt{maass\_symr\_package\_of\_theta}, shifts $(r-2j)it$).  Rank three is typed
+directly (\texttt{GL3Seed}): self-duality enters as a channel permutation hypothesis
+--- rank three does not supply it for free --- and the $\Sym^2$ lift \emph{discharges}
+it, with the recognition \texttt{ofSym2\_coeff\_eq\_sym2} identifying the lift's
+standard coefficients with the $\Sym^2$ transport coefficients on the nose: the
+Gelbart--Jacquet identification at seed level.  Level $N$ is not a separate
+obstruction: the rank-varying surface \texttt{RamifiedWeightFamily} (per-prime rank
+profile capped by $D$, degree drop at ramified places, degree zero fully ramified)
+carries the polynomial bound $(n+1)^{D+B}$ --- the cap enters only through
+$\binom{\cdot}{\cdot}$-majorant monotonicity --- and self-duality by \emph{per-place}
+channel permutations; the mechanism fires on any such bank
+(\texttt{ramified\_package\_of\_theta}).  The constant-rank family recovers the
+unramified $\Sym^r$ bank definitionally (\texttt{ofSeed\_coeff\_eq}, by \texttt{rfl}),
+and the principal-character family (rank $0$ at $p\mid N$, rank $1$ elsewhere) is the
+genuine rank-drop witness (\texttt{unitRamified}).
+
+\subsection*{The converse: the package forces the identity}
+
+The reverse arrow is the Hecke--Weil converse in the carrier register.  Its one
+genuinely analytic step is the contour shift, compiled as
+\texttt{vertical\_line\_shift}: an entire integrand, integrable on two vertical lines
+with vanishing horizontal integrals, has equal line integrals (rectangle
+Cauchy--Goursat and passage to the limit).  The functional equation exchanges the two
+inversion lines (\texttt{mellinInv\_reflect}), Mellin inversion runs on the chart line
+where the bank's transform \emph{is} $\Lambda$ (\texttt{mellin\_theta\_eq\_lam\_on}),
+and the assembly is:
+
+\begin{theorem}[The converse; \texttt{WeilConverse.weil\_converse}]\label{thm:weil-converse}
+Let $P,\kappa$ be as above with $\kappa$-kernel continuous on the ray, and let a
+package for $P$ at $\kappa$ be given together with line integrability of $\Lambda$ at
+one chart line $\sigma$ and a horizontal decay bound on the strip $[1-\sigma,\sigma]$.
+Then the pointwise theta reflection of the prescribed readouts holds --- in exactly the
+form consumed by Theorem~\ref{thm:mechanismK}.  Feeding it back returns the same
+continuation (\texttt{weil\_converse\_ring}): the ring is closed.
+\end{theorem}
+
+The two analytic side conditions are then discharged.  The line data come from the
+in-tree Stirling bound: the $\Gamma_{\mathbb R}$ line reduces to the compiled
+$\Gamma_{\mathbb C}$ line by a constant-ratio norm identity
+(\texttt{gammaR\_vline\_eq\_const\_mul}), chain multipliers are line-integrable and
+exponentially decaying with the Dirichlet factor uniformly bounded on the line
+(\texttt{StirlingLineDischarge}).  The strip decay is Phragm\'en--Lindel\"of:
+\texttt{strip\_exp\_decay} interpolates boundary decay $A e^{-k|t|}$ through a bounded
+strip \emph{with the same constants} (two multiplier applications of the vertical-strip
+principle).  The composite is the converse under the classical hypothesis set:
+
+\begin{theorem}[The converse from boundedness alone;
+\texttt{PhragmenBV.weil\_converse\_of\_BV}]\label{thm:weil-converse-bv}
+Package plus \emph{one} boundedness constant on the strip forces the theta reflection.
+At both compiled chart families the kernel side is hypothesis-free: the
+$\Gamma_{\mathbb C}$ chart (\texttt{weil\_converse\_of\_BV\_gammaC}; clock continuity
+compiled) and the pure-$\Gamma_{\mathbb R}$ chain
+(\texttt{weil\_converse\_of\_BV\_realChain$'$}; chain-kernel continuity compiled through
+the weight exchange \texttt{weighted\_logMellinConvolution\_eq\_convolution}).  The
+named Maass instance \texttt{maass\_converse\_of\_BV} runs at the spectral chart
+$\prod_j\Gamma_{\mathbb R}(s+(r-2j)it)$ of $\Sym^r$, every rank, every spectral
+parameter.
+\end{theorem}
+
+\subsection*{The identification: the generator laws}
+
+The reflection identifies.  The q-expansion
+$f(\tau)=\sum_n a_n e^{2\pi i(n+1)\tau}$ of a surface is holomorphic on the upper
+half-plane (\texttt{qSeries\_analyticOnNhd}); its $T$-law is exact from the expansion
+alone (\texttt{qSeries\_T}); the compiled $\Gamma_{\mathbb C}$-clock readout at height
+$y$ is $2f(iy)$ (\texttt{theta\_eq\_qSeries\_axis}); and the axis reflection extends to
+the full half-plane by the identity theorem
+(\texttt{qSeries\_S\_of\_reflection}): $f(\tau)=\varepsilon\,(-i\tau)^{-1}f(-1/\tau)$
+on $\mathbb H$.
+
+\begin{theorem}[The Hecke identification;
+\texttt{WeilIdentification.hecke\_identification}]\label{thm:hecke-ident}
+An entire package at the $\Gamma_{\mathbb C}$ chart with the functional equation and
+one boundedness constant yields both generator transformation laws of its
+q-expansion: exact $1$-periodicity and the $S$-law on all of $\mathbb H$.
+\end{theorem}
+
+Since $S$ and $T$ generate $\mathrm{SL}(2,\mathbb Z)$ --- machine-checked in Mathlib
+(\texttt{SpecialLinearGroup.SL2Z\_generators}) --- these are the complete generator set
+of level-one modularity.  Packaging the resulting multiplier system as a typed
+slash-invariant form (the weight/multiplier bookkeeping along the closure induction)
+is a named extension; the level-$N$ statement --- finitely many twisted functional
+equations sufficing for $\Gamma_0(N)$-automorphy --- is Weil's lemma, consumed at the
+cited converse-theorem layer of \S\ref{sec:cps-thm} exactly as before.
+
+\subsection*{The exchange instrument at $\Sym^r$}
+
+Both arrows compose at the $\Sym^r$ bank of any seed
+(\texttt{ExchangeInstrument.symr\_package\_of\_reflection},
+\texttt{symr\_reflection\_of\_package}): converting between the one-sided theta
+identity and the analytic package is an \emph{interface}, not missing machinery.  The
+per-rung obligation on either side is one classical datum --- the completed package
+with bounded vertical strips, the precise output shape of the classical
+symmetric-power automorphy results (Kim--Shahidi for $r\le4$, Newton--Thorne for all
+$r$ at level one; cited).  A cited package of that shape now yields the pointwise
+identity \emph{compiled}, and an identity yields the package \emph{compiled}; the
+rank-varying level-$N$ banks carry the same two arrows through their surface.
+
 \section{Formalization scope}
 
 \emph{Formalization.} The reflection for a \emph{general} fiber is Lean-proved: \texttt{FiniteWeightFiber}
@@ -7862,6 +8001,18 @@ The numerical experiments retained serve only as calibration and independent rep
 of the \emph{already-proved} classical-$L$ identification and its exact archimedean normalization (the archimedean
 two-clock and Poisson completion tied to the exact global $L$-values), governed by the exact gauge; the
 carrier/fiber rescaling reduces the residue reading to cell arithmetic.
+
+The mechanism--converse ring of \S\ref{sec:mechanism-converse} is machine-checked end
+to end at the same footprint: the coefficient-level mechanism and its instances
+(\texttt{RamifiedMechanism}, \texttt{GeneralSeed}, \texttt{GL3Seed},
+\texttt{RealChainCompletion}), the converse with its contour shift and
+Phragm\'en--Lindel\"of discharge (\texttt{WeilConverse},
+\texttt{StirlingLineDischarge}, \texttt{PhragmenBV},
+\texttt{ChainKernelContinuity}), the Hecke identification
+(\texttt{WeilIdentification}), and the $\Sym^r$ exchange interface
+(\texttt{ExchangeInstrument}).  The classical inputs consumed there remain exactly
+two, both cited at typed fields: the completed package with bounded vertical strips
+per rung, and Weil's finite-twist lemma at level $N$.
 
 \section{Hodge Connection}\label{sec:hodge-connection}
 \emph{The loss-ledger$\,\leftrightarrow\,$cycle-filtration correspondence.}
