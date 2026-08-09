@@ -25,14 +25,18 @@ consumed.  The analytic consequences are classical *given the cited inputs*
 (Kim–Shahidi `GL(2)×GL(3)` functoriality in both roles, Kim `Sym⁴`, JPSS,
 Shahidi nonvanishing) and are registered, not compiled.
 
-Scoreboard after this file, `GL(6)` converse for `Sym⁵`: `m = 1` classical (twisted
-tower), `m = 2` and `m = 3` via the two vehicles here, `m = 4` blocked — every
-factorization of `τ₄ ⊗ Sym⁵_f` through known automorphic pairs requires
-`⊠(GL(2)×GL(4))` or `⊠(GL(3)×GL(3))`, checked over all rank splits.  **The `Sym⁵`
-converse lacks exactly one twist degree, and that degree is exactly one new
-functorial product.**  Whether the `m = 2, 3` statements are already in print
-(Kim–Shahidi's applications papers) is a named pin-cite obligation before paper
-use.  No `axiom`, no `sorry`.
+Grade register (correction, same day).  The division chains supply
+**Serre-grade** control — holomorphy and nonvanishing on `Re s ≥ 1`, the exact
+input of the moment/Sato–Tate program — and **not converse-grade entirety**: a
+ratio inherits poles at the denominator's zeros inside the strip, and removing
+them is precisely the hard content of the Kim–Shahidi entirety theorems.
+Scoreboard, stated at grade: Serre-grade twisted families for `Sym⁵` at
+`m = 1, 2, 3`; `m = 4` blocked at any grade — every factorization of
+`τ₄ ⊗ Sym⁵_f` through known automorphic pairs requires `⊠(GL(2)×GL(4))` or
+`⊠(GL(3)×GL(3))`, checked over all rank splits.  A converse-theorem application
+would additionally require entirety of the twisted family, which no division
+chain provides.  Whether the `m = 2, 3` Serre-grade statements are already in
+print is a named pin-cite obligation before paper use.  No `axiom`, no `sorry`.
 -/
 
 open Finset ArithmeticFunction Complex UpperHalfPlane
