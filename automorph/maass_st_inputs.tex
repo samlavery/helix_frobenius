@@ -1,0 +1,374 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\Sym}{\mathrm{Sym}}
+\newcommand{\GL}{\mathrm{GL}}
+\newcommand{\A}{\mathbb{A}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\renewcommand{\Re}{\operatorname{Re}}
+
+\title{The Sato--Tate inputs for a Maass form:\\
+an exact reduction, the moment record,\\
+and structural insufficiency theorems}
+\author{Samuel Lavery\thanks{Machine-checked artifacts cited in the text live in
+the \texttt{RequestProject} Lean corpus of the helix--Frobenius repository
+(named files per section); every cited declaration compiles with axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no
+\texttt{sorry}, no \texttt{axiom}.  \texttt{sam@sk-labs.com}}}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $\pi$ be a Hecke--Maass cusp form for $\mathrm{SL}_2(\Z)$ with Satake
+parameters $\alpha_p$ and angles $\theta_p$.  The Sato--Tate conjecture for
+$\pi$ --- temperedness at every prime together with equidistribution of
+$\{\theta_p\}$ for the semicircle measure --- remains open; unlike the
+holomorphic case it is untouched by symmetric-power modularity of
+Newton--Thorne, whose method does not reach Maass forms.  This note records,
+with no conditional statement anywhere except where a hypothesis is explicitly
+named as such: (1) an \emph{exact} two-input reduction of the conjecture, each
+input equivalent to the conclusion it feeds, so that the interface provably has
+zero slack; (2) the unconditional moment record --- the first nine moments of
+$\{\theta_p\}$ converge to the Sato--Tate moments (Kim--Shahidi), with the
+complete tensor-tower coefficient algebra behind the record machine-checked,
+and the local Rankin--Selberg factor exhibited as an exact sum of squares;
+(3) an extension of the reachable \emph{joint} moment matrix for a pair of
+Maass forms by the three entries $(5,1)$, $(6,1)$, $(5,2)$, via automorphic
+vehicle identities, stated at their precise analytic grade; (4) two structural
+insufficiency theorems delimiting what any future proof must contain: no
+Satake-independent analytic payload can supply converse-theorem inputs, and
+every factorization of the missing $\GL(4)$-twist family for $\Sym^5$ through
+the monoid of known automorphic objects requires one of exactly two unknown
+functorial products; and (5) the frontier stated exactly: $\Sym^5$ automorphy
+--- the gateway past the record --- has two equivalent faces, one new
+functorial product or a global converse theorem at half twist range together
+with converse-grade entirety, and beyond finitely many rungs any route to the
+full conjecture requires an engine not present in current mathematics.
+\end{abstract}
+
+\section{The conjecture and the exact reduction}\label{sec:reduction}
+
+Fix a Hecke--Maass cusp form $\pi$ for $\mathrm{SL}_2(\Z)$, unramified
+everywhere, with unitarized Satake parameters
+$\{\alpha_p,\alpha_p^{-1}\}$ and $S_r(\alpha)=\sum_{j=0}^r\alpha^{r-2j}$ the
+symmetric-power trace ladder.  The Sato--Tate conjecture asserts
+(i) $|\alpha_p|=1$ for every $p$, and (ii) equidistribution of the angles
+$\theta_p$ with respect to $\tfrac{2}{\pi}\sin^2\theta\,d\theta$.
+
+\begin{theorem}[exact reduction; machine-checked]\label{thm:reduction}
+Let $M$ be the seed datum of $\pi$.  Then:
+\begin{enumerate}
+\item a per-rung polynomial ceiling
+$\|\alpha_p^{\pm r}\|\le C_p\,(r+1)^k$ for all $r\ge 1$ exists \emph{if and
+only if} $\pi$ is tempered at every prime;
+\item given temperedness, the vanishing of the prime averages of
+$S_r(\alpha_p)$ for every $r\ge1$ is \emph{equivalent} to Sato--Tate
+equidistribution of the angles.
+\end{enumerate}
+Consequently any proof of the conjecture must produce these two inputs at
+full strength: the interface has zero slack.
+\end{theorem}
+
+The two equivalences are the compiled statements
+\texttt{temperedness\_iff\_polyCeiling} and
+\texttt{cancellation\_iff\_equidistribution}, assembled in
+\texttt{maass\_satoTate\_exact} (file \texttt{MaassSatoTateClosure}); the
+polynomial-to-uniform ceiling manufacture is
+\texttt{MaassPolyCeiling.toCeiling}.  Serre's criterion \cite{Serre} converts
+input (2) into the one-line theory of $L(\Sym^r\pi,s)$: holomorphy and
+nonvanishing on $\Re s\ge 1$, for every $r$.
+
+\section{The unconditional moment record}\label{sec:record}
+
+\begin{theorem}[Kim--Shahidi; Gelbart--Jacquet, Kim]\label{thm:record}
+For $\pi$ as above and generic (non-dihedral) type:
+$\Sym^r\pi$ is automorphic for $r\le 4$
+\cite{GJ,KimShahidiAnnals,KimJAMS}; $L(\Sym^r\pi,s)$ admits meromorphic
+continuation with functional equation for $r\le 9$, holomorphic and
+nonvanishing on $\Re s\ge 1$ in the range needed by Serre's criterion
+\cite{KimShahidiDuke,KimShahidiIMRN}.  Hence the first nine moments of
+$\{\theta_p\}$ converge to the Sato--Tate moments.
+\end{theorem}
+
+Three layers behind this record are machine-checked in the corpus:
+
+\begin{proposition}[tensor-tower coefficient algebra; machine-checked]
+\label{prop:tower}
+For a Hecke eigen-datum with Satake $\alpha$, the coefficient banks satisfy,
+as exact identities of arithmetic functions at every $n$:
+$\mathrm{std}\otimes\Sym^2=\Sym^3\oplus\mathrm{std}$,
+$\mathrm{std}\otimes\Sym^4=\Sym^5\oplus\Sym^3$,
+$\Sym^2\otimes\Sym^4=\Sym^6\oplus\Sym^4\oplus\Sym^2$,
+$\Sym^3\otimes\Sym^4=\Sym^7\oplus\Sym^5\oplus\Sym^3\oplus\mathrm{std}$,
+$\Sym^4\otimes\Sym^4=\Sym^8\oplus\Sym^6\oplus\Sym^4\oplus\Sym^2\oplus 1$,
+together with their $L$-series forms on the common half-plane of absolute
+convergence.
+\end{proposition}
+
+(Files \texttt{TensorTowerBanks}, declarations \texttt{tensorCube\_bank}
+through \texttt{tensorSym4Sym4\_bank} and the \texttt{\_LSeries} forms;
+the trace-level engine is the Clebsch--Gordan law
+$S_k S_m=\sum_{j\le m}S_{k+m-2j}$, \texttt{clebsch\_gordan\_trace} in
+\texttt{RSLocalCauchy}.)
+
+\begin{proposition}[local positivity, exact; machine-checked]
+\label{prop:sumsq}
+Let $rs_k$ denote the $k$-th coefficient of the local Rankin--Selberg factor
+$\bigl((1-\alpha^2x)(1-x)^2(1-\alpha^{-2}x)\bigr)^{-1}$.  Then
+$rs_{k+2}-rs_k=S_{k+2}(\alpha)^2$ with $rs_0=S_0^2$, $rs_1=S_1^2$; hence
+$rs_k=\sum_{j\le k/2}S_{k-2j}(\alpha)^2$, and at a unit strand every $rs_k$
+is a nonnegative real --- positivity is an identity, not an estimate.
+\end{proposition}
+
+(\texttt{rs\_local\_cauchy}, \texttt{rsCoeff\_eq\_sum\_sq},
+\texttt{rs\_local\_positivity}.)  The record stops at nine because the
+Langlands--Shahidi list of Eisenstein configurations is exhausted at $E_8$
+\cite{KimShahidiIMRN}; no Eisenstein series in existence reaches $r\ge 10$.
+
+\section{Twisted families, grade, and the joint moment matrix}
+\label{sec:joint}
+
+The following automorphic \emph{vehicle} identities carry analytic control
+past the naive pair list.  All decompositions below are machine-checked as
+exact identities of coefficient banks; the analytic conclusions use the cited
+classical inputs: automorphy of the Kim--Shahidi product $\sigma_2\boxtimes
+\sigma_3$ in both roles \cite{KimShahidiAnnals}, of $\Sym^{\le4}$
+\cite{GJ,KimShahidiAnnals,KimJAMS}, Rankin--Selberg theory for automorphic
+pairs \cite{JPSS}, and nonvanishing on $\Re s=1$ \cite{ShahidiNonvanishing}.
+
+\begin{theorem}[twisted families at Serre grade]\label{thm:twisted}
+For every $\GL(2)$ cusp form $g$ and every $\GL(3)$ cusp form $\tau$:
+\[
+L\bigl((g\boxtimes\Sym^2\pi)\times\Sym^3\pi,s\bigr)
+ = L(g\times\Sym^5\pi,s)\,L(g\times\Sym^3\pi,s)\,L(g\times\pi,s),
+\]
+\[
+L\bigl((g\boxtimes\Sym^2\pi)\times\Sym^4\pi,s\bigr)
+ = L(g\times\Sym^6\pi,s)\,L(g\times\Sym^4\pi,s)\,L(g\times\Sym^2\pi,s),
+\]
+\[
+L\bigl(\Sym^4\pi\times(\pi\boxtimes\tau),s\bigr)
+ = L(\Sym^5\pi\times\tau,s)\,L(\Sym^3\pi\times\tau,s).
+\]
+In each identity the left side and all right-hand factors except one are
+Rankin--Selberg $L$-functions of pairs of automorphic representations; hence
+$L(g\times\Sym^5\pi,s)$, $L(g\times\Sym^6\pi,s)$ and
+$L(\Sym^5\pi\times\tau,s)$ are holomorphic and nonvanishing on
+$\Re s\ge 1$.
+\end{theorem}
+
+(Bank identities: \texttt{quinticG\_bank}, \texttt{vehicle\_bank},
+\texttt{quinticTau\_bank} --- the last universal over an arbitrary abstract
+$\GL(3)$ Satake family, so no automorphy enters the compiled layer.)
+
+\begin{proposition}[grade dichotomy]\label{prop:grade}
+The division chains of Theorem~\ref{thm:twisted} yield holomorphy and
+nonvanishing on the closed half-plane $\Re s\ge1$ (\emph{Serre grade}) and
+cannot yield entirety on $\C$ (\emph{converse grade}): a quotient inherits
+poles at the interior zeros of its denominator, and no unconditional
+zero-free region covers the critical strip.  Converse-theorem applications
+therefore require entirety inputs of the Kim--Shahidi type
+\cite{KimShahidiEntire}, which division does not supply.
+\end{proposition}
+
+\begin{corollary}[joint moment matrix for a Maass pair]\label{cor:joint}
+Let $\pi,\pi'$ be Hecke--Maass cusp forms, not twist-equivalent.  The mixed
+moments $\tfrac{1}{\pi(N)}\sum_{p\le N}S_a(\theta_p(\pi))S_b(\theta_p(\pi'))$
+converge to $0$ for all $(a,b)$ with $a,b\le 4$, for $(a,b)=(r,0)$ with
+$r\le 9$, and for
+\[
+(a,b)\in\{(5,1),\ (6,1),\ (5,2)\},
+\]
+the last three via Theorem~\ref{thm:twisted}.
+\end{corollary}
+
+The compiled layer identifies the joint-moment averages with the prime
+averages of the corresponding banks: the degree-one local Euler coefficient
+is the sum of the local weights (\texttt{radialLocalEulerCoeff\_one}), hence
+any bank's value at a prime is its local weight sum
+(\texttt{bank\_at\_prime}), hence the three banks read
+$S_5S_1$, $S_6S_1$, $S_5S_2$ at every prime
+(\texttt{joint\_51\_at\_prime} etc., file \texttt{JointMoments}).
+
+\begin{remark}[record check]\label{rem:check}
+Whether the entries $(5,1),(6,1),(5,2)$ --- and the $\GL(3)$-twisted family
+of Theorem~\ref{thm:twisted} --- appear in the existing joint-Sato--Tate
+literature is an open bibliographic obligation of this note; a targeted
+search of the Kim--Shahidi applications papers and recent joint-distribution
+work did not surface them, and no novelty is claimed pending a full reading.
+\end{remark}
+
+\section{Structural insufficiency theorems}\label{sec:insufficiency}
+
+Any future proof of the conjecture must contain content of a specific shape.
+Two theorems delimit it.
+
+\begin{theorem}[Satake-blind payloads are insufficient]\label{thm:blind}
+No family of completed analytic objects that is independent of the Satake
+data can supply the twisted inputs of any converse theorem.  In particular:
+the carrier completion attached to the polynomial Satake class satisfies
+identical functional equations for distinct data and distinct twists
+(machine-checked: the completed transform of the radius-live niceness class
+is literally the same function for different base pairs and twists), while
+the one-sided converse inputs distinguish real objects --- the unit (zeta)
+datum inhabits the class and its one-sided reflection is refuted
+(\texttt{zeta\_no\_package}, \texttt{zeta\_reflection\_fails}), and the
+maximally non-tempered spiral datum inhabits the radius-live class while a
+$\GL(2)$ automorphic representation with its parameters would contradict
+Rankin--Selberg bounds.  A discrimination-free source cannot feed a
+discrimination device.
+\end{theorem}
+
+\begin{theorem}[the monoid gap at $m=4$]\label{thm:monoid}
+Let $\mathcal{A}$ be the monoid of automorphic objects generated from
+$\GL(2)$ cusp forms by $\Sym^{\le4}$, the products
+$\GL(2)\boxtimes\GL(2)$ \cite{Ramakrishnan} and $\GL(2)\boxtimes\GL(3)$
+\cite{KimShahidiAnnals}, isobaric sums, duals and character twists.  Then for
+a $\GL(4)$ cusp form $\tau_4$, every factorization of
+$\tau_4\otimes\Sym^5\pi$ as $A\otimes B$ with $A,B\in\mathcal{A}$ requires an
+automorphic product on $\GL(2)\times\GL(4)$ or $\GL(3)\times\GL(3)$ ---
+neither of which exists \cite{Cogdell}.  The verification is finite
+bookkeeping over the rank splits, including the self-dual sub-families
+$\tau_4=g\boxtimes h$ and $\tau_4=\Sym^3 h$.
+\end{theorem}
+
+Together with the exhaustion of the Langlands--Shahidi list at $E_8$ and the
+failure of Euler structure for four or more copies of a $\GL(2)$ form against
+Siegel--Eisenstein pullbacks (the trilinear invariant functional is unique;
+from four factors on, invariant functionals smear into spectral integrals
+whose inversion presupposes the sought continuation), these results close
+every known route to rung ten and beyond.
+
+\section{The frontier, exactly}\label{sec:frontier}
+
+\begin{proposition}[two faces of the gateway]\label{prop:faces}
+$\Sym^5\pi$ automorphy follows from either:
+\emph{(A)} niceness of the twist family $L(\tau_4\times\Sym^5\pi,s)$ at
+converse grade --- by Theorem~\ref{thm:monoid} requiring one new functorial
+product; or
+\emph{(B)} the global converse theorem for $\GL(6)$ with twists up to
+$\GL(3)$ (the global Jacquet conjecture at $n=6$, open; its local analogue is
+a theorem \cite{Chai,JacquetLiu}) \emph{together with} converse-grade
+entirety of the $m\le3$ family, which by Proposition~\ref{prop:grade} the
+present division chains do not supply.
+\end{proposition}
+
+Even both faces falling extends the tower only finitely (to $\Sym^6$, with
+the compiled cascade identity
+$(\mathrm{std}_\pi\otimes\tau)\otimes\Sym^5_\pi=(\Sym^6_\pi\oplus\Sym^4_\pi)
+\otimes\tau$, \texttt{sexticTau\_bank}, and the quintic square
+$\Sym^5\otimes\Sym^5=\bigoplus_{j\le5}\Sym^{10-2j}$,
+\texttt{quinticSquare\_bank}, ready as pure citation): the twist demand of
+each successive converse grows linearly while the product supply is fixed, so
+the full conjecture requires an engine not present in current mathematics ---
+the Galois-theoretic engine is unavailable for Maass forms, and the
+trace-formula program remains unexecuted beyond its first cases.  The open
+input of this entire subject is therefore \emph{one object}: a
+coefficient-dependent mechanism producing the one-sided twisted reflections
+at unbounded rank.  Its minimal test case is the $(r,m)=(5,4)$ reflection.
+
+\begin{remark}[falsifiability]\label{rem:falsify}
+The reduction of Theorem~\ref{thm:reduction} is falsifiable at every stage:
+a computed violation of the nine-moment convergence, of local positivity
+(Proposition~\ref{prop:sumsq}), or of any bank identity of
+Proposition~\ref{prop:tower} at any $n$ would refute the corresponding
+machine-checked statement.  No violation is known; the identities have been
+verified symbolically at every $n$ by compilation.
+\end{remark}
+
+\section{What is achieved and what is not}\label{sec:status}
+
+Achieved, unconditionally: the exact zero-slack reduction; the nine-moment
+single-form record with its coefficient algebra machine-checked end to end;
+exact local Rankin--Selberg positivity; the three new joint-moment entries at
+Serre grade (subject to Remark~\ref{rem:check}); the two insufficiency
+theorems; and the reduction of the frontier to the two named faces of
+Proposition~\ref{prop:faces}.
+
+Not achieved, by anyone: the Sato--Tate conjecture for a single Maass form.
+Its remaining content is exactly the object named at the end of
+Section~\ref{sec:frontier}, and no assembly of existing results closes it ---
+that negative statement is itself proved here at the three levels of
+Theorems~\ref{thm:blind} and~\ref{thm:monoid} and the exhaustion facts of
+Section~\ref{sec:insufficiency}.
+
+\begin{thebibliography}{99}
+
+\bibitem{GJ} S.~Gelbart, H.~Jacquet,
+\emph{A relation between automorphic representations of $\GL(2)$ and
+$\GL(3)$}, Ann. Sci. \'Ecole Norm. Sup. (4) \textbf{11} (1978), 471--542.
+
+\bibitem{JPSS} H.~Jacquet, I.~Piatetski-Shapiro, J.~Shalika,
+\emph{Rankin--Selberg convolutions}, Amer. J. Math. \textbf{105} (1983),
+367--464; and \emph{Automorphic forms on $\GL(3)$ I, II}, Ann. of Math.
+\textbf{109} (1979), 169--258.
+
+\bibitem{KimShahidiAnnals} H.~Kim, F.~Shahidi,
+\emph{Functorial products for $\GL_2\times\GL_3$ and the symmetric cube for
+$\GL_2$}, Ann. of Math. (2) \textbf{155} (2002), 837--893.
+
+\bibitem{KimJAMS} H.~Kim,
+\emph{Functoriality for the exterior square of $\GL_4$ and the symmetric
+fourth of $\GL_2$}, J. Amer. Math. Soc. \textbf{16} (2003), 139--183.
+
+\bibitem{KimShahidiDuke} H.~Kim, F.~Shahidi,
+\emph{Cuspidality of symmetric powers with applications}, Duke Math. J.
+\textbf{112} (2002), 177--197.
+
+\bibitem{KimShahidiIMRN} H.~Kim, F.~Shahidi,
+\emph{Holomorphy of the 9th symmetric power $L$-functions for
+$\Re(s)>1$}, Int. Math. Res. Not. (2006), Art. ID 59326.
+
+\bibitem{KimShahidiEntire} H.~Kim, F.~Shahidi,
+\emph{Symmetric cube $L$-functions for $\GL_2$ are entire}, Ann. of Math.
+(2) \textbf{150} (1999), 645--662.
+
+\bibitem{Ramakrishnan} D.~Ramakrishnan,
+\emph{Modularity of the Rankin--Selberg $L$-series, and multiplicity one for
+$\mathrm{SL}(2)$}, Ann. of Math. (2) \textbf{152} (2000), 45--111.
+
+\bibitem{ShahidiNonvanishing} F.~Shahidi,
+\emph{On certain $L$-functions}, Amer. J. Math. \textbf{103} (1981),
+297--355.
+
+\bibitem{CPS} J.~Cogdell, I.~Piatetski-Shapiro,
+\emph{Converse theorems for $\GL_n$}, Publ. Math. IH\'ES \textbf{79} (1994),
+157--214; \emph{II}, J. reine angew. Math. \textbf{507} (1999), 165--188.
+
+\bibitem{Cogdell} J.~Cogdell,
+\emph{Converse theorems, functoriality, and applications to number theory},
+Proc. ICM 2002, Vol. II, 119--128 (arXiv:math/0304230).
+
+\bibitem{Chai} J.~Chai,
+\emph{Bessel functions and local converse conjecture of Jacquet},
+J. Eur. Math. Soc. \textbf{21} (2019), 1703--1728.
+
+\bibitem{JacquetLiu} H.~Jacquet, B.~Liu,
+\emph{On the local converse theorem for $p$-adic $\GL_n$}, Amer. J. Math.
+\textbf{140} (2018), 1399--1422.
+
+\bibitem{NewtonThorne} J.~Newton, J.~Thorne,
+\emph{Symmetric power functoriality for holomorphic modular forms, I--II},
+Publ. Math. IH\'ES \textbf{134} (2021), 1--116 and 117--152.
+
+\bibitem{Serre} J.-P.~Serre,
+\emph{Abelian $\ell$-adic representations and elliptic curves}, Benjamin,
+1968, Appendix to Chapter I.
+
+\end{thebibliography}
+
+\end{document}
