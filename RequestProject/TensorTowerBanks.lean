@@ -405,6 +405,31 @@ theorem tensorSym4Sym4_bank (H : HeckeEigenData f) :
     bankArithmetic_sumElim, bank_symClock H 4, bankArithmetic_sumElim,
     bank_symClock H 2, bankArithmetic_unit_eq_zeta]
 
+/-! ## The identities in L-function form -/
+
+/-- **The r = 3 opener as L-functions**: on the common summability region,
+`L(f × Sym²f, s) = L(Sym³f, s) · L(f, s)`. -/
+theorem tensorCube_LSeries (H : HeckeEigenData f) (s : ℂ)
+    (h3 : LSeriesSummable (⇑(symrBank H 3)) s)
+    (h1 : LSeriesSummable (⇑(symrBank H 1)) s) :
+    LSeries (⇑(coefficientArithmetic (radialGlobalSatakeCoeff
+        (fun p => stdSym2Weight (H.satake p.2))))) s
+      = LSeries (⇑(symrBank H 3)) s * LSeries (⇑(symrBank H 1)) s := by
+  rw [tensorCube_bank H]
+  exact ArithmeticFunction.LSeries_mul' h3 h1
+
+/-- **The r = 5 lever as L-functions**: on the common summability region,
+`L(f × Sym⁴f, s) = L(Sym⁵f, s) · L(Sym³f, s)` — the exact identity through which
+the analytic control of the automorphic pair `(f, Sym⁴f)` reaches `Sym⁵`. -/
+theorem tensorQuintic_LSeries (H : HeckeEigenData f) (s : ℂ)
+    (h5 : LSeriesSummable (⇑(symrBank H 5)) s)
+    (h3 : LSeriesSummable (⇑(symrBank H 3)) s) :
+    LSeries (⇑(coefficientArithmetic (radialGlobalSatakeCoeff
+        (fun p => stdSym4Weight (H.satake p.2))))) s
+      = LSeries (⇑(symrBank H 5)) s * LSeries (⇑(symrBank H 3)) s := by
+  rw [tensorQuintic_bank H]
+  exact ArithmeticFunction.LSeries_mul' h5 h3
+
 end CriticalLinePhasor.TensorTowerBanks
 
 #print axioms CriticalLinePhasor.TensorTowerBanks.bank_symClock
@@ -417,3 +442,5 @@ end CriticalLinePhasor.TensorTowerBanks
 #print axioms CriticalLinePhasor.TensorTowerBanks.tensorSym2Sym4_bank
 #print axioms CriticalLinePhasor.TensorTowerBanks.tensorSym3Sym4_bank
 #print axioms CriticalLinePhasor.TensorTowerBanks.tensorSym4Sym4_bank
+#print axioms CriticalLinePhasor.TensorTowerBanks.tensorCube_LSeries
+#print axioms CriticalLinePhasor.TensorTowerBanks.tensorQuintic_LSeries
