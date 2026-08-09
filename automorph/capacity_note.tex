@@ -1,0 +1,303 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\GR}{\Gamma_{\R}}
+
+\title{The information capacity of functional-equation windows}
+\author{Samuel Lavery\thanks{Numerical instruments cited as data:
+\texttt{tmp/adapter\_sym\_probe.py}, \texttt{tmp/adapter\_rigidity\_probe.py},
+\texttt{tmp/adapter\_twist\_probe.py}, \texttt{tmp/adapter\_twist\_fast.py} in the
+helix--Frobenius repository.  \texttt{sam@sk-labs.com}}}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Fix an archimedean factor $G(s)=\prod_{i=1}^{m}\GR(s+\lambda_i)$ with
+$0<\lambda_1\le\cdots\le\lambda_m$, its kernel
+$K(y)=\frac{1}{2\pi i}\int_{(c)}G(s)\,y^{-s}\,ds$, and a compact window
+$I=[a,b]\subset(0,\infty)$.  The \emph{windowed closure operator} sends a
+coefficient vector $(c_n)_{n\le N}$ to the reflection defect
+$x\mapsto\sum_n c_n\bigl(K(n/x)-\varepsilon\,x\,K(nx)\bigr)$ on $I$ --- the
+linearization of the question ``which coefficient sequences satisfy this
+functional equation on this window?''.  We prove three quantitative laws for
+these operators and their character-twisted companions: exponential
+singular-value decay with an explicit Bernstein rate (so a single functional
+equation carries only $O(\log(1/\tau))$ constraint directions at relative
+precision $\tau$, and the codimension of the windowed solution space is
+correspondingly small); the resulting linear-in-$N$ deficiency and its
+depth-stratification; and a \emph{burial law} for twists: twisting by a
+primitive character of conductor $q$, which rescales the kernel argument by
+$C=q^{(m_{\C}+\delta)/\dots}$, does not destroy the channel's information but
+shifts its entire singular spectrum deeper by
+$\lambda_1\log_{10}C$ decades, the minimal archimedean parameter acting as
+the burial rate.  Numerical spectra for the symmetric-power stacks of the
+discrete series of weight $12$ agree with all three laws, including the
+predicted $7.9$-decade burial of the conductor-$3$ channel at the
+$\mathrm{Sym}^5$ stack.  We record the interpretation for converse theory:
+exact rigidity is a statement at infinite depth, per-channel information at
+any finite depth is logarithmic, and conductor growth throttles twist
+channels at a rate set by the archimedean type.
+\end{abstract}
+
+\section{Setup}\label{sec:setup}
+
+Throughout, $\GR(s)=\pi^{-s/2}\Gamma(s/2)$ and
+$G(s)=\prod_{i=1}^m \GR(s+\lambda_i)$ with real parameters
+$0<\lambda_1\le\cdots\le\lambda_m$.  The associated kernel is
+\[
+K(y)\;=\;\frac{1}{2\pi i}\int_{(c)}G(s)\,y^{-s}\,ds\qquad(c>0),
+\]
+a Meijer $G$-function of type $G^{m,0}_{0,m}$ in the variable $\pi^m y^2$
+\cite[Ch.~V]{Luke}; $K$ is holomorphic on the sector
+$S_\phi=\{\,y:\ |\arg y|<\phi\,\}$ for any $\phi<m\pi/4$, positive on
+$(0,\infty)$, of polynomial growth $y^{\lambda_1}$ as $y\to0^+$ and of
+stretched-exponential decay
+$|K(y)|\le C_K\exp(-c_m\,|y|^{2/m})$ in any proper subsector
+\cite[Ch.~V, \S5.7--5.10]{Luke}.  Fix a window $I=[a,b]\subset(0,\infty)$, a
+sign $\varepsilon\in\{\pm1\}$, and define, for $N\in\N\cup\{\infty\}$, the
+\emph{windowed closure operator}
+\[
+A_N:\ \ell^2(\{1,\dots,N\})\longrightarrow L^2(I),\qquad
+(A_Nc)(x)=\sum_{n\le N}c_n f_n(x),\quad
+f_n(x)=K(n/x)-\varepsilon\,x\,K(nx).
+\]
+Since sectors are invariant under dilations and inversion, each $f_n$ extends
+holomorphically to any fixed Bernstein ellipse
+$E_\rho\subset S_\phi\cap\{\Re>0\}$ for $I$ (the image of $\{|w|=\rho\}$
+under $w\mapsto\frac{b-a}{4}(w+w^{-1})+\frac{a+b}{2}$), and we set
+$M_n=\sup_{E_\rho}|f_n|$; the kernel decay gives
+$M_n\le C_\rho\exp(-c_\rho n^{2/m})$, so $\|M\|_2<\infty$ and $A_\infty$ is
+well defined and compact.
+
+\section{Window capacity}\label{sec:capacity}
+
+\begin{theorem}[capacity of one functional equation]\label{thm:capacity}
+Let $\rho>1$ be any Bernstein parameter with $E_\rho\subset
+S_\phi\cap\{\Re>0\}$.  Then the singular values of $A_N$ (any $N\le\infty$)
+satisfy, for all $k\ge0$,
+\[
+\sigma_{k+2}(A_N)\;\le\;\frac{2\sqrt{b-a}}{\rho-1}\,\|M\|_2\;\rho^{-k}.
+\]
+Consequently the relative $\tau$-rank obeys
+\[
+\#\{j:\ \sigma_j\ge\tau\,\sigma_1\}\;\le\;
+2+\log_\rho\!\Bigl(\frac{2\sqrt{b-a}\,\|M\|_2}{(\rho-1)\,\tau\,\sigma_1}\Bigr)
+\;=\;O\!\bigl(\log(1/\tau)\bigr).
+\]
+\end{theorem}
+
+\begin{proof}
+Let $c\in\ell^2$, $\|c\|_2\le1$, and $g=A_Nc$.  By the Cauchy--Schwarz
+inequality $g$ extends holomorphically to $E_\rho$ with
+$\sup_{E_\rho}|g|\le\sum_n|c_n|M_n\le\|M\|_2$.  Bernstein's theorem on
+polynomial approximation of functions analytic in an ellipse
+\cite[Thm.~8.2]{Trefethen} gives, for the space $P_k$ of polynomials of
+degree $\le k$ (restricted to $I$, $\dim P_k=k+1$),
+\[
+\operatorname{dist}_{C(I)}(g,P_k)\;\le\;\frac{2\,\sup_{E_\rho}|g|}{\rho-1}\,
+\rho^{-k}\;\le\;\frac{2\|M\|_2}{\rho-1}\,\rho^{-k},
+\]
+hence $\operatorname{dist}_{L^2(I)}(g,P_k)\le\sqrt{b-a}$ times the same
+bound.  Thus the image of the unit ball of $A_N$ lies within
+$\eta_k=\tfrac{2\sqrt{b-a}}{\rho-1}\|M\|_2\rho^{-k}$ of the
+$(k{+}1)$-dimensional subspace $P_k\subset L^2(I)$, i.e.\ the
+$(k{+}2)$-nd approximation number of $A_N$ is at most $\eta_k$; for compact
+operators between Hilbert spaces approximation numbers coincide with
+singular values \cite[Thm.~2.5.3]{Pinkus}, giving the claim.  The
+$\tau$-rank bound is immediate.
+\end{proof}
+
+\begin{corollary}[deficiency, stratified by depth]\label{cor:deficiency}
+For every relative floor $\tau$ and every $N$,
+\[
+\operatorname{nullity}_\tau(A_N)\;\ge\;N-2-
+\log_\rho\!\Bigl(\frac{2\sqrt{b-a}\,\|M\|_2}{(\rho-1)\,\tau\,\sigma_1}\Bigr).
+\]
+The deficiency of a single windowed functional equation grows linearly in
+the coefficient dimension, and the number of constraint directions grows
+only logarithmically in the depth $1/\tau$: the ``hard band'' at shallow
+depth is $O(1)$, and each further decade of depth releases at most
+$1/\log_{10}\rho$ additional directions.
+\end{corollary}
+
+\begin{remark}
+This is the theorem behind two measured phenomena: the fixed shallow
+capacity of the bare functional equation across coefficient dimensions, and
+the \emph{floor split} --- per-channel yields of a few directions at
+$10^{-4}$ versus $\sim11$ at $10^{-20}$ --- which is the
+$\log(1/\tau)$-slope made visible.
+\end{remark}
+
+\section{The burial law for twists}\label{sec:burial}
+
+For a primitive character $\chi$ of conductor $q$ the twisted closure rows
+carry the rescaled kernel: with $C$ the conductor scale of the twisted
+completed function (for the rank-$d$ objects of \S\ref{sec:data},
+$C=q^{d/2}$),
+\[
+f^{(q)}_n(x)\;=\;\chi(n)\bigl(K(n/(Cx))-\varepsilon_\chi\,x\,K(nx/C)\bigr),
+\qquad A^{(q)}_N c=\sum_{n\le N}c_nf^{(q)}_n .
+\]
+
+\begin{theorem}[burial]\label{thm:burial}
+Write the ascending exponent set of $K$ at the origin as
+$\lambda_1<\lambda'<\cdots$ (the poles of $G(s)$, i.e.\ the numbers
+$\lambda_i+2k$, listed without multiplicity), let
+$r_0=\#\{i:\lambda_i=\lambda_1\}$, and put $\Delta=\lambda'-\lambda_1>0$.
+Suppose $Nb\le C$ (every kernel argument on the window is $\le1$).  Then
+\[
+A^{(q)}_N\;=\;B_N\;+\;E_N,\qquad
+\operatorname{rank}B_N\le 2r_0,\qquad
+\|E_N\|\;\le\;C_1\,\Bigl(\frac{Nb}{C}\Bigr)^{\lambda_1+\Delta}\sqrt{N},
+\]
+where $B_N$ is built from the leading Frobenius term
+$K(y)=\kappa_0y^{\lambda_1}(1+O(y^{\Delta}))$: its rows are
+$\chi(n)\kappa_0 (n/C)^{\lambda_1}\bigl(x^{-\lambda_1}-\varepsilon_\chi
+x^{1+\lambda_1}\bigr)$ up to the $r_0$-fold multiplicity structure.
+Consequently the whole singular spectrum of the channel is suppressed by the
+factor $(1/C)^{\lambda_1}$ relative to an unstarved channel: on a logarithmic
+depth axis the channel's information is not destroyed but \emph{buried}
+\[
+\text{burial depth}\;\approx\;\lambda_1\,\log_{10}C\ \ \text{decades}.
+\]
+\end{theorem}
+
+\begin{proof}
+The Mellin--Barnes representation gives the convergent Frobenius expansion
+of $K$ at the origin by shifting the contour left across the poles of
+$G$ \cite[Ch.~V]{Luke}: $K(y)=\kappa_0y^{\lambda_1}+O(y^{\lambda_1+\Delta})$
+uniformly on $0<y\le b$, with $r_0$ minimal-exponent terms when the minimal
+parameter has multiplicity $r_0$ (log terms, absorbed in the same rank
+count).  Substituting $y=n/(Cx)$ and $y=nx/C$ and collecting the leading
+terms yields $B_N$, whose column space lies in the $\le2r_0$-dimensional
+span of $x^{-\lambda_1},x^{1+\lambda_1}$ (times logs); the remainder rows
+are bounded by $C_1(n/C)^{\lambda_1+\Delta}$ on $I$, and summing squares
+over $n\le N$ gives the stated norm bound.  Weyl's inequality
+$\sigma_{k+2r_0}(A^{(q)}_N)\le\|E_N\|$ then confines all but $2r_0$
+directions below the remainder scale, while the surviving leading block
+itself carries the prefactor $(1/C)^{\lambda_1}$; comparison with the
+unrescaled channel gives the depth shift.
+\end{proof}
+
+\begin{remark}[the archimedean type sets the burial rate]
+$\lambda_1$ is the minimal archimedean parameter of the stack.  For the
+symmetric-power stacks of a weight-$12$ form, $\lambda_1=11/2$ at every odd
+rank; at $\mathrm{Sym}^5$ (rank $6$, $C=q^3$) the predicted burial of the
+conductor-$3$ channel is $\tfrac{11}{2}\log_{10}27\approx7.9$ decades.
+\end{remark}
+
+\section{Data}\label{sec:data}
+
+All spectra are for the symmetric-power stacks of the discrete series of
+weight $12$ on the window $I=[1,1.8]$, with exact symmetric-power
+coefficients; floors are relative to $\sigma_1$.
+
+\medskip
+\noindent\emph{Capacity and floor split.}  Bare functional equation:
+nullity $54/51/47$ of $60$ at rank $3$ and $34/31/28$ of $40$ at rank $6$
+(floors $10^{-8}/10^{-14}/10^{-20}$); at matched shallow floors both ranks
+carry $\sim3$ directions per channel, at $10^{-20}$ the rank-$3$ channels
+carry $\sim11$ --- the $\log(1/\tau)$ slope of
+Corollary~\ref{cor:deficiency}.
+
+\medskip
+\noindent\emph{Additivity at rank 3.}  Quadratic-twist channels
+$q=3,4,5$ cut the rank-$3$ deficiency $47\to36\to24\to13$ (of $60$, floor
+$10^{-20}$): $\sim11$ directions per channel, no saturation --- consistent
+with the classical fact that $\mathrm{GL}(3)$'s converse theorem needs
+$\mathrm{GL}(1)$ twists only.
+
+\medskip
+\noindent\emph{Starvation and burial at rank 6.}  At $N=120$ the shallow
+yields of $q=3,4,5,7,8$ are $2,2,1,0,0$ --- monotone in the conductor scale
+$C=q^3$, the shallow reading of Theorem~\ref{thm:burial}.  The deep
+spectrum of the $q=3$ channel recovers $\sim10$ directions at $10^{-20}$
+while yielding $\sim2$ at $10^{-4}$: the channel's information sits
+$\approx8$ decades deep, matching the predicted
+$\lambda_1\log_{10}C\approx7.9$.
+
+\section{Interpretation for converse theory}\label{sec:interp}
+
+Three consequences, stated as interpretation rather than theorem.  First,
+\emph{exact} rigidity --- the converse-theorem regime --- is a statement at
+infinite depth: any finite-precision reading of a functional-equation
+system sees only logarithmically many constraints per channel, so the
+empirical hardness of converse problems is structural, not numerical
+accident.  Second, rigidifying $N$ coefficients at depth $\tau$ needs
+total capacity $\ge N$, hence
+$\#\text{channels}\gtrsim N/\bigl(O(\log(1/\tau))\bigr)$ \emph{before}
+conductor effects; twist families are not a technical convenience of the
+classical proofs but an information-theoretic necessity.  Third, the burial
+law throttles high-rank twisting: the conductor scale $q^{d/2}$ grows with
+the rank $d$, so at fixed depth the usable twist channels thin out
+exponentially in the rank --- a quantitative shape for why the twist
+requirements of converse theorems, and the difficulty of supplying them,
+escalate with $d$.
+
+\begin{remark}[geometric register]
+The objects of this note are the one-dimensional chart readout of
+carrier-native structure, and both laws state carrier facts.  The variable
+$x$ is the carrier's scale flow ($\log x$ the height along the axis), and
+$x\mapsto1/x$ is the reflection through the origin exchanging the two
+conjugate ends of the double helix; the window is a height segment about the
+self-dual point, and the closure defect is the end-to-end \emph{registration}
+of the helix against the anti-helix on that segment.
+Theorem~\ref{thm:capacity} says a finite height window of registration has
+finite resolving power --- logarithmically many fiber channels per decade of
+depth --- because the carrier's clock is smooth; the Bernstein ellipse is the
+admissible tube around the axis, of width set by the rank's sector.
+Theorem~\ref{thm:burial} is the phasor entry law made quantitative: the
+exponent $\lambda_1$, a Mellin pole in the chart, is on the carrier the
+growth law of a phasor at birth (each phasor enters at height zero and grows
+continuously as $y^{\lambda_1}$), and a conductor-$C$ rail's phasors are
+still in their entry regime at every height the base window sees --- its
+information sits $\lambda_1\log_{10}C$ decades deep because information
+lives where phasors have matured.
+\end{remark}
+
+\begin{remark}[scope and provenance]
+The operators studied here impose the functional equation \emph{linearly};
+no Euler-product or multiplicativity constraint is imposed, so nothing here
+bounds the classical converse theorems themselves, whose hypotheses live at
+exact depth with arithmetic structure.  The nearest existing body of
+results known to us is the Selberg-class rigidity theory of Kaczorowski and
+Perelli (classification at small degree from functional equation plus Euler
+product); a systematic comparison is a stated obligation before any novelty
+claim for the framework.  The numerical spectra are data, not proof; the
+theorems above are unconditional statements about the operators.
+\end{remark}
+
+\begin{thebibliography}{9}
+
+\bibitem{Luke} Y.~L. Luke, \emph{The Special Functions and Their
+Approximations}, Vol.~I, Academic Press, 1969.
+
+\bibitem{Trefethen} L.~N. Trefethen, \emph{Approximation Theory and
+Approximation Practice}, SIAM, 2013.
+
+\bibitem{Pinkus} A.~Pinkus, \emph{$n$-Widths in Approximation Theory},
+Springer, 1985.
+
+\bibitem{KP} J.~Kaczorowski, A.~Perelli, \emph{On the structure of the
+Selberg class, I--VII}, Acta Math.\ \textbf{182} (1999) 207--241 and
+sequels.
+
+\end{thebibliography}
+
+\end{document}
