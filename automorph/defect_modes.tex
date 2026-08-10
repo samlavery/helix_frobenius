@@ -1,0 +1,195 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\renewcommand{\Re}{\operatorname{Re}}
+\newcommand{\Sym}{\mathrm{Sym}}
+\newcommand{\dv}{\,\frac{dv}{v}}
+
+\title{Defect modes: the symmetric-power wall\\ as spectral synthesis on the
+denominator's zeros}
+\author{Samuel Lavery\thanks{Companion to \emph{The Sato--Tate inputs for a
+Maass form} and \emph{The information capacity of functional-equation
+windows}, same repository.  \texttt{sam@sk-labs.com}}}
+\date{August 2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Let $f$ be a level-one Hecke eigenform, $T_5,T_3$ the one-sided theta
+functions of the $\Sym^5$ and $\Sym^3$ banks with their completed archimedean
+kernels, and $T_P=T_5\star T_3$ (multiplicative convolution) the theta of the
+Rankin--Selberg pair $f\times\Sym^4 f$.  The pair and the denominator are
+automorphic (Jacquet--Piatetski-Shapiro--Shalika; Kim--Shahidi), so their
+reflections are theorems; the $\Sym^5$ reflection is the open object.  We
+prove an exact identity: the pair's reflection defect equals the
+$T_3$-convolution of the $\Sym^5$ defect, so the $\Sym^5$ defect $D_5$ is
+annihilated by every multiplicative translate of the cuspidal theta $T_3$ ---
+unconditionally.  Because $T_3$ is exponentially small at both ends of the
+carrier, its Mellin transform is the entire function $\Lambda(\Sym^3)$, and
+the annihilation system admits exactly the paired zero-mode solutions
+$v^{\rho}-\varepsilon_5 v^{1-\rho}$, $\rho\in Z(\Lambda(\Sym^3))$.  The
+containment statement (entirety of $\Lambda(\Sym^5)$, hence the whole
+symmetric-power ladder past the classical record) is therefore precisely a
+spectral-synthesis statement: the actual defect, a priori a superposition of
+denominator-zero modes, has no modes.  The same identity holds for every
+Dirichlet twist, pinning each twisted defect to the corresponding twisted
+zero set.  Soft tauberian arguments provably cannot close this --- the modes
+exist --- and the remaining content is the arithmetic coherence of the mode
+coefficients across the twisted family.
+\end{abstract}
+
+\section{Setup and the identity}
+
+Fix the level-one eigenform $f$ of weight $k$ (the numerics elsewhere use
+$k=12$), analytic normalization throughout.  For a rank-$d$ symmetric-power
+bank with coefficients $\lambda(n)$ and archimedean kernel $K$ (the inverse
+Mellin of its $\Gamma_\R$-stack), the one-sided theta is
+$T(x)=\sum_{n\ge1}\lambda(n)K(nx)$, absolutely convergent on $(0,\infty)$,
+and its reflection defect is
+\[
+D(x)\;=\;T(1/x)\;-\;\varepsilon\,x\,T(x).
+\]
+The reflection statement ``$D\equiv0$'' is equivalent, through the mechanism
+ring, to the full one-sided analytic package of the bank.  Write $T_5,T_3$
+for the $\Sym^5,\Sym^3$ thetas, $\varepsilon_5,\varepsilon_3$ their signs
+(both $-1$ for $k=12$, measured and consistent with the classical local
+computations), and
+\[
+T_P(x)\;=\;(T_5\star T_3)(x)\;=\;\int_0^\infty T_5(x/t)\,T_3(t)\dv[t]
+\]
+the theta of the pair $f\times\Sym^4f$: its kernel is the product stack and
+its coefficients the Dirichlet convolution, so this is the compiled bank
+identity $\mathrm{std}\otimes\Sym^4=\Sym^5\oplus\Sym^3$ at function level;
+the integral converges absolutely (each theta decays faster than any power
+at $\infty$ and grows at most polynomially at $0$).
+
+\begin{theorem}[defect convolution]\label{thm:defect}
+With $D_P$ the pair defect and $D_3\equiv0$ the denominator's
+(Kim--Shahidi),
+\[
+D_P(x)\;=\;-\,\varepsilon_5\varepsilon_3\;x\int_0^\infty
+D_5(v)\,T_3(xv)\dv .
+\]
+In particular, since the pair reflects
+(Jacquet--Piatetski-Shapiro--Shalika), $D_P\equiv0$ and
+\[
+\int_0^\infty D_5(v)\,T_3(xv)\dv\;=\;0\qquad\text{for every }x>0 .
+\]
+\end{theorem}
+
+\begin{proof}
+In $D_P(x)=T_P(1/x)-\varepsilon_5\varepsilon_3 xT_P(x)$ substitute
+$t\mapsto1/(xw)$ in the first integral:
+$T_P(1/x)=\int T_5(w)\,T_3\!\bigl(1/(xw)\bigr)\dv[w]$, and insert the
+denominator's reflection $T_3(1/(xw))=\varepsilon_3\,xw\,T_3(xw)$ (exact,
+$D_3\equiv0$).  In the second integral substitute $t=xv$:
+$xT_P(x)=x\int T_5(1/v)\,T_3(xv)\dv$, and insert the \emph{definition}
+$T_5(1/v)=\varepsilon_5vT_5(v)+D_5(v)$.  The two $\int vT_5(v)T_3(xv)\,dv$
+terms cancel and the displayed identity remains.  All integrals converge
+absolutely: at $t\to\infty$ the theta factors decay super-polynomially, at
+$t\to0$ the partner factor does; splitting $D_5$ into its two terms keeps
+absolute convergence since $T_5(1/v)$ is small precisely where $T_3(xv)$
+grows.  Fubini and the substitutions are then legitimate.
+\end{proof}
+
+\section{The mode space}
+
+\begin{proposition}[cuspidal two-sided decay]\label{prop:decay}
+$T_3$ is exponentially small at both ends: at $\infty$ by kernel decay, at
+$0$ by its own reflection, $T_3(y)=\varepsilon_3y^{-1}T_3(1/y)$.  Hence its
+Mellin transform converges for every $s\in\C$ and equals the entire
+completed function $\Lambda(\Sym^3,s)$.
+\end{proposition}
+
+\begin{theorem}[zero modes]\label{thm:modes}
+For every $\rho$ with $\Lambda(\Sym^3,\rho)=0$ the function
+\[
+D_\rho(v)\;=\;v^{\rho}\;-\;\varepsilon_5\,v^{1-\rho}
+\]
+satisfies both constraints of the defect system: the annihilation
+$\int_0^\infty D_\rho(v)T_3(xv)\dv=
+x^{-\rho}\Lambda(\Sym^3,\rho)-\varepsilon_5x^{\rho-1}\Lambda(\Sym^3,1-\rho)
+=0$ (the functional equation pairs $\rho$ with $1-\rho$), and the forced
+anti-reflection $D(1/v)=-\varepsilon_5v^{-1}D(v)$ that every reflection
+defect obeys.  The system therefore has nonzero solutions of exactly the
+defect's growth class, one (with multiplicity) for each zero of the
+denominator's completed function.
+\end{theorem}
+
+\begin{corollary}[the wall, exactly]\label{cor:wall}
+No argument using only the pair's and the denominator's reflections and
+growth --- in particular no Wiener--Beurling tauberian argument --- can
+force $D_5\equiv0$: the solution space is as large as
+$Z(\Lambda(\Sym^3))$.  Entirety of $\Lambda(\Sym^5)$ (equivalently the
+zero-containment $Z(\Lambda(\Sym^3))\subseteq Z(\Lambda(f\times\Sym^4f))$,
+equivalently the vanishing of every mode coefficient of the actual defect
+$D_5$) is a \emph{spectral synthesis} statement on the denominator's zero
+set.
+\end{corollary}
+
+\begin{remark}
+This is, we believe, the sharpest available form of the symmetric-power
+wall: not ``an $L$-function lacks continuation'' but ``a concrete function,
+annihilated by a concrete translate family, must have empty mode spectrum.''
+The failure of the soft route is now a theorem rather than an experience.
+\end{remark}
+
+\section{The twisted family and the endgame}
+
+For every primitive Dirichlet character $\chi$ the pair
+$(f\otimes\chi)\times\Sym^4f$ is again an automorphic Rankin--Selberg pair
+and $\Sym^3f\otimes\chi$ is again Kim--Shahidi, so
+Theorem~\ref{thm:defect} holds verbatim with twisted data: the twisted
+defect $D_5^{\chi}$ is annihilated by the translates of $T_{3,\chi}$ and is
+therefore a superposition of $Z(\Lambda(\Sym^3\otimes\chi))$-modes.
+Unconditionally, then, the family $\{D_5^{\chi}\}_\chi$ is a system of
+mode-superpositions over the twisted zero sets, all generated by the
+\emph{single} coefficient sequence $\lambda_5(n)$.  The endgame is the
+arithmetic coherence of this system: mode coefficients are Mellin residues
+of the one meromorphic continuation $\Lambda(\Sym^5\otimes\chi)$, the
+twisted zero sets vary with $\chi$ while the Euler product does not, and
+the question --- the last question --- is whether any nonzero
+Hecke-multiplicative sequence can feed a coherent nonempty mode system.
+This is the Weil-converse shape with the twist information localized on
+zero sets rather than spread over strips; our capacity measurements
+(companion note) quantify why the $\mathrm{GL}(1)$ family alone carries
+limited depth, and the mode formulation is where higher-rank twists'
+light channels would act.
+
+\begin{remark}[register]
+Theorem~\ref{thm:defect} and~\ref{thm:modes} are unconditional given the
+cited automorphy of the pair and the denominator; no claim is made that the
+mode space exhausts the solution class beyond the exhibited span (spectral
+synthesis may admit closures), and none is needed: the exhibited modes
+already defeat the soft route, and the synthesis formulation of containment
+stands independently.  The numerical containment check (repository,
+\texttt{tmp/containment\_check.py}) tests the statement zero-by-zero at the
+first zeros of $\Lambda(\Sym^3\Delta)$.
+\end{remark}
+
+\begin{thebibliography}{9}
+\bibitem{JPSS} H.~Jacquet, I.~Piatetski-Shapiro, J.~Shalika,
+\emph{Rankin--Selberg convolutions}, Amer. J. Math. \textbf{105} (1983),
+367--464.
+\bibitem{KimShahidi} H.~Kim, F.~Shahidi, \emph{Functorial products for
+$\mathrm{GL}_2\times\mathrm{GL}_3$ and the symmetric cube for
+$\mathrm{GL}_2$}, Ann. of Math. \textbf{155} (2002), 837--893;
+\emph{Cuspidality of symmetric powers with applications}, Duke Math. J.
+\textbf{112} (2002), 177--197.
+\bibitem{Beurling} A.~Beurling, \emph{Sur les int\'egrales de Fourier
+absolument convergentes et leur application \`a une transformation
+fonctionnelle}, IX Congr. Math. Scand. (1938), 345--366.
+\end{thebibliography}
+
+\end{document}
