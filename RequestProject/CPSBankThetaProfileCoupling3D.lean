@@ -186,6 +186,52 @@ noncomputable def ArithmeticCPSCarrierSeed3D.toProfileCoupling
   primal_readout := G.primal_carrier
   dual_readout := G.dual_carrier
 
+/-- A completed arithmetic Rankin--Selberg theta source constructs the requested prescribed-bank
+profile coupling.  The profiles are the literal primal and contragredient bank readouts;
+`profile_reflection` is the source's compiled pointwise functional equation, and both readout
+identifications are definitional equalities. -/
+noncomputable def ArithmeticCPSReflectedThetaSource.toProfileCoupling
+    {r m : ℕ} {pi : PolynomialSatakeDualPair (Fin 2)}
+    {tau : PolynomialSatakeDualPair (Fin m)} {D : ArithmeticCPSCompletionData r m}
+    (S : ArithmeticCPSReflectedThetaSource r m pi tau D) :
+    BankThetaProfileCoupling3D (arithmeticCPSPolynomialTwist r m pi tau)
+      D.conductor D.tensorShifts where
+  primalProfile := cpsPolynomialFullPrimal3DBankReadout
+    (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts
+  dualProfile := fun x : ℝ => cpsPolynomialFullDual3DTransformedReadout
+    (arithmeticCPSPolynomialTwist r m pi tau) D.conductor D.tensorShifts (1 / x)
+  exchangeConstant := S.pair.ε
+  exchangeConstant_ne_zero := S.pair.hε
+  weight := S.pair.k
+  weight_pos := S.pair.hk
+  profile_reflection := S.prescribed3D_reflection
+  primal_readout := fun _ _ => rfl
+  dual_readout := fun _ _ => rfl
+
+/-- Named arithmetic entry point for the per-twist profile coupling. -/
+noncomputable def arithmeticProfileCoupling
+    {r m : ℕ} {pi : PolynomialSatakeDualPair (Fin 2)}
+    {tau : PolynomialSatakeDualPair (Fin m)} {D : ArithmeticCPSCompletionData r m}
+    (S : ArithmeticCPSReflectedThetaSource r m pi tau D) :
+    BankThetaProfileCoupling3D (arithmeticCPSPolynomialTwist r m pi tau)
+      D.conductor D.tensorShifts :=
+  S.toProfileCoupling
+
+/-- A completed arithmetic Rankin--Selberg theta source at every CPS twist constructs the exact
+all-rank coupling family consumed by `allProfileCarrierSeeds`. -/
+noncomputable def allArithmeticProfileCouplings
+    {r : ℕ} {pi : PolynomialSatakeDualPair (Fin 2)}
+    (source : ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : PolynomialSatakeDualPair (Fin m)) →
+      (D : ArithmeticCPSCompletionData r m) →
+        ArithmeticCPSReflectedThetaSource r m pi tau D) :
+    ∀ (m : ℕ), 1 ≤ m → m < r →
+      (tau : PolynomialSatakeDualPair (Fin m)) →
+      (D : ArithmeticCPSCompletionData r m) →
+        BankThetaProfileCoupling3D (arithmeticCPSPolynomialTwist r m pi tau)
+          D.conductor D.tensorShifts :=
+  fun m hm hmr tau D => (source m hm hmr tau D).toProfileCoupling
+
 /-- Per-twist theta profile couplings assemble into the exact carrier-seed family consumed by
 `ArithmeticCPSAllTwistsConverseCandidate3D.ofCarrierSeeds`: supply this family together with the
 restricted-product representation, the bank bridge, and the residual channels, and the all-twist
@@ -233,5 +279,8 @@ end CriticalLinePhasor.GenuineGL2Carrier
 #print axioms CriticalLinePhasor.GlobalHelix.BankThetaProfileCoupling3D.toReflectedThetaSource
 #print axioms CriticalLinePhasor.GlobalHelix.BankThetaProfileCoupling3D.toCarrierSeed
 #print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSCarrierSeed3D.toProfileCoupling
+#print axioms CriticalLinePhasor.GlobalHelix.ArithmeticCPSReflectedThetaSource.toProfileCoupling
+#print axioms CriticalLinePhasor.GlobalHelix.arithmeticProfileCoupling
+#print axioms CriticalLinePhasor.GlobalHelix.allArithmeticProfileCouplings
 #print axioms CriticalLinePhasor.GlobalHelix.allProfileCarrierSeeds
 #print axioms CriticalLinePhasor.GenuineGL2Carrier.StandardRungEulerData.toProfileCoupling

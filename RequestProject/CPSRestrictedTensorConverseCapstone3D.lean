@@ -1,5 +1,6 @@
 import RequestProject.CPSGenuineGL2CarrierSeed3D
 import RequestProject.CPSLatticeInstance3D
+import RequestProject.CPSAdelicGL3D
 import RequestProject.RepresentationSymmetricPower3D
 import Mathlib.RepresentationTheory.Invariants
 import Mathlib.RepresentationTheory.Irreducible
@@ -248,6 +249,22 @@ structure RestrictedSymmetricPowerRepresentation3D
   restrictedTensor_irreducible : restrictedTensor.IsIrreducible
   restrictedTensor_smooth : Representation.IsSmoothAtOpenSubgroups restrictedTensor
   restrictedTensor_admissible : Representation.IsAdmissibleAtOpenSubgroups restrictedTensor
+
+/-- The base symmetric-power representation specialized to the genuine adelic group over `ℚ`.
+The finite factor is the restricted product of `GL (r+1) ℚ_p` with respect to the integral
+subgroups `GL (r+1) ℤ_p`; unlike the polymorphic carrier above, this type cannot be inhabited by
+substituting an unrelated finite model group. -/
+abbrev AdelicRestrictedSymmetricPowerRepresentation3D
+    (r : ℕ) (pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2))
+    (Vlocal : Nat.Primes → Type*)
+    [∀ p, AddCommGroup (Vlocal p)] [∀ p, Module ℂ (Vlocal p)]
+    (X : Type*) [AddCommGroup X] [Module ℂ X]
+    [MulAction (AdelicGL (r + 1)) X] :=
+  RestrictedSymmetricPowerRepresentation3D r pi
+    (Matrix.GeneralLinearGroup (Fin (r + 1)) ℝ)
+    (fun p ↦ PadicGL (r + 1) p)
+    (fun p ↦ Subgroup (PadicGL (r + 1) p))
+    (fun p ↦ padicIntegralSubgroup (r + 1) p) Vlocal X
 
 /-- Construct the finite-place symmetric-power components functorially from genuine base GL(2)
 components.  The induced local representations are definitions, not fields.  Their irreducibility,

@@ -1,0 +1,16 @@
+---
+name: summed-fiber-selfdual-null
+description: aligned-sum HB route (SummedFiberHB.lean hcoh) CLOSED — ε=+1 bank is degenerate (Bcomp≡0); the E=A−iB re-weld is non-degenerate but NOT HB (‖E*‖/‖E‖>1 in bands, grows with y); derivative companion worse
+metadata:
+  type: project
+---
+
+The coherence-margins experiment (tmp/coherence_margins.py, tmp/coherence_margins_results.txt, 2026-07-02) on the two-strand Dirichlet kernel from tmp/strand_topology.py returned a STRUCTURAL NULL for the aligned-sum HB route in RequestProject/SummedFiberHB.lean.
+
+Exact identity (verified to 30 digits, q=5,13,17, on-grid and random off-axis): with chart s=1/2+iz and the ε=+1 symmetric two-strand kernel K_n(s)=A^{s/2}Γ(s/2,x)+A^{(1-s)/2}Γ((1-s)/2,x) (A=q/πn², x=πn²/q, χ real), each term satisfies E_n*(z)=E_n(z) IDENTICALLY as complex numbers everywhere. Cause: conj(s(conj z))=1−s(z) plus the manifest s↔1−s strand symmetry. So ‖E_n*‖/‖E_n‖≡1, R_sum=‖ΣE*‖/‖ΣE‖≡1 (an identity, not a floor), and the summed fiber ΣE reconstructs the self-dual Λ(1/2+iz,χ) with Acomp(ΣE)=Λ and Bcomp(ΣE)≡0.
+
+**Why:** the bank as welded builds the A-COMPONENT itself (degenerate de Branges structure function), not a strict-HB E. IsHB(ΣE) is false by construction; the per-term hcoh hypothesis is structurally impossible (‖E_j*‖=‖E_j‖ ⇒ need Re(e^{iθ}E_j)>‖E_j‖, but Re≤‖·‖). coherence_implies_conj_axis is vacuously inapplicable — its hypothesis can never be instantiated for a self-dual bank. Λ's zeros are all real, but that reality is EXTERNAL to this kernel's degenerate HB content.
+
+**How to apply:** do NOT try to measure or prove a positive coherence margin on the ε=+1 symmetric bank — the margin is pinned at 0 by symmetry, carrying no zero-location information.
+
+PART II (2026-07-02, same files): the natural non-degenerate re-weld E=A−iB was DERIVED and TESTED. With A=Σχ·K⁺ (self-dual), B=(1/i)Σχ·K⁻ (K⁻=S1−S2 anti-self-dual, (K⁻)*=−K⁻ verified), the collapse is exact: E=A−iB=2Σχ·S2 (single 2nd strand), E*=2Σχ·S1 (single 1st strand), Acomp(E)=Λ (zeros preserved, γ₁ to 5 digits), Bcomp≠0 off-axis. So strict HB of E ⟺ summed strand dominance ‖Σχ·S1‖<‖Σχ·S2‖ for Im z>0. RESULT: FAILS. ‖E*‖/‖E‖ exceeds 1 in alternating x-bands at every y>0 (q=5,13,17), the violation GROWS with y (q=5: 1.0003 at y=0.01 → 2.27 at y=3.0), is STABLE under bank enlargement (cutoff 45→180) and precision (dps 30→50) — NOT a truncation artifact, and NOT caused by a local zero of E (checked: |E|≈0.2 in the bands, E's zeros lie far out). Per-term dominance |S2_n|/|S1_n|>1 holds for every n but does NOT survive summation — phase cancellation in ΣS2 lets ΣS1 locally win. This is exactly the named failure mode "big strands cancel while small strands conspire," now EXHIBITED. Alternative derivative companion E=A−icA′ fails EVERYWHERE (200/200), worse. **Verdict: the aligned-sum route via the antisymmetric strand weld is CLOSED; a valid E needs the global HB inequality (all E-zeros in closed lower half-plane), which is RH-equivalent for E — no free lunch, wall relocated not lowered.** This is a HIT on the falsifiability register FOR THE ROUTE, not for RH. Relates to [[reverb-residue-dissipation]] (Weil/3D-helix-RH program), [[gl2-longspan-satake]].

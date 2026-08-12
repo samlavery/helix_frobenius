@@ -110,6 +110,32 @@ noncomputable def scalarRestrictedSymmetricPowerRepresentation3D
 
 end ScalarRepresentation
 
+/-! ## Genuine adelic specialization -/
+
+/-- The scalar representation witness specialized to the actual adelic group
+`GL (r+1, 𝔸_ℚ)`.  In particular, the finite factor is Mathlib's restricted product of
+`GL (r+1, ℚ_p)` with respect to `GL (r+1, ℤ_p)`, and the local/global irreducibility,
+smoothness, admissibility, and exact Satake compatibility fields are inherited from the compiled
+scalar representation construction above. -/
+noncomputable def scalarGenuineAdelicRestrictedRepresentation3D
+    (r : ℕ) (pi : GlobalHelix.PolynomialSatakeDualPair (Fin 2)) :
+    letI := scalarAdelicAction
+      (Matrix.GeneralLinearGroup (Fin (r + 1)) ℝ)
+      (fun p ↦ PadicGL (r + 1) p)
+      (fun p ↦ Subgroup (PadicGL (r + 1) p))
+      (fun p ↦ padicIntegralSubgroup (r + 1) p)
+    AdelicRestrictedSymmetricPowerRepresentation3D r pi (fun _ ↦ ℂ) ℂ := by
+  letI := scalarAdelicAction
+    (Matrix.GeneralLinearGroup (Fin (r + 1)) ℝ)
+    (fun p ↦ PadicGL (r + 1) p)
+    (fun p ↦ Subgroup (PadicGL (r + 1) p))
+    (fun p ↦ padicIntegralSubgroup (r + 1) p)
+  exact scalarRestrictedSymmetricPowerRepresentation3D
+    (Matrix.GeneralLinearGroup (Fin (r + 1)) ℝ)
+    (fun p ↦ PadicGL (r + 1) p)
+    (fun p ↦ Subgroup (PadicGL (r + 1) p))
+    (fun p ↦ padicIntegralSubgroup (r + 1) p) r pi
+
 /-! ## The equivariant residual channels -/
 
 /-- The residual channel exists whenever the Schur data holds; by
@@ -184,6 +210,45 @@ noncomputable def zeroReadoutBankBridge :
 
 end ZeroBridge
 
+/-- The zero-readout bridge specialized to the actual adelic group, with quotient subgroup
+definitionally equal to the diagonal image of `GL n ℚ`.  This is the canonical zero-channel
+inhabitant of the genuine adelic bank interface and exposes the rational quotient at the exact
+type consumed by `symmetricPowerFunctoriality3D_ofGenuineAdelicProfileCouplings`. -/
+noncomputable def zeroReadoutGenuineAdelicBankBridge3D (n : ℕ) :
+    letI := scalarAdelicAction
+      (Matrix.GeneralLinearGroup (Fin n) ℝ)
+      (fun p ↦ PadicGL n p)
+      (fun p ↦ Subgroup (PadicGL n p))
+      (fun p ↦ padicIntegralSubgroup n p)
+    letI : ContinuousSMul (AdelicGL n) ℂ := ⟨continuous_snd⟩
+    GenuineAdelicCPSBankBridge3D n ℂ PUnit (fun _ ↦ ZeroChannel) := by
+  letI := scalarAdelicAction
+    (Matrix.GeneralLinearGroup (Fin n) ℝ)
+    (fun p ↦ PadicGL n p)
+    (fun p ↦ Subgroup (PadicGL n p))
+    (fun p ↦ padicIntegralSubgroup n p)
+  letI : ContinuousSMul (AdelicGL n) ℂ := ⟨continuous_snd⟩
+  exact {
+    bridge := {
+      H := rationalDiagonalSubgroup n
+      readout := fun _ ↦ 0
+      readout_continuous := continuous_const
+      tate_archimedean := fun _ _ ↦ rfl
+      tate_finite := fun _ _ _ ↦ rfl
+      μ := fun _ ↦ 0
+      μ_invariant := fun _ ↦ ⟨fun _ ↦ by simp⟩
+      translate := fun _ q _ ↦ q
+      hintegrable := fun _ _ ↦ integrable_zero_measure
+      move := fun _ _ ↦ 1
+      eigenvalue := fun _ _ ↦ 2
+      heigen := fun p q u ↦ by
+        induction q using Quotient.inductionOn' with
+        | h x => show (0 : ℂ) = 2 * 0; norm_num
+      hnontrivial := fun _ _ ↦ by norm_num
+    }
+    rational_subgroup := rfl
+  }
+
 /-! ## The rank-one candidate: the capstone chain fires on compiled terms -/
 
 section RankOne
@@ -240,8 +305,10 @@ end CriticalLinePhasor.ThreeDConverse
 #print axioms CriticalLinePhasor.ThreeDConverse.Representation.trivial_isSmoothAtOpenSubgroups
 #print axioms CriticalLinePhasor.ThreeDConverse.Representation.isAdmissibleAtOpenSubgroups_of_finite
 #print axioms CriticalLinePhasor.ThreeDConverse.scalarRestrictedSymmetricPowerRepresentation3D
+#print axioms CriticalLinePhasor.ThreeDConverse.scalarGenuineAdelicRestrictedRepresentation3D
 #print axioms CriticalLinePhasor.ThreeDConverse.EquivariantCPSResidual3D.ofSchurData
 #print axioms CriticalLinePhasor.ThreeDConverse.scalarResidualChannel
 #print axioms CriticalLinePhasor.ThreeDConverse.zeroReadoutBankBridge
+#print axioms CriticalLinePhasor.ThreeDConverse.zeroReadoutGenuineAdelicBankBridge3D
 #print axioms CriticalLinePhasor.ThreeDConverse.scalarConverseCandidateRankOne
 #print axioms CriticalLinePhasor.ThreeDConverse.scalarRankOneCuspidalLift

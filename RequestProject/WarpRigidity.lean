@@ -199,69 +199,83 @@ theorem log_primes_int_independent {p q r : ℕ} (hp : p.Prime) (hq : q.Prime)
     rwa [hfacr, hfacr] at this
   refine ⟨?_, ?_, ?_⟩ <;> omega
 
-/-- The independence needed for the two composed warp translations. -/
-theorem log_diff_int_independent {p q r : ℕ} (hp : p.Prime) (hq : q.Prime)
+/-- The independence needed for the two composed warp translations, at an
+arbitrary nonzero degree multiplier `κ` (for rung `r` the conductor law
+gives `κ = r + 1`). -/
+theorem log_diff_int_independent {κ : ℝ} (hκ : κ ≠ 0)
+    {p q r : ℕ} (hp : p.Prime) (hq : q.Prime)
     (hr : r.Prime) (hpq : p ≠ q) (hpr : p ≠ r) (hqr : q ≠ r) :
     ∀ k l : ℤ,
-      (k : ℝ) * (6 * (Real.log p - Real.log r))
-        = (l : ℝ) * (6 * (Real.log p - Real.log q)) →
+      (k : ℝ) * (κ * (Real.log p - Real.log r))
+        = (l : ℝ) * (κ * (Real.log p - Real.log q)) →
       k = 0 ∧ l = 0 := by
   intro k l hkl
+  have hkl' : (k : ℝ) * (Real.log p - Real.log r)
+      = (l : ℝ) * (Real.log p - Real.log q) := by
+    have h : κ * ((k : ℝ) * (Real.log p - Real.log r)
+        - (l : ℝ) * (Real.log p - Real.log q)) = 0 := by
+      linear_combination hkl
+    rcases mul_eq_zero.mp h with h' | h'
+    · exact absurd h' hκ
+    · linarith [sub_eq_zero.mp h']
   have hrel : ((k - l : ℤ) : ℝ) * Real.log p + (l : ℝ) * Real.log q
       + ((-k : ℤ) : ℝ) * Real.log r = 0 := by
     push_cast
-    nlinarith [hkl]
+    nlinarith [hkl']
   rcases log_primes_int_independent hp hq hr hpq hpr hqr _ _ _ hrel
     with ⟨h1, h2, h3⟩
   constructor <;> omega
 
 /-! ## The assembly -/
 
-/-- **Three-warp rigidity**: if the polar carrier of a finite simple ledger
-is invariant (up to arbitrary scalars) under the affine warp
-`u ↦ −u − 6 log q` at three distinct primes, then every occupied mode sits
-at the centre `μ = 0` — i.e. every pole is at `ρ = 1/2`. -/
+/-- **Three-warp rigidity, degree-generic**: if the polar carrier of a
+finite simple ledger is invariant (up to arbitrary scalars) under the
+affine warp `u ↦ −u − κ log q` at three distinct primes — `κ ≠ 0` the
+degree multiplier, `κ = r + 1` at rung `r` — then every occupied mode sits
+at the centre `μ = 0`, i.e. every pole is at `ρ = 1/2`.  Every rung
+consumes this same theorem; only the instantiation data varies. -/
 theorem three_warp_central_support (μ c : Fin n → ℂ)
     (hμ : Function.Injective μ)
+    {κ : ℝ} (hκ : κ ≠ 0)
     {p q r : ℕ} (hp : p.Prime) (hq : q.Prime) (hr : r.Prime)
     (hpq : p ≠ q) (hpr : p ≠ r) (hqr : q ≠ r)
-    (w₁ w₂ w₃ : ℂ) (hw₁0 : w₁ ≠ 0)
-    (hw₁ : ∀ u : ℂ, expSum μ c 0 (-u - (6 * Real.log p : ℝ))
+    (w₁ w₂ w₃ : ℂ)
+    (hw₁ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log p : ℝ))
       = w₁ * expSum μ c 0 u)
-    (hw₂ : ∀ u : ℂ, expSum μ c 0 (-u - (6 * Real.log q : ℝ))
+    (hw₂ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log q : ℝ))
       = w₂ * expSum μ c 0 u)
-    (hw₃ : ∀ u : ℂ, expSum μ c 0 (-u - (6 * Real.log r : ℝ))
+    (hw₃ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log r : ℝ))
       = w₃ * expSum μ c 0 u) :
     ∀ i, c i ≠ 0 → μ i = 0 := by
   -- compose warps into genuine translations
   have hid₁ : ∀ u : ℂ,
-      expSum μ c 0 (u + ((6 * (Real.log p - Real.log q) : ℝ) : ℂ))
+      expSum μ c 0 (u + ((κ * (Real.log p - Real.log q) : ℝ) : ℂ))
         = (w₂ * w₁) * expSum μ c 0 u := by
     intro u
     have s1 := hw₁ u
-    have s2 := hw₂ (-u - (6 * Real.log p : ℝ))
-    have harg : -(-u - ((6 * Real.log p : ℝ) : ℂ)) - ((6 * Real.log q : ℝ) : ℂ)
-        = u + ((6 * (Real.log p - Real.log q) : ℝ) : ℂ) := by
+    have s2 := hw₂ (-u - (κ * Real.log p : ℝ))
+    have harg : -(-u - ((κ * Real.log p : ℝ) : ℂ)) - ((κ * Real.log q : ℝ) : ℂ)
+        = u + ((κ * (Real.log p - Real.log q) : ℝ) : ℂ) := by
       push_cast
       ring
     rw [harg] at s2
     rw [s2, s1]
     ring
   have hid₂ : ∀ u : ℂ,
-      expSum μ c 0 (u + ((6 * (Real.log p - Real.log r) : ℝ) : ℂ))
+      expSum μ c 0 (u + ((κ * (Real.log p - Real.log r) : ℝ) : ℂ))
         = (w₃ * w₁) * expSum μ c 0 u := by
     intro u
     have s1 := hw₁ u
-    have s2 := hw₃ (-u - (6 * Real.log p : ℝ))
-    have harg : -(-u - ((6 * Real.log p : ℝ) : ℂ)) - ((6 * Real.log r : ℝ) : ℂ)
-        = u + ((6 * (Real.log p - Real.log r) : ℝ) : ℂ) := by
+    have s2 := hw₃ (-u - (κ * Real.log p : ℝ))
+    have harg : -(-u - ((κ * Real.log p : ℝ) : ℂ)) - ((κ * Real.log r : ℝ) : ℂ)
+        = u + ((κ * (Real.log p - Real.log r) : ℝ) : ℂ) := by
       push_cast
       ring
     rw [harg] at s2
     rw [s2, s1]
     ring
   have huniq := occupied_exponent_unique μ c hμ
-    (log_diff_int_independent hp hq hr hpq hpr hqr) (w₂ * w₁) (w₃ * w₁)
+    (log_diff_int_independent hκ hp hq hr hpq hpr hqr) (w₂ * w₁) (w₃ * w₁)
     hid₁ hid₂
   -- at most one occupied index; the surviving mode is pinned by the reflection
   intro i hi
@@ -280,7 +294,7 @@ theorem three_warp_central_support (μ c : Fin n → ℂ)
     rw [hs]
     ring
   -- extract the pure reflection identity for the single mode
-  set A : ℂ := ((6 * Real.log p : ℝ) : ℂ) with hA
+  set A : ℂ := ((κ * Real.log p : ℝ) : ℂ) with hA
   have h2 : ∀ u : ℂ, Complex.exp (μ i * (-u - A)) = w₁ * Complex.exp (μ i * u) := by
     intro u
     have h1 := hw₁ u
@@ -321,6 +335,53 @@ theorem three_warp_central_support (μ c : Fin n → ℂ)
       = (Real.pi : ℂ) * I := by field_simp
   rw [harg, Complex.exp_pi_mul_I] at hpin
   norm_num at hpin
+
+/-- **The ledger dies.**  Three warps at distinct primes, with any one warp
+scalar different from `1`, empty the finite simple ledger entirely: rigidity
+forces every occupied mode to the centre, and at the centre the mode is a
+constant which its own reflection scalar kills.  (In the even-channel
+instantiation the scalar is `−1 ≠ 1`; scalar tolerance elsewhere is
+unchanged.) -/
+theorem three_warp_ledger_empty (μ c : Fin n → ℂ)
+    (hμ : Function.Injective μ)
+    {κ : ℝ} (hκ : κ ≠ 0)
+    {p q r : ℕ} (hp : p.Prime) (hq : q.Prime) (hr : r.Prime)
+    (hpq : p ≠ q) (hpr : p ≠ r) (hqr : q ≠ r)
+    (w₁ w₂ w₃ : ℂ) (hw₁ : w₁ ≠ 1)
+    (h₁ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log p : ℝ))
+      = w₁ * expSum μ c 0 u)
+    (h₂ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log q : ℝ))
+      = w₂ * expSum μ c 0 u)
+    (h₃ : ∀ u : ℂ, expSum μ c 0 (-u - (κ * Real.log r : ℝ))
+      = w₃ * expSum μ c 0 u) :
+    ∀ i, c i = 0 := by
+  have hcentral := three_warp_central_support μ c hμ hκ hp hq hr hpq hpr hqr
+    w₁ w₂ w₃ h₁ h₂ h₃
+  intro i
+  by_contra hi
+  have hμi : μ i = 0 := hcentral i hi
+  -- the sum collapses to the single central mode
+  have hsingle : ∀ u : ℂ, expSum μ c 0 u = c i * Complex.exp (μ i * u) := by
+    intro u
+    have hs := Finset.sum_eq_single_of_mem
+      (f := fun j => c j * μ j ^ 0 * Complex.exp (μ j * u)) i
+      (Finset.mem_univ i)
+      (fun j _ hji => by
+        by_cases hj : c j = 0
+        · simp [hj]
+        · exact absurd (hμ ((hcentral j hj).trans hμi.symm)) hji)
+    simp only [expSum]
+    rw [hs]
+    ring
+  -- the reflection scalar kills the constant mode
+  have h1 := h₁ 0
+  rw [hsingle, hsingle] at h1
+  rw [hμi] at h1
+  simp only [zero_mul, Complex.exp_zero, mul_one] at h1
+  have hz : c i * (1 - w₁) = 0 := by linear_combination h1
+  rcases mul_eq_zero.mp hz with h | h
+  · exact hi h
+  · exact hw₁ (by linear_combination -h)
 
 /-! ## Warp realization at simple poles: the FE moves principal parts -/
 

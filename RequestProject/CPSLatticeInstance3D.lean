@@ -1,5 +1,6 @@
 import RequestProject.CPSConverseTheorem3D
 import RequestProject.CPSFiniteQuotientLocalUnit3D
+import RequestProject.CPSAdelicGL3D
 import Mathlib.Analysis.SpecialFunctions.Complex.CircleAddChar
 import Mathlib.MeasureTheory.Measure.Count
 
@@ -137,6 +138,43 @@ theorem CPSBankBridge.landing
   haveI := B.μ_invariant
   exact cpsConverse3D_landing A B.H B.readout B.readout_continuous B.tate_archimedean
     B.tate_finite B.μ B.translate B.hintegrable B.move B.eigenvalue B.heigen B.hnontrivial
+
+/-! ## Genuine adelic specialization -/
+
+/-- A CPS bank on the genuine adelic group `GL n 𝔸_ℚ`, with the quotient subgroup forced to
+be the diagonal image of `GL n ℚ`.  This rules out the finite-model substitution at the bank type
+itself while retaining the existing landing engine. -/
+structure GenuineAdelicCPSBankBridge3D
+    (n : ℕ) (X P : Type*)
+    [TopologicalSpace X] [MulAction (AdelicGL n) X] [ContinuousSMul (AdelicGL n) X]
+    (U : P → Type*)
+    [∀ p, MeasurableSpace (U p)] [∀ p, Group (U p)]
+    [∀ p, MeasurableMul (U p)] [∀ p, MeasurableInv (U p)] where
+  bridge : CPSBankBridge Nat.Primes X
+    (Matrix.GeneralLinearGroup (Fin n) ℝ) P
+    (fun p ↦ padicIntegralSubgroup n p) U
+  rational_subgroup : bridge.H = rationalDiagonalSubgroup n
+
+/-- The genuine adelic bank lands on the rational quotient and its proper unipotent channels. -/
+theorem GenuineAdelicCPSBankBridge3D.landing
+    {n : ℕ} {X P : Type*}
+    [TopologicalSpace X] [MulAction (AdelicGL n) X] [ContinuousSMul (AdelicGL n) X]
+    {U : P → Type*}
+    [∀ p, MeasurableSpace (U p)] [∀ p, Group (U p)]
+    [∀ p, MeasurableMul (U p)] [∀ p, MeasurableInv (U p)]
+    (B : GenuineAdelicCPSBankBridge3D n X P U) :
+    (∀ x : X,
+      cpsAdelic3D_rationalQuotientReadout
+          (fun p ↦ padicIntegralSubgroup n p) B.bridge.H B.bridge.readout
+          B.bridge.readout_continuous B.bridge.tate_archimedean B.bridge.tate_finite
+          (Quotient.mk'' x) = B.bridge.readout x) ∧
+      CuspidalAlong3D B.bridge.μ
+        (quotientUnipotentKernel
+          (cpsAdelic3D_rationalQuotientReadout
+            (fun p ↦ padicIntegralSubgroup n p) B.bridge.H B.bridge.readout
+            B.bridge.readout_continuous B.bridge.tate_archimedean B.bridge.tate_finite)
+          B.bridge.translate) :=
+  B.bridge.landing
 
 namespace LatticeInstance
 
@@ -406,4 +444,5 @@ end CriticalLinePhasor.ThreeDConverse
 
 #print axioms CriticalLinePhasor.ThreeDConverse.LatticeInstance.cpsLatticeInstance_landing
 #print axioms CriticalLinePhasor.ThreeDConverse.CPSBankBridge.landing
+#print axioms CriticalLinePhasor.ThreeDConverse.GenuineAdelicCPSBankBridge3D.landing
 #print axioms CriticalLinePhasor.ThreeDConverse.LatticeInstance.latticeBridge_landing

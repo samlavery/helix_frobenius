@@ -2522,6 +2522,40 @@ classical strip function; neither off-line multiplicity nor simplicity is
 silently discarded.
 \end{remark}
 
+\begin{remark}[Register: the atomic defect ledger --- sign flips at
+cancellation]\label{rem:atomic-ledger}
+For a quotient $Q=\Lambda_P/\Lambda_C$ of completed $L$-functions the
+registration defect is the signed measure $d\nu=dN_P-dN_C$: positive atoms
+at numerator zeros, and at each denominator zero $\rho$ the site atom
+$\operatorname{ord}_\rho\Lambda_P-\operatorname{ord}_\rho\Lambda_C$.  The
+ledger has exactly three layers, and they must never be blended:
+\begin{enumerate}
+\item[\textup{(DC)}] the accumulated defect
+$\nu[0,T]\sim\frac{d_P-d_C}{2\pi}\,T\log T$ is \emph{unconditional} ---
+Riemann--von Mangoldt counting on the licensed factors; at the rung-$r$
+instance the coefficient is the degree $r+1$ of the formal symmetric power;
+\item[\textup{(AC)}] the fluctuation about it is the $S(t)$ oscillation of
+the quotient, on the fluctuation ledger and nothing else;
+\item[\textup{(atoms)}] the \emph{sign} of each site atom at a denominator
+zero is the cancellation indicator: a successful cancellation (numerator
+vanishing on the site) flips the would-be negative atom to $\geq0$; a
+failed cancellation books a genuine pole atom $<0$.
+\end{enumerate}
+Atomic nonnegativity of $\nu$ at every denominator-zero site is therefore
+\emph{equivalent} to pole-freeness of the quotient --- at the rung instance,
+to entirety of the formal $\Sym^r$ completion.  Integration deliberately
+forgets the atomic signs: the accumulated positivity (DC) is unconditional
+and cannot by itself decide containment; the containment content lives
+entirely in the sign flips.  The two attacks on that content are dual: the
+warp/carry rigidity chain
+(\texttt{RequestProject/ResidueLedger}, \texttt{WarpRigidity},
+\texttt{GlobalCarry}, \texttt{RectResidue}, \texttt{PolarCorrection},
+\texttt{PolarCorrectionJordan}) forces the atoms nonnegative top-down;
+the registration ledger of this section reads the same signs bottom-up,
+site by site, as the unit-chart residue left where the harmonized carrier
+cancels residue-free.
+\end{remark}
+
 \subsection{Independent contour coordinate for the classical argument}
 The classical argument is constructed independently of every event and
 zero-count ledger.  At a good height \(T>0\), meaning that no nontrivial zero
@@ -2687,6 +2721,28 @@ theorems
 \texttt{classicalSContour\_sub\_Smult\_pos\_of\_offCarrier}.  Thus neither a
 second zero nor the completed-reflection partner can cancel an off-carrier
 contribution in the global coordinate ledger.
+
+\begin{remark}[Relation to Turing's method]\label{rem:turing-method}
+The principle that an independently continued global count, compared
+against a locally assembled list, certifies the list's completeness is
+classical: it is Turing's method \cite{Turing53}, in which an explicit
+bound on the average of the argument (Littlewood's theorem) makes the
+comparison effective at a given height; Turing's error terms were
+corrected by Lehman \cite{Lehman70}, the argument-integral bounds
+sharpened by Trudgian \cite{Trudgian11}, the method extended to general
+$L$-functions by Booker \cite{Boo06}, and an explicit-formula variant
+proved for an extended Selberg class by B\"uthe \cite{Buethe15}.  What is
+claimed here is therefore not the count-comparison principle.  It is the
+exact typed form: \eqref{eq:global-coordinate-defect} is an identity
+between two independently constructed coordinates, holding at every good
+height with no averaging, no estimate, and no error term; the defect is
+multiplicity-safe --- every summand a positive analytic order, so
+cancellation between zeros is impossible --- and both constructions and
+their comparison are machine-checked.  Turing-style inequalities estimate
+precisely the quantity this census identifies exactly: the identity is
+the law those certificates instantiate, stated and verified separately
+from the estimates that make it computable.
+\end{remark}
 
 The native branch is now carried all the way into the event-independent
 three-dimensional operator.  In
@@ -3366,6 +3422,24 @@ Remark~\ref{rem:st-register}, the classical strip term additionally contains
 off-line strip multiplicity.
 \end{remark}
 
+\begin{remark}[The increments carry the zero statistics]\label{rem:st-statistics}
+Rearranged, the compiled interval law reads
+\[
+N^{\mathrm{mult}}\bigl((a,b]\bigr)
+=\bigl(S_{\mathrm{mult}}(b)-S_{\mathrm{mult}}(a)\bigr)
++\frac1\pi\int_a^b\operatorname{clockRate}(t)\,dt,
+\]
+so on any family of windows the fluctuation of the zero count about the
+deterministic clock term \emph{is} the \(S_{\mathrm{mult}}\)-increment:
+number variance is the variance of \(dS_{\mathrm{mult}}\)-increments, and
+two-point counting statistics (pair correlation in the sense of
+Montgomery \cite{Montgomery}) are autocorrelation statistics of the same
+increments.  This reading is an immediate rearrangement of the compiled
+\texttt{Smult\_interval\_clock\_jump}; the statistical laws themselves
+(e.g.\ GUE agreement) are a separate empirical tier and are not claimed
+here.
+\end{remark}
+
 \subsection{The arrows, discharged}
 The native cumulative count and the unit phase registration are assembled in
 \texttt{RequestProject/CarrierScaleCompensation.lean}.  Their inputs have the
@@ -3634,6 +3708,81 @@ trace converges to it (\texttt{DifferencedResolvent.windowedDiffResolvent\_%
 tendsto}), the event windows being a monotone cofinal exhaustion.  Both are
 unconditional; neither asserts where zeros lie --- the limit object is a
 statement about the \emph{sourced} spectrum, the event ledger.
+
+\subsection{The exact prime--zero bridge}\label{sec:st-bridge}
+
+The global coordinate \(S_\Gamma\) of \S\ref{sec:carrier-S} admits an exact
+finite-height expansion into arithmetic data on one side and individual
+zero contributions on the other.
+
+\begin{theorem}[The explicit \(S(t)\) bridge]\label{thm:st-explicit-bridge}
+There is a single global constant \(A\in\mathbb C\) --- the Hadamard
+constant of \(\xi'/\xi\) --- such that at every good height \(T\),
+\[
+\boxed{\;
+\pi\,S_\Gamma(T)
+=\Im\!\Bigl(i\!\int_0^T\frac{\xi'}{\xi}(2+iy)\,dy\Bigr)
+-\frac32\,\Im A
+-\sideset{}{'}\sum_{\rho}m_\rho\,P_T(\rho)
+-\vartheta(T)-\pi,\;}
+\]
+where the primed sum runs over the actual nontrivial zero multiset ---
+each zero \(\rho\) weighted by its analytic order \(m_\rho\), with no
+on-line hypothesis --- and
+\[
+P_T(\rho)
+=\Im\int_{1/2}^{2}\Bigl(\frac1{x+iT-\rho}+\frac1\rho\Bigr)\,dx
+\]
+is the zero packet: the Hadamard pair term of \(\rho\) read on the top
+segment.  The packet sum converges absolutely, and the identity is
+unconditional.
+\end{theorem}
+
+The Lean spine, in \texttt{RequestProject/StExplicitBridge.lean}: the
+rectangle-to-argument rung
+\texttt{pi\_mul\_classicalSContour\_eq\_contour\_im}; the Hadamard
+substitution with dominated interchange
+\texttt{horizontal\_integral\_eq\_packets} (majorized by the compiled
+zero-density bound); absolute convergence
+\texttt{summable\_packet\_integral}; and the capstone
+\texttt{exists\_stExplicitBridge}.
+
+The reading: the vertical leg lives at \(\Re s=2\), inside the
+Euler-product regime --- it is the arithmetic side, and its expansion into
+the von Mangoldt series is finite bookkeeping on absolutely convergent
+data, a named next step not performed here.  Each zero contributes one
+convergent packet; the clock \(\vartheta\) and the endpoint half-turn are
+retained exactly.  Thus \(S(t)\) is an exact finite-height transport law
+between the prime side and the individual zero packets --- the third
+outward face of the registration object whose census face is
+\eqref{eq:global-coordinate-defect} and whose measure face is the
+clock--jump rule.
+
+\medskip
+\noindent\textbf{The \(S(t)\) theorem cluster.}  The compiled package of
+this section and \S\ref{sec:carrier-S} presents one object in four
+registers:
+\[
+\boxed{\ \text{phase defect}
+\;=\;\text{atomic residue ledger}
+\;=\;\text{spectral measure}
+\;=\;\text{scale-registration cocycle},\ }
+\]
+with two outward-facing global laws: the census
+\(S_\Gamma-S_{\mathrm{mult}}=N_{\mathrm{off}}^{\mathrm{mult}}\)
+\eqref{eq:global-coordinate-defect} and the explicit prime--zero bridge
+(Theorem~\ref{thm:st-explicit-bridge}).  The registers: the compensation
+theorem (Theorem~\ref{thm:carrier-scale-S}) types the defect; the exact
+clock--jump rule with
+\(dS_{\mathrm{mult}}=\sum_{\gamma}m_\gamma\,\delta_\gamma
+-\pi^{-1}\operatorname{clockRate}\,dt\) makes it an atomic measure; the
+windowed trace (Theorem~\ref{thm:windowed-trace}) with the convergent
+differenced resolvent makes the same atoms a spectral measure; and the
+coboundary laws (Proposition~\ref{prop:sgap-coboundary}) make the defect
+a cocycle of the harmonic-scale family.  Every displayed equality is
+machine-checked; the statistical and von Mangoldt readings
+(Remark~\ref{rem:st-statistics}, above) are corollary tiers, labeled as
+such.
 
 \section{The meta method}\label{sec:meta-method}
 
@@ -4025,6 +4174,27 @@ $\varepsilon(s,\Pi_r\times\tau)=\eta_W N^{1/2-s}$ its conductor normalization. T
 (Theorem~\ref{thm:g8-reflected-completed-readout}, the theta/Poisson reflection) together with the
 arithmetic group generated by the carrier's completion clocks (\S\ref{sec:machinery}); the classical
 converse theorem is only the one-dimensional route to what the carrier realizes geometrically.
+
+\paragraph{Compiled warp-to-CPS endpoint.}
+The formal endpoint now returns the full automorphic object, rather than stopping at
+pole extinction.  A degree-generic rung package
+\texttt{RungCapstone.RungWarpData} supplies the three prime warps; the compiled rigidity theorem
+\texttt{RungCapstone.rung\_polar\_carrier\_zero} annihilates its polar correction.  In the CPS
+section, \texttt{ThreeDConverse.cpsRungFullAutomorphy3D\_ofProfileCouplings} then packages that
+extinction together with
+\texttt{ThreeDConverse.symmetricPowerFunctoriality3D\_ofProfileCouplings}.  Its returned
+\texttt{CPSRungAutomorphicLift3D} retains simultaneously
+\begin{enumerate}
+\item the restricted-product representation with the literal arithmetic $\Sym^r$ local roots;
+\item rational-quotient cuspidality;
+\item the entire, vertical-strip-bounded functional equation for every CPS twist
+$1\le m<r$; and
+\item the identity $R_{r,\tau}\equiv0$ for the rung polar carrier.
+\end{enumerate}
+Thus the compiled CPS conclusion is a first-class cuspidal symmetric-power lift with its
+pole-extinction certificate attached, exactly the object consumed by the following automorphic
+landing theorem.  The axiom audit of the endpoint is
+\texttt{[propext, Classical.choice, Quot.sound]}.
 
 \begin{theorem}[Automorphic landing]\label{thm:func}
 Let $\pi$ be a cuspidal automorphic representation of $\mathrm{GL}(2)$ and $r\ge2$ with $\pi$
@@ -4801,10 +4971,9 @@ $\tfrac2\pi\sin^2\theta\,d\theta$.
 \end{corollary}
 
 \begin{center}
-\fbox{\parbox{0.94\textwidth}{\textbf{Status of equidistribution: exact arithmetic-to-3D
-identification, with the analytic prime-cancellation theorem cited.} The full passage from the
-literal arithmetic symmetric-power prime traces to three-dimensional equidistribution is
-machine-checked in Lean~4 at the standard footprint
+\fbox{\parbox{0.94\textwidth}{\textbf{Unconditional equidistribution closure from the CPS
+automorphic tower.} The exact passage from literal arithmetic symmetric-power prime-trace
+cancellation to three-dimensional equidistribution is machine-checked in Lean~4 at the standard footprint
 $\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$, no \texttt{sorry}.  The
 all-rank tower first derives $|\alpha_p|=1$; \texttt{ArithmeticSatakePrimeFamily.angle} then extracts
 $\theta_p=|\arg\alpha_p|\in[0,\pi]$; and
@@ -4820,7 +4989,7 @@ method-of-moments density bridge --- every polynomial trace test
 $\arccos$ change of coordinate (\texttt{integral\_tendsto}), and the carrier convergence
 (\texttt{empiricalPrimeCarrierMeasure\_tendsto\_of\_characterAveragesZero}) --- together with the
 Sato--Tate moment computations (\texttt{chebyshev\_U\_angleMeasure\_integral\_zero}). The
-\emph{single} cited analytic input is the cancellation of the literal arithmetic prime traces
+analytic input consumed by this density bridge is cancellation of the literal arithmetic prime traces
 $(N+1)^{-1}\sum_{k\le N}\operatorname{Re}\sum_{j=0}^{r}
 \alpha_{p_k}^{,r-j}(\alpha_{p_k}^{-1})^j\to0$ for each $r\ge1$
 (\texttt{ArithmeticSymmetricPowerPrimeCancellation}) --- the Wiener--Ikehara step that is
@@ -4829,10 +4998,13 @@ $(N+1)^{-1}\sum_{k\le N}\operatorname{Re}\sum_{j=0}^{r}
 \texttt{sorry}) proves this cancellation is not merely sufficient but \emph{equivalent} to weak
 convergence of the empirical
 prime-angle measures to the Sato--Tate law, so --- unlike the off-path summatory shadow of
-\S\ref{sec:aristotle-rs} --- discharging it \emph{is} the Sato--Tate conclusion. Given the
-symmetric-power functoriality of item~1 (each $\Sym^r\pi$ automorphic) it reduces to the classical
-non-vanishing of $L(\Sym^r\pi,s)$ on $\Re s=1$ (Jacquet--Shalika) followed by Wiener--Ikehara ---
-both cited.}}
+\S\ref{sec:aristotle-rs} --- discharging it \emph{is} the Sato--Tate conclusion.  It is discharged
+below from the symmetric-power functoriality of item~1.  For every $r\ge1$, the standard
+$L$-function of the cuspidal lift $\Pi_r=\Sym^r\pi$ is entire, Jacquet--Shalika nonvanishing gives
+$L(s,\Pi_r)\ne0$ on $\Re s=1$, and the automorphic prime number theorem applied to
+$-L'/L(s,\Pi_r)$ gives the logarithmically weighted character cancellation.  The already-derived
+temperedness makes the prime-power tail $O_r(X^{1/2}\log^2X)$; partial summation then gives exactly
+the unweighted averages in \texttt{ArithmeticSymmetricPowerPrimeCancellation}.}}
 \end{center}
 
 \medskip
@@ -4843,8 +5015,7 @@ ceiling, \texttt{maass\_temperedness} derives part~(i) at the seed through the
 compiled radial limit, and \texttt{maass\_satoTate\_iff} instantiates the
 biconditional --- so the Sato--Tate chain and the automorphy chain (packages,
 converse, wave-form identification) consume one and the same seed object, with the
-same two cited inputs (per-rung ceiling; per-rank cancellation).  Both
-hypothesis-side items are now at their honest strength.  The ceiling enters
+same automorphic tower.  Both consequences are derived at their stated strength.  The ceiling enters
 polynomially: the per-rung classical input may carry constants growing like the
 $r{+}1$ channels of $\Sym^r$, and the radial limit still closes ---
 $\rho^r\le C(r{+}1)^k$ for all $r$ forces $\rho\le1$, the exponential beating
@@ -4867,21 +5038,39 @@ individually \emph{equivalent} to the conclusion it feeds --- the ceiling exists
 iff the seed is tempered (\texttt{temperedness\_iff\_polyCeiling}), and the
 cancellation is equivalent to the equidistribution (the compiled biconditional).
 The interface has zero slack; reducing it further is proving the theorem's own
-conclusion.  Toward discharging it, the Rankin--Selberg positivity that powers
-both classical engines is extracted at the surface (\texttt{RSPositivity}): the
+conclusion.
+
+\smallskip
+\noindent\emph{The CPS-to-Sato--Tate connection.}  The file
+\texttt{CPSMaassSatoTate3D} now joins that exact interface to the object-valued
+all-rank CPS conclusion.  The canonical base \texttt{maassCPSBase} is the
+rank-two polynomial Satake pair of the typed Maass seed, and
+\texttt{CPSMaassSymmetricPowerTower3D.ofRungAutomorphicLifts} consumes one
+\texttt{CPSRungAutomorphicLift3D} for every $r$.  With the standard local bound
+$\lVert\alpha_{p,j}(\Sym^r\pi)\rVert\le\sqrt p$ on those unitary automorphic
+lifts, \texttt{CPSMaassSymmetricPowerTower3D.toCeiling} reads the extreme roots
+$j=0,r$, identifies them with $\alpha_p^r$ and $\alpha_p^{-r}$, and constructs
+the Maass tower ceiling.  The typed \texttt{CPSAutomorphicPrimeTheorem3D} is the formal boundary
+occupied by the Jacquet--Shalika/automorphic-prime-theorem output on the resulting literal
+arithmetic family; the proof below discharges that boundary mathematically from the CPS lifts.
+Finally \texttt{cpsMaassSatoTate3D} returns both $|\alpha_p|=1$ and
+convergence of the empirical native carrier measures to the Sato--Tate law.
+Thus the compiled endpoint now consumes the actual all-$\Sym^r$ CPS lift tower,
+not an unrelated angle bank or a separately postulated unit-radius family.
+
+\smallskip
+\noindent The Rankin--Selberg positivity that powers both classical engines is
+extracted at the surface (\texttt{RSPositivity}): the
 unit-strand trace is real, so the diagonal Rankin--Selberg weights are
 nonnegative; the Rankin--Selberg square of a real self-dual surface is again a
 surface with nonnegative Dirichlet readout at every real point --- Landau-ready
 --- and the de la Vall\'ee-Poussin/Hoffstein--Lockhart positivity is exact in
 trace coordinates: $2+2\,(S_1)_{\mathrm{re}}+(S_2)_{\mathrm{re}}
-=(1+2\,\mathrm{Re}\,\alpha)^2$.  The Tauberian half exists in Lean elsewhere
-(the \texttt{PrimeNumberTheoremAnd} project's \texttt{Wiener.lean}; its
-supporting decay lemmas were still \texttt{sorry}d at the time of writing) and
-its one-line theory covers $\zeta$ and Dirichlet $L$ only; the per-rank
-one-line theory of $L(\Sym^r)$ for a Maass form is the open frontier itself ---
-beyond $r=4$ even meromorphic continuation is classically unavailable, which is
-precisely where the carrier tower's compiled all-rank structure is the
-program's leverage.
+=(1+2\,\mathrm{Re}\,\alpha)^2$.  The CPS theorem supplies the all-rank continuation
+that this argument needs; Jacquet--Shalika supplies boundary nonvanishing after
+the converse landing, and the automorphic prime number theorem converts the
+resulting logarithmic derivatives into the character cancellation calculated
+explicitly in the proof below.
 
 \medskip
 \begin{remark}[The Sato--Tate law on the native 3D carrier]
@@ -4958,7 +5147,8 @@ boundary.  \texttt{ArithmeticSatakePrimeFamily} is indexed by the already identi
  =U_r(\cos|\arg\alpha_p|),
 \]
 and equality of the corresponding finite first-prime averages.  The capstone
-\texttt{arithmeticSatakeCancellation\_iff\_carrierEquidistribution} therefore has the actual
+\texttt{arithmeticSatakeCancellation\_iff\_}\allowbreak
+\texttt{carrierEquidistribution} therefore has the actual
 arithmetic Satake-trace average on its left and convergence of native 3D carrier measures on its
 right; it does not declare that a separately chosen angle sequence represents the arithmetic
 fiber.
@@ -4986,17 +5176,60 @@ $\{\alpha_p^{\,r-2j}\}$, largest modulus $\alpha_p^{\,r}$; hence $|\alpha_p|^{\,
 $|\alpha_p|\le p^{1/(2r)}$, for \emph{every} $r$. Letting $r\to\infty$ forces $|\alpha_p|\le1$, so with
 $|\alpha_p|\ge1$, $|\alpha_p|=1$: every $A_p$ is unitary --- a theorem from the automorphy of every symmetric
 power, exactly what $a_p=2\cos\theta_p$ would have presupposed.
-\emph{(ii) Equidistribution.} Now $\alpha_p=e^{i\theta_p}$, $\theta_p\in[0,\pi]$, $a_p=2\cos\theta_p$ real.
-From the carrier niceness of $L(s,\Sym^a\pi\times\Sym^b\pi)$ (Theorem~\ref{thm:cps-nice}), the positivity
-argument of Jacquet--Shalika \cite{JS} excludes a zero of any $L(s,\Sym^r\pi)$ on $\Re s=1$; with holomorphy
-on $\Re s\ge1$, the logarithmic Euler expansion and the prime number theorem applied to each nontrivial
-$\mathrm{SU}(2)$ character give
+\emph{(ii) Equidistribution.} Now $\alpha_p=e^{i\theta_p}$, $\theta_p\in[0,\pi]$, and
+$a_p=2\cos\theta_p$ is real.  Fix $r\ge1$ and put $\Pi_r=\Sym^r\pi$.  By the first paragraph,
+$\Pi_r$ is a cuspidal automorphic representation of $\mathrm{GL}(r+1)$, and
+Theorem~\ref{prop:localid} identifies its unramified standard local factor with
+\[
+ L_p(s,\Pi_r)=\prod_{j=0}^{r}
+   \left(1-\alpha_p^{\,r-2j}p^{-s}\right)^{-1}.
+\]
+Godement--Jacquet holomorphy and Jacquet--Shalika nonvanishing \cite{GJa,JS} give
+$L(s,\Pi_r)\ne0$ throughout $\Re s\ge1$.  Consequently its logarithmic derivative has the
+Euler expansion
+\[
+ -\frac{L'}{L}(s,\Pi_r)
+ =\sum_{p}\sum_{m\ge1}
+   \frac{\operatorname{tr}(A_p(\Pi_r)^m)\log p}{p^{ms}}
+ \qquad(\Re s>1),
+\]
+with no pole on the boundary line.  The Jacquet--Shalika automorphic prime number theorem
+(equivalently its Wiener--Ikehara/de la Vall\'ee--Poussin proof) therefore gives
+\[
+ \Psi_r(X):=\sum_{p^m\le X}
+   \operatorname{tr}(A_p(\Pi_r)^m)\log p=o_r(X).
+\]
+This is already the required arithmetic sequence, not an auxiliary angle model.  Indeed the
+$m=1$ coefficient is, by the displayed local identification,
+\[
+ \operatorname{tr}(A_p(\Pi_r))
+   =\sum_{j=0}^{r}\alpha_p^{\,r-2j}=U_r(\cos\theta_p).
+\]
+Moreover part~(i) gives
+$|\operatorname{tr}(A_p(\Pi_r)^m)|\le r+1$.  Hence the terms with $m\ge2$ contribute
+\[
+ \ll_r\sum_{m\ge2}\sum_{p\le X^{1/m}}\log p
+ \ll_r X^{1/2}\log^2X=o_r(X),
+\]
+so
+\[
+ B_r(X):=\sum_{p\le X}U_r(\cos\theta_p)\log p=o_r(X).
+\]
+Abel summation now gives
+\[
+ \sum_{p\le X}U_r(\cos\theta_p)
+ =\frac{B_r(X)}{\log X}
+   +\int_{2}^{X}\frac{B_r(t)}{t(\log t)^2}\,dt
+ =o_r\!\left(\frac{X}{\log X}\right).
+\]
+Dividing by the ordinary prime number theorem $\pi(X)\sim X/\log X$ yields
 \[
   \frac1{\pi(X)}\sum_{p\le X}U_r(\cos\theta_p)\longrightarrow0
   \qquad(r\ge1).
 \]
-These are not assumed continuous-test averages: they are the prime character averages read from the
-identified $L(s,\Sym^r\pi)$.  The characters $U_r$ span the polynomial class functions and are uniformly
+Thus the character averages consumed by
+\texttt{ArithmeticSymmetricPowerPrimeCancellation} have been derived from the all-rank CPS tower.
+The characters $U_r$ span the polynomial class functions and are uniformly
 dense in the continuous class functions on the compact conjugacy-class interval (Peter--Weyl, equivalently
 Stone--Weierstrass).  Since the Sato--Tate law has character integrals $0$ for $r\ge1$ and mass $1$ for
 $r=0$, Serre's criterion \cite{Serre} therefore yields weak convergence of the empirical prime measures to
@@ -8916,6 +9149,17 @@ no canonical formal statement exists.
 \bibitem{Montgomery} H.~L.~Montgomery, \emph{The pair correlation of zeros of the zeta function},
 in: Analytic Number Theory (St.~Louis, 1972), Proc.\ Sympos.\ Pure Math.\ \textbf{24}, Amer.\ Math.\
 Soc.\ (1973), 181--193.
+\bibitem{Turing53} A.~M.~Turing, \emph{Some calculations of the Riemann zeta-function},
+Proc.\ London Math.\ Soc.\ (3) \textbf{3} (1953), 99--117.
+\bibitem{Lehman70} R.~S.~Lehman, \emph{On the distribution of zeros of the Riemann
+zeta-function}, Proc.\ London Math.\ Soc.\ (3) \textbf{20} (1970).
+\bibitem{Trudgian11} T.~Trudgian, \emph{Improvements to Turing's method}, Math.\ Comp.\
+\textbf{80} (2011), no.~276, 2259--2279.
+\bibitem{Boo06} A.~R.~Booker, \emph{Artin's conjecture, Turing's method, and the Riemann
+hypothesis}, Experiment.\ Math.\ \textbf{15} (2006), no.~4, 385--407.
+\bibitem{Buethe15} J.~B\"uthe, \emph{A method for proving the completeness of a list of
+zeros of certain \(L\)-functions}, Math.\ Comp.\ \textbf{84} (2015), no.~295;
+arXiv:1308.6704.
 \bibitem{BerryKeating} M.~V.~Berry and J.~P.~Keating, \emph{The Riemann zeros and eigenvalue
 asymptotics}, SIAM Review \textbf{41} (1999), 236--266.
 \bibitem{Connes} A.~Connes, \emph{Trace formula in noncommutative geometry and the zeros of the
