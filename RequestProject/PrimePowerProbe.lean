@@ -180,21 +180,69 @@ each carrying `‖F n‖`.)
 -/
 theorem cup_self_eq_two_energy (F : ℕ →₀ ℂ) :
     Cup F F = ((2 * ∑ n ∈ F.support, ‖F n‖ ^ 2 : ℝ) : ℂ) := by
-  simp_all +decide [ Cup, inner ];
-  simp +decide [ Dop, Finsupp.sum, mul_comm ];
-  rw [ show ( iotaR F - Jconj ( iotaL F ) |> Finsupp.support ) = ( F.support.image ( fun n => 2 * n ) ) ∪ ( F.support.image ( fun n => 2 * n + 1 ) ) from ?_ ];
-  · rw [ Finset.sum_union ];
-    · rw [ Finset.sum_image, Finset.sum_image ] <;> norm_num [ iotaR, iotaL, Jconj ];
-      rw [ ← Finset.sum_add_distrib ] ; rw [ Finset.mul_sum ] ; refine' Finset.sum_congr rfl fun x hx => _ ; simp +decide [ Finsupp.embDomain_apply, embR, embL ] ; ring;
-      split_ifs <;> norm_num [ Complex.mul_conj, Complex.normSq_eq_norm_sq ] ; ring; all_goals omega;
-    · norm_num [ Finset.disjoint_right ];
-      intros; omega;
-  · ext n; simp +decide [ Finsupp.mem_support_iff ] ;
-    unfold iotaR iotaL Jconj; simp +decide [ Finsupp.embDomain_apply ] ;
-    split_ifs <;> simp_all +decide [ sub_eq_zero, embR, embL ];
-    · grind +splitIndPred;
-    · grind;
-    · grind +splitIndPred
+  classical
+  -- The two legs of `Dop F`: `F n` on the even site `2n`, `−conj (F n)` on the odd site `2n+1`.
+  have hRapp : ∀ n : ℕ, Finsupp.embDomain embR F (2 * n) = F n :=
+    fun n => Finsupp.embDomain_apply_self embR F n
+  have hLapp : ∀ n : ℕ, Finsupp.embDomain embL F (2 * n + 1) = F n :=
+    fun n => Finsupp.embDomain_apply_self embL F n
+  have hRzero : ∀ n : ℕ, Finsupp.embDomain embR F (2 * n + 1) = 0 := by
+    intro n
+    refine Finsupp.embDomain_of_notMem_range _ _ _ ?_
+    rintro ⟨c, hc⟩
+    have hc' : 2 * c = 2 * n + 1 := hc
+    omega
+  have hLzero : ∀ n : ℕ, Finsupp.embDomain embL F (2 * n) = 0 := by
+    intro n
+    refine Finsupp.embDomain_of_notMem_range _ _ _ ?_
+    rintro ⟨c, hc⟩
+    have hc' : 2 * c + 1 = 2 * n := hc
+    omega
+  have hR : ∀ n : ℕ, Dop F (2 * n) = F n := by
+    intro n
+    simp [Dop, iotaR, iotaL, Jconj, Finsupp.sub_apply, Finsupp.mapRange_apply, hRapp, hLzero]
+  have hL : ∀ n : ℕ, Dop F (2 * n + 1) = -(starRingEnd ℂ) (F n) := by
+    intro n
+    simp [Dop, iotaR, iotaL, Jconj, Finsupp.sub_apply, Finsupp.mapRange_apply, hRzero, hLapp]
+  -- so the defect is supported on the two disjoint images of the carrier support
+  have hsupp : (Dop F).support ⊆
+      F.support.image (fun n => 2 * n) ∪ F.support.image (fun n => 2 * n + 1) := by
+    intro i hi
+    have hi' : Dop F i ≠ 0 := Finsupp.mem_support_iff.mp hi
+    rcases Nat.even_or_odd i with he | ho
+    · obtain ⟨m, hm⟩ := he
+      have hm' : i = 2 * m := by omega
+      subst hm'
+      refine Finset.mem_union_left _ (Finset.mem_image.mpr ⟨m, ?_, rfl⟩)
+      exact Finsupp.mem_support_iff.mpr fun h0 => hi' (by rw [hR m, h0])
+    · obtain ⟨m, hm⟩ := ho
+      subst hm
+      refine Finset.mem_union_right _ (Finset.mem_image.mpr ⟨m, ?_, rfl⟩)
+      exact Finsupp.mem_support_iff.mpr fun h0 => hi' (by rw [hL m, h0]; simp)
+  have hdisj : Disjoint (F.support.image (fun n => 2 * n))
+      (F.support.image (fun n => 2 * n + 1)) := by
+    rw [Finset.disjoint_left]
+    intro a ha hb
+    obtain ⟨x, _, hx⟩ := Finset.mem_image.mp ha
+    obtain ⟨y, _, hy⟩ := Finset.mem_image.mp hb
+    omega
+  rw [Cup, CriticalLinePhasor.UnconditionalFrobenius.inner_eq_sum_of_subset _ _ hsupp,
+    Finset.sum_union hdisj,
+    Finset.sum_image (fun x _ y _ h => by omega),
+    Finset.sum_image (fun x _ y _ h => by omega)]
+  -- each site contributes exactly `‖F n‖²`
+  have heven : ∀ x ∈ F.support,
+      (starRingEnd ℂ) (Dop F (2 * x)) * Dop F (2 * x) = ((‖F x‖ ^ 2 : ℝ) : ℂ) := by
+    intro x _
+    rw [hR x, ← Complex.normSq_eq_conj_mul_self, Complex.normSq_eq_norm_sq]
+  have hodd : ∀ x ∈ F.support,
+      (starRingEnd ℂ) (Dop F (2 * x + 1)) * Dop F (2 * x + 1) = ((‖F x‖ ^ 2 : ℝ) : ℂ) := by
+    intro x _
+    rw [hL x, map_neg, Complex.conj_conj, neg_mul_neg, Complex.mul_conj,
+      Complex.normSq_eq_norm_sq]
+  rw [Finset.sum_congr rfl heven, Finset.sum_congr rfl hodd]
+  push_cast
+  ring
 
 /-- The **truncated probe fibre**: the prime-power ledger weights at the sites `n < N`. -/
 def probeFibre (σ h : ℝ) (N : ℕ) : ℕ →₀ ℂ :=

@@ -191,7 +191,8 @@ theorem generalizedVonMangoldt_eq_primePowerRestriction3D
   let g := complexLogWeight3D A * I
   let H := primePowerRestriction3D g
   have hg1 : g 1 = 0 := by
-    simp [g, complexLogWeight3D, I]
+    rw [show g = complexLogWeight3D A * I from rfl, ArithmeticFunction.mul_apply_one]
+    simp [complexLogWeight3D]
   have hgA : g * A = complexLogWeight3D A := by
     calc
       g * A = complexLogWeight3D A * (I * A) := by simp [g]; ring

@@ -268,8 +268,7 @@ faithful) character `ψ₀ = ZMod.stdAddChar` — the concrete complex lane of f
 noncomputable def laneChar (ε : Fin g → ZMod N) : AddChar (Fin g → ZMod N) ℂ :=
   AddChar.toAddMonoidHomEquiv.symm ((AddChar.toAddMonoidHomEquiv ZMod.stdAddChar).comp (dotHom ε))
 
-lemma laneChar_apply (ε x : Fin g → ZMod N) : laneChar ε x = ZMod.stdAddChar (dot ε x) := by
-  simp [laneChar, dotHom]
+lemma laneChar_apply (ε x : Fin g → ZMod N) : laneChar ε x = ZMod.stdAddChar (dot ε x) := rfl
 
 /-- **The bridge**: analytic freeze of the lane `χ_ε` on `H` (zero variance) ⟺ the algebraic
 annihilation `∀ h ∈ H, ⟨ε, h⟩ = 0`.  Uses only that `ZMod.stdAddChar` is faithful

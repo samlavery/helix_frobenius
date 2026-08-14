@@ -68,8 +68,7 @@ theorem e8inv_mul_e8 : e8inv * e8 = 1 := by decide
 lattice regulator is exactly `±1` (Shioda: `= 1`). -/
 theorem regulator_unimodular : IsUnit e8.det := by
   refine isUnit_of_dvd_one ⟨e8inv.det, ?_⟩
-  rw [← Matrix.det_mul, Matrix.mul_eq_one_comm.mp e8inv_mul_e8,
-      Matrix.det_one]
+  rw [mul_comm, ← Matrix.det_mul, e8inv_mul_e8, Matrix.det_one]
 
 /-- The height coordinates `⟨P_l, z⟩` of a Mordell–Weil class against the
 generator basis: the E₈ Gram applied to `z`. -/
@@ -143,7 +142,7 @@ noncomputable def mwRealization :
     apply heightCoord_eq_zero
     funext l
     have h1 : toModelFun z l 1 = 0 := congrFun (congrFun h0 l) 1
-    simp only [toModelFun, if_pos rfl] at h1
+    simp only [toModelFun] at h1
     exact_mod_cast h1
 
 /-- **Exact regulator compatibility, as a theorem**: the moment-zero tower

@@ -169,8 +169,7 @@ noncomputable def pairIndexEquivOnLine :
   refine Equiv.ofBijective
     (fun x => ⟨zeroOfSub x, zeroOf_re x⟩) ⟨?_, ?_⟩
   · intro x y hxy
-    simp only [Subtype.mk.injEq] at hxy
-    exact zeroOfSub_injective hxy
+    exact zeroOfSub_injective (congrArg Subtype.val hxy)
   · rintro ⟨⟨ρ, hρ⟩, hre⟩
     have hre' : ρ.re = 1 / 2 := hre
     have htriv : ∀ n : ℕ, ρ ≠ -2 * ((n : ℂ) + 1) := by

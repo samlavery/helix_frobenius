@@ -46,6 +46,32 @@ noncomputable def maassWaveCoordinates (M : MaassEigenData) (K : ℝ → ℂ) :
 noncomputable def maassWave (M : MaassEigenData) (K : ℝ → ℂ) : UpperHalfPlane → ℂ :=
   waveFormH (maassFourierCoefficient M) K
 
+/-- **The radial data as the pre-repair `radial_equation` stated it**: the modified Bessel equation
+with its first-order term `y·K'` dropped, together with the decay and normalization that a genuine
+Whittaker kernel must satisfy.
+
+This bundle is kept, and named, because it is provably **uninhabited**
+(`firstOrderFreeRadialData_false`): no kernel obeying it can also decay and carry the standard
+Whittaker normalization `2√y·e^{2πy}·K(y) → 1`.  That is the certificate that the dropped term was
+load-bearing, and it is why `GenuineMaassCuspForm3D.radial_equation` now carries it.
+
+The mechanism is `sqrt_weight_sign_flip`: writing `S = 2√y·e^{2πy}·K`, this equation gives
+`S'' − 4πS' = c·S/y²` with `c = +r² ≥ 0`, while the true Whittaker equation gives
+`c = −(1/4 + r²) < 0`.  `no_positive_decaying_solution` rules out exactly `c ≥ 0`. -/
+structure FirstOrderFreeRadialData where
+  spectralParameter : ℝ
+  radialKernel : ℝ → ℂ
+  radial_smooth : ∀ k : ℕ, ContDiffOn ℝ k radialKernel (Set.Ioi 0)
+  radial_equation : ∀ y : ℝ, 0 < y →
+    (y : ℂ) ^ 2 * iteratedDeriv 2 radialKernel y =
+      (((2 * Real.pi * y) ^ 2 + spectralParameter ^ 2 : ℝ) : ℂ) * radialKernel y
+  radial_decay : Tendsto radialKernel atTop (nhds 0)
+  radial_normalization :
+    Tendsto
+      (fun y : ℝ ↦
+        ((2 * Real.sqrt y * Real.exp (2 * Real.pi * y) : ℝ) : ℂ) * radialKernel y)
+      atTop (nhds 1)
+
 /-- A normalized nonzero even level-one Hecke--Maass cusp form.
 
 The radial kernel is characterized on the positive ray by the modified Bessel
@@ -58,8 +84,8 @@ structure GenuineMaassCuspForm3D where
   radialKernel : ℝ → ℂ
   radial_smooth : ∀ k : ℕ, ContDiffOn ℝ k radialKernel (Set.Ioi 0)
   radial_equation : ∀ y : ℝ, 0 < y →
-    (y : ℂ) ^ 2 * iteratedDeriv 2 radialKernel y =
-      (((2 * Real.pi * y) ^ 2 + spectralParameter ^ 2 : ℝ) : ℂ) * radialKernel y
+    (y : ℂ) ^ 2 * iteratedDeriv 2 radialKernel y + (y : ℂ) * deriv radialKernel y =
+      (((2 * Real.pi * y) ^ 2 - spectralParameter ^ 2 : ℝ) : ℂ) * radialKernel y
   radial_decay : Tendsto radialKernel atTop (nhds 0)
   radial_normalization :
     Tendsto

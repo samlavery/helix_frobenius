@@ -131,7 +131,16 @@ and vanishes. The crossing produces **two outputs**:
 One crossing → one harmonic → one zero. Counts match. Heights match (both produced
 at the same crossing height `z`). The eigenvalue carries the zero's identity (which
 zero); the height carries its location (where on the helix). Self-adjointness forces
-the eigenvalue/harmonic to be real. The sign flip at the crossing forces `Re = 1/2`. -/
+the eigenvalue/harmonic to be real.
+
+**Scope (2026-08-11).** The paragraph above describes the intended geometry; it is not
+what the structure below records. `ZetaZero3D` carries **no ζ-vanishing condition** — it
+is a `HelixPoint` paired with a natural number, so any helix point and any index inhabit
+it. Correspondingly `HelixPoint.sourceCoord` and `ZetaZero2D.angleCoord` are **constant
+functions** (they discard their argument and return the midpoint), so the downstream
+`Re = 1/2` facts record the chart convention **by construction** and derive nothing about
+zeros of ζ. Nothing outside this file references `ZetaZero3D`, `ZetaZero2D` or `to1D`:
+this block is a dormant coordinate scaffold, and no result in the repository rests on it. -/
 structure ZetaZero3D where
   point : HelixPoint
   /-- The harmonic index: which harmonic this crossing produces (the n in nπ).
@@ -154,7 +163,8 @@ structure ZetaZero2D where
   w_on_circle : ‖w‖ = 1
 
 /-- The 2D midpoint is structural: the projected zero sits at `MIDPOINT_2D`
-in the unit-circle angle chart. -/
+in the unit-circle angle chart.  This is a constant function — it discards its
+argument — so it stipulates the chart position rather than computing it. -/
 noncomputable def ZetaZero2D.angleCoord (_z2 : ZetaZero2D) : ℝ := MIDPOINT_2D
 
 /-! ### 2D → 1D projection
@@ -166,13 +176,15 @@ in Mathlib's nontrivial zero set. No wrapper structure for 1D; use Mathlib's def
 - `im = y` where `w = exp(iy)` — the log unwrap of the 2D phase gives the pure-imaginary
   ordinate `iy` on the critical line -/
 
-/-- **2D → 1D projection**: the strip coordinate from a 2D zero. `Re = 1/2` from the
-midpoint chain, `Im = y` from the log-unwrapped phase `w = exp(iy)`. -/
+/-- **2D → 1D projection**: the strip coordinate from a 2D zero. `Re = 1/2` records the
+midpoint chart convention (`angleCoord` is constant), `Im = y` comes from the
+log-unwrapped phase `w = exp(iy)`. -/
 noncomputable def ZetaZero2D.to1D (z2 : ZetaZero2D) (y : ℝ)
     (_log_unwrap : z2.w = Complex.exp (Complex.I * (y : ℂ))) : ℂ :=
   ⟨arcChartInv z2.angleCoord, y⟩
 
-/-- The 1D projection has `Re = 1/2`, derived from the 2D midpoint. -/
+/-- The 1D projection has `Re = 1/2`, recorded by the constant 2D midpoint chart
+(`angleCoord` discards its argument), not derived from any property of ζ. -/
 theorem ZetaZero2D.to1D_re (z2 : ZetaZero2D) (y : ℝ)
     (h : z2.w = Complex.exp (Complex.I * (y : ℂ))) :
     (z2.to1D y h).re = 1 / 2 := mid_2D_to_1D

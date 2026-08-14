@@ -88,6 +88,16 @@ theorems of this file are unconditional statements about the line ledger.
   `N_pi3(e^t) − N_1(e^t) = S(t)`, with `S` the accumulated registration gap and
   `count_decomposition` its classical shape `N(t) = 1 + ϑ(t)/π + S(t)`.
   `S_has_no_native_carrier`: `S` is registration bookkeeping — no native oscillatory state.
+  *Which harmonic scale names the box.*  The box is stated at `π/3` because that is where
+  the realization of §4 is anchored (`native_identification`).  The trivial character's own
+  fiber cell is `π/6` (`μ₁₂`) — the eta-regulated principal reading lands there — and the
+  `π/6`-stated form is the **same theorem**, not a weaker one: `Sgap_pi6_one` and
+  `unit_tracks_pi6` give `N_{π/6}(e^t) − N_1(e^t) = S(t)` verbatim, because the whole
+  harmonic family registers identically (`Sgap_pi_div = 0`, §7).  The event channel reads
+  the arc-set *indicator*, which is `1` at every `π/m` (`pi_div_channel_open`); it does not
+  read the cell resolution.  So the scale in the box is a naming choice with no
+  mathematical content — what is *not* gauge is the cell (`μ₆` vs `μ₁₂`), and the count
+  does not read it.
 
 * **§6 Exhaustion — proven, consumed.**  The 3-D event space is the height ray, and its
   exhaustion is a *theorem* (`SourceHolonomy.threeD_exhaustive`): every event is weld-fixed,
@@ -989,7 +999,12 @@ differs by exactly the term the 1-D chart calls `S(t)` — the correction the un
 carry because it can never re-synchronize with the native registration
 (`lattice_gap_fundamental`, `unit_never_closes`).  Both counts are derived from their
 realizations (`native_identification'`, `unit_identification`); nothing here depends on
-where any zero lies. -/
+where any zero lies.
+
+The `π/3` here is the scale at which §4's realization is anchored, **not** a claim that
+`π/3` is ζ's aligned cell: the trivial character's own cell is `π/6` (`μ₁₂`).  That costs
+nothing, because the identical statement at `π/6` is proven — `Sgap_pi6_one`,
+`unit_tracks_pi6` — and the intra-family gap vanishes at every pair (`Sgap_pi_div`). -/
 theorem carrier_scale_compensation_S (t : ℝ) :
     N_pi3 (Real.exp t) - N_1 (Real.exp t) = S t := by
   unfold S
@@ -1020,9 +1035,17 @@ space; nothing is left out, unconditionally. -/
 event space). -/
 noncomputable def heightFiber (z : ℂ) : ℂ := riemannZeta (lineC z)
 
-/-- **Every registered closure event is a source — unconditional** (consumes the proven 3-D
-exhaustion `SourceHolonomy.threeD_exhaustive`): over the height ray, the 3-D object's entire
-event space, every closure event of the native count is weld-fixed and sourced. -/
+/-- **Every registered closure event is a source — unconditional** (consumes
+`SourceHolonomy.threeD_exhaustive`): over the height ray, the 3-D object's entire
+event space, every closure event of the native count is weld-fixed and sourced.
+
+Caveat, carried over from the source file so it is not lost at the citation site:
+`threeD_exhaustive` is `fun y h => ⟨h, Complex.conj_ofReal y⟩` — the weld-fixedness half is
+automatic because the height parameter is **real by typing**, so the theorem is trivial.
+As `SourceHolonomy.lean` puts it, "the triviality of this proof is the ontology made formal:
+in 3D there is nowhere else for a zero to happen."  So "unconditional" here means the height
+ray *is* the weld, and this statement carries no information about vanishings off it; the
+substantive target remains `SourceHolonomy.Exhaustive` over all of `ℂ`. -/
 theorem native_events_sourced (γ : ℝ) (h : NativeClosure γ) :
     SourceHolonomy.IsSource heightFiber (γ : ℂ) :=
   SourceHolonomy.threeD_exhaustive heightFiber γ

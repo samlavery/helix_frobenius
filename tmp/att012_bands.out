@@ -1,0 +1,46 @@
+================================================================================================
+ATTEMPT 012 stage 3 -- band split on the tape, and the recalibrated Selberg asymptotic
+================================================================================================
+
+EXACT TAPE FOURIER SPLIT of Var(S) at the Heisenberg edge tau = 1
+         T  Var_u total  tau<1 band  V_line pred   ratio  t>1 meas     tail   t>1 tot   /pred     Var_t
+     1e+03     0.165297    0.114111     0.114097  1.0001  0.048652 0.002533  0.051186  1.0104  0.165003
+     1e+04     0.174382    0.123114     0.122747  1.0030  0.048736 0.002533  0.051269  1.0120  0.174374
+     1e+05     0.186333    0.135111     0.135399  0.9979  0.048689 0.002533  0.051222  1.0111  0.186333
+     1e+06     0.197010    0.145605     0.146115  0.9965  0.048871 0.002533  0.051404  1.0147  0.197010
+     1e+07     0.205389    0.153822     0.155014  0.9923  0.049034 0.002533  0.051568  1.0179  0.205389
+  ('tau>1 meas' is the honestly measured band 1 <= tau <= 20; 'tail' is the only assumed part,
+   the K=1 continuation beyond tau=20, worth 1/(2 pi^2 * 20) = 0.002533 = ~5% of the band.)
+
+RESIDUAL, two definitions (t-measure, from stage 1 quantities recomputed here):
+         T      Var S   V_L exact  Var S - V_L  /(1/2pi^2)
+     1e+03   0.165003    0.114097     0.050905      1.0048
+     1e+04   0.174374    0.122747     0.051627      1.0191
+     1e+05   0.186333    0.135399     0.050934      1.0054
+     1e+06   0.197010    0.146115     0.050894      1.0046
+     1e+07   0.205389    0.155014     0.050375      0.9944
+  --> mean 0.050947  sd 0.000446  vs 1/(2pi^2) = 0.050661   mean/pred = 1.0057   no trend with T (range 0.050375..0.051627)
+
+------------------------------------------------------------------------------------------------
+ITEM 4 (recalibrated).  The exact finite-height variance is now
+      V(T) = (1/(2 pi^2)) [ log L + M + C_pp + 1 + eps(T) ],   L = log(T/2 pi),  M+C_pp = 0.4009679
+  so the classical asymptotic (1/(2 pi^2)) log log T carries a relative deficit
+      (1 + M + C_pp + log(1 - log(2pi)/log T)) / log log T   ->   1.4009679 / log log T.
+------------------------------------------------------------------------------------------------
+           T  measured Var  exact V(T)  asymptotic  asym/exact  asym/meas
+       1e+03      0.165003    0.164758    0.097909      0.5943     0.5934
+       1e+04      0.174374    0.173408    0.112483      0.6487     0.6451
+       1e+05      0.186333    0.186060    0.123788      0.6653     0.6643
+       1e+06      0.197010    0.196776    0.133024      0.6760     0.6752
+       1e+07      0.205389    0.205675    0.140834      0.6847     0.6857
+
+  Selberg's log log T asymptotic reaches   10% accuracy only at log log T = 14.0097,  log T = 1.21428e+06,  T = 10^527356
+  Selberg's log log T asymptotic reaches    5% accuracy only at log log T = 28.0194,  log T = 1.47453e+12,  T = 10^6.40378e+11
+  Selberg's log log T asymptotic reaches    1% accuracy only at log log T = 140.0968,  log T = 6.97045e+60,  T = 10^3.02723e+60
+
+  (for contrast, the line-sum-only calibration of stage 1, which OMITS the +1/(2pi^2):
+       10%: log T = 27.8636, T = 10^12.101)
+        5%: log T = 3002.23, T = 10^1303.85)
+        1%: log T = 2.59306e+17, T = 10^1.12615e+17)
+
+(stage 3 done)

@@ -141,11 +141,20 @@ theorem closure_not_fibre_collapse (F : ℕ →₀ ℂ) :
 zero.  Hence the closure deletes **no** arithmetic content.
 -/
 theorem dop_eq_zero_iff_carrier_zero (F : ℕ →₀ ℂ) : Dop F = 0 ↔ F = 0 := by
-  constructor <;> intro hF <;> simp_all +decide [ Dop, Finsupp.ext_iff ];
-  · intro n; specialize hF ( 2 * n ) ; simp_all +decide [ iotaR, iotaL, Jconj, Finsupp.embDomain_apply ] ;
-    split_ifs at hF <;> simp_all +decide [ embR, embL ];
-    obtain ⟨ a, ha ⟩ := ‹∃ a, embL a = 2 * n›; simp_all +decide [ embL ] ; omega;
-  · simp +decide [ show F = 0 from Finsupp.ext hF, iotaR, iotaL, Jconj ]
+  constructor
+  · intro hF
+    ext m
+    have hR : iotaR F (2 * m) = F m := Finsupp.embDomain_apply_self embR F m
+    have hL : iotaL F (2 * m) = 0 :=
+      Finsupp.embDomain_of_notMem_range embL F _ (by
+        rintro ⟨a, ha⟩
+        have ha' : 2 * a + 1 = 2 * m := ha
+        omega)
+    have h2 : Dop F (2 * m) = 0 := by rw [hF]; simp
+    simp only [Dop, Jconj, Finsupp.sub_apply, Finsupp.mapRange_apply, hR, hL] at h2
+    simpa using h2
+  · rintro rfl
+    simp [Dop, iotaR, iotaL, Jconj]
 
 /-
 **The closure preserves arithmetic content (unconditional).**  A nonzero carrier never lies in

@@ -1,0 +1,88 @@
+=== /tmp/adv5.out ===
+gate: lam_gen(0.5,t) must reproduce lam_scaled(t) (the on-line engine), and
+      Lambda(sigma+it) = Lambda(1-sigma-it)* must hold (functional equation + reality):
+   sigma=0.5 t=37.4: lam_gen 0.790891096497 (im 0.00e+00)  lam_scaled 0.790891096497
+   sigma=  0.5 t=   37.4: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=0.5 t=151.9: lam_gen 0.253404026546 (im 0.00e+00)  lam_scaled 0.253404026546
+   sigma=  0.5 t=  151.9: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=  1.3 t=   61.2: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma= -0.4 t=   88.8: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=  1.9 t=  133.1: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+
+A. argument principle on sigma in [-1,2], t in [10.0,200.0]
+   theta_Q count = 253.15;  on-line sign changes: F 205, L(f) 254
+       F: nv=4000 -> N = 253.0000   (max phase step 0.248 rad, must be < pi)   [1s]
+       F: nv=8000 -> N = 253.0000   (max phase step 0.124 rad, must be < pi)   [4s]
+    L(f): nv=4000 -> N = 254.0000   (max phase step 0.253 rad, must be < pi)   [1s]
+    L(f): nv=8000 -> N = 254.0000   (max phase step 0.127 rad, must be < pi)   [3s]
+GATE A  028's rotated engine (on the line) vs my unrotated gammainc AFE, specimen F
+   t=   12.0  engine       -1.4716632296798   mine       -1.4716632296798   rel 7.544e-15
+   t=   37.4  engine       0.79089109649682   mine       0.79089109649685   rel 3.074e-14
+   t=  100.0  engine        8.0274060217764   mine        8.0274060217765   rel 1.638e-14
+   t=  151.9  engine       0.25340402654591   mine       0.25340402654565   rel 1.033e-12
+   t=  200.0  engine        16.253386186719   mine        16.253386186719   rel 1.421e-14
+   t=  300.0  engine     -0.080205507568361   mine     -0.080205507568165   rel 2.443e-12
+
+GATE B  028's lam_gen OFF the critical line vs my AFE, specimen F
+   s=+0.800000+25.00000i  engine 0.04621307997-4.866915831j  mine 0.04621307997-4.866915831j  rel 4.762e-15
+   s=+1.300000+40.00000i  engine -27.81775014-19.19033643j  mine -27.81775015-19.19033643j  rel 9.887e-15
+   s=-0.400000+18.00000i  engine 16.79259114+28.70465788j  mine 16.79259114+28.70465788j  rel 2.564e-15
+   s=+0.953260+16.29022i  engine -5.110292284e-08-3.953443462e-08j  mine -5.110291664e-08-3.953443037e-08j  rel 1.164e-07
+   s=+0.700000+120.00000i  engine 4.735264851+4.317311749j  mine 4.735264851+4.317311749j  rel 4.352e-14
+
+GATE C  |F(rho)| at 028's claimed off-line zeros, MY evaluator (F = Lambda/((sqrt23/2pi)^s Gamma(s)))
+   rho = 0.95326047 + 16.29021572i :  |F(rho)| =   3.7877e-15   |F(rho+0.25i)| =    0.52331   ratio 7.238e-15
+   rho = 0.79799716 + 29.55176110i :  |F(rho)| =   2.6529e-15   |F(rho+0.25i)| =    0.52221   ratio 5.08e-15
+   rho = 0.66365168 + 33.65010058i :  |F(rho)| =   3.6109e-15   |F(rho+0.25i)| =    0.46151   ratio 7.824e-15
+   rho = 0.80999153 + 43.85866437i :  |F(rho)| =   4.3313e-15   |F(rho+0.25i)| =    0.42788   ratio 1.012e-14
+   rho = 0.78237858 + 46.96099367i :  |F(rho)| =   5.1744e-15   |F(rho+0.25i)| =    0.20808   ratio 2.487e-14
+   rho = 0.80865997 + 61.68790377i :  |F(rho)| =   7.6251e-15   |F(rho+0.25i)| =    0.39799   ratio 1.916e-14
+   rho = 0.84987910 + 64.43482894i :  |F(rho)| =   6.7094e-15   |F(rho+0.25i)| =    0.45328   ratio 1.48e-14
+   rho = 0.71364054 + 75.08120418i :  |F(rho)| =   1.7619e-14   |F(rho+0.25i)| =    0.63862   ratio 2.759e-14
+   rho = 0.79576903 + 79.59854966i :  |F(rho)| =    2.146e-14   |F(rho+0.25i)| =    0.68438   ratio 3.136e-14
+   rho = 0.73049816 + 89.51810598i :  |F(rho)| =    2.838e-14   |F(rho+0.25i)| =    0.57015   ratio 4.978e-14
+   rho = 0.59292969 + 173.25125603i :  |F(rho)| =    2.955e-14   |F(rho+0.25i)| =    0.42122   ratio 7.015e-14
+   rho = 0.72751130 + 288.75904338i :  |F(rho)| =   1.5062e-13   |F(rho+0.25i)| =    0.80132   ratio 1.88e-13
+   rho = 0.77043691 + 401.14925441i :  |F(rho)| =   9.5791e-14   |F(rho+0.25i)| =    0.37988   ratio 2.522e-13
+   rho = 0.62210440 + 499.71143051i :  |F(rho)| =   9.0973e-14   |F(rho+0.25i)| =    0.25105   ratio 3.624e-13
+   rho = 0.52674475 + 596.85618024i :  |F(rho)| =   3.4321e-12   |F(rho+0.25i)| =       1.12   ratio 3.064e-12
+=== /tmp/adv6.out ===
+theta_Q count [10.0,600.0] = 975.8589
+   zetaK step 0.04   sign changes   952   deficit  +23.86   [1s]
+   zetaK step 0.01   sign changes   970   deficit   +5.86   [2s]
+   zetaK step 0.004  sign changes   976   deficit   -0.14   [6s]
+   zetaK step 0.001  sign changes   976   deficit   -0.14   [25s]
+      Lf step 0.04   sign changes   976   deficit   -0.14   [1s]
+      Lf step 0.01   sign changes   976   deficit   -0.14   [3s]
+      Lf step 0.004  sign changes   976   deficit   -0.14   [6s]
+      Lf step 0.001  sign changes   976   deficit   -0.14   [68s]
+       F step 0.04   sign changes   768   deficit +207.86   [1s]
+       F step 0.01   sign changes   770   deficit +205.86   [2s]
+       F step 0.004  sign changes   770   deficit +205.86   [6s]
+       F step 0.001  sign changes   770   deficit +205.86   [21s]
+=== /tmp/adv8.out ===
+gate: lam_gen(0.5,t) must reproduce lam_scaled(t) (the on-line engine), and
+      Lambda(sigma+it) = Lambda(1-sigma-it)* must hold (functional equation + reality):
+   sigma=0.5 t=37.4: lam_gen 0.790891096497 (im 0.00e+00)  lam_scaled 0.790891096497
+   sigma=  0.5 t=   37.4: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=0.5 t=151.9: lam_gen 0.253404026546 (im 0.00e+00)  lam_scaled 0.253404026546
+   sigma=  0.5 t=  151.9: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=  1.3 t=   61.2: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma= -0.4 t=   88.8: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+   sigma=  1.9 t=  133.1: |Lambda(s) - conj Lambda(1-sigma+it)| / |Lambda| = 0.00e+00
+
+A. argument principle on sigma in [-1,2], t in [10.0,200.0]
+   theta_Q count = 253.15;  on-line sign changes: F 205, L(f) 254
+       F: nv=4000 -> N = 253.0000   (max phase step 0.248 rad, must be < pi)   [1s]
+       F: nv=8000 -> N = 253.0000   (max phase step 0.124 rad, must be < pi)   [3s]
+    L(f): nv=4000 -> N = 254.0000   (max phase step 0.253 rad, must be < pi)   [1s]
+    L(f): nv=8000 -> N = 254.0000   (max phase step 0.127 rad, must be < pi)   [3s]
+  F [10.0,300.0] nv= 16000 N=420.0000 (theta 420.09) maxstep 0.676  on-line 334 + 2*43 = 420  [3s]
+  F [10.0,300.0] nv= 30000 N=420.0000 (theta 420.09) maxstep 0.448  on-line 334 + 2*43 = 420  [6s]
+  F [10.0,300.0] nv= 48000 N=420.0000 (theta 420.09) maxstep 0.292  on-line 334 + 2*43 = 420  [10s]
+  F [10.0,600.0] nv= 16000 N=976.0000 (theta 975.86) maxstep 0.235  on-line 770 + 2*103 = 976  [3s]
+  F [10.0,600.0] nv= 30000 N=976.0000 (theta 975.86) maxstep 0.126  on-line 770 + 2*103 = 976  [6s]
+  F [10.0,600.0] nv= 48000 N=976.0000 (theta 975.86) maxstep 0.078  on-line 770 + 2*103 = 976  [10s]
+  F [300.0,600.0] nv= 16000 N=556.0000 (theta 555.76) maxstep 0.676  on-line 436 + 2*60 = 556  [3s]
+  F [300.0,600.0] nv= 30000 N=556.0000 (theta 555.76) maxstep 0.448  on-line 436 + 2*60 = 556  [6s]
+  F [300.0,600.0] nv= 48000 N=556.0000 (theta 555.76) maxstep 0.292  on-line 436 + 2*60 = 556  [10s]

@@ -77,9 +77,9 @@ theorem derivative_geometricEulerSeries_mul_linearEulerFactor (z : ℂ) :
   have hprod := geometricEulerSeries_mul_linearEulerFactor z
   have hder := congrArg PowerSeries.derivativeFun hprod
   have hlinear : PowerSeries.derivativeFun (linearEulerFactor z) = -PowerSeries.C z := by
-    ext n
-    cases n <;>
-    simp [PowerSeries.coeff_derivativeFun, linearEulerFactor]
+    show PowerSeries.derivative ℂ (linearEulerFactor z) = -PowerSeries.C z
+    rw [linearEulerFactor]
+    simp [Derivation.leibniz]
   rw [PowerSeries.derivativeFun_mul, hlinear, PowerSeries.derivativeFun_one] at hder
   simp only [smul_eq_mul] at hder
   linear_combination hder
@@ -243,8 +243,9 @@ theorem coeff_X_mul_derivativeFun (F : PowerSeries ℂ) (n : ℕ) :
   | zero => simp [PowerSeries.coeff_zero_X_mul]
   | succ k =>
       rw [show k + 1 = Nat.succ k by omega, coeff_X_mul_succ,
-        PowerSeries.coeff_derivativeFun]
-      norm_num [Nat.cast_add, Nat.cast_one]
+        show PowerSeries.derivativeFun F = PowerSeries.derivative ℂ F from rfl,
+        PowerSeries.coeff_derivative]
+      push_cast
       ring
 
 /-- The logarithmically weighted Rankin--Selberg coefficients at one prime are the formal

@@ -69,12 +69,13 @@ lemma tiles_aedisjoint : Pairwise (Function.onFun
     (MeasureTheory.AEDisjoint (volume : Measure ℍ))
     fun q : CosetQ => rep q • ModularGroup.fd) := by
   intro q q' hqq
+  have hout : ∀ p : CosetQ, Quotient.mk cosetSetoid (rep p) = p := fun p => Quotient.out_eq p
   apply fd_smul_inter_null
   · intro h
     apply hqq
     have h4 := congrArg (Quotient.mk cosetSetoid) h
-    simp only [rep] at h4
-    rwa [Quotient.out_eq, Quotient.out_eq] at h4
+    simp only [hout] at h4
+    exact h4
   · intro h
     apply hqq
     have hrel : cosetSetoid.r (rep q') (rep q) := by
@@ -83,8 +84,7 @@ lemma tiles_aedisjoint : Pairwise (Function.onFun
       exact h
     have h4 : Quotient.mk cosetSetoid (rep q') = Quotient.mk cosetSetoid (rep q) :=
       Quotient.sound hrel
-    simp only [rep] at h4
-    rw [Quotient.out_eq, Quotient.out_eq] at h4
+    simp only [hout] at h4
     exact h4.symm
 
 /-- Change of variables on a tile: integrate over the translated domain by translating the

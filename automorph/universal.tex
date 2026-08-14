@@ -2443,10 +2443,13 @@ S_{\mathrm{ev}}(t)\text{ is not an additional native oscillatory feature of the
 prime/harmonic system.}
 }
 \]
-The native system is realized on the \(\pi/3\)-scaled harmonic carrier.  The
-conventional analytic readout uses a unit-\(1\) coordinate system.  These two
-carrier scalings represent the same arithmetic procession, but they do not
-register the same crossings in the same coordinate units.
+The native system is realized on a harmonic carrier --- written below at
+\(\pi/3\), the scale at which part~(i) of Theorem~\ref{thm:carrier-scale-S} is
+proved, with the trivial character's own cell \(\pi/6\) giving the identical
+ledger (Remark~\ref{rem:which-harmonic}).  The conventional analytic readout
+uses a unit-\(1\) coordinate system.  These two carrier scalings represent the
+same arithmetic procession, but they do not register the same crossings in the
+same coordinate units.
 
 \emph{Typing convention, fixed before the theorem.} Throughout this section
 \(N_{\mathrm{ev}}(t)\) denotes the carrier's distinct event count --- the
@@ -2504,6 +2507,33 @@ displayed identity is machine-checked in
 \texttt{native\_identification'}, \texttt{unit\_identification},
 \texttt{carrier\_scale\_compensation\_S}.
 \end{theorem}
+
+\begin{remark}[Which harmonic scale names the box]\label{rem:which-harmonic}
+The theorem is stated at \(\pi/3\) because that is where the realization is
+anchored (part (i) is proved at \(\pi/3\)), \emph{not} because \(\pi/3\) is
+\(\zeta\)'s aligned cell.  It is not: the fiber-scale assignment of
+\S\ref{sec:carrier} sends the trivial character to \(\pi/6\) (the \(\mu_{12}\)
+cell, where the eta-regulated principal reading lands,
+\(\tfrac12\ln3+i\pi/6\)), and \(\pi/3\) is \(\chi_3\)'s aligned scale.  Naming
+\(\pi/6\) instead changes nothing, and this is a theorem rather than an
+expectation:
+\[
+N_{\pi/6}(e^t)-R_1(e^t)=S_{\mathrm{ev}}(t)
+\qquad(\texttt{Sgap\_pi6\_one},\ \texttt{unit\_tracks\_pi6}),
+\]
+because the whole harmonic family registers identically,
+\(S_{\pi/m,\pi/m'}=0\) (\texttt{Sgap\_pi\_div}; Theorem
+\ref{thm:harmonic-family-S}).  The reason is structural: the event channel
+reads the arc-set \emph{indicator}, which is \(1\) at every \(\pi/m\)
+(\(m\cdot(\pi/m)=\pi\), \texttt{pi\_div\_channel\_open}) --- it does not read
+the cell resolution.  At \(\pi/3\) the mark falls at \(k\equiv3\ (\mathrm{mod}\
+6)\), at \(\pi/6\) at \(k\equiv6\ (\mathrm{mod}\ 12)\): twice the cells, one
+mark per closed loop either way, the same count.  What is \emph{not} gauge is
+the cell itself (\(\mu_6\) versus \(\mu_{12}\)) --- it governs the complete-cell
+sums of Theorem~\ref{thm:g5-native-cell-closure} --- but the registered count
+does not read it, so the choice of harmonic scale is a naming convention here
+and carries no mathematical content.
+\end{remark}
 
 \begin{remark}[Register: the classical $S(t)$]\label{rem:st-register}
 What is proven above is unconditional for the distinct-event line ledger.
@@ -3747,10 +3777,82 @@ zero-density bound); absolute convergence
 \texttt{summable\_packet\_integral}; and the capstone
 \texttt{exists\_stExplicitBridge}.
 
+\begin{remark}[The arithmetic side is \(O(1)\); the constant term
+vanishes]\label{rem:st-bridge-arithmetic-side}
+Both non-zero terms of the bridge are now evaluated outright.
+
+\emph{The constant.}  \(\xi(s)=(s-1)\pi^{-s/2}\Gamma(s/2+1)\zeta(s)\) has real
+Taylor coefficients, so \(A=(\xi'/\xi)(0)\) is real:
+\[
+ A=-1-\frac{\gamma_{\mathrm E}}{2}+\log 2+\frac12\log\pi
+  =-0.023095708966121\ldots,
+\]
+the classical Hadamard constant.  Hence \(\Im A=0\) and the term
+\(-\tfrac32\Im A\) drops identically, leaving
+\[
+\boxed{\;
+\pi\,S_\Gamma(T)
+=\Im\!\Bigl(i\!\int_0^T\frac{\xi'}{\xi}(2+iy)\,dy\Bigr)
+-\sideset{}{'}\sum_{\rho}m_\rho\,P_T(\rho)
+-\vartheta(T)-\pi.\;}
+\]
+
+\emph{The arithmetic side.}  Since \(ds=i\,dy\) on the segment, the vertical
+leg is a continuous logarithm increment, \(\arg\xi(2+iT)\), which splits as
+\[
+ \arg(2+iT)+\arg(1{+}iT)-\frac T2\log\pi
+ +\Im\log\Gamma\!\Bigl(\frac{2+iT}{2}\Bigr)+\arg\zeta(2+iT),
+\]
+each branch continuous from \(0\).  Only the last term is arithmetic, and on
+\(\Re s=2\) the Euler product gives \(\log\zeta(s)=\sum_{p,k}(k\,p^{ks})^{-1}\)
+absolutely, so
+\[
+ \arg\zeta(2+iT)=-\sum_{p,k}\frac{\sin(kT\log p)}{k\,p^{2k}},
+\]
+dominated termwise by \(1/(k p^{2k})\).  Therefore, for \emph{every} \(T\),
+\[
+ \bigl|\text{arithmetic part of the vertical leg}\bigr|
+ \;\le\;\sum_{p,k}\frac1{k\,p^{2k}}=\log\zeta(2)=0.497700\ldots,
+\]
+contributing at most \(\log\zeta(2)/\pi=0.1584\) to \(S_\Gamma\).  The prime
+side of the bridge is thus bounded by an absolute constant: all growth in the
+vertical leg is archimedean, and the size of \(S\) lives entirely in the zero
+packets.
+
+\emph{The packets.}  With \(\rho=\beta+i\gamma\) and \(a=T-\gamma\),
+\(P_T(\rho)=\operatorname{atan2}(a,2-\beta)-\operatorname{atan2}(a,\tfrac12-\beta)
+-\tfrac32\Im(1/\rho)\); on the midline the middle term is a signed right angle,
+\[
+ P_T=\arctan\frac{2(T-\gamma)}3-\frac\pi2\operatorname{sgn}(T-\gamma)
+     +\frac{3\gamma/2}{\tfrac14+\gamma^2},
+\]
+and summing a conjugate pair \(\{\gamma,-\gamma\}\) cancels the \(1/\rho\)
+terms exactly, leaving a pair contribution of size \(3T/\gamma^2\) --- the
+absolute convergence of the theorem, made quantitative.
+
+\emph{Measured} (\texttt{tmp/att018\_vertical\_leg.py},
+\texttt{tmp/att019\_packets.py}).  The von Mangoldt series reproduces
+\(\arg\zeta(2+iT)\) to \(1.1\times10^{-7}\) over \(T\in[0.5,10^{6}]\); the
+bound is essentially sharp, \(\max|\arg\zeta(2+iT)|=0.4278\) over \(20{,}001\)
+samples in \(T\in[0,7400]\) with rms \(0.1975\); at \(T=10^{5}\) the \(\Gamma\)
+term is \(4.910\times10^{5}\) against an arithmetic term of \(+0.27\).  On
+\(22{,}491\) zeros to \(\gamma=20000\) (census gated by grid refinement; the
+Riemann--von Mangoldt prediction is \(22{,}491.4\)), the pair decay matches
+\(3T/\gamma^2\) to within \(0.8\%\), and the identity
+\(\sum_\rho m_\rho P_T(\rho)=\arg\xi(2+iT)-\arg\xi(\tfrac12+iT)\) --- computed
+by two disjoint routes, the left from the zeros and the closed form, the right
+from \(\Gamma\) and \(\zeta\) --- verifies with residual \(9.1\times10^{-7}\)
+at \(T=200\) (\(5.5\times10^{-7}\) relative), the residual growing as the
+second-order density tail.  Register: \emph{measured}, an independent
+reproduction of the compiled statement, never its proof.
+\end{remark}
+
 The reading: the vertical leg lives at \(\Re s=2\), inside the
 Euler-product regime --- it is the arithmetic side, and its expansion into
 the von Mangoldt series is finite bookkeeping on absolutely convergent
-data, a named next step not performed here.  Each zero contributes one
+data.  That bookkeeping is performed in
+Remark~\ref{rem:st-bridge-arithmetic-side}, where it is shown to be
+bounded by an absolute constant.  Each zero contributes one
 convergent packet; the clock \(\vartheta\) and the endpoint half-turn are
 retained exactly.  Thus \(S(t)\) is an exact finite-height transport law
 between the prime side and the individual zero packets --- the third

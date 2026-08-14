@@ -1,0 +1,76 @@
+====================================================================================================
+J.  EFFECTIVE DOF AUDIT on the controls, where K == 1 is known exactly.
+    For M tau-samples the nominal sigma of the mean is 1/sqrt(M).  Measure the true
+    scatter of block means (blocks of 0.05 in tau, i.e. ~200 samples) about 1.
+====================================================================================================
+  CUE: 156 blocks;  mean (K-1)*sqrt(M) = -0.0030;  sd = 0.9706   =>  dof_eff/dof_nom = 1.062
+       (sd = 1.000 exactly if samples were independent Exp(1))
+  POI: 156 blocks;  mean (K-1)*sqrt(M) = +0.1455;  sd = 0.9725   =>  dof_eff/dof_nom = 1.057
+       (sd = 1.000 exactly if samples were independent Exp(1))
+
+  -> error-bar inflation factor adopted from CUE: 0.971
+
+====================================================================================================
+A2'.  FLATNESS ABOVE tau=1 with the audited error bars (sigma inflated by the factor above)
+====================================================================================================
+           T   <K>_(1.05,3)    sigma   z vs 1  z vs CUE  <K>_(1.05,1.5)    sigma   z vs 1
+       1e+03         1.0221   0.0099    +2.23     +1.97          1.0763   0.0217    +3.52
+       1e+04         1.0094   0.0107    +0.88     +0.80          1.0578   0.0233    +2.48
+       1e+05         1.0083   0.0109    +0.77     +0.70          1.0565   0.0237    +2.39
+       1e+06         1.0036   0.0110    +0.33     +0.31          1.0357   0.0237    +1.51
+       1e+07         1.0063   0.0108    +0.58     +0.54          1.0197   0.0228    +0.87
+         CUE         0.9998   0.0055    -0.04         -          1.0033   0.0115    +0.29
+         POI         1.0103   0.0056    +1.85         -          1.0214   0.0117    +1.83
+
+  POOLED over the five heights: <K>_(1.05,3) = 1.0104 +- 0.0048   z vs 1 = +2.20   z vs CUE = +1.47
+  3-sigma DETECTION FLOOR on a uniform excess over (1.05,3): pooled 1.43% , single height 3.3% , single 0.05-bin ~21%
+
+====================================================================================================
+K.  SENSITIVITY / POSITIVE CONTROL: inject a known density modulation above tau=1
+    into the REAL zeta tape and check the pipeline recovers it at the predicted size.
+    A density ripple  rho -> 1 + A cos(2 pi tau0 u)  displaces u_k by  -(A/(2 pi tau0)) sin(2 pi tau0 u_k)
+    and produces a line of height K = A^2 U / 4  at tau0.  Target bin excess is over a
+    0.05 bin containing that line: dK_bin = (A^2 U/4)/(U*0.05) = A^2/0.2.
+====================================================================================================
+  T=1e+06  U=4001  tau0=1.6
+          A  pred dK_bin  meas dK_bin    sigma       z  K(tau0) meas     pred
+       0.05       0.0125       0.0042   0.0658    0.06          2.21     2.50
+       0.10       0.0500       0.0141   0.0664    0.21          7.58    10.00
+       0.20       0.2000       0.0500   0.0689    0.73         32.72    40.01
+       0.40       0.8000       0.1827   0.0780    2.34        136.88   160.06
+       0.80       3.2000       0.6263   0.1085    5.77        505.52   640.24
+  => the pipeline is NOT blind above tau=1; it detects a ripple of amplitude A at the
+     predicted amplitude.  The 3-sigma floor corresponds to A ~ sqrt(0.2*3*sigma).
+
+====================================================================================================
+L.  SURROGATE DISCRIMINATION: does the ramp carry prime information beyond the lattice?
+    median |K/D - 1| over 0.2<tau<0.95, zeta vs lattice+iid-S surrogate vs CUE.
+====================================================================================================
+           T   zeta med|K/D-1|   surrogate       CUE   corr(K,D) zeta     surr
+       1e+03            0.0583      0.1589    0.1000           0.9524   0.9421
+       1e+04            0.0291      0.1910    0.1023           0.9779   0.9645
+       1e+05            0.0202      0.2722    0.0446           0.9956   0.9655
+       1e+06            0.0268      0.2629    0.0404           0.9918   0.9602
+       1e+07            0.0200      0.2536    0.0480           0.9911   0.9638
+
+====================================================================================================
+M.  PRECISION AUDIT: perturb every zero by N(0, 1e-8) in t (100x the Zrs positional gate)
+====================================================================================================
+           T   K(1) exact  K(1) jitter   <K>_(1.05,3) exact    jitter
+       1e+03     132.0451     132.0451               1.0221    1.0221
+       1e+04      76.0742      76.0742               1.0094    1.0093
+       1e+05      40.0098      40.0098               1.0083    1.0081
+       1e+06      29.3376      29.3376               1.0036    1.0037
+       1e+07      15.1075      15.1075               1.0063    1.0064
+
+====================================================================================================
+N.  BIN-WIDTH / WINDOW AUDIT: <K>_(1.05,3) under different binning and sub-windows.
+====================================================================================================
+           T     full  1st half  2nd half      Q1      Q2      Q3      Q4
+       1e+03   1.0221    1.0270    1.0181  1.0284  1.0276  1.0222  1.0174
+       1e+04   1.0094    1.0143    1.0057  0.9988  1.0300  1.0064  1.0056
+       1e+05   1.0083    1.0101    1.0070  0.9968  1.0263  1.0121  1.0051
+       1e+06   1.0036    0.9990    1.0084  1.0136  0.9867  1.0153  1.0034
+       1e+07   1.0063    1.0020    1.0115  1.0043  1.0032  0.9975  1.0259
+
+done.

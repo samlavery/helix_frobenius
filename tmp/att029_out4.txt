@@ -1,0 +1,120 @@
+ATTEMPT 029, stage 6 -- DIRECT test of FACT 1 (the functional equation kills the first order)
+on REAL data with MAXIMALLY COHERENT displacements.
+
+Stage 3 established that zeta-prime's arithmetic is carried entirely by the betas: the
+ordinate-only Landau sum is 8% of the prediction, the beta-weighted sum is 101%.  That makes
+zeta-prime's (d_j, gamma_j) the most adversarial data available -- the displacement is perfectly
+correlated with the arithmetic phase.  So: take those SAME pairs and ask what an FE would do.
+
+CONSTRUCTION.  For each zeta-prime zero (1/2+d_j, gamma_j) and each scale s in (1, 1/2, 1/4, ...):
+   UNPAIRED (no FE, what zeta-prime actually is):   A_unp(s) = sum_j r^{s d_j} r^{i gamma_j}
+   FE-PAIRED (each zero replaced by 1/2 +- s d_j at the SAME ordinate, as a self-dual FE forces):
+                                                    A_par(s) = sum_j 2 cosh(s d_j log r) r^{i gamma_j}
+   ORDINATE-ONLY (what the instrument sees):        A_ord     = sum_j r^{i gamma_j}   (x2 when paired)
+   DEFICIT      Delta_unp(s) = A_ord/A_unp(s) - 1 ,  Delta_par(s) = A_ord/(A_par(s)/2) - 1.
+
+PRE-REGISTERED PREDICTIONS (Facts 1 and 2, before running):
+   |Delta_unp(s)| ~ s^1   (first order: 1 - r^{d} = -d log r + O(d^2))
+   |Delta_par(s)| ~ s^2   (second order: 2 - 2cosh(d log r) = -(d log r)^2 + O(d^4))
+   measured by the slope of log|Delta| against log s.
+NULL-8: the two slopes are the SAME, i.e. the FE pairing does not suppress the deficit and
+   Fact 1 is wrong.  Then the ordinate deficit is a first-order location readout for
+   FE-symmetric functions too, and the route is OPEN.
+
+CONTROL (must fail by MISSING STRUCTURE): shuffle the d_j against the gamma_j, destroying the
+   correlation that carries the arithmetic.  Both deficits must then collapse toward the
+   incoherent floor -- this shows the signal is the CORRELATION, not the mere presence of
+   off-line displacement.
+
+
+### zeta-prime T=1e5: 3864 zeros, W=2698, median d = 0.2432
+         r    |Dunp| s=1.0    |Dunp| s=0.5   |Dunp| s=0.25  |Dunp| s=0.125 |Dunp| s=0.0625
+    1.5000         0.65923         0.44621         0.26957         0.15021         0.07963   slope +0.767
+    paired         0.32128         0.10306         0.02772         0.00706         0.00177   slope +1.887   suppression at s=1: 0.4874
+    2.0000         0.39478         0.19237         0.09368         0.04610         0.02285   slope +1.028
+    paired         0.17313         0.04540         0.01148         0.00288         0.00072   slope +1.980   suppression at s=1: 0.4385
+    2.2500         0.85785         0.65082         0.42607         0.24950         0.13603   slope +0.670
+    paired         0.71181         0.34859         0.11426         0.03097         0.00791   slope +1.648   suppression at s=1: 0.8298
+    2.5000         0.79460         0.55837         0.34317         0.19272         0.10253   slope +0.744
+    paired         0.59147         0.23837         0.07015         0.01835         0.00464   slope +1.769   suppression at s=1: 0.7444
+    3.0000         2.40593         0.69883         0.16856         0.06442         0.02852   slope +1.624
+    paired         4.19246         0.18363         0.03760         0.00898         0.00222   slope +2.612   suppression at s=1: 1.7426
+    3.3750         0.93403         0.75601         0.51470         0.30704         0.16877   slope +0.624
+    paired         0.86819         0.53419         0.20667         0.05976         0.01555   slope +1.477   suppression at s=1: 0.9295
+    3.5000         0.84889         0.61261         0.38225         0.21650         0.11572   slope +0.725
+    paired         0.69770         0.31031         0.09562         0.02537         0.00644   slope +1.713   suppression at s=1: 0.8219
+    3.7500         0.90851         0.70339         0.46083         0.26831         0.14550   slope +0.668
+    paired         0.81719         0.44691         0.15675         0.04353         0.01119   slope +1.574   suppression at s=1: 0.8995
+    4.0000         0.42998         0.22748         0.11330         0.05621         0.02796   slope +0.990
+    paired         0.19222         0.05743         0.01491         0.00376         0.00094   slope +1.928   suppression at s=1: 0.4471
+    4.5000         0.91730         0.70455         0.45476         0.26169         0.14091   slope +0.683
+    paired         0.83478         0.45301         0.15666         0.04324         0.01110   slope +1.586   suppression at s=1: 0.9100
+    5.0000         1.60885         0.68742         0.13178         0.04618         0.01959   slope +1.662
+    paired         4.11279         0.22562         0.04104         0.00957         0.00235   slope +2.610   suppression at s=1: 2.5564
+    5.0625         0.97822         0.87332         0.66810         0.43452         0.25017   slope +0.494
+    paired         0.95536         0.72616         0.34086         0.10607         0.02813   slope +1.295   suppression at s=1: 0.9766
+    5.2500         0.93933         0.75061         0.50185         0.29549         0.16121   slope +0.643
+    paired         0.87856         0.52618         0.19675         0.05601         0.01450   slope +1.507   suppression at s=1: 0.9353
+    5.5000         0.89435         0.66322         0.41973         0.23950         0.12852   slope +0.707
+    paired         0.78838         0.38538         0.12457         0.03356         0.00856   slope +1.657   suppression at s=1: 0.8815
+    5.6250         0.96237         0.80965         0.56765         0.34445         0.19104   slope +0.590
+    paired         0.92481         0.63094         0.26769         0.08073         0.02127   slope +1.385   suppression at s=1: 0.9610
+    6.2500         0.99373         0.95332         0.84120         0.65193         0.43560   slope +0.293
+    paired         0.98744         0.90150         0.63414         0.27339         0.08154   slope +0.892   suppression at s=1: 0.9937
+    6.5000         0.90272         0.66881         0.42120         0.23932         0.12807   slope +0.712
+    paired         0.80570         0.39748         0.12882         0.03473         0.00886   slope +1.653   suppression at s=1: 0.8925
+    6.7500         0.97575         0.85016         0.62091         0.38910         0.22029   slope +0.542
+    paired         0.95140         0.70293         0.32649         0.10317         0.02760   slope +1.298   suppression at s=1: 0.9750
+    7.0000         1.41542         0.72158         0.12361         0.04179         0.01742   slope +1.680
+    paired         2.40087         0.24455         0.04172         0.00960         0.00235   slope +2.466   suppression at s=1: 1.6962
+  -> UNPAIRED  median slope d log|Delta|/d log s = +0.707   [predicted +1]
+  -> FE-PAIRED median slope                      = +1.653   [predicted +2]
+  -> FE suppression factor at s=1 (real zeta-prime displacements): median 0.9100
+  NULL-8 refuted iff the paired slope is ~2 and the unpaired ~1.
+  CONTROL (d shuffled against gamma, structure removed):  unpaired median |Delta| 0.67004  paired 0.42668   [unshuffled: 0.91730]
+
+### zeta-prime T=1e6: 3763 zeros, W=2099, median d = 0.1981
+         r    |Dunp| s=1.0    |Dunp| s=0.5   |Dunp| s=0.25  |Dunp| s=0.125 |Dunp| s=0.0625
+    1.5000         0.68644         0.47725         0.29498         0.16699         0.08937   slope +0.740
+    paired         0.34813         0.11482         0.03119         0.00797         0.00200   slope +1.873   suppression at s=1: 0.5072
+    2.0000         0.38873         0.18867         0.09171         0.04509         0.02234   slope +1.031
+    paired         0.16932         0.04429         0.01119         0.00280         0.00070   slope +1.981   suppression at s=1: 0.4356
+    2.2500         0.84104         0.62333         0.39896         0.22978         0.12400   slope +0.696
+    paired         0.68021         0.31551         0.09993         0.02676         0.00681   slope +1.684   suppression at s=1: 0.8088
+    2.5000         0.78547         0.54738         0.33448         0.18720         0.09941   slope +0.751
+    paired         0.57424         0.22607         0.06581         0.01715         0.00433   slope +1.782   suppression at s=1: 0.7311
+    3.0000         2.52581         0.67047         0.16481         0.06330         0.02808   slope +1.639
+    paired         3.49082         0.17678         0.03642         0.00871         0.00216   slope +2.567   suppression at s=1: 1.3821
+    3.3750         0.91040         0.69591         0.44385         0.25201         0.13438   slope +0.699
+    paired         0.82335         0.44992         0.15691         0.04345         0.01116   slope +1.578   suppression at s=1: 0.9044
+    3.5000         0.84760         0.61097         0.38083         0.21552         0.11514   slope +0.726
+    paired         0.69509         0.30796         0.09467         0.02509         0.00637   slope +1.716   suppression at s=1: 0.8201
+    3.7500         0.90510         0.69729         0.45530         0.26466         0.14343   slope +0.671
+    paired         0.81003         0.43619         0.15122         0.04181         0.01073   slope +1.586   suppression at s=1: 0.8950
+    4.0000         0.38616         0.20079         0.09819         0.04821         0.02385   slope +1.009
+    paired         0.16588         0.05054         0.01314         0.00331         0.00083   slope +1.921   suppression at s=1: 0.4296
+    4.5000         0.91575         0.70140         0.45142         0.25919         0.13937   slope +0.687
+    paired         0.83186         0.44875         0.15449         0.04256         0.01092   slope +1.590   suppression at s=1: 0.9084
+    5.0000         1.66810         0.65010         0.12907         0.04575         0.01952   slope +1.666
+    paired         5.11536         0.21230         0.03910         0.00913         0.00225   slope +2.685   suppression at s=1: 3.0666
+    5.0625         0.99013         0.92357         0.72427         0.44578         0.23650   slope +0.518
+    paired         0.97957         0.81603         0.38063         0.10875         0.02782   slope +1.318   suppression at s=1: 0.9893
+    5.2500         0.93459         0.73625         0.48364         0.28081         0.15184   slope +0.663
+    paired         0.86959         0.50648         0.18467         0.05202         0.01343   slope +1.532   suppression at s=1: 0.9304
+    5.5000         0.89880         0.66742         0.42175         0.24026         0.12878   slope +0.708
+    paired         0.79743         0.39324         0.12754         0.03440         0.00877   slope +1.653   suppression at s=1: 0.8872
+    5.6250         0.95822         0.79784         0.55444         0.33491         0.18539   slope +0.599
+    paired         0.91640         0.60827         0.25054         0.07447         0.01954   slope +1.413   suppression at s=1: 0.9564
+    6.2500         0.98171         0.87622         0.66129         0.42467         0.24365   slope +0.507
+    paired         0.96331         0.75000         0.37115         0.12062         0.03251   slope +1.241   suppression at s=1: 0.9813
+    6.5000         0.90608         0.67480         0.42670         0.24310         0.13030   slope +0.707
+    paired         0.81205         0.40513         0.13210         0.03569         0.00911   slope +1.646   suppression at s=1: 0.8962
+    6.7500         0.97128         0.82901         0.58662         0.35742         0.19855   slope +0.579
+    paired         0.94256         0.66679         0.29192         0.08931         0.02364   slope +1.354   suppression at s=1: 0.9704
+    7.0000         1.48372         0.62193         0.11574         0.04033         0.01710   slope +1.682
+    paired         2.87279         0.21291         0.03711         0.00857         0.00210   slope +2.547   suppression at s=1: 1.9362
+  -> UNPAIRED  median slope d log|Delta|/d log s = +0.707   [predicted +1]
+  -> FE-PAIRED median slope                      = +1.653   [predicted +2]
+  -> FE suppression factor at s=1 (real zeta-prime displacements): median 0.9044
+  NULL-8 refuted iff the paired slope is ~2 and the unpaired ~1.
+  CONTROL (d shuffled against gamma, structure removed):  unpaired median |Delta| 0.69588  paired 0.45135   [unshuffled: 0.91040]

@@ -159,8 +159,13 @@ def CarryFree (p n : ℕ) : Prop := CarryFreeThrough p n (carryCutoff p n)
 theorem centralBinom_factorization_eq_carryLedger_card {p n b : ℕ} (hp : p.Prime)
     (hb : Nat.log p (2 * n) < b) :
     ((2 * n).choose n).factorization p = (carryLedger p n b).card := by
-  simpa only [two_mul, carryLedger, carryAt] using
-    Nat.factorization_choose' (n := n) (k := n) hp (by simpa [two_mul] using hb)
+  have h := Nat.factorization_choose' (n := n) (k := n) hp (by simpa [two_mul] using hb)
+  have hfilter : carryLedger p n b = {i ∈ Ico 1 b | p ^ i ≤ n % p ^ i + n % p ^ i} := by
+    classical
+    ext i
+    simp only [carryLedger, Finset.mem_filter]
+    simp [carryAt, two_mul]
+  rw [two_mul n, h, hfilter]
 
 /-- First decomposition: a prime is absent exactly when every carry test vanishes. -/
 theorem prime_not_dvd_centralBinom_iff_carryFreeThrough {p n b : ℕ} (hp : p.Prime)
@@ -440,7 +445,9 @@ theorem carryAcceptance_eq_ite (p n : ℕ) :
   classical
   simp only [carryAcceptance, prefixCellFactor, halfCellIndicator, ZMod.val_natCast,
     Finset.prod_boole, CarryFree, CarryFreeThrough]
-  split_ifs <;> rfl
+  split_ifs with h
+  · exact (if_pos h).symm
+  · exact (if_neg h).symm
 
 /-- One nested cell after exact finite Fourier conversion. -/
 noncomputable def harmonicCellExpansion (p n i : ℕ) : ℂ :=
@@ -2726,7 +2733,8 @@ theorem lowerReciprocalPrimeCell_eq_sdiff (m k : ℕ) (hk : 0 < k) :
   classical
   ext p
   simp only [lowerReciprocalPrimeCell, reciprocalPrimeCell, mem_filter, mem_sdiff,
-    Nat.mem_primesLE, reciprocalCellHigh, reciprocalCellMid, quotientCellIndex]
+    Nat.mem_primesLE]
+  simp only [reciprocalCellHigh, reciprocalCellMid, quotientCellIndex]
   constructor
   · rintro ⟨⟨⟨hpm, hpprime⟩, hcell⟩, hlower⟩
     have hkp : p * k ≤ m := by
@@ -2768,7 +2776,8 @@ theorem upperReciprocalPrimeCell_eq_sdiff (m k : ℕ) (hk : 0 < k) :
   classical
   ext p
   simp only [upperReciprocalPrimeCell, reciprocalPrimeCell, mem_filter, mem_sdiff,
-    Nat.mem_primesLE, reciprocalCellMid, reciprocalCellLow, quotientCellIndex]
+    Nat.mem_primesLE]
+  simp only [reciprocalCellMid, reciprocalCellLow, quotientCellIndex]
   constructor
   · rintro ⟨⟨⟨hpm, hpprime⟩, hcell⟩, hupper⟩
     have hmlt : m < (k + 1) * p := by

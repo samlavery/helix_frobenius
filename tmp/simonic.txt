@@ -1,0 +1,2557 @@
+                                             EXPLICIT ZERO DENSITY ESTIMATE FOR THE RIEMANN
+                                                  ZETA-FUNCTION NEAR THE CRITICAL LINE
+
+                                                                             ALEKSANDER SIMONIČ
+
+
+
+
+arXiv:1910.08274v2 [math.NT] 29 Nov 2019
+                                                                                                               1     1
+                                                    Abstract. In 1946, A. Selberg proved N (σ, T ) ≪ T 1− 4 (σ− 2 ) log T where
+                                                    N (σ, T ) is the number of nontrivial zeros ρ of the Riemann zeta-function with
+                                                    ℜ{ρ} > σ and 0 < ℑ{ρ} ≤ T . We provide an explicit version of this estimate,
+                                                    together with an explicit approximate functional equation and an explicit up-
+                                                    per bound for the second power moment of the zeta-function on the critical
+                                                    line.
+
+
+
+
+                                                                                1. Introduction
+                                              Let ζ(s) be the Riemann zeta-function and denote by ρ = β + iγ a nontrivial
+                                           zero of ζ(s) in the critical strip 0 ≤ ℜ{s} ≤ 1. Denote by N (T ) the number of zeros
+                                           ρ with γ ∈ (0, T ], and let N (σ, T ) be the number of those zeros with β > σ ≥ 1/2.
+                                           Trivially, N (σ, T ) ≤ 21 N (T ), where
+                                                               T       T   7                                         1
+                                                    N (T ) −      log    −   ≤ 0.11 log T + 0.29 log log T + 2.29 +    ,              (1)
+                                                               2π     2πe 8                                         5T
+                                           T ≥ e, is an explicit version of the Riemann–von Mangoldt formula, see [PT15,
+                                           Corollary 1] and [Tru14, Corollary 1]. The Riemann Hypothesis is equivalent to
+                                           N (1/2, T ) = 0 for every T > 0. It has been rigorously verified for all nontrivial
+                                           zeros with |ℑ{ρ}| ≤ H0 , where
+                                                                             H0 := 3.0610046 · 1010 ,
+                                           the result due to Platt1, see [Pla17]. Non-trivial upper bounds for N (σ, T ) are
+                                           called zero density estimates. There exist many such estimates in the literature, for
+                                           instance Ingham’s theorem
+                                                                                            3(1−σ)
+                                                                            N (σ, T ) ≪ T    2−σ     log5 T.                          (2)
+                                           There are other zero density estimates which are better than (2) in smaller regions
+                                           of the critical strip. Possible applications strongly depend on the position of such a
+                                           region, e.g., to the distribution of prime numbers if σ is close to 1, see [PT19], and
+                                           to problems connected to the function S(t) and to the pair correlation conjecture
+                                           when σ is close to 1/2. We refer the reader to [KLN18] and references therein for
+                                           zero density estimates near the one-line. Much less work was done in the latter
+                                           case. Selberg proved in [Sel46, Theorem 1] that
+                                                                          N (σ, T ) ≪ T 1− 4 (σ− 2 ) log T,
+                                                                                             1       1
+                                                                                                                                      (3)
+                                           which supersedes (2) for σ − 1/2 ≪ log log T / log T . In fact, he provided a bound
+                                           for N (σ, T + H) − N (σ, T ) where H ∈ [T a , T ] and a ∈ (1/2, 1], such that (3) is a
+                                           special case of H = T after a dyadic partition. Later Jutila improved in [Jut83] the
+
+                                             Date: December 2, 2019.
+                                             2010 Mathematics Subject Classification. 11M06, 11M26; 11Y35.
+                                             Key words and phrases. Riemann zeta-function, Zero density theorems, Explicit results.
+                                             1Platt and Trudgian will soon announce that H can be replaced by 2.5 · 1012 , see [PT19,
+                                                                                            0
+                                           Lemma 4].
+2                                   ALEKSANDER SIMONIČ
+
+
+constant 1/4 to 1 − ε and Conrey announced in [Con89] a further improvement to
+8/7 − ε, where the implied constant in (3) depends on ε > 0. Observe that if one
+could prove (3) with 2 instead of 1/4, this would imply the Density Conjecture.
+   There exist only a few explicit zero density estimates, e.g., in recent papers
+[Kad13] and [KLN18] where they improve older results by Cheng and Ramaré, and
+are good near the one-line. As an example we mention only
+                                             8
+                   N (σ, T ) ≤ A(σ) · T 3 (1−σ) log5−2σ T + B(σ) log2 T,                     (4)
+valid for σ ∈ [3/5, 1) and T ≥ H0 , see [KLN18], where A(σ) and B(σ) are positive
+and calculable2 functions, e.g., A(37/58) ≤ 2.9 and B(37/58) ≤ 5.6. However, (4)
+produces non-trivial bound for σ > 5/8. It seems that the only explicit result of
+Selberg-type zero density estimate was done by Karatsuba and Korolëv in [KK06,
+Theorem 1]. They proved
+                  N (σ, T + H) − N (σ, T − H) ≤ 13HT ε(1−2σ)/10 log T
+for 0 < ε < 0.001, T ≥ T0 (ε) > 0 and H = T 27/82+ε . Unfortunately, T0 (ε) is not
+explicitly known.
+   The main result of this paper is the following explicit version of (3).
+Theorem 1. Let T ≥ H0 and σ ∈ [1/2, 0.831]. Then we have
+    N (σ, 2T ) − N (σ, T ) ≤ aT 1− 4 (σ− 2 ) log T + b log2 T + c log T log log T + d log T,
+                                    1    1
+
+
+
+with a = 10395.2, b = 1.104, c = 0.173 and d = 0.51.
+    Under the assumptions of Theorem 1, an immediate corollary is
+                                   10395.21                           T
+                                                   T 1− 4 (σ− 2 ) log
+                                                        1     1
+                   N (σ, T ) ≤
+                                 1− 14 (σ− 21 )                       2
+                               2                −1
+for T ≥ 2H0 . In virtue of (4), this bound is of interest only for σ ∈ (1/2, 5/8].
+Nevertheless, for σ = 37/58, when exponents of T in both inequalities are equal,
+it is better than (4). For larger H0 we can obtain smaller values for the leading
+constant, e.g., for T ≥ 1050 and σ ∈ [1/2, 0.569] we have
+             N (σ, 2T ) − N (σ, T ) ≤ 5.357 · T 1− 4 (σ− 2 ) log T + 1.11 · log2 T.
+                                                    1     1
+                                                                                             (5)
+But with the method presented here we cannot get a smaller constant than 3.259.
+   Our approach to Theorem 1 strongly relies on Selberg’s original proof with the
+simplification H = T . The main idea is using the approximate functional equation
+(Theorem 3) to prove the second power moment of ζ(s) with a special weight
+(Theorem 7), which is then used to estimate the main term in Littlewood’s zero-
+counting lemma for Selberg’s mollifier (Proposition 2). These three crucial steps
+constitute Sections 2, 3 and 4, respectively. Beside the proof of Theorem 1, which
+is presented in Section 4.5, we also provide three additional results which might
+be interesting on their own, namely explicit versions of the approximate functional
+equations for ζ(s) and ζ 2 (s), see Theorem 4 and Corollaries 1 and 4, and an explicit
+upper bound for the second power moment of ζ(s) on the critical line
+     Z T Å          ã2                                                   …
+             1                                                         3      T
+          ζ    + it    dt ≤ T log T − (1 + log 2π − 2γ) T + 70.26 · T 4 log     ,
+      0      2                                                               2π
+valid for T ≥ 2000, see Corollary 5 for a more precise statement. All results
+are believed to be new, and the latter inequality greatly improves the recently
+announced estimate [DHZA19, Theorem 4.3].
+    2Note that the first column in Table 1 in [KLN18] should have σ in place of σ . It seems that
+                                                                                 0
+A(σ) and B(σ) are increasing and decreasing functions, respectively. The author thanks Allysa
+Lumley for calculating A(0.638) = 2.789 . . . and B(0.638) = 5.312 . . ..
+                            EXPLICIT ZERO DENSITY ESTIMATE                            3
+
+
+                2. Explicit approximate functional equation
+   We can approximate ζ(s) with Dirichlet polynomials to arbitrary precision on
+every compact set in ℜ{s} > 1. Hardy and Littlewood showed in [HL21, Lemma
+2] that this is also possible to some extent in the critical strip.
+Theorem 2. Let s = σ + it where σ ∈ (0, 1] and s 6= 1. Also assume that x ≥ 1
+and |t| < 2πx. Then
+                           X          x1−s
+                    ζ(s) =     n−s −        + R(s; x),                    (6)
+                                      1−s
+                                     n≤x
+                       −σ
+where R(s; x) = O (x        ) uniformly.
+   In many cases the sum in (6) has too many terms to be useful. Remember that
+the functional equation for the Riemann zeta-function is ζ(s) = χ(s)ζ(1 − s) where
+                                              πs 
+                         χ(s) = 2s π s−1 sin        Γ(1 − s).                  (7)
+                                               2
+Hardy and Littlewood proved in [HL23, Theorem A] the following refinement of (6)
+which is known as the approximate functional equation.
+Theorem 3. Let s = σ + it where σ ∈ [0, 1] and |t| ≥ 2π. Also assume that
+2πxy = |t| for x, y ≥ 1. Then
+                           X             X
+                    ζ(s) =    n−s + χ(s)   ns−1 + R1 (s; x, y) ,      (8)
+                              n≤x                n≤y
+                                           
+where R1 (s; x, y) = O x−σ + y σ−1 |t|1/2−σ uniformly.
+   Equation (8) first appeared in [HL21], but with a factor log |t| in the remainder.
+The proof of this “imperfect” approximate functional equation exploits the Poisson
+summation formula3 while their approach to Theorem 3 was complex analytic in
+the sense that they used contour integration; it is sketched in [Tit86, p. 81] where
+also Theorem 2 is proved in such a way. Later they provided in [HL29] a proof
+along the similar lines as in [HL21]. However, the more common proof, see [Tit86,
+pp. 82–84] or [Ivi03, pp. 99–104], has roots in the celebrated paper of Siegel [Sie32]
+where he developed Riemann’s ideas on the zeta function and derived
+                               ζ(s) = R(s) + χ(s)R(1 − s̄),                        (9)
+where R(s) is some function given as the contour integral. A more useful expression
+for this function is
+                                X           Å ã− σ2
+                                              |t|
+                      R(s) =          n−s +           EL (s),                  (10)
+                                p             2π
+                                           |t|
+                                    n≤     2π
+
+
+where EL (s) has a known asymptotic expansion in powers of |t|−1/2 , see [AdR11,
+Theorem 3.1]. Equation (10), now called the Riemann–Siegel formula, was first
+proposed by Lehmer in [Leh56] for values on p    the critical line. Equations (9) and
+(10) imply (8) in the symmetric case x = y = |t|/(2π).
+   The Riemann–Siegel formula can be used to calculate values of ζ(s) relatively
+fast, e.g., through the Odlyzko–Schönhage algorithm which is suitable for large
+scale computations, and thus it replaced the previous method based on the Euler–
+Maclaurin summation formula or on its simpler version (6). For high precision
+calculations we still need to know explicit bounds. Titchmarsh [Tit35] carried out
+a complete analysis of the error terms which comes from Siegel’s method. Since his
+estimates are most suitable only for sufficiently large values of t, Turing developed a
+  3See also [Tit86, pp. 79–80] and [KV92, Chapter III].
+4                                  ALEKSANDER SIMONIČ
+
+
+different method, see [Tur43]. Gabcke provided in [Gab79] good bounds for EL (s)
+in case of σ = 1/2 and Arias de Reyna [AdR11, Section 4] for all values in the
+critical strip. There also exist generalisations of (9) to L-functions and to specially
+designed smooth functions, see [Hia16]. In the context of the Knopp–Hasse–Sondow
+formula for ζ(s), it is possible to obtain even better error term, see [Jer19].
+   None of the previously mentioned authors considered explicit versions of equation
+(8) in the non-symmetrical case. The main result of this section is an explicit form of
+the approximate functional equation (Theorem 6) which comes from the standard
+proof of Theorem 3. The main advantage of this is having a uniform bound on
+constants in the O-estimate of R1 , independent of x and y. In Section 2.4 we prove
+the following.
+Theorem 4. Let s = σ + it where σ ∈ [1/2, 1] and |t| ≥ 2π. Also assume that
+2πxy = |t| for x, y ≥ 1. If R1 (s; x, y) is defined by equation (8), then
+                                                    Å ã 12 −σ
+                                                      |t|
+                    |R1 (s; x, y)| ≤ E · x−σ + F ·            y σ−1 ,
+                                                     2π
+where E and F are non-negative real numbers, whose values are given by Table 1
+for |t| ≥ 2π, Table 2 for |t| ≥ 103 and Table 3 for |t| ≥ 1010 .
+   We used bounds from [AdR11] to give constants in Tables 1 and 2 in the sym-
+metric case. While these are expected to be better than those obtained by the
+classical method, they are not so large at all.
+
+          x≤y       x>y      x=y                             x≤y       x>y      x=y
+     E    36.094    0         4.257                     E    10.983   0         1.195
+     F      0    127.126        0                       F      0    15.726        0
+     ‹ 36.214
+     E           0            4.376                     ‹ 10.992
+                                                        E          0            1.205
+     ‹
+     F   0    127.245           0                       ‹
+                                                        F   0    15.726           0
+      Table 1. Bounds for |t| ≥ 2π.                     Table 2. Bounds for |t| ≥ 103 .
+
+
+
+
+                                      x≤y     x>y        x=y
+                              ‹ 10.7502
+                           E, E           0    1.00007
+                              ‹
+                           F, F    0    15.203    0
+                              Table 3. Bounds for |t| ≥ 1010 .
+
+
+
+    Sometimes it is more convenient to have (8) in the form
+                           X              X
+                    ζ(s) =    n−s + χe(s)     ns−1 + Re1 (s; x, y)                        (11)
+                             n≤x              n≤y
+
+where
+                                      Å ã 1Å       ã−it
+                                    2π σ− 2 |t|                 π
+                     e(σ + it) :=
+                     χ                                  esgn(t) 4 i .                 (12)
+                                    |t|        2πe
+Note that a consequence of Stirling’s formula is χ(σ + it) ∼ χ       e(σ + it) for t → ∞
+where χ(s) is defined by (7). In Section 2.2 we will provide an explicit version of this
+asymptotic relation, see Proposition 1. This will enable us to prove the following
+corollary of Theorem 4.
+                          EXPLICIT ZERO DENSITY ESTIMATE                           5
+
+
+Corollary 1. Let s = σ + it where σ ∈ [1/2, 1] and |t| ≥ 2π. Also assume that
+2πxy = |t| for x, y ≥ 1. If Re1 (s; x, y) is defined by equation (11), then
+                                                     Å ã 12 −σ
+                     e1 (s; x, y) ≤ E
+                     R                ‹ · x−σ + F ‹ · |t|      y σ−1 ,      (13)
+                                                       2π
+where E ‹ and F‹ are non-negative real numbers, whose values are given by Table 1
+for |t| ≥ 2π, Table 2 for |t| ≥ 103 and Table 3 for |t| ≥ 1010 .
+2.1. Some estimates for R(s; x). It seems that an explicit version of Theorem 2
+first appeared in [Che99, Proposition 1]. Cheng’s result was considerably improved
+by Kadiri in [Kad13, Theorem 1.2]. Following the proof outlined there, we can
+obtain an explicit bound for R(s; x) which also slightly improves Kadiri’s bound.
+Theorem 5. With assumptions and notations as in Theorem 2 we have
+                          Ç         …    σ 2 Å             ãå
+                            1 3x                    t      t
+          |R(s; x)| ≤ x−σ     +      1+         1−    cot                       (14)
+                            2   |t|       t        2x     2x
+for t 6= 0.
+Proof. Our proof is basically the same as the proof in [Kad13], except that we use
+closed expression for the sum in (16).
+   Let N ≥ 2. We start with the classical summation formula
+            X                                              Z N
+                    −s    N 1−s    x1−s   ((x))     1           ((u))
+                  n =           −       − s +         s
+                                                        +s            du
+                          1−s     1−s      x      2N        x   us+1
+              x<n≤N
+
+where ((x)) := ⌊x⌋ − x + 1/2, see [Tit86, Equation 2.1.2]. Then
+                                     Z ∞               Z N
+                           ((x))          ((u))            ((u))
+                R(s; x) = − s + s           s+1
+                                                du + s           du
+                            x          N u              x  us+1
+and from this it follows that
+                                            …      σ 2 Z N ((u))
+                            |s|     1
+               |R(s; x)| ≤       +     + |t|  1 +                  du .         (15)
+                           2σN σ   2xσ              t     x  us+1
+Writing ((u)) in form of the Fourier series and applying the second mean value
+theorem, we have
+           Z N             X∞
+                ((u))          I(n) − I(−n)              3    x−σ
+                  s+1
+                      du =                  , |I(±n)| ≤             .
+            x   u          n=1
+                                     n                  2π 2πxn ∓ t
+For details of this derivation see [Kad13, pp. 189–190]. Then
+  Z N                        ∞ Ç       Å     ã å−1          Å              ã
+       ((u))         6x1−σ X        2     t 2         3x1−σ       t      t
+             du ≤                 n −               =         1−    cot      (16)
+    x  us+1          (2πx)2 n=1          2πx             t2      2x     2x
+and (14) clearly follows from (15) and (16) after taking N → ∞. Equality in (16)
+is established by a well-known identity
+                          X∞
+                                 1      1 − (πa) cot (πa)
+                               2    2
+                                      =                   ,
+                          n=1
+                              n −a             2a2
+see [GR15, Eq. 1.421 3].                                                          
+Corollary 2. Let s = σ + it, σ ∈ [1/2, 1], |t| ≥ t0 > 0 and c > 1/(2π). Then
+                                  Å                       Å              ãã
+              X                         1 3c »                 1      1
+       ζ(s) −      n−s ≤ (tc)−σ c + +              1 + t20 1 −    cot       .
+                                        2      t0              2c     2c
+                 n<c|t|
+6                                  ALEKSANDER SIMONIČ
+
+
+In particular, if c = 1 and t0 = γ1 where γ1 ≈ 14.1347 is the imaginary part of the
+first non-trivial zero of ζ(s), then
+                                       X
+                              ζ(s) −           n−s ≤ 1.755 · t−σ .
+                                       n<|t|
+
+   This improves Kadiri’s constant 2.1946, see [Kad13, Corollary 1.3]. It was shown
+in [DHZA19, Lemma 2.10] that the Euler–Maclaurin summation formula implies
+that (6) is true with |R(s; x)| ≤ 5/6 · x−σ for σ ∈ (0, 1] and |t| ≤ x. Numerical
+calculations show that for |t| ≥ 1.18 inequality (14) always provides the better
+bound.
+   Taking t → 0 in (14), we obtain |R(σ; x)| ≤ x−σ (1/2 + σ/(4x)). However, it
+is possible to prove in quite elementary way that |R(σ; x)| ≤ x−σ /2 for all σ ∈
+(0, ∞) \ {1}, see [DHZA19, Lemma 2.9]. We will use this estimate in the proof of
+Theorem 7, see Section 3.6.
+2.2. Explicit Stirling approximation of χ(s). In the proof we make use of the
+following upper and lower bounds of arctan x which are asymptotically sharp. We
+note that the second inequality in (17) can be found in [AM15, Corollary V.14].
+Lemma 1. For x ≥ 0 we have
+                  π                       π
+                  2x                      2x
+                2     ≥ arctan x ≥    »           2 .                                     (17)
+                π +x                 + x2 + π − 2
+                                   2
+                                                 π             2     π
+
+Proof. Denote by ∆1 (x) the difference between the upper bound and arctan x, and
+by ∆2 (x) the difference between arctan x and the lower bound. For x ≥ 0 these
+functions are smooth, and we have ∆1 (0) = ∆2 (0) = 0 and limx→∞ ∆1 (x) =
+limx→∞ ∆2 (x) = 0. Numerical verification reveals that both functions are positive
+for x = 1. Equations ∆′1 (x) = 0 and ∆′2 (x) = 0 can be reduced to a linear and
+a quadratic equation, respectively. After simple calculations we can conclude that
+both functions have only one stationary point on the interval (0, ∞). Hence they
+cannot have any zeros for x > 0 due to zero limits at infinity. This implies that
+both functions are positive throughout this region.                             
+Proposition 1. Let σ ∈ (1/2, 1] and |t| ≥ t0 ≥ 1/π. Then
+                                                 Å                     ã
+                                                         C (σ, t, t0 )
+                         χ(σ + it) = χ e(σ + it) 1 +
+                                                             |t|
+where                                      Å              ã
+                                                t0 e−πt0
+               |C (σ, t, t0 )| ≤ C1 (σ, t) 1 +              C2 (t) + C3 (t, t0 )           (18)
+                                                    |t|
+with
+                                 Å        ã             Å        ã Å  2            ã
+                                   1    2                     1         π     1−σ
+      C1 (σ, t) := (1 − σ)2          +      + (1 − σ) σ −                 +            ,
+                                   2 π                        2         2       2|t|
+                          Å                  ã
+                               1         1
+         C2 (t) := exp             +          ,                                            (19)
+                             12|t| 90|t|3
+                                     Å           ã
+                     C2 (t0 ) − 1 1           1
+      C3 (t, t0 ) :=                      +         + t0 e−πt0 C2 (t).
+                     log C2 (t0 ) 12 90t2
+Proof. It is enough to prove the case when t is positive since χ(s) = χ (s̄) and
+e(s) = χ
+χ        e (s̄). We use Stieltjes’ explicit version of the Stirling formula for Γ(z)
+where ℜ{z} > 0, see [Olv74]:
+                       √       1                         1        1
+                 Γ(z) = 2πz z− 2 e−z+R(z) , |R(z)| ≤        +         .         (20)
+                                                       12|z| 90|z|3
+                            EXPLICIT ZERO DENSITY ESTIMATE                                                    7
+
+
+From the explicit expressions for χ(s) and Γ(z) we obtain
+    χ                Ä                                     ä
+       (σ + it) − 1 = (a(σ, t) − 1) eiϕ(σ,t) + eiϕ(σ,t) − 1 (1 + ε(σ, t)) + ε(σ, t)
+    χe
+where
+                                     ! 21 (σ− 12 )
+                            1
+         a(σ, t) :=                                 er(σ,t) ,
+                             1−σ 2
+                       1+     t
+                   π                t
+         r(σ, t) :=  t − t arctan       + σ − 1,                                                        (21)
+                   2              1−σ
+                   Å        ãÅ                   ã      Ç    Å    ã å
+                     1         π            t       t          1−σ 2
+        ϕ(σ, t) :=     −σ         − arctan         − log 1 +         ,
+                     2         2           1−σ      2           t
+         ε(σ, t) := eR(1−σ−it) − 1 − e−πt+πσi+R(1−σ−it) .
+Then
+          χ
+            (σ + it) − 1 ≤ (|a(σ, t) − 1| + |ϕ(σ, t)|) · |1 + ε(σ, t)| + |ε(σ, t)| .                    (22)
+          e
+          χ
+Using Stieltjes’ error term (20) and noting that |ez − 1| ≤ e|z| − 1, and that
+(ex − 1) x−1 and te−πt are strictly decreasing functions for x > 0 and t ≥ t0 ≥ 1/π
+respectively, we get
+                            Å             ã
+                                 t0 e−πt0                       C3 (t, t0 )
+             |1 + ε(σ, t)| ≤ 1 +            C2 (t), |ε(σ, t)| ≤             .  (23)
+                                     t                              t
+  The second inequality in (17) gives us
+                        Ñ                                                              é
+  π            t      π                    1                                                    π 2 1 − σ
+    − arctan       ≤       1−           »        2                                       ≤
+  2          1−σ      2         2 1−σ
+                                      + 1+ π − 2                               1−σ 2            2      t
+                                      π   t                      2   π          t
+                                                                                                        (24)
+which implies                            Å       Å      ã       ã
+                                    1 − σ  π 2      1     1−σ
+                      |ϕ(σ, t)| ≤                  σ−     +       .                                     (25)
+                                      t     2         2      2
+By (24) we have
+                                                                         t
+                   ∂           π          t      1−σ
+                      r(σ, t) = − arctan     −   Ä   ä2 > 0.
+                   ∂t          2         1−σ   1+ t                      1−σ
+
+Together with r(σ, 0) < 0 and limt→∞ r(σ, t) = 0 this implies r(σ, t) < 0. Next,
+                  Ñ                     ! 12 (σ− 21 ) é
+                                1
+   |a(σ, t) − 1| ≤ 1 −               2                 er(σ,t) + er(σ,t) − 1
+                           1 + 1−σt
+                  Ç         Ç      Å         ãÅ          ã åå
+                                1        1       1−σ 2
+                 ≤ 1 − exp −        σ−                           er(σ,t) + er(σ,t) − 1 .
+                                2        2            t
+Applying the first inequality in (17), we get
+                                          2(1 − σ)2
+                                    |r(σ, t)| ≤     .
+                                              πt
+Using the inequalities e−x ≤ 1 and 1 − e−x ≤ x, both valid for x ≥ 0, we obtain
+                                           Å Å          ã     ã
+                                   (1 − σ)2 1         1     2
+                   |a(σ, t) − 1| ≤               σ−       +     .             (26)
+                                       t     2t       2     π
+Inserting (26), (25) and (68) into (22), we finally obtain (18).                                           
+8                                ALEKSANDER SIMONIČ
+
+
+Corollary 3. Let s = σ + it where σ ∈ (0, 1) and t ≥ 1. Then
+                           1 −iπs            C2 (t) 1     π
+                             e    Γ(1 − s) ≤ σ √ t 2 −σ e 2 t
+                          2π                2 π
+where C2 (t) is defined by (19).
+Proof. We have
+                                 √                1
+                                                    −σ π
+              e−iπs Γ(1 − s) =    2π |1 − σ − it| 2 e 2 t+r(σ,t)+R(1−σ−it)
+where r(σ, t) and R(z) are defined by (21) and (20), respectively. Because t ≤
+                                        1                              1
+|1 − σ − it| ≤ 2t, we have |1 − σ − it| 2 −σ ≤ t 2 −σ and |1 − σ − it| 2 −σ ≤ (2t) 2 −σ for
+                                                 1                                 1
+
+
+σ ∈ [1/2, 1) and σ ∈ (0, 1/2], respectively. The result now follows since r(σ, t) is
+always negative.                                                                         
+
+  Assume that t ≥ t0 ≥ 2π. Observe that C1 (σ, t) ≤ C1 (σ, 2π), C2 (t) ≤ C2 (2π)
+and C3 (t, t0 ) ≤ C3 (2π, 2π). This implies
+                                    Ä        2
+                                               ä
+         |C(σ, t, t0 )| ≤ C1 (σ, 2π) 1 + e−2π C2 (2π) + C3 (2π, 2π) < 0.3746 (27)
+since the function in the middle has the maximum at σ ≈ 0.54162.
+   Let σ ∈ [0, 1/2) and t ≥ t0 ≥ 2π. Because χ(s)χ(1 − s) = 1, we have
+                                 Å ã 12 −σ                         −1
+                                  |t|            C (1 − σ, t, t0 )
+                   |χ(σ + it)| =            1+
+                                  2π                   |t|
+                                 Å ã 12 −σ
+                                  |t|                |t|
+                               ≤                                     .                (28)
+                                  2π       |t| − |C (1 − σ, t, t0 )|
+
+2.3. Explicit estimate for R1 (s; x, y). In this section we will provide an explicit
+upper bound for the remainder in (8). Our proof requires a bound of |ez − 1| for
+z = reiφ with r > 0 and φ ∈ [0, 2π]. We would like to obtain non-zero and φ-
+independent lower bound. Observe that the trivial estimate |ez − 1| ≥ er cos φ − 1
+is not good since it is zero for φ ∈ {π/2, 3π/2}.
+                           S                                              √
+Lemma 2. Let Dr := k∈Z {z ∈ C : |z − 2kπi| < r} where r ∈ (0, π/ 2]. For
+z ∈ C \ Dr we have
+                                                      − √r
+                                   |ez − 1| ≥ 1 − e      2   .                        (29)
+Proof. Firstly, observe that ex+iy − 1 ≥ ex − 1 for x > 0 and ex+iy − 1 ≥ 1 − ex
+for x < 0. This means that ex+iy − 1 ≥ 1 − e−h for |x| ≥ h > 0.
+   Let                                                               ™
+                        [ß                       r                r
+                 Sr :=       x + iy ∈ C : |x| < √ , |y − 2kπ| < √
+                        k∈Z
+                                                  2                2
+                                                  √                              √
+be a set of squares inscribed in Dr . For |x| ≥ r/Ä 2 we ähave ex+iy − 1 ≥ 1−e−r/ 2
+                  √                                   √
+while for |y| = r/ 2 we have ex+iy − 1 ≥ sin r/ 2 . This gives us
+                                      ß                   ™
+                                            r        − √r         − √r
+                 min |ez − 1| ≥ min sin √ , 1 − e 2 = 1 − e 2 .
+                z∈∂Sr                         2
+Take large k ∈ N and let Sk′ be a two-dimensional closed square with vertices
+−k±2kπi and k±2kπi. Define Ω(r, k) := (C \ Sr )∩Sk′ . Then minz∈∂Ω(r,k) |ez − 1| ≥
+    − √r
+1−e 2 . Because the set Ω(r, k) is bounded and ez −1 is holomorphic in the interior,
+                                              − √r
+the minimum principle implies |ez − 1| ≥ 1 − e 2 for every z ∈ Ω(r, k). Lemma 2
+now follows because for every z ∈ C \ Dr there exists k such that z ∈ Ω(r, k). 
+                                EXPLICIT ZERO DENSITY ESTIMATE                                      9
+
+
+   Numerical calculations suggest that the minimum value of |ez − 1| on the set
+{z ∈ C : |z| = r} occurs at z = −r, thus giving lower bound 1 − e−r in (29). But
+the author is unable to prove this claim.
+   We are now in a position to prove Theorem 6. We follow the proof presented
+in [Tit86] but with flexible parameters that have exactly prescribed domains of
+validity. This allows some optimisation when trying to get the best possible uniform
+bound for the remainder.
+Theorem 6. Let s = σ + it where σ ∈ [0, 1] and |t| > t0 ≥ 2π. Also assume that
+2πxy = |t| for x, y ≥ 1 where x ≤ y. In addition, let r0 , c, λ0 and d be four real
+numbers satisfying the following conditions:
+                    √
+   (a) 0 < r0 ≤ π/ 2, √
+   (b) r|t|
+         0x            3 2
+            ≤ c ≤ 10+4(1−σ)/t 0
+                                ,
+      (c) r0 ≤ λ0 ≤ c|t|
+                     x ,
+               πx
+      (d) d ≥ 2⌊x⌋ .
+Define four functions E1 (σ, t, c, d, x), E2 (σ, t, r0 , c, λ0 , x, y), E3 (σ, t, c, x) and
+E4 (σ, t, r0 , c, x, y) in the following way:
+                                                                      !
+                                   σ−1    |t|
+                          E1 := E1 2          E2 e−|t|Φ1 + E3 e−|t|Φ2 ,
+                                           π
+where
+                                                                                            d|t|
+                                                                              x      1 − e− x
+           E1 (c) := 2c2 + 2c + 1,             E2 (t, c, d, x) := d − c +        log       c|t|
+                                                                                                ,
+                                                                             |t|     1 − e− x
+                                                           x
+                                E3 (t, d, x) :=       p    Ä d|t|   ä,
+                                                   ⌊x⌋ π|t| e x − 1
+                                                   c                 d ⌊x⌋ π
+                     Φ1 (c) := c − arctan             ,       Φ2 (d, x) :=− ;
+                                                  1+c                  x    2
+                     Ç                              å                … Å        ã
+                2           1                   1       E5    r0        x     1 σ−1 E6
+      E2 :=                      r       +             e +        r        1+      e ,
+                E4       1−e
+                               − √0
+                                     2       eλ0 − 1            − √0
+                                                           1 − e 2 2y         y
+where
+                                                                 √
+                                                   (1 − σ + |t|)2 2c
+                               E4 (σ, t, c) := 1 −       Ä     √ ä ,
+                                                     3|t| 1 − c 2
+                                                                         (1 − σ)2
+                      E5 (σ, t, c, λ0 , x) := λ0 (x − ⌊x⌋) +                            ,
+                                                                     4|t|E4 (σ, |t|, c)
+
+                                         (1 − σ)r0   r0 (xy − ⌊y⌋⌊x⌋)
+          E6 (σ, t, r0 , x, y) :=                  +
+                                           2π⌊y⌋             ⌊y⌋
+                                                           Ä          äÄ                  ä
+                                                                         1        r0
+                                                     r02 xy 1 + 1−σ
+                                                                 |t|     2 + 3(2π⌊y⌋−r0 )
+                                                   +                                        ;
+                                                                     2π⌊y⌋2
+
+                                               2 − c + πx
+                                                       |t|      |t| −|t|Φ1 (−c)
+                            E3 := cσ−1                 c|t|
+                                                                   e            ,
+                                                1 − e− x         π
+and
+                                        Ä         äσ−1
+                                      x 1 − πx|t|
+                             E4 :=             r p        e−|t|Φ3 ,
+                                             − √0
+                                   ⌊x⌋ 1 − e      2    π|t|
+10                                       ALEKSANDER SIMONIČ
+
+
+where
+                                           Å                 ã
+                               π         1      πx(1 − 2{y})     ⌊x⌋
+             Φ3 (t, c, x, y) := + arctan     1+                −     c.
+                               2         c           |t|          x
+Define E(σ) := 2−σ C2 (t) (E1 + E2 + E3 + E4 ) where C2 (t) is defined by (19). Then
+we have
+                                         |R1 (s; x, y)| ≤ x−σ E,                                  (30)
+                                                    Å ã 12 −σ
+                                                       |t|
+                                   |R1 (s; y, x)| ≤            xσ−1 F                             (31)
+                                                      2π
+where F = E if σ = 1/2 or x = y, and
+                           (
+                   F         1 + |C(σ,t,t
+                                      |t|
+                                          0 )|
+                                               ;        σ ∈ (1/2, 1],
+                         ≤          |C(1−σ,t,t0 )|
+               E (1 − σ)     1 + |t|−|C(1−σ,t,t       ; σ ∈ [0, 1/2).
+                                                 0 )|
+
+
+Moreover, if c, d, λ0 and r0 are fixed, then E is bounded and the parts E1 , E3 , E4
+are decreasing to zero while t → ∞.
+Proof. Firstly, we will show how to obtain (31) from (30). Changing s to 1 − s
+in (8) and multiplying both sides by χ(s), we obtain the approximate functional
+equation with reversed role of x, y and R1 (s; y, x) = R1 (1 − σ − it; x, y)χ(σ + it).
+This implies |R1 (s; y, x)| ≤ E(1 − σ) |χ(σ + it)| xσ−1 . Since |χ(1/2 + it)| = 1 our
+assertions for σ ∈ [1/2, 1] follow directly from Proposition 1, and for σ ∈ [0, 1/2)
+by inequality (28).
+   The main equation in the analytical proof of (8) is
+                   ⌊x⌋
+                   X                       ⌊y⌋
+                                           X                                  Z
+                             −s                      s−1     e−iπs Γ(1 − s)     z s−1 e−⌊x⌋z
+          ζ(s) =         n        + χ(s)         n         +                                 dz   (32)
+                   n=1                     n=1
+                                                                   2πi        C    ez − 1
+
+where C is a positively oriented contour C which goes from +∞, encircles zeros
+±2lπi of ez − 1 with l ∈ {0, 1, 2, . . . , ⌊y⌋}, and returns back to +∞, see [Ivi03,
+pp. 99–100] for a detailed derivation of (32).
+    Let [a, b] be a line segment in the complex plane with endpoints a and b. Define
+η := 2πy = t/x, z1 := cη + iη(1 + c), z2 := −cη + iη(1 − c) and z3 := −cη −
+iπ (2 ⌊y⌋ + 1). Also define q as ⌊y⌋ if {y} ≤ 1/2 and ⌊y⌋ + 1 otherwise. The
+reader is advised to consult Figure 1. Because of the condition (a), the set I :=
+[z1 , z2 ] ∩ ∂Dr0 , where Dr is defined in Lemma 2, is empty or contains exactly two
+elements, say w1 and w2 . Without loss of generality we can assign w1 to the point
+closer to z1 . In the latter case, these √two points are on the same circle with radius
+r0 and center at 2πiq, unless r0 = π/ 2 and η = π(2l + 1).
+    Deform C into four curves. Let C1 := [∞ + iη(1 + c), z1 ], C3 := [z2 , z3 ] and C4 :=
+                                                                           ˘
+[z3 , ∞ − iπ (2 ⌊y⌋ + 1)]. Let C2 := [z1 , z2 ] if I = ∅, and [z1 , w1 ] ∪ w1 w2 ∪ [w2 , z1 ]
+otherwise where w    ˘1 w2 is a smaller arc on circle if both points belong to the same
+circle. If this is not the case, we take the segment [w1 , w2 ] instead of the arc.
+Anyway, such contour always lies in C \ Dr0 .
+    Write z = u + iv = reiϕ where r > 0. Then z s−1 = rσ−1 e−ϕt and |e−mz | =
+  −mu
+e       . Denote by Ik the integral in (32) which goes along Ck . In the next paragraphs
+we will derive explicit bounds for each Ik which will, together with Corollary 3, give
+the final bounds.
+    Consider integration along C1 . We have
+
+                                  z s−1 e−⌊x⌋z             σ−1 1 e
+                                                                   −⌊x⌋u
+
+                                      z
+                                               ≤ η σ E1 (c) 2            ,                        (33)
+                                     e −1                      η eu − 1
+                               EXPLICIT ZERO DENSITY ESTIMATE                                 11
+
+
+
+                                                                            z1
+
+
+                                                                        z(λ0 )
+
+                                                                   w1
+                                                    2πiq
+
+                                                              iη
+                                                   w2
+
+
+                                   z(−λ0 )
+
+
+                               z2
+                                                   2πi⌊y⌋
+
+
+
+        Figure 1. Part of the contour integration (black thick line) along C. The set
+        composed by open circles with radii r0 and centres at 2πik is denoted by Dr0 .
+
+
+
+
+and also
+                          z s−1 e−⌊x⌋z             σ−1   π          1 eu
+                              z
+                                       ≤ η σ E1 (c) 2 e− 2 t−tΦ1 (c) u    .                 (34)
+                             e −1                                   ηe −1
+
+Note that Φ1 (c) is strictly increasing, thus Φ1 (c) > 0. The last inequality is true
+because
+                η(1 + c)                          η(1 + c) tu    π
+    −t arctan            − (⌊x⌋ + 1)u ≤ −t arctan         −   ≤ − t − tΦ1 (c)
+                   u                                 u      η    2
+
+since the function in the middle is strictly decreasing in the variable u and arctan α+
+arctan 1/α = π/2 for α > 0. Let d satisfies the condition (d). Then d > c and
+                     ÇZ dη         Z ∞å
+                                               z s−1 e−⌊x⌋z
+           |I1 | ≤             +                            du
+                          cη        dη            ez − 1
+                                     Ç                                                  å
+                      σ        σ−1
+                                             −π           1     edη − 1   e−⌊x⌋dη
+                ≤ η E1 (c)      2        e    2 t−tΦ1 (c)    log cη     +
+                                                           η    e − 1 ⌊x⌋ η (edη − 1)
+
+where we use (34) for the first integral and (33) for the second one. This implies
+that
+                                    e−iπs Γ(1 − s)      C2 (t)
+                                                   I1 ≤        E1 x−σ .
+                                          2πi            2σ
+Note that Φ1 (c) > 0 and condition (d) imply that E1 → 0 while t → ∞ if c and d
+are fixed.
+   Consider integration along C2 . The main idea is to apply the bound from Lemma
+2 on a part of C2 which goes through {z ∈ C : |ℜ{z}| ≤ λ0 } \ Dr0 , where λ0 satisfies
+the condition (c). This set is represented by the grey colour in Figure 1. Firstly,
+observe that for |z| < 1 we can write log (1 + z) = z + f1 (z) = z − z 2 /2 + z 3 f2 (z)
+with
+                               Å              ã
+                                 1    |z|                        1
+               |f1 (z)| ≤ |z|2     +            , |f2 (z)| ≤            .
+                                 2 3(1 − |z|)                3(1 − |z|)
+12                                ALEKSANDER SIMONIČ
+
+                   √
+Let z(λ) = iη + λ 2eiπ/4 , λ ∈ [−cη, cη], be a parametrisation of the line [z1 , z2 ].
+Then we have
+                                                 Ç      √       å
+                  Ä               ä                   λ 2 −πi
+        s−1         (s−1) π i s−1
+log z(λ)    − log e       2  η      = (s − 1) log 1 +      e  4
+                                                        η
+                                              Ç √                         √        å
+                                                λ 2 − π i λ2 − π i λ3 2 2 − 3π i
+                                    = (s − 1)       e 4  − 2e     2  +        e 4 o
+                                                 η          η            η3
+            Ä Ä       √ ää−1                                             √
+where |o| ≤ 3 1 − c 2           . The above equation is valid if |λ| < η/ 2, and this
+                       √
+is true because c < 1/ 2 due to the condition (b). From this we obtain
+                                  Å Å                                    ãã
+               s−1     σ−1              π   λ             λ2    (σ − 1)λ
+          z(λ)      ≤η       exp t − + − E4 (σ, t, c) 2 +                   .
+                                        2    η            η         tη
+Note that E4 > 0. Writing e−⌊x⌋z = ez(x−⌊x⌋) e−zx and noticing that cosh (ax) ≥
+cosh ((1 − a)x) for a ≥ 0, we have
+                              e−⌊x⌋z(λ)          λ (x−⌊x⌋)
+                                              λ e 0
+
+                                z(λ)
+                                        ≤ e−t η λ0
+                              e      −1          e −1
+for |λ| ≥ λ0 . Denote the integration along segments [z1 , z (λ0 )] and [z (−λ0 ) , z2 ],
+and [z (λ0 ) , w1 ] and [w2 , z (−λ0 )] by I21 and I22 , respectively. Because
+                                  Z ∞                    √       Å 2 ã
+                                         −(aλ)2 +bλ        π        b
+                      I (a, b) :=      e            dλ =     exp
+                                   −∞                    |a|       4a2
+for real numbers a and b, see [GR15, Eq. 3.323 2], it follows
+                                                   Ç√               å
+                          √ σ−1 eλ0 (x−⌊x⌋) − π t      tE4 σ − 1
+                 |I21 | ≤ 2η                 e 2 I         ,
+                                    eλ0 − 1            η      η
+                              1       2π    1          π         
+                        ≤ tσ− 2 x−σ              exp  −   t + E 5  .
+                                      E4 eλ0 − 1        2
+                                                                                   r
+                                                                                 − √0
+The bound for I22 is the same except that we must replace eλ0 − 1 by 1 − e 2 in
+the above inequality.
+   Let z = 2πqi + r0 eiϕ be a parametrisation of the circle with center at 2πqi and
+radius r0 . Denote the integration along the arc w1 ˘  w2 by I23 . Since
+              Å          iϕ ã                                               Å iϕ ã
+                    r0 e                     (σ − 1)r0 eiϕ                   r0 e
+   (s − 1) log 1 +            − r0 ⌊x⌋ eiϕ =               + (σ − 1 + it)f1
+                    2πqi                          2πqi                       2πqi
+                                             Å           ã
+                                                t
+                                           +       − ⌊x⌋ r0 eiϕ ,
+                                               2πq
+we have                                                 Å     ã
+                                                …
+                           r0 π    σ− 21   −σ        x      1 σ−1 − π t+E6
+               |I23 | ≤      r
+                          − √0
+                                t    x                   1+      e 2       .
+                     1−e 2                          2πy     y
+Because I2 = I21 + I22 + I23 , we finally obtain
+                            e−iπs Γ(1 − s)      C2 (t)
+                                           I2 ≤        E2 x−σ .
+                                  2πi            2σ
+Note that E2 , although bounded for fixed c, λ0 and r0 , does not tend to zero while
+t → ∞ due to a contribution from parts I21 and I22 .
+   Consider integration along C3 . Because
+                          z s−1 e−⌊x⌋z   (cη)σ−1 − π t−tΦ1 (−c)
+                              z
+                                       ≤          e 2           ,
+                             e −1        1 − e−cη
+                                 EXPLICIT ZERO DENSITY ESTIMATE                                     13
+
+
+we have
+                           cσ−1 (2 − c + π/η) σ − π t−tΦ1 (−c)
+                            |I3 | ≤          η e 2
+                                1 − e−cη
+since η(1−c)+(2 ⌊y⌋ + 1) π ≤ η(2−c+π/η). Note that Φ1 (−c) is strictly increasing,
+thus Φ1 (−c) > 0. From this we obtain
+                                   e−iπs Γ(1 − s)      C2 (t)
+                                                  I3 ≤        E3 x−σ .
+                                         2πi            2σ
+Note that Φ1 (−c) > 0 implies that E3 → 0 while t → ∞ if c is fixed.
+  Consider integration along C4 . Because (2 ⌊y⌋ + 1)π > η − π, we have
+                        Å       ã           Å                            ã
+        s−1 −⌊x⌋z     1       π σ−1 σ           π          ⌊x⌋
+       z e         ≤     1−          η exp − t − tΦ3 −         tc − ⌊x⌋ u .
+                      η       η                 2           x
+Then
+                                                          ÇZ ∞                   å
+                x                  πx σ−1 σ−1 −σ − π t                 −⌊x⌋u
+                                                                                            ⌊x⌋
+    |I4 | ≤         r
+                  − √0
+                                1−        t   x e 2                 e           du e−tΦ3 − x tc ,
+          1−e           2           t                         −cη
+
+which gives
+                        e−iπs Γ(1 − s)      C2 (t)
+                                       I4 ≤        E4 x−σ .
+                              2πi            2σ
+Note that E4 → 0 while t → ∞ since c < π/2 ≤ πx/ (2 ⌊x⌋).                                           
+
+2.4. Numerical analysis of the error term. Let 0 ≤ σ0 ≤ σ ≤ 1. Among all
+four terms in E, the E2 is the only one which does not go asymptotically to zero,
+also because of term E5 . This suggests we choose λ0 as small as possible according
+to Äthe condition   (c) of Theorem 6, therefore λ0 = r0 . Because r0 x/|t| ≤ r0 /(2π) ≤
+      √ ä
+1/ 2 2 , the choice c = r0 /(2π) satisfies the condition (b). Putting these two
+parameters into E2 , we can obtain
+        Ã           Ä √          ä         Ç                          å
+                  6 π 2 − r0                     1               1
+  E2 ≤        √           Ä              ä            r  + r0
+                                                  − √0
+            3π 2 − r0 5 + 2(1−σ   |t|
+                                      0)
+                                              1−e 2          e −1
+               Ñ                            Ä           √  ä          é
+                                                                               √
+                                (1 − σ0 )2 6π − 3r0 2                      r0 / 2
+         · exp r0 +          Ä            √  ä                    √     +        r
+                                                                               − √0
+                         4|t| 6π − 5r0 2 − 8 (1 − σ0 ) r0 2               1−e 2
+                                      Ñ                                 éÑ     $        %−1 é2
+                 r02 (|t| + 1 − σ0 ) 1                   r0                         |t|
+         · exp                              +  j» k                      1+
+                         2π|t|            2 3 2π          |t|
+                                                                −  r                2π
+                                                          2π        0
+               Ñ       $        %−1 é                   $         %−1 !
+                            |t|            (1 − σ0 ) r0       |t|
+         + r0 2 +                       +                               .
+                            2π                 2π             2π
+
+Taking |t| → ∞ in the above expression, we get
+     Ã Ä            äÇ
+            √                                å             √        Å 2      ã
+       6 π 2 − r0           1           1        r0    r0 / 2        r0
+           √                   r  +            e    +        r  exp     + 2r0 .
+        3π 2 − 5r0      1−e 2
+                             − √0   e r0 − 1          1−e 2
+                                                           − √0      4π
+                                                                     √
+Because this function is positive and continuous for 0 < r0 ≤ π/ 2 with a pole
+at r0 = 0, it must have a minimum value on this interval. Let R0 be the upper
+bound of the set where the minimum value is attained. Numerical calculations show
+that there is only one stationary point at R0 ≈ 0.52777 and the minimum value is
+≈ 15.2029.
+14                                            ALEKSANDER SIMONIČ
+
+                                                                                                 p
+   Choosingpd = πx/ (2 ⌊x⌋) < π, and using inequalities πx/|t| ≤                                  π/(2|t|) and
+c|t|/x ≥ r0 |t|/(2π), we can estimate
+
+                       Å     Å                      ãã
+                |t|            r0              r0
+       E1 ≤         exp −|t|      − arctan
+                 π             2π          2π + r0
+               Ç                       Å          p |t| ãå
+                      r0       1              −r0                    2
+              · π−       −p         log 1 − e       2π     +p     π√           .
+                      2π      2π|t|                          π|t| e 2 2π|t| − 1
+
+Furthermore, we also have
+                              »
+           r σ0 −1 2 − r0  2|t| + 1   Å    Å
+                                                 r0            r0
+                                                                     ãã
+             0
+     E3 ≤           Å     2π     π
+                                   ã
+                              p |t| √ exp −|t| −    + arctan           ,
+            2π                                   2π          2π − r0
+                      1 − e−r0 2π    2
+         Å    …      ã                       Å     Å                    ãã
+                 π σ0 −1      2                      π   r0          2π
+     E4 ≤ 1 −                r0  p     exp  −|t|     −    + arctan      .
+                2|t|         −√
+                          1−e 2     π|t|             2   2π          r0
+
+From [AdR11, Theorems 4.1 and 4.2] we can deduce
+                                                                 Å         ã2
+                                            1  9σ                     11        2π 3σ
+                                  |EL (s)| ≤ + √ +                                 22
+                                            2 2 t                     10        7t
+
+for σ ∈ (0, 1] by taking the first two terms in EL (s). Together with Proposition 1
+this implies
+                                  !       Å         ã− σ2 Å                         Å           ãã
+                 |t|        |t|               |t|                                        0.3746
+      R1   s;        ,                ≤                    |EL (1)| + |EL (1 − σ0 )| 1 +           .
+                 2π         2π                2π                                           |t|
+
+Taking r0 = 0.52777 and σ0 = 1/2 in the above inequalities, we easily obtain
+bounds from Theorem 4. After applying Proposition 1 to Theorem 6, we obtain
+(13) with
+
+                             ‹ ≤ 0.3746
+                             E   p      + E,                     ‹ ≤ 0.3746 + F
+                                                                 F
+                                σ 2π|t|                               σ|t|
+     P
+since n≤X nσ−1 ≤ X σ /σ is valid for σ ∈ (0, 1]. This implies inequalities from
+Corollary 1.
+
+
+2.5. Application to the approximate functional equation for ζ 2 (s). Hardy
+and Littlewood proved in [HL29] that
+                                      X d(n)                    X d(n)
+                         ζ 2 (s) =                   + χ2 (s)                   + R2 (s; x, y)            (35)
+                                              ns                      n1−s
+                                      n≤x                       n≤y
+
+
+with 4π 2 xy = t2 , where R2 (s; x, y) ≪ x1/2−σ ((x + y)/|t|)1/4 log |t|. Here d(n) is the
+                                             P
+divisor function, and it is well-known that n≤X d(n) = X log X+(2γ−1)X+∆(X)
+                    √
+where ∆(X) ≪ X. Later Titchmarsh provided a different proof of (35) with
+R2 (s; x, y) ≪ x1/2−σ log |t|, see also [Ivi03, pp. 104–121]. Both proofs are quite
+elaborate. In the symmetric case x = y = |t|/(2π), Motohashi [Mot83] found a
+simple connection between (35) and (8) by means of Dirichlet’s hyperbola method.
+                          EXPLICIT ZERO DENSITY ESTIMATE                                                         15
+
+
+He obtained
+                                                                                                 Ä |t| ä
+                    Å           ã                       X                          X           R1 s; 2πn ,n
+                        |t| |t|                                      1
+        R2 (s) := R2 s;    ,      = 2χ(s)                              +2
+                        2π 2π                               p |t|    n               p |t|          ns
+                                                       n≤     2π              n≤          2π
+                                        Ä        |t|
+                                                        ä                                                !
+                          X           R1 1 − s; 2πn  ,n                                    |t|     |t|
+                     2
+              + 2χ (s)                                               + R12        s;           ,             ,
+                              p |t|           n1−s                                         2π      2π
+                         n≤      2π
+
+
+where R1 (s; x, y) is the error term in the approximate functional equation. Theorem
+6 enables us to obtain an explicit version of R2 (s) and thus of (35) in the symmetric
+case.
+Corollary 4. Let s = σ + it where σ ∈ [1/2, 1] and |t| ≥ 103 . Then we have
+           X d(n)                Å ã1−2σ Å       ã−2it X
+   2                              |t|        |t|             d(n)   e2 (s) , (36)
+  ζ (s) =          s
+                     + sgn (t) i                               1−s
+                                                                   +R
+             |t|
+                 n                2π        2πe          |t|
+                                                             n
+             n≤ 2π                                                                n≤ 2π
+
+where
+                                                       Å          ã 21 −σ
+                              e2 (s) ≤ 34.765               |t|                   |t|
+                              R                                             log       ,
+                                                            2π                    2π
+and also                              Å            ã
+                                e2        1                                  |t|
+                                R           + it       ≤ 28.621 log              .
+                                          2                                  2π
+Proof. By symmetry, we can assume that t ≥ 103 . By Proposition 1, (12) and (27)
+we have Re2 (s) ≤ |R2 (s)| + r2 (s), where
+                                 Å ã1−2σ
+                                     t     0.75 X d(n)
+                       r2 (s) :=                        .
+                                   2π        t   t
+                                                   n1−σ
+                                                                    n≤ 2π
+
+Partial summation assures that
+          X d(n)      1 σ          2γσ − 1 σ (2γ − 1)σ 2 − 2γσ + 1
+                   =   X   log X +          X +
+              n1−σ   σ                σ2                   σ2
+          n≤X
+                                           Z X
+                                               ∆(u)
+                                 + (1 − σ)       2−σ
+                                                     du + X σ−1 ∆(X)
+                                            1  u
+for X ≥ 1. Now we consider √ two cases: σ = 1/2 and σ ∈ (1/2, 1]. Using the
+elementary bound ∆(X) ≤ 3 X, we obtain
+                Å       ã                        Å ã1−2σ
+                  1                                t          t
+             r2     + it ≤ 0.106, r2 (s) ≤ 0.265         log    .
+                  2                               2π         2π
+There exist much better estimates for ∆(X), see [BBR12, Theorem 1.1], but this
+bound is good enough for our purposes.           p
+  Now we need to bound R2 (s). Because n ≤ t/(2π), this implies t/(2πn) ≥ n.
+By Theorem 4 and Theorem 6 we thus have
+                      Å            ã            Å ã 12 −σ
+                            t                     t
+                   R1 s;        , n ≤ 15.726               nσ−1 ,
+                           2πn                   2π
+                     Å                ã           Å ãσ− 21
+                                t                     t
+                  R1 1 − s;        , n ≤ 10.988              n−σ ,
+                              2πn                    2π
+                            Å                 ã
+                               1         t          10.983
+                         R1       + it;     ,n ≤ √ .
+                               2        2πn             n
+16                               ALEKSANDER SIMONIČ
+
+                                       1/2−σ
+Using also |χ(s)| ≤ 1.00038 (t/(2π))      , |χ(1/2 + it)| = 1, and the inequality
+                             X 1                     1
+                                    ≤ log X + γ +       ,
+                                 n                  2X
+                              n≤X
+
+see [DHZA19, Lemma 2.8], we obtain
+                                           Åã1
+                                          t 2 −σ       t
+                        |R2 (s)| ≤ 34.5          log     ,
+                                         2π           2π
+                              Å        ã
+                                 1                  t
+                           R2      + it ≤ 28.6 log .
+                                 2                 2π
+These bounds give the desired estimates from Corollary 4.                               
+   In a work in progress we will use Corollary 4 to obtain an explicit fourth power
+moment of the Riemann zeta-function which will be useful to get an explicit version
+of (2).
+
+     3. Explicit second power moment of the Riemann zeta-function
+   The main analytic tool used by Selberg in his proof of the zero density estimate
+is a weighted second power moment of ζ, see [Sel46, Lemma 6]. The main idea is
+to use the approximate functional equation in the form (11), together with (6) for
+real values. In the forthcoming subsections we will provide a proof of the following
+explicit version of Selberg’s lemma with H = T .
+Theorem 7. Let σ ∈ (1/2, σ0 ], σ0 ∈ (1/2, 1), and T ≥ T0 ≥ 2π. Furthermore, let
+1 ≤ µ1 ≤ µ2 ≤ T /(2π) be a positive coprime integers, and denote z := (σ, T, µ1 , µ2 ).
+Define
+                                 Z 2T              Å ãit
+                                                  2 µ1
+                        S (z) :=      |ζ(σ + it)|           dt
+                                  T                 µ2
+and                                                   
+                     ζ(2σ)        (2π)2σ−1 41−σ − 1 ζ(2 − 2σ) 2(1−σ)
+          S (z) :=            T+                                  T        .       (37)
+                    (µ1 µ2 )σ           2(1 − σ) (µ1 µ2 )
+                                                          1−σ
+
+Then
+                       Å ãσ
+                         µ2         σ      T µ2                          T µ1 µ2
+     |S − S | ≤ S1 (z)         T 1− 2 log        + S2 (z)µ1 µ2 T 1−σ log         ,
+                         µ1                 πµ1                              π
+where
+                            log T0
+                S1 (z) :=            (B5 (z) + B6 (z)) + B7 (z) + B8 (z),
+                            log Tπ0
+                                          …
+                                             1                   B9 (σ0 )
+                S2 (z) := B1 (σ0 , T0 ) +      B3 (z) + B4 (z) +          ,
+                                             π                   log Tπ0
+and positive functions B1 , B3 , . . . , B9 , defined by equations (59), (64), (65), (52),
+(53), (57), (58), and (48), respectively, are bounded for fixed σ0 and T0 . Addition-
+ally, they are continuous for σ ∈ [1/2, σ0 ] and σ0 ∈ [1/2, 1).
+   Although S (z) is not defined for σ = 1/2, the limit σ → 1/2 exists. This enables
+us to obtain an explicit upper bound for second power moment of ζ on the critical
+line, see Corollary 5. It turns out that we get an explicit version of Littlewood’s
+bound       Z T Å          ã2
+                    1
+                 ζ    + it    dt = T log T − (1 + log 2π − 2γ) T + E (T )
+                    2
+             0
+                 Ä 3 ä
+with E (T ) = O T 4 +ε , announced incorrectly and without proof in 1922. This
+estimate was the first improvement of the fact that the integral is asymptotically
+                            EXPLICIT ZERO DENSITY ESTIMATE                                     17
+
+
+equal to T log T , a result due to Hardy and Littlewood. Their second proof uses the
+approximate functional equation, see [Tit86, Theorem 7.3]. New turn in the mean
+square theory was Atkinson’s formula for E (T ) and its various generalisations,
+                                                                            Ä 35 e.g.,
+                                                                                    ä
+Matsumoto–Meurman formulas. They enabled to prove that E (T ) = O T 108 +ε
+                                              Ä 1 ä                           Ä 1ä
+and it is plausible to believe that E (T ) = O T 4 +ε is true since E (T ) = Ω T 4 ,
+see [Ivi03, Chapter 15] for proofs and techniques, and [Mat00] for an overview of
+the mean square theory.
+Corollary 5. Let T ≥ 2π. Then
+                     …
+                   3     T          √      T
+  E (T ) ≤ 13.803T 4 log    + 83.964 T log    + 2 · 103 log T + 3691.24.                     (38)
+                         2π                2π
+Proof. Let T0 = 103 and T ≥ 2T0 . Define S(σ, T ) := S (σ, T, 1, 1), S (σ, T ) :=
+S (σ, T, 1, 1), S1 (σ, T ) := S1 (σ, T, 1, 1) and S2 (σ, T ) := S2 (σ, T, 1, 1). Take
+an arbitrary σ0 ∈ (1/2, 1) and let σ ∈ (1/2, σ0 ]. By Theorem 7 there exist
+a continuous functions Sc                            c
+                               1 (σ0 , T0 ) and S2 (σ0 , T0 ) for σ0 ∈ [1/2, 1) such that
+S1 (σ, T ) ≤ S c1 (σ0 , T0 ) and S2 (σ, T ) ≤ S      c2 (σ0 , T0 ). Also S  c1 (1/2, T0 ) ≤ 9.4104
+     c
+and S2 (1/2, T ) ≤ 34.779. We thus have
+    Z T                       Xn0    Å        ã
+                     2                     T         c(σ)
+         |ζ (σ + it)| dt ≤        S σ, n ≤ S
+     2T0                      n=1
+                                           2
+                                                     …
+                              Sc1 (σ0 , T0 ) T 1− σ2        T      Sc2 (σ0 , T0 ) T 1−σ     T
+                           +            σ              log      +                       log    ,
+                                   21− 2 − 1               2π           21−σ − 1            2π
+where n0 := ⌊log2 (T /T0 )⌋ and
+                                             n0
+                                             X         Å        ã
+                                 c(σ) :=                      T
+                                 S                 S       σ, n .
+                                             n=1
+                                                             2
+A simple calculation shows that
+                                           
+                      c(σ) = ζ(2σ) 1 − 2−n0 T + f (σ)ζ(2 − 2σ),
+                      S
+where                                                  
+                                 (2π)2σ−1 1 − 4−(1−σ)n0 2(1−σ)
+                        f (σ) :=                         T     .
+                                         2(1 − σ)
+Remember that the Laurent series of ζ(s) around s = 1 is ζ(s) = (s−1)−1 +γ +g(s)
+for some holomorphic function g(s) with g(1) = 0, and γ is the Euler–Mascheroni
+constant. Then
+                      −n0
+                          ) T − f (σ)                                 
+       Sc(σ) = (1 − 2                 + (γ + g(2σ)) 1 − 2−n0 T + f (σ) .
+                      2σ − 1
+Since limσ→1/2 f (σ) = (1 − 2−n0 ) T , we have
+                          Å ã
+                                                      
+            c(σ) = − 1 f ′ 1 + 2γ 1 − 2−n0 T = 1 − 2−n0 (log T + 2γ) T
+       lim1 S
+      σ→ 2            2    2
+                    − (1 + log 2π) T + 2−n0 (1 + n0 log 2 + log 2π) T
+                                                               2πeT
+                    ≤ T log T − (1 + log 2π − 2γ) T + 2T0 log        .
+                                                                 T0
+Take σ0 → 1/2. For T ≥ 2T0 , the main inequality now easily follows from this since
+                               R 2T
+we can numerically verify that 0 0 |ζ(1/2 + it)|2 dt ≤ 11831, and this also implies
+                                    R 35            2
+that it is true for T ≥ 35. Finally 0 |ζ(1/2 + it)| dt ≤ 67, which concludes the
+proof.                                                                           
+18                                            ALEKSANDER SIMONIČ
+
+
+   Evaluation of the above integrals was performed in Mathematica, using the built-
+in function RiemannSiegelZ[t] and integration method NIntegrate. In princi-
+ple, it is possible to improve the constants in the first two terms in (38) because
+limT →∞ S1 (1/2, T, 1, 1) ≈ 8.953 and limT →∞ S2 (1/2, T, 1, 1) ≈ 22.6, but unfortu-
+nately T0 , and consequently the last two constants in (38), grow too rapidly to be
+numerically useful. Note that our estimate is for T ≥ 1545 better than the recent
+explicit bound in [DHZA19, Theorem 4.3].
+3.1. Setting of the proof. Assume the conditions of Theorem 7. Define
+                                                tµ1                                 tµ2
+                              x(t) :=                        and y(t) :=                .
+                                               2πµ2                                2πµ1
+Then 1 ≤ x(t) ≤ y(t) and 2πx(t)y(t) = t. Using Corollary 1, we obtain
+              X                        X
+  ζ(σ + it) =      n−σ−it + χ
+                            e(σ + it)      nσ−1+it
+                   n≤x(t)                                n≤y(t)
+                                                                      Å        ã− σ2 Å        ã− σ2
+                                                                           t             µ1           ‹ x(t), y(t))
+                                                                 +                                    E(s;
+                                                                          2π             µ2
+                     ‹ Changing roles of x(t) and y(t), Corollary 1 also implies
+     ‹ x(t), y(t)) ≤ E.
+with E(s;
+                    X                                         X
+     ζ(σ − it) =             m−σ+it + χ
+                                      e(σ − it)                       mσ−1−it
+                   m≤y(t)                                    m≤x(t)
+                                                                      Å        ã− σ2 Å        ã σ−1
+                                                                           t             µ1      2
+                                                                                                      ‹(s; x(t), y(t))
+                                                                 +                                    F
+                                                                          2π             µ2
+                        ‹. If we multiply these two equations, we get an expression
+     ‹(s; x(t), y(t)) ≤ F
+with F
+for |ζ(s)|2 consisting of nine terms and arranged into five groups:
+                                  X X                 m it
+                          A1 :=               (nm)−σ         ,
+                                                       n
+                                 n≤x(t) m≤y(t)
+                           Å ã1−2σ X X                      n it
+                             t
+                    A2 :=                         (nm)σ−1          ;
+                            2π                                m
+                                                     n≤y(t) m≤x(t)
+                                                       XX
+                             A3 := χ
+                                   e(σ + it)                      nσ−1 m−σ (nm)it ,
+                                                       n,m≤y(t)
+                                                      XX
+                             A4 := χ
+                                   e(σ − it)                     nσ−1 m−σ (nm)−it ;
+                                                      n,m≤x(t)
+
+                             Å        ã− σ2 Å        ã σ−1                          X
+                                  t             µ1      2
+                                                             ‹(s; x(t), y(t))
+                   A5 :=                                     F                                n−σ−it ,
+                                 2π             µ2
+                                                                                   n≤x(t)
+                             Å        ã− σ2 Å        ã− σ2                          X
+                                  t             µ1           ‹ x(t), y(t))
+                   A6 :=                                     E(s;                             n−σ+it ;
+                                 2π             µ2
+                                                                                   n≤y(t)
+
+                    Å        ã− σ2 Å         ã σ−1                                            X
+                         t             µ1       2
+                                                     ‹(s; x(t), y(t))e
+           A7 :=                                     F               χ (σ + it)                       nσ−1+it ,
+                        2π             µ2
+                                                                                          n≤y(t)
+                    Å        ã− σ2 Å         ã− σ2                                            X
+                         t              µ1           ‹
+           A8 :=                                                     χ (σ − it)
+                                                     E(s; x(t), y(t))e                                nσ−1−it ;
+                        2π              µ2
+                                                                                          n≤x(t)
+                                     EXPLICIT ZERO DENSITY ESTIMATE                                                        19
+
+                                 Å        ã−σ …
+                                      t                µ2 ‹               ‹(s; x(t), y(t)).
+                        A9 :=                             E(s; x(t), y(t))F
+                                     2π                µ1
+Therefore,
+                                                           9 Z 2T
+                                                           X                    Å        ãit
+                                                                                    µ1
+                               S(σ, T ; µ1 , µ2 ) =                      Aj ·                  dt.
+                                                           j=1      T               µ2
+Denote by Bi the ith summand in the above equation. In the following subsections
+we provide an explicit bounds on each Bi . Before doing this we firstly collect some
+lemmas which are used in the forthcoming subsections.
+
+3.2. Some lemmas. The first lemma is a rule for changing integration and sum-
+mation when the range in the sum depends on the integration variable.
+Lemma 3. Let f (n, t) be an integrable function in variable t ∈ [T1 , T2 ] where
+T1 ≥ 1, and let g(t) be a strictly increasing differentiable function with g (T1 ) ≥ 1.
+Then          Z T2 X                    X Z T2
+                          f (n, t)dt =                         f (n, t)dt.
+                        T1   n≤g(t)                      n≤g(T2 )       max{T1 ,g−1 (n)}
+
+Proof. We first prove the special case when g(t) = t. We can assume that ⌊T2 ⌋ −
+⌊T1 ⌋ ≥ 2 since otherwise the lemma is obviously true. Then
+                      Ñ                                             é
+Z T2 X                  X Z ⌊T1 ⌋+1      X X Z j+1
+                                        ⌊T2 ⌋−1
+                                                            X Z T2
+         f (n, t)dt =               +                   +             f (n, t)dt.
+ T1    n≤t                       n≤T1      T1              j=⌊T1 ⌋+1 n≤j        j              n≤⌊T2 ⌋    ⌊T2 ⌋
+
+The second integral equals to
+      X         ⌊T2 ⌋−1
+                  X         Z j+1                                          X         Z ⌊T2 ⌋
+                                                       f (n, t)dt =                                          f (n, t)dt.
+      n≤⌊T2 ⌋−1 j=max{⌊T1 ⌋+1,n}              j                         n≤⌊T2 ⌋−1        max{⌊T1 ⌋+1,n}
+
+This implies
+                                                   Ñ                                           é
+            Z T2 X                                     X Z T2              ⌊T2 ⌋
+                                                                            X        Z T2
+                               f (n, t)dt =                         +                                f (n, t)dt
+                   T1    n≤t                           n≤T1    T1        n=⌊T1 ⌋+1       n
+
+and consequently the lemma in this special case.
+   Write g(t) = u. Because g(t) is strictly increasing differentiable function, there
+                                                 ′
+exists its inverse t = g −1 (u) and dt = g −1 (u) du. We have
+        Z T2 X                   Z g(T2 ) X
+                                                                 ′
+                    f (n, t)dt =            f n, g −1 (u) g −1 (u) du
+             T1   n≤g(t)                          g(T1 ) n≤u
+
+                                                  X Z g(T2 )                                      ′
+                                          =                                  f n, g −1 (u) g −1 (u) du
+                                              n≤g(T2 )     max{g(T1 ),n}
+
+                                                  X Z T2
+                                          =                                          f (n, t)dt,
+                                              n≤g(T2 )     g−1 (max{g(T1 ),n})
+
+where the second equality follows from the first part of the proof. Clearly, the last
+integral equals to the second integral from the lemma.                             
+  From Lemma 3 it easily follows that
+   Z T2 X    X                        X                                    X         Z T2
+                    f (n, m, t)dt =                                                                  f (n, m, t)dt,    (39)
+       T1    n≤g1 (t) m≤g2 (t)                            n≤g1 (T2 ) m≤g2 (T2 )          M(n,m)
+20                             ALEKSANDER SIMONIČ
+
+                         
+where M(n, m) := max T1 , g1−1 (n), g2−1 (m) , and functions f, g1 , g2 satisfy condi-
+tions of Lemma 3.
+   The next two lemmas bound particular double sums which appear during the
+integration of Dirichlet polynomials. The first one is a slightly modified corollary
+of Preissmann’s inequality
+
+                   X X un um        X       |un |
+                                                  2
+                              ≤ πm0                      ,                                      (40)
+                      xn − xm         minn6=m |xn − xm |
+                   n,m≤X                        n≤X
+                    n6=m
+
+where X ≥ 2, {xn }n≤X are distinct real numbers, {un }n≤X are complex numbers
+         q        »
+and m0 := 1 + 23 65 , see [Pre84].
+
+Lemma 4. Let X ≥ 2, {an }n≤X be a sequence of complex numbers and Y ∈ R.
+Then
+                                                        Å     ã
+                 XX        an am  n iY       X          1
+                                         ≤ πm0   |an |2     +n ,
+                         log (n/m) m                      2
+                 n,m≤X                                 n≤X
+                  n6=m
+              q      »
+where m0 :=    1 + 23 65 .
+
+Proof. Use (40) for xj = log j and uj = aj j iY , and observe that |log (n/m)| ≥
+(n + 1/2)−1 for all distinct integers n and m.                                 
+
+Lemma 5. Let X ≥ 2 and |a| < 1. Then
+                         Ñ         é2
+    X X (nm)a               X           X         X       X 1
+                       ≤        na    −   n2a + 2   n1+2a     .
+           |log (n/m)|                                      n
+         n,m≤X                   n≤X             n≤X                 n≤X            n≤X
+          n6=m
+
+Proof. Firstly, observe that 1/ log λ ≤ 1 + λ1+a / (λ − 1) is true for λ > 1. Then
+                 XX       (nm)a      XX              X X m1+2a
+                                   ≤       (nm)a + 2
+                 n,m≤X
+                       |log (n/m)|   n,m≤X           n<m≤X
+                                                           m−n
+                 n6=m                   n6=m
+
+from which the main inequality follows.                                                           
+
+     The idea is to combine Lemmas 4 and 5 to bound the following double sum
+                                   X X (nm)a Å n iT2  n iT1 ã
+             D (a, T1 , T2 ; X) :=                       −           .
+                                      log (n/m)   m          m
+                               n,m≤X
+                                n6=m
+
+In the most subsequent applications, T2 is independent while T1 depends on the
+summation variables n and m. Thus we will use Lemma 4 for an = na , Y = T2 to
+bound the first part, and Lemma 5 for the second part. What we obtain is
+                         Ñ             é
+                                  X 1     X
+   |D (a, T1 , T2 ; X)| ≤ πm0 + 2             n1+2a
+                                     n
+                                  n≤X           n≤X
+                                            Ñ              é2
+                                                X                    πm            X
+                                                                           0
+                                        +             na        +              −1         n2a . (41)
+                                                                      2
+                                               n≤X                                  n≤X
+                            EXPLICIT ZERO DENSITY ESTIMATE                                 21
+
+
+Observe that πm0 /2 − 1 > 0. We will need (41) only for a ∈ {−σ, σ − 1}. Particular
+sums are estimated by
+                          X                          1
+                              n−2σ ≤ log X + γ +       ,                       (42)
+                                                   2X
+                          n≤X
+                    X                    Å                  ã
+                                                          1
+                        n2(σ−1) ≤ X 2σ−1 log X + γ +          ,                (43)
+                                                         2X
+                     n≤X
+                                       X                      X 2(1−σ)
+                                             n1−2σ ≤                   ,                 (44)
+                                                              2(1 − σ)
+                                      n≤X
+                                         X                    X 1−σ
+                                                     n−σ ≤          ,                    (45)
+                                                              1−σ
+                                         n≤X
+                        X                                Å          ã
+                                                  X 2σ       2σ   1
+                                 n2σ−1 ≤                  1+    − 2σ .                   (46)
+                                                  2σ         X   X
+                        n≤X
+
+These bounds are good also for σ = 1/2. Inequalities (44), (45) and (46) follow
+simply from integration.
+   The next two lemmas are explicit versions of Selberg’s Lemmas 2 and 3, with
+the same proof in principle. The first one is needed to estimate B2 while the second
+one is useful to obtain bounds for B3 and B4 .
+Lemma 6. Let σ ≥ 1/2, λ 6= 0 and T1 ≤ T2 . Then
+                       Z T2
+                                             2 1−2σ
+                            t1−2σ eiλt dt ≤     T1  .
+                         T1                 |λ|
+
+Proof. The stated inequality is clearly true in case of σ = 1/2. If we assume that
+σ > 1/2, it is not hard to see that integration by parts implies the stated bound. 
+                                                           √
+Lemma 7. Let σ ≥ 1/2, ξ ∈ (0, T1 ] and 2 ≤ T1 < T1 + T1 ≤ T2 . Then
+                        Z T2                 Å        ã±it                 1
+                                                                               −σ
+                                      1           t                     8T12
+                                  t   2 −σ                   dt ≤              √     .
+                            T1                   eξ                   log T1 +ξ T1
+
+Proof. Denote by I the above integral and assume ξ 6= T1 . Separating real and
+imaginary part of the exponential function, we obtain
+         Z T2 1 −σ       Å          ã               Z T2 1 −σ        Å          ã
+              t2                  t        t             t2                   t       t
+     I=           t  cos   t log       log   dt ± i           t sin   t log       log dt
+          T1 log ξ               eξ        ξ         T1 log ξ                eξ       ξ
+           1
+             −σ Ç Z  u(T1 +η1 (T2 −T1 ))             Z  u(T1 +η2 (T2 −T1 ))
+                                                                                    å
+         T2
+       = 1 T1                            cos udu ± i                        sin udu
+         log ξ      u(T1 )                             u(T1 )
+
+for some η1 , η2 ∈ [0, 1]. The second equality follows from the second mean value
+theorem and after making substitution u(t) := t log (t/ (eξ)) with u′ (t) = log (t/ξ) >
+0. This implies that
+                                                             1
+                                                                 −σ
+                                                  4T 2
+                                             |I| ≤ 1 T1 .                                (47)
+                                                  log ξ
+Define                                  √
+                                                                √            √
+                            log T1 +ξ T1                         T1     T1 + T1
+                 f (ξ) :=                        ,     g (ξ) :=     log         .
+                                 log Tξ1                         4          ξ
+22                                   ALEKSANDER SIMONIČ
+
+
+The first function
+               √ is strictly increasing while the second one is strictly decreasing.
+For ξ ≤ T1 − T1 we thus have
+                                              √ 
+                           1        f T1 − T1                   2
+                             T1
+                                 ≤        T  +
+                                               √
+                                                 T
+                                                      ≤      T
+                                                                   √
+                                                                  + T1
+                        log ξ         log  1      1
+                                                         log    1
+                                              ξ                    ξ
+                         √ 
+since limT1 →∞ f T1 − T1 = 2. In this case we obtain the desired inequality.
+                √
+Now, let T1 − T1 ≤ ξ ≤ T1 . By the already known inequality (47) we have
+                  Z T1 +√T1               Z T2             Å ã±it
+                              1                       1       t
+            |I| ≤           t 2 −σ dt +         √
+                                                    t 2 −σ            dt
+                   T1                      T1 + T1           eξ
+                                                              Ä        Ä    p ää
+                                 1                   1
+                                     −σ                  −σ
+                              4T12                4T12
+              ≤ T11−σ +           √       ≤              √        1 + g T1 − T1 .
+                          log T1 +ξ T1log T1 +ξ T1
+                                               √ 
+This also proves the main bound since g T1 − T1 < 1. The proof of Lemma 7 is
+thus complete.                                                            
+
+   We are now in position to obtain desired bounds for integrals Bi . We will do
+this in pairs of indices, namely for {5, 6}, {7, 8}, {1, 2} and {3, 4}, but starting
+with the most simple one B9 . Derivation of bounds for one part of a pair give
+bounds for the other part when changing the roles of parameters µ1 and µ2 . Note
+that the order of appearance of parameters µ1 and µ2 is crucial when obtaining
+bounds which depend only on σ0 and T0 . Here we use inequalities µ1 /µ2 ≤ 1 and
+πµ2 / (T µ1 ) ≤ 1/2.
+
+3.3. Bound on B9 . A straightforward calculation shows that
+                                        …
+                                          µ2
+                          |B9 | ≤ T 1−σ      B9 (σ0 ) ,
+                                          µ1
+where
+                                          2 − 2σ0 ‹ ‹
+                              B9 (σ0 ) := π σ0    E · F.                        (48)
+                                          1 − σ0
+Here we used the fact that (2 − 2x ) / (1 − x) is a strictly increasing function on
+[1/2, 1).
+
+3.4. Bounds on B5 and B6 . Firstly, we will consider B5 . Define
+                                      X        1
+                         Sx(t) (s) :=         σ+it
+                                                   .
+                                            n
+                                                  n≤x(t)
+
+Hölder’s inequality implies
+            Z 2T Å ã− σ2
+                    t                       1−σ     σ                 21−σ − 1
+                            Sx(t) (s) dt ≤ T 2 (2π) 2                          Ix(t) (s),
+             T     2π                                                   1−σ
+where
+                                             Z 2T
+                                                                  2
+                              Ix(t) (s) :=          Sx(t) (s) dt.
+                                              T
+The same inequality is also true for y(t) and s̄ = σ −it. The problem is thus reduced
+to bounding the second integral. Separation of the diagonal and off-diagonal terms
+which appear after multiplication gives, together with equality (39),
+                        Z 2T
+            Ix(t) (s) =       Sx(t) (2σ)dt + iD (−σ, −M1 , −2T ; x (2T ))        (49)
+                          T
+                                  EXPLICIT ZERO DENSITY ESTIMATE                                                23
+
+                  
+where M1 := max T, x−1 (n), x−1 (m) . Using (42), we can deduce by straightfor-
+ward integration that
+                    Z 2T
+                         Sx(t) (2σ)dt ≤ B5,1 (T, µ1 , µ2 ) T log T,
+                             T
+
+where
+                                                                »           Ä√         ä»
+                                                     1              2µ1                     2πµ2
+                                  1 γ − 2 + log                     πµ2 +        2−1        µ1 T
+             B5,1 (T, µ1 , µ2 ) := +                                                                .
+                                  2                                   log T
+After changing roles of µ1 and µ2 , the resulting bound is also
+                                                              true for y(t) in place
+of x(t) since (49) is also true in this case with M2 := max T, y −1 (n), y −1 (m) in
+place of M1 . We shall see that B5,1 contributes the most in (49).
+   Using (41), we get
+                                              Å     ã
+                                                 µ1 1−σ
+             |iD (−σ, −M1 , −2T ; x (2T ))| ≤           B5,2 (z) T log T
+                                                πµ2
+where
+                                     Ä                  » πµ              ä
+                                                 µ1
+                T −σ     4 + 2(1 − σ) 2γ + log πµ  2
+                                                     +    µ 1
+                                                              2
+                                                              T  + πm   0
+  B5,2 (z) :=          +
+              2(1 − σ)                4(1 − σ)2 T σ log T
+                                                 Ñ                          » πµ é
+                           Å      ã1−σ                   2γ +   log  µ1
+                                                                          +      2
+                             πµ2       πm0 − 2                      πµ2       µ1 T
+                         +                          1 +                            .
+                             µ1 T         4T σ                     log T
+
+This bound is also true for y(T ) after changing roles of µ1 and µ2 . Define
+                                        Å     ã1−σ
+          ‹5 (z) := B5,1 (T, µ1 , µ2 ) + µ1
+          B                                        B5,2 (z)
+                                          πµ2
+                            1   0.266        π σ0 −1                 4.43
+                       ≤      +       +              √     1+                                                 (50)
+                            2 log T0    2 (1 − σ0 ) T0          (1 − σ0 ) log T0
+                                                                  Å            ã!
+                                                            σ0 −1      0.717
+                                                + 0.534 · 2        1+             ,
+                                                                       log T0
+
+                 Å         ã1−σ
+   ‹6 (z) :=         πµ1
+   B                 B5,1 (T, µ2 , µ1 ) + B5,2 (σ, T, µ2 , µ1 )
+                     µ2
+                             Ñ                    »                     é
+                                      1.577 + 14 Tπ0            Å ã1−σ0
+           √         1                                           π
+          ≤ π+          √       1+                      + 0.534           .                                   (51)
+               (1 − σ0 ) T0            (1 − σ0 ) log T0          T0
+
+In derivation of the second inequality we used B5,1 (T, µ2 , µ1 ) < 1. Both functions
+and their bounds are continuous for σ ∈ [1/2, σ0 ] and σ0 ∈ [1/2, 1). Observe also
+that B5,1 (T, 1, 1) < 1/2 for T ≥ 50. This gives
+             Å              ã                                   Å              ã √
+        ‹5       1            1                    1       ‹6       1              π                    1
+        B          , T, 1, 1 ≤ + 2.3                  ,    B          , T, 1, 1 ≤    + 2.3
+                 2            2                   πT0               2             2                     T0
+for T0 ≥ 50. In case µ1 = µ2 = 1 and σ = 1/2 we will use these bounds instead of
+(50) and (51). We have
+                       Å     ã 1−σ              p                             Å    ã 12            p
+                   µ2           2
+                                         1− σ                             µ2                  σ
+    |B5 | ≤ B5 (z)                   T      2    log T ,   |B6 | ≤ B6 (z)                 T 1− 2    log T ,
+                   µ1                                                     µ1
+24                                              ALEKSANDER SIMONIČ
+
+
+where
+
+                                               ‹π 2
+                                                         σ0       2 − 2σ0 ‹
+                                     B5 (z) := F                          B5 (z),                                         (52)
+                                                                  1 − σ0
+
+                                             ‹ σ0 − 12             2 − 2σ0 ‹
+                                   B6 (z) := Eπ                            B6 (z).                                        (53)
+                                                                   1 − σ0
+
+In the general case we will use (50) and (51) to bound B5 (z) and B6 (z). This
+implies that both functions are bounded for fixed σ0 and T0 .
+
+
+3.5. Bounds on B7 and B8 . The strategy here is the same as in Section 3.4.
+Hölder’s inequality implies
+
+       Z 2T Å        ã 1−3σ
+                 t       2                                    2−3σ          3σ−1      22−3σ − 1
+                              Sy(t) (1 − s) dt ≤ T              2    (2π)     2                 Iy(t) (1 − s),
+        T       2π                                                                     2 − 3σ
+
+and we have
+                           Z 2T
+       Iy(t) (1 − s) =              Sy(t) (2(1 − σ))dt + iD (σ − 1, −M2 , −2T ; y(2T )) .                                 (54)
+                              T
+
+
+Using inequality (43), we can estimate by straightforward integration that
+                   Z 2T                                                         Å          ãσ
+                                                                       1             µ2               T µ2
+                          Sy(t) (2(1 − σ))dt ≤ B7,1 (z) T              2 +σ                     log        ,
+                     T                                                              πµ1               πµ1
+
+where
+                                                                Ñ      1
+                                                                            Ä 3        ä
+                                   1
+                                               1
+                                             2 2 −σ        1         2 2 −σ 2 2 +σ − 2
+     B7,1 (z) := (1 + 2σ)2         2 +σ   −         +             −
+                                            1 + 2σ log Tπµµ2              (1 + 2σ)2
+                                                              1
+                                                Ä          ä                                  é
+                                                 4 − 2 2 −σ γ + 2 2 −σ log 2 1 − 2−σ … πµ1
+                                                       3          1
+
+
+                                            +                                +                  .
+                                                           1 + 2σ                  σ     T µ2
+
+
+By inequality (41) we also have
+                                                                            Å         ãσ
+                                                                                µ2              1           T µ2
+            |iD (σ − 1, −M2 , −2T ; y(2T ))| ≤ B7,2 (z)                                    T 2 +σ log            ,
+                                                                                πµ1                         πµ1
+
+where
+                              » πµ          Ä          äσ Ñ                                     » πµ é
+                                                πµ1          2
+                     1 + 2σ        T µ2 −                    σ + πm0 + 2γ +
+                                     1                                                                 1
+                                                T µ2                                                T µ2
+     B7,2 (z) :=                      √                   1+
+                                  2σ T                             log Tπµµ12
+                                                                                           Ñ                   » πµ é
+                                                                              …                       2γ +           1
+                                                                  πm0 − 2           πµ1                            T µ2
+                                                              +     √                           1+                         .
+                                                                   4 T              µ2 T                   log Tπµµ12
+                           EXPLICIT ZERO DENSITY ESTIMATE                                            25
+
+
+After changing roles of µ1 and µ2 , both bounds are also true for x(t) and M1 in
+place of y(t) and M2 , respectively. Define
+             …
+  ‹7 (z) := πµ1 B7,1 (z) + B7,2 (z)
+  B
+                µ2
+                                             1
+            √                 1       2 2 −σ0
+          ≤ π (1 + 2σ0 ) 2 2 +σ0 −                                                (55)
+                                     1 + 2σ0
+                    ÑÄ            ä                                             é!
+                             3
+                       4 − 2 2 −σ0 γ + log 2        3                     …
+               1                                  2 2 −σ0           −σ0
+                                                                            π
+          +                                   −            2 +2 1−2
+            log Tπ0              2              (1 + 2σ0 )                   T0
+                     » Ñ                  » é              √
+                                                              Ñ          » é
+            1 + 2σ0 Tπ0          9.287 + Tπ0         0.534 π       2γ + Tπ0
+          +      √          1+                    +             1+               ,
+                    T0              log Tπ0             T0           log Tπ0
+
+                                    …
+‹8 (z) := B7,1 (σ, T, µ2 , µ1 ) +        µ1
+B                                           B7,2 (σ, T, µ2 , µ1 )
+                                        πµ2
+                                    1
+                       1         2 2 −σ0
+        ≤ (1 + 2σ0 ) 2 2 +σ0 −                                               (56)
+                                1 + 2σ0
+                ÑÄ         3
+                                ä                                      é
+            1       4 − 2 2 −σ0 γ + log 2       3
+                                              2 2 −σ0          −σ0
+                                                                    √   27.7101
+        +                                 −            2 + 1−2        2 + √      .
+          log 2                2            (1 + 2σ0 )                      πT0
+
+Both functions and their bounds are continuous for σ ∈ [1/2, σ0 ] and σ0 ∈ [1/2, 1).
+In case µ1 = µ2 = 1 and σ = 1/2 we will use
+               Å            ã           Å            ã      Å               ã
+                               √
+            ‹7 1 , T, 1, 1 ≤ πB7,1 1 , T0 , 1, 1 + B7,2 1 , T0 , 1, 1 ,
+            B
+                 2                         2                   2
+               Å            ã       Å              ã …        Å               ã
+            ‹    1                    1                1        1
+            B8     , T, 1, 1 ≤ B7,1     , T0 , 1, 1 +    B7,2     , T0 , 1, 1
+                 2                    2                π        2
+instead of (55) and (56). Then
+                Å ã 21                                              Å   ã 2σ+1
+                 µ2      5        T µ2                           µ2         4      5            T µ1
+ |B7 | ≤ B7 (z)        T 4 −σ log      ,          |B8 | ≤ B8 (z)                 T 4 −σ   log        ,
+                 µ1               πµ1                            µ1                             πµ2
+where
+                                                 »
+                                    ‹ · π σ0 − 2
+                          B7 (z) := F
+                                                   1
+                                                           ‹7 (z),
+                                                  λ1 (σ0 ) B                                      (57)
+                                                 »
+                                    ‹ · π σ0 − 14 λ1 (σ0 ) B
+                          B8 (z) := E                      ‹8 (z),                                (58)
+and λ1 (x) is a continuous function on R, defined as
+                                   ®
+                                      2−23x−1
+                         λ1 (x) :=      2−3x , x 6= 2/3,
+                                      2 log 2,  x = 2/3.
+Observe that λ1 (x) is a strictly increasing function on [1/2, 1]. In the general case
+we use (55) and (56) to bound B7 (z) and B8 (z), which means that both functions
+are bounded for fixed σ0 and T0 .
+3.6. Bounds on B1 and B2 . Separation of the diagonal (here we need coprimality
+of µ1 and µ2 ) and off-diagonal terms in A1 and A2 , together with equality (39) gives
+                 Z 2T     X                   X       X Z 2T            Å      ã
+                                                                          mµ1 it
+ B1 = (µ1 µ2 )−σ                  n−2σ dt +                      (nm)−σ           dt.
+                  T                                           M3          nµ2
+                       n≤x(t/µ1 )
+                              2             n≤x(2T ) m≤y(2T )
+                                                       mµ1 6=nµ2
+26                                        ALEKSANDER SIMONIČ
+
+               
+where M3 := max T, x−1 (n), y −1 (m) , and
+                           Z 2T Å        ã2σ−1      X
+                 σ−1                2π
+     B2 = (µ1 µ2 )                                            n2σ−2 dt
+                            T        t
+                                                 n≤y (
+                                                     t/µ22   )
+                                         X         X         Z 2T Å        ã2σ−1             Å          ãit
+                                                                      2π                          nµ1
+                                +                                                  (nm)σ−1                    dt.
+                                                              M4       t                          mµ2
+                                     n≤y(2T ) m≤x(2T )
+                                        nµ1 6=mµ2
+                  
+where M4 := max T, y −1 (n), x−1 (m) . Denote by B1,1 and B1,2 the first integral
+and the double sum in B1 , respectively. In the same vein define also B2,1 and
+B2,2 . If we apply Theorem 2 on the sums in B1,1 and B2,1 , and knowing that
+|R(σ; x)| ≤ (1/2)x−σ , then we obtain
+                                                      
+                                        (2π)σ 21−σ − 1 1−σ
+                  B1,1 + B2,1 = S (z) −                 T   ,
+                                             1−σ
+where S (z) is defined by (37). Writing mµ1 = M and nµ2 = N , we get
+                                XX             (N M )−σ
+|B1,2 | ≤ 2 (µ1 µ2 )
+                       σ                                          ‹1,2 (σ0 , T0 ) T 1−σ log T µ1 µ2 ,
+                                                          ≤ µ1 µ2 B
+                                pTµ µ        |log (N/M )|                                      π
+                           N,M≤     1 2
+                                    π
+                              N 6=M
+
+where
+                                                         Ñ                         »π é
+                                                                         2
+                                          σ0 −1                   2γ + 1−σ   +
+                     ‹1,2 (σ0 , T0 ) := π
+                     B                                       1+
+                                                                           0          T0
+                                        1 − σ0                           log Tπ0
+
+Lemma 6 implies
+
+                                                  1−σ
+                                                                      XX             (N M )σ−1
+             |B2,2 | ≤ 2(2π)2σ−1 (µ1 µ2 )                T 1−2σ
+                                                                         p Tµ µ     |log (N/M )|
+                                                                   N,M≤     1 2
+                                                                            π
+                                                                      N 6=M
+
+                             ‹2,2 (σ0 , T0 ) T 1−σ log            T µ1 µ2
+                     ≤ µ1 µ2 B                                            ,
+                                                                     π
+where
+                                     Ñ                                                       »                é
+                                                    …             4 + 2γ + (1 + 4γσ0 )           π   2πσ0
+                                                         π                                       T0 + T0
+ ‹2,2 (σ0 , T0 ) := 22σ0 π σ0 −1
+ B                                        1 + 2σ0           +                                                       .
+                                                         T0                        log Tπ0
+
+In both cases we have used the inequality from Lemma 5 without the term with
+the minus sign. We get
+                                                                                     T µ1 µ2
+                 |B1 + B2 − S (z)| ≤ B1 (σ0 , T0 ) µ1 µ2 T 1−σ log                           ,
+                                                                                        π
+where
+                                                                     σ0        σ0
+                                                 ‹2,2 (σ0 , T0 ) + π (2 − 2 ) .
+                               ‹1,2 (σ0 , T0 ) + B
+              B1 (σ0 , T0 ) := B                                                                               (59)
+                                                                   (1 − σ0 ) log Tπ0
+This function is clearly bounded for fixed σ0 and T0 , and is also continuous for
+σ0 ∈ [1/2, 1).
+                           EXPLICIT ZERO DENSITY ESTIMATE                               27
+
+
+3.7. Bounds on B3 and B4 . Using (12) and (39), we obtain
+                                      Z 2T             Ç            å−it
+           π
+                      XX                          1          t
+             i  σ− 21         σ−1 −σ                −σ
+     B3 = e (2π)
+           4                n    m              t 2                      dt.
+                                       M2 (n,m)          2πenm µµ21
+                          n,m≤y(2T )
+
+The equation for B4 is the same except that we need to replace eiπ/4 by e−iπ/4 ,
+y(2T ) by x(2T ), and −it by it. Lemma 7 and separation of diagonal and off-diagonal
+terms imply
+                                          1   1
+                        |B3 | ≤ 8(2π)σ− 2 T 2 −σ (B3,1 + B3,2 ) ,
+where
+                                  Ç                   p            å−1
+                           X              M2 (n, n) + M2 (n, n)
+                 B3,1 :=            n log                              ,
+                                                  2πn2 µµ21
+                         n≤y(2T )
+                                   Ç                        p            å−1
+                   XX                           M2 (n, m) + M2 (n, m)
+                              2σ−1          σ
+         B3,2 :=           n         (nm) log                                .
+                                                         2πnm µµ21
+                 n,m≤y(2T )
+                    n6=m
+
+The same inequality holds also for B4 except that the summation goes upÄto x(2T ).
+                                                      √                 √       √     √ ä
+Using the fact that M2 (n, n) ≥ 2πn2 µ1 /µ2 , x log (1 + 1/ x) ≥ T / 1 + T
+                p                √
+for x ≥ T , and M2 (n, n) ≤ 2T , we get
+                                                  …
+                               ‹3,1 (T, µ1 , µ2 )     µ2 √           T µ2
+                       B3,1 ≤ B                                T log      ,
+                                                     πµ1              πµ1
+where
+                                       Ñ              » πµ                          é
+                               …                              1 Å           ã
+                                 πµ            2γ  +                    1        1
+         ‹3,1 (T, µ1 , µ2 ) :=
+         B
+                                     1
+                                         1+
+                                                          T µ2
+                                                                  1+ √        +√
+                                  2µ2             log Tπµµ12             T        T
+                                   Ñ              »                              é
+                               …          2γ + Tπ0 Å                   ã
+                                 π                                  1         1
+                            ≤          1+          T
+                                                             1 +  √       +√        . (60)
+                                 2            log π 0
+                                                                    T0        T0
+
+Because
+                     p                            ß              ™
+          M2 (n, m) + M2 (n, m)   M2 (n, m)           T µ2   n m
+                                ≥           = max          ,  ,   ,
+                  2πnm µµ21       2πnm µµ21         2πnmµ1 m n
+it follows by Lemma 5 that
+               Å     ã 1                            …
+                 T µ2 σ− 2 X X (nm)−σ                     √
+                                            ‹3,2 (z) µ2 T log T µ2 ,
+        B3,2 ≤                             ≤B
+                 πµ1           |log (n/m)|            πµ1     πµ1
+                            n,m≤y(2T )
+                               n6=m
+
+where
+                                   Ñ           Ñ                            éé
+          ‹3,2 (z) :=       1           1          2      2γ      πµ1
+          B                            1+             +»        +
+                        2(1 − σ)     log Tπµµ12  1−σ       T µ2
+                                                           πµ1
+                                                                  T µ2
+                                Ç              Å          …          ãå
+                         1              1        2           π    π
+                  ≤               1+                 + 2γ       +       .            (61)
+                    2 (1 − σ0 )      log Tπ0 1 − σ0         T0    T0
+Define also
+                                                 »
+                                           2γ + Tπµµ21 Å           ã
+                                    √
+              ‹4,1 (T, µ1 , µ2 ) :=   2                         1      1
+              B                         + √                1 + √     +√
+                                     2       2 log Tπµµ21        T     2T
+                                         Å           ã
+                                                 1
+                                 ≤ 2.607 1 + √           ,                           (62)
+                                                 T0
+28                                  ALEKSANDER SIMONIČ
+
+                    …                                            Å             ã
+      ‹4,2 (z) :=        µ1 ‹                           1               2.886
+      B                     B3,2 (σ, T, µ2 , µ1 ) ≤ √             2.9 +          .       (63)
+                        πµ2                        2 π (1 − σ0 )        1 − σ0
+Functions B‹3,2 (z) and B‹4,2 (z), and their bounds are continuous for σ ∈ [1/2, σ0 ]
+and σ0 ∈ [1/2, 1). In case µ1 = µ2 = 1 and σ = 1/2 it is better to use
+                                             Å            ã …        Å              ã
+    ‹                ‹                  ‹      1              1‹       1
+    B4,1 (T, 1, 1) ≤ B4,1 (T0 , 1, 1) , B4,2     , T, 1, 1 ≤    B3,2     , T0 , 1, 1 .
+                                               2              π        2
+Putting all together finally gives
+                       …
+                           µ2 1−σ      T µ2                                     T µ1
+         |B3 | ≤ B3 (z)       T    log      ,         |B4 | ≤ B4 (z)T 1−σ log        ,
+                          πµ1          πµ1                                      πµ2
+where
+                                          Ä                              ä
+                                        1
+                    B3 (z) := 8(2π)σ0 − 2 B ‹3,1 (T, µ1 , µ2 ) + B
+                                                                 ‹3,2 (z) ,              (64)
+                                          Ä                              ä
+                                        1
+                    B4 (z) := 8(2π)σ0 − 2 B ‹4,1 (T, µ1 , µ2 ) + B
+                                                                 ‹4,2 (z) .              (65)
+
+In the general case we will use (60), (61), (62) and (63) to bound B3 (z) and B4 (z).
+This also implies that both functions are bounded for fixed σ0 and T0 .
+
+3.8. Proof of Theorem 7. The statement of Theorem 7 now easily follows by
+using bounds for Bi developed in Sections 3.4 and 3.5, which give S1 (z), and
+Sections 3.6, 3.7 and 3.3, which give S2 (z).
+
+                    4. Explicit Selberg’s zero density result
+4.1. The mollifier. Let s = σ + it with σ ≥ 1/2 and X ≥ 1. Selberg introduced
+         P
+SX (s) := n≤X λX (n)n−s where
+                          Ñ               é−1
+                             X µ2 (m)           X µ(nm)µ(m)
+            λX (n) := n2σ
+                                  ϕ2σ (m)            ϕ2σ (nm)
+                                    m≤X                     m≤X/n
+
+and
+                                         X µ(d)             Y               
+                          ϕx (n) := nx              = nx          1 − p−x
+                                               dx
+                                         d|n                p|n
+
+for x ∈ R. Observe that ϕ1 (n) is the ordinary Euler totient function ϕ(n), and
+also that λX (1) = 1. Because µ(n) and ϕ2σ (n) are multiplicative functions, and
+µ(nm) = 0 if (m, n) 6= 1, it follows
+                                  Ñ            é−1
+                       µ(n)n   2σ    X   2
+                                       µ (m)        X µ2 (m)
+              λX (n) =                                            .
+                        ϕ2σ (n)        ϕ2σ (m)            ϕ2σ (m)
+                                          m≤X                     m≤X/n
+                                                                  (m,n)=1
+
+This implies
+                                           n2σ      Y     1
+                             |λX (n)| ≤           =            .
+                                          ϕ2σ (n)     1 − p−2σ
+                                                      p|n
+
+If σ > 1/2, then |λX (n)| ≤ ζ(2σ). Let 1 < n ≤ X. Then the above product is not
+greater than the same product for p ≤ X and σ = 1/2. Therefore,
+
+                                    |λX (n)| ≤ b
+                                               λ(X) log X                                (66)
+
+for some bounded function b
+                          λ(X) ≤ 2.2 where X ≥ 8, see [RS62, Corollary 1].
+                              EXPLICIT ZERO DENSITY ESTIMATE                              29
+
+
+Lemma 8. We have
+                                                         Ñ                  é−1
+                 X X λX (n)λX (m)                            X µ2 (k)
+                                           (n, m)2σ =                             ,
+                               (nm)2σ                          ϕ2σ (k)
+                 n,m≤X                                     k≤X
+                          X X λX (n)λX (m)
+                                                    (n, m)2−2σ > 0.
+                                          nm
+                          n,m≤X
+
+Proof. This is quite straightforward to prove if we notice that
+                                          X
+                               (n, m)x =        ϕx (d).
+                                               d|n,d|m
+
+For details see [Sel46, pp. 15–16] or [KK06, p. 401].                                     
+
+Lemma 9. Let σ ≥ 1/2 + 1/ log X. Then
+                      X X λX (n)λX (m)                            1 + 2σ−1
+              ζ(2σ)                          (n, m)2σ ≤ 1 +             X
+                                                                           X 1−2σ .
+                                 (nm)2σ                            1 − e−2
+                      n,m≤X
+
+Proof. By Lemma 8 we have
+                                                             Ñ                é−1
+              X X λX (n)λX (m)                                   X µ2 (k)
+      ζ(2σ)                             (n, m)2σ = ζ(2σ)
+                         (nm)2σ                                    ϕ2σ (k)
+              n,m≤X                                              k≤X
+                                                                         P      −2σ
+                                                          ζ(2σ)           k>X k
+                                                 ≤P            −2σ
+                                                                   = 1 + P      −2σ
+                                                                                    .
+                                                         k≤X k            k≤X k
+
+Because
+              X                      Å           ã           X
+                              X 1−2σ      2σ − 1                            1 − e−2
+                    k −2σ ≤            1+          ,              k −2σ ≥           ,
+                              2σ − 1        X                               2σ − 1
+              k>X                                          k≤X
+
+the stated inequality follows.                                                            
+
+4.2. Littlewood’s lemma. Let f (s) be a holomorphic function on some domain
+in the complex plane which includes a rectangle with vertices σ + iT , a + iT , a + i2T
+and σ + i2T , where 1/2 ≤ σ < 1 < a. Denote by nf (τ ) the number of zeros of f (s)
+in the set {s ∈ C : σ < τ < ℜ{s} < a, T < ℑ{s} < 2T }, and assume that no zeros
+are on the boundary of the rectangle. Then Littlewood’s lemma asserts that
+      Z a              Z 2T
+   2π     nf (τ ) dτ =      log |f (σ + it)| − log |f (a + it)|dt
+       σ                T
+                                                Z a
+                                              +      arg f (τ + i2T ) − arg f (τ + iT )dτ.
+                                                     σ
+
+Define ΦX (s) := ζ(s)SX (s). Then ΦX (s) is holomorphic in C \ {1} and N (τ, 2T ) −
+N (τ, T ) = nζ (τ ) ≤ nΦ (τ ). We need some trivial estimates on ΦX (s) in order to
+apply Littlewood’s lemma.
+Lemma 10. Let σ ≥ σ1 ≥ 2.4 and define
+                     Ç        Å ã−σ      å
+                                3
+             h(σ) := 2ζ(σ) +          − 1 (1 + ζ(σ)ζ(2σ)) .                             (67)
+                                2
+Then |ΦX (s) − 1| ≤ 2−σ h (σ1 ) and
+                                                       h (σ1 )
+                              |arg ΦX (s)| ≤ 2−σ                    .
+                                                   1 − 2−σ1 h (σ1 )
+30                                       ALEKSANDER SIMONIČ
+
+
+Proof. By definition of ΦX (s), we have for σ > 1 the following:
+                                    ∞             ⌊X⌋                  ⌊X⌋
+                                                                     ∞ X
+                                    X             X   λX (n)         X     λX (m)
+                  ΦX (s) = 1 +            n−s +                  +                         .
+                                    n=2           n=2
+                                                         ns          n=2 m=2
+                                                                                 (nm)s
+Then the first inequality easily follows since |λX (n)| ≤ ζ(2σ),
+     ∞                                 Å ã−σ X     ∞  −σ
+                                                             !
+    X                                    3              n           2−σ h (σ)
+          −s                 −σ
+        n     ≤ ζ(σ) − 1 ≤ 2       1+           +               ≤               ,
+    n=2
+                                         2        n=4
+                                                        2         1 + ζ(σ)ζ(2σ)
+and h(σ) is decreasing function. Similarly, we also have |ℑ {ΦX (s)}| ≤ 2−σ h (σ1 )
+and ℜ {ΦX (s)} ≥ 1 − 2−σ1 h (σ1 ) > 0. This implies the bound on the argument of
+ΦX (s).                                                                         
+   Lemma 10 assures that lima→∞ ΦX (a + it) = 1, and also that nΦ (τ ) = 0 for
+τ ≥ 1. Therefore, Littlewood’s lemma implies
+   Z 1                                Z 2T
+                                   1
+       N (τ, 2T ) − N (τ, T )dτ ≤           log |ΦX (σ + it)|dt
+     σ                            2π T
+                                     Z σ1
+                                   1
+                                +          |arg ΦX (τ + i2T )| + |arg ΦX (τ + iT )| dτ
+                                  2π σ
+                                         2−σ1 h (σ1 )
+                                +        −σ
+                                  (1 − 2 1 h (σ1 )) π log 2
+for σ1 ≥ 2.4. In the following two subsections we will provide explicit estimates of
+the above integrals.
+                                     R 2T
+4.3. Explicit upper bound for T log |ΦX (σ + it)|dt. We will use Theorem 7
+together with Lemmas 8 and 9 in order to estimate
+             Z 2T                     X X λX (n)λX (m)S (σ, T, n, m)
+                                2
+                   |ΦX (σ + it)| dt =                                      .
+              T                        n,m≤X
+                                                          (nm)σ
+
+The following proposition is an explicit version of [Sel46, Lemma 7] for H = T . It
+is important to note that in this approach it is crucial to keep σ far enough from
+1/2.
+                                                                 6                   1
+Proposition 2. Let σ0 ∈ (1/2, 1), T ≥ T0 > e σ0 −1/2 , X = T 6 −ε , and
+                                  1          1
+                        0<ε≤ −                        .                                                    (68)
+                                  6    σ0 − 12 log T0
+Then         Z 2T
+                    |ΦX (σ + it)| dt ≤ T + φ (σ0 , T0 , ε, T ) T 1−2( 6 −ε)(σ− 2 )
+                                     2                                           1             1
+
+
+              T
+for                                      ñ                        ô
+                                   1                  1
+                                σ∈   +            1
+                                                             , σ0 ,                                        (69)
+                                   2              6 − ε log T
+where
+                                                        ε− 16               7
+                                    1 + (2σ0 − 1) T0                   log 2 T           log3 T
+           φ (σ0 , T0 , ε, T ) :=                               + φ1        1    + φ2           ,
+                                          1 − e−2                       T   4              T 3ε
+and
+                                                                                                    !
+              √ Å1    ã3
+                                                         γ           1
+       φ1 := 2 2                     b (X)2 1 +
+                   − ε S1 (σ0 , T0 ) λ                          +                                      ,
+                 6                                  1                 1
+                                                                        −ε
+                                                    6 − ε log T0   2T06
+                              Å      ã2
+                                1                   b (X)2 ,
+                      φ2 := 6     − ε S2 (σ0 , T0 ) λ
+                                6
+                          EXPLICIT ZERO DENSITY ESTIMATE                                  31
+
+
+with S1 and S2 as in Theorem 7, and b
+                                    λ(X) from (66).
+Proof. Let n and m be positive integers not greater than T /(2π). Define z :=
+(σ, T, n, m) and ẑ := (σ, T, n/(n, m), m/(n, m)). Because S(z) = S (ẑ), by Theorem
+7 we have
+                        2S2 (σ0 , T0 ) nm 1−σ        T nm
+    |S (z) − S (ẑ)| ≤                      T   log
+                            (n, m)2                 π(n, m)2
+                                             Ç  …                  …         å
+                                       1− σ    m σ        T m  n σ        Tn
+                     + S1 (σ0 , T0 ) T    2           log    +          log      .
+                                               n          πn   m            πm
+Let X := T α for some α ∈ (0, 1 − log (2π)/ log T ). Then
+
+   X X λX (n)λX (m) (S(z) − S (ẑ))
+                                              ≤
+                        (nm)σ
+    n,m≤X
+                 √                 Å                       ã
+                                              γ         1          σ     7
+                2 2α3 S1 b
+                                 2
+                         λ (T α ) 1 +              +          T 1− 2 log 2 T
+                                          α log T0    2T0α
+                                           + 6α2 S2 bλ (T α )2 T 1+α(1−2σ)+3α−σ log3 T.
+Now let σ ≥ 1/2 + 1/ log X. By Lemmas 8 and 9 we have
+               X X λX (n)λX (m)S (ẑ)                  1 + 2σ−1
+                                                            Tα
+                                               ≤T +           0
+                                                                  T 1+α(1−2σ)
+                              (nm)σ                    1 − e−2
+               n,m≤X
+
+since ζ(2 − 2σ) is negative for σ ∈ (1/2, 1). Take σ0 ∈ (0, 1) and define α := 1/6 − ε
+with ε satisfying (68). Then (69) is a well-defined set and the bound for the integral
+now clearly follows.                                                                
+   Observe that Proposition 2 implies
+                Z 2T                                             
+                     |ΦX (σ + it)|2 dt ≤ T + O T 1−2( 6 −ε)(σ− 2 ) ,
+                                                      1        1
+
+
+                   T
+uniformly for σ on the set (69) while σ0 and ε ∈ (0, 1/6) are fixed. This is a slight
+generalisation of Selberg’s result for H = T since his bound follows for ε = 1/24.
+Corollary 6. With assumptions and notations as in Proposition 2, we have
+           Z 2T
+         1                             1
+                                         φ (σ0 , T0 , ε, T ) T 1−2( 6 −ε)(σ− 2 ) .
+                                                                    1        1
+                log |ΦX (σ + it)|dt ≤
+        2π T                          4π
+Proof. The first inequality follows from Proposition 2, and because log (1 + x) ≤ x
+and                Z b                           Ç        Z b          å
+                                                     1
+                       log f (u)du ≤ (b − a) log               f (u)du
+                     a                             b−a a
+for x ≥ 0, and positive continuous functions f (u) on [a, b] ⊂ R.                        
+                                     R σ1
+4.4. Explicit upper bound for σ |arg ΦX (τ + it)| dτ . Let σ1 be as in Lemma
+10 and let w = σ1 + (2σ1 − 1) eiϕ + iU where ϕ ∈ [π/2, 3π/2] and U is not the
+ordinate of a zero of Φ(s). Assume that there is a function Φ         b (σ1 , ϕ, U, X) such
+                   b
+that |ΦX (w)| ≤ Φ (σ1 , ϕ, U, X). According to Proposition 4.10 in [KLN18], for
+σ ∈ (0, σ1 ] we have
+                                             Z 3π
+                                         1       2
+                                                       b (σ1 , ϕ, U )dϕ
+                |arg ΦX (σ + iU )| ≤               log Φ
+                                      2 log 2 π2
+                                          π         1 + 2−σ1 h (σ1 )      π
+                                   +
+                                       2 log 2
+                                               log
+                                                          −σ          2 + 2.          (70)
+                                                   (1 − 2   1 h (σ1 ))
+32                                 ALEKSANDER SIMONIČ
+
+
+Trivially,
+                                                11 σ1
+                                    b 1 (σ1 , X) :=
+                         |SX (w)| ≤ Φ             X log X.                                                             (71)
+                                                5
+For the second part we will use the following convexity result.
+Lemma 11. Let s = σ + it with σ ∈ [1 − σ1 , σ1 ] where σ1 ≥ 2.4, and s 6= 1. Then
+                                                                                       1
+                                                                                           +σ1
+                                    σ1 −σ             σ+σ1 −1      |3σ1 − 1 + s| 2
+                 |ζ(s)| ≤ b1 (σ1 ) 2σ1 −1 ζ (σ1 ) 2σ1 −1                                         ,
+                                                                         |1 − s|
+where                                   …              1
+                                  2            −σ1 + 12σ   + 13
+                         b1 (σ1 ) :=(2π)1−σ1 e           1  90σ
+                                                                1 .
+                                  π
+Proof. By the functional equation for ζ(s) and the Stirling formula (20) we have
+                                                                         σ − 21
+                         |ζ (1 − σ1 + it)| ≤ b1 (σ1 ) |σ1 + it| 1                  .
+Applying the Phragmén–Lindelöf theorem, see [Rad60, Theorem 2], on the function
+(1 − s)ζ(s) in the strip {s ∈ C : 1 − σ1 ≤ σ ≤ σ1 } with Q = 2σ1 − 1, we obtain the
+main inequality.                                                                 
+   Lemma 11 has the similar role as Lemma 3.1 in [KLN18], except that in our case
+we need to consider a larger strip around the critical line. For similar results for
+σ ∈ [1/2, 1 + δ] while taking into account also sub-convexity bound for ζ (1/2 + it),
+see [Tru11, Lemma 2.7] and [Tru16, Corollary 2.2].
+   Let U ≥ T0 > 2σ1 − 1. Lemma 11 implies
+                                               − cos ϕ             1+cos ϕ
+           b 2 (σ1 , ϕ, T0 , U ) := b1 (σ1 )      ζ (σ1 )
+                                                                             b2 (σ1 , T0 ) 2 ( 2
+                                                                                                         +σ1 )
+                                                                                                1    1             1
+  |ζ(w)| ≤ Φ                                                                                                     U 2 +σ1 ,
+                                            T0 − 2σ1 + 1
+                                                                                                                       (72)
+where                                   Å             ã2       Å             ã2
+                                            4σ1 − 1                2σ1 − 1
+                     b2 (σ1 , T0 ) :=                      +               +1 .
+                                              T0                     T0
+We can now state the following.
+Proposition 3. Let U ≥ T0 > 2σ1 − 1 ≥ 3.8 and U is not the ordinate of a zero
+of ΦX (s). Then
+                                         
+                              π 12 + σ1                πσ1                π
+    |arg ΦX (σ + iU )| ≤                   log U +           log X +           log log X + b3
+                                2 log 2              2 log 2           2 log 2
+for σ ∈ (0, σ1 ], where
+                                                                             Å         ã
+                    π−2                    log b1 (σ1 ) π log b2 (σ1 , T0 ) 1
+   b3 (σ1 , T0 ) :=         log ζ (σ1 ) +               +                         + σ1
+                    2 log 2                   log 2             4 log 2        2
+                                         π                  11 (1 + 2−σ1 h (σ1 ))              π
+                                   +           log                                         2 + 2
+                                      2 log 2      5 (T0 − 2σ1 + 1) (1 − 2   −σ 1 h (σ1 ))
+and h (σ1 ) is defined by (67).
+Proof. We can take Φ b=Φ  b 1 (σ1 , X) Φ
+                                       b 2 (σ1 , ϕ, T0 , U ), where Φ
+                                                                    b 1 and Φ
+                                                                            b 2 are defined
+by (71) and (72), respectively. Now the result simply follows from (70).                  
+                                                                                            1
+Corollary 7. Let T ≥ T0 > 2σ1 − 1 ≥ 3.8, 1 > σ ≥ 1/2, X = T 8 , and T or 2T is
+not the ordinate of a zero of ΦX (s). Then
+      Z σ1
+   1
+           |arg ΦX (τ + i2T )| + |arg ΦX (τ + iT )| dτ
+  2π σ
+          Å        ãÇ                                                           å
+       1         1     π (9σ1 + 4)             π                 π 11
+                                                                   2 − σ1
+    ≤       σ1 −                    log T +          log log T −            + 2b3 .
+      2π         2        8 log 2           2 log 2                   2
+                          EXPLICIT ZERO DENSITY ESTIMATE                                   33
+
+
+4.5. Proof of Theorem 1. Firstly, we will provide some general bounds. Let
+T ≥ T0 ≥ e24 ≈ 2.65 · 1010 and σ ∈ [1/2 + 8/ log T, 1/2 + 8/ log T0 ]. We can assume
+that ΦX (s) does not have any zeros with imaginary parts equal to T or 2T since the
+following inequalities can be extended by continuity principle also to these cases.
+Applying Corollaries 6 and 7 with ε = 1/24, we obtain
+      Z 1
+          N (τ, 2T ) − N (τ, T )dτ ≤ αT 1− 4 (σ− 2 ) + β log T + γ log log T + δ,
+                                           1     1
+                                                                                  (73)
+        σ
+where
+                                        Å                       ã
+                                  1       1   8           1
+                      α (T0 ) :=      φ     +      , T0 , , T0 ,
+                                 4π       2 log T0       24
+                                    1
+                                      
+                              σ1 − 2 (9σ1 + 4)                 σ1 − 21
+                  β (σ1 ) :=                   , γ (σ1 ) :=            ,
+                                   16 log 2                    4 log 2
+                  Å         ãÅ                        ã
+                          1    2σ1 − 11 b3 (σ1 , T0 )             2−σ1 h (σ1 )
+   δ (σ1 , T0 ) := σ1 −                   +              +                             ,
+                          2        8           π            (1 − 2−σ1 h (σ1 )) π log 2
+and σ1 ≥ 2.4. By (1) we have
+                                  T
+             N (2T ) − N (T ) ≤       log T + 0.22 log T + 0.6 log log T + 5.
+                                  2π
+Let σ ∈ [1/2, 1/2 + 8/ log T ]. Because N (τ, 2T ) − N (τ, T ) ≤ (N (2T ) − N (T )) /2
+and T ≤ e2 T 1− 4 (σ− 2 ) , we have
+                1     1
+
+
+    Z 1                                 Z 1 8
+                                     1 2 + log T
+        N (τ, 2T ) − N (τ, T )dτ ≤               N (2T ) − N (T )dτ
+     σ                               2 21
+                                    Z 1
+                                  +          N (τ, 2T ) − N (τ, T )dτ
+                                       1     8
+                                       2 + log T
+                                       Å       ã
+                                       2e2
+                                           + α T 1− 4 (σ− 2 ) + β log T + γ log log T
+                                                       1    1
+                                   ≤
+                                        π
+                                                    log log T0     20
+                                   + δ + 0.88 + 2.4            +        .             (74)
+                                                      log T0     log T0
+Because the right-hand side of (73) is always smaller than the right-hand side of
+(74), the latter inequality is true for all σ ∈ [1/2, 1/2 + 8/ log T0 ].
+   With help of (74) we are ready to estimate N (σ, 2T ) − N (σ, T ). Let σ ∈
+[1/2 + 4/ log T, 1/2 + 8/ log T0 ]. Then
+                                    Z
+                             log T 1
+    N (σ, 2T ) − N (σ, T ) ≤                   N (τ, 2T ) − N (τ, T )dτ
+                               4     σ− log4 T
+                               Å           ã
+                             e 2e2
+                                      + α T 1− 4 (σ− 2 ) log T
+                                                   1    1
+                           ≤
+                             4 π
+                                                                  Å         ã
+                             β     2      γ                         δ
+                           + log T + log T · log log T +              + 0.51 log T. (75)
+                             4            4                         4
+For σ ∈ [1/2, 1/2 + 4/ log T ] we have
+                                         e 1− 41 (σ− 12 )        1
+               N (σ, 2T ) − N (σ, T ) ≤     T             log T + log T.
+                                        4π                       4
+The right-hand side of the latter inequality is obviously smaller than the right-hand
+side of (75), therefore this inequality is true for all σ ∈ [1/2, 1/2 + 8/ log T0 ].
+Proof of Theorem 1. Take T0 = H0 and σ1 = 2.40764. Since S1 ≤ 219.618 and
+S2 ≤ 611.578 by Theorem 7, we have α (H0 ) < 15291.986, β (σ1 ) < 4.416, γ (σ1 ) <
+0.6881 and δ (σ1 , H0 ) < 0. Then the constants in Theorem 1 follows from (75). 
+34                                   ALEKSANDER SIMONIČ
+
+
+     Observe that
+                        Å                ã     Å              ã
+                    e       2e2             e3          1
+                                + α (T0 ) >     1+              > 3.259,
+                    4        π              2π     8 (e2 − 1)
+where the minimum is attained in the limit T0 → ∞. This means that the leading
+term in Theorem 1 can be significantly improved if we take larger values for T0 , but
+its value could not be below 3.259. For instance, if T0 = 1050 , then α (T0 ) < 3.18
+where we also calculating new bounds for S1 and S2 . Choosing σ1 = 2.4, we get
+zero density estimate (5).
+
+Acknowledgements. The author thanks Bryce Kerr for his comments on this
+manuscript, Daniele Dona, Harald Helfgott and Sebastian Zuniga Alterman for their
+interest in the explicit second power moment, Olivier Ramaré for lively discussions,
+and to Allysa Lumley for calculating the constants in (4). Finally, the author is
+grateful to his supervisor Tim Trudgian for continual guidance and support while
+writing this manuscript.
+
+                                         References
+[AdR11]  J. Arias de Reyna, High precision computation of Riemann’s zeta function by the
+         Riemann-Siegel formula, I, Math. Comp. 80 (2011), no. 274, 995–1009.
+[AM15]   G. Alirezaei, R. Mathar, Analytical bounds on the average error probability for Nak-
+         agami fading channels, 2015 Information Theory and Applications Workshop (ITA),
+         San Diego, CA, 2015, pp. 54–63.
+[BBR12] D. Berkane, O. Bordellès, and O. Ramaré, Explicit upper bounds for the remainder
+         term in the divisor problem, Math. Comp. 81 (2012), no. 278, 1025–1051.
+[Che99]  Y. Cheng, An explicit upper bound for the Riemann zeta-function near the line σ = 1,
+         Rocky Mountain J. Math. 29 (1999), no. 1, 115–140.
+[Con89]  J. B. Conrey, At least two-fifths of the zeros of the Riemann zeta function are on the
+         critical line, Bull. Amer. Math. Soc. (N.S.) 20 (1989), no. 1, 79–81.
+[DHZA19] D. Dona, H. A. Helfgott, and S. Zuniga Alterman, Explicit L2 bounds for the Riemann
+         ζ function, preprint available at arXiv:1906.01097v5.
+[Gab79]  W. Gabcke, Neue Herleitung und explizite Restabschätzung der Riemann-Siegel
+         Formel, Ph.D. thesis, Dissertation zur Erlangung des Doktorgrades der Mathematisch-
+         Naturwissenschaftlichen Fakultät der Georg-August-Universität zu Göttingen, 1979.
+[GR15]   I. S. Gradshteyn and I. M. Ryzhik, Table of Integrals, Series, and Products, 8th ed.,
+         Elsevier/Academic Press, Amsterdam, 2015.
+[Hia16]  G. A. Hiary, An alternative to Riemann-Siegel type formulas, Math. Comp. 85 (2016),
+         no. 298, 1017–1032.
+[HL21]   G. H. Hardy and J. E. Littlewood, The zeros of Riemann’s zeta-function on the critical
+         line, Math. Z. 10 (1921), no. 3-4, 283–317.
+[HL23]   G. H. Hardy and J. E. Littlewood, The Approximate Functional Equation in the
+         Theory of the Zeta-Function, with Applications to the Divisor-Problems of Dirichlet
+         and Piltz, Proc. London Math. Soc. (2) 21 (1923), 39–74.
+[HL29]   G. H. Hardy and J. E. Littlewood, The Approximate Functional Equations for ζ(s)
+         and ζ 2 (s), Proc. London Math. Soc. (2) 29 (1929), no. 2, 81–97.
+[Ivi03]  A. Ivić, The Riemann Zeta-Function, Dover Publications, Inc., Mineola, NY, 2003.
+[Jer19]  Y. Jerby, An approximate functional equation for the Riemann zeta function with
+         exponentially decaying error, preprint available at arXiv:1910.05754.
+[Jut83]  M. Jutila, Zeros of the zeta-function near the critical line, Studies in pure mathematics,
+         Birkhäuser, Basel, 1983, pp. 385–394.
+[Kad13]  H. Kadiri, A zero density result for the Riemann zeta function, Acta Arith. 160 (2013),
+         no. 2, 185–200.
+[KK06]   A. A. Karatsuba and M. A. Korolëv, The behavior of the argument of the Riemann zeta
+         function on the critical line, Russian Math. Surveys 61 (2006), no. 3(369), 389–482.
+[KLN18] H. Kadiri, A. Lumley, and N. Ng, Explicit zero density for the Riemann zeta function,
+         J. Math. Anal. Appl. 465 (2018), no. 1, 22–46.
+[KV92]   A. A. Karatsuba and S. M. Voronin, The Riemann Zeta-Function, De Gruyter Expo-
+         sitions in Mathematics, vol. 5, Walter de Gruyter & Co., Berlin, 1992.
+[Leh56]  D. H. Lehmer, Extended computation of the Riemann zeta-function, Mathematika 3
+         (1956), 102–108.
+                           EXPLICIT ZERO DENSITY ESTIMATE                                    35
+
+
+[Mat00]   K. Matsumoto, Recent developments in the mean square theory of the Riemann zeta
+          and other zeta-functions, Number theory, Trends Math., Birkhäuser, Basel, 2000,
+          pp. 241–286.
+[Mot83]   Y. Motohashi, A note on the approximate functional equation for ζ 2 (s), Proc. Japan
+          Acad. Ser. A Math. Sci. 59 (1983), no. 8, 393–396.
+[Olv74]   F. W. J. Olver, Asymptotics and Special Functions, Academic Press, New York, 1974.
+[Pla17]   D. J. Platt, Isolating some non-trivial zeros of zeta, Math. Comp. 86 (2017), no. 307,
+          2449–2467.
+[Pre84]   E. Preissmann, Sur une inégalité de Montgomery-Vaughan, Enseign. Math. (2) 30
+          (1984), no. 1-2, 95–113.
+[PT15]    D. J. Platt and T. S. Trudgian, An improved explicit bound on |ζ( 21 + it)|, J. Number
+          Theory 147 (2015), 842–851.
+[PT19]    D. J. Platt and T. S. Trudgian, The error term in the prime number theorem, preprint
+          available at arXiv:1809.03134.
+[Rad60]   H. Rademacher, On the Phragmén-Lindelöf theorem and some applications, Math. Z.
+          72 (1959/1960), 192–204.
+[RS62]    J. B. Rosser and L. Schoenfeld, Approximate formulas for some functions of prime
+          numbers, Illinois J. Math. 6 (1962), 64–94.
+[Sel46]   A. Selberg, Contributions to the theory of the Riemann zeta-function, Arch. Math.
+          Naturvid. 48 (1946), no. 5, 89–155.
+[Sie32]   C. L. Siegel, Über Riemanns Nachlaß zur analytischen Zahlentheorie, Quellen und
+          Studien zur Geschichte der Mathematik, Astronomie und Physik 2 (1932), 45–80.
+[Tit35]   E. C. Titchmarsh, The zeros of the Riemann zeta-function, Proc. Roy. Soc. London
+          151 (1935), no. 873, 234–255.
+[Tit86]   E. C. Titchmarsh, The Theory of the Riemann Zeta-Function, 2nd ed., The Clarendon
+          Press, Oxford University Press, New York, 1986.
+[Tru11]   T. Trudgian, Improvements to Turing’s method, Math. Comp. 80 (2011), no. 276,
+          2259–2279.
+[Tru14]   T. S. Trudgian, An improved upper bound for the argument of the Riemann zeta-
+          function on the critical line II, J. Number Theory 134 (2014), 280–292.
+[Tru16]   T. Trudgian, Improvements to Turing’s method II, Rocky Mountain J. Math. 46
+          (2016), no. 1, 325–332.
+[Tur43]   A. M. Turing, A method for the calculation of the zeta-function, Proc. London Math.
+          Soc. (2) 48 (1943), 180–197.
+
+   School of Science, The University of New South Wales (Canberra), ACT, Australia
+   E-mail address: a.simonic@student.adfa.edu.au
+

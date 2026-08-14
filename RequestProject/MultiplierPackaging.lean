@@ -87,7 +87,7 @@ theorem qForm_T_eigen (a : ℕ → ℂ)
   funext τ
   rw [ModularForm.SL_slash_apply, modular_T_smul]
   have hden : denom (ModularGroup.T) τ = 1 := by
-    simp [ModularGroup.T, ModularGroup.denom_apply]
+    simp [UpperHalfPlane.denom]
   rw [hden]
   simp only [Pi.smul_apply, smul_eq_mul, one_mul, one_zpow, mul_one, qForm]
   have hcoe : ((((1 : ℝ) +ᵥ τ : ℍ)) : ℂ) = 1 + (τ : ℂ) := by

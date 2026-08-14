@@ -22,6 +22,8 @@ theorem continuous_transvectionGL
   have hSL : Continuous
       (fun c : K => Matrix.SpecialLinearGroup.transvection hij c) := by
     apply continuous_induced_rng.mpr
+    show Continuous fun c : K =>
+      ((Matrix.SpecialLinearGroup.transvection hij c : Matrix n n K))
     refine continuous_matrix fun a b => ?_
     by_cases hai : a = i
     · subst a

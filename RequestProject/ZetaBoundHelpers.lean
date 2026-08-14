@@ -237,8 +237,7 @@ lemma mellin_norm_bound (σ : ℝ) (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) :
     norm_num [ ← Real.rpow_mul ( by linarith [ hu.out ] : 0 ≤ u ), ← Real.rpow_add ( by linarith [ hu.out ] : 0 < u ) ] ; ring;
     norm_num [ sq, mul_assoc, ← Real.rpow_add ( by linarith [ hu.out ] : 0 < u ) ] ; ring;
     rw [ show ( -1 / 2 + σ * ( -1 / 2 ) : ℝ ) = ( 3 / 2 + σ * ( -1 / 2 ) ) - 2 by ring, Real.rpow_sub ( by linarith [ hu.out ] ) ] ; norm_num ; ring;
-    rw [ HurwitzZeta.cosKernel_zero_eq_evenKernel_zero ] ; ring;
-    norm_cast ; norm_num ; ring;
+    rw [ HurwitzZeta.cosKernel_zero_eq_evenKernel_zero ];
   -- For the part from 0 to 1, we use the bound from `evenKernel_zero_sub_one_le`.
   have h_part2_bound : ∫ u in Set.Ioi (1 : ℝ), u ^ (-σ / 2 - 1 / 2) * (HurwitzZeta.evenKernel 0 u - 1) ≤ (40 / 19) * (Real.exp (-Real.pi)) / Real.pi := by
     refine' le_trans ( MeasureTheory.integral_mono_of_nonneg _ _ _ ) _;

@@ -593,6 +593,7 @@ theorem channelTerm_eq_lseries_term (σ h : ℝ) (n : ℕ) :
           (CriticalLinePhasor.PrimePowerProbe.specParam σ h) n := by
   by_cases hn : n = 0 <;> simp +decide [ *, LSeries.term ];
   · unfold PrimePowerProbe.channelTerm; norm_num [ ArithmeticFunction.vonMangoldt ] ;
+    exact Or.inl (Or.inr not_isPrimePow_zero)
   · unfold PrimePowerProbe.channelTerm
     rw [Complex.cpow_neg, div_eq_mul_inv, mul_assoc]
 

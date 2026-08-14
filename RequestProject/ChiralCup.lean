@@ -69,13 +69,17 @@ theorem chiral_defect_defined (F G : ℕ →₀ ℂ) : Dop (F + G) = Dop F + Dop
   by_cases h1 : ∃ a, embR a = n
   · obtain ⟨a, rfl⟩ := h1
     have hne : ¬ ∃ c, embL c = embR a := by
-      rintro ⟨c, hc⟩; simp [embL, embR] at hc; omega
+      rintro ⟨c, hc⟩
+      have hc' : 2 * c + 1 = 2 * a := hc
+      omega
     simp [Finsupp.embDomain_apply, hne, Finsupp.sub_apply, Finsupp.add_apply]
   · by_cases h2 : ∃ b, embL b = n
     · obtain ⟨b, rfl⟩ := h2
       have hr : ∀ X : ℕ →₀ ℂ, (Finsupp.embDomain embR X) (embL b) = 0 := by
         intro X; rw [Finsupp.embDomain_notin_range]
-        rintro ⟨a, ha⟩; simp [embR, embL] at ha; omega
+        rintro ⟨a, ha⟩
+        have ha' : 2 * a = 2 * b + 1 := ha
+        omega
       simp [Finsupp.embDomain_apply, hr, Finsupp.sub_apply, Finsupp.add_apply]; ring
     · have hr : ∀ X : ℕ →₀ ℂ, (Finsupp.embDomain embR X) n = 0 := fun X =>
         Finsupp.embDomain_notin_range _ _ _ (by rintro ⟨a, ha⟩; exact h1 ⟨a, ha⟩)

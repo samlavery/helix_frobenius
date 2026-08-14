@@ -203,10 +203,7 @@ theorem isFundamentalDomain_fdUnion :
                 rw [← mul_assoc, ← zpow_add, neg_add_cancel, zpow_zero, one_mul]
             _ = ModularGroup.T ^ (-m') * (ModularGroup.T ^ m * rep q) := by rw [h]
             _ = ModularGroup.T ^ (-m' + m) * rep q := by rw [← mul_assoc, ← zpow_add]
-        have hqq : q = q' := by
-          have h4 : Quotient.mk cosetSetoid (rep q) = Quotient.mk cosetSetoid (rep q') :=
-            Quotient.sound hrel
-          rwa [rep, rep, Quotient.out_eq, Quotient.out_eq] at h4
+        have hqq : q = q' := Quotient.out_equiv_out.mp hrel
         subst hqq
         have h5 : ModularGroup.T ^ m = ModularGroup.T ^ m' := mul_right_cancel h
         have h6 : ModularGroup.T ^ (m - m') = 1 := by
@@ -224,10 +221,7 @@ theorem isFundamentalDomain_fdUnion :
             _ = ModularGroup.T ^ (-m') * -(ModularGroup.T ^ m * rep q) := by rw [hstep]
             _ = -(ModularGroup.T ^ (-m' + m) * rep q) := by
                 rw [mul_neg, ← mul_assoc, ← zpow_add]
-        have hqq : q = q' := by
-          have h4 : Quotient.mk cosetSetoid (rep q) = Quotient.mk cosetSetoid (rep q') :=
-            Quotient.sound hrel
-          rwa [rep, rep, Quotient.out_eq, Quotient.out_eq] at h4
+        have hqq : q = q' := Quotient.out_equiv_out.mp hrel
         subst hqq
         rw [← neg_mul] at h
         have h5 : ModularGroup.T ^ m = -(ModularGroup.T ^ m') := mul_right_cancel h

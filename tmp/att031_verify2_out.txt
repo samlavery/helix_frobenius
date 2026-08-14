@@ -1,0 +1,96 @@
+====================================================================================================
+W1 -- CENSUS with half-gap margins (the naive lo-eps/hi+eps test mis-scores a list whose
+      endpoint zero is slightly displaced).  count in [lo-d/2, hi+d/2] must equal n.
+        set      n  nz in window  k1 implied  mean S at that k1   verdict
+      T=1e3   5168          5168         650           0.000149  COMPLETE
+      T=1e4   4318          4318       10143          -0.000050  COMPLETE
+      T=1e5   4162          4162      138070          -0.000146  COMPLETE
+      T=1e6   4003          4003     1747147          -0.000194  COMPLETE
+      T=1e7   4204          4204    21136126           0.000005  COMPLETE
+       long  22491         22491           1           0.000005  COMPLETE
+
+W2 -- ACCURACY of the cached zero lists vs mpmath.zetazero (the ground truth).
+        set                  idx tested    max |dt|      max |du|
+      T=1e3    [0, 1129, 1457, 3161]...    2.23e-06                    1.80e-06
+      T=1e4       [0, 110, 298, 726]...    1.02e-07                    1.22e-07
+      T=1e5    [0, 1197, 1604, 1713]...    5.25e-09                    8.10e-09
+      T=1e6    [0, 1421, 2173, 2219]...    2.21e-09                    4.22e-09
+      T=1e7     [0, 363, 1144, 1428]...    5.59e-09                    1.27e-08
+       long    [0, 4138, 4827, 6596]...    2.47e-03                    3.19e-04
+
+   worst-case effect on |phi|: a u-error du shifts each phasor by 2 pi du;
+   |phi| is depressed by ~ (2 pi du)^2/2 in relative terms.
+      T=1e3  max du = 1.80e-06  ->  relative depression of |phi| <= 6.39e-11
+      T=1e4  max du = 1.10e-07  ->  relative depression of |phi| <= 2.41e-13
+      T=1e5  max du = 1.42e-08  ->  relative depression of |phi| <= 4.00e-15
+      T=1e6  max du = 8.88e-10  ->  relative depression of |phi| <= 1.56e-17
+      T=1e7  max du = 1.27e-08  ->  relative depression of |phi| <= 3.18e-15
+       long  max du = 3.19e-04  ->  relative depression of |phi| <= 2.01e-06
+
+====================================================================================================
+W3 -- the noise floor Cbar by an INDEPENDENT route (batch means, 25 batches),
+      against the record's Bartlett-tapered long-run variance (0.187..1.176).
+        set   Cbar batch   031 Cbar         K    K-Cbar   bias %
+      T=1e3        0.201      0.187   132.045   131.844     0.15
+      T=1e4        0.437      0.277    76.074    75.637     0.57
+      T=1e5        0.646      0.613    40.010    39.364     1.61
+      T=1e6        0.612      0.469    29.338    28.725     2.09
+      T=1e7        0.846      1.176    15.107    14.261     5.60
+       long        0.746      0.472   445.508   444.763     0.17
+
+====================================================================================================
+W4 -- TAUTOLOGY AUDIT, done fairly.  Split each set in half.  Predict log|phi| on
+      half B using half B's OWN kappa_2 (the DC mode, which genuinely differs between
+      halves) but half A's kappa_4..kappa_8.  This isolates whether the NON-GAUSSIAN
+      part is transferable, i.e. whether it is a property of S or of the sample.
+        set  full-sample resid  031 resid  gap in K  transplanted resid    in K
+      T=1e3            -0.0053    -0.0053    1.0107              0.0112   0.978
+      T=1e4            -0.0090    -0.0090    1.0181              0.0200   0.961
+      T=1e5            -0.0124    -0.0124    1.0251             -0.0292   1.060
+      T=1e6             0.0098     0.0098    0.9805              0.1309   0.770
+      T=1e7            -0.0281    -0.0281    1.0579             -0.1608   1.379
+       long            -0.0063    -0.0063    1.0127             -0.0468   1.098
+   ('gap in K' = the factor in K still unaccounted after the j<=8 series -- the record's
+    '1.1%..5.5%' claim.  The transplanted column keeps kappa_2 local and imports only the
+    non-Gaussian shape.)
+
+====================================================================================================
+W5 -- CAN the independent-prime model match the DC mode at all?  kappa_2^model(X) is
+      monotone in X; we report the cutoff needed for the AT-ZEROS and the CONTINUOUS
+      variance, and whether it is physically sensible (the model's own scale is X ~ t).
+        set   t-centre  X (at zeros)  logX/logt   X (continuous)  logX/logt  k2_model(X=t)  V_u meas
+      T=1e3       3365            27      0.406        3.959e+07      2.154        0.12647   0.16530
+      T=1e4  1.177e+04            53      0.424         1.23e+09      2.233        0.13368   0.17438
+      T=1e5  1.013e+05           163      0.442        3.223e+11      2.299        0.14417   0.18633
+      T=1e6  1.001e+06           547      0.456        1.615e+14      2.368        0.15334   0.19701
+      T=1e7      1e+07          1693      0.461        5.804e+16      2.395        0.16115   0.20539
+       long       1000            43      0.544        4.282e+08      2.877        0.11833   0.17176
+
+   NOTE: the record's part B bisected on [3, 1e12] and printed 'X eff = 1e12' for every
+   set in its t-SAMPLED block -- that is the bisection SATURATING its upper bound, i.e.
+   the calibration silently FAILED there.  Above we let X run to 1e40 to find the truth.
+
+====================================================================================================
+W6 -- what the SAWTOOTH alone predicts, i.e. is 'the at-zeros Gaussian law' a sane
+      reference?  If S_continuous were EXACTLY Gaussian, the exact telescoping law forces
+      kappa_4(zeros) = -B_4/4 = +1/120 > 0, i.e. K ABOVE n exp(-4 pi^2 V_z), by:
+      exp(-2*(2 pi)^4*(1/120)/24) = 0.3388   (K would be 2.95 x the 'Gaussian law')
+      So the measured DEFICIT of 1.5-2.2 is not 'S at the zeros is platykurtic' arriving
+      from nowhere: it is the CONTINUOUS platykurtosis (kappa_4(u) ~ -0.011) overcoming
+      the sawtooth's +1/120.  Decomposition of the j=4 factor in K:
+        set      k4(u)   sawtooth      k4(z)  K factor from k4(u)  from sawtooth     net
+      T=1e3   -0.01081   -0.00833   -0.00248               0.2455         2.9515  0.7246
+      T=1e4   -0.01089   -0.00833   -0.00256               0.2430         2.9515  0.7171
+      T=1e5   -0.01133   -0.00833   -0.00300               0.2294         2.9515  0.6772
+      T=1e6   -0.01120   -0.00833   -0.00287               0.2335         2.9515  0.6891
+      T=1e7   -0.01241   -0.00833   -0.00408               0.1996         2.9515  0.5890
+       long   -0.01084   -0.00833   -0.00250               0.2447         2.9515  0.7224
+
+====================================================================================================
+W7 -- |phi_t(2 pi)| by exact integration by parts (independent of the record's trapezoid)
+      T=1e3  |boundary|/W = 1.90e-05   remainder <= 1.36e-05   031 quadrature = 1.90e-05   |phi_z| = 0.1598
+      T=1e4  |boundary|/W = 5.65e-05   remainder <= 1.57e-06   031 quadrature = 5.65e-05   |phi_z| = 0.1327
+      T=1e5  |boundary|/W = 7.40e-05   remainder <= 1.05e-07   031 quadrature = 7.40e-05   |phi_z| = 0.0980
+      T=1e6  |boundary|/W = 7.93e-05   remainder <= 6.96e-09   031 quadrature = 7.93e-05   |phi_z| = 0.0856
+      T=1e7  |boundary|/W = 7.57e-05   remainder <= 4.90e-10   031 quadrature = 7.57e-05   |phi_z| = 0.0599
+       long  |boundary|/W = 5.56e-05   remainder <= 5.52e-04   031 quadrature = 5.42e-05   |phi_z| = 0.1407

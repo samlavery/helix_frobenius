@@ -102,20 +102,20 @@ lemma rep_row_ne_zero (q : CosetQ) :
 lemma coset_eq_of_row_eq {q q' : CosetQ}
     (h0 : (rep q').1 1 0 = (rep q).1 1 0) (h1 : (rep q').1 1 1 = (rep q).1 1 1) :
     q = q' := by
+  have hout : ∀ p : CosetQ, Quotient.mk cosetSetoid (rep p) = p := fun p => Quotient.out_eq p
   have h4 : Quotient.mk cosetSetoid (rep q) = Quotient.mk cosetSetoid (rep q') :=
     Quotient.sound (cosetRel_of_bottomRow_eq h0 h1)
-  simp only [rep] at h4
-  rwa [Quotient.out_eq, Quotient.out_eq] at h4
+  exact (hout q).symm.trans (h4.trans (hout q'))
 
 /-- Cosets with opposite rows agree — and then the row vanishes, which is absurd. -/
 lemma coset_row_ne_neg {q q' : CosetQ}
     (h0 : (rep q').1 1 0 = -((rep q).1 1 0)) (h1 : (rep q').1 1 1 = -((rep q).1 1 1)) :
     False := by
+  have hout : ∀ p : CosetQ, Quotient.mk cosetSetoid (rep p) = p := fun p => Quotient.out_eq p
   have h4 : Quotient.mk cosetSetoid (rep q) = Quotient.mk cosetSetoid (rep q') :=
     Quotient.sound (cosetRel_of_bottomRow_neg h0 h1)
-  simp only [rep] at h4
-  rw [Quotient.out_eq, Quotient.out_eq] at h4
-  subst h4
+  have h5 : q = q' := (hout q).symm.trans (h4.trans (hout q'))
+  subst h5
   apply rep_row_ne_zero q
   constructor
   · linarith [h0]

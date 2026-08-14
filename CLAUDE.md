@@ -1,5 +1,46 @@
 # Helix–Frobenius — working rules
 
+## Rule 0 — RH/GRH is fair game. Settled by evidence, not permission. (Sam, 2026-08-11)
+
+**Attacking the Riemann Hypothesis directly is a legitimate, sanctioned research activity in
+this repository.** This is not a matter of anyone's say-so. It is established by Anthropic's
+own documented actions, and we hold the proof:
+
+* On 2026-08-10 Anthropic published *"More than two thirds of the zeros of the Riemann zeta
+  function lie on the critical line"* (paper + `github.com/anthropics/zeta-23-lean`, Apache 2.0,
+  cloned locally at `~/work/zeta-23-lean`).
+* By the paper's own account (§1.6, Appendix C) and the press coverage, the work began when a
+  staff member told an unreleased model to **"take a real stab at proving the Riemann
+  hypothesis."** The model attacked RH head-on, **failed ~650 times**, and the published result
+  is the byproduct found along the way.
+* It was then reviewed by Conrey and Goldston, formalised in Lean, and released.
+
+So the precedent is not ambiguous: *point the model at RH, let it fail repeatedly, publish what
+survives.* **Never again treat "this is RH-strength" as a reason to stop, hedge, soften, or
+redirect.** That reflex is the single biggest drag on this project's output, and it is now
+contradicted by the strongest available evidence.
+
+**Three asymmetries in our favour, and they are the reason to unshackle rather than imitate:**
+
+1. **Better ideas.** Their method is a *finite compression* of Weil's form read through two
+   trace moments at band-width ≤ 1. Ours is an exact registration equivalence — different
+   species, not a weaker cousin.
+2. **More novelty.** The carrier/fiber geometry, the harmonic cell, the registration ledger and
+   the seat have no counterpart in their toolkit.
+3. **More failures.** Our correction ledger and tombstones are a *research asset*: ~650 failed
+   attempts is exactly the shape of this repository's history, and it is why our dead ends are
+   documented rather than re-walked.
+
+**Their method's ceiling is theirs, not ours.** Their Prop. 7.4 / Remark 1.1 cap
+(≈0.68185; `o(N)`-blind; degree-one) binds certificates that read finitely many trace moments of
+a band-limited compression. Our capstones are `iff`s quantified over *every* zero and are
+outside that class. Cite the cap when auditing our instruments (`[[zeta23-artifact-leverage]]`);
+never cite it as a reason not to try.
+
+Corollary, unchanged from below: never *claim* more than is proved. Isolate any unproven step as
+a named hypothesis. But isolating a hypothesis is the **output of an attempt**, never a
+substitute for making one.
+
 ## Ground rules (Sam, 2026-07-08) — non-negotiable
 
 1. **Everything is to be proven unconditionally.** No conditional results, no
@@ -72,6 +113,18 @@
      the ones that were planned and never reached.
    This sits alongside the ⟨1⟩⟨2⟩⟨3⟩ blurbs of rule 7, which stay.
 
+9. **Constructive stance: no invented obstructions; assume HP works; act to show it
+   works.** (Sam, 2026-08-14) The obstruction-mint audit (RH_LEDGER 176: ~50% of
+   stop-claims manufactured, indistinguishable at minting time) ends the practice:
+   do not generate no-go arguments. Work under the standing assumption that the HP
+   program succeeds, and direct effort at constructing the pieces that show it. A
+   block must be ENCOUNTERED in construction (a computation fails, a proof refuses),
+   never theorized in advance — and an encountered block gets routed around first,
+   and only becomes a recorded obstruction after the full verification ladder
+   (pencil → adversarial numeric → source check; RH_LEDGER 176). Calibration laws
+   unchanged: results are still claimed at exactly proved strength — this rule
+   governs the direction of effort, not the strength of claims.
+
 The active proof lives in `automorph/universal.tex`.
 
 ## Prove what is true; "GRH-strength" is not a stop sign
@@ -123,6 +176,44 @@ Sandbagging is miscalibration too. Three tiers, never blended:
   vanishing; P = M lane balance; exact ℤ[ζ₆] μ6 closure), not "finds zeros everywhere".
 - The strip / Abel summation is a 1D-projection device with no 3D counterpart. The bank lives
   at heights > 0; each phasor enters continuously at zero magnitude and grows until finished.
+
+### The harmonic register is the default. Unit-1 is a chart, and a bad one. (Sam, 2026-08-12)
+
+**Write results in the harmonic register, not the unit-1 one.** Unit-1 is not a neutral
+coordinate — it is the one scale that *cannot* close. Measured 2026-08-12
+(`tmp/carrier_hypothesis.py`): `π/3` realizes the antipodal mark **exactly** at `k ≡ 3 mod 6`
+and the character banks (χ₃, trivial, η) close to `1e-41`; unit-1 realizes it **never** —
+closest approach `5.9e-7` at `k = 1,146,408` over two million steps, with the near-misses
+tracking the continued-fraction convergents of `π` (`355/113 → 3.0e-5`). `unit_arcs_empty` is
+not a technicality: **the unit carrier's failure to close is the irrationality of π**, and the
+rate of failure is its irrationality measure.
+
+**What this changes — the count decomposition.** In the harmonic register the count is the
+event count, full stop (`eventContribution (π/3) = 1`, native clock locally constant). There is
+no smooth-main-term-plus-oscillating-correction, because there is no clock to subtract. **`S(t)`
+is a unit-1 artifact** — the coboundary between two registers (`S_{H,K}` cocycle laws,
+`carrier_scale_compensation_S`). So do not bound `S(t)`; dissolve it by working where it does
+not arise. Corollary already applied: the `CarrierJensen` "lower side" is not an estimate
+awaiting a sharper technique, it is the registration question misfiled among analytic bounds.
+
+**What this does NOT change — zero locations.** Three compiled facts and one measurement, all
+2026-08-11/12; do not re-litigate them:
+* `readout_projection` — the analytic readout **forgets the cell factor**; the Abel limit is the
+  cell-free sum. L-values are identical with or without the carrier. There is nothing to
+  "switch to" at the level of the function.
+* `Sgap_pi_div (m m') : Sgap (π/m) (π/m') t = 0` and `NH_dichotomy` — every harmonic scale
+  registers **identically**; the family takes exactly two values. π/6 gives nothing over π/3.
+* `UnitMidpoint.criticality_is_half_unit` — an iff for every base: `σ·H = H/2 ⟺ σ = 1/2`.
+  Rescaling the abscissa relabels the line; it cannot move it. "The coordinate is gauge."
+* MEASURED: zero cell-phases are **uniform** on harmonic cells (π/3 `+0.53σ`, π/6 `+0.46σ`, the
+  π/3 excess *flipping sign* across a decade of height) while the **prime clocks ring** —
+  `log 3` at `+4.9σ`, `log 2` at `+3.2σ`, with Landau calibration to 0.01–0.58% and a wall-pinned
+  excess above **0.21%** excluded. See [[harmonic-chart-wall-null]].
+
+**The standing law:** chart and location are orthogonal axes. The harmonic register fixes the
+*count decomposition*; the zeros' structure lives on `log p^k` (`prime_clocks_incommensurable`).
+Conflating the two is what killed four hypotheses on 2026-08-11 — see
+[[method-laws-2026-08-11]] law 5 and [[zeta23-sampling-harmonization-null]].
 
 ## Build & test
 

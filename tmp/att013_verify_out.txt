@@ -1,0 +1,179 @@
+
+================================================================================================
+V1  POSITIVE CONTROL -- C1(k2) rebuilt from first principles (PL + FE), not transcribed
+================================================================================================
+              c            r   mine k2=1/6   published       diff
+    1.000011314  1.064340602      0.103787    0.103787  -2.24e-07
+    1.025253504  1.182375395      0.109409    0.109410  -5.57e-07
+    1.035766557  1.229059659      0.111973    0.111973  -4.98e-07
+
+================================================================================================
+V2  Trudgian's own closed formula for a, transcribed by me from refs/trudgian.txt
+================================================================================================
+  a(eta=0.06, r=2.08) = 0.110427746    [T14] Theorem 1 prints 0.111
+  my first-principles C1 at the same disc, k2=1/6 = 0.110427746
+  (difference 8.33e-17) -> the arc structure agrees
+
+================================================================================================
+V3  the k2->0 closed form g, exact identity, fractions, and the admissible floor
+================================================================================================
+  c=1.000011 r=1.064341 rho=2.128633: g=0.0839915  C1(k2=0)=0.0839915  kernel-mass/2pi=0.1269078  (all three equal: 4.3e-02)
+      g/C1(1/6) = 0.8093   => Lindelof would remove 19.07% at FIXED geometry
+  c=1.025254 r=1.182375 rho=2.251057: g=0.0933708  C1(k2=0)=0.0933708  kernel-mass/2pi=0.1515221  (all three equal: 5.8e-02)
+      g/C1(1/6) = 0.8534   => Lindelof would remove 14.66% at FIXED geometry
+  c=1.035767 r=1.229060 rho=2.294021: g=0.0970331  C1(k2=0)=0.0970331  kernel-mass/2pi=0.1611344  (all three equal: 6.4e-02)
+      g/C1(1/6) = 0.8666   => Lindelof would remove 13.34% at FIXED geometry
+  c=1.060000 r=1.164800 rho=2.080000: g=0.0918296  C1(k2=0)=0.0918296  kernel-mass/2pi=0.1345061  (all three equal: 4.3e-02)
+      g/C1(1/6) = 0.8316   => Lindelof would remove 16.84% at FIXED geometry
+
+  admissibility (HSW (4.11)):  1+eta < c  =>  d > 1/2 ;  c-r < 1-c  =>  r > 2c-1 = 2d  =>  rho > 2
+       rho   g(1/2,rho)     C1(1/6)
+    2.0000     0.078625    0.102746
+    2.0200     0.079476    0.102772
+    2.0500     0.080740    0.102938
+    2.1000     0.082817    0.103422
+    2.1286     0.083988    0.103785
+    2.2000     0.086864    0.104890
+    2.5000     0.098312    0.111310
+    3.0000     0.115712    0.124380
+/Users/samuellavery/work/helix_frobenius/tmp/att013_verify.py:54: IntegrationWarning: The occurrence of roundoff error is detected, which prevents 
+  the requested tolerance from being achieved.  The error may be 
+  underestimated.
+  v, _ = quad(lambda t: e_coeff(c + r*cos(t), k2), lo, hi, limit=400, epsabs=1e-14, epsrel=1e-14)
+    4.0000     0.146657    0.151631
+  FLOOR over the admissible range (d->1/2, rho->2+): g = 0.078625  = 75.8% of HSW's 0.103787
+
+================================================================================================
+V4  zero-cache validation (Riemann-von Mangoldt count + mpmath spot-check)
+================================================================================================
+    label T          first           last      span  #zeros  RvM pred   diff
+      1e+03      1001.3495      6198.6522    5197.3    5167   5166.08   0.92
+      1e+04     10000.0653     13599.7125    3599.6    4317   4316.28   0.72
+      1e+05    100000.7437    102698.8782    2698.1    4161   4160.42   0.58
+      1e+06   1000000.5841   1002099.4798    2098.9    4002   4001.47   0.53
+      1e+07  10000000.2400  10001849.2971    1849.1    4203   4202.50   0.50
+  NOTE: the window LABEL is the window START, not its centre.  At T=1e3 the window runs
+        1001 -> 6199, so log(T_label/2pi)=5.07 but the window-mean of log(t/2pi) is ~6.3.
+  mpmath spot-check |zeta(1/2+i gamma)| at cached zeros (should be ~0):
+    T=1e+03 gamma=1001.349484867  |zeta| = 9.087e-06
+    T=1e+03 gamma=3764.644280580  |zeta| = 1.752e-06
+    T=1e+06 gamma=1000000.584097696  |zeta| = 1.108e-09
+    T=1e+06 gamma=1001050.278616727  |zeta| = 3.206e-09
+    T=1e+07 gamma=10000000.240023557  |zeta| = 4.789e-08
+    T=1e+07 gamma=10000924.987259787  |zeta| = 1.418e-08
+
+================================================================================================
+V5  Jensen input: DC vs the LOCAL zero density, and the AC sd -- my own measurement
+================================================================================================
+
+  T14   c=1.060000 r=1.164800 rho=2.08000 u0=1.0214 2log rho=1.4647 g=0.091830
+       label   npts  mean JS/2lr  g*L(label) ratio_edge   g*<L(t)>  ratio_ctr    AC sd      max
+       1e+03   4000       0.5733      0.4656     1.2314     0.5735     0.9996   0.1950   1.1682
+       1e+03  20000       0.5735      0.4656     1.2318     0.5735     0.9999   0.1944   1.2027
+       1e+04   4000       0.6916      0.6770     1.0215     0.6919     0.9996   0.1898   1.2432
+       1e+04  20000       0.6918      0.6770     1.0219     0.6919     1.0000   0.1895   1.3032
+       1e+05   4000       0.8900      0.8885     1.0018     0.8897     1.0004   0.1897   1.4629
+       1e+05  20000       0.8897      0.8885     1.0014     0.8897     1.0000   0.1894   1.4856
+       1e+06   4000       1.0999      1.0999     1.0000     1.1000     0.9999   0.1892   1.7016
+       1e+06  20000       1.0999      1.0999     1.0000     1.1000     0.9999   0.1895   1.7050
+       1e+07   4000       1.3114      1.3113     1.0000     1.3114     1.0000   0.1893   1.8816
+       1e+07  20000       1.3115      1.3113     1.0001     1.3114     1.0001   0.1894   1.9221
+    sub-band audit inside the T=1e3 window (ratio vs the LOCAL density):
+      t in [ 1003.4, 2042.0]  mean=0.5020  g*L_local=0.5023  ratio=0.9994  sd=0.1906
+      t in [ 2042.0, 3080.7]  mean=0.5517  g*L_local=0.5513  ratio=1.0007  sd=0.1891
+      t in [ 3080.7, 4119.3]  mean=0.5827  g*L_local=0.5829  ratio=0.9996  sd=0.1893
+      t in [ 4119.3, 5158.0]  mean=0.6063  g*L_local=0.6063  ratio=1.0001  sd=0.1899
+      t in [ 5158.0, 6196.6]  mean=0.6249  g*L_local=0.6249  ratio=1.0000  sd=0.1885
+
+  HSW   c=1.000011 r=1.064341 rho=2.12863 u0=0.9396 2log rho=1.5110 g=0.083992
+       label   npts  mean JS/2lr  g*L(label) ratio_edge   g*<L(t)>  ratio_ctr    AC sd      max
+       1e+03   4000       0.5248      0.4258     1.2323     0.5246     1.0003   0.1945   1.0928
+       1e+03  20000       0.5246      0.4258     1.2319     0.5246     1.0000   0.1941   1.1613
+       1e+04   4000       0.6328      0.6192     1.0219     0.6328     1.0000   0.1910   1.1932
+       1e+04  20000       0.6328      0.6192     1.0219     0.6328     0.9999   0.1901   1.2695
+       1e+05   4000       0.8137      0.8126     1.0013     0.8137     0.9999   0.1904   1.3722
+       1e+05  20000       0.8137      0.8126     1.0014     0.8137     1.0000   0.1900   1.4191
+       1e+06   4000       1.0061      1.0060     1.0000     1.0061     1.0000   0.1898   1.6445
+       1e+06  20000       1.0060      1.0060     1.0000     1.0061     0.9999   0.1902   1.6537
+       1e+07   4000       1.1994      1.1994     1.0000     1.1994     1.0000   0.1902   1.8120
+       1e+07  20000       1.1995      1.1994     1.0001     1.1994     1.0001   0.1901   1.8358
+    sub-band audit inside the T=1e3 window (ratio vs the LOCAL density):
+      t in [ 1003.3, 2042.0]  mean=0.4591  g*L_local=0.4595  ratio=0.9992  sd=0.1911
+      t in [ 2042.0, 3080.7]  mean=0.5046  g*L_local=0.5042  ratio=1.0008  sd=0.1896
+      t in [ 3080.7, 4119.3]  mean=0.5328  g*L_local=0.5331  ratio=0.9995  sd=0.1900
+      t in [ 4119.3, 5158.0]  mean=0.5547  g*L_local=0.5545  ratio=1.0003  sd=0.1905
+      t in [ 5158.0, 6196.7]  mean=0.5716  g*L_local=0.5716  ratio=1.0000  sd=0.1891
+
+  RADIUS / CENTRE SENSITIVITY (their audit varied only precision, not geometry):
+           c       r     rho        T  mean/(g*<L>)    AC sd
+       1.060  1.1648  2.0800    1e+05       0.99998   0.1893
+       1.060  1.1648  2.0800    1e+07       1.00016   0.1894
+       1.060  1.4000  2.5000    1e+05       1.00007   0.1829
+       1.060  1.4000  2.5000    1e+07       1.00017   0.1826
+       1.200  1.6000  2.2857    1e+05       1.00004   0.1827
+       1.200  1.6000  2.2857    1e+07       1.00011   0.1826
+       1.500  2.2000  2.2000    1e+05       0.99999   0.1764
+       1.500  2.2000  2.2000    1e+07       1.00007   0.1764
+       1.060  2.5000  4.4643    1e+05       0.99994   0.1603
+       1.060  2.5000  4.4643    1e+07       1.00008   0.1603
+
+================================================================================================
+V6  tape-law AC prediction, independent quadrature (scipy oscillatory weight)
+================================================================================================
+  prime powers up to 1e6: 78734 terms
+
+  T14   predicted sd(AC/2log rho):
+    cutoff audit  X=10:0.14855  X=100:0.18836  X=1000:0.18882  X=10000:0.18906  X=100000:0.18922  X=1e+06:0.18932
+    top lines: n=5:15.3%, n=3:15.3%, n=7:12.7%, n=2:10.4%, n=11:8.4%, n=13:6.9%
+    PREDICTED sd = 0.18932
+      measured at T=1e+03: 0.19436   ratio meas/pred = 1.0266
+      measured at T=1e+04: 0.18949   ratio meas/pred = 1.0009
+      measured at T=1e+05: 0.18939   ratio meas/pred = 1.0004
+      measured at T=1e+06: 0.18948   ratio meas/pred = 1.0008
+      measured at T=1e+07: 0.18944   ratio meas/pred = 1.0006
+    xi^-2 law check  (what(xi)*xi^2*r^2/(2u0)  vs  -cos(u0 xi)):
+      xi=  2.0  lhs=+1.55711   -cos(u0 xi)=+0.45459
+      xi=  5.0  lhs=+0.35680   -cos(u0 xi)=-0.38423
+      xi= 10.0  lhs=+0.81874   -cos(u0 xi)=+0.70474
+      xi= 20.0  lhs=-0.01929   -cos(u0 xi)=+0.00668
+      xi= 50.0  lhs=-0.70275   -cos(u0 xi)=-0.69520
+
+  HSW   predicted sd(AC/2log rho):
+    cutoff audit  X=10:0.14045  X=100:0.18824  X=1000:0.18946  X=10000:0.18961  X=100000:0.18992  X=1e+06:0.19000
+    top lines: n=5:13.7%, n=3:13.1%, n=7:11.9%, n=2:8.7%, n=11:8.4%, n=13:7.1%
+    PREDICTED sd = 0.19000
+      measured at T=1e+03: 0.19414   ratio meas/pred = 1.0218
+      measured at T=1e+04: 0.19005   ratio meas/pred = 1.0003
+      measured at T=1e+05: 0.19004   ratio meas/pred = 1.0002
+      measured at T=1e+06: 0.19018   ratio meas/pred = 1.0010
+      measured at T=1e+07: 0.19015   ratio meas/pred = 1.0008
+    xi^-2 law check  (what(xi)*xi^2*r^2/(2u0)  vs  -cos(u0 xi)):
+      xi=  2.0  lhs=+1.41610   -cos(u0 xi)=+0.30350
+      xi=  5.0  lhs=+0.91390   -cos(u0 xi)=+0.01449
+      xi= 10.0  lhs=+1.12214   -cos(u0 xi)=+0.99958
+      xi= 20.0  lhs=-0.99426   -cos(u0 xi)=-0.99832
+      xi= 50.0  lhs=+0.98771   -cos(u0 xi)=+0.98952
+
+================================================================================================
+V7  Jensen identity + drop-one-zero control at a DIFFERENT T / centre / radius
+================================================================================================
+  c=1.13 r=1.3 T=100501.7 npts=192 dps=25: circle-mean-minus-centre=1.602788996  zero-sum=1.602460913  residual=3.28e-04  (#zeros=4)
+    drop-one control: residual=0.638991  expected=0.638663  diff=3.28e-04
+  c=1.06 r=1.1648 T=100501.7 npts=384 dps=30: circle-mean-minus-centre=1.484668977  zero-sum=1.484668977  residual=1.75e-10  (#zeros=3)
+    drop-one control: residual=0.626129  expected=0.626129  diff=1.75e-10
+  c=1.000011314 r=1.064340602 T=1000404.3 npts=256 dps=30: circle-mean-minus-centre=2.002425056  zero-sum=2.002336393  residual=8.87e-05  (#zeros=4)
+    drop-one control: residual=0.252431  expected=0.252342  diff=8.87e-05
+
+================================================================================================
+V8  max-statistic audit of the 'saturation' claim
+================================================================================================
+  T14   T=1e+06: mean=1.0999 sd=0.1895 max=1.7050  (max-mean)/sd = 3.19  independent cells ~ 3993  sqrt(2 ln cells) = 4.07
+      C1_pub*log T = 1.5335   g*<L> = 1.1000
+  T14   T=1e+07: mean=1.3115 sd=0.1894 max=1.9221  (max-mean)/sd = 3.22  independent cells ~ 4193  sqrt(2 ln cells) = 4.08
+      C1_pub*log T = 1.7891   g*<L> = 1.3114
+  HSW   T=1e+06: mean=1.0060 sd=0.1902 max=1.6537  (max-mean)/sd = 3.41  independent cells ~ 3994  sqrt(2 ln cells) = 4.07
+      C1_pub*log T = 1.4339   g*<L> = 1.0061
+  HSW   T=1e+07: mean=1.1995 sd=0.1901 max=1.8358  (max-mean)/sd = 3.35  independent cells ~ 4194  sqrt(2 ln cells) = 4.08
+      C1_pub*log T = 1.6728   g*<L> = 1.1994
+
+DONE.

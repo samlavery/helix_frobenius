@@ -1,4 +1,4 @@
-import PrimeNumberTheoremAnd.Wiener
+import RequestProject.Vendored.Wiener
 import Mathlib.NumberTheory.LSeries.PrimesInAP
 
 /-!

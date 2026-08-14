@@ -1,0 +1,10 @@
+(a) HYPERBOLIC SLOPE LAW TEST: X = X0 exp(Y)?
+    E[X]E[1/X] = 1.0877   lognormal prediction e^Var(Y) = 1.0872
+    skew(Y) = -0.2663  (symmetric: 0)   kurtosis(Y) = +0.7995  (normal: 0)
+    X0 = e^mean(Y) = 1.8955   sigma_Y = 0.2892
+    => eta_naive = E[1/X] = E[cosh Y − sinh Y]/1·... = cosh-moment/X0: 0.5502 vs measured E[1/X] = 0.5508
+(b) ENVELOPE FORM (3 band points — weak discrimination, stated):
+    exp   A e^{-(u-1)/a}                : SSE = 0.00310  params = [0.798 0.369]  edge value eta(1) = 0.798
+    sech  A sech((u-1)/a)               : SSE = 0.00056  params = [0.675 0.249]  edge value eta(1) = 0.675
+    sech2 A sech^2((u-1)/a)             : SSE = 0.00015  params = [0.669 0.378]  edge value eta(1) = 0.669
+    tanh  A(1-tanh((u-1-c)/a))/2 (3par) : SSE = 0.00000  params = [0.772 0.285 0.3  ]  edge value eta(1) = 0.688

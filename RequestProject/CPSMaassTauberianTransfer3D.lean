@@ -2,7 +2,7 @@ import RequestProject.CPSGeneralizedVonMangoldtSupport3D
 import RequestProject.CPSMaassCompletedRankinSelbergTower3D
 import RequestProject.CPSMaassSatoTate3D
 import Mathlib.NumberTheory.Chebyshev
-import PrimeNumberTheoremAnd.Consequences
+import RequestProject.Vendored.Consequences
 
 /-!
 # Tauberian transfer for the Maass CPS coefficients

@@ -1,0 +1,1059 @@
+                                                        COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION
+
+                                                                ELCHIN HASANALIZADE, QUANLI SHEN, AND PENG-JIE WONG
+
+
+                                                   Abstract. In this article, we show that
+
+
+
+
+arXiv:2107.06506v1 [math.NT] 14 Jul 2021
+                                                                                        
+                                                                            T         T
+                                                                  N (T ) −     log         ≤ 0.1038 log T + 0.2573 log log T + 9.3675
+                                                                            2π       2πe
+                                                   where N (T ) denotes the number of non-trivial zeros ρ, with 0 < Im(ρ) ≤ T , of the Riemann zeta
+                                                   function. This improves the previous result of Trudgian for sufficiently large T . The improvement
+                                                   comes from the use of various subconvexity bounds and ideas from the work of Bennett et al. on
+                                                   counting zeros of Dirichlet L-functions.
+
+
+
+
+                                                                                         1. Introduction
+                                             Let ζ(s) be the Riemann zeta function defined by
+                                                                                                    ∞
+                                                                                                    X 1
+                                                                                           ζ(s) =              ,
+                                                                                                    n=1
+                                                                                                          ns
+
+                                           for Re(s) > 1, which has an analytic continuation to a meromorphic function on C with only a
+                                           simple pole at s = 1. The study of zeros of ζ(s) is an important topic in number theory. In this
+                                           article, we shall estimate the number of non-trivial zeros ρ = β + iγ, with 0 < γ ≤ T , of ζ(s). For
+                                           T ≥ 0, we set
+                                                                   N (T ) = #{ρ ∈ C | ζ(ρ) = 0, 0 < β < 1, 0 < γ ≤ T }.
+                                             Before stating our results, we shall note that the study of N (T ) has a long history. Indeed, for
+                                           T ≥ T0 , writing
+                                                                                      
+                                                                          T         T
+                                                                 N (T ) −    log          ≤ C1 log T + C2 log log T + C3 ,                (1.1)
+                                                                          2π       2πe
+                                           we have the following table summarising the progress that has been made.
+
+                                                                                                  C1         C2     C3      T0
+                                                               Von Mangoldt [19] (1905)         0.4320     1.9167 13.0788 28.5580
+                                                                 Grossmann [6] (1913)           0.2907     1.7862 7.0120     50
+                                                                  Backlund [1] (1918)           0.1370     0.4430 5.2250    200
+                                                                   Rosser [14] (1941)           0.1370     0.4430 2.4630      2
+                                                                 Trudgian [17] (2014)           0.1120     0.2780 3.3850      e
+                                                                     Corollary 1.2              0.1038     0.2573 9.3675      e
+
+                                                                         Table 1. Explicit bounds for N (T ) in (1.1)
+
+                                               2010 Mathematics Subject Classification. 11M06.
+                                               Key words and phrases. Riemann zeta function, explicit formulae.
+                                               This research was supported by the NSERC Discovery grants RGPIN-2020-06731 of Habiba Kadiri and RGPIN-
+                                           2020-06032 of Nathan Ng. P.J.W. is currently an NCTS postdoctoral fellow; he was supported by a PIMS postdoctoral
+                                           fellowship and the University of Lethbridge during part of this research.
+                                                                                                    1
+                             COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                                2
+
+   The importance of explicit bounds for N (T ) comes from the fact that they are crucial for esti-
+mating sums over zeros of ζ(s), and all the best known bounds for π(x) and ψ(x) rely on them (see,
+e.g., [5]).
+   In this article, we prove the following general result for N (T ) with explicit dependence on the
+given bounds for ζ(s) on the both 12 -line and 1-line.
+Theorem 1.1. Let c, r, η be positive real numbers satisfying
+     1                          1                     1       1                      (c − 1/2)2
+  − < c − r < 1 − c < −η < ≤ δ := 2c − σ1 − < < 1 + η < σ1 := c +                                  <c+r
+     2                          4                     2       2                           r
+and θ1+η ≤ 2.1, where θy is defined in (4.10). Let c1 , c2 , k1 , k3 ≥ 0, k2 ∈ [0, 12 ] and t0 , t1 ≥ e such
+that for t ≥ t0 ,
+                                       |ζ(1 + it)| ≤ c1 (log t)c2 ,                                     (1.2)
+and for t ≥ t1 ,
+                                     |ζ( 12 + it)| ≤ k1 tk2 (log t)k3 .                                 (1.3)
+Let T0 ≥ e be fixed. Then for any T ≥ T0 , we have
+                                           
+                              T         T         1
+                     N (T ) −    log           +    ≤ C1 log T + C2 log log T + C3 ,                    (1.4)
+                              2π       2πe        8
+where C1 = C1 (c, r, η; k2 ), C2 = C2 (c, r, η; c2 , k3 ), C3 = C3 (c, r, η; c1 , c2 , t0 , k1 , k2 , k3 , t1 ; T0 ) are
+defined in (5.1), (5.2), (5.3), and (5.4), and some admissible values of C1 , C2 , and C3 are recorded
+in Table 2 in Section 5.
+   As a consequence, we obtain an explicit estimate for N (T ) as follows.
+Corollary 1.2. For any T ≥ e, we have
+                                    
+                        T         T
+               N (T ) −    log         ≤ 0.1038 log T + 0.2573 log log T + 9.3675.                                  (1.5)
+                        2π       2πe
+   Note that C1 = 0.1038 is the smallest value that can be obtained by our argument and compu-
+tation, and one can make C2 and C3 smaller at expense of larger C1 .
+   Let S(T ) = π1 ∆L arg ζ(s), where L denotes the straight line from 2 to 2 + iT and then to 21 + iT .
+We also have the following theorem concerning the argument of ζ(s) along the critical line.
+Theorem 1.3. In the notation and assumptions of Theorem 1.1, for any T ≥ T0 , we have
+                                      |S(T )| ≤ C1 log T + C2 log log T + C3′ ,                                     (1.6)
+where C1 = C1 (c, r, η; k2 ), C2 = C2 (c, r, η; c2 , k3 ), C3′ = C3′ (c, r, η; c1 , c2 , t0 , k1 , k2 , k3 , t1 ; T0 ) are
+defined in (5.1), (5.2), (5.3), and (5.7), and some admissible values of C1 , C2 , and C3′ are recorded
+in Table 2 in Section 5.
+  A stronger bound for S(T ), up to certain given height, can be confirmed using the database of
+non-trivial zeros of ζ(s) computed by Platt and made available at [9]. Indeed, nowadays, one has
+                                                   |S(T )| ≤ 2.5167                                                 (1.7)
+                                  1
+for 0 ≤ T ≤ 30 610 046 000. Hence, by Theorem 1.3 (with T0 = 30 610 046 000 and Table 2) and
+(1.7), we derive the following explicit bound for S(T ).
+Corollary 1.4. For any T ≥ e, we have
+ |S(T )| ≤ min{0.1038 log T + 0.2573 log log T + 8.3675, 0.1095 log T + 0.2042 log log T + 3.0305}.
+   1Recently, Platt and Trudgian [12] verified the Riemann hypothesis for the height up to 3 · 1012 , which would allow
+one to further bound S(T ) for 0 ≤ T ≤ 3 · 1012 .
+                             COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                              3
+
+   We note that this improves the previous best-known explicit bound (for T sufficiently large) due
+to Platt and Trudgian [11] (see also [15, 17]), who showed that for T ≥ e,
+                                |S(T )| ≤ 0.110 log T + 0.290 log log T + 2.290.
+   The proofs of Theorems 1.2 and 1.3 are based on the work of [2, 7, 17, 18].2 Compared to the
+considerations of Dirichlet L-functions in [2,18] and Dedekind zeta functions in [7,18], we further use
+subconvexity bounds for ζ( 12 +it), together with the Phragmén-Lindelöf principle and the functional
+equation, to obtain a shaper estimate for ζ(s) in the strip 0 ≤ Re(s) ≤ 1. Also, based on the idea
+of [2], we refine the bound for ζ(s) on Re(s) < 0 used in [17] by bounding ζ(s) over Re(s) < − 12 .
+Lastly, we note that most numerical computations were performed in Maple.
+
+                            2. Main term and bounds for gamma factors
+   We recall the completed Riemann zeta function ξ(s) is defined by
+                                             ξ(s) = s(s − 1)γ(s)ζ(s),                                             (2.1)
+where                                                            s
+                                                             s
+                                                γ(s) = π − 2 Γ
+                                                        .
+                                                    2
+It is well-known that ξ(s) can be extended to an entire function of order 1, which satisfies the
+functional equation
+                                       ξ(s) = ξ(1 − s).                                    (2.2)
+  To follow the argument used in [7], it would be simpler to work with the following “symmetric
+version” of N (T ). We introduce
+                             NQ (T ) = #{ρ ∈ C | ζ(ρ) = 0, 0 < β < 1, |γ| ≤ T }
+for T ≥ 0.3 Note that NQ (T ) = 2N (T ).
+   Let σ1 > 1, and let R be the rectangle with vertices σ1 − iT, σ1 + iT, 1 − σ1 + iT , and 1 − σ1 − iT
+(that is away from zeros of ξ(s)). Since ξ(s) is entire, applying the argument principle, we know
+that
+                                                 1
+                                     NQ (T ) =     ∆R arg ξ(s).
+                                                2π
+We let C be the part of the contour of R in Re(s) ≥ 12 and C0 be the part of the contour of R in
+Re(s) ≥ 21 and Im(s) ≥ 0. From the functional equation (2.2) and the fact that ξ(s) = ξ(s̄), it
+follows that
+                            ∆R arg ξ(s) = 2∆C arg ξ(s) = 4∆C0 arg ξ(s),
+and thus
+                                                         2
+                                             NQ (T ) =     ∆C arg ξ(s).                                           (2.3)
+                                                         π 0
+   Now, by (2.1), we arrive at
+                                                                       s
+        ∆C0 arg ξ(s) = ∆C0 arg s + ∆C0 arg π −s/2 + ∆C0 arg Γ                + ∆C0 arg ((s − 1)ζ(s)) .            (2.4)
+                                                                         2
+
+   2Regrettably, as pointed out in [2], there is an error appearing in [17, 18] (and [11], where the erroneous result of
+[17] was used) since the ranges of parameters involved in the final formulae were not verified properly; [2, 7] fix this
+issue for [18]. In a certain degree, the objective of the presented paper is to fix the error occurring in [17].
+   3This notation agrees with [7], where we defined N (T ), the zero-counting function for the Dedekind zeta function
+                                                        K
+of a number field K.
+                           COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                                               4
+
+In addition, by a straightforward calculation, we have
+
+                       ∆C0 arg s = arctan(2T ),
+                                              
+                                 −s/2   T       1
+                       ∆C0 arg π      = log       ,
+                                        2       π                                                                                (2.5)
+                                                                                                      
+                                                                                           1
+                       ∆C0 arg Γ(s) = ∆C0 (Im log Γ(s)) = Im log Γ                           + iT          .
+                                                                                           2
+
+  In order to control the contribution of the gamma factor in (2.4), we set
+                                                                                        
+                                  2                    1    T           T             T            1
+                           g(T ) = Im log Γ              +i            − log                   +                                 (2.6)
+                                  π                    4    2           π             2e           4
+
+and recall that by [2, Proposition 3.2], one has
+
+                                                                1
+                                                   |g(T )| ≤                                                                     (2.7)
+                                                               25T
+
+for T ≥ 5/7. Now, gathering (2.3), (2.4), (2.5), and (2.6), we establish
+                                                                        
+                     2                     T                        T            1 2
+            NQ (T ) = arctan(2T ) + g(T ) + log                              −    + ∆C arg((s − 1)ζ(s)).                         (2.8)
+                     π                     π                       2πe           4 π 0
+
+  To control ∆C0 arg((s − 1)ζ(s)), we let C1 be the vertical line from σ1 to σ1 + iT and C2 be the
+horizontal line from σ1 + iT to 12 + iT . As
+                                                                                                      
+                                                                                              T
+       ∆C1 arg(s − 1)ζ(s) = ∆C1 arg(s − 1) + ∆C1 arg ζ(s) = arctan                                             + ∆C1 arg ζ(s)
+                                                                                            σ1 − 1
+
+and for σ1 > 1,
+
+                  |∆C1 arg ζ(s)| = | arg ζ(σ1 + iT )| ≤ | log ζ(σ1 + iT )| ≤ log ζ(σ1 ),
+
+we obtain
+                                                                    π
+                                     |∆C1 arg(s − 1)ζ(s)| ≤           + log ζ(σ1 ).                                              (2.9)
+                                                                    2
+Hence, from (2.7), (2.8), and (2.9), it follows that
+                                
+                T           T            1      1   2            2
+       NQ (T ) − log                 +     ≤2+     + log ζ(σ1 ) + |∆C2 arg((s − 1)ζ(s))|.                                       (2.10)
+                π          2πe           4     25T  π            π
+
+  To end this section, we shall borrow some estimates for the gamma function from [2] as follows.
+For 0 ≤ d < 9/2 and T ≥ 5/7, we define
+
+                                                         1 +d                                    1 −d
+                                                σ + iT     2                           σ + iT          2
+                  E(T, d) = Im log Γ                               + Im log Γ                                    ,
+                                                  2        σ= 12                         2             σ= 12
+                           COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                 5
+
+As in [2, p. 1463], we set
+                         2T /3                    2T /3               4T /3
+        E(T, d) =            2        2
+                                         +             2       2
+                                                                 − 2
+                   (2d + 17) + 4T          (−2d + 17) + 4T         17 + 4T 2
+                                172                     (2d + 17)2                   (−2d + 17)2
+                                                                                            
+                   T                       T                            T
+                 + log 1 +               −   log   1 +                −    log   1 +
+                   2            4T 2       4                4T 2         4                4T 2
+                        (8 + 6π)/45                   (8 + 6π)/45             2(8 + 6π)/45
+                 +            2        2 3/2
+                                             +               2      2 3/2
+                                                                           +
+                   ((2d + 17) + 4T )           ((−2d + 17) + 4T )            (172 + 4T 2 )3/2
+                    3                                                                       
+                   X              1 + 4k             2d + 1 + 4k              −2d + 1 + 4k
+                 +      2 arctan           − arctan                − arctan
+                                     2T                    2T                      2T
+                     k=0
+                  2d + 15        2d + 17 −2d + 15            −2d + 17 15          17
+                 +        arctan         +           arctan           −    arctan    .
+                     4             2T           4               2T       2        2T
+It has been shown in [2, p. 1462] that E(T, d) ≤ E(T, d) for 0 ≤ d < 9/2 and T ≥ 5/7. Moreover,
+one has the following lemma established in [2, Lemma 3.4].
+Lemma 2.1. For 0 ≤ δ1 ≤ d < 9/2 and T ≥ 5/7, one has
+                                          0 < E(T, δ1 ) ≤ E(T, d).
+Also, for d ∈ [ 14 , 58 ] and T ≥ 5/7, one has
+                                     E(T, d)    640d − 112   1
+                                             ≤             + 10 .
+                                       π       1536(3T − 1) 2
+   We remark that the number 5/7 above is not random but is borrowed directly from [2]. In [2], it
+is chosen to obtain a proper numerical bound (in order to count the zeros of Drirchlet L-functions).
+One may replace 5/7 with an appropriate larger T0 to get a better result.
+
+                                          3. Backlund’s trick
+   In order to estimate ∆C2 arg((s − 1)ζ(s)), we shall borrow some results from [7]. Define
+                           1
+                             ((s + iT − 1)ζ(s + iT ))N + ((s − iT − 1)ζ(s − iT ))N
+                                                                                   
+                  fN (s) =                                                                   (3.1)
+                           2
+for N ∈ N. Let D(c, r) be the open disk centred at c with radius r. For any N ∈ N, we define
+                                            1     X              r
+                                SN (c, r) =               log         ,
+                                            N                 |z − c|
+                                                 z∈SN (D(c,r))
+
+where SN (D(c, r)) denotes the set of zeros of fN (s) in D(c, r). In [7, Proposition 3.5], the authors
+prove the following upper bound for SN (c, r).
+Proposition 3.1. Let c, r, and σ1 be real numbers such that
+                                           1
+                                    c − r < < 1 < c < σ1 < c + r.
+                                           2
+Let Fc,r : [−π, π] → R be an even function such that Fc,r (θ) ≥ N1m log |fNm (c + reiθ )|. Then there is
+an infinite sequence of natural numbers (Nm )∞ m=1 such that
+                                                                  !
+                                                  1         ζ(c)      1 π
+                                                                        Z
+                 lim sup SNm (c, r) ≤ log p                         +       Fc,r (θ)dθ.
+                   m→∞                       (c − 1)2 + T 2 ζ(2c)     π 0
+
+   To end this section, we recall the following version of Backlund’s trick established in [7, Propo-
+sition 3.7] (cf. [2, 17, 18]). As explained in [18, Sec. 3], using Backlund’s trick, one can track
+contribution from zeros of fN (σ) in [1 − σ1 , 12 ] whence there are zeros in [ 12 , σ1 ].
+                              COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                               6
+
+Proposition 3.2 (Backlund’s trick). Let c and r be real numbers. Set
+                                             (c − 1/2)2                              1
+                                  σ1 = c +                   and        δ = 2c − σ1 − .
+                                                  r                                  2
+If 1 < c < r and 0 < δ < 12 , then
+                                                             πSN (c, r)      E(T, δ)   π    π  π
+         arg ((σ + iT − 1)ζ(σ + iT ))|1/2
+                                      σ=σ1 ≤                               +         +   +    + .
+                                                        2 log(r/(c − 1/2))     2       N   2N  4
+
+                         4. Convexity and subconvexity bounds and Fc,r (θ)
+4.1. Convexity and subconvexity bounds. In light of Propositions 3.1 and 3.2, to estimate
+(2.10), we shall construct an appropriate Fc,r (θ). We first recall the following version of the
+Phragmén-Lindelöf principle established by Trudgian [17, Lemma 3].
+Proposition 4.1 (Phragmén-Lindelöf principle). Let a, b, Q be real numbers such that b > a and
+Q + a > 1. Let f (s) be a holomorphic function on the strip a ≤ Re(s) ≤ b such that
+                                                 |f (s)| < C exp(ek|t| )
+                              π
+for some C > 0 and 0 < k < b−a   . Suppose, further, that there are A, B, α1 , α2 , β1 , β2 ≥ 0 such that
+α1 ≥ β1 and                     (
+                                  A|Q + s|α1 (log |Q + s|)α2 for Re(s) = a;
+                     |f (s)| ≤
+                                  B|Q + s|β1 (log |Q + s|)β2 for Re(s) = b.
+Then for a ≤ Re(s) ≤ b, one has
+                                                          b−Re(s)                                     Re(s)−a
+          |f (s)| ≤ A|Q + s|α1 (log |Q + s|)α2                          B|Q + s|β1 (log |Q + s|)β2
+                                                                   
+                                                            b−a                                         b−a
+                                                                                                                .
+  We shall assume that there are c1 , c2 , k1 , k3 ≥ 0, k2 ∈ [0, 12 ] and t0 , t1 ≥ e such that
+                                               |ζ(1 + it)| ≤ c1 (log t)c2                                           (4.1)
+for t ≥ t0 , and
+                                             |ζ( 12 + it)| ≤ k1 tk2 (log t)k3                                       (4.2)
+for t ≥ t1 . Recall that 0 < η ≤ 12 . Now, we split our consideration into the following six cases.
+   (1) Assume σ ≥ 1 + η. The trivial bound for the zeta function immediately gives
+                                                     |ζ(s)| ≤ ζ(σ).                                                 (4.3)
+  (2) Assume 1 ≤ σ ≤ 1 + η. From (4.1), it follows that there is Q0 > 0 such that
+                       |(1 + it − 1)ζ(1 + it)| ≤ c1 |Q0 + (1 + it)|(log |Q0 + (1 + it)|)c2                          (4.4)
+for all t. (We note that Q0 depends on c1 , c2 , t0 , and it can be computed explicitly.) Also, by (4.3),
+it is clear that
+                     |(1 + η + it − 1)ζ(1 + η + it)| ≤ ζ(1 + η)|Q0 + (1 + η + it)|.
+Thus, by Proposition 4.1, for 1 ≤ σ ≤ 1 + η,
+                                                                         1+η−σ                       σ−1
+                   |(s − 1)ζ(s)| ≤ (c1 |Q0 + s|(log |Q0 + s|)c2 )          η     (ζ(1 + η)|Q0 + s|) η ,
+which implies
+                               1                                  1+η−σ                σ−1
+                |ζ(s)| ≤            (c1 |Q0 + s|(log |Q0 + s|)c2 ) η (ζ(1 + η)|Q0 + s|) η .
+                            |s − 1|
+  (3) Let 21 ≤ σ ≤ 1. Using (4.2), we deduce
+                    |( 12 + it − 1)ζ( 21 + it)| ≤ k1 |Q1 + ( 21 + it)|k2 +1 (log |Q1 + ( 12 + it)|)k3 ,             (4.5)
+                            COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                 7
+
+for all t, where Q1 > 0 is a constant depending only on k1 , k2 , k3 , t1 (which can be computed
+directly). Now, by (4.4), (4.5), and Proposition 4.1, for 12 ≤ σ ≤ 1, we have
+                    1                                     2−2σ
+        |ζ(s)| ≤         k1 |Q2 + s|k2 +1 (log |Q2 + s|)k3       (c1 |Q2 + s|(log |Q2 + s|)c2 )2σ−1 ,
+                 |s − 1|
+where Q2 = max{Q0 , Q1 }.
+  (4) Assume 0 ≤ σ ≤ 12 . On the one hand, by (4.2), there is Q3 > 0 such that
+                           |ζ( 12 + it)| ≤ k1 |Q3 + ( 21 + it)|k2 (log |Q3 + ( 12 + it)|)k3         (4.6)
+for all t. On the other hand, as (2.2) gives
+                                                       1   Γ( 21 − 2s )
+                                          ζ(s) = π s− 2                 ζ(1 − s),                   (4.7)
+                                                             Γ( 2s )
+it follows from (4.1) and the estimate
+                                                                            1 −σ
+                                            Γ( 21 − 2s )
+                                                             
+                                                                 |1 + s|     2
+                                                         ≤                          ,               (4.8)
+                                              Γ( 2s )               2
+for − 21 ≤ σ ≤ 12 , that
+                                                           1
+                                                   |1 + it| 2
+                                    |ζ(it)| ≤ c1                (log t)c2
+                                                       2π
+for t ≥ t0 . Hence, checking small values of t, we can find Q4 ≥ 1 such that
+                                             c1             1
+                              |ζ(0 + it)| ≤ √ |Q4 + it| 2 (log |Q4 + it|)c2                         (4.9)
+                                              2π
+for all t. Now, together with (4.6), by Proposition 4.1, we then obtain
+                                                       1−2σ 
+                        c1          1
+                                                    c
+                                                                                              2σ
+            |ζ(s)| ≤ √ |Q5 + s| 2 (log |Q5 + s|)      2
+                                                               k1 |Q5 + s|k2 (log |Q5 + s|)k3     .
+                         2π
+where Q5 = max{Q3 , Q4 }.
+   (5) For −η ≤ σ ≤ 0, using (4.3), the functional equation (4.7), and the Gamma bound (4.8), as
+Q4 ≥ 1, we obtain
+                                            1                                  1
+                                |1 − η + it| 2 +η                 |Q4 − η + it| 2 +η
+                                                               
+               |ζ(−η + it)| ≤                     ζ(1 + η) ≤                          ζ(1 + η)
+                                    2π                                  2π
+for all t. This estimate, combined with (4.9) and Proposition 4.1, then yields
+                                                     ! −σ                               σ+η
+                                                        η
+                        1                       1
+                                                  +η         c1       1
+                                                                                     c2
+                                                                                           η
+           |ζ(s)| ≤       1    ζ(1 + η)|Q4 + s| 2           √ |Q4 + s| (log |Q4 + s|)
+                                                                      2                       .
+                     (2π) 2 +η                                2π
+  (6) Finally, for σ ≤ −η, we use (4.7) to deduce
+
+                                  σ− 12   Γ( 21 − 2s )                       1
+                                                                    σ− 12 Γ( 2 − 2 )
+                                                                                    s
+                     |ζ(s)| ≤ π                        ζ(1 − s) ≤ π                   ζ(1 − σ).
+                                            Γ( 2s )                         Γ( 2s )
+From the proof of [2, Theorem 5.7], it follows that for a, b ∈ {0, 1} and k ∈ N,
+                                                                
+                                b   1−(s+k)         k
+           Γ( a2 + 1−s
+                    2    )   Γ( 2 +    2    )  −k 
+                                                    Y               sin( π2 (s + k + 1 − b))
+                           =                  2       (s + j − 1)                           .
+            Γ( a2 + 2s )      Γ( 2b + s+k
+                                       2 )
+                                                                      sin( π2 (s + 1 − a))
+                                                            j=1
+
+Now, for x ∈ R, we let [x] be the integer closest to x (if there are two integers equally close to
+x, we then choose the one closer to 0). Note that for a = 0 and b ≡ k (mod 2), the sine factors
+                          COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                     8
+
+above are ±1. Thus, upon taking k = −[σ] and applying [13, Lemmata 1 and 2] to bound the ratio
+Γ( 2b + 1−(s+k)
+           2    )/Γ( 2b + s+k
+                           2 ), we arrive at
+                                                                                    
+                           1−s                       1 +[σ]−σ       −[σ]
+                        Γ( 2 )
+                                   
+                                     1                2               Y
+                            s    ≤     |1 + s − [σ]|           2[σ]      |s + j − 1| ,
+                         Γ( 2 )      2
+                                                                           j=1
+
+which gives
+                                                                                                  
+                                             1 −σ                              −[σ]
+                                         1     2                     1
+                                                      (|1 + s − [σ]|) 2 +[σ]−σ 
+                                                                                   Y
+                |ζ(s)| ≤ ζ(1 − σ)                                                        |s + j − 1| .
+                                        2π
+                                                                                   j=1
+
+4.2. Constructing and estimating Fc,r (θ).
+
+4.2.1. Bounding N1 log |fN (s)|. With the above convexity and subconvexity bounds in hand, we are
+in a position to bound N1 log |fN (s)|, where fN (s) is defined in (3.1). For σ ≥ 1 + η > 1, we have
+                          1
+                             |s + iT − 1|N |ζ(s + iT )|N + |s − iT − 1|N |ζ(s − iT )|N
+                                                                                       
+                |fN (s)| ≤
+                          2
+                                                   N
+                        ≤ ((σ − 1)2 + (|t| + T )2 ) 2 ζ(σ)N .
+Taking logarithms and dividing both sides by N gives
+                      1               1
+                        log |fN (s)| ≤ log((σ − 1)2 + (|t| + T )2 ) + log ζ(σ).
+                     N                2
+  For 1 ≤ σ ≤ 1 + η, we have
+                    p                         p                              c2  N(1+η−σ)
+                                                                                         η
+         |fN (s)| ≤ c1 (Q0 + σ)2 + (|t| + T )2 log (Q0 + σ)2 + (|t| + T )2
+                           p                         N(σ−1)
+                                                         η
+                  × ζ(1 + η) (Q0 + σ)2 + (|t| + T )2          .
+
+Taking logarithms of both sides and dividing by N , we obtain
+       1                1+η−σ           c1    σ−1                   1
+         log |fN (s)| ≤            log c +          log ζ(1 + η) + log ((Q0 + σ)2 + (|t| + T )2 )
+       N                      η        2  2      η                  2
+                        c2 (1 + η − σ)
+                      +                log log ((Q0 + σ)2 + (|t| + T )2 ).
+                                η
+  For 12 ≤ σ ≤ 1, from
+                  
+                                                k2 +1
+                                                       p                          k3 (2−2σ)N
+        |fN (s)| ≤ k1 ((Q2 + σ)2 + (|t| + T )2 ) 2     log (Q2 + σ)2 + (|t| + T )2
+                                               1
+                                                   p                         c2 (2σ−1)N
+                × c1 ((Q2 + σ)2 + (|t| + T )2 ) 2 log (Q2 + σ)2 + (|t| + T )2              ,
+
+it follows that
+           1
+             log |fN (s)| ≤ (2 − 2σ) log k1 + (2σ − 1) log c1 − (k3 (2 − 2σ) + c2 (2σ − 1)) log 2
+           N
+                            (2 − 2σ)(k2 + 1) + 2σ − 1
+                          +                              log((Q2 + σ)2 + (|t| + T )2 )
+                                         2
+                          + (k3 (2 − 2σ) + c2 (2σ − 1)) log log((Q2 + σ)2 + (|t| + T )2 ).
+                                 COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                                           9
+
+  Assume 0 ≤ σ ≤ 12 . From
+                                                        N
+         |fN (s)| ≤ ((σ − 1)2 + (|t| + T )2 ) 2
+                    
+                       c1                               p                         c2 (1−2σ)N
+                                     2            2 14            2              2
+                  × √ ((Q5 + σ) + (|t| + T ) ) log (Q5 + σ) + (|t| + T )
+                        2π
+                    
+                                                 k2
+                                                     p                         k3 2σN
+                  × k1 ((Q5 + σ)2 + (|t| + T )2 ) 2 log (Q5 + σ)2 + (|t| + T )2            ,
+
+we derive
+                                                                      !
+         1                                              c1                            k1    1
+           log |fN (s)| ≤ (1 − 2σ) log                        √           + 2σ log        +   log ((σ − 1)2 + (|t| + T )2 )
+         N                                          c2 + 12                            k
+                                                                                      2 3   2
+                                                    2             π
+                              1 − 2σ + 4k2 σ
+                            +                 log ((Q5 + σ)2 + (|t| + T )2 )
+                                      4
+                            + (c2 (1 − 2σ) + 2k3 σ) log log ((Q5 + σ)2 + (|t| + T )2 ).
+  For −η ≤ σ ≤ 0, we have
+                                                                                                                              !− σ N
+                p                              N                1                    p                         1 +η            η
+                                                                                                                   2
+  |fN (s)| ≤         (σ − 1)2 + (|t| + T )2                           1       ζ(1 + η)   (Q4 + σ)2 + (|t| + T )2
+                                                            (2π) 2 +η
+                                                 1  p                                                        σ+η N
+                     c p                                                         c2                             η
+                    √1
+                                                   2
+            ×             (Q4 + σ)2 + (|t| + T )2     log (Q4 + σ)2 + (|t| + T )2                                         .
+                      2π
+Thus,
+            1                 σ       1       σ             σ+η      c1  σ+η
+              log |fN (s)| ≤ − log      1    − log(1 + η) +     log √ −      c2 log 2
+            N                 η    (2π) 2 +η  η              η        2π  η
+                                  1
+                                +   log((σ − 1)2 + (|t| + T )2 )
+                                  2
+                                                         
+                                       σ(1 + 2η) σ + η
+                                + −               +         log((Q4 + σ)2 + (|t| + T )2 )
+                                          4η          4η
+                                  σ+η
+                                +        c2 log log((Q4 + σ)2 + (|t| + T )2 ).
+                                     η
+  Lastly, for σ ≤ −η, as
+                                                                 N ( 1 −σ)
+                                                    N        1            2                                         (1−2σ+2[σ])N
+                                 2
+        |fN (s)| ≤ ((σ − 1) + (|t| + T ) )      2   2                             ((1 + σ − [σ])2 + (|t| + T )2 )        4
+                                                            2π
+                                                                     N
+                         −[σ]                                             2
+                         Y
+                                            2                     2 
+                ×             ((σ + j − 1) + (|t| + T ) )                     ζ(1 − σ)N ,
+                         j=1
+
+we obtain
+            1                                 1
+              log |fN (s)| ≤ log ζ(1 − σ) + log((σ − 1)2 + (|t| + T )2 )
+            N                                 2
+                             2σ − 1             (1 − 2σ + 2[σ])
+                           +          log 2π +                  log((1 + σ − [σ])2 + (|t| + T )2 )
+                                2                      4
+                               −[σ]
+                             1X
+                           +        log((σ + j − 1)2 + (|t| + T )2 ).
+                             2
+                                      j=1
+                           COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                         10
+
+4.2.2. Constructing and bounding Fc,r (θ). With the above bounds of N1 log |fN (s)| in mind, similar
+to the construction of Fc,r (θ) for Dirichlet L-functions in [2, Definition 5.10] and Dedekind zeta
+functions in [7], we shall construct Fc,r (θ) for ζ(s) as follows. (We note that the main difference
+between our construction and the ones in [2, 7] lies in the range 0 ≤ Re(s) ≤ 1 + η as we have
+sharper bounds for ζ(s) in this range.)
+   Similar to [2, 7], we first introduce some auxiliary functions and notation. For θ ∈ [−π, π], we let
+σ = c + r cos θ, with c − r > − 12 , and t = r sin θ. We define
+                               (j + c + r cos θ)2 + (|r sin θ| + T )2
+                   Lj (θ) = log                                       ,
+                                                T2
+                   Mj (θ) = log log((j + c + r cos θ)2 + (|r sin θ| + T )2 ) − log log(T 2 ).
+Now, we give upper bounds for Lj (θ) and Mj (θ). From the inequality log x ≤ x − 1, it follows that
+                (j + c + r cos θ)2 + (|r sin θ| + T )2       (j + c + r cos θ)2 + (r sin θ)2 2r sin θ
+     Lj (θ) ≤                                          − 1 =                                +
+                                  T2                                       T2                   T
+for θ ∈ [0, π]. Fix T0 ≥ 1. For θ ∈ [0, π], we let
+                                     1                       1
+                          L⋆j (θ) =    (j + c + r cos θ)2 + (r sin θ)2 + 2r sin θ.
+                                    T0                      T0
+It is clear that for T ≥ T0 and θ ∈ [0, π],
+                                                          L⋆j (θ)
+                                               Lj (θ) ≤             .
+                                                            T
+Similarly, for T ≥ T0 and θ ∈ [0, π], we have
+                        log((j + c + r cos θ)2 + (|r sin θ| + T )2 )
+                Mj (θ) ≤                                              −1
+                                            log(T 2 )
+                                         (j + c + r cos θ)2 + (|r sin θ| + T )2
+                                                                                          
+                            1                                                           2
+                      =              log                                        + log(T   )  −1
+                        log(T 2 )                         T2
+                            1
+                      =           Lj (θ)
+                        log(T 2 )
+                          L⋆j (θ)
+                      ≤            .
+                        2T log T
+  We are now in a position to construct Fc,r (θ).
+Definition 4.2. For θ ∈ [−π, π], we let σ = c + r cos θ, with c − r > − 12 , and t = r sin θ. For
+σ > 1 + η, we define
+                                            1
+                                Fc,r (θ) = L−1 (θ) + log T + log ζ(σ).
+                                            2
+For 1 ≤ σ ≤ 1 + η, we define
+                           1+η−σ                σ−1                  1
+                Fc,r (θ) =             log c1 +      log ζ(1 + η) + LQ0 (θ) + log T
+                                 η               η                   2
+                           c2 (1 + η − σ)           c2 (1 + η − σ)
+                         +                MQ0 (θ) +                log log T .
+                                   η                       η
+For 21 ≤ σ ≤ 1, we define
+                                                                                                          
+                                                                                         LQ2 (θ)
+    Fc,r (θ) = (2 − 2σ) log k1 + (2σ − 1) log c1 + ((2 − 2σ)(k2 + 1) + 2σ − 1)                   + log T
+                                                                                           2
+            + (k3 (2 − 2σ) + c2 (2σ − 1))(MQ2 (θ) + log log T ).
+                           COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                                                   11
+
+For 0 ≤ σ ≤ 12 , we define
+                                                                                                                                    
+                             c1                1             1 − 2σ + 4k2 σ                                        LQ5 (θ)
+   Fc,r (θ) = (1 − 2σ) log √ + 2σ log k1 + L−1 (θ) + log T +                                                               + log T
+                              2π               2                   2                                                 2
+            + (c2 (1 − 2σ) + 2k3 σ)(MQ5 (θ) + log log T ).
+
+For −η ≤ σ ≤ 0, we define
+                    σ      1+η            c1    1
+       Fc,r (θ) = − log          η
+                                   + log √ + L−1 (θ) + log T
+                    η     c1 (2π)          2π 2
+                                                         
+                      σ(1 + 2η) σ + η        LQ4 (θ)           σ+η
+                + −              +                   + log T +     c2 (MQ4 (θ) + log log T ).
+                         2η         2η         2                η
+
+For σ ≤ −η, we define
+                                                             
+                                        1              1 − 2σ           1 − 2σ
+               Fc,r (θ) = log ζ(1 − σ) + L−1 (θ) + 1 +          log T −        log 2π
+                                        2                 2                2
+                                                                         −[σ]
+                           (1 − 2σ + 2[σ])              1X
+                       +                   L1−[σ] (θ) +    Lj−1 (θ).
+                                  4                     2
+                                                                         j=1
+
+  It is clear that Fc,r (θ) is an even function ofR θ such that Fc,r (θ) ≥ N1 log |fN (c + reiθ )|.
+                                                    π
+  Now, we shall provide an upper bound for 0 Fc,r (θ)dθ. In light of work of [2] and [7], for c ∈ R
+and r > 0, we define
+                                      
+                                      0
+                                                     if c + r ≤ y;
+                                               y−c
+                                 θy = arccos r        if c − r ≤ y ≤ c + r;                         (4.10)
+                                      
+                                        π             if y ≤ c − r.
+                                      
+
+  Now, we let c, r, and η be positive real numbers satisfying
+                                          1
+                                      −     < c − r < 1 − c < −η < 1 + η < c                                                    (4.11)
+                                          2
+                             Rπ
+and 0 < η ≤ 12 . To bound        0 Fc,r (θ)dθ, we consider the splitting
+                           Z π        Z θ1+η       Z θ1        Z θ1          Z θ0       Z θ−η       Z π
+                                                                     2
+                                  =            +           +             +          +           +          .
+                             0         0            θ1+η        θ1             θ1        θ0          θ−η
+                                                                                2
+
+
+  Firstly, we have
+            Z θ1+η                    Z θ1+η       Z θ1+η                 Z θ1+η
+                                                                        1
+                   Fc,r (θ)dθ ≤ log T        1dθ +        log ζ(σ)dθ +           L⋆−1 (θ)dθ.
+             0                         0            0                  2T  0
+             R θ1
+  Secondly, θ1+η Fc,r (θ)dθ is bounded above by
+                                      Z θ1
+                                                              log c1 θ1
+           Z θ1
+                          c2
+                                                                    Z
+     log T        1dθ + log log T           (1 + η − σ)dθ +                (1 + η − σ)dθ
+             θ1+η         η            θ1+η                     η     θ1+η
+
+        log ζ(1 + η) θ1
+                                              Z θ1                           Z θ1
+                                           1                          c2
+                      Z
+     +                       (σ − 1)dθ +            L⋆Q0 (θ)dθ +                   (1 + η − σ)L⋆Q0 (θ)dθ.
+              η         θ1+η              2T   θ1+η               2ηT  log T  θ1+η
+                                        COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                  12
+
+ A direction calculation shows that
+Z θ1                    Z θ1                                         Z θ1
+   2                       2                                            2
+     Fc,r (θ)dθ ≤ log T      (2 − 2σ)(k2 + 1) + 2σ − 1dθ + log log T      k3 (2 − 2σ) + c2 (2σ − 1)dθ
+  θ1                                    θ1                                          θ1
+                    Z θ1
+                               2
+                +                  (2 − 2σ) log k1 + (2σ − 1) log c1 dθ
+                          θ1
+                           Z θ1
+                  1       (2 − 2σ)(k2 + 1) + 2σ − 1 ⋆
+                                    2
+                +                                      LQ2 (θ)dθ
+                  T   θ1                2
+                           Z θ1
+                      1
+                                 (k3 (2 − 2σ) + c2 (2σ − 1))L⋆Q2 (θ)dθ.
+                               2
+                +
+                  2T log T θ1
+                                   R θ0
+  Also, we can bound                 θ 1 Fc,r (θ)dθ above by
+                                        2
+
+               Z θ0
+                           log T θ0
+                                  Z                                  Z θ0
+         log T     1dθ +              1 − 2σ + 4k2 σdθ + log log T        c2 (1 − 2σ) + 2k3 σdθ
+               θ1             2    θ1                                  θ1
+                2                   2                                   2
+                      Z θ0                       Z θ0            Z θ0
+                  c1                                           1
+         + log √               1 − 2σdθ + 2 log k1      σdθ +            L⋆ (θ)dθ
+                   2π     θ1                        θ1        2T θ 1 −1
+                            2                        2                2
+               Z θ0                                         Z θ0
+             1                                         1
+         +          (1 − 2σ + 4k2 σ)L⋆Q5 (θ)dθ +                 (c2 (1 − 2σ) + 2k3 σ)L⋆Q5 (θ)dθ.
+            4T θ 1                                 2T log T θ 1
+                      2                                                   2
+
+              R θ−η
+  Moreover,    θ0     Fc,r (θ)dθ is bounded above by
+                Z θ−η                                       Z θ−η
+                         σ(1 + 2η) σ + η                            σ+η
+         log T       1−            +         dθ + log log T              c2 dθ
+                 θ0          2η         2η                   θ0       η
+            Z θ−η                                      Z θ−η
+                    σ     1+η             c1        1
+         +         − log          + log √ dθ +                L⋆−1 (θ)dθ
+             θ0     η    c1 (2π)η          2π      2T θ0
+            1 θ−η
+                                                                    Z θ−η
+                        σ(1 + 2η) σ + η                         1            σ+η
+               Z
+         +            −           +             ⋆
+                                              LQ4 (θ)dθ +                        c2 L⋆Q4 (θ)dθ.
+            T θ0            4η         4η                   2T log T θ0        η
+
+  Finally, we have
+      Z π                       Z π                    Z π                          Z π
+                                           1 − 2σ                                        1 − 2σ
+            Fc,r (θ)dθ ≤ log T        1+          dθ +      log ζ(1 − σ)dθ − log 2π             dθ
+        θ−η                      θ−η          2         θ−η                          θ−η    2
+                             Z π
+                          1                       1 θ− 21 1 − 2σ ⋆
+                                                   Z
+                       +           L⋆−1 (θ)dθ +                  L1 (θ)dθ
+                         2T θ−η                   T θ−η      4
+                          ∞ Z θ                                      j
+                                                                               !
+                         X       −j− 12   1 − 2σ − 2j             1X
+                       +                              Lj+1 (θ) +       Lk−1 (θ) dθ.
+                               θ    1
+                                                4                 2
+                                    j=1      −j+ 2                            k=1
+
+
+(We note that from the assumption − 12 < c − r it follows that θ−j+ 1 = θ−j− 1 = π for j ≥ 1, and
+                                                                    2        2
+thus the last term in the above inequality is equal to zero.)
+  To end this section, we require the following two estimates from [2, Lemmata 5.14 and 5.15] to
+control the zeta integrals appearing in the above estimates.
+                             COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                 13
+
+Lemma 4.3. Let c, r and η be positive real numbers, satisfying (4.11), and J1 and J2 be positive
+integers. If θ1+η ≤ 2.1, then for σ = c + r cos θ, one has
+           Z θ1+η
+                                log ζ(1 + η) + log ζ(c)        π    π
+                  log ζ(σ)dθ ≤                           θ1+η −    +     log ζ(c) + κ1 (J1 ),
+             0                             2                    2    4J1
+where
+                                                                                        
+                                                            JX
+                                                             1 −1                      
+                                    π                                              πj 
+                      κ1 (J1 ) =       log ζ(c + r) + 2             log ζ c + r cos        .
+                                   4J1                                              2J1
+                                                             j=1
+
+In addition, assuming further r > 2c − 1, one has
+      Z π
+                             log ζ(1 + η) + log ζ(c)                 π − θ1−c
+            log ζ(1 − σ)dθ ≤                         (θ1−c − θ−η ) +          log ζ(c) + κ2 (J2 ),
+        θ−η                             2                              2J2
+where
+                                                                                                   
+                                                  J2 −1                                       
+                π − θ1−c                         X                             πj      j
+   κ2 (J2 ) =              log ζ(1 − c + r) + 2           log ζ 1 − c − r cos      + 1−      θ1−c   .
+                  2J2                                                           J2      J2
+                                                  j=1
+
+
+                                            5. Final formulae
+  In this section, we shall first prove Theorem 1.1.
+Proof of Theorem 1.1. Using (2.10) and Propositions 3.1 and 3.2, for
+  1                              1                 1    1                           (c − 1/2)2
+− < c−r < 1−c < −η < 0 < ≤ δ = 2c−σ1 − < < 1 < 1+η < c < σ1 = c+                               < c+r,
+  2                              4                 2    2                                r
+satisfying θ1+η ≤ 2.1, we have
+                                  
+                      T        T       1
+            NQ (T ) − log            +
+                      π       2πe      4
+              5     1     2                      1              ζ(c)         1
+           ≤ +          + log ζ(σ1 ) +                      log      −                 log T
+              2 25T       π              log(r/(c − 1/2))       ζ(2c) log(r/(c − 1/2))
+                                 Z π
+                       1                           E(T, δ)
+           +                         Fc,r (θ)dθ +          .
+              π log(r/(c − 1/2)) 0                   π
+Thus, recalling that NQ (T ) = R2N (T ) and applying Lemma 2.1 (to bound E(T, δ)) and the estimates
+                                 π
+from Section 4.2.2 (to bound 0 Fc,r (θ)dθ), for T ≥ T0 , we have
+                                           
+                              T          T      1
+                     N (T ) −     log         +    ≤ C1 log T + C2 log log T + C3 ,
+                              2π        2πe     8
+where for j = 1, 2, 3,
+                                                         C̃j
+                                          Cj =                       ,                               (5.1)
+                                                 2π log(r/(c − 1/2))
+
+                                                              1 θ0
+                          Z θ1                                  Z
+                              2
+                    C̃1 =      (2 − 2σ)(k2 + 1) + 2σ − 2dθ +         1 − 2σ + 4k2 σdθ
+                           θ1                                 2 θ1
+                          Z θ−η                          Z π
+                                                                   2                                 (5.2)
+                                  σ(1 + 2η) σ + η              1 − 2σ
+                        +       −           +       dθ +              dθ,
+                           θ0        2η         2η        θ−η     2
+                               COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                              14
+
+                                                       Z θ1
+                             c2 θ1
+                                Z
+                                                           2
+                       C̃2 =           (1 + η − σ)dθ +        k3 (2 − 2σ) + c2 (2σ − 1)dθ
+                              η θ1+η                    θ1
+                             Z θ0                          Z θ−η                                                     (5.3)
+                                                                   σ+η
+                           +      c2 (1 − 2σ) + 2k3 σdθ +               c2 dθ,
+                              θ1                             θ0      η
+                                 2
+                                                                                                 
+                                     640δ − 112            1       5         1        2                       ζ(c)
+  C̃3 = π log(r/(c − 1/2))                            + 10 + +                     + log ζ(σ1 ) + π log
+                                   1536(3T0 − 1) 2                 2 25T0 π                                  ζ(2c)
+        log c1 θ1                            log ζ(1 + η) θ1
+                 Z                                           Z
+     +                  (1 + η − σ)dθ +                              (σ − 1)dθ
+           η       θ1+η                            η           θ1+η
+        Z θ1                                                                  Z θ0                         Z θ0
+             2                                                           c1
+     +         (2 − 2σ) log k1 + (2σ − 1) log c1 dθ + log √                            1 − 2σdθ + 2 log k1        σdθ
+         θ1                                                               2π       θ1                         θ1
+                                                                                    2                           2     (5.4)
+        Z θ−η                                                        Z π
+                   σ        1+η               c1                             1 − 2σ
+     +           − log               + log √ dθ − (log 2π)                             dθ
+         θ0        η      c1 (2π)η             2π                       θ−η       2
+        log ζ(1 + η) + log ζ(c)                 π        π
+     +                                  θ1+η −        +        log ζ(c) + κ1 (J1 )
+                       2                         2        4J1
+        log ζ(1 + η) + log ζ(c)                           π − θ1−c
+     +                               (θ1−c − θ−η ) +                   log ζ(c) + κ2 (J2 ) + κ3 (T0 ),
+                       2                                     2J2
+and κ3 (T0 ) is equal to
+               n Z θ1+η                  Z θ1                   Z θ1
+    1
+        max 0,              L⋆−1 (θ) +          L⋆Q0 (θ)dθ +          2
+                                                                        ((2 − 2σ)(k2 + 1) + 2σ − 1)L⋆Q2 (θ)dθ
+   2T0                0                    θ1+η                   θ1
+      Z θ0                     Z θ0                                         Z θ−η
+                             1
+   +           ⋆
+            L−1 (θ)dθ +                                    ⋆
+                                    (1 − 2σ + 4k2 σ)LQ5 (θ)dθ +                     L⋆−1 (θ)dθ
+        θ1                   2 θ1                                             θ0
+         2                        2
+      Z θ−η                                                 Z π                       Z θ 1
+                    σ(1 + 2η) σ + η                                                        − 2 1 − 2σ
+                                                                                                                o
+   +             −              +             L⋆Q4 (θ)dθ +            L⋆−1 (θ)dθ +                    L⋆1 (θ)dθ
+        θ0               2η           2η                        θ−η                      θ−η      2
+                                  θ1                                           θ1
+            1                          c2
+                           n   Z                                           Z
+                                          (1 + η − σ)L⋆Q0 (θ)dθ +                 (k3 (2 − 2σ) + c2 (2σ − 1))L⋆Q2 (θ)dθ
+                                                                                2
+   +                 max 0,
+      2T0 log T0                 θ1+η  η                                     θ1
+      Z θ0                                           Z θ−η
+                                                             σ+η                       o
+   +        (c2 (1 − 2σ) + 2k3 σ)L⋆Q5 (θ)dθ +                          c2 L⋆Q4 (θ)dθ .
+        θ1                                             θ0        η
+          2
+
+   Recall that Patel [10] showed that |ζ(1 + it)| ≤ log t for t ≥ 3 (i.e., in (1.2), (c1 , c2 , t0 ) = (1, 1, 3) is
+admissible) and that by the work of Hiary [8], (k1 , k2 , k3 , t1 ) = (0.77, 61 , 1, 3) is admissible for (1.3).4
+In addition, for (c1 , c2 , t0 ) = (1, 1, 3) and (k1 , k2 , k3 , t1 ) = (0.77, 16 , 1, 3), we may take
+                            (Q0 , Q1 , Q2 , Q3 , Q4 , Q5 ) = (1, 1.18, 1.18, 3.9, 2.3, 3.9).
+Finally, for T0 = 30 610 046 000, choosing J1 = 64 and J2 = 39, we calculate admissible (C1 , C2 , C3 )
+and record them in Table 2.                                                                         
+
+
+   4In fact, Hiary [8] showed that (k , k , k ) = (0.63, 1 , 1) was admissible. However, as pointed out by [10], due to
+                                      1   2   3          6
+an error in [8], one can only take (k1 , k2 , k3 ) = (0.77, 16 , 1).
+   We also note that there are two bounds used in [17, Sec. 5] and [11] that may be no longer valid. On one hand,
+Trudgian in [17, Sec. 5] used a result from [16] that |ζ(1 + it)| ≤ 43 log t for t ≥ 3. On the other hand, [11, Theorem
+1] states that (k1 , k2 , k3 ) = (0.732, 16 , 1) is admissible. However, as pointed out by [10], both bounds made use of an
+incorrect result obtained by Cheng-Graham in [4]. We refer the reader to [10] for a detailed discussion.
+                         COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                                                 15
+
+           c           r             η                               C1       C2       C3       C3′
+      1.000011314 1.064340602 4.2826451 · 10−6                    0.103787 0.257297 9.367419 8.367419
+      1.025253504 1.182375395 0.009944751381                      0.109410 0.204142 4.030486 3.030486
+      1.035766557 1.229059659 0.014325507360                      0.111973 0.189768 3.746756 2.746756
+
+         Table 2. Choices of parameters (c, r, η) and resulting admissible (C1 , C2 , C3 , C3′ )
+
+  Now, we are in a position to prove Corollary 1.2.
+Proof of Corollary 1.2. By Theorem 1.1 (with T0 = 30 610 046 000 and Table 2), it is sufficient to
+verify the corollary for e ≤ T ≤ 30 610 046 000. We note that by (2.8),
+                                                                             
+                        1                1            T       T      1
+               S(T ) = ∆C0 arg ζ(s) =        NQ (T ) − log         + − g(T ) − 2 ,           (5.5)
+                        π                2            π      2πe     4
+where g(T ) is defined as in (2.6). Thus, by (1.7) and (2.7), we obtain
+                                    
+                        T         T      1              1                       1
+               N (T ) −    log         +    ≤ |S(T )| + |g(T )| + 1 ≤ 2.5167 +     +1                                             (5.6)
+                        2π       2πe     8              2                      50e
+for e ≤ T ≤ 30 610 046 000. (We remark that one may apply [3, Lemma 2] to improve (5.6) for T ≥
+2π.) As the quantity on the right of (5.6) clearly is less than 0.1038 log T + 0.2573 log log T + 9.3675
+for any T ≥ e. We then conclude the proof by using the triangle inequality.                           
+  To end this section, we shall prove Theorem 1.3.
+Proof of Theorem 1.3. Note that
+                1               1                1                 1
+         S(T ) = ∆C0 arg ζ(s) = ∆C1 arg ζ(s) + ∆C2 arg(s − 1)ζ(s) − ∆C2 arg(s − 1).
+                π               π                π                 π
+We know that
+                                  |∆C1 arg ζ(s)| ≤ log ζ(σ1 )
+and
+                                                                                                                       
+                                      σ1 − 1                       1                      σ1 − 1                         1
+      |∆C2 arg(s − 1)| = arctan                    + arctan                ≤ arctan                      + arctan
+                                        T                         2T                        T0                          2T0
+for T ≥ T0 . From Propositions 3.1 and 3.2, it follows that for
+  1                     1             1 1                        (c − 1/2)2
+− < c−r < 1−c < −η < 0 < ≤ δ = 2c−σ1 − < < 1 < 1+η < c < σ1 = c+            < c+r,
+  2                     4             2 2                             r
+satisfying θ1+η ≤ 2.1,
+           1    1                      1              ζ(c)          1
+  |S(T )| ≤  + log ζ(σ1 ) +                      log       −                  log T
+           4 π               2 log(r/(c − 1/2))      ζ(2c) 2 log(r/(c − 1/2))
+                              Z π                                                        
+                    1                           E(T, δ)    1        σ1 − 1      1        1
+         +                         Fc,r (θ)dθ +          + arctan            + arctan         .
+           2π log(r/(c − 1/2)) 0                   2π      π          T0        π       2T0
+
+RThus,
+  π
+         applying Lemma 2.1 (to bound E(T, δ)) and the estimates from Section 4.2.2 (to bound
+  0 Fc,r (θ)dθ), for T ≥ T0 , we have
+                                  |S(T )| ≤ C1 log T + C2 log log T + C3′ ,
+where                                                                                         
+                                     1                     σ1 − 1           1               1
+                       C3′ = C3 − 1 + arctan                               + arctan                  ,                            (5.7)
+                                          π                  T0             π              2T0
+                              COUNTING ZEROS OF THE RIEMANN ZETA FUNCTION                                               16
+
+C1 = C1 (c, r, η; k2 ), C2 = C2 (c, r, η; c2 , k3 ), C3 = C3 (c, r, η; c1 , c2 , t0 , k1 , k2 , k3 , t1 ; T0 ) are given in
+(5.1), (5.2), (5.3), and (5.4). In particular, for T0 = 30 610 046 000, we have admissible (C1 , C2 , C3′ )
+recorded in Table 2. Finally, applying (1.7), we conclude the proof.                                                     
+
+                                                Acknowledgments
+  The authors would like to thank Nathan Ng for his encouragement and helpful comments. They
+are also grateful to the referee for the constructive and detailed comments.
+
+                                                     References
+ [1] R. J. Backlund, Über die Nullstellen der Riemannschen Zetafunktion, Acta Math. 41 (1916), no. 1, 345–375, DOI
+     10.1007/BF02422950.
+ [2] M. A. Bennett, G. Martin, K. O’Bryant, and A. Rechnitzer, Counting zeros of Dirichlet L-functions, Math.
+     Comp. 90 (2021), no. 329, 1455–1482, DOI 10.1090/mcom/3599.
+ [3] R. P. Brent, D. J. Platt, and T. S. Trudgian, Accurate estimation of sums over zeros of the Riemann zeta-function,
+     2020. arXiv:2009.13791.
+ [4] Y. F. Cheng and S. W. Graham, Explicit estimates for the Riemann zeta function, Rocky Mountain J. Math. 34
+     (2004), no. 4, 1261–1280, DOI 10.1216/rmjm/1181069799.
+ [5] L. Faber and H. Kadiri, New bounds for ψ(x), Math. Comp. 84 (2015), no. 293, 1339–1357, DOI 10.1090/S0025-
+     5718-2014-02886-X.
+ [6] J. Grossmann, Über die Nullstellen der Riemannschen Zeta-Funktion und der Dirichletschen L-Funktionen. PhD
+     thesis, Georg-August-Universität Göttingen, 1913.
+ [7] E. Hasanalizade, Q. Shen, and P.-J. Wong, Counting zeros of Dedekind zeta functions, accepted for publication
+     in Mathematics of Computation.
+ [8] G. A. Hiary, An explicit van der Corput estimate for ζ(1/2 + it), Indag. Math. (N.S.) 27 (2016), no. 2, 524–533,
+     DOI 10.1016/j.indag.2015.10.011.
+ [9] The LMFDB Collaboration, The L-functions and Modular Forms Database. http://www.lmfdb.org [Online;
+     accessed 28 January 2021].
+[10] D. Patel, An explicit upper bound for |ζ(1 + it)|, 2020. arXiv:2009.00769.
+[11] D. J. Platt and T. S. Trudgian, An improved explicit bound on |ζ( 12 +it)|, J. Number Theory 147 (2015), 842–851,
+     DOI 10.1016/j.jnt.2014.08.019.
+[12]         , The Riemann hypothesis is true up to 3·1012 , Bull. London Math. Soc., posted on 2021, published online,
+     DOI 10.1112/blms.12460.
+[13] H. Rademacher, On the Phragmén-Lindelöf theorem and some applications, Math. Z 72 (1959/1960), 192–204,
+     DOI 10.1007/BF01162949.
+[14] J. B. Rosser, Explicit bounds for some functions of prime numbers, Amer. J. Math. 63 (1941), 211–232, DOI
+     10.2307/2371291.
+[15] T. S. Trudgian, An improved upper bound for the argument of the Riemann zeta-function on the critical line,
+     Math. Comp. 81 (2012), no. 278, 1053–1061, DOI 10.1090/S0025-5718-2011-02537-8.
+[16]         , A new upper bound for |ζ(1 + it)|, Bull. Aust. Math. Soc. 89 (2014), no. 2, 259–264, DOI
+     10.1017/S0004972713000415.
+[17]         , An improved upper bound for the argument of the Riemann zeta-function on the critical line II, J. Number
+     Theory 134 (2014), 280–292, DOI 10.1016/j.jnt.2013.07.017.
+[18]         , An improved upper bound for the error in the zero-counting formulae for Dirichlet L-functions and
+     Dedekind zeta-functions, Math. Comp. 84 (2015), no. 293, 1439–1450, DOI 10.1090/S0025-5718-2014-02898-6.
+[19] H. C. F. von Mangoldt, Zur Verteilung der Nullstellen der Riemannschen Funktion ξ(t), Math. Ann. 60 (1905),
+     no. 1, 1–19, DOI 10.1007/BF01447494.
+
+  Department of Mathematics and Computer Science, University of Lethbridge, 4401 University
+Drive, Lethbridge, Alberta, T1K 3M4 Canada
+  Email address: e.hasanalizade@uleth.ca
+
+  Department of Mathematics and Computer Science, University of Lethbridge, 4401 University
+Drive, Lethbridge, Alberta, T1K 3M4 Canada
+  Email address: quanli.shen@uleth.ca
+
+   National Center for Theoretical Sciences, No. 1, Sec. 4, Roosevelt Rd., Taipei City, Taiwan
+   Email address: pengjie.wong@ncts.tw
+

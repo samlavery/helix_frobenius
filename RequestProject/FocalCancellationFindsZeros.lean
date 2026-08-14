@@ -16,6 +16,39 @@ statement:
 > replacing the infinite partial-sum closure of the 1-D L-function by an **exact cancellation**
 > built from **finite phasors** and **cell scaling**.
 
+## Scope correction (2026-08-11): the cell factors are constants
+
+The requested statement above is preserved verbatim as the *request*.  One word in it —
+**substitute** — claims more than this file proves, and the disproof is one of this file's own
+theorems.  Unfolding the two "units" of the factorization:
+
+* `Ucell (_χ) (_Z) = π/3` (`HarmonicPencilCell.lean`) — a literal constant; it discards both
+  the character and the height;
+* `centA (_χ) (_Z) = 1`, `centB (_χ) (_Z) = 2`, and `Vcell χ Z = (centB − centA)/centA`, so
+  `Vcell ≡ 1` — also a literal constant.
+
+So `focal_residual_eq_cell_scaled_L` reads, after unfolding, `Dᶜχ(Z) = (π/3)·Lχ(1/2 + i log Z)`.
+The cell focal residual is a fixed nonzero scalar multiple of the L-value.  Consequently:
+
+* "the cell vanishes exactly when the L-value does" is true **by normalization**, not by an
+  independent detection mechanism — a nonzero constant times `L` vanishes where `L` does;
+* the cancellation is **not** a substitute for the 1-D computation: evaluating `Dᶜχ(Z)` requires
+  the value `Lχ(1/2 + i log Z)`, so nothing is replaced.  "No limit is taken" holds only because
+  the L-value is taken as given; the finite phasors still reach `Φχ` through an Abel limit
+  (`finite_phasor_channel_abel_limit`).
+
+What *is* proved here and remains correct: the exact normalization identity itself; the finite
+phasor channel identity `P_N − M_N = (π/3)·Σ readoutTerm` (a real statement about the finite
+bank); the two-heights distinction `e^y ≠ y` with readout `reprPoint χ (e^y) = 1/2 + i y`; and
+the equivalence with infinite-phasor closure.  Those are theorems; only the word *substitute*
+was inflated.
+
+Note also the tension with the project ontology in `CLAUDE.md`, which states that the π/3
+structure's claim is *exact harmonic cancellation at the zeros*, "not 'finds zeros everywhere'".
+The file name `FocalCancellationFindsZeros.lean` predates that rule and overstates it; the name
+is left unchanged so existing references keep resolving, but it should be read as
+*"focal cancellation is exactly cell-scaled L"*, not as an independent zero-finder.
+
 ## The two heights (`e^y` vs `y`)
 
 The 3-D fiber lives in the *geometric source height* `Z > 0`; the 1-D analytic readout height is
@@ -30,10 +63,12 @@ In the 1-D picture, detecting a zero is an **infinite** process: `Φχ(Z) = Lχ(
 vanishes **iff the infinite phasor partial sums close** (tend to `0`) — this is
 `GeometricPhasorClosure.Phi_zero_iff_closure`, packaged here as `InfinitePhasorCloses`.
 
-In the 3-D cell fiber the same zero is detected by an **exact algebraic cancellation**: the
-normalized cell focal residual factors as `Dᶜχ(Z) = Vχ(Z)·Uχ(Z)·Lχ(1/2 + i log Z)` with the two
-units `Vχ(Z) ≠ 0` (focal-residual unit) and `Uχ(Z) = π/3 ≠ 0` (the **cell scaling**), so it vanishes
-**exactly** when the L-value does — no limit is taken (`focal_residual_eq_cell_scaled_L`).
+In the 3-D cell fiber the same zero is registered by an exact algebraic identity: the normalized
+cell focal residual factors as `Dᶜχ(Z) = Vχ(Z)·Uχ(Z)·Lχ(1/2 + i log Z)`
+(`focal_residual_eq_cell_scaled_L`).  Both cell factors are constants — `Vχ ≡ 1` and
+`Uχ ≡ π/3` (see the scope correction above) — so this is the normalization
+`Dᶜχ(Z) = (π/3)·Lχ(1/2 + i log Z)`, and the cell vanishes exactly where the L-value does because
+it *is* the L-value rescaled.
 
 The bridge between the two is `focal_cancellation_iff_infinite_phasor_closure`:
 
@@ -41,8 +76,8 @@ The bridge between the two is `focal_cancellation_iff_infinite_phasor_closure`:
 Dᶜχ(Z) = 0   ↔   the infinite 1-D phasor partial sums close.
 ```
 
-i.e. the exact finite-algebra cancellation is a **faithful substitute** for the infinite 1-D phasor
-computation — it fires on exactly the same heights.
+i.e. the two fire on exactly the same heights.  This is an agreement of vanishing loci, not a
+cheaper route to them: the left side is computed from the L-value.
 
 ## Finite phasors and cell scaling
 
@@ -62,8 +97,10 @@ six-cell amplitude `π/3` and the exact six-cell carrier closure `cell (n+6) = c
 source height `Z = e^y` the focal cancellation is exact (`Dᶜχ = Kᶜχ = Φχ = 0`, cell admissible
 `Aᶜχ ≠ 0`), the height is genuinely `e^y ≠ y` with readout `1/2 + i y`, the cancellation is the
 exact cell-scaled multiple of the L-value, and it coincides with the infinite-phasor closure — so
-the 3-D fiber really does find the zero by exact focal cancellation, as a substitute for the
-infinite 1-D phasor mathematics.
+the 3-D fiber registers the zero by an exact focal cancellation at the geometric height `e^y`.
+Per the scope correction above, "registers" is the accurate verb: the cancellation is the
+L-value rescaled by the constant `π/3`, so it locates the zero exactly but does not compute it
+independently of the 1-D readout.
 
 Everything is `Mathlib`-only and `sorry`/`axiom`-free; honest scope is unchanged from the rest of
 the project (a *real* source height reads out on the critical line, so this concerns on-line zeros,

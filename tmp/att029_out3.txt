@@ -1,0 +1,107 @@
+ATTEMPT 029, stage 5 -- the DECISIVE arm: Davenport-Heilbronn with its OFF-LINE zeros
+LOCATED, so that a_ord (ordinates only) and a_beta (beta-weighted) can be compared on the
+SAME zero set of an FE-SYMMETRIC specimen with 10.6% off-line content.
+
+WHY THIS IS THE TEST.  Stage 4 measured only the on-line census sum, which is Fact 3 (missing
+zeros, ZEROTH order).  Fact 1 -- the claim that a self-dual functional equation makes the
+ordinate-only deficit SECOND order in the off-line displacement -- can only be tested with the
+off-line ordinates in hand.  And stage 4 turned up an anomaly demanding exactly this data: the
+on-line sum has strong COHERENT lines at n = 2, 3 mod 5, where the bisector law Lambda Re chi
+predicts zero (a(2) = +0.49/+0.54 across two windows, ~ +Lambda(2)/sqrt 2, empirically tracking
++2 Lambda(n) Im chi(n)/n^{3/2}).  Either DH's prime side is not Lambda Re chi, or those lines
+are cancelled by the off-line zeros -- which would be the first coherent arithmetic ever
+attributed to off-line zeros here.
+
+PRE-REGISTERED, before running:
+G1  CENSUS GATE.  #on-line + 2*#off-line-pairs must equal round(delta theta_f/pi) within the
+    Turing slack (|S| <~ 2).  If it does not, the zero set is incomplete and every number below
+    is void.  theta_f(t) = (t/2)log(5/pi) + Im log Gamma(3/4 + it/2); density (1/2pi)log(5t/2pi).
+G2  PHASE GATE.  Z_f(t) = e^{i theta_f(t)} f(1/2+it) must be real to ~1e-10.
+G3  PAIRING GATE.  Every located off-line zero must have a partner at 1 - beta, SAME gamma
+    (self-dual FE).  Median |beta + beta' - 1| must be ~0.
+
+NULL-5 (pre-registered).  Delta_all := a_ord_all/a_beta - 1 is as large as Delta_online, i.e.
+    the FE's quadratic suppression (Fact 1) does not happen.  Then the ordinate sum's deficit
+    is a genuine O(1) location readout and the route is OPEN.
+NULL-6 (pre-registered).  a_beta does NOT equal -Lambda_f(n)/sqrt n for the TRUE Lambda_f of
+    -f'/f.  Then Landau's theorem is not usable for DH (attempt 011's D2 suspicion), every
+    ratio here is against an unknown prime side, and the DH arm is BROKEN, not negative.
+NULL-7 (the anomaly).  a_off(n) at n = 2,3 mod 5 is INCOHERENT (|a_off| ~ the sqrt(N_off)
+    floor), i.e. the off-line zeros carry no arithmetic of their own.
+
+VALIDITY, computed before running: sigma(a(n)) ~ (2pi/W) sqrt(N_total) is the incoherent floor;
+with W = 3000 and N ~ 3400 that is 0.122, so a coherent line must exceed 0.37 to be a 3-sigma
+detection.  Printed as a number below.
+
+G2 PHASE GATE  max |Im(e^{i theta} f)|/|f| over 9 probes = 1.201e-11   (must be ~0)
+  on-line zeros by sign change (h=0.02): 3032   [113s]
+  gaps between on-line zeros with expected count > 1.6: 273  (total excess 347.9)
+  2D Newton from 46825 seeds ...
+  off-line zeros located: 158   [520s]
+G3 PAIRING GATE  #(beta>1/2) = 137   #(beta<1/2) = 21   (must be equal)
+   median |beta_+ + beta_- - 1| = 1.85e-01   median |gamma_+ - gamma_-| = 1.29e+03
+   displacement d = beta-1/2 (right partners): median 0.1976  mean 0.1940  max 0.3978
+G1 CENSUS GATE  delta theta_f/pi = 3306.53   on-line 3032 + off-line 158 = 3190   deficit +116.53   (Turing slack |S| <~ 2)
+   off-line FRACTION f_off = 0.0478
+
+VALIDITY  incoherent floor sigma(a) = (2pi/W) sqrt(N) = 0.1183;  3-sigma coherent line must exceed 0.3549
+
+   n n%5    Lam_f   pred_f |     a_on   a_off   a_all   a_beta |   all/pf  bet/pf |    LamRe  pred_e  on/pe
+   2   2   0.1969  -0.1392 |   0.2778 -0.2388  0.0391   0.0083 |   -0.280  -0.059 |   0.0000 -0.0000    nan
+   3   3  -0.3121   0.1802 |  -0.2283  0.2196 -0.0087   0.0428 |   -0.048   0.237 |   0.0000 -0.0000    nan
+   4   4  -1.4422   0.7211 |   0.4244  0.1626  0.5870   0.6330 |    0.814   0.878 |  -0.6931  0.3466  1.224
+   5   0   0.0000  -0.0000 |   0.0002  0.0059  0.0061   0.0048 |      nan     nan |   0.0000 -0.0000    nan
+   6   1   1.9364  -0.7905 |  -0.2883 -0.2613 -0.5496  -0.6509 |    0.695   0.823 |   0.0000 -0.0000    nan
+   7   2   0.5528  -0.2089 |   0.1245 -0.1697 -0.0452  -0.1271 |    0.216   0.608 |   0.0000 -0.0000    nan
+   8   3   0.0159  -0.0056 |   0.0794 -0.0490  0.0304   0.0068 |   -5.415  -1.206 |   0.0000 -0.0000    nan
+   9   4  -2.2859   0.7620 |   0.4605  0.1445  0.6050   0.6856 |    0.794   0.900 |  -1.0986  0.3662  1.257
+  10   0   0.0000  -0.0000 |   0.0002  0.0018  0.0020  -0.0001 |      nan     nan |   0.0000 -0.0000    nan
+  11   1   2.3979  -0.7230 |  -0.6130 -0.0606 -0.6736  -0.6976 |    0.932   0.965 |   2.3979 -0.7230  0.848
+  13   3  -0.7286   0.2021 |  -0.0212  0.0997  0.0784   0.1563 |    0.388   0.773 |   0.0000 -0.0000    nan
+  14   4  -2.8520   0.7622 |   0.3465  0.2037  0.5502   0.6815 |    0.722   0.894 |  -0.0000  0.0000    nan
+  15   0   0.0000  -0.0000 |   0.0042 -0.0045 -0.0002  -0.0010 |      nan     nan |   0.0000 -0.0000    nan
+  16   1   1.3818  -0.3454 |  -0.3380 -0.0094 -0.3474  -0.3449 |    1.006   0.998 |   0.6931 -0.1733  1.951
+  17   2   0.8049  -0.1952 |   0.0134 -0.0906 -0.0772  -0.1651 |    0.395   0.846 |   0.0000 -0.0000    nan
+  19   4  -2.9444   0.6755 |   0.5645  0.0592  0.6237   0.6501 |    0.923   0.962 |  -2.9444  0.6755  0.836
+  21   1   3.2902  -0.7180 |  -0.3147 -0.1829 -0.4976  -0.6481 |    0.693   0.903 |   0.0000 -0.0000    nan
+  22   2   0.0000  -0.0000 |  -0.0520  0.0246 -0.0274  -0.0134 |      nan     nan |   0.0000 -0.0000    nan
+  23   3  -0.8907   0.1857 |  -0.0062  0.0764  0.0702   0.1539 |    0.378   0.829 |   0.0000 -0.0000    nan
+  25   0   0.0000  -0.0000 |   0.0034 -0.0130 -0.0096  -0.0087 |      nan     nan |   0.0000 -0.0000    nan
+  26   1   3.5210  -0.6905 |  -0.3723 -0.1334 -0.5057  -0.6362 |    0.732   0.921 |   0.0000 -0.0000    nan
+  27   2  -0.0252   0.0048 |  -0.0652  0.0127 -0.0525  -0.0054 |  -10.831  -1.122 |   0.0000 -0.0000    nan
+  29   4  -3.3673   0.6253 |   0.5788  0.0198  0.5986   0.6165 |    0.957   0.986 |  -3.3673  0.6253  0.926
+  31   1   3.4340  -0.6168 |  -0.5487 -0.0522 -0.6008  -0.6093 |    0.974   0.988 |   3.4340 -0.6168  0.890
+  32   2   0.0013  -0.0002 |  -0.0170 -0.0008 -0.0178  -0.0056 |   78.695  24.682 |   0.0000 -0.0000    nan
+  33   3   0.0000  -0.0000 |   0.0344 -0.0226  0.0118  -0.0005 |      nan     nan |   0.0000 -0.0000    nan
+  34   4  -3.8109   0.6536 |   0.3551  0.1158  0.4709   0.6087 |    0.720   0.931 |  -0.0000  0.0000    nan
+  35   0   0.0000  -0.0000 |   0.0201 -0.0104  0.0097   0.0086 |      nan     nan |   0.0000 -0.0000    nan
+  37   2   1.0258  -0.1686 |  -0.0092 -0.0552 -0.0644  -0.1529 |    0.382   0.907 |   0.0000 -0.0000    nan
+  38   3  -0.0000   0.0000 |   0.0879 -0.0491  0.0388   0.0075 | 2152789945785461.000415315212239593.500 |   0.0000 -0.0000    nan
+  39   4  -3.9592   0.6340 |   0.2949  0.1397  0.4346   0.5757 |    0.685   0.908 |  -0.0000  0.0000    nan
+  41   1   3.7136  -0.5800 |  -0.4830 -0.0474 -0.5303  -0.5618 |    0.914   0.969 |   3.7136 -0.5800  0.833
+  43   3  -1.0685   0.1629 |   0.0306  0.0382  0.0688   0.1395 |    0.422   0.856 |   0.0000 -0.0000    nan
+  46   1   4.1376  -0.6101 |  -0.3455 -0.0980 -0.4436  -0.5738 |    0.727   0.941 |   0.0000 -0.0000    nan
+  47   2   1.0937  -0.1595 |  -0.0377 -0.0387 -0.0764  -0.1304 |    0.479   0.817 |   0.0000 -0.0000    nan
+  49   4  -4.0489   0.5784 |   0.3592  0.0869  0.4461   0.5521 |    0.771   0.955 |  -1.9459  0.2780  1.292
+  51   1   4.2491  -0.5950 |  -0.3171 -0.1051 -0.4222  -0.5687 |    0.710   0.956 |   0.0000 -0.0000    nan
+  53   3  -1.1279   0.1549 |   0.0282  0.0429  0.0711   0.1274 |    0.459   0.823 |   0.0000 -0.0000    nan
+  55   0   0.0000  -0.0000 |   0.0057 -0.0225 -0.0168   0.0022 |      nan     nan |   0.0000 -0.0000    nan
+  57   2   0.0000  -0.0000 |  -0.0863  0.0322 -0.0540  -0.0243 | 1836375818614988.500826182581870678.375 |   0.0000 -0.0000    nan
+  58   3   0.0000  -0.0000 |   0.0452 -0.0136  0.0316   0.0142 | -2166358114542147.500-975406549042453.625 |   0.0000 -0.0000    nan
+  59   4  -4.0775   0.5309 |   0.4741  0.0124  0.4865   0.5118 |    0.916   0.964 |  -4.0775  0.5309  0.893
+
+Against the bisector prime side Lambda(n)Re chi(n)  (n = 1,4 mod 5, 10 lines):
+   a_on  median 0.9094   Delta_online = -0.0906   [Fact 3 predicts -0.0478]
+   a_all median 0.9658   Delta_all    = -0.0342
+   a_bet median 0.9869   Delta_beta   = -0.0131
+
+NULL-7, the n = 2,3 mod 5 anomaly ([2, 3, 7, 8, 13, 17, 23, 27, 32, 37, 43, 47, 53]):
+   |a_on|  = [0.279  0.2298 0.1247 0.0875 0.0337 0.0234 0.014  0.0769 0.023  0.0277
+ 0.034  0.0382 0.0293]
+   |a_off| = [0.2391 0.2199 0.1697 0.0548 0.1    0.0941 0.0764 0.0304 0.0064 0.0565
+ 0.0424 0.0389 0.043 ]   (incoherent floor for 158 off-line zeros: 0.0263)
+   |a_all| = [0.0408 0.0169 0.0458 0.0328 0.0806 0.0774 0.0708 0.0541 0.02   0.066
+ 0.0689 0.0771 0.0718]   -> cancellation iff |a_all| << |a_on|
+
+NULL-6, Landau with the TRUE Lambda_f: a_beta/pred_f median 0.9047  IQR 0.823-0.964   (must be 1.00 if Landau is usable for DH)
+          a_all /pred_f median 0.7150

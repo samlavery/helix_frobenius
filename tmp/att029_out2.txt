@@ -1,0 +1,124 @@
+ATTEMPT 029, stage 5 -- the DECISIVE arm: Davenport-Heilbronn with its OFF-LINE zeros
+LOCATED, so that a_ord (ordinates only) and a_beta (beta-weighted) can be compared on the
+SAME zero set of an FE-SYMMETRIC specimen with 10.6% off-line content.
+
+WHY THIS IS THE TEST.  Stage 4 measured only the on-line census sum, which is Fact 3 (missing
+zeros, ZEROTH order).  Fact 1 -- the claim that a self-dual functional equation makes the
+ordinate-only deficit SECOND order in the off-line displacement -- can only be tested with the
+off-line ordinates in hand.  And stage 4 turned up an anomaly demanding exactly this data: the
+on-line sum has strong COHERENT lines at n = 2, 3 mod 5, where the bisector law Lambda Re chi
+predicts zero (a(2) = +0.49/+0.54 across two windows, ~ +Lambda(2)/sqrt 2, empirically tracking
++2 Lambda(n) Im chi(n)/n^{3/2}).  Either DH's prime side is not Lambda Re chi, or those lines
+are cancelled by the off-line zeros -- which would be the first coherent arithmetic ever
+attributed to off-line zeros here.
+
+PRE-REGISTERED, before running:
+G1  CENSUS GATE.  #on-line + 2*#off-line-pairs must equal round(delta theta_f/pi) within the
+    Turing slack (|S| <~ 2).  If it does not, the zero set is incomplete and every number below
+    is void.  theta_f(t) = (t/2)log(5/pi) + Im log Gamma(3/4 + it/2); density (1/2pi)log(5t/2pi).
+G2  PHASE GATE.  Z_f(t) = e^{i theta_f(t)} f(1/2+it) must be real to ~1e-10.
+G3  PAIRING GATE.  Every located off-line zero must have a partner at 1 - beta, SAME gamma
+    (self-dual FE).  Median |beta + beta' - 1| must be ~0.
+
+NULL-5 (pre-registered).  Delta_all := a_ord_all/a_beta - 1 is as large as Delta_online, i.e.
+    the FE's quadratic suppression (Fact 1) does not happen.  Then the ordinate sum's deficit
+    is a genuine O(1) location readout and the route is OPEN.
+NULL-6 (pre-registered).  a_beta does NOT equal -Lambda_f(n)/sqrt n for the TRUE Lambda_f of
+    -f'/f.  Then Landau's theorem is not usable for DH (attempt 011's D2 suspicion), every
+    ratio here is against an unknown prime side, and the DH arm is BROKEN, not negative.
+NULL-7 (the anomaly).  a_off(n) at n = 2,3 mod 5 is INCOHERENT (|a_off| ~ the sqrt(N_off)
+    floor), i.e. the off-line zeros carry no arithmetic of their own.
+
+VALIDITY, computed before running: sigma(a(n)) ~ (2pi/W) sqrt(N_total) is the incoherent floor;
+with W = 3000 and N ~ 3400 that is 0.122, so a coherent line must exceed 0.37 to be a 3-sigma
+detection.  Printed as a number below.
+
+G2 PHASE GATE  max |Im(e^{i theta} f)|/|f| over 9 probes = 1.201e-11   (must be ~0)
+  on-line zeros by sign change (h=0.02): 3032   [118s]
+  2D Newton from 60000 seeds ...
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:32: RuntimeWarning: invalid value encountered in power
+  Z += A**(1-s)/(s-1) + A**(-s)/2
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:32: RuntimeWarning: invalid value encountered in divide
+  Z += A**(1-s)/(s-1) + A**(-s)/2
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:33: RuntimeWarning: invalid value encountered in power
+  Zp += -lA*A**(1-s)/(s-1) - A**(1-s)/(s-1)**2 - lA*A**(-s)/2
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:33: RuntimeWarning: invalid value encountered in divide
+  Zp += -lA*A**(1-s)/(s-1) - A**(1-s)/(s-1)**2 - lA*A**(-s)/2
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:38: RuntimeWarning: invalid value encountered in divide
+  poch = poch*(s+j); dp = dp + 1.0/(s+j)
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:39: RuntimeWarning: invalid value encountered in power
+  term = BN[k-1]/math.factorial(2*k)*poch*A**(-s-2*k+1)
+/Users/samuellavery/work/helix_frobenius/tmp/att014_dh_winding.py:50: RuntimeWarning: invalid value encountered in power
+  p = 5.0**(-s)
+/Users/samuellavery/work/helix_frobenius/tmp/att029_dh_offline.py:75: RuntimeWarning: invalid value encountered in divide
+  step = f/fp
+/Users/samuellavery/work/helix_frobenius/tmp/att029_dh_offline.py:76: RuntimeWarning: invalid value encountered in divide
+  step = np.where(np.abs(step) > 0.5, 0.5*step/np.abs(step), step)
+  off-line zeros located: 6   [277s]
+G3 PAIRING GATE  #(beta>1/2) = 4   #(beta<1/2) = 2   (must be equal)
+   median |beta_+ + beta_- - 1| = 1.92e-01   median |gamma_+ - gamma_-| = 2.81e+01
+   displacement d = beta-1/2 (right partners): median 0.0545  mean 0.1354  max 0.3978
+G1 CENSUS GATE  delta theta_f/pi = 3306.53   on-line 3032 + off-line 6 = 3038   deficit +268.53   (Turing slack |S| <~ 2)
+   off-line FRACTION f_off = 0.0018
+
+VALIDITY  incoherent floor sigma(a) = (2pi/W) sqrt(N) = 0.1154;  3-sigma coherent line must exceed 0.3463
+
+   n n%5    Lam_f   pred_f |     a_on   a_off   a_all   a_beta |   all/pf  bet/pf |    LamRe  pred_e  on/pe
+   2   2   0.1969  -0.1392 |   0.2778 -0.0111  0.2667   0.2659 |   -1.915  -1.910 |   0.0000 -0.0000    nan
+   3   3  -0.3121   0.1802 |  -0.2283  0.0090 -0.2193  -0.2181 |   -1.217  -1.211 |   0.0000 -0.0000    nan
+   4   4  -1.4422   0.7211 |   0.4244  0.0075  0.4318   0.4333 |    0.599   0.601 |  -0.6931  0.3466  1.224
+   5   0   0.0000  -0.0000 |   0.0002  0.0055  0.0056   0.0047 |      nan     nan |   0.0000 -0.0000    nan
+   6   1   1.9364  -0.7905 |  -0.2883 -0.0077 -0.2960  -0.2984 |    0.374   0.378 |   0.0000 -0.0000    nan
+   7   2   0.5528  -0.2089 |   0.1245 -0.0063  0.1182   0.1161 |   -0.566  -0.556 |   0.0000 -0.0000    nan
+   8   3   0.0159  -0.0056 |   0.0794 -0.0032  0.0763   0.0742 |  -13.576 -13.212 |   0.0000 -0.0000    nan
+   9   4  -2.2859   0.7620 |   0.4605  0.0019  0.4624   0.4644 |    0.607   0.610 |  -1.0986  0.3662  1.257
+  10   0   0.0000  -0.0000 |   0.0002 -0.0023 -0.0021   0.0002 |      nan     nan |   0.0000 -0.0000    nan
+  11   1   2.3979  -0.7230 |  -0.6130  0.0062 -0.6068  -0.6053 |    0.839   0.837 |   2.3979 -0.7230  0.848
+  13   3  -0.7286   0.2021 |  -0.0212  0.0078 -0.0135  -0.0101 |   -0.067  -0.050 |   0.0000 -0.0000    nan
+  14   4  -2.8520   0.7622 |   0.3465  0.0076  0.3541   0.3570 |    0.465   0.468 |  -0.0000  0.0000    nan
+  15   0   0.0000  -0.0000 |   0.0042  0.0083  0.0125   0.0122 |      nan     nan |   0.0000 -0.0000    nan
+  16   1   1.3818  -0.3454 |  -0.3380 -0.0001 -0.3381  -0.3360 |    0.979   0.973 |   0.6931 -0.1733  1.951
+  17   2   0.8049  -0.1952 |   0.0134 -0.0029  0.0106   0.0069 |   -0.054  -0.035 |   0.0000 -0.0000    nan
+  19   4  -2.9444   0.6755 |   0.5645 -0.0001  0.5644   0.5608 |    0.836   0.830 |  -2.9444  0.6755  0.836
+  21   1   3.2902  -0.7180 |  -0.3147 -0.0060 -0.3207  -0.3252 |    0.447   0.453 |   0.0000 -0.0000    nan
+  22   2   0.0000  -0.0000 |  -0.0520 -0.0042 -0.0562  -0.0596 |      nan     nan |   0.0000 -0.0000    nan
+  23   3  -0.8907   0.1857 |  -0.0062  0.0062  0.0000   0.0044 |    0.000   0.024 |   0.0000 -0.0000    nan
+  25   0   0.0000  -0.0000 |   0.0034 -0.0009  0.0026   0.0004 |      nan     nan |   0.0000 -0.0000    nan
+  26   1   3.5210  -0.6905 |  -0.3723 -0.0092 -0.3815  -0.3872 |    0.552   0.561 |   0.0000 -0.0000    nan
+  27   2  -0.0252   0.0048 |  -0.0652 -0.0021 -0.0674  -0.0661 |  -13.899 -13.629 |   0.0000 -0.0000    nan
+  29   4  -3.3673   0.6253 |   0.5788 -0.0044  0.5745   0.5800 |    0.919   0.928 |  -3.3673  0.6253  0.926
+  31   1   3.4340  -0.6168 |  -0.5487 -0.0051 -0.5538  -0.5486 |    0.898   0.890 |   3.4340 -0.6168  0.890
+  32   2   0.0013  -0.0002 |  -0.0170  0.0014 -0.0156  -0.0169 |   68.975  74.543 |   0.0000 -0.0000    nan
+  33   3   0.0000  -0.0000 |   0.0344 -0.0005  0.0339   0.0340 |      nan     nan |   0.0000 -0.0000    nan
+  34   4  -3.8109   0.6536 |   0.3551  0.0036  0.3587   0.3627 |    0.549   0.555 |  -0.0000  0.0000    nan
+  35   0   0.0000  -0.0000 |   0.0201 -0.0007  0.0193   0.0245 |      nan     nan |   0.0000 -0.0000    nan
+  37   2   1.0258  -0.1686 |  -0.0092 -0.0041 -0.0133  -0.0152 |    0.079   0.090 |   0.0000 -0.0000    nan
+  38   3  -0.0000   0.0000 |   0.0879  0.0040  0.0919   0.0984 | 5102341781319570.0005464289740489521.000 |   0.0000 -0.0000    nan
+  39   4  -3.9592   0.6340 |   0.2949  0.0105  0.3054   0.3091 |    0.482   0.488 |  -0.0000  0.0000    nan
+  41   1   3.7136  -0.5800 |  -0.4830 -0.0096 -0.4926  -0.4980 |    0.849   0.859 |   3.7136 -0.5800  0.833
+  43   3  -1.0685   0.1629 |   0.0306  0.0025  0.0331   0.0377 |    0.203   0.231 |   0.0000 -0.0000    nan
+  46   1   4.1376  -0.6101 |  -0.3455 -0.0034 -0.3490  -0.3536 |    0.572   0.580 |   0.0000 -0.0000    nan
+  47   2   1.0937  -0.1595 |  -0.0377  0.0015 -0.0362  -0.0376 |    0.227   0.235 |   0.0000 -0.0000    nan
+  49   4  -4.0489   0.5784 |   0.3592  0.0059  0.3651   0.3722 |    0.631   0.644 |  -1.9459  0.2780  1.292
+  51   1   4.2491  -0.5950 |  -0.3171 -0.0098 -0.3269  -0.3353 |    0.549   0.563 |   0.0000 -0.0000    nan
+  53   3  -1.1279   0.1549 |   0.0282 -0.0087  0.0195   0.0121 |    0.126   0.078 |   0.0000 -0.0000    nan
+  55   0   0.0000  -0.0000 |   0.0057  0.0053  0.0110   0.0139 |      nan     nan |   0.0000 -0.0000    nan
+  57   2   0.0000  -0.0000 |  -0.0863  0.0033 -0.0829  -0.0861 | 2819443200768069.5002926217707173766.000 |   0.0000 -0.0000    nan
+  58   3   0.0000  -0.0000 |   0.0452  0.0064  0.0516   0.0439 | -3536954348017994.500-3011183669907304.000 |   0.0000 -0.0000    nan
+  59   4  -4.0775   0.5309 |   0.4741 -0.0032  0.4708   0.4775 |    0.887   0.899 |  -4.0775  0.5309  0.893
+
+Against the bisector prime side Lambda(n)Re chi(n)  (n = 1,4 mod 5, 10 lines):
+   a_on  median 0.9094   Delta_online = -0.0906   [Fact 3 predicts -0.0018]
+   a_all median 0.9083   Delta_all    = -0.0917
+   a_bet median 0.9135   Delta_beta   = -0.0865
+
+NULL-7, the n = 2,3 mod 5 anomaly ([2, 3, 7, 8, 13, 17, 23, 27, 32, 37, 43, 47, 53]):
+   |a_on|  = [0.279  0.2298 0.1247 0.0875 0.0337 0.0234 0.014  0.0769 0.023  0.0277
+ 0.034  0.0382 0.0293]
+   |a_off| = [0.0118 0.009  0.0074 0.0066 0.0078 0.0035 0.0063 0.0087 0.0017 0.0048
+ 0.0061 0.0028 0.009 ]   (incoherent floor for 6 off-line zeros: 0.0051)
+   |a_all| = [0.2683 0.2209 0.1182 0.0874 0.0293 0.02   0.0116 0.0747 0.0227 0.0315
+ 0.0344 0.0372 0.0203]   -> cancellation iff |a_all| << |a_on|
+
+NULL-6, Landau with the TRUE Lambda_f: a_beta/pred_f median 0.5212  IQR 0.037-0.835   (must be 1.00 if Landau is usable for DH)
+          a_all /pred_f median 0.5152

@@ -71,8 +71,8 @@ def loopRadius (C : Channel) (k : ℝ) : ℝ := Real.exp C.mode * k
 /-! ### Anchoring facts (the geometry is sound and linear) -/
 
 /-- Every winding value is a unit. -/
-theorem unitary_norm (C : Channel) (t : ℝ) : ‖(unitary C t : ℂ)‖ = 1 := by
-  simp
+theorem unitary_norm (C : Channel) (t : ℝ) : ‖(unitary C t : ℂ)‖ = 1 :=
+  Circle.norm_coe _
 
 /-- The winding is a homomorphism `(ℝ,+) → S¹`. -/
 theorem unitary_add (C : Channel) (s t : ℝ) :

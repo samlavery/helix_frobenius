@@ -1,0 +1,37 @@
+====================================================================================================
+V2  the dyadic R^2 table, M = 32, basis {1, log n, sqrt n, n}, MY lambda array
+    Laguerre L_k^(1)(log 2) vs mpmath, k in {0,5,40,300}: max diff 3.828e-13
+    window           R^2 (mine)   030 reported
+    [   10,   20]   -1124.7345   -1124.7345
+    [   20,   40]     -65.7463   -65.7463
+    [   40,   80]     -30.8928   -30.8928
+    [   80,  160]      -3.7757   -3.7757
+    [  160,  320]       0.9501   0.9501
+    [  320,  640]       0.8340   0.834
+    [  640, 1280]       0.8158   0.8158
+    [ 1000, 2000]       0.8251   -
+
+    M-sensitivity (030's N3): R^2 at M = 2, 32, 1000, 10^5
+    window                 M=2        M=32      M=1000    M=100000
+    [   10,   20]    -64.2910  -1124.7345    -55.2623  -2786.7690
+    [   20,   40]     -9.7040    -65.7463     -7.6052    -46.2787
+    [   40,   80]      0.2911    -30.8928      0.5981     -0.4108
+    [   80,  160]     -2.2325     -3.7757      0.9578      0.8803
+    [  160,  320]      0.4972      0.9501      0.9995      0.9989
+    [  320,  640]     -0.7037      0.8340      0.9981      0.9982
+    [  640, 1280]      0.2836      0.8158      0.9936      0.9990
+    [ 1000, 2000]      0.1954      0.8251      0.9044      0.9971
+
+V3  crossing point n* (R^2 first reaches 0.5 and stays) vs window ratio
+    reported at the window START (030's convention), at the GEOMETRIC centre,
+    and at the ARITHMETIC centre -- edge-vs-centre is a known campaign failure.
+    basis orig :  r1.5: n*=173  r2.0: n*=90  r3.0: n*=46  r4.0: n*=35
+    basis lin  :  r1.5: n*=96  r2.0: n*=54  r3.0: n*=24  r4.0: n*=18
+    basis p3   :  r1.5: n*=173  r2.0: n*=90  r3.0: n*=46  r4.0: n*=34
+    basis p6   :  r1.5: n*=None  r2.0: n*=169  r3.0: n*=83  r4.0: n*=61
+    orig basis: START  [np.int64(173), np.int64(90), np.int64(46), np.int64(35)]  spread 4.94x
+                GEOM-C [212, 127, 80, 70]  spread 3.03x
+                ARITH-C [216, 135, 92, 88]  spread 2.47x
+    full range over bases x ratios (START label): 18 ... 173  = 9.6x
+
+[0s] verification stage 'v2' done

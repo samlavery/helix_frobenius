@@ -45,8 +45,8 @@ lemma Sgl_mem : Sgl ∈ 𝒮ℒ := ⟨ModularGroup.S, rfl⟩
 
 lemma Sgl_entries : (Sgl 1 0 : ℝ) = 1 ∧ (Sgl 1 1 : ℝ) = 0 ∧
     (Sgl 0 0 : ℝ) = 0 ∧ (Sgl 0 1 : ℝ) = -1 := by
-  refine ⟨?_, ?_, ?_, ?_⟩ <;>
-    simp [Sgl, ModularGroup.S]
+  have h : ∀ i j, (Sgl i j : ℝ) = ((ModularGroup.S i j : ℤ) : ℝ) := fun _ _ => rfl
+  refine ⟨?_, ?_, ?_, ?_⟩ <;> rw [h] <;> simp [ModularGroup.S]
 
 lemma vert_ne_zero (x : ℝ) (hx : 0 < x) : ((x : ℂ) * Complex.I) ≠ 0 := by
   apply mul_ne_zero

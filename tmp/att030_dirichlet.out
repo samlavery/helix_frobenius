@@ -1,0 +1,123 @@
+ATTEMPT 030, stage 2 -- THE DECISIVE TEST.  Does the attempt-015 threshold move with gamma_1?
+
+Attempt 015 found the dyadic R^2 of  lambda_n^arith  against the truncated Bombieri-Lagarias
+prime-Laguerre sum crossing from -3.78 to +0.9501 between n=160 and n=320, and named the
+crossing  n* = gamma_1^2 log 2 = 199.79 * 0.69315 = 138.5.
+
+TWO MECHANISMS PREDICT A NUMBER NEAR 138 ON ZETA AND THEY DISAGREE OFF ZETA.
+
+ (R) RESONANCE.  Szego 8.22.1:  e^{-x/2} L_{n-1}^{(1)}(x) ~ n^{1/4} x^{-3/4}
+     cos(2 sqrt(nx) - 3pi/4)/sqrt(pi).  Against the prime fluctuation, whose density carries
+     the frequencies gamma, stationary phase gives  d/dx[2 sqrt(nx)] = gamma  i.e.
+                                n = gamma^2 * log m .
+     Equivalently, in n:  the zero gamma oscillates in n with local period 2 pi gamma while the
+     m-tone has local period 2 pi sqrt(n / log m); they lock at n = gamma^2 log m.
+     PREDICTION: the smallest prime power m_1 with chi(m_1) != 0 switches on at
+                                n* = gamma_1(chi)^2 log m_1 ,
+     which MOVES between L-functions because gamma_1 does.
+
+ (W) WINDOW/DETREND ABSORPTION.  The m-tone completes
+     c = (sqrt(ratio)-1) sqrt(n) * 2 sqrt(log m) / (2 pi)  cycles per window [n, ratio*n];
+     a 4-parameter detrend absorbs it while c < ~1.3.  The frequencies 2 sqrt(log m) are
+     PROPERTIES OF THE LAGUERRE POLYNOMIAL, identical for every L-function.
+     PREDICTION: n* is the SAME for every L-function.
+
+SPECIMENS (real primitive characters; the arithmetic part is
+   lambda_n^{arith,chi} = -sum_m Lambda(m) chi(m)/m L_{n-1}^{(1)}(log m), no counterterm since
+   sum Lambda(m)chi(m)/m converges):
+     zeta         q=1   m_1 = 2
+     chi_-3       q=3   odd    m_1 = 2
+     chi_5        q=5   even   m_1 = 2
+     chi_8        q=8   even   m_1 = 3   (chi_8(2) = 0 -- a second, independent handle)
+
+CONTOUR VALIDITY, computed BEFORE running: the image of a zero beta+i gamma lies in |z|<r iff
+   beta^2 + gamma^2 < 1/(1-r^2).  Radius is chosen per specimen so that 1/(1-r^2) < gamma_1^2,
+   hence UNCONDITIONAL given only the (finitely verifiable) location of the lowest zeros.
+
+STATED NULL (pre-registered, before the run)
+   N2:  n*(chi) does NOT track gamma_1(chi)^2 log m_1 -- specifically, the ratio
+        n*(chi) / (gamma_1(chi)^2 log m_1) is NOT constant to within a factor 1.5 across the
+        four specimens, and/or n*(chi) is constant across specimens (mechanism W).
+   Rejecting N2 requires n*(chi)/(gamma_1^2 log m_1) constant within 1.5x while gamma_1^2 log m_1
+   itself spans a factor >= 2.5 across the specimens.
+POSITIVE CONTROL that fails by MISSING STRUCTURE: random frequencies with the true amplitudes.
+
+========================================================================================================
+first zeros (own scan + bisection, dps 30):
+    chi_-3  q=3 a=1   first three ordinates ['8.039737', '11.249206', '15.704619']
+     chi_5  q=5 a=0   first three ordinates ['6.648453', '9.831444', '11.958846']
+     chi_8  q=8 a=0   first three ordinates ['4.899974', '7.628429', '10.806588']
+   zeta                       first ordinate 14.134725
+      zeta: gamma_1 = 14.134725  -> unconditional radius r <= 0.99749, using r = 0.996   (r^2500 = 4.45e-05)
+    chi_-3: gamma_1 = 8.039737  -> unconditional radius r <= 0.99223, using r = 0.991   (r^2500 = 1.53e-10)
+     chi_5: gamma_1 = 6.648453  -> unconditional radius r <= 0.98862, using r = 0.987   (r^2500 = 6.21e-15)
+     chi_8: gamma_1 = 4.899974  -> unconditional radius r <= 0.97895, using r = 0.977   (r^2500 = 5.45e-26)
+
+   contour for chi_-3: r=0.991, N=8192, dps=60 ... [6s]
+      ... 2000/4096 [39s]
+      ... 4000/4096 [78s]
+      max |Im c| = 2.053e-61 [86s]
+   chi_-3: lambda_1^arith = 0.368281615970   direct L'/L(1,chi) = nan   diff nan
+
+   contour for chi_5: r=0.987, N=8192, dps=60 ... [86s]
+      ... 2000/4096 [77s]
+      ... 4000/4096 [150s]
+      max |Im c| = 1.226e-57 [240s]
+   chi_5: lambda_1^arith = 0.827679476716   direct L'/L(1,chi) = nan   diff nan
+
+   contour for chi_8: r=0.977, N=8192, dps=60 ... [240s]
+      ... 2000/4096 [124s]
+      ... 4000/4096 [237s]
+      max |Im c| = 2.885e-47 [482s]
+   chi_8: lambda_1^arith = 0.632114966040   direct L'/L(1,chi) = nan   diff nan
+
+========================================================================================================
+dyadic R^2, M = 32, basis {1,log n,sqrt n,n}, ZERO free parameters
+          window         zeta       chi_-3        chi_5        chi_8
+  [  10,   20]   -1124.7345       0.6503     -20.6541     -98.0173
+  [  20,   40]     -65.7463       0.1917      -2.4958       0.3546
+  [  40,   80]     -30.8928       0.7084       0.2594       0.9107
+  [  80,  160]      -3.7757       0.9368       0.8685       0.6309
+  [ 160,  320]       0.9501       0.7905       0.7539       0.3085
+  [ 320,  640]       0.8340       0.5749       0.4576       0.2800
+  [ 640, 1250]       0.8266       0.6919       0.6546       0.5680
+  [1250, 2500]       0.7700       0.5716       0.4355       0.3027
+
+detrended amplitude  rms(Yd)/n^{1/4}  (the amplitude TURN-ON, basis-light)
+          window         zeta       chi_-3        chi_5        chi_8
+  [  10,   20]       0.0002       0.0015       0.0025       0.0008
+  [  20,   40]       0.0015       0.0063       0.0147       0.0271
+  [  40,   80]       0.0086       0.0569       0.0800       0.2722
+  [  80,  160]       0.0315       0.2668       0.4992       0.5697
+  [ 160,  320]       0.3509       0.5453       0.6671       0.5350
+  [ 320,  640]       0.3064       0.5815       0.4875       0.7076
+  [ 640, 1250]       0.5716       0.7140       0.9077       0.9022
+  [1250, 2500]       0.6184       0.7083       0.7359       0.6925
+
+========================================================================================================
+THE TEST.  crossing point n* (R^2 >= 0.5 and staying), several window ratios and bases
+      spec   gamma_1  m_1  pred g1^2 log m1  n*(r=2,orig)  n*(r=3,orig)   n*(r=2,p3)  n*(r=2,lin)
+      zeta   14.1347    2             138.5            90            46           90           53
+    chi_-3    8.0397    2              44.8            21            16           37            8
+     chi_5    6.6485    2              30.6            41            23           41           25
+     chi_8    4.9000    3              26.4            24            15           24           10
+
+  ratio n*/(gamma_1^2 log m_1)  -- must be CONSTANT within 1.5x to reject N2:
+      r=2,orig: zeta=0.650  chi_-3=0.469  chi_5=1.338  chi_8=0.910    spread = 2.86x
+      r=3,orig: zeta=0.332  chi_-3=0.357  chi_5=0.751  chi_8=0.569    spread = 2.26x
+        r=2,p3: zeta=0.650  chi_-3=0.826  chi_5=1.338  chi_8=0.910    spread = 2.06x
+       r=2,lin: zeta=0.383  chi_-3=0.179  chi_5=0.816  chi_8=0.379    spread = 4.57x
+
+  same for the rival: n* itself (mechanism W says these are EQUAL across specimens):
+      r=2,orig: zeta=90  chi_-3=21  chi_5=41  chi_8=24    spread = 4.29x
+      r=3,orig: zeta=46  chi_-3=16  chi_5=23  chi_8=15    spread = 3.07x
+        r=2,p3: zeta=90  chi_-3=37  chi_5=41  chi_8=24    spread = 3.75x
+       r=2,lin: zeta=53  chi_-3=8  chi_5=25  chi_8=10    spread = 6.62x
+
+POSITIVE CONTROL: random frequencies, true amplitudes, window [320,640]
+      zeta  TRUE +0.8340   control median -2.5614  99th +0.4263  max +0.7439
+    chi_-3  TRUE +0.5749   control median -0.5274  99th +0.3774  max +0.4986
+     chi_5  TRUE +0.4576   control median -1.0456  99th +0.2943  max +0.3125
+     chi_8  TRUE +0.2800   control median -0.2260  99th +0.3940  max +0.4261
+
+[483s] stage 2 done

@@ -1,0 +1,58 @@
+================================================================================
+att033A -- implementation A: strip-constrained band-limited CGdL SDP
+NULL: Z(A) > 1.3274993 for every A whose Selberg charge is negligible.
+================================================================================
+
+[G2] Fejer gate -- spike term is the rhat-DENSITY at 0 (c_0/Delta)
+   Delta=0.040  Z_Fejer = 1.3332000000  (4/3 - D^2/12 = 1.3332000000)  mass=1.000000000000  ok
+   Delta=0.020  Z_Fejer = 1.3333000000  (4/3 - D^2/12 = 1.3333000000)  mass=1.000000000000  ok
+   Delta=0.010  Z_Fejer = 1.3333250000  (4/3 - D^2/12 = 1.3333250000)  mass=1.000000000000  ok
+   G2 PASS : reads 4/3, not 0.37 -- the mu^2/density term is alive.
+
+[G1] positive control  S=1 (supp rhat in [-1,1])  ->  MT = 1.3274993
+   Delta=0.040  Z* = 1.3274127   err = -8.66e-05   status=optimal  (0.0s)
+   Delta=0.020  Z* = 1.3274777   err = -2.16e-05   status=optimal  (0.4s)
+   Delta=0.010  Z* = 1.3274939   err = -5.41e-06   status=optimal  (6.9s)
+   error ratios (4.0 = O(Delta^2)): 4.00 , 4.00 ;  Richardson = 1.3274993
+   G1 PASS   (033 got 1.3270103/1.3273770/1.3274687; same MT limit, 5.7x larger
+        O(Delta^2) constant -- implementations agree on the continuum value)
+
+[G3] A = 0, S = 2 (band-limited CGdL, no strip) -> 033: Z*(2) ~ 1.3212
+/Users/samuellavery/work/helix_frobenius/tmp/att033A_strip_implA.py:122: UserWarning: Solution may be inaccurate. Try another solver, adjusting the solver settings, or solve with verbose=True for more information.
+  prob.solve(solver=solver, **kw)
+   Delta=0.040  Z*(2) = 1.3211943   status=optimal_inaccurate  (1.3s)
+   Delta=0.020  Z*(2) = 1.3211703   status=optimal_inaccurate  (24.0s)
+   solver cross-check Delta=0.04: CLARABEL 1.3211943 vs SCS 1.3211943 (diff 9.0e-10) [optimal_inaccurate]
+   G3 PASS   gain over MT = 0.00633
+
+   [structure] min_v Re r(v+iw) at the A=0 optimum (Delta=0.02):
+      w=0.000   min = -1.863497e-06
+      w=0.001   min = -1.863604e-06
+      w=0.005   min = -2.114169e-05
+      w=0.020   min = -3.408828e-04
+      w=0.050   min = -2.209036e-03
+   -> r has real zeros, and a real zero v0 forces
+      Re r(v0+iw) = -r''(v0) w^2/2 + O(w^4) < 0: the unconstrained optimum
+      violates strip positivity at EVERY w > 0.  The constraint is not slack.
+
+[Z(A)] strip constraints Re r(v+iw) >= 0 for |w| <= W(A) = A/pi
+   w-sample {W/4,W/2,3W/4,W}: dropping constraints => LOWER bound on Z(A).
+   ---- Delta = 0.04 (S=2, n=50 atoms) ----
+   A=0.00  W=0.0000  Z=  1.321194 [optimal_inaccurate] pin=0  min r=-4.5e-08 minRe r(.+iW)=-4.5e-08  alb=  -   (1s)
+   A=0.02  W=0.0064  Z=  1.320927 [optimal_inaccurate] pin=0  min r=-2.0e-05 minRe r(.+iW)=-4.0e-05  alb=-29.143 (8s)
+   A=0.05  W=0.0159  Z=  1.321292 [optimal_inaccurate] pin=0  min r=-2.0e-05 minRe r(.+iW)=-2.6e-05  alb=-11.630 (9s)
+   A=0.10  W=0.0318  Z=  1.322443 [optimal_inaccurate] pin=0  min r=-1.9e-05 minRe r(.+iW)=-3.4e-05  alb=-5.767 (8s)
+   A=0.25  W=0.0796  Z=  1.330059 [optimal_inaccurate] pin=0  min r=-7.1e-06 minRe r(.+iW)=-2.0e-05  alb=-2.173 (9s)
+   A=0.50  W=0.1592  Z=  1.350043 [optimal_inaccurate] pin=0  min r=-2.5e-06 minRe r(.+iW)=-1.7e-05  alb=-0.848 (12s)
+   A=1.00  W=0.3183  Z=  1.447297 [optimal] pin=0  min r=+5.3e-05 minRe r(.+iW)=-2.7e-09  alb=0.054 (19s)
+   A=2.00  W=0.6366  Z=  1.832225 [optimal] pin=0  min r=+7.7e-05 minRe r(.+iW)=-1.7e-08  alb=0.982 (104s)
+   A=4.00  W=1.2732  Z=  2.883135 [optimal] pin=0  min r=+6.4e-05 minRe r(.+iW)=-2.4e-08  alb=2.401 (42s)
+   A=8.00  W=2.5465  Z=  5.301423 [user_limit] pin=20  min r=+1.9e-03 minRe r(.+iW)=-7.4e+01  alb=5.020 (121s)
+   ---- Delta = 0.02 (S=2, n=100 atoms) ----
+   A=0.00  W=0.0000  Z=  1.321170 [optimal_inaccurate] pin=0  min r=-1.9e-06 minRe r(.+iW)=-1.9e-06  alb=  -   (22s)
+   A=0.02  W=0.0064  Z=  1.319647 [optimal_inaccurate] pin=0  min r=-9.9e-05 minRe r(.+iW)=-1.0e-04  alb=-29.143 (439s)
+   A=0.05  W=0.0159  Z=  1.320015 [optimal_inaccurate] pin=0  min r=-9.1e-05 minRe r(.+iW)=-1.6e-04  alb=-11.630 (417s)
+   A=0.10  W=0.0318  Z=  1.320965 [optimal_inaccurate] pin=0  min r=-9.9e-05 minRe r(.+iW)=-1.7e-04  alb=-5.767 (299s)
+   A=0.25  W=0.0796  Z=  1.329036 [optimal_inaccurate] pin=0  min r=-7.3e-05 minRe r(.+iW)=-2.0e-04  alb=-2.173 (679s)
+   A=0.50  W=0.1592  Z=  1.347406 [optimal_inaccurate] pin=0  min r=-6.8e-05 minRe r(.+iW)=-2.1e-04  alb=-0.848 (808s)
+   A=1.00  W=0.3183  Z=  1.444230 [optimal_inaccurate] pin=0  min r=-2.1e-05 minRe r(.+iW)=-1.6e-04  alb=0.054 (680s)

@@ -1,0 +1,134 @@
+ATTEMPT 031, part C -- the exact law that part B stumbled into, DERIVED and then TESTED
+out of sample.
+
+WHAT PART B SHOWED (measured, not predicted).  Comparing the two samplings of S:
+    Var_t S(t) - Var_zeros S(gamma) = 0.08297, 0.08333, 0.08329, 0.08336, 0.08334, 0.08218
+at the six sets.  1/12 = 0.0833333.  The four NARROW-window sets reproduce it to 4e-5.
+And the fourth/sixth cumulants: kappa4_t - kappa4_z = -0.00832,-0.00834,-0.00830,-0.00833,-0.00832
+(-1/120 = -0.0083333);  kappa6_t - kappa6_z = +0.003969,+0.003961,+0.003964,+0.003968,+0.003940
+(1/252 = 0.0039683).  Those are Bernoulli numbers:  B_2/2, B_4/4, B_6/6.
+
+THE DERIVATION (three lines, no probability).  On the unfolded axis u = theta/pi the counting
+fluctuation is EXACTLY piecewise linear of slope -1:  for u in [u_k, u_{k+1}),  S(u) = k - 1 - u.
+Its endpoint values are A_k = S_k + 1/2 (at u_k^+) and B_k = S_{k+1} - 1/2 (at u_{k+1}^-), and the
+cell length is delta_k = A_k - B_k.  Hence, with U = u_n - u_1,
+    <e^{i x S}>_u = (1/U) sum_k int_0^{delta_k} e^{i x (A_k - y)} dy
+                  = (1/(i x U)) sum_k [ e^{i x A_k} - e^{i x B_k} ]
+                  = (n/U) * ( e^{i x/2} - e^{-i x/2} )/(i x) * <e^{i x S}>_zeros  + O(1/(xU)),
+the middle factor telescoping the two sums into one.  So
+
+    ******  phi_u(x)  =  sinc(x/2) * phi_zeros(x),   sinc(z) := sin z / z   ******
+
+i.e. S sampled continuously EQUALS S sampled at the zeros PLUS an independent uniform on
+[-1/2, 1/2].  Its cumulant generating function is log(sinh(s/2)/(s/2)) = sum_m B_2m s^2m/(2m (2m)!),
+so the cumulants of the added uniform are exactly kappa_2m = B_2m/(2m):
+    1/12,  -1/120,  1/252,  -1/240,  1/132, ...
+This is Euler-Maclaurin / Abel summation, nothing more.  NO NOVELTY IS CLAIMED: it is the
+standard sawtooth identity, and the Bernoulli numbers are its signature.  What it BUYS is below.
+
+WHY IT SETTLES THE ATTEMPT.  sinc(pi m) = 0 for every nonzero integer m.  So
+    phi_u(2 pi m) = 0   EXACTLY, for every integer m,
+which is why part B measured |phi_t(2 pi)| = 2e-5 .. 8e-5 (pure boundary term) against
+|phi_zeros(2 pi)| = 0.060 .. 0.160.  The tau = 1 point mass K(1) -- and the whole pi/m cell
+family at every integer m -- sits EXACTLY ON THE ZEROS OF THE SINC KERNEL.  It is invisible to
+any continuous-in-t reading of S and is carried entirely by the discreteness of the zero
+counting.  Consequently Selberg's central limit theorem, which is a statement about the
+t-sampled S, does not govern K(1) directly: the two variances differ by exactly 1/12, and using
+the Selberg variance in exp(-4 pi^2 V) mis-states log K by 2 pi^2/12 = pi^2/6 = 1.6449.
+
+======================== PRE-REGISTERED BEFORE RUNNING (out of sample) ========================
+Everything above was FITTED to part B's kappa_2, kappa_4, kappa_6.  The following were not
+looked at and are predicted by the derivation alone:
+
+ C1  phi_u(x) / phi_zeros(x) = sin(x/2)/(x/2) at x = 0.5, 1, 1.5, ..., 8, and at x = 2 pi.
+     phi_u computed EXACTLY (closed-form cell integral, no sampling).
+     NULL: relative deviation > 1e-3 at any x where |sinc(x/2)| > 0.05.
+ C2  kappa_8,t - kappa_8,z = B_8/8 = -1/240 = -0.00416667   and
+     kappa_10 difference = B_10/10 = (5/66)/10 = +0.00757576.
+     NULL: relative deviation > 1e-2.
+ C3  all ODD cumulant differences vanish.
+     NULL: |kappa_3 diff| or |kappa_5 diff| > 1e-3.
+ C4  the error is a BOUNDARY term of size O(1/n): halving the sample must DOUBLE the residual.
+     NULL: the residual does not scale like 1/n.
+ C5  the t-uniform (rather than u-uniform) reading deviates by the Jacobian dt/du = 2 pi/L only,
+     so it must fail exactly on the two WIDE-ratio sets (T=1e3, ratio 6.19; long, ratio 1414)
+     and hold on the four narrow ones.  This is the pre-registered explanation of why part B's
+     t-uniform numbers gave 0.08297 and 0.08218 instead of 1/12.
+
+====================================================================================================
+C1 -- phi_u(x) / phi_zeros(x)  vs  sinc(x/2).   phi_u by EXACT cell integration.
+            T=1e3 n= 5168  max rel dev (|sinc|>0.05) = 7.159e-03
+                    per-x: 4.7e-05 9.5e-05 1.4e-04 1.9e-04 2.5e-04 3.2e-04 4.2e-04 5.6e-04 7.8e-04 1.1e-03 1.8e-03 3.6e-03 1.5e+11 2.5e-03 7.2e-03
+            T=1e4 n= 4318  max rel dev (|sinc|>0.05) = 7.728e-03
+                    per-x: 3.6e-05 7.2e-05 1.1e-04 1.5e-04 1.9e-04 2.6e-04 3.6e-04 5.3e-04 8.5e-04 1.5e-03 2.9e-03 9.3e-03 5.6e+11 2.2e-03 7.7e-03
+            T=1e5 n= 4162  max rel dev (|sinc|>0.05) = 9.366e-03
+                    per-x: 1.7e-05 3.3e-05 5.1e-05 7.0e-05 9.6e-05 1.4e-04 2.2e-04 3.9e-04 7.4e-04 1.5e-03 3.6e-03 1.4e-02 7.4e+11 9.4e-03 1.5e-03
+            T=1e6 n= 4003  max rel dev (|sinc|>0.05) = 1.266e-02
+                    per-x: 2.7e-05 5.4e-05 8.0e-05 1.1e-04 1.3e-04 1.6e-04 2.1e-04 3.3e-04 6.5e-04 1.5e-03 3.9e-03 1.6e-02 7.9e+11 1.3e-02 3.1e-03
+            T=1e7 n= 4204  max rel dev (|sinc|>0.05) = 2.893e-02
+                    per-x: 9.9e-07 3.1e-06 5.4e-06 5.6e-06 4.7e-06 2.9e-05 9.4e-05 2.5e-04 6.1e-04 1.5e-03 4.4e-03 2.1e-02 7.6e+11 2.4e-02 2.9e-02
+     long[14,2e4] n=22491  max rel dev (|sinc|>0.05) = 1.402e-03
+                    per-x: 8.9e-07 2.6e-06 5.3e-06 9.6e-06 1.6e-05 2.4e-05 3.6e-05 5.3e-05 7.8e-05 1.2e-04 1.9e-04 3.9e-04 1.4e+10 3.5e-04 1.4e-03
+
+   C1 WORST over all sets and all x with |sinc|>0.05 : 2.893e-02   (null was >1e-3)  ==> NULL HOLDS
+
+   and at the sinc ZERO x = 2 pi (prediction: phi_u = 0 up to the O(1/U) boundary term):
+              set   |phi_u(2pi)|   |phi_z(2pi)|         1/U   |phi_u|*U
+            T=1e3      1.531e-05        0.15985   1.936e-04      0.0791
+            T=1e4      5.642e-05        0.13273   2.317e-04      0.2435
+            T=1e5      7.399e-05        0.09805   2.404e-04      0.3078
+            T=1e6      7.929e-05        0.08561   2.499e-04      0.3173
+            T=1e7      7.574e-05        0.05995   2.380e-04      0.3183
+     long[14,2e4]      1.410e-06        0.14074   4.446e-05      0.0317
+
+====================================================================================================
+C2/C3 -- cumulant differences kappa_j(u-sampled) - kappa_j(at zeros) vs B_j/j
+              set          j=2          j=3          j=4          j=5          j=6          j=7          j=8         j=10
+            T=1e3     0.083236    -0.000104    -0.008322     0.000064     0.003956    -0.000068    -0.004150     0.007538
+            T=1e4     0.083524    -0.000037    -0.008388     0.000000     0.003994    -0.000008    -0.004200     0.007652
+            T=1e5     0.083429     0.000022    -0.008361    -0.000073     0.003974     0.000082    -0.004198     0.007677
+            T=1e6     0.083290     0.000067    -0.008342     0.000058     0.003969    -0.000125    -0.004178     0.007633
+            T=1e7     0.083302    -0.000141    -0.008391     0.000022     0.004027     0.000024    -0.004194     0.007548
+     long[14,2e4]     0.083201     0.000124    -0.008316    -0.000041     0.003949     0.000056    -0.004127     0.007466
+     B_j/j (pred)     0.083333     0.000000    -0.008333     0.000000     0.003968     0.000000    -0.004167     0.007576
+   (odd j predicted 0; MC error on the u-sample with 6e6 draws is ~1e-4 for j=2 and grows
+    steeply with j, so j=10 is reported for shape only.)
+
+              set  rel err j=2  rel err j=4  rel err j=6  rel err j=8
+            T=1e3     1.17e-03     1.33e-03     2.97e-03     4.04e-03
+            T=1e4     2.29e-03     6.52e-03     6.60e-03     8.06e-03
+            T=1e5     1.15e-03     3.27e-03     1.53e-03     7.61e-03
+            T=1e6     5.26e-04     9.92e-04     3.10e-04     2.74e-03
+            T=1e7     3.79e-04     6.93e-03     1.48e-02     6.51e-03
+     long[14,2e4]     1.59e-03     2.11e-03     4.86e-03     9.48e-03
+
+====================================================================================================
+C4 -- is the residual a 1/n boundary term?  halve the sample, the residual must DOUBLE.
+   (using the EXACT cell integral at x=1, residual := |phi_u - sinc(1/2) phi_z| * U)
+            T=1e3  n=5168: res=8.72e-05 (res*U=0.451)   n=2584: res=9.23e-05 (res*U=0.238)   n=1292: res=2.49e-05 (res*U=0.032)
+            T=1e4  n=4318: res=6.62e-05 (res*U=0.286)   n=2159: res=1.98e-04 (res*U=0.427)   n=1079: res=1.71e-04 (res*U=0.184)
+            T=1e5  n=4162: res=3.04e-05 (res*U=0.127)   n=2081: res=4.89e-05 (res*U=0.102)   n=1040: res=2.06e-04 (res*U=0.214)
+            T=1e6  n=4003: res=4.86e-05 (res*U=0.194)   n=2001: res=2.62e-05 (res*U=0.052)   n=1000: res=6.45e-05 (res*U=0.064)
+            T=1e7  n=4204: res=2.82e-06 (res*U=0.012)   n=2102: res=5.40e-05 (res*U=0.113)   n=1051: res=1.96e-04 (res*U=0.205)
+
+====================================================================================================
+C5 -- t-uniform vs u-uniform: the Jacobian must break the law on WIDE-ratio windows only
+              set    hi/lo  Var_t - Var_z  Var_u - Var_z      1/12
+            T=1e3    6.190       0.082964       0.083241  0.083333
+            T=1e4    1.360       0.083287       0.083272  0.083333
+            T=1e5    1.027       0.083323       0.083121  0.083333
+            T=1e6    1.002       0.083323       0.083438  0.083333
+            T=1e7    1.000       0.083355       0.083364  0.083333
+     long[14,2e4] 1414.656       0.082213       0.083373  0.083333
+
+====================================================================================================
+C6 -- consequence: what the Selberg variance would have given.  log K mis-statement = pi^2/6.
+              set   V_zeros       V_u  V_Selberg lead    K meas  K from V_u    ratio
+            T=1e3   0.08204   0.16537         0.10611   132.045      7.5500    17.49
+            T=1e4   0.09109   0.17442         0.11337    76.074      4.4130    17.24
+            T=1e5   0.10301   0.18634         0.12385    40.010      2.6569    15.06
+            T=1e6   0.11368   0.19702         0.13303    29.338      1.6769    17.50
+            T=1e7   0.12205   0.20538         0.14083    15.107      1.2657    11.94
+     long[14,2e4]   0.08842   0.17176         0.11156   445.508     25.5375    17.45
+   exp(4 pi^2/12) = exp(pi^2/3) = 26.8393  -- the exact factor by which using
+   the continuous-in-t variance in the Gaussian formula understates K.

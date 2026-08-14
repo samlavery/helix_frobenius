@@ -1,0 +1,392 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Lam}{\Lambda}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\inertia}{inertia}
+\DeclareMathOperator{\ran}{ran}
+
+\title{The Gram double pencil: a spectral census for the zeros of $\zeta$,\\
+and an Euler-anchored regulator}
+\author{}
+\date{2026-08-14}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We attach to each window of the critical line a pair of Hankel matrices computed by
+contour integration of $\xi'/\xi$, and prove that the number of zeros off the critical
+line in the window equals the negative inertia of the first matrix (Theorem
+\ref{thm:inertia}); the remaining spectral data of the pair counts the zeros with
+multiplicity, their distinct support, and their ordinates (Theorem \ref{thm:census}).
+Both statements are unconditional. The Riemann Hypothesis is thereby equivalent to a
+Stieltjes-type positivity condition, window by window, in a quotient chart obtained
+from the functional equation (Proposition \ref{prop:stieltjes}). We then construct,
+in the half plane of absolute convergence and with no reference to zeros, an
+Euler-anchored double pencil which is unconditionally positive semidefinite
+(Proposition \ref{prop:anchor}), and prove that its spectrum can be transported
+isospectrally by an explicit finite-dimensional regulator whenever a bank response
+matrix is nonsingular (Theorem \ref{thm:regulator}). The remaining obligations are
+stated precisely in \S\ref{sec:obligations}.
+\end{abstract}
+
+\section{Setup}
+
+Let $\xi$ be the completed Riemann zeta function and put
+\[
+  A(z) := \xi\!\left(\tfrac12 - iz\right),
+\]
+an entire function of order one, even ($A(-z)=A(z)$, the functional equation), real on
+$\R$, whose zeros are $z_\rho = \gamma_\rho + i(\tfrac12-\beta_\rho)\cdot(-1)$ for
+$\rho = \beta_\rho + i\gamma_\rho$ a nontrivial zero of $\zeta$; in particular
+\[
+  \rho \text{ on the critical line} \iff z_\rho \in \R .
+\]
+Nonreal zeros of $A$ occur in conjugate pairs $z,\bar z$ with equal multiplicities
+(conjugate symmetry of $\xi$ on the real axis).
+
+\begin{definition}[window moments]\label{def:moments}
+Let $W=(a,b)$ with $A$ nonvanishing on $\partial W \times \{|y|\le Y\}$, $Y>\tfrac12$,
+and let $\partial R_W$ be the positively oriented rectangle boundary. Put
+\[
+  \mu_k(W) := \frac{1}{2\pi i}\oint_{\partial R_W} z^k\,\frac{A'(z)}{A(z)}\,dz,
+  \qquad k \ge 0,
+\]
+and for $n\ge 1$,
+\[
+  H_n(W) := \bigl(\mu_{\alpha+\beta}(W)\bigr)_{\alpha,\beta=0}^{n-1},
+  \qquad
+  H_n^{(1)}(W) := \bigl(\mu_{\alpha+\beta+1}(W)\bigr)_{\alpha,\beta=0}^{n-1}.
+\]
+\end{definition}
+
+By the argument principle, with $x_1,\dots,x_r$ the distinct real zeros of $A$ in the
+window (multiplicities $a_i\ge 1$) and $z_j,\bar z_j$, $j=1,\dots,q$, the distinct
+conjugate pairs (equal multiplicities $b_j \ge 1$),
+\begin{equation}\label{eq:moments}
+  \mu_k(W) \;=\; \sum_{i=1}^r a_i x_i^k \;+\; \sum_{j=1}^q b_j\bigl(z_j^k + \bar z_j^{\,k}\bigr).
+\end{equation}
+All $\mu_k(W)$ are real and computable from $A$ alone; no knowledge of the zeros is used.
+Write $m := r + 2q$ for the number of distinct support points.
+
+\section{The inertia identity}
+
+\begin{theorem}[inertia]\label{thm:inertia}
+For every $n \ge m$,
+\[
+  \inertia H_n(W) \;=\; \bigl(r+q,\; q,\; n-r-2q\bigr),
+\]
+where $\inertia$ denotes (positive, negative, zero) eigenvalue counts. In particular
+\[
+  n_-\bigl(H_n(W)\bigr) \;=\; q,
+  \qquad\text{and}\qquad
+  H_n(W) \succeq 0 \iff q = 0,
+\]
+i.e.\ the negative inertia counts exactly the off-critical-line conjugate pairs.
+\end{theorem}
+
+\begin{proof}
+Let $v(t) := (1,t,\dots,t^{n-1})^{T}$. By \eqref{eq:moments},
+\[
+  H_n \;=\; \sum_{i=1}^r a_i\, v(x_i)v(x_i)^{T}
+  \;+\; \sum_{j=1}^q b_j\Bigl[v(z_j)v(z_j)^{T} + v(\bar z_j)v(\bar z_j)^{T}\Bigr].
+\]
+Write $v(z_j) = A_j + iB_j$ with $A_j,B_j\in\R^n$; then $v(\bar z_j)=A_j-iB_j$ and
+\begin{equation}\label{eq:minus}
+  v(z_j)v(z_j)^{T} + v(\bar z_j)v(\bar z_j)^{T}
+  \;=\; 2A_jA_j^{T} - 2B_jB_j^{T},
+\end{equation}
+the minus sign being the whole mechanism. Hence $H_n = UJU^{T}$ with
+\[
+  U = \bigl[v(x_1)\cdots v(x_r)\;A_1\,B_1\cdots A_q\,B_q\bigr],
+  \qquad
+  J = \operatorname{diag}(a_1,\dots,a_r,\,2b_1,-2b_1,\dots,2b_q,-2b_q),
+\]
+so $\inertia J = (r+q,q,0)$.
+
+$U$ has full column rank $m$: the complex matrix
+$V=[v(x_1),\dots,v(x_r),v(z_1),v(\bar z_1),\dots]$ is Vandermonde on $m$ distinct nodes
+with $n\ge m$, so its leading $m\times m$ minor equals
+$\prod_{\alpha<\beta}(s_\beta-s_\alpha)\ne 0$ and $\rank V=m$; replacing each pair
+$(v(z_j),v(\bar z_j))$ by $(A_j,B_j) = \bigl(\tfrac{v(z_j)+v(\bar z_j)}{2},
+\tfrac{v(z_j)-v(\bar z_j)}{2i}\bigr)$ is an invertible change of columns, so
+$\rank U = m$.
+
+Take a thin $QR$ factorisation $U=QR$ with $Q^{T}Q=I_m$ and $R$ invertible, and extend
+$Q$ to an orthogonal $\widetilde Q = [Q,Q_\perp]$. Then
+\[
+  \widetilde Q^{T} H_n \widetilde Q =
+  \begin{pmatrix} RJR^{T} & 0\\ 0 & 0_{n-m}\end{pmatrix},
+\]
+and by Sylvester's law of inertia $\inertia(RJR^{T}) = \inertia(J)$. The zero block
+contributes $n-m$ null directions.
+\end{proof}
+
+\begin{remark}
+The hypothesis $n \ge m$ is necessary: an off-line pair is invisible to a Hankel matrix
+smaller than the distinct support count. Since $\mu_0(W)$ is the number of zeros in $W$
+with multiplicity and $m \le \mu_0(W)$, the choice
+$n := \lceil \mu_0(W)\rceil + 1$ is admissible and computable from the bank alone.
+\end{remark}
+
+\begin{remark}[collisions]
+If a conjugate pair approaches $\R$, the corresponding negative eigenvalue tends to $0^-$
+and at collision becomes a null direction; the invariant through such an event is the
+inertia, not any individually ordered eigenvalue. Consequently the correct target is
+non-negativity $H_n \succeq 0$ (equivalently $n_-=0$), never strict positivity: the
+$n-m$ structural nulls and the collision nulls are expected.
+\end{remark}
+
+\section{The census, and the equivalent form of RH}
+
+\begin{theorem}[spectral census]\label{thm:census}
+Let $n \ge m$. From the spectral data of $H_n(W)$ and the value $\mu_0(W)$:
+\[
+  \mu_0 = \text{number of zeros in } W \text{ with multiplicity},\qquad
+  \rank H_n = m = r+2q,
+\]
+\[
+  n_-(H_n) = q,\qquad n_+(H_n)-n_-(H_n) = r,
+\]
+and $\mu_0 > \sum_i 1 + \sum_j 2$ (i.e.\ $\mu_0$ exceeds the distinct count) if and only
+if some zero in $W$ is multiple. Moreover the generalized eigenvalues of the pencil
+$\bigl(H^{(1)}_n, H_n\bigr)$ restricted to $\ran H_n$ are exactly the support points
+$x_i$ and $z_j,\bar z_j$.
+\end{theorem}
+
+\begin{proof}
+The first four items are Theorem \ref{thm:inertia} together with $\mu_0=\sum a_i+2\sum b_j$.
+For the pencil statement, $H_n = UJU^T$ and $H_n^{(1)} = U J \Sigma U^{T}$ where $\Sigma$
+is the diagonal matrix of support points in the basis of columns of $U$ (Vandermonde
+shift identity $v(t)^{T}\!\cdot t = $ shifted moments); on $\ran H_n$ the pencil is
+therefore similar to $\Sigma$. This is Gaussian quadrature for the measure
+\eqref{eq:moments}.
+\end{proof}
+
+\begin{proposition}[quotient chart; Stieltjes form]\label{prop:stieltjes}
+Let $w=z^2$ and $\nu_k(W) := \mu_{2k}(W)$. Under $z\mapsto w$: a real zero maps to
+$w>0$; a conjugate pair $x\pm iy$ ($x\ne0$) maps to a conjugate pair in $w$; a pair on
+the imaginary axis maps to $w<0$. Consequently, for $n$ large enough in the sense of
+Theorem \ref{thm:inertia},
+\[
+  \text{all zeros of } A \text{ in } W \text{ are real}
+  \iff
+  \bigl(\nu_{\alpha+\beta}\bigr) \succeq 0
+  \ \text{ and }\
+  \bigl(\nu_{\alpha+\beta+1}\bigr) \succeq 0 ,
+\]
+the Stieltjes condition for the measure $\sum_\rho m_\rho \delta_{z_\rho^2}$. Hence RH is
+equivalent to: for every window of a tiling of $\R$, both Hankel matrices of the even
+moments are positive semidefinite.
+\end{proposition}
+
+\begin{proof}
+The functional equation makes $A$ even, so the multiset of zeros is symmetric under
+$z\mapsto -z$ and descends to the $w$-chart. Reality and non-negativity of the
+$w$-support is exactly the Stieltjes moment condition (Hamburger positivity of both
+$(\nu_{\alpha+\beta})$ and its shift). The equivalence with the location statement is
+Theorem \ref{thm:inertia} applied in the $w$-chart together with the support map.
+\end{proof}
+
+\begin{corollary}[sign rigidity]\label{cor:rigidity}
+Let $t\mapsto A_t$ be a continuous deformation with zeros varying continuously and no
+zero crossing $\partial W$. Then $H_n(t)$ is continuous, and a conjugate pair is created
+or annihilated at $t_0$ if and only if an eigenvalue of $H_n(t)$ crosses $0$ at $t_0$;
+at simultaneous collisions the invariant is the inertia change. Consequently, if
+$H_n(t)\succeq 0$ for all $t$, then $n_-(H_n(t))\equiv 0$ and no off-line pair is ever
+born. If moreover $H_n(t_\ast)\succeq0$ is known at one parameter $t_\ast$ (for instance
+in a numerically verified range), the conclusion propagates along the deformation.
+\end{corollary}
+
+\section{Unconditional statements}
+
+The following hold with no hypothesis.
+
+\begin{enumerate}
+\item[(U1)] For every window $W$ and $n\ge m(W)$: $q(W)=n_-\bigl(H_n(W)\bigr)$; the
+off-critical-line pair count of a window is the negative inertia of a matrix computed by
+contour integration of $A'/A$.
+\item[(U2)] The census of Theorem \ref{thm:census} holds as stated.
+\item[(U3)] RH is equivalent to the Stieltjes condition of Proposition
+\ref{prop:stieltjes} on every window of a tiling, equivalently (Corollary
+\ref{cor:rigidity}) to the absence of a negative-sector eigenvalue crossing under the
+registered deformation.
+\item[(U4)] For every window contained in the numerically verified range
+($|t|\le 3\cdot 10^{12}$ by the computations of Platt and Trudgian), $q(W)=0$ and hence
+$H_n(W)\succeq 0$: the positivity hypothesis is an established fact on an initial
+segment of the tiling.
+\item[(U5)] With $Y>\tfrac12$ the top edge of $\partial R_W$ lies in the half plane of
+absolute convergence and the bottom edge maps there by the functional equation, giving a
+decomposition $H_n = H^{\mathrm{pr}} + H^{\mathrm{arch}} + H^{\mathrm{side}}$ into blocks
+computable from Dirichlet data, $\Gamma$-factors and the lateral edges respectively; in a
+tiling, adjacent lateral contributions cancel pairwise.
+\end{enumerate}
+
+\section{The Euler-anchored pencil and its regulator}
+
+Nothing in this section refers to zeros; the dependency order is
+\[
+  \text{Euler/FE bank}\;\to\;(G_1,G_0)\;\to\;\text{real spectrum}\;\to\;
+  \text{contour transport}\;\to\;\text{residues}\;\to\;\text{zeros},
+\]
+and no step may be inverted.
+
+\begin{proposition}[Euler anchor]\label{prop:anchor}
+Fix $s_0>1$ and $N\ge1$, and set
+\[
+  G_\ell[j,k] \;:=\; \sum_{n\ge2} \Lam(n)\,n^{-s_0}\,(\log n)^{\,j+k+\ell},
+  \qquad 0\le j,k<N,\quad \ell\in\{0,1\}.
+\]
+The series converge absolutely, and $G_0,G_1$ are the Hankel matrices of the positive
+measure $\sum_n \Lam(n)n^{-s_0}\delta_{\log n}$ supported in $[\log 2,\infty)$. Hence
+unconditionally
+\[
+  G_0 \succeq 0,\qquad G_1 \succeq 0,
+\]
+and $\spec(G_1,G_0)\subset[\log2,\infty)$ consists of the Gauss quadrature nodes of that
+measure.
+\end{proposition}
+
+\begin{proof}
+Absolute convergence for $s_0>1$ is standard. Positivity is the Hamburger/Stieltjes
+criterion for a positive measure on $[\log2,\infty)$: for $c\in\R^N$ and
+$P(x)=\sum_j c_jx^j$, $c^{T}G_0c=\int P^2\,d\sigma\ge0$ and
+$c^{T}G_1c=\int xP^2\,d\sigma\ge0$.
+\end{proof}
+
+\begin{theorem}[unconditional reverb regulator]\label{thm:regulator}
+Let $t\mapsto (G_0(t),G_1(t))$ be a smooth family with $G_0(t)>0$ on the active quotient,
+and set $S(t):=G_0^{-1/2}G_1G_0^{-1/2}$, so $S=S^{*}$ and
+$\spec S=\spec(G_1,G_0)$. Suppose the spectrum of $S(t_0)$ is simple, with spectral
+projections $P_a$ and eigenvectors $v_a$, and let the transport be controlled,
+\[
+  \dot S \;=\; F(u) \;=\; F_0 + \sum_{r=1}^{m} u_r F_r ,
+  \qquad F_r = F_r^{*}.
+\]
+Define $M_{ar} := \langle v_a, F_r v_a\rangle$ and $b_a := -\langle v_a,F_0v_a\rangle$.
+If $\det M \ne 0$, then $u := M^{-1}b$ is the unique control with
+$\Delta\bigl(F(u)\bigr):=\sum_a P_aF(u)P_a = 0$, and with
+\[
+  K := \sum_{a\ne b}\frac{P_aF(u)P_b}{\lambda_a-\lambda_b},
+  \qquad K^{*}=-K,
+\]
+one has $\dot S = [S,K]$. Consequently $S(t)=U(t)S(t_0)U(t)^{*}$ with $\dot U=-KU$,
+$U$ unitary, and
+\[
+  \spec S(t) \;=\; \spec S(t_0)\quad\text{exactly.}
+\]
+In particular the transported pencil remains Hermitian-definite and its generalized
+spectrum remains real.
+\end{theorem}
+
+\begin{proof}
+First-order perturbation theory gives $\dot\lambda_a=\langle v_a,F v_a\rangle$, so
+$\Delta(F)$ is precisely the component of the flow able to move eigenvalues; the linear
+system $Mu=b$ expresses $\Delta(F(u))=0$ and is uniquely solvable iff $\det M\ne0$.
+For such $u$, using $\sum_aP_a=I$,
+\[
+  [S,K]=\sum_{a\ne b}(\lambda_a-\lambda_b)\frac{P_aF(u)P_b}{\lambda_a-\lambda_b}
+  =\sum_{a\ne b}P_aF(u)P_b=F(u)-\Delta(F(u))=F(u)=\dot S .
+\]
+$K^{*}=-K$ since $F(u)^{*}=F(u)$ and the denominators are real and antisymmetric in
+$(a,b)$. The solution of $\dot U=-KU$, $U(t_0)=I$, is unitary, and
+$\frac{d}{dt}\bigl(U^{*}SU\bigr)=U^{*}\bigl(\dot S-[S,K]\bigr)U=0$.
+\end{proof}
+
+\begin{remark}[numerical verification]
+For the Euler anchor of Proposition \ref{prop:anchor} with $s_0=1.5$, $N=4$, control
+channels given by reweighting the prime channels $p\in\{2,3,5,7\}$ and raw flow
+$F_0=\partial_{s_0}S$: the spectrum is simple $(0.9619,2.7211,5.6399,8.8009)$,
+$\det M=-0.128$ with $\rank M=4$ and condition number $3.4\cdot10^{2}$; the solved
+control annihilates all diagonal drifts to $10^{-12}$, and
+$\|[S,K]-(F-\Delta(F))\|=1.3\cdot10^{-11}$ with $\|K+K^{T}\|=1.7\cdot10^{-13}$.
+\end{remark}
+
+\section{The conditional theorem}
+
+\begin{hypothesis}[$\mathrm{PSD}$]\label{hyp:psd}
+For every window $W$ of a tiling of $\R$ and $n=\lceil\mu_0(W)\rceil+1$,
+$H_n(W)\succeq0$; equivalently (Proposition \ref{prop:stieltjes}) both Hankel matrices of
+the even moments are positive semidefinite in the quotient chart.
+\end{hypothesis}
+
+\begin{theorem}\label{thm:main}
+Assume Hypothesis \ref{hyp:psd}. Then
+\begin{enumerate}
+\item every nontrivial zero of $\zeta$ lies on the critical line;
+\item for each window the spectral data of $H_n(W)$ returns the full census of Theorem
+\ref{thm:census}, with $n_-\equiv0$;
+\item the zeros are the real generalized eigenvalues of the explicitly computed
+Hermitian pencils $\bigl(H^{(1)}_n(W),H_n(W)\bigr)$.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:inertia}, $H_n(W)\succeq0$ with $n\ge m(W)$ forces $q(W)=0$: no
+conjugate pair of zeros of $A$ lies in $W$. Nonreal zeros occur in conjugate pairs with
+equal real part, hence both members lie in the same window of the tiling (for a pair on a
+boundary, apply the argument to a shifted tiling). Every nontrivial zero of $\zeta$
+corresponds to a zero of $A$ lying in some window, and only finitely many per window by
+Riemann--von Mangoldt. Hence all zeros of $A$ are real, i.e.\ all nontrivial zeros of
+$\zeta$ have real part $\tfrac12$. Items (2) and (3) are Theorem \ref{thm:census}, whose
+pencil is Hermitian-definite on $\ran H_n$ under Hypothesis \ref{hyp:psd}.
+\end{proof}
+
+\section{Remaining obligations}\label{sec:obligations}
+
+Theorem \ref{thm:main} is conditional on Hypothesis \ref{hyp:psd}. By the rigidity of the
+moment problem, any pairing whose Gram matrix reproduces the moments $\mu_{j+k}(W)$
+\emph{is} the counting pairing of \eqref{eq:moments}, so its positivity is equivalent to
+the conclusion; a proof of Hypothesis \ref{hyp:psd} must therefore proceed from the
+bank side, and the following are the precise steps.
+
+\begin{enumerate}
+\item[(T)] \textbf{Contour transport.} Continue the matrix-entry identities (not a
+claimed positive sum) from the Euler-anchored pair of Proposition \ref{prop:anchor} to
+the window pair of Definition \ref{def:moments}:
+\[
+  G_\ell[j,k] \;=\; \frac{1}{2\pi i}\oint_\Gamma z^{\,j+k+\ell}\frac{A'(z)}{A(z)}\,dz
+  \;+\; D_\ell[j,k],
+\]
+with $D_\ell$ the explicit pole, $\Gamma$-factor and lateral contributions of (U5).
+\item[(N)] \textbf{Pencil neutrality.} Show that the transport can be regulated so that
+$D_\ell$ does not move the spectrum. By Theorem \ref{thm:regulator} it suffices that the
+bank response matrix $M$ be nonsingular along the transport, which is a
+finite-dimensional, bank-computable condition; it holds at the Euler anchor. It then
+suffices to obtain the \emph{spectral} equivalence
+$\det(G_1-\lambda G_0)=C\det(H^{(1)}_n-\lambda H_n)$, $C\ne0$, rather than entrywise
+equality.
+\item[(W)] \textbf{Warp covariance.} The control $u=M^{-1}b$ must be an admissible
+deformation of the registered bank, and the terminal residue interpretation must be taken
+along the regulated deformation.
+\item[(C)] \textbf{Collisions.} At spectral collisions replace the scalar conditions by
+$P_aF(u)P_a=0$ on the degenerate eigenspace, treating the deformation piecewise between
+collisions; these are exactly the rank-drop events of Corollary \ref{cor:rigidity}.
+\end{enumerate}
+
+Granted (T), (N), (W), (C), the chain runs forward: the Euler-anchored pencil is
+positive semidefinite unconditionally (Proposition \ref{prop:anchor}); its spectrum is
+transported isospectrally and remains real (Theorem \ref{thm:regulator}); spectral
+equivalence identifies it with the window pencil; Theorem \ref{thm:census} identifies the
+latter's spectrum with the zeros; Theorem \ref{thm:inertia} converts positivity into
+$q\equiv0$; and Theorem \ref{thm:main} concludes.
+
+\end{document}
