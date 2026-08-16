@@ -1,0 +1,486 @@
+    The Gram double pencil: a spectral census for the zeros of ζ,
+                and an Euler-anchored regulator
+
+
+                                              2026-08-14
+
+
+                                               Abstract
+        We attach to each window of the critical line a pair of Hankel matrices computed by
+     contour integration of ξ ′ /ξ, and prove that the number of zeros off the critical line in the
+     window equals the negative inertia of the first matrix (Theorem 2); the remaining spectral
+     data of the pair counts the zeros with multiplicity, their distinct support, and their ordinates
+     (Theorem 5). Both statements are unconditional. The Riemann Hypothesis is thereby
+     equivalent to a Stieltjes-type positivity condition, window by window, in a quotient chart
+     obtained from the functional equation (Proposition 6). We then construct, in the half plane
+     of absolute convergence and with no reference to zeros, an Euler-anchored double pencil
+     which is unconditionally positive semidefinite (Proposition 8), and prove that its spectrum
+     can be transported isospectrally by an explicit finite-dimensional regulator whenever a bank
+     response matrix is nonsingular (Theorem 9), extended through spectral collisions by a block
+     regulator (Lemma 11). We then construct the readout itself: the warp — the flow of a
+     bank-computable velocity field — exists, is real and order-preserving, and carries the frozen
+     labels exactly onto the moving spectrum (Theorem 13); the characteristic polynomial obeys
+     an exact determinant-pullback law with nonvanishing cofactor (Theorem 14). The program
+     thereby reduces to a single hypothesis, the seat (Hypothesis 20): terminal seating of the
+     warped anchor spectrum on the window support, from which the positivity, the census and
+     the critical line follow (Theorem 21). The remaining obligations are stated precisely in §9.
+
+
+1    Setup
+Let ξ be the completed Riemann zeta function and put
+
+                                    A(z) := ξ 12 − iz ,
+                                                     
+
+an entire function of order one, even (A(−z) = A(z), the functional equation), real on R, whose
+zeros are zρ = γρ + i( 12 − βρ ) · (−1) for ρ = βρ + iγρ a nontrivial zero of ζ; in particular
+
+                                 ρ on the critical line ⇐⇒ zρ ∈ R.
+
+Nonreal zeros of A occur in conjugate pairs z, z̄ with equal multiplicities (conjugate symmetry
+of ξ on the real axis).
+Definition 1 (window moments). Let W = (a, b) with A nonvanishing on ∂W × {|y| ≤ Y },
+Y > 12 , and let ∂RW be the positively oriented rectangle boundary. Put
+
+                                                  A′ (z)
+                                         I
+                                      1
+                         µk (W ) :=            zk        dz,   k ≥ 0,
+                                     2πi ∂RW      A(z)
+
+                                                    1
+and for n ≥ 1,
+                                      n−1                                                  n−1
+                  Hn (W ) := µα+β (W ) α,β=0 ,                     Hn(1) (W ) := µα+β+1 (W ) α,β=0 .
+
+    By the argument principle, with x1 , . . . , xr the distinct real zeros of A in the window (multi-
+plicities ai ≥ 1) and zj , z̄j , j = 1, . . . , q, the distinct conjugate pairs (equal multiplicities bj ≥ 1),
+                                                r
+                                                X                      q
+                                                                       X
+                                                      ai xki                 bj zjk + z̄jk .
+                                                                                          
+                                  µk (W ) =                        +                                            (1)
+                                                i=1                    j=1
+
+All µk (W ) are real and computable from A alone; no knowledge of the zeros is used. Write
+m := r + 2q for the number of distinct support points.
+
+
+2     The inertia identity
+Theorem 2 (inertia). For every n ≥ m,
+                                                                               
+                                  inertia Hn (W ) =        r + q, q, n − r − 2q ,
+
+where inertia denotes (positive, negative, zero) eigenvalue counts. In particular
+                                
+                   n− Hn (W ) = q,           and     Hn (W ) ⪰ 0 ⇐⇒ q = 0,
+
+i.e. the negative inertia counts exactly the off-critical-line conjugate pairs.
+Proof. Let v(t) := (1, t, . . . , tn−1 )T . By (1),
+                            r
+                            X                         q
+                                                      X   h                               i
+                                                T
+                   Hn =           ai v(xi )v(xi )   +   bj v(zj )v(zj )T + v(z̄j )v(z̄j )T .
+                            i=1                          j=1
+
+Write v(zj ) = Aj + iBj with Aj , Bj ∈ Rn ; then v(z̄j ) = Aj − iBj and
+
+                            v(zj )v(zj )T + v(z̄j )v(z̄j )T = 2Aj ATj − 2Bj BjT ,                               (2)
+
+the minus sign being the whole mechanism. Hence Hn = U JU T with
+                                            
+    U = v(x1 ) · · · v(xr ) A1 B1 · · · Aq Bq , J = diag(a1 , . . . , ar , 2b1 , −2b1 , . . . , 2bq , −2bq ),
+
+so inertia J = (r + q, q, 0).
+     U has full column rank m: the complex matrix V = [v(x1 ), . . . , v(xr ), v(z1 ), v(z̄    Q1 ), . . . ] is
+Vandermonde on m distinct nodes with n ≥ m, so its leading m × m minor equals α<β (sβ −
+                                                                                v(zj )+v(z̄j ) v(zj )−v(z̄j ) 
+sα ) ̸= 0 and rank V = m; replacing each pair (v(zj ), v(z̄j )) by (Aj , Bj ) =       2       ,      2i
+is an invertible change of columns, so rank U = m.
+     Take a thin QR factorisation U = QR with QT Q = Im and R invertible, and extend Q to
+an orthogonal Q  e = [Q, Q⊥ ]. Then
+
+                                               RJRT
+                                                                
+                                     T                        0
+                                  Q Hn Q =
+                                   e     e                         ,
+                                                 0        0n−m
+
+and by Sylvester’s law of inertia inertia(RJRT ) = inertia(J). The zero block contributes n − m
+null directions.
+
+                                                               2
+Remark 3. The hypothesis n ≥ m is necessary: an off-line pair is invisible to a Hankel matrix
+smaller than the distinct support count. Since µ0 (W ) is the number of zeros in W with mul-
+tiplicity and m ≤ µ0 (W ), the choice n := ⌈µ0 (W )⌉ + 1 is admissible and computable from the
+bank alone.
+Remark 4 (collisions). If a conjugate pair approaches R, the corresponding negative eigenvalue
+tends to 0− and at collision becomes a null direction; the invariant through such an event is
+the inertia, not any individually ordered eigenvalue. Consequently the correct target is non-
+negativity Hn ⪰ 0 (equivalently n− = 0), never strict positivity: the n − m structural nulls and
+the collision nulls are expected.
+
+
+3    The census, and the equivalent form of RH
+Theorem 5 (spectral census). Let n ≥ m. From the spectral data of Hn (W ) and the value
+µ0 (W ):
+            µ0 = number of zeros in W with multiplicity,        rank Hn = m = r + 2q,
+                              n− (Hn ) = q,    n+ (Hn ) − n− (Hn ) = r,
+            P        P
+and µ0 >      i1 +  j 2 (i.e. µ0 exceeds the distinct count) if and only if some zero in W is
+                                                                (1)  
+multiple. Moreover the generalized eigenvalues of the pencil Hn , Hn restricted to ran Hn are
+exactly the support points xi and zj , z̄j .
+                                                                   P         P
+Proof. The first four items are Theorem 2 together with µ0 =          ai + 2 bj . For the pencil
+                                 (1)
+statement, Hn = U JU T and Hn = U JΣU T where Σ is the diagonal matrix of support points
+in the basis of columns of U (Vandermonde shift identity v(t)T · t = shifted moments); on ran Hn
+the pencil is therefore similar to Σ. This is Gaussian quadrature for the measure (1).
+
+Proposition 6 (quotient chart; Stieltjes form). Let w = z 2 and νk (W ) := µ2k (W ). Under
+z 7→ w: a real zero maps to w > 0; a conjugate pair x ± iy (x ̸= 0) maps to a conjugate pair in
+w; a pair on the imaginary axis maps to w < 0. Consequently, for n large enough in the sense
+of Theorem 2,
+                                                                           
+                all zeros of A in W are real ⇐⇒ να+β ⪰ 0 and να+β+1 ⪰ 0,
+                                        P
+the Stieltjes condition for the measure ρ mρ δzρ2 . Hence RH is equivalent to: for every window
+of a tiling of R, both Hankel matrices of the even moments are positive semidefinite.
+Proof. The functional equation makes A even, so the multiset of zeros is symmetric under
+z 7→ −z and descends to the w-chart. Reality and non-negativity of the w-support is exactly the
+Stieltjes moment condition (Hamburger positivity of both (να+β ) and its shift). The equivalence
+with the location statement is Theorem 2 applied in the w-chart together with the support
+map.
+
+Corollary 7 (sign rigidity). Let t 7→ At be a continuous deformation with zeros varying contin-
+uously and no zero crossing ∂W . Then Hn (t) is continuous, and a conjugate pair is created or
+annihilated at t0 if and only if an eigenvalue of Hn (t) crosses 0 at t0 ; at simultaneous collisions
+the invariant is the inertia change. Consequently, if Hn (t) ⪰ 0 for all t, then n− (Hn (t)) ≡ 0
+and no off-line pair is ever born. If moreover Hn (t∗ ) ⪰ 0 is known at one parameter t∗ (for
+instance in a numerically verified range), the conclusion propagates along the deformation.
+
+                                                 3
+4    Unconditional statements
+The following hold with no hypothesis.
+                                                              
+(U1) For every window W and n ≥ m(W ): q(W ) = n− Hn (W ) ; the off-critical-line pair count
+     of a window is the negative inertia of a matrix computed by contour integration of A′ /A.
+
+(U2) The census of Theorem 5 holds as stated.
+
+(U3) RH is equivalent to the Stieltjes condition of Proposition 6 on every window of a tiling,
+     equivalently (Corollary 7) to the absence of a negative-sector eigenvalue crossing under
+     the registered deformation.
+
+(U4) For every window contained in the numerically verified range (|t| ≤ 3 · 1012 by the compu-
+     tations of Platt and Trudgian), q(W ) = 0 and hence Hn (W ) ⪰ 0: the positivity hypothesis
+     is an established fact on an initial segment of the tiling.
+
+(U5) With Y > 21 the top edge of ∂RW lies in the half plane of absolute convergence and
+     the bottom edge maps there by the functional equation, giving a decomposition Hn =
+     H pr + H arch + H side into blocks computable from Dirichlet data, Γ-factors and the lateral
+     edges respectively; in a tiling, adjacent lateral contributions cancel pairwise.
+
+
+5    The Euler-anchored pencil and its regulator
+Nothing in this section refers to zeros; the dependency order is
+
+ Euler/FE bank → (G1 , G0 ) → real spectrum → contour transport → residues → zeros,
+
+and no step may be inverted.
+
+Proposition 8 (Euler anchor). Fix s0 > 1 and N ≥ 1, and set
+                        X
+           Gℓ [j, k] :=   Λ(n) n−s0 (log n) j+k+ℓ , 0 ≤ j, k < N,        ℓ ∈ {0, 1}.
+                         n≥2
+
+The series converge absolutely, and G0 , G1 are the Hankel matrices of the positive measure
+          −s0 δ
+P
+  n Λ(n)n       log n supported in [log 2, ∞). Hence unconditionally
+
+                                      G0 ⪰ 0,       G1 ⪰ 0,
+
+and spec(G1 , G0 ) ⊂ [log 2, ∞) consists of the Gauss quadrature nodes of that measure.
+
+Proof. Absolute convergence for s0 > 1 is standard. Positivity is P
+                                                                  the Hamburger/Stieltjes
+                                                                                  R 2 crite-
+                                                    N                   j  T
+rion for a positive measure on [log 2, ∞): for c ∈ R and P (x) = j cj x , c G0 c = P dσ ≥ 0
+and cT G1 c = xP 2 dσ ≥ 0.
+               R
+
+Theorem 9 (unconditional reverb regulator). Let t 7→ (G0 (t), G1 (t)) be a smooth family with
+                                                    −1/2     −1/2
+G0 (t) > 0 on the active quotient, and set S(t) := G0 G1 G0 , so S = S ∗ and spec S =
+
+
+
+
+                                                4
+spec(G1 , G0 ). Suppose the spectrum of S(t0 ) is simple, with spectral projections Pa and eigen-
+vectors va , and let the transport be controlled,
+                                                             m
+                                                             X
+                                Ṡ = F (u) = F0 +                  ur Fr ,          Fr = Fr∗ .
+                                                             r=1
+
+                            and ba := −⟨va , F0 va ⟩. If det M ̸= 0, then u := M −1 b is the unique
+Define Mar := ⟨va , Fr va ⟩P
+control with ∆ F (u) := a Pa F (u)Pa = 0, and with
+                                             X Pa F (u)Pb
+                                      K :=                       ,       K ∗ = −K,
+                                                    λa − λ b
+                                             a̸=b
+
+
+one has Ṡ = [S, K]. Consequently S(t) = U (t)S(t0 )U (t)∗ with U̇ = −KU , U unitary, and
+
+                                        spec S(t) = spec S(t0 )              exactly.
+
+In particular the transported pencil remains Hermitian-definite and its generalized spectrum re-
+mains real.
+
+Proof. First-order perturbation theory gives λ̇a = ⟨va , F va ⟩, so ∆(F ) is precisely the component
+of the flow able to move eigenvalues; the linear system
+                                                    P M u = b expresses ∆(F (u)) = 0 and is
+uniquely solvable iff det M ̸= 0. For such u, using a Pa = I,
+                  X                   Pa F (u)Pb X
+       [S, K] =          (λa − λb )             =  Pa F (u)Pb = F (u) − ∆(F (u)) = F (u) = Ṡ.
+                                       λa − λ b
+                  a̸=b                               a̸=b
+
+K ∗ = −K since F (u)∗ = F (u) and the denominators are real   and antisymmetric   in (a, b). The
+                                                    d
+                                                       U ∗ SU = U ∗ Ṡ − [S, K] U = 0.
+                                                                               
+solution of U̇ = −KU , U (t0 ) = I, is unitary, and dt
+
+Remark 10 (numerical verification). For the Euler anchor of Proposition 8 with s0 = 1.5, N = 4,
+control channels given by reweighting the prime channels p ∈ {2, 3, 5, 7} and raw flow F0 =
+∂s0 S: the spectrum is simple (0.9619, 2.7211, 5.6399, 8.8009), det M = −0.128 with rank M = 4
+and condition number 3.4 · 102 ; the solved control annihilates all diagonal drifts to 10−12 , and
+∥[S, K] − (F − ∆(F ))∥ = 1.3 · 10−11 with ∥K + K T ∥ = 1.7 · 10−13 .
+
+Lemma 11 (block regulator through collisions). Let S = S ∗ have distinct eigenvalues Λα
+with spectral projections Pα ofP
+                               arbitrary finite multiplicities, and let the flow be controlled as in
+Theorem 9, Ṡ = F (u) = F0 + r ur Fr , Fr = Fr∗ . With
+                                           X                                 X Pα F Pβ
+                               ∆(F ) :=          Pα F Pα ,           K :=                        ,
+                                             α
+                                                                                    Λα − Λβ
+                                                                             α̸=β
+
+one has [S, K] = F − ∆(F ) and K ∗ = −K. To first order the group Λα splits by the spectrum
+of the compression Pα F Pα ; hence the regulated condition is the block equation Pα F (u)Pα = 0
+for all α, a linear system in u generalizing M u = b, and when it is solvable the flow Ṡ =
+[S, K] is isospectral with multiplicities. Between collisions Theorem 9 applies; across a collision
+the invariant is the inertia (Corollary 7); the regulator therefore extends piecewise along any
+transport with finitely many collision events.
+
+
+                                                             5
+                            P
+Proof. SPα = Λα Pα and        α Pα = I give
+                                      X                   Pα F Pβ
+                           [S, K] =          (Λα − Λβ )            = F − ∆(F ),
+                                                          Λα − Λ β
+                                      α̸=β
+
+and K ∗ = −K since F ∗ = F and the real denominators are antisymmetric in (α, β). The
+first-order motion of a degenerate group is degenerate perturbation theory: the group splits by
+the eigenvalues of Pα F Pα , which vanish identically iff the block equation holds; the condition is
+linear in u, and on solution intervals the Lax argument of Theorem 9 is unchanged.
+
+
+6      Warp covariance: the bank-generated readout
+Theorem 9 fixes the abstract spectrum {λa } of the regulated flow; the same transport, unregu-
+lated, moves it. The first chart makes reality manifest, the second carries the physical ordinates,
+and the map between them — the warp — is not a hypothesis to be assumed but an object
+the bank constructs. Throughout this section t 7→ (G0 (t), G1 (t)) is a smooth transport of the
+continued jet pair, whose inputs are values and derivatives of the continued logarithmic deriva-
+tive along the path — function data; no zero location enters — and the parameter interval is
+                                                                                −1/2     −1/2
+regular : G0 (t) > 0 on the active quotient and spec St simple, where St := G0 G1 G0 . The
+finitely many failures of regularity are the collision and rank-drop events, crossed piecewise by
+Lemma 11.
+Definition 12 (bank velocity field; warp). Let λ1 (t) < · · · < λn (t) be the eigenvalues of St ,
+realized as the generalized eigenpairs G1 wa = λa G0 wa normalized by waT G0 wa = 1, and set
+                                                                           1/2
+                  da (t) := waT Ġ1 − λa Ġ0 wa
+                                                                              
+                                                   = ⟨va , Ṡt va ⟩, va = G0 wa .
+
+Let Vt be the unique real polynomial of degree ≤ n − 1 with Vt (λa (t)) = da (t), and let the warp
+φt be the flow of the scalar equation ẋ = Vt (x), φ0 = id.
+Theorem 13 (warp existence and exact covariance). On every regular interval the warp is
+defined on a neighborhood of [λ1 (0), λn (0)] and satisfies:
+    (i) bank determination: Vt , hence φt , is computed from (G0 , G1 )(t) and (Ġ0 , Ġ1 )(t) alone;
+
+ (ii) reality and order: φt (R ∩ dom) ⊆ R and x 7→ φt (x) is strictly increasing, in particular
+      injective;
+
+(iii) exact covariance: φt (λa (0)) = λa (t) for every a and every t in the interval.
+Proof. (i) is the construction. For (ii): Vt has real coefficients — real nodes, real diagonal drifts
+of a Hermitian family — so the flow preserves R; the field is polynomial in x with coefficients
+continuous in t, hence locally Lipschitz in x uniformly on compact t-intervals, so distinct scalar
+characteristics never cross and φt is strictly increasing where defined. For (iii): first-order
+perturbation theory for the Hermitian-definite pencil gives λ̇a = waT (Ġ1 − λa Ġ0 )wa = da (t) =
+Vt (λa (t)), so the eigenvalue path t 7→ λa (t) solves the initial-value problem defining φt (λa (0)),
+and uniqueness makes them equal. Existence: the node characteristics are the globally defined
+eigenvalue paths; a point between consecutive nodes is trapped between two of them by (ii); and
+continuous dependence on initial conditions extends the flow to a neighborhood of the compact
+hull for the same times.
+
+                                                      6
+Theorem 14 (determinant pullback). Let pt (x) := det(St − xI), and let I be an open real
+interval containing the time-0 active spectrum on which the warp is defined. Then on φt (I),
+
+                                      pt = Jt · p0 ◦ φ−1
+                                                         
+                                                      t    ,
+
+with Jt continuous and nonvanishing; consequently
+                                                                
+                                 Z(pt ) ∩ φt (I) = φt spec S0       ⊂ R.
+
+Proof. The field is polynomial in x, so φt is a strictly increasing C 1 diffeomorphism of I onto
+φt (I). On φt (I) the functions pt and p0 ◦ φ−1
+                                             t   have the same zero set {φt (λa (0))}a = {λa (t)}a
+(covariance and injectivity, Theorem 13), each zero simple (simple spectrum on a regular inter-
+val). The ratio Jt := pt /(p0 ◦ φ−1
+                                 t ) is continuous and  nonvanishing
+                                                                 ′        off the common zeros and
+extends across each with the nonzero limit p′t (λa (t)) p0 ◦ φ−1
+                                                              t     (λ a (t)).
+
+Remark 15 (the two architectures, reconciled). The regulated and unregulated flows describe one
+transport in two charts: labels frozen with a moving readout, or a moving spectrum read through
+the identity; by Theorem 13 the whole discrepancy is φt . This corrects the former statement of
+                                                                                 (1)
+obligation (N), which asked for a spectral equivalence det(G1 − λG0 ) = C det(Hn − λHn ) with
+one spectral variable λ and a constant C: under the regulated flow that identity is unsatisfiable
+— the transported spectrum stays at the anchor nodes while the window spectrum sits at the
+ordinates, disjoint multisets — and it is replaced by the pullback identity of Theorem 14, in
+which the change of spectral variable is explicit and bank-generated.
+Remark 16 (numerical verification). On the convergent segment (s0 : 1.5 → 1.2, N = 4, exact
+jets of −ζ ′ /ζ; tmp/att201 warp probe.py): the perturbation drift matches finite differences
+of the eigenvalue paths to 8.9 · 10−8 ; the flow of the interpolated field carries the anchor nodes
+(1.1916, 4.0395, 9.6214, 19.3384) onto the terminal eigenvalues (2.1714, 9.2832, 23.2371, 47.5293)
+with maximal error 1.9 · 10−10 ; an interior test point remains strictly interior. The exact-jet an-
+chor nodes differ from those quoted after Theorem 9, which realize the truncated prime sum at
+finite cutoff; the two banks are distinct legitimate realizations, and the drift between them is
+the truncation observation of the ledger.
+
+
+7     The conditional theorem
+Hypothesis 17 (PSD). For every window W of a tiling of R and n = ⌈µ0 (W )⌉ + 1, Hn (W ) ⪰ 0;
+equivalently (Proposition 6) both Hankel matrices of the even moments are positive semidefinite
+in the quotient chart.
+
+Theorem 18. Assume Hypothesis 17. Then
+
+    1. every nontrivial zero of ζ lies on the critical line;
+
+    2. for each window the spectral data of Hn (W ) returns the full census of Theorem 5, with
+       n− ≡ 0;
+
+    3. the zeros are the real generalized eigenvalues of the explicitly computed Hermitian pencils
+          (1)             
+        Hn (W ), Hn (W ) .
+
+
+
+                                                   7
+Proof. By Theorem 2, Hn (W ) ⪰ 0 with n ≥ m(W ) forces q(W ) = 0: no conjugate pair of
+zeros of A lies in W . Nonreal zeros occur in conjugate pairs with equal real part, hence both
+members lie in the same window of the tiling (for a pair on a boundary, apply the argument to
+a shifted tiling). Every nontrivial zero of ζ corresponds to a zero of A lying in some window,
+and only finitely many per window by Riemann–von Mangoldt. Hence all zeros of A are real,
+i.e. all nontrivial zeros of ζ have real part 12 . Items (2) and (3) are Theorem 5, whose pencil is
+Hermitian-definite on ran Hn under Hypothesis 17.
+
+
+8    The seat: reduction to a single hypothesis
+Definition 19 (terminal defect). Fix a window W with matched dimension n and a trans-
+port path whose terminal chart is the window chart, and let (G0 (1), G1 (1)) be the terminal
+transported pair. Put
+
+                      D0 := G0 (1) − Hn (W ),       D1 := G1 (1) − Hn(1) (W ).
+
+Both differences are computed from function data — jets of the continued logarithmic derivative
+on one side, contour integrals of A′ /A on the other — so the defect is defined with no reference
+to zeros. Obligation (T) of §9 evaluates Dℓ in closed form (pole, Γ-factor, lateral and windowing
+blocks); on the convergent segment s0 > 1 the pole block is the Hankel matrix of the exponential
+measure e−(s0 −1)x dx on [0, ∞), with moments k!/(s0 − 1)k+1 , hence itself positive semidefinite:
+the defect’s common mode adds positivity.
+
+Hypothesis 20 (the seat (S)). For every window W of the tiling there is a transport path
+                                                                      (1)           
+with finitely many regularity events such that every point of spec Hn (W ), Hn (W ) ran Hn —
+the window support — is a terminal limit of the warped anchor spectrum φt (spec S0 ), the
+remaining n − m directions retiring into the null space through the rank-drop events.
+
+Theorem 21 (the chain). Hypothesis 20 implies Hypothesis 17. Hence, granted the seat alone:
+every nontrivial zero of ζ lies on the critical line, the census of Theorem 5 is returned on every
+window, and the zeros are the real spectra of the computed Hermitian pencils (Theorem 18).
+
+Proof. On every regular interval the transported spectrum is real: the anchor spectrum is real
+(Proposition 8, S0 Hermitian) and Theorem 13 transports it by a real map; across regularity
+events reality is preserved because the pencil remains Hermitian with G0 > 0 on the active
+quotient (Lemma 11). A limit of reals is real, so by Hypothesis 20 every support point of the
+window measure (1) is real: q(W ) = 0 for every window, and Theorem 2 gives Hn (W ) ⪰ 0:
+Hypothesis 17.
+
+Remark 22 (necessity, and what has been gained). By the rigidity of the moment problem (§9)
+any hypothesis implying Hypothesis 17 is equivalent to it; the seat is no exception, and this
+is forced — it is not a defect of the method. What has changed is the form: of the former
+obligations, (N), (W1), (W2) and (C) are now theorems (Theorem 9, Lemma 11, Theorems
+13 and 14), and the residue is one statement, bank-generated and zero-free in formulation,
+finite-dimensional on each window.
+
+
+
+
+                                                8
+9    Remaining obligations
+Theorem 18 is conditional on Hypothesis 17, and Theorem 21 reduces Hypothesis 17 to the
+seat. By the rigidity of the moment problem, any pairing whose Gram matrix reproduces the
+moments µj+k (W ) is the counting pairing of (1), so its positivity is equivalent to the conclusion;
+a proof must therefore proceed from the bank side, and the precise remaining steps are these.
+
+ (T) Contour transport (defect evaluation). Evaluate the terminal defect of Definition 19
+     in closed form,
+                                                 A′ (z)
+                                      I
+                                    1
+                       Gℓ [j, k] =       z j+k+ℓ        dz + Dℓ [j, k],
+                                   2πi Γ         A(z)
+      with Dℓ the explicit pole, Γ-factor, lateral and windowing contributions of (U5). The
+      chain of Theorem 21 does not consume (T): the defect is already defined as a difference
+      of computed objects; (T) supplies its closed form, the DC structure of the seat, and
+      computational access to Hypothesis 20 on explicit windows.
+
+ (S) The seat. Hypothesis 20: terminal seating of the warped anchor spectrum on the window
+     support. This is the single remaining hypothesis. The former obligations (N), (W) and
+     (C) are discharged: pencil neutrality by Theorem 9 with the corrected terminal state-
+     ment of Remark 15; warp covariance — bank determination, reality, injectivity, and the
+     determinant-pullback law — by Theorems 13 and 14; collisions by Lemma 11.
+
+    Granted (S), the chain runs forward: the Euler-anchored pencil is positive semidefinite un-
+conditionally (Proposition 8); its spectrum is real and is carried by the bank-generated warp
+along the transport, exactly and order-preservingly (Theorems 9, 13, 14, Lemma 11); the seat
+identifies the terminal limits with the window support; reality forces q ≡ 0 (Theorem 2); and
+Theorem 18 concludes.
+
+
+
+
+                                                 9
+

@@ -1,0 +1,634 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1.1in]{geometry}
+\usepackage[hidelinks]{hyperref}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Lam}{\Lambda}
+\DeclareMathOperator{\spec}{spec}
+\DeclareMathOperator{\rank}{rank}
+\DeclareMathOperator{\inertia}{inertia}
+\DeclareMathOperator{\ran}{ran}
+
+\title{The Gram double pencil: a spectral census for the zeros of $\zeta$,\\
+an Euler anchor, and a bank-generated warp (Version 2)}
+\author{}
+\date{2026-08-14}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We attach to each ordinate window a pair of Hankel matrices computed by
+contour integration of $\xi'/\xi$, and prove that the number of zeros off the critical
+line in the window equals the negative inertia of the first matrix (Theorem
+\ref{thm:inertia}); the remaining spectral data of the pair counts the zeros with
+multiplicity, their distinct support, and their ordinates (Theorem \ref{thm:census}).
+Both statements are unconditional. On symmetric pairs of windows, the location statement
+is equivalent to a Stieltjes-type positivity condition in the quotient chart $w=z^2$
+(Proposition \ref{prop:stieltjes}). We then construct,
+in the half plane of absolute convergence and with no reference to zeros, an
+Euler-anchored positive-definite double pencil (Proposition \ref{prop:anchor}), an
+explicit finite-dimensional regulator (Theorem \ref{thm:regulator}), and an exact
+bank-generated warp for every regular Hermitian-definite pencil path (Theorems
+\ref{thm:warp} and \ref{thm:pullback}). These finite-dimensional results do not identify
+the terminal pencil with the contour-moment pencil. That endpoint identification is
+isolated as the seating hypothesis in \S\ref{sec:seat}; the analytic defect calculation
+needed to test it is stated in \S\ref{sec:obligations}.
+\end{abstract}
+
+\section{Setup}
+
+Let $\xi$ be the completed Riemann zeta function and put
+\[
+  A(z) := \xi\!\left(\tfrac12 + iz\right),
+\]
+an entire function of order one, even ($A(-z)=A(z)$, the functional equation), real on
+$\R$, whose zeros are
+\[
+  z_\rho=-i\!\left(\rho-\tfrac12\right)
+  =\gamma_\rho+i\!\left(\tfrac12-\beta_\rho\right)
+\]
+for
+$\rho = \beta_\rho + i\gamma_\rho$ a nontrivial zero of $\zeta$; in particular
+\[
+  \rho \text{ on the critical line} \iff z_\rho \in \R .
+\]
+Nonreal zeros of $A$ occur in conjugate pairs $z,\bar z$ with equal multiplicities
+(conjugate symmetry of $\xi$ on the real axis).
+
+\begin{definition}[window moments]\label{def:moments}
+Let $W=(a,b)$ with $A$ nonvanishing on $\partial W \times \{|y|\le Y\}$, $Y>\tfrac12$,
+and let $\partial R_W$ be the positively oriented rectangle boundary. Put
+\[
+  \mu_k(W) := \frac{1}{2\pi i}\oint_{\partial R_W} z^k\,\frac{A'(z)}{A(z)}\,dz,
+  \qquad k \ge 0,
+\]
+and for $n\ge 1$,
+\[
+  H_n(W) := \bigl(\mu_{\alpha+\beta}(W)\bigr)_{\alpha,\beta=0}^{n-1},
+  \qquad
+  H_n^{(1)}(W) := \bigl(\mu_{\alpha+\beta+1}(W)\bigr)_{\alpha,\beta=0}^{n-1}.
+\]
+\end{definition}
+
+By the argument principle, with $x_1,\dots,x_r$ the distinct real zeros of $A$ in the
+window (multiplicities $a_i\ge 1$) and $z_j,\bar z_j$, $j=1,\dots,q$, the distinct
+conjugate pairs (equal multiplicities $b_j \ge 1$),
+\begin{equation}\label{eq:moments}
+  \mu_k(W) \;=\; \sum_{i=1}^r a_i x_i^k \;+\; \sum_{j=1}^q b_j\bigl(z_j^k + \bar z_j^{\,k}\bigr).
+\end{equation}
+All $\mu_k(W)$ are real and computable from $A$ alone; no knowledge of the zeros is used.
+Write $m := r + 2q$ for the number of distinct support points.
+
+\section{The inertia identity}
+
+\begin{theorem}[inertia]\label{thm:inertia}
+For every $n \ge m$,
+\[
+  \inertia H_n(W) \;=\; \bigl(r+q,\; q,\; n-r-2q\bigr),
+\]
+where $\inertia$ denotes (positive, negative, zero) eigenvalue counts. In particular
+\[
+  n_-\bigl(H_n(W)\bigr) \;=\; q,
+  \qquad\text{and}\qquad
+  H_n(W) \succeq 0 \iff q = 0,
+\]
+i.e.\ the negative inertia counts exactly the off-critical-line conjugate pairs.
+\end{theorem}
+
+\begin{proof}
+Let $v(t) := (1,t,\dots,t^{n-1})^{T}$. By \eqref{eq:moments},
+\[
+  H_n \;=\; \sum_{i=1}^r a_i\, v(x_i)v(x_i)^{T}
+  \;+\; \sum_{j=1}^q b_j\Bigl[v(z_j)v(z_j)^{T} + v(\bar z_j)v(\bar z_j)^{T}\Bigr].
+\]
+Write $v(z_j) = A_j + iB_j$ with $A_j,B_j\in\R^n$; then $v(\bar z_j)=A_j-iB_j$ and
+\begin{equation}\label{eq:minus}
+  v(z_j)v(z_j)^{T} + v(\bar z_j)v(\bar z_j)^{T}
+  \;=\; 2A_jA_j^{T} - 2B_jB_j^{T},
+\end{equation}
+the minus sign being the whole mechanism. Hence $H_n = UJU^{T}$ with
+\[
+  U = \bigl[v(x_1)\cdots v(x_r)\;A_1\,B_1\cdots A_q\,B_q\bigr],
+  \qquad
+  J = \operatorname{diag}(a_1,\dots,a_r,\,2b_1,-2b_1,\dots,2b_q,-2b_q),
+\]
+so $\inertia J = (r+q,q,0)$.
+
+$U$ has full column rank $m$: the complex matrix
+$V=[v(x_1),\dots,v(x_r),v(z_1),v(\bar z_1),\dots]$ is Vandermonde on $m$ distinct nodes
+with $n\ge m$, so its leading $m\times m$ minor equals
+$\prod_{\alpha<\beta}(s_\beta-s_\alpha)\ne 0$ and $\rank V=m$; replacing each pair
+$(v(z_j),v(\bar z_j))$ by $(A_j,B_j) = \bigl(\tfrac{v(z_j)+v(\bar z_j)}{2},
+\tfrac{v(z_j)-v(\bar z_j)}{2i}\bigr)$ is an invertible change of columns, so
+$\rank U = m$.
+
+Take a thin $QR$ factorisation $U=QR$ with $Q^{T}Q=I_m$ and $R$ invertible, and extend
+$Q$ to an orthogonal $\widetilde Q = [Q,Q_\perp]$. Then
+\[
+  \widetilde Q^{T} H_n \widetilde Q =
+  \begin{pmatrix} RJR^{T} & 0\\ 0 & 0_{n-m}\end{pmatrix},
+\]
+and by Sylvester's law of inertia $\inertia(RJR^{T}) = \inertia(J)$. The zero block
+contributes $n-m$ null directions.
+\end{proof}
+
+\begin{remark}
+The hypothesis $n \ge m$ is necessary: an off-line pair is invisible to a Hankel matrix
+smaller than the distinct support count. Since $\mu_0(W)$ is the number of zeros in $W$
+with multiplicity and $m \le \mu_0(W)$, the choice
+$n := \max\{1,\mu_0(W)\}$ is admissible and computable from the contour data alone.
+\end{remark}
+
+\begin{remark}[collisions]
+If a conjugate pair approaches $\R$, the corresponding negative eigenvalue tends to $0^-$
+and at collision becomes a null direction; the invariant through such an event is the
+inertia, not any individually ordered eigenvalue. Consequently the correct target is
+non-negativity $H_n \succeq 0$ (equivalently $n_-=0$), never strict positivity: the
+$n-m$ structural nulls and the collision nulls are expected.
+\end{remark}
+
+\section{The census, and the equivalent form of RH}
+
+\begin{theorem}[spectral census]\label{thm:census}
+Let $n \ge m$. From the spectral data of $H_n(W)$ and the value $\mu_0(W)$:
+\[
+  \mu_0 = \text{number of zeros in } W \text{ with multiplicity},\qquad
+  \rank H_n = m = r+2q,
+\]
+\[
+  n_-(H_n) = q,\qquad n_+(H_n)-n_-(H_n) = r,
+\]
+and $\mu_0 > \sum_i 1 + \sum_j 2$ (i.e.\ $\mu_0$ exceeds the distinct count) if and only
+if some zero in $W$ is multiple. Moreover, if $Q\in\R^{n\times m}$ has orthonormal
+columns spanning $\ran H_n$, then the generalized eigenvalues of the compressed pencil
+\[
+  \widehat H_1:=Q^TH_n^{(1)}Q,\qquad \widehat H_0:=Q^TH_nQ
+\]
+are exactly the support points $x_i$ and $z_j,\bar z_j$.
+\end{theorem}
+
+\begin{proof}
+The first four items are Theorem \ref{thm:inertia} together with
+$\mu_0=\sum a_i+2\sum b_j$. For the pencil statement, enumerate the complex support as
+$s_1,\ldots,s_m$ and its positive multiplicities as $d_1,\ldots,d_m$. Put
+\[
+ V=[v(s_1)\ \cdots\ v(s_m)],\qquad
+ D=\operatorname{diag}(d_1,\ldots,d_m),\qquad
+ \Sigma=\operatorname{diag}(s_1,\ldots,s_m).
+\]
+Then, with ordinary transpose (not conjugate transpose),
+\[
+ H_n=VDV^T,\qquad H_n^{(1)}=VD\Sigma V^T.
+\]
+The Vandermonde argument in Theorem \ref{thm:inertia} gives $\rank V=m$ and
+$\ran_{\C}H_n=\ran_{\C}V$. Thus $B:=Q^TV$ is invertible and
+\[
+ \det(\widehat H_1-\lambda\widehat H_0)
+ =\det(B)^2\det(D)\prod_{a=1}^m(s_a-\lambda).
+\]
+The compressed determinant is not identically zero and its roots, with multiplicity,
+are precisely the support points. Conjugate support pairs make the determinant real.
+\end{proof}
+
+\begin{proposition}[symmetric quotient chart; Stieltjes form]\label{prop:stieltjes}
+Let $0\le a<b$ and let $W^\pm$ denote the union of the two reflected ordinate windows
+$(a,b)$ and $(-b,-a)$, with boundary contours chosen away from zeros. Define
+$\mu_k(W^\pm)$ by adding the two contour integrals and set
+$\nu_k(W^\pm):=\mu_{2k}(W^\pm)$. Then the zero multiset in $W^\pm$ is invariant under
+$z\mapsto-z$, and $\nu_k$ is the moment sequence of the pushforward counting measure
+under $w=z^2$. Under this map a real zero maps to $w\ge0$, while every nonreal orbit
+produces either a nonreal conjugate pair in the $w$-plane or a negative real support
+point. Consequently, for $n$ at least the number of distinct $w$-support points,
+\[
+  \text{all zeros of } A \text{ in } W^\pm \text{ are real}
+  \iff
+  \bigl(\nu_{\alpha+\beta}\bigr) \succeq 0
+  \ \text{ and }\
+  \bigl(\nu_{\alpha+\beta+1}\bigr) \succeq 0 ,
+\]
+the finite Stieltjes condition for the pushforward measure. Hence the zero-location
+statement is equivalent to positivity of both even-moment Hankel matrices on every
+member of a symmetric paired tiling.
+\end{proposition}
+
+\begin{proof}
+The use of $W^\pm$, rather than a single generic interval, ensures that restriction to
+the window commutes with the even quotient. Pairing the terms at $z$ and $-z$ gives a
+positive integer weight at $w=z^2$. For a finite real moment sequence, positivity of
+the Hankel matrix and its shift is equivalent to support in $[0,\infty)$; the
+Vandermonde inertia argument of Theorem \ref{thm:inertia} supplies the converse directly
+at any order at least the distinct support count. Finally $z^2\in[0,\infty)$ holds
+exactly when $z\in\R$.
+\end{proof}
+
+\begin{corollary}[sign rigidity]\label{cor:rigidity}
+Let $t\mapsto A_t$ be a continuous deformation with zeros varying continuously and no
+zero crossing $\partial W$. At every parameter for which $n$ dominates the distinct
+support count,
+\[
+ q(t)=n_-(H_n(t)).
+\]
+Thus the conjugate-pair count changes exactly when the negative inertia changes, and
+such a change can occur only at a zero eigenvalue of $H_n(t)$. A tangency at zero need
+not change the count. In particular, if $H_n(t)\succeq0$ for the entire deformation,
+then $q(t)=0$ throughout. Positivity at a single parameter does not by itself propagate;
+propagation requires exclusion of a subsequent negative-inertia change.
+\end{corollary}
+
+\section{Unconditional statements}
+
+The following hold with no hypothesis.
+
+\begin{enumerate}
+\item[(U1)] For every window $W$ and $n\ge m(W)$: $q(W)=n_-\bigl(H_n(W)\bigr)$; the
+off-critical-line pair count of a window is the negative inertia of a matrix computed by
+contour integration of $A'/A$.
+\item[(U2)] The census of Theorem \ref{thm:census} holds as stated.
+\item[(U3)] The zero-location statement is equivalent to the Stieltjes condition of
+Proposition \ref{prop:stieltjes} on every member of a symmetric paired tiling.
+\item[(U4)] For every window contained in the numerically verified range
+($|t|\le 3\cdot 10^{12}$ by the rigorous interval computation of Platt and
+Trudgian~\cite{PlattTrudgian2021}), $q(W)=0$ and hence
+$H_n(W)\succeq 0$: the positivity hypothesis is an established fact on an initial
+segment of the tiling.
+\item[(U5)] With $Y>\tfrac12$ and the convention
+$A(z)=\xi(\tfrac12+iz)$, the bottom edge of $\partial R_W$ lies in the half plane of
+absolute convergence and the top edge maps there by the functional equation, giving a
+decomposition $H_n = H^{\mathrm{pr}} + H^{\mathrm{arch}} + H^{\mathrm{side}}$ into blocks
+computable from Dirichlet data, $\Gamma$-factors and the lateral edges respectively; in a
+tiling, adjacent lateral contributions cancel pairwise.
+\end{enumerate}
+
+\section{The Euler-anchored pencil and its regulator}
+
+Nothing in this section refers to zeros; the dependency order is
+\[
+  \text{Euler/FE bank}\;\to\;(G_1,G_0)\;\to\;\text{real spectrum}\;\to\;
+  \text{contour transport}\;\to\;\text{residues}\;\to\;\text{zeros},
+\]
+and no step may be inverted.
+
+\begin{proposition}[Euler anchor]\label{prop:anchor}
+Fix $s_0>1$ and $N\ge1$, and set
+\[
+  G_\ell[j,k] \;:=\; \sum_{n\ge2} \Lam(n)\,n^{-s_0}\,(\log n)^{\,j+k+\ell},
+  \qquad 0\le j,k<N,\quad \ell\in\{0,1\}.
+\]
+The series converge absolutely, and $G_0,G_1$ are the Hankel matrices of the positive
+measure $\sum_n \Lam(n)n^{-s_0}\delta_{\log n}$ supported on infinitely many points of
+$[\log 2,\infty)$. Hence
+\[
+  G_0 > 0,\qquad G_1 > 0,
+\]
+and $\spec(G_1,G_0)\subset[\log2,\infty)$ consists of the Gauss quadrature nodes of that
+measure.
+\end{proposition}
+
+\begin{proof}
+Absolute convergence for $s_0>1$ is standard. Positivity is the Hamburger/Stieltjes
+criterion for a positive measure on $[\log2,\infty)$: for $c\in\R^N$ and
+$P(x)=\sum_j c_jx^j$, $c^{T}G_0c=\int P^2\,d\sigma\ge0$ and
+$c^{T}G_1c=\int xP^2\,d\sigma\ge0$. If $c\ne0$, the polynomial $P$ has only finitely
+many roots, whereas the prime-power logarithms in the support are infinite; both
+integrals are therefore strictly positive.
+\end{proof}
+
+\begin{theorem}[finite-dimensional reverb regulator]\label{thm:regulator}
+Let $t\mapsto (G_0(t),G_1(t))$ be a smooth family with $G_0(t)>0$ on the active quotient,
+and set $S(t):=G_0^{-1/2}G_1G_0^{-1/2}$, so $S=S^{*}$ and
+$\spec S=\spec(G_1,G_0)$. Suppose the active dimension is $d$, the spectrum of
+$S(t_0)$ is simple, with spectral projections $P_a$ and unit eigenvectors $v_a$
+($1\le a\le d$), and the transport has exactly $d$ scalar control channels,
+\[
+  \dot S \;=\; F(u) \;=\; F_0 + \sum_{r=1}^{d} u_r F_r ,
+  \qquad F_r = F_r^{*}.
+\]
+Define the square response matrix $M\in\R^{d\times d}$ by
+$M_{ar}:=\langle v_a,F_rv_a\rangle$ and put
+$b_a:=-\langle v_a,F_0v_a\rangle$.
+If $\det M \ne 0$, then $u := M^{-1}b$ is the unique control with
+$\Delta\bigl(F(u)\bigr):=\sum_a P_aF(u)P_a = 0$, and with
+\[
+  K := \sum_{a\ne b}\frac{P_aF(u)P_b}{\lambda_a-\lambda_b},
+  \qquad K^{*}=-K,
+\]
+one has $\dot S = [S,K]$. Consequently $S(t)=U(t)S(t_0)U(t)^{*}$ with $\dot U=-KU$,
+$U$ unitary, and
+\[
+  \spec S(t) \;=\; \spec S(t_0)\quad\text{exactly.}
+\]
+In particular the transported pencil remains Hermitian-definite and its generalized
+spectrum remains real.
+\end{theorem}
+
+\begin{proof}
+First-order perturbation theory gives $\dot\lambda_a=\langle v_a,F v_a\rangle$, so
+$\Delta(F)$ is precisely the component of the flow able to move eigenvalues; the linear
+system $Mu=b$ expresses $\Delta(F(u))=0$ and is uniquely solvable iff $\det M\ne0$.
+For such $u$, using $\sum_aP_a=I$,
+\[
+  [S,K]=\sum_{a\ne b}(\lambda_a-\lambda_b)\frac{P_aF(u)P_b}{\lambda_a-\lambda_b}
+  =\sum_{a\ne b}P_aF(u)P_b=F(u)-\Delta(F(u))=F(u)=\dot S .
+\]
+$K^{*}=-K$ since $F(u)^{*}=F(u)$ and the denominators are real and antisymmetric in
+$(a,b)$. The solution of $\dot U=-KU$, $U(t_0)=I$, is unitary, and
+$\frac{d}{dt}\bigl(U^{*}SU\bigr)=U^{*}\bigl(\dot S-[S,K]\bigr)U=0$.
+\end{proof}
+
+\begin{remark}[numerical verification]
+For the Euler anchor of Proposition \ref{prop:anchor} with $s_0=1.5$, $N=4$, control
+channels given by reweighting the prime channels $p\in\{2,3,5,7\}$ and raw flow
+$F_0=\partial_{s_0}S$: the spectrum is simple $(0.9619,2.7211,5.6399,8.8009)$,
+$\det M=-0.128$ with $\rank M=4$ and condition number $3.4\cdot10^{2}$; the solved
+control annihilates all diagonal drifts to $10^{-12}$, and
+$\|[S,K]-(F-\Delta(F))\|=1.3\cdot10^{-11}$ with $\|K+K^{T}\|=1.7\cdot10^{-13}$.
+\end{remark}
+
+\begin{lemma}[block regulator at a degenerate spectrum]\label{lem:block}
+Let $S=S^{*}$ have distinct eigenvalues $\Lambda_\alpha$ with spectral projections
+$P_\alpha$ of arbitrary finite multiplicities, and let the flow be controlled as in
+Theorem \ref{thm:regulator}, $\dot S=F(u)=F_0+\sum_ru_rF_r$, $F_r=F_r^{*}$. With
+\[
+  \Delta(F):=\sum_\alpha P_\alpha FP_\alpha,
+  \qquad
+  K:=\sum_{\alpha\ne\beta}\frac{P_\alpha FP_\beta}{\Lambda_\alpha-\Lambda_\beta},
+\]
+one has $[S,K]=F-\Delta(F)$ and $K^{*}=-K$. To first order the group $\Lambda_\alpha$
+splits by the spectrum of the compression $P_\alpha FP_\alpha$; hence the regulated
+condition is the block equation $P_\alpha F(u)P_\alpha=0$ for all $\alpha$, a linear
+system in $u$ generalizing $Mu=b$. Whenever that block system is solvable on an interval
+of fixed active dimension, the flow $\dot S=[S,K]$ is isospectral with multiplicities.
+\end{lemma}
+
+\begin{proof}
+$SP_\alpha=\Lambda_\alpha P_\alpha$ and $\sum_\alpha P_\alpha=I$ give
+\[
+  [S,K]=\sum_{\alpha\ne\beta}(\Lambda_\alpha-\Lambda_\beta)
+  \frac{P_\alpha FP_\beta}{\Lambda_\alpha-\Lambda_\beta}
+  =F-\Delta(F),
+\]
+and $K^{*}=-K$ since $F^{*}=F$ and the real denominators are antisymmetric in
+$(\alpha,\beta)$. The first-order motion of a degenerate group is degenerate
+perturbation theory: the group splits by the eigenvalues of $P_\alpha FP_\alpha$,
+which vanish identically iff the block equation holds; the condition is linear in
+$u$, and on solution intervals the Lax argument of Theorem \ref{thm:regulator} is
+unchanged.
+\end{proof}
+
+\begin{remark}[scope at singular events]
+Lemma \ref{lem:block} handles eigenvalue multiplicity for a fixed-dimensional Hermitian
+matrix. It does not by itself cross a rank drop of $G_0$, prove solvability of the block
+response system, or extend the scalar interpolation warp through merging nodes. Those
+three assertions require separate continuation data and are retained explicitly in the
+terminal seating statement below.
+\end{remark}
+
+\section{Warp covariance: the bank-generated readout}\label{sec:warp}
+
+Theorem \ref{thm:regulator} fixes the abstract spectrum $\{\lambda_a\}$ of the regulated
+flow; the same transport, unregulated, moves it. The first chart makes reality manifest,
+the second carries the physical ordinates, and the map between them --- the warp --- is
+not a hypothesis to be assumed but an object the bank constructs. Throughout this
+section $t\mapsto(G_0(t),G_1(t))$ is a given smooth transport of the continued jet pair, whose
+inputs are values and derivatives of the continued logarithmic derivative along the path
+--- function data; no zero location enters --- and the parameter interval is
+\emph{regular}: $G_0(t)>0$ on the active quotient and $\spec S_t$ simple, where
+$S_t:=G_0^{-1/2}G_1G_0^{-1/2}$. Theorems \ref{thm:warp} and \ref{thm:pullback}
+apply on such regular intervals. Their hypotheses do not assert existence of the full
+path, positivity of $G_0$ along it, or gluing through collision and rank-drop events.
+
+\begin{definition}[bank velocity field; warp]\label{def:warp}
+Let $\lambda_1(t)<\dots<\lambda_n(t)$ be the eigenvalues of $S_t$, realized as the
+generalized eigenpairs $G_1w_a=\lambda_aG_0w_a$ normalized by $w_a^{T}G_0w_a=1$, and set
+\[
+  d_a(t) := w_a^{T}\bigl(\dot G_1-\lambda_a\dot G_0\bigr)w_a
+  \qquad\bigl(=\langle v_a,\dot S_t\,v_a\rangle,\ v_a=G_0^{1/2}w_a\bigr).
+\]
+Let $V_t$ be the unique real polynomial of degree $\le n-1$ with
+$V_t(\lambda_a(t))=d_a(t)$, and let the \emph{warp} $\varphi_t$ be the flow of the
+scalar equation $\dot x=V_t(x)$, $\varphi_0=\mathrm{id}$.
+\end{definition}
+
+\begin{theorem}[warp existence and exact covariance]\label{thm:warp}
+On every regular interval the warp is defined on a neighborhood of
+$[\lambda_1(0),\lambda_n(0)]$ and satisfies:
+\begin{enumerate}
+\item[(i)] \textbf{bank determination:} $V_t$, hence $\varphi_t$, is computed from
+$(G_0,G_1)(t)$ and $(\dot G_0,\dot G_1)(t)$ alone;
+\item[(ii)] \textbf{reality and order:} $\varphi_t(\R\cap\mathrm{dom})\subseteq\R$ and
+$x\mapsto\varphi_t(x)$ is strictly increasing, in particular injective;
+\item[(iii)] \textbf{exact covariance:} $\varphi_t(\lambda_a(0))=\lambda_a(t)$ for
+every $a$ and every $t$ in the interval.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) is the construction. For (ii): $V_t$ has real coefficients --- real nodes, real
+diagonal drifts of a Hermitian family --- so the flow preserves $\R$; the field is
+polynomial in $x$ with coefficients continuous in $t$, hence locally Lipschitz in $x$
+uniformly on compact $t$-intervals, so distinct scalar characteristics never cross and
+$\varphi_t$ is strictly increasing where defined. For (iii): first-order perturbation
+theory for the Hermitian-definite pencil gives
+$\dot\lambda_a=w_a^{T}(\dot G_1-\lambda_a\dot G_0)w_a=d_a(t)=V_t(\lambda_a(t))$, so the
+eigenvalue path $t\mapsto\lambda_a(t)$ solves the initial-value problem defining
+$\varphi_t(\lambda_a(0))$, and uniqueness makes them equal. Existence: the node
+characteristics are the globally defined eigenvalue paths; a point between consecutive
+nodes is trapped between two of them by (ii); and continuous dependence on initial
+conditions extends the flow to a neighborhood of the compact hull for the same times.
+\end{proof}
+
+\begin{theorem}[determinant pullback]\label{thm:pullback}
+Let $p_t(x):=\det(S_t-xI)$, and let $I$ be an open real interval containing the
+time-$0$ active spectrum on which the warp is defined. Then on $\varphi_t(I)$,
+\[
+  p_t \;=\; J_t\cdot\bigl(p_0\circ\varphi_t^{-1}\bigr),
+\]
+with $J_t$ continuous and nonvanishing; consequently
+\[
+  Z(p_t)\cap\varphi_t(I)\;=\;\varphi_t\bigl(\spec S_0\bigr)\;\subset\;\R .
+\]
+\end{theorem}
+
+\begin{proof}
+The field is polynomial in $x$, so $\varphi_t$ is a strictly increasing $C^1$
+diffeomorphism of $I$ onto $\varphi_t(I)$. On $\varphi_t(I)$ the functions $p_t$ and
+$p_0\circ\varphi_t^{-1}$ have the same zero set
+$\{\varphi_t(\lambda_a(0))\}_a=\{\lambda_a(t)\}_a$ (covariance and injectivity,
+Theorem \ref{thm:warp}), each zero simple (simple spectrum on a regular interval). The
+ratio $J_t:=p_t/(p_0\circ\varphi_t^{-1})$ is continuous and nonvanishing off the common
+zeros and extends across each with the nonzero limit
+$p_t'(\lambda_a(t))\big/\bigl(p_0\circ\varphi_t^{-1}\bigr)'(\lambda_a(t))$.
+\end{proof}
+
+\begin{remark}[the two spectral charts]\label{rem:architectures}
+The regulated and unregulated flows describe one transport in two charts: labels frozen
+with a moving readout, or a moving spectrum read through the identity; by Theorem
+\ref{thm:warp} their relation is $\varphi_t$. A constant-factor identity written with
+one spectral variable cannot express this change of chart unless the two root multisets
+already coincide. Moreover, when $n>m$, the full window determinant
+$\det(H_n^{(1)}-\lambda H_n)$ vanishes identically because of the structural nullspace.
+The correct finite determinant is the compressed determinant of Theorem
+\ref{thm:census}; on every regular path its root motion is expressed by the pullback
+identity of Theorem \ref{thm:pullback}.
+\end{remark}
+
+\begin{remark}[numerical verification]
+On the convergent segment ($s_0\colon1.5\to1.2$, $N=4$, exact jets of $-\zeta'/\zeta$;
+\texttt{tmp/att201\_warp\_probe.py}): the perturbation drift matches finite differences
+of the eigenvalue paths to $8.9\cdot10^{-8}$. The interpolated flow carries
+\[
+ (1.1916,\,4.0395,\,9.6214,\,19.3384)
+ \longmapsto
+ (2.1714,\,9.2832,\,23.2371,\,47.5293)
+\]
+with maximal error $1.9\cdot10^{-10}$; an
+interior test point remains strictly interior. The exact-jet anchor nodes differ from
+those quoted after Theorem \ref{thm:regulator}, which realize the truncated prime sum at
+finite cutoff; the two banks are distinct legitimate realizations, and the drift between
+them is the truncation observation of the ledger.
+\end{remark}
+
+\section{The conditional theorem}
+
+\begin{hypothesis}[$\mathrm{PSD}$]\label{hyp:psd}
+For every window $W$ of a tiling of $\R$ and
+$n=\max\{1,\mu_0(W)\}$, $H_n(W)\succeq0$. Equivalently, on every symmetric paired
+window, both Hankel matrices of the even moments are positive semidefinite in the
+quotient chart of Proposition \ref{prop:stieltjes}.
+\end{hypothesis}
+
+\begin{theorem}\label{thm:main}
+Assume Hypothesis \ref{hyp:psd}. Then
+\begin{enumerate}
+\item every nontrivial zero of $\zeta$ lies on the critical line;
+\item for each window the spectral data of $H_n(W)$ returns the full census of Theorem
+\ref{thm:census}, with $n_-\equiv0$;
+\item the zeros are the real generalized eigenvalues of the compressed, explicitly
+computed symmetric pencils $(\widehat H_1(W),\widehat H_0(W))$ of Theorem
+\ref{thm:census}.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+By Theorem \ref{thm:inertia}, $H_n(W)\succeq0$ with $n\ge m(W)$ forces $q(W)=0$: no
+conjugate pair of zeros of $A$ lies in $W$. Nonreal zeros occur in conjugate pairs with
+equal real part, hence both members lie in the same window of the tiling (for a pair on a
+boundary, apply the argument to a shifted tiling). Every nontrivial zero of $\zeta$
+corresponds to a zero of $A$ lying in some window, and only finitely many per window by
+Riemann--von Mangoldt. Hence all zeros of $A$ are real, i.e.\ all nontrivial zeros of
+$\zeta$ have real part $\tfrac12$. Items (2) and (3) are Theorem \ref{thm:census}; under
+Hypothesis \ref{hyp:psd}, $\widehat H_0>0$ and $\widehat H_1$ is real symmetric.
+\end{proof}
+
+\section{The seat: endpoint identification}\label{sec:seat}
+
+\begin{definition}[compressed terminal defect]\label{def:defect}
+Fix a window $W$, let $m=\rank H_n(W)$, and choose
+$Q_W\in\R^{n\times m}$ with orthonormal columns spanning $\ran H_n(W)$. Write
+\[
+ \widehat H_0:=Q_W^TH_n(W)Q_W,
+ \qquad
+ \widehat H_1:=Q_W^TH_n^{(1)}(W)Q_W.
+\]
+For a transported bank pencil whose terminal active dimension is $m$, identify its
+terminal active coordinates with those of $Q_W$ and define
+\[
+ D_0:=G_0(1)-\widehat H_0,
+ \qquad
+ D_1:=G_1(1)-\widehat H_1.
+\]
+Both terms in each difference are obtained from function data: continued logarithmic-
+derivative jets on the bank side and contour integrals of $A'/A$ on the window side.
+No full $n\times n$ determinant is used; when $n>m$ that determinant contains a common
+structural nullspace and is identically zero as a polynomial in the spectral parameter.
+\end{definition}
+
+\begin{hypothesis}[terminal seating $(\mathrm{S})$]\label{hyp:seat}
+For every window $W$ there is a bank-generated transport from an Euler anchor to the
+window chart, decomposed into finitely many regular intervals, with the following
+properties:
+\begin{enumerate}
+\item on each regular interval $G_0>0$ on the active quotient and Theorem
+\ref{thm:warp} supplies the real, order-preserving warp;
+\item at every collision or rank change, the adjacent active spectra and warps admit
+compatible continuous multiset limits;
+\item the terminal multiset of those limits equals
+$\spec(\widehat H_1,\widehat H_0)$.
+\end{enumerate}
+Every object used to construct the path and the transition data is required to come
+from Euler, functional-equation, jet, contour, and registration data, without inserting
+the support points as interpolation targets.
+\end{hypothesis}
+
+\begin{theorem}[the conditional chain]\label{thm:chain}
+Hypothesis \ref{hyp:seat} implies Hypothesis \ref{hyp:psd}, and therefore implies all
+three conclusions of Theorem \ref{thm:main}.
+\end{theorem}
+
+\begin{proof}
+On each regular interval the generalized eigenvalues are real because $G_0>0$ and
+$G_1$ is real symmetric; equivalently, Theorem \ref{thm:warp} carries the real anchor
+spectrum by a real map. The transition clause of Hypothesis \ref{hyp:seat} preserves
+reality under multiset limits. Its terminal clause therefore makes every root of the
+compressed determinant
+$\det(\widehat H_1-\lambda\widehat H_0)$ real. By Theorem \ref{thm:census}, these roots
+are exactly the zero support in $W$, so $q(W)=0$. Theorem \ref{thm:inertia} now gives
+$H_n(W)\succeq0$ for every window, which is Hypothesis \ref{hyp:psd}.
+\end{proof}
+
+\begin{remark}[what the warp theorem proves]
+Theorems \ref{thm:warp} and \ref{thm:pullback} prove an exact covariance statement for
+every specified regular Hermitian-definite path. They do not prove the existence of a
+path reaching the contour-moment pencil, continued positivity of $G_0$, compatibility
+at singular events, or terminal equality with the compressed window spectrum. Those
+claims are precisely the content of Hypothesis \ref{hyp:seat}; coordinate covariance
+alone is not endpoint identification.
+\end{remark}
+
+\section{Remaining analytic obligation}\label{sec:obligations}
+
+The endpoint comparison is to be performed on the compressed active pencils. Its
+computable entrywise form is the following defect evaluation:
+\[
+  G_\ell[j,k]
+  =\frac{1}{2\pi i}\oint_\Gamma
+    z^{\,j+k+\ell}\frac{A'(z)}{A(z)}\,dz
+   +D_\ell[j,k],
+  \qquad \ell\in\{0,1\},
+\]
+where $D_\ell$ must be derived explicitly from the pole, $\Gamma$-factor, lateral-edge,
+windowing, and coordinate-compression terms. On $s_0>1$, the pole contribution has
+moments $k!/(s_0-1)^{k+1}$, the moments of
+$e^{-(s_0-1)x}\,dx$ on $[0,\infty)$, and is positive semidefinite. The signs and spectral
+effect of the remaining blocks must be retained rather than absorbed into a constant
+factor.
+
+Once this identity and the event-gluing data establish Hypothesis \ref{hyp:seat},
+Theorem \ref{thm:chain} applies. Until then, the unconditional results are the inertia
+identity, the compressed spectral census, Euler-anchor positivity, the regulator under
+its stated response hypotheses, and regular-interval warp covariance.
+
+\begin{thebibliography}{9}
+\bibitem{PlattTrudgian2021}
+D. Platt and T. Trudgian,
+\emph{The Riemann hypothesis is true up to $3\cdot10^{12}$},
+Bulletin of the London Mathematical Society \textbf{53} (2021), 792--797,
+\href{https://doi.org/10.1112/blms.12460}{doi:10.1112/blms.12460}.
+\end{thebibliography}
+
+\end{document}

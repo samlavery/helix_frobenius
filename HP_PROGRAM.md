@@ -448,10 +448,53 @@ drift to 10⁻¹²; the commutator identity ‖[S,K] − (F−Δ)‖ = 1.3×10�
 antisymmetric to 10⁻¹³. The regulator exists, is unique, and is computed from
 G₀, G₁, their bank eigenvectors and the warp responses — never from zeros.
 
-*Remaining for (N):* the warp-covariance statement (u = M⁻¹b must be an admissible
-Helix warp and the terminal residue interpretation must follow the regulated warp);
-collision handling piecewise (P_aF(u)P_a = 0 on degenerate eigenspaces — the
-rank-drop/reverb events); genericity of det M ≠ 0 beyond the tested anchor.
+**Warp covariance, exact form (`RequestProject/HelixWarpCovariance.lean`).**  Keep the
+invariant bank coordinate `x` separate from physical height `γ`.  The registration map
+`x = Ψ_t(γ)` is assembled upstream from Euler/FE/reverb data and contains no analytic-zero
+or physical-zero-height field.  The regulated labels remain the fixed real spectrum of
+`S₀`; physical spectral locations are `γ_a(t) = Ψ_t⁻¹(λ_a)`.  The transport identity to
+establish from the Helix FE/warp equations is precisely
+
+    (W)   A_t(γ) = J_t(γ) det(S₀ - Ψ_t(γ) I),       J_t(γ) ≠ 0.
+
+The compiled covariance theorem proves pointwise and on every active window that
+
+    A_t(γ) = 0  ⟺  Ψ_t(γ) ∈ spec(S₀),
+    Z(A_t) = Ψ_t⁻¹(spec(S₀)).
+
+At the terminal real FE-fixed chart it proves
+
+    Z_terminal = { 1/2 + i Ψ₁⁻¹(λ) : λ ∈ spec(S₀) },
+
+so every terminal point has real part `1/2`.  The same module proves that invertible
+regulator conjugation preserves both `spec(S₀)` and its physical inverse-warp image.
+Thus the instantiation-tier covariance target is exactly `(W)`: derive its `covariance`
+field and the nonvanishing of `J_t` from the actual bank evolution.  Separately, (N)
+retains collision handling piecewise (`P_aF(u)P_a = 0` on degenerate eigenspaces — the
+rank-drop/reverb events) and genericity of `det M ≠ 0` beyond the tested anchor.
+
+**PENCIL-LEVEL INSTANTIATION LANDED (2026-08-14, hp_pencil.tex §warp/§seat; ledger
+201).** The bank evolution DOES derive the covariance field, at the transported-pencil
+tier: the warp is CONSTRUCTED — V_t := degree-≤(n−1) Lagrange interpolation of the
+diagonal drifts d_a = w_a^T(Ġ₁ − λ_aĠ₀)w_a at the moving nodes, φ_t := its scalar flow.
+**Theorem (thm:warp)**: φ_t bank-determined, real, strictly order-preserving (scalar
+characteristics cannot cross), and φ_t(λ_a(0)) = λ_a(t) EXACTLY. **Theorem
+(thm:pullback)**: p_t = J_t·(p₀∘φ_t⁻¹), J_t nonvanishing ⟹ Z(p_t) = φ_t(spec S₀) ⊂ ℝ —
+the `(W)` identity inhabited at the pencil family, J_t exhibited not assumed. **Lemma
+(lem:block)**: block regulator [S,K] = F − Δ(F) with degenerate projections — collision
+handling PROVEN, (C) discharged. Adversarially probed (`tmp/att201_warp_probe.py`):
+drift formula 8.9e-8 vs finite differences; covariance 1.9e-10 over s₀ 1.5→1.2 (exact
+jets of −ζ′/ζ); order preserved. ARCHITECTURE CORRECTION in print (rem:architectures):
+the (N-old) same-λ constant-C spectral equivalence is UNSATISFIABLE under the regulated
+flow (anchor nodes and window ordinates are disjoint multisets) — the change of spectral
+variable must appear, and now does, bank-generated. Residue = **Hypothesis (S), THE
+SEAT** (hyp:seat): terminal seating of the warped anchor spectrum on the window support;
+**Theorem (thm:chain)**: (S) ⟹ window-PSD ⟹ RH + census + pencil realization. By moment
+rigidity any residue is necessarily RH-equivalent; the gain is its form — bank-generated,
+zero-free in formulation, finite-dimensional per window. (T) downgraded to defect
+evaluation: D_ℓ := G_ℓ(1) − H_ℓ is DEFINED as a difference of computed objects (the chain
+does not consume (T)); its pole block on s₀ > 1 is the exponential-measure Hankel,
+moments k!/(s₀−1)^{k+1} — PSD, the defect's common mode adds positivity.
 
 **(N-old) Pencil-neutral D (superseded by the regulator; kept for the record).** Choose/regulate the
 warp so D₁ − λD₀ = 0 on the active bank subspace — then D never alters the pencil

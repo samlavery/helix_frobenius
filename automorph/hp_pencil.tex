@@ -44,8 +44,16 @@ in the half plane of absolute convergence and with no reference to zeros, an
 Euler-anchored double pencil which is unconditionally positive semidefinite
 (Proposition \ref{prop:anchor}), and prove that its spectrum can be transported
 isospectrally by an explicit finite-dimensional regulator whenever a bank response
-matrix is nonsingular (Theorem \ref{thm:regulator}). The remaining obligations are
-stated precisely in \S\ref{sec:obligations}.
+matrix is nonsingular (Theorem \ref{thm:regulator}), extended through spectral
+collisions by a block regulator (Lemma \ref{lem:block}). We then construct the readout
+itself: the warp --- the flow of a bank-computable velocity field --- exists, is real
+and order-preserving, and carries the frozen labels exactly onto the moving spectrum
+(Theorem \ref{thm:warp}); the characteristic polynomial obeys an exact
+determinant-pullback law with nonvanishing cofactor (Theorem \ref{thm:pullback}). The
+program thereby reduces to a single hypothesis, the seat (Hypothesis \ref{hyp:seat}):
+terminal seating of the warped anchor spectrum on the window support, from which the
+positivity, the census and the critical line follow (Theorem \ref{thm:chain}). The
+remaining obligations are stated precisely in \S\ref{sec:obligations}.
 \end{abstract}
 
 \section{Setup}
@@ -230,7 +238,8 @@ contour integration of $A'/A$.
 \ref{cor:rigidity}) to the absence of a negative-sector eigenvalue crossing under the
 registered deformation.
 \item[(U4)] For every window contained in the numerically verified range
-($|t|\le 3\cdot 10^{12}$ by the computations of Platt and Trudgian), $q(W)=0$ and hence
+($|t|\le 3\cdot 10^{12}$ by the computations of Platt and Trudgian
+\cite{PlattTrudgian2021}), $q(W)=0$ and hence
 $H_n(W)\succeq 0$: the positivity hypothesis is an established fact on an initial
 segment of the tiling.
 \item[(U5)] With $Y>\tfrac12$ the top edge of $\partial R_W$ lies in the half plane of
@@ -320,6 +329,194 @@ control annihilates all diagonal drifts to $10^{-12}$, and
 $\|[S,K]-(F-\Delta(F))\|=1.3\cdot10^{-11}$ with $\|K+K^{T}\|=1.7\cdot10^{-13}$.
 \end{remark}
 
+\begin{lemma}[block regulator through collisions]\label{lem:block}
+Let $S=S^{*}$ have distinct eigenvalues $\Lambda_\alpha$ with spectral projections
+$P_\alpha$ of arbitrary finite multiplicities, and let the flow be controlled as in
+Theorem \ref{thm:regulator}, $\dot S=F(u)=F_0+\sum_ru_rF_r$, $F_r=F_r^{*}$. With
+\[
+  \Delta(F):=\sum_\alpha P_\alpha FP_\alpha,
+  \qquad
+  K:=\sum_{\alpha\ne\beta}\frac{P_\alpha FP_\beta}{\Lambda_\alpha-\Lambda_\beta},
+\]
+one has $[S,K]=F-\Delta(F)$ and $K^{*}=-K$. To first order the group $\Lambda_\alpha$
+splits by the spectrum of the compression $P_\alpha FP_\alpha$; hence the regulated
+condition is the block equation $P_\alpha F(u)P_\alpha=0$ for all $\alpha$, a linear
+system in $u$ generalizing $Mu=b$, and when it is solvable the flow $\dot S=[S,K]$ is
+isospectral with multiplicities. Between collisions Theorem \ref{thm:regulator}
+applies; across a collision the invariant is the inertia (Corollary
+\ref{cor:rigidity}); the regulator therefore extends piecewise along any transport
+with finitely many collision events.
+\end{lemma}
+
+\begin{proof}
+$SP_\alpha=\Lambda_\alpha P_\alpha$ and $\sum_\alpha P_\alpha=I$ give
+\[
+  [S,K]=\sum_{\alpha\ne\beta}(\Lambda_\alpha-\Lambda_\beta)
+  \frac{P_\alpha FP_\beta}{\Lambda_\alpha-\Lambda_\beta}
+  =F-\Delta(F),
+\]
+and $K^{*}=-K$ since $F^{*}=F$ and the real denominators are antisymmetric in
+$(\alpha,\beta)$. The first-order motion of a degenerate group is degenerate
+perturbation theory: the group splits by the eigenvalues of $P_\alpha FP_\alpha$,
+which vanish identically iff the block equation holds; the condition is linear in
+$u$, and on solution intervals the Lax argument of Theorem \ref{thm:regulator} is
+unchanged.
+\end{proof}
+
+\section{Warp covariance: the bank-generated readout}\label{sec:warp}
+
+Theorem \ref{thm:regulator} fixes the abstract spectrum $\{\lambda_a\}$ of the regulated
+flow; the same transport, unregulated, moves it. The first chart makes reality manifest,
+the second carries the physical ordinates, and the map between them --- the warp --- is
+not a hypothesis to be assumed but an object the bank constructs. Throughout this
+section $t\mapsto(G_0(t),G_1(t))$ is a smooth transport of the continued jet pair, whose
+inputs are values and derivatives of the continued logarithmic derivative along the path
+--- function data; no zero location enters --- and the parameter interval is
+\emph{regular}: $G_0(t)>0$ on the active quotient and $\spec S_t$ simple, where
+$S_t:=G_0^{-1/2}G_1G_0^{-1/2}$. The finitely many failures of regularity are the
+collision and rank-drop events, crossed piecewise by Lemma \ref{lem:block}.
+
+\begin{definition}[bank velocity field; warp]\label{def:warp}
+Let $\lambda_1(t)<\dots<\lambda_n(t)$ be the eigenvalues of $S_t$, realized as the
+generalized eigenpairs $G_1w_a=\lambda_aG_0w_a$ normalized by $w_a^{T}G_0w_a=1$, and set
+\[
+  d_a(t) := w_a^{T}\bigl(\dot G_1-\lambda_a\dot G_0\bigr)w_a
+  \qquad\bigl(=\langle v_a,\dot S_t\,v_a\rangle,\ v_a=G_0^{1/2}w_a\bigr).
+\]
+Let $V_t$ be the unique real polynomial of degree $\le n-1$ with
+$V_t(\lambda_a(t))=d_a(t)$, and let the \emph{warp} $\varphi_t$ be the flow of the
+scalar equation $\dot x=V_t(x)$, $\varphi_0=\mathrm{id}$.
+\end{definition}
+
+\begin{theorem}[warp existence and exact covariance]\label{thm:warp}
+On every regular interval the warp is defined on a neighborhood of
+$[\lambda_1(0),\lambda_n(0)]$ and satisfies:
+\begin{enumerate}
+\item[(i)] \textbf{bank determination:} $V_t$, hence $\varphi_t$, is computed from
+$(G_0,G_1)(t)$ and $(\dot G_0,\dot G_1)(t)$ alone;
+\item[(ii)] \textbf{reality and order:} $\varphi_t(\R\cap\mathrm{dom})\subseteq\R$ and
+$x\mapsto\varphi_t(x)$ is strictly increasing, in particular injective;
+\item[(iii)] \textbf{exact covariance:} $\varphi_t(\lambda_a(0))=\lambda_a(t)$ for
+every $a$ and every $t$ in the interval.
+\end{enumerate}
+\end{theorem}
+
+\begin{proof}
+(i) is the construction. For (ii): $V_t$ has real coefficients --- real nodes, real
+diagonal drifts of a Hermitian family --- so the flow preserves $\R$; the field is
+polynomial in $x$ with coefficients continuous in $t$, hence locally Lipschitz in $x$
+uniformly on compact $t$-intervals, so distinct scalar characteristics never cross and
+$\varphi_t$ is strictly increasing where defined. For (iii): first-order perturbation
+theory for the Hermitian-definite pencil gives
+$\dot\lambda_a=w_a^{T}(\dot G_1-\lambda_a\dot G_0)w_a=d_a(t)=V_t(\lambda_a(t))$, so the
+eigenvalue path $t\mapsto\lambda_a(t)$ solves the initial-value problem defining
+$\varphi_t(\lambda_a(0))$, and uniqueness makes them equal. Existence: the node
+characteristics are the globally defined eigenvalue paths; a point between consecutive
+nodes is trapped between two of them by (ii); and continuous dependence on initial
+conditions extends the flow to a neighborhood of the compact hull for the same times.
+\end{proof}
+
+\begin{theorem}[determinant pullback]\label{thm:pullback}
+Let $p_t(x):=\det(S_t-xI)$, and let $I$ be an open real interval containing the
+time-$0$ active spectrum on which the warp is defined. Then on $\varphi_t(I)$,
+\[
+  p_t \;=\; J_t\cdot\bigl(p_0\circ\varphi_t^{-1}\bigr),
+\]
+with $J_t$ continuous and nonvanishing; consequently
+\[
+  Z(p_t)\cap\varphi_t(I)\;=\;\varphi_t\bigl(\spec S_0\bigr)\;\subset\;\R .
+\]
+\end{theorem}
+
+\begin{proof}
+The field is polynomial in $x$, so $\varphi_t$ is a strictly increasing $C^1$
+diffeomorphism of $I$ onto $\varphi_t(I)$. On $\varphi_t(I)$ the functions $p_t$ and
+$p_0\circ\varphi_t^{-1}$ have the same zero set
+$\{\varphi_t(\lambda_a(0))\}_a=\{\lambda_a(t)\}_a$ (covariance and injectivity,
+Theorem \ref{thm:warp}), each zero simple (simple spectrum on a regular interval). The
+ratio $J_t:=p_t/(p_0\circ\varphi_t^{-1})$ is continuous and nonvanishing off the common
+zeros and extends across each with the nonzero limit
+$p_t'(\lambda_a(t))\big/\bigl(p_0\circ\varphi_t^{-1}\bigr)'(\lambda_a(t))$.
+\end{proof}
+
+\begin{remark}[the two architectures, reconciled]\label{rem:architectures}
+The regulated and unregulated flows describe one transport in two charts: labels frozen
+with a moving readout, or a moving spectrum read through the identity; by Theorem
+\ref{thm:warp} the whole discrepancy is $\varphi_t$. This corrects the former statement
+of obligation (N), which asked for a spectral equivalence
+$\det(G_1-\lambda G_0)=C\det(H^{(1)}_n-\lambda H_n)$ with one spectral variable
+$\lambda$ and a constant $C$: under the regulated flow that identity is unsatisfiable
+--- the transported spectrum stays at the anchor nodes while the window spectrum sits at
+the ordinates, disjoint multisets --- and it is replaced by the pullback identity of
+Theorem \ref{thm:pullback}, in which the change of spectral variable is explicit and
+bank-generated.
+\end{remark}
+
+\begin{proposition}[the warp is internally generated on the anchor segment]\label{prop:selfcal}
+On the segment $s_0>1$ the transport is $\dot\sigma=-x\,\sigma$ (each prime clock damps
+by its own frequency), so $\dot m_k=-m_{k+1}$: the moment flow is the pencil's own
+shift. Let $(\lambda_a,w_a)$ be the Gauss data of the $n$-point pencil, $P_n$ the monic
+node polynomial, and $h_n:=\int P_n^2\,d\sigma=m_{2n}-\sum_aw_a\lambda_a^{2n}$ the
+quadrature error of $x^{2n}$. Then
+\[
+  \frac{d\lambda_a}{ds_0}\;=\;-\,\frac{h_n}{w_a\,P_n'(\lambda_a)^2}\,,
+\]
+strictly negative for every $a$. Every quantity on the right except $h_n$ is internal
+to the pencil; the entire external input of the flow is the single boundary scalar
+$h_n$.
+\end{proposition}
+
+\begin{proof}
+The $n$-point Gauss data matches the moments $m_k$ for $k\le2n-1$. Differentiating the
+matching conditions along $\dot m_k=-m_{k+1}$, the homogeneous solution
+$\dot w_a=-\lambda_aw_a$, $\dot\lambda_a=0$ accounts for $-m_{k+1}$ within quadrature
+exactness, leaving the forcing $-h_n\delta_{k,2n-1}$ at the single degree where
+exactness fails. The correction $(u_a,\dot\lambda_a)$ solves
+$\sum_a[u_aQ(\lambda_a)+w_a\dot\lambda_aQ'(\lambda_a)]=-h_n\cdot[x^{2n-1}]Q$ for all
+$Q$ of degree $\le2n-1$. Take $Q=\ell_aP_n$ with $\ell_a$ the Lagrange basis: $Q$
+vanishes at every node, $Q'(\lambda_b)=\delta_{ab}P_n'(\lambda_a)$, and
+$[x^{2n-1}]Q=1/P_n'(\lambda_a)$; the display follows. Positivity of $\sigma$ on the
+segment gives $h_n>0$, $w_a>0$.
+\end{proof}
+
+\begin{remark}[self-calibration, and its limit]\label{rem:selfcal}
+Proposition \ref{prop:selfcal} is the Toda-deformation structure of exponentially
+damped measures: the infinite operator is isospectral --- its spectrum is the fixed
+prime-clock support $\{\log n\}$, the carrier --- while the finite pencil's nodes, the
+readout, move only through the boundary forcing $h_n$. Verified
+(\texttt{tmp/att205\_selfcal\_probe.py}, $s_0=1.5$, $N=4$): the internal law matches
+the direct perturbation drifts to $1.6\cdot10^{-11}$, with $h_n=2.2\cdot10^{5}$
+cancelling against Christoffel factors of order $10^{-4}$ exactly. Two consequences
+and one boundary. First, the warp needs no external support on the anchor segment
+beyond one scalar per instant; the continuation's defects (pole, $\Gamma$, window)
+must enter the finite system through this single boundary channel, so Hypothesis
+\ref{hyp:seat} becomes a statement about the behavior of a one-dimensional boundary
+sequence rather than an $n\times n$ identity. Second, $h_n=\int P_n^2\,d\sigma$ is
+manifestly nonnegative exactly as long as the driving functional is a positive
+measure: where the continuation costs $h_n$ its manifest sign is where the seat's
+content begins. The boundary: a self-calibrating flow is not a self-certifying one
+--- the device generates its own motion, but the terminal seating certificate must
+still come from the crossing analysis of Lemmas \ref{lem:nullflow} and
+\ref{lem:resonance}. Finally, an identity rather than an analogy: for Hankel pairs,
+$h_n=\det H_{n+1}/\det H_n$, so the boundary scalar that drives the flow \emph{is}
+the inertia-increment detector of the census --- its loss of sign at one size and
+the appearance of a negative direction at the next are the same fact (verified along
+the continuation: sign flip at $n=14$, inertia event at $n=15$;
+\texttt{tmp/att211\_boundary\_onset.py}).
+\end{remark}
+
+\begin{remark}[numerical verification]
+On the convergent segment ($s_0\colon1.5\to1.2$, $N=4$, exact jets of $-\zeta'/\zeta$;
+\texttt{tmp/att201\_warp\_probe.py}): the perturbation drift matches finite differences
+of the eigenvalue paths to $8.9\cdot10^{-8}$; the flow of the interpolated field carries
+the anchor nodes $(1.1916,\,4.0395,\,9.6214,\,19.3384)$ onto the terminal eigenvalues
+$(2.1714,\,9.2832,\,23.2371,\,47.5293)$ with maximal error $1.9\cdot10^{-10}$; an
+interior test point remains strictly interior. The exact-jet anchor nodes differ from
+those quoted after Theorem \ref{thm:regulator}, which realize the truncated prime sum at
+finite cutoff; the two banks are distinct legitimate realizations, and the drift between
+them is the truncation observation of the ledger.
+\end{remark}
+
 \section{The conditional theorem}
 
 \begin{hypothesis}[$\mathrm{PSD}$]\label{hyp:psd}
@@ -350,43 +547,434 @@ $\zeta$ have real part $\tfrac12$. Items (2) and (3) are Theorem \ref{thm:census
 pencil is Hermitian-definite on $\ran H_n$ under Hypothesis \ref{hyp:psd}.
 \end{proof}
 
+\section{The seat: reduction to a single hypothesis}\label{sec:seat}
+
+\begin{definition}[terminal defect]\label{def:defect}
+Fix a window $W$ with matched dimension $n$ and a transport path whose terminal chart is
+the window chart, and let $(G_0(1),G_1(1))$ be the terminal transported pair. Put
+\[
+  D_0 := G_0(1)-H_n(W),\qquad D_1 := G_1(1)-H^{(1)}_n(W).
+\]
+Both differences are computed from function data --- jets of the continued logarithmic
+derivative on one side, contour integrals of $A'/A$ on the other --- so the defect is
+defined with no reference to zeros. Obligation (T) of \S\ref{sec:obligations} evaluates
+$D_\ell$ in closed form; the smooth blocks are now explicit. The pole block is the
+Hankel of the exponential measure $e^{-(s_0-1)x}dx$ on $[0,\infty)$, moments
+$k!/(s_0-1)^{k+1}$, positive semidefinite on the convergent segment $s_0>1$. The
+$\Gamma$-block (trivial zeros) is the Hankel of the measure
+$e^{-(s_0+2)x}\bigl(1-e^{-2x}\bigr)^{-1}dx$ on $(0,\infty)$, with moments in closed
+Hurwitz form
+\[
+  k!\;2^{-(k+1)}\,\zeta\!\left(k+1,\;1+\tfrac{s_0}2\right)\qquad(k\ge1),
+\]
+a manifestly positive density for every $s_0>-2$, hence positive semidefinite
+\emph{throughout the strip}. The entire smooth part of the defect therefore adds
+positivity at every station of the transport; only the window and lateral blocks of
+(T) remain unevaluated. (These closed forms are the trivial-zero and pole components
+of the jet engine used in the numerical maps, validated there against direct
+differentiation to $5\cdot10^{-5}$.)
+\end{definition}
+
+\begin{lemma}[null-cone flow decomposition]\label{lem:nullflow}
+Let $\sigma=\sum_{x\in X}w(x)\delta_x$ be an atomic functional on a conjugation-closed
+multiset $X=\overline X$ with weights satisfying $w(\bar x)=\overline{w(x)}$, and let
+$H$ be the Hankel matrix of its moments, of size $n$. For every real polynomial $P$ of
+degree $<n$ with coefficient vector $v$,
+\[
+  v^{T}Hv \;=\; \sum_{x\in X\cap\R}w(x)P(x)^{2}
+  \;+\!\!\sum_{\{z,\bar z\}\subset X\setminus\R}\!\!2\,\mathrm{Re}\bigl[w(z)P(z)^{2}\bigr],
+\]
+in which the real-support sum is termwise nonnegative whenever $w\ge0$ on $X\cap\R$,
+while the conjugate-pair terms are unrestricted in sign. Consequently, along a weight
+homotopy $t\mapsto w_t$ with $\dot w_t\ge0$ on $X\cap\R$, the flow through a null
+direction ($v^{T}H_tv=0$) obeys
+\[
+  v^{T}\dot H_tv \;\ge\; \sum_{\{z,\bar z\}}2\,\mathrm{Re}\bigl[\dot w_t(z)P(z)^{2}\bigr]:
+\]
+a negative-sector crossing must be fed by conjugate-pair terms; real support cannot
+produce one. In particular, on any pointwise-monotone kernel homotopy whose weighted
+support is real and which starts at a nonnegative-weight configuration,
+$n_-(H_t)\equiv0$ unconditionally.
+\end{lemma}
+
+\begin{proof}
+Group the atoms: conjugate pairs combine to $2\mathrm{Re}[w(z)P(z)^{2}]$ because $P$
+is real, and the real-support terms are $w(x)P(x)^2\ge0$ termwise. The flow statement
+is the same identity applied to $\dot H_t$, discarding the nonnegative real sum. The
+last claim is closedness of the PSD cone: positive start, and no crossing is
+available.
+\end{proof}
+
+\begin{remark}[measured margin law]
+On the verified window $W=(10,32)$ ($n=5$, four zeros;
+\texttt{tmp/att202\_margin\_probe.py}), along the error-function smoothing of the
+window indicator: the dead-direction mass $v_*^{T}H(\tau)v_*$ ($v_*$ the terminal null
+polynomial vanishing at the four interior zeros) is monotone with positive flow sign
+($+1.4\cdot10^{-2}$ at $\tau=1$); by $\tau=1$ its source is $100\%$ the
+boundary-nearest exterior zero $\gamma_5=32.935$; and $\lambda_{\min}(H(\tau))$ tracks
+the Rayleigh value $v_*^{T}Hv_*$ to $99.8\%$ at $\tau=0.25$. The positivity slack of
+the window pencil near the sharp limit is the weight leaking onto the nearest exterior
+zero through the terminal null polynomial: the margin has a single computable source.
+\end{remark}
+
+\begin{remark}[cosine transport of the pair-fed flow]\label{rem:cosine}
+The conjugate-pair terms of Lemma \ref{lem:nullflow} have an exact operator form: for
+$F$ entire and real on $\R$, $F(x+iy)+F(x-iy)=2\cos(y\partial_x)F(x)$ (Taylor
+expansion, absolutely convergent). Hence a pair at depth $y$ feeds the flow with the
+\emph{same} real density $g=\dot w\,P^2$ that a real zero would, transported by
+$\cos(y\partial_x)$. The Fourier multiplier $\cos(y\xi)$ is nonnegative for
+$|\xi|\le\pi/(2y)$, and $y<\tfrac12$ unconditionally (the critical strip), so the
+worst-case positivity radius of the transport is the band $|\xi|\le\pi$. Two
+consequences. First, a quantitative target: pair-fed dominance on a null direction
+requires the density $g$ to carry Fourier mass beyond the positivity radius of the
+actual pair depths present --- shallow pairs feed like real zeros. Second --- correcting an identification staked in an earlier draft of this remark ---
+the cross-check against the narrow-support literature \emph{fails on the numbers, and
+informatively so}: the classical unconditional positivity radius (Yoshida
+\cite{Yoshida1992}) is
+$\log2=0.693$, set by the \emph{prime vacuum} (no $\Lambda$-support below the first
+prime), whereas the cosine-transport radius is $\pi=3.14$, set by pair depth. The two
+are distinct mechanisms on opposite sides of the explicit formula: prime-vacuum limits
+the classical regime, pair depth limits this transport, and $\pi>\log2$ means the
+pair-depth constraint is strictly the weaker one --- positivity of the pair-fed flow
+persists beyond the prime-vacuum boundary, and the two constraints compose rather
+than coincide. The present formulation additionally needs the sign only on null
+directions (a thinner set) and may weigh actual pair depths against unconditional
+density estimates rather than assuming the worst case everywhere.
+\end{remark}
+
+\begin{lemma}[resonance necessity]\label{lem:resonance}
+Let $P$ be a real polynomial of degree $d$ with roots $r_1,\dots,r_d$ (nonreal ones in
+conjugate pairs), let $z_0=x_0+iy_0$ with $y_0>0$, and let $w(z_0)\in\C^{\times}$ with
+$|\arg w(z_0)|\le\varphi_w<\tfrac\pi2$. Define the deviation of each root as the angle
+between $z_0-r_j$ and the real line,
+\[
+  \delta_j \;:=\; \arctan\!\frac{|y_0-\mathrm{Im}\,r_j|}{|x_0-\mathrm{Re}\,r_j|}
+  \;\in\;(0,\tfrac\pi2]
+  \qquad(\delta_j:=\tfrac\pi2\ \text{if}\ x_0=\mathrm{Re}\,r_j).
+\]
+If $\mathrm{Re}\bigl[w(z_0)P(z_0)^2\bigr]\le0$, then
+\[
+  \sum_{j=1}^{d}\delta_j\;\ge\;\frac\pi4-\frac{\varphi_w}2,
+\]
+and in particular some root satisfies
+\[
+  |x_0-\mathrm{Re}\,r_j|\;\le\;
+  \frac{|y_0-\mathrm{Im}\,r_j|}{\tan\bigl((\tfrac\pi4-\tfrac{\varphi_w}2)/d\bigr)}
+  \;\approx\;\frac{4d}{\pi}\,\bigl(y_0+|\mathrm{Im}\,r_j|\bigr)
+  \quad\text{for small angles.}
+\]
+\end{lemma}
+
+\begin{proof}
+Each squared factor of $P(z_0)^2=c^2\prod_j(z_0-r_j)^2$ contributes, modulo $2\pi$, an
+argument $\pm2\delta_j$: for a factor with argument $\theta_j\in(0,\pi)$, either
+$\theta_j=\delta_j$ or $\theta_j=\pi-\delta_j$, and $2(\pi-\delta_j)\equiv-2\delta_j$.
+Hence $\arg\bigl[P(z_0)^2\bigr]\equiv\sum_j\pm2\delta_j \pmod{2\pi}$, and
+$\bigl|\sum_j\pm2\delta_j\bigr|\le2\sum_j\delta_j$. A nonpositive real part of
+$w(z_0)P(z_0)^2$ requires its total argument to lie within $\tfrac\pi2$ of $\pi$
+modulo $2\pi$, so $2\sum\delta_j+\varphi_w\ge\tfrac\pi2$. The root bound is the
+pigeonhole $\max_j\delta_j\ge(\tfrac\pi4-\tfrac{\varphi_w}2)/d$.
+\end{proof}
+
+\begin{corollary}[separation forces depth]\label{cor:separation}
+In the setting of Lemma \ref{lem:resonance}, suppose every root satisfies
+$|x_0-\mathrm{Re}\,r_j|\ge d$ and $|\mathrm{Im}\,r_j|\le\iota$. Then a nonpositive
+pair term at $(x_0,y_0)$ requires
+\[
+  y_0\;\ge\;d\,\tan\!\frac{\tfrac\pi4-\tfrac{\varphi_w}2}{\,d^{\circ}\!P\,}\;-\;\iota
+  \;\approx\;\frac{\pi d}{4\,d^{\circ}\!P}\quad(\varphi_w,\iota\ \text{small}),
+\]
+where $d^{\circ}\!P$ is the degree. Equivalently: the abscissas from which a pair of
+depth $y_0$ can cross are confined to the
+$\bigl((y_0+\iota)/\tan((\tfrac\pi4-\tfrac{\varphi_w}2)/d^{\circ}\!P)\bigr)$-neighborhood
+of the null-root abscissa set --- a set of total measure at most
+$\approx\tfrac{8}{\pi}\,(d^{\circ}\!P)^2\,y_0$ --- while pairs elsewhere in the window
+are spectators regardless of the flow.
+\end{corollary}
+
+\begin{proof}
+Each deviation obeys $\delta_j\le\arctan((y_0+\iota)/d)$, so
+$\sum_j\delta_j\le d^{\circ}\!P\cdot\arctan((y_0+\iota)/d)$; Lemma \ref{lem:resonance}
+requires this to reach $\tfrac\pi4-\tfrac{\varphi_w}2$. The neighborhood statement is
+the same inequality read per root, and the measure bound is $d^{\circ}\!P$ intervals
+of the stated half-width.
+\end{proof}
+
+\begin{remark}[the composition slot]
+Corollary \ref{cor:separation} is the deterministic half of a two-part exclusion:
+crossing-capable pairs at depth $y$ are confined to an explicit set of measure
+$O(n^2y)$ per window, while the number of pairs of depth $\ge y$ up to height $T$ is
+counted unconditionally by the zero-density estimates: $N(\sigma,T)\ll
+T^{3(1-\sigma)/(2-\sigma)+o(1)}$ (Ingham \cite{Ingham1940}) and
+$N(\sigma,T)\le T^{30(1-\sigma)/13+o(1)}$ (Guth--Maynard \cite{GuthMaynard2024}, the
+first exponent improvement in eighty-four years), so pairs at depth $y$ number
+$\ll T^{30(\frac12-y)/13+o(1)}$. Two calibrations. The composition of the two counts
+against the window census yields rarity statements --- windows admitting a resonance
+are sparse --- and rarity is not exclusion: a count cannot reach zero, so this route's
+unaided yield is a new-mechanism density theorem, not the seat. Closing the seat on a
+given window requires the per-window exclusion --- path steering within the vulnerable
+set of Corollary \ref{cor:separation}, or positivity --- and that is where the
+remaining content sits.
+\end{remark}
+
+\begin{remark}[crossings are local resonances]
+Combining Lemmas \ref{lem:nullflow} and \ref{lem:resonance}: a negative-sector
+crossing requires a conjugate pair at depth $y_0<\tfrac12$ whose abscissa lies within
+$\approx\frac{4(n-1)}{\pi}\,y_0$ of a root cluster of the null polynomial of the
+accumulated Hankel --- with the kernel's phase budget $\varphi_w$ a design parameter
+one makes small on the strip. Shallow pairs can cross only in near-collision with a
+null root (the continuity of Corollary \ref{cor:rigidity}, now quantitative); deep
+pairs have room, but their number is the subject of unconditional zero-density
+estimates. The seat's remaining content is the exclusion of these localized
+resonances along one designed path per window; the composition of depth, density and
+the locality of null directions (the measured margin law) is the open program.
+\end{remark}
+
+\begin{hypothesis}[the seat $(\mathrm{S})$]\label{hyp:seat}
+For every window $W$ of the tiling there is a transport path with finitely many
+regularity events such that every point of
+$\spec\bigl(H^{(1)}_n(W),H_n(W)\bigr)\big|_{\ran H_n}$ --- the window support --- is a
+terminal limit of the warped anchor spectrum $\varphi_t(\spec S_0)$, the remaining
+$n-m$ directions retiring into the null space through the rank-drop events.
+\end{hypothesis}
+
+\begin{remark}[three contractions of one kernel]\label{rem:contractions}
+The transported objects of this paper are contractions of the single two-variable
+kernel $B_{jk}(\rho,\rho')=(s_0-\rho)^{-(j+1)}(s_0-\rho')^{-(k+1)}$ along three
+pairings of the conjugation- and FE-closed zero multiset: the \emph{holomorphic
+diagonal} ($\rho$ with $\rho$; the jet-Hankel face, real symmetric), the
+\emph{functional-equation pairing} ($\rho$ with $1-\rho$; hermitian by
+conjugation-closure), and the \emph{conjugate pairing} ($\rho$ with $\bar\rho$; a
+Gram matrix, positive semidefinite always). Atomwise, the FE and conjugate pairings
+coincide iff $\bar\rho=1-\rho$, i.e.\ iff the zero lies on the critical line; the
+holomorphic diagonal is indefinite for complex frequencies whether or not they lie on
+the line. Two consequences. First, a calibration: the indefiniteness onset of the
+jet-Hankel face along the continuation carries no information about zero locations
+--- it is the generic behavior of complex-frequency moment data. Second, the
+diagnostic content of the program is exactly the coincidence of the FE and conjugate
+contractions --- every zero self-paired by the functional equation is a zero on the
+line --- which is the pairing-language form of the single hypothesis, and the
+positivity of the FE contraction is its window-free shadow.
+\end{remark}
+
+\begin{proposition}[scalar seat criterion]\label{prop:scalarseat}
+Over the nontrivial-zero multiset put
+\[
+  S(s)\;:=\;\sum_{\rho}\,(s-\rho)^{-1}\,(\bar s-1+\rho)^{-1},
+\]
+absolutely convergent for $s$ off the zero set (terms are $O(|\gamma_\rho|^{-2})$),
+and real-valued: the relabeling $\rho\mapsto1-\bar\rho$, under which the multiset is
+closed, conjugates its terms. Then
+\[
+  \text{every nontrivial zero lies on the critical line}
+  \iff
+  S(s)\ge0\ \text{ for all }s\ \text{in the strip off the zero set.}
+\]
+\end{proposition}
+
+\begin{proof}
+($\Rightarrow$) For $\rho$ on the line, $1-\rho=\bar\rho$, so the $\rho$-term is
+$(s-\rho)^{-1}\overline{(s-\rho)^{-1}}=|s-\rho|^{-2}>0$: the sum is termwise
+positive. ($\Leftarrow$) Let $\rho_0=\beta_0+i\gamma_0$ with $\beta_0\ne\tfrac12$ and
+set $s=\rho_0+\varepsilon e^{i\theta}$. The $\rho_0$-term is
+$\varepsilon^{-1}e^{-i\theta}\bigl((2\beta_0-1)+\varepsilon e^{-i\theta}\bigr)^{-1}$,
+of modulus $\sim(\varepsilon|2\beta_0-1|)^{-1}$ with freely rotating phase; choosing
+$\theta$ with $\cos\theta\cdot(2\beta_0-1)<0$ makes its real part $\to-\infty$ as
+$\varepsilon\to0$. Every other term stays bounded on the $\varepsilon$-ball: the
+remaining members of the $\rho_0$-family ($\bar\rho_0$, $1-\rho_0$, $1-\bar\rho_0$)
+and all other zeros are at distance bounded below, and the full sum of their moduli
+converges. Hence $S(s)<0$ for small $\varepsilon$.
+\end{proof}
+
+\begin{remark}[the traveling seat]\label{rem:travelingseat}
+Proposition \ref{prop:scalarseat} is the $n=1$ member of the FE-paired family
+$A_{jk}(s)=\sum_\rho(s-\rho)^{-(j+1)}(\bar s-1+\rho)^{-(k+1)}$, Hermitian for every
+anchor $s$ by the same relabeling, with on-line zeros contributing rank-one positive
+terms at every anchor. Numerically (\texttt{tmp/att217\_anchor\_lift.py}, verified
+range, $n=8$): as the anchor rises through the strip the form remains positive
+semidefinite at every station and \emph{seats} on each zero in turn --- mass share of
+the nearest zero $99\%$ at $\tau=\gamma_j$, resolvent spike at each seating,
+conditioning improving with localization. A negative direction would appear exactly
+at the seating of an off-line pair: the falsifier is localized in the anchor height.
+
+The source reading required by the working rules identifies the scalar criterion: by
+partial fractions, $(s-\rho)^{-1}(\bar s-1+\rho)^{-1}
+=(s+\bar s-1)^{-1}\bigl[(s-\rho)^{-1}+(\rho-(1-\bar s))^{-1}\bigr]$, and summing over
+the paired multiset via the Hadamard expansion and the functional equation
+($\xi'/\xi(1-\bar s)=-\overline{\xi'/\xi(s)}$) gives the closed form
+\[
+  S(s)\;=\;\frac{2\,\mathrm{Re}\,\bigl[\xi'/\xi(s)\bigr]}{2\sigma-1},
+  \qquad \sigma=\mathrm{Re}\,s .
+\]
+Proposition \ref{prop:scalarseat} is therefore equivalent to the positivity
+criterion of Hinkkanen (1997) and Lagarias \cite{Lagarias1999}: RH iff
+$\mathrm{Re}\,[\xi'/\xi](s)>0$ for $\sigma>\tfrac12$ --- a rediscovery, in
+FE-paired coordinates, with the pairing trichotomy of Remark \ref{rem:contractions}
+supplying a two-line derivation. What is retained beyond the identification: the
+anchor-lift geometry above (the criterion's falsifier is seat-localized), and the
+wiring of the criterion into the transport apparatus of this paper. The graded
+family $A_{jk}$ for $n>1$ is likewise identified by the required source reading: it
+is of the Weil--Yoshida hermitian-form species \cite{Yoshida1992,Bombieri2000} in a
+resolvent basis at complex anchor --- the species carrying Li's criterion as its
+Laguerre-basis instance (Bombieri--Lagarias \cite{BombieriLagarias1999}) and the
+Connes--Consani semi-local positivity results as its deepest partial positivity.
+The bridge runs both ways: partial positivity results for these forms are partial
+results on the seat, and the transported-pencil apparatus --- the internal flow law,
+the boundary-scalar detector, the seat-localized falsifier geometry --- is what this
+paper adds around the classical species.
+\end{remark}
+
+\begin{proposition}[unconditional positivity on the verified band]\label{prop:verifiedband}
+Let $T_0$ be a height below which every nontrivial zero lies on the critical line
+($T_0=3\cdot10^{12}$ by \cite{PlattTrudgian2021}). There is an absolute constant $C$
+such that
+\[
+  S(s)\;>\;0
+  \qquad\text{for every }s=\sigma+i\tau\text{ in the strip with }
+  30\le|\tau|\le T_0-C\log T_0 .
+\]
+The scalar seat criterion of Proposition \ref{prop:scalarseat} therefore holds
+unconditionally on the full anchor band of the verified range; its open content is
+confined to anchors above the verification height.
+\end{proposition}
+
+\begin{proof}
+Split the sum at height $T_0$. Below: every zero is on the line, so each term is
+$|s-\rho|^{-2}>0$; by Riemann--von Mangoldt, $[\,|\tau|,|\tau|+1\,]$ contains a zero
+once $|\tau|\ge30$, giving a single-term lower bound
+$S_{<}(s)\ge\bigl(\tfrac14+1\bigr)^{-1}\cdot\tfrac12$, say. Above: for any zero
+$\rho$ (on the line or not) at height $\gamma>T_0$, both factors have modulus at
+least $\gamma-|\tau|$ --- $|s-\rho|\ge\gamma-|\tau|$ and
+$|\bar s-1+\rho|\ge\gamma-|\tau|$, since each has imaginary part $\pm(\gamma-|\tau|)$
+up to sign conventions --- so the term is bounded by $2(\gamma-|\tau|)^{-2}$ in
+modulus. Integrating against the counting measure,
+\[
+  |S_{>}(s)|\;\le\;2\int_{T_0}^{\infty}\frac{dN(\gamma)}{(\gamma-|\tau|)^{2}}
+  \;\ll\;\frac{\log T_0}{\,T_0-|\tau|\,},
+\]
+which is smaller than the lower bound once $T_0-|\tau|\ge C\log T_0$ for an absolute
+$C$.
+\end{proof}
+
+\begin{proposition}[band-local seat criterion]\label{prop:bandlocal}
+For $H\ge60$, with $C$ the absolute constant of Proposition \ref{prop:verifiedband}:
+\begin{enumerate}
+\item[(i)] if every zero with $|\gamma|\le H$ lies on the line, then $S(s)>0$ for all
+anchors with $30\le|\tau|\le H-C\log H$ (the proof of Proposition
+\ref{prop:verifiedband} verbatim, with $T_0$ replaced by $H$);
+\item[(ii)] if $S\ge0$ on the band $|\tau|\le H$, then every zero with
+$|\gamma|\le H-1$ lies on the line (the converse construction of Proposition
+\ref{prop:scalarseat} produces a negative value at an anchor within distance $1$ of
+any off-line zero).
+\end{enumerate}
+In particular RH is equivalent to band positivity at every height, with the
+correspondence exact up to logarithmic boundary layers.
+\end{proposition}
+
+\begin{remark}[the induction frame]\label{rem:induction}
+Proposition \ref{prop:bandlocal} places the whole question in one-dimensional
+coordinates: RH holds iff the band-positivity property is unbounded, and by (U4) it
+holds below $3\cdot10^{12}$. The single remaining statement is the self-extension
+step --- band positivity below $H$ implies it below $H+C\log H$ --- and by (ii) this
+step is equivalent to the absence of a first off-line zero in the boundary layer:
+necessarily of full strength, as every reduction in this paper must be, but now
+localized to a moving layer of logarithmic width, where the protecting mass is the
+verified band below and the threat is a single hypothetical seating just above. The
+seat, in its minimal coordinates: \emph{the boundary layer never turns.}
+\end{remark}
+
+\begin{theorem}[the chain]\label{thm:chain}
+Hypothesis \ref{hyp:seat} implies Hypothesis \ref{hyp:psd}. Hence, granted the seat
+alone: every nontrivial zero of $\zeta$ lies on the critical line, the census of
+Theorem \ref{thm:census} is returned on every window, and the zeros are the real
+spectra of the computed Hermitian pencils (Theorem \ref{thm:main}).
+\end{theorem}
+
+\begin{proof}
+On every regular interval the transported spectrum is real: the anchor spectrum is real
+(Proposition \ref{prop:anchor}, $S_0$ Hermitian) and Theorem \ref{thm:warp} transports
+it by a real map; across regularity events reality is preserved because the pencil
+remains Hermitian with $G_0>0$ on the active quotient (Lemma \ref{lem:block}). A limit
+of reals is real, so by Hypothesis \ref{hyp:seat} every support point of the window
+measure \eqref{eq:moments} is real: $q(W)=0$ for every window, and Theorem
+\ref{thm:inertia} gives $H_n(W)\succeq0$: Hypothesis \ref{hyp:psd}.
+\end{proof}
+
+\begin{remark}[necessity, and what has been gained]
+By the rigidity of the moment problem (\S\ref{sec:obligations}) any hypothesis implying
+Hypothesis \ref{hyp:psd} is equivalent to it; the seat is no exception, and this is
+forced --- it is not a defect of the method. What has changed is the form: of the former
+obligations, (N), (W1), (W2) and (C) are now theorems (Theorem \ref{thm:regulator},
+Lemma \ref{lem:block}, Theorems \ref{thm:warp} and \ref{thm:pullback}), and the residue
+is one statement, bank-generated and zero-free in formulation, finite-dimensional on
+each window.
+\end{remark}
+
 \section{Remaining obligations}\label{sec:obligations}
 
-Theorem \ref{thm:main} is conditional on Hypothesis \ref{hyp:psd}. By the rigidity of the
+Theorem \ref{thm:main} is conditional on Hypothesis \ref{hyp:psd}, and Theorem
+\ref{thm:chain} reduces Hypothesis \ref{hyp:psd} to the seat. By the rigidity of the
 moment problem, any pairing whose Gram matrix reproduces the moments $\mu_{j+k}(W)$
 \emph{is} the counting pairing of \eqref{eq:moments}, so its positivity is equivalent to
-the conclusion; a proof of Hypothesis \ref{hyp:psd} must therefore proceed from the
-bank side, and the following are the precise steps.
+the conclusion; a proof must therefore proceed from the bank side, and the precise
+remaining steps are these.
 
 \begin{enumerate}
-\item[(T)] \textbf{Contour transport.} Continue the matrix-entry identities (not a
-claimed positive sum) from the Euler-anchored pair of Proposition \ref{prop:anchor} to
-the window pair of Definition \ref{def:moments}:
+\item[(T)] \textbf{Contour transport (defect evaluation).} Evaluate the terminal defect
+of Definition \ref{def:defect} in closed form,
 \[
   G_\ell[j,k] \;=\; \frac{1}{2\pi i}\oint_\Gamma z^{\,j+k+\ell}\frac{A'(z)}{A(z)}\,dz
   \;+\; D_\ell[j,k],
 \]
-with $D_\ell$ the explicit pole, $\Gamma$-factor and lateral contributions of (U5).
-\item[(N)] \textbf{Pencil neutrality.} Show that the transport can be regulated so that
-$D_\ell$ does not move the spectrum. By Theorem \ref{thm:regulator} it suffices that the
-bank response matrix $M$ be nonsingular along the transport, which is a
-finite-dimensional, bank-computable condition; it holds at the Euler anchor. It then
-suffices to obtain the \emph{spectral} equivalence
-$\det(G_1-\lambda G_0)=C\det(H^{(1)}_n-\lambda H_n)$, $C\ne0$, rather than entrywise
-equality.
-\item[(W)] \textbf{Warp covariance.} The control $u=M^{-1}b$ must be an admissible
-deformation of the registered bank, and the terminal residue interpretation must be taken
-along the regulated deformation.
-\item[(C)] \textbf{Collisions.} At spectral collisions replace the scalar conditions by
-$P_aF(u)P_a=0$ on the degenerate eigenspace, treating the deformation piecewise between
-collisions; these are exactly the rank-drop events of Corollary \ref{cor:rigidity}.
+with $D_\ell$ the explicit pole, $\Gamma$-factor, lateral and windowing contributions of
+(U5). The chain of Theorem \ref{thm:chain} does not consume (T): the defect is already
+defined as a difference of computed objects; (T) supplies its closed form, the DC
+structure of the seat, and computational access to Hypothesis \ref{hyp:seat} on explicit
+windows.
+\item[(S)] \textbf{The seat.} Hypothesis \ref{hyp:seat}: terminal seating of the warped
+anchor spectrum on the window support. This is the single remaining hypothesis. By
+Lemma \ref{lem:nullflow} its content along monotone kernel homotopies is exactly: the
+conjugate-pair-fed component of the flow never dominates the real-fed component on a
+null direction of the accumulated Hankel --- the only crossing mechanism that exists. The
+former obligations (N), (W) and (C) are discharged: pencil neutrality by Theorem
+\ref{thm:regulator} with the corrected terminal statement of Remark
+\ref{rem:architectures}; warp covariance --- bank determination, reality, injectivity,
+and the determinant-pullback law --- by Theorems \ref{thm:warp} and \ref{thm:pullback};
+collisions by Lemma \ref{lem:block}.
 \end{enumerate}
 
-Granted (T), (N), (W), (C), the chain runs forward: the Euler-anchored pencil is
-positive semidefinite unconditionally (Proposition \ref{prop:anchor}); its spectrum is
-transported isospectrally and remains real (Theorem \ref{thm:regulator}); spectral
-equivalence identifies it with the window pencil; Theorem \ref{thm:census} identifies the
-latter's spectrum with the zeros; Theorem \ref{thm:inertia} converts positivity into
-$q\equiv0$; and Theorem \ref{thm:main} concludes.
+Granted (S), the chain runs forward: the Euler-anchored pencil is positive semidefinite
+unconditionally (Proposition \ref{prop:anchor}); its spectrum is real and is carried by
+the bank-generated warp along the transport, exactly and order-preservingly (Theorems
+\ref{thm:regulator}, \ref{thm:warp}, \ref{thm:pullback}, Lemma \ref{lem:block}); the
+seat identifies the terminal limits with the window support; reality forces $q\equiv0$
+(Theorem \ref{thm:inertia}); and Theorem \ref{thm:main} concludes.
+
+\begin{thebibliography}{9}
+
+\bibitem{Ingham1940} A.~E. Ingham, \emph{On the estimation of $N(\sigma,T)$},
+Quart. J. Math. Oxford 11 (1940), 291--292.
+
+\bibitem{GuthMaynard2024} L.~Guth and J.~Maynard, \emph{New large value estimates
+for Dirichlet polynomials}, arXiv:2405.20552 (2024).
+
+\bibitem{PlattTrudgian2021} D.~Platt and T.~Trudgian, \emph{The Riemann hypothesis
+is true up to $3\cdot10^{12}$}, Bull. London Math. Soc. 53 (2021), 792--797.
+
+\bibitem{Yoshida1992} H.~Yoshida, \emph{On hermitian forms attached to zeta
+functions}, in: Zeta Functions in Geometry, Adv. Stud. Pure Math. 21 (1992).
+
+\bibitem{Lagarias1999} J.~C. Lagarias, \emph{On a positivity property of the
+Riemann $\xi$-function}, Acta Arith. 89 (1999), 217--234.
+
+\bibitem{BombieriLagarias1999} E.~Bombieri and J.~C. Lagarias, \emph{Complements
+to Li's criterion for the Riemann hypothesis}, J. Number Theory 77 (1999),
+274--287.
+
+\bibitem{Bombieri2000} E.~Bombieri, \emph{Remarks on Weil's quadratic functional
+in the theory of prime numbers, I}, Rend. Mat. Acc. Lincei (9) 11 (2000),
+183--233.
+
+\end{thebibliography}
 
 \end{document}

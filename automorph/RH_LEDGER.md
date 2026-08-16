@@ -1,0 +1,30 @@
+
+### 209 — THE THREE-CONTRACTIONS TRICHOTOMY (in print): one kernel, three pairings — and the x-face event PROVEN RH-BLIND; the program's diagnostic content = FE-pairing ≡ conjugate-pairing
+- **rem:contractions (IN PRINT)**: B_jk(ρ,ρ′) = (s₀−ρ)^{−(j+1)}(s₀−ρ′)^{−(k+1)} contracted along (i) holomorphic diagonal (ρ,ρ) = the jet-Hankel x-face; (ii) FE pairing (ρ, 1−ρ) = the γ-face; (iii) conjugate pairing (ρ, ρ̄) = Gram, PSD always. Atomwise (ii) ≡ (iii) ⟺ ρ̄ = 1−ρ ⟺ on-line. (i) is indefinite for complex frequencies REGARDLESS of location.
+- **calibration payoff**: the n_c ≈ 15–17 onset (ledger 207) is PROVEN RH-blind — generic complex-frequency behavior, not a zero-location signal. Guards against over-reading the exit map.
+- **the sharpening**: EveryZeroHasSource in pairing language — every zero self-paired by the FE is on the line; the FE contraction's positivity is its window-free shadow; the window census (thm:inertia) is its per-window integer detector. The seat's chain: transported diagonal data → window pair (census, γ-chart) → positivity ⟺ pairing coincidence.
+- **goal part (2): OPEN.** Paper 12pp clean. The session's full state: ledgers 201–209; next bricks named there.
+
+### 210 — THE BOUNDARY SCALAR IS THE EVENT DETECTOR (identity, not analogy): h_n = det H_{n+1}/det H_n — the Toda tail coupling and the census's inertia-increment detector are ONE OBJECT; goal-file starting state refreshed
+- **measured** (`tmp/att211_boundary_onset.py`, s₀ = 0.9, flipped chart): h_n positive and growing (22.8 → 8.3e6) through n = 13; SIGN FLIP at n = 14 (−2.8e6); inertia event at n = 15; nodes leave ℝ at n = 17. Sequence: boundary sign-loss at n−1 → inertia increment at n → node complexification.
+- **the equality test fired on my own probe**: this is NOT an independent confirmation — h_n = det H_{n+1}/det H_n identically (Hankel det ratio), so the sign flip at 14 and the (1,14)-event at 15 are the SAME FACT. Upgrade recorded in print (rem:selfcal, one sentence): the single scalar driving the self-calibrating warp IS the inertia-increment detector. The night's two main structures (internal Toda law; census event) are one object, proven.
+- **handoff refreshed**: GOAL_HP_UNCONDITIONAL.md starting-state section updated to the ledger-210 frontier (compiled attack state, measured maps, ready engines, named bricks). The goal file is current for any continuing agent.
+- **goal part (2): OPEN.** Paper 12pp clean. The seat undischarged; the campaign's coordinates are at their sharpest recorded state.
+
+### 211 — THE Γ-BLOCK IN CLOSED FORM (T-progress, in print): the ENTIRE smooth defect (pole + Γ) is explicit and PSD throughout the strip — only window/lateral blocks remain in (T)
+- **the closed form (def:defect, IN PRINT)**: Γ-block = Hankel of e^{−(s₀+2)x}(1−e^{−2x})^{−1}dx on (0,∞); moments k!·2^{−(k+1)}·ζ_H(k+1, 1+s₀/2) (Hurwitz) for k ≥ 1 — manifestly positive density for ALL s₀ > −2 ⟹ PSD throughout the strip (vs the pole block's s₀ > 1). "The defect's common mode adds positivity" now covers the WHOLE smooth part at every transport station.
+- **provenance**: this is exactly the tsum component of the validated hybrid engine (5e-5 vs direct diff; ledgers 206–207) — the closed form was already load-bearing in every map of the campaign; now stated as (T)-content in print.
+- **(T) residue after this entry**: window and lateral blocks only — contour-specific, the genuinely windowed content.
+- **goal part (2): OPEN.** Paper 12pp clean.
+
+### 212 — SEPARATION FORCES DEPTH (cor:separation, in print): crossing-capable pairs at depth y confined to an O(n²y)-measure neighborhood of the null-root lattice — the deterministic half of the resonance-route composition
+- **the corollary (proof: three lines, contrapositive of the phase budget)**: all roots ≥ d from the pair abscissa (imag parts ≤ ι) ⟹ crossing needs y₀ ≥ d·tan((π/4−φ_w/2)/deg P) − ι ≈ πd/(4·deg P). Equivalently: shallow pairs can cross ONLY from the explicit ~(4n y/π)-neighborhood of the null-root abscissas — total measure ~8n²y/π per window; pairs elsewhere are SPECTATORS regardless of the flow.
+- **the composition slot (in print, calibrated)**: deterministic half = this corollary; counting half = classical zero-density estimates (unconditional), entering ONLY as a count — no exponent claimed pending the source read (literature rule observed in print). The composition against the window census = the named remaining analytic step of the resonance route.
+- **goal part (2): OPEN.** Paper 13pp clean.
+
+### 213 — DENSITY SOURCE-READ DONE + COMPOSITION SLOT FILLED IN PRINT (Ingham 1940, Guth–Maynard 2024 verified at source) + BIBLIOGRAPHY ADDED; and the composition's yield CALIBRATED: rarity ≠ exclusion
+- **source-read (web, this session)**: Guth–Maynard arXiv:2405.20552 (submitted 2024-05-31, v2 2026-04-07): N(σ,T) ≤ T^{30(1−σ)/13+o(1)} — first exponent improvement over Ingham 1940 (N ≪ T^{3(1−σ)/(2−σ)+o(1)}) in 84 years; at σ=3/4: T^{15/26} vs Ingham's T^{3/5}. Wired into rem (composition slot) with both cites; pairs at depth y number ≪ T^{30(1/2−y)/13+o(1)}.
+- **bibliography added** (the paper had none — original-read nit closed): Ingham 1940, Guth–Maynard 2024, Platt–Trudgian 2021 (wired into U4), Yoshida 1992 (wired into rem:cosine).
+- **calibration IN PRINT**: density counts cannot reach zero — the resonance-route composition unaided yields a NEW-MECHANISM density theorem (windows admitting resonances are sparse), NOT the seat; per-window closure still requires path steering within cor:separation's vulnerable set, or positivity. The remaining content located exactly there.
+- **process note**: one rule-2 violation (sed edit) caught by Sam and redone with the Edit tool.
+- **goal part (2): OPEN.** Paper 13pp clean with references.
