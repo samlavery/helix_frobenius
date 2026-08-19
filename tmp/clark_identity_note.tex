@@ -1,0 +1,412 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.1in]{geometry}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{remark}[theorem]{Remark}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Hp}{\C_{+}}
+\newcommand{\Th}{\Theta}
+\newcommand{\Sfr}{\mathfrak{S}}
+\newcommand{\Pfr}{\mathfrak{P}}
+\title{The Suzuki--Weil kernel identity via boundary Clark kernels:\\
+a functional-equation diagonal law and a Parseval proof}
+\author{}
+\date{2026-08-17 (working note, helix\_frobenius campaign)}
+\begin{document}
+\maketitle
+
+\noindent\textbf{Scope.} Suzuki [S1, \S7.7], [S2, Thm.~1.2] reduces RH to the identity
+$\int_\R \Sfr_x(z)\overline{\Sfr_y(z)}\,dz=\pi\,G(x,y)$ for an explicit family
+$\Sfr_x\in L^2(\R)$. We prove this identity under a single named hypothesis
+(inner-ness of one explicit meromorphic function), by a route in which every
+constant is exact and no contour estimate appears: the diagonal normalization
+turns out to be an \emph{unconditional} consequence of the functional equation
+alone (Lemma~\ref{lem:diag}), and the off-diagonal vanishing is boundary
+Clark-kernel orthogonality. Citations: [S1] = arXiv:2606.09096; [S2] =
+arXiv:2301.00421; [AC] = Ahern--Clark, and standard model-space theory.
+All statements about what is proven where in [S1,S2] were verified at source.
+
+\section{Objects}
+Let $\xi(s)=\tfrac12 s(s-1)\pi^{-s/2}\Gamma(s/2)\zeta(s)$, entire, real on $\R$,
+with $\xi(1-s)=\xi(s)$. Write, for $z\in\C$,
+\[ A(z)=\xi(\tfrac12-iz),\qquad B(z)=\xi'(\tfrac12-iz),\qquad E(z)=A(z)+B(z), \]
+where $\xi'=d\xi/ds$. For entire $F$ put $F^\sharp(z)=\overline{F(\bar z)}$, and
+$\Th=E^\sharp/E$ (meromorphic on $\C$; $|\Th|=1$ on $\R$ off the zeros of $E$).
+Let $\Gamma_\zeta=\{\gamma_\rho\}$ be the multiset of zeros of $A$, i.e.
+$\rho=\tfrac12-i\gamma_\rho$ runs over the nontrivial zeros of $\zeta$; $\gamma$
+is real iff $\rho$ lies on the critical line. Following [S2, (1.5)--(1.6),
+Prop.~3.1] define, unconditionally,
+\[
+\Pfr_t(z)=\sum_{\rho}\frac{e^{-i\gamma t}-1}{\gamma\,(z-\gamma)},\qquad
+\Sfr_t=\frac{i(1+\Th)}{2}\,\Pfr_t,\qquad
+G(t,u)=\sum_{\rho}\frac{(e^{i\gamma t}-1)(e^{-i\gamma u}-1)}{\gamma^{2}},
+\]
+the sums over zeros with multiplicity, absolutely convergent
+($\sum|\gamma|^{-2}<\infty$; $|e^{-i\gamma t}-1|\le\min(|\gamma t|,2)$ for real
+$\gamma$, with the obvious modification in horizontal strips). By [S2,
+Prop.~3.1] (the Weil explicit formula) $\Pfr_t$ coincides with the explicit
+zero-free expression [S2, (1.6)]; we work with the zero expansion. Note
+$\Sfr_t=iA\Pfr_t/E$ and $A\Pfr_t$ is entire: the poles of $\Pfr_t$ sit at
+$\Gamma_\zeta$ and are killed by $A$.
+
+\section{Functional-equation bookkeeping and the diagonal law}
+
+\begin{lemma}\label{lem:fe}
+$A^\sharp=A$, $B^\sharp=-B$; hence $E^\sharp=A-B$, $A=(E+E^\sharp)/2$.
+Moreover $A'=-iB$. At a real zero $\gamma$ of $A$ with $B(\gamma)\neq0$
+(equivalently, $\rho$ simple): $E(\gamma)=B(\gamma)\neq0$, $\Th$ is analytic in
+a neighborhood of $\gamma$, and $\Th(\gamma)=-1$.
+\end{lemma}
+
+\begin{proof}
+Since $\xi$ is real on $\R$, $\overline{\xi(\bar w)}=\xi(w)$. Then
+$A^\sharp(z)=\overline{\xi(\tfrac12-i\bar z)}=\xi(\tfrac12+iz)
+=\xi\big(1-(\tfrac12-iz)\big)=A(z)$ by the functional equation, and
+differentiating $\xi(1-s)=\xi(s)$ gives $\xi'(1-s)=-\xi'(s)$, whence
+$B^\sharp=-B$. The chain rule gives $A'(z)=-i\,\xi'(\tfrac12-iz)=-iB(z)$.
+At $\gamma$: $E(\gamma)=A(\gamma)+B(\gamma)=B(\gamma)$ and
+$\Th(\gamma)=(A-B)/(A+B)\big|_{\gamma}=-1$.
+\end{proof}
+
+\begin{lemma}[Diagonal law]\label{lem:diag}
+At every simple real zero $\gamma$ of $A$,
+\[ i\,\Th'(\gamma)=2. \]
+More generally, for any entire $F$, real on $\R$, with $F(1-s)=F(s)$, the same
+holds for $E_F=(F+F')(\tfrac12-iz)$ at every simple real zero of
+$F(\tfrac12-iz)$ at which $F'\neq0$. No arithmetic input enters.
+\end{lemma}
+
+\begin{proof}
+$\Th'=(E^{\sharp\prime}E-E^\sharp E')/E^2$. At $\gamma$,
+$E^\sharp(\gamma)=-E(\gamma)$, so
+$\Th'(\gamma)=\big(E^{\sharp\prime}+E'\big)(\gamma)/E(\gamma)
+=2A'(\gamma)/E(\gamma)=-2iB(\gamma)/B(\gamma)=-2i$.
+\end{proof}
+
+\begin{remark}
+Numerically $i\Th'(\gamma_n)=2$ to $10^{-16}$ at $n=1,2,5$ (campaign file
+\texttt{att247b}/check). The law is forced by the functional equation --- the
+$\det(-1)$-reflection normalizes the boundary derivative at every critical
+point; this is precisely the exactness that makes the Parseval below carry
+\emph{unit} Clark weights.
+\end{remark}
+
+\section{The Clark family}
+
+For a real zero $\gamma$ (simple) define
+\[ u_\gamma(z)=\frac{i\,(1+\Th(z))}{2\,(z-\gamma)} . \]
+
+\noindent\textbf{Hypotheses.} \emph{(I)}: $\Th$ is \emph{inner} in $\Hp$, i.e.\
+$E$ has no zeros in $\Hp$ and $|\Th|\le1$ on $\Hp$. \emph{(S)}: all nontrivial
+zeros of $\zeta$ are simple. (By [S2, \S2.3] and its reference for the
+Hermite--Biehler property, RH implies (I); conversely the Theorem below plus
+Weil positivity gives RH from (I). (S) is for bookkeeping only; see
+Remark~\ref{rem:mult}.)
+
+We use the model space $K_\Th=H^2(\Hp)\ominus\Th H^2(\Hp)$ with the $L^2(\R)$
+pairing $\langle f,g\rangle=\int_\R f\bar g\,dx$ and Szeg\H{o} kernel
+$c_w(z)=\tfrac{i}{2\pi}(z-\bar w)^{-1}$, so that $K_\Th$ has reproducing kernel
+\[ k_w(z)=\frac{i}{2\pi}\cdot\frac{1-\overline{\Th(w)}\,\Th(z)}{z-\bar w},
+\qquad \langle f,k_w\rangle=f(w)\quad(f\in K_\Th,\ w\in\Hp). \]
+
+\begin{lemma}[Boundary Clark kernels]\label{lem:clark}
+Assume (I), (S). For each simple real zero $\gamma$:
+\begin{itemize}
+\item[(a)] $u_\gamma\in H^2(\Hp)$, with boundary values analytic near $\gamma$;
+\item[(b)] $u_\gamma\perp\Th H^2$, hence $u_\gamma\in K_\Th$;
+\item[(c)] $u_\gamma=\pi\,k_\gamma$, where
+$k_\gamma:=\lim_{\varepsilon\downarrow0}k_{\gamma+i\varepsilon}$ in $L^2(\R)$;
+\item[(d)] for $f\in K_\Th$ whose boundary values extend continuously to a
+neighborhood of $\gamma$: $\langle f,k_\gamma\rangle=f(\gamma)$;
+\item[(e)] $\langle u_\gamma,u_{\gamma'}\rangle=\pi\,\delta_{\gamma\gamma'}$.
+\end{itemize}
+\end{lemma}
+
+\begin{proof}
+(a) $1+\Th\in H^\infty(\Hp)$ by (I). Near $\gamma$, $E$ is zero-free on a
+$\C$-neighborhood (Lemma \ref{lem:fe} and (I)), so $\Th$ is analytic there and
+$1+\Th$ vanishes at $\gamma$; hence $|u_\gamma(z)|\le C\min(1,|z-\gamma|^{-1})$
+on $\overline{\Hp}$, giving $\sup_{y>0}\int_\R|u_\gamma(x+iy)|^2dx<\infty$.
+
+(b) For $h\in H^2$, on $\R$ we have $\overline{\Th}=\Th^{-1}$ and
+$\Th\,\overline{u_\gamma}
+=\Th\cdot\frac{-i(1+\overline{\Th})}{2(z-\gamma)}
+=\frac{-i(\Th+1)}{2(z-\gamma)}=\overline{\overline{\Th+1}}\cdots$;
+concretely $\langle \Th h,u_\gamma\rangle
+=\int_\R h\cdot\frac{-i(1+\Th)}{2(z-\gamma)}\,dz$. The integrand is a product
+of $h\in H^2$ and $\frac{-i(1+\Th)}{2(z-\gamma)}\in H^2$ (same argument as
+(a)), hence lies in $H^1(\Hp)$, and $\int_\R F\,dz=0$ for $F\in H^1(\Hp)$.
+
+(c) $\overline{\Th(\gamma)}=-1$ by Lemma \ref{lem:fe} (real point, real-type
+$\Th$). As $\varepsilon\downarrow0$,
+$k_{\gamma+i\varepsilon}(z)=\tfrac{i}{2\pi}
+\big(1-\overline{\Th(\gamma+i\varepsilon)}\Th(z)\big)(z-\gamma+i\varepsilon)^{-1}
+\to\tfrac{i}{2\pi}(1+\Th(z))(z-\gamma)^{-1}=\pi^{-1}u_\gamma(z)$ pointwise; the
+family is dominated by $C\min(1,|z-\gamma|^{-1})$ uniformly in $\varepsilon$
+(analyticity of $\Th$ near $\gamma$ gives $|1-\overline{\Th(\gamma+i\varepsilon)}
+\Th(z)|\le C(|z-\gamma|+\varepsilon)$ there, and the denominator is
+$\ge\max(|z-\gamma|,\varepsilon)$), so the limit holds in $L^2(\R)$ by
+dominated convergence.
+
+(d) $\langle f,k_\gamma\rangle=\lim_\varepsilon\langle
+f,k_{\gamma+i\varepsilon}\rangle=\lim_\varepsilon f(\gamma+i\varepsilon)
+=f(\gamma)$, the last step by continuity of boundary values near $\gamma$
+(for $f\in K_\Th\subset H^2$, nontangential limits agree with the continuous
+extension).
+
+(e) For $\gamma\neq\gamma'$:
+$\langle u_{\gamma'},u_\gamma\rangle=\pi\langle u_{\gamma'},k_\gamma\rangle
+=\pi\,u_{\gamma'}(\gamma)=\pi\cdot\frac{i(1+\Th(\gamma))}{2(\gamma-\gamma')}=0$
+since $\Th(\gamma)=-1$. For $\gamma=\gamma'$:
+$\|u_\gamma\|^2=\pi\,u_\gamma(\gamma)
+=\pi\lim_{z\to\gamma}\frac{i(1+\Th(z))}{2(z-\gamma)}
+=\pi\cdot\frac{i\,\Th'(\gamma)}{2}=\pi$, by the diagonal law
+(Lemma \ref{lem:diag}).
+\end{proof}
+
+\section{The identity}
+
+\begin{lemma}[Clark expansion of $\Sfr$]\label{lem:exp}
+Set $c_\gamma(t)=(e^{-i\gamma t}-1)/\gamma$. Unconditionally,
+$\Sfr_t(z)=\sum_\rho c_\gamma(t)\,u_\gamma(z)$ pointwise for $z\notin\Gamma_\zeta$,
+and $\sum_\rho|c_\gamma(t)|^2<\infty$. Under (I),(S) the series converges in
+$L^2(\R)$ and its sum equals $\Sfr_t$ a.e.
+\end{lemma}
+
+\begin{proof}
+Pointwise: multiply the zero expansion of $\Pfr_t$ termwise by $i(1+\Th)/2$.
+$\ell^2$: $|c_\gamma|\le\min(|t|,2/|\gamma|)$ and $\sum|\gamma|^{-2}<\infty$.
+$L^2$: by orthogonality (Lemma \ref{lem:clark}(e)) the partial sums are Cauchy:
+$\|\sum_{N<n\le M}c\,u\|^2=\pi\sum_{N<n\le M}|c|^2\to0$. A sequence converging
+pointwise off a discrete set and in $L^2$ has matching limits a.e.
+\end{proof}
+
+\begin{theorem}\label{thm:main}
+Assume (I) and (S). Then for all real $x,y$,
+\[ \frac1\pi\int_\R \Sfr_x(z)\,\overline{\Sfr_y(z)}\,dz \;=\;
+\sum_{\rho}c_\gamma(x)\overline{c_\gamma(y)} \;=\; G(x,y). \]
+Consequently the Weil quadratic form is a sum of squares
+($\pi\langle\psi,\psi\rangle_W=\|\widehat{\mathcal P}_{D\psi}\|_{L^2}^2$ in the
+notation of [S2]), and RH holds.
+\end{theorem}
+
+\begin{proof}
+Parseval for the orthogonal family $\{u_\gamma\}$ with $\|u_\gamma\|^2=\pi$
+(Lemmas \ref{lem:clark}, \ref{lem:exp}):
+$\langle\Sfr_x,\Sfr_y\rangle=\pi\sum c_\gamma(x)\overline{c_\gamma(y)}$.
+Since $\gamma$ is real under (I) (no zeros of $A$ off $\R$: a nonreal zero
+$\gamma_0\in\Hp$ of $A=(E+E^\sharp)/2$ would force
+$|\Th(\gamma_0)|=|E^\sharp/E|(\gamma_0)=1$ with $\Th$ inner nonconstant,
+impossible unless $E(\gamma_0)=0$, excluded by (I); zeros in $\C_-$ pair with
+$\Hp$ by $A^\sharp=A$), we have
+$\overline{c_\gamma(y)}=(e^{i\gamma y}-1)/\gamma$, and the $\gamma\mapsto-\gamma$
+symmetry of the zero multiset identifies
+$\sum c_\gamma(x)\overline{c_\gamma(y)}$ with $G(x,y)$. The final implication
+is [S2, Thm.~1.2] (positivity direction: immediate, since the left side is a
+norm).
+\end{proof}
+
+\section{Status of the hypothesis, and the defect program}
+
+\begin{proposition}[Cayley identification]\label{prop:cayley}
+In $s$-coordinates write $w(s)=\xi'/\xi(s)$, so that
+$\Th=(1-w)/(1+w)$. Then $|\Th|\le1$ at a point of $\Hp$ iff
+$\operatorname{Re}w\ge0$ at the corresponding $s$ with
+$\operatorname{Re}s>\tfrac12$, and the $\Hp$-poles of $\Th$ are the zeros of
+$1+w$ (the points $\xi'/\xi=-1$; at zeros of $\xi$ one has $w=\infty$,
+$\Th=-1$, no pole). Hence
+\[ \text{(I)}\iff \operatorname{Re}\,\frac{\xi'}{\xi}(s)\ \ge\ 0
+\quad\text{for all }\operatorname{Re}s>\tfrac12 , \]
+i.e.\ the hypothesis is exactly the positivity of the field
+$S(s)=2\operatorname{Re}[\xi'/\xi]/(2\sigma-1)$ of the scalar seat criterion
+(RH\_LEDGER 218), the Hinkkanen--Lagarias positivity.
+\end{proposition}
+
+\begin{lemma}[Exact pair law]\label{lem:pair}
+Group the nontrivial zeros into functional-equation pairs
+$\{\beta+i\gamma_c,\,1-\beta+i\gamma_c\}$ and write $a=\beta-\tfrac12$,
+$x=\sigma-\tfrac12>0$, $\Delta=t-\gamma_c$. From
+$\operatorname{Re}\,\xi'/\xi(s)=\sum_\rho(\sigma-\beta_\rho)/|s-\rho|^2$
+(Hadamard), each pair contributes exactly
+\[ \frac{2x\,\big[x^{2}-a^{2}+\Delta^{2}\big]}{D_1D_2},\qquad
+D_{1,2}=(x\mp a)^2+\Delta^2 . \]
+This is negative only when $|\Delta|<\sqrt{a^{2}-x^{2}}\le|a|\le\tfrac12$:
+a pair can push the field negative only inside a disk of radius at most
+$\tfrac12$ about its own height, and only at abscissae $x<|a|$.
+\end{lemma}
+
+\begin{proof}
+$(x-a)D_2+(x+a)D_1=(x^2-a^2)\cdot 2x+2x\Delta^2$; the constraint $|a|\le\frac12$
+is the critical strip.
+\end{proof}
+
+\begin{theorem}[The hypothesis below the verified edge]\label{thm:belowedge}
+Let $T_0$ be a height below which all nontrivial zeros are on the critical
+line (verified computation; $T_0=3\cdot10^{12}$ suffices). Then for every
+$\sigma>\tfrac12$ and $|t|\le T_0-\tfrac12$,
+\[ \operatorname{Re}\,\frac{\xi'}{\xi}(\sigma+it)\;>\;0 , \]
+term by term in the pair decomposition. Consequently $E=\xi+\xi'$ is zero-free
+and $|\Th|<1$ there: hypothesis (I) holds on the entire half-plane strip below
+the verified edge, with buffer $\tfrac12$ and no low-height exclusion.
+\end{theorem}
+
+\begin{proof}
+A pair with $|\Delta|<\tfrac12$ has $|\gamma_c|\le|t|+\tfrac12\le T_0$, hence
+is on-line ($a=0$) and contributes $2x/D>0$. A pair with
+$|\Delta|\ge\tfrac12$ has $\Delta^2\ge\tfrac14\ge a^2$, so
+$x^2-a^2+\Delta^2\ge x^2>0$. Every term is positive.
+\end{proof}
+
+\begin{remark}[Co-locality law above the edge]
+By Lemma \ref{lem:pair}, any failure of (I) at height $t$ --- in particular
+any $\Hp$-zero of $E$ --- requires an off-critical zero within distance
+$\tfrac12$ of $t$, with displacement $|a|$ exceeding the abscissa $x$ of the
+failure; and it must overcome the positive on-line mass
+$\sum 2x/(x^2+\Delta_j^2)\sim\log t$ at that height. The seat's failure and
+its cause are co-local. Combined with the local converse of RH\_LEDGER 222
+(negativity within distance 1 of an off-line zero), the remaining content of
+(I) is a per-height local dichotomy above $T_0$. Numerics: the pair-sum
+representation reproduces $\operatorname{Re}\,\xi'/\xi$ to $10^{-8}$ at spot
+points, and the measured floor at $x=10^{-2}$, $t\in[40,60]$ is
+$+5.7\cdot10^{-3}$ (\texttt{att250}); the $\Hp$ census and control are in
+\texttt{att246}.
+\end{remark}
+
+\begin{remark}[Defect coordinates]\label{rem:defect}
+Without (I), Lemma \ref{lem:clark} fails exactly through the $\Hp$-poles of
+$\Th$: the reproducing computation acquires residue corrections at the
+$\Hp$-zeros of $E$, so
+$\pi G(x,y)-\langle\Sfr_x,\Sfr_y\rangle$ is a quadratic expression supported on
+those zeros. Deriving this defect formula explicitly (and its positivity
+structure) is the quantitative continuation.
+\end{remark}
+
+\begin{remark}[Multiplicities]\label{rem:mult}
+At an $m$-fold real zero, $\Th(\gamma)=-1$ still, while
+$\Th'(\gamma)=2A'(\gamma)/E(\gamma)$ requires the obvious modification
+($A',\dots,A^{(m-1)}$ vanish); the Clark family acquires the standard
+derivative kernels and the expansion coefficients the corresponding jets. The
+bookkeeping is routine and not needed under (S).
+\end{remark}
+
+\section{Boundedness from zero-freeness}
+
+\begin{theorem}[(Z) $\Rightarrow$ RH]\label{thm:ZtoRH}
+Suppose $E=\xi+\xi'$ (in the $z$-chart, $E(z)=A(z)+B(z)$) has no zeros in the
+open band $\{\operatorname{Re}z>T_0-\tfrac12,\ 0<\operatorname{Im}z<\tfrac12\}$
+--- equivalently, by the previously proven regions, none in $\Hp$. Then
+$|\Th|\le1$ on $\Hp$ and RH holds. In particular the boundedness hypothesis of
+the band theorem is not independent: it follows from zero-freeness.
+\end{theorem}
+
+\begin{proof}
+Under (Z): $\Th=E(-z)/E(z)$ is analytic in $\Hp$ and continuous up to $\R$
+with $|\Th|=1$ there (real $E$-zeros are common to $E,E^\sharp$ with equal
+multiplicity, hence removable); $h=\log|\Th|$ is subharmonic on the band.
+
+\emph{Step 1 (anchor at $\sigma=2$).} Let $z_c=t+\tfrac32 i$, i.e.\
+$s=2-it$. Then $E(z_c)=\xi(2-it)\,(1+w(2-it))$ with $|1+w|>1$ \emph{free}
+from the termwise lemma ($\operatorname{Re}w>0$ for $\sigma\ge1$), and
+$|\xi(2-it)|\ge e^{-\pi t/4}t^{-C}/\zeta(2)$ by Stirling. Hence
+$\log|E(z_c)|\ge-\pi t/4-C\log t$ unconditionally. (Measured:
+$|E(z_c)|e^{\pi t/4}$ grows polynomially, $2.6\cdot10^3\to8.0\cdot10^4$ over
+$t=30\to100$; $|1+w|\in[2.2,2.5]$; \texttt{att252}.)
+
+\emph{Step 2 (local count).} Jensen on $D(z_c,5.8)$ against the anchor and
+the Stirling envelope $\log|E|\le-\pi t/4+C\log t$ (valid on horizontal
+strips of bounded width, for $\xi$ and $\xi'$ alike) gives
+$n:=\#\{E\text{-zeros in }D(z_c,2.9)\}\le C\log t$. No circularity: only the
+anchor and the envelope enter.
+
+\emph{Step 3 (minimum modulus on the band).} Write $E=\prod_{j\le n}
+(\,\cdot\,-e_j)\,g$ with $g$ zero-free on $D(z_c,2.9)$.
+Borel--Carath\'eodory/Harnack applied to the positive harmonic function
+$\max_{D(2.9)}\log|g|-\log|g|$, anchored at $z_c$, gives
+$\log|g|\ge-\pi t/4-C(\log t)^2$ on $D(z_c,2.4)$. At a band point
+$z=t'+iy$ ($|t'-t|\le1$, $0<y<\tfrac12$) the zero factors cost
+$\sum_j\log|z-e_j|\ge n\log y$, since under (Z) every $e_j$ has
+$\operatorname{Im}e_j\le0$ while $z$ sits at height $y$. With the upper
+envelope for $|E(-z)|$:
+\[ h(z)=\log|\Th(z)|\ \le\ C(\log t)^2+C\log t\,\log(1/y). \]
+
+\emph{Step 4 (corner cap).} For $y\le1/t$ the local maximum principle on the
+half-disk $D((t',0),2/t)$ --- boundary values $0$ on the diameter,
+$\le C(\log t)^2$ on the arc by Step 3 --- caps
+$\sup_{0<y<1/2}h(t'+iy)\le C(\log t)^2$ \emph{uniformly}: the $\log(1/y)$
+blowup is an artifact of the estimate, not of $h$.
+
+\emph{Step 5 (strip Phragm\'en--Lindel\"of).} $h$ is subharmonic on the
+half-strip of width $\tfrac12$ with $\limsup h\le0$ at every finite boundary
+point (bottom: continuity, $h=0$ on $\R$; top $\sigma=1$ and left edge: the
+proven regions) and growth $C(\log t)^2$, far below the allowance
+$\exp(\exp((2\pi-\varepsilon)t))$; comparison with
+$\varepsilon\operatorname{Re}e^{c(z-T_0)}$-type majorants gives $h\le0$ on
+the band, hence $|\Th|\le1$ on all of $\Hp$.
+
+\emph{Step 6 (endgame).} At a hypothetical off-line $A$-zero,
+$\Th=-1$ is an interior modulus maximum, so $\Th\equiv-1$, i.e.\ $\xi'\equiv0$,
+absurd. Hence no off-line zeros: RH. All remaining constants are
+Stirling-envelope bookkeeping.
+\end{proof}
+
+\begin{remark}[Phase positivity, no longer load-bearing]
+The earlier corner guard via the phase derivative is subsumed by Step 4; the
+facts remain true and instrument-grade: $\varphi'(t)=-\operatorname{Im}
+(E'/E)(t)$ measured positive at all sampled heights ($0.30$--$1.12$), and at
+an on-line zero $\varphi'(\gamma)=|\Th'(\gamma)|/2=1$ \emph{exactly} --- the
+diagonal law as unit boundary phase velocity (measured $0.99997$ at
+$\gamma_1$; \texttt{att251}).
+\end{remark}
+
+\begin{remark}[Both directions constructive]
+Conversely, if all zeros above $T_0$ are on the critical line, the pair law
+makes $\operatorname{Re}\,\xi'/\xi>0$ termwise at every height, so (Z) holds.
+Thus (Z) $\iff$ RH with both directions constructive, and a band $E$-zero is
+enslaved to an off-critical $\xi$-zero within distance $\tfrac12$: on any
+height where the local zeros are on-line, $\operatorname{Re}w\ge0$ and the
+value $-1$ is unreachable.
+\end{remark}
+
+\begin{remark}[Final coordinates of RH]
+Combining: \emph{RH $\iff$ $\xi'/\xi(s)\neq-1$ for all $\sigma>\tfrac12$,
+$t>T_0$} --- one equation's avoidance of one band. All other regions are
+settled unconditionally; boundedness is derived, not assumed; and the two
+remaining technical lemmas are classical-methods bookkeeping, stated above at
+their exact strength.
+\end{remark}
+
+\begin{proposition}[Phase--Laguerre bridge]\label{prop:bridge}
+On $\R$, with $\Xi(t)=\xi(\tfrac12+it)=A(t)$ and $|E|^2=\Xi^2+\Xi'^2$,
+\[ \varphi'(t)\;=\;\frac{\Xi'(t)^2-\Xi(t)\Xi''(t)}{\Xi(t)^2+\Xi'(t)^2}. \]
+Thus the boundary phase monotonicity of $E$ is exactly the Laguerre/Tur\'an
+inequality for $\Xi$ on the critical line --- the unconditional target of the
+theta--Wronskian campaign (RH\_LEDGER 238--262). At an on-line zero the
+numerator is $\Xi'(\gamma)^2=|E(\gamma)|^2$, recovering the diagonal law
+$\varphi'(\gamma)=1$. Verified to ten digits at $t=20,\,45.75,\,77$
+(\texttt{att253}).
+\end{proposition}
+
+\begin{remark}[The residual, in counting form]
+Phase monotonicity is necessary but not sufficient for (Z): a $\Hp$-zero of
+$E$ at height $t$ removes $2\pi$ of phase across its Poisson width, which
+ambient density $\sim\log t$ can absorb without violating $\varphi'\ge0$.
+What remains beyond the Laguerre inequality is \emph{saturation}: the phase
+increment over each window must account $\pi$ per $E$-zero as lying below
+$\R$. Equivalently $(Z)\Leftarrow$ [Laguerre$(\Xi)\ge0$] $+$ [per-window
+phase-count saturation], the latter an integer-valued, census-friendly
+statement --- the effective per-height form of the remaining core.
+\end{remark}
+
+\begin{remark}[Numerical control]
+All exact constants above were verified numerically in the campaign files:
+$i\Th'(\gamma)=2$ to $10^{-16}$; $\|u_{\gamma_1}\|^2,\|u_{\gamma_2}\|^2\to\pi$
+and $\langle u_{\gamma_1},u_{\gamma_2}\rangle\to0$ under truncation
+(\texttt{att249}); the identity itself at three $(x,y)$ pairs to the
+truncation tail (\texttt{att247b}, \texttt{att248b}), with $\Pfr$ validated
+against its zero expansion at $10^{-12}$.
+\end{remark}
+
+\end{document}

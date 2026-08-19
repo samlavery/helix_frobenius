@@ -138,6 +138,58 @@ trichotomy fixes where the diagnostic content lives: FE pairing ≡ conjugate pa
 and PSD to numerical resolution; the well-conditioned γ-instrument is the
 window-contour chart, not resolvent Krylov bases.
 
+STATE AT LEDGER 256 (2026-08-17) — READ THIS FIRST.
+
+The theta-kernel branch is a FORMALIZATION project, not a research one: the
+analytic content is Csordas–Varga 1988 Thm 2.1 (hazard monotonicity /
+log-concavity of K(√t)), the Turán inequality is Csordas–Norfolk–Varga 1986,
+and Jensen hyperbolicity is known for all d ≤ 8 at every n (GORZ 2019) and to
+d ≈ 10²⁰ given Platt's verification. Nothing here is new arithmetic. Also
+RETRACTED (2026-08-17, Sam): an earlier version of this file claimed "the
+ladder cannot reach RH — PF_∞ for Φ is structurally impossible". That
+inference was WRONG, by a conflation. Schoenberg: f ∈ PF ⟺ its bilateral
+Laplace transform is 1/Ψ with Ψ ∈ Laguerre–Pólya. But the transform of
+Riemann's Φ IS Ξ, not 1/Ξ — so Φ ∈ PF_∞ would force Ξ = 1/Ψ, i.e. Ξ zero-free,
+false for trivial reasons. PF_∞ fails because Ξ HAS zeros, which says nothing
+about Ξ ∈ LP (= RH). The relevant ladder is Jensen hyperbolicity of J^{d,0}
+over all d, which IS RH and has NO known structural barrier; GORZ obtain every
+d asymptotically in n, so finite-d results are progress, not a ceiling.
+
+WHY THIS MACHINERY CAN CONTRIBUTE: the apparatus here is DEGREE-AGNOSTIC. The
+tail bounds, ground-split, region decomposition and sharp per-term estimates
+all control the sum over the theta index n and are independent of d; what
+changes with d is which moment inequality is the target (d = 2 is
+3m₂² > m₀m₄, higher d are inequalities of the same species in m₀…m_d fed by
+the same kernel estimates). The covariance-block reframe — "no pointwise
+control on the hard region is needed, only block sign conditions plus a sup
+bound" — is likewise an argument shape, not a d = 2 fact.
+
+PROVEN UNCONDITIONALLY in `ThetaWronskianSuzukiGram.lean` (8598 lines, 0
+sorries, std axioms): the gate `xiRadialConcavityNumerator_pos_of_half_le` on
+[½,∞); the ground gate positive on the whole half-line and ≥ 1/4 on [1/5,∞),
+≥ 2 on [2/5,∞), strictly increasing on [1/5,∞) (via g₀′ = −u·c₀′); the three
+sharp tail bounds at rate 30 and the per-term/q-weighted/gate tails at rate 23;
+the variance ground-split; TW levels 1–3 and Hankel positive-definiteness.
+
+THE REMAINING PIECES, in dependency order:
+1. Variance bounds at rate 23 + the final comparison on [2/5,½]. WARNING: that
+   comparison is tight — needs 4e6·q₀²e^{−3q₀} < 1.99 (true, 0.157 at
+   q₀ = 6.98) but q² ≤ e^q and Taylor orders 4–8 all lose by 2–10× there.
+   Use monotonicity of q²e^{−3q} or sharpen the variance constant (the biggest
+   single loss is folding (n+2)⁴ ≤ 16e^{4n}, which costs 186× at n = 0).
+2. The covariance block assembly at δ ≈ 0.36: mixed ≥ 0 needs only the SUP
+   bound H ≤ H(δ) on (0,δ] (`xiRadialCovarianceIntegrand_nonneg_mixed`,
+   compiled); the corner needs a crude bound (measured ratio ≈ 0.3 to
+   mixed+outer). This route AVOIDS the inner Taylor analysis entirely.
+3. Evenness via the Jacobi normalization bridge to Mathlib's two-variable
+   theta. The identity is K = h″ − h/4 with h(u) = e^{u/2}θ(u), verified to
+   1e−40.
+
+DO NOT re-walk: steering (ledger 215); the single-lemma closed-decay dominance
+(refuted, ledger 233 area); δ = ½ for the covariance split (corner 33.8%,
+outer 0.79% — fails); the box relaxation over u ∈ [0.22,½] (u and q₀ are
+linked; gives −4.4 at the corner).
+
 TERMINAL GEOMETRY (post-ledger-222; supersedes the brick list below where they
 conflict). The seat has been reduced, each step proven and in print
 (`automorph/hp_pencil.tex`, 15pp): n×n identity → scalar pointwise criterion

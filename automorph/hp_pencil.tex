@@ -26,7 +26,7 @@
 \title{The Gram double pencil: a spectral census for the zeros of $\zeta$,\\
 and an Euler-anchored regulator}
 \author{}
-\date{2026-08-14}
+\date{2026-08-14; formalization appendix updated 2026-08-16}
 
 \begin{document}
 \maketitle
@@ -45,7 +45,12 @@ Euler-anchored double pencil which is unconditionally positive semidefinite
 (Proposition \ref{prop:anchor}), and prove that its spectrum can be transported
 isospectrally by an explicit finite-dimensional regulator whenever a bank response
 matrix is nonsingular (Theorem \ref{thm:regulator}), extended through spectral
-collisions by a block regulator (Lemma \ref{lem:block}). We then construct the readout
+collisions by a block regulator (Lemma \ref{lem:block}). The census is
+verified as a computation against the actual zeros, and its detection law is
+identified: a violation of depth $y_0$ at height $x_0$ is seen with strength
+$2y_0^2P'(x_0)^2/\|c\|^2$ (Proposition \ref{prop:resolution}), amplified by
+the factor $4x_0^2$ in the quotient chart where the functional equation has
+been used (Proposition \ref{prop:fegain}). We then construct the readout
 itself: the warp --- the flow of a bank-computable velocity field --- exists, is real
 and order-preserving, and carries the frozen labels exactly onto the moving spectrum
 (Theorem \ref{thm:warp}); the characteristic polynomial obeys an exact
@@ -320,7 +325,7 @@ $(a,b)$. The solution of $\dot U=-KU$, $U(t_0)=I$, is unitary, and
 $\frac{d}{dt}\bigl(U^{*}SU\bigr)=U^{*}\bigl(\dot S-[S,K]\bigr)U=0$.
 \end{proof}
 
-\begin{remark}[numerical verification]
+\begin{remark}[numerical verification]\label{rem:channels}
 For the Euler anchor of Proposition \ref{prop:anchor} with $s_0=1.5$, $N=4$, control
 channels given by reweighting the prime channels $p\in\{2,3,5,7\}$ and raw flow
 $F_0=\partial_{s_0}S$: the spectrum is simple $(0.9619,2.7211,5.6399,8.8009)$,
@@ -710,14 +715,19 @@ $N(\sigma,T)\le T^{30(1-\sigma)/13+o(1)}$ (Guth--Maynard \cite{GuthMaynard2024},
 first exponent improvement in eighty-four years), so pairs at depth $y$ number
 $\ll T^{30(\frac12-y)/13+o(1)}$. Two calibrations. The composition of the two counts
 against the window census yields rarity statements --- windows admitting a resonance
-are sparse --- and rarity is not exclusion: a count cannot reach zero, so this route's
-unaided yield is a new-mechanism density theorem, not the seat. Closing the seat on a
-given window requires the per-window exclusion --- path steering within the vulnerable
-set of Corollary \ref{cor:separation}, or positivity --- and that is where the
-remaining content sits.
+are sparse. Whether that suffices is a quantitative question, not a categorical one:
+the count of resonant configurations in a given window is a nonnegative integer, so
+any bound driving it below $1$ forces it to $0$. What is true is narrower --- the
+exponents currently available do not reach below $1$ in the relevant range, since
+$30(\frac12-y)/13\to0$ as $y\to\frac12$ and a bound $T^{o(1)}$ need not be less than
+one. That is a statement about the present strength of the density estimates, not a
+barrier to the counting route. Closing the seat on a given window requires the
+per-window exclusion --- path steering within the vulnerable set of Corollary
+\ref{cor:separation}, positivity, or a density input sharp enough to cross the
+integrality threshold --- and that is where the remaining content sits.
 \end{remark}
 
-\begin{remark}[crossings are local resonances]
+\begin{remark}[crossings are local resonances]\label{rem:crossings}
 Combining Lemmas \ref{lem:nullflow} and \ref{lem:resonance}: a negative-sector
 crossing requires a conjugate pair at depth $y_0<\tfrac12$ whose abscissa lies within
 $\approx\frac{4(n-1)}{\pi}\,y_0$ of a root cluster of the null polynomial of the
@@ -737,6 +747,164 @@ $\spec\bigl(H^{(1)}_n(W),H_n(W)\bigr)\big|_{\ran H_n}$ --- the window support --
 terminal limit of the warped anchor spectrum $\varphi_t(\spec S_0)$, the remaining
 $n-m$ directions retiring into the null space through the rank-drop events.
 \end{hypothesis}
+
+\begin{lemma}[bounded bank field; global warp]\label{lem:boundedfield}
+The polynomial choice in Definition \ref{def:warp} is inessential, and replacing
+it globalizes the warp. Let $\psi_a\in C^\infty(\R)$ satisfy $\psi_a\ge0$,
+$\sum_a\psi_a\equiv1$ and $\psi_a(\lambda_b)=\delta_{ab}$ --- available as a
+partition of unity subordinate to the node gaps, the nodes being separated on a
+regular interval, and fixed canonically by scaling to the gaps. Put
+$V_t:=\sum_a d_a(t)\,\psi_a$. Then $V_t(\lambda_a)=d_a$, $V_t$ is real and
+$C^\infty$, and
+\[
+  \|V_t\|_\infty \;\le\; \max_a|d_a(t)| ,
+\]
+since $V_t$ is a convex combination of the $d_a$. Consequently, \emph{on a regular interval}, the flow of $\dot x=V_t(x)$ is
+complete,
+\[
+  |\varphi_t(x)-x|\;\le\;\int_0^t\|V_s\|_\infty\,ds
+  \;\le\;\int_0^t\max_a|d_a(s)|\,ds ,
+\]
+and $\varphi_t$ is a $C^\infty$ diffeomorphism of $\R$ \emph{onto} $\R$.
+\end{lemma}
+
+\begin{proof}
+Interpolation and the sup bound are immediate from $\psi_a\ge0$,
+$\sum\psi_a=1$. A bounded, locally Lipschitz field has no finite-time
+blow-up, so the flow is complete; strict monotonicity is as in Theorem
+\ref{thm:warp}(ii), and $\varphi_t(x)\to\pm\infty$ as $x\to\pm\infty$ by the
+displacement bound, so $\varphi_t$ is onto.
+\end{proof}
+
+\noindent Two caveats, both load-bearing. The partition subordinate to the
+node gaps degenerates as $\lambda_a-\lambda_b\to0$: boundedness of $V_t$
+survives a collision, since it is a convex combination throughout, but the
+Lipschitz constant does not, and with it uniqueness and monotonicity. The
+lemma is therefore stated on a regular interval, exactly as Theorem
+\ref{thm:warp} is, and it does \emph{not} by itself carry the warp across a
+collision. Second, the globalization must not be over-read: $S_t$ is
+Hermitian along the regulated flow, so $\spec S_t\subset\R$ automatically and
+$p_t$ is real-rooted for trivial reasons. Theorem \ref{thm:pullback} was never
+establishing reality; it establishes the \emph{identification}
+$Z(p_t)=\varphi_t(\spec S_0)$, which is covariance. What the bounded field buys
+is that this identification holds on all of $\R$ rather than on a neighborhood
+of the initial spectrum --- a removal of a domain restriction, not a gain in
+arithmetic content.
+
+\noindent All three clauses of Theorem \ref{thm:warp} are untouched: (i) the
+field is still computed from $(G_0,G_1,\dot G_0,\dot G_1)$; (ii) reality and
+order need only real coefficients and local Lipschitz continuity; (iii) is the
+interpolation condition. In Theorem \ref{thm:pullback} the interval $I$ may
+therefore be taken to be all of $\R$, strengthening its conclusion to
+$Z(p_t)=\varphi_t(\spec S_0)\subset\R$ globally, and the ``neighborhood of
+$[\lambda_1(0),\lambda_n(0)]$'' of Theorem \ref{thm:warp} becomes $\R$. The
+polynomial performed no function except to bound the domain; its degree is also
+what carries the factor $n-1$ in Remark \ref{rem:crossings} and $n^2$ in
+Corollary \ref{cor:separation}, so a bounded field shrinks the vulnerable set
+as well.
+
+\begin{lemma}[null directions retire; sum of squares]\label{lem:retire}
+Let $G_0(t)=\sum_\rho w_\rho(t)\,v(\rho(t))v(\rho(t))^{T}$ with real nodes and
+$w_\rho>0$, and let $w$ span a null direction, $P$ the associated polynomial.
+Then $w^{T}G_0w=\sum_\rho w_\rho P(\rho)^2=0$ forces $P(\rho)=0$ at every node,
+whence $w^{T}\dot G_0w=0$ and, with $k$ the least order for which
+$\rho^{(k)}\ne0$,
+\[
+  \frac{d^{2k}}{dt^{2k}}\Big|_{0}\,w^{T}G_0w
+  \;=\;\frac{(2k)!}{(k!)^2}\sum_\rho w_\rho\bigl(P'(\rho)\rho^{(k)}\bigr)^{2}
+  \;\ge\;0 .
+\]
+A null direction therefore retires into the null space and never crosses into
+the negative sector; equivalently, and more directly,
+$w^{T}G_0(t)w=\sum_\rho w_\rho(t)P(\rho(t))^2\ge0$ identically. The frozen case
+$\dot\rho=0$ needs no separate treatment.
+\end{lemma}
+
+\noindent The hypothesis of Lemma \ref{lem:retire} is the real-support,
+positive-weight regime, which is precisely the regime whose persistence is at
+issue; the lemma is therefore a statement about what can happen \emph{while}
+that regime holds, and cannot on its own establish that it persists through the
+first loss of reality. Read correctly, and combined with Corollary
+\ref{cor:rigidity} --- a conjugate pair is created exactly when an eigenvalue of
+$H_n$ crosses $0$ --- it says that so long as the support is real the crossing
+cannot originate at a null direction. Pair creation must therefore occur at a
+collision of two real nodes splitting off-axis, which near a double zero
+$\rho_*$ of $A_{t_0}$ is the local sign condition
+\[
+  (z-\rho_*)^2=-\,\frac{2\dot A(\rho_*)\,(t-t_0)}{A''(\rho_*)},
+  \qquad\text{real split}\iff \dot A(\rho_*)\,A''(\rho_*)\le0 .
+\]
+
+\begin{proposition}[viability of the real-rooted locus]\label{prop:viability}
+Let $R$ denote the set of configurations all of whose window zeros are real.
+At a boundary point $A_0\in\partial R$, carrying a double real zero at
+$\rho_*$, the contingent tangent cone is the closed half-space
+\[
+  T_R(A_0)\;=\;\bigl\{\dot A:\ \dot A(\rho_*)\,A_0''(\rho_*)\le0\bigr\},
+\]
+since $A_t(z)=\tfrac12A_0''(\rho_*)(z-\rho_*)^2+t\dot A(\rho_*)+o(\cdot)$ has
+real zeros near $\rho_*$ for $t>0$ exactly under that inequality. The
+velocities realizable by the regulated flow $\dot S=F_0+\sum_ru_rF_r$ form an
+affine set $\mathcal A$, and the cone is cut by the single linear functional
+$\ell(\dot A)=\dot A(\rho_*)A_0''(\rho_*)$. Hence
+$\mathcal A\cap T_R(A_0)\ne\emptyset$ --- Nagumo's condition --- unless $\ell$
+is strictly positive on all of $\mathcal A$, which fails as soon as one control
+direction has $\dot A_r(\rho_*)\ne0$.
+
+For the prime channels $p\in\{2,3,5,7\}$ of Remark \ref{rem:channels}, the
+$r$-th direction moves $A$ at $\rho_*$ by a multiple of $p_r^{-\rho_*}$, which
+is nonzero for every finite $\rho_*$. The non-degeneracy therefore holds at
+every collision site with no hypothesis, and $R$ is viable: from any
+real-rooted configuration, and at every time along the transport, there is an
+admissible velocity pointing into $R$.
+\end{proposition}
+
+\begin{corollary}[viable but not invariant]\label{cor:notinvariant}
+$R$ is not invariant under the regulated flow. Invariance would require
+$\mathcal A\subseteq T_R(A_0)$, i.e.\ $\ell\le0$ on every realizable velocity;
+but the same non-vanishing $p_r^{-\rho_*}\ne0$ that supplies viability lets the
+controls realize $\dot A(\rho_*)$ of either sign, so $\mathcal A$ straddles the
+hyperplane $\ell=0$.
+\end{corollary}
+
+\noindent This dichotomy is exactly why Hypothesis \ref{hyp:seat} is
+existential. Were $R$ invariant, reachability would be automatic: the anchor
+lies in $R$, every trajectory would remain there, and the terminal object would
+inherit $q=0$ with no choice to make. Because $R$ is merely viable, staying
+inside is always \emph{possible} but never \emph{forced}, and the seat is
+precisely the assertion that the possibility can be exercised all the way to
+the window. The content of the seat is thus located exactly: not in the
+boundary geometry, which is now settled, but in whether the admissible choices
+can be made consistently along a route terminating at the given window.
+
+\noindent The boundary of the real-rooted locus is thus never absorbing --- the
+failure mode that Lemma \ref{lem:nullflow} and the collision analysis were
+circling is excluded outright. What viability does \emph{not} supply is
+reachability: it produces trajectories that remain in $R$, not one that
+attains a prescribed target. The window's Hankel is fixed data and the control
+selects the route rather than the endpoint, so a route from the anchor to the
+window inside $R$ exists precisely when the window lies in $R$, i.e.\ when
+$q(W)=0$. Viability removes the obstruction along the way; the endpoint remains.
+
+\begin{remark}[what the collision criterion leaves]
+The three statements above remove, respectively, the domain obstruction on a
+regular interval, the null-direction obstruction while the real-support regime
+holds, and the generic-collision obstruction. What remains is the sign
+condition $\dot A(\rho_*)A''(\rho_*)\le0$ at each collision event. Here
+$A''(\rho_*)$ is fixed by the local shape and $\dot A(\rho_*)$ is a design
+parameter of the deformation, so the seat is a \emph{construction}: exhibit a
+transport whose velocity carries the correct sign at every collision.
+
+It should be recorded that path-independence of $n_-(H_n(W))=q(W)$ does
+\emph{not} argue against this. That the answer is independent of the route is
+what makes a route-based proof transfer, not what forbids one; a crossing-free
+path to the actual window exists precisely when $q(W)=0$, so exhibiting one is
+a proof rather than a verification. The cost is that the construction cannot be
+checked more cheaply than the theorem it establishes --- but unlike an
+estimate, it fails concretely, at a nameable collision, rather than by an
+insufficient margin. For a problem with no margin to spare that is the
+appropriate species of argument.
+\end{remark}
 
 \begin{remark}[three contractions of one kernel]\label{rem:contractions}
 The transported objects of this paper are contractions of the single two-variable
@@ -916,8 +1084,13 @@ Theorem \ref{thm:main} is conditional on Hypothesis \ref{hyp:psd}, and Theorem
 \ref{thm:chain} reduces Hypothesis \ref{hyp:psd} to the seat. By the rigidity of the
 moment problem, any pairing whose Gram matrix reproduces the moments $\mu_{j+k}(W)$
 \emph{is} the counting pairing of \eqref{eq:moments}, so its positivity is equivalent to
-the conclusion; a proof must therefore proceed from the bank side, and the precise
-remaining steps are these.
+the conclusion. Equivalence is not circularity: either side may be attacked, and a
+direct proof of positivity would be a proof of the conclusion rather than an appeal to
+it. What the rigidity does say is that no \emph{cheap} proof of positivity can exist ---
+one cannot verify it by exhibiting some other pairing with the same moments, since there
+is no other. The bank side is therefore one route among the available ones, taken here
+because it supplies structure the moment side does not; the precise remaining steps are
+these.
 
 \begin{enumerate}
 \item[(T)] \textbf{Contour transport (defect evaluation).} Evaluate the terminal defect
@@ -950,6 +1123,400 @@ the bank-generated warp along the transport, exactly and order-preservingly (The
 seat identifies the terminal limits with the window support; reality forces $q\equiv0$
 (Theorem \ref{thm:inertia}); and Theorem \ref{thm:main} concludes.
 
+\section{The census as a computation: verification, resolution law, and the
+functional-equation gain}\label{sec:computational}
+
+The census of \S\ref{sec:obligations} is not only a theorem; it is an
+algorithm, and its behaviour has been measured. Everything in this section was
+computed for the window $W=(10,30)$ with rectangle height $Y=3/2$, against the
+three zeros $14.134725$, $21.022040$, $25.010858$ it contains
+(\texttt{tmp/att220}--\texttt{att233}).
+
+\subsection{The contour blocks, evaluated}
+
+Decompose $\partial R_W$ into the two horizontal (windowing) edges and the two
+lateral edges.
+
+\begin{enumerate}
+\item[(a)] \textbf{Laterals telescope exactly.} The lateral moments at
+$x=10,20,30$ were computed directly from $A'/A$; the shared edge of two
+adjacent windows carries identical values with opposite orientation, so
+adjacent contributions cancel to zero at every $k$. This verifies the
+pairwise cancellation asserted in (U5).
+\item[(b)] \textbf{The windowing block is prime-computable --- through the
+functional equation.} The top edge lies at $\mathrm{Re}\,s=\tfrac12+Y=2$, in
+the half plane of absolute convergence, and recomputing its moments from
+\[
+  \frac{\xi'}{\xi}(s)=\frac1s+\frac1{s-1}-\tfrac12\log\pi
+    +\tfrac12\psi\!\left(\tfrac s2\right)+\frac{\zeta'}{\zeta}(s),
+  \qquad \frac{\zeta'}{\zeta}(s)=-\sum_{n\ge2}\Lambda(n)n^{-s},
+\]
+with no zero data whatsoever, reproduces the contour values to relative
+$2.3\cdot10^{-6}$--$2.7\cdot10^{-7}$. The bottom edge, by contrast, lies at
+$\mathrm{Re}\,s=\tfrac12-Y=-1$, where that series \emph{diverges}: it is
+accessible only as the functional-equation image of the top edge, and the two
+were measured to be exactly equal. The functional equation is therefore
+load-bearing in the prime-side representation, not decorative.
+\item[(c)] \textbf{Signs.} The pole and $\Gamma$ blocks are positive
+semidefinite (proved; \S\ref{sec:seat}), the laterals telescope, and the
+windowing block alone is \emph{indefinite} --- inertia $(2,1)$ at $n=3$. The
+assembled matrix is nevertheless positive semidefinite: a summand fails
+positivity while the sum does not.
+\end{enumerate}
+
+\subsection{Verification against the actual zeros}
+
+Assembling all blocks reproduces the atomic prediction
+$\mu_k=\sum_i x_i^{\,k}$ to $8$--$10$ digits ($\mu_0=3$ exactly by the
+argument principle; $\mu_1=60.16762236$ against $60.167623$; $\mu_5=
+1.445663\cdot10^{7}$ against $1.4456633\cdot10^{7}$). The census returns
+inertia $(n,0)$, $q=0$, with the structural rank drop appearing exactly at
+$n=4$ as Theorem \ref{thm:inertia} requires for three distinct support points.
+
+\subsection{The functional equation and the shape of a violation}
+
+$A$ is even, $A(-z)=A(z)$ --- this is the functional equation in the
+$z$-chart. Consequently a genuine off-critical zero appears not as a
+conjugate pair but as a \emph{quadruple} $\{\pm x\pm iy\}$, and a synthetic
+test that plants only $\{w,\bar w\}$ is not a $\xi$-like object. The
+functional-equation-respecting formulation is the quotient chart $w=z^2$ of
+Proposition \ref{prop:stieltjes}, in which the quadruple folds to a single
+conjugate pair and the test is the Stieltjes pair condition. Measured there
+at the size threshold $m=5$: the true configuration gives $n_-=0$ in both
+Hankels ($-1.9\cdot10^{-53}$, $-7.7\cdot10^{-57}$), an off-line quadruple at
+$18\pm0.01i$ gives $n_-=1$ in both ($-3.2\cdot10^{-8}$, $-1.0\cdot10^{-5}$).
+
+\begin{proposition}[resolution law]\label{prop:resolution}
+Let $P$ be a real polynomial and let a conjugate pair sit at $x_0\pm iy_0$.
+Its contribution to the quadratic form $c^{T}H_nc=\sum_\rho P(z_\rho)^2$ is
+\[
+  2\,\mathrm{Re}\bigl[P(x_0+iy_0)^2\bigr]
+  = 2P(x_0)^2-2y_0^2\bigl[P'(x_0)^2+P(x_0)P''(x_0)\bigr]+O(y_0^4).
+\]
+Hence the detecting direction is the $P$ vanishing at the real support and at
+$x_0$, and the detected eigenvalue is
+\[
+  \lambda_{\min}\;=\;-\,\frac{2y_0^2\,P'(x_0)^2}{\|c\|^2}+O(y_0^4):
+\]
+the depth enters as $y_0^2$ and the position through a Christoffel-type
+factor.
+\end{proposition}
+
+Measured against Proposition \ref{prop:resolution} with no fitted parameter,
+at $y_0=10^{-2}$, $n=5$: ratios of measured to predicted are $1.0001$,
+$1.0002$, $1.0001$, $1.0000$, $1.0001$, $1.0002$, $1.0002$ at
+$x_0=11,12,16,18,23,28,29$ --- the law reproduces a three-order spread in the
+signal exactly; and $1.00017$, $1.00004$, $1.00001$ across
+$y_0=2\cdot10^{-2},10^{-2},5\cdot10^{-3}$. When $x_0$ coincides with a support
+point the detecting polynomial satisfies one fewer vanishing condition, the
+extremal direction changes, and the signal is far larger --- a second, equally
+explicit regime.
+
+Two consequences. First, a working-precision requirement: detecting a pair of
+depth $y_0$ costs
+\[
+  \text{digits} \;\approx\;
+  \underbrace{\log_{10}\kappa}_{\text{dynamic range}}
+  +\;2\log_{10}(1/y_0)
+  +\;\log_{10}\bigl(\|c\|^2/P'(x_0)^2\bigr),
+\]
+so the census is an unconditional theorem with an algorithm attached rather
+than an effective verification method: at double precision the detection fails
+at every depth tested, including $y_0=0.3$.
+
+Second, and in the other direction:
+
+\begin{proposition}[functional-equation gain]\label{prop:fegain}
+In the quotient chart $w=z^2$ a violation at $x_0\pm iy_0$ sits at
+$w=(x_0+iy_0)^2$ with
+\[
+  \mathrm{Im}\,w \;=\; 2x_0y_0 ,
+\]
+so folding by the functional equation multiplies the effective depth by the
+height. By Proposition \ref{prop:resolution} the detected signal gains a
+factor $4x_0^2$.
+\end{proposition}
+
+Measured at the same physical violation: $\times440$ at $x_0=18$
+($-7.2\cdot10^{-11}$ in the $z$-chart against $-3.2\cdot10^{-8}$ in the
+$w$-chart) and $\times2300$ at $x_0=30$. Detection sensitivity therefore
+\emph{improves} quadratically with height in the functional-equation chart,
+against the degradation of the raw chart --- the symmetry buys the resolution.
+
+\subsection{Where the positivity comes from}
+
+On the near-null direction of the assembled matrix at $n=3$, splitting the
+energy into its prime, archimedean and boundary parts gives $-1.9\cdot10^{-3}$,
+$+3.0\cdot10^{-2}$ and $-2.4\cdot10^{-2}$ respectively. The prime block's
+contribution is negative; the positive energy is supplied by the archimedean
+block and partly consumed by the boundary. This is a single window and a
+single direction, and only the sign count $n_-$ is invariant --- the size of
+$\lambda_{\min}$ is not a margin, since structural nulls make it vanish by
+design once $n>m$. With that caution, the measurement points where the
+classical partial results also point: the difficulty of the positivity sits at
+the archimedean place, not with $\Lambda\ge0$.
+
+\subsection{The exchange rate: linear detection against exponential
+cancellation}\label{sec:exchange}
+
+The archimedean difficulty admits a quantitative statement in the Weil form
+itself, which we record because it fixes what any proof must overcome. Take
+$g=\psi*\tilde\psi$ with $\psi=\mathbf 1_{[-U/2,U/2]}$, so $g(x)=(U-|x|)_+$ and
+$\hat g(r)=4\sin^2(Ur/2)/r^2\ge0$, and write the explicit formula as
+$W=\mathrm{Arch}+\mathrm{Pole}-\mathrm{Prime}=\sum_\rho\hat g(\gamma_\rho)$.
+Two measurements, with the archimedean tail taken analytically
+($\hat g$ decays as $r^{-2}$ against a $\log r$ digamma factor, so truncation at
+$|r|\le400$ leaves an error comparable to $W$ itself and must be corrected):
+
+\emph{First}, $W$ is essentially constant while its constituents diverge. At
+$U=0.549,\,2,\,4$ one finds $W=+0.085,\,+0.107,\,+0.070$ against
+$\mathrm{Pole}=0.61,\,8.69,\,44.20$ and $\mathrm{Prime}=0,\,3.49,\,30.15$. The
+value is independently confirmed by $W=\sum_\rho\hat g(\gamma_\rho)\to
+2\sum_{\gamma>0}\gamma^{-2}\cdot2\approx0.092$. So the Weil form is a
+difference of quantities growing like $e^{U/2}$ whose difference is bounded, and
+the relative margin $W/\mathrm{Pole}$ falls from $1.4\cdot10^{-1}$ to
+$1.6\cdot10^{-3}$ across that range.
+
+\emph{Second}, the detection reach is only linear. A planted off-line pair at
+$\gamma=\beta\pm i\delta$ contributes
+$2\,\mathrm{Re}\,\hat g(\beta+i\delta)\sim\pm2\cosh(U\delta)/|\gamma|^2$,
+oscillating in sign with amplitude $e^{U\delta}$ against the background
+$\approx0.09$; numerically $W$ first turns negative at
+\[
+  U_{\mathrm{detect}}\;\approx\;1.6/\delta
+  \qquad(\delta=0.5,0.3,0.2,0.1\ \Rightarrow\ U=3.51,5.31,7.99,14.66),
+\]
+with the all-real control staying positive at every $U$ tested.
+
+Together: \emph{detection depth is bought linearly in the support, while the
+cancellation to be resolved grows exponentially in it.} The narrow-support
+regime in which Weil positivity is known unconditionally is not narrow by
+weakness of technique; at $U=(\log3)/2$ the reach is $\delta\gtrsim2.9$, outside
+the critical strip, so it excludes nothing, and sharpening constants moves the
+threshold only logarithmically. A proof must break this exchange rate rather
+than improve within it --- which is the same discipline the appendix records
+below, where every estimate that discarded a cancellation failed by orders and
+every exact evaluation succeeded.
+
+\section{Appendix: the formalized theta-kernel Tur\'an program}
+\label{sec:leanappendix}
+
+Parallel to the transport program of the body, a machine-checked campaign
+(\texttt{RequestProject/ThetaWronskianSuzukiGram.lean}, Lean~4/Mathlib, about
+$9{,}800$ lines, zero \texttt{sorry}, axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ on every
+theorem cited below) attacks the same moment inequalities through Riemann's
+theta kernel
+\[
+  K(u) \;=\; 4\sum_{n\ge1}\bigl(2\pi^2n^4e^{9u/2}-3\pi n^2e^{5u/2}\bigr)
+    e^{-\pi n^2e^{2u}},
+\]
+whose half-line moments $m_k=\int_0^\infty u^kK(u)\,du$ are the paper's
+central-coefficient data.
+
+\medskip
+\noindent\textbf{Attribution, and the status of this branch.}  The analytic
+content of this program is classical; the formalization is what is new.
+Monotonicity of the radial hazard $-K'(u)/(2uK(u))$ --- equivalently
+concavity of $\log K(\sqrt t\,)$, which is the gate below --- is
+Csordas--Varga \cite{CsordasVarga1988}, Theorem 2.1.  The Tur\'an
+inequalities for the Maclaurin coefficients of $\Xi$, solving a problem of
+P\'olya from 1927, are Csordas--Norfolk--Varga
+\cite{CsordasNorfolkVarga1986}; the central case $3m_2^2>m_0m_4$ used below
+is their $m=1$ --- the one case their analytic argument did not reach,
+established in 1986 by certified high-precision computation and analytically
+in \cite{CsordasVarga1988} --- with margin $6.96\%$ ($m_0m_4/m_2^2=2.7911$
+against $3$).  Hyperbolicity of the Jensen polynomials $J^{d,n}$ for
+\emph{every} $n$ is known for all $d\le8$ by Griffin--Ono--Rolen--Zagier
+\cite{GORZ2019}, which subsumes the five Theta--Wronskian levels obtained
+here.  Since Jensen's criterion already lives at $n=0$ ($\Xi$ lies in the
+Laguerre--P\'olya class, i.e.\ RH holds, iff $J^{d,0}$ is hyperbolic for
+every $d$), the tower at the centre is not a subfamily of the criterion but
+the criterion itself, its rungs climbed by successively higher-order
+positivity of the kernel.  This section therefore contributes a
+machine-checked development of that classical circle, not new arithmetic.
+It is worth stating what this does \emph{not} establish: no barrier is known
+to the degree ladder. Jensen's criterion already lives at $n=0$ --- $\Xi$ lies
+in the Laguerre--P\'olya class, equivalently RH holds, iff $J^{d,0}$ is
+hyperbolic for every $d$ --- so finite-degree results are progress along the
+criterion itself rather than a ceiling. (One tempting argument in the other
+direction is spurious: P\'olya-frequency membership of $\Phi$ fails, but by
+Schoenberg that would require the transform of $\Phi$ to be the reciprocal of
+a Laguerre--P\'olya function, whereas it is $\Xi$ itself; the failure records
+only that $\Xi$ has zeros, and carries no information about $\Xi\in LP$.) The
+estimates developed here are moreover independent of $d$: they control the
+sum over the theta index, while the degree selects which moment inequality is
+the target.
+
+\medskip
+\noindent The compiled results, at exactly their proved strength:
+
+\begin{enumerate}
+\item \textbf{Analytic layer.}  Term-by-term first and second differentiation
+of the theta series on $u>0$ under summable exponential majorants
+(\texttt{riemannXiKernel\_hasDerivAt},
+\texttt{riemannXiKernel\_deriv\_hasDerivAt}); positivity, continuity, and
+integrability of all polynomial moments.
+\item \textbf{The radial hazard and its gate.}  For
+$H(u)=-K'(u)/(2uK(u))$ the exact identity
+$H'(u)=N(u)/(2u^2K(u)^2)$ is formalized, with
+$N(u)=u(K')^2-uKK''+KK'$
+(\texttt{xiRadialHazard\_hasDerivAt}); positivity of $N$ on $u>0$ is
+equivalent, in compiled form, to domination of a weighted slope variance by a
+mass-times-gate term
+(\texttt{xiRadialConcavityNumerator\_pos\_iff\_gate\_dominates\_variance}).
+\item \textbf{The consequence chain.}  Integration by parts gives the exact
+hazard-moment identities
+$\int u^2KH=m_0/2$ and $\int u^4KH=3m_2/2$
+(\texttt{xiRadialHazard\_weight\_two/four}); the covariance double integral
+evaluates unconditionally to $3m_2^2-m_0m_4$
+(\texttt{xiRadialCovarianceIntegral\_eq}); and positivity of $N$ therefore
+forces the strict central Tur\'an inequality $m_0m_4<3m_2^2$ and closes
+Theta--Wronskian levels four and five, hence levels one through five
+(\texttt{theta\_wronskian\_levels\_one\_to\_five\_of\_numerator\_pos}).
+Levels one through three are unconditional
+(\texttt{riemann\_theta\_wronskian\_levels\_one\_to\_three}), as is positive
+definiteness of every finite Hankel moment matrix
+(\texttt{xiMomentMatrix\_posDef}).
+\item \textbf{The hazard-moment identities are generating, and yield a
+uniform family.}  The identities of item~3 are not isolated: they are the
+$k=2,4$ cases of
+\[
+  2\!\int_0^\infty\! u^{k}KH \;=\; \tfrac{k-1}{2}\,m_{k-2}
+  \qquad(k\ge2),
+\]
+verified to ten digits for $k\le10$, and the covariance evaluation is their
+antisymmetrisation rather than an independent fact: with weight $w=u^{2}K$,
+\[
+  \iint (u^2-v^2)\bigl(H(u)-H(v)\bigr)w(u)w(v)
+  = 2\Bigl\{\tfrac{3m_2}{4}\tfrac{m_2}{2}-\tfrac{m_4}{2}\tfrac{m_0}{4}\Bigr\}
+  = \tfrac{1}{4}\bigl(3m_2^2-m_0m_4\bigr).
+\]
+Shifting the weight to $w=u^{2j}K$ keeps the antisymmetrisation at $H^0$ and
+$H^1$, so the same two identities supply every ingredient and no
+$H^{2}$-moment ever appears.  This gives, for each $j\ge1$,
+\[
+  C_j \;=\; \tfrac14\Bigl[(2j+1)\,m_{2j}^{2}-(2j-1)\,m_{2j-2}m_{2j+2}\Bigr],
+\]
+with $C_1$ the central Tur\'an expression.  The integrand
+$(u^2-v^2)(H(u)-H(v))w(u)w(v)$ is pointwise nonnegative for \emph{every} $j$
+as soon as $H$ is increasing, so a single proved gate delivers the whole
+family $C_j>0$ at once, not one rung.  Measured positive for $j\le6$, with
+ratios $1.0748,1.0627,1.0543,1.0481,1.0432,1.0394$ decreasing towards $1$.
+
+We record two dead ends here so they are not re-walked.  Enlarging the
+Andreief determinant $\det\bigl[\int u^{2(i-1)}H^{\,j-1}w\bigr]$ instead of
+shifting the weight is the wrong generalisation: it forces $H^{j}$-moments
+with $j\ge2$, which are Fisher-information functionals and do not reduce by
+parts (a natural candidate misses by $6$--$9\%$); and it mismatches degrees,
+being degree $d$ in the moments where the Jensen discriminant at degree $d$ is
+degree $2(d-1)$, the two agreeing only at $d=2$.  Second, the family $C_j$
+consists of Laguerre--Tur\'an inequalities at every index; these are
+\emph{necessary} for $\Xi$ to lie in the Laguerre--P\'olya class but not
+sufficient, so the uniformity here is uniformity across indices, not a route
+to hyperbolicity of $J^{d,0}$ for all $d$.
+
+\item \textbf{State of the gate.}  The ground-index gate
+$s_0(u)-u\,c_0(u)>0$ is proved on the whole half-line, the thin region
+closed by a two-sided exponential window (quadratic Taylor minorant, squared
+Pad\'e majorant) against four-digit bounds for $\pi$
+(\texttt{xiTermGate\_zero\_pos}).  At the origin the kernel's evenness forces
+$N$ to vanish to third order, $N(u)=au^3+O(u^5)$ with
+$a=K''(0)^2-K(0)K''''(0)/3$; the strict inequality $3K''(0)^2>K(0)K''''(0)$
+is compiled from certified partial-sum bounds
+($S_0<9/20$, $S_2<-8333/1000$, $S_4<410$;
+\texttt{xiOriginThetaConstant\_pos}, \texttt{xiOriginCubicCoefficient\_pos}),
+with measured margin $a\approx152.2$, about $14\%$ relative.
+
+The gate is now proved unconditionally on the whole of $[1/4,\infty)$
+(\texttt{xiRadialConcavityNumerator\_pos\_of\_fourth}), extending the earlier
+$[3/10,\infty)$ result by one notch in the per-term decay rate, $18\to16$: at
+$u\ge1/4$ the ground coordinate satisfies $q_0=\pi e^{2u}\ge5.1$, the gap
+estimate $20n\le 4n q_0$ still holds, and $(n+2)^4\le16e^{4n}$ converts
+$2(n+2)^4e^{-20n}$ into $32e^{-16n}$.  The derived rates fall in step
+($q$-weighted $14$, squared-slope $12$) and every prefactor survives, each
+being a geometric sum $\sum e^{-cn}\le2$ valid for all $c\ge12$.  The one
+place the notch bites is $4q_0^2\le e^{q_0}$, which needs seven Taylor terms
+at $q_0\ge5.1$ where six sufficed at $q_0\ge5.7$.
+
+\item \textbf{What remains on $(0,1/4]$.}  Termwise estimation of $N$ fails
+there: near the origin $N$ is a cancellation of order $10^{3}$ between its
+three summands, and bounding them separately loses a factor $\approx22$
+(measured: a termwise majorant gives $|N^{(5)}|\le7.83\times10^{6}$ against a
+true $3.60\times10^{5}$).  The remedy is to work with the hazard rather than
+with $N$, which the compiled identity of item~2 already supplies: writing
+$g=(\log K)'-u(\log K)''=2u^{2}H'$, the identity
+$H'=N/(2u^{2}K^{2})$ reads $N=K^{2}g$, so $K^{2}>0$ factors out and the gate
+is \emph{equivalent} to $g>0$, i.e.\ to monotonicity of the radial hazard.
+This is a restatement of \texttt{xiRadialHazard\_hasDerivAt}, not a new
+identity; it is recorded here only because the $g$ form makes the next step
+visible.  That step is elementary: $g(0)=0$ and
+\[
+  g'(u) \;=\; -\,u\,(\log K)''' ,
+\]
+so the sign condition $(\log K)'''<0$ on an interval makes $g$ rise from zero
+and the gate hold there --- by integration, with no Taylor remainder and no
+jet coefficients.  Near the origin that sign is governed by the constant
+already compiled above: the quartic log-coefficient is
+$L_4=a_4/a_0-a_2^{2}/(2a_0^{2})=-a/(8K(0)^{2})$ with $a$ the cubic
+coefficient, so $(\log K)'''<0$ near $0$ is exactly $a>0$.  Numerically
+$(\log K)'''$ is negative throughout the range examined ($u\le3$), with
+small-$u$ slope $24L_4=-143.0$; this is measured, not proved.  Remaining for
+the gate: the sign of $(\log K)'''$ as a proved statement, and the formalized
+evenness of $K$ (Jacobi inversion; the one-dimensional Poisson ingredient is
+compiled elsewhere in the repository).  Three majorant strategies were refuted
+by measurement and are recorded as such in the source --- Cauchy coefficient
+estimates (loose by $2\times10^{4}$, because the Taylor coefficients of $K$
+are small precisely by cancellation), an order-nine Lagrange remainder (loose
+by $10$), and an $\ell^{1}$ bound on the derivative polynomials (loose by
+$2\times10^{5}$).
+
+The last of these is a defect of the instantiation, not of the route, and the
+repair is worth recording because it is the same repair three times over.
+Writing $D^kT_n=4e^{u/2}P_k(q)e^{-q}$ with
+$P_k=\sum_j\binom kj2^{\,j-k}R_j$ a \emph{single} polynomial --- the $R_j$
+obeying $R_{j+1}=2q(R_j'-R_j)$ --- and evaluating $P_k$ rather than summing
+$|R_j|$ recovers almost everything: the majorants for $|K^{(4)}|,\dots,
+|K^{(7)}|$ fall from $1.095,2.434,1.271,4.242$ times the true value to
+$1.001,1.001,1.051,1.503$. With that, the two-term criterion closes on
+$(0,1/20]$ with margin $1.60$, where the $\ell^{1}$ form had been short by a
+factor $3$ to $5$.
+
+Two further compiled ingredients on this route. The cumulant identity
+\[
+  (\log K)''' \;=\; \langle c'\rangle + 3\,\mathrm{Cov}(s,c) + \mu_3(s),
+  \qquad p_n=T_n/K,
+\]
+verified symbolically, exhibits the mechanism: near the origin the sign is
+carried by $\mu_3(s)<0$, the log-slopes being violently left-skewed
+($s_0=0.044$ against $s_1=-20.36$), while past $u\approx0.048$ the first
+summand turns negative and dominates as $p_0\to1$. Its termwise input is
+proved: \texttt{xiKernelTermLogCurvatureDeriv\_neg} gives $c_n'<0$ at every
+index for $u\ge1/10$, since $c_n'=8q\bigl(6(2q+3)/I^3-1\bigr)$ is negative
+exactly when $8q^3-36q^2+42q-45>0$, which holds on $[19/5,\infty)$ and hence
+at every index because $q_n\ge q_0\ge19/5$.
+\item \textbf{The Suzuki--Gram side.}  The finite Suzuki Gram inequality,
+signed Fredholm solvability and identification, and the corrected-pencil
+Galerkin transfer are compiled with their two analytic inputs isolated as
+hypotheses --- an operator contraction and the identification of the analysis
+integrals with a contraction of the Weil vectors
+(\texttt{xiSuzukiGram\_inequality},
+\texttt{xiGalerkin\_fredholm\_signed\_identification},
+\texttt{xiCorrectedPencil\_galerkin\_transfer}).  The contraction is
+discharged unconditionally at a certified corrected-pencil level: the
+single-node Galerkin compression of the actual kernel at node three satisfies
+$\|A\|=K(9)<1$ by a compiled decay bound and elementary bounds for $e$
+(\texttt{xiSuzukiGalerkin\_contraction\_example}), so the signed Fredholm
+chain fires there with no hypothesis
+(\texttt{xiGalerkin\_fredholm\_example}).
+\end{enumerate}
+
+The two campaigns are complementary reductions of the same object: the body's
+window census reads the zeros through contour Hankels and isolates the seat;
+the formalized program reads the central coefficients through the theta
+kernel and isolates the numerator gate and the Suzuki contraction.  Each
+residue is stated with its consequence chain fully compiled above it.
+
 \begin{thebibliography}{9}
 
 \bibitem{Ingham1940} A.~E. Ingham, \emph{On the estimation of $N(\sigma,T)$},
@@ -974,6 +1541,18 @@ to Li's criterion for the Riemann hypothesis}, J. Number Theory 77 (1999),
 \bibitem{Bombieri2000} E.~Bombieri, \emph{Remarks on Weil's quadratic functional
 in the theory of prime numbers, I}, Rend. Mat. Acc. Lincei (9) 11 (2000),
 183--233.
+
+\bibitem{CsordasNorfolkVarga1986} G.~Csordas, T.~S. Norfolk and R.~S. Varga,
+\emph{The Riemann hypothesis and the Tur\'an inequalities}, Trans. Amer. Math.
+Soc. 296 (1986), 521--541.
+
+\bibitem{CsordasVarga1988} G.~Csordas and R.~S. Varga, \emph{Necessary and
+sufficient conditions and the Riemann hypothesis}, Constr. Approx. 4 (1988),
+175--198.
+
+\bibitem{GORZ2019} M.~Griffin, K.~Ono, L.~Rolen and D.~Zagier,
+\emph{Jensen polynomials for the Riemann zeta function and other sequences},
+Proc. Natl. Acad. Sci. USA 116 (2019), 11103--11110.
 
 \end{thebibliography}
 

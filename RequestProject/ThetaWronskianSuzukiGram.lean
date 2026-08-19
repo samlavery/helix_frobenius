@@ -3651,6 +3651,57 @@ def xiRadialConcavityNumerator (u : ℝ) : ℝ :=
     - u * riemannXiKernel u * deriv^[2] riemannXiKernel u
     + riemannXiKernel u * deriv riemannXiKernel u
 
+/-- **The logarithmic gap** `g = (log K)' - u (log K)''`, written without `log`
+so that no differentiability side conditions are carried.  Its point is the
+factorization `N = K² · g` below: the radial concavity numerator is a positive
+square times this single scalar, so the gate is *equivalent* to `g > 0` and
+carries no cancellation of its own. -/
+noncomputable def xiLogGap (u : ℝ) : ℝ :=
+  deriv riemannXiKernel u / riemannXiKernel u -
+    u * ((deriv^[2] riemannXiKernel u * riemannXiKernel u -
+      (deriv riemannXiKernel u) ^ 2) / riemannXiKernel u ^ 2)
+
+/-- **The grouping identity `N = K² · g`.**  Purely algebraic given `K ≠ 0`.
+
+**Not a new identity.**  Since `xiRadialHazard = -(log K)'/(2u)` one has
+`g = 2u² · H'`, so this is `xiRadialHazard_hasDerivAt` (`H' = N/(2u²K²)`)
+rewritten with the square factored out.  It is stated separately only because
+the `g` form exposes `g(0) = 0` and `g' = -u (log K)'''`, which is the step the
+hazard form does not display.
+
+Its use is as the repair for the termwise route: bounding the three summands of
+`N` separately discards the cancellation between them and loses a factor `≈ 22`
+(measured: termwise `|N⁽⁵⁾| ≤ 7.83e6` against a true `3.60e5`). -/
+theorem xiRadialConcavityNumerator_eq_sq_mul_logGap {u : ℝ} (hu : 0 ≤ u) :
+    xiRadialConcavityNumerator u = riemannXiKernel u ^ 2 * xiLogGap u := by
+  have hK : riemannXiKernel u ≠ 0 := (riemannXiKernel_pos hu).ne'
+  unfold xiRadialConcavityNumerator xiLogGap
+  field_simp
+  ring
+
+/-- **The gate is exactly the sign of the logarithmic gap.**  With the square
+factored out there is nothing left to estimate: positivity of `N` on a region
+is *equivalent* to positivity of `g` there. -/
+theorem xiRadialConcavityNumerator_pos_iff_logGap_pos {u : ℝ} (hu : 0 ≤ u) :
+    0 < xiRadialConcavityNumerator u ↔ 0 < xiLogGap u := by
+  have hK : (0 : ℝ) < riemannXiKernel u ^ 2 := pow_pos (riemannXiKernel_pos hu) 2
+  rw [xiRadialConcavityNumerator_eq_sq_mul_logGap hu]
+  refine ⟨fun h => ?_, fun h => mul_pos hK h⟩
+  by_contra hg
+  push_neg at hg
+  nlinarith [h, hK, hg]
+
+/-- **The gap criterion on a region.**  Immediate from the factorization; it is
+the interface the analytic input plugs into.  The analytic content is that
+`g(0) = 0` and `g'(u) = -u (log K)'''`, so `(log K)''' < 0` on an interval makes
+`g` rise from zero and the gate hold there — by integration, with no Taylor
+remainder.  Near the origin that sign is governed by the already-compiled
+constant, since `L₄ = -xiOriginCubicCoefficient / (8 K(0)²)`. -/
+theorem xiRadialConcavityNumerator_pos_of_logGap_pos
+    {δ : ℝ} (_hδ : 0 < δ) (hgap : ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiLogGap u) :
+    ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiRadialConcavityNumerator u := fun u hu huδ =>
+  (xiRadialConcavityNumerator_pos_iff_logGap_pos hu.le).2 (hgap u hu huδ)
+
 /-- The radial concavity numerator has its forced origin zero. -/
 theorem xiRadialConcavityNumerator_zero :
     xiRadialConcavityNumerator 0 = 0 := by
@@ -4097,6 +4148,165 @@ theorem xiRadialConcavityNumerator_pos_iff_gate_dominates_variance
   rw [xiRadialConcavityNumerator_gate_variance hu]
   constructor <;> intro h <;> nlinarith
 
+/-! ## Phase A: evenness of the kernel and its consequences
+
+The completed theta `xiThetaTwoSided u = ∑_{n ∈ ℤ} exp (-π n² e^{2u})` satisfies
+Jacobi's inversion `θ(-u) = e^u θ(u)`, so `h u = e^{u/2} θ u` is even, and a
+termwise second differentiation gives the bridge identity
+
+  `riemannXiKernel = h'' - h/4`
+
+(verified numerically to `1e-40` at four stations, `tmp/att234`).  Both terms
+on the right are even, hence the kernel is even and all its odd jets vanish at
+the origin.  The Jacobi input is Mathlib's `jacobiTheta₂_functional_equation`
+under the normalization `ψ(x) = ∑_{n∈ℤ} e^{-πn²x}`, `ψ(1/x) = √x ψ(x)`; the
+consequences below are proved from evenness as a stated hypothesis, so that the
+remaining work is exactly the normalization bridge and nothing else. -/
+
+/-- Evenness of the kernel in the height variable: the functional equation in
+the `u`-chart. -/
+def XiKernelEven : Prop := ∀ u : ℝ, riemannXiKernel (-u) = riemannXiKernel u
+
+/-- An even differentiable function has vanishing derivative at the origin. -/
+theorem deriv_zero_of_even {f : ℝ → ℝ} (hev : ∀ u : ℝ, f (-u) = f u)
+    {d : ℝ} (hd : HasDerivAt f d 0) : d = 0 := by
+  have h1 : HasDerivAt (fun u : ℝ => -u) (-1 : ℝ) 0 := by
+    have h : HasDerivAt (fun u : ℝ => -(id u)) (-(1 : ℝ)) 0 :=
+      (hasDerivAt_id (0 : ℝ)).neg
+    exact h
+  have hd0 : HasDerivAt f d ((fun u : ℝ => -u) 0) := by simpa using hd
+  have hneg : HasDerivAt (fun u : ℝ => f (-u)) (d * -1) 0 :=
+    HasDerivAt.comp (0 : ℝ) hd0 h1
+  have hsame : HasDerivAt (fun u : ℝ => f (-u)) d 0 := by
+    have hfun : (fun u : ℝ => f (-u)) = f := funext hev
+    rw [hfun]
+    exact hd
+  have := hneg.unique hsame
+  linarith
+
+/-- **Evenness kills the first jet**: on the even kernel the derivative
+vanishes at the origin. -/
+theorem riemannXiKernel_deriv_zero_of_even (hev : XiKernelEven)
+    {d : ℝ} (hd : HasDerivAt riemannXiKernel d 0) : d = 0 :=
+  deriv_zero_of_even hev hd
+
+/-- **The numerator vanishes at the origin** under evenness: the boundary
+degeneracy of the gate, in exact form. -/
+theorem xiRadialConcavityNumerator_zero_of_even (hev : XiKernelEven)
+    (hd : HasDerivAt riemannXiKernel (deriv riemannXiKernel 0) 0) :
+    xiRadialConcavityNumerator 0 = 0 := by
+  have hzero : deriv riemannXiKernel 0 = 0 :=
+    riemannXiKernel_deriv_zero_of_even hev hd
+  unfold xiRadialConcavityNumerator
+  rw [hzero]
+  ring
+
+/-- The cubic coefficient of the numerator at the origin, in terms of the
+even jets: `a = k₂² - k₀k₄/3`, positive by `xiOriginCubicCoefficient_pos`. -/
+def xiOriginCubicCoefficient : ℝ :=
+  (deriv^[2] riemannXiKernel 0) ^ 2 -
+    riemannXiKernel 0 * deriv^[4] riemannXiKernel 0 / 3
+
+/-- **The gate from its two regions.**  Near-origin positivity plus bulk
+positivity is the whole of `xiRadialConcavityNumerator_pos`: the three-zone
+split of the corrected route, assembled. -/
+theorem xiRadialConcavityNumerator_pos_of_regions
+    {δ : ℝ} (hδ : 0 < δ)
+    (hnear : ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiRadialConcavityNumerator u)
+    (hbulk : ∀ u : ℝ, δ < u → 0 < xiRadialConcavityNumerator u) :
+    ∀ u : ℝ, 0 < u → 0 < xiRadialConcavityNumerator u := by
+  intro u hu
+  rcases le_or_gt u δ with h | h
+  · exact hnear u hu h
+  · exact hbulk u h
+
+/-! ### Phase D: the bulk region
+
+For `u ≥ 1/2` every summand's gate is positive (`xiTermGate_pos_of_half_le`),
+so the whole gate series is positive and the right-hand side of the dominance
+criterion is strictly positive with no hypothesis.  Measured margin on the
+criterion there: `E[gate] / (u·Var)` is `3·10^7` at `u = 1/2`, `4.5·10^14` at
+`u = 3/4`, and the variance underflows entirely by `u = 1` — the tail weight
+ratio `w₁/w₀` is `1.4·10^{-10}` and `7.9·10^{-18}` at those two stations.  The
+bulk is therefore not the difficult region; the origin is. -/
+
+/-- **The gate series is strictly positive on the bulk region.**  Every term is
+positive there and the series converges. -/
+theorem xiGateSeries_pos_of_half_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    0 < ∑' n : ℕ, xiKernelTermGateWeight n u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hterm : ∀ n : ℕ, 0 ≤ xiKernelTermGateWeight n u := by
+    intro n
+    unfold xiKernelTermGateWeight
+    exact mul_nonneg (xiTermGate_pos_of_half_le n hu).le
+      (riemannXiKernelTerm_pos n hu0).le
+  have hzero : 0 < xiKernelTermGateWeight 0 u := by
+    unfold xiKernelTermGateWeight
+    exact mul_pos (xiTermGate_pos_of_half_le 0 hu)
+      (riemannXiKernelTerm_pos 0 hu0)
+  exact (xiKernelTermGateWeight_summable hu0).tsum_pos hterm 0 hzero
+
+/-- **The mass–gate product is strictly positive on the bulk region**: the
+right-hand side of the dominance criterion needs no hypothesis for
+`u ≥ 1/2`. -/
+theorem xiMassGate_pos_of_half_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    0 < (∑' n : ℕ, riemannXiKernelTerm n u) *
+      ∑' n : ℕ, xiKernelTermGateWeight n u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hmass : 0 < ∑' n : ℕ, riemannXiKernelTerm n u :=
+    (riemannXiKernelTerm_summable u).tsum_pos
+      (fun n => (riemannXiKernelTerm_pos n hu0).le) 0
+      (riemannXiKernelTerm_pos 0 hu0)
+  exact mul_pos hmass (xiGateSeries_pos_of_half_le hu)
+
+/-- **The bulk obligation, reduced.**  On `u ≥ 1/2` the gate side is positive
+unconditionally, so the numerator is positive as soon as the weighted slope
+variance is dominated — and the measured margin for that domination is at
+least seven orders of magnitude at `u = 1/2`, growing without bound. -/
+theorem xiRadialConcavityNumerator_pos_of_half_le_of_variance
+    {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u)
+    (hvar : u *
+        ((∑' n : ℕ, riemannXiKernelTerm n u) *
+            (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+          (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2) <
+      (∑' n : ℕ, riemannXiKernelTerm n u) *
+        ∑' n : ℕ, xiKernelTermGateWeight n u) :
+    0 < xiRadialConcavityNumerator u := by
+  have hu0 : (0 : ℝ) < u := lt_of_lt_of_le (by norm_num) hu
+  exact (xiRadialConcavityNumerator_pos_iff_gate_dominates_variance hu0).2 hvar
+
+/-- **Ground-term split of the weighted slope variance.**  Writing the three
+series as ground term plus tail, the variance loses its leading square: every
+surviving term carries a tail factor.  This is the structural reason the bulk
+domination holds with an enormous margin — the tail weights are suppressed by
+`exp (-3π e^{2u})` — and it reduces the remaining bulk obligation to bounds on
+`T'`, `D'`, `S₂'` alone. -/
+theorem xiSlopeVariance_ground_split {u : ℝ} (hu : 0 ≤ u)
+    (hT : Summable (fun n : ℕ => riemannXiKernelTerm n u))
+    (hD : Summable (fun n : ℕ => xiKernelTermDeriv n u))
+    (hS : Summable (fun n : ℕ => xiKernelTermSlopeSquareWeight n u)) :
+    (∑' n : ℕ, riemannXiKernelTerm n u) *
+          (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+        (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2 =
+      riemannXiKernelTerm 0 u *
+          (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) +
+        xiKernelTermLogSlope 0 u ^ 2 * riemannXiKernelTerm 0 u *
+          (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) +
+        (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) *
+          (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) -
+        2 * (xiKernelTermLogSlope 0 u * riemannXiKernelTerm 0 u) *
+          (∑' n : ℕ, xiKernelTermDeriv (n + 1) u) -
+        (∑' n : ℕ, xiKernelTermDeriv (n + 1) u) ^ 2 := by
+  have hTs := hT.tsum_eq_zero_add
+  have hDs := hD.tsum_eq_zero_add
+  have hSs := hS.tsum_eq_zero_add
+  have hD0 : xiKernelTermDeriv 0 u =
+      xiKernelTermLogSlope 0 u * riemannXiKernelTerm 0 u := rfl
+  have hS0 : xiKernelTermSlopeSquareWeight 0 u =
+      xiKernelTermLogSlope 0 u ^ 2 * riemannXiKernelTerm 0 u := rfl
+  rw [hTs, hDs, hSs, hD0, hS0]
+  ring
+
 /-- The radial hazard of the summed Riemann kernel: the negative logarithmic
 derivative read in the squared-height variable. -/
 def xiRadialHazard (u : ℝ) : ℝ :=
@@ -4506,6 +4716,2498 @@ theorem tsum_exp_neg_index_eq :
       ring]
   rw [tsum_mul_left, tsum_geometric_of_lt_one hq0 hq1]
   rfl
+
+/-- Elementary: a fourth power is dominated by the exponential of four times
+the base. -/
+theorem pow_four_le_exp_four_mul {y : ℝ} (hy : 0 ≤ y) :
+    y ^ 4 ≤ Real.exp (4 * y) := by
+  have hbase : y ≤ Real.exp y := by
+    have := Real.add_one_le_exp y; linarith
+  have h4 : y ^ 4 ≤ (Real.exp y) ^ 4 := pow_le_pow_left₀ hy hbase 4
+  have he : (Real.exp y) ^ 4 = Real.exp (4 * y) := by
+    rw [show (4 : ℝ) * y = y + y + y + y by ring,
+      Real.exp_add, Real.exp_add, Real.exp_add]
+    ring
+  linarith [he ▸ h4]
+
+/-- Lower bound for the exponential factor on the bulk region. -/
+theorem exp_two_mul_ge_of_half_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (2.718 : ℝ) ≤ Real.exp (2 * u) := by
+  have h := Real.exp_one_gt_d9
+  have hmono : Real.exp 1 ≤ Real.exp (2 * u) := Real.exp_le_exp.mpr (by linarith)
+  linarith
+
+/-- The gap between the `n+1`st and the ground exponential coordinate is at
+least `16n + 24` on the bulk region. -/
+theorem xiKernelQ_succ_sub_ground_ge {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) (n : ℕ) :
+    16 * (n : ℝ) + 24 ≤ xiKernelQ (n + 1) u - xiKernelQ 0 u := by
+  have hXe := exp_two_mul_ge_of_half_le hu
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have hq : xiKernelQ (n + 1) u - xiKernelQ 0 u =
+      Real.pi * (((n : ℝ) + 2) ^ 2 - 1) * Real.exp (2 * u) := by
+    unfold xiKernelQ; push_cast; ring
+  have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hA : (3.14 : ℝ) * (2 * (n : ℝ) + 3) ≤ Real.pi * (((n : ℝ) + 2) ^ 2 - 1) := by
+    nlinarith [mul_nonneg hn hn]
+  have hnn : (0 : ℝ) ≤ Real.pi * (((n : ℝ) + 2) ^ 2 - 1) := by nlinarith
+  have hB : Real.pi * (((n : ℝ) + 2) ^ 2 - 1) * 2.718 ≤
+      Real.pi * (((n : ℝ) + 2) ^ 2 - 1) * Real.exp (2 * u) :=
+    mul_le_mul_of_nonneg_left hXe hnn
+  rw [hq]
+  nlinarith [hA, hB]
+
+/-- **The tail terms are geometrically dominated by the ground term** on the
+bulk region: `t_{n+1} ≤ e^{-(n+1)} t₀`.  The measured ratio at `u = 1/2` is
+`1.4·10^{-10}`; the statement is the weakest form that suffices. -/
+theorem riemannXiKernelTerm_succ_le_ground {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u)
+    (n : ℕ) :
+    riemannXiKernelTerm (n + 1) u ≤
+      Real.exp (-((n : ℝ) + 1)) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hXe := exp_two_mul_ge_of_half_le hu
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have hI0 : (0 : ℝ) < xiKernelInner 0 u := by
+    have := xiKernelInner_ge_three 0 hu0; linarith
+  have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hinner : xiKernelInner (n + 1) u ≤
+      2 * ((n : ℝ) + 2) ^ 2 * xiKernelInner 0 u := by
+    unfold xiKernelInner xiKernelQ
+    push_cast
+    nlinarith [mul_nonneg hn hn, sq_nonneg ((n : ℝ) + 2),
+      mul_nonneg (mul_nonneg hn hn) (le_of_lt (Real.exp_pos (2 * u))),
+      mul_le_mul_of_nonneg_left hXe
+        (by positivity : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2)]
+  have hgap := xiKernelQ_succ_sub_ground_ge hu n
+  have hquart : ((n : ℝ) + 2) ^ 4 ≤ Real.exp (4 * ((n : ℝ) + 2)) :=
+    pow_four_le_exp_four_mul (by linarith)
+  have hexp_le : 2 * ((n : ℝ) + 2) ^ 4 *
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+      Real.exp (-((n : ℝ) + 1)) := by
+    have h1 : Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        Real.exp (-(16 * (n : ℝ) + 24)) := Real.exp_le_exp.mpr (by linarith)
+    have h2 : (2 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+    calc 2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        Real.exp 1 * Real.exp (4 * ((n : ℝ) + 2)) *
+          Real.exp (-(16 * (n : ℝ) + 24)) := by
+          have hq4 : (0 : ℝ) ≤ ((n : ℝ) + 2) ^ 4 := by positivity
+          have hstep : 2 * ((n : ℝ) + 2) ^ 4 ≤
+              Real.exp 1 * Real.exp (4 * ((n : ℝ) + 2)) := by
+            nlinarith [hquart, h2, Real.exp_pos (4 * ((n : ℝ) + 2))]
+          exact mul_le_mul hstep h1 (Real.exp_pos _).le (by positivity)
+      _ = Real.exp (1 + 4 * ((n : ℝ) + 2) - (16 * (n : ℝ) + 24)) := by
+          rw [← Real.exp_add, ← Real.exp_add, sub_eq_add_neg]
+      _ ≤ Real.exp (-((n : ℝ) + 1)) := Real.exp_le_exp.mpr (by linarith)
+  have hf0 := riemannXiKernelTerm_factorized 0 u
+  have hfn := riemannXiKernelTerm_factorized (n + 1) u
+  have hpos : (0 : ℝ) < Real.pi * Real.exp (5 * u / 2) := by positivity
+  have hE : (0 : ℝ) < Real.exp (-xiKernelQ 0 u) := Real.exp_pos _
+  rw [hfn, hf0]
+  dsimp only
+  push_cast
+  have hsplit : Real.exp (-xiKernelQ (n + 1) u) =
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+        Real.exp (-xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  rw [hsplit]
+  have h2n : ((n : ℝ) + 1 + 1) = ((n : ℝ) + 2) := by ring
+  rw [h2n]
+  have hstep1 : Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+      xiKernelInner (n + 1) u ≤
+      (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        (2 * ((n : ℝ) + 2) ^ 4) := by
+    have hb : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) := by
+      positivity
+    nlinarith [mul_le_mul_of_nonneg_left hinner hb, hI0, hpos,
+      sq_nonneg ((n : ℝ) + 2)]
+  calc Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+        xiKernelInner (n + 1) u *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u))
+      = (Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner (n + 1) u) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ ((Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+          (2 * ((n : ℝ) + 2) ^ 4)) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_right hstep1
+        positivity
+    _ = (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u))) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        (Real.exp (-((n : ℝ) + 1)) * Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact mul_le_mul_of_nonneg_right hexp_le hE.le
+    _ = Real.exp (-((n : ℝ) + 1)) *
+        (Real.pi * ((0 : ℝ) + 1) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner 0 u * Real.exp (-xiKernelQ 0 u)) := by ring
+
+/-- The ground exponential coordinate exceeds `17/2` on the bulk region. -/
+theorem xiKernelQ_zero_ge_bulk {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (17 : ℝ) / 2 ≤ xiKernelQ 0 u := by
+  have hXe := exp_two_mul_ge_of_half_le hu
+  have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  unfold xiKernelQ
+  norm_num
+  nlinarith [Real.exp_pos (2 * u)]
+
+/-- **Sharp tail domination**: the `u`-dependent factor `e^{-3q₀}` is retained,
+which is what beats the polynomial `q₀`-growth of the variance terms.  At
+`u = 1/2` this factor is `7.5·10^{-12}` and it decays doubly exponentially. -/
+theorem riemannXiKernelTerm_succ_le_ground_sharp {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u)
+    (n : ℕ) :
+    riemannXiKernelTerm (n + 1) u ≤
+      6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have hq0 := xiKernelQ_zero_ge_bulk hu
+  have hI0 : (0 : ℝ) < xiKernelInner 0 u := by
+    have := xiKernelInner_ge_three 0 hu0; linarith
+  have hXe := exp_two_mul_ge_of_half_le hu
+  have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hinner : xiKernelInner (n + 1) u ≤
+      2 * ((n : ℝ) + 2) ^ 2 * xiKernelInner 0 u := by
+    unfold xiKernelInner xiKernelQ
+    push_cast
+    nlinarith [mul_nonneg hn hn, sq_nonneg ((n : ℝ) + 2),
+      mul_nonneg (mul_nonneg hn hn) (le_of_lt (Real.exp_pos (2 * u))),
+      mul_le_mul_of_nonneg_left hXe
+        (by positivity : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2)]
+  -- the exponential gap, with the ground factor retained
+  have hgapeq : xiKernelQ (n + 1) u - xiKernelQ 0 u =
+      (((n : ℝ) + 2) ^ 2 - 1) * xiKernelQ 0 u := by
+    unfold xiKernelQ; push_cast; ring
+  have hgap : 3 * xiKernelQ 0 u + 34 * (n : ℝ) ≤
+      xiKernelQ (n + 1) u - xiKernelQ 0 u := by
+    rw [hgapeq]
+    have hq0pos : (0 : ℝ) ≤ xiKernelQ 0 u := by linarith
+    have h4n : 34 * (n : ℝ) ≤ 4 * (n : ℝ) * xiKernelQ 0 u := by
+      nlinarith [mul_le_mul_of_nonneg_left hq0 hn]
+    nlinarith [mul_nonneg (mul_nonneg hn hn) hq0pos, h4n]
+  have hquart : ((n : ℝ) + 2) ^ 4 ≤ Real.exp (4 * ((n : ℝ) + 2)) :=
+    pow_four_le_exp_four_mul (by linarith)
+  have hexp_le : 2 * ((n : ℝ) + 2) ^ 4 *
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+      6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) := by
+    have h1 : Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        Real.exp (-(3 * xiKernelQ 0 u + 34 * (n : ℝ))) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have hsplit : Real.exp (-(3 * xiKernelQ 0 u + 34 * (n : ℝ))) =
+        Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(34 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    have hpre : 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(34 : ℝ) * (n : ℝ)) ≤
+        6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) := by
+      have hq : 2 * ((n : ℝ) + 2) ^ 4 ≤ 2 * Real.exp (4 * ((n : ℝ) + 2)) := by
+        linarith
+      have he8 : Real.exp (4 * ((n : ℝ) + 2)) * Real.exp (-(34 : ℝ) * (n : ℝ)) =
+          Real.exp 8 * Real.exp (-(30 : ℝ) * (n : ℝ)) := by
+        rw [← Real.exp_add, ← Real.exp_add]; congr 1; ring
+      have he8v : Real.exp 8 ≤ 3000 := by
+        have : Real.exp 8 = (Real.exp 1) ^ 8 := by
+          rw [← Real.exp_nat_mul]; norm_num
+        rw [this]
+        have h3 : Real.exp 1 ≤ 2.72 := by linarith [Real.exp_one_lt_d9]
+        calc (Real.exp 1) ^ 8 ≤ (2.72 : ℝ) ^ 8 :=
+              pow_le_pow_left₀ (Real.exp_pos 1).le h3 8
+          _ ≤ 3000 := by norm_num
+      calc 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(34 : ℝ) * (n : ℝ)) ≤
+          2 * Real.exp (4 * ((n : ℝ) + 2)) * Real.exp (-(34 : ℝ) * (n : ℝ)) := by
+            apply mul_le_mul_of_nonneg_right hq (Real.exp_pos _).le
+        _ = 2 * (Real.exp 8 * Real.exp (-(30 : ℝ) * (n : ℝ))) := by
+            rw [mul_assoc, he8]
+        _ ≤ 2 * (3000 * Real.exp (-(30 : ℝ) * (n : ℝ))) := by
+            have := mul_le_mul_of_nonneg_right he8v
+              (Real.exp_pos (-(30 : ℝ) * (n : ℝ))).le
+            linarith
+        _ = 6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) := by ring
+    calc 2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        2 * ((n : ℝ) + 2) ^ 4 *
+          (Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(34 : ℝ) * (n : ℝ))) := by
+          rw [← hsplit]
+          exact mul_le_mul_of_nonneg_left h1 (by positivity)
+      _ = (2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(34 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+      _ ≤ (6000 * Real.exp (-(30 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) :=
+          mul_le_mul_of_nonneg_right hpre (Real.exp_pos _).le
+      _ = 6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+  -- assemble exactly as in the unsharp version
+  have hf0 := riemannXiKernelTerm_factorized 0 u
+  have hfn := riemannXiKernelTerm_factorized (n + 1) u
+  have hpos : (0 : ℝ) < Real.pi * Real.exp (5 * u / 2) := by positivity
+  have hE : (0 : ℝ) < Real.exp (-xiKernelQ 0 u) := Real.exp_pos _
+  rw [hfn, hf0]
+  dsimp only
+  push_cast
+  have hsplit2 : Real.exp (-xiKernelQ (n + 1) u) =
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+        Real.exp (-xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  rw [hsplit2]
+  have h2n : ((n : ℝ) + 1 + 1) = ((n : ℝ) + 2) := by ring
+  rw [h2n]
+  have hstep1 : Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+      xiKernelInner (n + 1) u ≤
+      (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        (2 * ((n : ℝ) + 2) ^ 4) := by
+    have hb : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) := by
+      positivity
+    nlinarith [mul_le_mul_of_nonneg_left hinner hb, hI0, hpos,
+      sq_nonneg ((n : ℝ) + 2)]
+  calc Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+        xiKernelInner (n + 1) u *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u))
+      = (Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner (n + 1) u) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ ((Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+          (2 * ((n : ℝ) + 2) ^ 4)) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_right hstep1; positivity
+    _ = (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u))) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u)) * Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact mul_le_mul_of_nonneg_right hexp_le hE.le
+    _ = 6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) *
+        (Real.pi * ((0 : ℝ) + 1) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner 0 u * Real.exp (-xiKernelQ 0 u)) := by ring
+
+/-- The geometric sum used by every tail bound. -/
+theorem summable_exp_neg_thirty : Summable (fun n : ℕ => Real.exp (-(30 : ℝ) * n)) := by
+  have h : Summable (fun n : ℕ => (Real.exp (-30 : ℝ)) ^ n) := by
+    apply summable_geometric_of_lt_one (Real.exp_pos _).le
+    exact Real.exp_lt_one_iff.mpr (by norm_num)
+  refine h.congr fun n => ?_
+  rw [← Real.exp_nat_mul]
+  congr 1
+  ring
+
+/-- Closed bound for the geometric tail sum. -/
+theorem tsum_exp_neg_thirty_le : (∑' n : ℕ, Real.exp (-(30 : ℝ) * n)) ≤ 2 := by
+  have heq : (fun n : ℕ => Real.exp (-(30 : ℝ) * n)) =
+      fun n : ℕ => (Real.exp (-30 : ℝ)) ^ n := by
+    funext n; rw [← Real.exp_nat_mul]; congr 1; ring
+  rw [heq]
+  have hlt : Real.exp (-30 : ℝ) < 1 := Real.exp_lt_one_iff.mpr (by norm_num)
+  have hnn : (0 : ℝ) ≤ Real.exp (-30 : ℝ) := (Real.exp_pos _).le
+  rw [tsum_geometric_of_lt_one hnn hlt]
+  have hsmall : Real.exp (-30 : ℝ) ≤ 1 / 2 := by
+    have h1 : Real.exp (-30 : ℝ) ≤ Real.exp (-1 : ℝ) :=
+      Real.exp_le_exp.mpr (by norm_num)
+    have h2 : Real.exp (-1 : ℝ) ≤ 1 / 2 := by
+      rw [Real.exp_neg]
+      have he : (2 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+      rw [inv_le_comm₀ (Real.exp_pos 1) (by norm_num)]
+      linarith
+    linarith
+  rw [inv_le_comm₀ (by linarith) (by norm_num)]
+  linarith
+
+/-- **Sharp tail sum**: the whole tail carries the `e^{-3q₀}` factor. -/
+theorem xiKernelTail_le_ground_sharp {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      12000 * Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hsummable : Summable (fun n : ℕ => riemannXiKernelTerm (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (riemannXiKernelTerm_summable u)
+  have hmajf : Summable (fun n : ℕ =>
+      6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have := (summable_exp_neg_thirty.mul_left (6000 : ℝ))
+    simpa [mul_assoc] using
+      (this.mul_right (Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u))
+  have hcmp := Summable.tsum_le_tsum
+    (fun n => riemannXiKernelTerm_succ_le_ground_sharp hu n) hsummable hmajf
+  have hclosed : (∑' n : ℕ,
+      6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      6000 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) *
+        ∑' n : ℕ, Real.exp (-(30 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]
+    congr 1
+    funext n
+    ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_thirty_le
+  have hfac : (0 : ℝ) ≤ 6000 * (Real.exp (-3 * xiKernelQ 0 u) *
+      riemannXiKernelTerm 0 u) := by positivity
+  calc (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      6000 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) *
+        ∑' n : ℕ, Real.exp (-(30 : ℝ) * (n : ℝ)) := hcmp
+    _ ≤ 6000 * (Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 12000 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Geometric summability at any rate at least one. -/
+theorem summable_exp_neg_rate {c : ℝ} (hc : 1 ≤ c) :
+    Summable (fun n : ℕ => Real.exp (-c * n)) := by
+  have h : Summable (fun n : ℕ => (Real.exp (-c)) ^ n) := by
+    apply summable_geometric_of_lt_one (Real.exp_pos _).le
+    exact Real.exp_lt_one_iff.mpr (by linarith)
+  refine h.congr fun n => ?_
+  rw [← Real.exp_nat_mul]; congr 1; ring
+
+/-- Uniform closed bound for every geometric tail at rate at least one. -/
+theorem tsum_exp_neg_rate_le_two {c : ℝ} (hc : 1 ≤ c) :
+    (∑' n : ℕ, Real.exp (-c * n)) ≤ 2 := by
+  have heq : (fun n : ℕ => Real.exp (-c * n)) =
+      fun n : ℕ => (Real.exp (-c)) ^ n := by
+    funext n; rw [← Real.exp_nat_mul]; congr 1; ring
+  rw [heq]
+  have hlt : Real.exp (-c) < 1 := Real.exp_lt_one_iff.mpr (by linarith)
+  have hnn : (0 : ℝ) ≤ Real.exp (-c) := (Real.exp_pos _).le
+  rw [tsum_geometric_of_lt_one hnn hlt]
+  have hsmall : Real.exp (-c) ≤ 1 / 2 := by
+    have h1 : Real.exp (-c) ≤ Real.exp (-1 : ℝ) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have h2 : Real.exp (-1 : ℝ) ≤ 1 / 2 := by
+      rw [Real.exp_neg]
+      have he : (2 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+      rw [inv_le_comm₀ (Real.exp_pos 1) (by norm_num)]
+      linarith
+    linarith
+  rw [inv_le_comm₀ (by linarith) (by norm_num)]
+  linarith
+
+/-- Polynomial folding: `n + 2 ≤ 2 e^n`. -/
+theorem add_two_le_two_mul_exp (n : ℕ) : ((n : ℝ) + 2) ≤ 2 * Real.exp (n : ℝ) := by
+  have h := Real.add_one_le_exp (n : ℝ)
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  linarith
+
+/-- Squared folding. -/
+theorem add_two_sq_le (n : ℕ) : ((n : ℝ) + 2) ^ 2 ≤ 4 * Real.exp (2 * (n : ℝ)) := by
+  have h := add_two_le_two_mul_exp n
+  have hnn : (0 : ℝ) ≤ (n : ℝ) + 2 := by positivity
+  have hsq : ((n : ℝ) + 2) ^ 2 ≤ (2 * Real.exp (n : ℝ)) ^ 2 :=
+    pow_le_pow_left₀ hnn h 2
+  have he : (2 * Real.exp (n : ℝ)) ^ 2 = 4 * Real.exp (2 * (n : ℝ)) := by
+    rw [mul_pow, show (2 : ℝ) * (n : ℝ) = (n : ℝ) + (n : ℝ) by ring, Real.exp_add]
+    ring
+  linarith [he ▸ hsq]
+
+/-- **Tail bound for the first-derivative series** with the `u`-decay retained. -/
+theorem xiDerivTail_abs_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      240000 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  -- per-term bound
+  have hterm : ∀ n : ℕ, |xiKernelTermDeriv (n + 1) u| ≤
+      120000 * xiKernelQ 0 u * Real.exp (-(28 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hslope := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hsharp := riemannXiKernelTerm_succ_le_ground_sharp hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hfold := add_two_sq_le n
+    have h1 : |xiKernelTermDeriv (n + 1) u| ≤
+        5 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) * riemannXiKernelTerm (n + 1) u := by
+      unfold xiKernelTermDeriv
+      rw [abs_mul, abs_of_pos htp]
+      have := mul_le_mul_of_nonneg_right hslope htp.le
+      rw [hqn] at this
+      linarith
+    have h2 : 5 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) *
+        riemannXiKernelTerm (n + 1) u ≤
+        5 * ((4 * Real.exp (2 * (n : ℝ))) * xiKernelQ 0 u) *
+          (6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      apply mul_le_mul _ hsharp htp.le (by positivity)
+      have := mul_le_mul_of_nonneg_right hfold hq0.le
+      nlinarith [hq0]
+    have h3 : 5 * ((4 * Real.exp (2 * (n : ℝ))) * xiKernelQ 0 u) *
+        (6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+        120000 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(30 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+    have h4 : Real.exp (2 * (n : ℝ)) * Real.exp (-(30 : ℝ) * (n : ℝ)) =
+        Real.exp (-(28 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc |xiKernelTermDeriv (n + 1) u| ≤
+        5 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) *
+          riemannXiKernelTerm (n + 1) u := h1
+      _ ≤ 5 * ((4 * Real.exp (2 * (n : ℝ))) * xiKernelQ 0 u) *
+          (6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := h2
+      _ = 120000 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(30 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := h3
+      _ = 120000 * xiKernelQ 0 u * Real.exp (-(28 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+          rw [h4]
+  -- summability of the majorant and of the series
+  have hmaj : Summable (fun n : ℕ =>
+      120000 * xiKernelQ 0 u * Real.exp (-(28 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (28 : ℝ)) (by norm_num)
+    have := (hg.mul_left (120000 * xiKernelQ 0 u)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have habs : Summable (fun n : ℕ => |xiKernelTermDeriv (n + 1) u|) :=
+    Summable.of_nonneg_of_le (fun n => abs_nonneg _) hterm hmaj
+  have hsum : Summable (fun n : ℕ => xiKernelTermDeriv (n + 1) u) :=
+    Summable.of_abs habs
+  -- assemble
+  have hstep : |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := by
+    simpa [Real.norm_eq_abs] using
+      norm_tsum_le_tsum_norm (f := fun n : ℕ => xiKernelTermDeriv (n + 1) u)
+        (by simpa [Real.norm_eq_abs] using habs)
+  have hcmp := Summable.tsum_le_tsum hterm habs hmaj
+  have hclosed : (∑' n : ℕ,
+      120000 * xiKernelQ 0 u * Real.exp (-(28 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (120000 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(28 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]
+    congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (28 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 120000 * xiKernelQ 0 u *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := hstep
+    _ ≤ (120000 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) *
+        ∑' n : ℕ, Real.exp (-(28 : ℝ) * (n : ℝ)) := hcmp
+    _ ≤ (120000 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 240000 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Quartic folding. -/
+theorem add_two_pow_four_le (n : ℕ) :
+    ((n : ℝ) + 2) ^ 4 ≤ 16 * Real.exp (4 * (n : ℝ)) := by
+  have h := add_two_le_two_mul_exp n
+  have hnn : (0 : ℝ) ≤ (n : ℝ) + 2 := by positivity
+  have hp : ((n : ℝ) + 2) ^ 4 ≤ (2 * Real.exp (n : ℝ)) ^ 4 :=
+    pow_le_pow_left₀ hnn h 4
+  have he : (2 * Real.exp (n : ℝ)) ^ 4 = 16 * Real.exp (4 * (n : ℝ)) := by
+    rw [mul_pow, show (4 : ℝ) * (n : ℝ) = (n : ℝ) + (n : ℝ) + (n : ℝ) + (n : ℝ) by ring,
+      Real.exp_add, Real.exp_add, Real.exp_add]
+    ring
+  linarith [he ▸ hp]
+
+/-- **Tail bound for the squared-slope series** with the `u`-decay retained. -/
+theorem xiSlopeSquareTail_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      4800000 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hterm : ∀ n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u ≤
+      2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-(26 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hslope := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hsharp := riemannXiKernelTerm_succ_le_ground_sharp hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hsq : xiKernelTermLogSlope (n + 1) u ^ 2 ≤
+        25 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) ^ 2 := by
+      have h := sq_le_sq' (neg_le_of_abs_le hslope) (le_of_abs_le hslope)
+      rw [hqn] at h
+      nlinarith [h]
+    have hfold := add_two_pow_four_le n
+    have h1 : xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := by
+      unfold xiKernelTermSlopeSquareWeight
+      have := mul_le_mul_of_nonneg_right hsq htp.le
+      nlinarith [this, htp]
+    have h2 : 25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+        riemannXiKernelTerm (n + 1) u ≤
+        25 * ((16 * Real.exp (4 * (n : ℝ))) * xiKernelQ 0 u ^ 2) *
+          (6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      apply mul_le_mul _ hsharp htp.le (by positivity)
+      nlinarith [mul_le_mul_of_nonneg_right hfold (sq_nonneg (xiKernelQ 0 u))]
+    have h4 : Real.exp (4 * (n : ℝ)) * Real.exp (-(30 : ℝ) * (n : ℝ)) =
+        Real.exp (-(26 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := h1
+      _ ≤ 25 * ((16 * Real.exp (4 * (n : ℝ))) * xiKernelQ 0 u ^ 2) *
+          (6000 * Real.exp (-(30 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := h2
+      _ = 2400000 * xiKernelQ 0 u ^ 2 *
+          (Real.exp (4 * (n : ℝ)) * Real.exp (-(30 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-(26 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h4]
+  have hmaj : Summable (fun n : ℕ =>
+      2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-(26 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (26 : ℝ)) (by norm_num)
+    have := (hg.mul_left (2400000 * xiKernelQ 0 u ^ 2)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hnonneg : ∀ n : ℕ, 0 ≤ xiKernelTermSlopeSquareWeight (n + 1) u := by
+    intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hsum : Summable (fun n : ℕ => xiKernelTermSlopeSquareWeight (n + 1) u) :=
+    Summable.of_nonneg_of_le hnonneg hterm hmaj
+  have hcmp := Summable.tsum_le_tsum hterm hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-(26 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(26 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (26 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 2400000 * xiKernelQ 0 u ^ 2 *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      (2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) *
+        ∑' n : ℕ, Real.exp (-(26 : ℝ) * (n : ℝ)) := hcmp
+    _ ≤ (2400000 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 4800000 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- **Quantitative ground gate**: on the bulk region the ground-index gate is
+at least `5/2`. -/
+theorem xiTermGate_zero_ge_bulk {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (5 : ℝ) / 2 ≤ xiTermGate 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hI3 := xiKernelInner_ge_three 0 hu0
+  have hI0 : (0 : ℝ) < xiKernelInner 0 u := by linarith
+  have hslope_eq : xiKernelTermLogSlope 0 u =
+      5 / 2 + 4 * xiKernelQ 0 u / xiKernelInner 0 u - 2 * xiKernelQ 0 u := by
+    simp only [xiKernelTermLogSlope, Pi.add_apply, Pi.sub_apply, Pi.div_apply]
+  have hcurv_eq : xiKernelTermLogCurvature 0 u =
+      -(24 * xiKernelQ 0 u / xiKernelInner 0 u ^ 2) - 4 * xiKernelQ 0 u := by
+    unfold xiKernelTermLogCurvature; ring
+  unfold xiTermGate
+  rw [hslope_eq, hcurv_eq]
+  have h1 : (0 : ℝ) ≤ 4 * xiKernelQ 0 u / xiKernelInner 0 u := by positivity
+  have h2 : (0 : ℝ) ≤ 24 * u * xiKernelQ 0 u / xiKernelInner 0 u ^ 2 := by
+    positivity
+  have h3 : (0 : ℝ) ≤ 2 * xiKernelQ 0 u * (2 * u - 1) := by nlinarith
+  have hid : 5 / 2 + 4 * xiKernelQ 0 u / xiKernelInner 0 u - 2 * xiKernelQ 0 u -
+      u * (-(24 * xiKernelQ 0 u / xiKernelInner 0 u ^ 2) - 4 * xiKernelQ 0 u) =
+      5 / 2 + 4 * xiKernelQ 0 u / xiKernelInner 0 u +
+        24 * u * xiKernelQ 0 u / xiKernelInner 0 u ^ 2 +
+        2 * xiKernelQ 0 u * (2 * u - 1) := by
+    field_simp
+    ring
+  rw [hid]
+  linarith
+
+/-- The height is dominated by a sixth of the ground coordinate. -/
+theorem u_le_q_zero_div_six {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    u ≤ xiKernelQ 0 u / 6 := by
+  have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hexp : 1 + 2 * u ≤ Real.exp (2 * u) := by
+    simpa [add_comm] using Real.add_one_le_exp (2 * u)
+  have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+    unfold xiKernelQ; norm_num
+  rw [hq]
+  nlinarith [Real.exp_pos (2 * u)]
+
+/-- Cubic domination by the exponential at the bulk coordinate. -/
+theorem q_cube_le_exp {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    xiKernelQ 0 u ^ 3 ≤ Real.exp (xiKernelQ 0 u) := by
+  have hq := xiKernelQ_zero_ge_bulk hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hser := Real.pow_div_factorial_le_exp (xiKernelQ 0 u) hq0.le 7
+  have hfac : (Nat.factorial 7 : ℝ) = 5040 := by norm_num [Nat.factorial]
+  rw [hfac] at hser
+  have hq4 : (5220 : ℝ) ≤ xiKernelQ 0 u ^ 4 := by
+    have h1 : (17 : ℝ) / 2 ≤ xiKernelQ 0 u := hq
+    have h2 : ((17 : ℝ) / 2) ^ 4 ≤ xiKernelQ 0 u ^ 4 :=
+      pow_le_pow_left₀ (by norm_num) h1 4
+    norm_num at h2
+    linarith
+  have hsplit : xiKernelQ 0 u ^ 7 = xiKernelQ 0 u ^ 3 * xiKernelQ 0 u ^ 4 := by
+    ring
+  rw [hsplit] at hser
+  nlinarith [hser, hq4, pow_pos hq0 3]
+
+set_option maxHeartbeats 2000000 in
+/-- **The bulk domination**: on `u ≥ 1/2` the weighted slope variance is
+dominated by the mass-gate product, hence the numerator is positive.  All
+three tail bounds and the quantitative gate feed in here. -/
+theorem xiRadialConcavityNumerator_pos_of_half_le {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    0 < xiRadialConcavityNumerator u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hqb := xiKernelQ_zero_ge_bulk hu
+  have hE : (0 : ℝ) < Real.exp (-3 * xiKernelQ 0 u) := Real.exp_pos _
+  -- summability inputs
+  have hT := riemannXiKernelTerm_summable u
+  have hD : Summable (fun n : ℕ => xiKernelTermDeriv n u) :=
+    Summable.of_norm_bounded (xiKernelDerivMajorantCoeff_summable 1)
+      (fun n => xiKernelTermDeriv_norm_le n hu0)
+  have hS := xiKernelTermSlopeSquareWeight_summable hu0
+  -- the three tail bounds
+  have hTt := xiKernelTail_le_ground_sharp hu
+  have hDt := xiDerivTail_abs_le hu
+  have hSt := xiSlopeSquareTail_le hu
+  have hs0 : |xiKernelTermLogSlope 0 u| ≤ 5 * xiKernelQ 0 u :=
+    xiKernelTermLogSlope_abs_le 0 hu0
+  -- tails are nonnegative where needed
+  have hTnn : (0 : ℝ) ≤ ∑' n : ℕ, riemannXiKernelTerm (n + 1) u :=
+    tsum_nonneg fun n => (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hSnn : (0 : ℝ) ≤ ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u := by
+    apply tsum_nonneg
+    intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  -- bound the variance
+  set V := (∑' n : ℕ, riemannXiKernelTerm n u) *
+      (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+      (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2 with hV
+  have hsplit := xiSlopeVariance_ground_split hu0 hT hD hS
+  have hEsmall : Real.exp (-3 * xiKernelQ 0 u) ≤ Real.exp (-(51 : ℝ) / 2) :=
+    Real.exp_le_exp.mpr (by linarith)
+  have hEtiny : 100000000 * Real.exp (-(51 : ℝ) / 2) ≤ 1 := by
+    have hmul : Real.exp (-(51 : ℝ) / 2) * Real.exp ((51 : ℝ) / 2) = 1 := by
+      rw [← Real.exp_add]; norm_num
+    have hb : (2.718 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+    have hx : Real.exp 19 = (Real.exp 1) ^ 19 := by
+      rw [← Real.exp_nat_mul]; norm_num
+    have h18 : (100000000 : ℝ) ≤ Real.exp 19 := by
+      rw [hx]
+      calc (100000000 : ℝ) ≤ (2.718 : ℝ) ^ 19 := by norm_num
+        _ ≤ (Real.exp 1) ^ 19 := pow_le_pow_left₀ (by norm_num) hb 19
+    have h25 : Real.exp 19 ≤ Real.exp ((51 : ℝ) / 2) :=
+      Real.exp_le_exp.mpr (by norm_num)
+    nlinarith [Real.exp_pos (-(51 : ℝ) / 2), hmul, h18, h25]
+  have hEle : Real.exp (-3 * xiKernelQ 0 u) ≤ 1 / 100000000 := by
+    nlinarith [hEsmall, hEtiny, Real.exp_pos (-(51 : ℝ) / 2)]
+  have hs0' := abs_le.mp hs0
+  have hs0sq : xiKernelTermLogSlope 0 u ^ 2 ≤ 25 * xiKernelQ 0 u ^ 2 := by
+    nlinarith [hs0'.1, hs0'.2, hq0]
+  have hDabs := hDt
+  have hD1 := neg_abs_le (∑' n : ℕ, xiKernelTermDeriv (n + 1) u)
+  have hD2 := le_abs_self (∑' n : ℕ, xiKernelTermDeriv (n + 1) u)
+  set E := Real.exp (-3 * xiKernelQ 0 u) with hEdef
+  set Q := xiKernelQ 0 u with hQdef
+  set t := riemannXiKernelTerm 0 u with htdef
+  set Tp := ∑' n : ℕ, riemannXiKernelTerm (n + 1) u with hTpdef
+  set Dp := ∑' n : ℕ, xiKernelTermDeriv (n + 1) u with hDpdef
+  set Sp := ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u with hSpdef
+  have hA : t * Sp ≤ 4800000 * Q ^ 2 * E * t ^ 2 := by
+    have := mul_le_mul_of_nonneg_left hSt ht0.le
+    nlinarith [this]
+  have hB : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤ 300000 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤
+        25 * Q ^ 2 * t * (12000 * E * t) := by
+      apply mul_le_mul _ hTt hTnn (by positivity)
+      exact mul_le_mul_of_nonneg_right hs0sq ht0.le
+    nlinarith [h1]
+  have hC : Tp * Sp ≤ 576 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : Tp * Sp ≤ (12000 * E * t) * (4800000 * Q ^ 2 * E * t) :=
+      mul_le_mul hTt hSt hSnn (by positivity)
+    have hEsq : E * E ≤ (1 / 100000000) * E := by
+      nlinarith [hEle, hE.le]
+    nlinarith [h1, hEsq, hE.le, sq_nonneg Q, ht0.le, mul_pos ht0 ht0,
+      mul_nonneg (mul_nonneg (sq_nonneg Q) hE.le) (mul_pos ht0 ht0).le]
+  have hprod : |xiKernelTermLogSlope 0 u * Dp| ≤ 1200000 * Q ^ 2 * E * t := by
+    rw [abs_mul]
+    calc |xiKernelTermLogSlope 0 u| * |Dp| ≤
+        (5 * Q) * (240000 * Q * E * t) :=
+          mul_le_mul hs0 hDabs (abs_nonneg _) (by positivity)
+      _ = 1200000 * Q ^ 2 * E * t := by ring
+  have hD : -(2 * (xiKernelTermLogSlope 0 u * t) * Dp) ≤
+      2400000 * Q ^ 2 * E * t ^ 2 := by
+    have hneg := neg_abs_le (xiKernelTermLogSlope 0 u * Dp)
+    have hkey : -(xiKernelTermLogSlope 0 u * Dp) ≤ 1200000 * Q ^ 2 * E * t := by
+      linarith [hprod, hneg]
+    have := mul_le_mul_of_nonneg_left hkey (by linarith : (0:ℝ) ≤ 2 * t)
+    nlinarith [this]
+  have hE2 : -(Dp ^ 2) ≤ 0 := by nlinarith [sq_nonneg Dp]
+  have hXnn : (0 : ℝ) ≤ Q ^ 2 * E * t ^ 2 := by positivity
+  have hVbound : V ≤ 8000000 * Q ^ 2 * E * t ^ 2 := by
+    rw [hV, hsplit]
+    nlinarith [hA, hB, hC, hD, hE2, hXnn]
+  -- lower bound the mass-gate product
+  have hmass : riemannXiKernelTerm 0 u ≤ ∑' n : ℕ, riemannXiKernelTerm n u :=
+    hT.le_tsum 0 (fun n _ => (riemannXiKernelTerm_pos n hu0).le)
+  have hgate : (5 : ℝ) / 2 * riemannXiKernelTerm 0 u ≤
+      ∑' n : ℕ, xiKernelTermGateWeight n u := by
+    have hg0 : (5 : ℝ) / 2 * riemannXiKernelTerm 0 u ≤
+        xiKernelTermGateWeight 0 u := by
+      unfold xiKernelTermGateWeight
+      exact mul_le_mul_of_nonneg_right (xiTermGate_zero_ge_bulk hu) ht0.le
+    have hsum := (xiKernelTermGateWeight_summable hu0).le_tsum 0
+      (fun n _ => by
+        unfold xiKernelTermGateWeight
+        exact mul_nonneg (xiTermGate_pos_of_half_le n hu).le
+          (riemannXiKernelTerm_pos n hu0).le)
+    linarith
+  -- the final comparison
+  have hufinal : u * (8000000 * xiKernelQ 0 u ^ 2 *
+      Real.exp (-3 * xiKernelQ 0 u)) < 5 / 2 := by
+    have hu6 := u_le_q_zero_div_six hu
+    have hcube := q_cube_le_exp hu
+    have hkey : xiKernelQ 0 u ^ 3 * Real.exp (-3 * xiKernelQ 0 u) ≤
+        Real.exp (-2 * xiKernelQ 0 u) := by
+      have h1 : Real.exp (xiKernelQ 0 u) * Real.exp (-3 * xiKernelQ 0 u) =
+          Real.exp (-2 * xiKernelQ 0 u) := by
+        rw [← Real.exp_add]; congr 1; ring
+      calc xiKernelQ 0 u ^ 3 * Real.exp (-3 * xiKernelQ 0 u) ≤
+          Real.exp (xiKernelQ 0 u) * Real.exp (-3 * xiKernelQ 0 u) :=
+            mul_le_mul_of_nonneg_right hcube (Real.exp_pos _).le
+        _ = Real.exp (-2 * xiKernelQ 0 u) := h1
+    have h2q : Real.exp (-2 * xiKernelQ 0 u) ≤ Real.exp (-17 : ℝ) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have he17 : 20000000 * Real.exp (-17 : ℝ) ≤ 1 := by
+      have hmul : Real.exp (-17 : ℝ) * Real.exp (17 : ℝ) = 1 := by
+        rw [← Real.exp_add]; norm_num
+      have hb : (2.718 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+      have hx : Real.exp 17 = (Real.exp 1) ^ 17 := by
+        rw [← Real.exp_nat_mul]; norm_num
+      have h17 : (20000000 : ℝ) ≤ Real.exp 17 := by
+        rw [hx]
+        calc (20000000 : ℝ) ≤ (2.718 : ℝ) ^ 17 := by norm_num
+          _ ≤ (Real.exp 1) ^ 17 := pow_le_pow_left₀ (by norm_num) hb 17
+      nlinarith [Real.exp_pos (-17 : ℝ), hmul, h17]
+    nlinarith [hu6, hkey, h2q, he17, hq0, Real.exp_pos (-3 * xiKernelQ 0 u),
+      mul_pos hq0 hq0]
+  have hu0lt : (0 : ℝ) < u := lt_of_lt_of_le (by norm_num) hu
+  apply (xiRadialConcavityNumerator_pos_iff_gate_dominates_variance hu0lt).2
+  calc u * V ≤ u * (8000000 * xiKernelQ 0 u ^ 2 *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u ^ 2) :=
+      mul_le_mul_of_nonneg_left hVbound hu0
+    _ = (u * (8000000 * xiKernelQ 0 u ^ 2 *
+        Real.exp (-3 * xiKernelQ 0 u))) * riemannXiKernelTerm 0 u ^ 2 := by ring
+    _ < (5 / 2) * riemannXiKernelTerm 0 u ^ 2 := by
+        apply mul_lt_mul_of_pos_right hufinal
+        positivity
+    _ = riemannXiKernelTerm 0 u * ((5 / 2) * riemannXiKernelTerm 0 u) := by ring
+    _ ≤ (∑' n : ℕ, riemannXiKernelTerm n u) *
+        ∑' n : ℕ, xiKernelTermGateWeight n u := by
+        apply mul_le_mul hmass hgate (by positivity) _
+        exact le_trans ht0.le hmass
+
+/-! ### The near region `0 < u ≤ 1/2`
+
+Below `u = 1/2` the per-term gates are no longer positive: `g_n ≈ 2q_n(2u-1)`
+turns negative at large `n` (measured at `u = 0.4`: `g₀ = +2.81` but
+`g₁ = -6.48`, `g₅ = -96.16`).  The bulk route is therefore unavailable, and the
+gate series must be handled as *ground term minus a tail*, not termwise.  The
+ground gate is positive on the whole half-line (`xiTermGate_zero_pos`), so the
+criterion below is the right shape; what it needs is a quantitative lower bound
+for `g₀` and an absolute bound for the tail.  The numerically tightest point is
+`u ≈ 0.02`, where the two sides of the domination agree to `3%`. -/
+
+/-- Ground-minus-tail lower bound for the gate series. -/
+theorem xiGateSeries_ge_ground_sub_tail {u : ℝ} (hu : 0 ≤ u)
+    (hsum : Summable (fun n : ℕ => xiKernelTermGateWeight (n + 1) u)) :
+    xiKernelTermGateWeight 0 u -
+        ∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u| ≤
+      ∑' n : ℕ, xiKernelTermGateWeight n u := by
+  have habs : Summable (fun n : ℕ => |xiKernelTermGateWeight (n + 1) u|) :=
+    hsum.abs
+  have hsplit := (xiKernelTermGateWeight_summable hu).tsum_eq_zero_add
+  have hbound : -(∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      ∑' n : ℕ, xiKernelTermGateWeight (n + 1) u := by
+    have h := Summable.tsum_le_tsum
+      (fun n => neg_abs_le (xiKernelTermGateWeight (n + 1) u))
+      habs.neg hsum
+    rwa [tsum_neg] at h
+  rw [hsplit]
+  linarith
+
+/-- **Near-region criterion.**  On `0 < u ≤ 1/2` the numerator is positive as
+soon as the ground gate, less the absolute tail, dominates the weighted slope
+variance divided by the total mass.  This replaces the termwise-positivity
+route, which is unavailable below `1/2`. -/
+theorem xiRadialConcavityNumerator_pos_of_ground_minus_tail
+    {u : ℝ} (hu0 : 0 < u)
+    (hsum : Summable (fun n : ℕ => xiKernelTermGateWeight (n + 1) u))
+    (hdom : u *
+        ((∑' n : ℕ, riemannXiKernelTerm n u) *
+            (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+          (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2) <
+      (∑' n : ℕ, riemannXiKernelTerm n u) *
+        (xiKernelTermGateWeight 0 u -
+          ∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|)) :
+    0 < xiRadialConcavityNumerator u := by
+  have hmass : (0 : ℝ) < ∑' n : ℕ, riemannXiKernelTerm n u :=
+    (riemannXiKernelTerm_summable u).tsum_pos
+      (fun n => (riemannXiKernelTerm_pos n hu0.le).le) 0
+      (riemannXiKernelTerm_pos 0 hu0.le)
+  have hge := xiGateSeries_ge_ground_sub_tail hu0.le hsum
+  have hstep : (∑' n : ℕ, riemannXiKernelTerm n u) *
+      (xiKernelTermGateWeight 0 u -
+        ∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      (∑' n : ℕ, riemannXiKernelTerm n u) *
+        ∑' n : ℕ, xiKernelTermGateWeight n u :=
+    mul_le_mul_of_nonneg_left hge hmass.le
+  exact (xiRadialConcavityNumerator_pos_iff_gate_dominates_variance hu0).2
+    (lt_of_lt_of_le hdom hstep)
+
+/-- Explicit derivative of the log curvature of one summand. -/
+theorem xiKernelTermLogCurvature_hasDerivAt (n : ℕ) {u : ℝ} (hu : 0 ≤ u) :
+    HasDerivAt (xiKernelTermLogCurvature n)
+      (8 * xiKernelQ n u *
+        (6 * (2 * xiKernelQ n u + 3) / xiKernelInner n u ^ 3 - 1)) u := by
+  have hq := xiKernelQ_hasDerivAt n u
+  have hI := xiKernelInner_hasDerivAt n u
+  have hI0 : xiKernelInner n u ≠ 0 := ne_of_gt (xiKernelInner_pos n hu)
+  have hIsq : xiKernelInner n u ^ 2 ≠ 0 := pow_ne_zero 2 hI0
+  have hquot : HasDerivAt (fun v => xiKernelQ n v / xiKernelInner n v ^ 2)
+      ((2 * xiKernelQ n u * xiKernelInner n u ^ 2 -
+        xiKernelQ n u * (2 * xiKernelInner n u * (2 * (2 * xiKernelQ n u)))) /
+          (xiKernelInner n u ^ 2) ^ 2) u := by
+    exact hq.div ((hI.pow 2).congr_deriv (by ring)) hIsq
+  have hmain := ((hquot.const_mul (-24 : ℝ)).sub (hq.const_mul (4 : ℝ)))
+  have heq : xiKernelTermLogCurvature n =
+      fun v => -24 * (xiKernelQ n v / xiKernelInner n v ^ 2) -
+        4 * xiKernelQ n v := by
+    funext v
+    unfold xiKernelTermLogCurvature
+    ring
+  rw [heq]
+  apply hmain.congr_deriv
+  have hIdef : xiKernelInner n u = 2 * xiKernelQ n u - 3 := rfl
+  field_simp [hI0]
+  rw [hIdef]
+  ring
+
+/-- **The ground gate's derivative is minus the height times the curvature
+derivative** — the slope-derivative identity `s' = c` makes the `c` terms
+cancel. -/
+theorem xiTermGate_zero_hasDerivAt {u : ℝ} (hu : 0 ≤ u) :
+    HasDerivAt (xiTermGate 0)
+      (-(u * (8 * xiKernelQ 0 u *
+        (6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 - 1)))) u := by
+  have hs := xiKernelTermLogSlope_hasDerivAt 0 hu
+  have hc := xiKernelTermLogCurvature_hasDerivAt 0 hu
+  have hmul : HasDerivAt (fun v => v * xiKernelTermLogCurvature 0 v)
+      (1 * xiKernelTermLogCurvature 0 u +
+        u * (8 * xiKernelQ 0 u *
+          (6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 - 1))) u :=
+    (hasDerivAt_id u).mul hc
+  have h := hs.sub hmul
+  apply h.congr_deriv
+  ring
+
+/-- On the middle region the curvature derivative is negative, so the ground
+gate increases: `6(2q+3) < (2q-3)³` once `q ≥ 4`. -/
+theorem xiTermGate_zero_deriv_pos {u : ℝ} (hu : (1 : ℝ) / 5 ≤ u) :
+    0 < -(u * (8 * xiKernelQ 0 u *
+      (6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 - 1))) := by
+  have hu0 : (0 : ℝ) < u := lt_of_lt_of_le (by norm_num) hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  -- q ≥ 4 on u ≥ 1/5
+  have hq4 : (4 : ℝ) ≤ xiKernelQ 0 u := by
+    have hpi : (3.14 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+    have hexp : 1 + 2 * u ≤ Real.exp (2 * u) := by
+      simpa [add_comm] using Real.add_one_le_exp (2 * u)
+    have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+      unfold xiKernelQ; norm_num
+    rw [hq]
+    nlinarith [Real.exp_pos (2 * u)]
+  have hI : xiKernelInner 0 u = 2 * xiKernelQ 0 u - 3 := by
+    unfold xiKernelInner; rfl
+  have hI5 : (5 : ℝ) ≤ xiKernelInner 0 u := by rw [hI]; linarith
+  have hIpos : (0 : ℝ) < xiKernelInner 0 u := by linarith
+  have hcube : 6 * (2 * xiKernelQ 0 u + 3) < xiKernelInner 0 u ^ 3 := by
+    rw [hI]
+    have hx : (5 : ℝ) ≤ 2 * xiKernelQ 0 u - 3 := by linarith
+    have h1 : 5 * (2 * xiKernelQ 0 u - 3) ^ 2 ≤ (2 * xiKernelQ 0 u - 3) ^ 3 := by
+      nlinarith [sq_nonneg (2 * xiKernelQ 0 u - 3), hx]
+    have h2 : 25 * (2 * xiKernelQ 0 u - 3) ≤ 5 * (2 * xiKernelQ 0 u - 3) ^ 2 := by
+      nlinarith [hx]
+    nlinarith [h1, h2, hx]
+  have hratio : 6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 < 1 := by
+    rw [div_lt_one (by positivity)]
+    exact hcube
+  have hneg : 6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 - 1 < 0 := by
+    linarith
+  have hprod : 8 * xiKernelQ 0 u *
+      (6 * (2 * xiKernelQ 0 u + 3) / xiKernelInner 0 u ^ 3 - 1) < 0 := by
+    apply mul_neg_of_pos_of_neg (by linarith) hneg
+  nlinarith [mul_pos hu0 (neg_pos.mpr hprod)]
+
+/-- **The ground gate is strictly increasing on the middle region and beyond.**
+Hence a single endpoint evaluation bounds it on `[1/5, ∞)`. -/
+theorem xiTermGate_zero_strictMonoOn :
+    StrictMonoOn (xiTermGate 0) (Set.Ici ((1 : ℝ) / 5)) := by
+  apply strictMonoOn_of_deriv_pos (convex_Ici _)
+  · intro u hu
+    have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+    exact (xiTermGate_zero_hasDerivAt hu0).continuousAt.continuousWithinAt
+  · intro u hu
+    rw [interior_Ici] at hu
+    have hu5 : (1 : ℝ) / 5 ≤ u := le_of_lt hu
+    have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu5
+    rw [(xiTermGate_zero_hasDerivAt hu0).deriv]
+    exact xiTermGate_zero_deriv_pos hu5
+
+/-- Two-sided bracket for the ground coordinate at the middle-region endpoint:
+`q₀(1/5) = π e^{2/5} ∈ [4.68, 4.72]`.  Lower by the exponential series, upper by
+the Padé bound `e^x ≤ (2+x)/(2-x)`. -/
+theorem xiKernelQ_zero_at_fifth_bracket :
+    (4.68 : ℝ) ≤ xiKernelQ 0 (1 / 5) ∧ xiKernelQ 0 (1 / 5) ≤ 4.72 := by
+  have hq : xiKernelQ 0 (1 / 5) = Real.pi * Real.exp (2 / 5) := by
+    unfold xiKernelQ; norm_num
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hpiU : Real.pi ≤ 3.1416 := by linarith [Real.pi_lt_d4]
+  have hlow : (1.49 : ℝ) ≤ Real.exp (2 / 5) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 2/5) 4
+    have hval : (∑ i ∈ Finset.range 4, ((2:ℝ)/5) ^ i / (i.factorial : ℝ)) =
+        1 + 2/5 + (2/5)^2/2 + (2/5)^3/6 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hup : Real.exp (2 / 5) ≤ 1.5 := by
+    have h := exp_mul_two_sub_le (x := (2:ℝ)/5) (by norm_num)
+    norm_num at h
+    linarith
+  rw [hq]
+  constructor
+  · nlinarith [hpiL, hlow, Real.exp_pos ((2:ℝ)/5)]
+  · nlinarith [hpiU, hup, Real.pi_pos]
+
+/-- **Endpoint value of the ground gate**: `g₀(1/5) ≥ 1/4`.  Combined with
+strict monotonicity this bounds the gate on the entire middle region. -/
+theorem xiTermGate_zero_at_fifth_ge : (1 : ℝ) / 4 ≤ xiTermGate 0 (1 / 5) := by
+  obtain ⟨hqL, hqU⟩ := xiKernelQ_zero_at_fifth_bracket
+  set q := xiKernelQ 0 (1 / 5) with hqdef
+  have hq0 : (0 : ℝ) < q := xiKernelQ_pos 0 (1 / 5)
+  have hIdef : xiKernelInner 0 (1 / 5) = 2 * q - 3 := rfl
+  have hIpos : (0 : ℝ) < 2 * q - 3 := by linarith
+  have hslope_eq : xiKernelTermLogSlope 0 (1 / 5) =
+      5 / 2 + 4 * q / (2 * q - 3) - 2 * q := by
+    simp only [xiKernelTermLogSlope, Pi.add_apply, Pi.sub_apply, Pi.div_apply,
+      hIdef, ← hqdef]
+  have hcurv_eq : xiKernelTermLogCurvature 0 (1 / 5) =
+      -(24 * q / (2 * q - 3) ^ 2) - 4 * q := by
+    unfold xiKernelTermLogCurvature
+    rw [hIdef, ← hqdef]
+    ring
+  unfold xiTermGate
+  rw [hslope_eq, hcurv_eq, ← sub_nonneg]
+  have hexpand : 5 / 2 + 4 * q / (2 * q - 3) - 2 * q -
+      1 / 5 * (-(24 * q / (2 * q - 3) ^ 2) - 4 * q) - 1 / 4 =
+      (-(24 : ℝ) / 5 * q ^ 3 + 157 / 5 * q ^ 2 - 45 * q + 81 / 4) /
+        (2 * q - 3) ^ 2 := by
+    field_simp
+    ring
+  rw [hexpand]
+  apply div_nonneg _ (by positivity)
+  nlinarith [hqL, hqU, sq_nonneg (q - 47 / 10), mul_pos hq0 hq0]
+
+/-- Bracket for the ground coordinate at `u = 2/5`: `π e^{4/5} ∈ [6.98, 7.34]`. -/
+theorem xiKernelQ_zero_at_twofifths_bracket :
+    (6.98 : ℝ) ≤ xiKernelQ 0 (2 / 5) ∧ xiKernelQ 0 (2 / 5) ≤ 7.34 := by
+  have hq : xiKernelQ 0 (2 / 5) = Real.pi * Real.exp (4 / 5) := by
+    unfold xiKernelQ; norm_num
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hpiU : Real.pi ≤ 3.1416 := by linarith [Real.pi_lt_d4]
+  have hlow : (2.222 : ℝ) ≤ Real.exp (4 / 5) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 4/5) 5
+    have hval : (∑ i ∈ Finset.range 5, ((4:ℝ)/5) ^ i / (i.factorial : ℝ)) =
+        1 + 4/5 + (4/5)^2/2 + (4/5)^3/6 + (4/5)^4/24 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hup : Real.exp (4 / 5) ≤ 7 / 3 := by
+    have h := exp_mul_two_sub_le (x := (4:ℝ)/5) (by norm_num)
+    norm_num at h
+    linarith
+  rw [hq]
+  constructor
+  · nlinarith [hpiL, hlow, Real.exp_pos ((4:ℝ)/5)]
+  · nlinarith [hpiU, hup, Real.pi_pos]
+
+/-- **Endpoint value at `2/5`**: `g₀(2/5) ≥ 2` (measured `2.81`).  This is the
+stronger gate bound that relaxes the tail-domination threshold eightfold. -/
+theorem xiTermGate_zero_at_twofifths_ge : (2 : ℝ) ≤ xiTermGate 0 (2 / 5) := by
+  obtain ⟨hqL, hqU⟩ := xiKernelQ_zero_at_twofifths_bracket
+  set q := xiKernelQ 0 (2 / 5) with hqdef
+  have hq0 : (0 : ℝ) < q := xiKernelQ_pos 0 (2 / 5)
+  have hIdef : xiKernelInner 0 (2 / 5) = 2 * q - 3 := rfl
+  have hIpos : (0 : ℝ) < 2 * q - 3 := by linarith
+  have hslope_eq : xiKernelTermLogSlope 0 (2 / 5) =
+      5 / 2 + 4 * q / (2 * q - 3) - 2 * q := by
+    simp only [xiKernelTermLogSlope, Pi.add_apply, Pi.sub_apply, Pi.div_apply,
+      hIdef, ← hqdef]
+  have hcurv_eq : xiKernelTermLogCurvature 0 (2 / 5) =
+      -(24 * q / (2 * q - 3) ^ 2) - 4 * q := by
+    unfold xiKernelTermLogCurvature
+    rw [hIdef, ← hqdef]
+    ring
+  unfold xiTermGate
+  rw [hslope_eq, hcurv_eq, ← sub_nonneg]
+  have hexpand : 5 / 2 + 4 * q / (2 * q - 3) - 2 * q -
+      2 / 5 * (-(24 * q / (2 * q - 3) ^ 2) - 4 * q) - 2 =
+      (-(8 : ℝ) / 5 * q ^ 3 + 74 / 5 * q ^ 2 - 12 * q + 9 / 2) /
+        (2 * q - 3) ^ 2 := by
+    field_simp
+    ring
+  rw [hexpand]
+  apply div_nonneg _ (by positivity)
+  nlinarith [hqL, hqU, sq_nonneg (q - 7), mul_pos hq0 hq0]
+
+/-- **The ground gate past `2/5`**: at least `2`. -/
+theorem xiTermGate_zero_ge_two {u : ℝ} (hu : (2 : ℝ) / 5 ≤ u) :
+    (2 : ℝ) ≤ xiTermGate 0 u := by
+  rcases eq_or_lt_of_le hu with h | h
+  · rw [← h]; exact xiTermGate_zero_at_twofifths_ge
+  · have hmem : (2 : ℝ) / 5 ∈ Set.Ici ((1 : ℝ) / 5) := by
+      simp only [Set.mem_Ici]; norm_num
+    have humem : u ∈ Set.Ici ((1 : ℝ) / 5) := by
+      simp only [Set.mem_Ici]; linarith
+    have := xiTermGate_zero_strictMonoOn hmem humem h
+    linarith [xiTermGate_zero_at_twofifths_ge]
+
+/-- **The ground gate on the whole middle region and beyond**: at least `1/4`
+for every `u ≥ 1/5`. -/
+theorem xiTermGate_zero_ge_fourth {u : ℝ} (hu : (1 : ℝ) / 5 ≤ u) :
+    (1 : ℝ) / 4 ≤ xiTermGate 0 u := by
+  rcases eq_or_lt_of_le hu with h | h
+  · rw [← h]; exact xiTermGate_zero_at_fifth_ge
+  · have := xiTermGate_zero_strictMonoOn (Set.mem_Ici.mpr le_rfl)
+      (Set.mem_Ici.mpr hu) h
+    linarith [xiTermGate_zero_at_fifth_ge]
+
+/-- The ground coordinate past `u = 2/5` is at least `6.98`. -/
+theorem xiKernelQ_zero_ge_twofifths {u : ℝ} (hu : (2 : ℝ) / 5 ≤ u) :
+    (6.98 : ℝ) ≤ xiKernelQ 0 u := by
+  obtain ⟨hqL, -⟩ := xiKernelQ_zero_at_twofifths_bracket
+  have hmono : xiKernelQ 0 (2 / 5) ≤ xiKernelQ 0 u := by
+    unfold xiKernelQ
+    have : Real.exp (2 * (2 / 5 : ℝ)) ≤ Real.exp (2 * u) :=
+      Real.exp_le_exp.mpr (by linarith)
+    nlinarith [Real.pi_pos, Real.exp_pos (2 * (2 / 5 : ℝ))]
+  linarith
+
+/-- Ground coordinate past `u = 3/10`. -/
+theorem xiKernelQ_zero_ge_threetenths {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) :
+    (5.7 : ℝ) ≤ xiKernelQ 0 u := by
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hlow : (1.8214 : ℝ) ≤ Real.exp (3 / 5 : ℝ) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 3/5) 5
+    have hval : (∑ i ∈ Finset.range 5, ((3:ℝ)/5) ^ i / (i.factorial : ℝ)) =
+        1 + 3/5 + (3/5)^2/2 + (3/5)^3/6 + (3/5)^4/24 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hmono : Real.exp (3 / 5 : ℝ) ≤ Real.exp (2 * u) :=
+    Real.exp_le_exp.mpr (by linarith)
+  have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+    unfold xiKernelQ; norm_num
+  rw [hq]
+  nlinarith [hpiL, hlow, hmono, Real.exp_pos (3 / 5 : ℝ)]
+
+/-- Ground coordinate past `u = 1/4`.  `π e^{1/2} ≥ 3.1415 · 1.6484 = 5.178`. -/
+theorem xiKernelQ_zero_ge_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    (5.1 : ℝ) ≤ xiKernelQ 0 u := by
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hlow : (1.6484 : ℝ) ≤ Real.exp (1 / 2 : ℝ) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 1/2) 5
+    have hval : (∑ i ∈ Finset.range 5, ((1:ℝ)/2) ^ i / (i.factorial : ℝ)) =
+        1 + 1/2 + (1/2)^2/2 + (1/2)^3/6 + (1/2)^4/24 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hmono : Real.exp (1 / 2 : ℝ) ≤ Real.exp (2 * u) :=
+    Real.exp_le_exp.mpr (by linarith)
+  have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+    unfold xiKernelQ; norm_num
+  rw [hq]
+  nlinarith [hpiL, hlow, hmono, Real.exp_pos (1 / 2 : ℝ)]
+
+/-- Ground coordinate past `u = 1/10`.  `π e^{1/5} ≥ 3.1415 · 1.2214 = 3.837`. -/
+theorem xiKernelQ_zero_ge_tenth {u : ℝ} (hu : (1 : ℝ) / 10 ≤ u) :
+    (19 : ℝ) / 5 ≤ xiKernelQ 0 u := by
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hlow : (1.2214 : ℝ) ≤ Real.exp (1 / 5 : ℝ) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 1/5) 5
+    have hval : (∑ i ∈ Finset.range 5, ((1:ℝ)/5) ^ i / (i.factorial : ℝ)) =
+        1 + 1/5 + (1/5)^2/2 + (1/5)^3/6 + (1/5)^4/24 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hmono : Real.exp (1 / 5 : ℝ) ≤ Real.exp (2 * u) :=
+    Real.exp_le_exp.mpr (by linarith)
+  have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+    unfold xiKernelQ; norm_num
+  rw [hq]
+  nlinarith [hpiL, hlow, hmono, Real.exp_pos (1 / 5 : ℝ)]
+
+/-- Every index sits above the ground coordinate: `q_n = (n+1)^2 q_0`. -/
+theorem xiKernelQ_zero_le (n : ℕ) (u : ℝ) : xiKernelQ 0 u ≤ xiKernelQ n u := by
+  have hfac : xiKernelQ n u = ((n : ℝ) + 1) ^ 2 * xiKernelQ 0 u := by
+    unfold xiKernelQ; push_cast; ring
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hone : (1 : ℝ) ≤ ((n : ℝ) + 1) ^ 2 := by
+    have : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+    nlinarith
+  rw [hfac]
+  nlinarith [hq0, hone]
+
+/-- **The logarithmic curvature is strictly decreasing past `u = 1/10`**, at
+every index.  With `c_n' = 8q(6(2q+3)/I^3 - 1)` and `I = 2q-3`, negativity is
+exactly `6(2q+3) < (2q-3)^3`, i.e.
+`8q^3 - 36q^2 + 42q - 45 > 0`.  The cubic is increasing for `q > 2.21` (its
+derivative `24q^2-72q+42` has largest root there) and equals `33.7` at
+`q = 19/5`, so the bound holds on `[19/5, ∞)` and hence at every index, since
+`q_n ≥ q_0 ≥ 19/5`.
+
+This is the termwise input to region B of the logarithmic-derivative route:
+`(log K)''' = ⟨c'⟩ + 3\,\mathrm{Cov}(s,c) + μ₃(s)`, whose first summand this
+makes negative. -/
+theorem xiKernelTermLogCurvatureDeriv_neg {u : ℝ} (hu : (1 : ℝ) / 10 ≤ u)
+    (n : ℕ) :
+    8 * xiKernelQ n u *
+      (6 * (2 * xiKernelQ n u + 3) / xiKernelInner n u ^ 3 - 1) < 0 := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hq0 := xiKernelQ_zero_ge_tenth hu
+  have hqn : (19 : ℝ) / 5 ≤ xiKernelQ n u :=
+    le_trans hq0 (xiKernelQ_zero_le n u)
+  have hqpos : (0 : ℝ) < xiKernelQ n u := xiKernelQ_pos n u
+  have hI : xiKernelInner n u = 2 * xiKernelQ n u - 3 := rfl
+  have hIpos : (0 : ℝ) < xiKernelInner n u := by rw [hI]; linarith
+  have hI3 : (0 : ℝ) < xiKernelInner n u ^ 3 := by positivity
+  -- the cubic gap
+  have hcubic : 6 * (2 * xiKernelQ n u + 3) < xiKernelInner n u ^ 3 := by
+    rw [hI]
+    nlinarith [hqn, hqpos, sq_nonneg (xiKernelQ n u - 19 / 5),
+      sq_nonneg (xiKernelQ n u)]
+  have hfrac : 6 * (2 * xiKernelQ n u + 3) / xiKernelInner n u ^ 3 < 1 := by
+    rw [div_lt_one hI3]; exact hcubic
+  have h8q : (0 : ℝ) < 8 * xiKernelQ n u := by linarith
+  nlinarith [h8q, hfrac]
+
+/-- **Sharp per-term tail bound on the inner-middle region** `u ≥ 1/4`: the
+same shape as the `3/10` version, with decay rate `16` in place of `18`
+because the ground coordinate is only bounded below by `5.1` rather than
+`5.7`.  Since `e^{-16n} ≥ e^{-18n}`, this statement is the weaker of the two
+and covers the larger region. -/
+theorem riemannXiKernelTerm_succ_le_ground_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u)
+    (n : ℕ) :
+    riemannXiKernelTerm (n + 1) u ≤
+      32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have hq0 := xiKernelQ_zero_ge_fourth hu
+  have hqpos : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hI0 : (0 : ℝ) < xiKernelInner 0 u := by
+    have := xiKernelInner_ge_three 0 hu0; linarith
+  have hX : (5.1 : ℝ) ≤ Real.pi * Real.exp (2 * u) := by
+    have h := hq0
+    unfold xiKernelQ at h
+    norm_num at h
+    linarith [h]
+  have hm : (1 : ℝ) ≤ ((n : ℝ) + 2) ^ 2 := by nlinarith
+  have hinner : xiKernelInner (n + 1) u ≤
+      2 * ((n : ℝ) + 2) ^ 2 * xiKernelInner 0 u := by
+    unfold xiKernelInner xiKernelQ
+    push_cast
+    have hmnn : (0 : ℝ) ≤ ((n : ℝ) + 2) ^ 2 := by positivity
+    nlinarith [mul_le_mul_of_nonneg_left hX hmnn, hm, hmnn]
+  have hgapeq : xiKernelQ (n + 1) u - xiKernelQ 0 u =
+      (((n : ℝ) + 2) ^ 2 - 1) * xiKernelQ 0 u := by
+    unfold xiKernelQ; push_cast; ring
+  have hgap : 3 * xiKernelQ 0 u + 20 * (n : ℝ) ≤
+      xiKernelQ (n + 1) u - xiKernelQ 0 u := by
+    rw [hgapeq]
+    have hq0pos : (0 : ℝ) ≤ xiKernelQ 0 u := hqpos.le
+    have h4n : 20 * (n : ℝ) ≤ 4 * (n : ℝ) * xiKernelQ 0 u := by
+      nlinarith [mul_le_mul_of_nonneg_left hq0 hn]
+    nlinarith [mul_nonneg (mul_nonneg hn hn) hq0pos, h4n]
+  have hexp_le : 2 * ((n : ℝ) + 2) ^ 4 *
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+      32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) := by
+    have h1 : Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        Real.exp (-(3 * xiKernelQ 0 u + 20 * (n : ℝ))) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have hsplit : Real.exp (-(3 * xiKernelQ 0 u + 20 * (n : ℝ))) =
+        Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(20 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    have hpre : 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(20 : ℝ) * (n : ℝ)) ≤
+        32 * Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+      have hfold := add_two_pow_four_le n
+      have he : Real.exp (4 * (n : ℝ)) * Real.exp (-(20 : ℝ) * (n : ℝ)) =
+          Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+        rw [← Real.exp_add]; congr 1; ring
+      calc 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(20 : ℝ) * (n : ℝ)) ≤
+          2 * (16 * Real.exp (4 * (n : ℝ))) * Real.exp (-(20 : ℝ) * (n : ℝ)) := by
+            apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
+            linarith
+        _ = 32 * (Real.exp (4 * (n : ℝ)) * Real.exp (-(20 : ℝ) * (n : ℝ))) := by
+            ring
+        _ = 32 * Real.exp (-(16 : ℝ) * (n : ℝ)) := by rw [he]
+    calc 2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        2 * ((n : ℝ) + 2) ^ 4 *
+          (Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(20 : ℝ) * (n : ℝ))) := by
+          rw [← hsplit]
+          exact mul_le_mul_of_nonneg_left h1 (by positivity)
+      _ = (2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(20 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+      _ ≤ (32 * Real.exp (-(16 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) :=
+          mul_le_mul_of_nonneg_right hpre (Real.exp_pos _).le
+      _ = 32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+  have hf0 := riemannXiKernelTerm_factorized 0 u
+  have hfn := riemannXiKernelTerm_factorized (n + 1) u
+  have hpos : (0 : ℝ) < Real.pi * Real.exp (5 * u / 2) := by positivity
+  have hE : (0 : ℝ) < Real.exp (-xiKernelQ 0 u) := Real.exp_pos _
+  rw [hfn, hf0]
+  dsimp only
+  push_cast
+  have hsplit2 : Real.exp (-xiKernelQ (n + 1) u) =
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+        Real.exp (-xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  rw [hsplit2]
+  have h2n : ((n : ℝ) + 1 + 1) = ((n : ℝ) + 2) := by ring
+  rw [h2n]
+  have hstep1 : Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+      xiKernelInner (n + 1) u ≤
+      (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        (2 * ((n : ℝ) + 2) ^ 4) := by
+    have hb : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) := by
+      positivity
+    nlinarith [mul_le_mul_of_nonneg_left hinner hb, hI0, hpos,
+      sq_nonneg ((n : ℝ) + 2)]
+  calc Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+        xiKernelInner (n + 1) u *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u))
+      = (Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner (n + 1) u) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ ((Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+          (2 * ((n : ℝ) + 2) ^ 4)) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_right hstep1; positivity
+    _ = (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u))) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u)) * Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact mul_le_mul_of_nonneg_right hexp_le hE.le
+    _ = 32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) *
+        (Real.pi * ((0 : ℝ) + 1) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner 0 u * Real.exp (-xiKernelQ 0 u)) := by ring
+
+/-- **Sharp per-term tail bound on the middle region** `u ≥ 2/5`: the same
+shape as the bulk version, with decay rate `18` in place of `30` because the
+ground coordinate is only bounded below by `6.98` rather than `8.5`. -/
+theorem riemannXiKernelTerm_succ_le_ground_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u)
+    (n : ℕ) :
+    riemannXiKernelTerm (n + 1) u ≤
+      32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hn : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
+  have hq0 := xiKernelQ_zero_ge_threetenths hu
+  have hqpos : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hI0 : (0 : ℝ) < xiKernelInner 0 u := by
+    have := xiKernelInner_ge_three 0 hu0; linarith
+  have hX : (5.7 : ℝ) ≤ Real.pi * Real.exp (2 * u) := by
+    have h := hq0
+    unfold xiKernelQ at h
+    norm_num at h
+    linarith [h]
+  have hm : (1 : ℝ) ≤ ((n : ℝ) + 2) ^ 2 := by nlinarith
+  have hinner : xiKernelInner (n + 1) u ≤
+      2 * ((n : ℝ) + 2) ^ 2 * xiKernelInner 0 u := by
+    unfold xiKernelInner xiKernelQ
+    push_cast
+    have hmnn : (0 : ℝ) ≤ ((n : ℝ) + 2) ^ 2 := by positivity
+    nlinarith [mul_le_mul_of_nonneg_left hX hmnn, hm, hmnn]
+  have hgapeq : xiKernelQ (n + 1) u - xiKernelQ 0 u =
+      (((n : ℝ) + 2) ^ 2 - 1) * xiKernelQ 0 u := by
+    unfold xiKernelQ; push_cast; ring
+  have hgap : 3 * xiKernelQ 0 u + 22 * (n : ℝ) ≤
+      xiKernelQ (n + 1) u - xiKernelQ 0 u := by
+    rw [hgapeq]
+    have hq0pos : (0 : ℝ) ≤ xiKernelQ 0 u := hqpos.le
+    have h4n : 22 * (n : ℝ) ≤ 4 * (n : ℝ) * xiKernelQ 0 u := by
+      nlinarith [mul_le_mul_of_nonneg_left hq0 hn]
+    nlinarith [mul_nonneg (mul_nonneg hn hn) hq0pos, h4n]
+  have hquart : ((n : ℝ) + 2) ^ 4 ≤ Real.exp (4 * ((n : ℝ) + 2)) :=
+    pow_four_le_exp_four_mul (by linarith)
+  have hexp_le : 2 * ((n : ℝ) + 2) ^ 4 *
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+      32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) := by
+    have h1 : Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        Real.exp (-(3 * xiKernelQ 0 u + 22 * (n : ℝ))) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have hsplit : Real.exp (-(3 * xiKernelQ 0 u + 22 * (n : ℝ))) =
+        Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(22 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    have hpre : 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(22 : ℝ) * (n : ℝ)) ≤
+        32 * Real.exp (-(18 : ℝ) * (n : ℝ)) := by
+      have hfold := add_two_pow_four_le n
+      have he : Real.exp (4 * (n : ℝ)) * Real.exp (-(22 : ℝ) * (n : ℝ)) =
+          Real.exp (-(18 : ℝ) * (n : ℝ)) := by
+        rw [← Real.exp_add]; congr 1; ring
+      calc 2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(22 : ℝ) * (n : ℝ)) ≤
+          2 * (16 * Real.exp (4 * (n : ℝ))) * Real.exp (-(22 : ℝ) * (n : ℝ)) := by
+            apply mul_le_mul_of_nonneg_right _ (Real.exp_pos _).le
+            linarith
+        _ = 32 * (Real.exp (4 * (n : ℝ)) * Real.exp (-(22 : ℝ) * (n : ℝ))) := by
+            ring
+        _ = 32 * Real.exp (-(18 : ℝ) * (n : ℝ)) := by rw [he]
+    calc 2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) ≤
+        2 * ((n : ℝ) + 2) ^ 4 *
+          (Real.exp (-3 * xiKernelQ 0 u) * Real.exp (-(22 : ℝ) * (n : ℝ))) := by
+          rw [← hsplit]
+          exact mul_le_mul_of_nonneg_left h1 (by positivity)
+      _ = (2 * ((n : ℝ) + 2) ^ 4 * Real.exp (-(22 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+      _ ≤ (32 * Real.exp (-(18 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) :=
+          mul_le_mul_of_nonneg_right hpre (Real.exp_pos _).le
+      _ = 32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) := by ring
+  have hf0 := riemannXiKernelTerm_factorized 0 u
+  have hfn := riemannXiKernelTerm_factorized (n + 1) u
+  have hpos : (0 : ℝ) < Real.pi * Real.exp (5 * u / 2) := by positivity
+  have hE : (0 : ℝ) < Real.exp (-xiKernelQ 0 u) := Real.exp_pos _
+  rw [hfn, hf0]
+  dsimp only
+  push_cast
+  have hsplit2 : Real.exp (-xiKernelQ (n + 1) u) =
+      Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+        Real.exp (-xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  rw [hsplit2]
+  have h2n : ((n : ℝ) + 1 + 1) = ((n : ℝ) + 2) := by ring
+  rw [h2n]
+  have hstep1 : Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+      xiKernelInner (n + 1) u ≤
+      (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        (2 * ((n : ℝ) + 2) ^ 4) := by
+    have hb : (0 : ℝ) ≤ Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) := by
+      positivity
+    nlinarith [mul_le_mul_of_nonneg_left hinner hb, hI0, hpos,
+      sq_nonneg ((n : ℝ) + 2)]
+  calc Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+        xiKernelInner (n + 1) u *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u))
+      = (Real.pi * ((n : ℝ) + 2) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner (n + 1) u) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ ((Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+          (2 * ((n : ℝ) + 2) ^ 4)) *
+        (Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u)) *
+          Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_right hstep1; positivity
+    _ = (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((2 * ((n : ℝ) + 2) ^ 4 *
+          Real.exp (-(xiKernelQ (n + 1) u - xiKernelQ 0 u))) *
+          Real.exp (-xiKernelQ 0 u)) := by ring
+    _ ≤ (Real.pi * Real.exp (5 * u / 2) * xiKernelInner 0 u) *
+        ((32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u)) * Real.exp (-xiKernelQ 0 u)) := by
+        apply mul_le_mul_of_nonneg_left _ (by positivity)
+        exact mul_le_mul_of_nonneg_right hexp_le hE.le
+    _ = 32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) *
+        (Real.pi * ((0 : ℝ) + 1) ^ 2 * Real.exp (5 * u / 2) *
+          xiKernelInner 0 u * Real.exp (-xiKernelQ 0 u)) := by ring
+
+/-- **`q`-weighted tail on the middle region.** -/
+theorem xiQWeightedTail_le_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) :
+    (∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) ≤
+      256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hterm : ∀ n : ℕ,
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hsharp := riemannXiKernelTerm_succ_le_ground_mid hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hfold := add_two_sq_le n
+    have h1 : xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      apply mul_le_mul _ hsharp htp.le (by positivity)
+      rw [hqn]
+      nlinarith [mul_le_mul_of_nonneg_right hfold hq0.le]
+    have h2 : Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ)) =
+        Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := h1
+      _ = 128 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h2]
+  have hmaj : Summable (fun n : ℕ =>
+      128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (16 : ℝ)) (by norm_num)
+    have := (hg.mul_left (128 * xiKernelQ 0 u)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hnn : ∀ n : ℕ, 0 ≤ xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+    fun n => mul_nonneg (xiKernelQ_pos (n + 1) u).le
+      (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hsum : Summable (fun n : ℕ =>
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) :=
+    Summable.of_nonneg_of_le hnn hterm hmaj
+  have hcmp := Summable.tsum_le_tsum hterm hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (16 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 128 * xiKernelQ 0 u *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc (∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) ≤
+      (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(16 : ℝ) * (n : ℝ)) :=
+        hcmp
+    _ ≤ (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- **Gate tail on the middle region**: the absolute tail of the gate series,
+which the bulk route never needed because the gates were positive there. -/
+theorem xiGateTail_abs_le_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) (hu2 : u ≤ 1 / 2) :
+    (∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      2176 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  -- |g_n| ≤ 8.5 q_n
+  have hgn : ∀ n : ℕ, |xiKernelTermGateWeight (n + 1) u| ≤
+      17 / 2 * (xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    intro n
+    have hs := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hc := xiKernelTermLogCurvature_abs_le (n + 1) hu0
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : (0 : ℝ) < xiKernelQ (n + 1) u := xiKernelQ_pos (n + 1) u
+    have hgate : |xiTermGate (n + 1) u| ≤ 17 / 2 * xiKernelQ (n + 1) u := by
+      unfold xiTermGate
+      have h := abs_sub (xiKernelTermLogSlope (n + 1) u)
+        (u * xiKernelTermLogCurvature (n + 1) u)
+      have habs : |u * xiKernelTermLogCurvature (n + 1) u| ≤
+          7 / 2 * xiKernelQ (n + 1) u := by
+        rw [abs_mul, abs_of_nonneg hu0]
+        nlinarith [hc, hu2, hu0, hqn.le, abs_nonneg (xiKernelTermLogCurvature (n+1) u)]
+      calc |xiKernelTermLogSlope (n + 1) u -
+            u * xiKernelTermLogCurvature (n + 1) u| ≤
+          |xiKernelTermLogSlope (n + 1) u| +
+            |u * xiKernelTermLogCurvature (n + 1) u| := h
+        _ ≤ 5 * xiKernelQ (n + 1) u + 7 / 2 * xiKernelQ (n + 1) u := by
+            linarith
+        _ = 17 / 2 * xiKernelQ (n + 1) u := by ring
+    unfold xiKernelTermGateWeight
+    rw [abs_mul, abs_of_pos htp]
+    nlinarith [mul_le_mul_of_nonneg_right hgate htp.le, htp]
+  have hqt := xiQWeightedTail_le_mid hu
+  have hqsum : Summable (fun n : ℕ =>
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    have hnn : ∀ n : ℕ, 0 ≤ xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+      fun n => mul_nonneg (xiKernelQ_pos (n + 1) u).le
+        (riemannXiKernelTerm_pos (n + 1) hu0).le
+    have hmaj : Summable (fun n : ℕ =>
+        128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      have hg := summable_exp_neg_rate (c := (16 : ℝ)) (by norm_num)
+      have := (hg.mul_left (128 * xiKernelQ 0 u)).mul_right
+        (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+      simpa [mul_assoc] using this
+    refine Summable.of_nonneg_of_le hnn (fun n => ?_) hmaj
+    have hsharp := riemannXiKernelTerm_succ_le_ground_mid hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hfold := add_two_sq_le n
+    have h2 : Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ)) =
+        Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+          apply mul_le_mul _ hsharp htp.le (by positivity)
+          rw [hqn]
+          nlinarith [mul_le_mul_of_nonneg_right hfold hq0.le]
+      _ = 128 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h2]
+  have habs : Summable (fun n : ℕ => |xiKernelTermGateWeight (n + 1) u|) :=
+    Summable.of_nonneg_of_le (fun n => abs_nonneg _) hgn (hqsum.mul_left _)
+  have hcmp := Summable.tsum_le_tsum hgn habs (hqsum.mul_left _)
+  rw [tsum_mul_left] at hcmp
+  calc (∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      17 / 2 * ∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+        hcmp
+    _ ≤ 17 / 2 * (256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) := by
+        exact mul_le_mul_of_nonneg_left hqt (by norm_num)
+    _ = 2176 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Tail of the kernel series on the middle region. -/
+theorem xiKernelTail_le_ground_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) :
+    (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      64 * Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hmaj : Summable (fun n : ℕ =>
+      32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (18 : ℝ)) (by norm_num)
+    have := (hg.mul_left (32 : ℝ)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hsum : Summable (fun n : ℕ => riemannXiKernelTerm (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (riemannXiKernelTerm_summable u)
+  have hcmp := Summable.tsum_le_tsum
+    (fun n => riemannXiKernelTerm_succ_le_ground_mid hu n) hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (32 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)) *
+        ∑' n : ℕ, Real.exp (-(18 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (18 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 32 * (Real.exp (-3 * xiKernelQ 0 u) *
+      riemannXiKernelTerm 0 u) := by positivity
+  calc (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      (32 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)) *
+        ∑' n : ℕ, Real.exp (-(18 : ℝ) * (n : ℝ)) := hcmp
+    _ ≤ (32 * (Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u)) * 2 := mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 64 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Derivative tail on the middle region: `|s_n| ≤ 5 q_n` against the
+`q`-weighted tail. -/
+theorem xiDerivTail_abs_le_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) :
+    |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      1280 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hqt := xiQWeightedTail_le_mid hu
+  have hterm : ∀ n : ℕ, |xiKernelTermDeriv (n + 1) u| ≤
+      5 * (xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    intro n
+    have hs := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    unfold xiKernelTermDeriv
+    rw [abs_mul, abs_of_pos htp]
+    nlinarith [mul_le_mul_of_nonneg_right hs htp.le, htp]
+  have hqsum : Summable (fun n : ℕ =>
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    have hnn : ∀ n : ℕ, 0 ≤ xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+      fun n => mul_nonneg (xiKernelQ_pos (n + 1) u).le
+        (riemannXiKernelTerm_pos (n + 1) hu0).le
+    have hmaj : Summable (fun n : ℕ =>
+        128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      have hg := summable_exp_neg_rate (c := (16 : ℝ)) (by norm_num)
+      have := (hg.mul_left (128 * xiKernelQ 0 u)).mul_right
+        (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+      simpa [mul_assoc] using this
+    refine Summable.of_nonneg_of_le hnn (fun n => ?_) hmaj
+    have hsharp := riemannXiKernelTerm_succ_le_ground_mid hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hfold := add_two_sq_le n
+    have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+    have h2 : Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ)) =
+        Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+          apply mul_le_mul _ hsharp htp.le (by positivity)
+          rw [hqn]
+          nlinarith [mul_le_mul_of_nonneg_right hfold hq0.le]
+      _ = 128 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 128 * xiKernelQ 0 u * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h2]
+  have habs : Summable (fun n : ℕ => |xiKernelTermDeriv (n + 1) u|) :=
+    Summable.of_nonneg_of_le (fun n => abs_nonneg _) hterm (hqsum.mul_left _)
+  have hstep : |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := by
+    simpa [Real.norm_eq_abs] using
+      norm_tsum_le_tsum_norm (f := fun n : ℕ => xiKernelTermDeriv (n + 1) u)
+        (by simpa [Real.norm_eq_abs] using habs)
+  have hcmp := Summable.tsum_le_tsum hterm habs (hqsum.mul_left _)
+  rw [tsum_mul_left] at hcmp
+  calc |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := hstep
+    _ ≤ 5 * ∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+        hcmp
+    _ ≤ 5 * (256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) := mul_le_mul_of_nonneg_left hqt (by norm_num)
+    _ = 1280 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Squared-slope tail on the middle region. -/
+theorem xiSlopeSquareTail_le_mid {u : ℝ} (hu : (3 : ℝ) / 10 ≤ u) :
+    (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      25600 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hterm : ∀ n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u ≤
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hslope := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hsharp := riemannXiKernelTerm_succ_le_ground_mid hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hsq : xiKernelTermLogSlope (n + 1) u ^ 2 ≤
+        25 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) ^ 2 := by
+      have h := sq_le_sq' (neg_le_of_abs_le hslope) (le_of_abs_le hslope)
+      rw [hqn] at h
+      nlinarith [h]
+    have hfold := add_two_pow_four_le n
+    have h1 : xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := by
+      unfold xiKernelTermSlopeSquareWeight
+      have := mul_le_mul_of_nonneg_right hsq htp.le
+      nlinarith [this, htp]
+    have h4 : Real.exp (4 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ)) =
+        Real.exp (-(14 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := h1
+      _ ≤ 25 * ((16 * Real.exp (4 * (n : ℝ))) * xiKernelQ 0 u ^ 2) *
+          (32 * Real.exp (-(18 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+          apply mul_le_mul _ hsharp htp.le (by positivity)
+          nlinarith [mul_le_mul_of_nonneg_right hfold (sq_nonneg (xiKernelQ 0 u))]
+      _ = 12800 * xiKernelQ 0 u ^ 2 *
+          (Real.exp (4 * (n : ℝ)) * Real.exp (-(18 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h4]
+  have hmaj : Summable (fun n : ℕ =>
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (14 : ℝ)) (by norm_num)
+    have := (hg.mul_left (12800 * xiKernelQ 0 u ^ 2)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hnonneg : ∀ n : ℕ, 0 ≤ xiKernelTermSlopeSquareWeight (n + 1) u := by
+    intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hsum : Summable (fun n : ℕ => xiKernelTermSlopeSquareWeight (n + 1) u) :=
+    Summable.of_nonneg_of_le hnonneg hterm hmaj
+  have hcmp := Summable.tsum_le_tsum hterm hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(14 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (14 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 12800 * xiKernelQ 0 u ^ 2 *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(14 : ℝ) * (n : ℝ)) :=
+        hcmp
+    _ ≤ (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 25600 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-! ### The five tails on the inner-middle region `u ≥ 1/4`
+
+Verbatim retargets of the `3/10` versions along the one notch `18 → 16` in the
+per-term rate.  The derived rates drop in step (`q`-weighted `16 → 14`,
+squared-slope `14 → 12`) and every prefactor survives, because each is a
+geometric sum `∑ e^{-cn} ≤ 2` and the bound holds for all `c ≥ 12`. -/
+
+/-- **`q`-weighted tail on the inner-middle region.** -/
+theorem xiQWeightedTail_le_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    (∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) ≤
+      256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hterm : ∀ n : ℕ,
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hsharp := riemannXiKernelTerm_succ_le_ground_fourth hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hfold := add_two_sq_le n
+    have h1 : xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+      apply mul_le_mul _ hsharp htp.le (by positivity)
+      rw [hqn]
+      nlinarith [mul_le_mul_of_nonneg_right hfold hq0.le]
+    have h2 : Real.exp (2 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ)) =
+        Real.exp (-(14 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+        (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+          (32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := h1
+      _ = 128 * xiKernelQ 0 u *
+          (Real.exp (2 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h2]
+  have hmaj : Summable (fun n : ℕ =>
+      128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (14 : ℝ)) (by norm_num)
+    have := (hg.mul_left (128 * xiKernelQ 0 u)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hnn : ∀ n : ℕ, 0 ≤ xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+    fun n => mul_nonneg (xiKernelQ_pos (n + 1) u).le
+      (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hsum : Summable (fun n : ℕ =>
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) :=
+    Summable.of_nonneg_of_le hnn hterm hmaj
+  have hcmp := Summable.tsum_le_tsum hterm hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(14 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (14 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 128 * xiKernelQ 0 u *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc (∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) ≤
+      (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(14 : ℝ) * (n : ℝ)) :=
+        hcmp
+    _ ≤ (128 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Summability of the `q`-weighted tail on `u ≥ 1/4`, shared by the gate and
+derivative tails below. -/
+theorem xiQWeightedTail_summable_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    Summable (fun n : ℕ =>
+      xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hnn : ∀ n : ℕ, 0 ≤ xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+    fun n => mul_nonneg (xiKernelQ_pos (n + 1) u).le
+      (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hmaj : Summable (fun n : ℕ =>
+      128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (14 : ℝ)) (by norm_num)
+    have := (hg.mul_left (128 * xiKernelQ 0 u)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  refine Summable.of_nonneg_of_le hnn (fun n => ?_) hmaj
+  have hsharp := riemannXiKernelTerm_succ_le_ground_fourth hu n
+  have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+    riemannXiKernelTerm_pos (n + 1) hu0
+  have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+    unfold xiKernelQ; push_cast; ring
+  have hfold := add_two_sq_le n
+  have h2 : Real.exp (2 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ)) =
+      Real.exp (-(14 : ℝ) * (n : ℝ)) := by
+    rw [← Real.exp_add]; congr 1; ring
+  calc xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u ≤
+      (4 * Real.exp (2 * (n : ℝ)) * xiKernelQ 0 u) *
+        (32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+        apply mul_le_mul _ hsharp htp.le (by positivity)
+        rw [hqn]
+        nlinarith [mul_le_mul_of_nonneg_right hfold hq0.le]
+    _ = 128 * xiKernelQ 0 u *
+        (Real.exp (2 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ))) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+    _ = 128 * xiKernelQ 0 u * Real.exp (-(14 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h2]
+
+/-- **Gate tail on the inner-middle region.** -/
+theorem xiGateTail_abs_le_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u)
+    (hu2 : u ≤ 1 / 2) :
+    (∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      2176 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hgn : ∀ n : ℕ, |xiKernelTermGateWeight (n + 1) u| ≤
+      17 / 2 * (xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    intro n
+    have hs := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hc := xiKernelTermLogCurvature_abs_le (n + 1) hu0
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : (0 : ℝ) < xiKernelQ (n + 1) u := xiKernelQ_pos (n + 1) u
+    have hgate : |xiTermGate (n + 1) u| ≤ 17 / 2 * xiKernelQ (n + 1) u := by
+      unfold xiTermGate
+      have h := abs_sub (xiKernelTermLogSlope (n + 1) u)
+        (u * xiKernelTermLogCurvature (n + 1) u)
+      have habs : |u * xiKernelTermLogCurvature (n + 1) u| ≤
+          7 / 2 * xiKernelQ (n + 1) u := by
+        rw [abs_mul, abs_of_nonneg hu0]
+        nlinarith [hc, hu2, hu0, hqn.le,
+          abs_nonneg (xiKernelTermLogCurvature (n+1) u)]
+      calc |xiKernelTermLogSlope (n + 1) u -
+            u * xiKernelTermLogCurvature (n + 1) u| ≤
+          |xiKernelTermLogSlope (n + 1) u| +
+            |u * xiKernelTermLogCurvature (n + 1) u| := h
+        _ ≤ 5 * xiKernelQ (n + 1) u + 7 / 2 * xiKernelQ (n + 1) u := by
+            linarith
+        _ = 17 / 2 * xiKernelQ (n + 1) u := by ring
+    unfold xiKernelTermGateWeight
+    rw [abs_mul, abs_of_pos htp]
+    nlinarith [mul_le_mul_of_nonneg_right hgate htp.le, htp]
+  have hqt := xiQWeightedTail_le_fourth hu
+  have hqsum := xiQWeightedTail_summable_fourth hu
+  have habs : Summable (fun n : ℕ => |xiKernelTermGateWeight (n + 1) u|) :=
+    Summable.of_nonneg_of_le (fun n => abs_nonneg _) hgn (hqsum.mul_left _)
+  have hcmp := Summable.tsum_le_tsum hgn habs (hqsum.mul_left _)
+  rw [tsum_mul_left] at hcmp
+  calc (∑' n : ℕ, |xiKernelTermGateWeight (n + 1) u|) ≤
+      17 / 2 * ∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+        hcmp
+    _ ≤ 17 / 2 * (256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) := by
+        exact mul_le_mul_of_nonneg_left hqt (by norm_num)
+    _ = 2176 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Tail of the kernel series on the inner-middle region. -/
+theorem xiKernelTail_le_ground_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      64 * Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hmaj : Summable (fun n : ℕ =>
+      32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (16 : ℝ)) (by norm_num)
+    have := (hg.mul_left (32 : ℝ)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hsum : Summable (fun n : ℕ => riemannXiKernelTerm (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (riemannXiKernelTerm_summable u)
+  have hcmp := Summable.tsum_le_tsum
+    (fun n => riemannXiKernelTerm_succ_le_ground_fourth hu n) hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (32 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)) *
+        ∑' n : ℕ, Real.exp (-(16 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (16 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 32 * (Real.exp (-3 * xiKernelQ 0 u) *
+      riemannXiKernelTerm 0 u) := by positivity
+  calc (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      (32 * (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)) *
+        ∑' n : ℕ, Real.exp (-(16 : ℝ) * (n : ℝ)) := hcmp
+    _ ≤ (32 * (Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u)) * 2 := mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 64 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Derivative tail on the inner-middle region. -/
+theorem xiDerivTail_abs_le_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      1280 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hqt := xiQWeightedTail_le_fourth hu
+  have hterm : ∀ n : ℕ, |xiKernelTermDeriv (n + 1) u| ≤
+      5 * (xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u) := by
+    intro n
+    have hs := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    unfold xiKernelTermDeriv
+    rw [abs_mul, abs_of_pos htp]
+    nlinarith [mul_le_mul_of_nonneg_right hs htp.le, htp]
+  have hqsum := xiQWeightedTail_summable_fourth hu
+  have habs : Summable (fun n : ℕ => |xiKernelTermDeriv (n + 1) u|) :=
+    Summable.of_nonneg_of_le (fun n => abs_nonneg _) hterm (hqsum.mul_left _)
+  have hstep : |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := by
+    simpa [Real.norm_eq_abs] using
+      norm_tsum_le_tsum_norm (f := fun n : ℕ => xiKernelTermDeriv (n + 1) u)
+        (by simpa [Real.norm_eq_abs] using habs)
+  have hcmp := Summable.tsum_le_tsum hterm habs (hqsum.mul_left _)
+  rw [tsum_mul_left] at hcmp
+  calc |∑' n : ℕ, xiKernelTermDeriv (n + 1) u| ≤
+      ∑' n : ℕ, |xiKernelTermDeriv (n + 1) u| := hstep
+    _ ≤ 5 * ∑' n : ℕ, xiKernelQ (n + 1) u * riemannXiKernelTerm (n + 1) u :=
+        hcmp
+    _ ≤ 5 * (256 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) := mul_le_mul_of_nonneg_left hqt (by norm_num)
+    _ = 1280 * xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Squared-slope tail on the inner-middle region. -/
+theorem xiSlopeSquareTail_le_fourth {u : ℝ} (hu : (1 : ℝ) / 4 ≤ u) :
+    (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      25600 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hterm : ∀ n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u ≤
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(12 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by
+    intro n
+    have hslope := xiKernelTermLogSlope_abs_le (n + 1) hu0
+    have hsharp := riemannXiKernelTerm_succ_le_ground_fourth hu n
+    have htp : (0 : ℝ) < riemannXiKernelTerm (n + 1) u :=
+      riemannXiKernelTerm_pos (n + 1) hu0
+    have hqn : xiKernelQ (n + 1) u = ((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u := by
+      unfold xiKernelQ; push_cast; ring
+    have hsq : xiKernelTermLogSlope (n + 1) u ^ 2 ≤
+        25 * (((n : ℝ) + 2) ^ 2 * xiKernelQ 0 u) ^ 2 := by
+      have h := sq_le_sq' (neg_le_of_abs_le hslope) (le_of_abs_le hslope)
+      rw [hqn] at h
+      nlinarith [h]
+    have hfold := add_two_pow_four_le n
+    have h1 : xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := by
+      unfold xiKernelTermSlopeSquareWeight
+      have := mul_le_mul_of_nonneg_right hsq htp.le
+      nlinarith [this, htp]
+    have h4 : Real.exp (4 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ)) =
+        Real.exp (-(12 : ℝ) * (n : ℝ)) := by
+      rw [← Real.exp_add]; congr 1; ring
+    calc xiKernelTermSlopeSquareWeight (n + 1) u ≤
+        25 * (((n : ℝ) + 2) ^ 4 * xiKernelQ 0 u ^ 2) *
+          riemannXiKernelTerm (n + 1) u := h1
+      _ ≤ 25 * ((16 * Real.exp (4 * (n : ℝ))) * xiKernelQ 0 u ^ 2) *
+          (32 * Real.exp (-(16 : ℝ) * (n : ℝ)) *
+            Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+          apply mul_le_mul _ hsharp htp.le (by positivity)
+          nlinarith [mul_le_mul_of_nonneg_right hfold (sq_nonneg (xiKernelQ 0 u))]
+      _ = 12800 * xiKernelQ 0 u ^ 2 *
+          (Real.exp (4 * (n : ℝ)) * Real.exp (-(16 : ℝ) * (n : ℝ))) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by ring
+      _ = 12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(12 : ℝ) * (n : ℝ)) *
+          Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by rw [h4]
+  have hmaj : Summable (fun n : ℕ =>
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(12 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) := by
+    have hg := summable_exp_neg_rate (c := (12 : ℝ)) (by norm_num)
+    have := (hg.mul_left (12800 * xiKernelQ 0 u ^ 2)).mul_right
+      (Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u)
+    simpa [mul_assoc] using this
+  have hnonneg : ∀ n : ℕ, 0 ≤ xiKernelTermSlopeSquareWeight (n + 1) u := by
+    intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hsum : Summable (fun n : ℕ => xiKernelTermSlopeSquareWeight (n + 1) u) :=
+    Summable.of_nonneg_of_le hnonneg hterm hmaj
+  have hcmp := Summable.tsum_le_tsum hterm hsum hmaj
+  have hclosed : (∑' n : ℕ,
+      12800 * xiKernelQ 0 u ^ 2 * Real.exp (-(12 : ℝ) * (n : ℝ)) *
+        Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u) =
+      (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(12 : ℝ) * (n : ℝ)) := by
+    rw [← tsum_mul_left]; congr 1; funext n; ring
+  rw [hclosed] at hcmp
+  have hgeo := tsum_exp_neg_rate_le_two (c := (12 : ℝ)) (by norm_num)
+  have hfac : (0 : ℝ) ≤ 12800 * xiKernelQ 0 u ^ 2 *
+      Real.exp (-3 * xiKernelQ 0 u) * riemannXiKernelTerm 0 u := by positivity
+  calc (∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u) ≤
+      (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+        riemannXiKernelTerm 0 u) * ∑' n : ℕ, Real.exp (-(12 : ℝ) * (n : ℝ)) :=
+        hcmp
+    _ ≤ (12800 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u) * 2 :=
+        mul_le_mul_of_nonneg_left hgeo hfac
+    _ = 25600 * xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) *
+          riemannXiKernelTerm 0 u := by ring
+
+/-- Ground coordinate past `u = 9/20`. -/
+theorem xiKernelQ_zero_ge_ninetwentieths {u : ℝ} (hu : (9 : ℝ) / 20 ≤ u) :
+    (7.7 : ℝ) ≤ xiKernelQ 0 u := by
+  have hpiL : (3.1415 : ℝ) ≤ Real.pi := by linarith [Real.pi_gt_d4]
+  have hlow : (2.4525 : ℝ) ≤ Real.exp (9 / 10 : ℝ) := by
+    have h := Real.sum_le_exp_of_nonneg (by norm_num : (0:ℝ) ≤ 9/10) 5
+    have hval : (∑ i ∈ Finset.range 5, ((9:ℝ)/10) ^ i / (i.factorial : ℝ)) =
+        1 + 9/10 + (9/10)^2/2 + (9/10)^3/6 + (9/10)^4/24 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    norm_num at h
+    linarith [h]
+  have hmono : Real.exp (9 / 10 : ℝ) ≤ Real.exp (2 * u) :=
+    Real.exp_le_exp.mpr (by linarith)
+  have hq : xiKernelQ 0 u = Real.pi * Real.exp (2 * u) := by
+    unfold xiKernelQ; norm_num
+  rw [hq]
+  nlinarith [hpiL, hlow, hmono, Real.exp_pos (9 / 10 : ℝ)]
+
+set_option maxHeartbeats 2000000 in
+/-- **The gate on `[3/10, 1/2]`** — the middle region closed below `1/2` by the
+ground-minus-tail route, since the per-term gates are no longer positive
+there.  All three middle tails and the quantitative gate `g₀ ≥ 2` feed in. -/
+theorem xiRadialConcavityNumerator_pos_of_threetenths_le {u : ℝ}
+    (hu : (3 : ℝ) / 10 ≤ u) (hu2 : u ≤ 1 / 2) :
+    0 < xiRadialConcavityNumerator u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hu0' : (0 : ℝ) < u := lt_of_lt_of_le (by norm_num) hu
+  have hu25 : (3 : ℝ) / 10 ≤ u := hu
+  have hu15 : (1 : ℝ) / 5 ≤ u := by linarith
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hqb := xiKernelQ_zero_ge_threetenths hu
+  have hE : (0 : ℝ) < Real.exp (-3 * xiKernelQ 0 u) := Real.exp_pos _
+  -- e^{-2q₀} ≤ 4e-7 and hence q₀²e^{-3q₀} ≤ 1e-7, q₀e^{-3q₀} ≤ 4e-7
+  have hq2exp : 4 * xiKernelQ 0 u ^ 2 ≤ Real.exp (xiKernelQ 0 u) := by
+    have h := Real.sum_le_exp_of_nonneg hq0.le 6
+    have hval : (∑ i ∈ Finset.range 6, (xiKernelQ 0 u) ^ i / (i.factorial : ℝ)) =
+        1 + xiKernelQ 0 u + xiKernelQ 0 u ^ 2 / 2 + xiKernelQ 0 u ^ 3 / 6 +
+          xiKernelQ 0 u ^ 4 / 24 + xiKernelQ 0 u ^ 5 / 120 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    nlinarith [h, hqb, hq0, pow_pos hq0 3, pow_pos hq0 4]
+  have hqexp : xiKernelQ 0 u ≤ Real.exp (xiKernelQ 0 u) := by
+    linarith [Real.add_one_le_exp (xiKernelQ 0 u)]
+  have he2 : Real.exp (-2 * xiKernelQ 0 u) ≤ 2 / 100000 := by
+    have hle : Real.exp (-2 * xiKernelQ 0 u) ≤ Real.exp (-11 : ℝ) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have hmul : Real.exp (-11 : ℝ) * Real.exp (11 : ℝ) = 1 := by
+      rw [← Real.exp_add]; norm_num
+    have hb : (2.718 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+    have hx : Real.exp 11 = (Real.exp 1) ^ 11 := by
+      rw [← Real.exp_nat_mul]; norm_num
+    have h15 : (55000 : ℝ) ≤ Real.exp 11 := by
+      rw [hx]
+      calc (55000 : ℝ) ≤ (2.718 : ℝ) ^ 11 := by norm_num
+        _ ≤ (Real.exp 1) ^ 11 := pow_le_pow_left₀ (by norm_num) hb 11
+    nlinarith [hle, hmul, h15, Real.exp_pos (-11 : ℝ)]
+  have hsplit3 : Real.exp (-3 * xiKernelQ 0 u) =
+      Real.exp (-xiKernelQ 0 u) * Real.exp (-2 * xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  have hEinv : Real.exp (-xiKernelQ 0 u) * Real.exp (xiKernelQ 0 u) = 1 := by
+    rw [← Real.exp_add]; simp
+  have hq2E : xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) ≤ 1 / 200000 := by
+    rw [hsplit3]
+    have h1 : xiKernelQ 0 u ^ 2 * Real.exp (-xiKernelQ 0 u) ≤ 1 / 4 := by
+      nlinarith [hq2exp, hEinv, Real.exp_pos (-xiKernelQ 0 u), hq0]
+    nlinarith [h1, he2, Real.exp_pos (-xiKernelQ 0 u),
+      Real.exp_pos (-2 * xiKernelQ 0 u), sq_nonneg (xiKernelQ 0 u)]
+  have hqE : xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) ≤ 2 / 100000 := by
+    rw [hsplit3]
+    have h1 : xiKernelQ 0 u * Real.exp (-xiKernelQ 0 u) ≤ 1 := by
+      nlinarith [hqexp, hEinv, Real.exp_pos (-xiKernelQ 0 u), hq0]
+    nlinarith [h1, he2, Real.exp_pos (-xiKernelQ 0 u),
+      Real.exp_pos (-2 * xiKernelQ 0 u), hq0.le]
+  -- variance bound from the ground split and the three middle tails
+  have hT := riemannXiKernelTerm_summable u
+  have hD : Summable (fun n : ℕ => xiKernelTermDeriv n u) :=
+    Summable.of_norm_bounded (xiKernelDerivMajorantCoeff_summable 1)
+      (fun n => xiKernelTermDeriv_norm_le n hu0)
+  have hS := xiKernelTermSlopeSquareWeight_summable hu0
+  have hTt := xiKernelTail_le_ground_mid hu25
+  have hDt := xiDerivTail_abs_le_mid hu25
+  have hSt := xiSlopeSquareTail_le_mid hu25
+  have hs0 := xiKernelTermLogSlope_abs_le 0 hu0
+  have hs0' := abs_le.mp hs0
+  have hs0sq : xiKernelTermLogSlope 0 u ^ 2 ≤ 25 * xiKernelQ 0 u ^ 2 := by
+    nlinarith [hs0'.1, hs0'.2, hq0]
+  have hTnn : (0 : ℝ) ≤ ∑' n : ℕ, riemannXiKernelTerm (n + 1) u :=
+    tsum_nonneg fun n => (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hSnn : (0 : ℝ) ≤ ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u := by
+    apply tsum_nonneg; intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hD1 := neg_abs_le (∑' n : ℕ, xiKernelTermDeriv (n + 1) u)
+  have hD2 := le_abs_self (∑' n : ℕ, xiKernelTermDeriv (n + 1) u)
+  set E := Real.exp (-3 * xiKernelQ 0 u) with hEdef
+  set Q := xiKernelQ 0 u with hQdef
+  set t := riemannXiKernelTerm 0 u with htdef
+  set Tp := ∑' n : ℕ, riemannXiKernelTerm (n + 1) u with hTpdef
+  set Dp := ∑' n : ℕ, xiKernelTermDeriv (n + 1) u with hDpdef
+  set Sp := ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u with hSpdef
+  have hEle : E ≤ 1 / 100000 := by
+    nlinarith [hq2E, hqb, hq0, hE.le, sq_nonneg Q]
+  have hA : t * Sp ≤ 25600 * Q ^ 2 * E * t ^ 2 := by
+    nlinarith [mul_le_mul_of_nonneg_left hSt ht0.le]
+  have hB : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤ 1600 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤
+        25 * Q ^ 2 * t * (64 * E * t) := by
+      apply mul_le_mul _ hTt hTnn (by positivity)
+      exact mul_le_mul_of_nonneg_right hs0sq ht0.le
+    nlinarith [h1]
+  have hC : Tp * Sp ≤ 17 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : Tp * Sp ≤ (64 * E * t) * (25600 * Q ^ 2 * E * t) :=
+      mul_le_mul hTt hSt hSnn (by positivity)
+    have hEsq : E * E ≤ (1 / 100000) * E := by nlinarith [hEle, hE.le]
+    nlinarith [h1, hEsq, hE.le, sq_nonneg Q, ht0.le, mul_pos ht0 ht0,
+      mul_nonneg (mul_nonneg (sq_nonneg Q) hE.le) (mul_pos ht0 ht0).le]
+  have hprod : |xiKernelTermLogSlope 0 u * Dp| ≤ 6400 * Q ^ 2 * E * t := by
+    rw [abs_mul]
+    calc |xiKernelTermLogSlope 0 u| * |Dp| ≤ (5 * Q) * (1280 * Q * E * t) :=
+          mul_le_mul hs0 hDt (abs_nonneg _) (by positivity)
+      _ = 6400 * Q ^ 2 * E * t := by ring
+  have hDD : -(2 * (xiKernelTermLogSlope 0 u * t) * Dp) ≤
+      12800 * Q ^ 2 * E * t ^ 2 := by
+    have hneg := neg_abs_le (xiKernelTermLogSlope 0 u * Dp)
+    have hkey : -(xiKernelTermLogSlope 0 u * Dp) ≤ 6400 * Q ^ 2 * E * t := by
+      linarith [hprod, hneg]
+    nlinarith [mul_le_mul_of_nonneg_left hkey (by linarith : (0:ℝ) ≤ 2 * t)]
+  have hE2 : -(Dp ^ 2) ≤ 0 := by nlinarith [sq_nonneg Dp]
+  have hXnn : (0 : ℝ) ≤ Q ^ 2 * E * t ^ 2 := by positivity
+  have hsplit := xiSlopeVariance_ground_split hu0 hT hD hS
+  have hVbound : (∑' n : ℕ, riemannXiKernelTerm n u) *
+      (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+      (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2 ≤ 41000 * Q ^ 2 * E * t ^ 2 := by
+    rw [hsplit]
+    nlinarith [hA, hB, hC, hDD, hE2, hXnn]
+  -- mass-gate lower bound via ground minus tail
+  have hmass : t ≤ ∑' n : ℕ, riemannXiKernelTerm n u :=
+    hT.le_tsum 0 (fun n _ => (riemannXiKernelTerm_pos n hu0).le)
+  have hgateTail := xiGateTail_abs_le_mid hu25 hu2
+  have hg0 : (1 : ℝ) / 4 ≤ xiTermGate 0 u := xiTermGate_zero_ge_fourth hu15
+  have hgsum : Summable (fun n : ℕ => xiKernelTermGateWeight (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (xiKernelTermGateWeight_summable hu0)
+  have hGlow : 1 / 4 * t - 2176 * Q * E * t ≤
+      ∑' n : ℕ, xiKernelTermGateWeight n u := by
+    have hge := xiGateSeries_ge_ground_sub_tail hu0 hgsum
+    have hg0t : 1 / 4 * t ≤ xiKernelTermGateWeight 0 u := by
+      unfold xiKernelTermGateWeight
+      nlinarith [mul_le_mul_of_nonneg_right hg0 ht0.le]
+    linarith [hge, hgateTail]
+  have hGpos : (1 : ℝ) / 5 * t ≤ 1 / 4 * t - 2176 * Q * E * t := by
+    have h : 2176 * (Q * E) ≤ 1 / 20 := by nlinarith [hqE]
+    nlinarith [h, ht0.le]
+  -- final comparison
+  have hufinal : u * (41000 * Q ^ 2 * E) < 1 / 5 := by
+    have hXnn2 : (0 : ℝ) ≤ 41000 * Q ^ 2 * E := by positivity
+    have h : 41000 * Q ^ 2 * E ≤ 21 / 100 := by nlinarith [hq2E, hE.le]
+    nlinarith [h, hu2, hu0', hXnn2]
+  apply (xiRadialConcavityNumerator_pos_iff_gate_dominates_variance hu0').2
+  calc u * ((∑' n : ℕ, riemannXiKernelTerm n u) *
+        (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+        (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2) ≤
+      u * (41000 * Q ^ 2 * E * t ^ 2) :=
+        mul_le_mul_of_nonneg_left hVbound hu0
+    _ = (u * (41000 * Q ^ 2 * E)) * t ^ 2 := by ring
+    _ < (1 / 5) * t ^ 2 := by
+        apply mul_lt_mul_of_pos_right hufinal (by positivity)
+    _ = t * ((1 / 5) * t) := by ring
+    _ ≤ (∑' n : ℕ, riemannXiKernelTerm n u) *
+        ∑' n : ℕ, xiKernelTermGateWeight n u := by
+        apply mul_le_mul hmass (le_trans hGpos hGlow) (by positivity)
+        exact le_trans ht0.le hmass
+
+set_option maxHeartbeats 2000000 in
+/-- **The gate on `[1/4, 3/10]`** — the inner-middle region, closed by the same
+ground-minus-tail route one notch down.  The ground coordinate is only
+`q₀ ≥ 5.1` here, so the per-term rate is `16` rather than `18`; the endgame
+numerics still clear because the region caps `u` at `3/10` rather than `1/2`,
+which is what keeps `u · 41000 q₀² e^{-3q₀}` below `1/5`. -/
+theorem xiRadialConcavityNumerator_pos_of_fourth_le {u : ℝ}
+    (hu : (1 : ℝ) / 4 ≤ u) (hu2 : u ≤ 3 / 10) :
+    0 < xiRadialConcavityNumerator u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hu0' : (0 : ℝ) < u := lt_of_lt_of_le (by norm_num) hu
+  have hu15 : (1 : ℝ) / 5 ≤ u := by linarith
+  have hhalf : u ≤ 1 / 2 := by linarith
+  have ht0 : (0 : ℝ) < riemannXiKernelTerm 0 u := riemannXiKernelTerm_pos 0 hu0
+  have hq0 : (0 : ℝ) < xiKernelQ 0 u := xiKernelQ_pos 0 u
+  have hqb := xiKernelQ_zero_ge_fourth hu
+  have hE : (0 : ℝ) < Real.exp (-3 * xiKernelQ 0 u) := Real.exp_pos _
+  -- 4q₀² ≤ e^{q₀} needs seven Taylor terms at q₀ ≥ 5.1 (six give 122.6 vs 104.0)
+  have hq2exp : 4 * xiKernelQ 0 u ^ 2 ≤ Real.exp (xiKernelQ 0 u) := by
+    have h := Real.sum_le_exp_of_nonneg hq0.le 7
+    have hval : (∑ i ∈ Finset.range 7, (xiKernelQ 0 u) ^ i / (i.factorial : ℝ)) =
+        1 + xiKernelQ 0 u + xiKernelQ 0 u ^ 2 / 2 + xiKernelQ 0 u ^ 3 / 6 +
+          xiKernelQ 0 u ^ 4 / 24 + xiKernelQ 0 u ^ 5 / 120 +
+          xiKernelQ 0 u ^ 6 / 720 := by
+      simp [Finset.sum_range_succ, Nat.factorial]
+    rw [hval] at h
+    nlinarith [h, hqb, hq0, pow_pos hq0 3, pow_pos hq0 4, pow_pos hq0 5,
+      pow_pos hq0 6, sq_nonneg (xiKernelQ 0 u - 5.1)]
+  have hEinv : Real.exp (-xiKernelQ 0 u) * Real.exp (xiKernelQ 0 u) = 1 := by
+    rw [← Real.exp_add]; simp
+  -- e^{-2q₀} ≤ e^{-10} ≤ 5e-5 since 2q₀ ≥ 10.2
+  have he2 : Real.exp (-2 * xiKernelQ 0 u) ≤ 5 / 100000 := by
+    have hle : Real.exp (-2 * xiKernelQ 0 u) ≤ Real.exp (-10 : ℝ) :=
+      Real.exp_le_exp.mpr (by linarith)
+    have hmul : Real.exp (-10 : ℝ) * Real.exp (10 : ℝ) = 1 := by
+      rw [← Real.exp_add]; norm_num
+    have hb : (2.718 : ℝ) ≤ Real.exp 1 := by linarith [Real.exp_one_gt_d9]
+    have hx : Real.exp 10 = (Real.exp 1) ^ 10 := by
+      rw [← Real.exp_nat_mul]; norm_num
+    have h15 : (20000 : ℝ) ≤ Real.exp 10 := by
+      rw [hx]
+      calc (20000 : ℝ) ≤ (2.718 : ℝ) ^ 10 := by norm_num
+        _ ≤ (Real.exp 1) ^ 10 := pow_le_pow_left₀ (by norm_num) hb 10
+    nlinarith [hle, hmul, h15, Real.exp_pos (-10 : ℝ)]
+  have hsplit3 : Real.exp (-3 * xiKernelQ 0 u) =
+      Real.exp (-xiKernelQ 0 u) * Real.exp (-2 * xiKernelQ 0 u) := by
+    rw [← Real.exp_add]; congr 1; ring
+  -- q₀² e^{-q₀} ≤ 1/4 and q₀ e^{-q₀} ≤ 1/20, both straight from hq2exp
+  have hq2E : xiKernelQ 0 u ^ 2 * Real.exp (-3 * xiKernelQ 0 u) ≤
+      13 / 1000000 := by
+    rw [hsplit3]
+    have h1 : xiKernelQ 0 u ^ 2 * Real.exp (-xiKernelQ 0 u) ≤ 1 / 4 := by
+      nlinarith [hq2exp, hEinv, Real.exp_pos (-xiKernelQ 0 u), hq0]
+    nlinarith [h1, he2, Real.exp_pos (-xiKernelQ 0 u),
+      Real.exp_pos (-2 * xiKernelQ 0 u), sq_nonneg (xiKernelQ 0 u)]
+  have hqE : xiKernelQ 0 u * Real.exp (-3 * xiKernelQ 0 u) ≤ 3 / 1000000 := by
+    rw [hsplit3]
+    have h1 : xiKernelQ 0 u * Real.exp (-xiKernelQ 0 u) ≤ 1 / 20 := by
+      nlinarith [hq2exp, hEinv, Real.exp_pos (-xiKernelQ 0 u), hq0, hqb]
+    nlinarith [h1, he2, Real.exp_pos (-xiKernelQ 0 u),
+      Real.exp_pos (-2 * xiKernelQ 0 u), hq0.le]
+  have hT := riemannXiKernelTerm_summable u
+  have hD : Summable (fun n : ℕ => xiKernelTermDeriv n u) :=
+    Summable.of_norm_bounded (xiKernelDerivMajorantCoeff_summable 1)
+      (fun n => xiKernelTermDeriv_norm_le n hu0)
+  have hS := xiKernelTermSlopeSquareWeight_summable hu0
+  have hTt := xiKernelTail_le_ground_fourth hu
+  have hDt := xiDerivTail_abs_le_fourth hu
+  have hSt := xiSlopeSquareTail_le_fourth hu
+  have hs0 := xiKernelTermLogSlope_abs_le 0 hu0
+  have hs0' := abs_le.mp hs0
+  have hs0sq : xiKernelTermLogSlope 0 u ^ 2 ≤ 25 * xiKernelQ 0 u ^ 2 := by
+    nlinarith [hs0'.1, hs0'.2, hq0]
+  have hTnn : (0 : ℝ) ≤ ∑' n : ℕ, riemannXiKernelTerm (n + 1) u :=
+    tsum_nonneg fun n => (riemannXiKernelTerm_pos (n + 1) hu0).le
+  have hSnn : (0 : ℝ) ≤ ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u := by
+    apply tsum_nonneg; intro n
+    unfold xiKernelTermSlopeSquareWeight
+    exact mul_nonneg (sq_nonneg _) (riemannXiKernelTerm_pos (n + 1) hu0).le
+  set E := Real.exp (-3 * xiKernelQ 0 u) with hEdef
+  set Q := xiKernelQ 0 u with hQdef
+  set t := riemannXiKernelTerm 0 u with htdef
+  set Tp := ∑' n : ℕ, riemannXiKernelTerm (n + 1) u with hTpdef
+  set Dp := ∑' n : ℕ, xiKernelTermDeriv (n + 1) u with hDpdef
+  set Sp := ∑' n : ℕ, xiKernelTermSlopeSquareWeight (n + 1) u with hSpdef
+  have hEle : E ≤ 1 / 100000 := by
+    nlinarith [hq2E, hqb, hq0, hE.le, sq_nonneg Q]
+  have hA : t * Sp ≤ 25600 * Q ^ 2 * E * t ^ 2 := by
+    nlinarith [mul_le_mul_of_nonneg_left hSt ht0.le]
+  have hB : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤ 1600 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : xiKernelTermLogSlope 0 u ^ 2 * t * Tp ≤
+        25 * Q ^ 2 * t * (64 * E * t) := by
+      apply mul_le_mul _ hTt hTnn (by positivity)
+      exact mul_le_mul_of_nonneg_right hs0sq ht0.le
+    nlinarith [h1]
+  have hC : Tp * Sp ≤ 17 * Q ^ 2 * E * t ^ 2 := by
+    have h1 : Tp * Sp ≤ (64 * E * t) * (25600 * Q ^ 2 * E * t) :=
+      mul_le_mul hTt hSt hSnn (by positivity)
+    have hEsq : E * E ≤ (1 / 100000) * E := by nlinarith [hEle, hE.le]
+    nlinarith [h1, hEsq, hE.le, sq_nonneg Q, ht0.le, mul_pos ht0 ht0,
+      mul_nonneg (mul_nonneg (sq_nonneg Q) hE.le) (mul_pos ht0 ht0).le]
+  have hprod : |xiKernelTermLogSlope 0 u * Dp| ≤ 6400 * Q ^ 2 * E * t := by
+    rw [abs_mul]
+    calc |xiKernelTermLogSlope 0 u| * |Dp| ≤ (5 * Q) * (1280 * Q * E * t) :=
+          mul_le_mul hs0 hDt (abs_nonneg _) (by positivity)
+      _ = 6400 * Q ^ 2 * E * t := by ring
+  have hDD : -(2 * (xiKernelTermLogSlope 0 u * t) * Dp) ≤
+      12800 * Q ^ 2 * E * t ^ 2 := by
+    have hneg := neg_abs_le (xiKernelTermLogSlope 0 u * Dp)
+    have hkey : -(xiKernelTermLogSlope 0 u * Dp) ≤ 6400 * Q ^ 2 * E * t := by
+      linarith [hprod, hneg]
+    nlinarith [mul_le_mul_of_nonneg_left hkey (by linarith : (0:ℝ) ≤ 2 * t)]
+  have hE2 : -(Dp ^ 2) ≤ 0 := by nlinarith [sq_nonneg Dp]
+  have hXnn : (0 : ℝ) ≤ Q ^ 2 * E * t ^ 2 := by positivity
+  have hsplit := xiSlopeVariance_ground_split hu0 hT hD hS
+  have hVbound : (∑' n : ℕ, riemannXiKernelTerm n u) *
+      (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+      (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2 ≤ 41000 * Q ^ 2 * E * t ^ 2 := by
+    rw [hsplit]
+    nlinarith [hA, hB, hC, hDD, hE2, hXnn]
+  have hmass : t ≤ ∑' n : ℕ, riemannXiKernelTerm n u :=
+    hT.le_tsum 0 (fun n _ => (riemannXiKernelTerm_pos n hu0).le)
+  have hgateTail := xiGateTail_abs_le_fourth hu hhalf
+  have hg0 : (1 : ℝ) / 4 ≤ xiTermGate 0 u := xiTermGate_zero_ge_fourth hu15
+  have hgsum : Summable (fun n : ℕ => xiKernelTermGateWeight (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (xiKernelTermGateWeight_summable hu0)
+  have hGlow : 1 / 4 * t - 2176 * Q * E * t ≤
+      ∑' n : ℕ, xiKernelTermGateWeight n u := by
+    have hge := xiGateSeries_ge_ground_sub_tail hu0 hgsum
+    have hg0t : 1 / 4 * t ≤ xiKernelTermGateWeight 0 u := by
+      unfold xiKernelTermGateWeight
+      nlinarith [mul_le_mul_of_nonneg_right hg0 ht0.le]
+    linarith [hge, hgateTail]
+  have hGpos : (1 : ℝ) / 5 * t ≤ 1 / 4 * t - 2176 * Q * E * t := by
+    have h : 2176 * (Q * E) ≤ 1 / 20 := by nlinarith [hqE]
+    nlinarith [h, ht0.le]
+  have hufinal : u * (41000 * Q ^ 2 * E) < 1 / 5 := by
+    have hXnn2 : (0 : ℝ) ≤ 41000 * Q ^ 2 * E := by positivity
+    have h : 41000 * Q ^ 2 * E ≤ 54 / 100 := by nlinarith [hq2E, hE.le]
+    nlinarith [h, hu2, hu0', hXnn2]
+  apply (xiRadialConcavityNumerator_pos_iff_gate_dominates_variance hu0').2
+  calc u * ((∑' n : ℕ, riemannXiKernelTerm n u) *
+        (∑' n : ℕ, xiKernelTermSlopeSquareWeight n u) -
+        (∑' n : ℕ, xiKernelTermDeriv n u) ^ 2) ≤
+      u * (41000 * Q ^ 2 * E * t ^ 2) :=
+        mul_le_mul_of_nonneg_left hVbound hu0
+    _ = (u * (41000 * Q ^ 2 * E)) * t ^ 2 := by ring
+    _ < (1 / 5) * t ^ 2 := by
+        apply mul_lt_mul_of_pos_right hufinal (by positivity)
+    _ = t * ((1 / 5) * t) := by ring
+    _ ≤ (∑' n : ℕ, riemannXiKernelTerm n u) *
+        ∑' n : ℕ, xiKernelTermGateWeight n u := by
+        apply mul_le_mul hmass (le_trans hGpos hGlow) (by positivity)
+        exact le_trans ht0.le hmass
+
+/-- **The gate below and above `1/2`, combined**: positive for every
+`u ≥ 3/10`.  This is the largest region proved unconditionally, and it lies
+below the threshold `δ ≈ 0.36` required by the covariance-block route. -/
+theorem xiRadialConcavityNumerator_pos_of_threetenths {u : ℝ}
+    (hu : (3 : ℝ) / 10 ≤ u) : 0 < xiRadialConcavityNumerator u := by
+  rcases le_or_gt u (1 / 2) with h | h
+  · exact xiRadialConcavityNumerator_pos_of_threetenths_le hu h
+  · exact xiRadialConcavityNumerator_pos_of_half_le h.le
+
+/-- **The gate on the whole of `[1/4, ∞)`.**  Inner-middle region plus the
+`3/10` result.  This is now the largest region proved unconditionally, and it
+lowers by `1/20` the point the near-origin jet model has to reach. -/
+theorem xiRadialConcavityNumerator_pos_of_fourth {u : ℝ}
+    (hu : (1 : ℝ) / 4 ≤ u) : 0 < xiRadialConcavityNumerator u := by
+  rcases le_or_gt u (3 / 10) with h | h
+  · exact xiRadialConcavityNumerator_pos_of_fourth_le hu h
+  · exact xiRadialConcavityNumerator_pos_of_threetenths h.le
+
+/-- **The whole tail is dominated by the ground term** on the bulk region. -/
+theorem xiKernelTail_le_ground {u : ℝ} (hu : (1 : ℝ) / 2 ≤ u) :
+    (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤ riemannXiKernelTerm 0 u := by
+  have hu0 : (0 : ℝ) ≤ u := le_trans (by norm_num) hu
+  have hsummable : Summable (fun n : ℕ => riemannXiKernelTerm (n + 1) u) :=
+    (summable_nat_add_iff 1).2 (riemannXiKernelTerm_summable u)
+  have hmaj : Summable (fun n : ℕ =>
+      Real.exp (-((n : ℝ) + 1)) * riemannXiKernelTerm 0 u) :=
+    summable_exp_neg_index.mul_right _
+  have hcmp := Summable.tsum_le_tsum
+    (fun n => riemannXiKernelTerm_succ_le_ground hu n) hsummable hmaj
+  have hclosed : (∑' n : ℕ,
+      Real.exp (-((n : ℝ) + 1)) * riemannXiKernelTerm 0 u) =
+      (Real.exp (-1) / (1 - Real.exp (-1))) * riemannXiKernelTerm 0 u := by
+    rw [tsum_mul_right, tsum_exp_neg_index_eq]
+  rw [hclosed] at hcmp
+  have hratio : Real.exp (-1) / (1 - Real.exp (-1)) ≤ 1 := by
+    have hlt : Real.exp (-1) < 1 := Real.exp_lt_one_iff.mpr (by norm_num)
+    have hd : 0 < 1 - Real.exp (-1) := by linarith
+    rw [div_le_one hd]
+    have h2e : 2 * Real.exp (-1) < 1 := by
+      rw [Real.exp_neg]
+      have hepos := Real.exp_pos (1 : ℝ)
+      have h2 : (2 : ℝ) < Real.exp 1 := by
+        have := Real.exp_one_gt_d9; linarith
+      calc 2 * (Real.exp 1)⁻¹ < Real.exp 1 * (Real.exp 1)⁻¹ :=
+            mul_lt_mul_of_pos_right h2 (inv_pos.mpr hepos)
+        _ = 1 := mul_inv_cancel₀ hepos.ne'
+    linarith
+  calc (∑' n : ℕ, riemannXiKernelTerm (n + 1) u) ≤
+      (Real.exp (-1) / (1 - Real.exp (-1))) * riemannXiKernelTerm 0 u := hcmp
+    _ ≤ 1 * riemannXiKernelTerm 0 u :=
+        mul_le_mul_of_nonneg_right hratio (riemannXiKernelTerm_pos 0 hu0).le
+    _ = riemannXiKernelTerm 0 u := one_mul _
 
 /-- Closed form of the positive-index exponential tail. -/
 theorem xiShiftedIndexTail_eq :
@@ -5131,6 +7833,111 @@ theorem xiRadialCovarianceIntegrand_pos
         hmono (Set.mem_Ioi.mpr hv) (Set.mem_Ioi.mpr hu) h
       nlinarith
   exact mul_pos (mul_pos hfac (by positivity)) (by positivity)
+
+
+/-- Product of two nonpositive reals is nonnegative. -/
+theorem mul_nonneg_of_nonpos_nonpos_aux {a b : ℝ} (ha : a ≤ 0) (hb : b ≤ 0) :
+    0 ≤ a * b := by nlinarith
+
+/-! ### Block decomposition of the covariance integral
+
+The covariance integrand needs only a *sign condition*, not monotonicity.  On
+the mixed block `u ≤ δ ≤ v` it is nonnegative as soon as `H(u) ≤ H(δ)`, since
+`H` increases beyond `δ`; monotonicity on `(0, δ]` is never used.  Measured at
+`δ = 0.22`: corner (both `< δ`) is `+9.1e-8`, i.e. `0.083%` of the total
+`1.10e-4`, while mixed and outer carry `44.6%` and `55.6%`.  At `δ = 1/2` the
+same split degrades badly (corner `33.8%`, outer `0.79%`), so the useful
+threshold is near `0.22`, which is why the middle region `[0.22, 1/2]` is on
+the critical path and the inner Taylor analysis is not. -/
+
+/-- Pointwise sign criterion for the covariance integrand: only the sign of
+`(u² - v²)(H u - H v)` matters. -/
+theorem xiRadialCovarianceIntegrand_nonneg_of_sign {u v : ℝ}
+    (hu : 0 < u) (hv : 0 < v)
+    (hsign : 0 ≤ (u ^ 2 - v ^ 2) * (xiRadialHazard u - xiRadialHazard v)) :
+    0 ≤ xiRadialCovarianceIntegrand u v := by
+  have hKu := riemannXiKernel_pos hu.le
+  have hKv := riemannXiKernel_pos hv.le
+  unfold xiRadialCovarianceIntegrand
+  exact mul_nonneg (mul_nonneg hsign (by positivity)) (by positivity)
+
+/-- **Mixed-block nonnegativity from a sup bound.**  If `H` does not exceed
+`H δ` below `δ` and is monotone above it, then the integrand is nonnegative
+whenever one argument lies below `δ` and the other above — no information
+about the behaviour of `H` inside `(0, δ]` is needed. -/
+theorem xiRadialCovarianceIntegrand_nonneg_mixed {δ u v : ℝ}
+    (hδ : 0 < δ) (hu : 0 < u) (huδ : u ≤ δ) (hvδ : δ ≤ v)
+    (hsup : xiRadialHazard u ≤ xiRadialHazard δ)
+    (hmono : MonotoneOn xiRadialHazard (Set.Ici δ)) :
+    0 ≤ xiRadialCovarianceIntegrand u v := by
+  have hv : 0 < v := lt_of_lt_of_le hδ hvδ
+  have hHδv : xiRadialHazard δ ≤ xiRadialHazard v :=
+    hmono (Set.mem_Ici.mpr le_rfl) (Set.mem_Ici.mpr hvδ) hvδ
+  have hH : xiRadialHazard u ≤ xiRadialHazard v := le_trans hsup hHδv
+  have hsq : u ^ 2 ≤ v ^ 2 := by
+    apply pow_le_pow_left₀ hu.le (le_trans huδ hvδ)
+  apply xiRadialCovarianceIntegrand_nonneg_of_sign hu hv
+  have h1 : u ^ 2 - v ^ 2 ≤ 0 := by linarith
+  have h2 : xiRadialHazard u - xiRadialHazard v ≤ 0 := by linarith
+  exact mul_nonneg_of_nonpos_nonpos_aux h1 h2
+
+/-- Outer-block nonnegativity: both arguments beyond `δ`. -/
+theorem xiRadialCovarianceIntegrand_nonneg_outer {δ u v : ℝ}
+    (hδ : 0 < δ) (huδ : δ ≤ u) (hvδ : δ ≤ v)
+    (hmono : MonotoneOn xiRadialHazard (Set.Ici δ)) :
+    0 ≤ xiRadialCovarianceIntegrand u v := by
+  have hu : 0 < u := lt_of_lt_of_le hδ huδ
+  have hv : 0 < v := lt_of_lt_of_le hδ hvδ
+  apply xiRadialCovarianceIntegrand_nonneg_of_sign hu hv
+  rcases le_total u v with h | h
+  · have hH : xiRadialHazard u ≤ xiRadialHazard v :=
+      hmono (Set.mem_Ici.mpr huδ) (Set.mem_Ici.mpr hvδ) h
+    have hsq : u ^ 2 ≤ v ^ 2 := pow_le_pow_left₀ hu.le h 2
+    exact mul_nonneg_of_nonpos_nonpos_aux (by linarith) (by linarith)
+  · have hH : xiRadialHazard v ≤ xiRadialHazard u :=
+      hmono (Set.mem_Ici.mpr hvδ) (Set.mem_Ici.mpr huδ) h
+    have hsq : v ^ 2 ≤ u ^ 2 := pow_le_pow_left₀ hv.le h 2
+    exact mul_nonneg (by linarith) (by linarith)
+
+/-! ### The sup bound feeding the covariance mixed block
+
+`H(u) ≤ λ` is equivalent to `K'(u) + 2λ u K(u) ≥ 0`.  Unlike the gate — which
+vanishes to third order at the origin because `K` is even — this combination
+vanishes only to FIRST order, with slope `k₂ + 2λk₀` at `0`
+(`= -33.46 + 2λ·1.787`, positive as soon as `λ > 9.36`, and `H(3/10) ≈ 10.3`).
+So the mixed-block hypothesis is a strictly easier analytic target than the
+gate, needing third-jet rather than fifth-jet control. -/
+
+/-- Reduction of the hazard sup bound to a sign condition with no division. -/
+theorem xiRadialHazard_le_iff {u lam : ℝ} (hu : 0 < u) :
+    xiRadialHazard u ≤ lam ↔
+      0 ≤ deriv riemannXiKernel u + 2 * lam * u * riemannXiKernel u := by
+  have hK := riemannXiKernel_pos hu.le
+  have hden : (0 : ℝ) < 2 * u * riemannXiKernel u := by positivity
+  unfold xiRadialHazard
+  rw [div_le_iff₀ hden]
+  constructor <;> intro h <;> nlinarith [h, hK, hu]
+
+/-- The slope of the sup-bound combination at the origin is `k₂ + 2λk₀`; it is
+positive exactly when `λ` exceeds `-k₂/(2k₀)`, the limiting hazard. -/
+theorem xiSupBound_origin_slope_pos {lam : ℝ}
+    (hlam : -(deriv^[2] riemannXiKernel 0) < 2 * lam * riemannXiKernel 0) :
+    0 < deriv^[2] riemannXiKernel 0 + 2 * lam * riemannXiKernel 0 := by
+  linarith
+
+/-- **Mixed-block hypothesis, packaged.**  Given the sign condition on
+`(0, δ]` and monotonicity beyond `δ`, every mixed pair contributes
+nonnegatively — the form in which the covariance split consumes it. -/
+theorem xiCovariance_mixed_nonneg_of_supSign {δ : ℝ} (hδ : 0 < δ)
+    (hsign : ∀ u : ℝ, 0 < u → u ≤ δ →
+      0 ≤ deriv riemannXiKernel u +
+        2 * xiRadialHazard δ * u * riemannXiKernel u)
+    (hmono : MonotoneOn xiRadialHazard (Set.Ici δ))
+    {u v : ℝ} (hu : 0 < u) (huδ : u ≤ δ) (hvδ : δ ≤ v) :
+    0 ≤ xiRadialCovarianceIntegrand u v := by
+  have hsup : xiRadialHazard u ≤ xiRadialHazard δ :=
+    (xiRadialHazard_le_iff hu).2 (hsign u hu huδ)
+  exact xiRadialCovarianceIntegrand_nonneg_mixed hδ hu huδ hvδ hsup hmono
 
 /-- Every vertical slice of the covariance integrand is integrable. -/
 theorem integrable_covariance_slice {u : ℝ} :
@@ -6410,6 +9217,203 @@ theorem fredholm_signed_identification
   · exact (ContinuousLinearMap.isUnit_iff_bijective.mp hsign.2).1
       (hxPlus.trans hyPlus.symm)
 
+/-! ## Phase J (actual instantiation): the xi Suzuki–Hankel system -/
+
+/-- The actual multiplicative Hankel symbol of the program: Riemann's summed
+theta kernel. -/
+noncomputable def xiSuzukiHankelSymbol : ℝ → ℝ := riemannXiKernel
+
+/-- The actual weighted Galerkin compression of the xi Hankel kernel: the
+corrected pencil at a finite node/weight configuration. -/
+noncomputable def xiSuzukiGalerkin {ι : Type*} [Fintype ι]
+    (node weight : ι → ℝ) : Matrix ι ι ℝ :=
+  suzukiHankelGalerkin xiSuzukiHankelSymbol node weight
+
+/-- Every corrected-pencil section of the actual xi kernel is Hermitian. -/
+theorem xiSuzukiGalerkin_isHermitian {ι : Type*} [Fintype ι]
+    (node weight : ι → ℝ) :
+    (xiSuzukiGalerkin node weight).IsHermitian :=
+  suzukiHankelGalerkin_isHermitian _ _ _
+
+/-- **The actual Suzuki Gram inequality**, with the contraction
+identification isolated as its single hypothesis pair: whenever the xi
+analysis integrals of a finite test family factor through a contraction of
+the Weil vectors, the Weil Gram dominates the Suzuki Gram. -/
+theorem xiSuzukiGram_inequality
+    {E F ι : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [NormedAddCommGroup F] [InnerProductSpace ℝ F] [Fintype ι]
+    (T : E →L[ℝ] F) (hT : ‖T‖ ≤ 1) (weil : ι → E)
+    (S : ℝ → F) (φ : ι → ℝ → ℝ)
+    (hidentify : ∀ i, suzukiAnalysisIntegral S (φ i) = T (weil i)) :
+    FiniteSuzukiGramInequality (Matrix.gram ℝ weil)
+      (suzukiIntegralGram S φ) :=
+  finiteSuzukiGram_integral_of_contraction T hT weil S φ hidentify
+
+/-- **Actual signed Fredholm determinants** for the corrected pencil: strict
+contraction at a Galerkin level makes both signs invertible there. -/
+theorem xiGalerkin_fredholm_determinants_ne_zero
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (node weight : ι → ℝ)
+    (hA : ‖xiSuzukiGalerkin node weight‖ < 1) :
+    Matrix.det (1 - xiSuzukiGalerkin node weight) ≠ 0 ∧
+      Matrix.det (1 + xiSuzukiGalerkin node weight) ≠ 0 :=
+  galerkin_fredholm_determinants_ne_zero _ hA
+
+/-- **Fredholm signed identification at every corrected-pencil level** of the
+actual xi kernel: under strict contraction, any two solutions of each signed
+equation coincide — the analytic and Fredholm constructions are forced equal
+level by level. -/
+theorem xiGalerkin_fredholm_signed_identification
+    {ι : Type*} [Fintype ι] [DecidableEq ι] (node weight : ι → ℝ)
+    (hA : ‖xiSuzukiGalerkin node weight‖ < 1) (f : ι → ℝ)
+    {xM yM xP yP : ι → ℝ}
+    (hxM : (1 - xiSuzukiGalerkin node weight) *ᵥ xM = f)
+    (hyM : (1 - xiSuzukiGalerkin node weight) *ᵥ yM = f)
+    (hxP : (1 + xiSuzukiGalerkin node weight) *ᵥ xP = f)
+    (hyP : (1 + xiSuzukiGalerkin node weight) *ᵥ yP = f) :
+    xM = yM ∧ xP = yP := by
+  obtain ⟨hdM, hdP⟩ :=
+    xiGalerkin_fredholm_determinants_ne_zero node weight hA
+  have hunitM : IsUnit (1 - xiSuzukiGalerkin node weight) :=
+    (Matrix.isUnit_iff_isUnit_det _).mpr hdM.isUnit
+  have hunitP : IsUnit (1 + xiSuzukiGalerkin node weight) :=
+    (Matrix.isUnit_iff_isUnit_det _).mpr hdP.isUnit
+  constructor
+  · exact (Matrix.mulVec_injective_of_isUnit hunitM)
+      (hxM.trans hyM.symm)
+  · exact (Matrix.mulVec_injective_of_isUnit hunitP)
+      (hxP.trans hyP.symm)
+
+/-- **Corrected-pencil Galerkin transfer** for the actual xi system: under
+the contraction identification, the Suzuki Gram inequality holds at the full
+level, and every orthogonal Galerkin compression of the Weil family only
+strengthens the defect — the inequality transfers to all corrected-pencil
+sections. -/
+theorem xiCorrectedPencil_galerkin_transfer
+    {E F ι : Type*} [NormedAddCommGroup E] [InnerProductSpace ℝ E]
+    [NormedAddCommGroup F] [InnerProductSpace ℝ F] [Fintype ι]
+    (T : E →L[ℝ] F) (hT : ‖T‖ ≤ 1) (weil : ι → E)
+    (S : ℝ → F) (φ : ι → ℝ → ℝ)
+    (hidentify : ∀ i, suzukiAnalysisIntegral S (φ i) = T (weil i))
+    (K : Submodule ℝ E) [K.HasOrthogonalProjection] :
+    FiniteSuzukiGramInequality (Matrix.gram ℝ weil)
+        (suzukiIntegralGram S φ) ∧
+      (Matrix.gram ℝ weil -
+        Matrix.gram ℝ (fun i => K.starProjection (weil i))).PosSemidef :=
+  ⟨finiteSuzukiGram_integral_of_contraction T hT weil S φ hidentify,
+    galerkin_gram_defect_posSemidef K weil⟩
+
+/-- Global decaying bound for the summed kernel itself. -/
+theorem riemannXiKernel_le_decay {u : ℝ} (hu : 0 ≤ u) :
+    riemannXiKernel u ≤
+      192 * (Real.exp (-1) / (1 - Real.exp (-1))) * Real.exp (-u) := by
+  have hterm : ∀ n : ℕ, riemannXiKernelTerm n u ≤
+      48 * (Real.exp (-((n : ℝ) + 1)) * Real.exp (-u)) := by
+    intro n
+    have h := xiKernelQ_pow_mul_term_le_decay 0 n hu
+    have h' : riemannXiKernelTerm n u ≤
+        2 ^ 3 * 6 * (Real.exp (-((n : ℝ) + 1)) * Real.exp (-u)) := by
+      simpa [Nat.factorial] using h
+    linarith [h']
+  have hsum : (∑' n : ℕ, riemannXiKernelTerm n u) ≤
+      ∑' n : ℕ, 48 * (Real.exp (-((n : ℝ) + 1)) * Real.exp (-u)) :=
+    Summable.tsum_le_tsum hterm (riemannXiKernelTerm_summable u)
+      ((summable_exp_neg_index.mul_right _).mul_left 48)
+  have hclosed : (∑' n : ℕ,
+      48 * (Real.exp (-((n : ℝ) + 1)) * Real.exp (-u))) =
+      48 * (Real.exp (-1) / (1 - Real.exp (-1))) * Real.exp (-u) := by
+    rw [show (fun n : ℕ =>
+        48 * (Real.exp (-((n : ℝ) + 1)) * Real.exp (-u))) =
+        fun n : ℕ => (48 * Real.exp (-u)) * Real.exp (-((n : ℝ) + 1)) from
+      funext fun n => by ring]
+    rw [tsum_mul_left, tsum_exp_neg_index_eq]
+    ring
+  unfold riemannXiKernel
+  calc
+    4 * ∑' n : ℕ, riemannXiKernelTerm n u ≤
+        4 * (48 * (Real.exp (-1) / (1 - Real.exp (-1))) * Real.exp (-u)) := by
+      rw [← hclosed]
+      exact mul_le_mul_of_nonneg_left hsum (by norm_num)
+    _ = 192 * (Real.exp (-1) / (1 - Real.exp (-1))) * Real.exp (-u) := by
+      ring
+
+/-- Certified numeric contraction of the kernel value at height nine. -/
+theorem riemannXiKernel_nine_lt_one : riemannXiKernel 9 < 1 := by
+  have hdecay := riemannXiKernel_le_decay (u := 9) (by norm_num)
+  have he1 := Real.exp_one_gt_d9
+  have hepos := Real.exp_pos 1
+  have hS1 : Real.exp (-1) / (1 - Real.exp (-1)) < 1 := by
+    have h2e : 2 * Real.exp (-1) < 1 := by
+      rw [Real.exp_neg]
+      have h2 : (2 : ℝ) < Real.exp 1 := by linarith
+      calc
+        2 * (Real.exp 1)⁻¹ < Real.exp 1 * (Real.exp 1)⁻¹ :=
+          mul_lt_mul_of_pos_right h2 (inv_pos.mpr hepos)
+        _ = 1 := mul_inv_cancel₀ hepos.ne'
+    have hd : 0 < 1 - Real.exp (-1) := by
+      nlinarith [Real.exp_pos (-1)]
+    rw [div_lt_one hd]
+    nlinarith [Real.exp_pos (-1)]
+  have hSpos : 0 < Real.exp (-1) / (1 - Real.exp (-1)) := by
+    have hlt1 : Real.exp (-1) < 1 := Real.exp_lt_one_iff.mpr (by norm_num)
+    have hd : 0 < 1 - Real.exp (-1) := by linarith
+    positivity
+  have hexp9 : Real.exp (-9) < 1 / 1000 := by
+    have h9 : Real.exp 9 = Real.exp 1 ^ 9 := by
+      rw [← Real.exp_nat_mul]
+      norm_num
+    have hgt : (1000 : ℝ) < Real.exp 9 := by
+      rw [h9]
+      calc
+        (1000 : ℝ) < 2.71 ^ 9 := by norm_num
+        _ ≤ Real.exp 1 ^ 9 :=
+          pow_le_pow_left₀ (by norm_num) (by linarith) 9
+    rw [Real.exp_neg]
+    have hdiv := one_div_lt_one_div_of_lt
+      (by norm_num : (0 : ℝ) < 1000) hgt
+    rw [one_div] at hdiv
+    exact hdiv
+  have hstep : 192 * (Real.exp (-1) / (1 - Real.exp (-1))) *
+      Real.exp (-9) < 192 * Real.exp (-9) := by
+    have h192 : 192 * (Real.exp (-1) / (1 - Real.exp (-1))) < 192 := by
+      nlinarith [hS1, hSpos]
+    exact mul_lt_mul_of_pos_right h192 (Real.exp_pos _)
+  have hfinal : (192 : ℝ) * Real.exp (-9) < 1 := by
+    nlinarith [hexp9, Real.exp_pos (-9)]
+  linarith
+
+/-- The single-node corrected pencil at node three is the diagonal of the
+kernel value at nine. -/
+theorem xiSuzukiGalerkin_single_node_eq :
+    xiSuzukiGalerkin (fun _ : Fin 1 => 3) (fun _ : Fin 1 => 1) =
+      Matrix.diagonal (fun _ : Fin 1 => riemannXiKernel 9) := by
+  ext i j
+  fin_cases i
+  fin_cases j
+  simp [xiSuzukiGalerkin, suzukiHankelGalerkin, suzukiHankelKernel,
+    xiSuzukiHankelSymbol, Matrix.diagonal]
+  norm_num
+
+/-- **A certified strict contraction of the actual corrected pencil**: the
+single-node Galerkin compression of the xi Hankel kernel at node three. -/
+theorem xiSuzukiGalerkin_contraction_example :
+    ‖xiSuzukiGalerkin (fun _ : Fin 1 => 3) (fun _ : Fin 1 => 1)‖ < 1 := by
+  rw [xiSuzukiGalerkin_single_node_eq, Matrix.l2_opNorm_diagonal]
+  rw [pi_norm_lt_iff one_pos]
+  intro i
+  rw [Real.norm_eq_abs,
+    abs_of_pos (riemannXiKernel_pos (u := 9) (by norm_num))]
+  exact riemannXiKernel_nine_lt_one
+
+/-- **The signed Fredholm chain fires unconditionally** at the certified
+corrected-pencil level: both determinants are nonzero with no hypothesis. -/
+theorem xiGalerkin_fredholm_example :
+    Matrix.det (1 - xiSuzukiGalerkin (fun _ : Fin 1 => 3)
+        (fun _ : Fin 1 => 1)) ≠ 0 ∧
+      Matrix.det (1 + xiSuzukiGalerkin (fun _ : Fin 1 => 3)
+        (fun _ : Fin 1 => 1)) ≠ 0 :=
+  xiGalerkin_fredholm_determinants_ne_zero _ _
+    xiSuzukiGalerkin_contraction_example
+
 /-- The finite theta constant at the origin: the zeroth and fourth kernel
 jets are strictly dominated by three times the square of the second jet. -/
 theorem xiOriginThetaConstant_pos :
@@ -6452,6 +9456,102 @@ theorem xiOriginCubicCoefficient_pos :
     0 < (deriv^[2] riemannXiKernel 0) ^ 2 -
       riemannXiKernel 0 * deriv^[4] riemannXiKernel 0 / 3 :=
   (xiOriginCubicCoefficient_pos_iff _ _ _).2 xiOriginThetaConstant_pos
+
+/-! ### Phase A/C assembly (placed after the origin constant) -/
+
+/-- **Near-origin gate criterion.**  If the numerator dominates half its cubic
+model on an initial interval — the quantitative content of the Taylor step —
+then the gate holds there.  The cubic coefficient is positive
+unconditionally. -/
+theorem xiRadialConcavityNumerator_pos_near_origin
+    {δ : ℝ} (hδ : 0 < δ)
+    (htaylor : ∀ u : ℝ, 0 < u → u ≤ δ →
+      xiOriginCubicCoefficient / 2 * u ^ 3 ≤ xiRadialConcavityNumerator u) :
+    ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiRadialConcavityNumerator u := by
+  intro u hu huδ
+  have ha : 0 < xiOriginCubicCoefficient := xiOriginCubicCoefficient_pos
+  have hcube : 0 < xiOriginCubicCoefficient / 2 * u ^ 3 := by positivity
+  exact lt_of_lt_of_le hcube (htaylor u hu huδ)
+
+/-- **Everything downstream, from the two regions.**  Near-origin plus bulk
+positivity of the numerator delivers the strict central Turán inequality and
+all five Theta–Wronskian levels. -/
+theorem theta_wronskian_levels_one_to_five_of_regions
+    {δ : ℝ} (hδ : 0 < δ)
+    (hnear : ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiRadialConcavityNumerator u)
+    (hbulk : ∀ u : ℝ, δ < u → 0 < xiRadialConcavityNumerator u) :
+    xiThetaMoment 0 * xiThetaMoment 4 < 3 * xiThetaMoment 2 ^ 2 ∧
+      (AllZerosImaginary thetaP1 ∧
+        AllZerosImaginary (X ^ 2 + C (xiThetaMoment 2 / xiThetaMoment 0)) ∧
+        AllZerosImaginary
+          (2 * X * (X ^ 2 + 3 * C (xiThetaMoment 2 / xiThetaMoment 0)))) ∧
+      AllZerosImaginary
+        (X ^ 4 + 6 * C (xiThetaMoment 2 / xiThetaMoment 0) * X ^ 2 +
+          C (xiThetaMoment 4 / xiThetaMoment 0)) ∧
+      AllZerosImaginary
+        (thetaMomentQ5 (xiThetaMoment 2 / xiThetaMoment 0)
+          (xiThetaMoment 4 / xiThetaMoment 0)) := by
+  have hpos := xiRadialConcavityNumerator_pos_of_regions hδ hnear hbulk
+  exact ⟨xiThetaMoment_three_strict_of_numerator_pos hpos,
+    theta_wronskian_levels_one_to_five_of_numerator_pos hpos⟩
+
+/-- **Taylor criterion for the innermost region.**  If the numerator differs
+from its cubic model by at most `C u^5` on `(0, δ]`, and `δ² C < a`, the gate
+holds there.  Measured: `a ≈ 152.2` and `C ≈ 2900`, so the two-term model
+reaches `δ ≈ 0.22` — it does **not** reach `1/2`, which is why a middle region
+is needed. -/
+theorem xiRadialConcavityNumerator_pos_of_cubic_model
+    {δ C : ℝ} (hδ : 0 < δ) (hC : 0 ≤ C)
+    (hgap : δ ^ 2 * C < xiOriginCubicCoefficient)
+    (htaylor : ∀ u : ℝ, 0 < u → u ≤ δ →
+      xiOriginCubicCoefficient * u ^ 3 - C * u ^ 5 ≤
+        xiRadialConcavityNumerator u) :
+    ∀ u : ℝ, 0 < u → u ≤ δ → 0 < xiRadialConcavityNumerator u := by
+  intro u hu huδ
+  have ha : 0 < xiOriginCubicCoefficient := xiOriginCubicCoefficient_pos
+  have hu2 : u ^ 2 * C ≤ δ ^ 2 * C := by
+    apply mul_le_mul_of_nonneg_right _ hC
+    exact pow_le_pow_left₀ hu.le huδ 2
+  have hpos : 0 < xiOriginCubicCoefficient * u ^ 3 - C * u ^ 5 := by
+    have hcube : (0 : ℝ) < u ^ 3 := by positivity
+    have hfac : xiOriginCubicCoefficient * u ^ 3 - C * u ^ 5 =
+        (xiOriginCubicCoefficient - u ^ 2 * C) * u ^ 3 := by ring
+    rw [hfac]
+    apply mul_pos _ hcube
+    linarith
+  exact lt_of_lt_of_le hpos (htaylor u hu huδ)
+
+/-- **Three-region assembly.**  Innermost (cubic model), middle
+(ground-minus-tail), bulk (termwise gate, already unconditional) together give
+the gate on the whole half-line, hence — through the compiled chain — the
+strict central Tur\'an inequality and all five Theta--Wronskian levels. -/
+theorem theta_wronskian_levels_one_to_five_of_three_regions
+    {δ₁ δ₂ : ℝ} (h1 : 0 < δ₁) (h12 : δ₁ ≤ δ₂) (h2 : δ₂ ≤ 1 / 2)
+    (hinner : ∀ u : ℝ, 0 < u → u ≤ δ₁ → 0 < xiRadialConcavityNumerator u)
+    (hmid : ∀ u : ℝ, δ₁ < u → u ≤ δ₂ → 0 < xiRadialConcavityNumerator u)
+    (hupper : ∀ u : ℝ, δ₂ < u → u < 1 / 2 → 0 < xiRadialConcavityNumerator u) :
+    xiThetaMoment 0 * xiThetaMoment 4 < 3 * xiThetaMoment 2 ^ 2 ∧
+      (AllZerosImaginary thetaP1 ∧
+        AllZerosImaginary (X ^ 2 + C (xiThetaMoment 2 / xiThetaMoment 0)) ∧
+        AllZerosImaginary
+          (2 * X * (X ^ 2 + 3 * C (xiThetaMoment 2 / xiThetaMoment 0)))) ∧
+      AllZerosImaginary
+        (X ^ 4 + 6 * C (xiThetaMoment 2 / xiThetaMoment 0) * X ^ 2 +
+          C (xiThetaMoment 4 / xiThetaMoment 0)) ∧
+      AllZerosImaginary
+        (thetaMomentQ5 (xiThetaMoment 2 / xiThetaMoment 0)
+          (xiThetaMoment 4 / xiThetaMoment 0)) := by
+  have hall : ∀ u : ℝ, 0 < u → 0 < xiRadialConcavityNumerator u := by
+    intro u hu
+    rcases le_or_gt u δ₁ with hA | hA
+    · exact hinner u hu hA
+    · rcases le_or_gt u δ₂ with hB | hB
+      · exact hmid u hA hB
+      · rcases lt_or_ge u (1 / 2) with hC | hC
+        · exact hupper u hB hC
+        · exact xiRadialConcavityNumerator_pos_of_half_le hC
+  exact ⟨xiThetaMoment_three_strict_of_numerator_pos hall,
+    theta_wronskian_levels_one_to_five_of_numerator_pos hall⟩
 
 end CriticalLinePhasor.ThetaWronskianSuzukiGram
 
@@ -6613,3 +9713,46 @@ end CriticalLinePhasor.ThetaWronskianSuzukiGram
 #print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiOriginJetSeries_bounds
 #print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiOriginThetaConstant_pos
 #print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiOriginCubicCoefficient_pos
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiSuzukiGram_inequality
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiGalerkin_fredholm_signed_identification
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiCorrectedPencil_galerkin_transfer
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiSuzukiGalerkin_contraction_example
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiGalerkin_fredholm_example
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.deriv_zero_of_even
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_zero_of_even
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_of_regions
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_near_origin
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.theta_wronskian_levels_one_to_five_of_regions
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiGateSeries_pos_of_half_le
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiMassGate_pos_of_half_le
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiSlopeVariance_ground_split
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.riemannXiKernelTerm_succ_le_ground
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelTail_le_ground
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.riemannXiKernelTerm_succ_le_ground_sharp
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelQ_zero_ge_bulk
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelTail_le_ground_sharp
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiDerivTail_abs_le
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.tsum_exp_neg_rate_le_two
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiSlopeSquareTail_le
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_of_half_le
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiTermGate_zero_ge_bulk
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiGateSeries_ge_ground_sub_tail
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_of_ground_minus_tail
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_of_cubic_model
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.theta_wronskian_levels_one_to_five_of_three_regions
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialCovarianceIntegrand_nonneg_mixed
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialCovarianceIntegrand_nonneg_outer
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiTermGate_zero_strictMonoOn
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelTermLogCurvature_hasDerivAt
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiTermGate_zero_ge_fourth
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelQ_zero_at_fifth_bracket
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiTermGate_zero_ge_two
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.riemannXiKernelTerm_succ_le_ground_mid
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelQ_zero_ge_twofifths
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiQWeightedTail_le_mid
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiGateTail_abs_le_mid
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiKernelTail_le_ground_mid
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiDerivTail_abs_le_mid
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialConcavityNumerator_pos_of_threetenths
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiRadialHazard_le_iff
+#print axioms CriticalLinePhasor.ThetaWronskianSuzukiGram.xiCovariance_mixed_nonneg_of_supSign

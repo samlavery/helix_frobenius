@@ -1,0 +1,28 @@
+(1) POSITION dependence — same depth y0=0.01, n=5, moving the plant:
+   x0        min-eig        scale        relative signal
+         11      -5.457e-9    1.94e+11    2.82e-20
+         12      -1.492e-9    1.94e+11    7.69e-21
+  14.134725      -4.168e-6    1.96e+11    2.12e-17
+         16     -9.608e-11    2.02e+11    4.76e-22
+         18     -7.166e-11    2.15e+11    3.33e-22
+  21.022040      -1.228e-6     2.7e+11    4.55e-18
+         23     -8.177e-12     3.5e+11    2.34e-23
+  25.010858      -4.322e-6     5.0e+11    8.65e-18
+         28     -3.723e-10     9.5e+11    3.92e-22
+         29     -9.292e-10    1.19e+12    7.78e-22
+
+(2) SIZE dependence — same plant (18 + 0.01i), varying n:
+   n=3: min-eig      0.006002  scale    8.38e+5  relative    7.16e-9
+   n=4: min-eig      8.571e-5  scale    4.08e+8  relative    2.1e-13
+   n=5: min-eig    -7.166e-11  scale   2.15e+11  relative   3.33e-22
+   n=6: min-eig      -2.49e-8  scale    1.2e+14  relative   2.07e-22
+   n=7: min-eig     -8.083e-6  scale   6.99e+16  relative   1.16e-22
+
+(3) the y0^2 law across positions (is the exponent stable?):
+   x0= 12: ratio(y0 halved) = 4.002   (2^2 = 4 expected)
+   x0= 18: ratio(y0 halved) = 4.0005   (2^2 = 4 expected)
+   x0= 24: ratio(y0 halved) = 4.003   (2^2 = 4 expected)
+
+(4) CONTAMINATION CHECK — true object vs planted object, n=5:
+   TRUE (3 real zeros only): min-eig -1.18e-46  n_-=0   [mu_0 = 3]
+   PLANTED:                  min-eig -7.166e-11  n_-=1   [mu_0 = 5]  <- a different function

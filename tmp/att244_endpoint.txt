@@ -1,0 +1,30 @@
+== SELF-TESTS (transforms & pole forms vs brute quadrature) ==
+/Users/samuellavery/work/helix_frobenius/tmp/att244_full_rung_certificate.py:114: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  num = np.trapz((1 - t / h) * np.exp(1j * r * t), t)
+  ramp rho(0.37): closed 6.499987468e-03+1.042165461e-05i  quad 6.499987468e-03+1.042165458e-05i
+/Users/samuellavery/work/helix_frobenius/tmp/att244_full_rung_certificate.py:119: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  num2 = np.trapz((1 - np.abs(u) / h) * np.cos(r * u), u)
+  hat T(0.37) : closed 1.299997494e-02  quad 1.299997494e-02
+  ramp rho(7.3): closed 6.495123209e-03+2.055240972e-04i  quad 6.495123209e-03+2.055240967e-04i
+  hat T(7.3) : closed 1.299024642e-02  quad 1.299024642e-02
+  ramp rho(41.0): closed 6.347568291e-03+1.138540080e-03i  quad 6.347568291e-03+1.138540077e-03i
+  hat T(41.0) : closed 1.269513658e-02  quad 1.269513658e-02
+/Users/samuellavery/work/helix_frobenius/tmp/att244_full_rung_certificate.py:126: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  num = np.trapz((1 - np.abs(u - nodes[1]) / hh) * np.exp(s * u), u)
+/Users/samuellavery/work/helix_frobenius/tmp/att244_full_rung_certificate.py:128: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  num0 = np.trapz((1 - (u0 - nodes[0]) / hh) * np.exp(s * u0), u0)
+/Users/samuellavery/work/helix_frobenius/tmp/att244_full_rung_certificate.py:130: DeprecationWarning: `trapz` is deprecated. Use `trapezoid` instead, or one of the numerical integration functions in `scipy.integrate`.
+  numn = np.trapz(((un - nodes[-2]) / hh) * np.exp(s * un), un)
+  pole s=+0.5: int 9.005121058e-02/9.005121058e-02  L 4.354344914e-02/4.354344914e-02  R 5.685053486e-02/5.685053486e-02
+  pole s=-0.5: int 1.110942028e-01/1.110942028e-01  L 5.742189223e-02/5.742189224e-02  R 4.398106808e-02/4.398106808e-02
+  d(20) bracket [1.1577509948,1.1577509949] scipy 1.1577509948 contained=True
+== SIGMA GRID PASS ==
+  s0 = 0.995151516367 (width 2.0e-11);  w_enc = 2.38e-09;  maxW = 7.3476;  I4(certified+2%) = 1.0350e+07
+== L = 1.098612  (a = 0.54931, mesh n = 5313, h = 2.068e-04) ==
+  tau/A accumulated in 286s
+  float generalized bottom = +2.409195e-08
+  Cholesky OK at mu = +1.468309e-08; alpha_true 3.12e-09 <= est 3.60e-09: True
+  complement: beta_c 6.50e-10  cB 6.91e-05  S 0.995152
+  FULL-SPACE CERTIFIED BOTTOM >= +9.885960e-09   *** CERTIFIED POSITIVE — WEIL POSITIVITY HOLDS AT THIS SUPPORT ***
+== SUMMARY ==
+  L = 1.098612: certified bottom +9.886e-09  POSITIVE

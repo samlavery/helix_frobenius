@@ -1,0 +1,24 @@
+== SELF-TESTS ==
+  d(  1.0) bracket [-2.0251461931,-2.0251461931] width 2.0e-11  scipy -2.0251461931  contained=True
+  d(  9.0) bracket [0.3588319889,0.3588319889] width 2.0e-11  scipy 0.3588319889  contained=True
+  d( 20.0) bracket [1.1577509948,1.1577509949] width 2.0e-11  scipy 1.1577509948  contained=True
+  d( 45.3) bracket [1.9754096598,1.9754096599] width 2.1e-11  scipy 1.9754096598  contained=True
+  j_10(15.0) scipy 1.896979e-03 mpmath 1.896979e-03 rel 1.3e-15
+  j_20(21.0) scipy 5.178842e-02 mpmath 5.178842e-02 rel 1.3e-16
+  j_30(21.5) scipy 1.052938e-04 mpmath 1.052938e-04 rel 1.3e-15
+  j_40(21.5) scipy 1.715350e-09 mpmath 1.715350e-09 rel 1.3e-15
+== GRID PASS: certified sigma on the midpoint grid ==
+  R2 = 45.3, h = 8e-06, points = 5662500, series N = 3000
+  d(45.3) in [1.975409659835, 1.975409659855]  ->  s0 = 0.995151516367 (width 2.0e-11)
+  first chunk done (200000 pts)
+  sigma enclosure max width = 1.90e-08; max|w| = 7.348; int|w| ~= 42.62
+== L = 0.90 (support [e^-0.450, e^0.450], f-window e^L = 2.4596) ==
+  head bottoms:   even +1.054891e-05   odd +1.741707e-03
+  ledger: quad 4.05e-07  sigma-enc 5.89e-07  bessel 7.57e-10  pole 1.00e-12  s0 2.00e-11  eig 1.00e-20  tailblock 2.20e-24
+  TOTAL ledger = 9.948e-07
+  CERTIFIED:      even +9.554069e-06   odd +1.740712e-03   *** BOTH POSITIVE — CERTIFICATE HOLDS ***
+== L = 0.95 (support [e^-0.475, e^0.475], f-window e^L = 2.5857) ==
+  head bottoms:   even +2.445088e-06   odd +5.113743e-04
+  ledger: quad 4.33e-07  sigma-enc 5.89e-07  bessel 7.99e-10  pole 1.00e-12  s0 2.00e-11  eig 1.00e-20  tailblock 6.46e-23
+  TOTAL ledger = 1.023e-06
+  CERTIFIED:      even +1.421994e-06   odd +5.103512e-04   *** BOTH POSITIVE — CERTIFICATE HOLDS ***

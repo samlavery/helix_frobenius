@@ -1,0 +1,52 @@
+== SELF-TESTS ==
+  corr closed-form vs quad : worst |diff| = 1.215e-13
+  S(0) vs Gram             : 3.327e-16
+  pole vec closed vs quad  : 4.581e-13
+== ARCH TWO-ROUTE CHECK (Hann window) ==
+  A(F) u-integral route    : +0.5919346385
+  -1/2pi int dens*|Ghat|^2 : +0.5919346385
+  diff                     : -5.534e-11   (gamma/2*F0 would be +1.191e-01)
+== GLOBAL EF VALIDATION (arithmetic vs actual zeros) ==
+  L=1.2000 (crosses log2, log3? no: log3=1.0986<1.2 -> {2,3}) primes=[2, 3]
+    Q arithmetic side : +0.0001710073
+    Q zero side       : +0.0001710073   (tail est 8.72e-21)
+    rel diff          : 2.009e-10
+  L=1.9000 ({2,3,4,5}) primes=[2, 3, 4, 5]
+    Q arithmetic side : +0.0000229310
+    Q zero side       : +0.0000229310   (tail est 1.27e-21)
+    rel diff          : 2.438e-09
+== CC ANCHORS: arch-only, constraints (pole, zero) ==
+  L = 0.6000 (e^L = 1.8221)  lam_min(arch-only) = +1.207356e+00
+  L = 0.6500 (e^L = 1.9155)  lam_min(arch-only) = +1.127262e+00
+  L = 0.6931 (e^L = 2.0000)  lam_min(arch-only) = +1.062944e+00
+  L = 0.6981 (e^L = 2.0100)  lam_min(arch-only) = +1.055750e+00
+  L = 0.7031 (e^L = 2.0201)  lam_min(arch-only) = +1.048608e+00
+  L = 0.7131 (e^L = 2.0404)  lam_min(arch-only) = +1.034475e+00
+  L = 0.7431 (e^L = 2.1025)  lam_min(arch-only) = +9.932326e-01
+  L = 0.7931 (e^L = 2.2103)  lam_min(arch-only) = +9.280544e-01
+  L = 0.8931 (e^L = 2.4428)  lam_min(arch-only) = +8.091724e-01
+== RUNG (log2, log3): arch + prime-2, constraints (pole, zero) ==
+  L = 0.70315 (e^L = 2.0201)  lam_min = +1.040974e+00
+  L = 0.73819 (e^L = 2.0921)  lam_min = +9.514815e-01
+  L = 0.77323 (e^L = 2.1668)  lam_min = +9.007500e-01
+  L = 0.80827 (e^L = 2.2440)  lam_min = +8.798544e-01
+  L = 0.84332 (e^L = 2.3241)  lam_min = +8.724148e-01
+  L = 0.87836 (e^L = 2.4069)  lam_min = +8.704127e-01
+  L = 0.91340 (e^L = 2.4928)  lam_min = +8.701775e-01
+  L = 0.94844 (e^L = 2.5817)  lam_min = +8.698888e-01
+  L = 0.98349 (e^L = 2.6738)  lam_min = +8.126804e-01
+  L = 1.01853 (e^L = 2.7691)  lam_min = +6.741629e-01
+  L = 1.05357 (e^L = 2.8679)  lam_min = +5.511115e-01
+  L = 1.08861 (e^L = 2.9701)  lam_min = +4.426549e-01
+  L = 1.09361 (e^L = 2.9850)  lam_min = +4.283029e-01
+  L = 1.09661 (e^L = 2.9940)  lam_min = +4.198195e-01
+  L = 1.09861 (e^L = 3.0000)  lam_min = +4.142163e-01
+== K-CONVERGENCE at L = 1.00 (arch+p2) ==
+  K = 20:  lam_min = +7.470583575e-01
+  K = 30:  lam_min = +7.455722802e-01
+  K = 40:  lam_min = +7.449288576e-01
+  K = 50:  lam_min = +7.445827940e-01
+== UNCONSTRAINED (true Weil criterion, pole term in) sanity ==
+  L = 0.6000  lam_min(no constraints) = +7.596413e-03
+  L = 1.0000  lam_min(no constraints) = +9.636375e-07
+  L = 1.0886  lam_min(no constraints) = +8.212621e-08
