@@ -186,6 +186,42 @@ substitute for making one.
     a reason to stop (rule 0). That a statement is RH-equivalent is a fact about its
     content, never a verdict on whether to attack it.
 
+11. **Work backwards from the theorem; maintain the skeleton.** (Sam, 2026-08-24)
+
+    The primary artifact is a **proof skeleton of the target, written from its last
+    line backwards**, every node tagged `COMPILED` / `EQUIV` / `STRONGER` and carrying
+    its ledger number and theorem name. Every session either fills a node or refines
+    the skeleton. Work with no slot in the skeleton is not progress, and is named as
+    such *before* it is done, not discovered afterwards.
+
+    **Why this is a rule and not a preference.** Forward chaining — compile bricks,
+    then judge how far they reach — is what manufactures obstructions, because its
+    outputs are reach-estimates and a reach-estimate that comes out short reads as a
+    wall. Backward chaining cannot produce them: its outputs are "X would suffice,"
+    which are targets. On 2026-08-24 five obstruction-shaped claims were produced in
+    one session, all false, all forward reach-claims, all in the direction of making
+    the work look more blocked than it is; four were caught by Sam, one by a grep that
+    had been written into the plan as a gate and skipped. Rule 9 already states the
+    constructive stance and has no artifact; this supplies it. Same upgrade pattern as
+    rule 7 (harmonics made checkable) and rule 8 (the kit made checkable).
+
+    **Forward reach-claims are not admissible output.** The skeleton decides
+    reachability structurally, by whether a slot exists. RH_LEDGER 494 had to
+    *discover by hand* that eighteen rungs served no slot; under a skeleton that is
+    visible before the work, not after.
+
+    **The guard.** Every sufficient condition for the target is either equivalent to it
+    or strictly stronger — forced, not a defect. So a naive backward chain reproduces
+    the known restatement class (RH_LEDGER 424: "every road's second node IS the
+    theorem"). Therefore: **a skeleton all of whose leaves are `EQUIV` is a restatement
+    of the target, not a plan to prove it.** At least one leaf must be
+    `STRONGER`-and-constructive — an object to be *exhibited*, discharged by identity
+    rather than by estimate (the geometric-vs-analytic distinction, RH_LEDGER 513) — or
+    the skeleton is not yet a proof plan and saying so is the session's output.
+
+    **Citation rule.** Any node claimed open carries a ledger number and either a
+    compiled theorem name or an explicit "grep returned none." Uncited, inadmissible.
+
 The active proof lives in `automorph/universal.tex`.
 
 ## Prove what is true; "GRH-strength" is not a stop sign
