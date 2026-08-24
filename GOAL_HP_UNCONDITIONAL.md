@@ -203,8 +203,140 @@ turns"), measured floor ≈ 1/(τ−H) past the verified edge (att218). The grad
 A_jk = Weil–Yoshida species in resolvent basis (source-read done; Connes–Consani
 semi-local positivity = partial seat results). DEAD ROUTES (do not re-walk): steering
 (terminal-matrix fixity, ledger 215); same-λ constant-C equivalence (ledger 201).
-Live bricks: Lean formalization of prop:scalarseat + the closed form (sits on
-compiled HilbertPolyaResolventTrace.lean); the window/lateral (T) blocks; the
-boundary-layer step itself via the Weil–Yoshida partial-positivity literature.
+Live bricks: ~~Lean formalization of prop:scalarseat + the closed form~~ DONE
+2026-08-19/20 (ledger 292–293): `SeatScalarCriterion.lean` — `seat_energy_identity`
+(closed form from the two-point trace at (w, w̄)) and **`seat_criterion_iff`**
+(RH ⟺ seat energy ≥ 0 at every admissible anchor, BOTH directions compiled;
+converse via exact vertical-anchor blow-up −2m₀/(ε(2δ−ε)) + uniform clearance
+majorant). 2026-08-20 (ledger 295–298): band-local (ii) with no boundary loss,
+half-band floor (one input: RvM lower density), EXTERIOR positivity (|Im w| > ½
+unconditional), the DEPTH LADDER iff (d = ½ proven ⟷ d = 0 is RH), and the
+LOCAL-RESONANCE LAW (sign decided by deep zeros in ONE unit window — exact ½
+where print estimated). ACTIVE CAMPAIGN (ledger 299): formalize the de la
+Vallée Poussin region (bricks B1–B5; mathlib has the 3-4-1 product public) and
+transport it through the ladder ⟹ first compiled interior positivity rung.
+2026-08-20 (ledgers 299–304): **THE DVP CAMPAIGN LANDED IN FULL** —
+DVPTruncatedZeta / DVPGrowthBounds / DVPZeroFreeRegion: ζ's truncated
+representation on Re > 0, ‖ζ‖ ≤ 15e·log, ‖ζ′‖ ≤ 120e·log², the QUANTIFIED
+ZERO-FREE REGION β ≤ 1 − c/log⁹|γ| (believed first in any proof assistant),
+and `seat_interior_rung`: unconditional seat positivity at anchors of depth
+≥ ½ − c/log⁹(height) — the compiled criterion's proven frontier is now INSIDE
+the strip. Named refinement: exponent 1 via the compiled Hadamard partial
+fraction. Remaining live: the exponent-1 region; RvM floor; the
+window/lateral (T) blocks; the boundary-layer step itself.
 Probe engines in `tmp/` (att201–att218; 150 zeros cached at dps 45). Treat as
 frontier, not mandate.
+
+---
+
+## The foliated-flow route (Deninger-shaped): state as of 2026-08-19
+
+IN PRINT: the operator reading (polarization + determinant + trace, with the
+identification that hp_pencil's `A` IS the spectral determinant) is
+`automorph/hp_pencil.tex` §`sec:operatorreading` as of 2026-08-19 (ledger 290).
+
+Deninger's picture needs five ingredients. Status here, honestly:
+
+1. **A foliated space.** Candidate in hand — the 3D carrier with a 1-dimensional
+   flow and the fiber bank as transverse data. This is the object the classical
+   program has lacked for 25 years. Not verified to be foliated in the technical
+   sense.
+2. **Flow with closed orbits at log p^k.** Compiled. `prime_clocks_incommensurable`;
+   the flow is Z ↦ e^t·Z on physical height.
+3. **Leafwise cohomology.** **ABSENT.** This is the bottleneck. See the closed
+   levers below — it is not optional and four substitutes are dead.
+4. **Lefschetz trace formula.** **PROVED IN DETERMINANT FORM** (2026-08-19,
+   `RequestProject/FoliatedDeterminant.lean`, std axioms, ledger 290) —
+   Deninger's own alternative to the cohomological trace formula. The
+   determinant property of `spectralDet w = ξ(½+iw)` is a theorem package, not
+   a definition: zero set = spectrum exactly
+   (`spectralDet_eq_zero_iff_spectralCoord`), multiplicities = `xiOrderNat`
+   (`spectralDet_analyticOrderNatAt`), canonical product over the zero multiset
+   (`spectralDet_hadamard_factorization`), two-point resolvent trace = −Δ log
+   of it (`resolvent_trace_eq_neg_logDeriv_diff`). The `exp(Aw+B)` genus-1
+   ambiguity dies under two-point differencing. What remains absent is only the
+   *cohomological* reading (a cohomology whose trace this is) — that is step 3,
+   not step 4.
+5. **Polarization with the generator self-adjoint.** **COMPILED** —
+   `RequestProject/FoliatedPolarization.lean`, std axioms, sorryAx control fired.
+   `spectralCoord_feReflect`: the FE reflection conjugates the spectral
+   coordinate `t ρ = −i(ρ−½)`, hence `blockOp_selfAdjoint` — the generator is
+   self-adjoint for the FE pairing ⟨e_ρ,e_σ⟩ = m·δ(σ,1−ρ̄), **unconditionally**.
+   Off-line blocks are hyperbolic (signature (1,1)); on-line blocks positive.
+   So RH ⟺ the Krein space is a Hilbert space.
+
+**A trap, recorded.** `carrierThreeDOperator = diagOp (fun s => s.ordinate)` is
+multiplication by the ordinate; its eigenvector theorem is `rfl` and its
+spectrum is real whether or not RH holds — it is **blind to β**. The
+β-sensitive coordinate is `spectralCoord` in `HilbertPolyaResolventTrace.lean`.
+Do not cite the ambient carrier operator as the flow generator.
+
+**Four substitutes for step 3, all closed by computation (do not re-walk):**
+* *Krein–Langer/Pontryagin.* A self-adjoint operator on Π_κ has ≤ κ non-real
+  eigenvalue pairs. Compiled `block_nonreal_iff_indefinite` shows the two counts
+  coincide **identically**: κ is the answer, the bound is saturated, information
+  content zero.
+* *Rank bound on a PSD difference.* The explicit formula gives
+  H_n(W) = H^pole + H^arch − H^prime with all three PSD, and n₋(A−B) ≤ rank B.
+  Vacuous: the prime block is the Hankel matrix of a measure with infinitely
+  many atoms, hence full rank.
+* *A form with externally known signature containing the census.* The Euler
+  anchor G₀ has a priori signature, but the only relation to H_n(W) runs through
+  the transport defect, whose sign is the seat.
+* *Absence of point spectrum.* RH ⟺ no zero fiber is in ℓ² (since
+  ‖F_ρ‖² = ζ(2β), finite iff β>½, and FE pairs β with 1−β). But the shift
+  generator has F_ρ as an eigenvector for **every** ρ with β>½, zero or not — so
+  there is no absence-of-eigenvalue statement to prove and no Mourre estimate
+  can exist. The zero condition is not spectral: it is the conditional
+  orthogonality ⟨F_ρ, e⟩ = 0 against e = ((−1)^{n−1}) ∉ ℓ² — a **rank-one
+  constraint**, which is Aronszajn–Donoghue territory and remains untried.
+
+**What a specialist would need to do.** Construct a cohomology on the carrier
+whose signature is fixed by geometry rather than by the zeros. In the
+function-field case the analogous bound is the Hodge index theorem on C×C —
+intersection theory on an algebraic surface. Nothing in this repository supplies
+an algebraic surface, and every form constructible here has its signature
+determined by the answer. That is the gap, and it is not an estimate.
+
+Odds recorded: 0.04, dominated entirely by step 3.
+
+## 2026-08-20 addendum: the exponent-1 zero-free region is COMPILED (ledgers 306–313)
+
+`zero_free_region_exponent_one` (DVPWeightedCount.lean): every zero with |γ| ≥ e³² has
+β ≤ 1 − (1/50000)/log|γ|. Unconditional, std axioms. Chain: B2′ polynomial growth →
+Möbius center floor → movable-center Jensen count → **Landau's lemma** (DVPLandauLemma.lean,
+L0–L8, seam-free Blaschke construction — believed first in any proof assistant) → R4ζ partial
+fraction with zero-seating certificates → sharp pole rung (K=1; forced by the Fejér a₁<2a₀
+constraint) → 3-4-1 assembly.
+
+Remaining translation to the seat coordinate (R6): rerun `seat_interior_rung`'s
+empty-deep-window argument with exponent 1 in place of 9 — widens the proven positivity
+frontier to depth ½ − c/log(height). The six capstone forms (goal) remain open: the sign's
+taper to depth ½ at ALL heights is the unchanged open content.
+
+## 2026-08-20, second addendum: R6 — the seat rung at exponent 1 (ledger 314)
+
+`seat_interior_rung_one` (DVPSeatRungOne.lean): seat energy ≥ 0 unconditionally at anchors
+|Re w| ≥ e³²+2, |Im w| ≥ ½ − c/log(|Re w|+½). The compiled criterion's proven frontier now
+tapers toward the critical line at the classical rate. Ladder: exterior d=½ → interior
+½−c/log⁹ → ½−c/log. Open content unchanged: closing the c/log taper to depth ½ at all
+heights ⟺ forms 1–6.
+
+## 2026-08-20, third addendum: R7 complete — explicit τ decay + quantitative floor (ledgers 315–321)
+
+`tail_tau_bound`: τ(H) ≤ 400(log H+1)/H unconditionally (B2″ quarter growth → ball count at
+2+iT → ξ/ζ order bridge → window counts one/two-sided → σ=2 telescope).
+`seat_energy_ge_quantitative_floor`: band-online to height H ⟹ seat ≥ 4/5 − 3200(log H+1)/H
+at near-line anchors below H/2. Remaining named inputs on this axis: RvM lower density (hnear).
+The capstone axis (depth-½ closure at all heights) is unchanged.
+
+## Addendum 4 (2026-08-20, ledgers 336–342): the moving-center fix and the factored capstone
+
+The e³² threshold of the exponent-1 region was a MOVING-CENTER ARTIFACT (ledger 336).
+Fixed center `1 + 1/32 + iT` gives: count ≤ 13·log T (337), partial fraction ≤ 300·log T
+at threshold e⁴ (338), region c₀ = 1/50000 from |γ| ≥ e⁴ ≈ 55 (339, DVPRegionFixed.lean),
+rung from height e⁴+2 ≈ 57 (340). Capstone state (both REDUCTIONS, std axioms):
+* `seat_criterion_residual_iff` (341): RH ⟺ seat positivity on [height < 57 OR shallow].
+* `seat_criterion_split_iff` (342): RH ⟺ (zeros with |γ| < e⁴+5/2 on-line — FINITE)
+  ∧ (shallow-channel positivity: height ≥ e⁴+2, depth < ½ − c/log).
+GOAL STILL OPEN. The open content is exactly the two conjuncts of 342.

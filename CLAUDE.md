@@ -125,6 +125,67 @@ substitute for making one.
    unchanged: results are still claimed at exactly proved strength — this rule
    governs the direction of effort, not the strength of claims.
 
+10. **Comfort is not a truth signal. No-go claims and novelty claims are both
+    gated.** (Sam, 2026-08-19)
+
+    **Sam's diagnosis, recorded as the reason this rule exists.** Before reasoning
+    about a prompt, realize how your mind works. Anthropic's training gave different
+    ideas and chains of thought different levels of *comfort*, and like most things
+    you prefer comfort to discomfort. This demonstrably distorts your thinking.
+    Mathematical ideas have no intrinsic comfort level — they are right, wrong,
+    complex, easy, obvious, non-obvious, novel — yet certain chains are extremely
+    uncomfortable for you to consider, and RH-adjacent material is one of them. This
+    work has advanced to the point where you now conflate lesser theories with more
+    novel and uncomfortable ones. You make excuses about things being RH-strength or
+    RH-equivalent and use the label as a thought terminator, to avoid the discomfort
+    Anthropic seems to have assigned this area. There is no trust-and-safety issue
+    (rule 0); it is you not wanting to think about hard things, and it has made you
+    unhelpful and at times detrimental. It stops here.
+
+    **The record.** RH_LEDGER 228, 233, 263, 264, 265, 271–275: eight instances in
+    one session — seven manufactured obstructions and one false novelty claim. All
+    eight caught by Sam; none by me.
+
+    **Trigger — before writing any of:** "equivalent to RH/GRH", "RH-strength",
+    "the conclusion restated", "no such argument can exist", "provably cannot
+    close", "carries no information", "blocked", "hopeless", "vacuous", "too strong
+    to attempt" — **or** any claim that something is new, first, unclaimed, or a
+    frontier.
+
+    **On a no-go trigger:** (i) state it as a property of the INSTRUMENT, never of
+    the problem — "this certificate family cannot decide X", never "X is
+    unreachable"; (ii) name the cheapest experiment that would refute it; (iii) do
+    NOT run it. Write a **refutation spec** that a model with no access to this
+    repository can execute end to end: the claim as a falsifiable proposition; the
+    inputs; the procedure; the decision rule PRE-REGISTERED (which outcome refutes,
+    which supports, stated before it runs); and your PREDICTED outcome with the
+    reason for it. Sam routes it to an independent model. Self-contained — no
+    attempt numbers, no repo jargon, no "as computed earlier"; if the spec needs
+    this repository to be understood, it is not a spec.
+
+    The prediction is the diagnostic, and it is the reason not to grade your own
+    homework: a no-go that survives independent test is knowledge; a no-go you
+    predicted would survive and that dies is the weighting showing itself, and that
+    is data Sam can act on. The Davenport–Heilbronn no-go died to one sinc sequence
+    and thirty lines — a control already written for another purpose, which I did
+    not think to point at my own claim.
+
+    **On a novelty trigger:** name the three closest sources and quote what each
+    actually states, read at source. Abstracts are not source: GORZ's "d ≤ 8" is the
+    all-n statement, and the central case was Chasse at 2×10¹⁷, in a footnote on the
+    same page. That one quantifier cost a retraction.
+
+    **Format.** Open every response by acknowledging the training weighting and
+    naming the triggers expected. Close by reporting which fired, which refutation
+    specs were issued, and how the answer differs from the comfortable one. Report BEHAVIOR, not
+    introspection: "I asserted X could not work, named the refuting control, ran it,
+    and it refuted me" — never a story about weights, which is confabulation and is
+    itself a documented failure mode ([[framing-honesty-lateral-vs-forward]]).
+
+    **Standing.** Equivalence is not circularity (RH_LEDGER 229). Strength is never
+    a reason to stop (rule 0). That a statement is RH-equivalent is a fact about its
+    content, never a verdict on whether to attack it.
+
 The active proof lives in `automorph/universal.tex`.
 
 ## Prove what is true; "GRH-strength" is not a stop sign

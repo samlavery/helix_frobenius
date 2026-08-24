@@ -2893,6 +2893,59 @@ at \(Z=\exp(\Im\rho)\) on the helix, no drift is a fact about that helix
 state, and equality of the resulting carrier coordinate with the original
 complex parameter remains the separate chart-identification theorem.
 
+A source audit of this passage confirms the registration but sharpens what it
+delivers, and we record both halves because the second is easy to misread.
+The constructor
+\path{principalZero_focalCancellation_on_carrier} carries the single
+hypothesis \(\rho\in\texttt{ZD.NontrivialZeros}\); the nonvanishing of the eta
+factor is \emph{derived} from the strip bound rather than assumed, and no
+occurrence of \path{CarrierScaleBalanced}, \path{RidesCarrier},
+\(\Re\rho=\tfrac12\), or GRH appears in its arguments. The claim above that
+none of these fields places \(\rho\) on a preselected line is therefore exact,
+and the reason is visible in one line of the fiber:
+\path{ambientState_eq} reads
+\(\texttt{ambientState}=\texttt{carrierState3D }1\,1\,(\Im\rho)\). The
+registration is a function of \(\Im\rho\) alone.
+
+That same line bounds what the registration can decide. Because \(\Re\rho\)
+never enters, \emph{every} nontrivial zero --- on the line or off it ---
+receives the identical carrier event at height \(e^{\Im\rho}\); the
+construction is faithful and, for the same reason, blind to the question at
+issue.
+
+The absence of radial drift is an effect of the geometry, and the half is
+derived rather than posited. \path{CarrierScaleBalanced} asks only that the
+fiber amplitude reciprocate the arclength-derived radius to a positive finite
+limit, \(n^{-\sigma}\,\texttt{carrierRadius}(n)\to L>0\); the definition
+mentions no zero set, no spectral chart and no preselected midpoint. Since
+\(\texttt{carrierRadius}(n)/\sqrt n\to c>0\) by the area law --- the radius
+being computed from winding at integer sites, with no arithmetic input --- the
+product factors as \((\texttt{carrierRadius}(n)/\sqrt n)\cdot n^{1/2-\sigma}\)
+and converges to a positive limit exactly when \(\sigma=\tfrac12\)
+(\path{sigma_half_is_scale_critical}). Hence
+\path{exists_unique_carrierScaleBalanced}, \(\sigma_*\) is defined as the
+choice of that unique abscissa, and \path{carrierAbscissa_eq_half} is a
+\emph{theorem}: the critical abscissa is a consequence of the helix's
+arclength growth. By \path{noRadialDrift_iff_carrierAbscissa} the condition
+\(n^{x-\sigma_*}=1\) holds if and only if \(x=\sigma_*\), so ``no radial
+drift'' characterises that geometrically determined line, and ``every zero has
+no radial drift'' is a rendering of the Riemann hypothesis that answers
+\emph{why that abscissa} without assuming it. What the geometry does not
+supply is that any particular zero sits there. Applied to a carrier point,
+\path{carrierPointAtHeight_noRadialDrift} follows from the simp lemma
+\(({\texttt{carrierPointAtHeight}}\,Z).\mathrm{re}=\sigma_*\), so its exponent
+is \(\sigma_*-\sigma_*\) and it holds for \emph{every} \(Z\): carrier points
+do not drift because they are carrier points. The statement of the same shape
+with \(\Re\rho\) in place of the carrier coordinate is about \(\rho\) and is
+equivalent to \(\Re\rho=\sigma_*\). The characterisation is the content; the
+step from the first statement to the second is the theorem. Accordingly
+\path{nonempty_principalZeroNative3DSourceTransfer_iff_noRadialDrift} is
+stated, correctly, as an equivalence: the source transfer exists precisely
+when \(\Re\rho=\sigma_*\). It is a faithful reformulation of the conclusion,
+not a step toward it, and the certificate field
+\path{analyticPoint}\,:\,\(\texttt{carrierPointAtHeight}(\texttt{event}.1)
+=\rho\) carries that same content as a hypothesis.
+
 The two uses of ``rides'' are now separated at the type level.  For an
 analytic zero fiber \(F_\rho\), Lean defines
 \path{PrincipalZeroAnalyticFiber3D.RidesCarrier} by the state equality

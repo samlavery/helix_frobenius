@@ -26,7 +26,9 @@
 \title{The Gram double pencil: a spectral census for the zeros of $\zeta$,\\
 and an Euler-anchored regulator}
 \author{}
-\date{2026-08-14; formalization appendix updated 2026-08-16}
+\date{2026-08-14; formalization appendix updated 2026-08-16; operator-reading
+section added 2026-08-19; seat-criterion split and certified channel added
+2026-08-21 (ladder state as of the 371.5 rung)}
 
 \begin{document}
 \maketitle
@@ -58,7 +60,13 @@ determinant-pullback law with nonvanishing cofactor (Theorem \ref{thm:pullback})
 program thereby reduces to a single hypothesis, the seat (Hypothesis \ref{hyp:seat}):
 terminal seating of the warped anchor spectrum on the window support, from which the
 positivity, the census and the critical line follow (Theorem \ref{thm:chain}). The
-remaining obligations are stated precisely in \S\ref{sec:obligations}.
+remaining obligations are stated precisely in \S\ref{sec:obligations}. A closing
+section records the operator reading, machine-checked: the functional-equation
+pairing polarizes the zero multiset as a Krein space whose negative index is the
+census $q$ and on which the flow generator is unconditionally self-adjoint, and $A$
+itself is the generator's spectral determinant --- zero multiset equal to the
+spectrum with multiplicity, canonical genus-one product, two-point resolvent-trace
+identity (\S\ref{sec:operatorreading}).
 \end{abstract}
 
 \section{Setup}
@@ -252,7 +260,57 @@ absolute convergence and the bottom edge maps there by the functional equation, 
 decomposition $H_n = H^{\mathrm{pr}} + H^{\mathrm{arch}} + H^{\mathrm{side}}$ into blocks
 computable from Dirichlet data, $\Gamma$-factors and the lateral edges respectively; in a
 tiling, adjacent lateral contributions cancel pairwise.
+\item[(U6)] \textbf{The critical abscissa is derived, not posited.} Scale balance
+asks only that the fiber amplitude reciprocate the arclength radius to a positive
+finite limit, \(n^{-\sigma}\,\texttt{carrierRadius}(n)\to L>0\); the condition names
+no zero set. Since \(\texttt{carrierRadius}(n)/\sqrt n\to c>0\) --- the radius being
+computed from winding at integer sites, with no arithmetic input --- the balance
+product is \((\texttt{carrierRadius}(n)/\sqrt n)\,n^{1/2-\sigma}\), finite and
+positive exactly when \(\sigma=\tfrac12\). The balanced abscissa is therefore unique
+and equal to \(\tfrac12\) as a theorem of the helix geometry.
+\item[(U7)] \textbf{The functional-equation pair is area-balanced.} For a nontrivial
+zero \(\rho\) and its reflection \(1-\bar\rho\), the literal three-dimensional radial
+magnitudes satisfy \(\mathrm{mag}_\rho(n)=n^{-\Re\rho}\) exactly, and
+\[
+  \mathrm{mag}_\rho(n)\cdot \mathrm{mag}_{1-\bar\rho}(n)\;=\;n^{-1},
+\]
+with the area-normalized product tending to \(1\). No hypothesis on \(\Re\rho\) is
+used. Equality of the two magnitudes holds if and only if \(\Re\rho=\tfrac12\).
+\item[(U8)] \textbf{Boundary viability of the real-rooted locus.} At a double real
+zero \(\rho_*\) the contingent tangent cone to the real-rooted locus is the half
+space \(\{\dot A:\dot A(\rho_*)A''(\rho_*)\le0\}\), and the regulated velocities meet
+it because the prime channels move \(A\) at \(\rho_*\) by a nonzero multiple of
+\(p_r^{-\rho_*}\). The locus is viable, and not invariant.
+\item[(U9)] \textbf{The gate on \([1/4,\infty)\)}, with the strict central Tur\'an
+inequality and the Laguerre--Tur\'an family \(C_j\) at every index following from a
+single gate hypothesis (appendix, \S\ref{sec:leanappendix}).
 \end{enumerate}
+
+\begin{remark}[what is and is not established]\label{rem:status}
+The list above is unconditional. The Riemann hypothesis is not among its
+consequences, and the paper does not claim it: Theorem \ref{thm:main} is stated under
+Hypothesis \ref{hyp:psd}, Theorem \ref{thm:chain} reduces that to Hypothesis
+\ref{hyp:seat}, and the seat is the single remaining hypothesis
+(\S\ref{sec:obligations}). What (U6)--(U8) supply is the geometry around it: the
+critical line is intrinsically characterised rather than assumed, the
+functional-equation pair balances collectively, and the boundary of the real-rooted
+locus is never absorbing.
+
+Combining (U6) and (U7) puts the residue in its sharpest and most nearly one-sided
+form. Writing \(a_n:=n^{-\Re\rho}\,\texttt{carrierRadius}(n)\sim c\,n^{1/2-\Re\rho}\)
+and \(b_n\) for its reflection, one has \(a_nb_n\to1\) unconditionally, so the pair
+balances; the hypothesis is that each strand balances individually. Since \(a_n\)
+bounded above forces \(\Re\rho\ge\tfrac12\), and since \(1-\rho\) is a zero whenever
+\(\rho\) is, a single upper bound valid at every zero yields
+\(\Re\rho\ge\tfrac12\) and \(1-\Re\rho\ge\tfrac12\), hence \(\Re\rho=\tfrac12\).
+Thus:
+\[
+  \text{RH}\iff
+  n^{-\Re\rho}\,\texttt{carrierRadius}(n)\ \text{is bounded above at every zero.}
+\]
+No lower bound and no two-sided estimate are required --- the functional equation
+supplies the other half --- but the upper bound itself is not proved here.
+\end{remark}
 
 \section{The Euler-anchored pencil and its regulator}
 
@@ -740,6 +798,35 @@ resonances along one designed path per window; the composition of depth, density
 the locality of null directions (the measured margin law) is the open program.
 \end{remark}
 
+\begin{remark}[what the local analysis cannot do]\label{rem:collisionwall}
+Two of the natural attacks on that remaining content are foreclosed, and it is
+worth recording why so the effort is not spent. At a \emph{null direction} with
+real support the relevant eigenvalue reaches zero with second derivative
+$\bigl((2k)!/(k!)^2\bigr)\sum_\rho w_\rho\bigl(P'(\rho)\rho^{(k)}\bigr)^2\ge0$, a
+sum of squares: the determinant touches and does not cross. That mechanism does
+\emph{not} extend to a node \emph{collision}. In the minimal model --- two unit
+nodes at $\pm s$, so $\det H=m_0m_2-m_1^2=4s^2$ --- the natural parameter through
+a merge is $\tau=s^2$, in which $\det H=4\tau$ is \emph{linear}: the crossing is
+transversal, so no statement about the local order of vanishing can exclude the
+off-axis branch. (Consistently, a conjugate pair $w\delta_z+\bar w\delta_{\bar z}$
+gives $\det H=-4y^2(u^2+v^2)<0$ exactly.)
+
+Nor can the collision be avoided by choosing the path better. For a real monic
+polynomial $\operatorname{sign}(\operatorname{disc})=(-1)^{r_2}$ with $r_2$ the
+number of conjugate pairs, and $\operatorname{disc}$ is a polynomial in the
+coefficients, hence continuous along any path; passing from $r_2=0$ to $r_2=1$
+therefore forces $\operatorname{disc}=0$ somewhere, which is precisely a repeated
+node. The collision wall is thus codimension one \emph{within the moment family}
+--- the single condition $\rho_i=\rho_j$ --- rather than the codimension two of
+eigenvalue coincidence in an unconstrained real-symmetric family, so genericity
+buys nothing: any transport whose target carries a conjugate pair must cross it.
+What happens at that crossing is therefore decided by which side of the wall the
+zeta configuration lies on, which is the conclusion. This delimits the
+construction, not the problem: it says the seat cannot be closed by local
+analysis at its degeneracies, and that an argument for it must be global or
+arithmetic.
+\end{remark}
+
 \begin{hypothesis}[the seat $(\mathrm{S})$]\label{hyp:seat}
 For every window $W$ of the tiling there is a transport path with finitely many
 regularity events such that every point of
@@ -1105,7 +1192,9 @@ defined as a difference of computed objects; (T) supplies its closed form, the D
 structure of the seat, and computational access to Hypothesis \ref{hyp:seat} on explicit
 windows.
 \item[(S)] \textbf{The seat.} Hypothesis \ref{hyp:seat}: terminal seating of the warped
-anchor spectrum on the window support. This is the single remaining hypothesis. By
+anchor spectrum on the window support. This is the single remaining hypothesis; its
+channel-localized equivalent form, with a machine-checked certified floor to height
+$743/2$, is \S\ref{subsec:seatsplit}. By
 Lemma \ref{lem:nullflow} its content along monotone kernel homotopies is exactly: the
 conjugate-pair-fed component of the flow never dominates the real-fed component on a
 null direction of the accumulated Hankel --- the only crossing mechanism that exists. The
@@ -1297,6 +1386,336 @@ threshold only logarithmically. A proof must break this exchange rate rather
 than improve within it --- which is the same discipline the appendix records
 below, where every estimate that discarded a cancellation failed by orders and
 every exact evaluation succeeded.
+
+\section{The operator reading: a self-adjoint generator for the
+functional-equation pairing, and $A$ as its spectral determinant}
+\label{sec:operatorreading}
+
+Everything in this section is unconditional, and every statement carrying a
+\texttt{teletype} name is machine-checked
+(\texttt{RequestProject/FoliatedPolarization.lean},
+\texttt{RequestProject/FoliatedDeterminant.lean},
+\texttt{RequestProject/HilbertPolyaResolventTrace.lean}; Lean~4/Mathlib, zero
+\texttt{sorry}, axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ on every
+cited theorem). The frame is Deninger's \cite{Deninger1998}: a flow with
+closed orbits of lengths $\log p^k$ whose generator carries the zeros as
+spectrum, RH delivered --- as for curves over finite fields --- by positivity
+of a polarization for which the generator is self-adjoint. We construct no
+foliated space and no leafwise cohomology. What is constructed is the rest of
+that frame's inventory --- spectral coordinate, polarization,
+self-adjointness, trace, determinant --- together with the observation that
+ties it to this paper: the central object $A$ of \S1 \emph{is} the
+determinant.
+
+\paragraph{The spectral coordinate.}
+For a zero $\rho=\beta_\rho+i\gamma_\rho$ put
+\[
+  t_\rho := -i\bigl(\rho-\tfrac12\bigr)
+          = \gamma_\rho + i\bigl(\tfrac12-\beta_\rho\bigr),
+  \qquad \rho = \tfrac12 + i\,t_\rho ,
+\]
+so $t_\rho\in\R\iff\beta_\rho=\tfrac12$ (\texttt{spectralCoord\_real\_iff}).
+The functional-equation reflection $\rho^*:=1-\bar\rho$ is an involution
+fixing exactly the critical line (\texttt{feReflect\_eq\_self\_iff}), and it
+\emph{conjugates} the coordinate:
+\begin{equation}\label{eq:tconj}
+  t_{1-\bar\rho} \;=\; \overline{t_\rho}
+  \qquad\text{(\texttt{spectralCoord\_feReflect}).}
+\end{equation}
+In this coordinate the zero multiset of $A$ is $\{t_\rho\}$: the real support
+points $x_i$ of \eqref{eq:moments} are the on-line zeros, and the conjugate
+pairs $z_j,\bar z_j$ are the off-line FE pairs $\{\rho,1-\bar\rho\}$, landed
+on $\{t_\rho,\overline{t_\rho}\}$.
+
+\begin{proposition}[the polarization]\label{prop:polarization}
+On the reflection block $\C e_\rho\oplus\C e_{\rho^*}$ with multiplicity
+weight $m>0$ define
+\[
+  \langle v,w\rangle_m := m\bigl(v_1\bar w_2 + v_2\bar w_1\bigr),
+  \qquad
+  \Theta\big|_{\mathrm{block}} :=
+    \operatorname{diag}\bigl(t_\rho,\overline{t_\rho}\bigr),
+\]
+the diagonal action being forced by \eqref{eq:tconj}. Unconditionally:
+\begin{enumerate}
+\item[(i)] $\langle\Theta v,w\rangle_m=\langle v,\Theta w\rangle_m$ for every
+zero, on the line or off it (\texttt{blockOp\_selfAdjoint});
+\item[(ii)] off the line ($\rho^*\ne\rho$) the block is hyperbolic of
+signature $(1,1)$: the pairing is positive on $e_\rho+e_{\rho^*}$ and negative
+on $e_\rho-e_{\rho^*}$ (\texttt{pairBlock\_indefinite});
+\item[(iii)] on the line ($\rho^*=\rho$) the block degenerates to the single
+line $\C e_\rho$, on which the pairing is the positive norm $2m|z|^2$
+(\texttt{pairForm\_online\_pos}).
+\end{enumerate}
+\end{proposition}
+
+Summing blocks over the multiset polarizes the zero space as a Krein space on
+which the generator is self-adjoint; the negative index is the number of
+off-line FE pairs --- on a window $W$, exactly the census $q(W)$ of Theorem
+\ref{thm:inertia}, which is thereby the signature computation of this pairing,
+window by window; the pairing itself is the FE contraction of the trichotomy
+of Remark \ref{rem:contractions}. Hence
+\[
+  \text{RH}\iff\text{the pairing is definite}
+          \iff\text{the Krein space is a Hilbert space},
+\]
+which is Hypothesis \ref{hyp:psd} in operator coordinates: by the rigidity
+discussion of \S\ref{sec:obligations} this supplies a generator for the
+pairing, not a new reduction.
+
+\paragraph{A calibration, itself compiled.}
+A self-adjoint operator on a Pontryagin space with $\kappa$ negative squares
+has at most $\kappa$ pairs of non-real eigenvalues (the Krein--Langer bound).
+Here that bound is saturated identically: per block, non-real spectrum and
+indefiniteness are the same event,
+$\operatorname{Im}t_\rho\ne0\iff\rho^*\ne\rho$
+(\texttt{block\_nonreal\_iff\_indefinite}), so the abstract theorem returns
+the census and nothing else. It becomes informative only when $\kappa$ is
+bounded by an input external to the spectrum; in the function-field analogue
+that input is the Hodge index theorem on $C\times C$. Nothing in this paper
+supplies such a bound; the anchored transport of \S\ref{sec:obligations} is
+this paper's candidate for the role.
+
+\paragraph{The trace.}
+Unconditionally (\texttt{hilbertPolya\_resolvent\_trace}; net-limit form
+\texttt{hilbertPolya\_resolvent\_trace\_hasSum}): for $w,w_0$ whose chart
+points $\tfrac12+iw$, $\tfrac12+iw_0$ avoid the zero set, the two-point
+resolvent sum over the actual zero multiset, weighted by the analytic
+multiplicities $m_\rho$, converges absolutely and equals the completed
+logarithmic derivative read in the chart:
+\begin{equation}\label{eq:twopointtrace}
+  \sum_{\rho} m_\rho\Bigl[(t_\rho-w)^{-1}-(t_\rho-w_0)^{-1}\Bigr]
+  \;=\;
+  -\,i\Bigl[\frac{\xi'}{\xi}\bigl(\tfrac12+iw\bigr)
+        -\frac{\xi'}{\xi}\bigl(\tfrac12+iw_0\bigr)\Bigr].
+\end{equation}
+Two-point differencing kills the Hadamard constant and the $1/\rho$
+normalizers exactly; no regularization convention survives into the
+statement.
+
+\begin{theorem}[$A$ is the spectral determinant]\label{thm:specdet}
+Put $\det\nolimits_\Theta(w):=\xi\bigl(\tfrac12+iw\bigr)$, so that
+$\det\nolimits_\Theta(w)=A(-w)=A(w)$ by the functional equation.
+Unconditionally:
+\begin{enumerate}
+\item[(i)] \emph{(zero set $=$ spectrum)}\;
+$\det\nolimits_\Theta(w)=0\iff w=t_\rho$ for some nontrivial zero $\rho$
+(\texttt{spectralDet\_eq\_zero\_iff\_spectralCoord});
+\item[(ii)] \emph{(multiplicities)}\; at every $w_0\in\C$ the analytic
+vanishing order of $\det\nolimits_\Theta$ equals the order of $\xi$ at
+$\tfrac12+iw_0$; at $w_0=t_\rho$ it is $m_\rho$
+(\texttt{spectralDet\_analyticOrderNatAt},
+\texttt{spectralDet\_orderNat\_spectralCoord});
+\item[(iii)] \emph{(canonical product)}\; there are constants $c_1,c_0\in\C$
+with
+\[
+  \det\nolimits_\Theta(w)
+  \;=\; e^{c_1w+c_0}\,
+  \prod_{\rho} E_1\!\Bigl(\frac{\tfrac12+iw}{\rho}\Bigr)^{m_\rho},
+  \qquad E_1(u)=(1-u)e^{u},
+\]
+the multiplicity-indexed Weierstrass product over the zero multiset,
+multipliable locally uniformly on $\C$
+(\texttt{spectralDet\_hadamard\_factorization}, \texttt{xiProductMult});
+each factor vanishes exactly at $w=t_\rho$;
+\item[(iv)] \emph{(trace identity)}\; the left side of
+\eqref{eq:twopointtrace} equals
+$-\bigl[\det\nolimits_\Theta'/\det\nolimits_\Theta(w)
+       -\det\nolimits_\Theta'/\det\nolimits_\Theta(w_0)\bigr]$
+(\texttt{resolvent\_trace\_eq\_neg\_logDeriv\_diff}); the genus-one ambiguity
+$e^{c_1w+c_0}$ cancels in every two-point difference.
+\end{enumerate}
+\end{theorem}
+
+The name is earned in the only sense the frame requires: $A$ is an entire
+function whose zero multiset, with multiplicity, is the spectrum of the
+generator; it factors as the canonical genus-one product over that multiset;
+and its two-point logarithmic derivative is the resolvent trace. Of the two
+services a leafwise cohomology would render, the finiteness of the trace is
+done by the product; the positivity is not, and is Hypothesis \ref{hyp:psd},
+i.e.\ the seat. Read backwards, the identification explains why the window
+moments carry the program: by \eqref{eq:moments} the $\mu_k(W)$ are the
+contour moments of $d\log A=d\log\det\nolimits_\Theta$ --- the power sums of
+the generator's spectrum localized to the window --- and the census of
+Theorem \ref{thm:census} is the generator's spectral resolution read window
+by window.
+
+\subsection{The seat criterion split, and a certified channel}
+\label{subsec:seatsplit}
+
+Everything in this subsection is unconditional and machine-checked
+(\texttt{RequestProject/DVPLadder.lean},
+\texttt{DVPChannelBase.lean}, \texttt{DVPLadder126.lean} and their
+dependency closure; Lean~4/Mathlib, zero \texttt{sorry}, axiom footprint
+$\{\texttt{propext},\texttt{Classical.choice},\texttt{Quot.sound}\}$ on
+every cited theorem). For an anchor $w\in\C$ with $\tfrac12+iw$ and
+$\tfrac12+i\bar w$ off the zero set and $w\ne\bar w$, write
+\[
+  F(w)\;:=\;\operatorname{Re}\sum_{\rho} m_\rho\,
+    (t_\rho-w)^{-1}(t_\rho-\bar w)^{-1},
+\]
+the FE-symmetric two-point quadratic form of the resolvent of
+\eqref{eq:twopointtrace} --- per reflection block, exactly the pairing of
+Proposition \ref{prop:polarization} evaluated at the anchor pair
+$\{w,\bar w\}$.
+
+\paragraph{The criterion.}
+There is an explicit $c>0$ such that, as a compiled equivalence
+(\texttt{seat\_criterion\_channel\_iff}),
+\[
+  \text{RH}
+  \;\iff\;
+  F(w)\ge 0\ \text{ for every admissible anchor in the channel }
+  e^4+2\le|\operatorname{Re}w|,\quad
+  |\operatorname{Im}w|<\frac12-\frac{c}{\log\bigl(|\operatorname{Re}w|
+    +\tfrac12\bigr)}.
+\]
+This is Hypothesis \ref{hyp:psd} localized: definiteness of the
+polarization need only be checked on a shallow channel hugging the real
+axis, at height growing like $\tfrac12-O(1/\log)$. The criterion as
+originally compiled carries a second, finite conjunct --- every zero of
+ordinate $|\gamma|<e^4+\tfrac52$ on the line --- and that conjunct is now a
+theorem (\texttt{conjunct\_one}), so the split collapses to the channel
+alone.
+
+\paragraph{The certified ladder, and precisely what it settles.}
+The finite conjunct asks only for the zeros of ordinate below
+$e^4+\tfrac52\approx57.1$, and it is \emph{already discharged} by the first
+rung: \texttt{online\_below\_58} covers that range, so conjunct (1) of the
+split is closed and no further height is required for it. Every rung above
+$58$ therefore serves conjunct (2) alone, by widening the window on which
+the transfer \texttt{seat\_channel\_of\_online\_range} gives channel
+positivity. We record this explicitly because it delimits the ladder's
+reach: that window is bounded at every stage, while conjunct (2) quantifies
+over an unbounded set of heights, so no finite number of rungs closes it.
+What the ladder yields is a certified floor, not a route to the closure.
+With that said, the ladder is at
+present at height $743/2$ (\texttt{online\_below\_743o2}): every
+nontrivial zero with $|\gamma|\le\tfrac{743}2$ has $\beta=\tfrac12$. The
+census $N(743/2)=183$ is itself a compiled count
+(\texttt{stripZeroCountMult\_743o2}) --- obtained by lifting the argument
+principle along the standard contour with kernel-checked rational
+enclosures, at what is itself a half-integer anchor height: every
+integer anchor in $[140,230]$ fails the segment floors, and the anchor
+scan has selected half-integer heights ever since (an integer anchor $T$
+is carried in half form as $2T/2$); the $183$ zeros
+are then separated by $184$ certified sign changes of the real detector
+$\operatorname{Re}\,\Lambda(\tfrac12+it)$ (\texttt{hardyG}) at stations
+including seventeen half-integer heights and four
+quarter-integer heights (the first, $\tfrac{741}4$, placed at the
+Hardy-function peak of the thinnest zero gap, certified at $N=981$; the
+deepest, $\tfrac{1181}4$, at $N=1989$), forced by close pairs inside
+one integer cell or by thin margins at the neighbouring integers.
+Where a close pair is too narrow for any dyadic station to clear the
+first-order Euler--Maclaurin cost, the certificate switches instrument
+rather than deepening the sum: the second-order enclosure
+(\texttt{zeta\_EM\_enclosure\_second\_numeric}), which books the $B_2$ term
+into the head instead of the error, reduces that cost by a factor
+$\approx 63/N$ and settles such a station at a table depth already
+available. Each
+station is an exact-rational Euler--Maclaurin certificate; where the crude
+boundary bound $\sqrt N/t$ would consume the margin, the boundary term is
+instead evaluated in closed form and contributes with its true sign
+(\texttt{phase\_station\_lower\_half\_eval}). The construction is a
+mechanized rung procedure and has been run nineteen times
+($58\to63\to74\to81\to91\to109\to126\to\tfrac{289}2\to\tfrac{309}2\to\tfrac{399}2\to\tfrac{435}2\to\tfrac{471}2\to\tfrac{525}2\to\tfrac{561}2\to\tfrac{581}2\to\tfrac{618}2\to\tfrac{671}2\to\tfrac{687}2\to\tfrac{743}2$); nothing in it is
+height-specific beyond the witness tables.
+
+\paragraph{The transfer.}
+On-line-ness up to height $T$ transfers to channel positivity on the
+matching window (\texttt{seat\_channel\_of\_online\_range}): if every zero
+with $|\gamma|\le T$ is on the line, then $F(w)\ge0$ for every admissible
+anchor with $|\operatorname{Re}w|\le T-\tfrac12$ --- at \emph{every}
+height $|\operatorname{Im}w|$, not merely in the channel. With the ladder
+this is unconditional to $|\operatorname{Re}w|\le371$
+(\texttt{seat\_channel\_to\_371}).
+
+\paragraph{Exact status.}
+The compiled equivalence and the compiled transfer bracket the remaining
+content precisely: positivity of $F$ on the channel window
+$|\operatorname{Re}w|\le T-\tfrac12$ is a theorem for $T=743/2$ and is
+extensible rung by rung, while positivity on the full channel is, by the
+criterion, the conclusion itself --- the two statements differ exactly by
+the passage $T\to\infty$, and the equivalence
+$\text{RH}\iff\text{on-line above }58$
+(\texttt{rh\_iff\_online\_above\_58}) shows no finite extension closes it.
+What the split changes is the shape of the obligation: the seat of
+\S\ref{sec:obligations} now has a certified floor and a single
+quantitative frontier, and every rung moves the frontier by a compiled
+theorem.
+
+\paragraph{The residual conjunct, as a sign condition.}
+The remaining conjunct admits a form with no sum over zeros in it. Writing
+$w=x+iy$, the two chart points of the seat energy are
+$s_1=\tfrac12-y+ix$ and $s_2=\tfrac12+y+ix=1-\overline{s_1}$, so the
+functional equation $\xi(1-s)=\xi(s)$ and the reality $\xi(\bar
+s)=\overline{\xi(s)}$, differentiated, give
+$\xi'/\xi(s_2)=-\overline{\xi'/\xi(s_1)}$. The two-point difference is then
+twice a real part, and dividing by $w-\bar w=2i\,\operatorname{Im}w$ leaves
+(\texttt{seat\_energy\_re\_eq}, unconditional)
+\[
+  F(w)\;=\;-\,\frac{\operatorname{Re}\bigl[\xi'/\xi(\tfrac12+iw)\bigr]}
+                  {\operatorname{Im}w}.
+\]
+Since conjunct (1) is discharged at height $58$, the whole of RH is therefore
+the sign condition
+\[
+  \operatorname{Re}\bigl[\xi'/\xi(\sigma+it)\bigr]\;\le\;0
+  \qquad(\sigma<\tfrac12)
+\]
+at admissible points. The same antisymmetry makes $\operatorname{Re}[\xi'/\xi]$
+vanish identically on $\sigma=\tfrac12$; since $\xi$ is entire, this function is
+harmonic off the zeros, which are its only singularities, and it tends to
+$-\infty$ as $\sigma\to-\infty$. For $\sigma<0$ the condition is
+unconditional --- there $1-s$ lies in the half-plane of absolute convergence,
+so $\zeta'/\zeta(1-s)$ is bounded and
+$\operatorname{Re}[\xi'/\xi]\approx-\tfrac12\log(|t|/2\pi)$ --- which is the
+exterior positivity already recorded. The content is the strip
+$0<\sigma<\tfrac12$, where the same reflection sends $1-s$ into
+$(\tfrac12,1)$ and $\zeta'/\zeta$ is no longer bounded. We state this because
+it is the sharpest compiled form of the obligation, not because it weakens
+it: the reformulation is an equivalence, and a single zero off the line
+defeats the inequality, the offending pair contributing
+$2y[(a^2-y^2)-d^2]/D$ with $a=|\beta-\tfrac12|$, $d=t-\gamma$, which is
+positive exactly on the disc $d^2+y^2<a^2$ and unbounded as $y\to a^-$.
+
+\paragraph{The bank read in order.}
+The sign condition is posed inside the strip, where the Dirichlet series does
+not converge, so it is worth recording in what sense the bank is still
+available there. The carrier's alternating bank
+$\sum_{n\ge0}(-1)^n(n+1)^{-s}$, summed \emph{in the order its phasors enter},
+converges on all of $\operatorname{Re}s>0$: consecutive phasors differ by
+\[
+  \bigl\|a^{-s}-(a+1)^{-s}\bigr\|\;\le\;\|s\|\,a^{-\sigma-1}
+  \qquad(a>0,\ \sigma\ge-1),
+\]
+by the fundamental theorem of calculus on $[a,a+1]$
+(\texttt{cpow\_diff\_norm\_le}), so the paired series
+$\sum_k\bigl[(2k+1)^{-s}-(2k+2)^{-s}\bigr]$ is absolutely summable exactly
+when $\sigma>0$ (\texttt{paired\_bank\_summable}), and the ordered partial
+sums converge there (\texttt{etaPartial\_tendsto}). The limit is holomorphic
+on that half-plane, and on it
+\[
+  \lim_{N\to\infty}\sum_{n<N}\frac{(-1)^n}{(n+1)^s}
+  \;=\;\bigl(1-2^{\,1-s}\bigr)\zeta(s)
+  \qquad(\operatorname{Re}s>0,\ s\ne1),
+\]
+proved by the identity theorem from $\operatorname{Re}s>1$ across the
+punctured half-plane $\{\operatorname{Re}s>0\}\setminus\{1\}$, which is
+covered by four convex opens and is therefore preconnected
+(\texttt{etaLim\_differentiableOn}, \texttt{etaLim\_eq\_zeta}; both
+unconditional, standard axioms).
+
+We are explicit about what this does and does not add. It does \emph{not}
+enlarge the region in which $\zeta$ is available unconditionally in this
+development: the Euler--Maclaurin representation
+\texttt{truncated\_zeta\_pos\_re} already covers $\operatorname{Re}s>0$,
+$s\ne1$. What changes is the summation order and the shape of the error: the
+truncation error after $N$ ordered terms is the tail of a single elementary
+majorant, rather than a tail of fractional-part integrals. Nor does it bear on
+the sign condition, which is an obligation over an unbounded range of $t$ and
+is not discharged by any pointwise representation of $\zeta$.
 
 \section{Appendix: the formalized theta-kernel Tur\'an program}
 \label{sec:leanappendix}
@@ -1541,6 +1960,10 @@ to Li's criterion for the Riemann hypothesis}, J. Number Theory 77 (1999),
 \bibitem{Bombieri2000} E.~Bombieri, \emph{Remarks on Weil's quadratic functional
 in the theory of prime numbers, I}, Rend. Mat. Acc. Lincei (9) 11 (2000),
 183--233.
+
+\bibitem{Deninger1998} C.~Deninger, \emph{Some analogies between number theory
+and dynamical systems on foliated spaces}, Doc.\ Math.\ J.\ DMV, Extra Volume
+ICM I (1998), 163--186.
 
 \bibitem{CsordasNorfolkVarga1986} G.~Csordas, T.~S. Norfolk and R.~S. Varga,
 \emph{The Riemann hypothesis and the Tur\'an inequalities}, Trans. Amer. Math.

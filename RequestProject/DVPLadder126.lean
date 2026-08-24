@@ -1,0 +1,187 @@
+import RequestProject.DVPLadder109
+import RequestProject.DVPExhaustion126
+import RequestProject.DVPStation223o2
+import RequestProject.DVPStation113
+import RequestProject.DVPStation115
+import RequestProject.DVPStation118
+import RequestProject.DVPStation120
+import RequestProject.DVPStation122
+import RequestProject.DVPStation247o2
+import RequestProject.DVPStation125
+
+/-!
+# Rung-126: on-line to 126, channel to 125.5
+-/
+
+open Complex Finset
+open CriticalLinePhasor.ContourArgument CriticalLinePhasor.CarrierScale
+open CriticalLinePhasor.FoliatedPolarization
+
+noncomputable section
+
+namespace CriticalLinePhasor.DVP
+
+/-- The forty-two station heights (two half-integer: 111.5, 123.5). -/
+def ladder126T (i : Fin 42) : ℝ :=
+  if i.val = 0 then 11
+  else if i.val = 1 then 18
+  else if i.val = 2 then 23
+  else if i.val = 3 then 28
+  else if i.val = 4 then 32
+  else if i.val = 5 then 35
+  else if i.val = 6 then 39
+  else if i.val = 7 then 42
+  else if i.val = 8 then 46
+  else if i.val = 9 then 49
+  else if i.val = 10 then 52
+  else if i.val = 11 then 55
+  else if i.val = 12 then 58
+  else if i.val = 13 then 60
+  else if i.val = 14 then 62
+  else if i.val = 15 then 66
+  else if i.val = 16 then 68
+  else if i.val = 17 then 71
+  else if i.val = 18 then 74
+  else if i.val = 19 then 76
+  else if i.val = 20 then 78
+  else if i.val = 21 then 80
+  else if i.val = 22 then 84
+  else if i.val = 23 then 86
+  else if i.val = 24 then 88
+  else if i.val = 25 then 90
+  else if i.val = 26 then 93
+  else if i.val = 27 then 95
+  else if i.val = 28 then 97
+  else if i.val = 29 then 100
+  else if i.val = 30 then 102
+  else if i.val = 31 then 105
+  else if i.val = 32 then 106
+  else if i.val = 33 then 108
+  else if i.val = 34 then 223/2
+  else if i.val = 35 then 113
+  else if i.val = 36 then 115
+  else if i.val = 37 then 118
+  else if i.val = 38 then 120
+  else if i.val = 39 then 122
+  else if i.val = 40 then 247/2
+  else 125
+
+set_option maxHeartbeats 12800000 in
+/-- **The 42-station ladder is inhabited.** -/
+theorem ladder126Data_holds : LadderData126 := by
+  refine ⟨ladder126T, ?_, ?_, ?_⟩
+  · rw [Fin.strictMono_iff_lt_succ]
+    intro i
+    fin_cases i <;> norm_num [ladder126T]
+  · intro i
+    fin_cases i <;> constructor <;> norm_num [ladder126T]
+  · intro i
+    fin_cases i
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_11_sign station_18_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_18_sign station_23_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_23_sign station_28_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_28_sign station_32_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_32_sign station_35_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_35_sign station_39_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_39_sign station_42_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_42_sign station_46_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_46_sign station_49_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_49_sign station_52_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_52_sign station_55_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_55_sign station_58_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_58_sign station_60_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_60_sign station_62_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_62_sign station_66_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_66_sign station_68_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_68_sign station_71_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_71_sign station_74_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_74_sign station_76_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_76_sign station_78_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_78_sign station_80_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_80_sign station_84_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_84_sign station_86_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_86_sign station_88_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_88_sign station_90_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_90_sign station_93_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_93_sign station_95_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_95_sign station_97_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_97_sign station_100_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_100_sign station_102_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_102_sign station_105_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_105_sign station_106_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_106_sign station_108_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_108_sign station_223o2_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_223o2_sign station_113_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_113_sign station_115_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_115_sign station_118_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_118_sign station_120_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_120_sign station_122_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_pos_of_neg station_122_sign station_247o2_sign
+    · norm_num [ladder126T]
+      exact_mod_cast mul_neg_of_neg_of_pos station_247o2_sign station_125_sign
+
+/-- **Every nontrivial zero of ordinate `|γ| ≤ 126` is on the line.** -/
+theorem online_below_126 :
+    ∀ ρ ∈ ZD.NontrivialZeros, |ρ.im| ≤ 126 → ρ.re = 1/2 :=
+  online_below_126_of_ladder ladder126Data_holds
+
+/-- **The channel to height 125.5, unconditional.** -/
+theorem seat_channel_to_125_5 {w : ℂ}
+    (hw : (1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros)
+    (hw' : (1 / 2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros)
+    (him : w - (starRingEnd ℂ) w ≠ 0)
+    (hre : |w.re| ≤ 251/2) :
+    0 ≤ (∑' ρ : {ρ : ℂ // ρ ∈ ZD.NontrivialZeros},
+        (ZD.xiOrderNat ρ.val : ℂ) *
+          ((spectralCoord ρ.val - w)⁻¹ *
+            (spectralCoord ρ.val - (starRingEnd ℂ) w)⁻¹)).re :=
+  seat_channel_of_online_range (T := 126) online_below_126 hw hw' him
+    (by linarith)
+
+end CriticalLinePhasor.DVP
+
+section AxiomAudit
+#print axioms CriticalLinePhasor.DVP.ladder126Data_holds
+#print axioms CriticalLinePhasor.DVP.online_below_126
+#print axioms CriticalLinePhasor.DVP.seat_channel_to_125_5
+end AxiomAudit

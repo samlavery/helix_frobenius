@@ -1,0 +1,36 @@
+# RUNG PLAYBOOK (att267) — the validated per-anchor extension procedure
+# Five rungs executed: 58, 63, 74, 81, 91, 109. Each rung at integer anchor T:
+#
+# 0. ANCHOR SCAN: crude [0.5,0.6] floor via head(2..10 signed) + Abel tail
+#    (N=150) + costs; pick integer T with floor > +0.8 and segmin > +1.
+# 1. SEGMENT WITNESSES (att260-style): for n=2..100: k=round(T ln n/2pi),
+#    r=floor(quarter-angle*1e7)/1e7, delta ceil 1e-8, v=round(cos,1e-6);
+#    verify delta+96|r|^10*(11/36288000)+|v-F| <= 1/25000 EXACT.
+#    !!! expTaylor REFERENCE = sum over range(n) (LEAN SEMANTICS, 9 terms at n=9).
+# 2. SIX INTERVAL FLOORS exact-Q with err coeff (T+2)(T+3)/8 rounded UP,
+#    bdy 100*q_hi(100,an)/T, breakpoints [5,7,9,11,14,17,20]/10.
+# 3. STATION PLAN: Z at integers in (prev_anchor, T); one station per
+#    sign-window; margin_std = S_lo - (N*bN/M + bN/2 + em); thin (<~0.3)
+#    -> eval route N=200/250 with margin = S_lo + BDYLO - bN/2 - em,
+#    BDYLO = (N*bN if Elo<0 else N*aN)*Elo/D, Elo = -(vC+eps)/2 - M(uN+eps),
+#    D = 1/4+M^2. Theta gap = |psi+2piJ-target| + 0.105 + 10|1/30-1/M| + 0.04
+#    must be < pi/2 - 0.1. Negative stations: target = theta+pi, flip via
+#    cos_sin_flip at proxy psi+2piJ-pi.
+# 4. FILES (generators in transcript, sessions 428-443; all patterns compiled):
+#    DVPCos{T}Table (cosMul_eval 99x), DVPCos{T}Psum (chain + interval_cases
+#    floor; watch v=1/1-vs-1 serialization), DVPWeights{T} (complement only),
+#    DVPSegment{T}Core (textual transform of previous core: norm bounds
+#    |sigma|+T<=T+2, T+3; err coeff; bdy /T; h{T} rename; im=T),
+#    DVPSegment{T} (six-interval generator, assert floors >= 1/5 with the
+#    LEAN err coeff), DVPLift{T} (textual transform; N-pin bounds N-1 < N < N+1
+#    from pi*N = theta+pi+piS, theta window inline from 30-anchor; import
+#    DVPLog200Table if T > 100), stations (std template N=100; eval template
+#    N=200/250 with BOTH Elo branches: negative -> hEneg+le_div_iff0+products;
+#    positive -> hElopos + same products; stations >100 heights need
+#    DVPLog200Table import), DVPExhaustion{T} (textual: Fin K+1/K, count,
+#    heights), DVPLadder{T} (if-chain ladder def, positional sign bullets,
+#    heartbeats 12800000 at 34 stations, exact_mod_cast bridges,
+#    channel corollary via seat_channel_of_online_range).
+# 5. TABLES: log/sqrt compiled to n=250 (DVPLog58/200/250Table,
+#    DVPSqrtTable/DVPSqrt200Table/DVPSqrt250Table).
+# All witness files: tmp/att25*_*, tmp/att26*_*.

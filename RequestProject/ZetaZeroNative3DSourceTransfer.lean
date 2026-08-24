@@ -1207,6 +1207,65 @@ theorem globalCoordinateIdentification_and_zeroLedger_eq_carrierHeight_of_selfAd
   have hop := xiZeroLedgerOperator_eq_carrierHeight_of_allNative3DSourceTransfer chiOne hall
   exact ⟨(globalCoordinateIdentification_iff_zeroLedger_eq_carrierHeight chiOne).2 hop, hop⟩
 
+/-! ## The one-sided reduction
+
+The area-normalized fiber magnitude at a zero is `n^{1/2 - Re rho}` up to the positive
+constant supplied by the area law.  A single *upper* bound on it, holding at every
+nontrivial zero, already forces the critical line: the functional-equation reflection
+supplies the opposite inequality, so no lower bound and no two-sided estimate is needed.
+The implication below is unconditional; only its hypothesis is open. -/
+
+/-- An upper bound on `n ^ (1/2 - Re rho)` forces `Re rho ≥ 1/2`.  If the exponent were
+positive the powers would be unbounded. -/
+theorem re_ge_half_of_scaleBounded {rho : ℂ} {C : ℝ}
+    (hC : ∀ n : ℕ, 1 ≤ n → (n : ℝ) ^ ((1 : ℝ) / 2 - rho.re) ≤ C) :
+    (1 : ℝ) / 2 ≤ rho.re := by
+  by_contra hlt
+  push_neg at hlt
+  have hpos : 0 < (1 : ℝ) / 2 - rho.re := by linarith
+  have hC1 : (1 : ℝ) ≤ C := by simpa using hC 1 le_rfl
+  have hCpos : (0 : ℝ) < C := lt_of_lt_of_le one_pos hC1
+  obtain ⟨n, hn⟩ := exists_nat_gt (Real.exp (Real.log C / ((1 : ℝ) / 2 - rho.re)))
+  have hnpos : (0 : ℝ) < (n : ℝ) := lt_trans (Real.exp_pos _) hn
+  have hn1 : 1 ≤ n := by
+    have h1 : (1 : ℝ) ≤ (n : ℝ) := by
+      have := Real.add_one_le_exp (Real.log C / ((1 : ℝ) / 2 - rho.re))
+      nlinarith [hn, Real.exp_pos (Real.log C / ((1 : ℝ) / 2 - rho.re)),
+        Real.log_nonneg hC1, div_nonneg (Real.log_nonneg hC1) hpos.le]
+    exact_mod_cast h1
+  have hlog : Real.log C / ((1 : ℝ) / 2 - rho.re) < Real.log (n : ℝ) := by
+    have := Real.log_lt_log (Real.exp_pos _) hn
+    rwa [Real.log_exp] at this
+  have hbig : C < (n : ℝ) ^ ((1 : ℝ) / 2 - rho.re) := by
+    rw [Real.rpow_def_of_pos hnpos]
+    have hmul : Real.log C < Real.log (n : ℝ) * ((1 : ℝ) / 2 - rho.re) := by
+      rw [div_lt_iff₀ hpos] at hlog; linarith
+    calc C = Real.exp (Real.log C) := (Real.exp_log hCpos).symm
+      _ < _ := Real.exp_lt_exp.2 hmul
+  exact absurd (hC n hn1) (not_le.2 hbig)
+
+/-- **The one-sided reduction.**  If the area-normalized fiber magnitude is bounded above
+at every nontrivial zero, then every nontrivial zero lies on the critical line.  The
+functional-equation reflection `rho ↦ 1 - conj rho` converts the single upper bound into
+the matching lower bound: it sends a zero to a zero and `Re` to `1 - Re`.
+
+The implication is unconditional.  Its hypothesis --- that no zero's fiber escapes the
+carrier outward --- is exactly the content isolated as the seat. -/
+theorem re_eq_half_of_scaleBoundedAtEveryZero
+    (hbdd : ∀ rho ∈ ZD.NontrivialZeros, ∃ C : ℝ,
+      ∀ n : ℕ, 1 ≤ n → (n : ℝ) ^ ((1 : ℝ) / 2 - rho.re) ≤ C)
+    {rho : ℂ} (hrho : rho ∈ ZD.NontrivialZeros) :
+    rho.re = 1 / 2 := by
+  obtain ⟨C, hC⟩ := hbdd rho hrho
+  have hge : (1 : ℝ) / 2 ≤ rho.re := re_ge_half_of_scaleBounded hC
+  obtain ⟨C', hC'⟩ := hbdd _ (one_sub_conj_mem_nontrivialZeros hrho)
+  have hre' : (1 - (starRingEnd ℂ) rho).re = 1 - rho.re := by
+    simp [Complex.sub_re, Complex.conj_re]
+  have hge' : (1 : ℝ) / 2 ≤ 1 - rho.re := by
+    have := re_ge_half_of_scaleBounded (rho := 1 - (starRingEnd ℂ) rho) hC'
+    rwa [hre'] at this
+  linarith
+
 end CriticalLinePhasor.ContourArgument
 
 #print axioms CriticalLinePhasor.ContourArgument.principalZeroAnalyticFiber3D

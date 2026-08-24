@@ -168,7 +168,7 @@ private theorem gammaLog_continuousOn : ContinuousOn gammaLog rightHalfPlane := 
 private theorem gammaLog_two : gammaLog 2 = Real.log (1 / Real.pi) := by
   simp [gammaLog]
 
-private theorem exp_gammaLog {s : ℂ} (hs : s ∈ rightHalfPlane) :
+theorem exp_gammaLog {s : ℂ} (hs : s ∈ rightHalfPlane) :
     Complex.exp (gammaLog s) = Gammaℝ s := by
   have h2 : (2 : ℂ) ∈ rightHalfPlane := by simp [rightHalfPlane]
   rw [gammaLog, Complex.exp_add, Complex.exp_sub, exp_gammaLogRaw hs,
