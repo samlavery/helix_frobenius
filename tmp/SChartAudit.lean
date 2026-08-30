@@ -1,0 +1,11 @@
+import RequestProject.CarrierScaleCompensation
+
+open CriticalLinePhasor
+
+#print axioms CriticalLinePhasor.Readout.readout_exp
+#print axioms CriticalLinePhasor.CarrierScale.native_identification
+#print axioms CriticalLinePhasor.CarrierScale.unit_identification
+#print axioms CriticalLinePhasor.CarrierScale.carrier_scale_compensation_S
+#print axioms CriticalLinePhasor.CarrierScale.Sgap_refl
+#print axioms CriticalLinePhasor.CarrierScale.Sgap_antisymm
+#print axioms CriticalLinePhasor.CarrierScale.Sgap_cocycle

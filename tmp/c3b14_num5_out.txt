@@ -1,0 +1,61 @@
+==============================================================================
+D1 -- THE GAUSSIAN CONTROL, in closed form, and the noise floor it calibrates
+==============================================================================
+  W(t) = exp(-t^2):   R(v) = (1/4)sqrt(pi/2) exp(-2v^2),  Rhat(xi) = (pi/8)exp(-xi^2/8)
+      xi       Rhat closed form     (1/4)(c0c2+s1^2) at x=xi/2
+     0.0   3.92699081698724e-01           3.92699081698724e-01
+     4.0   5.31460414484545e-02           5.31460414484545e-02
+     8.0   1.31735865921557e-04           1.31735865921557e-04
+    16.0   4.97320618160990e-15           4.97320618160989e-15
+    20.0   7.57418294121984e-23           7.57418294121973e-23
+  Both columns agree exactly; Rhat > 0 STRICTLY for every xi.  Any negative measured
+  for this kernel is numerical, full stop.
+
+  Block 4's grid (PL=6.6, VMAX=3.4) vs a grid sized to the Gaussian:
+    block 4 grid (WRONG for this kernel)   min = -2.6735e-12 at xi=16.35, negatives=  57, R(VMAX)=2.85e-11
+    kernel-sized grid                      min = -2.2146e-17 at xi=19.05, negatives=  49, R(VMAX)=8.06e-57
+  => block 4's U6 rows for exp(-t^2) and for Phi_c are TRUNCATION ARTEFACTS.
+     They are WITHDRAWN.
+
+==============================================================================
+D1b -- U6 RERUN with per-kernel grids and a stated noise floor
+==============================================================================
+  A row counts as a REAL violation only if |min| exceeds the kernel's own tail
+  residual R(VMAX) by orders of magnitude AND the location is stable.
+                          kernel      PL,VMAX         min Rhat   at xi   neg     R(VMAX)      verdict
+                   Phi (Riemann)      6.6,3.4       1.5314e-04   20.00     0    0.00e+00     positive
+              exp(-t^2) Gaussian     14.0,8.0      -2.2146e-17   19.05    49    8.06e-57        noise
+      exp(-t^2)+exp(-4t^2) Phi_g     14.0,8.0      -3.8999e-03    6.50    57    8.06e-57     REAL NEG
+        exp(-t^2)(2+cos2t) Phi_c     14.0,8.0       1.2048e-15   20.00     0    3.40e-56     positive
+             Phi + 0.5 exp(-t^2)     14.0,8.0      -1.7536e-02    5.40    86    2.01e-57     REAL NEG
+                         sech(t)    30.0,18.0      -5.9513e-13   11.45   103    3.63e-12        noise
+                       exp(-t^4)      8.0,5.0       1.4602e-05   20.00     0    0.00e+00     positive
+
+==============================================================================
+D2 -- TOTAL POSITIVITY, re-adjudicated
+==============================================================================
+  Block 4 printed 'TP is FALSE' while measuring 0/5 TP2 violations.  The printed
+  verdict was unsupported and is WITHDRAWN.  The correct structural statement does
+  not need the minors at all:
+
+    TP2 for K(a,b) = R(a-b) is EQUIVALENT to log-concavity of R (classical).
+    But log-concavity does NOT imply a nonnegative transform.  Witness, exact:
+      W(v) = exp(-v^4) is even, positive, and log-concave ((log W)'' = -12 v^2 <= 0),
+      yet exp(-|v|^p) is positive definite ONLY for p <= 2, so its transform takes
+      negative values.  Measured below.
+      transform of exp(-v^4): min = -1.872725e-01 at xi = 4.600  -> NEGATIVE, as claimed
+    So even if R IS log-concave (=TP2), that gives nothing.  And TP_infinity (PF)
+    would force, by Schoenberg, Rhat = 1/Psi with Psi in Laguerre-Polya -- a
+    statement about Rhat being zero-free, which is not what is wanted and is not
+    available.  The determinantal family is dead because it does not IMPLY the
+    conclusion, not because R fails its hypotheses.
+
+==============================================================================
+D3 -- LOG-CONCAVITY of R, re-measured off the underflow region
+==============================================================================
+  R ranges from 3.1438e-02 at v=0 to 5.0704e-09 at v=0.75 -- all representable.
+  (log R)'' on [0,0.75]:  min = -1.139745e+02   max = -4.698413e+01
+  log-concave on this region? True
+  Block 2's S3 'max = +7.49e5' came from the region where R had underflowed to 0
+  and log R was clamped at log(1e-300); that number is WITHDRAWN.
+==============================================================================

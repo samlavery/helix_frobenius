@@ -1,0 +1,117 @@
+==============================================================================
+SETUP
+==============================================================================
+  mass = cosMom R 0 = 1.14198308344437e-02,   mass/4 = 2.85495770861092e-03
+  R decreasing on [0,inf)? True
+
+==============================================================================
+G0 -- REJECTION GATE:  cos z >= 2 exp(-beta z^2) - 2
+==============================================================================
+    beta=0.25: min(cos - minorant) = 7.725999e-01  TRUE pointwise
+    beta= 0.5: min(cos - minorant) = 9.844382e-01  TRUE pointwise
+    beta= 1.0: min(cos - minorant) = 9.998963e-01  TRUE pointwise
+    beta= 2.0: min(cos - minorant) = 1.000000e+00  TRUE pointwise
+
+  Now the ASSEMBLED bound, which is what matters:
+    int_{-a}^{a} R cos(2xv) dv >= 2 int_{-a}^{a} R e^{-beta(2xv)^2} dv - 2 int_{-a}^{a} R
+  and with the window tail, the criterion left side is
+    K(a,x) = 2 G(a,x) - 2 W(a) - 2 Tail(a),   W(a) = int_{-a}^{a} R, G <= W.
+  Since G(a,x) <= W(a) ALWAYS, K <= -2 Tail(a) <= 0 for every a and x.
+      a       x          2G - 2W        -2 Tail                K   K>0?
+   0.20    0.00     0.000000e+00  -1.891507e-03    -1.891507e-03  False
+   0.20    1.00    -7.529710e-04  -1.891507e-03    -2.644478e-03  False
+   0.20    3.00    -5.036252e-03  -1.891507e-03    -6.927759e-03  False
+   0.50    0.00     0.000000e+00  -4.061559e-06    -4.061559e-06  False
+   0.50    1.00    -1.681782e-03  -4.061559e-06    -1.685844e-03  False
+   0.50    3.00    -8.396601e-03  -4.061559e-06    -8.400663e-03  False
+   1.00    0.00     0.000000e+00  -0.000000e+00     0.000000e+00  False
+   1.00    1.00    -1.687271e-03  -0.000000e+00    -1.687271e-03  False
+   1.00    3.00    -8.404724e-03  -0.000000e+00    -8.404724e-03  False
+  VERDICT: the assembly is NONPOSITIVE at every (a,x), and identically 0 in the
+  central part at x = 0 where the truth is W(a) > 0.  The minorant is TRUE but
+  USELESS: it discards the entire mass.  **REJECTED, not formalised.**
+
+==============================================================================
+G1 -- cos z >= exp(-beta z^2) on |z| <= z*: optimal (beta, z*)
+==============================================================================
+  Near 0: cos z - e^{-beta z^2} = (beta - 1/2) z^2 + (1/24 - beta^2/2) z^4 + ...
+  so beta > 1/2 is NECESSARY.  For large z the inequality dies once cos z < 0,
+  so z* <= pi/2 always.  Measured z*(beta) = sup{Z : cos z >= e^{-beta z^2} on [0,Z]}:
+    beta     z*(beta)    z*/(pi/2)
+    0.51   0.34097276   0.21707000
+    0.55   0.71813666   0.45718000
+    0.60   0.94871386   0.60397000
+    0.75   1.26475808   0.80517000
+    1.00   1.44741028   0.92145000
+    1.50   1.54261624   0.98206000
+    2.00   1.56324865   0.99519500
+    4.00   1.57074135   0.99996500
+    8.00   1.57078847   0.99999500
+  READING: z* increases with beta toward pi/2, but a larger beta makes the Gaussian
+  decay faster, so the assembled bound is a genuine trade-off; optimised in RE below.
+
+==============================================================================
+G3 -- SIGNED-ANNULUS (cosine-lobe) decomposition
+==============================================================================
+  Split [0,inf) at v_k = (2k+1) pi/(4x): cos(2xv) >= 0 on [0,v_0], <= 0 on [v_0,v_1], ...
+  With J_k = int_{lobe k} R |cos(2xv)| dv, cosMom R (2x) = 2 (J_0 - J_1 + J_2 - ...).
+  If R is DECREASING then (J_k) is decreasing and the alternating sum >= J_0 - J_1.
+  This uses the tail's CANCELLATION, not its mass -- the ingredient batches 14/15
+  identified as missing.  Structural hypothesis 'R decreasing' falsification-tested above.
+      x              J0              J1              J2         2(J0-J1)      true cosMom   >0?
+   0.50    5.651140e-03    1.268557e-62    0.000000e+00     1.130228e-02     1.130228e-02  True
+   1.00    5.478346e-03    4.961710e-13   3.039401e-302     1.095669e-02     1.095669e-02  True
+   2.00    4.842593e-03    5.141430e-06    5.073292e-28     9.674903e-03     9.674903e-03  True
+   4.00    3.362968e-03    4.314493e-04    2.213379e-08     5.863038e-03     5.863083e-03  True
+   6.00    2.435432e-03    1.190927e-03    1.320782e-05     2.489009e-03     2.515421e-03  True
+   8.00    1.884360e-03    1.628640e-03    1.209791e-04     5.114412e-04     7.511755e-04  True
+  12.00    1.285456e-03    1.742421e-03    5.339785e-04    -9.139305e-04     2.132025e-05 False
+  20.00    7.805989e-04    1.352995e-03    8.789536e-04    -1.144792e-03     1.446867e-09 False
+  REACH of the two-lobe bound: |x| <= 8.863342
+  (batch 15's window criterion reached 6.638679)
+
+==============================================================================
+M1 / M2 -- the ANNULUS lower bound for Qwin, and the explicit c
+==============================================================================
+  CLAIM to pre-test:  Qwin a >= 2 c^2 (Tail c - Tail a)  for 0 <= c <= a
+  (on c <= |v| < a one has v^2 >= c^2, and that annulus carries 2(Tail c - Tail a)).
+      c       a           Qwin a      2c^2(Tc-Ta)  holds?
+   0.05    0.30   1.84554984e-04   1.98029806e-05    True
+   0.05    0.50   2.35144333e-04   2.08311228e-05    True
+   0.05    1.00   2.36295823e-04   2.08412767e-05    True
+   0.10    0.30   1.84554984e-04   5.17685159e-05    True
+   0.10    0.50   2.35144333e-04   5.58810847e-05    True
+   0.10    1.00   2.36295823e-04   5.59217003e-05    True
+   0.20    0.30   1.84554984e-04   5.90475538e-05    True
+   0.20    0.50   2.35144333e-04   7.54978290e-05    True
+   0.20    1.00   2.36295823e-04   7.56602913e-05    True
+   0.30    0.30   1.84554984e-04   0.00000000e+00    True
+   0.30    0.50   2.35144333e-04   3.70131191e-05    True
+   0.30    1.00   2.36295823e-04   3.73786594e-05    True
+  violations: 0 (must be 0)
+
+  Tail(0) = 5.70991541722184e-03   mass/2 = 5.70991541722184e-03   reldiff 0.00e+00
+  explicit c with Tail c > mass/4 (this is the ONE numeric fact the exclusion needs):
+       c           Tail c           mass/4   Tail c > mass/4
+    0.02   5.08311707e-03   2.85495771e-03              True
+    0.05   4.16825535e-03   2.85495771e-03              True
+    0.08   3.31550019e-03   2.85495771e-03              True
+    0.10   2.79608501e-03   2.85495771e-03             False
+    0.12   2.32334935e-03   2.85495771e-03             False
+    0.15   1.70972875e-03   2.85495771e-03             False
+  largest tested c with Tail c > mass/4: 0.095
+  => uniform lower bound  Qwin a >= 2 c^2 (Tail c - mass/4) = 1.20585455e-06
+     for every admissible a (4 Tail a <= mass, hence Tail a <= mass/4, hence a >= c)
+  => GLOBAL cap  x^2 <= mass/(2 * 1.205855e-06) = 4.735161e+03,  i.e. |x| <= 68.812506
+     This is the missing adaptive-window exclusion, modulo that one numeric fact.
+
+==============================================================================
+RE -- REACH of every surviving criterion
+==============================================================================
+  quadratic window (batch 15):        |x| <= 6.638679
+  Gaussian window beta=0.75 z*=1.26476: |x| <= 5.381949
+  Gaussian window beta=1.0  z*=1.44741: |x| <= 5.676119
+  Gaussian window beta=2.0  z*=1.56325: |x| <= 5.299148
+  Gaussian window beta=4.0  z*=1.57074: |x| <= 4.688780
+  two-lobe signed annulus:            |x| <= 8.863342
+==============================================================================

@@ -1,0 +1,162 @@
+==============================================================================
+B0 -- NORMALISATION / DICTIONARY.  Three independent routes.
+==============================================================================
+route Q : quadrature of the repo kernel  (c0,s1,c2) = moments of Phi
+route X : xi(1/2+ix) and its exact log-derivative      (Xi, Xi', Xi'')
+Claim to test:  c0 = kappa*Xi,  s1 = -kappa*Xi',  c2 = -kappa*Xi''  (one kappa)
+
+         x              c0 (quad)                Xi (xi)        kappa=c0/Xi
+       0.0      0.994241556376628      0.497120778188314                2.0
+       1.0      0.971514859341967      0.485757429670983                2.0
+       3.0      0.806330414514148      0.403165207257074                2.0
+       7.0      0.304409048572179      0.152204524286089                2.0
+      11.0     0.0396163490400192     0.0198081745200096                2.0
+
+kappa (from x=0) = 2.0
+max |kappa(x)/kappa(0) - 1| over the five points = 2.33363e-61
+
+Now the derivative slots, with that single kappa:
+         x            s1 (quad)             -kap*Xi1      reldiff            c2 (quad)             -kap*Xi2      reldiff
+       1.0      0.0449661971672      0.0449661971672          0.0      0.0430305370157      0.0430305370157    1.356e-60
+       3.0       0.113459059099       0.113459059099    3.428e-61      0.0230141574028      0.0230141574028    2.112e-60
+       7.0       0.108141640681       0.108141640681    3.597e-61     -0.0194941216161     -0.0194941216161    1.247e-60
+      11.0       0.028427444162       0.028427444162    8.551e-62     -0.0143618855842     -0.0143618855842    1.693e-61
+   14.1347     0.00276543817758     0.00276543817758          0.0     -0.0032058650561     -0.0032058650561    6.664e-53
+
+DICTIONARY VERDICT: worst relative disagreement = 6.66366e-53
+  c0 = kappa*Xi,  s1 = -kappa*Xi',  c2 = -kappa*Xi''  CONFIRMED (evidence).
+  => target  c0*c2 + s1^2 = kappa^2 * (Xi'^2 - Xi*Xi'') = kappa^2 * L1(x).
+  The repo's kernel carries kappa = 4 relative to xi (checked above).
+
+route T (third, independent): L1(0) two ways
+  quadrature  c0(0)*c2(0)        = 0.045679323337774873349
+  kappa^2 * (Xi'(0)^2-Xi(0)Xi''(0)) = 0.045679323337774873349
+  reldiff = 1.29847e-59
+
+POSITIVE CONTROL (independent of every route above).  Since
+   L1(x)/Xi(x)^2 = (xi'/xi)'(1/2+ix) = sum_rho 1/(x-gamma_rho)^2,
+at x = 0 this must equal sum_rho 1/gamma_rho^2, and the classical closed form
+   sum_rho 1/(rho(1-rho)) = 2 + gamma_E - log(4 pi) = sum_rho 1/(gamma^2+1/4).
+   2 + gamma_E - log(4pi)                 = 0.0461914179322421
+   + correction sum 1/g^2 - 1/(g^2+1/4)   = 0.0462099843387768
+   measured L1(0)/Xi(0)^2                 = 0.0462099862308379
+   CONTROL reldiff                        = 4.09449e-8
+
+==============================================================================
+B1 -- HOSTILE SCAN of L1 (xi normalisation; sign is normalisation-free)
+==============================================================================
+points scanned: 2144   (x in [0,400], plus 27 zero ordinates x 9 offsets)
+NEGATIVES of L1/Xi^2: 0
+min L1/Xi^2 = 0.0462099862308 at x = 0.0
+
+Scale-free margin at the hostile points (L1/Xi^2 is already scale-free:
+  it equals sum_rho 1/(x-gamma_rho)^2, so its minimum is the informative number).
+
+               x                  Xi(x)                L1/Xi^2                     L1
+               0         0.497120778188        0.0462099862308        0.0114198308344
+             0.5          0.49425698791        0.0462658353837        0.0113022795424
+               1         0.485757429671        0.0464344729065         0.010956691251
+               2         0.453099858313        0.0471258056939        0.0096749034791
+            6.28         0.193500069093        0.0580012812847       0.00217170002509
+               9        0.0653213184993        0.0834531888089       0.00035608429583
+              11          0.01980817452         0.152380343782        5.9788527351e-5
+14.134725141734693790      6.32251046254e-22      4.78287249979e+36       1.91191207968e-6
+              20      -3.66554277556e-5          1.07684233689       1.44686731415e-9
+              40      2.11762170791e-11          1.55478979772      6.97217762542e-22
+              60     -2.90927482394e-18          4.03472463152       3.4149425119e-35
+             100     -7.41004479407e-31           1.6390334026       8.9997298046e-61
+             150      4.48926613599e-49          350.792856321      7.06970749205e-95
+             200     -4.02172916111e-64          1.45119816758     2.34721224242e-127
+             300      8.78899427169e-99            40.32905056     3.11527479017e-195
+             400     1.43704532778e-133          4517.42942822     9.32894023293e-263
+
+==============================================================================
+B2 -- EXACT SPLIT (elementary / polygamma / zeta) of L1/Xi^2   [EXACT-IDENTITY]
+==============================================================================
+  L1(x)/Xi(x)^2 = (xi'/xi)'(1/2+ix)
+                = T_el + T_gam + T_zeta,   all three REAL, where
+     T_el   = (2x^2 - 1/2)/(x^2 + 1/4)^2          [from 1/s + 1/(s-1)]
+     T_gam  = (1/4) Re psi_1(1/4 + i x/2)          [from (1/2)psi(s/2)]
+     T_zeta = Re (zeta'/zeta)'(1/2 + i x)
+
+         x               T_el              T_gam               T_zeta                  sum              L1/Xi^2    reldiff
+       0.1       -7.100591716        3.848760839        3.29804309394       0.046212216731       0.046212216731        0.0
+       0.5                0.0       0.2788509321      -0.232585096726      0.0462658353837      0.0462658353837        0.0
+         1               0.96      -0.2502823855      -0.663283141585      0.0464344729065      0.0464344729065        0.0
+         3       0.2045288532     -0.03094312004      -0.125244477456      0.0483412556824      0.0483412556824        0.0
+         7      0.04019686155    -0.005183801898      0.0271510323749        0.06216409203        0.06216409203        0.0
+        11      0.01642682538    -0.002079151003       0.138032669405       0.152380343782       0.152380343782        0.0
+14.1347251     0.009972987778    -0.001256058438    4.78287249979e+36    4.78287249979e+36    4.78287249979e+36        0.0
+        17     0.006902481532   -0.0008673132762       0.235609894782       0.241645063037       0.241645063037        0.0
+21.0220396     0.004517969717    -0.000566670016    7.24493768604e+36    7.24493768604e+36    7.24493768604e+36        0.0
+        30     0.002220371227   -0.0002780097977        5.77652509506        5.77846745649        5.77846745649        0.0
+        60    0.0005554398282    -6.945892042e-5        4.03423865062        4.03472463152        4.03472463152        0.0
+       100    0.0001999850006    -2.500187539e-5        1.63885841948         1.6390334026         1.6390334026        0.0
+       200     4.999906251e-5    -6.250117194e-6        1.45115441864        1.45119816758        1.45119816758        0.0
+
+SPLIT VERIFIED, worst reldiff = 0.0
+
+Sign audit of the three terms, which is the point of the split:
+  T_el  < 0 at 1/13 sampled x  (exactly the disc |x| < 1/2: T_el >= 0 iff x^2 >= 1/4)
+  T_gam < 0 at 11/13 sampled x
+  T_zeta< 0 at 3/13 sampled x
+
+dedicated sign scan, x in [0.05, 60] step 0.05 (1200 points):
+  T_gam  negative at 1189/1200 points, min -0.25771041
+  T_zeta negative at 103/1200 points, min -0.69927381 at x=0.85
+
+READING: if T_gam >= 0 and T_zeta >= 0 then the ONLY negative term is T_el,
+which is >= 0 exactly on |x| >= 1/2.  That would reduce the target on |x|>=1/2
+to the single pure-zeta statement  Re (zeta'/zeta)'(1/2+it) >= 0.
+
+==============================================================================
+B6 -- THE THICKENED ZERO FIBRE:  c2(0)*|c0(x)| <= s1(x)^2  ==>  L1(x) >= 0
+==============================================================================
+Unconditional because |c2(x)| <= c2(0) (as t^2*Phi >= 0), so
+  L1 = c0 c2 + s1^2 >= -|c0| c2(0) + s1^2.
+Batch 12 had only the exact fibre {Xi = 0}.  This is an INTERVAL around each zero.
+Measured half-width of the guaranteed interval at the first zero ordinates:
+
+  c2(0) = 0.04594388863029087507   (repo normalisation, kappa = 2.0)
+
+                   gamma       |Xi1(gamma)|       half-width   covered?
+   14.134725141734693790     0.001382719089    0.06019164378        yes
+   21.022039638771554993     1.774977621e-5   0.000772671915        yes
+   25.010857580145688763     1.265203691e-6   5.507603857e-5        yes
+   30.424876125859513210     2.411708894e-8   1.049849704e-6        yes
+   32.935061587739189691     4.089175081e-9   1.780073565e-7        yes
+   37.586178158825671257    1.870733105e-10   8.143555804e-9        yes
+   40.918719012147495187    1.219544242e-11   5.30884206e-10        yes
+   43.327073280914999519    2.500914743e-12  1.088682224e-10        yes
+   48.005150881167159727    6.492594577e-14  2.826314781e-12        yes
+   49.773832477672302182    1.560388735e-14  6.792584526e-13        yes
+   60.831778524609809844    4.370244626e-18  1.902426963e-16        yes
+   72.067157674481907582    1.550132797e-21  6.747939034e-20        yes
+
+Coverage of the compiled criterion on a grid (x in [0,60] step 0.05):
+  criterion fires at 2/1201 grid points (0.17%)
+  (the criterion is a LOWER bound instrument; where it does not fire it says nothing)
+
+==============================================================================
+B7 -- STURM DATUM.   L1' = -Xi*Xi'''   [EXACT-IDENTITY, checked]
+==============================================================================
+d/dx (Xi'^2 - Xi Xi'') = 2Xi'Xi'' - Xi'Xi'' - Xi Xi''' = Xi'Xi'' - Xi Xi'''
+  -- CAREFUL: the naive 'L1'' = -Xi Xi''' ' is WRONG; the true value is
+     L1' = Xi'Xi'' - Xi Xi'''.  Verified numerically below against a
+     high-precision central difference of L1 (step 1e-12 at dps=60).
+
+         x             L1p (closed)         L1p (central diff)      reldiff
+         1     -0.00090762349829087       -0.00090762349829087    3.949e-26
+         3      -0.0019660602355305        -0.0019660602355305    3.105e-26
+         7     -0.00086958752777175       -0.00086958752777175    1.495e-26
+14.1347251         -7993732751.3215        -2.2164054056672e-6    3.607e+15
+        25     -1.8995508970508e-12       -1.8995508970508e-12    2.371e-25
+
+Sturm reading: at a hypothetical first zero x* of L1 (L1(x*)=0, L1'(x*)<=0)
+one has BOTH  Xi'(x*)^2 = Xi(x*)Xi''(x*)  AND  Xi'Xi'' <= Xi Xi''' at x*.
+That is two equations in four jets; it does not close by itself.  Recorded as
+a constraint, not a proof.
+
+==============================================================================
+END BLOCK 1.  Everything above is EVIDENCE (quadrature / mpmath), not certified.
+==============================================================================

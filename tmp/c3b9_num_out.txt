@@ -1,0 +1,218 @@
+====================================================================================================
+C3 BATCH 9 — corrected numerics (defect-1 and defect-2 repairs)
+mpmath dps = 40
+RIGOROUS = closed-form enclosure; NONRIG = high-precision Simpson (no derivative bound)
+====================================================================================================
+
+[RIGOROUS] residual enclosure resid(K, A1) at the k-cutoffs actually used
+   x=         0 u=  0 A1= 6.28318530718 K=  40 resid=8.6530303565e-100
+   x= 14.134725 u=  0 A1= 6.28318530718 K=  42 resid=3.82900387834e-105
+   x=    21.022 u=  0 A1= 6.28318530718 K=  43 resid=8.02147442347e-108
+   x=        60 u=  0 A1= 6.28318530718 K=  49 resid=6.44650904325e-124
+   x=        88 u=  0 A1= 6.28318530718 K=  54 resid=2.35789511994e-137
+   x=        88 u=  1 A1= 46.4268087147 K=  41 resid=2.99633353829e-833
+
+====================================================================================================
+(B1) SIGN OF cellDensity — RE-AUDITED with the corrected enclosure
+====================================================================================================
+
+--- x = 0.0  window [0, 0.578927603572] ---
+    u=           0.0 Cred=0.00809940801493 resid=8.6530303565e-100 +  [RIGOROUS]
+    u=0.144731900893 Cred=0.00255146339518 resid=3.58176233631e-137 +  [RIGOROUS]
+    u=0.289463801786 Cred=0.000323370659582 resid=3.78315423592e-187 +  [RIGOROUS]
+    u=0.434195702679 Cred=1.41729710198e-5 resid=5.91609192143e-254 +  [RIGOROUS]
+    u=0.578927603572 Cred=1.64219940184e-7 resid=3.02277290712e-343 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 0 at []
+
+--- x = 1.0  window [0, 1.27207478413] ---
+    u=           0.0 Cred=0.00771045190462 resid=8.6530303565e-100 +  [RIGOROUS]
+    u=0.318018696033 Cred=0.00018403456109 resid=7.69081730478e-199 +  [RIGOROUS]
+    u=0.636037392066 Cred=1.76701244205e-8 resid=3.00072951571e-386 +  [RIGOROUS]
+    u=0.954056088099 Cred=1.18748986961e-16 resid=1.22651094583e-740 +  [RIGOROUS]
+    u= 1.27207478413 Cred=1.48713159266e-32 resid=1.70090692493e-1410 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 0 at []
+
+--- x = 10.0  window [0, 2.97682287637] ---
+    u=           0.0 Cred=2.03589337764e-5 resid=1.82281539565e-102 +  [RIGOROUS]
+    u=0.744205719093 Cred=2.02493122419e-11 resid=1.68763652405e-482 +  [RIGOROUS]
+    u= 1.48841143819 Cred=3.05107796743e-51 resid=2.61688644614e-2181 +  [RIGOROUS]
+    u= 2.23261715728 Cred=8.27923853139e-234 resid=2.84003403687e-9711 +  [RIGOROUS]
+    u= 2.97682287637 Cred=1.48274177158e-1046 resid=8.884590077e-43074 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 0 at []
+
+--- x = 14.134725  window [0, 3.29591937608] ---
+    u=           0.0 Cred=-2.64799904309e-7 resid=3.82900387834e-105 -  [RIGOROUS]
+    u=0.823979844019 Cred=6.06037872797e-14 resid=4.15852423531e-568 +  [RIGOROUS]
+    u= 1.64795968804 Cred=3.08398181067e-71 resid=2.36761025558e-3006 +  [RIGOROUS]
+    u= 2.47193953206 Cred=3.82810063774e-379 resid=4.56644897643e-15682 +  [RIGOROUS]
+    u= 3.29591937608 Cred=9.78271930514e-1985 resid=1.1250441545e-81555 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 1 at ['0.274659948006']
+
+--- x = 21.022  window [0, 3.67096955726] ---
+    u=           0.0 Cred=-1.19209637954e-11 resid=8.02147442347e-108 -  [RIGOROUS]
+    u=0.305914129772 Cred=-9.8126708533e-13 resid=8.81329512936e-199 -  [RIGOROUS]
+    u=0.917742389316 Cred=7.27925540432e-18 resid=7.19245514356e-688 +  [RIGOROUS]
+    u= 1.83548477863 Cred=1.18881780374e-104 resid=9.02577652382e-4381 +  [RIGOROUS]
+    u= 2.75322716795 Cred=6.1865931263e-668 resid=1.38109348829e-27536 +  [RIGOROUS]
+    u= 3.67096955726 Cred=4.84482106407e-4207 resid=1.44627917011e-172689 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 1 at ['0.611828259544']
+
+--- x = 60.0  window [0, 4.68980146775] ---
+    u=           0.0 Cred=6.28464046927e-36 resid=6.44650904325e-124 +  [RIGOROUS]
+    u=0.781633577958 Cred=-8.42159983403e-38 resid=6.43774009881e-547 -  [RIGOROUS]
+    u= 1.17245036694 Cred=2.47086073299e-39 resid=2.53282387503e-1153 +  [RIGOROUS]
+    u= 2.34490073387 Cred=1.69447245021e-294 resid=3.97998440083e-12160 +  [RIGOROUS]
+    u= 3.51735110081 Cred=4.57363077286e-3093 resid=1.46178096851e-127004 +  [RIGOROUS]
+    u= 4.68980146775 Cred=1.5838396885e-32313 resid=4.09983626036e-1325108 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 2 at ['0.781633577958', '1.17245036694']
+
+--- x = 88.0  window [0, 5.0675639733] ---
+    u=           0.0 Cred=7.48700087094e-55 resid=2.35789511994e-137 +  [RIGOROUS]
+    u=0.422296997775 Cred=-2.14997390778e-57 resid=1.66686012677e-285 -  [RIGOROUS]
+    u= 1.26689099333 Cred=-7.96996830435e-58 resid=3.81327418505e-1430 -  [RIGOROUS]
+    u= 2.53378198665 Cred=4.1454905315e-431 resid=9.22857356626e-17749 +  [RIGOROUS]
+    u= 3.80067297998 Cred=1.53759343561e-5454 resid=1.2495557694e-223838 +  [RIGOROUS]
+    u=  5.0675639733 Cred=9.02236377568e-68794 resid=1.18389676568e-2820817 +  [RIGOROUS]
+    sign changes (rigorously decided points only): 4 at ['0.422296997775', '0.844593995551', '1.26689099333', '1.6891879911']
+
+====================================================================================================
+(B2) U_x(s) — grid aligned exactly at s; N, 2N, 4N refinement
+====================================================================================================
+
+--- x = 0.0  u1=0.578927603572  M=1.77787523997  A1(M)=220.0 ---
+    s=           0.0
+        N=  40 Ured=  3.61584617857e-5  [NONRIG]
+        N=  80 Ured=  3.61584617857e-5  [NONRIG]
+        N= 160 Ured=  3.61584617857e-5  [NONRIG]
+        k-resid<=6.33015764944e-106  u-tail<=1.92172357554e-86  sign=POS  [enclosure-decided]
+    s=0.214203213322
+        N=  40 Ured=  1.94634621148e-6  [NONRIG]
+        N=  80 Ured=   1.9442123629e-6  [NONRIG]
+        N= 160 Ured=  1.94408206932e-6  [NONRIG]
+        k-resid<=4.50499850443e-166  u-tail<=1.48708217564e-86  sign=POS  [enclosure-decided]
+    s=0.364724390251
+        N=  40 Ured=  8.96519811095e-8  [NONRIG]
+        N=  80 Ured=  8.93047299526e-8  [NONRIG]
+        N= 160 Ured=  8.92819147248e-8  [NONRIG]
+        k-resid<=9.76187532157e-227  u-tail<=1.21494875261e-86  sign=POS  [enclosure-decided]
+    s=0.578927603572
+        N=  40 Ured= 1.31429932402e-10  [NONRIG]
+        N=  80 Ured= 1.29682623624e-10  [NONRIG]
+        N= 160 Ured= 1.29546298944e-10  [NONRIG]
+        k-resid<=1.64422901859e-351  u-tail<=8.75056563882e-87  sign=POS  [enclosure-decided]
+
+--- x = 1.0  u1=1.27207478413  M=1.77787523997  A1(M)=220.0 ---
+    s=           0.0
+        N=  40 Ured=  3.46920289485e-5  [NONRIG]
+        N=  80 Ured=  3.46920289485e-5  [NONRIG]
+        N= 160 Ured=  3.46920289485e-5  [NONRIG]
+        k-resid<=6.33015764944e-106  u-tail<=1.92172357554e-86  sign=POS  [enclosure-decided]
+    s=0.470667670129
+        N=  40 Ured=  5.02609395709e-9  [NONRIG]
+        N=  80 Ured=   4.9880987719e-9  [NONRIG]
+        N= 160 Ured=  4.98541400158e-9  [NONRIG]
+        k-resid<=8.28215581019e-282  u-tail<=1.03988567995e-86  sign=POS  [enclosure-decided]
+    s=0.801407114003
+        N=  40 Ured= 2.80183447054e-15  [NONRIG]
+        N=  80 Ured= 2.71906907683e-15  [NONRIG]
+        N= 160 Ured= 2.71051938221e-15  [NONRIG]
+        k-resid<=5.55803965196e-552  u-tail<=5.80944719034e-87  sign=POS  [enclosure-decided]
+    s= 1.27207478413
+        N=  40 Ured= 4.81008264921e-36  [NONRIG]
+        N=  80 Ured= 4.58610641987e-36  [NONRIG]
+        N= 160 Ured= 4.54097944797e-36  [NONRIG]
+        k-resid<=4.72019884809e-1422  u-tail<=1.5656603355e-87  sign=POS  [enclosure-decided]
+
+--- x = 10.0  u1=2.97682287637  M=3.47682287637  A1(M)=6578.24202487 ---
+    s=           0.0
+        N=  40 Ured=  4.84843322553e-7  [NONRIG]
+        N=  80 Ured=  4.84878279893e-7  [NONRIG]
+        N= 160 Ured=  4.84878279893e-7  [NONRIG]
+        k-resid<=2.86896940349e-110  u-tail<=4.69828995735e-2842  sign=POS  [enclosure-decided]
+    s= 1.10142446426
+        N=  40 Ured= 3.83256741029e-27  [NONRIG]
+        N=  80 Ured= 1.54326508718e-26  [NONRIG]
+        N= 160 Ured= 1.64524172811e-26  [NONRIG]
+        k-resid<=3.1205280845e-1030  u-tail<=2.19308981131e-2842  sign=POS  [enclosure-decided]
+    s= 1.87539841211
+        N=  40 Ured=9.90819091783e-123  [NONRIG]
+        N=  80 Ured=9.05781596315e-119  [NONRIG]
+        N= 160 Ured=2.60996187788e-117  [NONRIG]
+        k-resid<=6.18661394554e-4842  u-tail<=9.96804185364e-2843  sign=POS  [enclosure-decided]
+    s= 2.97682287637
+        N=  40 Ured=3.0796092733e-1072  [NONRIG]
+        N=  80 Ured=8.90661756761e-1060  [NONRIG]
+        N= 160 Ured=4.63755754103e-1054  [NONRIG]
+        k-resid<=8.98187724129e-43343  u-tail<=9.71913960065e-2844  sign=POS  [enclosure-decided]
+
+--- x = 14.134725  u1=3.29591937608  M=3.79591937608  A1(M)=12452.9873209 ---
+    s=           0.0
+        N=  40 Ured=  6.03627401375e-9  [NONRIG]
+        N=  80 Ured=  6.05366333622e-9  [NONRIG]
+        N= 160 Ured=  6.05366333634e-9  [NONRIG]
+        k-resid<=1.95050177167e-113  u-tail<=2.23185981965e-5392  sign=POS  [enclosure-decided]
+    s= 1.21949016915
+        N=  40 Ured= 1.48695773533e-34  [NONRIG]
+        N=  80 Ured= 2.22213863604e-33  [NONRIG]
+        N= 160 Ured= 3.42289318623e-33  [NONRIG]
+        k-resid<=8.17188830071e-1311  u-tail<=1.02819084399e-5392  sign=POS  [enclosure-decided]
+    s= 2.07642920693
+        N=  40 Ured=2.52534024736e-185  [NONRIG]
+        N=  80 Ured=2.39751051936e-178  [NONRIG]
+        N= 160 Ured=1.95210426137e-175  [NONRIG]
+        k-resid<=1.16778002928e-7255  u-tail<=4.57976767432e-5393  sign=POS  [enclosure-decided]
+    s= 3.29591937608
+        N=  40 Ured=1.73827348963e-2033  [NONRIG]
+        N=  80 Ured=4.52821317584e-2009  [NONRIG]
+        N= 160 Ured=1.96786247068e-1997  [NONRIG]
+        k-resid<=3.02212526814e-82065  u-tail<=3.87287559735e-5394  sign=POS  [enclosure-decided]
+
+--- x = 21.022  u1=3.67096955726  M=4.17096955726  A1(M)=26365.6203487 ---
+    s=           0.0
+        N=  40 Ured=  1.0039561236e-12  [NONRIG]
+        N=  80 Ured= 9.97612657665e-13  [NONRIG]
+        N= 160 Ured= 9.97612848835e-13  [NONRIG]
+        k-resid<=1.04159679339e-116  u-tail<=2.45947138033e-11433  sign=POS  [enclosure-decided]
+    s= 1.35825873619
+        N=  40 Ured=  3.2507424279e-46  [NONRIG]
+        N=  80 Ured=  4.4474326719e-44  [NONRIG]
+        N= 160 Ured= 1.63605771288e-43  [NONRIG]
+        k-resid<=6.33292521628e-1739  u-tail<=1.1184583304e-11433  sign=POS  [enclosure-decided]
+    s= 2.31271082108
+        N=  40 Ured=8.08735888851e-301  [NONRIG]
+        N=  80 Ured=6.14283851196e-288  [NONRIG]
+        N= 160 Ured=3.45977656404e-282  [NONRIG]
+        k-resid<=7.95547808297e-11668  u-tail<=4.88185656782e-11434  sign=POS  [enclosure-decided]
+    s= 3.67096955726
+        N=  40 Ured=3.01341951843e-4311  [NONRIG]
+        N=  80 Ured=1.60640342706e-4258  [NONRIG]
+        N= 160 Ured=7.36647175833e-4233  [NONRIG]
+        k-resid<=1.06963104264e-173769  u-tail<=3.53457125761e-11435  sign=POS  [enclosure-decided]
+
+--- x = 60.0  u1=4.68980146775  M=5.18980146775  A1(M)=202294.533674 ---
+    s=           0.0
+        N=  40 Ured=-2.62298356112e-37  [NONRIG]
+        N=  80 Ured= 2.22858395109e-37  [NONRIG]
+        N= 160 Ured= 1.33534395891e-37  [NONRIG]
+        k-resid<=2.38813619986e-132  u-tail<=5.26803137248e-87835  sign=POS  [enclosure-decided]
+    s= 1.73522654307
+        N=  40 Ured=1.01556315791e-103  [NONRIG]
+        N=  80 Ured= 1.91793479588e-96  [NONRIG]
+        N= 160 Ured= 1.54064932107e-93  [NONRIG]
+        k-resid<=6.00027913827e-3740  u-tail<=2.3341905368e-87835  sign=POS  [enclosure-decided]
+    s= 2.95457492468
+        N=  40 Ured=4.99385625192e-1117  [NONRIG]
+        N=  80 Ured=5.95054221398e-1057  [NONRIG]
+        N= 160 Ured=1.27076408471e-1028  [NONRIG]
+        k-resid<=3.45471921132e-42363  u-tail<=9.77215849894e-87836  sign=POS  [enclosure-decided]
+    s= 4.68980146775
+        N=  40 Ured=4.49990849662e-33127  [NONRIG]
+        N=  80 Ured=2.39827647602e-32716  [NONRIG]
+        N= 160 Ured=2.34479925479e-32513  [NONRIG]
+        k-resid<=3.25056072274e-1333411  u-tail<=4.88979612843e-87837  sign=POS  [enclosure-decided]
+
+====================================================================================================
+SUMMARY
+====================================================================================================
+  U_x(s) negative instances: 0
+  no counterexample found (NONRIG quadrature; falsification only)

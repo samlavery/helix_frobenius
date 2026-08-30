@@ -1,0 +1,41 @@
+==============================================================================
+D1 -- the transform of exp(-|t|) is 2/(1+x^2)  [quadrature check]
+==============================================================================
+       x               quadrature                2/(1+x^2)      reldiff
+       0                      2.0                      2.0          0.0
+     0.5                      1.6                      1.6          0.0
+       1                      1.0                      1.0          0.0
+       2                      0.4                      0.4          0.0
+       5      0.07692307692307692      0.07692307692307692          0.0
+      20     0.004987531172069825     0.004987531172069825    1.545e-31
+
+==============================================================================
+D2 -- L1 of that transform, two independent routes
+==============================================================================
+       x           numerical derivs                closed form      reldiff   sign
+       0                        8.0                        8.0          0.0    pos
+     0.5                     2.4576                     2.4576          0.0    pos
+   0.999       0.001003506006002497       0.001003506006002497    1.048e-28    pos
+       1                        0.0                        0.0          0.0      0
+   1.001     -0.0009965059940025027     -0.0009965059940025027    9.663e-30    NEG
+     1.5       -0.08963271594131858       -0.08963271594131858    4.125e-31    NEG
+       2                    -0.0384                    -0.0384          0.0    NEG
+       5     -0.0004201533559749308     -0.0004201533559749308    3.438e-31    NEG
+      20      -1.234483791736981e-7      -1.234483791736981e-7    1.904e-31    NEG
+
+  VERDICT: L1 < 0 for every |x| > 1, EXACTLY, in closed form.
+  So evenness + positivity + integrability do NOT imply the target, and the
+  witness is elementary -- no Gaussian mixture and no numerics are needed.
+
+==============================================================================
+D3 -- the corner asymptotic against the measured N=1 violation
+==============================================================================
+  Phi_1'(0+) = 0.0789975305355 (block 5, C2)  =>  A = 2*Phi_1'(0+) = 0.157995061
+       x        -2A^2/x^6 (predicted)    measured L1_1 (block 3/5)
+   19.75           -8.41229353009e-10        -1.469845023317387e-8
+
+  Same sign and same order of magnitude; the leading asymptotic is crude (the
+  x^-4 term is not small at x = 20), so this is a MECHANISM CONFIRMATION, not a
+  fit.  Together with D2 it settles that the N=1 violation is the corner, NOT the
+  truncation.  The 'no termwise proof' reading of block 3's B20 is WITHDRAWN.
+==============================================================================

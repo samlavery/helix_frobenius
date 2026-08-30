@@ -1545,7 +1545,16 @@ nonconstant lane phase, which on the connected carrier line must attain a height
 with \(\sin(2\phi)\neq0\) --- otherwise it maps into the discrete set
 \(\tfrac{\pi}{2}\mathbb Z\) and is constant --- at which the two lanes
 \(e^{\pm i\phi(y)}\) are independent (Lean
-\texttt{CarrierReachability.reachable\_independent\_stage}).  Applying the
+\texttt{CarrierReachability.reachable\_independent\_stage}).  For the Riemann
+carrier the hypothesis pair is instantiated at the actual clock: the lane phase
+is \(\vartheta(t)=\int_0^t \operatorname{Re}\,(\log\Gamma_{\mathbb R})'(\tfrac12+iu)\,du\)
+--- the Riemann--Siegel phase by its defining ODE and initial condition --- and
+its continuity and nonconstancy are compiled
+(\texttt{CarrierScale.theta\_continuous},
+\texttt{ZetaPhaseBridge.theta\_nonconstant}, the latter from the compiled
+Stirling asymptotic), so the specialized stage exists unconditionally (Lean
+\texttt{ZetaPhaseBridge.zeta\_reachable\_independent\_stage}, with the closure
+form \texttt{ZetaPhaseBridge.zeta\_reachable\_residual\_forcible}).  Applying the
 forcing there extinguishes the residual.  The correction adjusts only the
 forcing weights of the adapter layer --- the fiber datum \(a_W\), the
 represented identity (Theorem~\ref{thm:g3-g4-identity-synthesis}), the ledger,

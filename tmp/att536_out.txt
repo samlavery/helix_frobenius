@@ -1,0 +1,51 @@
+# att536 ATTACK 20: the S_60(r) profile and the weight monotonicity.
+# exact anchors:  S_60(0) = -6.102853678e-37   (att532, 13-digit reproduction)
+#                 int_0^inf S_60 dr = L1(60)/32 = 1.067169535e-36
+#                 S_60'(0) = -Xi(60)^2/8 = -1.057985e-36
+
+#      r        S_60(r)               sign
+         0   -6.102853678e-37      NEG
+      0.05   -5.286157945e-37      NEG
+       0.1   -3.160774353e-37      NEG
+      0.15   -1.254832434e-37      NEG
+       0.2   -1.062760803e-37      NEG
+       0.3   4.407856919e-37       +
+       0.4   8.836011057e-37       +
+       0.5   1.502385049e-36       +
+       0.7   2.10399999e-36        +
+       1.0   7.838445007e-37       +
+       1.4   2.312775078e-50       +
+
+# sign crossover r0 in (0.2, 0.3]
+# weight g''(r) = 4y cosh(2yr) + 4y^2 r sinh(2yr), y small:
+   y=0.01   g''(r)/g''(0) at r=0,.2,.5,1,1.4 : 1.0 1.00002 1.0001 1.0004 1.00078
+   y=0.1    g''(r)/g''(0) at r=0,.2,.5,1,1.4 : 1.0 1.0016 1.01001 1.0402 1.07917
+   y=0.3    g''(r)/g''(0) at r=0,.2,.5,1,1.4 : 1.0 1.01443 1.09102 1.37646 1.76982
+# g''/g''(0) >= 1 and increasing => the weight DOWN-weights the early
+#   negative lobe and UP-weights the late positive lobe.  The pointwise
+#   STP failure is therefore not inherited by Khat.
+
+# att536 ATTACKS 7/8/9: the theta-mode split.
+#   G_n(v) = FT of the truncated even kernel;  G_inf = Xi(v)/2
+#     v      G_1 (ground)         G_2                  G_5                  Xi(v)/2
+     0.0  0.248474519          0.248560389          0.248560389          0.248560389
+     2.0  0.226464582          0.226549929          0.226549929          0.226549929
+     5.0  0.137692319          0.137774999          0.137774999          0.137774999
+     9.0  0.0325844918         0.0326606592         0.0326606592         0.0326606592
+    14.0  3.55496786e-5        0.000100647194       0.000100647222       0.000100647222
+
+# DIAGONAL DOMINATION: |G_1 - G_inf| / |G_inf|  (how much the ground mode
+# already carries; the rest is the off-diagonal remainder)
+   v=0      ground/full = 0.99965453       |off-diag|/|full| = 0.00034546926
+   v=2      ground/full = 0.99962328       |off-diag|/|full| = 0.0003767243
+   v=5      ground/full = 0.9993999        |off-diag|/|full| = 0.00060010485
+   v=9      ground/full = 0.99766792       |off-diag|/|full| = 0.0023320843
+   v=14     ground/full = 0.35321073       |off-diag|/|full| = 0.64678927
+
+# ground-mode defect density D^(1)_x(t) vs the full D_x(t), at x = 3:
+#     t      D^(1)_3(t)           D_3(t) (full)        both signs agree?
+     0.5   0.00195249616        0.00195307584        yes
+       1   0.0019191034         0.00191967982        yes
+       2   0.00179266931        0.00179323287        yes
+       4   0.00138398012        0.0013844954         yes
+       8   0.000613243778       0.000613609539       yes

@@ -1,0 +1,59 @@
+# att535 ATTACK 1: tail primitives at r = 0.
+#   n = 2 : S_x(0), the STP -- FALSIFIED at x = 60 (att532).
+#   n = 2m+1 : EXACT via I2, no quadrature.  n=1 is Xi(x)^2/8 >= 0 always;
+#              n=3 is L1(x)/32 >= 0 by the Laguerre inequality.
+#     x         n=1 (exact)          n=2 (STP)            n=3 (exact)          n=5 (exact)
+      0.000  0.03089113351         0.003763766022        0.0003568697136       1.989599086e-6      
+     14.000  5.06493166e-9         2.875750811e-7        6.984581747e-8        1.160877017e-9      
+     30.000  2.818736884e-17       8.598482271e-17       4.071994838e-17       2.367967405e-18     
+     59.347  3.092012961e-44       5.593658325e-36       3.992313078e-36       7.283007181e-37     
+     60.000  1.057985e-36          -6.102853678e-37      1.067169535e-36       2.869665371e-37     
+     60.832  1.170966899e-43       2.815640866e-37       5.968067011e-37       1.029498394e-37     
+     80.000  7.407047551e-49       9.618859144e-49       5.084572737e-49       5.36398803e-50      
+    100.000  6.863595481e-62       4.605159144e-62       2.812415564e-62       3.875869242e-63     
+
+# cross-check of I2 at m=1 against I4: S^{(3)}_x(0) should equal L1(x)/32
+   x=0      S^{(3)} = 0.0003568697136        L1/32 = 0.0003568697136       rel = 0.0
+   x=14     S^{(3)} = 6.984581747e-8         L1/32 = 6.984581747e-8        rel = 1.28402e-36
+   x=60     S^{(3)} = 1.067169535e-36        L1/32 = 1.067169535e-36       rel = 0.0
+
+# att535 ATTACKS 10/11/12: kernel moments, Hankel PD, the C_j family,
+# and the Jensen/Laguerre coefficients at n = 0.
+# K = Lean riemannXiKernel = 4*P0 = 2*Riemann Phi.  m_k = int_0^inf u^k K du.
+#  k      m_k
+    0   0.49712077818831
+    1   0.086114830502266
+    2   0.022971944315145
+    3   0.0076635532076893
+    4   0.0029628484336876
+    5   0.0012769115140894
+    6   0.00059929594659758
+    7   0.00030159392279436
+    8   0.0001609665745502
+
+# central Turan  3 m_2^2 > m_0 m_4  (Csordas-Norfolk-Varga 1986, m=1 case)
+   3 m_2^2      = 0.00158313067685
+   m_0 m_4      = 0.00147289351901
+   m_0 m_4/m_2^2= 2.791102858   (paper reports 2.7911, margin 6.96%)
+
+# the C_j family (hp_pencil.tex sec:leanappendix item 4):
+#   C_j = (1/4)[(2j+1) m_{2j}^2 - (2j-1) m_{2j-2} m_{2j+2}]
+   j=1   C_j = 2.755928946e-5         ratio = 1.0748439    POS
+   j=2   C_j = 6.478437161e-7         ratio = 1.0627437    POS
+   j=3   C_j = 3.237290121e-8         ratio = 1.0543033    POS
+   j=4   C_j = 2.672818337e-9         ratio = 1.0480505    POS
+   j=5   C_j = 3.20445389e-10         ratio = 1.0432125    POS
+   j=6   C_j = 5.157829544e-11        ratio = 1.0393451    POS
+
+# Hankel moment matrices [m_{i+j}] positive definite? (xiMomentMatrix_posDef)
+   n=2  Cholesky OK -> positive definite     det = 0.0040040668
+   n=3  Cholesky OK -> positive definite     det = 8.6545257e-7
+   n=4  Cholesky OK -> positive definite     det = 6.7601755e-12
+   n=5  Cholesky OK -> positive definite     det = 2.3452727e-18
+
+# Jensen at n = 0: Xi(x) = sum_k (-1)^k a_k x^{2k}/(2k)!, a_k = int_R u^{2k} Phi
+#   a_k = m_{2k}/2  (Phi = K/2 on the half line, doubled by evenness)
+#   Jensen polynomial J^{d,0}(X) = sum_j binom(d,j) gam_j X^j, gam_j = a_j/(2j)!
+   d=2  roots ['-161.081', '-24.9988']  -> hyperbolic: True
+   d=3  roots ['-322.226', '-105.085', '-17.6381']  -> hyperbolic: True
+   d=4  roots ['-517.546', '-224.051', '-78.7409', '-13.638']  -> hyperbolic: True

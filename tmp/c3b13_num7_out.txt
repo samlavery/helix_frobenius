@@ -1,0 +1,42 @@
+==============================================================================
+B21 (fast) -- COVERAGE of the two compiled fibres
+==============================================================================
+  c0(0) = 0.994241556376628    c2(0) = 0.045943888630291
+  CONTROLS against batch 12's COMPILED identities:
+    M0 = 2.471290681066e-01   (1/4)c0(0)^2 = 2.471290681066e-01   reldiff 1.123e-16
+    M  = 5.709915417222e-03   (1/8)c0(0)c2(0) = 5.709915417222e-03   reldiff 3.038e-16
+  controls pass; proceeding.
+
+  Jbar(a) by the closed form  a^2(2 m0(a) - M0) - (2 m2(a) - M),
+  validated against nested adaptive quadrature at a = 0.10 (num4, reldiff 0.0).
+
+       a            Jbar(a)     T = 4 Jbar/a^2   fires?
+    0.08   4.9792078277e-03       3.1120048923       no
+    0.10   4.8771598605e-03       1.9508639442       no
+    0.12   4.9347905209e-03       1.3707751447       no
+    0.15   5.4225317857e-03       0.9640056508      yes
+    0.18   6.4932069231e-03       0.8016304843      yes
+    0.20   7.5666720522e-03       0.7566672052      yes
+    0.22   8.9401407944e-03       0.7388546111      yes
+    0.25   1.1566333686e-02       0.7402453559      yes
+    0.30   1.7404714132e-02       0.7735428503      yes
+    0.35   2.4928701931e-02       0.8139984304      yes
+    0.40   3.3963652285e-02       0.8490913071      yes
+    0.50   5.6083396975e-02       0.8973343516      yes
+    0.70   1.1538333564e-01       0.9419047807      yes
+    1.00   2.4141915269e-01       0.9656766108      yes
+
+  best a = 0.22,  T_min = 0.7388546111,  c0(0)^2 = 0.9885162724
+  fibre L is NONEMPTY: True
+  fibre L = { x : |c0(x)| >= 0.8595665251 }, i.e. |Xi(x)| >= 0.4297832626
+  => the INTERVAL |x| <= 2.50349099
+
+  Coverage on x in [0,60] step 0.05 (1201 points):
+    fibre S (small readout) : 2/1201 (0.17%)
+    fibre L (large readout) : 51/1201 (4.25%)
+    S or L (compiled union) : 53/1201 (4.41%)
+
+  HONEST READING: the compiled union covers a neighbourhood of x = 0 -- which block 3
+  identifies as the TIGHTEST point of the target -- plus specks at the first zero.
+  It leaves the bulk of the line open.  No claim beyond the measured count.
+==============================================================================

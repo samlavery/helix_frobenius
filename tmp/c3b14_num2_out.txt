@@ -1,0 +1,122 @@
+==============================================================================
+SETUP
+==============================================================================
+  R(0) = 0.03143811705337   (batch 13: L1xi(0) = 0.011419830834443718)
+  R >= 0 on grid: True   R(VMAX) = 0.0000e+00
+
+==============================================================================
+NECESSARY CONDITIONS FOR POSITIVE DEFINITENESS -- these test the TARGET itself
+==============================================================================
+N1 -- a PD function attains its max at 0:  R(0) >= |R(v)| for all v.
+     max R on [0,3.4] = 0.03143811705337 at v = 0.0000;  R(0) = 0.03143811705337
+     N1 HOLDS
+
+N2 -- BOCHNER, finite form: [R(v_i - v_j)] must be PSD for every finite point set.
+     Hostile point sets: uniform, clustered, wide, and a deterministic 'ragged' set.
+     uniform h=0.05, n=40       min eigenvalue =  2.433477e-14  ok
+     uniform h=0.20, n=30       min eigenvalue =  8.409805e-03  ok
+     uniform h=0.50, n=14       min eigenvalue =  3.132128e-02  ok
+     clustered near 0, n=30     min eigenvalue = -2.721315e-17  ok
+     wide h=1.0, n=7            min eigenvalue =  3.143812e-02  ok
+     ragged (golden), n=35      min eigenvalue =  7.704376e-07  ok
+     two clusters, n=24         min eigenvalue =  3.352358e-15  ok
+     worst: clustered near 0, n=30 at -2.721e-17
+     N2 HOLDS to numerical tolerance
+
+N3 -- the transform  Rhat(xi) = int R(v) cos(xi v) dv  on a hostile xi grid.
+     (This IS the target; Rhat(2x) = L1(x).)  Computed on the FULL line by evenness.
+     xi in [0,100] step 0.05 (2001 pts): negatives = 318, min = -1.890067e-18 at xi = 99.050
+     NOTE: at large xi the quadrature floor (~1e-16) dominates the true value
+     (Rhat(xi) ~ e^{-pi xi/4}), so large-xi signs here are NOT informative.
+     Informative window xi <= 20 (x <= 10):
+       negatives with xi <= 20: 0
+
+==============================================================================
+SUFFICIENT CONDITIONS -- failure kills only the route
+==============================================================================
+S1 -- POLYA and every corner-generated class.
+     R'(0+) estimated = -7.385376e-04  (R is even and smooth => 0)
+     A convex + decreasing R on (0,inf) with R'(0+)=0 forces R constant, so POLYA
+     cannot apply to ANY smooth even kernel.  Same argument kills every mixture of
+     PD generators having a corner at 0 (exp(-lam|v|) mixtures included), since such
+     a mixture has R'(0+) = -int lam dmu < 0 unless mu = 0.
+     measured: R decreasing on (0,inf)? True
+               R convex   on (0,inf)? False
+
+S2 -- SCHOENBERG: R a Gaussian scale mixture <=> g(tau) := R(sqrt(tau)) completely
+     monotone, i.e. (-1)^n g^(n) >= 0 for all n.  This class IS compatible with
+     smoothness, so it is a live route (unlike S1).
+     (-1)^1 g^(1): min =  1.106069e-138   >= 0 ok
+     (-1)^2 g^(2): min =  1.265230e-137   >= 0 ok
+     (-1)^3 g^(3): min = -3.812438e+00   NEGATIVE -> not CM
+     (-1)^4 g^(4): min = -2.554617e+04   NEGATIVE -> not CM
+
+S3 -- log-concavity / log-convexity of R (a derivative-sign-sequence attack).
+     (log R)'' : min = -2.830434e+03, max =  7.493610e+05
+     log-concave everywhere? False    log-convex? False
+
+S4 -- FOURIER CONVOLUTION SQUARE.  R = h*h with h even real <=> Rhat >= 0 (circular).
+     Non-circular proxy: the k=0 analogue R0(v) = int Phi(v+p)Phi(v-p) dp IS a
+     convolution square ((Phi*Phi)(2v)/2), which is why its transform is Xi^2 >= 0.
+     Question: does the p^2 weight preserve a convolution-square structure?
+     Exact decomposition (checked below): R(v) = (M2*Phi)(2v) - v^2 (Phi*Phi)(2v).
+       v          R(v) direct    (M2*Phi)(2v) - v^2(Phi*Phi)(2v)      reldiff
+    0.00       0.031438117053                     0.031438117053    5.542e-13
+    0.20       0.012195436307                     0.012195436307    5.545e-13
+    0.50       0.000059724448                     0.000059724448    5.498e-13
+    1.00       0.000000000000                     0.000000000000    5.842e-13
+    1.50       0.000000000000                     0.000000000000    6.717e-13
+     READING: the -v^2 term is exactly what breaks the convolution-square form.
+     A convolution square has a nonneg transform by construction; R does not have
+     that form, so this route supplies no sign.
+
+S5 -- COMPLETE MONOTONICITY IN x^2 of the transform (necessary if R is a Gaussian
+     scale mixture).  Rhat would then be decreasing in |xi|.
+     Rhat increases at 0/160 consecutive steps on xi in [0,40]
+     => monotone so far
+
+==============================================================================
+TRANSFER TESTS and DECOMPOSITIONS
+==============================================================================
+T1 -- SYMMETRIZED THETA TERMS (no artificial corner).  S_k(u) = phi_k(u) + phi_k(-u).
+     Batch 13 issued this as refutation spec RS-1 with the PREDICTION that S_k would
+     be nonnegative and satisfy the target.  Run here because batch 14's brief asks
+     for it explicitly.  Outcome reported as-is.
+   k      min S_k on [-4,4]     at u   S_k >= 0 ?
+   1      -1.5672622648e+00   -0.833        False
+   2      -1.1083523155e+00   -1.526        False
+   3      -9.0496567155e-01   -1.931        False
+     PREDICTION FROM BATCH 13 (S_k nonnegative): see the column above.
+     phi_k(u) < 0 for u < (1/2)log(3/(2 pi k^2)) -- the SECOND theta term dominates
+     at large negative u -- so the symmetrised single term is NOT a positive kernel.
+
+T2 -- COMPACTLY SUPPORTED APPROXIMATION.  Phi_T := Phi * 1_{|t|<=T} (even, nonneg,
+     but with a JUMP at |t|=T).  Does the target survive truncation of the support?
+     T     min Rhat_T on xi<=20    at xi  negatives
+   0.5             2.626769e-04    20.00          0
+   1.0             1.531385e-04    20.00          0
+   1.5             1.531378e-04    20.00          0
+   2.0             1.531378e-04    20.00          0
+   3.0             1.531378e-04    20.00          0
+     READING: a hard cutoff introduces a jump, whose transform decays like 1/xi and
+     oscillates in sign -- the same species of artefact as batch 13's corner.
+
+T3 -- ANTIHELIX CONJUGATION.  The swap v <-> p sends R(v) = int p^2 Phi(v+p)Phi(v-p)dp
+     to int v^2 Phi(p+v)Phi(p-v)dv.  Since Phi is even, Phi(p+v)Phi(p-v) =
+     Phi(v+p)Phi(v-p) (C3B12.antihelix_swap), so the swapped object is the SAME
+     bilinear form read on the other axis: it gives no new sign.  Checked:
+     v=0.3   R(v) = 0.003642632682   swapped = 0.003642632682   reldiff 0.00e+00
+     v=0.9   R(v) = 0.000000000001   swapped = 0.000000000001   reldiff 0.00e+00
+
+T4 -- CARRIER pi/3 HARMONISATION: applicability check, not a scan.
+     The pi/3 register governs CELL-REGISTRATION counts N_{pi/3}(e^t) - N_1(e^t).
+     R is a MOMENT of the carrier product in the half-gap; its argument v is a cell
+     CENTRE, not a registration cell index, and no count is formed anywhere in this
+     batch.  So the harmonic register is not at risk and pi/3 is not applicable here.
+     Reported as a NULL by design, not run as a unit-1 scan (which would be the
+     documented false-null trap).  Sanity: R has no special structure at v = k pi/3:
+       v = 1 pi/3 = 1.047198   R(v) = 4.018774e-18   R(v)/R(0) = 1.278313e-16
+       v = 2 pi/3 = 2.094395   R(v) = 4.308223e-173   R(v)/R(0) = 1.370382e-171
+       v = 3 pi/3 = 3.141593   R(v) = 0.000000e+00   R(v)/R(0) = 0.000000e+00
+       v = 4 pi/3 = 4.188790   R(v) = 0.000000e+00   R(v)/R(0) = 0.000000e+00
+==============================================================================

@@ -1,0 +1,81 @@
+==============================================================================
+(2)  IS  c0*c2 >= 0 ?   c0 = cosMom Phi x = Xi(x),  c2 = cosMom kM2 x = -Xi''(x)
+     the batch-12 ledger proposed this as an OPEN sub-fibre; it is FALSE
+==============================================================================
+  spot check at the value the ledger's own P2 table already contained:
+    x=7:  c0 = 0.304409048572  c2 = -0.0194941216161  c0*c2 = -0.00593418701392   <-- NEGATIVE
+          s1^2 = 0.0116946144492,  c0*c2 + s1^2 = 0.0057604274353 > 0
+
+  scanned 1201 points, x in [0,60] step 0.05, mpmath 40 dps
+  c0*c2 < 0 at 600/1201 points  (50.0% of the grid)
+  first failures:
+    x=  4.8000  c0*c2 = -0.0003492360624   s1^2 =    0.01778866988   sum = 0.01743943382
+    x=  4.8500  c0*c2 = -0.0006887758399   s1^2 =    0.01777659121   sum = 0.01708781537
+    x=  4.9000  c0*c2 =  -0.001016928113   s1^2 =    0.01775653855   sum = 0.01673961044
+    x=  4.9500  c0*c2 =   -0.00133370977   s1^2 =    0.01772860626   sum = 0.01639489649
+    x=  5.0000  c0*c2 =  -0.001639149009   s1^2 =    0.01769289635   sum = 0.01605374734
+    x=  5.0500  c0*c2 =  -0.001933285069   s1^2 =    0.01764951826   sum = 0.01571623319
+    x=  5.1000  c0*c2 =  -0.002216167952   s1^2 =    0.01759858858   sum = 0.01538242063
+    x=  5.1500  c0*c2 =  -0.002487858131   s1^2 =    0.01754023077   sum = 0.01505237263
+  sign runs of c0*c2 on [0,60]  (+ = nonneg, - = negative):
+    +  [  0.000,   4.800)
+    -  [  4.800,  14.150)
+    +  [ 14.150,  17.050)
+    -  [ 17.050,  21.050)
+    +  [ 21.050,  23.250)
+    -  [ 23.250,  25.050)
+    +  [ 25.050,  27.500)
+    -  [ 27.500,  30.450)
+    +  [ 30.450,  32.150)
+    -  [ 32.150,  32.950)
+    +  [ 32.950,  35.400)
+    -  [ 35.400,  37.600)
+    +  [ 37.600,  39.450)
+    -  [ 39.450,  40.950)
+    +  [ 40.950,  42.650)
+    -  [ 42.650,  43.350)
+    +  [ 43.350,  45.650)
+    -  [ 45.650,  48.050)
+    +  [ 48.050,  49.400)
+    -  [ 49.400,  49.800)
+    +  [ 49.800,  51.850)
+    -  [ 51.850,  53.000)
+    +  [ 53.000,  54.950)
+    -  [ 54.950,  56.450)
+
+  VERDICT: the proposed sub-fibre  0 <= c0*c2  is FALSE on a set of positive
+  measure.  It is moved to FAILED.  The OPEN statement stays the full edge
+      0 <= c0*c2 + s1^2 ,
+  and the genuinely smallest useful decomposition is the SIGN SPLIT:
+    - on {c0*c2 >= 0}: already compiled (C3B12.momentTwo_nonneg_of_cos);
+    - on {c0*c2 <  0}: the whole content is  |c0*c2| <= s1^2 ,
+      i.e. square domination, reduced by C3B12.momentTwo_nonneg_of_square_dominates.
+  Margin of the surviving inequality on the negative region:
+    min over {c0*c2<0} of (c0*c2 + s1^2)/s1^2 = 0.2952346509  at x = 10.8000
+    (a scale-free margin: 1 would mean c0*c2 = 0, 0 would mean equality/failure)
+
+==============================================================================
+(5)  P4's x = 300 tail value: precision cross-check at 80 and 120 dps
+==============================================================================
+       x   dps                         L1                         Xi     L1/Xi^2 (scale-free)
+   100.0    30          3.59989192184e-60         -1.48200895881e-30             1.6390334026
+   100.0    80          3.59989192184e-60         -1.48200895881e-30             1.6390334026
+   100.0   120          3.59989192184e-60         -1.48200895881e-30             1.6390334026
+         rel(30 vs 120) = 1.16822e-31   rel(80 vs 120) = 1.62447e-81   rel scale-free(80 vs 120) = 0.0
+
+   200.0    30         9.38884896966e-127         -8.04345832222e-64            1.45119816758
+   200.0    80         9.38884896966e-127         -8.04345832222e-64            1.45119816758
+   200.0   120         9.38884896966e-127         -8.04345832222e-64            1.45119816758
+         rel(30 vs 120) = 8.69679e-32   rel(80 vs 120) = 5.05162e-82   rel scale-free(80 vs 120) = 0.0
+
+   300.0    30         1.24610991607e-194          1.75779885434e-98              40.32905056
+   300.0    80         1.24610991607e-194          1.75779885434e-98              40.32905056
+   300.0   120         1.24610991607e-194          1.75779885434e-98              40.32905056
+         rel(30 vs 120) = 1.325e-31   rel(80 vs 120) = 7.41884e-82   rel scale-free(80 vs 120) = 0.0
+
+  LABEL: NON-CERTIFIED.  Even where the 80- and 120-dps values agree, these are
+  floating-point evaluations of mp.diff on a function of enormous dynamic range;
+  they are consistency checks, not interval arithmetic, and no claim in the
+  batch-12 ledger rests on them.  The scale-free ratio L1/Xi^2 is the only figure
+  reported with a meaningful number of correct digits, and the raw 1e-194 value
+  quoted in P4 at 30 dps is withdrawn as a certified figure.

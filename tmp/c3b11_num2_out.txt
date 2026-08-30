@@ -1,0 +1,71 @@
+==============================================================================
+M1  calibration of the double-precision quadrature against mpmath
+==============================================================================
+x=    0.000000 y=0.5   quad Q= 2.309571e-02  |M|^2= 1.000000e+00
+                      mpmath Q= 2.309571e-02  |M|^2= 1.000000e+00   -> quadrature |M|^2 error 2.93e-12
+x=    5.000000 y=0.5   quad Q= 8.126447e-03  |M|^2= 3.077495e-01
+                      mpmath Q= 8.126447e-03  |M|^2= 3.077495e-01   -> quadrature |M|^2 error 1.78e-12
+x=   14.134725 y=0.5   quad Q= 3.954680e-06  |M|^2= 1.944505e-06
+                      mpmath Q= 3.954680e-06  |M|^2= 1.944505e-06   -> quadrature |M|^2 error 1.48e-15
+x=   20.000000 y=0.5   quad Q= 3.058246e-09  |M|^2= 6.862231e-09
+                      mpmath Q= 3.058246e-09  |M|^2= 6.862231e-09   -> quadrature |M|^2 error 2.22e-16
+x=   30.000000 y=0.5   quad Q= 2.919223e-15  |M|^2= 2.282407e-15
+                      mpmath Q= 2.919099e-15  |M|^2= 2.282457e-15   -> quadrature |M|^2 error 4.97e-20
+x=   40.000000 y=0.5   quad Q= 1.577723e-21  |M|^2= 2.685266e-21
+                      mpmath Q= 1.623632e-21  |M|^2= 2.547356e-21   -> quadrature |M|^2 error 1.38e-22
+x=   46.100000 y=0.5   quad Q=-2.975113e-26  |M|^2= 9.141000e-24
+                      mpmath Q= 4.879876e-25  |M|^2= 1.638546e-24   -> quadrature |M|^2 error 7.50e-24
+x=   60.000000 y=0.5   quad Q= 1.837149e-29  |M|^2= 3.416585e-24
+                      mpmath Q= 1.080619e-34  |M|^2= 7.768894e-35   -> quadrature |M|^2 error 3.42e-24
+
+==============================================================================
+M2  HOSTILE SCAN (mpmath, 30 dps):  Q(x,y) = A A' + B B'  must be >= 0
+==============================================================================
+  scanned 8064 (x,y) pairs;  negatives found: 0
+  min of Q/|M|^2 = 4.62099862e-08  at x=0.000000, y=1e-06
+  (Q/|M|^2 = 2 * d/dy log|M| = 2 Re[xi'/xi](1/2+y+ix); it is >= 0 iff the leaf is.)
+
+==============================================================================
+M3  the y -> 0+ edge:   Q(x,y)/y  ->  L1(x) = Xi'(x)^2 - Xi(x) Xi''(x)
+    (Xi(x) = 2 xi(1/2+ix), real on the real axis)
+==============================================================================
+  x=    0.000000   Q/y =  4.5679323338e-02   L1(x) =  4.5679323338e-02
+  x=    3.000000   Q/y =  3.1429973170e-02   L1(x) =  3.1429973170e-02
+  x=    7.000000   Q/y =  5.7604274353e-03   L1(x) =  5.7604274353e-03
+  x=   14.134725   Q/y =  7.6476483164e-06   L1(x) =  7.6476483164e-06
+  x=   14.500000   Q/y =  5.0089017953e-06   L1(x) =  5.0089017953e-06
+  x=   21.022040   Q/y =  1.2602182209e-09   L1(x) =  1.2602182209e-09
+  x=   25.010858   Q/y =  6.4029615208e-12   L1(x) =  6.4029615208e-12
+  x=   40.000000   Q/y =  2.7888710502e-21   L1(x) =  2.7888710502e-21
+  L1 scanned on x in [0,150] step 0.25: negatives = 0;  min L1 = 2.827883e-94 at x=150.0000
+
+==============================================================================
+M4  COUNTEREXAMPLE CLOSURE (generic positive even kernels)
+==============================================================================
+  (a)  Phi_c(t) = e^{-t^2}(2 + cos 2t) > 0, even, Schwartz.
+       M_c(z) = int e^{zt} Phi_c(t) dt = sqrt(pi) e^{z^2/4} (2 + e^{-1} cos z).
+       zero at z0 = (3.14159265358979 + 2.37772652459815j);  M_c(z0) = (-1.7793383e-30 + 8.4471746e-31j)
+       |M_c(i*Im z0)|  = 1.725062786   (>0, on the imaginary axis)
+       |M_c(z0)|       = 1.969668114e-30   (=0, OFF the imaginary axis)
+       => F(lam)=|M_c(lam + i*Im z0)|^2/4 is >0 at lam=0 and =0 at lam=Re z0=pi,
+          so F DECREASES somewhere on (0,pi): the target FAILS for Phi_c.
+       Explicit negative sample of the leaf functional Q_c(x0,y):
+         x0=2.3777265246  y=2.40   Q_c = -6.21307409e-01
+         x0=2.3777265246  y=2.60   Q_c = -3.06248749e+00
+         x0=2.3777265246  y=2.80   Q_c = -6.29358203e+00
+         x0=2.3777265246  y=3.00   Q_c = -7.19124073e+00
+         x0=2.3777265246  y=3.10   Q_c = -3.41464607e+00
+
+  (b)  Gaussian mixtures (= complete monotonicity of Phi(sqrt(.))): Phi_g(t)=e^{-t^2}+e^{-4t^2}
+       zero z = (2.59435455359 + 3.22915786432j)   M_g(z) = (-9.86076e-32 + 9.86076e-32j)   Re z = 2.594355 != 0
+       zero z = (2.59435455359 - 3.22915786432j)   M_g(z) = (-9.86076e-32 - 9.86076e-32j)   Re z = 2.594355 != 0
+       so with x = Im z = 3.229158: |M_g(i x)|^2 = 3.511789e-01 > 0
+                              but |M_g(2.5944 + i x)|^2 = 1.944692e-62 = 0
+         x=3.229158  y=1.2972   Q_g = -5.53140584e-02
+         x=3.229158  y=1.8160   Q_g = -1.24854532e-01
+         x=3.229158  y=2.2052   Q_g = -1.68281720e-01
+         x=3.229158  y=2.4646   Q_g = -1.09947960e-01
+       A Gaussian mixture has cosine transform = positive mixture of Gaussians,
+       hence NO zeros on the imaginary axis; being entire of order 2 and non-vanishing
+       only if it is a single Gaussian, it MUST have off-axis zeros. So for every
+       Gaussian-mixture kernel except a single Gaussian the target FAILS.

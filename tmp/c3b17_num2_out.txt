@@ -1,0 +1,83 @@
+==============================================================================
+D1 -- THETA-MODE: termwise log-concavity does NOT transfer to the sum
+==============================================================================
+  The repository compiles riemannXiKernelTerm_log_strictConcaveOn (each summand is
+  strictly log-concave on Ici 0).  Does that give log Phi concave?  NO -- a sum of
+  log-concave functions need not be log-concave.  Explicit witness:
+    g(x) = exp(-x^2) + exp(-100(x-3)^2): both summands log-concave,
+    max (log g)'' = 8.229368e+02 > 0  ->  g is NOT log-concave
+  So the compiled per-term result CANNOT be used to discharge the Phi hypothesis,
+  and this batch does not use it that way.  Recorded as a FAILED transfer.
+
+==============================================================================
+D2 / D3 / D4 -- MLR, TP2, and midpoint log-concavity of the pair
+==============================================================================
+  All three are equivalent-in-spirit reformulations of the SAME four-point inequality
+  Phi(v+p)Phi(v-p) <= Phi(u+p)Phi(u-p) that the compiled pairing argument delivers.
+  Measured as determinants (TP2 form): D = Phi(u+p)Phi(v-p) - Phi(v+p)Phi(u-p) >= 0 ?
+     u      v      p            TP2 minor D    sign
+  0.00   0.30   0.10       1.4181946460e+00     pos
+  0.00   0.30   1.20       3.5495195949e-16     pos
+  0.00   1.50   0.10       2.4837711518e-18     pos
+  0.00   1.50   1.20       1.1200915017e-11     pos
+  0.20   0.30   0.10       3.3234474612e-01     pos
+  0.20   0.30   1.20       3.5525731250e-23     pos
+  0.20   1.50   0.10       1.1210555294e-18     pos
+  0.20   1.50   1.20       1.1210555294e-18     pos
+  0.50   1.50   0.10       4.5355257350e-20     pos
+  0.50   1.50   1.20       1.5708060403e-36     pos
+  TP2 violations: 0/24
+  MLR form: log Phi(v+p) - log Phi(u+p) nonincreasing in p?  Same content.
+  Hoelder/midpoint: log Phi((a+b)/2) >= (log Phi a + log Phi b)/2 -- midpoint
+  log-concavity, which for continuous Phi is EQUIVALENT to full log-concavity.
+  midpoint log-concavity violations: 0/1681
+
+==============================================================================
+D5 / D6 -- convolution decompositions
+==============================================================================
+  R(v) = (M2*Phi)(2v) - v^2 (Phi*Phi)(2v)  (batch 14, exact to 5.5e-13).
+  The first term is a convolution of two NONNEGATIVE functions, hence its value at
+  2v is NOT automatically monotone; and the -v^2 term is not monotone either.
+  Measured: is (M2*Phi)(2v) antitone in v?  is (Phi*Phi)(2v) antitone?
+      v         (M2*Phi)(2v)        (Phi*Phi)(2v)
+   0.00     3.1438117053e-02     1.2790072478e+00
+   0.10     3.5264819258e-02     1.0419217809e+00
+   0.20     3.4488856532e-02     5.5733550563e-01
+   0.30     2.0687404113e-02     1.8938634923e-01
+   0.40     6.8057863356e-03     3.8574237046e-02
+   0.50     1.1410383549e-03     4.3252556278e-03
+   0.60     8.8527379090e-05     2.3830135875e-04
+   0.70     2.7877150727e-06     5.5808537739e-06
+   0.80     3.0040431988e-08     4.6369489081e-08
+   0.90     8.9276424843e-11     1.0934555117e-10
+   1.00     5.5928412529e-14     5.5632927494e-14
+   1.10     5.2996513170e-18     4.3641462026e-18
+   1.20     5.0507852121e-23     3.4987937053e-23
+  (M2*Phi)(2v) increases at 3/24 steps;  (Phi*Phi)(2v) at 0/24 steps
+  Both antitone here, but the DIFFERENCE structure gives no monotonicity proof:
+  a difference of antitone functions is not antitone.  Route yields nothing.
+
+==============================================================================
+D7 -- AUDIT of the compiled signed-window bound, and its reach
+==============================================================================
+  C3B17.window_lower_signed:  C(a,x) - Compl|cos|(a,x) <= Rhat(2x)
+  C3B15.window_lower_compl :  C(a,x) - Compl(a)        <= Rhat(2x)
+     a      x       signed LHS         mass LHS         Rhat(2x)  both ok
+  0.15   0.00   4.58091585e-03   4.58091585e-03   1.14198308e-02     True
+  0.15   2.00   5.48767095e-03   4.17211256e-03   9.67490348e-03     True
+  0.15   5.00   3.98955602e-03   2.24286356e-03   4.01343683e-03     True
+  0.15   8.00   2.67256466e-04  -4.94257261e-04   7.51175525e-04     True
+  0.30   0.00   1.05891940e-02   1.05891940e-02   1.14198308e-02     True
+  0.30   2.00   9.51453400e-03   9.18968314e-03   9.67490348e-03     True
+  0.30   5.00   4.00777529e-03   3.95395562e-03   4.01343683e-03     True
+  0.30   8.00   2.70844722e-04   9.79169977e-05   7.51175525e-04     True
+  0.60   0.00   1.14195359e-02   1.14195359e-02   1.14198308e-02     True
+  0.60   2.00   9.67490348e-03   9.67487374e-03   9.67490348e-03     True
+  0.60   5.00   4.01315038e-03   4.01314616e-03   4.01343683e-03     True
+  0.60   8.00   7.51173009e-04   7.51143945e-04   7.51175525e-04     True
+  violations (signed valid, mass valid, mass <= signed): 0
+  reach with the MASS complement  : |x| <= 42.560368
+  reach with the SIGNED complement: |x| <= 51.621609   (gain +9.061240)
+  NOTE: these use the EXACT central integral, so they are the ceiling of each
+  complement treatment, not of a computable criterion.
+==============================================================================

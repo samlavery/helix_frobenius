@@ -1,0 +1,76 @@
+==============================================================================
+B12 -- TIGHTNESS of the COMPILED bound  |L1(x)| <= L1(0)
+       (Lean: C3B13.laguerre_abs_le_zero, axiom-clean)
+==============================================================================
+  L1(0) = 0.011419830834443718337
+         x                    L1(x)          L1(x)/L1(0)
+         0      0.01141983083444372                  1.0
+      0.25      0.01139033123774317      0.9974168096596
+       0.5       0.0113022795424495     0.98970638937666
+         1      0.01095669125098577     0.95944426934407
+         2     0.009674903479101046     0.84720199619072
+         4     0.005863083125320356     0.51341243231349
+         6     0.002515421104555236     0.22026780790556
+         9    0.0003560842958304244    0.031181223346709
+14.1347251     1.911912079683027e-6  0.00016742035038877
+        25    1.621234234950208e-12  1.4196657187428e-10
+
+  READING: the ratio is 1 at x=0 and decreases monotonically on the sampled range,
+  so the bound is ATTAINED at x = 0 and is therefore SHARP as stated.  It is a
+  two-sided bound; its lower half (>= -L1(0)) is weaker than the OPEN target (>= 0)
+  by exactly the amount L1(0).  No claim beyond that.
+
+==============================================================================
+B18 -- WHERE IS THE TARGET TIGHTEST?  margin structure of  -(log|Xi|)'' >= 0
+==============================================================================
+  The scale-free quantity is B(x) = L1/Xi^2 = sum_z 1/(x-z)^2 (Hadamard).
+  Its minimum over an interval is the informative margin.
+            window                min B         at x
+             [0,5]      0.0462099862308          0.0
+            [5,10]      0.0528585943467          5.0
+           [10,20]       0.106230796249         10.0
+           [20,40]       0.389787282711         27.7
+           [40,80]       0.569743040285         45.6
+          [80,160]       0.941088496098         81.2
+         [160,320]        1.26230593304        172.0
+
+  READING: the minimum GROWS with height (zeros get denser, each contributing
+  1/(x-gamma)^2), so the target is TIGHTEST NEAR x = 0, where it is already
+  compiled (C3B12.momentTwo_zero_nonneg).  The difficulty is therefore NOT
+  asymptotic; it is the absence of any zero-location input at finite height.
+
+==============================================================================
+B17 -- THE SECOND LAGUERRE EXPRESSION L2 (the next rung of the same ladder)
+==============================================================================
+  L2(f) = (1/24)[2 f f'''' - 8 f' f''' + 6 f''^2].  If the whole hierarchy L_n >= 0
+  held for all n, together with growth, f would be in the Laguerre-Polya class
+  (= RH here).  So L2 >= 0 is a STRICTLY STRONGER statement than the target and
+  is scanned only to see whether the target is the first place the ladder bites.
+
+         x             L1 (moments)             L2 (moments)    L2 sign
+         0        0.045679323337775       0.0010186747319544        pos
+         1        0.043826765003943      0.00098106840525016        pos
+         3        0.031429973169933      0.00072571518210205        pos
+         6        0.010061684418221      0.00026055973942325        pos
+         9       0.0014243371833217        4.643980934044e-5        pos
+        11      0.00023915410940383       9.9772763117456e-6        pos
+14.1347251       7.6476483187321e-6       5.1761360852873e-7        pos
+        17       2.8539274432776e-7       2.3282235606151e-8        pos
+        20       5.7874692565922e-9      6.4632706683657e-10        pos
+        25      6.4849369398008e-12      1.0707989279005e-12        pos
+  L2 negative at 0/10 sampled ordinates.
+
+==============================================================================
+B20 -- TRANSFER: truncated theta kernels Phi_N = 4 sum_{n <= N}
+==============================================================================
+  Each Phi_N is even.  Phi_1 > 0 (batch 3 attack 26 checked this).  If the target
+  survived truncation, a term-by-term proof would be available.
+
+   N         min L1_N on [0,30]     at x   negatives/121
+   1        -1.4698450233174e-8    19.75              28
+   2        5.2001322465694e-15     30.0               0
+   3        5.2121533923849e-15     30.0               0
+   5        5.2121533923921e-15     30.0               0
+  10        5.2121533923921e-15     30.0               0
+
+  Compare the untruncated kernel on the same grid:

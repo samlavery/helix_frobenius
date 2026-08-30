@@ -1,0 +1,61 @@
+==============================================================================
+P1 -- THE COMPILED CAP vs THE MEASURED REACH
+==============================================================================
+  C3B16.no_adaptive_window gives X = mass / (2 * 2c^2 (Tail c - mass/4)) for any
+  witness c.  The bound is valid for EVERY witness; the best (smallest) X is the
+  informative one.  Compiled existence uses continuity; here we optimise c numerically.
+       c          Tail c    2c^2(Tc-mass/4)           cap X      |x| cap
+   0.010  5.39578026e-03     5.08164510e-07    1.123635e+04   106.001661
+   0.020  5.08311707e-03     1.78252749e-06    3.203269e+03    56.597431
+   0.030  4.77337749e-03     3.45315560e-06    1.653536e+03    40.663688
+   0.040  4.46797286e-03     5.16164849e-06    1.106219e+03    33.259876
+   0.050  4.16825535e-03     6.56648819e-06    8.695539e+02    29.488199
+   0.060  3.87550021e-03     7.34790598e-06    7.770806e+02    27.876166
+   0.070  3.59088990e-03     7.21213549e-06    7.917094e+02    28.137331
+   0.080  3.31550019e-03     5.89494380e-06    9.686124e+02    31.122538
+   0.090  3.05028854e-03     3.16435950e-06    1.804446e+03    42.478770
+  BEST witness c = 0.065: cap X = 7.703701e+02, i.e. |x| <= 27.755542
+  measured reach of the criterion: |x| <= 6.638679
+  the compiled cap is a valid but LOOSE upper bound on that reach (27.756 vs 6.639).
+  Both are properties of the CRITERION, not of the target.
+
+==============================================================================
+P2 -- HOSTILE SCAN, 40 dps, cancellation-free
+==============================================================================
+  points: 2615 (2e-4 grid near 0; 0.01 to x=10; 0.1 to 60; 0.5 to 400;
+          27 zero ordinates x 7 offsets)
+  NEGATIVES: 0    min L1/Xi^2 = 0.0462099862308 at x = 0.0
+
+==============================================================================
+P3 -- PIECEWISE ENVELOPE: max(quadratic, linear)
+==============================================================================
+  quadratic alone : |x| <= 6.638679
+  linear alone    : |x| <= 5.752559
+  max of the two  : |x| <= 6.638679   (gain +0.000000)
+
+==============================================================================
+P4 -- LOBE-ANNULUS HYBRID: k-lobe truncation
+==============================================================================
+  bound_k = 2*(J0 - J1 + ... +- J_{k-1})  minus the remainder bounded by J_k
+      x        2(J0-J1)     k=4 partial     k=6 partial            true
+   4.00    5.863038e-03    5.863083e-03    5.863083e-03    5.863083e-03
+   6.00    2.489009e-03    2.515421e-03    2.515421e-03    2.515421e-03
+   8.00    5.114412e-04    7.511740e-04    7.511753e-04    7.511755e-04
+   8.80    3.223843e-05    4.166163e-04    4.166373e-04    4.166375e-04
+  10.00   -4.645268e-04    1.527585e-04    1.531377e-04    1.531378e-04
+  12.00   -9.139305e-04    1.458628e-05    2.131988e-05    2.132025e-05
+  reach of the 2-lobe partial sum: |x| <= 8.863342
+  reach of the 4-lobe partial sum: |x| <= 12.558529
+  reach of the 6-lobe partial sum: |x| <= 15.563725
+  reach of the 8-lobe partial sum: |x| <= 18.331719
+  NOTE: a k-lobe PARTIAL SUM is a valid lower bound only if the remainder is
+  nonnegative, which needs (J_k) decreasing, i.e. R decreasing.  Measured True.
+  R DECREASING IS NOT COMPILED -- this route is numerical only.
+
+==============================================================================
+P5 -- HEAT / de BRUIJN FLOW on the CRITERION
+==============================================================================
+    lam        mass_lam   reach of criterion
+   0.20  1.18302133e-02             6.593057
+   0.10  1.16224289e-02             6.615595
+   0.00  1.14198308e-02             6.638679

@@ -1,0 +1,86 @@
+==============================================================================
+U1 -- TOTAL POSITIVITY of K(a,b) = R(a-b)
+==============================================================================
+  A PD function need not be TP; TP would be far stronger and would give the sign
+  by a determinantal argument.  Ordered indices a_1<...<a_n, b_1<...<b_n.
+test                                              2x2 minor     sign
+a=(0,0.1) b=(0,0.1)                            3.710513e-04      pos
+a=(0,0.5) b=(0,0.5)                            9.883516e-04      pos
+a=(0,0.3) b=(0.2,0.9)                          3.340194e-08      pos
+a=(0,1.0) b=(0.4,1.6)                          1.736205e-09      pos
+a=(0,0.2) b=(0.5,0.6)                          2.788306e-08      pos
+3x3 (0,0.2,0.4)x(0,0.2,0.4)                    2.189646e-05
+3x3 (0,0.2,0.4)x(0.1,0.5,1.0)                  2.435900e-10
+  TP2 violations among the sampled ordered pairs: 0/5
+  => TP is FALSE for this kernel; the determinantal route is dead.
+
+==============================================================================
+U2 -- HAMBURGER MOMENTS (NECESSARY: a failure refutes the TARGET)
+==============================================================================
+  control: m_0 = 1.975315151551e-01   2*pi*R(0) = 1.975315151551e-01   reldiff 1.461e-14
+  moments m_k = int xi^2k Rhat dxi, k=0..4:
+    m_0 = 1.9753151516e-01
+    m_1 = 9.2808443795e+00
+    m_2 = 1.2888464077e+03
+    m_3 = 2.9549589741e+05
+    m_4 = 9.4693995295e+07
+  Hankel 2x2 eigenvalues: [1.30694375e-01 1.28891324e+03]
+  Hankel 3x3 eigenvalues: [1.04556212e-01 3.66813070e+02 9.46949174e+07]
+  U2 HOLDS (both PSD)
+
+==============================================================================
+U3 -- VARIATION DIMINISHING
+==============================================================================
+  sign changes of v -> R(v) on the grid (|R|>1e-18): 0   (R >= 0, so 0 expected)
+  sign changes of xi -> Rhat(xi) on xi in [0,20]: 0
+  A variation-diminishing argument needs the transform to have NO MORE sign changes
+  than the kernel.  The kernel has 0.  So VD would GIVE the target -- but VD is a
+  property of TOTALLY POSITIVE kernels, and U1 just showed TP fails.  Route dead,
+  and dead for a reason (U1), not by measurement of the conclusion.
+
+==============================================================================
+U4 -- BERNSTEIN / STIELTJES / complete monotonicity in |v|
+==============================================================================
+  A completely monotone function of |v| is a mixture int exp(-lam|v|) dmu, which has
+  one-sided derivative -int lam dmu < 0 at 0 unless mu = 0.  R is even and smooth, so
+  R'(0+) = 0.  Hence R is NOT completely monotone in |v|, and every Bernstein /
+  Stieltjes representation in |v| is structurally unavailable -- the SAME obstruction
+  that kills Polya.  This is a proof, not a measurement.
+  consistency check: (R(h)-R(0))/h at h=0.001 is -7.385376e-04 -> 0 as h->0
+                     (R(2h)-R(0))/(2h) = -1.477024e-03
+
+==============================================================================
+U5 -- HEAT / de BRUIJN FLOW on R
+==============================================================================
+  Phi_lam(t) = e^{lam t^2} Phi(t) is even and positive for every real lam, so each is
+  an admissible kernel.  Note R_lam(v) = e^{2 lam v^2} int p^2 e^{2 lam p^2} Phi(v+p)Phi(v-p) dp.
+  PRE-REGISTERED PREDICTION (written before running): lam > 0 keeps Rhat_lam >= 0
+  (de Bruijn: real zeros for lam >= 1/2); lam < 0 eventually produces a NEGATIVE
+  Rhat_lam, because backward flow drives zeros off the line.
+
+     lam     min Rhat_lam, xi<=20    at xi  negatives
+    0.25             1.481465e-04    20.00          0
+    0.10             1.511366e-04    20.00          0
+    0.00             1.531378e-04    20.00          0
+   -0.05             1.541402e-04    20.00          0
+   -0.10             1.551434e-04    20.00          0
+   -0.20             1.571521e-04    20.00          0
+   -0.35             1.601677e-04    20.00          0
+
+==============================================================================
+U6 -- TRANSFER on nearby even positive kernels
+==============================================================================
+  Each is even, positive, integrable and SMOOTH at 0 (no corner), so batch 13's
+  corner mechanism is excluded by construction and any negative is informative.
+                            kernel       min Rhat, xi<=20    at xi    neg
+          Phi (the Riemann kernel)           1.531378e-04    20.00      0
+                 Phi * exp(-t^2/4)           1.581571e-04    20.00      0
+              Phi + 0.05*exp(-t^2)           1.531378e-04    20.00      0
+               Phi + 0.5*exp(-t^2)          -1.753572e-02     5.40     86
+                Phi + 2*exp(-4t^2)           1.403403e-04    20.00      0
+                          Phi(t)^2           9.715323e-04    20.00      0
+             exp(-t^2)  (Gaussian)          -2.673497e-12    16.35     57
+ exp(-t^2)+exp(-4t^2)  (b12 Phi_g)          -3.899855e-03     6.50     57
+  exp(-t^2)(2+cos 2t)  (b12 Phi_c)          -9.357346e-12    20.00     25
+                           sech(t)          -7.737768e-02     3.35    178
+==============================================================================

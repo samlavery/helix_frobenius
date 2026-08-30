@@ -1,0 +1,58 @@
+==============================================================================
+SETUP / CONTROL
+==============================================================================
+  cosMom R 0 (float64 grid) = 1.14198308344437e-02
+  L1(0) (mpmath, 40 dps)    = 1.14198308344437e-02
+  reldiff                   = 7.595e-16
+
+==============================================================================
+H1 -- THE COMPILED IMPLICATION, END TO END
+==============================================================================
+  C3B15.window_criterion_quadratic:  2 x^2 Q(a) + 4 T(a) <= cosMom R 0  =>  L1(x) >= 0
+  Wherever the hypothesis holds, the conclusion must hold.  Checked at hostile x with
+  the a that minimises the hypothesis's left side.
+         x   best a    LHS of hypothesis       cosMom R 0  holds?            L1(x)   ok
+         0    0.990     0.0000000000e+00 1.1419830834e-02    True     1.141983e-02 True
+      0.25    0.990     2.9536977918e-05 1.1419830834e-02    True     1.139033e-02 True
+         1    0.990     4.7259164670e-04 1.1419830834e-02    True     1.095669e-02 True
+       2.5    0.400     2.9298480466e-03 1.1419830834e-02    True     8.811122e-03 True
+         4    0.250     6.5381755761e-03 1.1419830834e-02    True     5.863083e-03 True
+         5    0.200     8.6911253206e-03 1.1419830834e-02    True     4.013437e-03 True
+         6    0.165     1.0467475989e-02 1.1419830834e-02    True     2.515421e-03 True
+       6.6    0.150     1.1366606268e-02 1.1419830834e-02    True     1.819990e-03 True
+         7    0.145     1.1907226445e-02 1.1419830834e-02   False     1.440107e-03 True
+         9    0.110     1.4034601695e-02 1.1419830834e-02   False     3.560843e-04 True
+14.1347251    0.070     1.7045497855e-02 1.1419830834e-02   False     1.911912e-06 True
+  implication violated at 0 of the sampled points (must be 0)
+
+==============================================================================
+H2 -- COVERAGE AND REACH of the compiled criterion
+==============================================================================
+  REACH of window_criterion_quadratic: fires exactly for |x| <= 6.638679
+  coverage on x in [0,60] step 0.05: 133/1201 (11.07%)
+  batch 13's best conditional reach was |x| <= 2.503 (4.41% of the same grid)
+  batch 12 compiled only the single point x = 0
+
+==============================================================================
+H3 -- HOSTILE SCAN of cosMom R (2x) = L1(x), cancellation-free at 40 dps
+==============================================================================
+  points scanned: 2065  (near-zero 5e-5 grid, transitions, 27 zero ordinates x 7 offsets, up to x=400)
+  NEGATIVES of L1/Xi^2: 0
+  min L1/Xi^2 = 0.0462099862308 at x = 0.0
+
+==============================================================================
+H4 -- THE PER-a CAP of criterion_forces_x_bound, against the measured reach
+==============================================================================
+  compiled: 2 x^2 Q(a) + 4 T(a) <= cosMom R 0  =>  x^2 <= cosMom R 0 / (2 Q(a))
+      a            Q(a)            T(a)  4T<=mass?   cap on |x|  criterion fires to
+   0.10    1.823490e-05    2.796085e-03       True    17.695514            2.541092
+   0.15    5.197074e-05    1.709729e-03       True    10.481788            6.638679
+   0.20    9.816222e-05    9.457536e-04       True     7.626805            6.236903
+   0.25    1.456121e-04    4.696473e-04       True     6.262044            5.723857
+   0.30    1.845550e-04    2.076592e-04       True     5.562268            5.356160
+   0.40    2.255562e-04    2.759876e-05       True     5.031383            5.007005
+   0.50    2.351443e-04    2.030779e-06       True     4.927738            4.925985
+   0.75    2.362957e-04    9.765172e-11       True     4.915718            4.915717
+  The 'cap' column is the compiled necessary bound; the last column is where the
+  criterion actually stops for that a.  The optimum over a is the H2 reach.
+==============================================================================

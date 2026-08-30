@@ -1,0 +1,48 @@
+==============================================================================
+P5'  the counterexample kernel Phi_c and the u^2 SUB-LEAF  L1_c(x)
+==============================================================================
+         x            L1_c (closed)           L1_c (mp.diff)    rel err
+     0.000         6.07060114138577         6.07060114138577   3.03e-41
+     0.500         5.40822898946308         5.40822898946308   1.70e-41
+     1.000         3.86008283380572         3.86008283380572   0.00e+00
+     2.000         1.20001227330593         1.20001227330593   5.74e-41
+     3.000        0.304442985228311        0.304442985228311   5.66e-41
+     5.000       0.0043847196594259       0.0043847196594259   1.43e-40
+     7.000      1.46358984534876e-6      1.46358984534876e-6   5.09e-40
+    10.600     3.41861327854635e-17     3.41861327854635e-17   4.81e-39
+    15.000     7.87365107482488e-38     7.87365107482488e-38   2.14e-38
+
+  scanned 2001 points on x in [0,30]:  negatives = 0
+  min L1_c        = 2.241934807e-171 at x = 30.0000
+  min L1_c/Xi_c^2 = 0.2412461117 at x = 2.3100   (scale-free)
+
+  EXACT ARGUMENT (pencil, not numerics).  With c = cosh x >= 1 and a = 1/e,
+    h(c) := (log g)'' = a(2c + a)/(2 + ac)^2,
+    h'(c) = 2a(2 - ac - a^2)/(2 + ac)^3, so h is maximised at c* = (2 - a^2)/a,
+    where ac* = 2 - a^2, 2 + ac* = 4 - a^2, 2c* + a = (4 - a^2)/a, hence
+    max h = 1/(4 - a^2) = 0.258754658758, and 1/(4-a^2) < 1/2 iff a^2 < 2.
+    Since a = 1/e < 1 this holds, so L1_c = Xi_c^2 (1/2 - h) > 0 for EVERY real x.
+    CHECK against the scan above: 1/2 - 1/(4-a^2) = 0.2412453412
+    (An earlier draft of this file said the max was at c = 1, value a/(2+a).
+     That was wrong; h increases to c* first.  The conclusion is unchanged.)
+
+  CONSEQUENCE, and it is the batch's most useful negative-turned-positive:
+  Phi_c REFUTES the full four-moment leaf (batch 11 F1) but SATISFIES the u^2
+  sub-leaf.  The sub-leaf is therefore STRICTLY WEAKER, and the batch-11
+  counterexample does NOT obstruct an unconditional proof of it.
+
+==============================================================================
+P6  the same question for the two-Gaussian kernel Phi_g = e^{-t^2} + e^{-4t^2}
+    M_g(z) = sqrt(pi) e^{z^2/4} + (sqrt(pi)/2) e^{z^2/16};  Xi_g(x) = M_g(ix)
+==============================================================================
+  scanned 1201 points on [0,30]: negatives = 57;  min L1_g = -0.01559942194 at x = 3.2500
+  Xi_g > 0 everywhere (a positive mixture of two Gaussians), so Phi_g has no real
+  zeros -- yet it VIOLATES the u^2 sub-leaf.  So the two counterexample kernels
+  SEPARATE the two statements:
+     Phi_c : violates the FULL leaf,  satisfies the u^2 sub-leaf
+     Phi_g : violates the FULL leaf,  violates  the u^2 sub-leaf
+  Consequences, both load-bearing: (1) the sub-leaf is STRICTLY WEAKER than the
+  full leaf, so batch 11's Phi_c counterexample does NOT obstruct proving it;
+  (2) the sub-leaf is nevertheless NOT implied by evenness + positivity alone,
+  since Phi_g is even and positive and fails it.  Any proof of the sub-leaf must
+  use a property of Phi_Xi beyond positivity.

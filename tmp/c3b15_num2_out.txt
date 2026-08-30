@@ -1,0 +1,124 @@
+==============================================================================
+A -- ADJUDICATION of block 1's CEIL section
+==============================================================================
+  Block 1 printed: 'CEILING of the absolute-tail window method: |x| <= 30.000000'
+  and asserted that the method caps because T(a) is a constant while L1 decays.
+  TWO DEFECTS, both mine.
+
+  (i) The 30.0 is the TOP OF THE BINARY SEARCH RANGE, not a measurement.  T(a)
+      UNDERFLOWS to exactly 0 in float64 for a >= 0.75, so C(a,x) - 2T(a) became
+      literally C(a,x) = Rhat(2x) and the 'ceiling' was the target itself.
+      evidence: T(0.75) = 9.765e-11, T(1.00) = 0.000e+00 (exact 0 in float64)
+
+  (ii) The BINDING CONSTRAINT IS THE OTHER WAY ROUND.  R inherits Phi's DOUBLE
+       exponential decay, so T(a) is astronomically small already at moderate a:
+         T(0.30) = 2.076592e-04
+         T(0.40) = 2.759876e-05
+         T(0.50) = 2.030779e-06
+         T(0.60) = 7.372868e-08
+         T(0.75) = 9.765172e-11
+       The tail is NOT what limits the method.  What limits it is that a POLYNOMIAL
+       central bound cos z >= P(z) has P(z) -> -infinity, while the true central
+       integral decays like e^{-pi x/2}.  No polynomial can track that, so the
+       CENTRAL bound caps the reach.  Corrected statement, and it is a property of
+       the polynomial-central-bound instrument class, not of the target.
+
+==============================================================================
+B -- HIGHER-ORDER CENTRAL BOUNDS: validity FIRST, then reach
+==============================================================================
+  Candidate global lower bounds for cos z (must be verified, not assumed):
+    P2(z) = 1 - z^2/2
+    P6(z) = 1 - z^2/2 + z^4/24 - z^6/720
+    P10(z)= P6 + z^8/40320 - z^10/3628800
+    P2: min (cos z - P2(z)) over |z|<=60 = 0.000000e+00   VALID lower bound
+    P6: min (cos z - P6(z)) over |z|<=60 = -1.110223e-16   VALID lower bound
+    P10: min (cos z - P10(z)) over |z|<=60 = -2.220446e-16   VALID lower bound
+
+  reach of each, optimising over the window a  (criterion > 0 => Rhat(2x) > 0):
+    P2  reach |x| <= 6.638679
+    P6  reach |x| <= 6.805123
+    gain from the higher-order bound: +0.166444
+
+==============================================================================
+C -- DYADIC ANNULI decomposition of the tail
+==============================================================================
+  T(a) = sum_k int_{2^k a}^{2^{k+1} a} R.  Each annulus bounded by its own sup.
+      a       T(a) exact       dyadic sum     reldiff  #annuli used
+   0.20   9.45753641e-04   9.45753641e-04    0.00e+00             4
+   0.30   2.07659219e-04   2.07659219e-04    0.00e+00             4
+   0.40   2.75987594e-05   2.75987594e-05    0.00e+00             3
+   0.50   2.03077932e-06   2.03077932e-06    0.00e+00             3
+  The dyadic split is exact by construction; it buys nothing over T(a) itself here,
+  because R's decay is doubly exponential and the FIRST annulus already carries
+  essentially all of the (tiny) tail.  Recorded as a null.
+
+==============================================================================
+D -- CHERNOFF / EXPONENTIAL-MOMENT tail bound
+==============================================================================
+  Claim to pre-test:  int e^{lam|v|} R(v) dv  <=  (1/4) B0(lam) B2(lam),
+  with B_j(lam) = int t^j e^{lam|t|/2} Phi(t) dt  (B1 = 0 by parity),
+  from (t,s) = (v+p, v-p), 2|v| <= |t| + |s|, p = (t-s)/2, dv dp = (1/2) dt ds.
+   lam    LHS int e^{lam|v|}R       RHS (1/4)B0 B2   LHS<=RHS
+   0.0         1.14198308e-02       1.14198308e-02       True
+   1.0         1.28615962e-02       1.47767749e-02       True
+   2.0         1.46030757e-02       1.92893808e-02       True
+   4.0         1.93405591e-02       3.37917542e-02       True
+   6.0         2.66818479e-02       6.15525755e-02       True
+  and the Chernoff bound T(a) <= e^{-lam a} * (1/4) B0 B2 / 2 :
+     a       T(a) exact    best Chernoff      ratio
+  0.30   2.07659219e-04   5.06256570e-03   2.44e+01
+  0.50   2.03077932e-06   3.21360754e-04   1.58e+02
+  0.75   9.76517166e-11   9.40154065e-08   9.63e+02
+  1.00   0.00000000e+00   4.83660944e-12  4.84e+288
+  Chernoff is valid but LOSSY here (ratio >> 1): it produces an exponential bound
+  for a doubly-exponentially small quantity.  Valid, and recorded as lossy.
+
+==============================================================================
+F -- INTEGRATION BY PARTS on the central integral
+==============================================================================
+  int_{-a}^{a} R cos(2xv) dv = [R sin(2xv)/(2x)]_{-a}^{a} - (1/(2x)) int_{-a}^{a} R' sin(2xv) dv
+                             = R(a) sin(2xa)/x  - (1/(2x)) int R' sin
+     a      x           direct         by parts     reldiff
+  0.30   1.00   1.06403153e-02   1.06403106e-02    4.46e-07
+  0.30   3.00   8.05832176e-03   8.05831744e-03    5.36e-07
+  0.50   1.00   1.09547205e-02   1.09547197e-02    7.46e-08
+  0.50   3.00   7.86148742e-03   7.86148449e-03    3.73e-07
+  IBP trades R for R' and gains a 1/x -- but |R'| has a LARGER mass than R, so the
+  net factor is (mass of R')/(2x mass of R); measured below:
+    int|R| = 1.141983e-02,  int|R'| = 6.287623e-02,  crossover x = 2.7529
+  so IBP only helps for x above that crossover, where the central bound is already
+  the binding constraint.  Recorded; not used.
+
+==============================================================================
+G / H -- ANTIHELIX and pi/3 APPLICABILITY
+==============================================================================
+  G: the v <-> p swap leaves Phi(v+p)Phi(v-p) invariant (C3B12.antihelix_swap), so
+     R's defining form is symmetric under it and the swap yields no new bound.
+     Verified in batch 14 to reldiff 0.00e+00; not re-run.
+  H: pi/3 registration applies to CELL-REGISTRATION COUNTS N_{pi/3}(e^t)-N_1(e^t).
+     In this batch the variable a is a WINDOW RADIUS in the cell-centre coordinate v.
+     v IS a cell coordinate, so the register is checkable here -- unlike batch 14,
+     where only moments appeared.  Test: does choosing a on the pi/3 lattice help?
+               a    K_P2 max over x=4      K_P2 at x=6
+  pi/3 = 1.04720       3.85836449e-03  -5.59346845e-03
+  pi/6 = 0.52360       3.87398751e-03  -5.55332876e-03
+  pi/12= 0.26180       4.86716270e-03  -1.36425879e-03
+  optimum (free)       4.88165526e-03   9.52354846e-04
+  READING: reported as measured.  The pi/3 lattice is not privileged for this
+  quantity; a unit-1 scan is NOT run (documented false-null trap).
+
+==============================================================================
+J -- ADAPTIVE a(x): the optimal window as a function of x
+==============================================================================
+      x     best a         K_P2 max    true Rhat(2x)  loss factor
+   0.00      1.500   1.14198308e-02   1.14198308e-02       1.0000
+   1.00      0.990   1.09472392e-02   1.09566913e-02       1.0009
+   2.00      0.500   9.53055305e-03   9.67490348e-03       1.0151
+   3.00      0.335   7.30704114e-03   7.85749329e-03       1.0753
+   4.00      0.250   4.88165526e-03   5.86308313e-03       1.2010
+   5.00      0.200   2.72870551e-03   4.01343683e-03       1.4708
+   6.00      0.165   9.52354846e-04   2.51542110e-03       2.6413
+   6.60      0.150   5.32245666e-05   1.81999015e-03      34.1946
+   7.00      0.145  -4.87395610e-04   1.44010686e-03          nan
+  The optimal a SHRINKS as x grows, exactly as the polynomial-bound analysis predicts.
+==============================================================================

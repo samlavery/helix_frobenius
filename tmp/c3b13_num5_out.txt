@@ -1,0 +1,45 @@
+==============================================================================
+C1 -- PRECISION ADJUDICATION of the N=1 violation at x = 19.75
+==============================================================================
+   dps    nodes                L1_1(19.75)               c0               s1               c2
+    30        A      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+    30        B      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+    60        A      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+    60        B      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+    90        A      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+    90        B      -1.469845023317387e-8 -0.0003123902215 -0.0001558460716  0.0001248004757
+
+  spread across 6 (dps, nodeset) settings = 3.08062e-39
+  value scale                              = 1.46985e-8
+  VERDICT: STABLE - the negative sign survives
+
+==============================================================================
+C2 -- THE CORNER.  Phi_N'(0+) for the truncations, against the full kernel's 0.
+==============================================================================
+  The FULL kernel is even as an IDENTITY (Jacobi reflection), so Phi'(0) = 0 and
+  there is no corner.  A truncation is not even; forming Phi_N(|u|) imposes
+  evenness and creates a corner of size 2*Phi_N'(0+).
+
+   N             Phi_N(0)        Phi_N-prime(0+)     corner/value
+   1        1.78290788527        0.0789975305355      0.044308251
+   2        1.78678759869       1.65305591555e-7     9.2515524e-8
+   3        1.78678760187      2.78345172722e-16    1.5577966e-16
+   5        1.78678760187      3.49232402276e-40    1.9545267e-40
+  10        1.78678760187      3.47524944248e-40    1.9449706e-40
+  40        1.78678760187      3.47524944248e-40    1.9449706e-40
+
+  READING: if Phi_N-prime(0+) -> 0 as N grows, the corner vanishes with N and the
+  N=1 violation CANNOT be separated from the corner artefact by this data alone.
+
+==============================================================================
+C3 -- INDEPENDENT ROUTE: the complex zero of Xi_1 nearest the real axis
+==============================================================================
+  B9's Hadamard calculus: L1 < 0 near x = g requires a transform zero at g -+ i delta
+  with 2/delta^2 exceeding the other zeros' contribution.  Locate it.
+  nearest zero found: z = (26.0561669336 + 7.12535970761j)
+  |Im z| = delta = 7.125359708   ->  pair contributes -2/delta^2 = -0.03939275985 at x = Re z
+  measured L1_1(Re z) = 2.09487516733e-10  (POSITIVE - prediction MISSED)
+
+==============================================================================
+END BLOCK 5.
+==============================================================================
