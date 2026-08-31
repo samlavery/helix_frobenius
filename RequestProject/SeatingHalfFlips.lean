@@ -1,4 +1,5 @@
 import RequestProject.SeatingChain
+import RequestProject.SeatingTransversal
 
 /-!
 # Uniform window radius for a sorted list of simple on-line ordinates

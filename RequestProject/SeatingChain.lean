@@ -1,4 +1,4 @@
-import RequestProject.SeatingTransversal
+import RequestProject.SeatingDetector
 
 /-!
 # Chain packing: disjoint flip windows assemble into one alternating chain

@@ -465,6 +465,323 @@ either a compiled theorem name or an explicit "grep returned none."
    |            reflection are countermodeled or countermodel-pending.
    |            Same conclusion as the DH count-register control, now at
    |            the KERNEL level.  NO new door built (per directive).
+   |            ★ HP CONSTRUCTION PASS 2026-08-29 ★ (directive: genuine
+   |            HP endpoint)  COMPILED: XiStructureAFunction.lean (std
+   |            axioms) — Acomp xiStructure z = ξ(½−iz) = Ξ(z) EXACT;
+   |            Bcomp = i·ξ′-chart.  The de Branges A-function of the
+   |            warp IS Ξ — identification target pinned by identity.
+   |            OPERATOR INVENTORY: tree has NO concrete operator objects
+   |            (receiver = function-level Prop; de Branges pair only).
+   |            CANDIDATE AUDIT (circularity test run):
+   |            H₁ = multiplication in H(E), E = xiStructure: spectrum
+   |            would be zeros of A = Ξ ✓ WITH multiplicity — REJECTED
+   |            at step B: H(E) is a Hilbert space iff IsHB (kernel
+   |            positivity = the leaf).  Encountered, exact.
+   |            H₂ = position/Jacobi on L²(Φdu): self-adjoint by
+   |            construction ✓ non-circular ✓ (moment problem
+   |            determinate, Carleman via double-exp decay) — fails
+   |            C-SHAPE: spectrum = ℝ (continuous); Ξ is the Fourier
+   |            transform of its ground spectral measure, zeros ≠
+   |            eigenvalues.  Inverse canonical-system problem =
+   |            de Branges program = the leaf.
+   |            H₃ = DETECTOR OPERATOR (survivor): multiplication by
+   |            flip ordinates of Λ (finite-box truncations).  A ✓
+   |            explicit, consumes only carrier readout signs — no
+   |            zero-set input; B ✓ real multiplication; C = the
+   |            registration identity: Re Tr(H_B−z)⁻¹ IS the pointMass
+   |            line-sum — the compiled registration door is step D
+   |            waiting on C.  ANSWER to the directive's question: the
+   |            operator hiding in the pointMass kernel is the flip/
+   |            census multiplication operator.
+   |            C-RESIDUAL ISOLATED (not hypothesized): R(z) :=
+   |            −Ξ′/Ξ − G − Σ_flips(t_f−z)⁻¹ (G = compiled zero-free
+   |            part; strip side unconditionally discharged via the
+   |            contour identity, att550 1e−27).  Poles of R = flip-
+   |            invisible classes exactly.  R ≡ 0 ⟺ C ⟺ the leaf.
+   |            Attackable unconditional properties of R: mirror-odd
+   |            (floor_odd), real-on-line, no poles below 634.5
+   |            (ladder!), Hadamard growth class — next slot: compile
+   |            R's rigidity properties and force vanishing with the
+   |            one arithmetic input.
+   |            ★ R NORMAL FORM 2026-08-29 ★ (H₃ directive, four steps)
+   |            COMPILED: XiLogDerivConstantFree.lean (std axioms) —
+   |            xiLogDeriv_constant_free: 2·ξ′/ξ(s) = Σ m_ρ((s−ρ)⁻¹ −
+   |            ((1−s)−ρ)⁻¹) via two-point at the mirror + compiled
+   |            oddness — P ≡ 0, NO entire remainder (G ≡ 0 in z-chart:
+   |            Ξ even order-1, evenness kills e^{az}).  PACKETS EXACT
+   |            (residue −m per pole): (a) on-line odd-m detected:
+   |            R_a = (m−1)·2z/(γ²−z²) — m=1 CANCELS EXACTLY;
+   |            (b) on-line even-m: R_b = m·2z/(γ²−z²);
+   |            (c) off-line quartet {±γ±iδ}: R_c = m[2z/(w²−z²) +
+   |            2z/(w̄²−z²)], w = γ+iδ.  SYMMETRIES: all packets odd,
+   |            real, conj-equivariant — compiled symmetry class = real
+   |            even-pair pole configs; ladder adds: no (c)-poles with
+   |            |Re| ≤ 634.5 (pointwise simplicity below 634.5 NOT
+   |            found compiled — flagged, (a≥3)/(b) exclusion open).
+   |            SYNTHETIC R (insufficiency, exact, one line): R₀ =
+   |            quartet packet at any w = a+ib, a > 634.5 — satisfies
+   |            ALL weak properties.  Weak class insufficient, confirmed.
+   |            THE TERMINAL IDENTITY (step 4): μ_R paired with heat
+   |            family = W(h_τ) := (prime/Γ Weil side) − (detector sum)
+   |            — both sides computable, no zeros mentioned; Gaussian
+   |            family = uniqueness class ⟹ (∀τ: W(h_τ) = 0) ⟹ R ≡ 0
+   |            ⟹ spectrum(H₃) = Ξ-divisor ⟹ Mathlib RH via compiled
+   |            registration door.  Synthetic quartets are cosh(2τγδ)-
+   |            enhanced in heat pairing — the narrow-support Weil
+   |            positivity machinery grips exactly this excess.  NEXT:
+   |            the heat-balance W ≡ 0 — primes vs flips, the one
+   |            arithmetic identity.
+   |            ★ HEAT BALANCE MEASURED 2026-08-30 ★ (att555, pre-reg
+   |            passed)  W(h_{t₀,σ=6}) = [Γ-integral + poles − 2ΣΛ(n)
+   |            n^{−1/2}ĥ(log n)] − [detector sum]: t₀ = 0,20,30,40,50,
+   |            60: |W| = 3e−16, 0, 4e−15, 5e−12, 1e−9, 1e−7 (residual
+   |            growth = quad tolerance at large t₀, not structure).
+   |            Normalization locked FIRST TRY, no fudge factors —
+   |            harness trustworthy.  The balance holds at prime-active
+   |            oscillatory windows through the verified range.  PROOF
+   |            REQUIREMENT (exact): the detector satisfies the explicit
+   |            formula — Σ_flips h(t_f) = arithmetic side, per window —
+   |            i.e. Hardy-at-full-density, the identity version of what
+   |            the density instruments cap at 0.68.  DISCRIMINANT for
+   |            the proof: invisible on-line ⟹ nonneg W-bumps; quartet
+   |            ⟹ cosh(δ·)-enhanced SIGNED oscillation — the object
+   |            narrow-support Weil positivity grips.  The leaf,
+   |            unchanged in content, now carries a locked computational
+   |            harness (primes vs flips, no zeros mentioned).
+   |            ★ HP CORRESPONDENCE DOORS 2026-08-30 ★ (Sam's correction:
+   |            HP needs CORRESPONDENCE, not exact matching)  COMPILED
+   |            (HPCorrespondenceDoor.lean, std axioms):
+   |            riemannHypothesis_of_log_correspondence — SAM'S DEFINITION
+   |            VERBATIM as hypothesis: every zero's parameter −i(ρ−½) is
+   |            log Z for a height Z > 0; logs of heights are REAL, so the
+   |            definition carries reality itself (3-line proof) → exact
+   |            Mathlib RH.  riemannHypothesis_of_eigenvalue_correspondence
+   |            — operator form: ONE symmetric T + eigenvalue membership
+   |            per zero (no trace identity, no exhaustion, no
+   |            multiplicities — all previous operator doors were OVER-
+   |            demanding, retired as requirements).  Consumes
+   |            hilbert_polya_on_critical_line (von Neumann step,
+   |            compiled).  The leaf in minimal form: the log map is ONTO
+   |            the chart zeros (= vanishing ⇒ eigenstate, Faithfulness's
+   |            own named open link; = EveryZeroHasSource in Sam's
+   |            coordinates; 3D side compiled one-line).
+   |            ★ RANK-DROP CASCADE DOOR 2026-08-30 ★ (Sam's ordering:
+   |            vanishing first, then the mark)  COMPILED
+   |            (HPRankDropCascade.lean, std axioms):
+   |            riemannHypothesis_of_real_staged_cascade — a cascade whose
+   |            stages vanish only at REAL heights forces exact Mathlib RH
+   |            (accumulation of reals is real → Complete → wiring
+   |            theorem).  LOOK-DON'T-ASSUME SEARCH (Sam's directive)
+   |            FOUND: (1) ChiralityHB.carrier_zeros_real — FINITE
+   |            carrier banks (unimodular weights, positive lengths)
+   |            vanish only at real heights: the rank-drop reality law,
+   |            COMPILED at every finite rank, exactly as Sam said.
+   |            (2) ProjectionCompleteness.lean — the tree's OWN PRIOR
+   |            formalization of this whole dialogue ("Sam's correction,
+   |            formalized"): helix3D_RH unconditional;
+   |            projection_complete_iff_RH — completeness ⟺ classical RH.
+   |            THE COMPOSITION POINT (one, exact): two compiled families
+   |            each hold ONE needed property — finite clock banks are
+   |            real-rooted (✓ carrier_zeros_real) but don't converge to
+   |            xiSection on ℂ; theta-mode truncations converge locally
+   |            uniformly (doubly-exp) but their real-rootedness is not
+   |            compiled.  ONE family with BOTH properties feeds the
+   |            compiled door and finishes everything.  NEXT: probe
+   |            whether theta-mode truncations Ξ_N are real-rooted
+   |            (N=1 is Pólya-classical territory); if measured yes,
+   |            that becomes the pre-registered constructive claim on
+   |            explicit entire functions.
+   |            ★ EXTENT-STAGE MEASUREMENT 2026-08-30 ★ (Sam: use the
+   |            WARPED+SCALED geometric kernel — mode truncation was the
+   |            error; the geometric truncation is finite CARRIER EXTENT)
+   |            Stage U: Ξ_U(z) = 2∫₀^U Φ(u)cos(zu)du, Φ = warped Gaussian
+   |            bank (modes e^{−πn²e^{2u}}, warp e^{2u}, scale π).  Entire
+   |            ✓ even ✓ real on ℝ ✓ → Ξ locally uniformly ✓ (Ξ_3 = Ξ_6 to
+   |            16 digits at z=10).  COUNTER VALIDATED (att557): power
+   |            control on att551 countermodel = 1.000 at its known
+   |            complex zero, 0 on empty box.  MEASURED (att557/558):
+   |            near band [0,25]×[.05,3]: ZERO complex zeros, all U.
+   |            Wide: U=1 → 1 complex zero in [25,80]; U=3 → 0 in
+   |            [25,60], 4 in [60,100]; U=5 → 0 in [25,60], 4 in
+   |            [60,100], 2 in [100,140].  CONCLUSION 1 (refutes my own
+   |            door's hypothesis): finite-extent stages are NOT
+   |            real-rooted — riemannHypothesis_of_real_staged_cascade
+   |            compiles but its hypothesis is FALSE for this family;
+   |            the correct consumer is the PRE-EXISTING compiled
+   |            riemannHypothesis_of_complete_cascade, whose `Complete`
+   |            asks only that stage zeros not ACCUMULATE off-axis.
+   |            CONCLUSION 2 (the real finding): the complex zeros
+   |            RETREAT as extent grows — clean band [0, f(U)] with
+   |            f(U) increasing (f(1)<25, f(3)≈60, f(5)≥60 w/ zeros
+   |            pushed outward).  So the attackable quantitative target
+   |            is: EVERY complex zero of Ξ_U satisfies |Re z| > f(U)
+   |            with f(U) → ∞.  That is `Complete` (hence RH by the
+   |            compiled iff) but stated as an EXPLICIT band-limited
+   |            escape estimate — Paley–Wiener/Levinson territory,
+   |            about functions we can write down, not about ζ.
+   |            ★ ROUCHÉ NUMERATOR, FIRST LINKS COMPILED 2026-08-30 ★
+   |            XiTailStripBound.lean (std axioms): cos_strip_bound —
+   |            ‖cos(zu)‖ ≤ e^{Yu} for u ≥ 0, |Im z| ≤ Y (complex
+   |            frequency costs exactly ONE exponential in the extent);
+   |            kernel_bound_aux + kernel_term_abs_bound — |Φ_n(u)| ≤
+   |            2π²(n+1)⁴e^{9u/2}e^{−π(n+1)²e^{2u}} on u ≥ 0 (negative
+   |            part never exceeds positive part's scale).  Product =
+   |            the incomplete-Γ integrand; ∫_U^∞ gives Sam's explicit
+   |            B(U,Y) ≍ exp[−πe^{2U} + (Y+5/2)U].
+   |            THE FRONT, DERIVED (Sam + independent derivation agree):
+   |            πX/4 = πe^{2U} ⟹ F(U) = 4e^{2U} − (4/π)(2a−2)U + O(log X).
+   |            MEASURED brackets (Sam, resolution-doubled): U=0.8:
+   |            17.6→23.0 (pred 19.8); 1.0: 27.7→31.7 (29.6); 1.1:
+   |            35.3→39.3 (36.1); 1.2: 45.7→48.9 (44.1).  Ratio test:
+   |            predicted F(1.2)/F(1.0) = 1.64 vs measured 1.65.  R-scaling
+   |            test: predicted e^{π·5.44/4} = 71.6 vs measured 72.
+   |            EXPONENT IS 2, not the fitted 2.5 (corrections explain it).
+   |            REMAINING (single named input): uniform lower bound
+   |            min_{∂B_X}|Ξ| ≥ e^{−πX/4−o(X)} on zero-separating contours
+   |            along an exhaustion X→∞.  NOTE ON STRENGTH: Rouché gives
+   |            equal zero COUNTS, so the scheme certifies RH up to height
+   |            F(U) per extent (verification ladder, exponential reach
+   |            per unit extent) — full RH needs the contour bound plus
+   |            stage real-rootedness uniformly.
+   |            ★ CELL-ANCHOR FLOOR: MEASURED + COMPILED 2026-08-30 ★
+   |            (Sam: "doesn't the carrier scale work for that bound,
+   |            π/3?" — yes.)  MEASURED (att559/560, 7 decades):
+   |            min over μ6 cycles of max|Z|, π/3 anchors vs Gram:
+   |            10²:1.59/1.59 · 10³:1.01/0.68 · 10⁴:0.75/0.18 ·
+   |            10⁵:1.00/0.36 · 10⁶:0.74/0.43 · 10⁷:0.68/0.68 ·
+   |            10⁸:0.52/0.27.  π/3 ≥ Gram at EVERY height, ~2× typical;
+   |            worst single cell 0.005–0.06 (100× penalty for a bad
+   |            anchor — why arbitrary anchoring fails).  Cell floor
+   |            drifts 1.6→0.52 over 6 decades (log-slow; not yet
+   |            resolved whether it settles — the open asymptotic).
+   |            COMPILED (CellAnchorFloor.lean, std axioms):
+   |            cos_sq_cell_sum — cos²φ + cos²(φ+π/3) + cos²(φ+2π/3)
+   |            = 3/2 EXACTLY, every phase (the μ6 closure as a DC
+   |            identity: doubled phases are cube roots, cancel);
+   |            cell_anchor_floor — hence some π/3 anchor has
+   |            |cos| ≥ √2/2 (sharp constant √3/2 at φ=π/6);
+   |            flat_anchor_no_floor — at unit spacing π EVERY anchor
+   |            carries the same value, ZERO at φ=π/2: the unit chart
+   |            has no floor at all.  THE HOUSE LAW (unit-1 → false
+   |            null) IS NOW A COMPILED THEOREM, and it is the exact
+   |            mechanism the measurement exhibits.
+   |            ★ EXHAUSTION ROUTE MAP 2026-08-30 ★ ("get this to a proof
+   |            of exhaustion")  COMPILED this pass: mode_integrand_bound
+   |            (XiTailStripBound.lean, std axioms) — ‖Φ_n(u)·cos(zu)‖ ≤
+   |            [2π²(n+1)⁴e^{9u/2}e^{−π(n+1)²e^{2u}}]·e^{Yu}: the last
+   |            ELEMENTARY link; its ∫_U^∞ is B(U,Y).
+   |            TWO INFRASTRUCTURE FACTS ESTABLISHED (grep, at source):
+   |            (i) Mathlib has NO Rouché and NO argument principle;
+   |            (ii) the integral representation Ξ(z) = ∫Φ(u)cos(zu)du is
+   |            NOT compiled in-tree (kernel positivity/evenness/
+   |            factorization ARE: riemannXiKernelTerm_pos,
+   |            riemannXiKernel_neg, _factorized).
+   |            EXHAUSTION CHAIN, five links, each classified:
+   |            [L1] representation Ξ = ∫Φcos — CLASSICAL (Riemann 1859),
+   |                 formalization labor, no new mathematics.
+   |            [L2] tail bound B(U,Y) — elementary links COMPILED; needs
+   |                 integrability + incomplete-Γ step: routine.
+   |            [L3] contour floor min_{∂B}|Ξ| ≥ c·e^{−πX/4} — MECHANISM
+   |                 COMPILED (cell_anchor_floor: μ6 closure forces
+   |                 |cos| ≥ √2/2; flat_anchor_no_floor: unit scale has
+   |                 NO floor).  ζ-side asymptotics OPEN (measured drift
+   |                 1.6→0.52 over 6 decades; second-moment class, NOT
+   |                 zero-location class).
+   |            [L4] Rouché count transfer — CLASSICAL, absent from
+   |                 Mathlib; substantial but standard formalization.
+   |            [L5] stage zero-count = real sign changes — OPEN
+   |                 (measured: stages real-rooted in the clean band,
+   |                 complex zeros beyond F(U) which retreat).
+   |            THE DECOMPOSITION IS THE RESULT: exhaustion now splits
+   |            into THREE classical-but-unformalized links (L1, L4, and
+   |            L2's routine part) and TWO genuinely open quantitative
+   |            statements (L3 asymptotics, L5) — both about EXPLICIT
+   |            functions, neither a zero-location statement.  First time
+   |            the residual has left the zero-location class entirely.
+   |            ★ BACKGROUND-IMMUNE CELL FLOOR 2026-08-30 ★ (the cell
+   |            floor's unexplored edge — ours, not a restatement)
+   |            COMPILED (CellAnchorFloor.lean, std axioms, first pass):
+   |            abs_le_max_add_sub — |x| ≤ max(|B+x|,|B−x|): a shift
+   |            cannot hide both sides of a ± pair; cell_floor_background
+   |            — for ANY background B and leading amplitude A ≥ 0,
+   |            max over the μ6 cycle of |B ± A cos(φ+jπ/3)| ≥ A·√2/2.
+   |            THE POINT: over six π/3 cells the cosine values come in
+   |            ± pairs, so the background CANCELS and the floor is
+   |            carried by the closure alone.  The higher clocks cannot
+   |            conspire to suppress every anchor — an exact pigeonhole
+   |            where every classical treatment needs an estimate.
+   |            This is precisely what a contour lower bound for a full
+   |            CLOCK BANK requires (the L3 obstruction).
+   |            MEASURED against ζ (att561): min-cycle max|Z| at heights
+   |            10³–10⁶ = 1.01, 0.75, 1.00, 0.74 → effective rotating
+   |            amplitude A_eff = 1.04–1.44 vs the n=1 RS amplitude 2.
+   |            DIAGNOSIS (honest): the bound applies to the FULLY
+   |            ROTATING part; higher clocks only partially rotate per
+   |            cell step — lag factor (1 − log n/θ′) = 0.73 → 0.88 for
+   |            n=2 across the range, i.e. as height grows MORE of the
+   |            bank co-rotates with the leading clock and the effective
+   |            amplitude should RISE, not fall.  Measured A_eff is flat/
+   |            oscillating, so the co-rotation is not yet visible at
+   |            these heights — the open quantitative question is the
+   |            bank's effective rotating amplitude, NOT a zero-location
+   |            statement.  Next measurement: A_eff at 10⁸–10¹² with more
+   |            cycles, to separate "flat ≈ 1" from slow growth.
+   |            ★ REGISTER-FREE ANCHOR TEST 2026-08-30 ★ (Sam: "RS is
+   |            removed by harmonization")  Anchors placed by the
+   |            READOUT'S OWN vanishings — thirds between consecutive
+   |            zeros, where a pure clock sits at |cos| = √3/2 exactly.
+   |            No θ, no Gram, no RS truncation in the register (siegelz
+   |            used only as numerical evaluator).  MEASURED, same
+   |            statistic as att561 (max within μ6 cycle = 2 gaps, then
+   |            min over cycles), 25 gaps per height:
+   |            10³: 0.70 (θ-anchored 1.01) · 10⁴: 0.45 (0.75) ·
+   |            10⁵: 0.36 (1.00) · 10⁶: 0.60 (0.74).
+   |            RESULT: register-free anchoring is WORSE at every
+   |            height — 0.4–0.7× the θ-anchored floor.  The claim that
+   |            harmonization improves the floor is NOT supported by
+   |            this test; the θ/Gram grid, whatever its register
+   |            provenance, tracks the bank's rotating component better
+   |            than the zero-thirds grid does.  (Probe-design error
+   |            owned: first run compared worst-single-anchor against
+   |            max-per-cycle — different statistics; corrected here.)
+   |            INTERPRETATION (limited): both grids give A_eff well
+   |            below the n=1 amplitude 2, and neither floor is
+   |            monotone in height.  What harmonization demonstrably
+   |            does remove is the COUNT DECOMPOSITION (S(t), Gram
+   |            bookkeeping — compiled: Sgap_pi_div = 0); it does not
+   |            remove the prime-clock lag, which is what A_eff
+   |            measures.  Consistent with [[harmonic-chart-wall-null]]:
+   |            cells don't ring, prime clocks do.
+   |            ★ CENSUS-MANY CELL PIGEONHOLE 2026-08-30 ★ COMPILED
+   |            (CellAnchorFloor.lean, std axioms): two_cells_clear_half
+   |            — at most ONE of the three π/3 cells can fall below 1/2
+   |            (two below would force sum < 1/4+1/4+1 < 3/2, violating
+   |            the exact closure); two_cell_pairs_flip — hence if the
+   |            background |B| < A/2, at least TWO of the three ± cell
+   |            pairs carry a strict sign change, i.e. ONE FLIP PER
+   |            ZERO-GAP: the density rh_of_high_flip_visibility needs.
+   |            ★ SAM'S INDEX AUDIT (answered at source) ★ "does the
+   |            repo prove each cell has argument-principle count 1?"
+   |            COMPILED: rect_winding (∮(z−ρ)⁻¹ = 2πi — a zero consumes
+   |            exactly ONE unit of index); rectangleBoundaryIntegral_
+   |            weighted_divisor (count = 2πi·Σm); _logDeriv_eq_zero
+   |            (no zeros ⟹ ∮logDeriv = 0); _logDeriv_finiteDivisor
+   |            Product (argument principle FOR FINITE DIVISOR PRODUCTS).
+   |            NOT COMPILED: (a) the local factorization ξ = (finite
+   |            divisor product)·(nonvanishing) on a rectangle — the
+   |            step that applies the above to ξ (classical, pure
+   |            labor); (b) "cell index = 1".
+   |            AND (b) IS FALSE AS STATED for θ/Gram cells: Gram's law
+   |            fails ~30% of the time (Rosser phenomenology) — a cell
+   |            can hold 0 or 2 zeros.  So the composition {index 1} +
+   |            {unit consumption} + {no residual} cannot be assembled
+   |            from the natural cell family.  What the house probe
+   |            measured (C3 spec, 202/202 exact) is the reason: Gram
+   |            violations displace flip AND census TOGETHER, so the
+   |            house identity survives where index-1 fails.  The
+   |            correct target is therefore NOT per-cell index 1 but
+   |            the compiled flip-count inequality — which is what
+   |            two_cell_pairs_flip now feeds, needing only |B| < A/2.
    |            ★ HIGH FLIPS 2026-08-28 ★ SeatingHighFlips.lean (std axioms):
    |            rh_of_high_flip_visibility — the Hardy-detector hypothesis
    |            (census-many XiLine sign flips per box) needed only in boxes
@@ -485,6 +802,46 @@ either a compiled theorem name or an explicit "grep returned none."
    |            = the seating."  STRONGER-and-constructive (candidate risk, not
    |            estimate risk: seating of THIS H is not RH-equivalent).
    |            In-tree: ZeroCountJensen, DVP count lanes, exactness iff.
+   |            ★ T★ FLIP–CENSUS CONSERVATION COMPILED 2026-08-30 ★
+   |            (adjudicator directive: the weakest exact theorem converting
+   |            a ΔS-excess into equal flip-excess; Sam's precision honored:
+   |            attained finite MAXIMUM, no supremum)
+   |            SeatingFlipConservation.lean (std axioms, build 9621):
+   |            even_mult_no_flip — even ζ-order repels the flip (same-sign
+   |            edges) + isolation window, from the local ξ-factorization
+   |            (order finite by riemannXi_analyticOrderAt_ne_top);
+   |            flip_yields_odd_zero — a sign change forces an ODD-order
+   |            on-line zero strictly inside (strong induction on the
+   |            finite window census; even zeros push the flip aside);
+   |            flips_le_oddOnLine_ncard — UPPER: every admissible chain
+   |            has ≤ oddOnLineBox(open box) many flips;
+   |            exists_uniform_delta_odd — mult-1 → Odd hypothesis swap in
+   |            the uniform-δ kit + a RIGHT margin (g + δ ≤ T₂) so the
+   |            packed chain is box-admissible;
+   |            exists_odd_census_flip_chain — LOWER at the exact census:
+   |            packing floor (gs.length+1 ≤ points) and the upper ceiling
+   |            PIN the packed chain's length to census+1 — the maximum is
+   |            EXHIBITED.  THE FACTORIZATION (T★):
+   |            high_flip_visibility_iff_flip_census — the compiled door
+   |            hypothesis ⟺ stripBox.ncard ≤ oddOnLineBox.ncard per high
+   |            box.  H2 SPLITS: the co-displacement/analytic half is now
+   |            UNCONDITIONAL (the conservation law HOLDS in C₁ — it
+   |            survives the exact configuration that falsifies every
+   |            door); the residual is ONE integer equation per box,
+   |            D := strip − oddOnLine = 0 (D ≥ 0 compiled:
+   |            oddOnLine_ncard_le_strip), and D counts exactly the
+   |            R-normal-form poles — the leaf verbatim (no off-line, no
+   |            even-order on-line), disguise stripped by a theorem.
+   |            Doors: rh_of_high_flip_census (≤ form),
+   |            rh_of_flip_census_conservation (equality/registration
+   |            form).  Classical shadow named at source: Turing-method
+   |            bookkeeping (sign changes + RvM), here as exact identity.
+   |            BUILD NOTE RESOLVED for this composition: Zeta23.Statement
+   |            (zeroMult) is Rectangle-FREE, so the clash was import
+   |            hygiene, not substance — SeatingChain reduced to Detector,
+   |            SeatingOddFlips to Detector+DVPWeightedCount+Zeta23.
+   |            Statement, SeatingHalfFlips takes Transversal directly;
+   |            the odd-flip kit co-imports with the PNT+ ladder door.
    |    Tombstone honored: same-λ C-equiv UNSATISFIABLE (hp-pencil-seat, 08-14) —
    |    the pencil equivalence route is dead; the seating route is not it.
 ```
