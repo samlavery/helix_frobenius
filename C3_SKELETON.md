@@ -9,6 +9,681 @@ applied. Every live-repo citation re-grepped 2026-08-27.
 here is named as such *before* it is done. Any node claimed open carries a ledger number and
 either a compiled theorem name or an explicit "grep returned none."
 
+**GOVERNING PLAN MOVED 2026-09-01:** the proof plan now lives in `HP_SKELETON.md` at the
+repo root (the lifted-geometry HP skeleton: leaf E3 = focal cancellation = eigenvalue,
+Sam's instrument decision; tracks 0/A/B/C/D with pre-registered decision rules; the
+ledger's tombstones cited). This file keeps the road-by-road record. Phase A below is
+unchanged and is Track A there.
+
+## ROADMAP TO COMPLETION (2026-08-31, governing plan; execution order A3→A2→A1 ∥ B-diagnostics → B → C)
+
+**PHASE A — the labor package (zero mathematical risk; ends with exactly ONE hypothesis).**
+* A3 (first; 1–2 sessions): the Γ/pole splice — logDeriv ξ = 1/s + 1/(s−1) − ½log π
+  + ½ψ(s/2) + logDeriv ζ, composed with the compiled η-bridge
+  (zeta_logDeriv_eq_etaLim) → `seatMass_eta_form`: the mass hypothesis stated
+  ENTIRELY in ordered carrier data + explicit trivial terms.  (If Mathlib lacks
+  complex digamma, use logDeriv Complex.Gamma directly.)
+* A2 (1–2 sessions): stage/F holomorphy + derivative transfer — dominated
+  differentiation under the integral with the compiled u-weighted tail majorants,
+  or Cauchy-from-uniform via the compiled uniform rate.  Closes door clause (ii).
+* A1 (several sessions, the big labor block): L1b identification
+  xiIntegral(z) = ξ(½+iz) — Mathlib's completedRiemannZeta₀ = Mellin(θ-kernel)
+  unfolded (symmetrize by FE, two integrations by parts onto the compiled
+  riemannXiKernel shape, t = e^{2u}), proven on a real segment, extended by the
+  identity theorem (needs A2's holomorphy).  Closes door clause (i) for ξ.
+* A4 (contingent): even-Hadamard for type-U stages (P1) — only if the B-attack
+  consumes stage zeros; the ξ-side two-point form is already compiled.
+* PHASE-A OUTPUT: a machine-checked theorem  [ONE hypothesis] → RiemannHypothesis,
+  the hypothesis being channel mass ≥ 0 in the carrier register (⟺ RH by the
+  compiled iff; ⟺ HP positive-spectral-measure by Herglotz — one statement,
+  three registers).
+**PHASE B — the content (all the mathematical risk; NO date, by policy).**
+**[CLOSED 2026-08-31 by Sam's directive — see PHASE B CLOSED entry below:
+interior fully compiled; B2 discharged in resolvent form; residue = the
+one node, three registers, outside any phase apparatus.]**
+  The single item: break C₁ in the carrier register.  Instruments, with roles:
+  B1 ordered-η route (register compiled): show the readout's oscillation cannot
+     overwhelm the χ-clock DC; the ζ-specific input is the MULTIPLICATIVE
+     structure of the series (att551 isolation).  FIRST DIAGNOSTIC (cheap,
+     pre-registerable): construct the C₁-perturbed readout numerically and
+     identify WHICH property of the ordered series it breaks.
+  B2 heat-balance identity W ≡ 0 (primes vs flips; harness locked at 1e−16).
+  B3 spectral/canonical identification (family S; positive Hamiltonian; the
+     compiled Poisson/Jacobi data) — the HP face of the same item.
+  Ripeness: after A3 the hypothesis is readable where these instruments act.
+**PHASE C — assembly (trivial):** the doors are pre-compiled; compose.
+
+### PHASE B OPENED 2026-08-31 — the C₁-breaking axiom identified and measured
+(att569 + addendum, pre-registered).  C₁ realized EXPLICITLY as the Blaschke
+surgery ζ_{C₁} = ζ·Q (quadruple at γ = 25.011, depth 0.15; FE-symmetric,
+census-preserving).  Instrument calibrated: σ=2 comb teeth measured at
+Λ(n)/n² exactly (0.1733/0.1221/0.0433).  REGISTERED PREDICTION REFUTED:
+no 5× null-violation at fixed long windows — the C₁ term is suppressed
+as taper×1/T (predicted residual 1e−5 = measured 1e−5, reconciled).
+CORRECTED AXIOM, then CONFIRMED by the addendum: **the surgery injects a
+finite-energy TRANSIENT localized at the surgery height** (window [10,40]:
++10.7% at ln18; window [200,230]: ratios 1.000 exactly; teeth identical
+everywhere — C₁ is invisible to every finite-power statistic).  Genuine
+ordinary-Dirichlet readouts are pure finite-power Bohr-almost-periodic
+signals with atomic log-lattice spectrum — ZERO transient sector; a
+decaying nonzero component violates Bohr recurrence.  THE PHASE-B MAP:
+(i) at σ > 1 transient-freeness is an arithmetic FACT (Dirichlet
+structure) — Bohr rigidity ("a.p. + decay ⟹ ≡ 0") is the compilable
+C₁-exclusion-at-σ>1 brick (next B-session; check Mathlib a.p. support,
+else via uniform limits of Dirichlet polynomials);
+★ COMPILED 2026-08-31 ★ CarrierTransientRigidity.lean (std axioms,
+build 8697) — the brick landed WITHOUT a.p. theory, by Cesàro
+character extraction: freq_separation (mode m isolated by
+cₘ = log((m+2)/(m+1))); char_integral_diag/_offdiag_norm (T on the
+diagonal, ≤ 2/|Δfreq| off it, uniformly in T);
+readout_char_integral (the tsum/integral interchange);
+avg_close — the windowed character average is within 2M/(cₘT) of aₘ,
+EXPLICIT RATE; cesaro_avg_tendsto_zero (bounded nonneg decaying ⟹
+vanishing Cesàro averages); **coeff_eq_zero_of_tendsto_zero** — an
+absolutely convergent log-lattice readout tending to 0 along the line
+has EVERY coefficient zero; **readout_eq_zero_of_tendsto_zero** — the
+readout is identically zero.  THE σ>1 HALF OF THE TRANSIENT DICHOTOMY
+IS NOW A THEOREM: no Dirichlet readout has a transient sector; the C₁
+surgery's transient (measured in att569: decaying, nonzero at the
+surgery height) can never be absorbed by a genuine carrier readout.
+Remaining in Phase B: the TRANSPORT of transient-freeness into the
+channel (endpoint statements both measured; σ>1 endpoint now
+compiled; consumers all pre-compiled).
+★ SURGERY EXCLUSION COMPILED 2026-08-31 (same session) ★
+CarrierTransientRigidity.lean (std axioms, verified):
+packetTrace (the general zero/pole surgery trace Q′/Q on any line);
+line_point_im, inv_line_tendsto_zero, packetTrace_tendsto_zero
+(surgeries are pure transients — each term O(1/|t − Im z|));
+**no_readout_realization_of_packet** — no absolutely convergent
+carrier readout can differ from another by a nonvanishing surgery:
+readout difference is a readout, the surgery is its decaying limit,
+rigidity kills every coefficient, contradiction with the witness.
+**pair_packetTrace_ne_zero** — every genuine pair surgery (z₀ ≠ p₀)
+is somewhere nonvanishing, so the exclusion hypothesis is inhabited
+for EVERY actual deformation.  THE FORMAL σ>1 C₁-EXCLUSION IS DONE:
+census-preserving Blaschke deformations of ANY size and configuration
+exit the Dirichlet class at the moment they exist, as a theorem.
+Phase B's residue: transport this class-rigidity from σ > 1 to the
+channel — the house levers: etaLim (the class structure compiled INTO
+the strip, Re s > 0), the η-bridge (channel ζ′/ζ in carrier data),
+and the mass door as the channel transient-detector.
+
+### [B★] THE FINISH-FORM OF PHASE B (2026-08-31, calibrated by class
+### inhabitation — this is what "finishing Phase B" means, exactly)
+
+**Class calibration (theorem-grade, no rerun needed):** the carrier class
+{absolutely convergent Dirichlet log-derivative on σ>1} + FE is INHABITED
+BY RH-FALSE OBJECTS — Davenport–Heilbronn is an ordinary Dirichlet series
+with an FE and measured off-line zeros (in-tree ground truth), and its
+teeth are SIGNED (the compiled GL(2)/CM comb campaign measured signed and
+even vanishing teeth as Satake phenomena).  Also: Beurling systems show
+Λ ≥ 0 + pole WITHOUT FE fails.  Hence NO proof from class + FE alone can
+close the channel, and no proof from Λ≥0 + pole alone either — the
+transport is FORCED to consume the conjunction.
+**[B★]:**  FE + carrier class + POSITIVE TEETH (Λ ≥ 0) + the pole at 1
+(+ θ-lattice self-duality if needed)  ⟹  channel mass ≥ 0.
+Status: OPEN — this is where RH lives, in its final register.  No
+counterexample to [B★] is known; conversely a counterexample (an in-class
+Λ≥0-FE-pole object with an off-line zero) would refute the program and be
+a major result — RECORDED IN THE FALSIFIABILITY REGISTER as a legitimate
+parallel search track.
+**[B★] CORRECTED (Sam, 2026-08-31: "the carrier has the Euler product").**
+FRAMING ERROR LOGGED, caught by Sam: the paragraph above demoted the
+carrier to a coefficient class and then re-derived Euler as an axiom to
+ADD.  The carrier IS the FTA product of prime clocks — Euler is
+CONSTITUTIVE (carrier_zeros_real: "the carrier is the FTA product of its
+prime clocks"; ambient spectroscopy: "Euler lives in the helix").  DH is
+excluded by CARRIER MEMBERSHIP (it is not a clock product), not by an
+added positivity axiom.  And Λ ≥ 0 is NOT the right invariant: character
+carriers have complex unimodular teeth (faces χ(p)) and GRH is still the
+truth — consistent with the compiled mass machinery, which never consumed
+tooth positivity (the disk law uses only the FE mirror).  The compiled
+finiteBank_seatMass_nonneg IS [B★] at finite rank, with Euler structure
+built in, for ARBITRARY unimodular faces.  [B★] FINAL FORM:
+   FE + CLOCK-PRODUCT STRUCTURE (unimodular faces = temperedness,
+   the compiled helix-not-spiral invariant) + pole  ⟹  channel mass ≥ 0
+— GRH-shaped, as the house always said.  The transport is the original
+bank→limit registration (M1/M2), with the two endpoint presentations
+being the MULTIPLICATIVE (clock banks: mass-positive, compiled;
+non-convergent) and ADDITIVE (θ-stages: convergent; transiently
+non-real) faces of one object, married by Poisson/heat balance.
+Λ ≥ 0 on the real ray (CarrierPrimePositivity) stays as a compiled fact
+about the TRIVIAL-face carrier, demoted from axiom to instance.
+**EULER-AT-READOUT-LEVEL COMPILED 2026-08-31 (same turn):**
+FiniteBankMass.lean (std axioms, verified): symClock_logDeriv_eq (the
+strand-quotient form) and **symClock_logDeriv_expansion** — on the upper
+half-plane (the channel's chart) each unitary clock's log-derivative is
+an absolutely convergent lattice readout with unimodular teeth:
+logDeriv(symClock α ℓ) z = −iℓ/2 − iℓ·Σ_{k≥1}(ᾱ·e^{iℓz})^k — the local
+Euler factor's Dirichlet expansion exactly where the channel lives
+(|ᾱe^{iℓz}| = e^{−yℓ} < 1).  "The carrier has the Euler product" is now
+a compiled statement in the transport's register: the multiplicative
+endpoint (clock banks, mass-positive by finiteBank_seatMass_nonneg) and
+the σ>1 rigidity class now speak the same language — bank readouts ARE
+log-lattice readouts with unimodular teeth, teeth = faces, faces =
+temperedness.  Transport target unchanged and sharpened: carry this
+structure through the bank→Ξ registration.
+**finiteBank_logDeriv_expansion COMPILED 2026-08-31 (std axioms,
+build 8775):** the WHOLE finite bank on the upper half-plane is one
+absolutely convergent lattice readout with unimodular teeth ℓᵢ·ᾱᵢᵏ at
+frequencies kℓᵢ (logDeriv_prod over the per-clock expansions).  The
+finite-rank loop is now closed IN ONE FILE: clock-product structure ⟹
+lattice readout, unimodular teeth (finiteBank_logDeriv_expansion) ⟹
+anti-Herglotz (finiteBank_logDeriv_im_nonpos) ⟹ seat mass ≥ 0
+(finiteBank_seatMass_nonneg).  [B★] at finite rank is a theorem with
+every arrow compiled; the ONLY open arrow anywhere in Phase B is the
+rank limit.
+### HP UNCONDITIONAL CAMPAIGN OPENED 2026-08-31 (Sam's standing directive:
+### "just focus on proving unconditional hp, don't object, just finish it";
+### "you've already got the euler product on the helix")
+
+The operator supply is the CLOCK BANK.  The HP dictionary on the helix:
+unimodular face = unitary boundary twist on the log p circle =
+self-adjointness per clock — temperedness IS self-adjointness.  First
+bricks COMPILED (HPHelixSupply.lean, std axioms, build 9511):
+* diagOp / diagOp_isSymmetric / diagOp_hasEigenvalue — the diagonal
+  spectral engine (any real symbol on a finite index realized as a
+  symmetric operator with those eigenvalues).
+* **finiteBank_hp_supply** — the helix Euler product supplies HP at
+  EVERY finite rank, unconditionally: for any finite unitary bank and
+  any finite set of its zeros, a symmetric operator has each as an
+  eigenvalue (reality from the compiled helix FTA, no census input).
+* xi_zeros_finite_in_compact — ξ-zeros finite in compacts (entire +
+  identity theorem, anchor ξ(0) = 1/2).
+* **hp_door_inhabited_below_ladder** — the eigenvalue door
+  (riemannHypothesis_of_eigenvalue_correspondence) is INHABITED below
+  the ladder cap: one symmetric operator carries −i(ρ−1/2) for every
+  zero with |Im ρ| ≤ 634.5.
+THE CAMPAIGN = REMOVE THE CAP: finite rank → ∞ on the helix side,
+634.5 → ∞ on the ζ side; the compiled intertwiner between the two
+spectra is the constant-free ledger balance below.  Refutation spec
+routed to Sam (tmp/spec_hp_inhabitation.md).  Memory:
+hp-unconditional-campaign.
+**PREDICTION BEATEN 2026-08-31 ("beat your own predictions", Sam):**
+my rigidity boundary (transient-freeness = arithmetic fact at σ > 1
+ONLY) is WRONG.  The character-extraction engine needs a MEAN-VALUE
+law, not absolute convergence; Carlson (1922) supplies it for ordered
+Dirichlet series at σ > 1/2.  MEASURED (η-readout at σ = 0.6, T = 1000,
+tmp task bgbhoytex): coefficient extraction to ~1/T — m=2: −0.6586 vs
+−0.6598; m=3: +0.5176 vs +0.5173.  CONSEQUENCE: the rigidity /
+no-transient / surgery-exclusion package extends to the ENTIRE
+right-of-critical-line half-strip (σ > 1/2), wall moves from σ = 1 to
+the critical line itself.  Calibration: this kills the deformation/
+transient sector on σ > 1/2; it does not by itself relocate zeros.
+COMPILE TARGET QUEUED: Carlson mean-value for the ordered η-class +
+strip-rigidity theorem (extend CarrierTransientRigidity below σ = 1).
+**RECEIVER REGIONS COMPILED 2026-08-31 (HPReceiverRegions.lean, std
+axioms, build 9512) — chart-side LABOR, so labeled (Sam: "why are you
+building this off helix?"):** receiver_outside_wedge (D5's regularity
+holds off-axis wherever ½ ≤ |Im z| — strip bound — or |Re z| ≤ 634.5 —
+ladder); receiver_of_wedge_regular (THE BOX REDUCES TO THE WEDGE);
+rh_of_wedge_regular (wedge regularity ⟹ Mathlib RiemannHypothesis,
+composed through capstone + bridge).  THE WEDGE := {0 < |Im z| < ½,
+|Re z| > 634.5} in the spectral chart — the CHART SHADOW of the one
+node; region bookkeeping, not construction.  REGISTER CORRECTION
+(Sam): the construction mainline is HELIX-NATIVE — the self-adjoint
+supply is the clock bank (S1: face = unitary twist = self-adjointness)
+and the HOST (carrier winding + two ends); the balance is their
+pairing.  NEXT CONSTRUCTION: the hosted operator — [⊕ₚ clock
+generators] coupled to the carrier winding generator, its renormalized
+readout = the balance's arithmetic side; operator-walk finding logged:
+with the seat weight n^{−1/2} the readout converges exactly on
+|Im z| > ½ — every convergent prime presentation ends at the wedge's
+edge, in the operator register as in all others.
+**THE DICTATED STACK COMPILED 2026-08-31 (PencilCellEdgeDoor.lean, std
+axioms, build 8782) — Sam's assembly, three dictation layers, all
+landed first-elaboration:**
+⟨layer 1: double-ended helix → scaled carrier → warped fiber → cell
+edges → pencil⟩ pencil_sees_registered_vanishing (UNCONDITIONAL: the
+Gram pencil rank-drops at every vanishing registered at an eigenheight
+— gramH iff is χ-unconditional, reaches ζ at q=1 via
+LFunction_modOne_eq; warp explicit: reprPoint = ½ + i·τχ(log Z),
+abscissa ½ CONSTITUTIVE); riemannHypothesis_of_cell_edge_registration
+("the fiber vanishes at cell edges" ⟹ Mathlib RH);
+riemannHypothesis_of_pencil_cell_stack (RH ∧ pencil certificate per
+zero).
+⟨layer 2: the resolvent trace through conjugate ends⟩
+conjugate_end_mem (anti-helix end 1−conj ρ is a vanishing);
+conjugate_end_spectralCoord (the two ends read the pair (λ, conj λ));
+ends_agree_iff_online; rh_iff_all_end_pairs_coincide.
+⟨layer 3: Frobenius linkage⟩ endPairFace ρ = e^{β−½};
+endPair_same_height; **endPair_det_one — det = 1 UNCONDITIONAL, the
+Frobenius similitude at every height**; endFace_helix_iff_online;
+**rh_iff_spectrum_tempered — RH = TEMPEREDNESS OF THE SPECTRUM**:
+every end-pair face a helix strand, not a spiral — the radial
+dichotomy landed on the zero set itself.  THE NODE IN ITS MOST
+HOUSE-NATIVE FORM: det = 1 is free (conjugacy); |face| = 1 per pair is
+the remaining field — the same helix-vs-spiral dichotomy that defines
+temperedness, now asked of the zeros' own faces.
+⟨layer 3 EXTENDED 2026-08-31, the no-spiral law compiled (same file,
+std axioms, build 10263 green)⟩ The faces are REAL AND POSITIVE
+(endPairFace_eq_ofReal: face = e^{β−½} ∈ ℝ_{>0}), so the strand
+dichotomy is EXHAUSTIVE AND EXCLUSIVE on the zero set —
+endFace_helix_or_spiral + endFace_not_helix_and_spiral: every face
+exactly one of helix/spiral, NO THIRD BRANCH.
+endFace_spiral_iff_offline (the exact complement: the negation of RH
+now has a concrete typed inhabitant, IsSpiralStrand at a face);
+**rh_iff_no_spiral_faces [EQUIV]**. The trace meter DC-exact:
+endFace_trace_eq_cosh (trace = 2·cosh(β−½) COMPUTED, not estimated);
+endFace_trace_re_ge_two (DC floor exactly 2);
+endFace_trace_eq_two_iff_online [EQUIV]; offline_trace_gt_two (spiral
+face rings the compiled non-tempered signature |trace| > 2,
+spiral_strandTrace_gt_two applied at the zeros). Pair radial ledger:
+endPair_radial_ledger_zero (log-radii of the two ends sum to 0 at
+EVERY zero — det 1 in the log register; RH = each summand 0
+SEPARATELY, not just the pair total);
+offline_expanding_contracting_pair (a spiral is a coupled
+expansion/contraction at ONE height — the hyperbolic pair).
+OPERATOR REGISTER, the field named constructively:
+strand_radius_one_of_unitary (NEW converse: isometry ⟹ radius 1);
+endFace_strandBlock_det_one (SL₂ FREE at every zero);
+endFace_isometry_iff_online; **rh_iff_all_faces_isometry [EQUIV] — RH
+= the zero set's transverse monodromy lands in the maximal compact:
+det = 1 given, unitarity the field**. SKELETON READING: all four new
+capstones are [EQUIV] leaves (dictionary entries, the equality test
+applied — {β=½} renamed through exp/cosh/diag, NOT progress claims);
+their yield is (i) the negation typed and quantitative (spiral face,
+trace > 2, expansion/contraction pair), (ii) the field relocated to
+"EXHIBIT THE ISOMETRY per face" — discharged by identity, the
+STRONGER-and-constructive shape, and it is the HP seating's own box
+(hilbert-polya-capstone: ONE box = the seating). The no-spiral law's
+constructive leaf and the HP seat are THE SAME SLOT.
+⟨layer 4 COMPILED 2026-08-31 (same file, std axioms, build 10263 green;
+Sam: "not using frobenius?" → "grind on")⟩ FROBENIUS NOW ACTS.
+endExchange ρ = 1 − conj ρ is THE Frobenius of the skeleton:
+endExchange_involutive; endExchange_mem (preserves the zero set);
+spectralCoord_endExchange (acts on the spectrum as conjugation — pairs
+(λ, λ̄)); endPairFace_endExchange (acts on faces as inversion — the
+det-1 similitude in ACTION form); **endExchange_fixed_iff +
+rh_iff_zeros_endExchange_fixed [EQUIV] — RH = THE ZERO SET IS POINTWISE
+FROBENIUS-FIXED** (the fixed-point chart of the box; layer 2's
+end-pairs-coincide is this law read on spectral coords). THE WEIL SHAPE
+COMPILED: face_norm_one_of_invariant_weight (similitude + positivity ⟹
+unitarity — Castelnuovo's cancellation, per event);
+**riemannHypothesis_of_frobenius_weight — D7, THE FROBENIUS–WEIL DOOR,
+route-shaped: inhabitant = ONE positive Frobenius-invariant weight P on
+the zero set, intertwined with the face similitude ⟹ Mathlib RH** (via
+no_offline_zeros_implies_rh). CALIBRATION CONTROL:
+control_weight_pos_sim — P = e^{−β} satisfies positivity + intertwining
+OUTRIGHT on all of ℂ, so for that weight the whole strength sits in
+F-invariance alone: the door's field is the invariant/intertwined PAIR,
+not either half. Relation to D4: D4 = corridor FIELD positivity
+(seatMass left of the line), D7 = per-zero WEIGHT positivity —
+complementary registers of Castelnuovo's seat; candidate supply register
+for P: S7 anti-Herglotz finite-bank masses.
+**D5 RE-SHELVED 2026-08-31 (Sam: "D5 is circular, isn't it?" — audit
+run at source):** NOT circular — IsSelfAdjointReceiver (T) = regularity
+off ℝ for ARBITRARY T (HelixResolventCapture:319), no zeros/ξ/½ in the
+definition chain; the forcing is earned
+(real_absorption_of_selfAdjoint). But RESTATEMENT-EXACT at the
+instance: selfAdjointReceiver_xi_iff_rh proves its own hypothesis is RH
+renamed — zero slack. CORRECT SHELF: exactness certificate AT THE BOX,
+not a door (inhabiting the functional hypothesis IS the theorem, no
+object in between). Route-shape survives only in the operator form
+rh_of_selfAdjoint_resolventReadout_xi: inhabitant = (A, a, φ) with the
+trace identity hid — the seating, again. Door count: route-shaped =
+D1–D4, D6, D7, D5-op; functional D5 = the box's guard.
+**REPO AUDIT 2026-08-31 (Sam: "everything you need is already in the
+repo, have you checked?" — answer was NO; the check changed the
+skeleton):** my "open slots exhaustively ①②③" was WRONG twice.  Missed
+compiled doors: riemannHypothesis_of_bank_convergence (BankLimitBridge —
+hypothesis = PURE CONVERGENCE, positivity never assumed: supplied per
+finite rank by finiteBank_seatMass_nonneg and transported by
+mass_nonneg_of_logDeriv_tendsto, which needs no holomorphy/uniformity/
+zero-set control — nonnegativity is CLOSED); riemannHypothesis_of_
+stage_mass (SeatingStageDoor); rh_of_wedge_regular (HPReceiverRegions);
+flip/census doors with health certificates (SeatingDoorStrength);
+channel_mass_iff_online (D4's exactness guard — D4 functional hypothesis
+is zero-slack like D5's; its route-shape lives through the bank bridge).
+**THE HERGLOTZ REDUCTION COMPILED 2026-08-31
+(BankHerglotzReduction.lean, std axioms, build 10265 green; Sam:
+"compile it then"):** the bank door's object computed EXACTLY — DC
+first, no estimate.  symClock_logDeriv_closed: the clock's log-derivative
+in closed form = −(ℓ/2)·i·(1+w)/(1−w), w = conj α·e^{iℓz}, |w| < 1 on
+the half-plane — THE HERGLOTZ KERNEL OF THE DISK per clock (the
+geometric series of symClock_logDeriv_expansion collapsed; was an
+internal `have` of symClock_logDeriv_im_nonpos, never exported).
+bank_readout_logDeriv_closed: the door's object at every point left of
+the line = −Σᵢ(ℓᵢ/2)·(1+wᵢ)/(1−wᵢ) — the bank IS a positive-length
+combination of disk Herglotz kernels; S7's anti-Herglotz positivity is
+now an identity you can SEE.  **riemannHypothesis_of_herglotz_sum_
+convergence — D8, THE BANK–CARLSON DOOR: RH from convergence of the
+EXPLICIT Herglotz-kernel lattice sums to logDeriv ξ at channel points.**
+Everything else spent: positivity by identity, transfer closed, mass
+door closed.  Remaining field = ONE Tendsto about elementary functions —
+the register CarrierTransientRigidity's mean-value machinery (Carlson,
+S5, measured at σ=0.6 to ~1/T) speaks; FE (carrier-native) reflects the
+left channel to σ > ½ where the measurement lives.  Calibration: the
+Tendsto carries full RH strength (Littlewood class — Euler-product
+convergence in the strip), as forced; the compile relocates the box, it
+does not lower it.  NEXT: the Carlson mean-value compile aimed at THIS
+Tendsto — coefficient extraction for the lattice sums wᵢᵏ at σ > ½,
+teeth chosen per S4's ledger (ℓᵢ = k·log p, α per prime clock).
+**PENCIL JOIN READING (Sam: "you used the harmonic pencil rank drop
+operator?" — answer NO, and the pointer is the frame):** the pencil IS
+the constitutive operator (rank drop = the vanishing event;
+pencilFin_det = (λ−μ)·A·B exact; gramH_rank_drop_iff_L_zero at every
+height; pencilFin_det_tendsto compiled).  The cascade door's two fields
+ARE the scissors: `converges` ✓ for the pencil/sum staging (BchanFin is
+a SUM — read at source — so `hreal` is the escort question there);
+`hreal` ✓ for product-form banks (helix FTA) which lack `converges`.
+NEXT CONSTRUCTION SHARPENED: build the hosted operator ON THE PENCIL
+FRAME — B-channel in PRODUCT form (∏ symClock at cell scale; rank
+drops real by carrier_zeros_real), registration to xiSection supplied
+by the host coupling (winding + ends, the balance) — one structure
+whose two fields are fed by the two compiled halves.
+
+**LEDGER BALANCE COMPILED 2026-08-31 (CarrierLedgerBalance.lean, std
+axioms, build 9523):** `ledger_balance_constant_free` — on Re s > 1,
+2·L(Λ)(s) = −Σ'_ρ m_ρ·((s−ρ)⁻¹ − ((1−s)−ρ)⁻¹)
+            + 2·(1/s + 1/(s−1) + Γℝ′/Γℝ(s)),
+the pointwise W ≡ 0 in the resolvent register with NO free constant:
+prime clock readings = mirror-pair focal census + carrier ends + carrier
+winding.  Assembly of three compiled bricks (euler_pillar +
+bridge_pillar + xiLogDeriv_constant_free), first-build green.  The
+att555 Gaussian harness (1e−16) measures the integral transform of
+exactly this identity.  NOTE (grep-before-writing paid twice): the
+existential-A form was ALREADY compiled (VonMangoldtEFStandalone,
+vonMangoldt_explicit_formula_LSeries); this join eliminates A via this
+session's mirror evaluation.  Rungs retired as grind direction per
+RH_LEDGER 494 (floor ≠ route); grind lives on the terminating axes:
+depth (depth_criterion_iff, bounded), registration (N_off ≡ 0), and the
+[B★] rank limit — one node, three registers, this identity the bridge
+they all cross.
+**First Λ-consumer COMPILED 2026-08-31:** CarrierPrimePositivity.lean
+(std axioms, build 8697): neg_zeta_logDeriv_re_nonneg — on the real ray
+σ > 1, Re[−ζ′/ζ(σ)] ≥ 0 via Mathlib's L↗Λ = −ζ′/ζ and termwise
+Λ(n)/n^σ ≥ 0.  The sign of the teeth enters the compiled record for the
+first time; [B★]'s consumption line is open for construction (next:
+complete monotonicity on the ray; the two-point mirror combination of
+the positive teeth against the compiled constant-free identity — the
+Weil-pairing shape in the house registers).
+(ii) the mass door IS the channel's transient detector (a quadruple's
+channel transient = its depth-disk mass bump);
+(iii) RH = TRANSPORT of transient-freeness from σ > 1 into the channel —
+the one wall, now in its sharpest register, with both endpoint statements
+measured and the σ>1 endpoint provable.  Known cross-check kept in view:
+signed-teeth Dirichlet objects (DH-class, compiled GL(2)/CM comb
+measurements) show comb structure alone is insufficient — the transport
+must consume the POSITIVE teeth (Λ ≥ 0) or the lattice self-duality.
+**Calibration line:** Phase B is RH.  The roadmap guarantees only — and
+exactly — that any B-success completes a machine-checked proof immediately,
+and that every B-attempt has a compiled, minimal, register-optimal target.
+
+## MAINLINE AUDIT 2026-08-31 (backward from unconditional RH; supersedes the roads below as the working plan)
+
+```
+[RH]  RiemannHypothesis (exact Mathlib prop)
+  ↑ COMPILED  riemannHypothesis_of_channel_mass (SeatingMassRH; ladder ≤ 634.5 inside)
+[M]   0 ≤ seatMass on the high-left channel                          EQUIV (= RH)
+      channel_mass_iff_online COMPILED BOTH WAYS (SeatingMassPositivity):
+      forward = the wrap; backward = seatMass_nonneg_of_online
+      (termwise (σ−½)·m·(N₁⁻¹+N₂⁻¹) ≥ 0 — parity-free, no simplicity)
+  ↑ M1 ∧ M2 ⟹ M by pointwise limit on channel compacts
+      [A3] limit transfer                        OPEN-routine (uncompiled bookkeeping)
+[M1]  stage mass ≥ 0 on channel compacts, eventually in the stage
+[M2]  stage logDeriv → Ξ′/Ξ on channel compacts
+      TWO FAMILIES, pincer (difficulty conserved, placed differently):
+      F — Fourier stages Ξ_U = 2∫₀^U Φ cos(zu)du:
+        [M2-F] Ξ_U → Ξ loc. unif.               CLASSICAL-OPEN (labor; the
+               representation itself uncompiled — grep none 08-30, 08-31)
+        [M1-F] ★ THE LEAF ★ capacity-reality: no complex zeros below
+               F_cap(U) ≈ 2π·e^{2U}, escort depth bounded     OPEN
+               (explicit band-limited statement; att565 sound support,
+               control passed; att558 U≥3 RETRACTED as dps noise;
+               LITERATURE PASS MANDATORY before any novelty label:
+               Pólya 1918 truncated transforms, de Bruijn 1950, Ki–Kim;
+               in-tree: grep returned none)
+      S — spectral/canonical truncation:
+        [M1-S] FREE by self-adjointness (compiled finite instance:
+               finiteBank_seatMass_nonneg; symClock zeros = spectrum of
+               twisted circle generators)
+        [M2-S] Ξ = A-function of a POSITIVE Hamiltonian    EQUIV (= the
+               leaf; H₁ audit "encountered, exact"; no canonical-system
+               compilation in-tree — grep none 08-31)
+[A1]  finite helix positivity      COMPILED, STRONGER-and-constructive
+      (FiniteBankMass: gauge ≡ 0 symbolically; symClock_logDeriv_im_nonpos
+       → finiteBank_logDeriv_im_nonpos → finiteBank_seatMass_nonneg)
+```
+
+**Compiled trunk (NOT open; commonly mislabeled):** ladder to 634.5; residual shell
+log⁻⁹; xiLogDeriv_constant_free + summability; disk law; Xi_line_im reality; RvM chain;
+T★ flip conservation; door-strength iffs; seatMass mirror; the C₁ adjudication.
+
+**Retired to diagnostic (compiled, surcharged or dead):** open-flip door ⟺ RH ∧ odd-high;
+R-defect door ⟺ RH ∧ simple-high; 08-28 flip door (hypothesis edge-unsatisfiable);
+Road A merges into [M] via rh_of_high_sign; Road B X₀=3 compiled, outer band parked;
+HP lens/correspondence doors parked (family S is their heir).
+
+**Guard verdict (rule 11):** exactly one substantive open leaf on the mainline — [M1-F] —
+plus two labor arrows ([M2-F], [A3]). [A1] is the compiled STRONGER-and-constructive
+element the guard demands; [M2-S] is EQUIV and tagged as such. [M1-F] is estimate-discharged
+about exhibited functions, not identity-discharged: a proof plan modulo one explicit-function
+estimate and classical labor — and said at exactly that strength.
+
+**Queue:** (1) literature pass on truncated-cosine reality (mandated before "new");
+(2) escort-prediction probe (edge-local vs arithmetic — decides [M1-F]'s difficulty class);
+(3) compile the Ξ = ∫Φcos representation (unblocks [M2-F]); (4) compile [A3].
+
+### [M1-F] WORK SESSION 2026-08-31 — literature + edge-wave model + escort tests
+
+**LITERATURE (read at source / survey level, queue item 1 DISCHARGED):**
+Pólya 1918 (Math. Z. 2) founded finite-Fourier-transform zero theory; Hejhal 1990
+extended Pólya's real-rooted truncated approximations to arbitrary finite N;
+**Csordas et al. (Complex Var. Elliptic Equ. 56, 2011): the truncated ξ (finite
+cosine transform of the θ-kernel) HAS nonreal zeros** — the escort's existence is
+PUBLISHED; att565/566 replicate and quantify it, they do not discover it.
+**Haglund (arXiv:0910.5228, READ AT SOURCE): the closest prior to the whole
+route** — series-truncation approximants Ξ_N (incomplete-γ partial sums),
+Conjecture 1 (monotone first-quadrant zeros) ⟹ RH by argument principle
+(his Prop 1); explicitly NO quantitative law for nonreal-zero locations vs N.
+Ki–Kim (J. Korean Math. Soc. 2007) saddle-point zero-distribution asymptotics =
+the technique class for proving a front law.  SCOPING AFTER SOURCE PASS: the
+genre (approximant zeros ⟹ RH) is Haglund's; escort existence is Csordas';
+NOT found in literature: quantitative front/depth laws for the EXTENT family,
+and the mass/disk consumption (strictly weaker than monotonicity: needs only
+escape + influence decay, tolerates arbitrarily deep zeros).
+
+**EDGE-WAVE MODEL (arithmetic-free: only Φ's edge + Stirling envelope):**
+Ξ_U = Ξ − T_U, T_U(z) ≈ Φ(U)[e^{izU}/(c−iz) + e^{−izU}/(c+iz)],
+c = 2πe^{2U} − 9/2.  Amplitude front x_a solves 2Φ(U)/√(c²+x²) = E(x)
+(E = Stirling envelope of |Ξ|): computed x_a(1.0) ≈ 31 vs Sam's bracket
+(27.7, 31.7); x_a(1.2) ≈ 45.8 vs (45.7, 48.9) — BOTH DEAD-ON.  Off-axis
+balance curve y*(x) = D(x)/δ(x), δ = U − ½log(x/2π); capacity front
+2πe^{2U} = δ→0 locus.  Escort count per stage ≈ ∫δdx/2π ~ O(1) — presence
+is quantized (explains U=1.2/1.35 stages with NO shallow escort).
+
+**ESCORT TESTS (att566, pre-registered, all boxes amplitude-sound):**
+T1 (U=1.0) PASS: exactly one zero, x∈[31,34], y∈[0.8,1.6] (predicted
+30.5±2, 0.8±0.4 — upper-edge overlap).  T3 (U=0.8) PASS: one zero,
+x∈[20.5,23], y∈[0.05,0.6] (predicted 20±2, 0.3±0.15).  T2 (U=1.02,
+discriminator): DIVE direction CONFIRMED (escort deeper: mid band [0.5,3.5]
+holds it; collision band [0.02,0.5] EMPTY — axis-collision refuted), naive
+dive RATE REFUTED (predicted [3.5,11] empty — the zero LAGS the balance
+curve; phase continuity correction needed).  Reconciles att565: by U=1.2
+the diver has passed depth 3.
+
+### PROOF PUSH 2026-08-31 — [A3] COMPILED + the (c)-regime brick
+
+**SeatingStageDoor.lean (std axioms, build 9528): ARROW [A3] IS CLOSED.**
+`seatMass_eq_zero_of_zero` — at a hypothetical ξ-zero the seat mass vanishes by
+the quotient convention: the door needs NO zero-avoidance hypothesis;
+`stage_mass_tendsto` — value+derivative convergence at a nonvanishing point
+carries stage masses to the seat mass; `rh_of_stage_mass` and
+**`riemannHypothesis_of_stage_mass`** — ∃ compiled A > 0: a stage family per
+channel point with pointwise value+derivative convergence to ξ and EVENTUAL
+stage-mass nonnegativity ⟹ exact Mathlib RH.  Pointwise and eventual is all
+the limit needs (`ge_of_tendsto`): no compacts, no uniformity, no rate.
+`finiteBank_seatMass_nonneg` already supplies the sign clause for every finite
+bank at every index; THE CHAIN TO MathLIB RH IS NOW MACHINE-CHECKED MODULO
+EXACTLY [M2] (convergence of a registered family) AND [M1] (its stage-mass
+sign) — nothing else.
+
+**SeatingDeepPairBound.lean (std axioms, build 9525): the (c)-regime brick.**
+`deep_pair_mass_lower_bound` — for any mirror pair of depth |β−½| ≥ 1 and any
+point of channel width, the pair's mass contribution ≥ −32/(depth² +
+height-offset²): quadratic influence decay, valid INSIDE the depth-disk.
+The disk-law suite now covers all four regimes: on-line pairs (nonneg
+anywhere), any pair outside its disk, strip pairs at far height, and deep
+pairs (decay).  Divers are mass-harmless as they plunge — stage-mass
+positivity needs only the shallow and middle bands, exactly the three-regime
+escort law's shape.
+
+**Remaining for the proof, exhaustively:** [M1-F] (escort law / middle-band
+clearance — THE content), [M2-F] (Ξ = ∫Φcos + locally uniform convergence —
+classical labor), and the stage-side finite Hadamard representation (P1,
+classical labor) to wire the per-pair bricks into a stage-mass sum.
+
+**L2 QUANTITATIVE CORE COMPILED 2026-08-31 (same push):** XiTailStripBound.lean
+(std axioms, build 8699, lean_verify clean): mode_tail_exp_domination —
+convexity of the inner clock (e^{2u} ≥ e^{2U}(1+2(u−U))) converts the
+doubly-exponential tail integrand into a pure exponential with rate
+c = 2πe^{2U} − 9/2 − Y; mode_tail_integral_bound — the per-mode tail integral
+beyond extent U is ≤ 2π²(n+1)⁴·e^{(9/2+Y)U}·e^{−π(n+1)²e^{2U}}/c in CLOSED
+FORM, uniformly on |Im z| ≤ Y — doubly-exponentially small in U.  The
+skeleton's L2 "integrability + incomplete-Γ step: routine" is DONE.
+[M2-F]'s residue after tonight: the mode-sum interchange (tsum over n,
+geometric in e^{−πn²e^{2U}}) and the L1 representation itself.
+
+**MODE-SUM CLOSED, FULL-KERNEL L2 COMPLETE 2026-08-31 (continued push):**
+XiTailStripBound.lean (std axioms, build 8699, lean_verify clean).  The
+tsum/integral interchange was DISSOLVED, not performed: the whole mode
+ladder is dominated pointwise by one geometric series —
+pow_four_mul_exp_le (m⁴e^{−πm²} ≤ e^{−m}, via log m ≤ m−1 and π > 3);
+kernel_term_abs_le_geometric; **kernel_abs_bound** — |Φ(u)| ≤
+8π²e^π·e^{9u/2}e^{−πe^{2u}} on u ≥ 0, the full-kernel pointwise bound
+(an independently useful unconditional brick);
+kernel_tail_exp_domination; **kernel_tail_integral_bound** —
+∫_U^∞ ‖Φ(u)cos(zu)‖ ≤ 8π²e^π·e^{(9/2+Y)U}e^{−πe^{2U}}/(2πe^{2U}−9/2−Y),
+uniformly on |Im z| ≤ Y, in closed form.  [M2-F]'s residue is now the
+L1 representation ALONE (Ξ = 2∫₀^∞ Φcos, Riemann 1859 — formalization
+labor; grep none).  The route's convergence side is otherwise fully
+compiled: L1 + these bounds ⟹ Ξ_U → Ξ with derivatives on every strip
+compact (Cauchy), feeding riemannHypothesis_of_stage_mass clauses (i)–(ii).
+
+**THE INTEGRAL OBJECT COMPILED 2026-08-31 (same push, continued):**
+XiTailStripBound.lean (std axioms, lean_verify clean):
+xiIntegrand_integrableOn_Ioi / _Ioc / xiIntegrand_integrableOn — the Xi
+integrand is integrable on the whole half-line for EVERY frequency z
+(split at U₀ = |Im z|; continuity of the compiled kernel + exponential
+domination); defs xiStage (U) and xiIntegral (the object F);
+**xiIntegral_sub_stage_bound** — ‖F(z) − Ξ_U-stage(z)‖ ≤ 2·B(U,Y) in
+closed form, uniformly on |Im z| ≤ Y.  STAGE CONVERGENCE TO F IS NOW
+COMPILED WITH EXPLICIT DOUBLY-EXPONENTIAL RATE.  L1 SCOPE COLLAPSE
+(recon finding): ZD.riemannXi is DEFINED as (s(s−1)/2)·Mathlib
+completedRiemannZeta₀ + ½, and Mathlib's completedRiemannZeta₀ IS the
+Mellin transform of the theta kernel — the upstream representation
+machinery exists.  L1b = F(chart) = ξ reduces to Riemann's unfolding on
+a real segment (symmetrize, two integrations by parts, t = e^{2u})
+plus the identity theorem.  [M2-F] residue = L1b alone.
+**xiStage_tendsto_xiIntegral COMPILED 2026-08-31 (same push):** the stages
+converge to the integral object at EVERY frequency (std axioms, verified) —
+the squeeze of 2B(n,Y) via π(1+n)² ≥ (11/2+Y)n at threshold ⌈Y⌉₊+4 and the
+geometric collapse of e^{−n}.  THE VALUE CLAUSE OF THE STAGE DOOR IS CLOSED
+RELATIVE TO F.
+
+**THE EXACT OUTSTANDING COUNT (2026-08-31, end of push):**
+Machine-checked count: TWO items —
+ (1) THE L1 PACKAGE (zero mathematical risk, pure formalization):
+     L1b identification xiIntegral(z) = ξ(½+iz) (Riemann 1859 unfolding
+     over Mathlib's own Mellin-θ machinery + identity theorem) together
+     with stage/F holomorphy + derivative transfer (dominated
+     differentiation or Cauchy-from-uniform; templates and rates compiled).
+ (2) ★ [M1-F] ★ (all mathematical risk): eventual stage-mass
+     nonnegativity at each channel point — the strip-band escort law.
+Mathematical-risk count: ONE — [M1-F].  Every other link from the finite
+helix to Mathlib's RiemannHypothesis is either compiled (std axioms,
+verified) or classical-1859 formalization labor with compiled templates.
+
+### [M1-F] GRIND 2026-08-31 — THE ZERO-FLOW ODE: exact, compiled generator,
+### measured CONFIRM on both zero species
+
+**THE REFORMULATION:** [M1-F] is now a DYNAMIC invariance claim.  The
+extent-flow generator is exact — ∂_U Ξ_U(z) = 2Φ(U)cos(zU) (FTC at the
+extent boundary) — so a simple stage zero obeys
+   ż_e(U) = −2Φ(U)·cos(z_e U)/Ξ_U′(z_e)   (EXACT, not modeled).
+COMPILED (std axioms, verified): xiStage_extent_hasDerivAt — the generator
+as a Lean theorem (FTC via integral_hasDerivAt_right + the compiled
+kernel continuity/integrability).
+MEASURED (att567/568, pre-registered): the pre-registered ODE test
+CONFIRMED on BOTH zero species — (a) the ESCORT localized exactly at
+z_e(1.00) = 31.279 + 1.110i, velocity measured (70.6 + 63.0i)/unit-U vs
+ODE (63.3 + 67.8i): 9.3% (< 15% rule) CONFIRM; it DIVES (Im ż > 0) while
+RIDING THE FRONT (Re ż ≈ 70 ≈ front speed 8e^{2U} ≈ 59): the escort
+tracks the front horizontally and sinks — never returns behind it.
+(b) the real-zero rearrangement flow at fine steps: 3.7% CONFIRM.
+(att567 first run: Newton slid off the complex seed onto a real zero and
+scored MARGINAL by central-difference curvature — design fault, corrected
+by finer steps + axis-rejection; recorded, not hidden.)
+**[M1-F] IN FLOW FORM:** the strip band behind the front is clear ⟸ the
+exact vector field points out of it — quantitatively: on strip-band zeros,
+Re ż ≥ front-speed − o(·) OR Im ż > 0.  Measured true at the escort; the
+attack is now a phase-plane/invariance argument about ONE explicit ODE
+whose generator is compiled.  NEXT: (i) the invariance inequality at the
+band boundary (pencil: cos(zU) phase vs Ξ_U′ argument — both edge-local
+quantities); (ii) escort-collision exclusion (Ξ_U′ ≠ 0 along the track);
+(iii) the birth mechanism at the front (where zeros ENTER the band) —
+these three exhaust the flow-form of the leaf.
+**AUDIT 2026-08-31 (Sam: "if it's hard, check you're doing it right") —
+THE THREE-SUB-QUESTION DECOMPOSITION ABOVE IS RETRACTED.**  Re-derivation
+of the consumption chain: (1) the disk law prices front-region zeros by
+DISTANCE — a quadruple at height γ hurts height t only if depth > |γ−t|;
+the escort (riding the front, |γ−t| → ∞ at fixed t) is AUTOMATICALLY
+harmless at any depth.  No band clearance near the front, no birth or
+collision analysis is needed by the mass.  What the mass needs at fixed
+t: no stage zeros in a FIXED compact off the line near height t (strip
+depths (δ′,½]) + mechanical floor exclusions outside the strip.
+(2) Behind the front ‖Ξ_U − ξ‖ ≤ 2B (compiled, doubly-exp): the
+perturbative instrument reproduces only the backward direction (already
+compiled as seatMass_nonneg_of_online).  (3) The flow FREEZES: Φ(U) → 0
+doubly-exp ⟹ ż → 0; large-U dynamics is a frozen field; C₁'s inherited
+frozen quadruple satisfies the ODE trivially ⟹ the invariance inequality
+is FALSE in C₁ ⟹ no phase-local proof exists (instrument-scoped; the
+category-5 adjudication reaching the flow instrument by quantifier
+inspection, not a new wall).  SURVIVES: the compiled generator + validated
+ODE as diagnostics/consumers; and the SIMPLIFIED leaf — after the labor
+items, [M1-F]'s content is EXACTLY off-line ξ-zero-freeness in the
+channel-depth band, zero analytic surcharge.  The producing input must
+break C₁; candidates unchanged (ordered-η channel readout — next
+compilable brick; heat balance; mode-weight multiplicativity).
+**η-READOUT BRIDGE COMPILED 2026-08-31 + HP COMPATIBILITY PINNED** (Sam:
+"do that then, but is this compatible with HP?").
+CarrierChannelReadout.lean (std axioms, build 8735):
+etaFactor_ne_zero — |2^{1−s}| = 2^{1−σ} > 1 left of σ = 1: the ordered
+chart is singularity-free on the whole strip interior and channel;
+zeta_logDeriv_eq_etaLim — at every strip point off the zeros,
+ζ′/ζ = (etaLim)′/etaLim − (η-factor)′/(η-factor), UNCONDITIONAL: the
+seat's prime side moved onto the compiled convergent carrier series
+(etaLim holomorphic on Re s > 0, etaLim_eq_zeta — both pre-compiled).
+HP COMPATIBILITY (exact, not analogy): channel mass ≥ 0 IS the Herglotz
+sign of the two-point sum near the line ⟺ (Herglotz representation) the
+zero measure is a POSITIVE measure on ℝ ⟺ the diagonal resolvent of a
+self-adjoint operator ⟺ the log-correspondence door's hypothesis
+verbatim.  finiteBank_logDeriv_im_nonpos is this statement at finite
+rank with the operator EXHIBITED (twisted circle generators).  The
+η-readout is the trace-formula face: the resolvent's channel boundary
+values from ordered arithmetic data — the explicit formula the
+lens/receiver doors demand.  The mass register demands strictly less
+than diagonalization (parity-blind).  The mass program and HP are one
+program in two registers; the freeze finding only retired the FOURIER
+truncation's dynamics, not the spectral one.
+NEXT on this line: splice the Γ/pole terms (logDeriv ξ = trivial-part +
+logDeriv ζ) to state seatMass itself in etaLim data — then the mass
+hypothesis reads entirely on the carrier series, where the arithmetic
+(alternation/multiplicativity) can finally act on C₁.
+
+**[M1-F] REFINED (the three-regime form, all measured):** per stage, complex
+zeros are (a) absent in the shallow band behind/below the front, (b) exactly
+the quantized escorts transiting the middle band near x_a(U) ≈ 4e^{2U} which
+DIVE out, (c) deep divers with mass influence O(1/depth²) → 0 (disk law /
+Poisson decay).  The route needs: front → ∞ (amplitude law, edge-local) +
+middle-band clearance away from the front + influence decay — NOT
+real-rootedness, NOT monotonicity.  The arithmetic input localizes to
+off-axis |Ξ| lower bounds on middle-band segments (where C₁ lives, as it
+must).  NEXT: (i) phase-continuity dive law (ODE for escort trajectory,
+testable); (ii) two-term-model error bound (Laplace remainder — compilable);
+(iii) Ξ = ∫Φcos representation (labor, unblocks [M2-F]).
+
 ```
 [TARGET]  ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1/2                                    (RH)
    ↑ COMPILED  rh_of_xiStructure_isHB        RequestProject/XiStructureFunction.lean:109
@@ -842,6 +1517,144 @@ either a compiled theorem name or an explicit "grep returned none."
    |            SeatingOddFlips to Detector+DVPWeightedCount+Zeta23.
    |            Statement, SeatingHalfFlips takes Transversal directly;
    |            the odd-flip kit co-imports with the PNT+ ladder door.
+   |            ★ R-DEFECT LEDGER 2026-08-30 ★ (Sam: "make the same D
+   |            appear independently in the R-normal-form/energy branch")
+   |            SeatingRDefect.lean (std axioms, build 9515):
+   |            zeroMult_eq_xiOrderNat (register bridge — the count weight
+   |            and the R weight are ONE number, off the real axis);
+   |            sign_change_window_iff_odd (detector-pole characterization:
+   |            window sign changes ⟺ odd ξ-order; even_mult_no_flip
+   |            closes the forward direction); xi_logDeriv_residue
+   |            (analytic mass per pole = ξ-order, via compiled
+   |            logDeriv_residue_eq_order); two_point_kernel_residue +
+   |            packet_residue (every z-chart packet c·2z/(γ²−z²) books
+   |            residue −c: c = m−1 detected — vanishes iff simple —
+   |            c = m for the invisible classes: D per pole, ANALYTICALLY);
+   |            flipIndicator/rDefectWeight/rBoxLedger;
+   |            census_mass_partition — Σ ξ-orders = detector supply +
+   |            rBoxLedger EXACT per box (T★ in the R register);
+   |            rDefectWeight_eq_zero_iff (weight 0 ⟺ on-line AND simple);
+   |            rh_of_high_R_defect — ledger ≡ 0 above 634.5 ⟹ RH via the
+   |            SEATING door, independent of the flip-chain door.
+   |            ★ MASS DOOR AT EXACT STRENGTH 2026-08-30 ★ (Sam: "prove
+   |            seatMass ≥ 0 on the compiled high-left channel; even
+   |            multiplicities can be ignored entirely" — confirmed; the
+   |            mechanism is the mass register's parity-blindness)
+   |            SeatingMassPositivity.lean (std axioms, build 9524):
+   |            summable_two_point_mirror (Hadamard summability differenced
+   |            at the mirror pair (s, 1−s));
+   |            seatMass_nonneg_of_online — under ∀ρ on-line, each
+   |            constant-free summand has re = (σ−½)·m·(N₁⁻¹+N₂⁻¹), so
+   |            seatMass = ½·(termwise-nonneg tsum) ≥ 0 at EVERY s off the
+   |            line: NO mirror pairing, NO parity, NO simplicity — m
+   |            enters only as a nonneg weight; channel_mass_iff_online —
+   |            ∃ compiled A > 0: channel mass nonnegativity ⟺ every zero
+   |            on-line.  The mass door is pinned at EXACT RH strength.
+   |            ★ EDGE DEFECT FOUND + REPAIRED 2026-08-30 ★ (encountered
+   |            in construction via the T★ iff, not theorized): the 08-28
+   |            door shape rh_of_(high_)flip_visibility compares chains in
+   |            [T₁,T₂] against the CLOSED-edge census Ioc — a zero at
+   |            ordinate exactly T₂ books no flip inside the box, so any
+   |            box whose right edge sits on a zero ordinate falsifies the
+   |            hypothesis IN EVERY WORLD (the door is sound; its
+   |            hypothesis is unsatisfiable once high zeros exist; the
+   |            ½-capstone is immune — its ε-slack absorbs edges — and the
+   |            seating/R-defect/mass doors have no window accounting).
+   |            REPAIR: SeatingDoorStrength.lean (std axioms):
+   |            stripBoxOpen; rh_of_high_open_flip_census +
+   |            rh_of_high_open_flip_visibility (healthy doors, open
+   |            census); HEALTH CERTIFICATES pinning every door's exact
+   |            strength: high_open_flip_census_iff — open flip door ⟺
+   |            RH ∧ odd-multiplicity above ladder;
+   |            high_R_defect_iff — R-defect door ⟺ RH ∧ SIMPLE above
+   |            ladder; channel_mass_iff_online — mass door ⟺ RH.
+   |            THE DOOR ORDERING IS NOW COMPILED: mass (⟺ RH, weakest
+   |            hypothesis, obstruction class = off-line alone) ⟸ open
+   |            flips (RH ∧ odd) ⟸ R-defect (RH ∧ simple) — three
+   |            registers, three compiled iffs, one integer D family.
+   |            Route consequence: effort at the leaf goes to the MASS
+   |            door's hypothesis; the count/R registers supply the
+   |            detector semantics but carry parity/simplicity surcharge.
+   |            ★ KILL TREE ADOPTED + ARROW 1 COMPILED 2026-08-30 ★
+   |            (Sam's map: finite helix positivity → registration
+   |            preserves positivity → limit preserves positivity → RH;
+   |            flips and R retired to diagnostic status)
+   |            GAUGE AUDIT (executed FIRST, per directive, symbolic):
+   |            symClock α ℓ = 2i·e^{iθ/2}·sin((zℓ−θ)/2) — a CONSTANT
+   |            times a sine: the registration gauge g′ is IDENTICALLY
+   |            ZERO per factor; and any self-duality-preserving
+   |            registration keeps it zero (even order-1 ⟹ odd
+   |            log-derivative ⟹ odd linear term ≡ 0 — the SAME mechanism
+   |            as compiled xiLogDeriv_odd killing Ξ's Hadamard constant).
+   |            The gauge cancels identically.  COMPILED (FiniteBankMass
+   |            .lean, std axioms, build 8775): clock_exponent_re;
+   |            symClock_hasDerivAt ((iℓ/2)·(A+G), the mirror strand sum);
+   |            symClock_logDeriv_im_nonpos — EXACT per-clock mass sign:
+   |            Im[logDeriv] carried by the strand imbalance e^{−yℓ}−e^{yℓ}
+   |            alone, ≤ 0 on the upper half-plane;
+   |            finiteBank_logDeriv_im_nonpos — every finite unitary bank
+   |            anti-Herglotz on UHP (logDeriv_prod);
+   |            finiteBank_seatMass_nonneg — THE FINITE-BANK SEAT MASS IS
+   |            ≥ 0 ON THE WHOLE HALF-PLANE σ < ½, UNCONDITIONALLY, in the
+   |            compiled seat chart (spectralCoord): arrow 1 done, even
+   |            multiplicities invisible at finite rank exactly as at the
+   |            limit (seatMass_nonneg_of_online).
+   |            MIDDLE-ARROW RESIDUAL (audited, exact — the mass register
+   |            DISSOLVES the old real-rootedness refutation): the extent
+   |            stages Ξ_U are even order-1 ⟹ constant-free by the same
+   |            mirror mechanism ⟹ stage mass = real-zero terms (≥ 0) +
+   |            quadruple terms (≥ 0 outside compiled depth-disks).  Stage
+   |            real-rootedness is NOT needed — only (i) the escape
+   |            estimate f(U) → ∞ with a depth bound (L3/L5 class,
+   |            explicit band-limited functions, measured retreat
+   |            f(1)<25, f(3)≈60, f(5)≥60→outward), and (ii) Ξ_U → Ξ
+   |            locally uniformly (L1: Riemann 1859, formalization
+   |            labor).  Then log-derivatives converge on channel
+   |            compacts, positivity passes through the real limit
+   |            (pointwise limit of nonneg), and channel_mass_iff_online
+   |            fires.  NAMED OPEN SLOTS (Sam's list):
+   |            registeredBank_logDeriv_tendsto_xiLogDeriv (arrow 2),
+   |            xi_channel_mass_nonneg (arrow 3).  Alternative consumption
+   |            (measure form, avoids pointwise poles): μ_U ≥ 0 line-
+   |            supported + local mass bounds ⟹ weak-* limit Cauchy
+   |            transform is analytic off the line ⟹ an off-line pole of
+   |            Ξ′/Ξ is impossible.  Brainworm guard honored: "finite
+   |            forbids ⟹ limit forbids" used NOWHERE — the transfer is
+   |            carried by the topology (locally uniform + escape), or
+   |            not at all.
+   |            ★ DEPTH-PROFILE PROBE + INSTRUMENT CORRECTION 2026-08-31 ★
+   |            (att565, pre-registered, dps 32, q=0-style control PASSED:
+   |            U=1.5 at [40,60], all depth bands 0, amplitudes sound)
+   |            SOUNDNESS FINDING (encountered): att557/558 ran at dps 15
+   |            while |Ξ(x)| ~ e^{−πx/4} < noise floor above height ~45 —
+   |            the U≥3 wide-box counts (4 in [60,100], 2 in [100,140])
+   |            and hence f(3)≈60, f(5)≥60 were NOISE ZEROS.  RETRACTED.
+   |            MEASURED (all boxes flagged sound, [20,60]×[0.02,3],
+   |            bands .02/.1/.4/1.2/3): U=0.8: ONE complex zero, height
+   |            [20,40], depth [0.1,0.4]; U=1.0: ONE, height [20,40],
+   |            depth [0.4,1.2]; U=1.2: ZERO everywhere (front supposedly
+   |            ≈47 — inside the window!); U=1.35: ZERO everywhere.
+   |            OUTCOME A, stronger than predicted: at most one escort
+   |            zero per stage in the strip, bounded depth ≤ 1.2, and
+   |            behind/above it everything clean — fixed windows vacate
+   |            completely as U grows.  ROUTE-DECISIVE READING: the
+   |            sign-change front 4e^{2U} (Sam's brackets, low heights,
+   |            still credible) measures real-zero MISPLACEMENT, not
+   |            complexification; the complex-zero onset tracks the
+   |            CAPACITY front — band-limited type U carries real density
+   |            ≤ U/π, Ξ demands log(t/2π)/2π, so onset at
+   |            F_cap(U) ≈ 2π·e^{2U} (U=1.2 ⟹ ≈69 > 60 ✓ clean window
+   |            explained; U=3 ⟹ ≈2534: no complex zeros below ~2500,
+   |            consistent with the retraction).  THE OPEN ESTIMATE,
+   |            sharpened: the forced direction (density excess ⟹ complex
+   |            zeros above capacity) is classical Levinson-type; the
+   |            NEEDED direction is the converse — no complex zeros below
+   |            the capacity front (with bounded escort depth) — an
+   |            explicit band-limited statement with exact conjectured
+   |            front, clean numerical support, and exponential reach
+   |            per unit extent.  Numerics cannot distinguish provable
+   |            from RH-conditioned (RH-true range); the estimate is the
+   |            leaf.
    |    Tombstone honored: same-λ C-equiv UNSATISFIABLE (hp-pencil-seat, 08-14) —
    |    the pencil equivalence route is dead; the seating route is not it.
 ```

@@ -92,7 +92,43 @@ theorem mirror_pair_mass_nonneg_outside (β γ : ℝ) {s : ℂ}
     apply div_nonneg _ hnn
     exact mul_nonneg (by linarith) hD
 
+
+/-- **Only zeros at nearby height can obstruct the mass.**  Unconditionally
+(using just `0 < β < 1`, the strip): every FE-mirror pair whose ordinate is
+at least `1/2` away from the point's height contributes NONNEGATIVELY to
+the seat mass — its depth-disk has radius `< 1/2` and cannot reach.
+So `seatMass ≥ 0` is not a global condition: at each height only the
+`O(log t)` zeros within half a unit can possibly obstruct, and every other
+pair in the ledger is already on the right side.  Multiplicity is
+irrelevant throughout (it enters as a positive weight). -/
+theorem far_height_pair_mass_nonneg (β γ : ℝ) (hβ0 : 0 < β) (hβ1 : β < 1)
+    {s : ℂ} (hfar : 1/2 ≤ |s.im - γ|) :
+    0 ≤ ((s - (β + γ * I))⁻¹ + (s - ((1 - β) + γ * I))⁻¹).re
+        / (s.re - 1/2) := by
+  have him : (((β : ℂ) + γ * I)).im = γ := by simp
+  have him2 : ((((1 : ℂ) - β) + γ * I)).im = γ := by simp
+  have hne : s.im ≠ γ := by
+    intro h
+    rw [h] at hfar
+    simp at hfar
+    linarith
+  have h1 : s ≠ (β : ℂ) + γ * I := by
+    intro h
+    apply hne
+    rw [h, him]
+  have h2 : s ≠ ((1 : ℂ) - β) + γ * I := by
+    intro h
+    apply hne
+    rw [h, him2]
+  apply mirror_pair_mass_nonneg_outside β γ _ h1 h2
+  have hb : (β - 1/2) ^ 2 < 1/4 := by nlinarith
+  have hg : (1:ℝ)/4 ≤ (s.im - γ) ^ 2 := by
+    have := sq_abs (s.im - γ)
+    nlinarith [abs_nonneg (s.im - γ), hfar]
+  nlinarith [sq_nonneg (s.re - 1/2)]
+
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.mirror_pair_floor_law
 #print axioms CriticalLinePhasor.SeatingLedger.mirror_pair_mass_nonneg_outside
+#print axioms CriticalLinePhasor.SeatingLedger.far_height_pair_mass_nonneg
