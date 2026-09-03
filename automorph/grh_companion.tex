@@ -1195,6 +1195,43 @@ finite bank theorem is retained as its internal truncation-level detector and
 is not substituted for the completed identity.
 
 \medskip
+\noindent\textbf{The geometry, stated once.} The carrier is a double-ended
+helix and it is conjugate: the two lanes \(C_+\sqcup C_-\) share radius and
+height law and differ only in the sign of the transverse phase, exchanged by
+the involution \(J\) with \(J^2=\mathrm{id}\) (\cite{UniversalCarrier},
+double carrier); the functional equation is the end-swap read through the
+projection (\texttt{feReflect\_involutive}). The carrier rides both sides and
+is scaled harmonically: the scale is a constant on its own integer lattice
+(\texttt{Admissible.scale}), and scaling never moves a vanishing
+(\texttt{vanishing\_preserves\_readout}). The \(L\)-function is the fiber, and
+the fiber rides the carrier: fiber readout and \(L\) are equivalent
+representations (\texttt{DirichletFiberEquivalence},
+\texttt{UniversalFiberEquivalence}, \texttt{PrincipalFiberEquivalence}). The
+fiber is warped to vanish at the harmonic cell edges --- the \(\mu_6\) walls at
+\(k\equiv3\pmod 6\) (\texttt{pi3\_arcs\_eq}), reached from any scale by the
+unit-modulus warp (\texttt{fiber\_converts\_to\_harmonic}) --- and it leaves no
+residue when it vanishes: the cell channel is exactly \((\pi/3)\,L\)
+(\texttt{cell\_normalized\_scalar\_exact}, \texttt{scalar\_zero\_iff\_L\_zero})
+and each complete block closes in \(\mathbb Z[\zeta_6]\) in integer arithmetic.
+The vanishing creates the eigenvalue at its height: the completed event at
+physical height \(Z\) is an eigenvector of the ambient carrier operator with
+eigenvalue \(\log Z\) and zero radial drift
+(\texttt{completedThreeDZeroAtHeight\_focal\_rankDrop\_eigenvector\_noRadialDrift}).
+That height corresponds to the analytic zero ordinate; it is not equal to it,
+it coincides with it. Height and ordinate are coordinates in two charts, one
+the exponential of the other (\texttt{carrierPointAtHeight\_exp}), the event
+registers in both (\texttt{eventHeight\_eq\_focalCancellationHeight}), the
+projection carries its loss ledger and is a bijection with it
+(\texttt{record\_bijective}), and the global registration between the two
+charts is exactly \(S(t)\) (\texttt{carrier\_scale\_compensation\_S}). The
+mechanism is focal cancellation in the fiber's banks --- the lanes stay
+individually large and their weighted sum closes
+(\texttt{focalClosure\_iff\_rankDrop},
+\texttt{completedThreeDZeroAtHeight\_iff\_L\_zero}) --- carried by phasors
+that rotate at their carrier angle \(-y\log x_n\), born at magnitude zero and
+grown (\texttt{resonanceHeightEquiv}).
+
+\medskip
 \noindent\textbf{Note (Frobenius determinant one).} The conjugate eigenstate pair the alignment
 realizes is not free to sit anywhere; it is pinned by an algebraic constraint. On the carrier the
 local Frobenius acts as a \emph{similitude of determinant one}: its chiral block has \(\det=1\)

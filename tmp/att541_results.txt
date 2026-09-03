@@ -1,0 +1,39 @@
+window W=(10.0,30.0): zeros ['14.13472514', '21.02203964', '25.01085758']
+
+P1  exact split mu_k = C_k + S_k (S_k via Stieltjes parts, independent of the zero list except through N):
+  k=0  mu=3.0  C=3.54115754636  S=-0.541157546362  mu-(C+S)=-1.97e-31
+  k=1  mu=60.1676223607  C=76.4282619471  S=-16.2606395865  mu-(C+S)=-1.26e-29
+  k=2  mu=1267.2596023  C=1754.72422237  S=-487.464620073  mu-(C+S)=-1.01e-28
+  k=3  mu=27759.5390254  C=42238.7540877  S=-14479.2150624  mu-(C+S)=-6.46e-27
+  k=4  mu=626518.989367  C=1053618.66486  S=-427099.675489  mu-(C+S)=-1.55e-25
+  k=5  mu=14456632.0071  C=26998313.7844  S=-12541681.7773  mu-(C+S)=-8.27e-24
+  k=6  mu=339059996.071  C=706213658.095  S=-367153662.024  mu-(C+S)=-2.65e-22
+  k=7  mu=8049180057.92  C=18772475380.3  S=-10723295322.4  mu-(C+S)=-5.08e-21
+  k=8  mu=192853748594.0  C=505446191904.0  S=-312592443310.0  mu-(C+S)=-2.71e-19
+
+P2  inertia (pos, neg, null):
+  n=2  clock C   inertia=(2, 0, 0)  eigs=[2.1187e-01 1.7581e+03]
+  n=2  S-Hankel  inertia=(1, 1, 0)  eigs=[-4.8801e+02  1.2566e-03]
+  n=2  total mu  inertia=(2, 0, 0)  eigs=[1.4301e-01 1.2701e+03]
+  n=3  clock C   inertia=(3, 0, 0)  eigs=[1.6089e-02 6.1909e+01 1.0553e+06]
+  n=3  S-Hankel  inertia=(1, 2, 0)  eigs=[-4.2759e+05 -5.4276e-03  3.4157e+00]
+  n=3  total mu  inertia=(3, 0, 0)  eigs=[3.7762e-03 3.7661e+01 6.2775e+05]
+  n=4  clock C   inertia=(3, 0, 1)  eigs=[1.2012e-03 4.1767e+00 2.1630e+04 7.0725e+08]
+  n=4  S-Hankel  inertia=(1, 1, 2)  eigs=[-3.6758e+08 -1.0515e-02  1.3389e-01  1.3221e+03]
+  n=4  total mu  inertia=(3, 0, 1)  eigs=[-2.0828e-09  1.4566e+00  1.0216e+04  3.3968e+08]
+
+P3  Gram points: {-1: '9.6669081', 0: '17.8456', 1: '23.170283', 2: '27.670182', 3: '31.71798', 4: '35.467184'}
+    warp displacement  gamma_j - g_{j-2}  vs  (pi/theta'(g))(1 - S(gamma_j+)):
+  j=1 gamma=14.134725 g_{j-2}=9.6669081  disp=4.46782  pred(1st order)=6.56586  rel.err=0.47  | S(gamma+)=0.55025  gram-interval=8.1787
+  j=2 gamma=21.02204 g_{j-2}=17.8456  disp=3.17644  pred(1st order)=3.43257  rel.err=0.0806  | S(gamma+)=0.42979  gram-interval=5.3247
+  j=3 gamma=25.010858 g_{j-2}=23.170283  disp=1.84057  pred(1st order)=1.89518  rel.err=0.0297  | S(gamma+)=0.6064  gram-interval=4.4999
+  j=4 gamma=30.424876 g_{j-2}=27.670182  disp=2.75469  pred(1st order)=2.84428  rel.err=0.0325  | S(gamma+)=0.32894  gram-interval=4.0478
+  j=5 gamma=32.935062 g_{j-2}=31.71798  disp=1.21708  pred(1st order)=1.23133  rel.err=0.0117  | S(gamma+)=0.68273  gram-interval=3.7492
+
+P4  discrete clock registration vs continuous clock moment on W:
+    Gram points in W: ['17.8456', '23.170283', '27.670182']
+  k=0  sum g^k=3.0  C_k=3.541157546  diff=-0.541158  bound(max z^k)=1.0
+  k=1  sum g^k=68.68606446  C_k=76.42826195  diff=-7.7422  bound(max z^k)=30.0
+  k=2  sum g^k=1620.966407  C_k=1754.724222  diff=-133.758  bound(max z^k)=900.0
+  k=3  sum g^k=39307.82093  C_k=42238.75409  diff=-2930.93  bound(max z^k)=27000.0
+  k=4  sum g^k=975844.0869  C_k=1053618.665  diff=-77774.6  bound(max z^k)=810000.0

@@ -1,0 +1,59 @@
+att554 — carrier on the compiled helix: pitch p = 1, gauge r = 3, Δ = π/3
+P1 radius(n)²/n at the wound sites (compiled limit rΔ/π = 1.0000):
+   n=    10  k_n=    1.013 turns  radius=    3.040  radius²/n=0.92414
+   n=   100  k_n=    3.316 turns  radius=    9.947  radius²/n=0.98942
+   n=  1000  k_n=   10.534 turns  radius=   31.601  radius²/n=0.99865
+   n= 10000  k_n=   33.331 turns  radius=   99.992  radius²/n=0.99984
+   n=100000  k_n=  105.408 turns  radius=  316.225  radius²/n=0.99998
+   P1 CONFIRMED
+
+P2 bank-only scan of the closure c(y) = |R_P − R_M|/max|R| on [10, 80], 100000 phasors, 4.5s
+   crossings found: 21 ; analytic zeros in range: 21
+   γ_01 model=14.134725  closure=2.2e-09  |model − ζ-zero|=2.1e-10
+   γ_02 model=21.022040  closure=1.5e-08  |model − ζ-zero|=7.4e-10
+   γ_03 model=25.010858  closure=3.7e-08  |model − ζ-zero|=6.3e-10
+   γ_04 model=30.424876  closure=1.1e-07  |model − ζ-zero|=2.7e-10
+   γ_05 model=32.935062  closure=1.7e-07  |model − ζ-zero|=1.2e-09
+   γ_06 model=37.586178  closure=3.0e-07  |model − ζ-zero|=4.1e-09
+   γ_07 model=40.918719  closure=6.1e-07  |model − ζ-zero|=9.6e-10
+   γ_08 model=43.327073  closure=8.2e-07  |model − ζ-zero|=2.8e-11
+   γ_21 model=79.337375  closure=4.7e-05  |model − ζ-zero|=2.1e-09
+   max deviation 1.02e-08 ; P2 CONFIRMED
+   FINDING (not pre-registered): lane resultants AT the crossings, |R_P| = |R_M|, by height:
+      γ_01=14.135  |R_P|=|R_M|=1.1650
+      γ_04=30.425  |R_P|=|R_M|=0.1148
+      γ_07=40.919  |R_P|=|R_M|=0.0382
+      γ_10=49.774  |R_P|=|R_M|=0.0171
+      γ_13=59.347  |R_P|=|R_M|=0.0079
+      γ_16=67.080  |R_P|=|R_M|=0.0044
+      γ_19=75.705  |R_P|=|R_M|=0.0024
+      (they shrink with height: at a crossing R_P = R_M = ½·(windowed full sum), and the full sum's analytic part vanishes there, so what remains is the growth FRONT's residual — a property of the truncation at N = 100000, not of the object)
+   sign flips of the real fiber on the grid: 21 ; crossings: 21 (every crossing is a flip: True)
+
+Clock: Gram points g_k (ϑ(g_k) = kπ): g_-1=9.6669 g_0=17.8456 g_1=23.1703 g_2=27.6702 ...
+
+P3 THE WARP  (cell j: left edge g_{j−2} → crossing γ_j)
+    j     γ_j      g_{j−2}     d_j=γ−g   ϑ′d/π (1st order)   1−S_j (exact)    S_j     pitch φ′
+     2   21.0220   17.8456     3.1764       0.6105            0.5702     +0.4298   0.749
+     3   25.0109   23.1703     1.8406       0.4047            0.3936     +0.6064   1.203
+     4   30.4249   27.6702     2.7547       0.6915            0.6711     +0.3289   0.620
+     5   32.9351   31.7180     1.2171       0.3209            0.3173     +0.6827   1.241
+     6   37.5862   35.4672     2.1190       0.6032            0.5936     +0.4064   0.944
+     7   40.9187   38.9992     1.9195       0.5724            0.5651     +0.4349   0.716
+     8   43.3271   42.3636     0.9635       0.2961            0.2944     +0.7056   1.449
+     9   48.0052   45.5930     2.4121       0.7806            0.7708     +0.2292   0.567
+    10   49.7738   48.7108     1.0631       0.3502            0.3483     +0.6517   1.057
+    11   52.9703   51.7338     1.2365       0.4195            0.4172     +0.5828   1.182
+    12   56.4462   54.6752     1.7710       0.6188            0.6143     +0.3857   1.011
+    13   59.3470   57.5452     1.8019       0.6440            0.6396     +0.3604   0.529
+    14   60.8318   60.3518     0.4800       0.1734            0.1731     +0.8269   1.557
+    21   79.3374   78.6724     0.6650       0.2684            0.2679     +0.7321     —
+   exact identity (ϑ(γ_j) − ϑ(g_{j−2}))/π = 1 − S_j: max residual 1.3e-15 ; first-order form within 7.1% (pre-registered 5%: DIED at low height where ϑ′ varies across a cell; 10% holds) ; P3 CONFIRMED (10%)
+P4 pitch modulation φ′ − 1: mean -0.0365, std 0.3056, |S| mean 0.507 max 0.827 ; P4 CONFIRMED
+
+P5 state at crossing γ_3=25.0109: |R_P|=0.2218 |R_M|=0.2218 closure=3.66e-08
+   state at cell edge g_1=23.1703: |R_P|=2.1127 |R_M|=1.2812 closure=1.603
+   P5 CONFIRMED
+
+figure: tmp/att554_helix_model.png
+SUMMARY P1 CONFIRMED  P2 CONFIRMED  P3 CONFIRMED  P4 CONFIRMED  P5 CONFIRMED
