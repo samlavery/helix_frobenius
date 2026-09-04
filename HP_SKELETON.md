@@ -170,6 +170,13 @@ the warp removes the S(t) correction so vanishing is residue-free at a cell boun
               the prime side alone: window counts within 0.02 of one and peaks within 0.015 of
               the zeros at Q = 10⁵–10⁶; the finite-Q measure is SIGNED with bounded negative
               mass ≈ 0.4–0.55 per window (Krein at every stage, Hilbert only in the limit).
+              CORRECTED 2026-09-03 (ledgers 567–568): the negative mass is the sharp window's
+              Dirichlet lobes, a universal constant of the window SHAPE (Selberg 0.218, cubic
+              0.185, sharp ~(2/π²)log V), forced by any plateau at the front (Bochner). With the
+              RIESZ window (1 − log n/log x)₊ the kernel is Fejér and the finite-stage measure is
+              POSITIVE at every front (att567: negative mass 0.00000 at x = 10²,10³,10⁴).
+              RH ⟺ D_{R,x} ≥ 0 ∀x,t — property (i) of the compound object at finite stage;
+              `RieszTruncatedFormula.lean`.
               Two DCs alone DIED at Q ≥ 10⁵ (the end term, omitted twice this day: law
               `end-term-dc-law`). The Q → ∞ limit's support on the real axis is RH.
               COMPILED 2026-09-02 (ledger 533, ClockSpectralDensity): clockDensity p z =
@@ -238,6 +245,14 @@ the warp removes the S(t) correction so vanishing is residue-free at a cell boun
   GEOMETRY  helix + anti-helix, J, area law σ* = ½, no-drift ⟺ balanced          COMPILED
   LIFT      fiber equivalence, all three families                                COMPILED
 ```
+
+**Registry cross-reference (Sam, 2026-09-03, ledger 566).** The object IS built: `HP_PROGRAM.md`
+§1, the registration operator (diagonal, self-adjoint, spectrum = prime-forced stations,
+zero-knowledge-free; measured to RMS 0.039 spacings over 41k zeros, bijectively) and §2 its
+compiled certificate `shadowing_implies_online_simple`. The "exhibition" language of this file is
+about the EXACTNESS of that object's readout, never about its existence; do not read it otherwise.
+The remaining item, in the registry's words: the residual tail law (|γ_n − t_n| < half a gap at
+every station), whose exact residual is now the compiled comb of ledgers 563–565.
 
 **Guard verdict (rule 11), 2026-09-02.** E1 and E2 are compiled and constructive. [HP] is
 EQUIV to the target with no slack, and its discharge is an OBJECT: the operator whose readout
@@ -645,6 +660,58 @@ tests = Weil's criterion = the theorem. Under the rule-11 guard this skeleton is
 RESTATEMENT plus one classical identity plus numerics: every compiled node is EQUIV or INSTRUMENT;
 no STRONGER-and-constructive leaf exists yet. "One node away" measures nothing.
 
+**COMPILED 2026-09-03 (ledger 563, `RequestProject/TruncatedExplicitFormula.lean`, standard
+axioms): the truncated explicit formula at a growth front — the "stage measure ↔ zero comb"
+relation retracted above as NOT compiled — in the cubic-taper form.**
+`truncated_explicit_formula_cubic`: for `x = e^L`, `s₀` off the zero set, `a < 0 < 1 < b`,
+`a < Re s₀ < b`,
+```
+ξ′/ξ(s₀) + Σ'_ρ m_ρ K(ρ−s₀) = (1/2π)[∫ K(b+it−s₀)E(b+it)dt + ∫ K(a+it−s₀)E(1−a−it)dt]
+                               − Σ_n W(log n)·Λ(n)n^{−s₀},
+K(w) = (x^{4w} − 3x^{3w} + 3x^{2w} − x^w)/(w⁴L³),   W = cubic B-spline,
+```
+`cubicProfile_log_eq_one`: `W = 1` exactly for `n ≤ x` (sharp front); `cubicProfile_log_eq_zero`:
+`W = 0` for `n ≥ x⁴`; the zero sum converges absolutely (`K` decays at order 4). General form
+`stripBoundary_pole_mul_logDeriv_xi`: any kernel continuous on the two lines with decay 4 there
+and a simple residue-one pole at `s₀` inside the strip. Route: the pole handled by partial
+fractions against the entire factor `G = K·w` (decay 3 on the strip), Track W's residue and
+exchange lemmas reused on the lines via the line extension `s ↦ F(σ + i·Im s)`; prime side by
+Fourier inversion of the explicit B-spline profile (right line) and its reflection (left line,
+vanishing at `−log n`). The END term is the residue `K(1−s₀)` of the pole of `E` at `s = 1`
+inside the strip — measured (att563), residue extraction NOT compiled. NOT compiled: the fully
+sharp cutoff (conditionally convergent zero sum; needs `ξ′/ξ` on horizontal lines). TAG: COMPILED
+identity, the bridge item 3 of ledger 557 — an INSTRUMENT-grade exact relation, EQUIV-free; it
+makes the settling register of item 2 (ledger 558) a statement about the zero comb by identity.
+Not the STRONGER leaf.
+
+**COMPILED 2026-09-03 (ledger 564, `RequestProject/SelbergTruncatedFormula.lean`, standard
+axioms; Sam: "why don't you build it"): the SAME identity for Selberg's linear taper `Λ_x`
+(Titchmarsh 14.20) — the object att554d/560 measured.** `truncated_explicit_formula_selberg`:
+`K₁(w) = (x^{2w} − x^w)/(w²L)`, weight exactly `1` for `n ≤ x` (`linProfile_log_eq_one`),
+`log(x²/n)/log x` on `[x, x²]` (`linProfile_eq_taper`), `0` past `x²` (`linProfile_log_eq_zero`);
+END term `K₁(1−s₀) = (x^{2(1−s₀)} − x^{1−s₀})/((1−s₀)²L)`, the form in `end-term-dc-law`. The two
+costs named at 563 were built: `summable_logWeight_nontrivialZeros`
+(`Σ_ρ m_ρ (1 + log(1+|ρ|))/|ρ|² < ∞`, dyadic shells on the compiled count
+`xi_weighted_zero_count_disk_bound`, index `Nat.log 2 ⌊‖ρ‖⌋₊`, `Finset.sum_fiberwise_of_maps_to`)
+and `integral_inv_mul_inv_le` (`∫dt/((1+|t|)(1+|t−γ|)) ≤ 12(1 + log(1+|γ|))/(1+|γ|)`, three
+regions, `∫_{−R}^{R}(1+|t|)⁻¹ = 2 log(1+R)`); plus `stripBoundary_div_sub_eq₁`, the strip residue
+at decay order 1 (the entire factor `G₁ = K₁·w` decays only at order 1). Measured att564 at
+x = 60 and x = 20 (see ledger 564): identity to the truncation level of the order-2 kernel.
+
+**COMPILED 2026-09-03 (ledger 565, `RequestProject/TruncatedFormulaEnds.lean`, standard axioms;
+Sam: "make progress"): the two END terms as residues, and the CLASSICAL FORM.**
+`stripBoundary_kernel_mul_ends`: `∮ K·E₀ = 2πi[E₀(s₀) + K(0) + K(1)]` for `E₀ = 1/s + 1/(s−1) − ½log π`
+(the two ends of the helix, poles at 1 and 0). `selberg_identity_classical` /
+`cubic_identity_classical` (Re s₀ > 0, ζ(s₀) ≠ 0):
+```
+Σ_n Λ_x(n)Λ(n)n^{−s₀} = −ζ′/ζ(s₀) + K(1−s₀) + K(−s₀) − Σ′_ρ m_ρ K(ρ−s₀) + R_clock(s₀),
+R_clock(s₀) = (1/2π)[∫ K(b+it−s₀)Ψ(b+it)dt + ∫ K(a+it−s₀)Ψ(1−a−it)dt] − Ψ(s₀),  Ψ = ½Γ′/Γ(s/2).
+```
+The END DC `K(1−s₀)` and the anti-end `K(−s₀)` are compiled residues; `R_clock` is the trivial
+zeros `−Σ_{k≥0}K(−2k−s₀)` (measured att565 to 1e−5), NOT compiled as a residue sum: its gate is
+the digamma partial fraction, absent from Mathlib (ledger 527, same gate as Suzuki field 3). TAG:
+COMPILED identity, the END-term law of `end-term-dc-law` now in Lean for both ends.
+
 ### Track P — RETIRED same day (Sam, 2026-09-02: "i don't know why you brought the weil form in,
 ### it doesn't belong"). Kept for the record only; not a slot in the HP plan.
 ### (was: the Weil form on the prime phasor bank, ledger 537)
@@ -822,3 +889,86 @@ Papers: `automorph/hp_pencil.tex` (Theorems inertia/census/Stieltjes, the operat
 reading, the seat split), `automorph/grh_companion.tex` (the three operator levels,
 `grh_of_selfAdjoint_resolvent_capture`, `rh_iff_symmetrizedLineTower_traceLimit`),
 `automorph/universal.tex` (Part I, §carrier-S, the meta method).
+
+**Sam's first-collision frame (2026-09-03, ledgers 569–570).** RH ⟺ no real double zero of
+H_t = e^{−t∂²}ξ(½+i·) on [0, t₀]. Exact at a zero: H′_t(x) = −θ′_t(x)·S_t(x) with the odd lane
+S_t = (1/x)∫(−Φ_t′)(1 − cos xu) > 0 (positive identity, t ≤ 9.36) and the one-ended bank zero-free in
+the closed UHP (theorems, elementary, not compiled). CONTROL: t < 0 kernels are positive, even and
+decreasing and DO collide — positivity + J cannot decide; the arithmetic must be transported along the
+flow at the bank level. REGISTERED: ẋ_k(0) = 2i·FP(ρ_k) = the prime side of the compiled Riesz formula
+at s₀ → ρ_k (verified 2e−4); closing rates 8 − screening exact; 54% of gaps close forward
+(crystallization pair by pair). Slot: STRONGER-constructive candidate = a per-pair barrier from the
+registered closing rates; not yet a proof plan.
+
+## SIMPLICITY SKELETON (2026-09-03, ledgers 569–577), written backward from the target
+
+**Target S.** Every on-line zero ½+iγ of ζ is simple ⟺ Z′(γ) ≠ 0 at every zero of Hardy's Z
+[EQUIV, Zeta23 `hasDerivAt_hardyZ`, `deriv_hardyZ_eq_zero_iff`]. Off-line zeros are invisible to Z
+and belong to Target R (RH) below.
+
+- **S1 [COMPILED 574]** For every front N ≥ 1, t ≠ 0:
+  Z′(t) = Re[i e(t)(ϑ′(t)·bank_N − clock_N)] + Re[i e(t)(ϑ′·tail_N + tail′_N)], with
+  |tail_N|, |tail′_N| ≤ explicit(N, t) → 0 (`tail_bound`, `tailDeriv_bound`).
+  Hence Z′(γ) = lim_N Re[i e(γ)(ϑ′(γ)·bank_N(½+iγ) − clock_N(½+iγ))].
+- **S2 [COMPILED 573]** clock_N = Σ_{d≤N} Λ(d) d^{−s} bank_{N/d} = −bank′_N (multiplicativity; the
+  property every t ≠ 0 lacks, 572 control).
+- **S3 [OPEN — the only open node for Target S]** At a crossing (Z(γ) = 0), the limit in S1 is ≠ 0:
+  the clock-sampled growth history never equals ϑ′ × endpoint up to the vanishing tails.
+  Would suffice (targets, not claims):
+  (a) a many-phasor two-clock criterion generalizing 577 (double zero ⟺ finitely many exact
+      quarter-turn resonances in the rates), then `prime_clocks_incommensurable`. Holds for 2 phasors
+      [COMPILED 577]; for ≥ 3 phasors the double-zero locus on the rate torus is a continuum of
+      codimension 2, so the criterion must use the specific amplitudes n^{−½} and ϑ-tied phases —
+      NOT formulated. Spec: compute the double-zero locus of the N = 3 zeta-rate model.
+  (b) the registry route: `shadowing_implies_online_simple` [COMPILED, conditional] + the residual
+      tail law (566) [OPEN, RH-strength: it also yields on-line-ness].
+  (c) a Chebyshev/total-positivity inequality between clock_N and ϑ′·bank_N at crossings — no
+      candidate identity; the measured ratio takes both signs and both sides of 1 (572).
+  Unconditional partial: ≥ ½ − ε of zeros in [T, 2T] simple on-line [COMPILED `seating_simple_floor`
+  via Zeta23]; ≥ ¾ − ε distinct [Zeta23].
+
+**Target R (RH via Newman).** No real double zero of H_t = e^{−t∂²}ξ on [0, 0.22] ⟹ RH + S
+[EQUIV, pencil; de Bruijn–Newman machinery NOT in Lean anywhere in the workspace].
+- **R1 [MEASURED 570–572, not theorems]** velocity field ẋ_k(0) = registered prime field; closing
+  rates 8 − screening; g² concave; Burgers boundary law dv/dt = −Im q_xx − 2v Re q_x + (Im q_x)²/v;
+  control double zero at t = −0.0961.
+- **R2 [OPEN]** a per-pair barrier: v(t)² > 0 on [0, 0.22] from the boundary law — needs the
+  indefinite terms controlled; no candidate.
+- **R3 [OPEN]** bank-level transport (571): weights e^{t log²(N/n)}; n = 1 dominance at large
+  height (Polymath's mechanism) not compiled here.
+
+**Guard (rule 11):** every leaf is EQUIV or STRONGER-and-not-yet-constructive. No leaf is discharged
+by identity. This skeleton is a map, not yet a proof plan; the session's output is the location of
+the single open node S3 with every other node compiled.
+
+**STRONGER-constructive leaf (ledger 580, Sam's frame "no complex zeros supported").** Exhibit a
+source-labelled cascade converging to the ξ-section (every stage entire, all stage zeros at real
+heights, locally uniform convergence); `rh_of_sourceLabelled_cascade` [COMPILED] finishes. Not
+filled: phasor-built stages fail labelling [COMPILED counterexample]; Hadamard partial products and
+the Newman family H_t (t ∈ (0, ½)) are labelled iff RH; a cascade labelled BY ARITHMETIC is the
+object to build. This is the only leaf of the skeleton that is discharged by identity (Hurwitz) once
+the object exists.
+
+**S3, density register, COMPILED form (ledger 584, `RieszMultiplicityReadout.lean`):**
+m_{ρ₀}·L/2 = (prime side at ρ₀, Riesz front) − xiFinitePart ρ₀ − Σ_{ρ≠ρ₀} m_ρ K_R(ρ−ρ₀), exact at every
+front. Simplicity of ρ₀ ⟺ lim_L (2/L)·(prime side − finite part − comb) = 1. Open content unchanged:
+the prime side's dip at a zero is bounded below (a sup over zeros); measured 1.00 ± 0.01 at 13 zeros.
+
+**Track S prime side (ledgers 589–592).** The door `rh_iff_hermForm_nonneg` [COMPILED] has hypothesis
+Re Q_w(R) ≥ 0 with Q the zero-side form. Its prime side (589, pencil, verified 1e−4): Q_w(r) =
+−2Re Σ_i f_{−i}(r)(ξ′/ξ)^{(i−1)}(w)/(i−1)!, f_{−i} explicit sesquilinear; the jets are COMPILED
+(592, `hadamard_jet`), and the finite partial-fraction identity is COMPILED (594,
+`HermFormJets.lean`): **`hermForm_eq_jets`** — hermForm w R = Σ_{j,k} conj(r_j) r_k · jetValue s c j k,
+jetValue a finite functional of 2Re(ξ′/ξ)(s) and the jets (ξ′/ξ)^{(m)} at s = ½+iw and at the mirror
+c = 1−s̄ (593 on the path: the paired first-order term is FP(s) − FP(1−s̄) = 2Re FP(s)). Door restated
+**`rh_iff_jets_nonneg`** [COMPILED both ways]: RH ⟺ ∀ γ, 1<σ₀<3/2, R(0)=0:
+Re Σ conj(r_j) r_k jetValue(σ₀+iγ, 1−σ₀+iγ) ≥ 0 — hypothesis side has NO zero sum. Fold COMPILED (595,
+`HermFormJetsFold.lean`: `iteratedDeriv_conj_comm`, `jet_reflect`, `jet_mirror` ⟹ `rh_iff_jets_s_nonneg`,
+jets at ONE point). Prime chart COMPILED (595, `XiJetsArithmetic.lean`: `xi_jet_arith` ⟹
+**`rh_iff_prime_jets_nonneg`** [COMPILED both ways]): RH ⟺ ∀ γ, 1<σ₀<3/2, R(0)=0:
+Re Σ conj(r_j) r_k · jetValueP(σ₀+iγ, 2σ₀−1) ≥ 0, jetValueP built from 1/s, 1/(s−1), log π, the jets of
+½Γ′/Γ(·/2), and Σ Λ(n)(log n)^m n^{−s}. **No zero of ζ in the hypothesis.** Remaining on the dependency
+path: closed form of `pf` (hockey stick) making jetValueP a Hankel-type form; DC = Pascal–Hankel pole/Γ
+part (589, ≻ 0), AC = prime series; then the open node in its zero-free form: the sign of that form.
+Content of the door's hypothesis (590–591): the positivity is carried by the actual phases γ·log p,
+enslaved to the zeros; free phases violate at every degree ≥ 2. Open node unchanged in content.
