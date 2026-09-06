@@ -1,0 +1,42 @@
+warning: PrimeNumberTheoremAnd: repository '/Users/samuellavery/work/helix_frobenius/.lake/packages/PrimeNumberTheoremAnd' has local changes
+/private/tmp/rh-afternoon-probes/DraftProbes.lean:17:2: error: A: integrated bound for the full Riesz-minus-native balance, retaining multiplicity and bank change
+⊢ (fun T => ∫ (t : ℝ) in 0..T, ↑(offLineStripZeroCountMult t)) =o[atTop] fun T => T
+/private/tmp/rh-afternoon-probes/DraftProbes.lean:33:2: error: B: nonnegativity of the full DC plus correlated prime-power phase sum
+γ σ : ℝ
+hσ : 1 < σ
+hσupper : σ < 3 / 2
+R : Polynomial ℂ
+hR : R.coeff 0 = 0
+⊢ 0 ≤
+    PrimeClock.dcForm R (↑σ + ↑γ * I) ↑(2 * σ - 1) +
+      ∑' (n : ℕ),
+        ArithmeticFunction.vonMangoldt n * ↑n ^ (-σ) *
+          (PrimeClock.phase γ (Real.log ↑n) * PrimeClock.primeSymbol R (2 * σ - 1) (Real.log ↑n)).re
+/private/tmp/rh-afternoon-probes/DraftProbes.lean:48:2: error: C: eventual theta-stage mass sign at this channel point
+A : ℝ
+hA : 0 < A
+hdoor :
+  (∀ (s : ℂ),
+      1269 / 2 < |s.im| →
+        A / Real.log |s.im| ^ 9 < s.re →
+          s.re < 1 / 2 →
+            ZD.riemannXi s ≠ 0 →
+              ∃ G,
+                Tendsto (fun n => G n s) atTop (𝓝 (ZD.riemannXi s)) ∧
+                  Tendsto (fun n => deriv (G n) s) atTop (𝓝 (deriv ZD.riemannXi s)) ∧
+                    ∀ᶠ (n : ℕ) in atTop, 0 ≤ (logDeriv (G n) s).re / (s.re - 1 / 2)) →
+    RiemannHypothesis
+s : ℂ
+him : 1269 / 2 < |s.im|
+hlo : A / Real.log |s.im| ^ 9 < s.re
+hhi : s.re < 1 / 2
+hxi : ZD.riemannXi s ≠ 0
+⊢ ∀ᶠ (n : ℕ) in atTop, 0 ≤ (logDeriv ((fun n => xiArithmeticStage ↑n) n) s).re / (s.re - 1 / 2)
+/private/tmp/rh-afternoon-probes/DraftProbes.lean:67:2: error: D: arithmetic finite spectra, correction regular through the real axis, and local uniform limit
+N : ℕ
+inst✝ : NeZero N
+χ : DirichletCharacter ℂ N
+⊢ ∃ r d c E,
+    DifferentiableOn ℂ E spectralStrip ∧
+      TendstoLocallyUniformlyOn (fun n => normalizedSpectrumTrace (d n) (c n)) (fun z => normalizedLTrace χ z - E z)
+        atTop stripOffReal

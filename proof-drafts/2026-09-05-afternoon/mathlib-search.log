@@ -1,0 +1,240 @@
+.lake/packages/mathlib/Mathlib/Probability/Process/LocalProperty.lean:234:  obtain ⟨T, -, hT⟩ := Filter.exists_seq_monotone_tendsto_atTop_atTop ι
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:377:  simpa [-det_coe, Matrix.det_fin_two, mul_comm] using A.2
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:388:    (h : ∀ (a b c d : R) (hdet : a * d - b * c = 1), P ⟨!![a, b; c, d], by rwa [det_fin_two_of]⟩)
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:391:  convert! h (m 0 0) (m 0 1) (m 1 0) (m 1 1) (by rwa [det_fin_two] at hm)
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:408:  · simp_rw [det_coe A ▸ det_fin_two A.1]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:415:  · simp_rw [det_coe A ▸ det_fin_two A.1]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:438:  · rw [Matrix.det_fin_two_of, ← h]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:449:  · rw [Matrix.det_fin_two_of, ← h]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:826:  ⟨!![0, -1; 1, 0], by simp [Matrix.det_fin_two_of]⟩
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/SpecialLinearGroup.lean:830:  ⟨!![1, 1; 0, 1], by simp [Matrix.det_fin_two_of]⟩
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Adjugate.lean:395:  rw [adjugate_fin_succ_eq_det_submatrix, det_fin_two]
+.lake/packages/mathlib/Mathlib/Order/Filter/IsBounded.lean:450:theorem bddBelow_range_of_tendsto_atTop_atTop [IsCodirectedOrder α] {u : ℕ → α}
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/FixedDetMatrices.lean:131:  simpa only [det_fin_two, ha, mul_zero, sub_zero] using A.2
+.lake/packages/mathlib/Mathlib/Probability/Kernel/Disintegration/StandardBorel.lean:110:      rw [tendsto_atTop_atTop] at hs_tendsto
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean:807:theorem det_fin_two (A : Matrix (Fin 2) (Fin 2) R) : det A = A 0 0 * A 1 1 - A 0 1 * A 1 0 := by
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean:814:theorem det_fin_two_of (a b c d : R) : Matrix.det !![a, b; c, d] = a * d - b * c :=
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/Determinant/Basic.lean:815:  det_fin_two _
+.lake/packages/mathlib/Mathlib/Probability/Kernel/Disintegration/MeasurableStieltjes.lean:390:    rw [tendsto_atTop_atTop]
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:185:theorem tendsto_atTop_atTop : Tendsto f atTop atTop ↔ ∀ b : β, ∃ i : α, ∀ a : α, i ≤ a → b ≤ f a :=
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:190:  tendsto_atTop_atTop (β := βᵒᵈ)
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:193:theorem tendsto_atTop_atTop_iff_of_monotone (hf : Monotone f) :
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:195:  tendsto_atTop_atTop.trans <| forall_congr' fun _ => exists_congr fun a =>
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:199:alias _root_.Monotone.tendsto_atTop_atTop_iff := tendsto_atTop_atTop_iff_of_monotone
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:204:  tendsto_atTop_atTop_iff_of_monotone (β := βᵒᵈ) hf
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Basic.lean:226:  refine le_antisymm (hf.tendsto_atTop_atTop fun c ↦ ?_) ?_
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Finset.lean:27:  Finset.range_mono.tendsto_atTop_atTop Finset.exists_nat_subset_range
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Finset.lean:75:  refine tendsto_atTop_atTop.mpr fun t ↦ ⟨t.sup id, fun _ hu _ hv ↦ ?_⟩
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Finset.lean:83:  · refine tendsto_atTop_atTop.mpr fun s ↦ ?_
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Archimedean.lean:47:  Nat.mono_cast.tendsto_atTop_atTop exists_nat_ge
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Archimedean.lean:50:  tendsto_atTop_atTop_of_monotone (fun _ _ h ↦ h) fun a ↦ ⟨Nat.succPNat a, Nat.le_succ a⟩
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Prod.lean:35:  apply Monotone.tendsto_atTop_atTop
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:91:This lemma together with `exists_seq_monotone_tendsto_atTop_atTop` below
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:120:theorem tendsto_atTop_atTop_of_monotone [Preorder α] [Preorder β] {f : α → β} (hf : Monotone f)
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:130:  @tendsto_atTop_atTop_of_monotone _ βᵒᵈ _ _ _ hf h
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:133:alias _root_.Monotone.tendsto_atTop_atTop := tendsto_atTop_atTop_of_monotone
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:141:    (tendsto_atTop_atTop_of_monotone (fun _ _ => (hm _ _).2) hu).le_comap
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:156:theorem tendsto_atTop_atTop_of_monotone' [Preorder ι] [LinearOrder α] {u : ι → α} (h : Monotone u)
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:158:  apply h.tendsto_atTop_atTop
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/Tendsto.lean:170:  h.tendsto_atTop_atTop fun b => (hu.eventually (mem_atTop b)).exists
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/CountablyGenerated.lean:74:theorem exists_seq_monotone_tendsto_atTop_atTop (α : Type*) [Preorder α] [Nonempty α]
+.lake/packages/mathlib/Mathlib/Order/Filter/AtTopBot/CountablyGenerated.lean:92:  exists_seq_monotone_tendsto_atTop_atTop αᵒᵈ
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/FinTwo.lean:74:    grind [discr_fin_two, trace_fin_two, det_fin_two]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/FinTwo.lean:94:    det_fin_two, sq, (by norm_num : (4 : K) = 2 * 2)]
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/FinTwo.lean:176:  rw [IsElliptic, discr_fin_two, trace_fin_two, det_fin_two, hc] at hm
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/FinTwo.lean:292:      have : g.det = g 1 1 ^ 2 := by rw [val_det_apply, det_fin_two, hg10, hg00]; ring
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Matrix/GeneralLinearGroup/Basic.lean:28:  GeneralLinearGroup.mkOfDetNeZero !![a, -b; b, a] (by simpa [det_fin_two, sq] using hab)
+.lake/packages/mathlib/Mathlib/Probability/Distributions/Fernique.lean:88:    simp only [tendsto_atTop_atTop_iff_of_monotone ht_mono.monotone] at ht_tendsto
+.lake/packages/mathlib/Mathlib/AlgebraicGeometry/EllipticCurve/Affine/Point.lean:412:  simp_rw [Algebra.norm_eq_matrix_det <| CoordinateRing.basis W', Matrix.det_fin_two,
+.lake/packages/mathlib/Mathlib/LinearAlgebra/Complex/Determinant.lean:27:  rw [← LinearMap.det_toMatrix basisOneI, toMatrix_conjAe, Matrix.det_fin_two_of]
+.lake/packages/mathlib/Mathlib/Probability/Martingale/BorelCantelli.lean:220:theorem Martingale.ae_not_tendsto_atTop_atTop [IsFiniteMeasure μ] (hf : Martingale f ℱ μ)
+.lake/packages/mathlib/Mathlib/Probability/Martingale/BorelCantelli.lean:224:    not_bddAbove_of_tendsto_atTop htop (hω.2 <| bddBelow_range_of_tendsto_atTop_atTop htop)
+.lake/packages/mathlib/Mathlib/Probability/Martingale/BorelCantelli.lean:289:  have h₁ := (martingale_martingalePart hf hint).ae_not_tendsto_atTop_atTop h₀
+.lake/packages/mathlib/Mathlib/Probability/Martingale/BorelCantelli.lean:296:  · refine tendsto_atTop_atTop_of_monotone' ?_ ?_
+.lake/packages/mathlib/Mathlib/Probability/Martingale/BorelCantelli.lean:305:  · refine tendsto_atTop_atTop_of_monotone' (monotone_nat_of_le_succ hω₄) ?_
+.lake/packages/mathlib/Mathlib/Probability/BorelCantelli.lean:88:  refine tendsto_atTop_atTop_of_monotone' ?_ ?_
+.lake/packages/mathlib/Mathlib/Analysis/Polynomial/Basic.lean:244:theorem abs_div_tendsto_atTop_atTop_of_degree_gt (hdeg : Q.degree < P.degree) (hQ : Q ≠ 0) :
+.lake/packages/mathlib/Mathlib/Analysis/Polynomial/Basic.lean:251:alias abs_div_tendsto_atTop_of_degree_gt := abs_div_tendsto_atTop_atTop_of_degree_gt
+.lake/packages/mathlib/Mathlib/Analysis/Polynomial/Basic.lean:297:  convert! (abs_div_tendsto_atTop_atTop_of_degree_gt _ _ hdeg hQ).comp tendsto_neg_atBot_atTop
+.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/ProjectiveLine.lean:138:      simpa [det_fin_two, show g 0 0 = 0 from congr_fun h 0, show g 1 0 = 0 from congr_fun h 1]
+.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/ProjectiveLine.lean:182:    rw [det_fin_two]
+.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/ProjectiveLine.lean:194:  rw [discr_fin_two, trace_fin_two, det_fin_two] at hdisc
+.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/ProjectiveLine.lean:228:      simp only [discr_fin_two, trace_fin_two, det_fin_two]
+.lake/packages/mathlib/Mathlib/Topology/Compactification/OnePoint/ProjectiveLine.lean:239:        det_fin_two]
+.lake/packages/mathlib/Mathlib/Topology/Algebra/Order/Floor.lean:68:  floor_mono.tendsto_atTop_atTop fun b =>
+.lake/packages/mathlib/Mathlib/Topology/Algebra/Order/Floor.lean:75:  ceil_mono.tendsto_atTop_atTop fun b => ⟨b, (ceil_intCast _).ge⟩
+.lake/packages/mathlib/Mathlib/Computability/AkraBazzi/AkraBazzi.lean:258:      (DifferentiableOn.mono (differentiableOn_rpow_const _) fun z hz => ?_)
+.lake/packages/mathlib/Mathlib/Computability/AkraBazzi/AkraBazzi.lean:348:        (DifferentiableOn.mono (differentiableOn_rpow_const _) fun z hz => ?_)
+.lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/IndicatorCard.lean:52:    rw [h_mono.tendsto_atTop_atTop_iff]
+.lake/packages/mathlib/Mathlib/Algebra/Order/Archimedean/IndicatorCard.lean:66:    rw [tendsto_congr' (sum_indicator_eventually_eq_card r hs), tendsto_atTop_atTop]
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/SmoothingSeminorm.lean:563:    Tendsto.comp (tendsto_smoothingFun_of_map_one_le_one μ hμ1 x) (tendsto_atTop_atTop_of_monotone
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/SeminormFromConst.lean:155:        (tendsto_atTop_atTop_of_monotone (fun _ _ hnm ↦ by
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/SeminormFromConst.lean:190:      (tendsto_atTop_atTop_of_monotone (fun _ _ hnk ↦ mul_le_mul_right hnk m) _)
+.lake/packages/mathlib/Mathlib/Analysis/Normed/Unbundled/SeminormFromConst.lean:252:      (tendsto_atTop_atTop_of_monotone add_left_mono _)
+.lake/packages/mathlib/Mathlib/NumberTheory/Chebyshev.lean:786:theorem integral_theta_div_log_sq_isLittleO :
+.lake/packages/mathlib/Mathlib/NumberTheory/Chebyshev.lean:788:  refine integral_theta_div_log_sq_isBigO.trans_isLittleO ?_
+.lake/packages/mathlib/Mathlib/NumberTheory/Chebyshev.lean:804:  have := integral_theta_div_log_sq_isLittleO.bound εpos
+.lake/packages/mathlib/Mathlib/NumberTheory/WellApproximable.lean:224:    refine h_mono.tendsto_atTop_atTop fun n => ?_
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:15:for set integrals. See `Filter.Tendsto.integral_sub_linear_isLittleO_ae` and its corollaries.
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:41:theorem Filter.Tendsto.integral_sub_linear_isLittleO_ae
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:73:theorem ContinuousWithinAt.integral_sub_linear_isLittleO_ae [TopologicalSpace X]
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:81:  (hx.mono_left inf_le_left).integral_sub_linear_isLittleO_ae hfm (μ.finiteAt_nhdsWithin x t) hs m
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:93:theorem ContinuousAt.integral_sub_linear_isLittleO_ae [TopologicalSpace X] [OpensMeasurableSpace X]
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:99:  (hx.mono_left inf_le_left).integral_sub_linear_isLittleO_ae hfm (μ.finiteAt_nhds x) hs m hsμ
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:109:theorem ContinuousOn.integral_sub_linear_isLittleO_ae [TopologicalSpace X] [OpensMeasurableSpace X]
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Bochner/FundThmCalculus.lean:116:  (hft x hx).integral_sub_linear_isLittleO_ae ht
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:74:`measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae`, states the following.
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:171:The most general theorem `measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae` can be
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:175:directions: first, `measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae` deals with any
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:253:See also `measure_integral_sub_linear_isLittleO_of_tendsto_ae` for a version assuming
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:260:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae' [IsMeasurablyGenerated l']
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:268:  have A := hf.integral_sub_linear_isLittleO_ae hfm hl (hu.Ioc hv)
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:269:  have B := hf.integral_sub_linear_isLittleO_ae hfm hl (hv.Ioc hu)
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:283:See also `measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le` for a version assuming
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:287:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:294:  (measure_integral_sub_linear_isLittleO_of_tendsto_ae' hfm hf hl hu hv).congr'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:308:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_ge'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:315:  (measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le' hfm hf hl hv hu
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:331:See also `measure_integral_sub_linear_isLittleO_of_tendsto_ae'` for a version that also works, e.g.,
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:336:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae [FTCFilter a l l']
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:342:  measure_integral_sub_linear_isLittleO_of_tendsto_ae' hfm hf (FTCFilter.finiteAt_inner l) hu hv
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:350:See also `measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le'` for a version that also works,
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:352:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:359:  measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_le' hfm hf (FTCFilter.finiteAt_inner l) hu
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:368:See also `measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_ge'` for a version that also works,
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:370:theorem measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_ge
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:377:  measure_integral_sub_linear_isLittleO_of_tendsto_ae_of_ge' hfm hf (FTCFilter.finiteAt_inner l) hu
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:392:theorem measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:403:    ((measure_integral_sub_linear_isLittleO_of_tendsto_ae hmeas_a ha_lim hua hva).neg_left.add_add
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:404:          (measure_integral_sub_linear_isLittleO_of_tendsto_ae hmeas_b hb_lim hub hvb)).congr'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:430:theorem measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_right
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:436:    measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae hab stronglyMeasurableAt_bot
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:449:theorem measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_left
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:455:    measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae hab hmeas
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:490:theorem integral_sub_linear_isLittleO_of_tendsto_ae [FTCFilter a l l']
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:494:  simpa [integral_const] using! measure_integral_sub_linear_isLittleO_of_tendsto_ae hfm hf hu hv
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:506:theorem integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:516:    using measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae hab hmeas_a hmeas_b
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:526:theorem integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_right
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:531:    measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_right hab hmeas hf hu hv
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:540:theorem integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_left
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:545:    measure_integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_left hab hmeas hf hu hv
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:591:    integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae hf hmeas_a hmeas_b ha hb
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:621:    integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_right hf hmeas hb continuousAt_snd
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:796:    integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae hf hmeas_a hmeas_b ha hb
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/IntervalIntegral/FundThmCalculus.lean:861:  .of_isLittleO <| integral_sub_integral_sub_linear_isLittleO_of_tendsto_ae_right hf hmeas hb
+.lake/packages/mathlib/Mathlib/NumberTheory/PrimeCounting.lean:98:  apply tendsto_atTop_atTop_of_monotone' monotone_primeCounting'
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/CurveIntegral/Basic.lean:521:  simp only [hasFDerivWithinAt_iff_isLittleO, Path.segment_same, curveIntegral_refl, sub_zero,
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/DiffContOnCl.lean:80:  ⟨h.differentiableOn.mono ht, h.continuousOn.mono (closure_mono ht)⟩
+.lake/packages/mathlib/Mathlib/Topology/Order/MonotoneConvergence.lean:93:  exact h_mono.rangeFactorization.tendsto_atTop_atTop fun b => b.2.imp fun a ha => ha.ge
+.lake/packages/mathlib/Mathlib/Topology/Order/MonotoneConvergence.lean:208:  else Or.inl <| tendsto_atTop_atTop_of_monotone' h_mono H
+.lake/packages/mathlib/Mathlib/MeasureTheory/Integral/Lebesgue/DominatedConvergence.lean:137:    · rw [tendsto_atTop_atTop_iff_of_monotone h_mono] at h_absurd
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:99:    rw [det_fin_two]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:224:      mulVecLin_apply, mulVec, dotProduct, det_fin_two, f₁]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:244:  have H := congr(Int.cast (R := ℂ) $(det_fin_two g))
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:332:  replace had : g 0 0 * g 1 1 = 1 := by rw [det_fin_two, hc] at had; lia
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:346:  replace hg : g 0 1 = g 0 0 * g 1 1 - 1 := by rw [det_fin_two, hc] at hg; lia
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:494:  have ha : g 0 0 = 1 := by grind [det_fin_two, g.property]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:535:    simpa [-SpecialLinearGroup.det_coe, det_fin_two, hd, hc, neg_eq_iff_eq_neg] using g.property
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:545:    rw [modular_S_smul, ← coe_re, coe_mk, inv_re, normSq_eq_norm_sq, norm_neg, hz', one_pow,
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:577:    grind [g.property, det_fin_two]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:608:    simp_rw [det_fin_two] at this
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:667:    mul_le_iff_le_one_right z.im_pos, normSq_eq_norm_sq, sq_le_one_iff₀ (norm_nonneg _)] at hden
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:678:      · simp [normSq_eq_norm_sq, denom, coe_S, hnm]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:711:    eq_comm, mul_eq_left₀ z.im_ne_zero, normSq_eq_norm_sq,
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:901:      simp [← normSq_eq_norm_sq, normSq_apply]
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:950:    exact ⟨hz.le, h.2, h.1.2, by simpa [Complex.normSq_eq_norm_sq] using h.1.1⟩
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:955:      simpa [← sq_lt_one_iff₀ (norm_nonneg _), ← Complex.normSq_eq_norm_sq, Complex.normSq,
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:957:    exact ⟨⟨z, hz'⟩, ⟨⟨by simpa [Complex.normSq_eq_norm_sq], h2⟩, h1⟩, rfl⟩
+.lake/packages/mathlib/Mathlib/NumberTheory/Modular.lean:1001:      normSq_eq_norm_sq] at h1
+.lake/packages/mathlib/Mathlib/MeasureTheory/Covering/LiminfLimsup.lean:91:    tendsto_atTop_atTop.mpr fun j => ⟨f j, fun i hi => (hf₂ j).trans (hi.trans <| hf₂ i)⟩
+.lake/packages/mathlib/Mathlib/Analysis/AbsoluteValue/Equivalence.lean:184:  choose r₁ hr₁ using tendsto_atTop_atTop.1 hcᵢ 2
+.lake/packages/mathlib/Mathlib/Analysis/SpecificLimits/Basic.lean:178:  tendsto_atTop_atTop_of_monotone' (pow_right_mono₀ <| le_add_of_nonneg_left h.le) <|
+.lake/packages/mathlib/Mathlib/Analysis/SpecificLimits/Basic.lean:211:          hr).monotone.tendsto_atTop_atTop (fun b ↦ ?_)
+.lake/packages/mathlib/Mathlib/Analysis/SpecificLimits/Basic.lean:672:  tendsto_atTop_atTop_of_monotone (fun _ _ ↦ Nat.factorial_le) fun n ↦ ⟨n, n.self_le_factorial⟩
+.lake/packages/mathlib/Mathlib/Analysis/SpecificLimits/Basic.lean:707:  Nat.floor_mono.tendsto_atTop_atTop fun x ↦ ⟨max 0 (x + 1), by simp [Nat.le_floor_iff]⟩
+.lake/packages/mathlib/Mathlib/Analysis/SpecificLimits/Basic.lean:712:  refine Nat.ceil_mono.tendsto_atTop_atTop (fun x ↦ ⟨x, ?_⟩)
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Stieltjes.lean:650:lemma measure_Ioi_of_tendsto_atTop_atTop (hf : Tendsto f atTop atTop) (x : R) :
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Stieltjes.lean:658:lemma measure_Ici_of_tendsto_atTop_atTop (hf : Tendsto f atTop atTop) (x : R) :
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Stieltjes.lean:660:  rw [← top_le_iff, ← f.measure_Ioi_of_tendsto_atTop_atTop hf x]
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Stieltjes.lean:689:lemma measure_univ_of_tendsto_atTop_atTop [Nonempty R] (hf : Tendsto f atTop atTop) :
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/Stieltjes.lean:692:  rw [← top_le_iff, ← f.measure_Ioi_of_tendsto_atTop_atTop hf default]
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/Taylor.lean:192:      (hf.differentiableOn_iteratedDerivWithin (mod_cast coe_lt_succ) hs_unique).mono h
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Complex/Log.lean:130:  · simp_rw [log, map_add, map_mul, conj_ofReal, conj_I, normSq_eq_norm_sq, Real.log_pow,
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Gamma/BohrMollerup.lean:364:    differentiableOn_Gamma_Ioi.continuousOn.mono <| by grind
+.lake/packages/mathlib/Mathlib/NumberTheory/LSeries/RiemannZeta.lean:185:def RiemannHypothesis : Prop :=
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/PolarCoord.lean:116:    Matrix.det_fin_two_of, sub_neg_eq_add]
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Log/InvLog.lean:75:  (differentiableOn_log.mono (by grind)).inv (by simp; tauto)
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Log/InvLog.lean:78:  differentiableOn_inv_log'.mono (by grind)
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Log/InvLog.lean:125:  (differentiableOn_log.mono (by grind)).log (by simp; tauto)
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Log/InvLog.lean:128:  differentiableOn_log_log'.mono (by grind)
+.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/Bounds.lean:93:      simpa only [Matrix.det_fin_two, hg, hg', mul_zero, mul_zero, sub_zero] using g.det_coe
+.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/Cusps.lean:126:      simp [discr_fin_two, trace_fin_two, det_fin_two, ModularGroup.T]
+.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/QExpansion.lean:303:  have := ((differentiableOn_cuspFunction_ball hh hfper hfhol hfbdd).mono
+.lake/packages/mathlib/Mathlib/MeasureTheory/Measure/MeasureSpace.lean:526:    rcases exists_seq_monotone_tendsto_atTop_atTop ι with ⟨x, hxm, hx⟩
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Extend.lean:69:    have diff : DifferentiableOn ℝ f (B ∩ s) := f_diff.mono inter_subset_right
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Extend.lean:117:  have t_diff : DifferentiableOn ℝ f t := f_diff.mono ts
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Extend.lean:152:  have t_diff : DifferentiableOn ℝ f t := f_diff.mono ts
+.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/EisensteinSeries/E2/Defs.lean:74:    Matrix.det_fin_two B.1, Int.cast_sub, ← map_mul, h0.2.2.2]
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/DivergenceTheorem.lean:174:  refine HasIntegral.of_le_Henstock_of_forall_isLittleO gp_le ?_ ?_ _ s hs ?_ ?_
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Equiv.lean:387:  rw [tendsto_atTop_atTop]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:63:  rw [div_re, normSq_eq_norm_sq (a - b), ← add_div, add_re, sub_re, add_im, sub_im]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:68:      simp [← normSq_apply, normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:94:    rw [← this]; simp [← normSq_eq_norm_sq, Complex.normSq_sub]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:95:  simp [normSq_eq_norm_sq, Real.cos_sub]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:119:  rw [div_le_div_iff₀ (by positivity [h₁.trans h₂]) ?hpos, ← normSq_eq_norm_sq, normSq_sub,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Poisson.lean:120:    normSq_eq_norm_sq, normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/NumberTheory/ModularForms/CongruenceSubgroups.lean:119:    rw [Matrix.det_fin_two] at adet
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Circle.lean:73:@[simp] lemma normSq_coe (z : Circle) : normSq z = 1 := by simp [normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.lean:148:  rw [Filter.tendsto_atTop_atTop]
+.lake/packages/mathlib/Mathlib/Analysis/SpecialFunctions/Pow/Asymptotics.lean:150:  obtain ⟨c, hc⟩ := tendsto_atTop_atTop.mp (tendsto_rpow_atTop hy) b
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Basic.lean:779:theorem HasIntegral.of_bRiemann_eq_false_of_forall_isLittleO (hl : l.bRiemann = false)
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Basic.lean:873:theorem HasIntegral.of_le_Henstock_of_forall_isLittleO (hl : l ≤ Henstock) (B : ι →ᵇᵃ[I] ℝ)
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Basic.lean:883:  HasIntegral.of_bRiemann_eq_false_of_forall_isLittleO (Bool.eq_false_of_le_false hl.1) B hB0 _ s hs
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Basic.lean:898:theorem HasIntegral.mcShane_of_forall_isLittleO (B : ι →ᵇᵃ[I] ℝ) (hB0 : ∀ J, 0 ≤ B J)
+.lake/packages/mathlib/Mathlib/Analysis/BoxIntegral/Basic.lean:902:  (HasIntegral.of_bRiemann_eq_false_of_forall_isLittleO (l := McShane) rfl B hB0 g ∅ countable_empty
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Congr.lean:198:theorem DifferentiableOn.congr_mono (h : DifferentiableOn 𝕜 f s) (h' : ∀ x ∈ t, f₁ x = f x)
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Congr.lean:199:    (h₁ : t ⊆ s) : DifferentiableOn 𝕜 f₁ t := fun x hx => (h x (h₁ hx)).congr_mono h' (h' x hx) h₁
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Basic.lean:488:theorem DifferentiableOn.mono (h : DifferentiableOn 𝕜 f t) (st : s ⊆ t) : DifferentiableOn 𝕜 f s :=
+.lake/packages/mathlib/Mathlib/Analysis/Calculus/FDeriv/Basic.lean:497:  (differentiableOn_univ.2 h).mono (subset_univ _)
+.lake/packages/mathlib/Mathlib/Analysis/Complex/RemovableSingularity.lean:64:      ⟨Iff.mpr (differentiableOn_dslope_of_notMem fun h => h.2 rfl) (h.mono sdiff_subset),
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean:147:lemma normSq_eq_norm_sq (z : ℂ) : normSq z = ‖z‖ ^ 2 := by
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean:150:protected theorem sq_norm (z : ℂ) : ‖z‖ ^ 2 = normSq z := (normSq_eq_norm_sq z).symm
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean:153:  rw [← one_lt_sq_iff₀ (norm_nonneg _), normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Norm.lean:156:  rw [← one_le_sq_iff₀ (norm_nonneg _), normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Manifold.lean:184:  · simp [Matrix.det_fin_two]; ring
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Manifold.lean:243:      Algebra.norm_complex_eq, Complex.normSq_eq_norm_sq, ← pow_mul, sign_neg h, neg_div]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Manifold.lean:245:      Algebra.norm_complex_eq, Complex.normSq_eq_norm_sq, ← pow_mul]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:56:    simpa [Matrix.det_fin_two, hc, h₀] using g.det_ne_zero
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:57:  have h : g.val.det < 0 := by simp [Matrix.det_fin_two, *]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:71:  rw [eq_div_iff (by positivity), dist_eq_norm, ← Complex.normSq_eq_norm_sq, Complex.normSq_apply,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:73:  simp [num, denom, Complex.ext_iff, htrace, Matrix.det_fin_two, field]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:99:      simp [gl_smul_eq_self_iff_dist_sq_eq, *, dist_eq_norm, ← Complex.normSq_eq_norm_sq,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:134:    simp [discrim, Matrix.discr_fin_two, Matrix.trace_fin_two, Matrix.det_fin_two]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FixedPoints.lean:161:    · simp [discrim, Matrix.discr_fin_two, Matrix.trace_fin_two, Matrix.det_fin_two]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Angle.lean:44:  simp [div_eq_mul_inv, Complex.normSq_eq_norm_sq]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/MoebiusAction.lean:61:  simp [Matrix.det_fin_two, H]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/MoebiusAction.lean:88:    GeneralLinearGroup.val_det_apply, g.1.det_fin_two]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Isometry.lean:107:  simp_rw [← normSq_eq_norm_sq, Complex.normSq_sub] at hsq
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Isometry.lean:108:  simpa [normSq_eq_norm_sq, Complex.add_conj, LinearIsometry.norm_map] using hsq.symm
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Isometry.lean:155:  rw [← LinearMap.det_toMatrix basisOneI, toMatrix_rotation, Matrix.det_fin_two]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/Measure.lean:114:    simp [det_smulFDeriv, *, im_smul_eq_div_normSq, Complex.normSq_eq_norm_sq, field]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/UpperHalfPlane/FunctionsBoundedAtInfty.lean:97:  simpa [Matrix.det_fin_two, hg] using g.det_ne_zero
+.lake/packages/mathlib/Mathlib/Analysis/Complex/CanonicalDecomposition.lean:105:    · rw [← normSq_eq_conj_mul_self, normSq_eq_norm_sq w, sub_ne_zero, ne_eq, ← ofReal_pow,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/CanonicalDecomposition.lean:166:  rw [← ofReal_pow, ← normSq_eq_norm_sq, normSq_eq_conj_mul_self, ← sub_mul, mul_comm _ z]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/OpenMapping.lean:99:    ⟨h3.differentiableOn.mono ball_subset_closedBall,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/HasPrimitives.lean:133:  exact integral_boundary_rect_eq_zero_of_differentiableOn f z w <| hf.mono hzw
+.lake/packages/mathlib/Mathlib/Analysis/Complex/HasPrimitives.lean:217:  simpa using intervalIntegral.integral_hasDerivAt_right int1 int2 int3 |>.isLittleO
+.lake/packages/mathlib/Mathlib/Analysis/Complex/JensenFormula.lean:74:    rw [← ofReal_inj, ← normSq_eq_norm_sq, normSq_sub ]
+.lake/packages/mathlib/Mathlib/Analysis/Complex/JensenFormula.lean:76:      simp [normSq_eq_norm_sq, hρ, -mul_re, this, mul_assoc]
+.lake/packages/mathlib/Mathlib/Analysis/InnerProductSpace/TwoDim.lean:515:    o.volumeForm_robust Complex.orthonormalBasisOneI rfl, Basis.det_apply, Matrix.det_fin_two,
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Basic.lean:96:  simpa [← Complex.normSq_eq_norm_sq] using continuous_norm (E := ℂ).fun_pow 2
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Basic.lean:346:  norm_sq_eq_def_ax z := (normSq_eq_norm_sq z).symm
+.lake/packages/mathlib/Mathlib/Analysis/Complex/Basic.lean:419:    rw [← sq_eq_sq₀ (by positivity) (by positivity), ← normSq_eq_norm_sq, ← RCLike.normSq_eq_def',
+.lake/packages/mathlib/Mathlib/MeasureTheory/VectorMeasure/Decomposition/Hahn.lean:314:    rw [tendsto_atTop_atTop] at h₄
+.lake/packages/mathlib/Mathlib/MeasureTheory/VectorMeasure/BoundedVariation.lean:200:    Filter.exists_seq_monotone_tendsto_atTop_atTop α
+.lake/packages/mathlib/Mathlib/RingTheory/Etale/StandardEtale.lean:310:  Matrix.det_fin_two Algebra.PreSubmersivePresentation.jacobiMatrix_apply
+.lake/packages/mathlib/Mathlib/RingTheory/Complex.lean:39:    Matrix.det_fin_two, normSq_apply]
+.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/Basic.lean:138:theorem MDifferentiableOn.mono (h : MDiff[t] f) (st : s ⊆ t) : MDiff[s] f :=
+.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/Basic.lean:151:  (mdifferentiableOn_univ.2 h).mono (subset_univ _)
+.lake/packages/mathlib/Mathlib/Geometry/Manifold/MFDeriv/Basic.lean:1004:theorem MDifferentiableOn.congr_mono (h : MDiff[s] f) (h' : ∀ x ∈ t, f₁ x = f x) (h₁ : t ⊆ s) :

@@ -1,0 +1,12 @@
+import RequestProject.RegistrationCalibration
+import RequestProject.HelixHubFusion
+
+open Complex Filter Asymptotics MeasureTheory
+open CriticalLinePhasor CriticalLinePhasor.ContourArgument
+open CriticalLinePhasor.CaptureInterfaceAudit
+
+example : RiemannHypothesis := by
+  apply riemannHypothesis_of_integratedDefectSublinear
+  change (fun T => ∫ t in (0 : ℝ)..T, (offLineStripZeroCountMult t : ℝ))
+    =o[atTop] fun T : ℝ => T
+  fail "A: integrated bound for the full Riesz-minus-native balance, retaining multiplicity and bank change"

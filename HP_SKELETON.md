@@ -210,10 +210,115 @@ the warp removes the S(t) correction so vanishing is residue-free at a cell boun
       Compiled interface: SpectralCarrierKernelCoupling3D ; nonempty_coupling_iff
         (a coupling exists ⟺ the analytic kernel and the carrier coordinate name the
          same point ⟺ Re ρ = σ*)                                                  ledger 286
-      Three compiled registers of the SAME node (do not count them as three problems):
+      Four compiled registers of the SAME node (do not count them as four problems):
         count   N_off ≡ 0                offLineMassLog_iff_offLine_zero        ledger 424, 426
         trace   windowed exhaustion      traceLimit_of_rh (converse compiled)   companion
         mass    seatMass ≥ 0 on channel  channel_mass_iff_online                SeatingMassPositivity
+        intertwining  Semiconj zeroHeightCorrespondence ledgerOp carrierOp
+                ⟺ every zero on the line   semiconj_iff_nontrivialZeros_online   ledger 597
+                the zero-built map's defect is the drift −i(Re ρ − ½) (597, 598); the map that
+                carries the fiber is the REGISTRATION: `StationRegistration t` (stations from the
+                primes, zeros shadowed within half the local gap) ⟹ full intertwining ⟹ RH
+                (599 — RETRACTED 603: `StationRegistration` is uninhabited, an all-sign enumeration
+                against a one-sided station sequence, `stationRegistration_not_nonempty`; use 600 or
+                the parallel session's `PositiveStationRegistration`).
+                Count form (600, `OnePerGap.lean`): `OnePerGap t` — one zero with
+                multiplicity per station gap on the compiled strip census — ⟹ every zero on the
+                line AND simple (`online_simple_of_onePerGap`) ⟹ RH ⟹ full intertwining
+                (`semiconj_of_onePerGap`). STATIONS BUILT (601, `RegistrationStations.lean`,
+                `PrimeStrain.lean`): `primeStation X n` = first crossing above 10 of level n − 3/2 by
+                ϑ/π + Ŝ_X, Ŝ_X the prime-forced strain −(1/π)Σ_{n≤X} Λ(n) sin(t log n)/(√n log n);
+                `primeStation_spec` = the station equation exactly; `resid_station`:
+                R(t_n) = N(t_n) − n + ½ exactly. DOOR `nontrivialZeros_online_of_primeResid`:
+                RH ⟸ start n₀ ∧ primeStation X n₀ ≤ 58 ∧ ∀ n ≥ n₀, |R(t_n) − R(t_{n₀})| < 1.
+                603: with a FIXED cutoff X this hypothesis is FALSE (it would bound S, and S is
+                unbounded) — the door is empty. The station machinery stands for any continuous
+                strain; re-instantiate it on a HEIGHT-MATCHED, Riesz-tapered strain (owed). The 58
+                obligation is removed by `primeStation_le_58_of_level_le` (IVT, parallel session);
+                the one-step form `onePerGap_of_adjacent_resid` replaces the run-from-n₀ form.
+                OPEN NODE, exact: the adjacent residual law on the height-matched object (measured
+                max 0.31–0.38 spacings over 41k zeros). HEIGHT-MATCHED DOOR COMPILED (604,
+                `RegistrationSeq.lean`): `StrainSeq` (one bank per station), `seqStation`,
+                `onePerGap_of_seqResid`, `nontrivialZeros_online_of_primeSeqResid`, inhabitant under
+                RH stated (Ŝ_n ≡ n − 3/2 − ϑ(γ_n)/π puts every station on its zero); DC per station
+                `seqResid_station_abs_le` with constant 24 + |A′| + B_n. Draft A's `fail` = the
+                adjacent estimate for the prime banks. Drafts B/C/D (605): B's Laplace brick
+                `laplace_pow` (`LaplacePower.lean`) puts the pole DC in the ℓ-variable of the symbol;
+                C hits the oscillatory cross terms (`JKernelPhaseSign`); D with station spectra has
+                its correction holomorphic iff RH (606: `stripTraceLimit_iff_GRH`; the attack is to
+                spend E). Four attacks, each with its own tools.
+                THE REGISTRY'S MECHANISM COMPILED (607–608, `RegistrationDensity.lean`,
+                `RieszStrainDeriv.lean`, `RegistrationGapCount.lean`): `density_on_line` — on the
+                line the Fejér-smoothed zero density = clockRate + Riesz prime bank + explicit
+                remainders, NO ξ′/ξ term (its real part vanishes there); `rieszStrain_hasDerivAt`
+                (the Riesz strain is the bank's antiderivative); **`smoothed_gap_count`**: over a
+                station gap of the Riesz-strained clock the smoothed count is EXACTLY one plus the
+                integrated remainders — the registration operator is designed so; "there is no
+                residual" at the smoothed level. Sharp − smoothed = the Fejér boundary term alone.
+                Owed: `hrem` (continuity of the clock line integrals in t). BOUNDARY TERM
+                COMPILED (609, `RegistrationBoundary.lean`): smoothed count = Σ'_ρ m_ρ·gapWeight
+                (exchange via uniform O(‖ρ‖⁻²) kernel bound), `gap_count_decomposition`:
+                sharp count = 1 + ∫rem/π + Σ'_ρ m_ρ(1_gap − w_ρ). One-per-gap ⟺
+                |∫rem/π + boundary| < ½ on every gap; on-line w_ρ = Fejér mass of the gap (≥ 0
+                compiled; ≤ 1 needs ∫(1−cos Lu)/(Lu²) = π, owed). 610 (`FejerMass.lean`,
+                `RegistrationWeightBound.lean`, `RegistrationRemainderIntegrable.lean`,
+                `FejerTail.lean`): ∫_ℝ fejer = π COMPILED (Fourier inversion of the triangle);
+                on-line w_ρ ∈ [0,1]; `hrem` DISCHARGED (`gap_count_decomposition'` needs only hB, hn);
+                weights in zero–station distances: inside 1 − w ≤ (2/πL)(1/(γ−a) + 1/(b−γ)),
+                outside w ≤ (2/πL)/dist and ≤ (2(b−a)/πL)/dist². EXACT RESIDUAL FORM: boundary
+                term additive ⟹ B_n = Φ(t_{n+1}) − Φ(t_n), Φ := N − N_L the registration potential;
+                OnePerGap ⟺ Φ(t_n) + R_n constant at the stations (R_n = archimedean drift).
+                611 (`RegistrationMaster.lean`, `RegistrationWarp.lean`): MASTER IDENTITY with no
+                stations, `count_identity`: N(a,b] = Δϑ/π + ΔŜ_L + ∫rem/π + boundaryTerm for all
+                L > 0, 0 < a ≤ b; `S_identity` = Selberg's formula for S with Riesz weights, exact.
+                Stations for ANY clock tending to infinity (`nontrivialZeros_online_of_resid'`).
+                Height-matched bank `warpStrain Lf t = Ŝ_{Lf t}(t)` continuous (joint continuity
+                of Ŝ in (L,t)), clock → ∞ when e^{Lf} ≤ t/20; `warp_gap_count` EXACT: count = 1 +
+                ∫rem/π + B_{L_a} − (bank change), bank change ≤ (1/π)((L′−L)/L)(e^{L′}+1).
+                612 (`RegistrationScale.lean`, `RegistrationFlux.lean`): THE CONCRETE REGISTRY
+                `registryStrain c = Ŝ_{c log t}(t)`, c ∈ (0,1), explicit threshold 20^{1/(1−c)};
+                `registry_gap_count` exact; `registry_bankChange_le` ≤ (1/π)(log(b/a)/log a)(b^c+1);
+                door `nontrivialZeros_online_of_registryResid`. FLUX CONSERVATION `boundaryTerm_add`;
+                `run_count`: over k gaps N = k + ∫rem/π + B(run) — net defect = END effect;
+                `boundaryTerm_split` near/far; `far_weights_le` ≤ (2(b−a)/πL)·(far second moment)
+                for on-line far zeros. Lattice configuration ⟹ B ≡ 0 (translation symmetry): B is
+                the local irregularity. **613 CALIBRATION: the gap doors 600–612 put the gap
+                boundaries at the PREDICTED-ZERO level n − 3/2; their residual law demands
+                one-sided offsets, contradicted by the measured registry (signed e, RMS 0.063).
+                Hypotheses uninhabited at that level. Repair = integer level (shifted strain
+                Ŝ − ½ = mid-gap stations = the shadowing frame of 161), zero new mathematics.
+                Even repaired, one-per-cell for ALL n is stronger than RH and expected to fail at
+                close pairs (162); the honest target is the DENSITY version + the close-pair
+                object (165). Direction since 607: lateral (instrument), not forward.**
+                NEXT: compile the integer-level door; retag 600–612; density version.
+                DC UNCONDITIONAL (602, `RegistrationDC.lean`): `resid_station_abs_le`
+                |R(t_n)| ≤ C(log(t_n+1)+1) at every station; `net_defect_le`: registration bijective
+                on average, net defect O(log t_M) over any run of stations. AC = the pointwise law
+                |R(t_n) − R(t_{n₀})| < 1: the one open inequality, the count of one gap from primes.
+      SEAT DOOR, DEGREE-N RUNGS (617–618): Q_N(s) = Σ_ρ[(s−ρ)(ρ−1+s̄)]^{−N}, 1 < σ₀ < 3/2; the
+                de la Vallée Poussin (3,4,1) square goes through on the prime side at EVERY degree
+                (Q_N = DC_N − 2Σ Λ(n)n^{−σ₀}cos(γ log n)A_N(log n), A_N > 0); the archimedean scaling
+                (pole η^{−N} vs Γ log γ) would give 1 − β ≫ (log γ)^{−1/N}; the argument fails at
+                exactly one step — off-line zero terms are sign-indefinite for N ≥ 2 (phase Nφ),
+                so clusters of bad zeros within ~η of the anchor (Jensen allows ~η log γ of them)
+                can cancel. SURVIVING DICHOTOMY: isolated bad zeros satisfy 1 − β ≫ (log γ)^{−1/2};
+                bad zeros must cluster (Turán/Pintz-type; source-read owed). LEAF (STRONGER,
+                constructive): cluster control at scale (log γ)^{−1/2}, or an anchor scheme
+                restoring termwise positivity at N ≥ 2.
+      DRAFTS RE-REVIEW 620: Leaf A ⟺ N_off ≡ 0 (compiled pointwise), balance = census partition
+                (`balance_is_partition`, `registrationDefect_eq_resid_sub`); Leaf B2 ⟹ no isolated
+                off-line zero with 1 − β < c(log γ)^{−1/2} (derived) — Turán-scale, not finite;
+                Leaf C ⟺ RH on the region; Leaf D ⟺ GRH(χ) with the zero set as inhabitant.
+      [HP-LEAF] AT DEGREE N — THE TOEPLITZ (CAYLEY) REGISTER (622, `SeatToeplitzRegister.lean`,
+                `tmp/att622b`): w_ρ = (ρ−c)/(s−ρ) maps the line to the unit circle and nothing else
+                (`transport_norm_eq_one_iff`); the degree-N seat form = Toeplitz form of
+                μ_s = Σ x x′ δ_{w_ρ}; μ̂_0 = seatMass, μ̂_n = binomial combination of the jets S_2..S_{n+1}
+                (`transport_pow_identity`, `toeplitzCoeff`); linear in the jets ⟹ T = T^E + T^M + T^A.
+                MEASURED: T ⪰ 0 with tiny minimum (transported measure ≈ point mass at w=1 near the
+                line; angular spread ≈ 2(½−σ)/spacing), T^E negative scalar, T^M negative-definite
+                (ticks inside the disc), T^A positive-definite. [HP-LEAF] at degree N:
+                T^A ⪰ −(T^E + T^M). TAG: the leaf; identity route = show μ_s is a positive measure
+                from the faces' constitution.
       TAG: EQUIV (= RH) by nonempty_coupling_iff.
       SHAPE: constructive — an object to exhibit per zero, discharged by identity
              if and only if the identification theorem is proven.  That theorem is RH.
@@ -411,19 +516,24 @@ The C3 roadmap's Phase A, unchanged, in order A3 → A2 → A1:
 - **A2** — stage/F holomorphy + derivative transfer (dominated differentiation with the
   compiled u-weighted tail majorants, or Cauchy from the compiled uniform rate). Closes
   `riemannHypothesis_of_stage_mass` clause (ii).
-- **A1** — L1b identification `xiIntegral(z) = ξ(½ + iz)`: Mathlib's
-  `completedRiemannZeta₀` is the Mellin transform of the theta kernel; unfold (symmetrize
-  by FE, two integrations by parts onto the compiled `riemannXiKernel` shape, t = e^{2u}),
-  prove on a real segment, extend by the identity theorem (needs A2). Closes clause (i).
+- **A1 DONE (2026-09-04)** — `RequestProject/XiIntegralIdentification.lean` proves
+  `xiIntegral(z) = 2 * ξ(½ + iz)` for every complex `z`. The existing kernel and integral
+  definitions require this factor of two. The proof integrates the derivative of
+  `ψ′(u) cos(zu) + z ψ(u) sin(zu)`, with `ψ′(0) = -1/2`, and applies the compiled
+  Mellin identity. `xiArithmeticStage U s := xiStage U (-I * (s - 1/2)) / 2` is entire;
+  `xiArithmeticStage_value_and_derivative` proves convergence to both `ξ(s)` and `ξ′(s)`
+  at every `s`, closing both analytic approximation clauses of the stage door.
 
 **A3 DONE, A2 DONE (2026-09-01, ledger 519).** `SeatMassEtaForm.lean`: `logDeriv_Gammaℝ_eq`,
 `logDeriv_riemannXi_splice`, `seatMass_eta_form`, `riemannHypothesis_of_eta_mass` — the mass
 door restated on `η′/η − (1−2^{1−s})′/(1−2^{1−s}) + 1/s + 1/(s−1) − ½ log π + ½ Γ′/Γ(s/2)`.
 `XiStageHolomorphy.lean`: `xiStage_hasDerivAt`, `xiStage_sub_xiIntegral_norm_le`,
 `xiStage_tendstoLocallyUniformly`, `xiIntegral_differentiable` (entire),
-`deriv_xiStage_tendsto`. Both clean, standard axioms. Remaining: A1 (the identification),
-several sessions, EQUIV labor. Calibration confirmed in the doing: A3/A2 make the obligation
-exact; they do not build the operator.
+`deriv_xiStage_tendsto`. **A1 is also compiled (2026-09-04)** with the normalization above.
+The kernel checks for `xiIntegral_eq_two_mul_riemannXi`, `xiArithmeticStage_differentiable`,
+and `xiArithmeticStage_value_and_derivative` report exactly
+`[propext, Classical.choice, Quot.sound]`. The stage-mass sign and the carrier eigenvalue
+correspondence remain separate construction targets.
 
 **The θ-stage tower is NOT a real-rooted family — KNOWN SINCE 2026-08-31 (C3 [M1-F]:
 Csordas et al. 2011 at source; edge-wave front law `x_a(U)`; att565/566/568), re-walked by
@@ -967,8 +1077,16 @@ Re Σ conj(r_j) r_k jetValue(σ₀+iγ, 1−σ₀+iγ) ≥ 0 — hypothesis side
 jets at ONE point). Prime chart COMPILED (595, `XiJetsArithmetic.lean`: `xi_jet_arith` ⟹
 **`rh_iff_prime_jets_nonneg`** [COMPILED both ways]): RH ⟺ ∀ γ, 1<σ₀<3/2, R(0)=0:
 Re Σ conj(r_j) r_k · jetValueP(σ₀+iγ, 2σ₀−1) ≥ 0, jetValueP built from 1/s, 1/(s−1), log π, the jets of
-½Γ′/Γ(·/2), and Σ Λ(n)(log n)^m n^{−s}. **No zero of ζ in the hypothesis.** Remaining on the dependency
-path: closed form of `pf` (hockey stick) making jetValueP a Hankel-type form; DC = Pascal–Hankel pole/Γ
-part (589, ≻ 0), AC = prime series; then the open node in its zero-free form: the sign of that form.
-Content of the door's hypothesis (590–591): the positivity is carried by the actual phases γ·log p,
-enslaved to the zeros; free phases violate at every degree ≥ 2. Open node unchanged in content.
+½Γ′/Γ(·/2), and Σ Λ(n)(log n)^m n^{−s}. **No zero of ζ in the hypothesis.** Collected by n (596,
+`PrimeSymbol.lean`, **`rh_iff_prime_symbol_nonneg`** [COMPILED both ways]): RH ⟺ ∀ γ, 1<σ₀<3/2, R(0)=0:
+Re[ dcForm R s d − Σ'_n 2·Re(Λ(n) n^{−s} 𝒜_R(log n)) ] ≥ 0, s = σ₀+iγ, d = 2σ₀−1, with the symbol
+𝒜_R(ℓ) = Σ conj(r_j) r_k primeSymbol d j k ℓ an explicit real polynomial functional (closed form
+`pf_fst_closed`, all coefficients positive; 𝒜_R(0) = the 589 Pascal–Hankel form). **Identification
+(pencil + numeric 8e−31; Lean integral owed):** 𝒜_R(ℓ) = ∫₀^∞ P_R(u+ℓ) conj P_R(u) e^{−du} du — the
+autocorrelation of the one-sided Laguerre-type function P_R(u) e^{−(σ₀−½)u} e^{iγu} 1_{u>0}; the door
+is Weil's functional on the anchored Laguerre class (unbounded support ⟹ full-strength iff). The DC is
+the Gram matrix of that basis in L²(0,∞; e^{−du}) (positive definite); the AC is the phase clock with
+autocorrelation weights and an ℓ-dependent phase. N = 1 carries no RH content (Re ξ′/ξ ≥ 0 for σ₀ > 1);
+N = 2 is the first degree with a phase. Open node, in this register: the Gram-vs-clock inequality for
+every P_R. Content of the door's hypothesis (590–591): the positivity is carried by the actual phases
+γ·log p, enslaved to the zeros; free phases violate at every degree ≥ 2. Open node unchanged in content.

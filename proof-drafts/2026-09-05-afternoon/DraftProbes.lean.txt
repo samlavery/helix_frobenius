@@ -1,0 +1,69 @@
+import RequestProject.RegistrationCalibration
+import RequestProject.HelixHubFusion
+import RequestProject.PrimeSymbolReconciliation
+import RequestProject.XiStageMass
+import RequestProject.StripTraceRegularCorrection
+
+namespace DraftA
+
+open Complex Filter Asymptotics MeasureTheory
+open CriticalLinePhasor CriticalLinePhasor.ContourArgument
+open CriticalLinePhasor.CaptureInterfaceAudit
+
+example : RiemannHypothesis := by
+  apply riemannHypothesis_of_integratedDefectSublinear
+  change (fun T => ∫ t in (0 : ℝ)..T, (offLineStripZeroCountMult t : ℝ))
+    =o[atTop] fun T : ℝ => T
+  fail "A: integrated bound for the full Riesz-minus-native balance, retaining multiplicity and bank change"
+
+end DraftA
+
+namespace DraftB
+
+open Complex
+open CriticalLinePhasor CriticalLinePhasor.ContourArgument
+
+example : RiemannHypothesis := by
+  apply RHBridge.no_offline_zeros_implies_rh
+  apply rh_iff_prime_jets_nonneg.mpr
+  intro γ σ hσ hσupper R hR
+  change 0 ≤ PrimeClock.primeJetsForm R
+    ((σ : ℂ) + (γ : ℂ) * I) ((2 * σ - 1 : ℝ) : ℂ)
+  rw [PrimeClock.primeJetsForm_eq_dc_add_phase R (2 * σ - 1) σ γ hσ]
+  fail "B: nonnegativity of the full DC plus correlated prime-power phase sum"
+
+end DraftB
+
+namespace DraftC
+
+open Complex Filter Topology
+open CriticalLinePhasor CriticalLinePhasor.XiKernelBridge
+
+example : RiemannHypothesis := by
+  obtain ⟨A, hA, hdoor⟩ := SeatingLedger.riemannHypothesis_of_stage_mass
+  apply hdoor
+  intro s him hlo hhi hxi
+  refine ⟨(fun n => xiArithmeticStage n), xiArithmeticStage_tendsto s,
+    deriv_xiArithmeticStage_tendsto s, ?_⟩
+  fail "C: eventual theta-stage mass sign at this channel point"
+
+end DraftC
+
+namespace DraftD
+
+open Complex Filter Topology
+open CriticalLinePhasor CriticalLinePhasor.CaptureInterfaceAudit
+
+example : GRHSpectral.GRHComplete := by
+  intro N _ χ
+  suffices h : ∃ (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℝ)
+      (c : ∀ n, Fin (r n) → ℂ) (E : ℂ → ℂ),
+      DifferentiableOn ℂ E spectralStrip ∧
+      TendstoLocallyUniformlyOn
+        (fun n => normalizedSpectrumTrace (d n) (c n))
+        (fun z => normalizedLTrace χ z - E z) atTop stripOffReal by
+    obtain ⟨r, d, c, E, hE, hlim⟩ := h
+    exact grh_of_regularCorrectionTraceLimit χ d c E hE hlim
+  fail "D: arithmetic finite spectra, correction regular through the real axis, and local uniform limit"
+
+end DraftD

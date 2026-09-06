@@ -1,0 +1,16 @@
+import RequestProject.StripTraceRegularCorrection
+
+open Complex Filter Topology
+open CriticalLinePhasor CriticalLinePhasor.CaptureInterfaceAudit
+
+example : GRHSpectral.GRHComplete := by
+  intro N _ χ
+  suffices h : ∃ (r : ℕ → ℕ) (d : ∀ n, Fin (r n) → ℝ)
+      (c : ∀ n, Fin (r n) → ℂ) (E : ℂ → ℂ),
+      DifferentiableOn ℂ E spectralStrip ∧
+      TendstoLocallyUniformlyOn
+        (fun n => normalizedSpectrumTrace (d n) (c n))
+        (fun z => normalizedLTrace χ z - E z) atTop stripOffReal by
+    obtain ⟨r, d, c, E, hE, hlim⟩ := h
+    exact grh_of_regularCorrectionTraceLimit χ d c E hE hlim
+  fail "D: arithmetic finite spectra, correction regular through the real axis, and local uniform limit"

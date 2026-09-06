@@ -26,11 +26,13 @@ unchanged and is Track A there.
 * A2 (1–2 sessions): stage/F holomorphy + derivative transfer — dominated
   differentiation under the integral with the compiled u-weighted tail majorants,
   or Cauchy-from-uniform via the compiled uniform rate.  Closes door clause (ii).
-* A1 (several sessions, the big labor block): L1b identification
-  xiIntegral(z) = ξ(½+iz) — Mathlib's completedRiemannZeta₀ = Mellin(θ-kernel)
-  unfolded (symmetrize by FE, two integrations by parts onto the compiled
-  riemannXiKernel shape, t = e^{2u}), proven on a real segment, extended by the
-  identity theorem (needs A2's holomorphy).  Closes door clause (i) for ξ.
+* **A1 CLOSED (2026-09-04):** `XiIntegralIdentification.lean` proves
+  `xiIntegral(z) = 2 * ξ(½+iz)` for every complex `z`; the factor two follows from
+  the existing definitions. Its normalized arithmetic stages
+  `xiArithmeticStage U s := xiStage U (-I * (s - 1/2)) / 2` are entire and converge
+  in value and derivative to `ξ`, by `xiArithmeticStage_value_and_derivative`.
+  Kernel audit: `[propext, Classical.choice, Quot.sound]`. Both analytic
+  approximation clauses of the stage door are now supplied explicitly.
 * A4 (contingent): even-Hadamard for type-U stages (P1) — only if the B-attack
   consumes stage zeros; the ξ-side two-point form is already compiled.
 * PHASE-A OUTPUT: a machine-checked theorem  [ONE hypothesis] → RiemannHypothesis,
@@ -582,7 +584,11 @@ the squeeze of 2B(n,Y) via π(1+n)² ≥ (11/2+Y)n at threshold ⌈Y⌉₊+4 and
 geometric collapse of e^{−n}.  THE VALUE CLAUSE OF THE STAGE DOOR IS CLOSED
 RELATIVE TO F.
 
-**THE EXACT OUTSTANDING COUNT (2026-08-31, end of push):**
+**2026-09-04 update:** item (1) below is closed by `XiIntegralIdentification.lean`
+and `XiStageHolomorphy.lean`, including the factor-two normalization. Item (2),
+eventual stage-mass nonnegativity, is the remaining stage-family construction target.
+
+**THE EXACT OUTSTANDING COUNT (2026-08-31, historical end of push):**
 Machine-checked count: TWO items —
  (1) THE L1 PACKAGE (zero mathematical risk, pure formalization):
      L1b identification xiIntegral(z) = ξ(½+iz) (Riemann 1859 unfolding

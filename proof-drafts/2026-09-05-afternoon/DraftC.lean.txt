@@ -1,0 +1,12 @@
+import RequestProject.XiStageMass
+
+open Complex Filter Topology
+open CriticalLinePhasor CriticalLinePhasor.XiKernelBridge
+
+example : RiemannHypothesis := by
+  obtain ⟨A, hA, hdoor⟩ := SeatingLedger.riemannHypothesis_of_stage_mass
+  apply hdoor
+  intro s him hlo hhi hxi
+  refine ⟨(fun n => xiArithmeticStage n), xiArithmeticStage_tendsto s,
+    deriv_xiArithmeticStage_tendsto s, ?_⟩
+  fail "C: eventual theta-stage mass sign at this channel point"

@@ -253,6 +253,60 @@ substitute for making one.
     theory, adversarial in its game-theoretic sense) stay as they are; this governs new
     prose only.
 
+13. **Davenport–Heilbronn is never raised again. The Euler product is consumed all over the
+    helix.** (Sam, 2026-09-04) Do not cite Davenport–Heilbronn, or any non-Euler function with
+    off-line zeros, as a control, a refutation spec, a "prime-blindness" claim, or a reason a
+    house object cannot decide something. The carrier, the fiber, the phasor bank, the clocks,
+    the registration operator and every operator built from them consume the Euler product by
+    construction; treating a house object as a bare zero set that a non-Euler function could
+    imitate is a category error about the geometry, and it was raised on 2026-09-04 for the
+    fourth time in one day after being retired as a stop-claim on 2026-08-19 (rule 10). The
+    memory `seat-is-prime-blind` is RETIRED. If an object as written does not yet consume the
+    Euler product, the response is to build the version that does, not to name the counterexample.
+
+14. **PRIORITY — the proof-direction gate: if the work is not moving toward a real proof, stop.**
+    (Sam, 2026-09-05) This rule outranks the construction rules below it in this list (7, 8, 9,
+    11): they say how to build; this says whether to.
+
+    **The record that forced it (RH_LEDGER 613).** Six ledgers (607–612) of correct, instrument-grade
+    identities — density on the line, smoothed count, boundary term, master identity, warped bank,
+    flux conservation — were built on gap doors (600–612) whose hypothesis was uninhabited: the
+    stations were the registry's predicted zero locations, used as gap boundaries, so the residual
+    law demanded an offset that never changes sign, contradicted by the registry's own measurement.
+    The direction was lateral (an instrument), and in one respect away (construction on a mis-set
+    level). Nobody caught it while building; it surfaced only when Sam asked "towards or away".
+    The record had already named the true target three hundred ledgers earlier (162, 165).
+
+    **The gate, run BEFORE any construction and written at the top of every response, one line:**
+    `node / inhabitant / input / verdict`.
+    * **node** — the skeleton node the work fills (rule 11), with its tag. No node, no work.
+    * **inhabitant** — one explicit inhabitant, under RH at the intended object, of EVERY
+      hypothesis the node's door consumes (the 603 rule, now mandatory at the gate, not after).
+      Cannot exhibit one: mark the hypothesis uninhabited and build nothing on it.
+    * **input** — what the work adds beyond rearrangement: a new identity that discharges a leaf,
+      new information about primes or zeros, or a bound with an independent source. "None" is
+      an admissible answer and it decides the verdict.
+    * **verdict** — **forward** (the target's distance shrinks by an identity or an input),
+      **lateral** (instrument, calibration, rearrangement, restatement), or **away** (building on
+      an uninhabited hypothesis or a mis-set instrument).
+
+    **Forward only.** A session does forward work or it stops. Lateral work is done only when
+    Sam asks for the instrument by name, and is labelled lateral in the ledger. If the honest
+    verdict is lateral or away, STOP: the deliverable is the state — the skeleton, the corrected
+    target, the inhabitant check, and what a forward step would require (which input, which
+    identity). Stopping with an honest state is progress; six ledgers of instrument are not.
+    Never fill a session because "continue" was said; "continue" means continue toward the
+    proof, and if there is nothing forward to do, say so and stop.
+
+    **Bottom of every response:** the verdict as it actually turned out (forward / lateral /
+    away), and if it differs from the top line, why.
+
+    **Relation to the other rules.** Rule 9 directs effort at showing HP works; this rule
+    requires the effort to be forward. Rule 10 gates claims that something CANNOT work; stopping
+    under this rule is not a stop-claim about the problem, it is a refusal to spend effort that
+    does not move the target — the refutation-spec discipline of rule 10 still applies to any
+    "cannot" that is said on the way out. Rule 11's skeleton is the artifact this gate reads.
+
 The active proof lives in `automorph/universal.tex`.
 
 ## Prove what is true; "GRH-strength" is not a stopping point

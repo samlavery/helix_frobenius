@@ -1,0 +1,13 @@
+import RequestProject.PrimeSymbolReconciliation
+
+open Complex
+open CriticalLinePhasor CriticalLinePhasor.ContourArgument
+
+example : RiemannHypothesis := by
+  apply RHBridge.no_offline_zeros_implies_rh
+  apply rh_iff_prime_jets_nonneg.mpr
+  intro γ σ hσ hσupper R hR
+  change 0 ≤ PrimeClock.primeJetsForm R
+    ((σ : ℂ) + (γ : ℂ) * I) ((2 * σ - 1 : ℝ) : ℂ)
+  rw [PrimeClock.primeJetsForm_eq_dc_add_phase R (2 * σ - 1) σ γ hσ]
+  fail "B: nonnegativity of the full DC plus correlated prime-power phase sum"
