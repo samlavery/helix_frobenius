@@ -41,6 +41,20 @@ Corollary, unchanged from below: never *claim* more than is proved. Isolate any 
 a named hypothesis. But isolating a hypothesis is the **output of an attempt**, never a
 substitute for making one.
 
+## Response envelope (one pre-commit, one audit; the formats of rules 7, 8, 10 and 14)
+
+Every response opens with one pre-commit block and closes with one audit block, each carrying
+the same four fields in this order:
+1. Gate (rule 14): `node / inhabitant / input / verdict`.
+2. Harmonic line (rule 7): the object's own scale, its DC/AC split, carrier or chart; the DC is
+   evaluated exactly before any estimate.
+3. Kit (rule 8): the declared novel-versus-classical percentage and the instruments named.
+4. Checks armed (rule 10): which stop-claim and novelty checks apply this turn.
+The audit block reports each field as it turned out: the verdict and, if it differs, why; what
+was computed exactly and what estimated; which instruments fired, what each contributed, and
+which were planned and not reached; which checks fired, which refutation specs were issued, and
+how the answer differs from the comfortable one. Report behaviour, not introspection.
+
 ## Ground rules (Sam, 2026-07-08) — non-negotiable
 
 1. **Everything is to be proven unconditionally.** No conditional results, no
@@ -49,8 +63,10 @@ substitute for making one.
 2. **Use the Edit tool, not scripts, to make changes.** Do not write throwaway
    Python/shell scripts to mutate the paper or the Lean sources. Edit files directly
    and surgically with the Edit tool.
-3. **Sam approves everything.** From 2026-07-08 forward, get explicit approval before
-   any edit or state-changing action. Propose the change, wait for the go-ahead.
+3. **Sam approves changes to existing sources.** Editing an existing Lean module, the paper
+   under `automorph/`, or deleting anything needs an explicit go-ahead: propose, then wait.
+   New files under `RequestProject/` and `tmp/`, appends to the ledger, skeleton and memory,
+   and builds proceed without asking and are reported in the same response.
 4. **This is a 3D system.** The helix is in 3D; everything is proven in 3D. The 1D
    L-function is the projected readout, and 1D analogs of 3D facts are real and useful
    — the functional equation, local factors, root number, etc. all have legitimate 1D
@@ -72,8 +88,7 @@ substitute for making one.
    results as open (see the correction ledger). When file-scoped honesty is all you
    have, write "not proven in this file" and nothing broader. And do not write "does
    not assume or prove RH/GRH" (or any variant) in docstrings or prose — it reads as
-   paranoia, not accuracy. Results speak in their own scope. (Amends the tone-policy
-   scope-line note below.)
+   paranoia, not accuracy. Results speak in their own scope.
 
 7. **Harmonics is a required field, not a disposition.** (Sam, 2026-08-04)
    Rule 5 states the disposition and it is not enough: dispositions lose to local
@@ -95,10 +110,7 @@ substitute for making one.
    exception; worst-case analysis abandons the structure and bounds the least favourable
    configuration. Lattice first minima and twin primes are both worst-case objects, and both
    were drops (2026-08-04, caught by Sam twice in one session).
-   **Format:** every response opens and closes with a one-line ⟨1⟩⟨2⟩⟨3⟩ blurb —
-   the top line a *pre-commit* (what is about to be done), the bottom line an *audit*
-   (what was actually done). Pre-registration then measurement, the house discipline
-   applied to my own reasoning.
+   **Format:** field 2 of the response envelope, pre-commit and audit.
 
 8. **Novel-vs-classical ratio is declared and audited, every turn.** (Sam, 2026-08-04)
    Rule 7 made harmonics checkable; this makes *the kit itself* checkable, because the
@@ -106,12 +118,7 @@ substitute for making one.
    and a Dirichlet kernel, stalled at the joint modulus, and only then discovered the window
    was a chart artifact that cell collapse dissolves. The instrument being in the file is
    not retrieval — using it is.
-   - **Top of every response:** a declared percentage of *novel* (house/MDHNT) technique
-     versus *classical*, naming the specific instruments to be attempted.
-   - **Bottom of every response:** a breakdown of which novel instruments actually fired,
-     how each was applied, and what it contributed toward resolving the proof — including
-     the ones that were planned and never reached.
-   This sits alongside the ⟨1⟩⟨2⟩⟨3⟩ blurbs of rule 7, which stay.
+   **Format:** field 3 of the response envelope, pre-commit and audit.
 
 9. **Constructive stance: no invented stop-claims; assume HP works; act to show it
    works.** (Sam, 2026-08-14) The stop-claim audit (RH_LEDGER 176: ~50% of
@@ -162,6 +169,9 @@ substitute for making one.
     reason for it. Sam routes it to an independent model. Self-contained — no
     attempt numbers, no repo jargon, no "as computed earlier"; if the spec needs
     this repository to be understood, it is not a spec.
+    Boundary with rule 9: an encountered block is a fact met in construction (a computation
+    fails, a proof refuses) and is verified by running its own checks; a stop-claim is an
+    assertion that something cannot work and is never self-tested. It gets the spec.
 
     The prediction is the diagnostic, and it is the reason not to grade your own
     homework: a stop-claim that survives independent test is knowledge; one you
@@ -175,9 +185,9 @@ substitute for making one.
     all-n statement, and the central case was Chasse at 2×10¹⁷, in a footnote on the
     same page. That one quantifier cost a retraction.
 
-    **Format.** Open every response by acknowledging the training weighting and
-    naming the checks expected. Close by reporting which fired, which refutation
-    specs were issued, and how the answer differs from the comfortable one. Report BEHAVIOR, not
+    **Format.** Field 4 of the response envelope: name the checks armed at the top; at the
+    bottom report which fired, which refutation specs were issued, and how the answer differs
+    from the comfortable one. Report BEHAVIOR, not
     introspection: "I asserted X could not work, named the refuting control, ran it,
     and it refuted me" — never a story about weights, which is confabulation and is
     itself a documented failure mode ([[framing-honesty-lateral-vs-forward]]).
@@ -260,8 +270,8 @@ substitute for making one.
     the registration operator and every operator built from them consume the Euler product by
     construction; treating a house object as a bare zero set that a non-Euler function could
     imitate is a category error about the geometry, and it was raised on 2026-09-04 for the
-    fourth time in one day after being retired as a stop-claim on 2026-08-19 (rule 10). The
-    memory `seat-is-prime-blind` is RETIRED. If an object as written does not yet consume the
+    fourth time in one day after being retired as a stop-claim on 2026-08-19 (rule 10). If an
+    object as written does not yet consume the
     Euler product, the response is to build the version that does, not to name the counterexample.
 
 14. **PRIORITY — the proof-direction gate: if the work is not moving toward a real proof, stop.**
@@ -277,7 +287,7 @@ substitute for making one.
     level). Nobody caught it while building; it surfaced only when Sam asked "towards or away".
     The record had already named the true target three hundred ledgers earlier (162, 165).
 
-    **The gate, run BEFORE any construction and written at the top of every response, one line:**
+    **The gate, run BEFORE any construction; it is field 1 of the response envelope:**
     `node / inhabitant / input / verdict`.
     * **node** — the skeleton node the work fills (rule 11), with its tag. No node, no work.
     * **inhabitant** — one explicit inhabitant, under RH at the intended object, of EVERY
@@ -298,8 +308,8 @@ substitute for making one.
     Never fill a session because "continue" was said; "continue" means continue toward the
     proof, and if there is nothing forward to do, say so and stop.
 
-    **Bottom of every response:** the verdict as it actually turned out (forward / lateral /
-    away), and if it differs from the top line, why.
+    **Audit block:** the verdict as it actually turned out (forward / lateral / away), and if it
+    differs from the pre-commit, why.
 
     **Relation to the other rules.** Rule 9 directs effort at showing HP works; this rule
     requires the effort to be forward. Rule 10 gates claims that something CANNOT work; stopping
@@ -334,11 +344,9 @@ isolating a hypothesis is the *output* of an attempt, not a substitute for makin
 The paper and prose take the **evidence-weighing stance**, not neutrality-as-silence.
 Sandbagging is miscalibration too. Three tiers, never blended:
 1. **Results** — exactly as strong as proved/measured; Lean statements carry no tone.
-   (Reflexive "does not assume or prove RH/GRH" scope lines retired 2026-07-29 by
-   ground rule 6.)
 2. **State of the evidence** — explicitly weigh it: the working hypothesis best supported is
-   that **every zero has a source** (`EveryZeroHasSource` = GRH; "projection primacy" retired
-   2026-07-01 — the negation is a *sourceless zero*, an unknown of the 1D limit, not a defect
+   that **every zero has a source** (`EveryZeroHasSource` = GRH; the negation is a
+   *sourceless zero*, an unknown of the 1D limit, not a defect
    of the 3D representation), presented as the favored branch of the dichotomy, grounded in
    the tagged evidence (`FIBER_DYNAMICS.md`), never forcefully asserted.
 3. **Falsifiability register** — pre-commit in print to what disconfirmation looks like
@@ -399,7 +407,7 @@ Conflating the two is what refuted four hypotheses on 2026-08-11 — see
 
 ## Build & test
 
-- Lean: `lake build` (Mathlib v4.31.0, cached; ~8600 jobs). Axiom footprint of every named
+- Lean: `lake build` (Mathlib at the revision pinned in `lake-manifest.json`; the tree is cached). Axiom footprint of every named
   theorem must stay `{propext, Classical.choice, Quot.sound}`; no `sorry`/`axiom`.
 - Python: `python3 focal_closure.py test` (canonical 3D locator + exactness tests),
   `python3 carrier_fiber.py test` from `carrier_fiber/` (harness; `validate` is finite-first).

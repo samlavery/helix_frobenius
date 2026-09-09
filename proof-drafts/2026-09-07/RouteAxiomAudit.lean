@@ -1,0 +1,27 @@
+import RequestProject.ExplicitAnchorDischarge
+import RequestProject.HelixHubFusion
+import RequestProject.StripTraceRegularCorrection
+import RequestProject.SourceLabelledCascade
+import RequestProject.WeilDuality
+import RequestProject.ChiralCup
+import RequestProject.NeronSeveriRung
+import RequestProject.HelixHeightDischarge
+import RequestProject.HermitianPencil3D
+import RequestProject.GlobalHelixIntertwiner
+
+/- Representative existing consumers and the prerequisites used by the selected route.
+The printed footprint audits proof dependencies; hypotheses remain visible in source. -/
+#print axioms CriticalLinePhasor.SeatingLedger.riemannHypothesis_of_explicit_stage_bound
+#print axioms CriticalLinePhasor.SeatingLedger.riemannHypothesis_of_explicit_rates
+#print axioms CriticalLinePhasor.CaptureInterfaceAudit.riemannHypothesis_of_integratedDefectSublinear
+#print axioms CriticalLinePhasor.CaptureInterfaceAudit.grh_of_regularCorrectionTraceLimit
+#print axioms CriticalLinePhasor.Cascade.rh_of_sourceLabelled_cascade
+#print axioms CriticalLinePhasor.WeilDuality.purity_from_castelnuovo
+#print axioms CriticalLinePhasor.ChiralCup.cup_positive_semidefinite
+#print axioms CriticalLinePhasor.HodgeLedgerFiltration.NeronSeveriRung.pairCoord_eq_zero
+#print axioms CriticalLinePhasor.HodgeLedgerFiltration.NeronSeveriRung.readout_is_pairing
+#print axioms CriticalLinePhasor.XiChannel.semiconj_of_ledger_symmetric
+#print axioms CriticalLinePhasor.Pencil3D.eigenvalue_real_of_pencil_limit
+#print axioms CriticalLinePhasor.GlobalHelix.circleReadout_globalHelixInvolution
+#print axioms CriticalLinePhasor.GlobalHelix.circleReadout_norm_one
+#print axioms CriticalLinePhasor.GlobalHelix.analyticOrdinate_eq_height

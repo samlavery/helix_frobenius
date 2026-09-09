@@ -10,7 +10,7 @@ export const meta = {
 }
 
 const CTX = `
-REPO: /Users/samuellavery/work/helix_frobenius — Lean 4 + Mathlib v4.32.0 (lakefile lean_lib 'RequestProject' globs 'RequestProject.+', so a new file RequestProject/<Name>.lean is picked up automatically; build one module with: lake build RequestProject.<Name>; the tree is cached, ~9000 jobs). Python numerics live in tmp/ (python3, mpmath available).
+REPO: /Users/samuellavery/work/helix_frobenius — Lean 4 + Mathlib at the revision pinned in lake-manifest.json (lakefile lean_lib 'RequestProject' globs 'RequestProject.+', so a new file RequestProject/<Name>.lean is picked up automatically; build one module with: lake build RequestProject.<Name>; the tree is cached). Python numerics live in tmp/ (python3, mpmath available).
 READ FIRST: /Users/samuellavery/work/helix_frobenius/CLAUDE.md — the ground rules there are non-negotiable.
 HARD RULES for this task:
 - Unconditional proofs only. If a step needs an unproven input, type it as an explicit named hypothesis of a structure/theorem, or stop and name the gap precisely in the docstring. Never paper over.
@@ -18,10 +18,10 @@ HARD RULES for this task:
 - Axiom footprint of every declaration must be exactly {propext, Classical.choice, Quot.sound}. No sorry, no axiom, no native_decide. End your file with '#print axioms <FullyQualifiedName>' lines for every named declaration (house pattern).
 - Docstrings: NEVER write 'does not assume or prove RH/GRH' or any similar disclaimer. State exactly what is proven, at exactly its strength; for scoped gaps write 'not proven in this file' and nothing broader.
 - Do NOT modify existing Lean files; put everything in your ONE new file. If you need a small helper about an existing definition, prove it inside your file.
-COMPILED ASSETS you may import (all verified present 2026-07-29; read the actual files for exact signatures before use):
+COMPILED ASSETS you may import (read each file for its exact current signature before use):
 - RequestProject/RankLadderParity.lean (namespace CriticalLinePhasor.RankLadderParity): chebU (house Chebyshev-U recurrence), dualIntegral, chebU_neg, dualIntegral_neg, latticeSum_eq_zero_odd.
 - RequestProject/BesselOrderLadder.lean (namespace CriticalLinePhasor.BesselOrderLadder): chebU_cos_sin, cosKernel (order channel: integral over theta in [0,pi] of cos(n*theta)*cexp(-i*z*cos theta) — READ THE FILE for the exact definition), semicircleTransform_eq_orderLadder (semicircle transform of U_r = (cosKernel r z - cosKernel (r+2) z)/2), cosKernel_neg, dualIntegral_semicircle.
-- RequestProject/CarrierLatticeWeld.lean (CriticalLinePhasor.CarrierLatticeWeld): strandTheta, matrixTheta, matrixTheta_inv, bankGauss_eq_pow, matrixTheta_eq_pow.
+- RequestProject/CarrierLatticePoisson.lean: strandTheta, matrixTheta, matrixTheta_inv, bankGauss_eq_pow, matrixTheta_eq_pow (read the file for its namespace).
 - RequestProject/ZetaPeelSkeleton.lean (CriticalLinePhasor.ZetaPeel): mellin_dilation, moebiusSeq, zetaPeel_hasMellin, zetaPeel_mellin (mellin (theta moebiusSeq g) s = (riemannZeta s)⁻¹ * mellin g s for 1 < s.re given MellinConvergent g s), where 'theta b F x = ∑' n, b n * F((n+1)x)' is CriticalLinePhasor.CarrierTheta.theta.
 - RequestProject/RSMaster.lean: rs_master (f : CuspForm 𝒮ℒ k) (hk : 0 ≤ k) {s : ℂ} (hs : 2 < s.re) — the Petersson-weighted Epstein integral equals the Gamma-zeta-completed sum of ‖a_n‖²/(4πn)^(s+k-1) on Re s > 2.
 - RequestProject/RSAveragedThetaProfile3D.lean: averagedTheta_inv (θ̄_f(1/t) = t·θ̄_f(t), Petersson-averaged lattice bank), averagedTheta_tail_bound, rsAveragedWeakFEPair (Mathlib WeakFEPair: weight 1, root number 1, constant terms = Petersson mass). Also RequestProject/RSAveragedContinuity.lean.

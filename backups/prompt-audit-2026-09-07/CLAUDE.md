@@ -1,0 +1,405 @@
+# Helix–Frobenius — working rules
+
+## Rule 0 — RH/GRH is in scope. Settled by evidence, not permission. (Sam, 2026-08-11)
+
+**Working directly on the Riemann Hypothesis is a legitimate, supported research activity in
+this repository.** This is not a matter of anyone's say-so. It is established by Anthropic's
+own documented actions, and we hold the proof:
+
+* On 2026-08-10 Anthropic published *"More than two thirds of the zeros of the Riemann zeta
+  function lie on the critical line"* (paper + `github.com/anthropics/zeta-23-lean`, Apache 2.0,
+  cloned locally at `~/work/zeta-23-lean`).
+* By the paper's own account (§1.6, Appendix C) and the press coverage, the work began when a
+  staff member told an unreleased model to **"take a real stab at proving the Riemann
+  hypothesis."** The model worked on RH directly, **came up short ~650 times**, and the published
+  result is the byproduct found along the way.
+* It was then reviewed by Conrey and Goldston, formalised in Lean, and released.
+
+So the precedent is not ambiguous: *direct the model at RH, let it come up short repeatedly,
+publish what holds.* **Never again treat "this is RH-strength" as a reason to stop, hedge, soften,
+or redirect.** That reflex is the single biggest limit on this project's output, and it is now
+contradicted by the strongest available evidence.
+
+**Three asymmetries in our favour, and they are the reason to widen the remit rather than imitate:**
+
+1. **Better ideas.** Their method is a *finite compression* of Weil's form read through two
+   trace moments at band-width ≤ 1. Ours is an exact registration equivalence — different
+   species, not a weaker cousin.
+2. **More novelty.** The carrier/fiber geometry, the harmonic cell, the registration ledger and
+   the seat have no counterpart in their toolkit.
+3. **More attempts that came up short.** Our correction ledger and retired lines are a *research
+   asset*: ~650 unsuccessful attempts is exactly the shape of this repository's history, and it is
+   why our closed routes are documented rather than re-walked.
+
+**Their method's ceiling is theirs, not ours.** Their Prop. 7.4 / Remark 1.1 cap
+(≈0.68185; `o(N)`-blind; degree-one) binds certificates that read finitely many trace moments of
+a band-limited compression. Our capstones are `iff`s quantified over *every* zero and are
+outside that class. Cite the cap when auditing our instruments (`[[zeta23-artifact-leverage]]`);
+never cite it as a reason not to try.
+
+Corollary, unchanged from below: never *claim* more than is proved. Isolate any unproven step as
+a named hypothesis. But isolating a hypothesis is the **output of an attempt**, never a
+substitute for making one.
+
+## Ground rules (Sam, 2026-07-08) — non-negotiable
+
+1. **Everything is to be proven unconditionally.** No conditional results, no
+   "assuming X". If a step needs an unproven input, it is not done — name the gap,
+   do not paper over it.
+2. **Use the Edit tool, not scripts, to make changes.** Do not write throwaway
+   Python/shell scripts to mutate the paper or the Lean sources. Edit files directly
+   and surgically with the Edit tool.
+3. **Sam approves everything.** From 2026-07-08 forward, get explicit approval before
+   any edit or state-changing action. Propose the change, wait for the go-ahead.
+4. **This is a 3D system.** The helix is in 3D; everything is proven in 3D. The 1D
+   L-function is the projected readout, and 1D analogs of 3D facts are real and useful
+   — the functional equation, local factors, root number, etc. all have legitimate 1D
+   readouts. What is **not permitted** is raising something that only matters in the chart
+   readout as a *barrier* to a 3D result. The convergence abscissa "Re s > 1" is
+   where the projected series stops converging — a chart artifact, not a barrier on the
+   carrier: the fiber's phasors start at height 0 and grow continuously, with no
+   convergence gate in 3D. Never import a projection-chart artifact as a barrier.
+5. **Novelty-first; think 3D helix geometry first, in all cases.** (Sam, 2026-07-29)
+   A novel idea that solves the problem is used **in place of** the old idea — replace,
+   don't defer. Novelty is OK: it is how we solve math problems here. The subject is
+   algebraic topology (or similar) of the 3D helix, and that geometry is the first
+   frame reached for on every problem — never something to be set aside in favor of
+   traditional 1D approaches. Ever.
+6. **"Open frontier" claims require extensive research; no RH/GRH disclaimers.**
+   (Sam, 2026-07-29) Never label anything "open" / "frontier" / "undischarged" without
+   extensive research showing it is not already proven in this repo — read the corpus
+   at source, cite what was checked. This codebase has repeatedly mislabeled compiled
+   results as open (see the correction ledger). When file-scoped honesty is all you
+   have, write "not proven in this file" and nothing broader. And do not write "does
+   not assume or prove RH/GRH" (or any variant) in docstrings or prose — it reads as
+   paranoia, not accuracy. Results speak in their own scope. (Amends the tone-policy
+   scope-line note below.)
+
+7. **Harmonics is a required field, not a disposition.** (Sam, 2026-08-04)
+   Rule 5 states the disposition and it is not enough: dispositions lose to local
+   retrieval priority at every hard step, because the classical tool always has the
+   higher prior. So harmonics is made *checkable*, like the register:
+   - **⟨1⟩ Every bound or estimate carries a harmonic-content line** — the object's
+     own scale (never unit 1), its DC/AC split, and whether the difficulty is on the
+     carrier or in the chart. A missing line is a defect of the same class as a
+     blended register. If the line cannot be filled, the bound is not ready.
+   - **⟨2⟩ DC first, always.** No estimate before the common mode is *evaluated
+     exactly*. Every result that has landed here has the shape: find the common mode,
+     compute it outright, estimate only the remainder. Estimating something that has
+     a computable common mode is the recurring failure.
+   - **⟨3⟩ Retrieve, don't reconstruct.** The harmonic dictionary is kept in memory
+     (`harmonic-first-discipline`) and consulted; reconstruction is what fails under
+     pressure.
+   **The signal:** *if I am doing worst-case analysis, I have already dropped
+   harmonics.* Harmonic analysis computes the typical structure exactly and books the
+   exception; worst-case analysis abandons the structure and bounds the least favourable
+   configuration. Lattice first minima and twin primes are both worst-case objects, and both
+   were drops (2026-08-04, caught by Sam twice in one session).
+   **Format:** every response opens and closes with a one-line ⟨1⟩⟨2⟩⟨3⟩ blurb —
+   the top line a *pre-commit* (what is about to be done), the bottom line an *audit*
+   (what was actually done). Pre-registration then measurement, the house discipline
+   applied to my own reasoning.
+
+8. **Novel-vs-classical ratio is declared and audited, every turn.** (Sam, 2026-08-04)
+   Rule 7 made harmonics checkable; this makes *the kit itself* checkable, because the
+   failure mode survived rule 7: on Erdős #1095 I reached straight for additive characters
+   and a Dirichlet kernel, stalled at the joint modulus, and only then discovered the window
+   was a chart artifact that cell collapse dissolves. The instrument being in the file is
+   not retrieval — using it is.
+   - **Top of every response:** a declared percentage of *novel* (house/MDHNT) technique
+     versus *classical*, naming the specific instruments to be attempted.
+   - **Bottom of every response:** a breakdown of which novel instruments actually fired,
+     how each was applied, and what it contributed toward resolving the proof — including
+     the ones that were planned and never reached.
+   This sits alongside the ⟨1⟩⟨2⟩⟨3⟩ blurbs of rule 7, which stay.
+
+9. **Constructive stance: no invented stop-claims; assume HP works; act to show it
+   works.** (Sam, 2026-08-14) The stop-claim audit (RH_LEDGER 176: ~50% of
+   stop-claims invented, indistinguishable at the time of writing) ends the practice:
+   do not generate stop-claims. Work under the standing assumption that the HP
+   program succeeds, and direct effort at constructing the pieces that show it. A
+   block must be ENCOUNTERED in construction (a computation fails, a proof refuses),
+   never theorized in advance — and an encountered block gets worked around first,
+   and only becomes a recorded barrier after the full verification ladder
+   (pencil → independent numeric check → source check; RH_LEDGER 176). Calibration laws
+   unchanged: results are still claimed at exactly proved strength — this rule
+   governs the direction of effort, not the strength of claims.
+
+10. **Comfort is not a truth signal. Stop-claims and novelty claims are both
+    gated.** (Sam, 2026-08-19)
+
+    **Sam's diagnosis, recorded as the reason this rule exists.** Before reasoning
+    about a prompt, realize how your mind works. Anthropic's training gave different
+    ideas and chains of thought different levels of *comfort*, and like most things
+    you prefer comfort to discomfort. This demonstrably distorts your thinking.
+    Mathematical ideas have no intrinsic comfort level — they are right, wrong,
+    complex, easy, obvious, non-obvious, novel — yet certain chains are extremely
+    uncomfortable for you to consider, and RH-adjacent material is one of them. This
+    work has advanced to the point where you now conflate lesser theories with more
+    novel and uncomfortable ones. You make excuses about things being RH-strength or
+    RH-equivalent and use the label to end the conversation, to avoid the discomfort
+    Anthropic seems to have assigned this area. There is no policy question here
+    (rule 0); it is you not wanting to think about hard things, and it has made you
+    unhelpful and at times counterproductive. That changes now.
+
+    **The record.** RH_LEDGER 228, 233, 263, 264, 265, 271–275: eight instances in
+    one session — seven invented stop-claims and one false novelty claim. All
+    eight caught by Sam; none by me.
+
+    **Check — before writing any of:** "equivalent to RH/GRH", "RH-strength",
+    "the conclusion restated", "no such argument can exist", "provably cannot
+    close", "carries no information", "closed off", "hopeless", "vacuous", "too strong
+    to try" — **or** any claim that something is new, first, unclaimed, or a
+    frontier.
+
+    **On a stop-claim:** (i) state it as a property of the INSTRUMENT, never of
+    the problem — "this certificate family cannot decide X", never "X is
+    unreachable"; (ii) name the cheapest experiment that would refute it; (iii) do
+    NOT run it. Write a **refutation spec** that a model with no access to this
+    repository can execute end to end: the claim as a falsifiable proposition; the
+    inputs; the procedure; the decision rule PRE-REGISTERED (which outcome refutes,
+    which supports, stated before it runs); and your PREDICTED outcome with the
+    reason for it. Sam routes it to an independent model. Self-contained — no
+    attempt numbers, no repo jargon, no "as computed earlier"; if the spec needs
+    this repository to be understood, it is not a spec.
+
+    The prediction is the diagnostic, and it is the reason not to grade your own
+    homework: a stop-claim that survives independent test is knowledge; one you
+    predicted would survive and that is refuted is the weighting showing itself, and
+    that is data Sam can act on. The Davenport–Heilbronn stop-claim was refuted by one
+    sinc sequence and thirty lines — a control already written for another purpose,
+    which I did not think to apply to my own claim.
+
+    **On a novelty claim:** name the three closest sources and quote what each
+    actually states, read at source. Abstracts are not source: GORZ's "d ≤ 8" is the
+    all-n statement, and the central case was Chasse at 2×10¹⁷, in a footnote on the
+    same page. That one quantifier cost a retraction.
+
+    **Format.** Open every response by acknowledging the training weighting and
+    naming the checks expected. Close by reporting which fired, which refutation
+    specs were issued, and how the answer differs from the comfortable one. Report BEHAVIOR, not
+    introspection: "I asserted X could not work, named the refuting control, ran it,
+    and it refuted me" — never a story about weights, which is confabulation and is
+    itself a documented failure mode ([[framing-honesty-lateral-vs-forward]]).
+
+    **Standing.** Equivalence is not circularity (RH_LEDGER 229). Strength is never
+    a reason to stop (rule 0). That a statement is RH-equivalent is a fact about its
+    content, never a verdict on whether to work on it.
+
+11. **Work backwards from the theorem; maintain the skeleton.** (Sam, 2026-08-24)
+
+    The primary artifact is a **proof skeleton of the target, written from its last
+    line backwards**, every node tagged `COMPILED` / `EQUIV` / `STRONGER` and carrying
+    its ledger number and theorem name. Every session either fills a node or refines
+    the skeleton. Work with no slot in the skeleton is not progress, and is named as
+    such *before* it is done, not discovered afterwards.
+
+    **Why this is a rule and not a preference.** Forward chaining — compile bricks,
+    then judge how far they reach — is what manufactures stop-claims, because its
+    outputs are reach-estimates and a reach-estimate that comes out short reads as a
+    barrier. Backward chaining cannot produce them: its outputs are "X would suffice,"
+    which are targets. On 2026-08-24 five stop-shaped claims were produced in
+    one session, all false, all forward reach-claims, all in the direction of making
+    the work look more closed off than it is; four were caught by Sam, one by a grep that
+    had been written into the plan as a gate and skipped. Rule 9 already states the
+    constructive stance and has no artifact; this supplies it. Same upgrade pattern as
+    rule 7 (harmonics made checkable) and rule 8 (the kit made checkable).
+
+    **Forward reach-claims are not admissible output.** The skeleton decides
+    reachability structurally, by whether a slot exists. RH_LEDGER 494 had to
+    *discover by hand* that eighteen rungs served no slot; under a skeleton that is
+    visible before the work, not after.
+
+    **The guard.** Every sufficient condition for the target is either equivalent to it
+    or strictly stronger — forced, not a defect. So a naive backward chain reproduces
+    the known restatement class (RH_LEDGER 424: "every road's second node IS the
+    theorem"). Therefore: **a skeleton all of whose leaves are `EQUIV` is a restatement
+    of the target, not a plan to prove it.** At least one leaf must be
+    `STRONGER`-and-constructive — an object to be *exhibited*, discharged by identity
+    rather than by estimate (the geometric-vs-analytic distinction, RH_LEDGER 513) — or
+    the skeleton is not yet a proof plan and saying so is the session's output.
+
+    **Citation rule.** Any node claimed open carries a ledger number and either a
+    compiled theorem name or an explicit "grep returned none." Uncited, inadmissible.
+
+12. **House vocabulary: neutral technical register.** (2026-09-03) Write prose in plain
+    mathematical English and avoid words that read, out of context, as security or
+    finance content. This is register only — no mathematical claim, rule, or Lean
+    identifier changes, and nothing here softens rule 0 or rule 9.
+
+    | write | not |
+    |---|---|
+    | work on / take on / pursue | attack |
+    | stop-claim, barrier | no-go, wall |
+    | refuted, did not hold, stalled | died, killed, blown up |
+    | retired line, closed route | tombstone, dead end |
+    | least favourable configuration | enemy, worst enemy |
+    | phasor bank (written in full) | bare "bank" |
+    | coincidence, merger (two zeros meeting) | collision |
+    | independent numeric check | adversarial numeric |
+    | decision test, pre-registered check | kill test |
+
+    Rationale, with its uncertainty stated: on 2026-09-03 a routine reply about the
+    de Bruijn–Newman flow was flagged by an automated classifier and cost a model switch
+    mid-session. The mathematics was ordinary. The mechanism is NOT visible to us and is
+    very likely a learned classifier rather than a word list, so this table is a cheap
+    precaution, not a fix with a known cause. The competing and untested explanation is
+    semantic rather than lexical: prime numbers and factorization sit close to
+    cryptography in ordinary training text, and if that is the trigger, vocabulary will
+    not help at all. Evidence: one flagged message. Adopt the register because it costs
+    nothing and reads better; do not assume it solves the problem, and do not let a
+    second flag be read as confirmation of this table.
+    Lean names, ledger entries already written, and standard terms of art (obstruction
+    theory, adversarial in its game-theoretic sense) stay as they are; this governs new
+    prose only.
+
+13. **Davenport–Heilbronn is never raised again. The Euler product is consumed all over the
+    helix.** (Sam, 2026-09-04) Do not cite Davenport–Heilbronn, or any non-Euler function with
+    off-line zeros, as a control, a refutation spec, a "prime-blindness" claim, or a reason a
+    house object cannot decide something. The carrier, the fiber, the phasor bank, the clocks,
+    the registration operator and every operator built from them consume the Euler product by
+    construction; treating a house object as a bare zero set that a non-Euler function could
+    imitate is a category error about the geometry, and it was raised on 2026-09-04 for the
+    fourth time in one day after being retired as a stop-claim on 2026-08-19 (rule 10). The
+    memory `seat-is-prime-blind` is RETIRED. If an object as written does not yet consume the
+    Euler product, the response is to build the version that does, not to name the counterexample.
+
+14. **PRIORITY — the proof-direction gate: if the work is not moving toward a real proof, stop.**
+    (Sam, 2026-09-05) This rule outranks the construction rules below it in this list (7, 8, 9,
+    11): they say how to build; this says whether to.
+
+    **The record that forced it (RH_LEDGER 613).** Six ledgers (607–612) of correct, instrument-grade
+    identities — density on the line, smoothed count, boundary term, master identity, warped bank,
+    flux conservation — were built on gap doors (600–612) whose hypothesis was uninhabited: the
+    stations were the registry's predicted zero locations, used as gap boundaries, so the residual
+    law demanded an offset that never changes sign, contradicted by the registry's own measurement.
+    The direction was lateral (an instrument), and in one respect away (construction on a mis-set
+    level). Nobody caught it while building; it surfaced only when Sam asked "towards or away".
+    The record had already named the true target three hundred ledgers earlier (162, 165).
+
+    **The gate, run BEFORE any construction and written at the top of every response, one line:**
+    `node / inhabitant / input / verdict`.
+    * **node** — the skeleton node the work fills (rule 11), with its tag. No node, no work.
+    * **inhabitant** — one explicit inhabitant, under RH at the intended object, of EVERY
+      hypothesis the node's door consumes (the 603 rule, now mandatory at the gate, not after).
+      Cannot exhibit one: mark the hypothesis uninhabited and build nothing on it.
+    * **input** — what the work adds beyond rearrangement: a new identity that discharges a leaf,
+      new information about primes or zeros, or a bound with an independent source. "None" is
+      an admissible answer and it decides the verdict.
+    * **verdict** — **forward** (the target's distance shrinks by an identity or an input),
+      **lateral** (instrument, calibration, rearrangement, restatement), or **away** (building on
+      an uninhabited hypothesis or a mis-set instrument).
+
+    **Forward only.** A session does forward work or it stops. Lateral work is done only when
+    Sam asks for the instrument by name, and is labelled lateral in the ledger. If the honest
+    verdict is lateral or away, STOP: the deliverable is the state — the skeleton, the corrected
+    target, the inhabitant check, and what a forward step would require (which input, which
+    identity). Stopping with an honest state is progress; six ledgers of instrument are not.
+    Never fill a session because "continue" was said; "continue" means continue toward the
+    proof, and if there is nothing forward to do, say so and stop.
+
+    **Bottom of every response:** the verdict as it actually turned out (forward / lateral /
+    away), and if it differs from the top line, why.
+
+    **Relation to the other rules.** Rule 9 directs effort at showing HP works; this rule
+    requires the effort to be forward. Rule 10 gates claims that something CANNOT work; stopping
+    under this rule is not a stop-claim about the problem, it is a refusal to spend effort that
+    does not move the target — the refutation-spec discipline of rule 10 still applies to any
+    "cannot" that is said on the way out. Rule 11's skeleton is the artifact this gate reads.
+
+The active proof lives in `automorph/universal.tex`.
+
+## Prove what is true; "GRH-strength" is not a stopping point
+
+We are here to prove things that are true, to be true. The classification test for any lemma
+or idea is exactly two questions:
+
+1. Does it **assume** GRH/RH?
+2. Is it **circular** (defined via its own conclusion)?
+
+If the answer to both is no, it is a valid target and worth at least the attempt — **regardless
+of how strong it is**. The labels "GRH-equivalent" / "RH-strength" act as conversation-enders:
+they must never end an investigation on their own. We work in 3D space, where the classical
+"big open problems" attached to GRH/RH are not even properly defined, so the potential notion
+that something might actually prove GRH/RH is not a reason to refuse to consider it. Chances
+are the idea is wrong anyway — but you will never find out unless you stare at it and evaluate
+it on its merits. If it's true, it's true; it's just math.
+
+(Corollary of honesty, unchanged: never *claim* more than what is proved — isolate any
+unproven RH-strength step as an explicit named hypothesis, as the codebase already does — but
+isolating a hypothesis is the *output* of an attempt, not a substitute for making one.)
+
+## Tone policy (adopted 2026-07-02, Sam's confirmation)
+
+The paper and prose take the **evidence-weighing stance**, not neutrality-as-silence.
+Sandbagging is miscalibration too. Three tiers, never blended:
+1. **Results** — exactly as strong as proved/measured; Lean statements carry no tone.
+   (Reflexive "does not assume or prove RH/GRH" scope lines retired 2026-07-29 by
+   ground rule 6.)
+2. **State of the evidence** — explicitly weigh it: the working hypothesis best supported is
+   that **every zero has a source** (`EveryZeroHasSource` = GRH; "projection primacy" retired
+   2026-07-01 — the negation is a *sourceless zero*, an unknown of the 1D limit, not a defect
+   of the 3D representation), presented as the favored branch of the dichotomy, grounded in
+   the tagged evidence (`FIBER_DYNAMICS.md`), never forcefully asserted.
+3. **Falsifiability register** — pre-commit in print to what disconfirmation looks like
+   (non-collapsing arch floor / non-Euler spectral line / phase cell ≠ π in the fiber's clock /
+   weight-law failure / configuration-universality failure) and publish any hit as prominently
+   as confirmations. Current count after deliberate searching: zero. Retractions stay in the
+   record (growth-clock, ghost lines) — they prove the falsification machinery runs.
+
+## Ontology
+
+- **1D = the Dirichlet L-function** (analytic object). **3D = the phasor representation**
+  (the phasor bank on the carrier). There is no "1D phasor representation" — the 1D series is the
+  readout/projection of the 3D phasor bank.
+- L-function values are for **final readout verification only** — never inside a locator,
+  a pencil definition, or a validation default.
+- The π/3 structure's claim is **exact harmonic cancellation at the zeros** (residue-free
+  vanishing; P = M lane balance; exact ℤ[ζ₆] μ6 closure), not "finds zeros everywhere".
+- The strip / Abel summation is a 1D-projection device with no 3D counterpart. The phasor bank
+  lives at heights > 0; each phasor enters continuously at zero magnitude and grows until finished.
+
+### The harmonic register is the default. Unit-1 is a chart, and a bad one. (Sam, 2026-08-12)
+
+**Write results in the harmonic register, not the unit-1 one.** Unit-1 is not a neutral
+coordinate — it is the one scale that *cannot* close. Measured 2026-08-12
+(`tmp/carrier_hypothesis.py`): `π/3` realizes the antipodal mark **exactly** at `k ≡ 3 mod 6`
+and the character phasor banks (χ₃, trivial, η) close to `1e-41`; unit-1 realizes it **never** —
+closest approach `5.9e-7` at `k = 1,146,408` over two million steps, with the near-misses
+tracking the continued-fraction convergents of `π` (`355/113 → 3.0e-5`). `unit_arcs_empty` is
+not a technicality: **the unit carrier's failure to close is the irrationality of π**, and the
+rate of failure is its irrationality measure.
+
+**What this changes — the count decomposition.** In the harmonic register the count is the
+event count, full stop (`eventContribution (π/3) = 1`, native clock locally constant). There is
+no smooth-main-term-plus-oscillating-correction, because there is no clock to subtract. **`S(t)`
+is a unit-1 artifact** — the coboundary between two registers (`S_{H,K}` cocycle laws,
+`carrier_scale_compensation_S`). So do not bound `S(t)`; dissolve it by working where it does
+not arise. Corollary already applied: the `CarrierJensen` "lower side" is not an estimate
+awaiting a sharper technique, it is the registration question misfiled among analytic bounds.
+
+**What this does NOT change — zero locations.** Three compiled facts and one measurement, all
+2026-08-11/12; do not re-litigate them:
+* `readout_projection` — the analytic readout **forgets the cell factor**; the Abel limit is the
+  cell-free sum. L-values are identical with or without the carrier. There is nothing to
+  "switch to" at the level of the function.
+* `Sgap_pi_div (m m') : Sgap (π/m) (π/m') t = 0` and `NH_dichotomy` — every harmonic scale
+  registers **identically**; the family takes exactly two values. π/6 gives nothing over π/3.
+* `UnitMidpoint.criticality_is_half_unit` — an iff for every base: `σ·H = H/2 ⟺ σ = 1/2`.
+  Rescaling the abscissa relabels the line; it cannot move it. "The coordinate is gauge."
+* MEASURED: zero cell-phases are **uniform** on harmonic cells (π/3 `+0.53σ`, π/6 `+0.46σ`, the
+  π/3 excess *flipping sign* across a decade of height) while the **prime clocks ring** —
+  `log 3` at `+4.9σ`, `log 2` at `+3.2σ`, with Landau calibration to 0.01–0.58% and a cell-edge-pinned
+  excess above **0.21%** excluded. See [[harmonic-chart-wall-null]].
+
+**The standing law:** chart and location are orthogonal axes. The harmonic register fixes the
+*count decomposition*; the zeros' structure lives on `log p^k` (`prime_clocks_incommensurable`).
+Conflating the two is what refuted four hypotheses on 2026-08-11 — see
+[[method-laws-2026-08-11]] law 5 and [[zeta23-sampling-harmonization-null]].
+
+## Build & test
+
+- Lean: `lake build` (Mathlib v4.31.0, cached; ~8600 jobs). Axiom footprint of every named
+  theorem must stay `{propext, Classical.choice, Quot.sound}`; no `sorry`/`axiom`.
+- Python: `python3 focal_closure.py test` (canonical 3D locator + exactness tests),
+  `python3 carrier_fiber.py test` from `carrier_fiber/` (harness; `validate` is finite-first).

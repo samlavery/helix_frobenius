@@ -1,0 +1,19 @@
+import Mathlib
+open Complex MeasureTheory
+#check @HasDerivAt.comp_ofReal
+#check @integrableOn_exp_mul_Ioi
+#check @integrableOn_Ioi_exp_neg
+#check @Real.integrableOn_Ioi_rpow_of_lt
+#check @MeasureTheory.integrableOn_Ioi_exp_neg_mul
+#check @MeasureTheory.setIntegral_union
+#check @intervalIntegral.integral_of_le
+#check @Set.Ioc_union_Ioi_eq_Ioi
+#check @MeasureTheory.IntegrableOn.mono_set
+#check @MeasureTheory.Integrable.mono'
+#check @Real.rpow_neg
+#check @Real.rpow_natCast
+#check @intervalIntegral.integral_const_mul
+#check @Filter.Tendsto.sub
+#check @tendsto_nhds_unique
+#check @squeeze_zero_norm'
+#check @intervalIntegral.norm_integral_le_of_norm_le_const

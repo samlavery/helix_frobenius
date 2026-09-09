@@ -1,4 +1,11 @@
-# RH/GRH draft verification — September 5 afternoon update
+# RH/GRH draft verification
+
+The September 7 source audit, support-module checks, and deliberate draft failures are in
+[proof-drafts/2026-09-07/VERIFICATION.md](/Users/samuellavery/work/helix_frobenius/proof-drafts/2026-09-07/VERIFICATION.md).
+The earlier verification is preserved below and in the
+[before-review snapshot](/Users/samuellavery/work/helix_frobenius/proof-drafts/2026-09-07-before-review/RH_DISCHARGE_VERIFICATION.md).
+
+## September 5 afternoon verification
 
 The three support modules below passed their direct compiler gates. Their printed declarations use exactly `[propext, Classical.choice, Quot.sound]`. The four fixed-conclusion RH/GRH drafts still contain named unfinished leaves.
 

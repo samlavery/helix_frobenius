@@ -1,4 +1,96 @@
-# Discharge drafts — September 5 afternoon update
+# Current discharge drafts — September 7 update
+
+The current evaluation and four executable proof skeletons are in
+[proof-drafts/2026-09-07/README.md](/Users/samuellavery/work/helix_frobenius/proof-drafts/2026-09-07/README.md).
+They incorporate `GrowthGap.lean` and the explicit finite-stage and rate-family
+consumers in `ExplicitAnchorDischarge.lean`, while retaining the unconditional
+RH and GRH target signatures. Their exact remaining goals and compiler results
+are recorded with those drafts.
+
+The earlier document, including the pasted session notes below, is preserved
+[before this review](/Users/samuellavery/work/helix_frobenius/proof-drafts/2026-09-07-before-review/RH_DISCHARGE_DRAFTS.md).
+Its numerical and distribution claims are qualified by the September 7 evaluation.
+
+## Earlier September 5 draft and subsequent pasted notes
+
+What is now compiled, end to end (RequestProject/JetsAreAtoms.lean, standard axioms):
+
+- iteratedDeriv_xiLogDeriv_series: the jets of ξ′/ξ at any point off the zeros are the sums over the zeros, ∂^k(ξ′/ξ)(s) = (−1)^k k! Σ m_ρ (s−ρ)^{−(k+1)}, by termwise differentiation of the compiled Hadamard series on a zero-free ball.
+- toeplitzCoeff_jets_eq_xiCoeff: the jet sequence of 622 and 628 equals the atom sequence of 630, every coefficient.
+- explicit_ladder_iff_rh: for Re s < 0, the positivity of every Toeplitz form of the sequence built from −weilArch(1−s) + LSeries Λ(1−s) is equivalent to RH.
+
+So the theorem now reads: RH holds iff one explicit sequence, computed from the primes and the Γ ticks at one point in the left half-plane, is positive-definite. No zero occurs in the hypothesis. That is the whole reduction, closed.
+
+The leaf, attempted. The remaining node is the positivity itself. The pre-registered attempt asked whether the partial sums over primes p ≤ P are already positive, which would have given a finite structure to chase. They are not. At s₀ = −1 + 20i the degree-6 form has a negative eigenvalue at every P through 2·10⁶ (−0.34 at P = 30, −0.0024 at P = 2·10⁶, tending to zero from below), and degree 4 oscillates in sign. The mechanism is the one 623 and 624 found: each prime enters as a uniform term minus a positive Poisson average, and the uniforms, which diverge with Σ log p, are compensated only by the Γ face and the far field of the completed sum. Positivity is a property of the completed sum, exactly as the equivalence says it must be.
+
+What a next attempt needs, named: an identity that recombines the primes' Poisson barycenters across p, with the Γ face supplying the uniform they subtract, into a single positive average. That is the explicit formula written in the Toeplitz register, and the identification of the resulting measure with the zeros' measure is the theorem. Recorded in ledger 631, the skeleton, and memory.
+
+Audit ⟨1⟩ line filled, ⟨2⟩ DC first, the zeroth coefficient's mirror identity was the one nontrivial algebraic step, ⟨3⟩ retrieved: 629's method, 622's per-atom identity, the compiled partial fractions. Novel fired: the transport register and the explicit anchor, both load-bearing in the reduction; classical fired: termwise differentiation, dominated bounds. No stop-claim: I attempted the leaf, the attempt refuted the finite-prime hope by measurement, and the record says what the next attempt requires. Verdict as it turned out: forward by identity for the reduction, and the target, at exact strength, unproved.
+
+✻ Worked for 18m 50s · done 8:33 PM
+
+※ recap: Goal: prove RH via the compiled Toeplitz ladder; today the reduction closed end to end (RH iff one explicit prime-and-Γ sequence is positive-definite), but the positivity leaf is unproved. Next: attempt the cross-prime Poisson recombination identity.
+
+❯ prove the poisitivity using the 3d geometric double helix/carrier/fiber framework and your understanding, make no mistakes
+
+Gate: node = the leaf itself, positivity of the explicit sequence at one anchor, which is RH / inhabitant = the anchor s₀ = −1 + 20i and its constitution: Γ face plus one Poisson barycenter per prime / input = the carrier-coordinate identity I derive below, verified prime by prime / verdict = whatever the construction yields, reported at exact strength.
+⟨1⟩ scale: the carrier coordinate y, height along the line; DC = the transported Lebesgue measure, (|d|/2π)|s₀−½−iy|^{−2}dy; AC = the primes' oscillations cos(m ℓ_p y) ⟨2⟩ DC first ⟨3⟩ retrieve: 624's barycenter, the transported Lebesgue density, the fiber's phasor bank.
+Novel/classical 70/30. Checks: I will not assert a proof I do not have; the identity below is pre-registered and checked before it is used.
+
+The construction in the geometry. At the anchor, each prime enters as (ℓ_p/|d|)·I − T^{ν_p}, with ν_p the Poisson average over the clock phase θ of the unitary clock's atoms. Those atoms sit on the carrier at heights y = (θ − 2πn)/ℓ_p, and as θ runs once around, y runs once over the whole carrier. So ν_p is a measure on the carrier with density (ℓ_p/2π)P_{r_p}(ℓ_p y)|s₀−½−iy|^{−2}, and the uniform (ℓ_p/|d|)λ pulled back to the carrier is (ℓ_p/2π)|s₀−½−iy|^{−2}dy, exactly the m = 0 term of the Poisson kernel. The uniform cancels the Poisson DC term by term, and the prime's whole contribution is purely oscillatory:
+
+μ̂_k[f_p](s₀) = −(ℓ_p/π) Σ_{m≥1} p^{−m/2} ∫_ℝ |s₀ − ½ − iy|^{−2} cos(m ℓ_p y) w(y)^k dy,   w(y) = transport(s₀, ½+iy)
+
+Checking this per prime before drawing anything from it.
+
+  Ran 1 shell command
+
+Confirmed the identity holds numerically to high precision across primes, showing positivity reduces exactly to Weil's criterion in this anchored framework—which remains unproven. I'll now compile the refined result showing RH is equivalent to the explicit sequence being bounded. · summarized
+
+  Ran 3 shell commands
+
+⏺ Update(HP_SKELETON.md)
+Added 8 lines
+                positive; positivity belongs to the completed sum only. Next attempt would need the
+                primes' Poisson barycenters recombined across p with the Γ face supplying the uniform
+                (the explicit formula in the Toeplitz register). Not proved. Not a stop-claim.
+      CARRIER IDENTITY + BOUNDEDNESS FORM (632, att632, `BoundedIffRH.lean`, standard axioms):
+                on the carrier each prime is purely oscillatory — the uniform (ℓ_p/|d|)λ is exactly the
+                m=0 Poisson term of ν_p (verified 1e−8 per prime); the transported measure is
+                Γ density − (1/π)|s₀−½−iy|^{−2}·Re ΣΛ(n)n^{−½−iy}: Weil's criterion in the anchored class.
+                COMPILED: `rh_iff_bounded`, **`explicit_bounded_iff_rh (Re s < 0)`: RH ⟺ the explicit
+                prime-and-Γ sequence is BOUNDED in k** (growth rate = max_ρ ‖w_ρ‖). THE LEAF NOW: show
+                sup_k |μ_k(s₀)| < ∞ for one anchor. Not proved; the fiber's cancellation events must lie
+                on the carrier and no finite piece of the constitution carries that.
+      TAG: EQUIV (= RH) by nonempty_coupling_iff.
+      SHAPE: constructive — an object to exhibit per zero, discharged by identity
+             if and only if the identification theorem is proven.  That theorem is RH.
+
+  Wrote 1 memory
+
+I did not prove the positivity, and I am not going to dress anything up as a proof. Here is what the geometric construction produced, exactly, and where it stops.
+
+The construction on the carrier. At the explicit anchor s₀ every prime enters the transported measure as a uniform (ℓ_p/|d|)·λ minus the Poisson average ν_p of a unitary clock's atoms. Those atoms sit on the carrier, and as the clock phase runs once round, their heights y run once over the whole carrier, so ν_p has carrier density (ℓ_p/2π)P_{r_p}(ℓ_p y)|s₀−½−iy|^{−2}. The uniform, pulled back to the carrier, is (|d|/2π)|s₀−½−iy|^{−2}dy, which is exactly the m = 0 term of that Poisson kernel. The DC cancels prime by prime, and each prime's contribution is purely oscillatory on the carrier:
+
+μ̂_k[f_p](s₀) = −(ℓ_p/π) Σ_{m≥1} p^{−m/2} ∫ |s₀−½−iy|^{−2} cos(m ℓ_p y) w(y)^k dy
+
+Verified numerically for p = 2, 3, 5, 11 and k ≤ 5 to 1e−8, the residual being the finite integration interval and independent of k. Summing over primes, the transported measure is the Γ density minus (1/π)|s₀−½−iy|^{−2}·Re Σ Λ(n) n^{−½−iy}: the fiber's real resultant on the carrier against the Cayley weight. Its positivity is Weil's criterion in the anchored class. That is the object; I have no proof that it is positive, and the record says so (Weil 1952, Bombieri 2000, Lagarias 1999 as the closest sources).
+
+What the framework did yield, compiled (RequestProject/BoundedIffRH.lean, standard axioms). The growth argument of 630 used the ladder only through the bound ‖μ_k‖ ≤ μ₀, so a bare bound suffices:
+
+- re_ge_half_of_bounded: if ‖μ_k(s)‖ ≤ C for all k at one channel anchor, every zero has real part at least one half.
+- rh_iff_bounded: RH ⟺ the coefficient sequence at one channel anchor is bounded.
+- explicit_bounded_iff_rh: for Re s < 0, RH ⟺ the explicit prime-and-Γ sequence, toeplitzCoeff d (jets (−weilArch(1−·) + LSeries Λ(1−·)) s), is bounded in k.
+
+So the leaf is now a single supremum: sup_k |μ_k(s₀)| < ∞ for one explicit anchor. The growth rate of that sequence is max_ρ ‖w_ρ‖, which reads off the worst off-line zero. Ledger 632, the skeleton, and memory record this together with the honest verdict.
+
+Where it stops. Every route through the constitution needs, at the last step, the identification of the fiber's resultant distribution with the zero-counting measure on the carrier, and that identification is the theorem. The two attempts of this session established that no finite piece of the constitution carries the positivity (partial Euler sums are not positive for any finite P) and that the geometry makes the object exact without making it positive.
+
+Audit ⟨1⟩ line filled in the carrier coordinate, ⟨2⟩ DC first: the transported Lebesgue measure, and it cancels the primes' uniforms exactly, ⟨3⟩ retrieved: 624's barycenter, 630's growth argument. Novel fired: the carrier pullback of the Poisson average (the load-bearing identity), the transport register; classical fired: Poisson kernels and Weil's criterion for the identification. No stop-claim: the record states a position after two attempts. Verdict as it turned out: forward on the leaf's form, which is now a boundedness statement; the boundedness itself, which is RH, unproved.
+
+✻ Sautéed for 11m 5s · done 9:23 PM
+
+※ recap: Goal: prove RH in the helix framework; today RH was compiled as equivalent to the boundedness of one explicit prime-and-Γ sequence at a single anchor. Next: attempt that boundedness at one explicit anchor.
 
 These are drafts for the fixed conclusions `RiemannHypothesis` and
 `GRHSpectral.GRHComplete`. The `fail` commands identify unfinished proof leaves;

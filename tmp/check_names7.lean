@@ -1,0 +1,9 @@
+import Mathlib
+open Complex
+#check @norm_riemannZeta_sub_one_le
+#check @riemannZeta_sub_one_norm_le
+#check @norm_riemannZeta_le
+#check @MeasureTheory.integral_Ioi_of_hasDerivAt_of_tendsto
+#check @MeasureTheory.intervalIntegral_tendsto_integral_Ioi
+#check @intervalIntegral.integral_eq_sub_of_hasDerivAt
+#check @MeasureTheory.integrableOn_Ioi_of_intervalIntegral_norm_bounded

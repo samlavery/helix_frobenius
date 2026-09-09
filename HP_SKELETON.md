@@ -319,6 +319,180 @@ the warp removes the S(t) correction so vanishing is residue-free at a cell boun
                 (ticks inside the disc), T^A positive-definite. [HP-LEAF] at degree N:
                 T^A ⪰ −(T^E + T^M). TAG: the leaf; identity route = show μ_s is a positive measure
                 from the faces' constitution.
+      CONSTITUTION OF THE ORDERED FACE (623, `SeatToeplitzReflection.lean`, att623): two exact
+                readings, T^A = T^ξ − T^E + Σ_q T^{cond_q}(s) = U·I + D − T^{P_Q}(1−s) (reflection law
+                `toeplitzCoeff_reflect`). POSITIVE FROM CONSTITUTION: the unitary clock is a cotangent
+                (`symClock_logDeriv_eq_cot`) = pure symmetric partial fractions over LINE zeros ⟹ its
+                transported measure is positive atoms on the circle; Poisson barycenter (520) averages
+                them; on the channel cond_q = barycenter − ℓ/2 ⟹ T^{cond_q} ⪰ (log q/|d|)·I at every
+                degree (measured, all cases); right of the line Euler_p = barycenter − ℓ/2 with the
+                uniform SUBTRACTED ⟹ not PSD (prediction refuted, C3). −T^E = |mass_E|·I + dipoles.
+                THE LEAF: T^ξ ⪰ 0 ⟺ T^{P_Q}(1−s) ⪯ U·I + D — the reflected Q-free Euler side's
+                transported measure dominated by the Γ-and-clock uniform background. Owed: symmetric
+                partial fractions at all jet orders (Mathlib cot_series_rep), Gram positivity,
+                derivative under the circle average, `condClock_toeplitz_psd`.
+      CONDUCTION-CLOCK TOEPLITZ POSITIVITY COMPILED (624, `UnitaryClockJets.lean`,
+                `UnitaryClockToeplitz.lean`, `ConductionClockToeplitz.lean`, standard axioms): the
+                unitary clock's jets are the symmetric sums over its line zeros (`clockS_jet`), its
+                mass Σ 1/|s − tick_n|² (`clockS_re_logDeriv`); its Toeplitz coefficients are
+                Σ_n ω_n w_n^k with |w_n| = 1 (`clock_toeplitzCoeff`) and the Gram identity gives
+                `unitaryClock_toeplitz_psd` at every degree. The conduction clock is −G_r − ℓ/2 with
+                G_β = (ℓ/2)h(βv) holomorphic in β (`condClock_logDeriv_eq`); Mathlib's Poisson
+                integral formula gives T(G_r) = ∮ P_r T(G_β) (`toeplitzForm_jets_rad_eq`), hence
+                `conductionClock_toeplitz_lower_bound`: T^{cond_q} ⪰ (log q/(1−2σ))·I, every degree.
+                In the constitution, Σ_q T^{cond_q} ⪰ 0 is now COMPILED; owed: −T^E (Γ face; atoms are
+                the trivial zeros, off the circle, so not Gram-type); T^ξ ⪰ 0 is the leaf.
+      THE Γ FACE, EXACT (625, att625/625b; not compiled — needs digamma partial fractions): −T^E =
+                [log(t/2π)/(1−2σ)]·I + a SKEW charge M = i/(2t) + O(1/t²) at the antipode w = −1
+                (closed form, telescoped digammas, = direct sum to 1e−42; the half-density ends arch
+                seen from height t) + drift. Its Toeplitz form is the Hilbert-type skew matrix, norm
+                ≈ N/(πt) linear in N (geometric-growth prediction REFUTED), so −T^E ≻ 0 only for
+                N < N₀(s) ≈ πt·log(t/2π)/(1−2σ) and not at every degree. Consequence: the non-ξ part of
+                the constitution is positive only up to N₀; above it T^ξ's own far cluster must absorb
+                the skew charge. The leaf is unchanged: RH ⟺ T^ξ ⪰ 0 at every degree (Gram). Register
+                scale law: degree N resolves heights h ≈ N(1−2σ); the bottom is seen at N ≈ t/(1−2σ).
+      THE SWEEP IDENTITY (626, Sam: "only the nontrivial zeros"; att626, 1e−28 per atom, 5e−7
+                summed): Φ_s(z) = μ̂_0 + 2Σ μ̂_k z^k = Σ_ρ ω_ρ h(w_ρ z) = (2/d)[L(s_z) − i Im L(s)],
+                s_z = (s + zc)/(1+z), L = ξ′/ξ; Re Φ_s(z) = 2Re L(s_z)/d. The disc is the channel, the
+                circle the line, z = −1 height ∞. HENCE the full ladder at ONE anchor ⟺ seat mass ≥ 0
+                on the whole channel ⟺ RH (Herglotz both ways, elementary). The degree-N constitution
+                (622–625) IS the degree-1 mass constitution swept over the channel: 624's Poisson formula
+                was the sweep; 625's Γ limit is the sweep reaching the bottom where Re E < 0. TAG: EQUIV;
+                the register is an instrument (Cayley picture), not a new certificate family. Compile
+                plan (identity only, ~200 lines): per-atom ring identity + `logDeriv_xiProductMult_partial_fraction`
+                + `xi_logDeriv_sub_product_const_off_zeros` + r-damped `Real.circleAverage` formula.
+      SWEEP COMPILED; VERDICT RETRACTED (627, `HerglotzSweep.lean`, standard axioms): `atomHerglotz_eq`,
+                `xiHerglotz_eq` (Φ_s(z) = (1/d)[−L(s) − L(1−s̄) + 2L(s_z)]), `xiHerglotz_eq'`,
+                `xiHerglotz_re` (Re Φ_s(z) = 2Re L(s_z)/(2σ−1)), `movedAnchor_re_lt_half_iff` (disc = channel).
+                THE FREEDOM IT BUYS: the anchor. At Re s₀ < 0 every ingredient of the coefficient
+                sequence is absolutely convergent and explicit (primes + Γ + clocks), and the sweep carries
+                the one-anchor ladder into the strip by identity — rule 4 realised on the carrier. NEW LEAF
+                SHAPE (STRONGER, constructive): exhibit the positive measure on the circle whose Fourier
+                coefficients are the explicit sequence μ̂_k(s₀); discharge by identity. Owed: coefficient
+                expansion + r-damped integral + Herglotz both ways ⟹ ladder at one anchor ⟺ RH.
+                NEXT OBJECT: the explicit anchor's sequence from `logDeriv_xi_eq_arch_sub_lseries`.
+      THE EXPLICIT ANCHOR COMPILED (628, `ExplicitAnchor.lean`, standard axioms): on Re s < 0,
+                ξ′/ξ = −weilArch(1−s) + LSeries Λ(1−s) as functions (`xiLogDeriv_eq_explicit`); the jets
+                of ξ′/ξ are the jets of this explicit function (`jets_xiLogDeriv_eq_explicit`); the prime
+                jets are absolutely convergent L-series `(−1)^m/m!·Σ Λ(n)(log n)^m n^{s−1}`
+                (`jets_primeSide`, Mathlib `LSeries_hasDerivAt` through the reflection); the Toeplitz
+                coefficients split Γ + prime (`explicitAnchor_toeplitzCoeff_split`,
+                `primeSide_toeplitzCoeff_succ`: Laguerre-type polynomial in log n per prime power); the
+                sweep's Herglotz function is the explicit function at the moved anchor while Re s_z < 0
+                (`xiHerglotz_explicit`), no zero in any hypothesis. LEAF (STRONGER, constructive): the
+                explicit sequence μ̂_k(s₀) is a Carathéodory sequence — exhibit its positive measure.
+                Owed: Γ jets as series (polygamma all orders), Herglotz both ways, then one-anchor ⟺ RH.
+      Γ JETS AS SERIES, ALL ORDERS (629, `GammaJetsSeries.lean`, built, standard axioms):
+                `hasSum_deriv_inv_pow_series` (termwise derivative of Σ(w+n)^{−k}, k ≥ 2, on a ball
+                inside ℂ∖ℤ), `iteratedDeriv_digamma_series` (ψ^{(k)}(z) = (−1)^{k+1}k! Σ(z+n)^{−(k+1)},
+                induction from Zeta23's trigamma), `hasSum_polygamma`,
+                `iteratedDeriv_digamma_half_one_sub_series` (the anchor's variable (1−s)/2, Im s ≠ 0).
+                `ArchSideJets.lean` (jets of 1/(s−a); `jets_archSide_series`: jets archSide s m =
+                1/s^m + 1/(s−1)^m − Σ_{n≥0}(s−1−2n)^{−m}, m ≥ 2, Re s < 0, Im s ≠ 0; CAPSTONE
+                `jets_xiLogDeriv_series`: every jet of ξ′/ξ at an explicit anchor = Γ-tick series +
+                Laguerre-weighted prime series, no zero anywhere). With 628 the explicit anchor's whole
+                coefficient sequence is series: Γ ticks 1+2n (−1), end 0 (+1), primes Λ(n)n^{s−1} with
+                Laguerre weights. Owed: Herglotz both ways ⟹ one-anchor ⟺ RH.
+      ONE ANCHOR'S LADDER ⟺ RH, COMPILED (630, `AnchorLadder.lean`, `LadderMinor.lean`,
+                `LadderImpliesRH.lean`, standard axioms): `anchor_ladder_iff_rh (s ∉ zeros) (Re s < ½) :
+                Ladder s ↔ RH`, Ladder = every Toeplitz form of hermExt(xiCoeff s) real and ≥ 0,
+                xiCoeff s k = Σ_ρ m_ρ ω_ρ w_ρ^k. RH ⟹ ladder: Gram identity (`ladder_of_rh`). Ladder ⟹ RH:
+                by growth, not Herglotz — minor bound ‖μ_k‖ ≤ μ_0 (`ladder_coeff_bound`), a channel zero
+                has ‖w_ρ‖ > 1 (`one_lt_norm_transport_iff`), largest modulus attained on a finite set
+                (`finite_transport_ge`), tail → 0 (dominated convergence), Cesàro of the finite
+                almost-periodic sum ≠ 0 (`re_ge_half_of_ladder`), mirror symmetry. TAG: EQUIV, compiled.
+                THE CERTIFICATE FAMILY: RH ⟺ positive-definiteness of one sequence at one point.
+                Owed: atom sequence = jet sequence (S_m = Σ m_ρ(s−ρ)^{−m}, m ≥ 2, termwise differentiation
+                of `logDeriv_xiProductMult_partial_fraction`), which makes 628's explicit prime-and-Γ
+                sequence the one whose ladder is RH.
+      REDUCTION CLOSED END TO END (631, `JetsAreAtoms.lean`, standard axioms):
+                `iteratedDeriv_xiLogDeriv_series`, `toeplitzCoeff_jets_eq_xiCoeff`, and
+                **`explicit_ladder_iff_rh (Re s < 0) : ExplicitLadder s ↔ RH`** — RH is the
+                positive-definiteness of the explicit prime-and-Γ sequence
+                `toeplitzCoeff d (jets (−weilArch(1−·) + LSeries Λ(1−·)) s)` at one point. No zero in any
+                hypothesis. THE LEAF (the only node left, STRONGER-constructive): exhibit the positive
+                measure on the circle with these Fourier coefficients. ATTEMPTED (att631): partial Euler
+                sums p ≤ P have a negative computed N=6 eigenvalue at all 15 sampled cutoffs through
+                P = 2·10⁶; N=4 changes sign across these samples. This does not settle every finite P.
+                Each prime contributes (ℓ_p/|d|)I − T^{bary_p}, uniform minus positive. Next attempt needs the
+                primes' Poisson barycenters recombined across p with the Γ face supplying the uniform
+                (the explicit formula in the Toeplitz register). Not proved. Not a stop-claim.
+      CARRIER IDENTITY + BOUNDEDNESS FORM (632, att632, `BoundedIffRH.lean`, standard axioms):
+                on the carrier each prime is purely oscillatory — the uniform (ℓ_p/|d|)λ is exactly the
+                m=0 Poisson term of ν_p (verified 1e−8 per prime); the transported measure is
+                Γ density − (1/π)|s₀−½−iy|^{−2}·Re ΣΛ(n)n^{−½−iy}: Weil's criterion in the anchored class.
+                COMPILED: `rh_iff_bounded`, **`explicit_bounded_iff_rh (Re s < 0)`: RH ⟺ the explicit
+                prime-and-Γ sequence is BOUNDED in k** (growth rate = max_ρ ‖w_ρ‖). THE LEAF NOW: show
+                sup_k |μ_k(s₀)| < ∞ for one anchor. Not proved; the fiber's cancellation events must lie
+                on the carrier; the finite-cutoff experiments do not settle all finite constructions.
+      POLYNOMIAL GROWTH CONSUMER (`SubexponentialAnchor.lean`, standard axioms; 2026-09-06 review):
+                the maximal-atom argument needs only μ_k/R^k → 0 for every R > 1. COMPILED:
+                `rh_of_subexponential`, `rh_of_polynomial_growth`, and the fixed-anchor consumer
+                `riemannHypothesis_of_explicit_fixed_anchor_polynomial_growth` to Mathlib's literal RH.
+                An alternative sufficient estimate is |μ_k(-1+20i)| ≤ C(1+k^p), with C and p fixed.
+      NORMALIZATION AND CORRECTIONS (633, `SeatHerglotzSweep.lean`, standard axioms): exact
+                `xiHerglotz_re_eq_scaled_seatMass`: Re Φ_s(z) = ((1−|z|²)/|1+z|²)·seatMass(s_z);
+                `Gclock_re_pos` (Re G_β > 0 on the channel); `movedAnchor_inverse`. Owned corrections:
+                626(ii) sign (Re G_r > 0), 631 finite-cutoff overclaim (evidence, not a law), 632
+                distribution claim (coefficientwise; a tempered distribution ⟺ polynomially bounded
+                coefficients ⟺ RH), 625/626 scale wording (far-height reach near the antipode).
+                THE LEAF, FINAL FORM: RH ⟺ the fiber's resultant functional on the carrier is TEMPERED
+                (one polynomial bound on one explicit sequence at one fixed point). Not established.
+      THE EXACT GAP, COMPILED (634, `GrowthGap.lean`, standard axioms): unconditionally
+                `explicit_growth_unconditional'`: ‖toeplitzCoeff(−3)(jets explicitLogDeriv(−1+20i)) k‖ ≤
+                C·growthBase^k with growthBase = √(1+3/(1215/2−20)²) < 1 + 5·10⁻⁶ (`growthBase_lt`),
+                from the compiled DVP height 607.5 (`online_below_1215o2`) and `norm_transport_sq`.
+                RH = base 1 with a polynomial factor. Distance to RH at this anchor = the last
+                4.35·10⁻⁶ of the growth base; verified height H gives base √(1+3/(H−20)²), never 1.
+                Not proved. A proof needs an input beyond zero verification (Weil positivity in the
+                anchored class); none supplied.
+      STAGED TARGET AND THE END ATOM (635, `StageBoundStatus.lean`, standard axioms):
+                `stage_bound_iff_polynomial_bound` — the staged Draft-B bound is EQUIVALENT to the
+                completed Draft-A bound (limit transfer one way, constant C+1 the other), so staging is
+                presentation, not weakening. `one_lt_norm_transport_anchor_zero`: the Archimedean END
+                atom 0 (the reflected pole of ζ at 1) has ‖w‖ = √(1+3/401) = 1.0037 > 1;
+                `norm_transport_anchor_tick_lt_one`: every Γ tick 1+2n is strictly inside. Hence the
+                Archimedean side ALONE violates every polynomial envelope, and only a PAIRED estimate
+                (prime divergence at the reflected point cancelling the end atom) can discharge the leaf.
+                Rules out the split-estimate class of attempts. RH not proved.
+                [635's framing was barrier-shaped and wrong (rules 9/11); superseded by 636, which
+                performs the pairing instead of reporting the atom.]
+      THE END PAIRING, CONSTRUCTED (636, `PairedSides.lean`, standard axioms):
+                pairedArch = archSide − 1/s, atoms = Γ ticks 3,5,7,… only (`jets_pairedArch_series`);
+                pairedPrime = 1/s + primeSide absorbs the ζ′/ζ pole at the reflected point;
+                `pairedArchCoeff_atoms`, and **`pairedArchCoeff_bounded`: the Γ face's coefficient
+                sequence is BOUNDED unconditionally** (every tick inside the closed disc, weights
+                ≤ (n+1)^{−2}). Hence **`rh_iff_pairedPrime_polynomial`: RH ⟺ a polynomial bound on the
+                paired PRIME coefficients alone** — the Archimedean side is out of the leaf. The leaf is
+                now one arithmetic sequence: 1/s + Σ Λ(n)n^{s−1}, jetted and binomially transformed at
+                −1+20i. Not proved.
+                That estimate is not yet proved. Next construction: a finite-order bound for the
+                completed carrier functional on w^k, identified with these explicit coefficients.
+                Sweep normalization, review, and literal compiler output: `SWEEP_UPDATE_REVIEW.md`
+                and `SWEEP_UPDATE_VERIFICATION.md`.
+      THE ARITHMETIC BOUND ATTEMPTED (637, `tmp/att637_paired_prime_laguerre.py`, `tmp/att637b_planted.py`;
+                pencil, no new Lean): the paired prime weights in closed form, exact —
+                q_k(ℓ) = (−1)^{k+1}(ℓ/(k+1))·L_k^{(1)}(3ℓ) (rational check k ≤ 30) — so
+                μ_{k+1} = ω₀w₀^{k+1} + ((−1)^{k+1}/(k+1)) Σ_n Λ(n) log n · n^{−2+20i} L_k^{(1)}(3 log n)
+                = (−1)^{k+1} ∫₀^∞ e^{−(2−20i)u} P_k(u) d[ψ(e^u) − e^u]: the Laguerre transform at scale
+                |d| = 3 of the prime remainder measure at critical normalization e^{−u/2}d[ψ(e^u) − e^u].
+                Sequence computed four ways (Cauchy Taylor, atoms, primes to 10⁷, sweep generating
+                function), agreeing to 6e−7; bounded ≤ 0.39 to degree 3000 while the end atom alone is 178.
+                Pencil: |ψ(x) − x| ≤ C x^{½}(log x)^A ⟹ |μ_{k+1}| ≤ C′k^{A+3}; any exponent θ > ½ admits a
+                remainder with exponential coefficient growth (planted e^{ρu} is the atom at 1 − ρ; base
+                1.00033 at ρ = 0.6 + 50i). So in arithmetic the leaf IS von Koch's estimate — the node §2
+                already carries ("Centering at the END lands on von Koch — EQUIV, unsigned"): RESTATEMENT,
+                `rh_iff_pairedPrime_polynomial` EQUALS the von Koch node. Unconditional inputs: Zeta23
+                `MediumPNT` (exponent 1 − o(1)) gives base e^{2/3} by the absolute route, strictly worse
+                than the exact atom route's 1 + 4.35e−6 (634); the cancellation an arithmetic bound must
+                produce is A_k/|μ_{k+1}| ≈ 16·e^{2k/3} (3.8e18 at k = 60). Not proved. Verdict: lateral.
+      MIRROR PAIR UNDER TRANSPORT (646, `MirrorTransport.lean`, standard axioms): `transport_mirror`
+                (w_{1−ρ̄} = (w̄_ρ)⁻¹), `atomWeight_mirror` (ω_{1−ρ̄} = ω̄_ρ), `pairCoeff_conj` (the pair's
+                coefficient sequence is Hermitian), `pairCoeff_of_norm_one` (on the circle the pair
+                collapses to 2Re(ω)·w^k). An off-line pair is the face-inversion pair (w, 1/w̄) with
+                conjugate weights; its seat-form contribution is 2Re[ω C(w) conj C(1/w̄)]. The Hankel
+                chart on a real strip anchor is indefinite under RH because the pole block's continuation
+                across s₀ = 1 is minus a positive measure's moments (646). Identities only; no positivity.
       TAG: EQUIV (= RH) by nonempty_coupling_iff.
       SHAPE: constructive — an object to exhibit per zero, discharged by identity
              if and only if the identification theorem is proven.  That theorem is RH.
@@ -367,6 +541,75 @@ separately. Struck 2026-09-02: X-drift (no off-line fibers on the helix — Sam)
 register of the count face, ledger 529/530). So this file is a proof plan MODULO ONE
 EXHIBITION, that exhibition carries full strength, and the active work is the construction of
 the object, instrumented by att530. Rule 0: strength is a reason to attempt, never to stop.
+
+**Guard verdict, 2026-09-07 (ledger 638).** The anchored transport that `hp_pencil.tex` names as
+the candidate external bound on κ (the negative squares of the FE pairing) has been built and
+measured (622–637): its growth base is sup_ρ ‖w_ρ‖ (634) and its bound is von Koch (637), so it
+computes κ from the spectrum and is an instrument, not the exhibition. Every leaf under [HP]
+remains EQUIV. The exhibition's required input now has a stated shape, in the paper's own frame:
+a positivity proved on an object that is neither the zero set nor a finite truncation of the prime
+series (the function-field model is the Hodge index theorem on C×C). No such object is compiled;
+grep for "Hodge index" / "Castelnuovo" returns the paper's one sentence and C3's D7 door only.
+The plan is still a proof plan modulo the one exhibition.
+
+**Branch (B), opened 2026-09-07 on Sam's choice (ledger 639): the external bound on κ, written
+backward from the target in the surface register of Weil's proof for curves.**
+
+```
+[B0]  κ = 0 for the FE pairing  ⟺  RH                       (289, spectralCoord_feReflect)   EQUIV
+[B1]  THE SURFACE REGISTER — classes on carrier × anti-carrier and their pairings, DC first:
+        H, V      the two ends (poles at 0 and 1)            pairings P₋ = ∫g e^{−u/2}, P₊ = ∫g e^{u/2}
+        Δ         the diagonal                               Δ·Δ = "2 − 2g" = the archimedean DC (625),
+                                                             the genus is infinite and grows as log t
+        Γ_t       graph of the time-t flow (height shift)    Γ_t·Γ_s = e^{min(t,s)} N(|t−s|),
+                                                             N = the fixed-point comb Σ Λ(n) n^{−½} δ_{log n}
+                                                             + ends + archimedean = the explicit formula (534)
+      Curve model: Γ_{F^m}·Γ_{F^n} = q^{min} N_{|m−n|}, N_k = 1 + q^k − Σ α_i^k, N_0 = 2 − 2g.       COMPILED
+      (the pairings ARE the compiled explicit formula read as intersection numbers; no new theorem)
+[B2]  CASTELNUOVO ON THE FLOW SPAN: for D = Σ a_t Γ_t, D² ≤ 2(D·H)(D·V).
+      Pencil (this session, curve case exact): the pole terms of D² equal 2(D·H)(D·V) identically,
+      so the inequality is Σ_i |b̂(θ_i)|² ≥ 0, i.e. RH for the curve. For ζ the same cancellation is
+      Lemma A of the support certificate: Q(g) = 2Re(P₊P̄₋) + (1/2π)∫σ|Ĝ|².                    EQUIV
+      Equality test: [B2] EQUALS Weil positivity (Track W, att239). Restatement in a new register.
+[B3]  THE SUPPLY — a Hodge-index inequality on an AMBIENT object, proved without the spectrum,
+      restricting to [B2] on the flow span.                           STRONGER-constructive (shape)
+      Weil's proof needs three things the flow span does not contain: (i) an ambient divisor group
+      with effective classes, (ii) Riemann–Roch on the surface (an existence theorem for sections
+      with quadratic growth), (iii) effective classes pair non-negatively with ample ones. The
+      Kähler proof needs instead: harmonic representatives + pointwise algebra on primitive (1,1)-forms.
+      Candidates in the house, each run through the equality test (ledger 639):
+        (a) unitary-clock Grams + the Poisson barycenter (520/624): PSD each, but the Euler mixture
+            enters with wrong-sign DC per prime (631, 632); the compensation is the Γ face and the
+            zeros' far field — spectral.                                                  census
+        (b) monotone warps (pushforward of a positive clock measure is PSD): the warp is built
+            from the zeros (the seat, 541); spectral.                                     census
+        (c) harmonic representatives / Bochner: the kernel Σ_ρ e^{iγτ} is positive-definite iff
+            the zero measure is positive; the harmonic representative IS the spectrum.    census
+        (d) Riemann–Roch on carrier × anti-carrier with effective classes: no house object for
+            RR or effectivity. Literature: Connes–Consani's Riemann–Roch strategy on the square
+            of the scaling site (open; Connes survey 2602.04022 §4.1 read at source 08-17: no
+            conceptual reason for positivity "when primes are involved").                  OPEN
+        (e) WeilDuality.lean (2026-07-01, never ledgered): Weil I's engine COMPILED
+            (tensor_power_purity, duality_forces_purity, purity_engine, purity_from_castelnuovo)
+            with ONE input, "the helix Castelnuovo inequality" ‖T^k v‖² ≤ C·B^k·‖v‖² on the
+            vanishing classes. Realized in the anchor register it is ‖w_ρ‖ ≤ 1 for every zero:
+            EQUALS the growth leaf of 630/634, and 634 is its measure (holds with B = growthBase²
+            in place of 1).                                                               census
+        (f) ChiralCup.lean (2026-06-26): the cup form, a Gram form on ℕ →₀ ℂ, PSD by construction
+            with a Hilbert completion — an AMBIENT positive form; its link to the vanishing classes
+            (an operator on the cup space whose resolvent trace is the fiber's readout) is [HP].
+        (g) NeronSeveriRung.lean (Hodge side): NS(E×E), rank 3, no Frobenius class — the
+            cooperative-parameter surface in characteristic 0.                            model
+      No candidate survives the equality test; (d) remains the un-walked construction. Absence
+      claims here were checked by grep AFTER being written once (ledger 639 correction); every
+      line above now cites the file it rests on.
+```
+
+First object of (B), if pursued: an RR-type count of sections on the house surface — the dimension
+of the space of banks vanishing on a prescribed cell configuration — computed on the finite unitary
+bank first (where the answer is known and RH holds by construction), then at support L for ζ.
+The test it must pass before it counts as a supply: positivity of the pairing of an "effective"
+class with every flow class, derived from the count alone, with no zero location used.
 
 ---
 
@@ -1090,3 +1333,101 @@ autocorrelation weights and an ℓ-dependent phase. N = 1 carries no RH content 
 N = 2 is the first degree with a phase. Open node, in this register: the Gram-vs-clock inequality for
 every P_R. Content of the door's hypothesis (590–591): the positivity is carried by the actual phases
 γ·log p, enslaved to the zeros; free phases violate at every degree ≥ 2. Open node unchanged in content.
+
+### 652 (2026-09-07) — compiled direction of ζ′ at an on-line zero
+`GrowthDisplacementLaw.lean`: `deriv_zeta_online_reflect` ζ′(ρ) = −χ(ρ)·conj ζ′(ρ) (COMPILED, every on-line zero);
+`growth_direction_eta` η(ρ−2)/η′(ρ) = B·(1−ρ)(2−ρ)/(4π²)·conj(ζ(ρ+2)/ζ′(ρ)) (COMPILED, simple on-line zero).
+Serves the fiber's growth flow (650–651); no node on an off-line zero. Consumers: seat sign form, escort ladder.
+### 653 (2026-09-07) — phase bound compiled
+`PhaseBound.lean`: `phase_bound` 0 < Re(B·q·conj ζ(ρ+2)) and `growth_direction_re_neg` Re(η(ρ−2)/η′(ρ)·conj ζ′(ρ)) < 0
+(COMPILED, simple on-line zero, |γ| ≥ 14; Euler product inside via `zeta_inSector`). The 651 law is fully machine-checked.
+### 658 (2026-09-07) — sign-mechanism leaf: input identified
+Seat on the channel = generating function of the Laguerre hierarchy J_n(t) (classical: Patrick 1973 / Csordas–Varga 1990;
+verified 1e−15). Positivity is not site-local and not a kernel-shape property (measured, 658c/d): it is the cancellation of
+the two-ended sites' cusps at the weld u = 0 (modular symmetry at the fixed point). LEAF INPUT REQUIRED: the weld
+smoothness entering the Laguerre hierarchy — order of cusp cancellation vs power of 1/t. Status: EQUIV, input named.
+### 659 (2026-09-08) — new sub-node under the sign-mechanism leaf: RUNG 1 = "RH near the line"
+Rung 1 of the Laguerre hierarchy (L(Ξ) ≥ 0 ∀t) ⟺ Re[(ξ′/ξ)′(½+it)] ≥ 0 ∀t (second jet of the seat's complex form on the
+carrier ≥ 0). Consequence (derived, Hadamard): any off-line zero satisfies (β−½)² ≥ 2/Σ_{others}Re 1/(γ−τ)², i.e. repelled
+from the line by the local density, ≈ |β−½| ≥ 4.9/log(γ/2π). Measured: bank-level L(Z) > 0 on [10,1000] (far end never
+load-bearing; density ≫ curvature). Tag: NECESSARY (weaker than RH); inputs: on-carrier jets + far-end curvature;
+proof status: not in record; literature: Csordas–Varga 1990, Csordas–Smith–Varga 1994 (not re-read).
+### 661 (2026-09-08) — mirror transport of the derivative, GRH fibers (COMPILED)
+`MirrorDerivativeTransport.lean`: Λ(s₀, χ⁻¹) = 0 ⟹ Λ(1−s₀, χ) = 0 ∧ Λ′(1−s₀, χ) = −N^{s₀−½} ε(χ) Λ′(s₀, χ⁻¹), every zero,
+functional equation only. Next: Schwarz reflection for `completedLFunction` → on-line direction identity for characters.
+### 662 (2026-09-08) — growth-resolution of multiplicity (node: one event per height)
+m-fold limit event ⟺ m finite-head events at ρ + Z^{−2/m}(η(ρ−2)/c_m)^{1/m}ω^k (from F_Z = η − Z^{−2}η(s−2) + …).
+Simplicity ⟺ convergence rate Z^{−2} at every zero. Sam's "no exact equality twice at a height" is exact at finite head.
+### 664 (2026-09-08) — RH from ONE VANISHING PER HEIGHT (COMPILED reduction)
+`OneVanishingPerHeight.lean`: for a real cascade converging to ξ, one vanishing per height ⟺ SourceLabelled, and
+`rh_of_oneVanishingPerHeight`. Inputs still to write: the fiber cascade instance (convergence to ξ) and the principle on its stages.
+
+## BURNDOWN (2026-09-08) — final task list to RH via `rh_of_oneVanishingPerHeight`
+Compiled reduction (664): for a `MidpointCascade C` (stages entire, converging locally uniformly to ξ(½+iz)),
+`RealStages C → OneVanishingPerHeight C → RiemannHypothesis`. Everything below serves its two hypotheses.
+
+### Critical path
+- **T1 — the fiber cascade instance `C_fiber : MidpointCascade`.** Stages = transforms of the two-ended site sums
+  Σ_{m≤N} g̃_m (or a smooth-weld variant, see T2). Sub-tasks:
+  - T1a  ξ's kernel representation in Lean: ξ(½+iz) = ∫Φ(u)e^{izu}du with Φ built from Jacobi theta (Mathlib has the
+         theta functional equation and `completedRiemannZeta` via a Mellin pair; the kernel form needs two integrations
+         by parts and the evenness of Φ). STATUS: not in Mathlib, not in tree. Size: large.
+  - T1b  each stage entire (parameter integral of a super-exponentially decaying kernel). STATUS: to write. Medium.
+  - T1c  locally uniform convergence of the stages to ξ (dominated convergence, Σ_m sup|g̃_m|e^{|Im z||u|} summable).
+         STATUS: to write. Medium.
+  - T1d  `RealStages C_fiber` (kernels real and even). STATUS: to write; easy once T1b exists.
+- **T2 — `OneVanishingPerHeight C_fiber`: every stage has at most one vanishing per height.** THE CONTENT.
+  - T2a  Decide the cascade. Measured (660): the cusped two-ended sums C_N lose zeros beyond a crossover height
+         (C_1 keeps 1 of 13 real zeros below 60; C_2 keeps 7); the missing zeros are elsewhere in the plane. If they
+         are non-real, each comes with its conjugate at the same height and T2 FAILS for that stage. TASK: locate the
+         missing zeros of C_1, C_2 in a wide box with mp-precision nodes. Pre-registered prediction: non-real
+         conjugate pairs at |Im z| ≳ 1 ⟹ the cusped cascade cannot serve T2; the cascade must have a smooth weld.
+  - T2b  Choose stages with a smooth weld that CONVERGE to Φ (Pólya's product family is real-rooted in range but is a
+         model: P_1(0) = 0.0385 vs Φ(0) = 0.4467, 660). Candidates: (i) two-ended site sums with the weld smoothed by
+         the modular partner terms (the theta transformation applied to the tail, so each stage is smooth at u = 0
+         and the sum is still Φ); (ii) the positive amplitude warp e^{λu²}Φ, λ ↓ 0 (real-rooted for λ ≥ 0.22, Polymath;
+         convergence to Φ is the λ → 0 limit; real-rootedness for all λ > 0 is RH by Rodgers–Tao's Λ ≥ 0).
+         STATUS: (i) unbuilt; (ii) known, and its T2 is the theorem.
+  - T2c  Prove T2 on the chosen stages, all heads, all heights. STATUS: open; this is the clause. Instruments: rung 1 as
+         the merger detector (659), the growth-resolution lemma (662), the mirror transport (661), inertness of
+         admission (662c), the seat as the Laguerre generating function (658).
+
+### Supporting formal debt (lateral, finite)
+- S1  Schwarz reflection for `completedLFunction` (absent from Mathlib) → GRH version of 652's direction identity.
+- S2  Compile the growth-resolution lemma (662) from the Mellin expansion of the smooth-entry fiber.
+- S3  Compile the seat = Laguerre generating identity (658; Patrick 1973) and rung 1 ⟺ Re(ξ′/ξ)′ ≥ 0 on the line.
+- S4  Compile |ε(χ)| = 1 (root number modulus; stated in Mathlib's docstring, no lemma).
+- S5  Wire the bounded discharge (`online_below_1269o2`) into the 663 transfer file for |Im ρ| ≤ 634.5.
+
+### Order
+T2a (decides the cascade) → T2b (build it) → T1a–T1d (compile the instance) → T2c. S-items in parallel.
+#### BURNDOWN update 2026-09-08 (ledger 666)
+- T2a DONE: cusped sums shed conjugate pairs beyond their crossover (C_1: 8 pairs located to Im 25; C_2: 2 past 37);
+  the cusped cascade is not source-labelled.
+- T2b DECIDED: the flow cascade C_flow, stages Ξ_λ = ∫e^{λu²}Φ e^{izu}du, λ_n ↓ 0 (partial-sum smoothings fail:
+  Gevrey tails, √N divergence, or inheritance of Ξ's zeros).
+- Remaining critical path: T1 (flow cascade instance; T1a kernel representation of ξ), then T2c = one vanishing per
+  height for Ξ_λ at every λ ∈ (0, 0.22) — known for λ ≥ 0.22 — i.e. no first collision at positive warp.
+#### BURNDOWN update 2026-09-08 (ledger 667): T1a steps 1–2 compiled (`XiKernelMellin.lean`): Λ(s) = 2∫e^{su}Ψ(u)du for Re s > 1.
+Remaining T1a: step 3 IBP ×2 (Ψ″+Ψ′, boundary limits), step 4 evenness of K from the theta FE, step 5 continuation to all z.
+#### BURNDOWN update 2026-09-08 (ledger 668): T1a scaffolding compiled (`XiKernelTheta.lean`): Ψ_reflect, holomorphic extension PsiC on |Im w| < π/4, all derivatives on the axis. Next: integrability + boundary limits, then the two IBPs.
+#### BURNDOWN update 2026-09-08 (ledger 669): T1a step 4 compiled (`XiKernelEven.lean`: Kker_even). Remaining: step 3 (IBP), step 5 (continuation), then T1b–d.
+#### BURNDOWN update 2026-09-08 (ledgers 671–672): T1a step 3 compiled (`XiKernelIBP.lean`: xi_integral_form). Remaining: step 5 (entire K-transform + identity theorem), then T1b–d.
+#### BURNDOWN update 2026-09-08 (ledger 673): **T1a COMPLETE** — `xiSection_eq_Ktrans`. Remaining: T1b–d (flow cascade instance), then T2c.
+#### BURNDOWN update 2026-09-08 (ledger 674): **T1 COMPLETE** — `rh_of_oneVanishingPerHeight_flow`. Remaining: T2c only
+(one vanishing per height on Ξ_{1/(n+1)} for every n; stages n ≤ 3 covered by Polymath's λ ≥ 0.22 on paper, not in Lean).
+#### BURNDOWN update 2026-09-08 (ledger 676): REGISTER DOOR compiled for all heights — `rh_of_registerIdentity : RegisterIdentity → RH`
+(`RegisterIdentity` = at every good height ≥ 10 a ladder with exactly the census count of sign changes). T2c now has two
+compiled forms: `OneVanishingPerHeight flowCascade` (cascade chart) and `RegisterIdentity` (register chart).
+#### BURNDOWN update 2026-09-08 (ledger 677): **LIMIT DOOR** — `rh_of_smultIntegralSublinear : (∀ ε>0, ∀ᶠ T, −εT ≤ ∫₀ᵀ S_mult) → RH`,
+Littlewood consumed unconditionally (`littlewoodBound_holds`). T2c in its weakest compiled form: the on-line ledger's
+running integral is not linearly negative.
+#### BURNDOWN update 2026-09-08 (ledgers 679–681): warped chart of T2c — head law (fiber decides the band iff Z ≥ T),
+bank identity F_Z = F̃_Z − 2^{1−s}F̃_{Z/2} (END terms cancel), atom-flow road ATTEMPTED and refuted by computation
+(atoms cross the carrier at Z ≈ t/2). Open clause unchanged: |F_T(s)| > 0 on the band below the head = η's band
+zero-freeness.
+#### BURNDOWN update 2026-09-08 (ledger 685): T2c constructive leaf = FLOW FRONTIER. `rh_of_flowFrontier` compiled;
+RH ⟺ FlowFrontier λ₀ ∀ λ₀ > 0. de Bruijn = FlowFrontier (1/8) [to compile: strip narrowing]; Polymath = FlowFrontier 0.055.
+Open part after de Bruijn: λ ∈ (0, 1/8) — a bounded parameter interval.
+#### BURNDOWN update 2026-09-08 (ledger 687): Littlewood's radial identity COMPILED (`integral_SAll_eq_radialLogMass_sub`);
+residue identity; fifth door `rh_of_radialNoResidue` (crossing-driven cumulative warp = radial log-mass difference ⟹ RH).

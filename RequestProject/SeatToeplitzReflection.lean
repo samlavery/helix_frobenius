@@ -21,6 +21,7 @@ import RequestProject.ClockPoissonBarycenter
 -/
 
 open Complex Finset
+open CriticalLinePhasor.ChiralityHB
 
 namespace CriticalLinePhasor.SeatingLedger
 
@@ -31,7 +32,7 @@ theorem toeplitzCoeff_reflect (d : ℂ) (S : ℕ → ℂ) (n : ℕ) :
   | zero =>
     simp only [toeplitzCoeff]
     have : ((-1 : ℂ) ^ (1 - 1) * S 1).re = (S 1).re := by simp
-    rw [this, div_neg]
+    rw [this, div_neg, neg_neg]
   | succ n =>
     simp only [toeplitzCoeff]
     rw [← Finset.sum_neg_distrib]
@@ -57,15 +58,16 @@ theorem symClock_logDeriv_eq_cot (θ ℓ : ℝ) (z : ℂ)
     rw [hA, hG]; ring
   have hEE : Complex.exp (φ * I) - Complex.exp (-φ * I) ≠ 0 := by
     intro h0; apply hne; rw [hsym, h0, mul_zero]
-  rw [symClock_logDeriv_eq, hA, hG]
-  unfold Complex.cot Complex.cos Complex.sin
+  rw [symClock_logDeriv_eq, hA, hG, Complex.cot_eq_cos_div_sin]
+  simp only [Complex.cos, Complex.sin]
   have hexp : Complex.exp (I * θ / 2) ≠ 0 := Complex.exp_ne_zero _
   have hI : (I : ℂ) ≠ 0 := I_ne_zero
-  have hden : (Complex.exp (-φ * I) - Complex.exp (φ * I)) * I / 2 ≠ 0 := by
-    apply div_ne_zero _ two_ne_zero
-    apply mul_ne_zero _ hI
+  have hEE' : Complex.exp (-φ * I) - Complex.exp (φ * I) ≠ 0 := by
     intro h0; apply hEE; linear_combination -h0
-  rw [div_eq_iff hden, eq_div_iff (mul_ne_zero hexp hEE)] at *
-  sorry
+  field_simp
+  ring_nf
+  simp only [Complex.I_sq]
+  rw [show (-cexp (I * φ) + cexp (-(I * φ))) = -(cexp (I * φ) - cexp (-(I * φ))) by ring, inv_neg]
+  ring
 
 end CriticalLinePhasor.SeatingLedger

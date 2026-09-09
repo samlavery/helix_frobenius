@@ -1,0 +1,11 @@
+import Mathlib
+#check @intervalIntegral.integral_mono_on
+#check @intervalIntegral.integral_const
+#check @intervalIntegral.integral_add_adjacent_intervals
+#check @Real.isLittleO_log_id_atTop
+#check @Asymptotics.IsLittleO.bound
+#check @Asymptotics.IsLittleO.def
+#check @Filter.Tendsto.atTop_add
+#check @tendsto_atTop_add_const_left
+#check @intervalIntegral.integral_nonneg
+#check @Real.log_nonneg

@@ -1,0 +1,13 @@
+import Mathlib
+open Complex
+#check @HasDerivAt.clog
+#check @Complex.log_re
+#check @Complex.norm_log_one_add_le
+#check @Complex.abs_re_le_norm
+#check @Complex.abs_im_le_norm
+#check @intervalIntegral.integral_congr_ae
+#check @MeasureTheory.integral_Ioi_of_hasDerivAt_of_tendsto
+#check @tendsto_integral_of_dominated_convergence
+#check @MeasureTheory.tendsto_setIntegral_of_monotone
+#check @intervalIntegral.integral_sub
+#check @intervalIntegral.integral_add_adjacent_intervals

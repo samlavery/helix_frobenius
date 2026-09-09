@@ -1,0 +1,8 @@
+import RequestProject.StageBoundStatus
+import RequestProject.PrimeSymbolClock
+
+#print axioms CriticalLinePhasor.SeatingLedger.stage_bound_of_polynomial_bound
+#print axioms CriticalLinePhasor.SeatingLedger.explicitCoeff_polynomial_bound_of_stage_bound
+#print axioms CriticalLinePhasor.SeatingLedger.explicit_growth_unconditional
+#print axioms CriticalLinePhasor.ContourArgument.PrimeClock.logMul_iterate_term
+#print axioms CriticalLinePhasor.ContourArgument.PrimeClock.term_eq_weight_phase
