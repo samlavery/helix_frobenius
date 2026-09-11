@@ -1,0 +1,27 @@
+warning: PrimeNumberTheoremAnd: repository '/Users/samuellavery/work/helix_frobenius/.lake/packages/PrimeNumberTheoremAnd' has local changes
+'CriticalLinePhasor.DVP.rh_of_smultIntegralSublinear' depends on axioms: [propext, Classical.choice, Quot.sound]
+'CriticalLinePhasor.DVP.littlewood_o_input_holds' depends on axioms: [propext, Classical.choice, Quot.sound]
+proof-drafts/FullRegistrationAttempts20260909.lean:22:2: error: linarith failed to find a contradiction
+ε : ℝ
+hε : 0 < ε
+hsmall : ∀ᶠ (x : ℝ) in atTop, ‖∫ (t : ℝ) in 0..x, Smult t + ↑(offLineStripZeroCountMult t)‖ ≤ ε * ‖x‖
+T : ℝ
+hT0 : 0 ≤ T
+hT : |∫ (t : ℝ) in 0..T, SAll t| ≤ ε * T
+hlower : -(ε * T) ≤ ∫ (t : ℝ) in 0..T, SAll t
+hmass : 0 ≤ ∫ (t : ℝ) in 0..T, ↑(offLineStripZeroCountMult t)
+a✝ : (∫ (t : ℝ) in 0..T, SAll t) - ∫ (t : ℝ) in 0..T, ↑(offLineStripZeroCountMult t) < -(ε * T)
+⊢ False
+failed
+proof-drafts/FullRegistrationAttempts20260909.lean:32:4: error: linarith failed to find a contradiction
+case h2
+t : ℝ
+hwarp :
+  CriticalLinePhasor.CarrierScale.N_pi3 (Real.exp t) - CriticalLinePhasor.CarrierScale.N_1 (Real.exp t) =
+    CriticalLinePhasor.CarrierScale.S t
+hmult :
+  Smult t - CriticalLinePhasor.CarrierScale.S t =
+    ↑(zeroEventCountMult t) - ↑(CriticalLinePhasor.CarrierScale.zeroEventCount t)
+a✝ : Smult t < Smult t + ↑(offLineStripZeroCountMult t)
+⊢ False
+failed

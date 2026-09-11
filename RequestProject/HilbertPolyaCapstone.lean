@@ -103,10 +103,25 @@ theorem xi_spectralCoord_mem_singularSupport {ρ : ℂ}
   rw [heqfun]
   simpa [Function.comp] using hcomp.neg
 
-/-- **The Hilbert–Pólya capstone.**  If the ξ spectral trace is the readout
-of the real spectral channel — `IsSelfAdjointReceiver`: regular off `ℝ`,
-the earned reality of self-adjointness, never an assumption about zeros —
-then every nontrivial zero lies on the critical line. -/
+/-- **What `IsSelfAdjointReceiver` actually says, under a name that cannot mislead.**
+`ResonatesOnlyOnRealAxis T` is a property of a READOUT FUNCTION `T : ℂ → ℂ`: it has a finite
+limit at every non-real point, so its resonances (poles) lie on `ℝ`.  It is not a statement
+about an operator.  Every self-adjoint operator's resolvent readout has this property
+unconditionally (`isSelfAdjointReceiver_resolventReadout`); whether a GIVEN readout, such as
+the ξ spectral trace, has it is a question about that readout's poles. -/
+abbrev ResonatesOnlyOnRealAxis (T : ℂ → ℂ) : Prop := IsSelfAdjointReceiver T
+
+/-- The operator side, restated: self-adjointness is unconditional and so is the regularity
+of the readout off `ℝ`.  Nothing here depends on the location of any zero. -/
+theorem selfAdjoint_readout_resonatesOnlyOnRealAxis
+    {A : Type*} [CStarAlgebra A] [StarModule ℂ A] {a : A} (ha : IsSelfAdjoint a)
+    {φ : A → ℂ} (hφ : Continuous φ) :
+    ResonatesOnlyOnRealAxis (fun z => φ (resolvent a z)) :=
+  isSelfAdjointReceiver_resolventReadout ha hφ
+
+/-- **The Hilbert–Pólya capstone.**  If the ξ spectral trace resonates only on the real axis
+(`IsSelfAdjointReceiver` = `ResonatesOnlyOnRealAxis`, a property of the trace, never an
+assumption about an operator), then every nontrivial zero lies on the critical line. -/
 theorem rh_of_selfAdjointReceiver_xi
     (hsa : IsSelfAdjointReceiver xiSpectralTrace) :
     ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
@@ -134,11 +149,16 @@ theorem rh_of_selfAdjoint_resolventReadout_xi
   obtain ⟨L, hL⟩ := h z hz
   exact ⟨L, hL.congr' (by filter_upwards with w using hid w)⟩
 
-/-- **Exactness: the receiver property is the Riemann Hypothesis.**  The
-interface has zero slack — realizing the ξ spectral trace as the readout of
-the real spectral channel is *equivalent* to the theorem it proves. -/
-theorem selfAdjointReceiver_xi_iff_rh :
-    IsSelfAdjointReceiver xiSpectralTrace ↔
+/-- **The ξ spectral trace resonates only on the real axis iff every zero is on the line.**
+This is a statement about the poles of the trace `−ξ′/ξ(½ + i·)`: it has a pole at
+`z = −i(ρ − ½)` for every zero `ρ`, and that pole is non-real exactly when `ρ` is off the
+line.  It says NOTHING about whether an operator is self-adjoint: any self-adjoint operator
+is self-adjoint whether or not RH holds, and its readout is regular off `ℝ` whether or not RH
+holds (`selfAdjoint_readout_resonatesOnlyOnRealAxis`).  What this equivalence fixes is the
+other side: the ξ trace can be the readout of a self-adjoint operator only if it has no
+non-real pole, i.e. only if RH; and under RH it has none. -/
+theorem xiTrace_resonatesOnlyOnRealAxis_iff_rh :
+    ResonatesOnlyOnRealAxis xiSpectralTrace ↔
       ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
   constructor
   · exact rh_of_selfAdjointReceiver_xi
@@ -168,9 +188,17 @@ theorem selfAdjointReceiver_xi_iff_rh :
       exact hn
     exact ⟨xiSpectralTrace z, hT.tendsto.mono_left nhdsWithin_le_nhds⟩
 
+/-- The former name, kept so that nothing referring to it breaks; the statement and the proof are
+unchanged.  Prefer `xiTrace_resonatesOnlyOnRealAxis_iff_rh`, which says what the predicate is. -/
+theorem selfAdjointReceiver_xi_iff_rh :
+    IsSelfAdjointReceiver xiSpectralTrace ↔ ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
+  xiTrace_resonatesOnlyOnRealAxis_iff_rh
+
 end CriticalLinePhasor.HilbertPolya
 
 #print axioms CriticalLinePhasor.HilbertPolya.xi_spectralCoord_mem_singularSupport
 #print axioms CriticalLinePhasor.HilbertPolya.rh_of_selfAdjointReceiver_xi
 #print axioms CriticalLinePhasor.HilbertPolya.rh_of_selfAdjoint_resolventReadout_xi
 #print axioms CriticalLinePhasor.HilbertPolya.selfAdjointReceiver_xi_iff_rh
+#print axioms CriticalLinePhasor.HilbertPolya.xiTrace_resonatesOnlyOnRealAxis_iff_rh
+#print axioms CriticalLinePhasor.HilbertPolya.selfAdjoint_readout_resonatesOnlyOnRealAxis

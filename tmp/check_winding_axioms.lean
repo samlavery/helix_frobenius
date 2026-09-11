@@ -1,0 +1,8 @@
+import RequestProject.WindingTwoEndRatio
+open CriticalLinePhasor.GrownFiber
+#print axioms twoEndedFace_eq_zero_iff
+#print axioms log_norm_faceRatio
+#print axioms log_norm_warpedRatio
+#print axioms hasDerivAt_re_logEulerBank_diff
+#print axioms faceRatio_mul_faceRatio_one_sub
+#print axioms re_eq_half_of_twoEndedFace_eq_zero

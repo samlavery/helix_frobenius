@@ -1431,3 +1431,103 @@ RH ⟺ FlowFrontier λ₀ ∀ λ₀ > 0. de Bruijn = FlowFrontier (1/8) [to comp
 Open part after de Bruijn: λ ∈ (0, 1/8) — a bounded parameter interval.
 #### BURNDOWN update 2026-09-08 (ledger 687): Littlewood's radial identity COMPILED (`integral_SAll_eq_radialLogMass_sub`);
 residue identity; fifth door `rh_of_radialNoResidue` (crossing-driven cumulative warp = radial log-mass difference ⟹ RH).
+
+#### BURNDOWN refinement 2026-09-09 (ledger 677/687 coordinate layer)
+`RequestProject/LogHeightRegistration.lean` transports the integrated registers through
+the carrier's event-height coordinate `t = log Z`, with measure `dZ/Z`.
+`integral_logHeight_register_split` retains the exact off-line multiplicity integral;
+`smult_logHeight_lower` transports Littlewood's lower bound with that correction retained.
+The six declarations passed `lake env lean RequestProject/LogHeightRegistration.lean`
+(exit 0), with only `[propext, Classical.choice, Quot.sound]`; literal output is in
+`proof-drafts/LogHeightRegistration20260909.txt`. This fills the coordinate-transport
+layer of the limit route. It does not discharge the averaged lower bound in ledger 677.
+
+#### BURNDOWN update 2026-09-10 (ledgers 696–698): the averaged door's ladder
+- 696a: `PrimeCrossingMeanAgreement c` (prime-forced strain vs crossing ledger, in the mean; no chart object) ⟹ RH;
+  697: it is an iff (`primeCrossingMeanAgreement_iff_rh`). Tag EQUIV.
+- 698: the door lives on the COUNT axis, `∫₀ᵀ N_off = o(T)` ⟺ `N_off ≡ 0` — **no rung between door and theorem**.
+  The DEPTH axis (678's fourth door, `Σ(β−½)⁺ = (1/2π)∫log|Z| + O(log T)`) has rungs: 0 ⊃ O(log T) ⊃ o(T) ⊃ O(T)
+  [Selberg 1946] ⊃ O(T log log T). Its open rung o(T) ⟺ `N(½ + A/log T, T) = o(N(T))` for every fixed A (almost
+  all zeros within o(1) spacing) — the middle band / sub-pair resolution of the primes, closed at current technology
+  in ledgers 137–162, 502. Forward at THIS door requires an identity for the fiber's crossing count from the primes
+  with no zero sum; none in the record. Verdict lateral; the deliverable is this state.
+- 699 (Sam: "hp style proof … you are approaching the proof of rh via some weird vector"): 677–698 were a CHART vector.
+  The node is E3 in the frame's words (every zero of ξ is a fiber vanishing at a real height Z, y = log Z); its exact
+  compiled residual is the drift i(Re ρ − ½) on the native mode (`NativeCarrierTransport.full_operator_transport`,
+  09-09). Constructive leaf unchanged: T2c `FlowFrontier`. Its next compile (de Bruijn strip narrowing) is STARTED:
+  `DeBruijnStripStep.lean` has the polynomial shift step (no ledger entry until 699). Remaining: entire-function
+  limit, heat operator as shift limit, assembly ⟹ `FlowFrontier (1/8)`, stages n ≤ 7 discharged at all heights.
+- **700 (2026-09-10): COMPILED — `flowFrontier_one_eighth : FlowFrontier (1/8)`** (`DeBruijnFlowFrontier.lean`, with
+  `HurwitzLimit`, `StripShiftClass`, `FlowCoshStages`, `XiStripApproximants`; standard axioms, build green). Stages
+  n ≤ 7 of the cascade (`flowCascade_realRooted_of_le_seven`) are real-rooted at EVERY height — the first all-heights
+  discharge of any stage. Zero-side input: the Hadamard product with paired exponential cancellation only.
+  **T2c open part is now λ ∈ (0, 1/8).** Next classical input: Ki–Kim–Lee / Polymath 15 (`FlowFrontier 0.055`), not
+  compiled; below 0.055 nothing classical is known. Tag of stages n ≤ 7: COMPILED; stages n ≥ 8: OPEN.
+- **701 (Sam: "the helix geometry doesn't even have a strip"): 700 is CHART-FRAME — an instrument of the flow chart,
+  not a geometric node.** The flow cascade itself is a chart object (transforms of a flowed kernel). The geometric
+  program's clause is E3 in the transport register: `full_operator_transport` gives `K∘A = H∘K − i·K∘D`; RH ⟺ `D = 0`
+  on the transported modes. Open decision (Sam): keep T2c in the flow chart, or rebuild it on a warp the geometry owns
+  (growth head `W(y)` / the S-warp), clause "one clean cancellation per carrier height".
+- **702 (Sam: rebuild on the growth head): T2c REBUILT — `GrownFiberDoor.lean`: `HeadClean carrierHeads ↔ RH`**
+  (`rh_of_carrierHeadClean`, `carrierHeadClean_iff_rh`; standard axioms). Cascade = the carrier's grown fiber
+  `finiteFiber (physicalHead n)`; clause = no event in any compact far-side region once the head has climbed past it
+  ("one clean cancellation per carrier height", the two ends). Convergence of the grown fiber to the readout compiled
+  (`GrownFiberConverges.lean`: the fiber is the window-weighted average of the ordered bank's partial readouts). Tag
+  EQUIV. Leaf (STRONGER, finite per region): an explicit head `Z₀(K)` past which no event sits in `K`. The flow-chart
+  T2c (674–700) stays as an instrument; the frame's T2c is this one.
+- **703: T2c's OBJECT IS FINAL — the TWO-ENDED grown fiber `twoEnded Z s = F_Z(s) + χ_η(s) F_Z(1−s)`.** Measured
+  (att703): at heads 25–1000 every event in `[0.2,0.8]×[10,50]` is on the axis (10 = 10 = ζ's ten), none on the far
+  side; the second end pins the events to the axis (the one-ended fiber's sit `Z^{−2}` off it). Compiled
+  (`TwoEndedFiber.lean`): η's own FE `χ_η(s)η(1−s) = η(s)`, convergence to `2η` on the strip, the clause
+  `TwoEndedClean` (one clean cancellation per carrier height, at every head, in every box) and the door
+  `rh_of_twoEndedClean`. Per-stage clause = a finite decidable statement (box count = sign-change count). Owed: stage
+  symmetry + reality on the axis (exact identities); converse needs simple zeros + a counting lemma. Tag EQUIV-or-
+  stronger. The standing target is unchanged: the constitutional reason the balanced fiber's events cannot leave the
+  axis.
+- **704: FE symmetry and axis reality COMPILED** (`TwoEndedSymmetry.lean`): `twoEnded_one_sub` (the stages satisfy η's
+  functional equation exactly at finite head), `chiEta_norm_one` (|χ_η| = 1 on the axis, from FE + conjugation),
+  `twoEnded_sq_axis` / `twoEnded_axis_real` (the stage is a unimodular rotation of a real function on the axis). The
+  per-stage clause is now "the box zeros of G_Z are the sign changes of the real u_Z" — finite, decidable per (T, Z).
+  Still owed: the converse of the door (simple zeros + a counting lemma); the relation ω = e^{i(ϑ+φ)} to the
+  Riemann–Siegel theta (duplication formula; not needed).
+- **706 (Sam: "bring in the winding"): the winding enters the two-ended fiber through the MULTIPLICATIVE face —
+  `WindingTwoEndRatio.lean` (standard axioms).** `E_x = exp L_x` (Riesz-tapered log-Euler product at front x),
+  `G_x = E_x + χ_η E_x(1−s)`, ratio `R_x`; a balanced event is `R_x = −1`; `log‖R_x‖ = log‖χ_η‖ + Re L_x(1−s) − Re L_x`
+  EXACT; slope across the axis = `2Σ w_xΛ(n)n^{−½}cos(t log n)`, so first-order far-side domination ⟺
+  `D_{R,x} − END_x ≥ 0` (568 without the pole); domination ⟹ all events on the axis (compiled). MEASURED: Riesz
+  fronts 10²–10⁴ keep 10 = 10 events on the axis, but domination fails on 2–6% of heights — exactly in the pole's
+  shadow (period 2π/log x, amplitude x^{½}/(πt² log x)); `D_{R,x}` with the pole is ≥ 0 at every front (567
+  reproduced). Sharp cutoff: off-axis events proliferate (32, 294). Verdict LATERAL: the pure ends+winding sign
+  mechanism (517) is refuted in the pole's shadow; forward needs a multiplicative face carrying the pole (η's
+  conduction comb) so that its two-end domination is `D_{R,x} ≥ 0` itself, then a reason for it that is not the
+  zero comb. Not a stop-claim; the identity check for the pole-carrying face is pre-registrable and not run.
+- **707 (Sam: "you aren't warping, are you"): NO — 702–706 were unwarped (growth law W only). Warp applied:**
+  warped log-face `L_x + Π_x`, `Π_x′ = K_R(1−s)` (pole's Riesz kernel; `Π_x = −Ei(L(1−s)) + (x^{1−s}−1)/(L(1−s))`);
+  two-end slope `κ^w = −2π D_{R,x}` EXACTLY (568 with the pole; 1.8e−15). Measured: κ^w < 0 at every height at
+  fronts 10²–10⁴ (max −0.0073), events 10/0/10; finite-δ domination second-order-fragile at 10⁴ (δ = 0.05: 99.75%).
+  END-TERM DC LAW fifth instance. Compiled object corrected: `chiZeta = feFactor⁻¹` (ζ's factor) — the first build
+  paired the pure face with `chiEta` (formal theorems held; object mismatched the measurement).
+- **708 (Sam: "carrier scaling and fiber warp apply at the same time"): front slaved to height by the head law
+  (`physicalHead ≥ 9e^{2y}`, 556): `x(t) = 9t²`.** The two-ended warped multiplicative fiber at its own head is ONE
+  real function of t; clause `D_{R,9t²}(t) ≥ 0`. Measured [10,100]: min D = +0.00164; 29 = 29 events, station − zero
+  RMS 0.0062 (0.002 spacings), max 0.012, no zero data. Pencil: one-variable clause ⟺ RH (off-line dip
+  `(9t²)^δ/(Lδ²)` beats the comb). Rung below: unconditional Weil positivity reaches support log 2 (Yoshida; house
+  log 3) = fronts ≤ 3, never the carrier's head ≥ 900. Verdict LATERAL; forward needs a reason for the inequality
+  that is not the zero comb. Next pre-registrable test: the margin law of `min D_{R,9t²}` over [T, 2T].
+- **709 (Sam: "positivity means non-negativity; run the margin test only if certain of its value"): clause is
+  `D ≥ 0`; margin test NOT run (Fejér valleys dip to 0 harmlessly — no decision value). CORRECTIONS to 708:** (i) the
+  compiled head at ordinate t is `physicalHead t ≥ 9e^{2t}` (y = ordinate; `kClimb = e^y/p`); 708's `9t²` was a
+  stand-in. (ii) 708's "EQUIV by pencil" RETRACTED by its own zero-side control (att709/709b): an FE-consistent merged
+  pair `½ ± δ + iγ₀` is detected by the slaved-front register only for `δ ≥ δ*(γ₀)` — stand-in: `A₀ = δ*·log 9γ₀²` =
+  0.33/0.49/0.46 at γ₀ = 10²/10³/10⁴; compiled head: δ* = 1e−4/2e−6/6e−8. So `D_{R,x(t)}(t) ≥ 0 ∀t` at ANY slaved
+  front is a DEPTH-AXIS RUNG ("all zeros within δ*(γ) of the axis"), not RH; RH = the fully grown (∀x) fiber, 568.
+  Free front confirmed: δ = 0.02 at γ₀ ≈ 1000 detected from L = 50 on. Verdict lateral; the rung is named, nothing
+  classical walks it; forward = a reason for `D ≥ 0` at every front that is not the zero comb.
+- **710 (Sam: "run that test"): MARGIN LAW measured.** Stand-in front 9t²: m(T)/(ϑ′/π) ≈ 0.015, FLAT T = 80…2560
+  (my "shrinking" prediction refuted; minimum at a Fejér null of the nearest zero, gap 1.3–1.6× mean: the nulls sit
+  at gap midpoints because 2π/L ≈ ḡ/2). Compiled head 9e^{2t}: m ≈ 1.5e−3·ℓ²/T (as predicted). D ≥ 0 everywhere;
+  prime side = zero side to 1e−4. Comb statistics under RH; lateral.
+- **711 (2026-09-11, Sam: "project 3D → 2D → 1D and land on anything besides a line?" NO — compiled):**
+  `ProjectionLandsOnLine.lean`: `range_chartReadout : Set.range chartReadout = {ρ | ρ.re = ½}` (image of the full
+  chain is exactly the line; radius and angle booked; abscissa = area-law output, not a coordinate);
+  `not_chartReadout_of_re_ne`, `offLine_zero_not_chartReadout`. Standard axioms. §0a forward direction, one statement.
