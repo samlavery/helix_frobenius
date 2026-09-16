@@ -1,0 +1,2329 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm,mathrsfs}
+\usepackage[margin=1.1in]{geometry}
+\usepackage{hyperref}
+\usepackage{booktabs}
+\usepackage{multirow}
+
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{hypothesis}[theorem]{Hypothesis}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\GR}{\Gamma_{\R}}
+% Identifiers are \detokenize'd throughout.  Two reasons: they may be written with raw
+% underscores, and -- crucially -- the resulting characters carry a correct ToUnicode
+% mapping, so every identifier in this paper can be copied out of the PDF verbatim.
+% (\texttt{a\_b} renders correctly but extracts as "a b", which silently corrupts any
+% name a reader tries to paste into a source file or a search.)
+\newcommand{\lean}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\leanref}[1]{%
+  \par\nobreak\vspace{2pt}%
+  {\footnotesize\raggedright\noindent\textsc{Lean:}~\texttt{\detokenize{#1}}\par}%
+  \vspace{2pt}}
+\DeclareMathOperator{\ord}{ord}
+
+\title{A carrier readout for the zeros of $\zeta$,\\
+and a machine-checked index-to-ordinate extractor}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We work in a three-dimensional model and descend to the classical one-dimensional
+setting only as a readout. The stage is a double-ended Archimedean helix with
+closed-form arclength; a \emph{carrier} --- a numberline scaled by a harmonic constant
+$\Delta>0$ --- is laid along it, its sites at equal arclength $x_n=\Delta n$; and the
+$L$-function rides the carrier as a \emph{fiber}, whose phasors the conductor sorts into
+channels that cancel \emph{focally}, at a height, leaving no residue. The
+one-dimensional $L$-function is this object seen in a chart, reached by dropping the
+radius (Cayley) and then the angle ($y=\log z$); the height survives, and the classical
+ordinate is its registration.
+
+In the chart the construction is a one-parameter family of \emph{carrier readouts}:
+real-valued functions $u_\Delta$ on the critical line. We prove, unconditionally and
+with machine-checked proofs, that $u_\Delta$ is a strictly positive multiple of
+$\Lambda(\tfrac12+it)$, so its zeros are exactly the on-line zeros of $\zeta$ at every
+carrier scale; that its sign changes by $(-1)^m$ across an event of multiplicity $m$,
+with no simplicity hypothesis; that zeros off the line pair at a common ordinate, so the
+parity of the \emph{full} strip count is the readout's sign change; and that a sign
+change across an interval on which $\Xi'$ does not vanish forces exactly one event
+there, simple. Chaining this yields the index: the $i$-th cell contains the $i$-th
+event, uniquely, and a sign-change sub-bracket of that cell encloses a zero of $\zeta$
+on the critical line. Every hypothesis is an evaluation at finitely many points; no
+counting routine, zero-density estimate, or bound on $S(t)$ enters.
+
+Separately, and off that path, the \emph{abscissa} of a zero proves recoverable from
+data computed only on the line: the bank's log-jets are exactly a power sum over the
+fiber's zeros, a zero $\beta+i\gamma$ becomes a node $\gamma-i(\beta-\tfrac12)$, and a
+matrix pencil returns those nodes as eigenvalues. The reading is calibrated against
+off-line zeros the fiber carries in closed form.
+
+The development is formalised in Lean~4/Mathlib --- $100$ theorems in the chart chain,
+with the geometry, its descent and five supporting modules besides; zero \lean{sorry},
+zero \lean{axiom}. An implementation is reported and validated at $297$ indices, and
+its own hypotheses are discharged by computation against an explicit Euler--Maclaurin
+remainder. Two propositions earlier carried as open hypotheses are \emph{disproved}
+rather than assumed. \S\ref{sec:notclaimed} states precisely what is not claimed.
+
+\medskip
+\noindent\textbf{Contribution.} This is a geometric model for the Dirichlet
+$L$-functions, and it computes. Its objects are a \emph{scaled carrier} --- a
+numberline reparametrized by a harmonic constant on its own integer lattice, the
+sites at arclength $x_n=\Delta n$ --- and a \emph{warp}, a reparametrization by a
+function: dynamic, readout-preserving, of unit modulus. The fiber rides the carrier;
+the lanes are the conductor's $\pm$ channels; the weld gauge is the fiber's own
+argument, and it absorbs the root number, so the readout is real for every primitive
+character and not only for the self-dual ones. The model is carrier-generic: reality,
+the functional equation and the counts are properties of the involution and the
+readout map, established once for every fiber that rides the carrier, with $\zeta$ the
+case formalised here. From that geometry --- addressed by index, with no Gram point and
+no asymptotic expansion needed to \emph{define} the readout --- one receives a certified
+interval containing the $i$-th zero, and the chain down to
+$\zeta(\tfrac12+i\gamma)=0$ is machine-checked. (The Riemann--Siegel formula does appear
+later, but only as an interchangeable \emph{evaluator} of the readout's sign,
+\S\ref{sec:obligations}(O4); nothing in the model or the theorems depends on it.)
+Geometric readings of $\zeta$ have to this point been descriptive; this one is
+operational.
+
+\medskip\noindent\textbf{Status of the obligations.} A companion aim of this paper is
+that it should carry no unproved hypothesis and no unbacked measurement. Every theorem
+here is unconditional, no theorem cited takes an unproved proposition as an argument,
+and the implementation's own hypotheses are now discharged by computation: the sign
+evaluations are certified against an explicit Euler--Maclaurin remainder, the
+non-vanishing of $\Xi'$ is certified on the intervals returned, and the zero count is
+certified by contour, all from an explicit region bound on $\lvert\Xi\rvert$ derived
+here rather than quoted. Two propositions that earlier drafts carried as open
+hypotheses are \emph{disproved} instead: the $\mu_6$ sector balance law
+(Theorem~\ref{thm:arcobstruction}) and the fixed-cutoff clock bound
+(Proposition~\ref{prop:o2false}). \S\ref{sec:obligations} gives the status of each item
+and what closed it.
+\medskip
+\noindent\textbf{Keywords.} Riemann zeta function; zeros on the critical line;
+certified computation; formalized mathematics; Lean 4; Prony's problem.
+
+\medskip
+\noindent\textbf{2020 Mathematics Subject Classification.}
+Primary 11M06, 11Y35; Secondary 11M26, 68V20.
+
+\medskip
+\noindent\textbf{Code availability.} The Lean sources, the implementation and every
+numerical check named in this paper are included with it; \S\ref{sec:repro} lists what
+each one runs and the decision rule it was given before it ran.
+\end{abstract}
+
+\tableofcontents
+
+%======================================================================
+\section{Introduction}\label{sec:intro}
+
+\subsection*{What is constructed}
+The object is a three-dimensional one, and the order of exposition follows it. There
+are three layers, and they are kept apart throughout because conflating them is what
+makes the subject look one-dimensional.
+
+\emph{The geometry} (\S\ref{sec:geometry}) is the stage: a double-ended Archimedean
+helix
+\[
+  \gamma(k)\;=\;\bigl(rk\cos2\pi k,\;rk\sin2\pi k,\;pk\bigr)
+\]
+together with its conjugate anti-helix through the origin, both running
+$0\to+\infty$. It has a closed-form arclength and no marks. Scaling does not act here.
+
+\emph{The carrier} (\S\ref{sec:carriergeom}) is a numberline laid along the geometry
+--- a ruler --- and it is where harmonic scaling acts: the sites sit at equal
+\emph{arclength} $x_n=\Delta n$ for a harmonic constant $\Delta>0$. One geometry can
+host several such rails at once.
+
+\emph{The fiber} (\S\ref{sec:fiber}) is what rides the carrier: the $L$-function's
+representation, carrying a phasor at each site consumed. Phasors are born at zero
+magnitude and grow; they spin in the logarithm because the ruler they sit on turns.
+The conductor sorts them into positive and negative channels --- for $\zeta$, the even
+and odd sites, which is what a conductor of $2$ supplies. A \emph{warp} --- scaling by
+a function, unit modulus --- moves the fiber through configuration space and sets the
+height at which its channels cancel. That cancellation is \emph{focal}: the channels
+point at a common height and close there, exactly, leaving no residue. It is an event
+at a height, not a root of a formula.
+
+Only then does the one-dimensional $L$-function appear, and it appears as a
+\emph{readout} (\S\ref{sec:descent}): $3\text{-D}\to2\text{-D}$ by Cayley, dropping the
+radius; $2\text{-D}\to1\text{-D}$ by $y=\log z$, dropping the angle. The height
+survives both steps, and the classical ordinate is its registration --- the two
+coincide, and are not the same quantity. The logarithm of the entire model enters once,
+in the second step. That the geometric event and the analytic one coincide is proved,
+as an \emph{iff}, for non-principal real characters (Theorem~\ref{thm:focal}); for
+$\zeta$ that particular form degenerates and the licence is instead an exact
+factorisation of the fiber on the line (Theorem~\ref{thm:weld}), with
+Remark~\ref{rem:zetabridge} recording precisely how much of the geometric form is
+proved for $\zeta$ and how much is a named hypothesis.
+
+In the chart (\S\ref{sec:carrier} onward) the fiber is a complex number at each height
+which turns as the height advances; the \emph{weld gauge} is its own argument, read off
+from the archimedean local factor, and dividing it out leaves a real number --- the
+\emph{carrier readout}. The rest of the paper is statements about where that readout
+vanishes and how its sign changes there, all invariant under $\Delta$: the carrier
+scale is a gauge, not a parameter of the answer.
+
+\subsection*{Contribution}\label{sec:contribution}
+\emph{A three-dimensional model, and the one-dimensional function is its chart.} The
+layers are set out in \S\S\ref{sec:geometry}--\ref{sec:descent} and not repeated here.
+What the ordering buys is that each classical difficulty can be sorted into one of two
+boxes --- a fact about the object, or a fact about the projection --- and the sorting is
+not a matter of taste. The abscissa of convergence, the strip, and the devices for
+reconstructing the functional equation from inside the projection are all in the second
+box; the double end, the focal cancellation and the height are in the first.
+
+Two structures of the model are distinguished throughout because conflating them is the
+characteristic error. The \emph{carrier scale} is scaling by a harmonic
+\emph{constant} $\Delta$, acting on the ruler: the sites sit at arclength
+$x_n=\Delta n$. The \emph{warp} is scaling by a \emph{function} --- dynamic, unit
+modulus, readout-preserving --- acting on the fiber; its radial generator is the
+log-weight operator $H$ multiplying the $n$-th phasor by $\log n$, and on the carrier of
+scale $\Delta$ that generator is $H_\Delta=H+\log\Delta\cdot I$, the shift by a constant
+being the whole of the carrier's effect on it. The carrier scale is a gauge --- the
+events and the readout's sign are invariant across the family $\Delta>0$, which is
+Proposition~\ref{prop:zeros} and not a convention --- while the warp genuinely moves the
+height at which the cancellation completes. There is no inverse warp; the reciprocal of
+a warp is again a warp.
+
+\emph{It is a model for the Dirichlet $L$-functions, not for $\zeta$ alone.} A fiber
+rides the carrier; the lanes are the conductor's $\pm$ channels, supplied by the
+character. Reality, the functional equation and the counting laws are properties of
+the weld involution and the readout map, and hold for every fiber that rides the
+carrier --- $\zeta$ being the case whose formalisation is carried out here
+(\S\ref{sec:general} records what changes for a general primitive $\chi$: the root
+number enters as a fixed ray, which the weld gauge absorbs, and nothing else does).
+
+\emph{And it computes.} On one side of the existing literature, geometric readings of
+$\zeta$ --- the Dirichlet walk and its helical carrier, spirals of $\zeta$, phasor
+accumulations in the Argand plane --- are descriptive: they supply pictures and
+intuitions about where zeros can and cannot be, and no algorithm. On the other, the
+methods that do take an index and return an ordinate --- Turing's method and its
+modern form, Platt's isolation, Newton refinement in ball arithmetic,
+Odlyzko--Sch\"onhage --- carry no geometric representation, working from the
+Riemann--Siegel formula and its relatives. The model here is in both columns: one
+addresses it by index and receives a certified interval, and every step from the
+representation down to $\zeta(\tfrac12+i\gamma)=0$ is machine-checked
+(\S\ref{sec:formalization}). What is claimed is the model and its operation, not a
+faster algorithm and not a new localization principle; \S\ref{sec:notclaimed} is
+explicit about the difference.
+
+\subsection*{What is proved}
+The chain runs as follows, each link machine-checked. The weld gauge makes the readout
+a strictly positive multiple of the completed zeta function on the line
+(Theorem~\ref{thm:weld}), so the readout's zeros are exactly the on-line zeros of
+$\zeta$, at every carrier scale (Proposition~\ref{prop:zeros}). Across an event of
+multiplicity $m$ the readout's sign changes by $(-1)^m$, with no simplicity hypothesis
+(Theorem~\ref{thm:signflip}): multiplicity is \emph{carried} through the argument
+rather than assumed away. The zeros off the line occur in conjugate pairs at a common
+ordinate with equal multiplicity, so the parity of the \emph{full} strip count --- not
+merely the on-line count --- equals the readout's sign change
+(Theorem~\ref{thm:stripparity}). On an interval across which the readout changes sign
+and on which $\Xi'$ does not vanish, there is exactly one event and that event
+is simple (Theorem~\ref{thm:countone}); chaining this across a ladder of ordinates
+gives the index (Theorem~\ref{thm:chain}), and the capstone
+(Theorem~\ref{thm:capstone}) converts a sign-change sub-bracket of the $i$-th cell into
+an interval provably containing the $i$-th zero of $\zeta$ on the critical line. Every
+hypothesis of the capstone is an evaluation at finitely many points: signs of the
+readout at the ladder ordinates, and non-vanishing of $\Xi'$ between them
+(Remark~\ref{rem:whichderiv} says why the second is stated on $\Xi$ and not on the
+readout). No zero-counting routine, no zero-density estimate, and no bound on $S(t)$
+appears anywhere in the chain.
+
+\subsection*{Relation to existing work}\label{sec:related}
+\emph{Index to certified interval is not new, and we do not claim it.} Turing's method~\cite{Turing1953}
+counts zeros on the line by bounding $\int_{t_1}^{t_2}S(t)\,dt$ over a suitable
+interval, which converts a sign count into a certified total; its modern rigorous form
+is due to Platt~\cite{Platt2017}, who isolated the non-trivial zeros with imaginary part up to
+$3.061\times10^{10}$ to absolute precision $\pm2^{-102}$. That algorithm is implemented
+and shipped. Arb~\cite{Johansson2017} provides
+\lean{acb_dirichlet_hardy_z_zeros} and
+\lean{acb_dirichlet_platt_hardy_z_zeros} take an index $n$ and a count and return
+ball enclosures of consecutive zeros, the documented example retrieving zeros of index
+$\approx1.048\times10^{9}$ near height $3.888\times10^{8}$ in about a quarter of a
+second. A reader wanting the $i$-th ordinate fast should use that. What is offered here
+is a different \emph{representation} of the same data, with the path from the
+representation to $\zeta(\tfrac12+i\gamma)=0$ machine-checked.
+
+\emph{Refinement.} Once a zero is isolated, Newton's method in ball arithmetic with
+precision doubling refines it at the cost of roughly two full-precision evaluations at
+any digit count. Johansson~\cite{Johansson2015} gives the rigorous high-precision
+evaluation machinery this rests on; the record computation of the first ordinate to
+over $3\times10^{5}$ digits is a separate artifact built on that machinery and on
+Arb~\cite{Johansson2017}, not a result of~\cite{Johansson2015} itself, and is recorded
+as the reference value in OEIS \texttt{A058303}. We make no speed claim against any of
+it (\S\ref{sec:notclaimed}(i)).
+
+\emph{Amortised evaluation.} Odlyzko and Sch\"onhage~\cite{OdlyzkoSchonhage1988} reduce
+the cost of evaluating $\zeta$ at many equally spaced heights by transforming the
+Dirichlet sum into a rational-function evaluation at roots of unity and applying the
+FFT. That is an amortisation over a \emph{region}; it does not give random access to a
+single index, which is what is addressed here.
+
+\emph{The ancestor of the jet enclosure.} Gargantini and
+Henrici~\cite{GargantiniHenrici1971} ask exactly the question of \S\ref{sec:jets}: if
+the value of the logarithmic derivative $p'/p$, and of finitely many of its
+derivatives, is known at a point, and the other zeros are known to lie in specified
+circular regions, where is the remaining zero? They answer it in circular (complex
+interval) arithmetic, connect it to a classical result of Laguerre, and --- this is the
+relevant sentence --- apply the theory to locating zeros of certain \emph{transcendental}
+functions. The jet enclosure below is that construction with the circular regions
+supplied by the carrier's own tail bound, and it should be read as a descendant, not as
+a new localization principle. The complementary classical device, power sums of the
+zeros in a region by contour integration, is Delves and Lyness~\cite{DelvesLyness1967}.
+
+%======================================================================
+\section{The geometry: the double-ended helix}\label{sec:geometry}
+
+The object is three-dimensional, and this section fixes it before any series is
+written. Nothing here is a picture attached to a one-dimensional argument: the
+one-dimensional statements later in the paper are readouts \emph{of} this, taken in a
+chart, and it is worth having the stage in hand first so that it is clear which
+statements are about the object and which are about the chart.
+
+\begin{definition}[the helix]\label{def:helix}
+For a pitch $p>0$ and a radial rate $r>0$, the helix is the space curve
+\[
+  \gamma(k)\;=\;\bigl(r k\cos 2\pi k,\; r k\sin 2\pi k,\; p k\bigr),
+  \qquad k\ge 0 ,
+\]
+Archimedean in the turn parameter $k$: radius $rk$, pitch $p$. The geometry is
+\emph{double-ended} --- the helix together with its conjugate anti-helix, the mirror
+image through the origin --- and both ends run $0\to+\infty$.
+\end{definition}
+\leanref{Geometry.helix, Geometry.helixVel, Geometry.helix_hasDerivAt,
+Geometry.helix_cyl_radius}
+
+\noindent
+The cylindrical radius of $\gamma(k)$ is $\lvert rk\rvert$ and the speed is
+\[
+  \lvert\dot\gamma(k)\rvert^{2}\;=\;p^{2}+r^{2}+(2\pi r k)^{2},
+\]
+so the curve accelerates as it climbs: successive turns are longer, and that is the
+whole source of the logarithm later.
+\leanref{Geometry.helix_speed_sq, Geometry.speed}
+
+\begin{definition}[the climber, and the height]\label{def:climber}
+The \emph{climber} is $k(y)=e^{y}/p$. It registers a one-dimensional ordinate $y$
+against a point of the geometry, at cylindrical height
+\[
+  z\;=\;p\,k(y)\;=\;e^{y},\qquad R(y)\;=\;r\,k(y)\;=\;(r/p)\,e^{y}.
+\]
+\end{definition}
+\leanref{Geometry.kClimb, Geometry.height_eq_p_mul_kClimb, Geometry.radius,
+Geometry.radius_eq, Geometry.gammaY, Geometry.gammaY_eq}
+
+\noindent
+So the object is Archimedean in its own turn parameter and exponential in the analytic
+ordinate; both descriptions are correct, in different charts, and the climber is the
+change of variable between them. \emph{The height is the geometric quantity; the
+ordinate is its readout} (\S\ref{sec:descent}). We will say that a height and an
+ordinate \emph{coincide}, never that they are equal --- they are quantities in
+different charts, related by a registration.
+
+\begin{theorem}[closed-form arclength]\label{thm:arclength}
+For $r>0$,
+\[
+  S(k)\;=\;\int_0^{k}\lvert\dot\gamma\rvert
+  \;=\;\frac{k}{2}\sqrt{p^{2}+r^{2}+4\pi^{2}r^{2}k^{2}}
+      +\frac{p^{2}+r^{2}}{4\pi r}\,
+       \operatorname{arsinh}\frac{2\pi rk}{\sqrt{p^{2}+r^{2}}} .
+\]
+For $r=0$ it degenerates to $S(k)=pk$.
+\end{theorem}
+\leanref{Geometry.arclength, Geometry.arclengthClosed, Geometry.arclength_closed_form,
+Geometry.arclength_r_zero}
+
+\noindent
+The arclength is what the next section measures with, so it matters that it is in
+closed form rather than an integral to be estimated: the ruler is exact.
+
+%======================================================================
+\section{The carrier: a numberline, harmonically scaled}\label{sec:carriergeom}
+
+The geometry is the stage; it carries no marks. A \emph{carrier} is a numberline laid
+along it --- a ruler --- and the carrier is where scaling acts. The distinction is not
+decorative and the paper keeps it throughout:
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & scaling by & acts on\\
+\midrule
+carrier scale & a harmonic \emph{constant} $\Delta$ & the carrier\\
+warp & a \emph{function}, unit modulus & the fiber\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Harmonic scaling does not act on the geometry. It multiplies the carrier's tick
+spacing by a harmonic constant $\Delta$, and the carrier's sites then sit at equal
+\emph{arclength} $x_n=\Delta n$ along the curve. The index is the arclength in units of
+$\Delta$,
+\[
+  N(y)\;=\;\frac{S\bigl(k(y)\bigr)}{\Delta},
+  \qquad\text{and at }\Delta=\pi/3,\qquad N(y)=\frac{3}{\pi}\,S\bigl(k(y)\bigr).
+\]
+\leanref{Geometry.Delta, Geometry.Nindex, Geometry.Nindex_eq}
+
+\noindent
+One geometry can host several carriers at once --- \emph{rails} --- differently
+configured, running alongside one another in the same space without displacing each
+other. Only one rail is used in this paper.
+
+That $\Delta$ is a gauge and not a parameter of the answer is the content of
+Proposition~\ref{prop:zeros} below, and it is measured in \S\ref{sec:validation}: the
+extracted ordinates are identical across a factor of $57$ in carrier scale.
+
+%======================================================================
+\section{The fiber: the $L$-function riding the carrier}\label{sec:fiber}
+
+The carrier is a ruler; the \emph{fiber} is what rides it. The $L$-function's
+representation lives on the carrier, and the phasors live on the fiber. As the fiber
+grows from the origin outward, the conductor assigns a phasor to each carrier integer
+consumed --- positive, negative, or neutral channels, supplied by the character. For
+$\zeta$ the channels are the even and odd sites and the assignment is the
+non-principal character mod $2$; that is where the two \emph{lanes} come from, and
+they are not a device introduced for $\zeta$ but what a conductor of $2$ supplies.
+
+Three properties of the fiber are used later and are worth stating as the geometry
+gives them, not as the series gives them.
+
+\emph{Phasors are born at zero magnitude and grow.} A phasor enters continuously at
+magnitude $0$ at its own site and grows until finished. There is no site at the origin
+and no phasor before the first, and in particular there is no convergence gate: the
+fiber is defined at every height. (The abscissa of convergence is a fact about a
+projected series, \S\ref{sec:descent}, and it is not a constraint on the fiber.)
+
+\emph{Phasors spin in the logarithm because the carrier turns.} The site at arclength
+$x_n$ carries the phasor $x_n^{-s}$; at $s=\tfrac12+it$ this has modulus $x_n^{-1/2}$
+and phase $-t\log x_n$. The logarithm is not put in by hand --- it is the registration
+between the turn parameter and the ordinate, the climber of
+Definition~\ref{def:climber} read on a rotating ruler.
+\leanref{cpow_critical_line, eta_term_critical_line, norm_cpow_critical_line}
+
+\emph{The warp.} A \emph{warp} is a scaling by a function: dynamic, unit modulus,
+readout-preserving. It is the geometric knob --- it moves the fiber through
+configuration space, and turning it changes \emph{the height at which the cancellation
+completes}. The warp used here aligns the fiber's vanishing with the harmonic cell
+edges, and the vanishing books no residue. There is no such thing as an inverse warp:
+the reciprocal of a warp is again a warp.
+
+\begin{theorem}[antipodal cancellation, logarithm-free]\label{thm:antipodal}
+In the $\mu_6$ cell the antipode of a cell is its negative:
+$\operatorname{cell}(n)+\operatorname{cell}(n+3)=0$.
+\end{theorem}
+\leanref{Readout.cell_antipodal_cancel}
+
+\noindent
+This is the mechanism in its native form: exact cancellation of the positive against
+the negative side, forced by the $\pi/3$ helix angle alone, with no logarithm
+anywhere. The vanishing of the fiber is a \emph{focal cancellation} --- the channels
+point at a common height and cancel there --- and it is an event at a height, not a
+root of a formula.
+
+\begin{theorem}[the fiber always leaves a residue]\label{thm:residue}
+A unimodular phasor has a unique cancelling partner, and the $\pm$ block of a
+unimodular fiber phasor has determinant $1$; so the two sides cannot both vanish, and
+one cannot simultaneously phase-align two eigenheights and cancel exactly.
+\end{theorem}
+\leanref{Readout.fiber_residue_no_double_cancellation,
+Readout.cancelling_partner_unique, Readout.fiber_pair_block_det_one}
+
+\begin{theorem}[focal cancellation is the vanishing]\label{thm:focal}
+For a non-principal real-valued $\chi$ and $Z>0$, the positive-minus-negative channel
+closes at height $Z$ exactly when the $L$-value vanishes at the corresponding
+ordinate:
+\[
+  P_\chi^{(N)}(\log Z)-M_\chi^{(N)}(\log Z)\;\xrightarrow[N\to\infty]{}\;0
+  \quad\Longleftrightarrow\quad
+  \Phi_\chi(Z)=0 .
+\]
+\end{theorem}
+\leanref{Readout.focal_pm_cancellation_iff_L_zero}
+
+\noindent
+This is the bridge in its native form, and it is an \emph{iff}: the geometric event ---
+the $\pm$ channels closing at a height --- and the analytic event --- the $L$-function
+vanishing --- are the same occurrence seen in two charts.
+
+\begin{remark}[$\zeta$ is not covered by Theorem~\ref{thm:focal}, and what covers it
+instead]\label{rem:zetabridge}
+The hypothesis $\chi\ne1$ excludes the trivial character, so
+Theorem~\ref{thm:focal} does \emph{not} apply to $\zeta$. This is not an oversight of
+the statement: the $\pm$ split there is by character \emph{value}, and for $\zeta$ that
+split degenerates --- there is no non-trivial sign to sort by. Saying otherwise would be
+the characteristic error of this subject, and we do not.
+
+For $\zeta$ the corresponding decomposition is by \emph{angle} rather than by value:
+the bank's phasors, with von Mangoldt weights and no character hypothesis, are sorted
+into the six $\mu_6$ sectors by $t\log n$, and antipodal sectors are compared. The
+decomposition is an exact partition, the antipodal pairing is a fixed-point-free
+involution, and the imbalance vanishes at a truncation exactly when all three antipodal
+pairs agree --- all machine-checked.
+\leanref{ZetaSectorBank.sector_partition, ZetaSectorBank.bank_pair_decomposition,
+ZetaSectorBank.antipode_involutive, ZetaSectorBank.imbalance_eq_zero_iff,
+ZetaSectorBank.norm_zetaTerm}
+
+The balance law built on top of that bookkeeping --- that the sectors balance in the
+limit at every on-line zero --- was carried in an earlier version of this work as a
+named hypothesis. It is not open. It is false, and the reason is elementary.
+\end{remark}
+
+\begin{theorem}[the antipodal arc obstruction]\label{thm:arcobstruction}
+For every real $t$ and every $N$,
+\[
+  \frac{\sqrt3}{2}\sum_{n\le N}\frac{\Lambda(n)}{\sqrt n}\;\le\;\operatorname{imb}(N,t),
+  \qquad
+  \operatorname{imb}(N,t)=\sum_{j=0}^{2}\bigl\lvert S_j(N,t)-S_{j+3}(N,t)\bigr\rvert .
+\]
+Consequently $\operatorname{imb}(N,t)\not\to0$ for \emph{every} real $t$, and the
+balance law holds if and only if $\zeta$ has no zero on the critical line.
+\end{theorem}
+\leanref{ZetaSectorBank.imbalance_ge_half_mass, ZetaSectorBank.not_sectorBalanceAt,
+ZetaSectorBank.angleSectorBalanceLaw_iff_no_critical_zero,
+ZetaSectorBank.re_rotate_ge, ZetaSectorBank.re_rotate_le, ZetaSectorBank.norm_sub_ge,
+ZetaSectorBank.floorConst_le_imbalance}
+
+\begin{proof}
+A sector is an arc of angular width $2\pi/6=\pi/3$. Every phasor in sector $j$
+therefore lies within $\pi/6$ of that sector's midpoint direction $u_j$, so its
+component along $u_j$ is at least $\cos(\pi/6)=\sqrt3/2$ times its modulus. The
+antipodal sector $j+3$ is the same arc rotated by $\pi$, so its phasors have midpoint
+direction $-u_j$ and their components along $u_j$ are at most $-\sqrt3/2$ times their
+moduli. Subtracting therefore \emph{adds} the two masses:
+\[
+  \lvert S_j-S_{j+3}\rvert\;\ge\;\bigl\langle S_j-S_{j+3},\,u_j\bigr\rangle
+  \;\ge\;\frac{\sqrt3}{2}\bigl(M_j+M_{j+3}\bigr),
+\]
+where $M_j$ is the mass in sector $j$; and the three antipodal pairs sweep the six
+sectors exactly once, giving the displayed bound. For the consequence, no asymptotics
+are needed: the $n=2$ term alone gives
+$\operatorname{imb}(N,t)\ge\tfrac{\sqrt3}{2}\cdot\tfrac{\log2}{\sqrt2}>0.42$ for every
+$N\ge2$, and a sequence bounded below by a positive constant does not tend to $0$.
+\end{proof}
+
+\noindent
+Measured, for confirmation rather than for evidence: at $\gamma_1=14.1347\ldots$ and at
+the non-zero $t=20$, the ratio $\operatorname{imb}/\text{mass}$ sits at $0.955$ for
+every $N$ from $10^{3}$ to $4\times10^{6}$ --- above the proved floor $\sqrt3/2=0.866$,
+and \emph{identical at the zero and the non-zero to three decimals}. So the statistic
+does not merely fail to vanish; it does not distinguish zeros from non-zeros at all.
+Two independent implementations agree --- one in \lean{numpy}
+with a sieve, one in \texttt{mpmath} at $40$ digits with trial division and no
+\lean{numpy} at all (\lean{checks/balance_law_refuted.py},
+\lean{checks/balance_law_independent.py}); they match to six digits.
+
+\begin{remark}
+This is reported because it removes the one place where this work carried an unproved
+hypothesis, and it removes it in the direction that is easy to get wrong. The correct
+conclusion is not that the $\mu_6$ geometry is idle --- the log-free antipodal
+cancellation of Theorem~\ref{thm:antipodal} is exact and is the mechanism --- but that
+\emph{this particular statistic}, sorting the von Mangoldt bank into six arcs and
+differencing antipodes, cannot detect a zero, because differencing an arc against its
+own antipode is a sum and not a cancellation. Nothing elsewhere in the paper used it.
+\end{remark}
+
+\noindent
+So the licence for the chart work on $\zeta$ is not Theorem~\ref{thm:focal} and not the
+balance law. It is an exact algebraic identity, and that is the stronger footing:
+the fiber \emph{factors} on the line as
+$F_\Delta(\tfrac12+it)=w_\Delta(t)\,\Lambda(\tfrac12+it)$ with $w_\Delta(t)\ne0$
+(Theorem~\ref{thm:weld}), so the readout's vanishing and $\zeta$'s vanishing are the
+same set --- not in a limit, not conditionally, but by a factorisation. Everything from
+\S\ref{sec:carrier} onward rests on that identity. Theorem~\ref{thm:focal} and
+Remark~\ref{rem:zetabridge} say what the same phenomenon looks like in its geometric
+form, and how much of that form is currently proved.
+
+%======================================================================
+\section{The descent to the chart}\label{sec:descent}
+
+The one-dimensional $L$-function is not the object; it is the object read in a chart,
+and the chart is reached by two projections, each with its own loss.
+
+\begin{center}
+\begin{tabular}{@{}llll@{}}
+\toprule
+step & map & drops & survives\\
+\midrule
+$3\text{-D}\to 2\text{-D}$ & Cayley/M\"obius & the radius & angle, height\\
+$2\text{-D}\to 1\text{-D}$ & $y=\log z$ & the angle & the height\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{theorem}[the two steps]\label{thm:descent}
+The Cayley map $w\mapsto(w-i)/(w+i)$ carries the real readout line to the unit circle,
+$\lVert\operatorname{cayley}(x)\rVert=1$ for real $x$; and the height readout
+$y=\log z$ inverts globally, $\log(e^{\gamma})=\gamma$, with no branch cut.
+\end{theorem}
+\leanref{Readout.cayley, Readout.cayley_real_norm_one, Readout.heightReadout,
+Readout.readout_exp, Readout.height_eq_exp_of_readout}
+
+\noindent
+Two consequences are used repeatedly and are stated here so that they are not
+rediscovered later as difficulties.
+
+\emph{The classical strip is the Cayley image of the unit circle.} It is a feature of
+the chart, not of the geometry, and phenomena that live in it are chart artifacts. The
+geometry has no free abscissa to vary: there is a height axis, and the critical
+abscissa is not posited there but is where the double-ended reflection has its fixed
+set. In particular the abscissa of convergence $\operatorname{Re}s>1$ is where a
+projected series stops converging; the fiber has no convergence gate, and this paper
+never treats the strip's boundary as a constraint on the object.
+
+\emph{The height survives; the ordinate is its registration.} The logarithm appears
+exactly once in the whole model, in the $2\text{-D}\to1\text{-D}$ step, and that is the
+only place it appears. A vanishing event happens at a height $z$; its readout is the
+ordinate $\gamma=\log z$. The two coincide; they are not the same quantity.
+
+\emph{The functional equation is the double end.} The geometry has two ends, mirror
+images through the origin, and a readout cannot tell which end it is reading. That
+end-swap descends through the Cayley step to $s\mapsto1-s$. The functional equation is
+therefore not an identity to be derived in the chart but a symmetry the object simply
+has; the chart's devices for reconstructing it from inside the projection are chart
+devices, and the paper does not use them to explain carrier facts.
+
+%======================================================================
+\section{The chart readout: lanes and the weld gauge}\label{sec:carrier}
+
+From here to \S\ref{sec:extractor} the work is in the chart, and every object is a
+readout of \S\S\ref{sec:geometry}--\ref{sec:fiber}. The reason for descending is
+Theorem~\ref{thm:focal}: the events are the same, and in the chart they are
+computable and machine-checkable.
+
+\begin{definition}[carrier fiber]\label{def:fiber}
+For $\Delta>0$ set
+\[
+  F_\Delta(s)\;=\;\Delta^{-s}\bigl(1-2^{1-s}\bigr)\zeta(s),
+\]
+the sum over the sites $x_n=\Delta n$ of the phasors $x_n^{-s}$ with the odd and even
+sites entering with opposite sign.
+\end{definition}
+\leanref{carrierFiber}
+
+\noindent
+The lane-balanced sum converges for $\operatorname{Re}s>0$ --- that is the whole point
+of taking the lanes with opposite sign, and it is why the construction can be written
+\emph{on} the critical line rather than continued to it. The unbalanced Dirichlet
+series would need $\operatorname{Re}s>1$; the alternating one does not, and the
+displayed closed form is an identity of convergent objects at $s=\tfrac12+it$. The
+convergence is conditional, which is exactly the fact the head law of
+\S\ref{sec:extractor} has to pay for.
+
+\begin{definition}[weld factor]\label{def:weld}
+\[
+  w_\Delta(t)\;=\;\frac{\Delta^{-(\frac12+it)}\bigl(1-2^{\frac12-it}\bigr)}{\GR(\tfrac12+it)} ,
+  \qquad \GR(s)=\pi^{-s/2}\Gamma(s/2).
+\]
+\end{definition}
+\leanref{weldFactor}
+
+\begin{theorem}[the weld gauge]\label{thm:weld}
+For every $\Delta>0$ and every $t\in\R$,
+\[
+  e^{-i\arg w_\Delta(t)}\,F_\Delta(\tfrac12+it)\;=\;\lvert w_\Delta(t)\rvert\,
+  \Lambda(\tfrac12+it)\;\in\;\R ,
+\]
+and $\lvert w_\Delta(t)\rvert=\Delta^{-1/2}\lvert 1-2^{\frac12-it}\rvert/\lvert\GR(\tfrac12+it)\rvert>0$.
+\end{theorem}
+\leanref{weld_gauge_exact, weld_gauge_im_zero, weldFactor_norm,
+carrierFiber_eq_weldFactor_mul, lane_factor_ne_zero, weldFactor_ne_zero}
+
+\begin{proof}[Proof sketch]
+The factorisation $F_\Delta(\tfrac12+it)=w_\Delta(t)\Lambda(\tfrac12+it)$ is
+$\eta=(1-2^{1-s})\zeta$ together with $\Lambda=\GR\zeta$, the $\Delta^{-s}$ cancelling
+between fiber and gauge. Rotating a nonzero complex number by its own argument lands it
+on its modulus, so the left side is $\lvert w_\Delta(t)\rvert\,\Lambda(\tfrac12+it)$;
+and $\Lambda(\tfrac12+it)\in\R$ by the functional equation together with Schwarz
+reflection (\S\ref{sec:formalization}). Positivity of $\lvert w_\Delta(t)\rvert$ is the
+observation that $1-2^{\frac12-it}$ never vanishes, since
+$\lvert2^{\frac12-it}\rvert=\sqrt2\ne1$; and that $\GR(\tfrac12+it)$ is finite and
+nonzero, since $\Gamma$ has no zeros and $\tfrac14+\tfrac{it}{2}$ is never a pole.
+\end{proof}
+
+\begin{remark}\label{rem:theta}
+No asymptotics enter. The Riemann--Siegel theta function never appears; its role is
+played by $\arg\GR(\tfrac12+it)$, which it equals. Indeed
+$\GR(s)=\pi^{-s/2}\Gamma(s/2)$ gives
+\[
+  \arg\GR(\tfrac12+it)\;=\;\arg\Gamma(\tfrac14+\tfrac{it}{2})-\tfrac{t}{2}\log\pi
+  \;=\;\vartheta(t),
+\]
+which is the definition of $\vartheta$. The equality is one of \emph{arguments}, hence
+modulo $2\pi$: $\arg$ is the principal value and $\vartheta$ the continuous branch, and
+the two differ by the winding $2\pi k(t)$. Nothing tracks that branch, because
+$w_\Delta$ uses the argument only through $e^{-i\arg\GR}$, on which $k$ acts trivially.
+This is the whole reason the construction needs no asymptotic expansion of $\vartheta$:
+the classical device computes $\vartheta$ to subtract it, and here it is divided out
+exactly by the local factor it came from.
+
+The script \lean{extractor/checks/theta_identity.py} checks this numerically at
+$60$-digit working precision, at thirteen sample heights spanning
+$t\in[0,10^{4}]$, including $t=2\pi$ and the first ordinate: worst
+branch-corrected discrepancy $2.5\times10^{-57}$, i.e.\ agreement to working
+precision at every sample. The check was pre-registered to refute the remark at any
+sample exceeding $10^{-30}$.
+\end{remark}
+
+\begin{definition}[the readout]\label{def:readout}
+$u_\Delta(t)=\lvert w_\Delta(t)\rvert\,\operatorname{Re}\Lambda(\tfrac12+it)$.
+\end{definition}
+\leanref{weldReadout, xiRe}
+
+\begin{definition}[event]\label{def:event}
+An \emph{event} is a real $t$ at which the readout vanishes --- equivalently, by
+Proposition~\ref{prop:zeros} below, a zero of $\zeta$ on the critical line. Its
+\emph{multiplicity} is the order of vanishing there, and an event of multiplicity $1$
+is called \emph{simple}. Counts of events are always counts with multiplicity unless
+said otherwise. The word is used rather than ``zero'' as a standing reminder that an
+event is an \emph{on-line} zero: the readout sees exactly these, and whether they
+exhaust the zeros of $\zeta$ in a band is the question \S\ref{sec:pairing} keeps open
+and \S\ref{sec:notclaimed}(iv) restates.
+\end{definition}
+
+\begin{proposition}[events]\label{prop:zeros}
+$u_\Delta(t)=0 \iff \zeta(\tfrac12+it)=0$, for every $\Delta>0$; and the sign of
+$u_\Delta$ does not depend on $\Delta$.
+\end{proposition}
+\leanref{weldReadout_eq_zero_iff, weldReadout_carrier_ratio, weldReadout_sign_carrier_free}
+
+\begin{proof}[Proof sketch]
+By Theorem~\ref{thm:weld} the readout is $\lvert w_\Delta(t)\rvert\Lambda(\tfrac12+it)$
+with $\lvert w_\Delta(t)\rvert>0$, so it vanishes exactly where $\Lambda(\tfrac12+it)$
+does; and $\Lambda=\GR\zeta$ with $\GR(\tfrac12+it)$ finite and nonzero, so that is
+exactly where $\zeta(\tfrac12+it)$ does. Changing $\Delta$ multiplies the readout by
+the positive ratio $\lvert w_\Delta(t)\rvert/\lvert w_{\Delta'}(t)\rvert
+=(\Delta'/\Delta)^{1/2}$, which cannot change a sign.
+\end{proof}
+
+%======================================================================
+\section{The ordinate variable and the entire readout}\label{sec:ordinate}
+
+Everything so far has been written on the line $s=\tfrac12+it$, where the readout is
+a function of the real variable $t$. For the counting arguments we need an
+\emph{entire} function of a complex variable whose restriction to the real axis is
+that readout, so that order, multiplicity and the argument principle are available.
+The substitution that does this is $s=\tfrac12+iz$: the functional equation's
+involution $s\mapsto1-s$ becomes $z\mapsto-z$, and complex conjugation on the line
+becomes conjugation in $z$. This is Riemann's own change of variable~\cite{Riemann1859}, not
+something the carrier supplies, and we record it as his.
+
+Write $\Lambda_0=\lean{completedRiemannZeta}_0$ for the entire completed zeta, so that
+$\Lambda(s)=\Lambda_0(s)-\frac1s-\frac1{1-s}$.
+
+\begin{definition}[the entire readout]\label{def:xi}
+\[
+  \Xi(z)\;=\;\bigl(\tfrac12+iz\bigr)\bigl(\tfrac12-iz\bigr)\,
+             \Lambda_0\bigl(\tfrac12+iz\bigr)\;-\;1 .
+\]
+\end{definition}
+\leanref{xiEntire, xiEntire_differentiable}
+
+\noindent
+Entirety is manifest: $\Lambda_0$ is entire and the remaining factors are polynomials.
+No pole is cancelled by hand and no removable singularity is argued away --- the
+$-1$ is exactly what the two poles contribute, as the next statement records.
+
+\begin{proposition}[pole clearing]\label{prop:xiclear}
+For $z$ with $\tfrac12+iz\notin\{0,1\}$,
+$\Xi(z)=(\tfrac12+iz)(\tfrac12-iz)\,\Lambda(\tfrac12+iz)$; that is, $\Xi$ is
+$s(1-s)\Lambda(s)$ in the ordinate variable. On the real axis,
+\[
+  \Xi(t)\;=\;\bigl(\tfrac14+t^{2}\bigr)\,\Lambda\bigl(\tfrac12+it\bigr),
+  \qquad t\in\R ,
+\]
+and $\tfrac14+t^{2}>0$, so $\Xi\restriction\R$ is a strictly positive multiple of the
+readout: same sign, same zeros, same orders.
+\end{proposition}
+\leanref{xiEntire_eq_completed, xiEntire_ofReal, quarter_add_sq_pos}
+
+\begin{proof}[Proof sketch]
+Write $A=\tfrac12+iz$ and $B=\tfrac12-iz$, so that $A+B=1$. With
+$\Lambda=\Lambda_0-\tfrac1A-\tfrac1B$ at $s=A$, the clearing is the identity
+\[
+  AB\Bigl(L-\tfrac1A-\tfrac1B\Bigr)\;=\;ABL-1 ,
+\]
+valid for any $L$ whenever $A,B\ne0$ and $A+B=1$: expand the left side to
+$ABL-B-A$ and substitute $A+B=1$. The two factors are never inspected --- only their
+sum is used. On the real axis $AB=(\tfrac12+it)(\tfrac12-it)=\tfrac14+t^{2}$, which is
+positive, giving the displayed form.
+\end{proof}
+
+\begin{proposition}[reality]\label{prop:xireal}
+$\Xi(t)\in\R$ for every real $t$, and $\Xi(t)=0\iff\zeta(\tfrac12+it)=0$.
+\end{proposition}
+\leanref{xiEntire_im_ofReal, xiEntire_ofReal_eq_zero_iff, xiEntire_re_eq_zero_iff}
+
+\begin{proof}[Proof sketch]
+Immediate from Proposition~\ref{prop:xiclear}: $\Xi(t)$ is the real number
+$\tfrac14+t^{2}$ times $\Lambda(\tfrac12+it)$, which is real, and the multiplier is
+positive, so $\Xi(t)=0$ exactly when $\Lambda(\tfrac12+it)=0$, i.e.\ exactly when
+$\zeta(\tfrac12+it)=0$.
+\end{proof}
+
+\noindent
+So $\Xi$ is a real-on-$\R$ entire function with the on-line zeros of $\zeta$ as its
+real zeros, carrying the same multiplicities. Every count below is a count of
+zeros of $\Xi$.
+
+\begin{theorem}[multiplicity sign law]\label{thm:signflip}
+Let $G$ be analytic at a real point $t_0$, real on the real axis, not identically
+zero near $t_0$, of order $m$ there. Then for all sufficiently small $h>0$,
+\[
+  (-1)^m\,\operatorname{Re}G(t_0-h)\,\operatorname{Re}G(t_0+h)\;>\;0 .
+\]
+Consequently the carrier readout's sign is multiplied by $(-1)^m$ across an event of
+multiplicity $m$, at every carrier scale.
+\end{theorem}
+\leanref{sign_flip_of_order, weldReadout_sign_flip}
+
+\begin{proof}[Proof sketch]
+Factor $G(z)=(z-t_0)^m g(z)$ with $g$ analytic and $g(t_0)\ne0$. Along the real axis
+$(t-t_0)^m$ is a nonzero real for $t\ne t_0$, so $g$ inherits reality there by a
+punctured limit, and $g$ keeps the sign of $g(t_0)$ on a small enough interval. Then
+\[
+  \operatorname{Re}G(t_0-h)\,\operatorname{Re}G(t_0+h)
+  \;=\;(-h)^m h^m\,g(t_0-h)g(t_0+h)
+  \;=\;(-1)^m h^{2m}\,g(t_0-h)g(t_0+h),
+\]
+and the last product is positive for small $h$. Multiplying by $(-1)^m$ gives the
+claim. The carrier statement follows because the readout is a positive multiple of
+$\Xi\restriction\R$ (Remark~\ref{rem:whichderiv}).
+\end{proof}
+
+\begin{remark}
+The statement is with multiplicity. This is what removes any simplicity hypothesis
+from the chain; it is also the honest price of a sign bit, which cannot see an event
+of even order.
+\end{remark}
+
+%======================================================================
+\section{Off-line pairing and the strip count}\label{sec:pairing}
+
+\begin{lemma}[the reflection is conjugation]\label{lem:crit}
+In the ordinate variable the involution $s\mapsto 1-\bar s$, whose fixed set is the
+critical line, is $z\mapsto\bar z$.
+\end{lemma}
+\leanref{crit_is_conj, ordinate_eq, offCriticalLine_iff}
+
+\begin{proof}[Proof sketch]
+With $s=\tfrac12+iz$ one has $\bar s=\tfrac12+\overline{iz}=\tfrac12-i\bar z$, hence
+\[
+  1-\bar s\;=\;1-\tfrac12+i\bar z\;=\;\tfrac12+i\bar z ,
+\]
+which is the point of ordinate $\bar z$. So $s\mapsto1-\bar s$ reads as
+$z\mapsto\bar z$, whose fixed set is $\operatorname{Im}z=0$, i.e.\
+$\operatorname{Re}s=\tfrac12$.
+\end{proof}
+
+\begin{theorem}[off-line pairing]\label{thm:pairing}
+An event off the critical line has a distinct partner at the same ordinate with the
+same multiplicity.
+\end{theorem}
+\leanref{xiEntire_conj, xiEntire_order_conj, offAxis_pairs, offCriticalLine_partner}
+
+\begin{proof}[Proof sketch]
+The key identity is $\Xi(\bar z)=\overline{\Xi(z)}$, and it consumes \emph{both} the
+conjugation symmetry $\overline{\Lambda_0(\bar s)}=\Lambda_0(s)$ and the functional
+equation $\Lambda_0(1-s)=\Lambda_0(s)$; neither alone suffices, because
+$z\mapsto\bar z$ is the composite $s\mapsto1-\bar s$ of the two. Given it, $\Xi(z)=0$
+forces $\Xi(\bar z)=0$, and $\bar z\ne z$ precisely when $z$ is off the axis, which by
+Lemma~\ref{lem:crit} is off the critical line. Orders agree by transporting the local
+factorisation $\Xi(w)=(w-z)^m h(w)$ through conjugation.
+\end{proof}
+
+\begin{theorem}[the strip count's parity]\label{thm:stripparity}
+For a bounded height band with no event at either endpoint, the parity of the total
+multiplicity of \emph{all} events in the band --- on the critical line or off it ---
+is the readout's sign change.
+\end{theorem}
+\leanref{bounded_strip_zeros_finite, even_sum_of_involution,
+offline_strip_multiplicity_even, full_count_parity_eq_weld_parity}
+
+\begin{proof}[Proof sketch]
+The band is a compact rectangle in the ordinate variable and $\Xi$ is entire and not
+identically zero, so it holds finitely many events. Off the axis, conjugation is a
+fixed-point-free involution preserving the order, so the off-line events split into
+two-element orbits, each contributing $2m$ to the total --- an even number, whatever
+$m$ is. The total multiplicity is therefore congruent mod $2$ to the on-line total,
+and the on-line half is Theorem~\ref{thm:count}.
+\end{proof}
+
+\noindent
+Theorem~\ref{thm:count} is stated and proved in \S\ref{sec:count}, and its proof uses
+nothing from this section, so the forward reference carries no circularity. That is
+mechanically checkable and was checked: none of the twelve identifiers defined in
+\lean{CarrierOffLinePairing.lean}, the module carrying this section, occurs anywhere in
+\lean{CarrierIntervalCount.lean}, the module carrying \S\ref{sec:count}.
+
+\begin{proposition}[the boundary]\label{prop:boundary}
+Every event in the band is interior: $0<\operatorname{Re}s<1$.
+\end{proposition}
+\leanref{xiEntire_ne_zero_of_im_eq_neg_half, xiEntire_ne_zero_of_im_eq_half,
+stripBand_zeros_interior, stripBand_zeros_in_open_strip}
+
+\begin{proof}[Proof sketch]
+In the ordinate variable $\operatorname{Re}s=\tfrac12-\operatorname{Im}z$, so the two
+edges $\operatorname{Re}s\in\{0,1\}$ are $\operatorname{Im}z=\pm\tfrac12$. On the edge
+$\operatorname{Re}s=1$ non-vanishing is $\zeta(1+it)\ne0$; the edge
+$\operatorname{Re}s=0$ follows from it by the functional equation. The one point where
+$\Lambda$ has a pole rather than a value is handled by the entire form: at $z=-i/2$,
+i.e.\ $s=1$, the factor $\tfrac12-iz$ vanishes and
+$\Xi(-i/2)=0\cdot\Lambda_0(1)-1=-1\ne0$.
+\end{proof}
+
+%======================================================================
+\section{The interval count}\label{sec:count}
+
+\begin{theorem}[interval count parity]\label{thm:count}
+For $a\le b$ with no event at either endpoint,
+\[
+  \ord(a,b)\ \text{is even}\iff u_\Delta(a)\,u_\Delta(b)>0 ,
+\]
+where $\ord(a,b)$ is the total multiplicity of the on-line events in $(a,b)$.
+\end{theorem}
+\leanref{zeros_finite, sign_const_of_no_zeros, zeroCount_split, interval_sign_parity,
+zeroCount_even_iff, weldReadout_interval_parity}
+
+\begin{proof}[Proof sketch]
+Strong induction on the number of events in $(a,b)$, which is finite. With none, the
+readout is continuous and non-vanishing on $[a,b]$, hence of constant sign, so the
+product is positive and the count is $0$. Otherwise isolate one event $t_0$, split
+$(a,b)$ at points either side of it at which the readout does not vanish, apply
+Theorem~\ref{thm:signflip} across $t_0$ to pick up a factor $(-1)^{m}$, and apply the
+inductive hypothesis to the two shorter intervals; the counts add and the signs
+multiply.
+\end{proof}
+
+\begin{theorem}[scope]\label{thm:scope}
+The on-line count equals the full strip count for a band exactly when no event in
+that band lies off the critical line.
+\end{theorem}
+\leanref{stripCount_eq, stripCount_eq_zeroCount_iff}
+
+\noindent
+This is stated so that the index certified by the on-line chain is not confused with
+the classical index. The machinery nowhere assumes the two agree; where the
+distinction matters it is flagged, in \S\ref{sec:notclaimed}(iv).
+
+%======================================================================
+\section{A count of one without a count}\label{sec:countone}
+
+\begin{theorem}\label{thm:countone}
+Let $a<b$. If $\Xi'$ does not vanish on $[a,b]$ and $u_\Delta(a)u_\Delta(b)<0$, then
+$(a,b)$ contains exactly one event and it is simple.
+\end{theorem}
+\leanref{zeroCount_eq_one_of_deriv_ne_zero, subsingleton_zeros_of_deriv_ne_zero,
+exists_zero_of_sign_change, order_eq_one_of_deriv_ne_zero}
+
+\begin{proof}[Proof sketch]
+Three steps. \emph{At least one:} the readout is continuous and changes sign, so the
+intermediate value theorem supplies an event. \emph{At most one:} if there were two,
+Rolle applied to $\Xi\restriction\R$ between them would give a point of $[a,b]$ with
+$\Xi'=0$, contrary to hypothesis. \emph{Simple:} at the event $\gamma$ we have
+$\Xi(\gamma)=0$ and $\Xi'(\gamma)\ne0$, which is order exactly one.
+\end{proof}
+
+\begin{remark}[which function's derivative, and why it matters]\label{rem:whichderiv}
+The sign hypothesis is the carrier readout's and the derivative hypothesis is
+$\Xi$'s, and the two are not interchangeable. By
+Proposition~\ref{prop:xiclear} and Theorem~\ref{thm:weld},
+\[
+  u_\Delta(t)\;=\;\rho_\Delta(t)\,\Xi(t),\qquad
+  \rho_\Delta(t)\;=\;\frac{\lvert w_\Delta(t)\rvert}{\tfrac14+t^{2}}\;>\;0 ,
+\]
+so $u_\Delta$ and $\Xi$ have the same zeros and the same sign, and the sign
+hypotheses transfer exactly, at every carrier scale --- that is the content of
+\lean{sign_product_iff}. Their derivatives, however, satisfy
+$u_\Delta'=\rho_\Delta'\,\Xi+\rho_\Delta\,\Xi'$, and away from an event the first
+term need not vanish; so $u_\Delta'\ne0$ on $[a,b]$ and $\Xi'\ne0$ on $[a,b]$ are
+genuinely different hypotheses, and it is the latter that is formalised.
+
+At an event the distinction disappears: $\Xi(\gamma)=0$ forces
+$u_\Delta'(\gamma)=\rho_\Delta(\gamma)\,\Xi'(\gamma)$ with $\rho_\Delta(\gamma)>0$, so
+$u_\Delta'(\gamma)\ne0\iff\Xi'(\gamma)\ne0$ and ``simple'' means the same thing read
+either way. What is \emph{not} formalised here is the version of
+Theorem~\ref{thm:countone} whose derivative hypothesis is $u_\Delta'\ne0$; it is true,
+by the same Rolle argument applied to $u_\Delta$, but it is not what the Lean
+statements consume, and we state the hypothesis as it is checked.
+\end{remark}
+
+\begin{remark}[why not a density bound]\label{rem:density}
+The apparent alternative --- ``a short interval holds at most two events'' --- is not
+a weaker statement. Recall the Riemann--von Mangoldt decomposition of the counting
+function $N(T)$ of zeros with ordinate in $(0,T]$,
+\[
+  N(T)\;=\;\frac{\vartheta(T)}{\pi}+1+S(T),\qquad
+  S(T)\;=\;\frac1\pi\arg\zeta(\tfrac12+iT),
+\]
+the argument taken by continuous variation; $S$ is the entire difficulty, and it is
+what every classical count has to control. Since
+$N(b)-N(a)=\bigl(\vartheta(b)-\vartheta(a)\bigr)/\pi+S(b)-S(a)$ and the main term is
+$w\log(t/2\pi)/2\pi+O(w^{2})$ for a bracket of width $w=b-a$, bounding the count by
+two amounts to
+\[
+  S(b)-S(a)\;\le\;2-\frac{w\log(t/2\pi)}{2\pi}+O(w^{2}).
+\]
+So the ``density bound'' is a bound on the variation of $S$ over a short interval ---
+the same quantity, not an easier one. And approaching it from the other side does not
+help either: Jensen's formula on a disc of radius comparable to the spacing gives
+$O(\log t)$ events, not two. The hypothesis of Theorem~\ref{thm:countone} is pointwise
+and computable instead, which is the whole reason it is the one used.
+\end{remark}
+
+%======================================================================
+\section{The chain and the capstone}\label{sec:capstone}
+
+\begin{theorem}[the index from a certified chain]\label{thm:chain}
+Let $t_0<t_1<\dots<t_n$ be such that across each cell the readout changes sign and
+$\Xi'$ does not vanish. Then $\ord(t_0,t_n)=n$; and for $1\le i\le n$ the counts
+to either side of the $i$-th cell are $i-1$ and $i$, and that cell holds a unique
+event, which is simple.
+\end{theorem}
+\leanref{zeroCount_chain, ith_event_of_chain}
+
+\begin{proof}[Proof sketch]
+Theorem~\ref{thm:countone} applied to each cell gives exactly one event there, simple,
+so each cell contributes $1$; the counts add over the ladder by
+\lean{zeroCount_split}, giving $\ord(t_0,t_n)=n$ and $\ord(t_0,t_{i-1})=i-1$,
+$\ord(t_0,t_i)=i$.
+\end{proof}
+
+\begin{theorem}[the capstone]\label{thm:capstone}
+Under the hypotheses of Theorem~\ref{thm:chain}, for any $t_{i-1}\le c\le d\le t_i$
+with $u_\Delta(c)u_\Delta(d)<0$ there is $\gamma\in(c,d)$ with
+$\zeta(\tfrac12+i\gamma)=0$, and $\gamma$ is the unique event of the $i$-th cell.
+\end{theorem}
+\leanref{ith_event_enclosed, sign_product_iff, ith_event_enclosed_carrier}
+
+\begin{proof}[Proof sketch]
+By Theorem~\ref{thm:chain} the $i$-th cell $(t_{i-1},t_i)$ holds a unique event
+$\gamma$. The sub-bracket $[c,d]$ lies inside that cell and the readout changes sign
+across it, so by the intermediate value theorem it contains an event; uniqueness in
+the cell forces that event to be $\gamma$. Proposition~\ref{prop:zeros} converts
+``event'' to $\zeta(\tfrac12+i\gamma)=0$.
+\end{proof}
+
+\noindent
+Every hypothesis is a finite computation: $n+3$ sign evaluations of the readout, and
+non-vanishing of $\Xi'$ on each cell (Remark~\ref{rem:whichderiv}).
+
+%======================================================================
+\section{The jet enclosure}\label{sec:jets}
+
+Theorem~\ref{thm:capstone} encloses the $i$-th event in a bracket $(c,d)$ obtained
+from sign evaluations alone. That bracket is as narrow as the bisection that produced
+it and no narrower. This section sharpens it to an interval of width $2\varepsilon$
+using the logarithmic jets of $\Xi$ at a nearby base point.
+
+Fix a base point $y_0$ and set $d=y_0-\gamma$ for the event $\gamma$ in question. The
+jets are the power sums
+\[
+  A_m\;=\;\sum_{j}\,(y_0-\gamma_j)^{-m},
+\]
+and the classical observation is that $A_m/A_{m+1}\to d$ when $\gamma$ is the ordinate
+nearest $y_0$. What we need is not the limit but an \emph{enclosure} valid at finite
+$m$, with every error that entered the computation carried explicitly.
+
+\begin{theorem}[the ratio enclosure]\label{thm:ratio}
+Let $d\in\C^{\times}$, $m\in\N$, and let $P,Q\in\C$ and $\alpha,\beta\ge0$ satisfy
+\[
+  \bigl\lvert P-d^{-m}\bigr\rvert\le\alpha,\qquad
+  \bigl\lvert Q-d^{-(m+1)}\bigr\rvert\le\beta,\qquad
+  \beta<\lvert d\rvert^{-(m+1)} .
+\]
+Then
+\[
+  \Bigl\lvert \frac{P}{Q}-d \Bigr\rvert
+  \;\le\;\frac{\alpha+\lvert d\rvert\,\beta}{\lvert d\rvert^{-(m+1)}-\beta}.
+\]
+If moreover $d$ is real and the right-hand side is $\le\varepsilon$, then
+$\lvert\operatorname{Re}(P/Q)-d\rvert\le\varepsilon$.
+\end{theorem}
+\leanref{ratio_enclosure, re_enclosure}
+
+\begin{proof}[Proof sketch]
+The numerator identity is
+\[
+  P-dQ\;=\;\bigl(P-d^{-m}\bigr)-d\bigl(Q-d^{-(m+1)}\bigr),
+\]
+since $d\cdot d^{-(m+1)}=d^{-m}$; so
+$\lvert P-dQ\rvert\le\alpha+\lvert d\rvert\beta$. For the denominator, the reverse
+triangle inequality gives
+$\lvert Q\rvert\ge\lvert d\rvert^{-(m+1)}-\beta>0$, which in particular makes $Q\ne0$.
+Dividing, $\lvert P/Q-d\rvert=\lvert P-dQ\rvert/\lvert Q\rvert$ is at most the stated
+quotient. Taking real parts can only shrink the error: for $d$ real,
+$\lvert\operatorname{Re}(P/Q)-d\rvert=\lvert\operatorname{Re}(P/Q-d)\rvert
+\le\lvert P/Q-d\rvert$.
+\end{proof}
+
+\noindent
+The hypothesis $\beta<\lvert d\rvert^{-(m+1)}$ is exactly what keeps $Q$ away from
+zero, and it is checkable. The two budgets $\alpha,\beta$ are the \emph{only} route by
+which any approximation enters: the finite-bank truncation error and the jet tail both
+land there, and the theorem is indifferent to which contributed what. This is the
+ancestor of the argument in Gargantini and Henrici \cite{GargantiniHenrici1971}, where
+circular arithmetic on the same power-sum ratios yields inclusion discs for polynomial
+roots; the contribution here is that the two budgets are separated and the statement is
+machine-checked.
+
+The counting routine enters the next statement as an interface, and the interface has
+exactly one requirement. It is worth isolating, because it is the whole of what the
+theorem asks of a count.
+
+\begin{definition}[counting routine]\label{def:routine}
+A \emph{counting routine} is a function $R:\R\to\N$ that is \emph{additive along the
+axis between non-events}: whenever $x\le y$ and $\Xi(x),\Xi(y)\ne0$,
+\[
+  R(y)\;=\;R(x)+\ord(x,y).
+\]
+\end{definition}
+\leanref{CountRoutine}
+
+\noindent
+Nothing else is required --- not that $R$ counts from zero, not that it agrees with
+$N(t)$, not that it is computed in any particular way. Any procedure whose increments
+are the true event counts qualifies, and the theorem below is stated relative to
+whichever one is supplied. This is what \S\ref{sec:notclaimed}(iv) means when it says
+the certified index is the index \emph{of the count that was given}.
+
+\begin{theorem}[the product theorem]\label{thm:product}
+Let $R$ be a counting routine with $R(a)+1=i$ and $R(b)=i$, let $\Xi(a),\Xi(b)\ne0$
+and $a\le b$, and suppose that for every zero $\gamma$ of $\Xi$ in $(a,b)$ the data
+$y_0,P,Q,m,\alpha,\beta,\varepsilon$ satisfy the hypotheses of
+Theorem~\ref{thm:ratio} with $d=y_0-\gamma$. Then there is exactly one such $\gamma$,
+and
+\[
+  \gamma\;\in\;\bigl[\,y_0-\operatorname{Re}(P/Q)-\varepsilon,\;\;
+                      y_0-\operatorname{Re}(P/Q)+\varepsilon\,\bigr].
+\]
+\end{theorem}
+\leanref{gamma_enclosure, count_eq_one_of_endpoints, unique_event_of_count_eq_one,
+one_le_order_of_zero}
+
+\begin{proof}[Proof sketch]
+Additivity (Definition~\ref{def:routine}) applied to $a\le b$ gives
+$R(b)=R(a)+\ord(a,b)$, and the two supplied counts then force $\ord(a,b)=1$. Now
+$\ord(a,b)$ is by definition the \emph{sum} of the multiplicities of the events in
+$(a,b)$, and every event has multiplicity at least $1$; a sum of positive integers
+equal to $1$ has exactly one summand, equal to $1$. So there is exactly one zero
+$\gamma$ of $\Xi$ in $(a,b)$, and it is simple --- note that this comes from the count
+alone, with no derivative hypothesis and no appeal to
+Theorem~\ref{thm:countone}. Applying Theorem~\ref{thm:ratio} to that $\gamma$ with
+$d=y_0-\gamma$ bounds $\lvert\operatorname{Re}(P/Q)-(y_0-\gamma)\rvert$ by
+$\varepsilon$, which rearranges to the stated interval.
+\end{proof}
+
+\noindent
+Two features of this statement carry the weight. The counting routine enters only as
+an interface: any procedure satisfying Definition~\ref{def:routine} may be substituted,
+and the theorem does not ask how it is computed. And the event's multiplicity is
+\emph{certified by the count}, not assumed --- the passage from $R(b)-R(a)=1$ to ``one
+simple zero'' is the sum-of-orders argument in the proof above, so no simplicity
+hypothesis is imported here or anywhere else in the paper.
+
+It is worth being precise about what this buys, because it is easy to overstate. The
+enclosure of Theorem~\ref{thm:capstone} obtains its count from the chain, whose
+hypotheses are sign evaluations and non-vanishing of $\Xi'$; the enclosure here obtains
+it from $R$, and inherits whatever $R$ certifies. The two are independent routes to the
+same integer, and the paper proves both rather than choosing.
+
+\subsection*{Measured conditioning}
+The enclosure is a theorem for any $\alpha,\beta$; how \emph{small} $\varepsilon$ gets
+is a question about the jets, and it is governed by
+\[
+  \kappa\;=\;\frac{\lvert y_0-\gamma_1\rvert}{\lvert y_0-\gamma_2\rvert},
+\]
+the distance ratio from the base point to the nearest and second-nearest ordinates.
+The error of $A_m/A_{m+1}$ should contract by $\kappa$ per order. Measured against the
+true ordinates at $50$-digit precision
+(\lean{extractor/checks/jet_sweep.py}), over ten base points with $\kappa$ ranging from
+$0.0143$ to $0.3426$, the mean contraction over $m=5,\dots,15$ agreed with $\kappa$ to
+between $1.2\%$ and $2.7\%$ --- confirmed at all ten, against a pre-registered
+threshold of $5\%$.
+
+The law degrades exactly where it should. At a base point placed between two ordinates
+at nearly equal distance ($\kappa=0.882$) the measured contraction was $1.29$: the
+error does not decay at all, and it oscillates, because the two nearest contributions
+enter with opposite signs and there is no dominant term to extract. This is not a
+defect of Theorem~\ref{thm:ratio}, which remains true; it is the statement that a
+badly placed base point yields a large $\varepsilon$. A large $\varepsilon$ is a wide
+interval, never a wrong one.
+
+\begin{remark}
+This entire section is \emph{off} the certification path. The enclosure of
+Theorem~\ref{thm:capstone} --- which ordinate, and that it is unique --- is complete
+without any jet, any tail bound, or any conditioning hypothesis. What the jets buy is
+narrowness, and if they are badly conditioned the only consequence is that the
+interval is wide.
+\end{remark}
+
+%======================================================================
+\section{The extractor}\label{sec:extractor}
+
+\subsection{The head law}
+The lane split is not free: it manufactures a stationary point, and that stationary
+point sets the cost. Writing the $n$-th term of the lane-balanced bank at height $T$,
+its phase is
+\[
+  \varphi(n)\;=\;\pi n-T\log(\Delta n),
+\]
+the $\pi n$ supplied by the alternating lane sign and the $T\log(\Delta n)$ by the
+phasor. Then $\varphi'(n)=\pi-T/n$, which vanishes at
+\[
+  n_\ast \;=\; T/\pi .
+\]
+Below $n_\ast$ the terms oscillate and cancel; at $n_\ast$ they align. A head window
+that is tapered to zero at its edge therefore has to carry $n_\ast$ strictly inside its
+flat core, or the truncation cuts the bank exactly where it is not cancelling. With a
+window whose flat core is the first half, this forces
+\[
+  X \;>\; 2T/\pi .
+\]
+\emph{The head is linear in the ordinate, not $O(\sqrt T)$.} This is the single
+structural cost of the construction, and it is the price of the lane split: the
+Riemann--Siegel head is $O(\sqrt T)$ precisely because its phase has no such
+stationary point in range.
+
+This is a \emph{design} rule: it says where to put the window, not what accuracy a
+given head achieves, and the two are worth separating. The script
+\lean{extractor/checks/head_threshold.py} measures the smallest head $X_{\min}$
+reaching a fixed relative accuracy, as a multiple of $2T/\pi$:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrr@{}}
+\toprule
+$T$ & $\mathrm{tol}=10^{-6}$ & $10^{-9}$ & $10^{-12}$\\
+\midrule
+$500$   & $1.12$ & $1.37$ & $1.69$\\
+$1500$  & $1.00$ & $1.10$ & ---\\
+$5000$  & $0.95$ & $0.99$ & ---\\
+$15000$ & $0.96$ & $0.98$ & ---\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+So the accuracy threshold tracks $2T/\pi$ to within a few percent at large $T$, but it
+is \emph{not} approached from one side: at a loose tolerance and large height the rule
+is mildly conservative (ratio $0.95$), and at a tight tolerance and small height it is
+not enough on its own (ratio $1.69$). The dashes are not omissions. They record that a
+\lean{float64} bank \emph{cannot} reach $10^{-12}$ relative accuracy at those heights at
+any head length: the phase $T\log(\Delta n)$ carries absolute error of order
+$T\log(X)\cdot2.2\times10^{-16}$, which floors the bank's relative accuracy near
+$10^{-13}$ at $T\sim10^{3}$ and near $3\times10^{-10}$ at $T=1.5\times10^{4}$. The
+\lean{--tol} parameter therefore sets the head \emph{length} via the law below; it does
+not by itself deliver the corresponding accuracy, and past the floor a longer head buys
+nothing. This is the same arithmetic limit that (O1) proposes to remove.
+
+Past the threshold the convergence is fast and the right variable is the excess.
+Writing $s=\sqrt{\pi X/2-T}$, the relative error of the truncated bank falls like
+$\exp(-cs)$. Measured at $60$-digit working precision against
+$\Delta^{-s}(1-2^{1-s})\zeta(s)$
+(\lean{extractor/checks/head_law_decay.py}, \lean{extractor/checks/head_law_moments.py}),
+over heights $T=143,500,1500$, carrier scales $\Delta\in\{\pi/3,1\}$ and moment orders
+$r=0,\dots,4$:
+\[
+  -\ln(\mathrm{err})/s\;\in\;[1.400,\,1.485]\quad\text{for } s\gtrsim10,
+\]
+across thirteen orders of magnitude of error. The dependence on the moment order is
+slight --- the five orders $r=0,\dots,4$ span $0.085$ at fixed $s$ --- and the
+dependence on $\Delta$ is nil to every digit printed. For $s$ below about $10$, that is
+for a head only just past the threshold, the effective rate is \emph{larger} (up to
+$2.7$ at $s\approx5.6$), so the exponential law is approached from above and using a
+constant from the asymptotic band is the conservative choice. The implementation sets
+$X=2(T+K)/\pi$ with $K=(\ln(1/\mathrm{tol})/1.43)^2$; the constant $1.43$ sits inside
+the measured band, and at $\mathrm{tol}=10^{-16}$ the difference between $1.43$ and the
+band's lower end $1.40$ is thirteen terms of head.
+
+\begin{remark}[why this had to be measured in high precision]
+A double-precision run cannot see this law at all. The bank summed in \lean{float64}
+saturates near $10^{-13}$ relative, so its error stops falling once the head passes the
+threshold and the measured $-\ln(\mathrm{err})/s$ then decays like $1/s$ --- an artifact
+of the arithmetic, not a property of the bank. The figures above were therefore taken
+with the bank summed in \texttt{mpmath}; the reported thirteen orders of magnitude are
+what $60$ digits of working precision will support, and no claim is made beyond them.
+\end{remark}
+
+\subsection{Algorithm}
+The extractor takes an index $i$ and returns an interval.
+
+\begin{description}
+\item[Stage 1 (anchor).] Invert the archimedean winding $\vartheta$ for a coarse
+  ordinate: solve $\vartheta(T)/\pi+1=i$ by Newton on a smooth monotone function. Cost
+  is polylogarithmic and the result is within a few mean spacings.
+\item[Stage 2 (bracket).] Bisect on the predicate $\mathrm{Count}(t)\ge i$, which is
+  monotone in $t$. This is the one place the count enters, and it enters only as an
+  \emph{interface}: any routine satisfying Definition~\ref{def:routine} may be
+  substituted, and the certification in Stage~5 is stated relative to whatever it
+  returns (\S\ref{sec:capstone}, \S\ref{sec:jets}). Bisection rather than a fixed-step
+  march is not a detail --- see \S\ref{sec:validation} on Lehmer's pair.
+\item[Stages 3--4 (moments and jets).] Write $v$ for the vector of site phasors
+  $\bigl(x_n^{-s}\bigr)_n$ over the head, $\ell$ for the lane-balanced summation
+  functional that forms the fiber from it (the alternating sum of
+  Definition~\ref{def:fiber}), and $H$ for the log-weight operator of
+  \S\ref{sec:contribution}, so that $\ell(v)=F_\Delta(s)$ truncated to the head. One
+  pass over the head evaluates the bank and, simultaneously, the log-weighted moments
+  $M_r=\ell(H^r v)$, since the weights $\log x_n$ are already formed. A Bell (cumulant) recursion converts the moments into
+  the log-jets $A_m=\sum_j(y_0-\gamma_j)^{-m}$, and the ratio $A_m/A_{m+1}$ locates the
+  nearest event with error $O(\kappa^m)$, $\kappa$ the ratio of distances to the
+  nearest and next-nearest events. The whole jet vector costs one pass, not $m$.
+\item[Stage 5 (certificate).] Narrow to a sign bracket around the jet estimate and
+  return it. The returned interval is certified \emph{given} the count, which is
+  exactly the shape of the product theorem, Theorem~\ref{thm:product} --- \emph{not}
+  of the capstone. The distinction matters and is set out in (O1): the implementation
+  takes the count route, which carries no derivative hypothesis at all.
+\end{description}
+
+\noindent A noise floor is estimated from the head tolerance and the bank magnitude; a
+bracket narrower than the floor is reported as \emph{not certified} rather than
+returned silently. That guard was added after an early version produced false
+certificates by narrowing past its own arithmetic.
+
+\subsection{Validation}\label{sec:validation}
+The harness checks three things at every index: that the count interface actually
+reached $\mathrm{Count}(a)=i-1$ and $\mathrm{Count}(b)=i$; that Stage~5 returned an
+interval rather than hitting its noise floor; and that the interval contains the
+reference ordinate. The reference is \texttt{mpmath}'s
+\texttt{zetazero}, which is an independent implementation --- it is not derived from
+anything in this paper.
+
+\begin{remark}[two layers, and which one this table is]\label{rem:twolayers}
+The word \emph{certified} is used in two senses in this paper and they should not be run
+together. This section reports the \lean{float64} extractor, which \emph{locates}: it is
+fast, it is validated against an independent reference at every index below, and its
+internal guard is a measured noise floor, which is a heuristic. The certification proper
+is a separate layer, \S\ref{sec:obligations}(O1): an Euler--Maclaurin evaluator with an
+explicit remainder, which proves the signs, the non-vanishing of $\Xi'$ and the count on
+the intervals this layer produces. The table below is evidence that the locator works;
+it is not the certificate, and nothing in it is claimed to be.
+\end{remark}
+
+\begin{center}
+\begin{tabular}{lrr}
+\toprule
+sample & indices & failures\\
+\midrule
+exhaustive $1\le i\le200$ & 200 & 0\\
+random $201\le i\le 2\times10^{4}$ & 90 & 0\\
+spot checks to $i=10^{6}$ & 5 & 0\\
+Lehmer's pair $i=6709,6710$ & 2 & 0\\
+\midrule
+total & 297 & 0\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent\emph{Lehmer's pair~\cite{Lehmer1956} is the interesting one.} The two ordinates are
+\[
+  \gamma_{6709}=7005.062866174921,\qquad \gamma_{6710}=7005.100564672656:
+\]
+a separation of $0.0377$ against a local
+mean spacing of $0.8955$, i.e.\ $0.042$ of a mean spacing. A fixed-step bracket search
+with any step comparable to the mean spacing walks straight over both; bisection on the
+monotone count predicate does not, because it never needs to resolve the pair --- it
+only needs the count to cross. Both are returned certified, and each contains its
+reference ordinate. This was a genuine failure of an earlier version (a fixed-step
+march at $0.30$ spacings returned $\gamma_{6711}$ for $i=6710$), and it is the reason
+Stage~2 is stated as bisection on a predicate rather than as a search.
+
+\emph{Carrier-scale invariance.} The whole construction is supposed to be
+$\Delta$-free, and this is testable rather than assumed: running $i=1$ and $i=100$ on
+$\Delta\in\{\pi/6,\pi/3,1,2,30\}$ --- a factor of $180/\pi\approx57$ between the
+smallest and largest carrier scale --- returns the same ordinates to every digit
+printed. That is Proposition~\ref{prop:zeros} as a measurement.
+
+%======================================================================
+\section{Eigenvalues and the rank drop: reading the abscissa on the
+line}\label{sec:pencil}
+
+Everything so far has used the readout's \emph{sign}, which is one bit per evaluation
+and is blind to the abscissa by construction. The moment vector of Stage~3 carries
+more than that, and this section extracts it. The claim is that the abscissa of a zero
+--- whether it lies on the critical line at all --- is recoverable from data computed
+\emph{only on the line}, as the imaginary part of an eigenvalue.
+
+\subsection{The jets are a power sum over the fiber's zeros}
+Write $G(y)=F_\Delta(\tfrac12+iy)$ for the fiber read in the ordinate variable. Near a
+real base point $y_0$,
+\[
+  \frac{d}{dy}\log G(y)\;=\;\sum_j\frac{1}{y-y_j},
+\]
+the sum over the zeros $y_j$ of $G$, so differentiating $m-1$ further times and
+normalising gives
+\begin{equation}\label{eq:powersum}
+  A_m\;=\;\frac{(-1)^{m-1}}{(m-1)!}\,\bigl(\log G\bigr)^{(m)}(y_0)
+  \;=\;\sum_j \mu_j\,d_j^{\,m},
+  \qquad d_j=\frac{1}{y_0-y_j},
+\end{equation}
+with $\mu_j$ the multiplicity of $y_j$. The jets are therefore an exact
+\emph{power sum} in the reciprocal distances, and \eqref{eq:powersum} is what makes the
+rest of this section possible: a power sum determines its nodes.
+
+The $A_m$ cost one pass. The bank evaluates $M_r=\ell(H^rv)$ for $r=0,\dots,2K+1$
+simultaneously (Stage~3), and a Bell recursion converts $M_r\mapsto A_m$; no additional
+evaluation of $\zeta$, and no differentiation of anything, is involved.
+
+\subsection{The node dictionary}
+Which $y_j$ occur is the point. $G$ is $\Delta^{-s}(1-2^{1-s})\zeta(s)$ at
+$s=\tfrac12+iy$, so its zeros are those of $\zeta$ together with those of the lane
+factor. Under $s=\tfrac12+iy$ a zero of $\zeta$ at $\rho=\beta+i\gamma$ sits at
+\begin{equation}\label{eq:dict}
+  y\;=\;\gamma-i\bigl(\beta-\tfrac12\bigr),
+  \qquad\text{so}\qquad
+  \operatorname{Im}y=0\iff\beta=\tfrac12 .
+\end{equation}
+\emph{The imaginary part of the node is the signed distance of the zero from the
+critical line.} A node on the real axis is an on-line zero; a node off it reports its
+own abscissa as $\beta=\tfrac12-\operatorname{Im}y$. Nothing in the computation left the
+line to learn this.
+
+\subsection{The pencil}
+Recovering nodes from a power sum is classical: it is Prony's problem, taken here in
+the numerically stable matrix-pencil form of Hua and Sarkar~\cite{HuaSarkar1990}.
+Build the Hankel data matrix
+$Y=(A_{1+i+j})_{0\le i\le K,\,0\le j\le K}$, take its singular value decomposition,
+keep the $K_r$ dominant right singular directions $V$, and form the shifted pair
+$(V_{1:},V_{:1})$; the eigenvalues of $V_{1:}^{+}V_{:1}$ are the $d_j$, and
+$y_j=y_0-1/d_j$.
+
+\subsection{What the rank counts}
+The rank of $Y$ is the number of \emph{distinct} nodes. This is worth stating carefully
+because it is easy to misread, and because it is the instrument's one structural
+limitation. Measured directly on synthetic power sums with known nodes
+(\lean{extractor/checks/rank_drop.py}):
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+configuration & numerical rank & $\sigma_2/\sigma_1$\\
+\midrule
+$1,2,3,4$ distinct nodes & $1,2,3,4$ & --- \\
+one node of multiplicity $2$ & $1$ & $1.3\times10^{-18}$\\
+one node of multiplicity $1$ & $1$ & $1.3\times10^{-18}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The last two rows are the limitation: a double node and a simple node give
+\emph{bit-identical} singular-value profiles. Multiplicity enters \eqref{eq:powersum}
+as the coefficient $\mu_j$, not as an extra exponential, so the rank cannot see it.
+\textbf{The rank detects coincidence, not multiplicity.} A rank of $1$ where the count
+says $2$ means two events have merged to within the resolution; it does not certify a
+double zero, and we do not use it to.
+
+The approach to a merger is quantitative. With two nodes at separation $\varepsilon$,
+the measured $\sigma_2/\sigma_1$ was $4.58\times10^{-3},\ 4.24\times10^{-5},\
+4.20\times10^{-7},\ 4.20\times10^{-9}$ at $\varepsilon=10^{-1},\dots,10^{-4}$: a clean
+\[
+  \sigma_2/\sigma_1\;\approx\;4.2\,\varepsilon^{2},
+\]
+so in double precision, where the floor is near $10^{-16}$, two events remain distinct
+down to $\varepsilon\approx5\times10^{-9}$ and are indistinguishable below it. That
+number is the resolution of the instrument, and it is a property of the arithmetic
+rather than of the geometry.
+
+\subsection{The calibration standard the fiber carries}\label{sec:lanecontrol}
+An instrument that claims to measure the abscissa must be checked against zeros whose
+abscissa is known and \emph{is not} $\tfrac12$. The fiber supplies them. The lane
+factor $1-2^{1-s}$ vanishes exactly when $1-s\in\frac{2\pi i}{\log2}\Z$, that is on the
+line $\operatorname{Re}s=1$, and under \eqref{eq:dict} these sit at
+\begin{equation}\label{eq:lane}
+  y\;=\;-\frac{2\pi k}{\log 2}-\frac{i}{2},\qquad k\in\Z:
+  \qquad \operatorname{Im}y=-\tfrac12\ \text{exactly},\quad
+  \text{spacing } \frac{2\pi}{\log2}=9.064720 .
+\end{equation}
+These are genuine off-line nodes, in closed form, carried by the object itself --- not
+planted, not synthetic, and not adjustable. A working pencil must place them at
+$\operatorname{Im}y=-\tfrac12$, equivalently report $\beta=1$ for them.
+
+Measured (\lean{extractor/checks/pencil_lane_control.py}), at an anchor $y_0=17.5$
+placed between the first two ordinates so that no node dominates, with $K=8$:
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+returned node & identification & error\\
+\midrule
+$18.129441-0.500000\,i$ & lane, $k=-2$ of \eqref{eq:lane} & $2.0\times10^{-14}$\\
+$14.134707+0.000026\,i$ & $\gamma_1$, on-line & $1.8\times10^{-5}$\\
+$21.022108+0.000122\,i$ & $\gamma_2$, on-line & $6.8\times10^{-5}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+From one moment vector computed on the critical line, the pencil returns $\beta=1$ for
+the lane zeros to fourteen digits and $\beta=\tfrac12$ for $\zeta$'s zeros, and it
+separates the two populations. At $y_0=12$ the $k=-1$ lane node comes back as
+$9.064720-0.500005\,i$, against the predicted $9.064720-\tfrac{i}{2}$.
+
+This control is what makes the abscissa reading falsifiable rather than decorative, and
+it has already done work: it refuted two successive implementations of the pencil --- a
+wrong data-matrix shape, and a spurious conjugation that returned $\overline{y}$ in
+place of $y$ --- both of which had produced clean-looking certificates while inverting
+precisely the off-line information the pencil exists to read.
+
+\subsection{Lehmer's pair, resolved}
+The hardest close pair in the low range is $\gamma_{6709},\gamma_{6710}$, separated by
+$0.0377$, or $0.042$ of the local mean spacing. At an anchor between them
+(\lean{extractor/checks/lehmer_rank.py}), with $K=4$, the pencil returns rank $2$ with
+$\sigma_2/\sigma_1=1.6\times10^{-10}$ --- far above the floor --- and the two nodes
+\[
+  7005.100564673+2.1\times10^{-12}i,\qquad
+  7005.062866175-2.7\times10^{-12}i,
+\]
+matching the reference ordinates to $9.1\times10^{-13}$ and $3.2\times10^{-11}$, with
+both abscissae $\beta=\tfrac12$ to $3\times10^{-12}$. So the pair is resolved as two
+distinct events and both are certified on-line by the instrument, at a separation forty
+times finer than would trouble it.
+
+\subsection{Status}
+This section is \emph{off} the certification path of \S\ref{sec:capstone}, and nothing
+above depends on it. It is a finite-rank fit to a truncated moment vector in double
+precision; the errors reported are measured, not bounded a priori, and obligation
+(O3) applies to them. What is established is that the abscissa is \emph{present} in the
+on-line moment data, that a standard eigenvalue method extracts it, and that the
+extraction is calibrated against an off-line set the fiber carries in closed form. Two
+routes would make it a certificate rather than a measurement: interval arithmetic on
+the Hankel matrix, which would turn the singular-value gap into a certified rank; and
+an a priori bound on the finite-bank error in \eqref{eq:powersum}, which is the same
+$\alpha,\beta$ budget as (O3). Neither is done here.
+
+%======================================================================
+\section{The model for a general Dirichlet \texorpdfstring{$L$}{L}-function}\label{sec:general}
+
+The carrier does not change and the warp does not change. Exactly two things do: the
+lane structure and the weld gauge.
+
+\emph{The lanes are the conductor's channels.} For a primitive character $\chi$ the
+fiber is $\sum_n\chi(n)x_n^{-s}$, the site weights supplied by the character. The
+alternating split used throughout \S\ref{sec:carrier} is the special case of $\chi$
+trivial, reached through $\eta(s)=(1-2^{1-s})\zeta(s)$: the two lanes are then the even
+and odd sites, and the $\pm$ is the value of the non-principal character mod $2$. So
+the lane split is not a device introduced for $\zeta$; it is what the conductor
+supplies, seen at conductor $2$.
+
+\emph{The archimedean factor carries the parity.} The gamma factor is
+$\GR(s+a)$ with $a\in\{0,1\}$ the parity of $\chi$, and the weld gauge is read off from
+it exactly as before.
+
+\emph{The root number is absorbed, not assumed away.} The completed function satisfies
+$\Lambda(s,\chi)=\varepsilon(\chi)\Lambda(1-s,\bar\chi)$, so on the critical line
+$\Lambda(\tfrac12+it,\chi)=\varepsilon(\chi)\overline{\Lambda(\tfrac12+it,\chi)}$ at
+every $t$. A value fixed by such an anti-involution lies on a fixed ray, at half the
+argument of $\varepsilon$. Hence the readout is real for \emph{every} primitive
+character, not only the self-dual ones, provided the gauge is rotated by
+$\arg\varepsilon(\chi)/2$ --- and that rotation is a constant, computed once from the
+Gauss sum, not a function of $t$.
+
+\begin{proposition}[the weld absorbs the root number]\label{prop:rootnumber}
+Let $\phi\in\R$. A value satisfying the weld anti-involution $z=e^{i\phi}\bar z$ lies
+on the $\phi/2$ ray: $z\,e^{-i\phi/2}\in\R$. With $\phi=\arg\varepsilon(\chi)$ this is
+the statement that $\Lambda(\tfrac12+it,\chi)$, rotated by half the root number, is
+real at every~$t$.
+\end{proposition}
+\leanref{HingeKernel.weld_pins_half_phase, UnitMidpoint.conj_fixed_iff}
+
+\begin{proof}[Proof sketch]
+Put $u=e^{i\phi/2}$, so $e^{i\phi}=u^{2}$ and $\bar u=u^{-1}$. The relation
+$z=u^{2}\bar z$ reads $zu^{-1}=\overline{zu^{-1}}$, i.e.\ $ze^{-i\phi/2}$ is fixed by
+conjugation, i.e.\ real. For the application, the functional equation
+$\Lambda(s,\chi)=\varepsilon(\chi)\Lambda(1-s,\bar\chi)$ combined with
+$\Lambda(s,\bar\chi)=\overline{\Lambda(\bar s,\chi)}$ gives, at $s=\tfrac12+it$,
+$\Lambda(\tfrac12+it,\chi)=\varepsilon(\chi)\overline{\Lambda(\tfrac12+it,\chi)}$,
+which is the hypothesis with $\phi=\arg\varepsilon(\chi)$.
+\end{proof}
+
+\noindent
+The ray is determined only modulo $\pi$ --- both $\pm e^{i\phi/2}$ solve
+$u^{2}=e^{i\phi}$ --- which is a choice of overall sign for the readout and affects
+nothing below, since every statement is about zeros and sign \emph{changes}. Computed
+directly from the Gauss sums (\lean{extractor/checks/root_number_rays.py}): the
+order-$4$ character mod $5$ gives the ray $0.088104\pi$ and the order-$6$ character mod
+$7$ gives $0.186840\pi$, with $\lvert\varepsilon\rvert=1$ to machine precision in both
+cases and the conjugate characters mirrored about $0$.
+
+\begin{remark}
+Everything downstream --- the multiplicity sign law, the off-line pairing, the interval
+count, the count of one from a non-vanishing derivative, the chain --- is stated for a
+real readout and therefore transfers verbatim once the readout is made real. The
+off-line pairing in particular survives non-self-duality: composing the functional
+equation with conjugation returns $\chi$ to itself, since
+$\Lambda(s,\chi)=\varepsilon(\chi)\overline{\Lambda(1-\bar s,\chi)}$, so
+$\Lambda(\cdot,\chi)$ vanishes at $s$ exactly when it vanishes at $1-\bar s$ --- the
+reflection in the critical line, which is again $z\mapsto\bar z$ in the ordinate
+variable. The pairing is between zeros of the \emph{same} function, not between $\chi$
+and $\bar\chi$.
+
+The formalisation in \S\ref{sec:formalization} is carried out for $\zeta$; the general
+case changes the lane weights and the ray, and nothing else. Proposition~\ref{prop:rootnumber}
+is itself machine-checked, in two further modules
+(\lean{HingeKernel.lean}, \lean{UnitMidpoint.lean}); the transfer of the downstream
+chain to a general primitive $\chi$ is not.
+\end{remark}
+
+%======================================================================
+\section{What is not claimed}\label{sec:notclaimed}
+
+This section is not optional, and it is longer than the contribution on purpose.
+
+\begin{enumerate}
+\item[(i)] \emph{No speed claim.} We do not claim to beat a state-of-the-art refinement,
+and an earlier draft of this work did, wrongly. Newton's method in ball arithmetic with
+precision doubling costs about two full-precision evaluations at any digit count, and
+it can share the same derivative vector this construction computes; measured against a
+correct baseline it wins. The jet enclosure's advantage is that it produces the
+enclosure and the ordinate from \emph{one} pass over the bank, not that the resulting
+arithmetic is cheaper.
+
+The $198\times$ reported in \S\ref{sec:obligations}(O4) is not a counter-example to
+this and should not be read as one. It compares the one-ended lane bank against a
+two-ended evaluator \emph{within this implementation} --- a statement about the two
+heads, not about this work against anyone else's. Against Platt's isolation or Newton
+refinement in ball arithmetic we make no comparison at all.
+
+\item[(ii)] \emph{Index to certified interval is not new.} Turing's method in Platt's
+rigorous form~\cite{Platt2017} does exactly this and is shipped in
+Arb~\cite{Johansson2017}. Anyone who wants the $i$-th ordinate should call that. The
+claim here is a representation with a machine-checked path to
+$\zeta(\tfrac12+i\gamma)=0$, not a new capability.
+
+\item[(iii)] \emph{The jet enclosure is not a new localization principle.} It is the
+construction of Gargantini and Henrici~\cite{GargantiniHenrici1971} --- locating a zero
+from the logarithmic derivative and finitely many of its derivatives at a point, in
+circular arithmetic --- with the circular regions supplied by the carrier's tail bound.
+Their paper already applies the idea to transcendental functions.
+
+\item[(iv)] \emph{The index certifies less than it appears to.} What
+Theorem~\ref{thm:product} returns --- and it is the product theorem rather than the
+capstone that the implementation instantiates, see (O1) --- is: an interval containing
+a zero of $\zeta$ on the
+critical line, given a count. It does not certify that this is the $i$-th zero in the
+strip unless the count supplied is the strip count; with an on-line count it certifies
+the $i$-th \emph{on-line} zero, and Theorem~\ref{thm:stripparity} is exactly the
+statement of how much the readout can see about the difference. The readout cannot
+distinguish an on-line zero from a conjugate off-line pair by its sign alone --- that
+is the content of the parity law, not a defect of the implementation.
+
+\item[(v)] \emph{The coordinate is Riemann's.} The substitution in which the
+functional-equation involution $s\mapsto1-s$ becomes complex conjugation is
+$s=\tfrac12+iz$, which is Riemann's $\Xi$ variable~\cite{Riemann1859}. The carrier supplies the
+lane structure and the gauge; it does not supply that coordinate, and we do not claim
+it.
+
+\item[(vi)] \emph{The Riemann Hypothesis is not involved.} Nothing above assumes it,
+nothing above bears on it, and the count interface is agnostic to it: if a zero left
+the line the parity law of Theorem~\ref{thm:stripparity} is what would report it.
+
+\item[(vii)] \emph{The eigenvalue method of \S\ref{sec:pencil} is classical, and its
+rank does not see multiplicity.} Recovering nodes from a power sum is Prony's problem,
+and the matrix-pencil form used here is Hua and Sarkar's; neither is ours. What
+\S\ref{sec:pencil} supplies is the reading --- that under $s=\tfrac12+iy$ the fiber's
+log-jets are a power sum whose nodes carry the abscissa in their imaginary part, and
+that the lane factor furnishes a closed-form off-line calibration set. Two limits are
+stated there and repeated here because they are easy to overstate. The numerical rank
+counts \emph{distinct} nodes, so a double zero is indistinguishable from a simple one
+and a rank drop reports coincidence rather than multiplicity. And the whole section is
+a measurement: the node errors are observed, not bounded a priori, so the abscissae it
+reports are evidence about particular zeros and not certificates about any of them.
+
+\item[(viii)] \emph{The focal equivalence is proved for non-principal real characters
+and does not extend to $\zeta$ in that form.} Theorem~\ref{thm:focal} --- the $\pm$
+channels closing at a height if and only if the $L$-value vanishes --- carries the
+hypothesis $\chi\ne1$, so it says nothing about $\zeta$; the split there is by
+character \emph{value}, and for $\zeta$ there is no non-trivial value to sort by. The
+sector statistic that replaces it for $\zeta$ is refuted in
+Theorem~\ref{thm:arcobstruction}. What licenses the $\zeta$ chain is neither of these
+but the exact factorisation of Theorem~\ref{thm:weld}, which is an identity.
+\end{enumerate}
+
+\medskip\noindent
+With Theorem~\ref{thm:arcobstruction} in place, no statement in this paper is
+conditional on an unproved hypothesis, and no theorem cited here takes one as an
+argument. What remains is of a different kind and is itemised next, with a status line
+for each: the sign evaluations and the two-ended head are now discharged by computation,
+the two error terms of (O3) are open but off the certification path by construction, and
+the count is open \emph{by design}, since it is the interface of
+Definition~\ref{def:routine} and certifying it is Turing's method. None of these is a
+gap in a proof.
+
+%======================================================================
+\section{Remaining obligations}\label{sec:obligations}
+
+The theorems above are complete as stated. This section is about the distance from
+those statements to a fully certified pipeline. It began as four open items; two of
+them are discharged here and the other two are reduced, so what follows records both
+what closed and what did not.
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+ & status & where\\
+\midrule
+(O1) which theorem the code instantiates & resolved: the product theorem & below\\
+(O1) certified sign evaluations & \textbf{closed} & \lean{certified_zeta.py}\\
+(O1) certified \emph{count} & \textbf{closed} via (O5) & \lean{certified_count.py}\\
+(O1) $\Xi'\ne0$: the \emph{capstone's} hypothesis & \textbf{closed} via (O5) & \lean{certified_deriv.py}\\
+(O2) a bound on $S$ & \textbf{closed in the negative} & \lean{Sx_bounded.py}\\
+(O3) two error terms & resolved in role: evaluation count only & \lean{certified_bisect.py}\\
+(O4) two-ended head & \textbf{closed}, $198\times$ measured & \lean{two_ended_head.py}\\
+(O5) explicit region bound on $\lvert\Xi\rvert$ & \textbf{closed}: derived below & \lean{region_bounds.py}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The structure of this section is (O5). Several obligations that looked independent all
+needed the same missing ingredient --- an \emph{explicit} bound on $\lvert\Xi\rvert$ over
+a complex region --- and supplying it discharges them together. It is derived below from
+the same Euler--Maclaurin expansion the certified evaluator uses, so no constant is
+quoted that is not computed here. One item, (O2), does \emph{not} reduce to it and
+remains open; it is a question about the distribution of zeros, and it bears on speed
+alone.
+
+\paragraph{(O1) The implementation realises the product theorem, not the capstone, and
+its arithmetic is not certified.}
+Two separate things, and an earlier draft of this section ran them together.
+
+\emph{Which theorem the implementation instantiates.} Theorem~\ref{thm:capstone} needs
+$\Xi'\ne0$ across each cell; Theorem~\ref{thm:product} needs no derivative hypothesis
+at all, only the two endpoint counts and a sign bracket. The extractor supplies the
+counts (Stage~2) and the bracket (Stage~5), so what it instantiates is the product
+theorem. This is not a technicality, because the capstone's hypothesis is in general
+\emph{false} on the bracket the extractor produces. Between consecutive zeros of $\Xi$
+there is necessarily a critical point, and a bracket a mean spacing wide generally
+reaches past one of the two flanking it. Measured directly
+(\lean{extractor/checks/deriv_in_cell.py}): at $i=10,100,1000$ the Stage-2 bracket
+contains exactly one sign change of $\Xi'$ --- at $i=1000$, a critical point in
+$[1418.9845,1418.9961]$ against $\gamma_{1000}=1419.4225$ --- while at $i=1$ it contains
+none. On the narrow interval Stage~5 returns, $\Xi'$ has no sign change at any index
+tested. So a capstone-shaped certification is available, but only with the cells taken
+to be the returned intervals rather than the search brackets, and the present code does
+not do that.
+
+\emph{The arithmetic --- now certified.} The sign evaluations no longer rest on a noise
+floor. A certified evaluator is supplied in \lean{extractor/certified_zeta.py}: the
+Euler--Maclaurin expansion
+\[
+  \zeta(s)=\sum_{n<N}n^{-s}+\frac{N^{-s}}{2}+\frac{N^{1-s}}{s-1}
+    +\sum_{k=1}^{K}\frac{B_{2k}}{(2k)!}(s)_{2k-1}N^{-s-2k+1}+E,
+\]
+carried with its classical explicit remainder
+$\lvert E\rvert\le\bigl\lvert(s)_{2K+1}\tfrac{B_{2K+2}}{(2K+2)!}N^{-\sigma-2K-1}\bigr\rvert
+\cdot\tfrac{\lvert s+2K+1\rvert}{\sigma+2K+1}$,
+plus an explicit allowance for the working-precision rounding. This returns an
+\emph{enclosure} $\zeta(s)\in v\pm\rho$. Since
+$\operatorname{sign}u_\Delta=\operatorname{sign}Z$ with
+$Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ and the two discarded factors strictly
+positive, the sign of the readout is proved wherever $\lvert Z\rvert>\rho$.
+
+Run on the extractor's own output (\lean{extractor/checks/certified_signs.py}), at
+$i=1,10,10^{2},10^{3},10^{4}$, at all four points the product theorem consumes --- the
+two bracket endpoints and the two ends of the returned interval --- \emph{every sign is
+proved}, with margins $\lvert Z\rvert/\rho$ between $7\times10^{11}$ and
+$6\times10^{36}$, and the sign change across the returned interval is proved at every
+index. The enclosure was itself validated against an independent implementation:
+\texttt{mpmath}'s \texttt{zeta} falls inside the computed radius at every height tested.
+
+What is \emph{not} certified by this is the count, and we attempted it rather than
+deferring it. The natural route is the argument principle --- Delves and
+Lyness~\cite{DelvesLyness1967} --- since the winding number is an integer and so only
+has to be pinned to within half a turn. Walking the boundary of a rectangle and
+accepting a step whenever
+$\operatorname{Re}\bigl(\Xi(z_{k+1})\overline{\Xi(z_k)}\bigr)>0$ is certified looks
+sufficient, because that condition places the increment in $(-\pi/2,\pi/2)$.
+
+\begin{remark}[a criterion that looks sound and is not]\label{rem:windingtrap}
+It is not sufficient, and the failure is quiet. The condition pins the increment in
+$(-\pi/2,\pi/2)$ \emph{modulo} $2\pi$; it does not exclude the path making extra full
+turns between the two samples. On the rectangle $[10,23]\times[-\tfrac12,\tfrac12]$,
+which contains $\gamma_1$ and $\gamma_2$, one sample per side has \emph{all four}
+increments pass the test and returns the count $0$; the true value $2$ appears only from
+four samples per side onward, as
+\lean{extractor/checks/winding_unsound.py} records. A local test that passes at every step,
+with an answer that moves as the sampling is refined, is the signature: soundness cannot
+depend on the sampling density.
+
+The repair is standard and needs one thing we do not have. If $L$ is the step length and
+$M'$ bounds $\lvert\Xi'\rvert$ on the step, then $\lvert\Xi(z_k)\rvert>LM'$ forces
+$\Xi$ to stay in the half-plane through $\Xi(z_k)$, which excludes the extra turns. By
+Cauchy, $M'\le M/r$ with $M$ a bound for $\lvert\Xi\rvert$ on a disc of radius $r$. So
+the criterion becomes sound as soon as $M$ is available --- and $M$ is (O5).
+\end{remark}
+
+\noindent
+That repair is carried out in (O5) below, and with it the contour route works: the count
+is certified without an external counter. Turing's method in Platt's
+form~\cite{Platt2017}, shipped in Arb~\cite{Johansson2017}, remains the fast route and
+is what we would recommend in practice; the point here is only that the paper does not
+have to borrow one.
+
+\emph{What a partial attempt showed.} Certifying $\Xi'\ne0$ on an interval by a Cauchy
+estimate --- $\lvert\Xi''\rvert\le2M(r)/r^{2}$ on a disc of radius $r$, hence no
+critical point where $\lvert\Xi'(m)\rvert>(2M(r)/r^{2})\cdot\text{halfwidth}$ --- reaches
+a ratio of only $0.27$ to $0.38$ on the Stage-2 bracket, at the best radius, uniformly
+across $i=1,10,100,1000$; and subdividing makes it \emph{worse}, not better. That is
+the signature of the hypothesis failing rather than the bound being loose, and it is
+what led to the measurement above.
+
+\paragraph{(O2) The count is $O(i)$ in the index, and a bound on $S$ would make it
+$O(1)$.}
+Stage~2 bisects on $\mathrm{Count}$, and the cost of the count is what the head law
+sets: linear in the ordinate, hence linear in the index up to logarithms. If one knew
+$\lvert S_x-S\rvert<1$ --- that the clock-model count and the true count never differ
+by a whole unit --- the index could be read off the archimedean winding directly and
+the count would cost $O(1)$ in the index. Here $S$ is as in Remark~\ref{rem:density}
+and $S_x$ is its Selberg approximation at cutoff $x$, the finite prime-clock sum
+\[
+  S_x(t)\;=\;-\frac1\pi\sum_{n\le x^{3}}
+      \frac{\Lambda(n)\,w_x(n)}{\sqrt n\,\log n}\,\sin(t\log n),
+\]
+with $w_x$ the standard Selberg damping weights ($w_x=1$ for $n\le x$, tapering to $0$
+by $n=x^{3}$). It is a trigonometric polynomial in $t$ with frequencies $\log n$, so it
+is computable outright; the question is only how far it can stray from $S$.
+We measured that rather than assuming
+it: over $3000$-point grids spanning the ordinates $\gamma_{50}$--$\gamma_{70}$ and
+$\gamma_{1000}$--$\gamma_{1015}$, with the Selberg cutoff $x=100$
+(\lean{extractor/checks/count_error_grid.py}), the maximum of $\lvert S_x-S\rvert$ was
+$0.502$ and $0.518$ respectively, with median $0.018$ and $0.051$. The excursions are
+not spread out: the grid points within $0.02$ mean spacings of an ordinate carry
+median error $0.44$ and $0.47$ and supply every sample above $\tfrac12$, while beyond
+$0.35$ spacings the error never exceeded $0.075$. So the difficulty is concentrated at
+the events, which is where $S$ jumps.
+
+This is a statement about \emph{speed, not soundness}: Theorem~\ref{thm:chain} delivers
+the index with no bound on $S$ whatsoever. But the hypothesis it asks for is not merely
+unproved. At a fixed cutoff it is false, and the reason is immediate.
+
+\begin{proposition}[the fixed-cutoff hypothesis fails]\label{prop:o2false}
+For each fixed $x$, $\sup_t\lvert S_x(t)-S(t)\rvert=\infty$. In particular
+$\lvert S_x-S\rvert<1$ holds at no fixed cutoff.
+\end{proposition}
+
+\begin{proof}
+$S_x$ is a finite trigonometric polynomial, so for every $t$
+\[
+  \lvert S_x(t)\rvert\;\le\;B(x)\;:=\;\frac1\pi\sum_{n\le x^{3}}
+    \frac{\Lambda(n)\,w_x(n)}{\sqrt n\,\log n},
+\]
+an explicit finite constant. Meanwhile $S$ is unbounded. Unconditionally
+\[
+  S(t)\;=\;\Omega_\pm\Bigl((\log t/\log\log t)^{1/3}\Bigr),
+\]
+by Selberg's method~\cite{Selberg1946}, in the sharpened form due to Tsang. Hence
+$\lvert S_x(t)-S(t)\rvert\ge\lvert S(t)\rvert-B(x)$ is unbounded in $t$.
+\end{proof}
+
+\noindent
+The constant is not large. Computed
+(\lean{extractor/checks/Sx_bounded.py}): $B(10)=2.17$, $B(100)=12.43$, $B(1000)=110.5$.
+So at the cutoff the implementation uses, any $t$ with $\lvert S(t)\rvert>13.43$
+already violates the hypothesis; such $t$ exist by the proposition, though they lie far
+beyond computational reach --- the largest known values of $\lvert S\rvert$ are near
+$3.3$.
+
+What is within reach is the threshold that actually matters. Reading an integer count
+off $\vartheta(t)/\pi+1+S_x(t)$ requires $\lvert S_x-S\rvert<\tfrac12$, not $<1$, and
+that fails already:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lrrr@{}}
+\toprule
+window & height & median & $\max\lvert S_x-S\rvert$\\
+\midrule
+$\gamma_{50}$--$\gamma_{70}$ & $143$ & $0.017$ & $0.501$\\
+$\gamma_{500}$--$\gamma_{520}$ & $811$ & $0.047$ & $0.526$\\
+$\gamma_{1000}$--$\gamma_{1015}$ & $1419$ & $0.051$ & $0.518$\\
+$\gamma_{3000}$--$\gamma_{3015}$ & $3533$ & $0.062$ & $0.530$\\
+$\gamma_{8000}$--$\gamma_{8015}$ & $8148$ & $0.057$ & $0.562$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Every window exceeds $\tfrac12$, and the maximum drifts upward with height, as
+\lean{checks/Sx_growth.py} records. So the clock model at a fixed cutoff is
+a locator, never a certified counter --- which is how the paper has used it throughout,
+and why the count is stated as the interface of Definition~\ref{def:routine}.
+
+\emph{What the correct statement would be, and why we do not need it.} A bound of this
+shape requires the cutoff to grow with the height, $x=x(t)$; that is Selberg's formula,
+and its uniform error term is the difficult part. We do not prove one. Nor do we need
+one: the count is certified by contour in (O5)(a) below, and Turing's method in Platt's
+form~\cite{Platt2017} supplies a fast certified counter. (O2) asked for a shortcut past
+both, and Proposition~\ref{prop:o2false} says the shortcut does not exist at fixed
+cutoff. That closes the item --- in the negative, which is the only direction available.
+
+\paragraph{(O3) Two error terms are measured and not proved.}
+The finite-bank moment bound --- the $\alpha,\beta$ of Theorem~\ref{thm:ratio} as
+functions of the head length --- is at present the empirical law of
+\S\ref{sec:extractor}, $\exp(-cs)$ with $c\in[1.400,1.485]$ measured across thirteen
+orders of magnitude of error at $60$-digit working precision, uniformly in the moment
+order $r\le4$ and in the carrier scale. The proof route is stationary phase against the saddle at
+$n_\ast=T/\pi$, the same saddle the head law already identifies; what is missing is a
+remainder with explicit constants, not the shape. Separately, the derivative remainder
+in the Riemann--Siegel comparison is quoted rather than derived, and the route there is
+Gabcke's explicit error estimates \cite{Gabcke1979}, which supply exactly such
+constants for the first eleven partial sums at $t\ge200$.
+
+Both sit on the jet path, and with (O1) in hand their status is now structural rather
+than asserted. The certification runs through the Euler--Maclaurin evaluator, which
+carries its own explicit remainder; the lane bank's truncation error and the
+Riemann--Siegel remainder enter only the \emph{locator} and the jet's $\varepsilon$.
+An unproved $\alpha,\beta$ therefore costs narrowness, never correctness --- and that
+is now true by construction, because the object that decides the signs is not the
+object these two error terms belong to. What remains open in (O3) is consequently a
+question about performance parameters, not about soundness: the two constants govern
+how wide the returned interval is and how long the bracketing takes, and neither
+enters the proof that the interval contains the event.
+
+\paragraph{(O4) The two-ended head, realised.}
+The head law forces $X>2T/\pi$, linear in the ordinate, and this is the construction's
+one structural cost. An earlier draft of this section said the two-ended form ``has to
+be derived for the lane-balanced bank rather than borrowed''. That was the wrong
+framing, and it is worth saying why, because the same observation is what closes the
+item: every compiled theorem consumes the readout \emph{only through its sign}, and
+$u_\Delta=\lvert w_\Delta\rvert\,\lvert\GR\rvert\,Z$ with both discarded factors
+strictly positive. So the sign may be taken from any evaluator of Hardy's $Z$ --- in
+particular from the Riemann--Siegel main sum, which is two-ended by construction and has
+$N=\lfloor\sqrt{t/2\pi}\rfloor$ terms. Nothing needs deriving for the lane bank; the
+lane bank is the locator, and the evaluator is interchangeable.
+
+Realised in \lean{extractor/checks/two_ended_head.py} as a vectorised \lean{float64}
+main sum with the first Riemann--Siegel correction term, and measured:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrrrr@{}}
+\toprule
+$T$ & one-ended $X$ & two-ended $N$ & terms & \multicolumn{2}{c}{$2000$ sign evaluations}\\
+\cmidrule(l){5-6}
+ & & & ratio & one-ended & two-ended\\
+\midrule
+$7.0\times10^{3}$ & $4891$ & $33$ & $148$ & $0.219$\,s & $0.064$\,s\\
+$5.76\times10^{5}$ & $367124$ & $302$ & $1216$ & $13.06$\,s & $0.066$\,s\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+A speedup of $3.4\times$ at $T\approx7\times10^{3}$ and $198\times$ at
+$T=5.76\times10^{5}$ --- so this is now a wall-clock measurement and not merely a term
+count. Against the one-ended lane bank the two evaluators agreed on the sign at
+$400$ probes at each of four heights, with zero disagreements; against
+\texttt{mpmath}'s \texttt{siegelz} the float64 value agrees to $3\times10^{-5}$ at
+$T\ge7\times10^{3}$.
+
+Two honest qualifications. The term-count ratio is $1216$ at $i=3\times10^{6}$, not the
+$605$ an earlier draft reported: that figure double-counted, taking two sums of length
+$\sqrt{T/2\pi}$ where the standard Riemann--Siegel main sum is one sum of that length
+with a factor $2$. And the float64 main sum with one correction term carries error
+$\sim3\times10^{-5}$, which decides the sign comfortably away from an event but not
+within the returned interval; the architecture that follows is therefore two-ended
+Riemann--Siegel for the bracketing, where nearly all evaluations happen, and the
+certified evaluator of (O1) for the final signs.
+
+\paragraph{(O5) An explicit bound on $\lvert\Xi\rvert$ over a region.}
+What is needed is a function $M$ with $\lvert\Xi(z)\rvert\le M$ on a disc, with explicit
+constants --- not an asymptotic order and not a sampled maximum, both useless here
+because the conclusions drawn from $M$ are certificates. It is supplied in
+\lean{extractor/region_bounds.py}, and no constant is taken from the literature:
+
+\begin{itemize}
+\item $\lvert\tfrac14+z^{2}\rvert\le\tfrac14+(\lvert m\rvert+r)^{2}$ and
+$\lvert\pi^{-s/2}\rvert\le\pi^{-(1/2-r)/2}$, both elementary;
+\item $\lvert\Gamma(s/2)\rvert$ by Stirling with its classical explicit remainder
+$\lvert\log\Gamma(w)-[(w-\tfrac12)\log w-w+\tfrac12\log2\pi]\rvert\le1/(12\lvert w\rvert)$,
+valid for $\operatorname{Re}w>0$, with $\operatorname{Re}[(w-\tfrac12)\log w-w]$ bounded
+over the box by its value at a corner, each product being linear in each factor;
+\item $\lvert\zeta(s)\rvert$ \emph{term by term from the same Euler--Maclaurin expansion
+the certified evaluator uses}. This is the step that removes the need for a quoted
+subconvexity constant: every term, and the remainder, is an explicit function of
+$(m,r,N,K)$, so bounding $\operatorname{Re}s$ below by $\tfrac12-r$ bounds the whole sum.
+\end{itemize}
+
+\noindent
+The precondition $\lvert h\rvert+r<\tfrac12$ on a disc centred at $m+ih$ is not a coding
+limit: it is exactly $\operatorname{Re}(s/2)>0$, the hypothesis of the Stirling
+remainder. Validated as a genuine upper bound at seven $(m,r)$ pairs from
+$m=14$ to $m=1419$ (\lean{extractor/checks/region_bounds_val.py}); it exceeds the
+sampled maximum of $\lvert\Xi\rvert$ every time, by factors between $25$ and $520$.
+Looseness of that order costs step size, not validity.
+
+\medskip\noindent
+Three things follow, by Cauchy's estimate $\lvert\Xi^{(k)}\rvert\le k!\,M/r^{k}$.
+
+\emph{(a) The count, certified.} The criterion of Remark~\ref{rem:windingtrap} becomes
+sound in the form: a step of length $L$ is safe when
+$\lvert\Xi(z_k)\rvert>L\cdot M/(R-L/2)$, which forces $\Xi$ into an open half-plane
+along the step and so admits no hidden turn. Run on the band
+$\lvert\operatorname{Im}z\rvert\le\tfrac14$ with $R=0.18$
+(\lean{extractor/checks/certified_count.py}), it returns the correct count on all six
+test rectangles --- including $[10,23]$, the one the unsound criterion got wrong. The
+cost is real: $10^{4}$ to $4\times10^{4}$ evaluations per rectangle, because steps must
+shrink where $\lvert\Xi\rvert$ does.
+
+\emph{(b) The capstone's hypothesis, certified.} On $[\ell,h]$ the mean value theorem
+gives $\lvert\Xi'(t)\rvert\ge\lvert\text{slope}\rvert-\max\lvert\Xi''\rvert(h-\ell)$
+with $\max\lvert\Xi''\rvert\le2M/r^{2}$, so $\Xi'\ne0$ there whenever the slope's
+certified lower bound exceeds $2M(h-\ell)/r^{2}$. On the intervals the extractor returns
+this holds at $i=1,10,10^{2},10^{3},10^{4}$ with margins from $10^{4}$ to
+$2\times10^{8}$ (\lean{extractor/checks/certified_deriv.py}). So the capstone's
+hypothesis --- not merely the product theorem's --- is discharged exactly where (O1)
+showed it is true.
+
+\emph{(c) (O3), resolved in role.} With signs certified, bisection alone narrows the
+enclosure. The script \lean{extractor/checks/certified_bisect.py} drives it from
+certified signs and reaches widths of $10^{-20}$ down to $10^{-35}$ in $34$ to $76$
+steps, stopping at the
+\emph{evaluator's} precision, never at the bank's. The jets are therefore an
+optimisation on the number of evaluations, and their $\alpha,\beta$ govern neither
+soundness nor the achievable narrowness. Certifying them by contour, as
+Delves--Lyness~\cite{DelvesLyness1967} intended, is now unblocked by $M$ and would buy
+speed; we have not implemented it, and nothing rests on it.
+
+\paragraph{Relation to (O2).}
+(O2) does not reduce to (O5) --- it is a question about the distribution of zeros, not an
+estimate on $\lvert\Xi\rvert$ --- and it is resolved separately, in the negative, by
+Proposition~\ref{prop:o2false}. The two together leave the certified count resting on
+(O5)(a) or on an external counter, and on nothing else.
+
+%======================================================================
+\section{Formalization}\label{sec:formalization}
+
+Every statement above carries a \textsc{Lean:} line naming the identifiers that check
+it; those names are the statements' addresses in the sources and can be looked up
+verbatim. The modules divide along the same seam as the exposition: the geometry and
+its descent on one side, the chart chain on the other.
+
+\begin{center}
+\begin{tabular}{@{}llr@{}}
+\toprule
+layer & module & theorems\\
+\midrule
+geometry (\S\S\ref{sec:geometry}--\ref{sec:carriergeom})
+  & \lean{ClosedForm.lean} & 102\\
+fiber and descent (\S\S\ref{sec:fiber}--\ref{sec:descent})
+  & \lean{GeometricReadout.lean} & 18\\
+\midrule
+\multirow{7}{*}{the chart chain (\S\S\ref{sec:carrier}--\ref{sec:capstone})}
+  & \lean{CarrierParityQuantization.lean} & 16\\
+  & \lean{CarrierSignFlip.lean} & 13\\
+  & \lean{CarrierOffLinePairing.lean} & 12\\
+  & \lean{CarrierIntervalCount.lean} & 14\\
+  & \lean{CarrierStripParity.lean} & 21\\
+  & \lean{ZeroEnclosure.lean} & 8\\
+  & \lean{CarrierUniqueEvent.lean} & 16\\
+\midrule
+ & chain total & 100\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The geometry modules are what make \S\S\ref{sec:geometry}--\ref{sec:descent} statements
+rather than a picture: the helix and its velocity, the closed-form arclength, the
+climber and the height identity $z=e^{y}$, the carrier index $N(y)=S(k(y))/\Delta$, the
+Cayley step, the global inverse of the height readout, the antipodal cancellation of
+the $\mu_6$ cell, the residue law, and Theorem~\ref{thm:focal} --- the bridge
+identifying focal $\pm$ closure with the vanishing of the $L$-function --- are all
+machine-checked, with the same three-axiom footprint as the rest.
+
+\noindent
+Five further modules are cited above but are not part of that chain and are not
+counted in the table:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lrl@{}}
+\toprule
+module & theorems & carries\\
+\midrule
+\lean{HelixCollapseReality.lean} & 6 & reality of $\Lambda(\tfrac12+it)$\\
+\lean{HingeKernel.lean} & 14 & \multirow{2}{*}{Proposition~\ref{prop:rootnumber}}\\
+\lean{UnitMidpoint.lean} & 8 & \\
+\lean{ZetaSectorBank.lean} & 11 & the $\mu_6$ sector decomposition, Remark~\ref{rem:zetabridge}\\
+\lean{SectorBalanceRefuted.lean} & 11 & Theorem~\ref{thm:arcobstruction}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+That last module is worth a sentence. \lean{ZetaSectorBank.AngleSectorBalanceLaw} is a
+\lean{def ... : Prop} --- a named hypothesis, not a theorem --- and one result in that
+module takes it as an explicit argument. The refutation module proves it false,
+unconditionally: \lean{not_sectorBalanceAt} holds at every real $t$ with no hypothesis
+at all, so that conditional result is vacuous rather than useful. After it,
+\textbf{no theorem cited in this paper takes an unproved proposition as an argument.}
+
+\noindent
+Zero \lean{sorry}, zero \lean{axiom}. Every one of the $109$ identifiers named in a
+\textsc{Lean:} line above was checked \emph{individually} with \lean{#print axioms},
+and each reports exactly
+\[
+  \{\lean{propext},\ \lean{Classical.choice},\ \lean{Quot.sound}\},
+\]
+the three axioms of Lean's standard classical foundation, and nothing else. The check was run
+alongside a positive control (a deliberately incomplete proof in the same file), which
+reported \lean{sorryAx}; without that control the audit would not establish that the
+procedure can fail.
+
+\paragraph{What is taken from outside.}
+The construction rests on four facts from Mathlib, and on no others:
+
+\begin{center}\footnotesize\raggedright
+\begin{tabular}{@{}ll@{}}
+\toprule
+identifier & content\\
+\midrule
+\lean{completedRiemannZeta} & the completed zeta $\Lambda$\\
+\lean{completedRiemannZeta}$_0$ & its entire companion $\Lambda_0$\\
+\lean{completedRiemannZeta_one_sub} & the functional equation $\Lambda(1-s)=\Lambda(s)$\\
+\lean{differentiable_completedZeta}$_0$ & $\Lambda_0$ is entire\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Those are the analytic inputs, and they are the only ones.
+
+In particular the reality of $\Lambda(\tfrac12+it)$ --- Proposition~\ref{prop:xireal},
+on which the whole readout depends --- is \emph{not} assumed. It is proved here, in a
+further module \lean{HelixCollapseReality.lean}, from the functional equation together
+with the Schwarz-reflection symmetry $\overline{\Lambda(\bar s)}=\Lambda(s)$: on the
+line $\overline{\tfrac12+it}=1-(\tfrac12+it)$, so the two symmetries compose to
+$\overline{\Lambda}=\Lambda$. The reflection lemma is not in Mathlib and is proved from
+the real Dirichlet coefficients on $\operatorname{Re}s>1$ and extended by the identity
+theorem. It carries the same three-axiom footprint.
+
+\paragraph{Versions.}
+The statements above are reproducible against the following revision, and are not
+claimed against any other.
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}ll@{}}
+\toprule
+Lean~4 toolchain & \lean{leanprover/lean4:v4.33.0-rc2}\\
+Mathlib & \lean{v4.33.0-rc2}\\
+Mathlib commit & \lean{51e6992efd06126df61a496bebf8f49482a4e129}\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%======================================================================
+\section{Reproducibility}\label{sec:repro}
+
+\paragraph{The proofs.}
+With the toolchain and revision of \S\ref{sec:formalization} in place,
+\begin{center}
+\lean{lake build RequestProject.CarrierUniqueEvent RequestProject.CarrierStripParity}
+\end{center}
+compiles the two capstone modules and, transitively, the other five. The axiom audit
+is a separate file of \lean{#print axioms} lines carrying the positive control, run
+with \lean{lake env lean}; it is not part of the library build, so that the control's
+\lean{sorry} never enters the tree.
+
+\paragraph{The extractor.}
+\lean{helix_extractor.py} takes indices on the command line and returns intervals:
+\begin{center}
+\lean{python3 helix_extractor.py 1 10 100 1000 --verify}
+\end{center}
+with \lean{--delta} setting the carrier scale, \lean{--tol} the head tolerance,
+\lean{--x} an explicit head length, \lean{--m} the jet order, and
+\lean{--scales} running the carrier-scale invariance check of
+\S\ref{sec:validation}. The validation harness \lean{extractor_validate.py}
+reproduces the table of \S\ref{sec:validation} in full: $297$ indices, $0$ failures.
+Its reference ordinates come from \texttt{mpmath}'s \texttt{zetazero}, which shares no
+code with anything in this paper.
+
+\paragraph{The numerical checks.}
+Each measurement quoted above is a separate script with its decision rule fixed before
+it ran, so that a reader can see which outcome would have refuted the claim rather
+than only the outcome that occurred.
+
+\begin{center}
+\footnotesize
+\begin{tabular}{@{}lll@{}}
+\toprule
+script & claim tested & pre-registered refutation\\
+\midrule
+\lean{checks/theta_identity.py} & $\arg\GR(\tfrac12+it)=\vartheta(t)$
+  & any sample $>10^{-30}$\\
+\lean{checks/jet_sweep.py} & contraction $=\kappa$
+  & disagreement $>5\%$ at small $\kappa$\\
+\lean{checks/count_error_grid.py} & size of $\lvert S_x-S\rvert$
+  & (measurement; no threshold)\\
+\lean{checks/root_number_rays.py} & the $\chi_5,\chi_7$ rays
+  & either ray off by $>5\times10^{-4}\pi$\\
+\lean{checks/balance_law_refuted.py} & imbalance grows, ratio $>\sqrt3/2$
+  & any decay toward $0$\\
+\lean{checks/head_law_decay.py} & $-\ln(\mathrm{err})/s$ band
+  & (measurement; band reported as found)\\
+\lean{checks/head_law_moments.py} & band uniform in $r\le4$
+  & spread $>0.25$ across orders\\
+\lean{checks/head_threshold.py} & $X_{\min}$ vs $2T/\pi$
+  & (measurement; no threshold)\\
+\lean{checks/deriv_in_cell.py} & $\Xi'\ne0$ on the returned interval
+  & any sign change of $\Xi'$ in it\\
+\lean{checks/certified_signs.py} & every sign proved, margin $>1$
+  & any point with $\lvert Z\rvert\le\rho$\\
+\lean{checks/two_ended_head.py} & two-ended signs agree
+  & any sign disagreement in $400$ probes\\
+\lean{checks/winding_unsound.py} & naive winding test unsound
+  & a count stable under refinement\\
+\lean{checks/region_bounds_val.py} & $M$ is an upper bound
+  & any sampled $\lvert\Xi\rvert$ above $M$\\
+\lean{checks/certified_count.py} & counts match, soundly
+  & any rectangle miscounted\\
+\lean{checks/certified_deriv.py} & $\Xi'\ne0$ certified, margin $>1$
+  & any index with margin $\le1$\\
+\lean{checks/certified_bisect.py} & narrowing is evaluator-limited
+  & narrowing stalling at the bank's floor\\
+\lean{checks/Sx_bounded.py} & $S_x$ bounded by $B(x)$
+  & any $\lvert S_x\rvert$ exceeding $B(x)$\\
+\lean{checks/Sx_growth.py} & $\max\lvert S_x-S\rvert>\tfrac12$
+  & a window staying below $\tfrac12$\\
+\lean{checks/pencil_lane_control.py} & lane nodes at $\operatorname{Im}y=-\tfrac12$
+  & misplaced, or $\operatorname{Im}y=+\tfrac12$\\
+\lean{checks/rank_drop.py} & rank $=$ \#distinct nodes
+  & $\sigma_2/\sigma_1$ stays $O(1)$ through a merger\\
+\lean{checks/lehmer_rank.py} & the pair resolves at rank $2$
+  & one node returned, or $\beta\ne\tfrac12$\\
+\lean{checks/sx_formula.py} & printed $S_x$ $=$ the code's
+  & any height differing by $>10^{-12}$\\
+\lean{extractor_validate.py} & interval contains $\gamma_i$
+  & any index missing its ordinate\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+Two of these did return a refutation, and both are reported above rather than
+discarded: the jet sweep at $\kappa=0.882$ (\S\ref{sec:jets}), where the geometric law
+fails because no nearest ordinate dominates; and the planted-node control on the
+harmonic pencil (\S\ref{sec:pencil}), which refuted two successive implementations
+whose own certificates looked clean. The $S$ measurement is reported as a measurement
+in two windows at one cutoff, with no uniformity claimed.
+
+%======================================================================
+\section{What the exercise settled}\label{sec:conclusion}
+
+The construction is a geometric model that computes, and the two halves of that are
+worth separating in closing.
+
+\emph{As a model}, its content is that the one-dimensional $L$-function is a chart
+readout of a three-dimensional object, and that the classical difficulties sort cleanly
+on that distinction. The abscissa of convergence and the strip are features of the
+projection; the double end, the focal cancellation and the height are features of the
+object. The sorting is not a matter of taste --- the Cayley step is what makes the
+strip the image of a circle, and it is machine-checked, as are the helix, its arclength
+and the height identity $z=e^{y}$.
+
+\emph{As a computation}, the chain from the representation to
+$\zeta(\tfrac12+i\gamma)=0$ is machine-checked end to end, the implementation is
+validated at $297$ indices against an independent reference, and its own hypotheses are
+discharged against an explicit remainder rather than a noise floor. What it does not do
+is compete: Turing's method in Platt's form is faster and we say so repeatedly.
+
+The part we would point a reader at, though, is what \emph{failed}. Three propositions
+that this work carried at various times as plausible or open turned out to be false,
+and all three fell to the same observation --- a finite object cannot track an unbounded
+one. The $\mu_6$ sector balance law fails because a $\pi/3$ arc cannot cancel against
+its own antipode, so differencing antipodal sectors adds the masses
+(Theorem~\ref{thm:arcobstruction}). The natural winding criterion fails because
+$\operatorname{Re}\bigl(\Xi(z_{k+1})\overline{\Xi(z_k)}\bigr)>0$ pins the argument only
+modulo $2\pi$, and the give-away was an answer that moved under refinement while every
+local test passed (Remark~\ref{rem:windingtrap}). The clock bound
+$\lvert S_x-S\rvert<1$ fails at any fixed cutoff because $S_x$ is a finite
+trigonometric polynomial and $S$ is not bounded
+(Proposition~\ref{prop:o2false}). Each was more useful refuted than it would have been
+left open, and each cost less to refute than to keep.
+
+%======================================================================
+\begin{thebibliography}{9}
+
+\bibitem{DelvesLyness1967}
+L.~M. Delves and J.~N. Lyness,
+\emph{A numerical method for locating the zeros of an analytic function},
+Math. Comp. \textbf{21} (1967), no.~100, 543--560.
+
+\bibitem{Riemann1859}
+B. Riemann,
+\emph{\"Uber die Anzahl der Primzahlen unter einer gegebenen Gr\"osse},
+Monatsber. K\"onigl. Preuss. Akad. Wiss. Berlin (1859), 671--680.
+
+\bibitem{Turing1953}
+A.~M. Turing,
+\emph{Some calculations of the Riemann zeta-function},
+Proc. London Math. Soc. (3) \textbf{3} (1953), 99--117;
+\href{https://doi.org/10.1112/plms/s3-3.1.99}{doi:10.1112/plms/s3-3.1.99}.
+
+\bibitem{Lehmer1956}
+D.~H. Lehmer,
+\emph{On the roots of the Riemann zeta-function},
+Acta Math. \textbf{95} (1956), 291--298;
+\href{https://doi.org/10.1007/BF02401102}{doi:10.1007/BF02401102}.
+
+\bibitem{HuaSarkar1990}
+Y. Hua and T.~K. Sarkar,
+\emph{Matrix pencil method for estimating parameters of exponentially
+damped/undamped sinusoids in noise},
+IEEE Trans. Acoust. Speech Signal Process. \textbf{38} (1990), no.~5, 814--824;
+\href{https://doi.org/10.1109/29.56027}{doi:10.1109/29.56027}.
+
+\bibitem{Gabcke1979}
+W. Gabcke,
+\emph{Neue Herleitung und explizite Restabsch\"atzung der Riemann--Siegel-Formel},
+Dissertation, Georg-August-Universit\"at G\"ottingen, 1979.
+\href{https://doi.org/10.53846/goediss-5113}{doi:10.53846/goediss-5113}.
+
+\bibitem{GargantiniHenrici1971}
+I. Gargantini and P. Henrici,
+\emph{Circular arithmetic and the determination of polynomial zeros},
+Numer. Math. \textbf{18} (1971), 305--320.
+
+\bibitem{Johansson2015}
+F. Johansson,
+\emph{Rigorous high-precision computation of the Hurwitz zeta function and its
+derivatives},
+Numer. Algorithms \textbf{69} (2015), no.~2, 253--270; arXiv:1309.2877.
+
+\bibitem{Johansson2017}
+F. Johansson,
+\emph{Arb: efficient arbitrary-precision midpoint-radius interval arithmetic},
+IEEE Trans. Comput. \textbf{66} (2017), no.~8, 1281--1292;
+\href{https://doi.org/10.1109/TC.2017.2690633}{doi:10.1109/TC.2017.2690633}.
+
+\bibitem{OdlyzkoSchonhage1988}
+A.~M. Odlyzko and A. Sch\"onhage,
+\emph{Fast algorithms for multiple evaluations of the Riemann zeta function},
+Trans. Amer. Math. Soc. \textbf{309} (1988), no.~2, 797--809.
+
+\bibitem{Selberg1946}
+A. Selberg,
+\emph{Contributions to the theory of the Riemann zeta-function},
+Arch. Math. Naturvid. \textbf{48} (1946), no.~5, 89--155;
+reprinted in \emph{Collected Papers}, Vol.~I, Springer, 1989.
+
+\bibitem{Platt2017}
+D.~J. Platt,
+\emph{Isolating some non-trivial zeros of zeta},
+Math. Comp. \textbf{86} (2017), no.~307, 2449--2467.
+
+\end{thebibliography}
+
+\end{document}

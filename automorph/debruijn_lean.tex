@@ -1,0 +1,647 @@
+\documentclass[11pt]{article}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage[margin=1.2in]{geometry}
+\usepackage{booktabs}
+\usepackage{lmodern}
+\usepackage[T1]{fontenc}
+\usepackage{listings}
+\usepackage[htt]{hyphenat}
+\usepackage{hyperref}
+\emergencystretch=3em
+\sloppy
+
+\lstset{basicstyle=\ttfamily\footnotesize,breaklines=true,columns=fullflexible,
+        xleftmargin=1.5em,frame=none,extendedchars=true,inputencoding=utf8,
+        literate={σ}{{$\sigma$}}1 {λ}{{$\lambda$}}1
+        {Δ}{{$\Delta$}}1 {ℝ}{{$\mathbb{R}$}}1 {ℂ}{{$\mathbb{C}$}}1 {ℕ}{{$\mathbb{N}$}}1
+        {→}{{$\to$}}1 {↦}{{$\mapsto$}}1 {∀}{{$\forall$}}1 {∃}{{$\exists$}}1
+        {≤}{{$\le$}}1 {≥}{{$\ge$}}1 {≠}{{$\ne$}}1 {∈}{{$\in$}}1 {∫}{{$\int$}}1
+        {α}{{$\alpha$}}1 {ι}{{$\iota$}}1 {κ}{{$\kappa$}}1 {ρ}{{$\rho$}}1 {ξ}{{$\xi$}}1
+        {Ξ}{{$\Xi$}}1 {Ψ}{{$\Psi$}}1 {·}{{$\cdot$}}1 {ᴴ}{{$^{H}$}}1
+        {₀}{{$_0$}}1 {₁}{{$_1$}}1 {₂}{{$_2$}}1 {∧}{{$\wedge$}}1 {∨}{{$\vee$}}1
+        {¬}{{$\neg$}}1 {↔}{{$\leftrightarrow$}}1 {ℤ}{{$\mathbb{Z}$}}1
+        {∑}{{$\sum$}}1 {∏}{{$\prod$}}1 {√}{{$\surd$}}1 {⁺}{{$^{+}$}}1
+        {≡}{{$\equiv$}}1 {∘}{{$\circ$}}1 {⟨}{{$\langle$}}1 {⟩}{{$\rangle$}}1}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{remark}[theorem]{Remark}
+
+\DeclareMathOperator{\Imop}{Im}
+\DeclareMathOperator{\Reop}{Re}
+
+\title{De Bruijn's strip-narrowing theorem for the Riemann \texorpdfstring{$\Xi$}{Xi}-function,\\
+       formalized in Lean 4}
+\author{Samuel Lavery}
+\date{Draft --- \today}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We report a complete, machine-checked proof in Lean 4 (Mathlib) of de Bruijn's 1950 theorem on the
+heat-flow deformations of the Riemann $\Xi$-function: writing
+$\Xi_\lambda(z)=\int_{\mathbb R} e^{\lambda u^{2}}K(u)e^{izu}\,du$ with $\Xi_0=\Xi$, every $\Xi_\lambda$
+with $\lambda\ge\tfrac18$ has only real zeros.  In the normalization standard in the
+de Bruijn--Newman literature this is the bound $\Lambda\le\tfrac12$ on the de Bruijn--Newman constant.
+The development is self-contained --- Mathlib contains no Laguerre--P\'olya theory, no preservation of
+real-rootedness under locally uniform limits, no Hadamard product for $\xi$, and no de Bruijn--Newman
+material --- so the Hadamard factorization of $\xi$, the polynomial strip-narrowing step, the passage
+from imaginary shifts to the heat semigroup, and a Hurwitz limit theorem are all built here.  The
+result is $216$ theorems over $14$ modules and $3462$ lines, with axiom footprint
+$\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$ and no \texttt{sorry}.
+We also record a transversality theorem at the polynomial level --- every real zero of the shift of a
+real-rooted polynomial is simple --- together with an explicit account of why it does \emph{not}
+descend to $\Xi_\lambda$.
+The Riemann Hypothesis is not proved and is not approached: the interval $\lambda\in(0,\tfrac18)$
+remains, and closing it is equivalent to $\Lambda\le 0$, which is RH.  We close by reporting a
+numerical experiment locating where the $\tfrac18$ is slack.
+\end{abstract}
+
+\section{What is formalized}
+
+Let $\xi$ be the completed Riemann zeta function and put
+\[
+  \Xi(z)\;=\;\xi\!\left(\tfrac12+iz\right).
+\]
+Then $\Xi$ is entire, real on $\mathbb R$, and its zeros are the images of the nontrivial zeros of
+$\zeta$: if $\rho=\beta+i\gamma$ is a nontrivial zero, the corresponding $z$ is
+$z=\gamma-i(\beta-\tfrac12)$, so
+\begin{equation}\label{eq:strip}
+  \Xi(z)=0 \;\Longrightarrow\; |\Imop z|=\left|\beta-\tfrac12\right|<\tfrac12 ,
+\end{equation}
+because $0<\beta<1$.  The Riemann Hypothesis is the assertion that every zero of $\Xi$ is real.
+
+$\Xi$ has a classical Fourier representation $\Xi(z)=\int_{\mathbb R}K(u)e^{izu}\,du$ \cite[\S10.1]{Titchmarsh} with an explicit even,
+positive, rapidly decaying kernel $K$ built from the Jacobi theta function (\S\ref{sec:normal}).
+Deforming the kernel by a Gaussian gives the \emph{flow}
+\begin{equation}\label{eq:flow}
+  \Xi_\lambda(z)\;=\;\int_{\mathbb R} e^{\lambda u^{2}}K(u)\,e^{izu}\,du ,
+  \qquad \Xi_0=\Xi .
+\end{equation}
+This is the backward heat flow: since $\partial_z^{2}e^{izu}=-u^{2}e^{izu}$, we have
+$\Xi_\lambda=e^{-\lambda\partial_z^{2}}\Xi$ formally, and the zeros of $\Xi_\lambda$ migrate toward the
+real axis as $\lambda$ increases.  The object of this paper is the following theorem, proved by
+de Bruijn in 1950 (\cite{deBruijn1950}, Thm.~13) and here formalized.  De Bruijn's statement is the
+strip contraction in the form $|\Imop z|\le\bigl(\max(\Delta^{2}-\lambda,0)\bigr)^{1/2}$ for the kernel
+factor $e^{\lambda t^{2}/2}$, which with the factor $e^{\lambda u^{2}}$ used here reads
+$\bigl(\max(\Delta^{2}-2\lambda,0)\bigr)^{1/2}$ --- the law appearing as
+Proposition~\ref{prop:shift} below.
+
+\begin{theorem}[\texttt{flowFrontier\_one\_eighth}]\label{thm:main}
+For every $\lambda$ with $\tfrac18\le\lambda\le 1$, every zero of $\Xi_\lambda$ is real.
+\end{theorem}
+
+In Lean, with \texttt{flowStage} the function \eqref{eq:flow}:
+
+\begin{lstlisting}
+def FlowFrontier (lam₀ : ℝ) : Prop :=
+  ∀ lam : ℝ, lam₀ ≤ lam → lam ≤ 1 → ∀ z : ℂ, flowStage lam z = 0 → z.im = 0
+
+theorem flowFrontier_one_eighth : FlowFrontier (1 / 8)
+\end{lstlisting}
+
+\noindent The upper cut $\lambda\le1$ is a convenience of the ambient development, not a restriction of
+the method; the narrowing argument is monotone in $\lambda$ and \texttt{FlowFrontier.mono} transports
+the conclusion to every $\lambda_0\ge\tfrac18$.
+
+The mechanism has three parts, and each is elementary in isolation:
+
+\begin{enumerate}
+\item[(i)] a \emph{polynomial} step: the map $p\mapsto p(\cdot+ih)+p(\cdot-ih)$ carries a real
+  polynomial whose zeros lie in $(\Imop w)^{2}\le\sigma$ to one whose zeros lie in
+  $(\Imop w)^{2}\le\max(\sigma-h^{2},0)$ (\S\ref{sec:core}--\S\ref{sec:class});
+\item[(ii)] an \emph{approximation} step: $\Xi$ is a locally uniform limit of real polynomials with all
+  zeros in $(\Imop w)^{2}\le\tfrac14$, supplied by the Hadamard product (\S\ref{sec:hadamard});
+\item[(iii)] a \emph{limit} step: iterating (i) with $N$ shifts of size $h$ where $Nh^{2}=2\lambda$
+  realizes the Gaussian $e^{\lambda u^{2}}$ in the limit, and real-rootedness survives locally uniform
+  limits by Hurwitz (\S\ref{sec:cosh}--\S\ref{sec:assembly}).
+\end{enumerate}
+
+\section{Normalization}\label{sec:normal}
+
+The de Bruijn--Newman literature is not uniform in its scaling, and the numerical value of the
+threshold depends on it, so we fix conventions explicitly.
+
+Let $\psi(x)=\sum_{n\ge1}e^{-\pi n^{2}x}$ and set $\Psi(u)=\psi(e^{2u})$.  The functional equation
+$\psi(1/x)=\sqrt{x}\,\psi(x)+\tfrac{\sqrt x-1}{2}$ becomes
+\begin{equation}\label{eq:reflect}
+  \Psi(u)=e^{-u}\Psi(-u)+\tfrac{e^{-u}-1}{2},
+\end{equation}
+which is compiled as \texttt{Psi\_reflect} (from Mathlib's \texttt{evenKernel\_functional\_equation}
+at $a=0$; in the formalization $\Psi$ is the restriction to $\mathbb R$ of
+$\texttt{PsiC}(w)=\tfrac12(\vartheta_2(0,ie^{2w})-1)$, holomorphic on $|\Imop w|<\pi/4$).  The kernel is
+\[
+  K(u)\;=\;e^{u/2}\bigl(\Psi''(u)+\Psi'(u)\bigr),
+\]
+and differentiating \eqref{eq:reflect} twice gives $\Psi''(u)+\Psi'(u)=e^{-u}(\Psi''(-u)+\Psi'(-u))$,
+hence $K(-u)=K(u)$: the kernel is even (\texttt{Kker\_even}).  That $\int_{\mathbb R}K(u)e^{izu}du=\Xi(z)$
+is \texttt{xiSection\_eq\_Ktrans}, proved by analytic continuation from the half-plane
+$\Imop z<-\tfrac12$ where the integral converges absolutely term by term.
+
+With this $u$, the strip bound \eqref{eq:strip} reads $\Delta=\tfrac12$, and Theorem~\ref{thm:main}
+gives real-rootedness at $\lambda\ge\tfrac18$.  The de Bruijn--Newman constant $\Lambda$ is defined in
+the literature through the family $H_t$ normalized so that $H_0(z)=\tfrac18\Xi(z/2)$; halving the
+$z$-variable doubles the half-width to $\Delta_{\text{std}}=1$ and divides the Gaussian exponent by
+four, so
+\begin{equation}\label{eq:norm}
+  \lambda \;=\; t/4 .
+\end{equation}
+Relation \eqref{eq:norm} is not ours: Ki--Kim--Lee state it explicitly, defining the de Bruijn--Newman
+constant as $\Lambda=4\lambda(0)$ with $\lambda(0)$ the infimum of $\lambda$ for which $\Xi_\lambda$ has
+only real zeros \cite{KKL2009}.  Theorem~\ref{thm:main} is therefore exactly de Bruijn's published
+bound $\Lambda\le\tfrac12$ \cite{deBruijn1950}.  Two further consistency checks: de Bruijn's
+$t=\tfrac12$ maps to $\lambda=\tfrac18$, and the Polymath~15 bound $t\le0.22$
+\cite{Polymath15} maps to $\lambda\le0.055$, correctly strictly better than $\tfrac18$.  A reader who
+prefers the $H_t$ normalization should read every $\lambda$ below as $t/4$.
+
+\section{The elementary core: one identity}\label{sec:core}
+
+Everything in part (i) rests on a single algebraic identity, which we state first because it is the
+whole mechanism and it is two lines.
+
+For real $a,b$ let $Q_{a,b}(z)=(z-a)^{2}+b^{2}$, the real quadratic with roots $a\pm ib$.
+
+\begin{lemma}[\texttt{pairFactor\_normSq\_shift}]\label{lem:core}
+For all real $a,b,h$ and all $z\in\mathbb C$,
+\[
+  \bigl|Q_{a,b}(z+ih)\bigr|^{2}-\bigl|Q_{a,b}(z-ih)\bigr|^{2}
+  \;=\;8\,(\Imop z)\,h\,\Bigl((\Reop z-a)^{2}+(\Imop z)^{2}+h^{2}-b^{2}\Bigr).
+\]
+\end{lemma}
+
+\begin{proof}
+Expand both sides in $\Reop z$, $\Imop z$ and compare; in Lean this is \texttt{simp} on the real and
+imaginary parts followed by \texttt{ring}.
+\end{proof}
+
+The consequence is immediate and is the engine of the whole paper.
+
+\begin{corollary}[\texttt{pairFactor\_norm\_shift\_lt}]\label{cor:core}
+If $\Imop z>0$, $h>0$ and $b^{2}<(\Imop z)^{2}+h^{2}$, then
+$\bigl|Q_{a,b}(z-ih)\bigr|<\bigl|Q_{a,b}(z+ih)\bigr|$.
+\end{corollary}
+
+\noindent In words: \emph{a conjugate pair of roots that is not too high up sees the upward shift as
+strictly larger than the downward one}, uniformly in the real part.  A real polynomial $p$ factors
+over $\mathbb C$ into such quadratics together with real linear factors, and a real linear factor
+$z-a$ is the case $b=0$ of $Q_{a,b}$ after squaring; taking the product of strict inequalities over
+all roots (\texttt{polynomial\_norm\_shift\_lt}) gives
+
+\begin{proposition}[\texttt{polynomial\_shift\_zero\_strip}]\label{prop:polystep}
+Let $p\in\mathbb R[X]$, $p\ne0$, $h>0$, and suppose every root $w$ of $p$ satisfies
+$(\Imop w)^{2}\le\Delta^{2}$.  If $p(z+ih)+p(z-ih)=0$ then
+\[
+  \Imop z=0 \qquad\text{or}\qquad (\Imop z)^{2}+h^{2}\le\Delta^{2}.
+\]
+\end{proposition}
+
+\begin{proof}
+If $\Imop z>0$ and $(\Imop z)^{2}+h^{2}>\Delta^{2}$ then Corollary~\ref{cor:core} applies to every
+root, so $\|p(z-ih)\|<\|p(z+ih)\|$; but $p(z+ih)=-p(z-ih)$ forces equality of norms, a contradiction.
+The case $\Imop z<0$ follows by conjugating, using that $p$ has real coefficients
+($\texttt{Polynomial.aeval\_conj}$), which exchanges the two shifted arguments.  No simplicity
+assumption on the roots is used: multiplicities are carried by the multiset of roots throughout.
+\end{proof}
+
+We emphasise what Proposition~\ref{prop:polystep} costs: a single \texttt{ring} identity, a product of
+strict inequalities, and the triangle inequality.  There is no potential theory and no
+Laguerre--P\'olya theory in it.
+
+\section{The strip class and the shift}\label{sec:class}
+
+\begin{definition}[\texttt{StripClass}]
+For $\sigma\in\mathbb R$ and $f:\mathbb C\to\mathbb C$, say $f$ lies in the \emph{strip class at
+$\sigma$} if there are nonzero real polynomials $P_n$ with every root of every $P_n$ satisfying
+$(\Imop w)^{2}\le\sigma$, such that $P_n\to f$ locally uniformly on $\mathbb C$.
+\end{definition}
+
+\begin{lstlisting}
+def StripClass (σ : ℝ) (f : ℂ → ℂ) : Prop :=
+  ∃ P : ℕ → ℝ[X], (∀ n, P n ≠ 0) ∧ (∀ n (w : ℂ), aeval w (P n) = 0 → w.im ^ 2 ≤ σ) ∧
+    TendstoLocallyUniformly (fun n z => aeval z (P n)) f atTop
+\end{lstlisting}
+
+Write $S_h f(z)=f(z+ih)+f(z-ih)$ for the imaginary shift operator.
+
+\begin{proposition}[\texttt{StripClass.shift}, \texttt{StripClass.shiftIter}]\label{prop:shift}
+Let $\sigma\ge0$, $h>0$.  If $f$ lies in the strip class at $\sigma$ then $S_hf$ lies in the strip
+class at $\max(\sigma-h^{2},0)$; consequently $S_h^{N}f$ lies in the strip class at
+$\max(\sigma-Nh^{2},0)$.
+\end{proposition}
+
+\begin{proof}
+The polynomial witnesses transport: $S_h$ applied to a real polynomial is again a real polynomial,
+because the complex polynomial $p(X+ih)+p(X-ih)$ has real coefficients (the odd-order Hasse
+derivatives cancel; \texttt{shiftPolyC\_coeff\_real}), and its root strip is controlled by
+Proposition~\ref{prop:polystep}.  Local uniform convergence is preserved because precomposition with
+$z\mapsto z\pm ih$ preserves it and sums of locally uniformly convergent sequences converge locally
+uniformly.  Nonvanishing of the shifted witness is \texttt{shiftPoly\_ne\_zero}.  The iterate is an
+induction on $N$, whose only content is the arithmetic
+$\max(\max(\sigma-Nh^{2},0)-h^{2},0)=\max(\sigma-(N{+}1)h^{2},0)$.
+\end{proof}
+
+\section{Transversality: the shift crosses, it never grazes}\label{sec:transversal}
+
+The narrowing step of \S\ref{sec:class} controls \emph{where} the zeros of $S_hf$ are.  A separate and
+equally elementary argument controls \emph{how} they are met: at the polynomial level the shift's real
+zeros are always simple.  This is not needed for Theorem~\ref{thm:main}, and we record it because it
+is the exact point at which multiplicity enters the construction, and because it is sharp
+(Remark~\ref{rem:sharp}).
+
+The observation that starts it: $p$ has real coefficients, so for real $x$ and real $h$,
+$p(x-ih)=\overline{p(x+ih)}$, whence on the axis
+\begin{equation}\label{eq:axisshift}
+  (S_hp)(x)=2\Reop p(x+ih),\qquad (S_hp)'(x)=2\Reop p'(x+ih).
+\end{equation}
+So a \emph{double} zero of $S_hp$ at $x$ says exactly that both $p(w)$ and $p'(w)$ are purely
+imaginary at $w=x+ih$ --- and then $\overline{p(w)}\,p'(w)$ is real.  It never is:
+
+\begin{lemma}[\texttt{im\_conj\_mul\_deriv\_neg}]\label{lem:herglotz}
+Let $p\in\mathbb R[X]$ have positive degree and only real zeros, and let $\Imop w>0$.  Then
+\[
+  \Imop\bigl(\overline{p(w)}\,p'(w)\bigr)<0 .
+\]
+\end{lemma}
+
+The reason is the classical one --- $\overline{p}p'/|p|^{2}=\sum_k 1/(w-r_k)$ and each term has
+imaginary part $-\Imop w/|w-r_k|^{2}<0$ --- but the formalization does not construct that sum.  It
+peels one real root at a time: writing $p=(X-r)q$ with $r$ real and $q$ again real-rooted,
+\begin{equation}\label{eq:peel}
+  \Imop\bigl(\overline{p(w)}p'(w)\bigr)
+  \;=\;-\,|q(w)|^{2}\,\Imop w\;+\;|w-r|^{2}\,\Imop\bigl(\overline{q(w)}q'(w)\bigr),
+\end{equation}
+in which the first term is strictly negative --- a real-rooted $q$ cannot vanish off the axis, so
+$|q(w)|^{2}>0$ --- and the second is $\le0$ by induction on the degree.  The strict sign is produced by
+the peel itself, which is why no sum and no partial-fraction decomposition is required.
+
+\begin{theorem}[\texttt{shiftPoly\_zero\_simple}]\label{thm:simple}
+Let $p\in\mathbb R[X]$ have positive degree and only real zeros, and let $h>0$.  Then every real zero
+of $S_hp$ is simple.
+\end{theorem}
+
+\begin{proof}
+At a zero, \eqref{eq:axisshift} gives $\Reop p(w)=0$; if it were not simple we would also have
+$\Reop p'(w)=0$, making $\overline{p(w)}p'(w)$ real and contradicting Lemma~\ref{lem:herglotz}.
+\end{proof}
+
+The statement is carried to the compiled shift polynomial by
+$\texttt{shiftPoly\_derivative}:\ \partial(S_hp)=S_h(\partial p)$ --- the shift commutes with
+differentiation --- so Theorem~\ref{thm:simple} is a statement about
+\texttt{derivative (shiftPoly h p)} and not merely about the shifted evaluations.
+
+\begin{remark}[why this does \emph{not} descend to $\Xi_\lambda$]\label{rem:nodescend}
+Theorem~\ref{thm:simple} is a statement about each approximating polynomial, and simplicity is not a
+closed condition: Hurwitz (\S\ref{sec:hurwitz}) carries real-rootedness to a locally uniform limit but
+not simplicity, since a sequence of simple zeros may coalesce.  One might hope to recover it from a
+uniform lower bound on the zero gaps of the approximants, but no such bound is available at this
+level: the approximants have degree $\to\infty$, and the heat flow applied to $z^{n}$ produces the
+Hermite polynomial, whose $n$ roots spread over a range $\sim\sqrt n$ so that the minimum gap
+degrades.  Any proof of simplicity for $\Xi_\lambda$ must therefore draw on the limit's own zero
+density rather than on the polynomial step.  We do not prove it.
+\end{remark}
+
+\begin{remark}[the threshold is sharp for simplicity]\label{rem:sharp}
+Simplicity cannot hold at $\lambda=\tfrac18$ itself.  The isolated pair $p(z)=z^{2}+\tfrac14$ flows to
+$p_t(z)=z^{2}+\tfrac14-2t$, which at $t=\tfrac18$ is exactly $z^{2}$ --- a genuine double zero --- and
+for $t>\tfrac18$ has the two distinct real roots $\pm\sqrt{2t-\tfrac14}$.  So the correct statement to
+aim at is simplicity on the \emph{open} range $\lambda>\tfrac18$, matching the classical assertion that
+the zeros of $\Xi_\lambda$ are real for $\lambda\ge\tfrac18$ and simple for $\lambda>\tfrac18$.
+Numerically the separation is immediate rather than gradual: applying the flow to real-rooted
+polynomials with multiple roots ($z^{2}$, $z^{3}$, $z^{4}$, $(z^2)(z-1)^2$, $(z+1)^2z(z-1)^2$) gives
+all-real all-simple roots already at $t=10^{-8}$, with minimum gap growing like $2\sqrt{2t}$.
+\end{remark}
+
+\section{From shifts to the heat flow}\label{sec:cosh}
+
+On the Fourier side the shift is a multiplication operator:
+\[
+  S_h\!\left(\int K(u)e^{izu}du\right)
+  =\int K(u)\bigl(e^{-hu}+e^{hu}\bigr)e^{izu}du
+  =\int 2\cosh(hu)\,K(u)\,e^{izu}\,du .
+\]
+Iterating, $S_h^{N}\Xi(z)=\int\bigl(2\cosh(hu)\bigr)^{N}K(u)e^{izu}du$; this is
+\texttt{shiftOp\_iterate\_Ktrans}.  Now choose
+\[
+  h_n=\sqrt{\frac{2\lambda}{n+1}},\qquad N=n+1,
+  \qquad\text{so that}\qquad Nh_n^{2}=2\lambda\ \text{ for every } n,
+\]
+and normalize by $2^{-(n+1)}$.  Since
+$\cosh(h_nu)^{n+1}\ \text{is squeezed between}\ \bigl(1+\tfrac{\lambda u^{2}}{n+1}\bigr)^{n+1}$ and
+$e^{\lambda u^{2}}$ --- the lower bound from $1+r^{2}/2\le\cosh r$, the upper from
+$\cosh r\le e^{|r|}$ --- dominated convergence gives:
+
+\begin{proposition}[\texttt{tendstoLocallyUniformly\_coshApprox}]\label{prop:cosh}
+For $0\le\lambda\le1$, the normalized stages
+$\;z\mapsto\int\cosh(h_nu)^{n+1}K(u)e^{izu}du\;$ converge to $\Xi_\lambda$ locally uniformly on
+$\mathbb C$.
+\end{proposition}
+
+The dominating function is uniform on each horizontal strip $|\Imop z|\le A$, which is what
+``locally uniformly on $\mathbb C$'' requires; the compact-set formulation is obtained from
+\texttt{tendstoLocallyUniformly\_iff\_forall\_isCompact}.
+
+Two nonvanishing facts are needed and are proved separately: no weighted transform
+$\int w(u)K(u)e^{izu}du$ with $w$ continuous, positive and of at most exponential growth is
+identically zero (\texttt{coshStage\_ne\_zero}, \texttt{flowStage\_ne\_zero}).  These follow from
+Fourier inversion together with $\xi(\tfrac12)\ne0$.  They are exactly the hypothesis ``$f$ is not
+identically zero'' of the Hurwitz step, and omitting them would make the argument vacuous rather than
+wrong, which is why we flag them.
+
+\section{\texorpdfstring{$\Xi$ lies in the strip class at $\tfrac14$}{Xi lies in the strip class at 1/4}}\label{sec:hadamard}
+
+This is the arithmetic input, and the only place where anything about $\zeta$ beyond \eqref{eq:strip}
+is used.
+
+\begin{proposition}[\texttt{xiSection\_stripClass}]\label{prop:strip}
+$\Xi$ lies in the strip class at $\sigma=\tfrac14$.
+\end{proposition}
+
+\begin{proof}[Construction of the witnesses]
+Start from the Hadamard product, compiled as \texttt{riemannXi\_hadamard\_factorization}:
+\[
+  \xi(s)=e^{As+B}\prod_{\rho}\Bigl(1-\frac s\rho\Bigr)^{m_\rho}e^{m_\rho s/\rho},
+\]
+the product over nontrivial zeros with multiplicity.  Restrict to the cofinal finite sets
+$G_N=\{\rho:|\Imop\rho|\le N\}$, which are closed under $\rho\mapsto1-\rho$ and $\rho\mapsto\bar\rho$
+by the functional equation and the reflection $\overline{\xi(\bar s)}=\xi(s)$.  Substituting
+$s=\tfrac12+iz$ and writing $w_\rho=-i(\rho-\tfrac12)$,
+\[
+  e^{As+B}\prod_{\rho\in G_N}\Bigl(\bigl(1-\tfrac s\rho\bigr)e^{s/\rho}\Bigr)^{m_\rho}
+  \;=\;\kappa_N\,e^{iz(A+c_N)}\,Q_N(z),
+  \qquad
+  Q_N(z)=\prod_{\rho\in G_N}\Bigl(1-\frac z{w_\rho}\Bigr)^{m_\rho},
+\]
+with $c_N=\sum_{G_N}m_\rho/\rho$.  Because $G_N$ is closed under the two involutions, the zero
+multiset of $Q_N$ is closed under conjugation, so $Q_N\in\mathbb R[X]$; and $w_\rho$ satisfies
+$|\Imop w_\rho|=|\Reop\rho-\tfrac12|<\tfrac12$ by \eqref{eq:strip}, so every root of $Q_N$ lies in
+$(\Imop w)^{2}\le\tfrac14$.  The paired sums converge, $c_N\to-A$
+(\texttt{reflection\_const\_eq\_zero}), so the exponential factor tends to $1$ and
+$\kappa_N\to\Xi(0)\ne0$.  Hence $\Xi(0)\,Q_N\to\Xi$ locally uniformly, and after rescaling these are
+the required witnesses.
+\end{proof}
+
+The cancellation $c_N\to-A$ is the one delicate point: individually the sums $\sum1/\rho$ do not
+converge absolutely, and it is the pairing $\rho\leftrightarrow1-\rho$ inside each $G_N$ that makes
+$c_N$ converge.  This is why the exhaustion must be by symmetric sets and not by, say, the first $N$
+zeros in some order.
+
+\section{Real zeros survive locally uniform limits}\label{sec:hurwitz}
+
+\begin{proposition}[\texttt{Hurwitz.im\_eq\_zero\_of\_tendstoLocallyUniformly}]\label{prop:hurwitz}
+Let $F_n$ be entire with only real zeros, $F_n\to f$ locally uniformly on $\mathbb C$, and $f$ not
+identically zero.  Then $f$ has only real zeros.
+\end{proposition}
+
+The formalization proves this through a nonvanishing form of Hurwitz's theorem on an open preconnected
+set, and it is worth recording the route because it avoids winding numbers entirely.
+
+\begin{lemma}[\texttt{Hurwitz.ne\_zero\_of\_tendstoLocallyUniformlyOn}]\label{lem:hurwitz}
+Let $U\subseteq\mathbb C$ be open and preconnected, $F_n$ holomorphic on $U$ with $F_n$ nowhere zero on
+$U$, $F_n\to f$ locally uniformly on $U$, and $f\not\equiv0$ on $U$.  Then $f$ is nowhere zero on $U$.
+\end{lemma}
+
+\begin{proof}
+Suppose $f(z_0)=0$, $z_0\in U$.  Since $f\not\equiv0$ on the preconnected $U$, the identity theorem
+gives a punctured neighbourhood of $z_0$ on which $f\ne0$; choose $r>0$ with
+$\overline{B}(z_0,r)\subseteq U$ and $f\ne0$ on the sphere $|z-z_0|=r$, and let
+$m=\min_{|z-z_0|=r}\|f(z)\|>0$ (attained, the sphere being compact).  Local uniform convergence is
+uniform on $\overline{B}(z_0,r)$, so for some $n$ we have $\|F_n-f\|<m/2$ there, whence
+\[
+  \|F_n(z)\|>m/2 \ \text{ on the sphere},\qquad \|F_n(z_0)\|<m/2 \ \text{ at the centre}.
+\]
+But $F_n$ is nowhere zero on the disc, so $1/F_n$ is holomorphic there, and the maximum modulus
+principle bounds $\|1/F_n(z_0)\|$ by its maximum on the boundary, i.e.\ $\le2/m$ --- that is,
+$\|F_n(z_0)\|\ge m/2$, contradicting the second display.
+\end{proof}
+
+\begin{proof}[Proof of Proposition~\ref{prop:hurwitz}]
+Apply Lemma~\ref{lem:hurwitz} to the two open half-planes $U_\pm=\{\pm\Imop w>0\}$.  Each is convex,
+hence preconnected; each $F_n$ is nowhere zero on $U_\pm$ precisely because its zeros are all real; and
+$f\not\equiv0$ on $U_\pm$ because $f\not\equiv0$ on $\mathbb C$ and $f$ is entire, so vanishing on an
+open subset would force vanishing identically.  Hence $f$ has no zero off the real axis.
+\end{proof}
+
+Specialised to the strip class this gives \texttt{StripClass.im\_eq\_zero\_of\_zero}: a member of the
+strip class at $\sigma=0$ which is not identically zero has only real zeros.
+
+\section{Assembly}\label{sec:assembly}
+
+\begin{proof}[Proof of Theorem~\ref{thm:main}]
+Fix $\lambda$ with $\tfrac18\le\lambda\le1$ and let $n\in\mathbb N$.  By
+Proposition~\ref{prop:strip}, $\Xi$ lies in the strip class at $\tfrac14$.  Apply
+Proposition~\ref{prop:shift} with $h=h_n$ and $N=n+1$: the iterate $S_{h_n}^{n+1}\Xi$ lies in the
+strip class at
+\[
+  \max\!\left(\tfrac14-(n{+}1)h_n^{2},\,0\right)=\max\!\left(\tfrac14-2\lambda,\,0\right)=0,
+  \qquad\text{since }\lambda\ge\tfrac18 .
+\]
+By \texttt{shiftOp\_iterate\_Ktrans} that iterate is the cosh stage, and by
+Proposition~\ref{prop:hurwitz} (applied within the strip class, using
+\texttt{coshStage\_ne\_zero}) every zero of the $n$-th normalized stage is real.  Now let
+$n\to\infty$: by Proposition~\ref{prop:cosh} the stages converge to $\Xi_\lambda$ locally uniformly,
+and $\Xi_\lambda\not\equiv0$ by \texttt{flowStage\_ne\_zero}, so Proposition~\ref{prop:hurwitz} applies
+once more and every zero of $\Xi_\lambda$ is real.
+\end{proof}
+
+Hurwitz is used twice, at two different levels --- once to pass from polynomial witnesses to each
+fixed stage, once to pass from the stages to the flow.  The threshold $\tfrac18$ enters at exactly one
+place: the requirement $2\lambda\ge\sigma=\tfrac14$.
+
+\begin{corollary}[\texttt{flowCascade\_realRooted\_of\_le\_seven}]
+In the cascade $\lambda_n=1/(n+1)$, the stages $n\le7$ have only real zeros, at every height.
+\end{corollary}
+
+\section{The formalization}\label{sec:lean}
+
+The development is Lean~4 against Mathlib \cite{Mathlib} at the revision pinned in \texttt{lake-manifest.json}
+(\texttt{v4.33.0-rc2}).
+
+\begin{center}
+\begin{tabular}{lrrl}
+\toprule
+module & lines & thms & content \\
+\midrule
+\texttt{XiKernelTheta}                & 123 & 16 & $\Psi$ holomorphic on a strip \\
+\texttt{XiKernelEven}                 & 122 & 11 & $K(-u)=K(u)$ from the theta reflection \\
+\texttt{XiKernelTransform}            & 269 & 22 & $\int K(u)e^{izu}du=\Xi(z)$ \\
+\texttt{XiHadamardFactorization}      & 484 & 13 & the Hadamard product for $\xi$ \\
+\texttt{XiProductMultPartialFraction} & 277 &  6 & multiplicity bookkeeping, $\sum m_\rho/\rho$ \\
+\texttt{XiStripApproximants}          & 542 & 43 & Prop.~\ref{prop:strip}: $\Xi$ in the class at $\tfrac14$ \\
+\texttt{DeBruijnStripStep}            & 230 & 13 & Lem.~\ref{lem:core}, Prop.~\ref{prop:polystep} \\
+\texttt{HurwitzLimit}                 & 139 &  2 & Prop.~\ref{prop:hurwitz} \\
+\texttt{StripShiftClass}              & 166 & 14 & \texttt{StripClass}, Prop.~\ref{prop:shift} \\
+\texttt{FiberShiftSimple}            & 226 &  7 & Lem.~\ref{lem:herglotz}, Thm.~\ref{thm:simple} \\
+\texttt{XiFlowCascade}                & 366 & 30 & $\Xi_\lambda$, the cascade $\lambda_n$ \\
+\texttt{FlowCoshStages}               & 354 & 26 & Prop.~\ref{prop:cosh}, nonvanishing \\
+\texttt{FlowFrontier}                 &  69 &  5 & \texttt{FlowFrontier}, monotonicity \\
+\texttt{DeBruijnFlowFrontier}         &  95 &  8 & Theorem~\ref{thm:main} \\
+\midrule
+total                                 & 3462 & 216 & \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Axiom audit.}  Every named theorem in the chain, checked with \verb|#print axioms|,
+depends on exactly $\{\texttt{propext},\ \texttt{Classical.choice},\ \texttt{Quot.sound}\}$ --- the
+three axioms of Lean's standard classical foundation --- and nothing else.  There is no \texttt{sorry}
+and no bespoke \texttt{axiom} in the development or anywhere in the repository containing it: a full
+\verb|lake build| over $10451$ jobs reports zero errors and zero declarations using \texttt{sorry}.
+
+\paragraph{What Mathlib supplied and what it did not.}  Mathlib supplied the analytic infrastructure:
+holomorphy, locally uniform convergence, the maximum modulus principle, the identity theorem
+(\texttt{eqOn\_zero\_of\_preconnected\_of\_eventuallyEq\_zero}), dominated convergence, Fourier
+integrals, the Jacobi theta function with its functional equation
+(\texttt{evenKernel\_functional\_equation}), polynomial algebra over $\mathbb R$ and $\mathbb C$
+including \texttt{aroots} with
+multiplicity, and \texttt{completedRiemannZeta} with its functional equation.  Mathlib did \emph{not}
+supply, and this development therefore builds from scratch: the Hadamard product for $\xi$; any notion
+of a real-rooted or Laguerre--P\'olya class; preservation of real-rootedness under locally uniform
+limits; and any de Bruijn--Newman material whatsoever.  A search of the pinned revision for
+\texttt{Laguerre}, \texttt{P\'olya}, \texttt{realRooted} and \texttt{deBruijn} returns nothing relevant;
+\texttt{Mathlib/Analysis/Complex/Hadamard.lean} is the three-lines theorem, not the factorization.
+
+\section{The remaining interval}\label{sec:remaining}
+
+Let \texttt{FlowFrontier} $\lambda_0$ abbreviate ``every $\Xi_\lambda$ with
+$\lambda_0\le\lambda\le1$ has only real zeros''.  The following is also compiled:
+
+\begin{lstlisting}
+theorem rh_of_flowFrontier (h : ∀ lam₀ : ℝ, 0 < lam₀ → FlowFrontier lam₀) : RiemannHypothesis
+\end{lstlisting}
+
+\noindent Its hypothesis quantifies over \emph{every} positive $\lambda_0$; the proof instantiates at
+$\lambda_n=1/(n+1)\to0$.  Theorem~\ref{thm:main} supplies $\lambda_0\ge\tfrac18$.  The gap is therefore
+the bounded interval
+\[
+  \lambda\in\left(0,\tfrac18\right),
+\]
+which under \eqref{eq:norm} is the statement $\Lambda\le0$, and by Newman's conjecture \cite{Newman1976}, settled by
+Rodgers--Tao ($\Lambda\ge0$) \cite{RodgersTao2020}, this is equivalent to the Riemann Hypothesis.  Nothing in this paper
+bears on it.
+
+It is worth recording precisely \emph{where} the constant $\tfrac18$ comes from, because it is not a
+feature of $\Xi$.  Proposition~\ref{prop:polystep} is exactly tight for a single conjugate pair and
+nothing else: for $p(z)=z^{2}+y_0^{2}$ one has $p''=2$, so under the flow
+$p_t(z)=z^{2}+y_0^{2}-2t$, whose roots reach the real axis exactly at $t=y_0^{2}/2$; with
+$y_0=\tfrac12$ this is $\tfrac18$.  The input $\sigma=\tfrac14$ of Proposition~\ref{prop:strip} is the
+bare critical strip \eqref{eq:strip}: no zero density, no zero count, no arithmetic beyond
+$0<\beta<1$ enters Theorem~\ref{thm:main} at all.
+
+\begin{remark}[a numerical experiment, not a theorem]\label{rem:density}
+The flow acts exactly on polynomials, $p_t=\sum_j(-t)^{j}p^{(2j)}/j!$, and for a conjugate pair at
+$x\pm iy$ in a field of further zeros $x_k$ the imaginary part obeys
+\[
+  \partial_t y \;=\; -\frac1y \;-\; 2y\sum_k\frac1{(x-x_k)^{2}+y^{2}} ,
+\]
+in which \emph{both} terms are negative when the $x_k$ are real: neighbours accelerate the descent, so
+$t^{*}\le y_0^{2}/2$ should be slack.  We measured this.  With $y_0=\tfrac12$ and $m$ real zeros at
+spacing $s=1/\rho$, the first time $t^{*}$ at which all roots are real satisfies (control: $m=0$
+reproduces $t^{*}=\tfrac18$ to $8\times10^{-23}$)
+\[
+  \begin{array}{c|ccc}
+    \rho & 1 & 2 & 4\\\hline
+    t^{*}/(1/8)\ \ (m=40) & 0.471 & 0.279 & 0.156
+  \end{array}
+\]
+and at $\rho=4$ the value $0.0195$ agrees to $2\%$ with the linear law $y_0/(2\pi\rho)=0.0199$ that
+replaces the quadratic $y_0^{2}/2$ once the density is felt.  Since the zeros of $\Xi$ have density
+$\rho=\log(T/2\pi)/2\pi$ at height $T$, the corresponding heuristic threshold is
+$y_0/\log(T/2\pi)\to0$.  Replacing all neighbours by conjugate pairs at the maximal height
+$y_1=y_0=\tfrac12$ --- the configuration best able to push the pair \emph{away} from the axis, and the
+relevant one since the neighbours of a hypothetical off-line zero are not known to be real --- the
+ratios become $0.680$, $0.479$, $0.329$: still decreasing in $\rho$.  De Bruijn's bound held as a
+control throughout ($t^{*}\le\tfrac18$ in every configuration tested).
+
+We draw no conclusion about $\Xi$ from this.  What it does identify is the point at which a
+sharpening would have to enter: a \emph{local, density-aware} refinement of
+Proposition~\ref{prop:shift}, in which $m$ roots in a window of width $w$ about $x$ buy a narrowing
+near $x$ strictly better than $Nh^{2}$, by an amount increasing in $m/w$.  That is a statement about
+polynomials.
+\end{remark}
+
+\section{What is not claimed}
+
+The theorem proved here is Theorem~\ref{thm:main} and nothing more.  In particular:
+
+\begin{itemize}
+\item The Riemann Hypothesis is not proved, and no step of this development is a step toward it.  The
+  distance between Theorem~\ref{thm:main} and RH is the interval $\lambda\in(0,\tfrac18)$, and closing
+  that interval \emph{is} RH; it is not a gap in formalization or in plumbing.
+\item Theorem~\ref{thm:main} is de Bruijn's 1950 bound \cite{deBruijn1950} and is weaker than the
+  published state of the art.  Ki--Kim--Lee sharpened it to the strict inequality $\Lambda<\tfrac12$
+  \cite{KKL2009}, and Polymath~15 gave $\Lambda\le0.22$ \cite{Polymath15}, i.e.\ $\lambda\le0.055$,
+  roughly a factor $2.3$ better; neither is formalized here, and formalizing Polymath~15 would shrink
+  the open interval to $(0,0.055)$ without closing it.
+\item The novelty claimed is formalization, not mathematics.  The mathematical content of
+  \S\ref{sec:core}--\S\ref{sec:assembly} is de Bruijn's, and where the argument is arranged differently
+  from his --- the strip class as an explicit predicate, the $\cosh$-power staging, the symmetric
+  exhaustion $G_N$ --- that is a convenience of formalization, not a new idea.
+\item Simplicity of the zeros of $\Xi_\lambda$ is \emph{not} proved.  Theorem~\ref{thm:simple} is a
+  statement about the approximating polynomials only; Remark~\ref{rem:nodescend} explains why it does
+  not descend through the limit, and Remark~\ref{rem:sharp} why any such statement must be confined to
+  the open range $\lambda>\tfrac18$.  A fortiori nothing here bears on the simplicity of the zeros of
+  $\zeta$, which would be a statement at $\lambda=0$.
+\item Remarks~\ref{rem:sharp} and \ref{rem:density} report numerical experiments on polynomials, with
+  pre-registered decision rules and positive controls.  They are not theorems and are not used
+  anywhere above.
+\end{itemize}
+
+\section*{Availability}
+
+The development builds with \texttt{lake build} against the pinned Mathlib.  The two results stated
+above are
+\begin{center}
+\begin{tabular}{ll}
+Theorem~\ref{thm:main} & \texttt{CriticalLinePhasor.XiKernel.flowFrontier\_one\_eighth} \\
+  & in \texttt{RequestProject/DeBruijnFlowFrontier.lean} \\[2pt]
+Theorem~\ref{thm:simple} & \texttt{CriticalLinePhasor.DeBruijn.shiftPoly\_zero\_simple} \\
+  & in \texttt{RequestProject/FiberShiftSimple.lean}
+\end{tabular}
+\end{center}
+
+\begin{thebibliography}{9}
+
+\bibitem{deBruijn1950}
+N.~G.~de Bruijn,
+\emph{The roots of trigonometric integrals},
+Duke Math.\ J.\ \textbf{17} (1950), 197--226.
+
+\bibitem{Newman1976}
+C.~M.~Newman,
+\emph{Fourier transforms with only real zeros},
+Proc.\ Amer.\ Math.\ Soc.\ \textbf{61} (1976), 245--251.
+
+\bibitem{KKL2009}
+H.~Ki, Y.-O.~Kim, J.~Lee,
+\emph{On the de Bruijn--Newman constant},
+Adv.\ Math.\ \textbf{222} (2009), 281--306.
+
+\bibitem{Polymath15}
+D.~H.~J.~Polymath,
+\emph{Effective approximation of heat flow evolution of the Riemann $\xi$ function, and a new upper
+bound for the de Bruijn--Newman constant},
+Res.\ Math.\ Sci.\ \textbf{6} (2019), no.~3, Paper No.~31.
+
+\bibitem{RodgersTao2020}
+B.~Rodgers, T.~Tao,
+\emph{The de Bruijn--Newman constant is non-negative},
+Forum Math.\ Pi \textbf{8} (2020), e6.
+
+\bibitem{Titchmarsh}
+E.~C.~Titchmarsh,
+\emph{The Theory of the Riemann Zeta-Function}, 2nd ed., rev.\ D.~R.~Heath-Brown,
+Oxford University Press, 1986.
+
+\bibitem{Mathlib}
+The mathlib Community,
+\emph{The Lean mathematical library},
+CPP 2020, 367--381.
+
+\end{thebibliography}
+
+\end{document}

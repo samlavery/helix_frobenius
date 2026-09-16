@@ -151,7 +151,8 @@ theorem responseKernel_gram {κ : Type*} [Fintype κ]
     (A B : Matrix ι ι ℂ) (hA : A.IsHermitian) (hB : B.PosDef)
     (b : ι → ℂ) (z : κ → ℂ) (hz : ∀ i, 0 < (z i).im) :
     responseKernel A B b z =
-      (fun k i => state A B b (z i) k)ᴴ * B * (fun k i => state A B b (z i) k) := by
+      (Matrix.of fun k i => state A B b (z i) k)ᴴ * B *
+        (Matrix.of fun k i => state A B b (z i) k) := by
   ext i j
   have hne : z j - star (z i) ≠ 0 := by
     intro h

@@ -14,12 +14,21 @@ real-rooted** — and the target is made a FRONTIER in the warp parameter:
 * `xiSection_zero_im_lt_half` : at `λ = 0` the zeros lie in the strip `|Im z| < ½` (the classical strip) — the input
   of the strip-narrowing theorem.
 
-De Bruijn's theorem (1950, Thm 13), in this normalisation, is `FlowFrontier (1/8)`: the heat operator `e^{λu²}` on a
+De Bruijn's theorem (1950, Thm 13 — VERIFIED 846c: Thm 13 is the strip-contraction statement, and in his
+normalisation `e^{λt²/2}` it reads `|Im z| ≤ √(Δ² − λ)⁺`, which with our `e^{λu²}` is `√(Δ² − 2λ)⁺`),
+in this normalisation, is `FlowFrontier (1/8)`: the heat operator `e^{λu²}` on a
 kernel whose transform has zeros in `|Im z| ≤ Δ` narrows the strip to `√(Δ² − 2λ)⁺`, so `Δ = ½` gives real zeros for
-`λ ≥ 1/8` at EVERY height.  Ki–Kim–Lee and Polymath 15 push the frontier to `λ ≥ 0.055` here (their `0.22` with `Δ = 1`).
-Neither is compiled; de Bruijn's is the next compile, and it would discharge stages `n ≤ 7` of the cascade for all
-heights — the first all-heights discharge of any stage.  The remaining target is then a bounded interval of the
-warp parameter, `λ ∈ (0, λ₀)`, not an all-heights quantifier.
+`λ ≥ 1/8` at EVERY height.
+
+**COMPILED (ledger 700, `DeBruijnFlowFrontier.lean`): `flowFrontier_one_eighth : FlowFrontier (1/8)`**,
+unconditional, axioms `{propext, Classical.choice, Quot.sound}`.  It discharges stages `n ≤ 7` of the cascade at
+all heights (`flowCascade_realRooted_of_le_seven`) — the first all-heights discharge of any stage — so the
+remaining target is the bounded interval `λ ∈ (0, 1/8)`, not an all-heights quantifier.
+
+Beyond de Bruijn, NEITHER of the following is compiled, and they are two different results, not one:
+Ki–Kim–Lee (2009) sharpen de Bruijn's `Λ ≤ ½` to the STRICT `Λ < ½`; Polymath 15 (2019) gives `Λ ≤ 0.22`,
+which is `λ ≤ 0.055` here (their `Δ = 1` normalisation, `Λ = 4λ`).  Only the latter is a numerical
+improvement on the compiled frontier.  Exposition: `automorph/debruijn_lean.tex`.
 -/
 
 open Complex Filter Topology
