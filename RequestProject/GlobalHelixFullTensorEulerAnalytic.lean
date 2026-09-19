@@ -141,7 +141,7 @@ theorem fullTensorEulerZeroModeTheta_rapid
       (fun v hv => zero_lt_one.trans (hq v hv)) k
     have hH1 : 1 ≤ H := by
       unfold H bilateralEulerHeight
-      apply Finset.one_le_prod
+      apply Finset.one_le_prod₀
       intro v hv
       exact one_le_zpow₀ (le_of_lt (hq v v.property)) (hk0 v)
     have hHx1 : 1 ≤ H * x := by nlinarith

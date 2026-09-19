@@ -46,7 +46,7 @@ theorem hadamard_factorization_const :
     rw [h.deriv]
     field_simp
   have hlog : logDeriv ZD.riemannXi 2 = A + logDeriv ZD.xiProductMult 2 := by
-    rw [hξ, logDeriv_mul 2 hne1 hne2 hd1 hd2, hexp]
+    rw [hξ, logDeriv_fun_mul 2 hne1 hne2 hd1 hd2, hexp]
   rw [logDeriv_apply, xiHadamardConst_spec 2 h2, ZD.logDeriv_xiProductMult_partial_fraction h2] at hlog
   have hA : A = xiHadamardConst := (add_right_cancel hlog).symm
   exact ⟨B, fun z => by rw [hAB z, hA]⟩

@@ -215,11 +215,11 @@ theorem closedCellBank_marriage (Q : Finset ℕ) (hQ : ∀ q ∈ Q, 1 < q) {s : 
   have hsplit : logDeriv (closedCellBank Q) s
       = logDeriv (fun w => ∏ q ∈ Q, conductionClock q w) s + logDeriv riemannZeta s := by
     unfold closedCellBank
-    exact logDeriv_mul (f := fun w => ∏ q ∈ Q, conductionClock q w) (g := riemannZeta) s
+    exact logDeriv_fun_mul (f := fun w => ∏ q ∈ Q, conductionClock q w) (g := riemannZeta) s
       hprod_ne hz hprod_diff (differentiableAt_riemannZeta hs1')
   have hprodlog : logDeriv (fun w => ∏ q ∈ Q, conductionClock q w) s
       = ∑ q ∈ Q, logDeriv (conductionClock q) s :=
-    logDeriv_prod hne hdiff
+    logDeriv_fun_prod hne hdiff
   have hterm : ∀ q ∈ Q, logDeriv (conductionClock q) s
       = -((Real.log q : ℝ) : ℂ)
         - ((Real.log q : ℝ) : ℂ) * (q : ℂ) ^ (s - 1) / (1 - (q : ℂ) ^ (s - 1)) := by

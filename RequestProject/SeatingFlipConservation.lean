@@ -447,11 +447,11 @@ inside `(T₁, T₂)`: all windows flip, all windows disjoint, and the hull stay
 inside the box on BOTH sides — the right margin is what pins the attained
 maximum inside the box. -/
 theorem exists_uniform_delta_odd (T₁ T₂ : ℝ) :
-    ∀ gs : List ℝ, gs.Chain' (· < ·) →
+    ∀ gs : List ℝ, gs.IsChain (· < ·) →
     (∀ g ∈ gs, T₁ < g ∧ g < T₂ ∧ g ≠ 0 ∧ linePt g ∈ ZD.NontrivialZeros ∧
       Odd (Zeta23.zeroMult (linePt g))) →
     ∃ δstar : ℝ, 0 < δstar ∧ δstar ≤ 1 ∧ ∀ δ : ℝ, 0 < δ → δ < δstar →
-      gs.Chain' (fun x y => x + δ < y - δ) ∧
+      gs.IsChain (fun x y => x + δ < y - δ) ∧
       (∀ g ∈ gs, XiLine (g - δ) * XiLine (g + δ) < 0) ∧
       (∀ g ∈ gs, T₁ ≤ g - δ) ∧
       (∀ g ∈ gs, g + δ ≤ T₂) := by
@@ -467,7 +467,7 @@ theorem exists_uniform_delta_odd (T₁ T₂ : ℝ) :
     intro hchain hmem
     obtain ⟨hT₁g, hgT₂, hgne, hgmem, hgodd⟩ := hmem g List.mem_cons_self
     obtain ⟨εg, hεg, hflipg⟩ := odd_mult_flips hgne hgmem hgodd
-    have hchain' : rest.Chain' (· < ·) := hchain.tail
+    have hchain' : rest.IsChain (· < ·) := hchain.tail
     have hmem' : ∀ x ∈ rest, T₁ < x ∧ x < T₂ ∧ x ≠ 0 ∧
         linePt x ∈ ZD.NontrivialZeros ∧ Odd (Zeta23.zeroMult (linePt x)) :=
       fun x hx => hmem x (List.mem_cons_of_mem g hx)
@@ -544,12 +544,12 @@ theorem exists_uniform_delta_odd (T₁ T₂ : ℝ) :
 /-- A `FlipStep`-chain list of pinned length inside `[T₁, T₂]` yields the
 `Fin`-chain shape the doors consume. -/
 private theorem fin_chain_of_list (T₁ T₂ : ℝ) {l : List ℝ} {m : ℕ}
-    (hlen : l.length = m + 1) (hchain : l.Chain' FlipStep)
+    (hlen : l.length = m + 1) (hchain : l.IsChain FlipStep)
     (hbound : ∀ x ∈ l, T₁ ≤ x ∧ x ≤ T₂) :
     ∃ a : Fin (m+1) → ℝ, StrictMono a ∧ T₁ ≤ a 0 ∧ a (Fin.last m) ≤ T₂ ∧
       ∀ i : Fin m, XiLine (a i.castSucc) * XiLine (a i.succ) < 0 := by
   set a : Fin (m+1) → ℝ := fun i => l.get (Fin.cast hlen.symm i) with ha
-  have hltchain : l.Chain' (· < ·) := hchain.imp (fun _ _ h => h.1)
+  have hltchain : l.IsChain (· < ·) := hchain.imp (fun _ _ h => h.1)
   have hltpair : l.Pairwise (· < ·) := List.isChain_iff_pairwise.mp hltchain
   have hmono : StrictMono a := by
     intro i j hij
@@ -607,7 +607,7 @@ theorem exists_odd_census_flip_chain (T₁ T₂ : ℝ) (h0 : 0 < T₁) (hT : T�
   have hnodup : gs.Nodup := Finset.sort_nodup _ _
   have hpair : gs.Pairwise (· < ·) :=
     (hsorted.and hnodup).imp (fun h => lt_of_le_of_ne h.1 h.2)
-  have hchainlt : gs.Chain' (· < ·) := List.isChain_iff_pairwise.mpr hpair
+  have hchainlt : gs.IsChain (· < ·) := List.isChain_iff_pairwise.mpr hpair
   have hcount : gs.length = S.ncard := by
     rw [hgs, Finset.length_sort, hords]
     rw [Finset.card_image_of_injOn, ← Set.ncard_eq_toFinset_card _ hfin]

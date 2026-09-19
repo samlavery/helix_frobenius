@@ -211,7 +211,7 @@ theorem phasor3D_charged_spin (χ : ℕ → ℂ) (σ y t : ℝ) (n : ℕ) :
       = Complex.exp (-(t * Real.log n) * I) * plane (phasor3D χ σ y n) := by
   by_cases hn : n = 0
   · simp [phasor3D_plane, phasorTerm, hn]
-  · simp only [phasor3D_plane, phasorTerm, if_neg hn, mellinSpin]
+  · simp only [phasor3D_plane, phasorTerm, ite_eq_right hn, mellinSpin]
     have hexp : Complex.exp (-(↑(y + t) * ↑(Real.log ↑n)) * I)
         = Complex.exp (-(↑t * ↑(Real.log ↑n)) * I) * Complex.exp (-(↑y * ↑(Real.log ↑n)) * I) := by
       rw [← Complex.exp_add]; push_cast; ring_nf

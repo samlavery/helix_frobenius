@@ -96,7 +96,7 @@ theorem zeroCount_eq_one_of_deriv_ne_zero {a b : ℝ} (hab : a < b)
   have hγC : xiEntire (γ : ℂ) = 0 := (xiEntire_re_eq_zero_iff γ).mp h0
   have hsingle : (zeros_finite_Ioo a b).toFinset = {γ} := by
     ext t
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Finset.mem_singleton]
+    simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Finset.mem_singleton]
     constructor
     · rintro ⟨ht, h0t⟩
       exact subsingleton_zeros_of_deriv_ne_zero hd
@@ -120,7 +120,7 @@ theorem unique_event_of_deriv_ne_zero {a b : ℝ} (hab : a < b)
 theorem zeroCount_self (a : ℝ) : zeroCount a a = 0 := by
   have h : (zeros_finite_Ioo a a).toFinset = ∅ := by
     ext t
-    simp [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo]
+    simp [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo]
   rw [zeroCount, h, Finset.sum_empty]
 
 /-- A certified cell has a non-vanishing readout at each end. -/
@@ -248,7 +248,7 @@ theorem sign_product_iff {Δ : ℝ} (hΔ : 0 < Δ) (a b : ℝ) :
   constructor
   · intro h
     by_contra hc
-    push_neg at hc
+    push Not at hc
     have h1 : (xiRe a * xiRe b) * (‖weldFactor Δ a‖ * ‖weldFactor Δ b‖) < 0 :=
       mul_neg_of_neg_of_pos h (mul_pos pa pb)
     have h2 : 0 ≤ ((1/4 + a^2) * (1/4 + b^2)) * (weldReadout Δ a * weldReadout Δ b) :=
@@ -256,7 +256,7 @@ theorem sign_product_iff {Δ : ℝ} (hΔ : 0 < Δ) (a b : ℝ) :
     rw [key] at h1; linarith
   · intro h
     by_contra hc
-    push_neg at hc
+    push Not at hc
     have h1 : ((1/4 + a^2) * (1/4 + b^2)) * (weldReadout Δ a * weldReadout Δ b) < 0 :=
       mul_neg_of_pos_of_neg (mul_pos qa qb) h
     have h2 : 0 ≤ (xiRe a * xiRe b) * (‖weldFactor Δ a‖ * ‖weldFactor Δ b‖) :=

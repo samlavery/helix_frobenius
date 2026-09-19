@@ -97,7 +97,7 @@ theorem rectangleBoundaryIntegral_logDeriv_factorizedRational
       logDeriv P z = ∑ ρ ∈ S, (D ρ : ℂ) * (z - ρ)⁻¹ := by
     intro z hz
     rw [hP, hprod_fun]
-    rw [logDeriv_prod]
+    rw [logDeriv_fun_prod]
     · apply Finset.sum_congr rfl
       intro ρ hρ
       rw [logDeriv_fun_zpow (f := fun w : ℂ ↦ w - ρ) (by fun_prop)]

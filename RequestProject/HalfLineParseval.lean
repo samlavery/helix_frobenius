@@ -536,7 +536,7 @@ theorem halfLine_cosine_parseval_strong {f : ℝ → ℝ} (hf_meas : Measurable 
       ((FourierTransform.fourier ((memLp_evenExtC hf_meas hf_sq).toLp :
           Lp ℂ 2 (volume : Measure ℝ))) : ℝ → ℂ) =ᵐ[volume]
         FourierTransform.fourier (evenExtC f) :=
-    fourier_Lp_eq_fourierIntegral_ae hg_memLp.1 hg_int hg_memLp
+    fourier_Lp_eq_fourierIntegral_ae hg_memLp.aestronglyMeasurable hg_int hg_memLp
   have hFour : ∀ ξ, FourierTransform.fourier (evenExtC f) ξ =
       ((2 * ∫ t in Ioi (0 : ℝ), f t * Real.cos (2 * Real.pi * ξ * t) : ℝ) : ℂ) :=
     fun ξ => fourier_evenExtC_eq_cosine hf_meas hf_int ξ
@@ -606,7 +606,7 @@ theorem halfLine_cosine_parseval_strong {f : ℝ → ℝ} (hf_meas : Measurable 
     have hmem := Lp.memLp (FourierTransform.fourier
       ((memLp_evenExtC hf_meas hf_sq).toLp :
         Lp ℂ 2 (volume : Measure ℝ)))
-    exact (memLp_two_iff_integrable_sq_norm hmem.1).mp hmem
+    exact (memLp_two_iff_integrable_sq_norm hmem.aestronglyMeasurable).mp hmem
   -- (b) Transfer via hAE to the cosine expression.
   have hCosSq4_int : Integrable
       (fun ξ => 4 * (∫ t in Ioi (0 : ℝ), f t * Real.cos (2 * Real.pi * ξ * t)) ^ 2)
@@ -881,7 +881,7 @@ theorem halfLine_sine_parseval_strong {f : ℝ → ℝ} (hf_meas : Measurable f)
       ((FourierTransform.fourier ((memLp_oddExtC hf_meas hf_sq).toLp :
           Lp ℂ 2 (volume : Measure ℝ))) : ℝ → ℂ) =ᵐ[volume]
         FourierTransform.fourier (oddExtC f) :=
-    fourier_Lp_eq_fourierIntegral_ae hg_memLp.1 hg_int hg_memLp
+    fourier_Lp_eq_fourierIntegral_ae hg_memLp.aestronglyMeasurable hg_int hg_memLp
   have hFour : ∀ ξ, FourierTransform.fourier (oddExtC f) ξ =
       ((-(2 * ∫ t in Ioi (0 : ℝ), f t * Real.sin (2 * Real.pi * ξ * t)) : ℝ) : ℂ) *
         Complex.I :=
@@ -945,7 +945,7 @@ theorem halfLine_sine_parseval_strong {f : ℝ → ℝ} (hf_meas : Measurable f)
     have hmem := Lp.memLp (FourierTransform.fourier
       ((memLp_oddExtC hf_meas hf_sq).toLp :
         Lp ℂ 2 (volume : Measure ℝ)))
-    exact (memLp_two_iff_integrable_sq_norm hmem.1).mp hmem
+    exact (memLp_two_iff_integrable_sq_norm hmem.aestronglyMeasurable).mp hmem
   have hSinSq4_int : Integrable
       (fun ξ => 4 * (∫ t in Ioi (0 : ℝ), f t * Real.sin (2 * Real.pi * ξ * t)) ^ 2)
       (volume : Measure ℝ) :=

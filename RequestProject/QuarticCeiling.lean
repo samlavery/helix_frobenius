@@ -570,7 +570,7 @@ theorem extremalCore_le_of_outer {n : ℕ} (hn : 2 ≤ n) {x : ℝ}
         nlinarith [Real.pi_pos, hn1]
     nlinarith [abs_nonneg x, sq_abs x, hx, hnn]
   rw [extremalCore_eval, extremalCore_eval]
-  refine Finset.prod_le_prod ?_ ?_
+  refine Finset.prod_le_prod₀ ?_ ?_
   · intro i hi
     simp only [Finset.mem_Ico] at hi
     have hlt := interior_node_lt hn hi.1 (by omega)

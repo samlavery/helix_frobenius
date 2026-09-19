@@ -126,7 +126,7 @@ theorem bank_readout_logDeriv_closed {ι : Type*} (t : Finset ι)
       = ∑ i ∈ t, logDeriv (fun w =>
           symClock (α i) (ℓ i)
             (CriticalLinePhasor.HilbertPolya.spectralCoord w)) s := by
-    exact logDeriv_prod
+    exact logDeriv_fun_prod
       (fun i hi => symClock_ne_zero_off_axis (hα i hi) (hℓ i hi) hzne)
       (fun i hi => (symClock_differentiableAt (α i) (ℓ i) _).comp s
         (spectralCoord_hasDerivAt s).differentiableAt)

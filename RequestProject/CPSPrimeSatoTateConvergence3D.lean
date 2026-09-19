@@ -29,13 +29,12 @@ noncomputable def finiteUniformProbability (n : ℕ) : ProbabilityMeasure (Fin (
 /-- The empirical measure of the Satake angles at the first `n + 1` primes. -/
 noncomputable def empiricalPrimeAngleMeasure
     (angle : Nat.Primes → ℝ) (n : ℕ) : ProbabilityMeasure ℝ :=
-  (finiteUniformProbability n).map
-    (measurable_of_finite (fun i : Fin (n + 1) => angle (nthPrime i))).aemeasurable
+  (finiteUniformProbability n).map (fun i : Fin (n + 1) => angle (nthPrime i))
 
 /-- The empirical prime measure lifted to the native three-dimensional helix. -/
 noncomputable def empiricalPrimeCarrierMeasure
     (angle : Nat.Primes → ℝ) (n : ℕ) : ProbabilityMeasure (ℝ × ℝ × ℝ) :=
-  (empiricalPrimeAngleMeasure angle n).map continuous_point.measurable.aemeasurable
+  (empiricalPrimeAngleMeasure angle n).map point
 
 /-- The normalized Sato--Tate angle law as a probability measure. -/
 noncomputable def angleProbability : ProbabilityMeasure ℝ :=
@@ -95,15 +94,14 @@ noncomputable def empiricalPrimeSatoTate_of_testAverages
 
 /-- The native carrier probability law is exactly the pushforward of the angle probability law. -/
 theorem angleProbability_map_point :
-    angleProbability.map continuous_point.measurable.aemeasurable = carrierProbability := by
+    angleProbability.map point = carrierProbability := by
   apply ProbabilityMeasure.toMeasure_injective
   rfl
 
 /-- The global-coordinate pushforward of the native carrier probability law recovers the angle
 probability law. -/
 theorem carrierProbability_map_globalCoordinate :
-    carrierProbability.map continuous_globalCoordinate.measurable.aemeasurable =
-      angleProbability := by
+    carrierProbability.map globalCoordinate = angleProbability := by
   apply ProbabilityMeasure.toMeasure_injective
   exact map_globalCoordinate_carrierMeasure
 
@@ -126,8 +124,7 @@ theorem empiricalPrimeCarrierMeasure_tendsto_of_testAverages
 /-- The global coordinate recovers every empirical angle measure exactly from its 3D lift. -/
 theorem empiricalPrimeCarrierMeasure_map_globalCoordinate
     (angle : Nat.Primes → ℝ) (n : ℕ) :
-    (empiricalPrimeCarrierMeasure angle n).map
-        continuous_globalCoordinate.measurable.aemeasurable =
+    (empiricalPrimeCarrierMeasure angle n).map globalCoordinate =
       empiricalPrimeAngleMeasure angle n := by
   apply ProbabilityMeasure.toMeasure_injective
   rw [empiricalPrimeCarrierMeasure, ProbabilityMeasure.toMeasure_map,

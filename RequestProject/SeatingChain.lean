@@ -41,11 +41,11 @@ private theorem getLast_app2 (l : List ℝ) (a b : ℝ) (h : l ++ [a, b] ≠ [])
 points inside the windows' hull, ending at the last right edge with a nonzero
 readout. -/
 theorem exists_flip_chain_of_windows {δ : ℝ} (hδ : 0 < δ) :
-    ∀ zs : List ℝ, zs.Chain' (fun x y => x + δ < y - δ) →
+    ∀ zs : List ℝ, zs.IsChain (fun x y => x + δ < y - δ) →
     (∀ z ∈ zs, XiLine (z - δ) * XiLine (z + δ) < 0) →
     ∀ hne : zs ≠ [],
     ∃ l : List ℝ, ∃ hl : l ≠ [],
-      l.Chain' FlipStep ∧ zs.length + 1 ≤ l.length ∧
+      l.IsChain FlipStep ∧ zs.length + 1 ≤ l.length ∧
       (∀ x ∈ l, zs.head hne - δ ≤ x ∧ x ≤ zs.getLast hne + δ) ∧
       l.getLast hl = zs.getLast hne + δ ∧
       XiLine (l.getLast hl) ≠ 0 := by
@@ -88,7 +88,7 @@ theorem exists_flip_chain_of_windows {δ : ℝ} (hδ : 0 < δ) :
         exact hQne
     · -- extend the chain of zs
       have happ := List.isChain_append.mp hsep
-      have hsep' : zs.Chain' (fun x y => x + δ < y - δ) := happ.1
+      have hsep' : zs.IsChain (fun x y => x + δ < y - δ) := happ.1
       have hflip' : ∀ w ∈ zs, XiLine (w - δ) * XiLine (w + δ) < 0 :=
         fun w hw => hflip w (List.mem_append_left _ hw)
       obtain ⟨l, hl, hchain, hlen, hrange, hlast, hLne⟩ := ih hsep' hflip' hzs

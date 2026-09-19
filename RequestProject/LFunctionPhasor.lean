@@ -83,7 +83,7 @@ theorem term_eq_phasorTerm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) :
     LSeries.term χ ((σ : ℂ) + (y : ℂ) * I) n = phasorTerm χ σ y n := by
   rcases eq_or_ne n 0 with hn | hn
   · simp [LSeries.term, phasorTerm, hn]
-  · rw [LSeries.term_of_ne_zero hn, phasorTerm, if_neg hn, mellinSpin, div_eq_mul_inv,
+  · rw [LSeries.term_of_ne_zero hn, phasorTerm, ite_eq_right hn, mellinSpin, div_eq_mul_inv,
       ← Complex.cpow_neg]
     have h := CriticalLinePhasor.cpow_vertical_line_phasor (n : ℝ) (by positivity) σ y
     push_cast at h ⊢
@@ -103,7 +103,7 @@ the character bucket sets the amplitude weight, the spin contributes modulus `1`
 theorem phasorTerm_norm (χ : ℕ → ℂ) (σ y : ℝ) (n : ℕ) (hn : 0 < n) :
     ‖phasorTerm χ σ y n‖ = ‖χ n‖ * (n : ℝ) ^ (-σ) := by
   unfold phasorTerm
-  rw [if_neg hn.ne', norm_mul, norm_mul, mellinSpin_norm, mul_one, Complex.norm_real,
+  rw [ite_eq_right hn.ne', norm_mul, norm_mul, mellinSpin_norm, mul_one, Complex.norm_real,
     Real.norm_of_nonneg (by positivity)]
 /-- **Magnitude bound for a bounded (e.g. Dirichlet) character.**  If `‖χ(n)‖ ≤ 1`, the phasor
 magnitude is at most `n^{-σ}`. -/
@@ -175,7 +175,7 @@ theorem lfunction_phasor_form {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ 
   refine ⟨LSeries_phasor_representation (fun n => χ n) σ y, ?_, mellinSpin_norm y, mellinSpin_mul y, ?_,
     fun m n h => bucket_eq_of_mod_eq χ m n h, fun n => phasorTerm_bucket_trichotomy χ hq n⟩
   · intro n hn
-    simp only [phasorTerm, if_neg hn.ne']
+    simp only [phasorTerm, ite_eq_right hn.ne']
   · refine phasorTerm_norm_tendsto_zero (fun n => χ n) σ y hσ (fun n => ?_)
     rcases phasorTerm_bucket_trichotomy χ hq n with h | h | h <;> norm_num [h]
 /-! ## 6. Bucket cancellation: bounded character partial sums (the strip-extension input)
@@ -616,7 +616,7 @@ theorem summableLocallyUniformlyOn_tail {q : ℕ} [NeZero q] (χ : DirichletChar
       · subst hi
         have hs0 : s ≠ 0 := by
           intro h; rw [h] at hsre; simp at hsre
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
         simp only [Nat.cast_zero, zero_add, Complex.zero_cpow (neg_ne_zero.mpr hs0),
           sub_zero, Complex.one_cpow, norm_one, one_mul]
         have hb : ‖∑ j ∈ Finset.range 1, χ (j : ZMod q)‖ ≤ (q : ℝ) :=
@@ -637,7 +637,7 @@ theorem summableLocallyUniformlyOn_tail {q : ℕ} [NeZero q] (χ : DirichletChar
             ≤ (‖s‖ * (i : ℝ) ^ (-(σ₀ + 1))) * (q : ℝ) := by
           apply mul_le_mul hstep1 hGle (norm_nonneg _)
           positivity
-        rw [if_neg hi, add_zero]
+        rw [ite_eq_right hi, add_zero]
         refine le_trans hstep2 ?_
         have hrpownn : 0 ≤ (i : ℝ) ^ (-(σ₀ + 1)) := Real.rpow_nonneg (by positivity) _
         have heq2 : ‖s‖ * (i : ℝ) ^ (-(σ₀ + 1)) * (q : ℝ)
@@ -998,7 +998,7 @@ theorem eta_summableLocallyUniformlyOn_tail :
       · subst hi
         have hs0 : s ≠ 0 := by
           intro h; rw [h] at hsre; simp at hsre
-        rw [if_pos rfl]
+        rw [ite_eq_left rfl]
         simp only [Nat.cast_zero, zero_add, Complex.zero_cpow (neg_ne_zero.mpr hs0),
           sub_zero, Complex.one_cpow, norm_one, one_mul]
         have hb : ‖∑ j ∈ Finset.range 1, (-1 : ℂ) ^ (j + 1)‖ ≤ (1 : ℝ) :=
@@ -1019,7 +1019,7 @@ theorem eta_summableLocallyUniformlyOn_tail :
             ≤ (‖s‖ * (i : ℝ) ^ (-(σ₀ + 1))) * (1 : ℝ) := by
           apply mul_le_mul hstep1 hGle (norm_nonneg _)
           positivity
-        rw [if_neg hi, add_zero]
+        rw [ite_eq_right hi, add_zero]
         refine le_trans hstep2 ?_
         have hrpownn : 0 ≤ (i : ℝ) ^ (-(σ₀ + 1)) := Real.rpow_nonneg (by positivity) _
         have heq2 : ‖s‖ * (i : ℝ) ^ (-(σ₀ + 1)) * (1 : ℝ)
@@ -1056,15 +1056,15 @@ theorem isPreconnected_strip_diff_one :
   have hDc : Convex ℝ D := (convex_halfSpace_re_gt 0).inter (convex_halfSpace_re_lt 1)
   have hEc : Convex ℝ E := convex_halfSpace_re_gt 1
   have hm2I_A : ((2 : ℝ) + I) ∈ A := by
-    simp only [hA, Set.mem_setOf_eq]; constructor <;> simp
-  have hm2I_E : ((2 : ℝ) + I) ∈ E := by simp only [hE, Set.mem_setOf_eq]; simp
-  have hm2nI_E : ((2 : ℝ) - I) ∈ E := by simp only [hE, Set.mem_setOf_eq]; simp
+    simp only [hA, Set.mem_ofPred_eq]; constructor <;> simp
+  have hm2I_E : ((2 : ℝ) + I) ∈ E := by simp only [hE, Set.mem_ofPred_eq]; simp
+  have hm2nI_E : ((2 : ℝ) - I) ∈ E := by simp only [hE, Set.mem_ofPred_eq]; simp
   have hm2nI_B : ((2 : ℝ) - I) ∈ B := by
-    simp only [hB, Set.mem_setOf_eq]; constructor <;> simp
+    simp only [hB, Set.mem_ofPred_eq]; constructor <;> simp
   have hmhI_A : (((1 : ℝ) / 2) + I) ∈ A := by
-    simp only [hA, Set.mem_setOf_eq]; constructor <;> simp
+    simp only [hA, Set.mem_ofPred_eq]; constructor <;> simp
   have hmhI_D : (((1 : ℝ) / 2) + I) ∈ D := by
-    simp only [hD, Set.mem_setOf_eq]; refine ⟨by simp, ?_⟩; simp; norm_num
+    simp only [hD, Set.mem_ofPred_eq]; refine ⟨by simp, ?_⟩; simp; norm_num
   have hAE : IsPreconnected (A ∪ E) :=
     IsPreconnected.union ((2 : ℝ) + I) hm2I_A hm2I_E hAc.isPreconnected hEc.isPreconnected
   have hAEB : IsPreconnected (A ∪ E ∪ B) :=
@@ -1074,7 +1074,7 @@ theorem isPreconnected_strip_diff_one :
       hAEB hDc.isPreconnected
   have hset : A ∪ E ∪ B ∪ D = ({z : ℂ | 0 < z.re} \ {1}) := by
     ext z
-    simp only [hA, hB, hD, hE, Set.mem_union, Set.mem_setOf_eq, Set.mem_sdiff,
+    simp only [hA, hB, hD, hE, Set.mem_union, Set.mem_ofPred_eq, Set.mem_sdiff,
       Set.mem_singleton_iff]
     have hne_of_im : z.im ≠ 0 → z ≠ 1 := fun h hz => h (by rw [hz]; simp)
     have hne_of_re_lt : z.re < 1 → z ≠ 1 := fun h hz => by rw [hz] at h; simp at h

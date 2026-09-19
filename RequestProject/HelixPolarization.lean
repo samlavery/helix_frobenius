@@ -468,7 +468,7 @@ theorem inner_mapDomain_injective {f : ℕ → ℕ} (hf : Function.Injective f) 
       CriticalLinePhasor.UnconditionalFrobenius.inner_def,
       Finsupp.sum_mapDomain_index_inj hf]
   refine Finsupp.sum_congr fun a _ => ?_
-  rw [Finsupp.mapDomain_apply hf]
+  rw [Finsupp.mapDomain_apply_of_injective hf]
 
 /-
 **Weighted adjoint law (non-scalar).**  The site-shift satisfies `⟪U_m x, U_m y⟫ = m·⟪x,y⟫` —

@@ -157,7 +157,7 @@ theorem bankFace_logDeriv_re_le {ι : Type*} (t : Finset ι) (α : ι → ℂ) (
       symClock (α i) (ℓ i) (HilbertPolya.spectralCoord w)) s
       = ∑ i ∈ t, logDeriv (fun w =>
           symClock (α i) (ℓ i) (HilbertPolya.spectralCoord w)) s := by
-    exact logDeriv_prod
+    exact logDeriv_fun_prod
       (fun i hi => symClock_ne_zero_of_face_ge (hα i hi) (hℓ i hi) hs)
       (fun i hi => (symClock_differentiableAt (α i) (ℓ i) _).comp s
         (spectralCoord_hasDerivAt s).differentiableAt)

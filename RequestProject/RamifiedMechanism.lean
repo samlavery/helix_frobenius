@@ -470,7 +470,7 @@ theorem ramifiedGlobalCoeff_norm_le (rank : Nat.Primes → ℕ)
         ≤ ∏ p : ↑m.primeFactors,
           ((((m.factorization p.1 + 1) ^ D : ℕ) : ℝ) *
             (p.1 : ℝ) ^ (B * m.factorization p.1)) := by
-          exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
+          exact Finset.prod_le_prod₀ (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
     _ = (∏ p : ↑m.primeFactors,
           (((m.factorization p.1 + 1) ^ D : ℕ) : ℝ)) *
         (∏ p : ↑m.primeFactors,

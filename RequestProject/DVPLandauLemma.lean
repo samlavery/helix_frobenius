@@ -330,7 +330,7 @@ theorem blaschke_package {c : ℂ} {r : ℝ} (hr : 0 < r) {f : ℂ → ℂ}
       simp only [norm_pow]
     rw [hfc, hGc, mul_comm (‖g c‖)]
     apply mul_le_mul_of_nonneg_right _ (norm_nonneg _)
-    apply Finset.prod_le_prod
+    apply Finset.prod_le_prod₀
     · intro u _
       positivity
     · intro u hu
@@ -706,15 +706,15 @@ theorem landau_decomposition {c : ℂ} {r : ℝ} (hr : 0 < r) {f g G : ℂ → �
   have hstep1 : logDeriv f z
       = logDeriv (fun w => ∏ u ∈ S, (w - u) ^ (n u)) z + logDeriv g z := by
     rw [logDeriv_congr_nhds hfP]
-    exact logDeriv_mul z hPz hgz hP_diff hg_diff
+    exact logDeriv_fun_mul z hPz hgz hP_diff hg_diff
   -- logDeriv G = logDeriv g + Σ logDeriv(Blaschke factors)
   have hstep2 : logDeriv G z = logDeriv g z
       + ∑ u ∈ S, (n u : ℂ) * (-(starRingEnd ℂ) (u - c))
           / (((r:ℂ))^2 - (starRingEnd ℂ) (u - c) * (z - c)) := by
     rw [hGdef]
-    rw [logDeriv_mul z hgz hBz hg_diff hB_diff]
+    rw [logDeriv_fun_mul z hgz hBz hg_diff hB_diff]
     congr 1
-    rw [logDeriv_prod]
+    rw [logDeriv_fun_prod]
     · apply Finset.sum_congr rfl
       intro u hu
       have hfac_ne : ((((r:ℂ))^2 - (starRingEnd ℂ) (u - c) * (z - c)) / (r:ℂ))
@@ -732,7 +732,7 @@ theorem landau_decomposition {c : ℂ} {r : ℝ} (hr : 0 < r) {f g G : ℂ → �
   -- logDeriv P = Σ n/(z−u)
   have hstep3 : logDeriv (fun w => ∏ u ∈ S, (w - u) ^ (n u)) z
       = ∑ u ∈ S, (n u : ℂ) / (z - u) := by
-    rw [logDeriv_prod]
+    rw [logDeriv_fun_prod]
     · apply Finset.sum_congr rfl
       intro u hu
       exact logDeriv_sub_pow (Finset.prod_ne_zero_iff.mp hPz u hu)

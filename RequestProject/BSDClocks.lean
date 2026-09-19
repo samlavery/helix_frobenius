@@ -378,7 +378,7 @@ zeros, `logDeriv((·−c)^r·G) = r/(s−c) + logDeriv G`. -/
 theorem model_logDeriv {G : ℂ → ℂ} {c : ℂ} (r : ℕ) {s : ℂ} (hs : s ≠ c)
     (hG : DifferentiableAt ℂ G s) (hGs : G s ≠ 0) :
     logDeriv (fun z => (z - c) ^ r * G z) s = r / (s - c) + logDeriv G s := by
-  have hmul := logDeriv_mul (f := fun z : ℂ => (z - c) ^ r) (g := G) s
+  have hmul := logDeriv_fun_mul (f := fun z : ℂ => (z - c) ^ r) (g := G) s
     (pow_ne_zero r (sub_ne_zero.mpr hs)) hGs
     (((differentiable_id.sub_const c).pow r).differentiableAt) hG
   rw [hmul, logDeriv_centered_pow r hs]
@@ -415,7 +415,7 @@ theorem census_lane_decomposition {S : Set ℂ} {ι : Type*} (t : Finset ι)
       = ∑ i ∈ t, fun s : S => logDeriv (f i) (s : ℂ) := by
     funext s
     rw [Finset.sum_apply]
-    exact logDeriv_prod (fun i hi => (hf i hi s s.2).1)
+    exact logDeriv_fun_prod (fun i hi => (hf i hi s s.2).1)
       (fun i hi => (hf i hi s s.2).2)
   rw [hfun, map_sum]
 

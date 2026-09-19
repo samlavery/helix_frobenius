@@ -56,7 +56,7 @@ theorem mass_pos_of_metric_image_ne_zero (B : Matrix ι ι ℂ) (hB : B.PosSemid
   by_contra h
   have hr : (star v ⬝ᵥ B.mulVec v).re = 0 := by linarith
   apply hv
-  apply (hB.dotProduct_mulVec_zero_iff v).mp
+  apply (hB.dotProduct_mulVec_zero_iff (x := v)).mp
   exact Complex.ext hr hi
 
 /-- The generalized eigenvalue is real for every state outside the metric kernel. -/

@@ -173,7 +173,7 @@ theorem prime_not_dvd_centralBinom_iff_carryFreeThrough {p n b : ℕ} (hp : p.Pr
     ¬p ∣ (2 * n).choose n ↔ CarryFreeThrough p n b := by
   have hcne : (2 * n).choose n ≠ 0 := (Nat.choose_pos (by omega)).ne'
   have hzero : ((2 * n).choose n).factorization p = 0 ↔ ¬p ∣ (2 * n).choose n := by
-    simp [Nat.factorization_eq_zero_iff, hp, hcne]
+    simp [hp, hcne, hp.ne_one]
   rw [← hzero, centralBinom_factorization_eq_carryLedger_card hp hb]
   simp only [card_eq_zero, carryLedger, filter_eq_empty_iff, CarryFreeThrough, mem_Ico,
     carryAt, not_le, and_imp]

@@ -110,7 +110,7 @@ theorem indexedZeroModeGaussianTheta_rapid
     indexedZeroModeGaussianTheta a H c =O[atTop] (fun x : ℝ => x ^ r) := by
   unfold indexedZeroModeGaussianTheta indexedTheta
   simp only [tsum_fintype]
-  apply IsBigO.sum
+  apply IsBigO.fun_sum
   intro i _
   exact (zeroModeGaussianKernel_mul_rapid hc (hH i) r).const_mul_left (a i)
 

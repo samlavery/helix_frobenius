@@ -20,11 +20,11 @@ noncomputable section
 namespace CriticalLinePhasor.SeatingLedger
 
 theorem exists_uniform_delta (T₁ : ℝ) :
-    ∀ gs : List ℝ, gs.Chain' (· < ·) →
+    ∀ gs : List ℝ, gs.IsChain (· < ·) →
     (∀ g ∈ gs, T₁ < g ∧ g ≠ 0 ∧ linePt g ∈ ZD.NontrivialZeros ∧
       Zeta23.zeroMult (linePt g) = 1) →
     ∃ δstar : ℝ, 0 < δstar ∧ δstar ≤ 1 ∧ ∀ δ : ℝ, 0 < δ → δ < δstar →
-      gs.Chain' (fun x y => x + δ < y - δ) ∧
+      gs.IsChain (fun x y => x + δ < y - δ) ∧
       (∀ g ∈ gs, XiLine (g - δ) * XiLine (g + δ) < 0) ∧
       (∀ g ∈ gs, T₁ ≤ g - δ) := by
   intro gs
@@ -38,7 +38,7 @@ theorem exists_uniform_delta (T₁ : ℝ) :
     intro hchain hmem
     obtain ⟨hT₁g, hgne, hgmem, hgmult⟩ := hmem g List.mem_cons_self
     obtain ⟨εg, hεg, hflipg⟩ := simple_zero_flips hgne hgmem hgmult
-    have hchain' : rest.Chain' (· < ·) := hchain.tail
+    have hchain' : rest.IsChain (· < ·) := hchain.tail
     have hmem' : ∀ x ∈ rest, T₁ < x ∧ x ≠ 0 ∧ linePt x ∈ ZD.NontrivialZeros ∧
         Zeta23.zeroMult (linePt x) = 1 :=
       fun x hx => hmem x (List.mem_cons_of_mem g hx)
@@ -154,7 +154,7 @@ theorem half_flips_per_box :
   have hnodup : gs.Nodup := Finset.sort_nodup _ _
   have hpair : gs.Pairwise (· < ·) :=
     (hsorted.and hnodup).imp (fun h => lt_of_le_of_ne h.1 h.2)
-  have hchainlt : gs.Chain' (· < ·) := List.isChain_iff_pairwise.mpr hpair
+  have hchainlt : gs.IsChain (· < ·) := List.isChain_iff_pairwise.mpr hpair
   -- the census count
   have hcount : gs.length = S.ncard := by
     rw [hgs, Finset.length_sort, hords]
@@ -188,7 +188,7 @@ theorem half_flips_per_box :
     set n : ℕ := l.length - 1 with hn
     have hlen1 : l.length = n + 1 := by omega
     set a : Fin (n+1) → ℝ := fun i => l.get (Fin.cast hlen1.symm i) with ha
-    have hltchain : l.Chain' (· < ·) := hchain.imp (fun _ _ h => h.1)
+    have hltchain : l.IsChain (· < ·) := hchain.imp (fun _ _ h => h.1)
     have hltpair : l.Pairwise (· < ·) := List.isChain_iff_pairwise.mp hltchain
     have hmono : StrictMono a := by
       intro i j hij

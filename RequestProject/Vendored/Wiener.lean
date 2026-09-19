@@ -3035,7 +3035,7 @@ lemma limiting_fourier_variant
 
 
   have haux :
-    (fun σ' ↦
+    (fun σ' : ℝ ↦
         ∑' (n : ℕ),
           term (fun n ↦ (f n : ℂ)) (σ' : ℂ) n *
             𝓕 ψ.toFun (π⁻¹ * 2⁻¹ * Real.log ((n : ℝ) / x))
@@ -3044,7 +3044,7 @@ lemma limiting_fourier_variant
             cexp (-( (u : ℂ) * ((σ' : ℂ) - 1))) *
               𝓕 (W21.ofCS2 ψ).toFun (u / (2 * π)))
       =ᶠ[𝓝[>] (1 : ℝ)]
-    (fun σ' ↦
+    (fun σ' : ℝ ↦
       ∫ (t : ℝ), G ((σ' : ℂ) + (t : ℂ) * I) * ψ.toFun t * (x : ℂ) ^ ((t : ℂ) * I)) := by
     rw [Filter.EventuallyEq]
 

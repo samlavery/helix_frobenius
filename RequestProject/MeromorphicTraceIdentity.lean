@@ -100,7 +100,7 @@ theorem state_resolvent_trace_eq {s : ℂ} (hs : 0 < s.re)
     rw [logDeriv_apply, logDeriv_apply, heq.deriv_eq, heq.eq_of_nhds]
   have hsplit : logDeriv (completedLFunction χ) s
       = logDeriv (gammaFactor χ) s + logDeriv (LFunction χ) s := by
-    rw [hcong, logDeriv_mul s hG hL hGdiff hLdiff]
+    rw [hcong, logDeriv_fun_mul s hG hL hGdiff hLdiff]
   rw [hsplit]; ring
 
 /-! ## Connection to the self-adjoint spectral operator -/

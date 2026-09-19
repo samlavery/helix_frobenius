@@ -85,7 +85,7 @@ theorem zeta_logDeriv_eq_etaLim {s : ℂ} (hs0 : 0 < s.re) (hs1 : s.re < 1)
   have hld : logDeriv etaLim s
       = logDeriv (fun w => ((1:ℂ) - (2:ℂ)^((1:ℂ)-w)) * riemannZeta w) s := by
     rw [logDeriv_apply, logDeriv_apply, hev.deriv_eq, hev.eq_of_nhds]
-  rw [hld, logDeriv_mul s hfne hz hfd hzd]
+  rw [hld, logDeriv_fun_mul s hfne hz hfd hzd]
   ring
 
 end CriticalLinePhasor.CarrierChannelReadout

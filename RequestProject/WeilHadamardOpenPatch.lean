@@ -270,7 +270,7 @@ theorem xi_logDeriv_partial_fraction_on_open_of_logDeriv_xiOverP_const
     have h_ld_ratio :
         logDeriv (fun w => riemannXi w / xiProductMult w) s =
           logDeriv riemannXi s - logDeriv xiProductMult s := by
-      simpa using logDeriv_div (f := riemannXi) (g := xiProductMult) s h_xi_ne h_P_ne
+      simpa using logDeriv_fun_div (f := riemannXi) (g := xiProductMult) s h_xi_ne h_P_ne
         (riemannXi_differentiable s) (xiProductMult_differentiable s)
     -- Step 4: logDeriv ξ at s is literally deriv ξ / ξ at s.
     have h_ld_riemann : logDeriv riemannXi s = deriv riemannXi s / riemannXi s := rfl

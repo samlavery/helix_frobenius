@@ -57,7 +57,7 @@ theorem xiEntire_zeros_finite_of_isCompact {K : Set ℂ} (hK : IsCompact K) :
   intro z _
   rw [Filter.inf_principal_eq_bot]
   filter_upwards [xiEntire_eventually_ne_cx z] with w hw
-  simp only [hS, Set.mem_compl_iff, Set.mem_setOf_eq, not_and]
+  simp only [hS, Set.mem_compl_iff, Set.mem_ofPred_eq, not_and]
   exact fun _ => hw
 
 /-- The closed strip band, in the ordinate variable: `Re z` is the height, `Im z ∈ [-½,½ ]` is the
@@ -176,7 +176,7 @@ theorem offline_strip_multiplicity_even (a b : ℝ) :
   set F := (stripBandOpen_zeros_finite a b).toFinset.filter (fun z => z.im ≠ 0) with hF
   have hmem : ∀ z, z ∈ F ↔ (z ∈ stripBandOpen a b ∧ xiEntire z = 0 ∧ z.im ≠ 0) := by
     intro z
-    simp only [hF, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]
+    simp only [hF, Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]
     tauto
   refine even_sum_of_involution F.card F (starRingEnd ℂ) (analyticOrderNatAt xiEntire) rfl
     ?_ ?_ ?_ ?_
@@ -195,7 +195,7 @@ theorem online_part_eq_image (a b : ℝ) :
     (stripBandOpen_zeros_finite a b).toFinset.filter (fun z => ¬ z.im ≠ 0)
       = (zeros_finite_Ioo a b).toFinset.image (fun t : ℝ => (t : ℂ)) := by
   ext z
-  simp only [Finset.mem_filter, Finset.mem_image, Set.Finite.mem_toFinset, Set.mem_setOf_eq,
+  simp only [Finset.mem_filter, Finset.mem_image, Set.Finite.mem_toFinset, Set.mem_ofPred_eq,
     not_not, stripBandOpen]
   constructor
   · rintro ⟨⟨⟨hre, _⟩, h0⟩, him⟩
@@ -349,7 +349,7 @@ theorem stripCount_eq_zeroCount_iff (a b : ℝ) :
   · intro h z hz h0
     by_contra him
     have hmem : z ∈ (stripBandOpen_zeros_finite a b).toFinset.filter (fun w => w.im ≠ 0) := by
-      simp only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq]
+      simp only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq]
       exact ⟨⟨hz, h0⟩, him⟩
     have hpos : 0 < ∑ w ∈ (stripBandOpen_zeros_finite a b).toFinset.filter
         (fun w => w.im ≠ 0), analyticOrderNatAt xiEntire w := by
@@ -358,7 +358,7 @@ theorem stripCount_eq_zeroCount_iff (a b : ℝ) :
   · intro h
     have : (stripBandOpen_zeros_finite a b).toFinset.filter (fun w => w.im ≠ 0) = ∅ := by
       ext w
-      simp only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_setOf_eq,
+      simp only [Finset.mem_filter, Set.Finite.mem_toFinset, Set.mem_ofPred_eq,
         Finset.notMem_empty, iff_false, not_and, not_not]
       intro hw
       exact h w hw.1 hw.2

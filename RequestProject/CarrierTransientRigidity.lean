@@ -363,7 +363,7 @@ theorem cesaro_avg_tendsto_zero {h : ℝ → ℝ} {M : ℝ} (hcont : Continuous 
     (hnn : ∀ t, 0 ≤ h t) (hM : ∀ t, h t ≤ M)
     (hdec : Tendsto h atTop (𝓝 0)) :
     Tendsto (fun T : ℝ => (∫ t in (0:ℝ)..T, h t) / T) atTop (𝓝 0) := by
-  rw [NormedAddCommGroup.tendsto_nhds_zero]
+  rw [NormedAddGroup.tendsto_nhds_zero]
   intro ε hε
   have hM0 : (0:ℝ) ≤ M := le_trans (hnn 0) (hM 0)
   have hev : ∀ᶠ t in atTop, h t < ε/2 :=

@@ -240,7 +240,7 @@ private theorem logDeriv_xiOverP_eq_xiHadamardD_of_notMem_NontrivialZeros {z : â
   have h_log_ratio :
       logDeriv (fun w => riemannXi w / xiProductMult w) z =
         logDeriv riemannXi z - logDeriv xiProductMult z := by
-    simpa using logDeriv_div (f := riemannXi) (g := xiProductMult) z h_xi_ne h_P_ne
+    simpa using logDeriv_fun_div (f := riemannXi) (g := xiProductMult) z h_xi_ne h_P_ne
       (riemannXi_differentiable z) (xiProductMult_differentiable z)
   calc
     logDeriv xiOverP z = logDeriv (fun w => riemannXi w / xiProductMult w) z := by

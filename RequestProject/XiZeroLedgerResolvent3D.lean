@@ -248,7 +248,8 @@ noncomputable def xiZeroReflectionOperator :
 @[simp] theorem xiZeroReflectionOperator_apply (f : XiZeroIndex →₀ ℂ)
     (ρ : XiZeroIndex) :
     xiZeroReflectionOperator f ρ = f (xiZeroReflection ρ) := by
-  have h := Finsupp.mapDomain_apply xiZeroReflection_injective f (xiZeroReflection ρ)
+  have h := Finsupp.mapDomain_apply_of_injective xiZeroReflection_injective f
+    (xiZeroReflection ρ)
   simpa [xiZeroReflectionOperator] using h
 
 /-- The diagonal zero-ledger operator selected by the already identified resolvent poles.  Its

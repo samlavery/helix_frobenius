@@ -96,7 +96,7 @@ theorem summable_naturalTensorEuler_zeroModeTerm
   intro k
   rw [norm_mul]
   have hH1 : 1 ≤ ∏ v : S, q v ^ k v := by
-    apply Finset.one_le_prod
+    apply Finset.one_le_prod₀
     intro v hv
     exact one_le_pow₀ (le_of_lt (hq v v.property))
   calc

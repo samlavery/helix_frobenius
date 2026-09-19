@@ -149,7 +149,7 @@ theorem finiteBank_logDeriv_im_nonpos {ι : Type*} (t : Finset ι)
     (hα : ∀ i ∈ t, ‖α i‖ = 1) (hℓ : ∀ i ∈ t, 0 < ℓ i)
     {z : ℂ} (hy : 0 < z.im) :
     (logDeriv (fun w => ∏ i ∈ t, symClock (α i) (ℓ i) w) z).im ≤ 0 := by
-  rw [logDeriv_prod
+  rw [logDeriv_fun_prod
     (fun i hi => symClock_ne_zero_off_axis (hα i hi) (hℓ i hi) (ne_of_gt hy))
     (fun i hi => symClock_differentiableAt (α i) (ℓ i) z)]
   rw [Complex.im_sum]
@@ -304,7 +304,7 @@ theorem finiteBank_logDeriv_expansion {ι : Type*} (t : Finset ι)
             ∑' k : ℕ,
               ((starRingEnd ℂ) (α i)
                 * Complex.exp (Complex.I * ℓ i * z))^(k+1)) := by
-  rw [logDeriv_prod
+  rw [logDeriv_fun_prod
     (fun i hi => symClock_ne_zero_off_axis (hα i hi) (hℓ i hi) (ne_of_gt hy))
     (fun i hi => symClock_differentiableAt (α i) (ℓ i) z)]
   apply Finset.sum_congr rfl

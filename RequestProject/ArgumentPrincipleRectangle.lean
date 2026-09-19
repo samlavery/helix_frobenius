@@ -591,7 +591,7 @@ theorem logDeriv_finiteDivisorProduct (S : Finset ℂ) (m : ℂ → ℕ) {z : �
     logDeriv (finiteDivisorProduct S m) z =
       ∑ ρ ∈ S, (m ρ : ℂ) * (z - ρ)⁻¹ := by
   unfold finiteDivisorProduct
-  rw [logDeriv_prod]
+  rw [logDeriv_fun_prod]
   · apply Finset.sum_congr rfl
     intro ρ hρ
     rw [logDeriv_fun_pow (f := fun w : ℂ ↦ w - ρ) (by fun_prop)]

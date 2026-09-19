@@ -101,7 +101,7 @@ theorem logDeriv_Gammaℝ_eq {s : ℂ} (hs0 : 0 < s.re) :
   have hπ0 : (Real.pi : ℂ) ≠ 0 := by exact_mod_cast Real.pi_pos.ne'
   have hAne : (Real.pi : ℂ) ^ (-s / 2) ≠ 0 := cpow_ne_zero_iff.mpr (Or.inl hπ0)
   have hBne : Complex.Gamma (s / 2) ≠ 0 := Gamma_ne_zero_of_re_pos (half_re_pos hs0)
-  rw [hfun, logDeriv_mul (f := fun w : ℂ => (Real.pi : ℂ) ^ (-w / 2))
+  rw [hfun, logDeriv_fun_mul (f := fun w : ℂ => (Real.pi : ℂ) ^ (-w / 2))
       (g := fun w : ℂ => Complex.Gamma (w / 2)) s hAne hBne
       hA.differentiableAt hB.differentiableAt,
     logDeriv_apply, logDeriv_apply, hA.deriv, hB.deriv, logDeriv_apply,
@@ -141,10 +141,10 @@ theorem logDeriv_riemannXi_splice {s : ℂ} (hs0 : 0 < s.re) (hs1 : s ≠ 1)
       = logDeriv (fun w : ℂ => (w * (w - 1) / 2) * (Gammaℝ w * riemannZeta w)) s := by
     rw [logDeriv_apply, logDeriv_apply, hev.deriv_eq, hev.eq_of_nhds]
   rw [hld,
-    logDeriv_mul (f := fun w : ℂ => w * (w - 1) / 2)
+    logDeriv_fun_mul (f := fun w : ℂ => w * (w - 1) / 2)
       (g := fun w : ℂ => Gammaℝ w * riemannZeta w) s hpoly_ne (mul_ne_zero hΓ hz)
       hpoly_d (hΓd.mul hζd),
-    logDeriv_mul (f := Gammaℝ) (g := riemannZeta) s hΓ hz hΓd hζd,
+    logDeriv_fun_mul (f := Gammaℝ) (g := riemannZeta) s hΓ hz hΓd hζd,
     logDeriv_poly_eq hs0' hs1, logDeriv_Gammaℝ_eq hs0]
   ring
 

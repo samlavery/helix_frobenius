@@ -98,7 +98,6 @@ theorem zeta_local_bound {s : ℂ} (hσl : (1:ℝ)/4 ≤ s.re)
           have hexp : (1 - (1:ℝ)/4) = (3:ℝ)/4 := by norm_num
           rw [hexp] at h
           convert h using 2
-          norm_num
       _ ≤ 1 + (4/3) * 22 := by
           nlinarith [rpow_58_34,
             Real.rpow_nonneg (by norm_num : (0:ℝ) ≤ 58) ((3:ℝ)/4)]

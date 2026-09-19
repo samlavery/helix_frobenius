@@ -2258,7 +2258,6 @@ theorem integrable_exp_neg_two_sq_plus_linear (c : ℝ) :
   rw [h_eq] at h_complex
   have h_re := h_complex.re
   convert h_re using 1
-  norm_cast
 
 /-- **`coshGaussMellin c 1` closed form** = `(√(π/2)/2)·exp(c²/8)`. -/
 theorem coshGaussMellin_at_one (c : ℝ) :

@@ -148,7 +148,7 @@ theorem summable_naturalTensorEulerCoeff_mul_height_rpow
       (fun v hv => lt_trans zero_lt_one (hq v hv)) k M]
     rw [norm_prod]
     rw [← Finset.prod_mul_distrib]
-    apply Finset.prod_le_prod
+    apply Finset.prod_le_prod₀
     · intro v hv
       exact mul_nonneg (norm_nonneg _)
         (pow_nonneg (pow_nonneg (inv_nonneg.mpr

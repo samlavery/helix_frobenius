@@ -69,7 +69,7 @@ theorem indexedGaussianTheta_sub_sum_rapid
     funext x
     simp only [indexedTheta, tsum_fintype, mul_sub, mul_one, Finset.sum_sub_distrib]
   rw [hsum]
-  apply IsBigO.sum
+  apply IsBigO.fun_sum
   intro i _
   exact (gaussianLatticeTheta_mul_sub_one_rapid (hH i) r).const_mul_left (a i)
 

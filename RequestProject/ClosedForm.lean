@@ -987,10 +987,10 @@ variable {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q)
 theorem dirichlet_char_norm_eq (n : ℕ) :
     ‖χ (n : ZMod q)‖ = if IsUnit (n : ZMod q) then 1 else 0 := by
   by_cases h : IsUnit (n : ZMod q)
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     obtain ⟨u, hu⟩ := h
     rw [← hu]; exact DirichletCharacter.unit_norm_eq_one χ u
-  · rw [if_neg h, MulChar.map_nonunit χ h, norm_zero]
+  · rw [ite_eq_right h, MulChar.map_nonunit χ h, norm_zero]
 
 omit [NeZero q] in
 /-- **Magnitude case-split, coprimality form.**
@@ -998,10 +998,10 @@ omit [NeZero q] in
 theorem dirichlet_char_norm_coprime (n : ℕ) :
     ‖χ (n : ZMod q)‖ = if Nat.Coprime n q then 1 else 0 := by
   by_cases h : Nat.Coprime n q
-  · rw [if_pos h]
+  · rw [ite_eq_left h]
     obtain ⟨u, hu⟩ := (ZMod.isUnit_iff_coprime n q).mpr h
     rw [← hu]; exact DirichletCharacter.unit_norm_eq_one χ u
-  · rw [if_neg h]
+  · rw [ite_eq_right h]
     have hu : ¬ IsUnit (n : ZMod q) := fun hu => h ((ZMod.isUnit_iff_coprime n q).mp hu)
     rw [MulChar.map_nonunit χ hu, norm_zero]
 
@@ -1032,7 +1032,7 @@ theorem dirichletCarrier_eq_tsum {s : ℂ} (hs : 1 < s.re) :
   rw [LSeries.term_def]
   rcases eq_or_ne n 0 with rfl | hn
   · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
-  · rw [if_neg hn, Complex.cpow_neg, div_eq_mul_inv]
+  · rw [ite_eq_right hn, Complex.cpow_neg, div_eq_mul_inv]
 
 /-- **Log-weight derivative content** in `Re s > 1`:
 `L'(s,χ) = -∑_n (log n) χ(n) n^(-s)`.  Combined with the chain rule
@@ -1051,7 +1051,7 @@ theorem dirichlet_deriv_eq_tsum {s : ℂ} (hs : 1 < s.re) :
   rw [LSeries.term_def]
   rcases eq_or_ne n 0 with rfl | hn
   · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
-  · rw [if_neg hn, LSeries.logMul, Complex.cpow_neg, div_eq_mul_inv, ← Complex.natCast_log,
+  · rw [ite_eq_right hn, LSeries.logMul, Complex.cpow_neg, div_eq_mul_inv, ← Complex.natCast_log,
       mul_assoc]
 
 omit [NeZero q] in
@@ -1071,7 +1071,7 @@ theorem dirichlet_logDeriv_eq_tsum {s : ℂ} (hs : 1 < s.re) :
   rw [LSeries.term_def]
   rcases eq_or_ne n 0 with rfl | hn
   · simp [Complex.zero_cpow (neg_ne_zero.mpr hs0)]
-  · rw [if_neg hn, Complex.cpow_neg, Pi.mul_apply, div_eq_mul_inv, mul_assoc]
+  · rw [ite_eq_right hn, Complex.cpow_neg, Pi.mul_apply, div_eq_mul_inv, mul_assoc]
 
 /-!
 ### The carrier and its zero set (exhaustion of the critical-line `L`-zeros)

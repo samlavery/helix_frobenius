@@ -58,7 +58,7 @@ theorem zeros_finite (a b : ℝ) :
   have hclosed : IsClosed S := by
     have : S = Set.Icc a b ∩ (fun t : ℝ => (xiEntire (t : ℂ)).re) ⁻¹' {0} := by
       ext t
-      simp only [hS, Set.mem_setOf_eq, Set.mem_inter_iff, Set.mem_preimage,
+      simp only [hS, Set.mem_ofPred_eq, Set.mem_inter_iff, Set.mem_preimage,
         Set.mem_singleton_iff, and_congr_right_iff]
       intro _
       exact (xiEntire_re_eq_zero_iff t).symm
@@ -71,7 +71,7 @@ theorem zeros_finite (a b : ℝ) :
   intro t _
   rw [Filter.inf_principal_eq_bot]
   filter_upwards [xiEntire_eventually_ne t] with u hu
-  simp only [hS, Set.mem_compl_iff, Set.mem_setOf_eq, not_and]
+  simp only [hS, Set.mem_compl_iff, Set.mem_ofPred_eq, not_and]
   exact fun _ => hu
 
 /-- **With no event in between, the readout keeps its sign.**  The base case of the induction:
@@ -113,7 +113,7 @@ theorem zeroCount_split {a c b : ℝ} (hac : a ≤ c) (hcb : c ≤ b) (hc : xiEn
   have hfin : (zeros_finite_Ioo a b).toFinset
       = (zeros_finite_Ioo a c).toFinset ∪ (zeros_finite_Ioo c b).toFinset := by
     ext t
-    simp only [Set.Finite.mem_toFinset, Finset.mem_union, Set.mem_setOf_eq, Set.mem_Ioo]
+    simp only [Set.Finite.mem_toFinset, Finset.mem_union, Set.mem_ofPred_eq, Set.mem_Ioo]
     constructor
     · rintro ⟨⟨h1, h2⟩, h3⟩
       rcases lt_trichotomy t c with h | h | h
@@ -126,7 +126,7 @@ theorem zeroCount_split {a c b : ℝ} (hac : a ≤ c) (hcb : c ≤ b) (hc : xiEn
   have hdisj : Disjoint (zeros_finite_Ioo a c).toFinset (zeros_finite_Ioo c b).toFinset := by
     rw [Finset.disjoint_left]
     intro t ht ht'
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo] at ht ht'
+    simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo] at ht ht'
     linarith [ht.1.2, ht'.1.1]
   rw [zeroCount, zeroCount, zeroCount, hfin, Finset.sum_union hdisj]
 
@@ -136,7 +136,7 @@ theorem zeroCount_single {c d t₀ : ℝ} (h1 : c < t₀) (h2 : t₀ < d) (hz : 
     zeroCount c d = analyticOrderNatAt xiEntire (t₀ : ℂ) := by
   have hfin : (zeros_finite_Ioo c d).toFinset = {t₀} := by
     ext t
-    simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Finset.mem_singleton]
+    simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Finset.mem_singleton]
     constructor
     · rintro ⟨hm, h0⟩; exact honly t hm h0
     · rintro rfl; exact ⟨⟨h1, h2⟩, hz⟩
@@ -193,7 +193,7 @@ theorem interval_sign_parity : ∀ n : ℕ, ∀ a b : ℝ, a ≤ b →
         rcases eq_or_lt_of_le ht.2 with rfl | h2
         · exact hb h0
         have : t ∈ (zeros_finite_Ioo a b).toFinset := by
-          simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo]
+          simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo]
           exact ⟨⟨h1, h2⟩, h0⟩
         rw [hempty] at this
         exact absurd this (Finset.notMem_empty t)
@@ -204,7 +204,7 @@ theorem interval_sign_parity : ∀ n : ℕ, ∀ a b : ℝ, a ≤ b →
       have hne : (zeros_finite_Ioo a b).toFinset.Nonempty :=
         Finset.card_pos.mp (by omega)
       obtain ⟨t₀, ht₀⟩ := hne
-      simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo] at ht₀
+      simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo] at ht₀
       obtain ⟨⟨hat, htb⟩, hz⟩ := ht₀
       obtain ⟨ε, hε, Hloc⟩ := sign_flip_of_order (xiEntire_analyticAt (t₀ : ℂ))
         (xiEntire_analyticOrderAt_ne_top _) xiEntire_im_ofReal
@@ -232,22 +232,22 @@ theorem interval_sign_parity : ∀ n : ℕ, ∀ a b : ℝ, a ≤ b →
       have hsub1 : (zeros_finite_Ioo a c).toFinset ⊂ (zeros_finite_Ioo a b).toFinset := by
         rw [Finset.ssubset_iff_of_subset]
         · refine ⟨t₀, ?_, ?_⟩
-          · simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo]
+          · simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo]
             exact ⟨⟨hat, htb⟩, hz⟩
-          · simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo, not_and]
+          · simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo, not_and]
             intro hm _; linarith [hm.2]
         · intro t ht
-          simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo] at ht ⊢
+          simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo] at ht ⊢
           exact ⟨⟨ht.1.1, by linarith [ht.1.2]⟩, ht.2⟩
       have hsub2 : (zeros_finite_Ioo d b).toFinset ⊂ (zeros_finite_Ioo a b).toFinset := by
         rw [Finset.ssubset_iff_of_subset]
         · refine ⟨t₀, ?_, ?_⟩
-          · simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo]
+          · simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo]
             exact ⟨⟨hat, htb⟩, hz⟩
-          · simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo, not_and]
+          · simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo, not_and]
             intro hm _; linarith [hm.1]
         · intro t ht
-          simp only [Set.Finite.mem_toFinset, Set.mem_setOf_eq, Set.mem_Ioo] at ht ⊢
+          simp only [Set.Finite.mem_toFinset, Set.mem_ofPred_eq, Set.mem_Ioo] at ht ⊢
           exact ⟨⟨by linarith [ht.1.1], ht.1.2⟩, ht.2⟩
       have hc1 := Finset.card_lt_card hsub1
       have hc2 := Finset.card_lt_card hsub2

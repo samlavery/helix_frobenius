@@ -189,7 +189,7 @@ theorem twistedSymmetricPowerSatakeCoeff_norm_le
           (m.factorization p.1)‖
         ≤ ∏ p : ↑m.primeFactors,
           (((m.factorization p.1 + 1 : ℕ) : ℝ) ^ d) := by
-            exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
+            exact Finset.prod_le_prod₀ (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
     _ = ((∏ p : ↑m.primeFactors,
           (((m.factorization p.1 + 1 : ℕ) : ℝ))) ^ d) := by
             rw [Finset.prod_pow]

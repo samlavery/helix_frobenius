@@ -193,7 +193,8 @@ lemma mellin_norm_bound (σ : ℝ) (hσ0 : 0 ≤ σ) (hσ1 : σ ≤ 1) :
       rw [ Set.indicator_of_mem ] <;> norm_num [ ht ];
       norm_cast ; norm_num [ Real.rpow_neg ht.1.le ];
       rw [ abs_of_nonneg ] <;> norm_num [ ← Real.sqrt_eq_rpow ];
-      convert HurwitzZeta.evenKernel_zero_ge_rpow ht.1 using 1 <;> [rfl; norm_num [ Real.sqrt_eq_rpow, Real.rpow_neg ht.1.le ]];
+      convert HurwitzZeta.evenKernel_zero_ge_rpow ht.1 using 1 <;>
+        first | rfl | norm_num [ Real.sqrt_eq_rpow, Real.rpow_neg ht.1.le ];
     · refine' MeasureTheory.setIntegral_congr_fun measurableSet_Ioi fun t ht => _;
       unfold WeakFEPair.f_modif; norm_num [ ht.out.le ] ;
       rw [ Set.indicator_of_mem ] <;> norm_num [ ht.out ];

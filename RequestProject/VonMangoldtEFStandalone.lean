@@ -201,7 +201,7 @@ theorem bridge_pillar (s : ℂ) (hs_re : 1 < s.re) :
       hriemannXi_eventually.self_of_nhds
     simp only [logDeriv_apply] at *
     rw [h_deriv_eq, h_val_eq]
-    have := logDeriv_mul s hp_ne hcompleted_ne hp_diff hcompleted_diff
+    have := logDeriv_fun_mul s hp_ne hcompleted_ne hp_diff hcompleted_diff
     simpa [logDeriv_apply] using this
   have hp_log :
       logDeriv p s = 1 / s + 1 / (s - 1) := by
@@ -216,7 +216,7 @@ theorem bridge_pillar (s : ℂ) (hs_re : 1 < s.re) :
       differentiableAt_id.div_const 2
     have h_sub1_diff : DifferentiableAt ℂ (fun z : ℂ => z - 1) s :=
       differentiableAt_id.sub_const 1
-    rw [logDeriv_mul s h_div2_ne h_sub1_ne h_div2_diff h_sub1_diff]
+    rw [logDeriv_fun_mul s h_div2_ne h_sub1_ne h_div2_diff h_sub1_diff]
     have hdiv2 : logDeriv (fun z : ℂ => z / 2) s = 1 / s := by
       rw [logDeriv_apply, deriv_div_const, deriv_id'']; field_simp
     have hsub1 : logDeriv (fun z : ℂ => z - 1) s = 1 / (s - 1) := by
@@ -243,7 +243,7 @@ theorem bridge_pillar (s : ℂ) (hs_re : 1 < s.re) :
       hriemann_eventually.self_of_nhds
     simp only [logDeriv_apply]
     rw [h_deriv_eq, h_val_eq]
-    have := logDeriv_div s hcompleted_ne hΓℝ_ne hcompleted_diff hΓℝ_diff
+    have := logDeriv_fun_div s hcompleted_ne hΓℝ_ne hcompleted_diff hΓℝ_diff
     simpa [logDeriv_apply] using this
   have hζ_unfold : deriv riemannZeta s / riemannZeta s = logDeriv riemannZeta s := by
     rw [logDeriv_apply]

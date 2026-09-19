@@ -50,7 +50,7 @@ theorem norm_radialLocalEulerCoeff_le_multichoose_mul_pow
       rw [norm_prod]
       calc
         ∏ i, ‖w i ^ l i‖ ≤ ∏ i, Q ^ l i := by
-          apply Finset.prod_le_prod
+          apply Finset.prod_le_prod₀
           · intro i _
             exact norm_nonneg _
           · intro i _
@@ -107,7 +107,7 @@ theorem radialGlobalSatakeCoeff_norm_le_of_prime_pow
         ≤ ∏ p : ↑m.primeFactors,
           ((((m.factorization p.1 + 1) ^ d : ℕ) : ℝ) *
             (p.1 : ℝ) ^ (B * m.factorization p.1)) := by
-          exact Finset.prod_le_prod (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
+          exact Finset.prod_le_prod₀ (fun _ _ => norm_nonneg _) (fun p _ => hlocal p)
     _ = (∏ p : ↑m.primeFactors,
           (((m.factorization p.1 + 1) ^ d : ℕ) : ℝ)) *
         (∏ p : ↑m.primeFactors,

@@ -182,7 +182,7 @@ theorem continuous_globalCoordinate : Continuous globalCoordinate := by
 
 noncomputable instance carrierMeasure_isProbability : IsProbabilityMeasure carrierMeasure := by
   unfold carrierMeasure
-  exact Measure.isProbabilityMeasure_map continuous_point.measurable.aemeasurable
+  infer_instance
 
 /-- The global coordinate `S(t)` recovers the entire Sato--Tate angle measure from its native
 three-dimensional carrier measure. -/

@@ -60,7 +60,7 @@ theorem count_eq_one_of_endpoints (R : CountRoutine) {a b : ℝ} {i : ℕ} (hab 
 theorem one_le_order_of_zero {t : ℝ} (h0 : xiEntire (t : ℂ) = 0) :
     1 ≤ analyticOrderNatAt xiEntire (t : ℂ) := by
   by_contra hlt
-  push_neg at hlt
+  push Not at hlt
   interval_cases h : analyticOrderNatAt xiEntire (t : ℂ)
   obtain ⟨g, _, hg0, hev⟩ :=
     ((xiEntire_analyticAt (t : ℂ)).analyticOrderNatAt_eq_iff
@@ -85,7 +85,7 @@ theorem unique_event_of_count_eq_one {a b : ℝ} (hcount : zeroCount a b = 1) :
   have hpos : F.Nonempty := by
     rw [← Finset.card_pos]
     by_contra hc
-    push_neg at hc
+    push Not at hc
     interval_cases h : F.card
     rw [zeroCount, ← hF, Finset.card_eq_zero.mp h, Finset.sum_empty] at hcount
     exact absurd hcount (by norm_num)
@@ -123,7 +123,7 @@ theorem event_mem_of_sign_bracket {a b c d : ℝ} (hcount : zeroCount a b = 1)
   -- a zero exists in `[c,d]`, else the sign would be constant
   by_cases hex : ∀ t ∈ Set.Icc c d, xiEntire (t : ℂ) ≠ 0
   · exact absurd (sign_const_of_no_zeros hcd hex) (by linarith)
-  push_neg at hex
+  push Not at hex
   obtain ⟨t, ht, h0⟩ := hex
   have hcne : xiEntire (c : ℂ) ≠ 0 := fun h => by
     rw [(xiEntire_re_eq_zero_iff c).mpr h] at hsign; simp at hsign

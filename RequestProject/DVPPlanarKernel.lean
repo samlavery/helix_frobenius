@@ -147,7 +147,7 @@ theorem zeta_logDeriv_integrableOn_near (ρ : ℂ) (hρ1 : ρ ≠ 1) :
     have hd1 : DifferentiableAt ℂ (fun z : ℂ => (z - ρ) ^ n) s :=
       ((differentiableAt_id.sub_const ρ).pow n)
     have hd2 : DifferentiableAt ℂ g s := hga.differentiableAt
-    rw [logDeriv_mul s hpow_ne hg0 hd1 hd2]
+    rw [logDeriv_fun_mul s hpow_ne hg0 hd1 hd2]
     have hlin := logDeriv_sub_pow (u := ρ) (z := s) (k := n) hpow_ne
     calc ‖logDeriv (fun z : ℂ => (z - ρ) ^ n) s + logDeriv g s‖
         ≤ ‖logDeriv (fun z : ℂ => (z - ρ) ^ n) s‖ + ‖logDeriv g s‖ :=

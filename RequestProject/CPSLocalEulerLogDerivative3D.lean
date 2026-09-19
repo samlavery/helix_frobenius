@@ -77,7 +77,7 @@ theorem derivative_geometricEulerSeries_mul_linearEulerFactor (z : ℂ) :
   have hprod := geometricEulerSeries_mul_linearEulerFactor z
   have hder := congrArg PowerSeries.derivativeFun hprod
   have hlinear : PowerSeries.derivativeFun (linearEulerFactor z) = -PowerSeries.C z := by
-    show PowerSeries.derivative ℂ (linearEulerFactor z) = -PowerSeries.C z
+    show PowerSeries.derivative (R := ℂ) (linearEulerFactor z) = -PowerSeries.C z
     rw [linearEulerFactor]
     simp [Derivation.leibniz]
   rw [PowerSeries.derivativeFun_mul, hlinear, PowerSeries.derivativeFun_one] at hder
@@ -243,7 +243,7 @@ theorem coeff_X_mul_derivativeFun (F : PowerSeries ℂ) (n : ℕ) :
   | zero => simp [PowerSeries.coeff_zero_X_mul]
   | succ k =>
       rw [show k + 1 = Nat.succ k by omega, coeff_X_mul_succ,
-        show PowerSeries.derivativeFun F = PowerSeries.derivative ℂ F from rfl,
+        show PowerSeries.derivativeFun F = PowerSeries.derivative (R := ℂ) F from rfl,
         PowerSeries.coeff_derivative]
       push_cast
       ring

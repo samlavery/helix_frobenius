@@ -55,7 +55,7 @@ theorem logDeriv_one_add_xiWeierstrassTerm {ρ z : ℂ} (hρ : ρ ≠ 0) (hzρ :
     have h_div : DifferentiableAt ℂ (fun w : ℂ => w / ρ) z :=
       differentiableAt_id.div_const ρ
     exact Complex.differentiable_exp.differentiableAt.comp z h_div
-  have h_mul := logDeriv_mul (f := fun w : ℂ => 1 - w / ρ)
+  have h_mul := logDeriv_fun_mul (f := fun w : ℂ => 1 - w / ρ)
     (g := fun w : ℂ => Complex.exp (w / ρ)) z h_sub (Complex.exp_ne_zero _) h_f_diff h_g_diff
   rw [h_mul]
   -- logDeriv (1 - z/ρ) at z = -1/ρ / (1 - z/ρ).

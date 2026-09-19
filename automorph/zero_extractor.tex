@@ -53,8 +53,24 @@ radius (Cayley) and then the angle ($y=\log z$); the height survives, and the cl
 ordinate is its registration.
 
 In the chart the construction is a one-parameter family of \emph{carrier readouts}:
-real-valued functions $u_\Delta$ on the critical line. We prove, unconditionally and
-with machine-checked proofs, that $u_\Delta$ is a strictly positive multiple of
+real-valued functions $u_\Delta$ on the critical line, the chart of the bank at each
+height. In the chart that readout is Hardy's $Z$ up to a strictly positive factor, and
+the isolation results below are what the chart reads: they are stated and proved as
+properties of the readout, and they coincide with the classical argument, which is the
+form the chart gives them. \S\ref{sec:loadbearing} sets out what lives only in three
+dimensions. One item is not available in the chart at all: in the ordinate variable the distance off the critical
+line is a \emph{radial} coordinate, so a certified contour count over a band
+$\lvert\beta-\tfrac12\rvert\le h$, matched against certified sign changes, certifies
+that no zero in a window has left the line by as much as $h$
+(Theorem~\ref{thm:bandverify}), and an elementary certificate on the sliver near
+$\operatorname{Re}s=1$ removes the band, so that every zero with ordinate in the window
+lies on the line (Corollary~\ref{cor:bandfree}) --- a statement about $\beta$, which the
+readout's sign provably cannot reach. We prove, unconditionally and
+with machine-checked proofs, that the warped fiber on the scaled carrier \emph{is} the
+one-dimensional function --- its ordered chart equals $\Delta^{-s}(1-2^{1-s})\zeta(s)$ on
+the whole channel $\operatorname{Re}s>0$, on the three-dimensional phasors and at every
+carrier scale, and determines $\zeta$ everywhere by the identity theorem
+(Theorem~\ref{thm:fiberisfunction}); that $u_\Delta$ is a strictly positive multiple of
 $\Lambda(\tfrac12+it)$, so its zeros are exactly the on-line zeros of $\zeta$ at every
 carrier scale; that its sign changes by $(-1)^m$ across an event of multiplicity $m$,
 with no simplicity hypothesis; that zeros off the line pair at a common ordinate, so the
@@ -72,7 +88,7 @@ matrix pencil returns those nodes as eigenvalues. The reading is calibrated agai
 off-line zeros the fiber carries in closed form.
 
 The development is formalised in Lean~4/Mathlib --- $100$ theorems in the chart chain,
-with the geometry, its descent and five supporting modules besides; zero \lean{sorry},
+with the geometry, its descent and ten supporting modules besides; zero \lean{sorry},
 zero \lean{axiom}. An implementation is reported and validated at $297$ indices, and
 its own hypotheses are discharged by computation against an explicit Euler--Maclaurin
 remainder. Two propositions earlier carried as open hypotheses are \emph{disproved}
@@ -83,16 +99,20 @@ rather than assumed. \S\ref{sec:notclaimed} states precisely what is not claimed
 $L$-functions, and it computes. Its objects are a \emph{scaled carrier} --- a
 numberline reparametrized by a harmonic constant on its own integer lattice, the
 sites at arclength $x_n=\Delta n$ --- and a \emph{warp}, a reparametrization by a
-function: dynamic, readout-preserving, of unit modulus. The fiber rides the carrier;
+function: dynamic, readout-preserving, of unit modulus. The warp's generator is a
+self-adjoint operator on $\ell^2$ with the phasors as eigenbasis; the fiber is its flow,
+$\zeta$ is its trace, and the critical line is the boundary of the Hilbert space in which
+the fiber lives (\S\ref{sec:hamiltonian}). The fiber rides the carrier;
 the lanes are the conductor's $\pm$ channels; the weld gauge is the fiber's own
 argument, and it absorbs the root number, so the readout is real for every primitive
 character and not only for the self-dual ones. The model is carrier-generic: reality,
 the functional equation and the counts are properties of the involution and the
 readout map, established once for every fiber that rides the carrier, with $\zeta$ the
 case formalised here. From that geometry --- addressed by index, with no Gram point and
-no asymptotic expansion needed to \emph{define} the readout --- one receives a certified
-interval containing the $i$-th zero, and the chain down to
-$\zeta(\tfrac12+i\gamma)=0$ is machine-checked. (The Riemann--Siegel formula does appear
+no asymptotic expansion needed to \emph{define} the readout --- one receives, given a
+count satisfying the interface of \S\ref{sec:extractor}, a certified interval containing
+the $i$-th on-line zero, and the chain down to $\zeta(\tfrac12+i\gamma)=0$ is
+machine-checked; \S\ref{sec:notclaimed}(iv) says exactly how much that certifies. (The Riemann--Siegel formula does appear
 later, but only as an interchangeable \emph{evaluator} of the readout's sign,
 \S\ref{sec:obligations}(O4); nothing in the model or the theorems depends on it.)
 Geometric readings of $\zeta$ have to this point been descriptive; this one is
@@ -119,9 +139,12 @@ certified computation; formalized mathematics; Lean 4; Prony's problem.
 Primary 11M06, 11Y35; Secondary 11M26, 68V20.
 
 \medskip
-\noindent\textbf{Code availability.} The Lean sources, the implementation and every
-numerical check named in this paper are included with it; \S\ref{sec:repro} lists what
-each one runs and the decision rule it was given before it ran.
+\noindent\textbf{Code availability.} The Lean sources (\lean{RequestProject/}), the
+implementation and every numerical check named here live in the project repository, and
+\S\ref{sec:repro} lists what each one runs and the decision rule it was given before it
+ran. They are \emph{not} embedded in this PDF: a reader sent the PDF alone cannot run
+any of it, and no claim here should be taken on the strength of a script the reader
+cannot see.
 \end{abstract}
 
 \tableofcontents
@@ -192,10 +215,17 @@ $x_n=\Delta n$. The \emph{warp} is scaling by a \emph{function} --- dynamic, uni
 modulus, readout-preserving --- acting on the fiber; its radial generator is the
 log-weight operator $H$ multiplying the $n$-th phasor by $\log n$, and on the carrier of
 scale $\Delta$ that generator is $H_\Delta=H+\log\Delta\cdot I$, the shift by a constant
-being the whole of the carrier's effect on it. The carrier scale is a gauge --- the
-events and the readout's sign are invariant across the family $\Delta>0$, which is
-Proposition~\ref{prop:zeros} and not a convention --- while the warp genuinely moves the
-height at which the cancellation completes. There is no inverse warp; the reciprocal of
+being the whole of the carrier's effect on it. That sentence is a theorem and not a
+description: $H$ is an unbounded self-adjoint operator on $\ell^2(\mathbb N,\mathbb C)$
+on its maximal domain, the phasors are a Hilbert basis of its eigenvectors,
+$H_\Delta=H+\log\Delta\cdot I$ holds with equal domains, and the warp $e^{-sH}$ is its
+functional calculus on that basis (\S\ref{sec:hamiltonian}). The carrier scale is a gauge --- the
+events and the readout's sign are invariant across the family $\Delta>0$. That
+invariance is not a theorem with content: $\Delta^{-s}$ cancels between the fiber and the
+gauge, so $u_\Delta/u_{\Delta'}=(\Delta'/\Delta)^{1/2}$, a positive constant independent
+of $t$. It is worth stating precisely because it says the model has \emph{no free
+parameter to tune} --- an honest design property, not a discovery. The warp is different:
+it genuinely moves the height at which the cancellation completes. There is no inverse warp; the reciprocal of
 a warp is again a warp.
 
 \emph{It is a model for the Dirichlet $L$-functions, not for $\zeta$ alone.} A fiber
@@ -206,6 +236,25 @@ carrier --- $\zeta$ being the case whose formalisation is carried out here
 (\S\ref{sec:general} records what changes for a general primitive $\chi$: the root
 number enters as a fixed ray, which the weld gauge absorbs, and nothing else does).
 
+\emph{The chart, and what does not fit in it.} The readout is the chart of the bank at a
+height, and in the chart it is Hardy's $Z$ up to a strictly positive factor
+(Proposition~\ref{prop:isZ}); the isolation chain of
+\S\S\ref{sec:ordinate}--\ref{sec:capstone} is therefore what the chart reads, and it
+coincides with the classical argument, which is not claimed to be otherwise. What lives
+only in three dimensions is set out in \S\ref{sec:loadbearing}: the lane structure
+supplies a series convergent \emph{on} the line, which is what the locator evaluates; the
+same lane structure imposes a linear head, which is a cost and is reported as one; the
+$\mu_6$ cell width is the constant in the refutation of Theorem~\ref{thm:arcobstruction};
+the lane factor supplies a closed-form off-line calibration set for the abscissa reading;
+the focal equivalence (Theorem~\ref{thm:focal}) is a theorem about the model for the
+characters the $Z$-identification does not reach; the site weight is forced by the
+carrier scale being a gauge and is the climber's registration of the site
+(Theorem~\ref{thm:gauge}, \S\ref{sec:fiber}); the distance off the line is a radial
+coordinate of the object, invisible to the chart (\S\ref{sec:bandverify}); and the fiber
+has a self-adjoint generator whose Hilbert space ends at the critical line
+(\S\ref{sec:hamiltonian}). Two of those are negative results about the carrier, which is
+the part we would defend hardest.
+
 \emph{And it computes.} On one side of the existing literature, geometric readings of
 $\zeta$ --- the Dirichlet walk and its helical carrier, spirals of $\zeta$, phasor
 accumulations in the Argand plane --- are descriptive: they supply pictures and
@@ -214,14 +263,21 @@ methods that do take an index and return an ordinate --- Turing's method and its
 modern form, Platt's isolation, Newton refinement in ball arithmetic,
 Odlyzko--Sch\"onhage --- carry no geometric representation, working from the
 Riemann--Siegel formula and its relatives. The model here is in both columns: one
-addresses it by index and receives a certified interval, and every step from the
+addresses it by index and receives a certified interval --- certified relative to the
+count supplied through the interface of \S\ref{sec:extractor}, as
+\S\ref{sec:notclaimed}(iv) spells out --- and every step from the
 representation down to $\zeta(\tfrac12+i\gamma)=0$ is machine-checked
 (\S\ref{sec:formalization}). What is claimed is the model and its operation, not a
 faster algorithm and not a new localization principle; \S\ref{sec:notclaimed} is
 explicit about the difference.
 
 \subsection*{What is proved}
-The chain runs as follows, each link machine-checked. The weld gauge makes the readout
+First, that the object and its chart are the same thing: the lane-balanced chart of the
+warped bank on the scaled carrier equals $\Delta^{-s}(1-2^{1-s})\zeta(s)$ on the whole
+channel $\operatorname{Re}s>0$, on the three-dimensional phasors and at every carrier
+scale, and any entire function agreeing with that chart on the channel is
+$(1-2^{1-s})\zeta(s)$ everywhere (Theorem~\ref{thm:fiberisfunction}). The chain then runs
+as follows, each link machine-checked. The weld gauge makes the readout
 a strictly positive multiple of the completed zeta function on the line
 (Theorem~\ref{thm:weld}), so the readout's zeros are exactly the on-line zeros of
 $\zeta$, at every carrier scale (Proposition~\ref{prop:zeros}). Across an event of
@@ -241,6 +297,16 @@ readout at the ladder ordinates, and non-vanishing of $\Xi'$ between them
 (Remark~\ref{rem:whichderiv} says why the second is stated on $\Xi$ and not on the
 readout). No zero-counting routine, no zero-density estimate, and no bound on $S(t)$
 appears anywhere in the chain.
+
+Off that chain, the operator named in \S\ref{sec:contribution} is proved to be one
+(\S\ref{sec:hamiltonian}): the log-weight operator is self-adjoint on $\ell^2$ with the
+phasors as eigenbasis (Theorem~\ref{thm:logweight}); the warp is its functional calculus
+and, on the line, its unitary group (Theorem~\ref{thm:generator}); $\zeta$ is its trace,
+$-\zeta'/\zeta$ its von Mangoldt trace, and the Euler product its decomposition into
+prime clocks (Theorem~\ref{thm:zetatrace}); and the fiber is its flow --- the bank
+$B(s)=e^{-sH}\mathbb 1$, square-summable exactly to the right of the critical line, of
+which every $L$-series is a chart, and whose entry into the kernel of the lane-balanced
+chart is the chart's zero (Theorem~\ref{thm:bank}).
 
 \subsection*{Relation to existing work}\label{sec:related}
 \emph{Index to certified interval is not new, and we do not claim it.} Turing's method~\cite{Turing1953}
@@ -283,6 +349,18 @@ functions. The jet enclosure below is that construction with the circular region
 supplied by the carrier's own tail bound, and it should be read as a descendant, not as
 a new localization principle. The complementary classical device, power sums of the
 zeros in a region by contour integration, is Delves and Lyness~\cite{DelvesLyness1967}.
+
+\emph{The Hamiltonian reading.} That $\zeta$ is the partition function of a quantum
+statistical system whose Hamiltonian has spectrum $\{\log n\}$ is Bost and
+Connes~\cite{BostConnes1995}; the spectral side of the same frame --- an operator whose
+eigenvalues are the ordinates --- is the Hilbert--P\'olya programme in the forms of Berry
+and Keating~\cite{BerryKeating1999} and Connes~\cite{Connes1999}. In
+\S\ref{sec:hamiltonian} the warp's generator of \S\ref{sec:contribution} is made a
+self-adjoint operator on $\ell^2$; $\zeta$ is its trace, which is the Bost--Connes
+identity for this operator, and the object the trace is taken of is the \emph{bank} ---
+with its unitary orbit on the line, its $\ell^2$-boundary at the line, and every
+$L$-series as one of its charts. No operator with the ordinates as spectrum is
+constructed or claimed.
 
 %======================================================================
 \section{The geometry: the double-ended helix}\label{sec:geometry}
@@ -384,6 +462,52 @@ One geometry can host several carriers at once --- \emph{rails} --- differently
 configured, running alongside one another in the same space without displacing each
 other. Only one rail is used in this paper.
 
+\begin{theorem}[the carrier scale forces the logarithm]\label{thm:gauge}
+Call a weight $w$ on the carrier \emph{gauge} if rescaling the carrier by $\Delta>0$
+shifts the weight of every site by one constant, $w(\Delta x)=w(x)+c(\Delta)$ for all
+$\Delta,x>0$ --- that is, if the carrier scale acts on the fiber by a factor common to
+all sites. Then:
+\begin{enumerate}
+\item[(i)] $\log$ is gauge, with $c(\Delta)=\log\Delta$;
+\item[(ii)] a gauge weight continuous on $(0,\infty)$ is $a\log x+b$ for constants $a,b$;
+\item[(iii)] the weights of the carrier-scaled and the unscaled generator differ by the
+gauge constant, $\log(\Delta x_n)=\log x_n+\log\Delta$, which is
+$H_\Delta=H+\log\Delta\cdot I$ (Theorem~\ref{thm:logweight}(iii)).
+\end{enumerate}
+\end{theorem}
+\leanref{CarrierReadout.log_isGaugeWeight, CarrierReadout.gaugeWeight_eq_log,
+CarrierReadout.logWeight_gauge_shift}
+
+\begin{proof}
+(i) is $\log(\Delta x)=\log x+\log\Delta$. (ii): $\varphi(u)=w(e^{u})-w(1)$ satisfies
+$\varphi(u+v)=\varphi(u)+\varphi(v)$, by the gauge law at $\Delta=e^{u}$, $x=e^{v}$ and
+again at $x=1$; a continuous additive map $\mathbb R\to\mathbb R$ is linear, so
+$\varphi(u)=au$ and $w(x)=a\log x+w(1)$. (iii) is (i) at the sites.
+\end{proof}
+
+\noindent
+So the site weight of the fiber is not chosen. The design fact that the carrier scale is
+a gauge --- Proposition~\ref{prop:zeros}, measured in \S\ref{sec:validation} --- \emph{is}
+the statement that the weight is logarithmic, by (ii); the affine freedom $a\log x+b$ is
+the unit of the ordinate ($a$) and the carrier scale ($b=\log\Delta$).
+
+\begin{proposition}[the geometric head]\label{prop:geohead}
+For $r>0$ and $k\ge0$, $S(k)\ge\pi rk^{2}$; hence at $\Delta=\pi/3$ the carrier index
+satisfies, for $p,r>0$,
+\[
+  N(y)\;\ge\;\frac{3r}{p^{2}}\,e^{2y}:
+\]
+the number of sites the carrier has laid down by the ordinate $y$ grows exponentially in
+$y$, against the linear $2y/\pi$ that the lane saddle of \S\ref{sec:extractor} requires.
+\end{proposition}
+\leanref{CarrierReadout.arclength_ge_pi_r_sq, CarrierReadout.Nindex_ge_exp}
+
+\begin{proof}
+In the closed form of Theorem~\ref{thm:arclength} the root is at least $2\pi rk$ and the
+$\operatorname{arsinh}$ term is non-negative, so $S(k)\ge\tfrac k2\cdot2\pi rk$; then
+$k(y)=e^{y}/p$.
+\end{proof}
+
 That $\Delta$ is a gauge and not a parameter of the answer is the content of
 Proposition~\ref{prop:zeros} below, and it is measured in \S\ref{sec:validation}: the
 extracted ordinates are identical across a factor of $57$ in carrier scale.
@@ -410,10 +534,23 @@ projected series, \S\ref{sec:descent}, and it is not a constraint on the fiber.)
 
 \emph{Phasors spin in the logarithm because the carrier turns.} The site at arclength
 $x_n$ carries the phasor $x_n^{-s}$; at $s=\tfrac12+it$ this has modulus $x_n^{-1/2}$
-and phase $-t\log x_n$. The logarithm is not put in by hand --- it is the registration
-between the turn parameter and the ordinate, the climber of
-Definition~\ref{def:climber} read on a rotating ruler.
-\leanref{cpow_critical_line, eta_term_critical_line, norm_cpow_critical_line}
+and phase $-t\log x_n$. The logarithm is not put in by hand, and \S\ref{sec:carriergeom}
+has already said why once: Theorem~\ref{thm:gauge} forces it. The climber of
+Definition~\ref{def:climber} says it a second time, as a registration. On the axial rail
+--- $r=0$, where the carrier's arclength is its height (Theorem~\ref{thm:arclength}) ---
+the climber reaches arclength $x$ at the ordinate $\log x$; so it reaches the site
+$x_n=\Delta n$ exactly at the ordinate $\log x_n$, which is the site's weight, and at
+$\Delta=\pi/3$ the carrier index at that ordinate is $N(\log x_n)=n$. The phase
+$-t\log x_n$ is therefore the product of two registrations by the same climber: the
+ordinate $t=\log z$ at which the fiber is read, and the ordinate $\log x_n$ at which the
+site was reached. (On a rail of radial rate $r>0$ the same site is reached at the
+ordinate $\log(p\,S^{-1}(x_n))$; the weight $\log x_n$ is the axial reading, and the
+site's \emph{angle} --- its cell --- is read on the turning rail,
+Proposition~\ref{prop:cellangle}.)
+\leanref{CarrierReadout.climber_reaches_arclength,
+CarrierReadout.climber_reaches_site_at_weight, CarrierReadout.Nindex_at_site,
+CarrierReadout.mellinSpin_eq_registrations, cpow_critical_line,
+eta_term_critical_line, norm_cpow_critical_line}
 
 \emph{The warp.} A \emph{warp} is a scaling by a function: dynamic, unit modulus,
 readout-preserving. It is the geometric knob --- it moves the fiber through
@@ -435,6 +572,28 @@ anywhere. The vanishing of the fiber is a \emph{focal cancellation} --- the chan
 point at a common height and cancel there --- and it is an event at a height, not a
 root of a formula.
 
+\begin{proposition}[the cell is the helix's angle]\label{prop:cellangle}
+$\operatorname{cell}(n)=e^{\,i\cdot2\pi\cdot n/6}$: the $\mu_6$ cell of the site $n$ is the
+angle of the helix at turn parameter $k=n/6$ --- six sites per turn --- and the helix at
+that parameter is
+\[
+  \gamma(n/6)\;=\;\Bigl(r\tfrac n6\operatorname{Re}\operatorname{cell}(n),\;
+                       r\tfrac n6\operatorname{Im}\operatorname{cell}(n),\;p\tfrac n6\Bigr).
+\]
+The antipode $n+3$ of Theorem~\ref{thm:antipodal} is half a turn up.
+\end{proposition}
+\leanref{CarrierReadout.cell_eq_helix_angle, CarrierReadout.helix_at_sixth_turn}
+
+\begin{definition}[fiber phasor, its $\pm$ block, and a cancelling partner]\label{def:fiberphasor}
+A \emph{fiber phasor} is a unimodular complex number $w$, $\lvert w\rvert=1$: the state
+of one site of the fiber at a height. Its \emph{$\pm$ block} is the conjugate-pair
+matrix $\operatorname{diag}(w,\bar w)$ --- the phasor read from the two ends of the
+geometry, the end-swap being conjugation (Lemma~\ref{lem:crit}) --- and its two entries
+are the phasor's \emph{eigenheights}; they \emph{phase-align} when $w=\bar w$. A
+\emph{cancelling partner} of $w$ is an $a\in\mathbb C$ with $w+a=0$.
+\end{definition}
+\leanref{DeBranges.conjPairBlock}
+
 \begin{theorem}[the fiber always leaves a residue]\label{thm:residue}
 A unimodular phasor has a unique cancelling partner, and the $\pm$ block of a
 unimodular fiber phasor has determinant $1$; so the two sides cannot both vanish, and
@@ -442,6 +601,21 @@ one cannot simultaneously phase-align two eigenheights and cancel exactly.
 \end{theorem}
 \leanref{Readout.fiber_residue_no_double_cancellation,
 Readout.cancelling_partner_unique, Readout.fiber_pair_block_det_one}
+
+\begin{definition}[the $\pm$ channels and the closure function]\label{def:channels}
+For a real-valued character $\chi$ and an ordinate $t$ let
+$a_n(t)=\tfrac{\pi}{3}\,n^{-1/2}e^{-it\log n}$ be the amplitude carried by the site $n$
+--- the same for both channels, the character entering only through the split --- and
+put
+\[
+  P^{(N)}_\chi(t)=\sum_{\substack{n\le N\\ \chi(n)=+1}}a_n(t),\qquad
+  M^{(N)}_\chi(t)=\sum_{\substack{n\le N\\ \chi(n)=-1}}a_n(t),
+\]
+the \emph{positive} and \emph{negative channels} truncated at $N$. The \emph{closure
+function} at height $Z>0$ is the $L$-value at the corresponding ordinate,
+$\Phi_\chi(Z)=L(\chi,\tfrac12+i\log Z)$.
+\end{definition}
+\leanref{Focal.aTerm, Focal.Pchan, Focal.Mchan, Geometric.Phi}
 
 \begin{theorem}[focal cancellation is the vanishing]\label{thm:focal}
 For a non-principal real-valued $\chi$ and $Z>0$, the positive-minus-negative channel
@@ -458,7 +632,13 @@ ordinate:
 \noindent
 This is the bridge in its native form, and it is an \emph{iff}: the geometric event ---
 the $\pm$ channels closing at a height --- and the analytic event --- the $L$-function
-vanishing --- are the same occurrence seen in two charts.
+vanishing --- are the same occurrence seen in two charts. In the chart,
+Definition~\ref{def:channels} makes $P^{(N)}_\chi-M^{(N)}_\chi$ the partial sum
+$\tfrac{\pi}{3}\sum_{n\le N}\chi(n)n^{-1/2-i\log Z}$ of the $L$-series at
+$\tfrac12+i\log Z$, and the theorem's chart reading is the conditional convergence of that
+series on the line. The object's reading is the one displayed: the conductor sorts the
+sites into two channels, and the fiber vanishes at a height exactly when they close
+there.
 
 \begin{remark}[$\zeta$ is not covered by Theorem~\ref{thm:focal}, and what covers it
 instead]\label{rem:zetabridge}
@@ -490,8 +670,11 @@ For every real $t$ and every $N$,
   \qquad
   \operatorname{imb}(N,t)=\sum_{j=0}^{2}\bigl\lvert S_j(N,t)-S_{j+3}(N,t)\bigr\rvert .
 \]
-Consequently $\operatorname{imb}(N,t)\not\to0$ for \emph{every} real $t$, and the
-balance law holds if and only if $\zeta$ has no zero on the critical line.
+Consequently $\operatorname{imb}(N,t)\not\to0$ for \emph{every} real $t$: the balance law
+fails at every on-line zero, and since $\zeta$ has on-line zeros
+($\gamma_1=14.134\ldots$, certified in \S\ref{sec:bandverify}) the law is false. The
+compiled form of that last step is an equivalence, the law holding if and only if $\zeta$
+has no zero on the critical line at all.
 \end{theorem}
 \leanref{ZetaSectorBank.imbalance_ge_half_mass, ZetaSectorBank.not_sectorBalanceAt,
 ZetaSectorBank.angleSectorBalanceLaw_iff_no_critical_zero,
@@ -615,6 +798,59 @@ sites entering with opposite sign.
 \end{definition}
 \leanref{carrierFiber}
 
+\begin{theorem}[the fiber is the function]\label{thm:fiberisfunction}
+Let $\Delta>0$; write $B_\Delta(s)=(x_n^{-s})_{n\ge1}$ for the bank on the carrier of scale
+$\Delta$, $x_n=\Delta n$, and $\ell$ for the lane-balanced chart, the phasors summed in
+pairs in the order they enter.
+\begin{enumerate}
+\item[(i)] $B_\Delta(s)=e^{-sH_\Delta}\mathbb 1$: the phasor at the site $x_n$ is
+$\exp(-s\,\lambda_n(H_\Delta))$ with $\lambda_n(H_\Delta)=\log x_n$ the eigenvalue of the
+scaled generator (\S\ref{sec:hamiltonian}); and $B_\Delta(s)=\Delta^{-s}B_1(s)$, the
+carrier scale a gauge on the bank.
+\item[(ii)] For $\operatorname{Re}s>0$, $s\ne1$: $\ell(B_\Delta(s))=F_\Delta(s)$. The chart
+of the warped bank on the scaled carrier \emph{is} the fiber ---
+$\Delta^{-s}(1-2^{1-s})\zeta(s)$, the analytic function and not a truncation of it --- on
+the whole channel on which the ordered sum converges.
+\item[(iii)] In the strip, $\zeta(s)=0$ if and only if $B_\Delta(s)\in\ker\ell$, at every
+carrier scale.
+\item[(iv)] The same identity holds on the three-dimensional phasors: with $\chi_2$ the
+conductor-$2$ lane character, the planar projections of the $3$-D phasors
+$\bigl(\chi_2(n)\,n^{-\sigma}e^{-iy\log n},\;(1-\lvert\chi_2(n)\rvert)\,n^{-\sigma}\bigr)$,
+summed in pairs in the order they enter and scaled by $\Delta^{-s}$, equal
+$F_\Delta(\sigma+iy)$ for $\sigma>0$, $\sigma+iy\ne1$. (The mass-axis coordinate vanishes:
+for $\zeta$ the neutral channel is empty.)
+\item[(v)] The one-dimensional function has no content beyond the chart: any entire
+function that agrees with $\ell(B_1(s))$ on the channel equals $(1-2^{1-s})\zeta(s)$ at
+every $s\ne1$.
+\end{enumerate}
+\end{theorem}
+\leanref{CarrierReadout.fiber_eq_function, CarrierReadout.fiber3D_eq_function,
+CarrierReadout.function_determined_by_fiber, CarrierReadout.plane_phasor3D_eq,
+CarrierReadout.laneChart3D_eq, CarrierReadout.bank_eq_rpow_mul_spin, DVP.etaLim_eq_zeta}
+
+\begin{proof}[Proof sketch]
+(i): $x_n^{-s}=e^{-s\log x_n}$, and $(\Delta n)^{-s}=\Delta^{-s}n^{-s}$
+(\lean{CarrierReadout.bank}$\Delta$\lean{_eq_exp},
+\lean{CarrierReadout.bank}$\Delta$\lean{_eq_scale}). (ii): pairing consecutive phasors
+gives the ordered sum $\sum_k\bigl((2k+1)^{-s}-(2k+2)^{-s}\bigr)$, which converges for
+$\operatorname{Re}s>0$ and equals $(1-2^{1-s})\zeta(s)$ there --- the continuation of the
+lane-balanced series across the abscissa of the unbalanced one, proved in the sources from
+$\operatorname{Re}s>1$ by the identity theorem (\lean{DVP.etaLim_eq_zeta}); then the gauge
+of (i) (\lean{CarrierReadout.laneChart_bank}$\Delta$). (iii): the lane factor does not
+vanish in the strip (\lean{CarrierReadout.zeta_zero_iff_bank}$\Delta$\lean{_mem_ker}).
+(iv): the planar projection of the $3$-D phasor at site $n$ is
+$\chi_2(n)\,n^{-\sigma}e^{-iy\log n}=\chi_2(n)\,n^{-s}$. (v): both sides are analytic on
+$\mathbb C\setminus\{1\}$, which is connected, and agree on the open channel.
+\end{proof}
+
+\noindent
+Before this theorem the closed form of Definition~\ref{def:fiber} was, in the sources, the
+\emph{definition} of \lean{carrierFiber}; the description ``the sum over the sites of the
+phasors, the odd and even sites entering with opposite sign'' is now what is proved, on
+the three-dimensional phasors and at every carrier scale. The boundary is stated exactly:
+the ordered sum converges on $\operatorname{Re}s>0$ and nowhere to the left of it, and
+there the function is determined by the chart, which is (v).
+
 \noindent
 The lane-balanced sum converges for $\operatorname{Re}s>0$ --- that is the whole point
 of taking the lanes with opposite sign, and it is why the construction can be written
@@ -695,6 +931,42 @@ exhaust the zeros of $\zeta$ in a band is the question \S\ref{sec:pairing} keeps
 and \S\ref{sec:notclaimed}(iv) restates.
 \end{definition}
 
+\begin{proposition}[the readout is Hardy's $Z$ in the carrier's gauge]\label{prop:isZ}
+For every $\Delta>0$ and every real $t$,
+\[
+  u_\Delta(t)\;=\;\lvert w_\Delta(t)\rvert\,\bigl\lvert\GR(\tfrac12+it)\bigr\rvert\;Z(t),
+  \qquad Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it),
+\]
+and both factors in front are strictly positive. Consequently $u_\Delta$ and $Z$ have the
+same zeros, the same orders and the same sign at every $t$.
+\end{proposition}
+
+\begin{proof}
+$\Lambda(\tfrac12+it)=\GR(\tfrac12+it)\zeta(\tfrac12+it)$ and
+$\vartheta=\arg\GR(\tfrac12+it)$ (Remark~\ref{rem:theta}), so
+$\Lambda(\tfrac12+it)=\lvert\GR(\tfrac12+it)\rvert\,e^{i\vartheta(t)}\zeta(\tfrac12+it)
+=\lvert\GR(\tfrac12+it)\rvert\,Z(t)$. Multiply by $\lvert w_\Delta(t)\rvert$ and apply
+Definition~\ref{def:readout}. Positivity of the two factors is
+Theorem~\ref{thm:weld}.
+\end{proof}
+
+\begin{remark}[what this costs and what it buys]\label{rem:isZ}
+It should be said plainly, because it governs how the rest of the paper is to be read.
+\emph{The carrier readout is Hardy's $Z$, up to a strictly positive factor.} It follows
+that \S\S\ref{sec:ordinate}--\ref{sec:capstone} --- reality on the line, the sign change
+across an odd-order zero, uniqueness and simplicity by Rolle and the intermediate value
+theorem --- are the classical $Z$/$\Xi$ isolation argument. We do not claim them as new
+mathematics, and a reader who already knows that argument will recognise every step.
+
+What the identification buys is the other direction, and it is used twice. First, the
+certification is \emph{evaluator-agnostic}: every theorem here consumes $u_\Delta$ only
+through its sign, so the sign may be taken from any evaluator of $Z$ --- which is what
+closes (O4), and it is why a two-ended head can be substituted for the lane bank without
+touching a proof. Second, it is what makes the geometry's contribution locatable rather
+than decorative: since the isolation argument is classical, the question ``what does the
+carrier actually do here?'' has a definite answer, and \S\ref{sec:loadbearing} gives it.
+\end{remark}
+
 \begin{proposition}[events]\label{prop:zeros}
 $u_\Delta(t)=0 \iff \zeta(\tfrac12+it)=0$, for every $\Delta>0$; and the sign of
 $u_\Delta$ does not depend on $\Delta$.
@@ -731,7 +1003,19 @@ $\Lambda(s)=\Lambda_0(s)-\frac1s-\frac1{1-s}$.
              \Lambda_0\bigl(\tfrac12+iz\bigr)\;-\;1 .
 \]
 \end{definition}
+
 \leanref{xiEntire, xiEntire_differentiable}
+
+\begin{remark}[normalisation]\label{rem:normalisation}
+This $\Xi$ is not Riemann's. With $\xi(s)=\tfrac12 s(s-1)\Lambda(s)$ one has
+$s(1-s)\Lambda(s)=-2\xi(s)$, so
+\[
+  \Xi(z)\;=\;-2\,\xi(\tfrac12+iz),
+\]
+an overall factor of $-2$ against the classical normalisation. Nothing below depends on
+the constant --- every statement is about zeros, orders and sign \emph{changes} --- but
+a reader comparing formulas against Riemann's or Titchmarsh's should carry it.
+\end{remark}
 
 \noindent
 Entirety is manifest: $\Lambda_0$ is entire and the remaining factors are polynomials.
@@ -831,8 +1115,9 @@ $\operatorname{Re}s=\tfrac12$.
 \end{proof}
 
 \begin{theorem}[off-line pairing]\label{thm:pairing}
-An event off the critical line has a distinct partner at the same ordinate with the
-same multiplicity.
+A zero of $\Xi$ off the real axis --- a zero of $\zeta$ off the critical line, which is
+not an event in the sense of Definition~\ref{def:event} --- has a distinct partner at the
+same ordinate with the same multiplicity.
 \end{theorem}
 \leanref{xiEntire_conj, xiEntire_order_conj, offAxis_pairs, offCriticalLine_partner}
 
@@ -857,7 +1142,7 @@ offline_strip_multiplicity_even, full_count_parity_eq_weld_parity}
 \begin{proof}[Proof sketch]
 The band is a compact rectangle in the ordinate variable and $\Xi$ is entire and not
 identically zero, so it holds finitely many events. Off the axis, conjugation is a
-fixed-point-free involution preserving the order, so the off-line events split into
+fixed-point-free involution preserving the order, so the off-line zeros split into
 two-element orbits, each contributing $2m$ to the total --- an even number, whatever
 $m$ is. The total multiplicity is therefore congruent mod $2$ to the on-line total,
 and the on-line half is Theorem~\ref{thm:count}.
@@ -1103,10 +1388,9 @@ the certified index is the index \emph{of the count that was given}.
 
 \begin{theorem}[the product theorem]\label{thm:product}
 Let $R$ be a counting routine with $R(a)+1=i$ and $R(b)=i$, let $\Xi(a),\Xi(b)\ne0$
-and $a\le b$, and suppose that for every zero $\gamma$ of $\Xi$ in $(a,b)$ the data
-$y_0,P,Q,m,\alpha,\beta,\varepsilon$ satisfy the hypotheses of
-Theorem~\ref{thm:ratio} with $d=y_0-\gamma$. Then there is exactly one such $\gamma$,
-and
+and $a\le b$. Then $\Xi$ has exactly one zero $\gamma$ in $(a,b)$; and if, for that
+$\gamma$, the data $y_0,P,Q,m,\alpha,\beta,\varepsilon$ satisfy the hypotheses of
+Theorem~\ref{thm:ratio} with $d=y_0-\gamma$, then
 \[
   \gamma\;\in\;\bigl[\,y_0-\operatorname{Re}(P/Q)-\varepsilon,\;\;
                       y_0-\operatorname{Re}(P/Q)+\varepsilon\,\bigr].
@@ -1276,7 +1560,8 @@ The extractor takes an index $i$ and returns an interval.
   $\bigl(x_n^{-s}\bigr)_n$ over the head, $\ell$ for the lane-balanced summation
   functional that forms the fiber from it (the alternating sum of
   Definition~\ref{def:fiber}), and $H$ for the log-weight operator of
-  \S\ref{sec:contribution}, so that $\ell(v)=F_\Delta(s)$ truncated to the head. One
+  \S\ref{sec:contribution} (Theorem~\ref{thm:logweight}), so that $\ell(v)=F_\Delta(s)$
+  truncated to the head. One
   pass over the head evaluates the bank and, simultaneously, the log-weighted moments
   $M_r=\ell(H^r v)$, since the weights $\log x_n$ are already formed. A Bell (cumulant) recursion converts the moments into
   the log-jets $A_m=\sum_j(y_0-\gamma_j)^{-m}$, and the ratio $A_m/A_{m+1}$ locates the
@@ -1358,21 +1643,33 @@ more than that, and this section extracts it. The claim is that the abscissa of 
 \emph{only on the line}, as the imaginary part of an eigenvalue.
 
 \subsection{The jets are a power sum over the fiber's zeros}
-Write $G(y)=F_\Delta(\tfrac12+iy)$ for the fiber read in the ordinate variable. Near a
-real base point $y_0$,
-\[
-  \frac{d}{dy}\log G(y)\;=\;\sum_j\frac{1}{y-y_j},
-\]
-the sum over the zeros $y_j$ of $G$, so differentiating $m-1$ further times and
-normalising gives
+Write $G(y)=F_\Delta(\tfrac12+iy)$ for the fiber read in the ordinate variable: a
+meromorphic function of $y$ whose zeros are those of $\zeta$ (non-trivial and trivial)
+and of the lane factor, and whose one pole --- $\zeta$'s pole at $s=1$ --- sits at
+$y=-\tfrac{i}{2}$. Near a real base point $y_0$, for $m\ge2$,
 \begin{equation}\label{eq:powersum}
   A_m\;=\;\frac{(-1)^{m-1}}{(m-1)!}\,\bigl(\log G\bigr)^{(m)}(y_0)
   \;=\;\sum_j \mu_j\,d_j^{\,m},
   \qquad d_j=\frac{1}{y_0-y_j},
 \end{equation}
-with $\mu_j$ the multiplicity of $y_j$. The jets are therefore an exact
+the sum over the zeros \emph{and the pole} of $G$, with $\mu_j$ the multiplicity of a
+zero and $\mu=-1$ at the pole. The series converges absolutely for $m\ge2$: the
+non-trivial zeros number $O(\log T)$ per unit ordinate, so
+$\sum_j\lvert y_0-y_j\rvert^{-m}<\infty$, and the trivial zeros, the lane nodes and the
+pole sit at distance $\gtrsim y_0$ from a base point on the line. This is the $m$-th
+logarithmic derivative of a Hadamard
+product of genus one: for $m\ge2$ the exponential factor and the convergence factors
+differentiate away and what remains is exactly the power sum. At order one it is
+\emph{not} exact --- an earlier version of this section said it was, and that was an
+erratum: $(\log G)'(y_0)$ carries, besides a symmetrically summed
+$\sum_j\mu_j/(y_0-y_j)$, the constant $-i\log\Delta$ from the carrier scale and the
+constants of the Hadamard factor and of $\Gamma_{\mathbb R}$. That the carrier scale
+shows itself in the jets \emph{only} at order one, and there as the shift $\log\Delta$,
+is Theorem~\ref{thm:logweight}(iii) read on the jets. For $m\ge2$ the jets are an exact
 \emph{power sum} in the reciprocal distances, and \eqref{eq:powersum} is what makes the
-rest of this section possible: a power sum determines its nodes.
+rest of this section possible: a power sum determines its nodes. The extractor uses
+$m\ge2$ only (its default order is $9$), and from a base point on the line the pole and
+the trivial zeros are nodes at distance $\gtrsim y_0$, contributing $O(y_0^{-m})$.
 
 The $A_m$ cost one pass. The bank evaluates $M_r=\ell(H^rv)$ for $r=0,\dots,2K+1$
 simultaneously (Stage~3), and a Bell recursion converts $M_r\mapsto A_m$; no additional
@@ -1493,6 +1790,212 @@ both abscissae $\beta=\tfrac12$ to $3\times10^{-12}$. So the pair is resolved as
 distinct events and both are certified on-line by the instrument, at a separation forty
 times finer than would trouble it.
 
+\subsection{The singular values, certified}\label{sec:certrank}
+The rank reading above was a measurement. It need not be, and making it a certificate is
+worth doing because the rank is the one part of this instrument that carries a
+\emph{count}, and counts are what the rest of the paper certifies.
+
+The chain is entirely within the machinery of \S\ref{sec:obligations}, with one new
+element. Certified values of $\Xi$ give certified \emph{Taylor coefficients} at an anchor
+$c$ by the trapezoid rule on a circle $\lvert z-c\rvert=R$: the $n$-point rule returns the
+aliased coefficient $\sum_{i\ge0}a_{k+in}R^{k+in}$, and bounding $\lvert\Xi\rvert\le M'$ on
+a larger disc of radius $R'>R$ gives $\lvert a_j\rvert\le M'/R'^{\,j}$ by Cauchy, hence
+\[
+  \Bigl\lvert a_kR^k-\widehat a_k\Bigr\rvert
+  \;\le\;\frac{M'\,(R/R')^{k+n}}{1-(R/R')^{n}} ,
+\]
+an explicit geometric bound. The point of routing through $\Xi$ rather than $\Xi'/\Xi$ is
+that $\Xi$ is \emph{entire}: no lower bound on $\lvert\Xi\rvert$ is needed anywhere, and
+the region bound (O5) supplies $M'$. Complex interval arithmetic then carries the
+coefficients through $f_k=\Xi^{(k)}/\Xi$ and the cumulant recursion to certified jets
+$A_m$; Weyl's inequality,
+$\lvert\sigma_i(H)-\sigma_i(H_{\text{true}})\rvert\le\lVert E\rVert_2\le\lVert E\rVert_F$,
+turns those into certified singular values.
+
+Measured (\lean{extractor/checks/certified_rank.py}), at three anchors with $K=3$: the
+error norm $\lVert E\rVert_F$ came out between $3.7\times10^{-29}$ and
+$5.3\times10^{-27}$, every singular value is enclosed to that width, and \emph{every
+consecutive pair of enclosures separates} --- so the ordering of the spectrum is proved,
+not observed. For the anchor $c=17{.}5$: $\sigma_1=6.773\times10^{-1}$,
+$\sigma_2=8.088\times10^{-2}$, $\sigma_3=1.970\times10^{-3}$,
+$\sigma_4=1.992\times10^{-5}$, each with radius $2.6\times10^{-28}$.
+
+\subsection{Propose and verify: the node locations, certified}\label{sec:proposeverify}
+Theorem~\ref{thm:rankcert} certifies the rank for the contour-restricted moments. It says
+nothing about \emph{where} the nodes are, and that is what the pencil supplies: the node
+locations, abscissa included. Those need not be trusted either --- they can be
+\emph{verified}:
+
+\begin{enumerate}
+\item[(1)] the contour certifies the count $K$ in the band, with no pencil involved;
+\item[(2)] the pencil, run on certified jets, \emph{proposes} $K$ nodes with abscissae;
+\item[(3)] the certified machinery of \S\ref{sec:obligations}(O1) verifies each proposal
+--- a certified sign change with $\Xi'\ne0$ on a small interval about it;
+\item[(4)] if the number verified equals $K$, every node is accounted for.
+\end{enumerate}
+
+\noindent
+The tail never enters: step (1) counts and step (3) locates, and neither consults the
+pencil's own error. The script \lean{checks/pencil_verify.py} measures this at the
+anchors the extractor actually uses, with $K=2$ and a $\pm10^{-4}$ verification window:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrrl@{}}
+\toprule
+$i$ & proposed node & $\operatorname{Im}y$ & node error & verified\\
+\midrule
+$1$ & $14.1347251374$ & $2.8\times10^{-36}$ & $4.3\times10^{-9}$ & yes\\
+$10$ & $49.7738359156$ & $-2.1\times10^{-29}$ & $3.4\times10^{-6}$ & yes\\
+$100$ & $236.524229631$ & $4.1\times10^{-26}$ & $3.4\times10^{-8}$ & yes\\
+$1000$ & $1419.42248108$ & $-6.5\times10^{-24}$ & $1.3\times10^{-7}$ & yes\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+All four verify, and $\operatorname{Im}y$ --- the abscissa offset --- comes back at
+$10^{-24}$ or smaller in every case.
+
+\begin{remark}[the conditioning is not incidental]
+A first attempt ran this at $c=17{.}5$, midway between $\gamma_1$ and $\gamma_2$, and
+\emph{all} proposals failed verification: the pencil returned $14.068$, $20.872$,
+$27.666$ against true ordinates $14.135$, $21.022$, $25.011$. That is the
+$\kappa\approx0.88$ case of \S\ref{sec:jets} --- no nearest node dominates --- and the
+failure is the conditioning law doing exactly what it says. The extractor never uses such
+an anchor: Stage~2 bisects first, which is what makes Stage~4 well conditioned. The
+propose-and-verify pipeline inherits that dependence, and a verification window must be
+scaled to the conditioning, not fixed.
+\end{remark}
+
+\subsection{The rank, certified}\label{sec:rankcertified}
+An earlier version of this section left the \emph{rank} uncertified. The obstruction was
+that $A_m=\sum_j d_j^{\,m}$ runs over \emph{all} zeros, so the exact Hankel matrix is not
+of finite rank and ``rank $K$'' is only a statement about a threshold; certifying it
+looked to require an explicit Riemann--von Mangoldt constant to bound the tail
+$\sum_{\lvert c-\gamma_j\rvert>D}d_j^{\,m}$.
+
+No such constant is needed. The tail is an artifact of summing over all zeros, and
+restricting to a contour removes it by construction.
+
+\begin{theorem}[the rank]\label{thm:rankcert}
+Let $C$ be a contour carrying no zero of $\Xi$, enclosing exactly $K$ zeros of $\Xi$, all
+simple and at distinct points. Put
+\[
+  s_m\;=\;\frac{1}{2\pi i}\oint_C z^{m}\,\frac{\Xi'(z)}{\Xi(z)}\,dz ,
+  \qquad m=0,1,2,\dots
+\]
+Then $s_m=\sum_{j=1}^{K}\gamma_j^{\,m}$, and the Hankel matrix
+$H=(s_{i+j})_{0\le i,j\le K}$ has rank exactly $K$.
+\end{theorem}
+
+\begin{proof}
+$z^m$ is entire, so by the residue theorem the only contributions are the zeros inside
+$C$; each being simple, $s_m=\sum_j\gamma_j^{\,m}$. Let $V$ be the $(K+1)\times K$ matrix
+$V_{i,k}=\gamma_k^{\,i}$. Then $s_{i+j}=\sum_k\gamma_k^{\,i}\gamma_k^{\,j}$, that is
+$H=VV^{\mathsf T}$. $V$ is a Vandermonde in $K$ \emph{distinct} nodes with $K+1$ rows,
+hence of full column rank $K$. Over $\mathbb C$ that is not yet enough on its own ---
+$VV^{\mathsf T}$ is not $VV^{*}$, and $AA^{\mathsf T}$ can have smaller rank than $A$
+--- but $V^{\mathsf T}$ has full row rank $K$, so it maps $\mathbb C^{K+1}$ \emph{onto}
+$\mathbb C^{K}$, on which $V$ is injective; hence
+$\operatorname{rank}H=\operatorname{rank}(VV^{\mathsf T})=K$.
+\end{proof}
+
+\noindent
+Each hypothesis is discharged by machinery already built: no zero on $C$ by a certified
+positive lower bound for $\lvert\Xi\rvert$ there --- sample, then fill the gaps with
+$\lvert\Xi(z)\rvert\ge\lvert\Xi(z_k)\rvert-\tfrac{L}{2}M/\rho$, the same device as the
+sound winding criterion; exactly $K$ zeros inside by the certified argument principle;
+simple and distinct by \S\ref{sec:bandverify}.
+
+Measured (\lean{extractor/checks/rank_certified.py}):
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrlll@{}}
+\toprule
+centre & $R$ & $K$ & $s_0$ & $s_1$ & Hankel rank\\
+\midrule
+$14.1347$ & $0.30$ & $1$ & $1.0$ & $14.1347251417$ & $1$\\
+$17.6$ & $3.60$ & $2$ & $2.0$ & $35.1567647805$ & $2$\\
+$19.5$ & $6.00$ & $3$ & $3.0$ & $60.1676223607$ & $3$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+$s_0$ returns the count as an integer, $s_1$ matches the sum of the reference ordinates to
+twelve digits, and the trailing singular value falls to between $10^{-18}$ and $10^{-20}$
+--- the arithmetic floor --- in every case. On the first contour, which passes within
+$0.3$ of $\gamma_1$, the lower bound for $\lvert\Xi\rvert$ needed $n=8192$ samples to come
+out positive ($3.6\times10^{-4}$); a contour near a zero costs sampling, which is the only
+price this route pays.
+
+\begin{remark}[what changed, and what did not]
+The full-jet Hankel is still not of finite rank, and its numerical rank is still a
+threshold statement --- that was never wrong. What was wrong was the inference that
+certifying \emph{a} rank therefore required a zero-density input. The rank question is
+well posed for the contour-restricted moments and ill posed for the unrestricted ones, and
+posing it correctly removes the need for the constant rather than supplying it.
+\end{remark}
+
+\subsection{The inertia: what the sign of the Hankel spectrum counts}\label{sec:inertia}
+Theorem~\ref{thm:rankcert} restricts the moments to a contour, $s_m=\sum_j y_j^m$ over the
+$K$ nodes enclosed, and reads the rank. The same matrix carries a second integer.
+
+\begin{lemma}[inertia]\label{lem:inertia}
+Let the enclosed nodes consist of $r$ real ones $y_1,\dots,y_r$ and $q$ conjugate pairs
+$z_j,\bar z_j$, all distinct, and let $H_n=(s_{i+j})_{0\le i,j<n}$ with $n\ge r+2q$. Then
+the inertia of $H_n$ is $(r+q,\;q,\;n-r-2q)$: the number of negative eigenvalues is
+exactly the number of off-line pairs enclosed, and $H_n\succeq0$ if and only if $q=0$.
+\end{lemma}
+
+\begin{proof}
+With $v(y)=(1,y,\dots,y^{n-1})^{\mathsf T}$,
+$H_n=\sum_i v(y_i)v(y_i)^{\mathsf T}+\sum_j\bigl[v(z_j)v(z_j)^{\mathsf T}
++v(\bar z_j)v(\bar z_j)^{\mathsf T}\bigr]$. Writing $v(z_j)=A_j+iB_j$ with $A_j,B_j$
+real, the bracket is $2A_jA_j^{\mathsf T}-2B_jB_j^{\mathsf T}$ --- the minus sign is the
+whole mechanism --- so $H_n=UJU^{\mathsf T}$ with
+$U=[\,v(y_1)\cdots v(y_r)\;A_1\,B_1\cdots A_q\,B_q\,]$ and
+$J=\operatorname{diag}(1,\dots,1,\,2,-2,\dots,2,-2)$. $U$ has full column rank $r+2q$ (a
+Vandermonde in distinct nodes followed by an invertible change of columns), and
+Sylvester's law of inertia gives the count.
+\end{proof}
+
+So the contour moments --- computed from $\Xi'/\Xi$ alone, with no zero located --- carry
+the number of zeros off the line inside the contour as the negative inertia of a real
+symmetric matrix. Measured (\lean{extractor/checks/operator_positivity.py}) with the
+certified moments of \S\ref{sec:rankcertified} and eigenvalue enclosures by Weyl's
+inequality:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}rrrrr@{}}
+\toprule
+centre & $R$ & $K$ & $\max\lvert\operatorname{Im}s_m\rvert$ & $\lambda_{\min}/\lambda_{\max}$\\
+\midrule
+$14.135$ & $0.30$ & $1$ & $3.3\times10^{-31}$ & $+7.1\times10^{-39}$\\
+$17.600$ & $3.60$ & $2$ & $2.1\times10^{-22}$ & $+6.2\times10^{-38}$\\
+$19.500$ & $6.00$ & $3$ & $5.0\times10^{-19}$ & $-5.8\times10^{-40}$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+As a positive control (\lean{extractor/checks/positivity_control.py}), a planted conjugate
+pair at distance $\beta-\tfrac12$ from the line produces a negative eigenvalue whose size
+scales as $(\beta-\tfrac12)^2$ --- $5.4\times10^{-10}$ at $0.5$ down to
+$2.1\times10^{-21}$ at $10^{-6}$ --- against a rounding floor of $8\times10^{-59}$.
+
+\begin{remark}[status]
+This is a \emph{reading}, not yet an independent certificate. An eigenvalue enclosure
+$\lambda_{\min}\ge-\varepsilon$ does not decide $q=0$ by itself: a pair close enough to
+the line contributes a negative eigenvalue smaller than $\varepsilon$. To make the inertia
+a certificate one needs a \emph{separation} --- a proved lower bound on that negative
+eigenvalue in terms of the distance from the line and the conditioning of $U$ --- and no
+such bound is proved here. On the three windows above, $q=0$ is established by
+Theorem~\ref{thm:bandverify} with Corollary~\ref{cor:bandfree}; the inertia reading agrees
+with it to forty digits, which is a consistency check of Lemma~\ref{lem:inertia} and of the
+certified moments, and is reported as that.
+\end{remark}
+
 \subsection{Status}
 This section is \emph{off} the certification path of \S\ref{sec:capstone}, and nothing
 above depends on it. It is a finite-rank fit to a truncated moment vector in double
@@ -1579,6 +2082,497 @@ chain to a general primitive $\chi$ is not.
 \end{remark}
 
 %======================================================================
+\section{A certified on-line verification, carried out in the ordinate
+variable}\label{sec:bandverify}
+
+Everything in \S\S\ref{sec:ordinate}--\ref{sec:capstone} runs on the readout's \emph{sign},
+and \S\ref{sec:notclaimed}(iv) records the price: a sign bit cannot tell an on-line zero
+from a conjugate off-line pair. That limitation is real, and it is a limitation of the
+chart. This section removes it, and the removal is geometric.
+
+\paragraph{The radial reading.} Under $s=\tfrac12+iz$ a zero $\beta+i\gamma$ sits at
+$y=\gamma-i(\beta-\tfrac12)$, so
+\[
+  \lvert\operatorname{Im}z\rvert\le h
+  \qquad\Longleftrightarrow\qquad
+  \bigl\lvert\beta-\tfrac12\bigr\rvert\le h .
+\]
+\emph{Off the critical line is off the real axis.} The distance from the line is a
+\emph{radial} coordinate in the ordinate variable, and a contour integral over the band
+$\lvert\operatorname{Im}z\rvert\le h$ counts exactly the zeros within $h$ of the line ---
+a quantity the one-dimensional readout has no way to express, because the descent of
+\S\ref{sec:descent} discards precisely this direction.
+
+\begin{theorem}[band verification]\label{thm:bandverify}
+Let $a<b$ and $h>0$, let $\Xi$ have no zero on the boundary of
+$[a,b]\times[-h,h]$, and suppose
+\begin{enumerate}
+\item[(i)] the argument principle over $[a,b]\times[-h,h]$ certifies $N$ zeros of $\Xi$
+in the band, counted with multiplicity, and
+\item[(ii)] the readout has $N$ certified sign changes on $[a,b]$, each isolated to its
+own subinterval, the $N$ subintervals pairwise disjoint, on each of which $\Xi'\ne0$ is
+certified.
+\end{enumerate}
+Then every zero of $\zeta$ with ordinate in $(a,b)$ and $\lvert\beta-\tfrac12\rvert\le h$
+lies \emph{on} the critical line and is simple.
+\end{theorem}
+
+\begin{proof}
+By (ii) and Theorem~\ref{thm:countone}, each of the $N$ subintervals contains exactly one
+event, and it is \emph{simple}; these are $N$ distinct real zeros of $\Xi$ lying in
+$(a,b)$, hence in the band, and being simple they contribute exactly $N$ to the count of
+(i). By (i) the band contains exactly $N$ zeros with multiplicity. So the band contains
+no further zero at all, and in particular none with
+$0<\lvert\operatorname{Im}z\rvert\le h$.
+
+The boundary hypothesis is not an extra burden in practice: the sound step criterion of
+\S\ref{sec:obligations}(O5)(a) requires $\lvert\Xi(z_k)\rvert$ to exceed a positive bound
+at every sample, so a zero on the contour makes the count fail to certify rather than
+certify wrongly.
+\end{proof}
+
+\noindent
+Both hypotheses are discharged by the machinery of \S\ref{sec:obligations}: (i) by the
+sound winding criterion, which needs the explicit region bound (O5); (ii) by the certified
+signs and the certified derivative. Measured
+(\lean{extractor/checks/band_verification.py}), at $h=\tfrac14$ --- that is,
+$\beta\in[\tfrac14,\tfrac34]$:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lrrrl@{}}
+\toprule
+window & band count & simple real zeros & evaluations & verdict\\
+\midrule
+$[10,16]$ & $1$ & $1/1$ & $17\,108$ & certified\\
+$[10,23]$ & $2$ & $2/2$ & $32\,042$ & certified\\
+$[10,26]$ & $3$ & $3/3$ & $42\,290$ & certified\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[what this is, and what it is not]
+It is a \emph{window} statement with a \emph{band}: it certifies that no zero in that
+window has left the line by as much as $h$, and it says nothing outside the window or
+beyond the band. It is also not new as a capability --- this is the conclusion Turing's
+method reaches, in Platt's rigorous form~\cite{Platt2017}, far faster and far higher; the
+evaluation counts above are frank about the cost.
+
+What it is, is the first statement in this paper that the chart cannot make. The
+sign-based chain is blind to the abscissa by construction; the band count sees it because
+the ordinate variable has a direction that the descent throws away, and the carrier
+supplies the object whose contour is being integrated. The geometry is not decorating an
+analytic argument here --- it is supplying the coordinate in which the question can be
+posed at all.
+\end{remark}
+
+\paragraph{The band, removed.} The band in Theorem~\ref{thm:bandverify} is a limitation of
+the instrument, not of the statement: the region bound of \S\ref{sec:obligations}(O5) is a
+Stirling bound and needs $\operatorname{Re}(s/2)>0$, so a certified contour in the ordinate
+variable cannot reach $\lvert\operatorname{Im}z\rvert=\tfrac12$. What the contour cannot see
+is the sliver $\beta\in(0,\tfrac12-h)\cup(\tfrac12+h,1)$, and by $\xi(s)=\xi(1-s)$ the left
+piece is the reflection of the right. That region is not near the critical line; it is near
+$\operatorname{Re}s=1$, where $\zeta$ is bounded away from zero on any bounded range of
+ordinates --- a finite computation in the $s$-plane, with no $\Gamma$-factor and no Stirling
+bound in it.
+
+\begin{proposition}[the sliver]\label{prop:sliver}
+Let $0<Y<\tfrac12$, $a<b$ and $S_1>1$. Suppose
+\begin{enumerate}
+\item[(a)] on the box $\sigma\in[\tfrac12+Y,S_1]$, $t\in[a,b]$, a grid of certified
+enclosures of $\zeta$, together with a certified $L\ge\sup\lvert\zeta'\rvert$ over the
+box, gives $\lvert\zeta\rvert-\mathrm{rad}>L\rho$ at every node, $\rho$ the covering
+radius of a grid cell; and
+\item[(b)] $\lvert\zeta(s)\rvert\ge\zeta(2\sigma)/\zeta(\sigma)>0$ for $\sigma\ge S_1$, which
+is the Euler product.
+\end{enumerate}
+Then $\zeta$ has no zero with ordinate in $[a,b]$ and $\lvert\beta-\tfrac12\rvert>Y$.
+\end{proposition}
+
+\begin{proof}
+(a) and (b) exclude zeros with $\sigma\ge\tfrac12+Y$ in the ordinate range: every point of
+the box is within $\rho$ of a node, so
+$\lvert\zeta\rvert\ge(\lvert\zeta(\text{node})\rvert-\mathrm{rad})-L\rho>0$ there. A zero
+with $\beta<\tfrac12-Y$ would give, by the functional equation and conjugation, a zero at
+$1-\beta>\tfrac12+Y$ with the same ordinate, which is excluded. The constant $L$ is
+Cauchy's $\sup\lvert\zeta'\rvert\le M/\delta$, with $M$ an Euler--Maclaurin bound for
+$\lvert\zeta\rvert$ on the box enlarged by $\delta$, every term bounded in modulus; the
+node enclosures are those of \S\ref{sec:obligations}(O1).
+\end{proof}
+
+\begin{corollary}[band-free window]\label{cor:bandfree}
+If Theorem~\ref{thm:bandverify} certifies the window $[a,b]$ at band $h$ and
+Proposition~\ref{prop:sliver} certifies it at $Y=h$, then every zero of $\zeta$ with
+ordinate in $(a,b)$ lies on the critical line and is simple.
+\end{corollary}
+
+\noindent
+Measured (\lean{extractor/checks/strip_sliver.py}); the decision rule was fixed before the
+run --- a single node failing $\lvert\zeta\rvert-\mathrm{rad}>L\rho$ reports a refutation
+and does not refine:
+
+\begin{center}\footnotesize
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule
+$Y$ & ordinates & grid & $L$ & $L\rho$ & worst $\lvert\zeta\rvert$ & ratio\\
+\midrule
+$0.45$ & $[13.4,25.6]$ & $11\times1232$ & $25.23$ & $0.1696$ & $0.3016$ & $1.78$\\
+$0.40$ & $[13.4,25.6]$ & $17\times1361$ & $27.87$ & $0.1753$ & $0.2735$ & $1.56$\\
+$0.45$ & $[9,31]$ & $11\times2352$ & $26.72$ & $0.1743$ & $0.3015$ & $1.73$\\
+$0.25$ & $[10,26]$ & $85\times4525$ & $39.59$ & $0.0989$ & $0.1806$ & $1.83$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\noindent
+The last row is at the band of the table above ($h=\tfrac14$) and covers its three
+windows, so Corollary~\ref{cor:bandfree} applies to each of them: \emph{every zero of
+$\zeta$ with ordinate in $(10,26)$ lies on the critical line and is simple.} That is,
+again, a conclusion Turing's method reaches --- and the companion Lean library already
+carries it to ordinate $371.5$ (\lean{online_below_743o2}) --- and it costs some
+$385\,000$ certified evaluations of $\zeta$ on the sliver alone, the worst node sitting
+beside the first zero at $\sigma=0.752$, $t=14.13$. What is new is only that the
+geometric certificate now says it without a qualifier.
+
+%======================================================================
+\section{The Hamiltonian of the fiber, and the three-dimensional zeta}\label{sec:hamiltonian}
+
+\S\ref{sec:contribution} named the warp's radial generator --- the log-weight operator
+$H$ --- and asserted $H_\Delta=H+\log\Delta\cdot I$. A generator is an infinite-dimensional
+object, and the sentence is not a statement until a Hilbert space, a domain and a
+self-adjointness theorem are supplied; Stone's theorem needs exactly that. This section
+supplies them, and then reads off what the operator does: the fiber is its flow, the
+one-dimensional $L$-function is its trace, and the chart's zero is an event in the flow.
+Every statement is unconditional and machine-checked; nothing here bears on where the
+zeros are, and Remark~\ref{rem:hamiltonian} says so at the end.
+
+\subsection{The log-weight operator}
+Write $\mathcal H=\ell^2(\mathbb N,\mathbb C)$, the index $n$ standing for the site
+$x_{n+1}$ (there is no site at the origin), and $e_n$ for the $n$-th site phasor, the
+sequence with a $1$ at $n$ and $0$ elsewhere. For a real weight $w$ let $M_w$ be
+multiplication by $w$ on its \emph{maximal} domain $\{v\in\mathcal H: w\cdot v\in\mathcal H\}$.
+The log-weight operator and its carrier-scaled form are
+\[
+  H=M_{\log(n+1)},\qquad H_\Delta=M_{\log(\Delta(n+1))}.
+\]
+
+\begin{theorem}[the log-weight operator]\label{thm:logweight}
+\begin{enumerate}
+\item[(i)] $M_w$ is self-adjoint on its maximal domain --- $M_w^\dagger=M_w$, domain and
+values. In particular $H$ and every $H_\Delta$ are self-adjoint.
+\item[(ii)] The site phasors are orthonormal with dense span, a Hilbert basis of
+$\mathcal H$, and each is an eigenvector: $He_n=\log(n+1)\,e_n$.
+\item[(iii)] For $\Delta>0$, $H_\Delta$ and $H$ have the same domain and
+$H_\Delta v=Hv+\log\Delta\cdot v$ on it: the carrier scale shifts the generator by a
+constant and does nothing else.
+\item[(iv)] $H$ is unbounded: no $C$ satisfies $\lVert Hv\rVert\le C\lVert v\rVert$ on the
+domain.
+\end{enumerate}
+\end{theorem}
+\leanref{CarrierReadout.weightMul_isFormalAdjoint, CarrierReadout.weightDomain_dense,
+CarrierReadout.adjointDomain_le, CarrierReadout.weightMul_isSelfAdjoint,
+CarrierReadout.logWeight_isSelfAdjoint, CarrierReadout.carrierLogWeight_isSelfAdjoint,
+CarrierReadout.phasor_orthonormal, CarrierReadout.phasor_total, CarrierReadout.phasorBasis,
+CarrierReadout.H_phasor, CarrierReadout.carrierLogWeight_eq_shift,
+CarrierReadout.logWeight_not_bounded}
+
+\begin{proof}[Proof sketch]
+(i) has the two halves the statement needs: symmetry on a dense domain --- the phasors
+lie in every maximal domain and span a dense subspace --- and maximality, that a vector in
+the domain of the adjoint is already in the maximal domain, read off against each
+phasor. The second half is what fails on a smaller domain: the restriction of $H$ to
+finitely supported vectors is symmetric and not self-adjoint. (ii) is the $\ell^2$ basis.
+(iii) is $\log(\Delta(n+1))=\log\Delta+\log(n+1)$ together with the observation that
+adding a constant to a weight does not change the maximal domain; the domain equality is
+\lean{CarrierReadout.H}$\Delta$\lean{_domain} (the name carries a Greek delta). (iv):
+$\lVert He_n\rVert=\log(n+1)$ is unbounded.
+\end{proof}
+
+The domain is not a formality. Self-adjointness is a property of an operator \emph{on a
+domain}, and where \S\ref{sec:contribution} calls $H$ a generator the maximal domain is
+the one that must be meant. And the eigenvalues are the geometry's, twice over: by
+\S\ref{sec:fiber}, $\log x_n$ is the ordinate at which the climber reaches the site, so
+$H$ is the climber read on the sites; and by Theorem~\ref{thm:gauge} it is, up to the
+affine freedom, the only continuous weight for which the carrier scale is a gauge.
+
+\subsection{The warp is the functional calculus of \texorpdfstring{$H$}{H}}
+Let $e^{-sH}$ denote multiplication by $(n+1)^{-s}$ on its maximal domain.
+
+\begin{theorem}[the generator]\label{thm:generator}
+The eigenvalue of $e^{-sH}$ on $e_n$ is $\exp(-s\lambda_n)$ with $\lambda_n=\log(n+1)$
+the eigenvalue of $H$: on the total eigenbasis of Theorem~\ref{thm:logweight},
+$e^{-sH}$ \emph{is} the functional calculus of $H$. It satisfies
+$e^{-sH}e^{-s'H}=e^{-(s+s')H}$ on the eigenbasis, and for $s=-it$ each phasor is rotated
+by the unimodular $\exp(it\log(n+1))$: the warp on the critical line is the unitary group
+of $H$.
+\end{theorem}
+\leanref{CarrierReadout.heat_phasor, CarrierReadout.heat_eigenvalue_eq_exp,
+CarrierReadout.heat_eigenvalue_add, CarrierReadout.norm_line_phase}
+
+This is the precise content of ``the warp is scaling by a function of unit modulus whose
+radial generator is $H$'': the function is $x_n\mapsto x_n^{-s}=e^{-s\log x_n}$, the
+generator is $H$, and unit modulus is the case $\operatorname{Re}s=0$.
+
+\subsection{The one-dimensional function is the trace}
+\begin{theorem}[$\zeta$ is the partition function of $H$]\label{thm:zetatrace}
+For $\operatorname{Re}s>1$,
+\[
+  \sum_{n\ge0}\bigl\langle e_n,\;e^{-sH}e_n\bigr\rangle\;=\;\zeta(s),
+  \qquad
+  \sum_{n\ge0}\Lambda(n+1)\,\bigl\langle e_n,\;e^{-sH}e_n\bigr\rangle\;=\;-\frac{\zeta'}{\zeta}(s).
+\]
+The eigenvalue of $H$ at the site $x=n+1$ decomposes over the primes,
+$\log(n+1)=\sum_{p\mid n+1}v_p(n+1)\log p$, so $H=\sum_p\log p\cdot N_p$ with $N_p$ the
+$p$-adic valuation at each site and each $\log p\cdot N_p$ self-adjoint; and the trace
+factorises accordingly, $\operatorname{Tr}e^{-sH}=\prod_p(1-p^{-s})^{-1}$, each factor the
+geometric partition function $\sum_k(p^{-s})^k$ of the single clock $\log p\cdot N_p$.
+Finally the entire readout is the completed trace: for $\operatorname{Re}s>1$,
+\[
+  \xi(s)\;=\;\frac{s(s-1)}2\,\Gamma_{\mathbb R}(s)\,\operatorname{Tr}e^{-sH},
+\]
+so $\Xi(z)=-2\,\xi(\tfrac12+iz)$ (Definition~\ref{def:xi}) is $-2$ times the completed
+partition function of $H$, read in the ordinate variable.
+\end{theorem}
+\leanref{CarrierReadout.inner_phasor_heat, CarrierReadout.zeta_eq_heatTrace,
+CarrierReadout.vonMangoldt_heatTrace_eq, CarrierReadout.logWeight_eq_sum_primeClocks,
+CarrierReadout.primeClock_isSelfAdjoint, CarrierReadout.primeClock_phasor,
+CarrierReadout.heatTrace_eulerProduct, CarrierReadout.primeClock_partition,
+CarrierReadout.riemannXi_eq_completed_heatTrace}
+
+The first identity is the one Bost and Connes read off their
+system~\cite{BostConnes1995}, here proved of this paper's own operator; the second says
+that the prime side of the explicit formula is the trace of a function of $H$; the third
+is the Euler product carried by the operator rather than by the series --- the
+multiplicative structure of the sites is in $H$, as a sum of commuting self-adjoint prime
+clocks. These are statements about the object: what the chart reads off the generator's
+flow. Their analytic halves --- the Dirichlet series, the von Mangoldt series, the Euler
+product --- are Mathlib's theorems (\S\ref{sec:formalization}), and the proofs consist of
+identifying each as a trace over the phasor basis. The next subsection is the object
+those traces are taken of.
+
+\subsection{The three-dimensional zeta is the bank, and the chart's zero is an event}
+The scalar identities above are shadows of a vector one. The \emph{bank} at height $s$ is
+the vector of site phasors,
+\[
+  B(s)\;=\;e^{-sH}\mathbb 1\;=\;\bigl(x_n^{-s}\bigr)_{n},
+\]
+$\mathbb 1$ the all-ones state --- every phasor at unit magnitude at height zero,
+$B(0)=\mathbb 1$. This is the three-dimensional object of \S\ref{sec:fiber}; the
+one-dimensional $L$-function is a \emph{chart} of it, a linear functional applied to the
+bank.
+
+\begin{theorem}[the bank]\label{thm:bank}
+\begin{enumerate}
+\item[(i)] \emph{$H$ generates the bank.} $B(s+s')=e^{-s'H}B(s)$, componentwise for all
+$s,s'$, and as vectors of $\mathcal H$ whenever $\operatorname{Re}s>\tfrac12$ and
+$\operatorname{Re}s'\ge0$.
+\item[(ii)] \emph{On the critical line the bank is a unitary orbit of one state.}
+$B(\tfrac12+it)=U(t)\,B(\tfrac12)$ with $U(t)=e^{-itH}$ rotating each phasor by a
+unimodular phase.
+\item[(iii)] \emph{The critical line is the $\ell^2$-boundary of the bank.}
+$B(s)\in\ell^2$ if and only if $\operatorname{Re}s>\tfrac12$, and
+$\lVert B(s)\rVert^2=\sum_n x_n^{-2\operatorname{Re}s}=\zeta(2\operatorname{Re}s)$, which
+diverges at the line through the pole at $1$.
+\item[(iv)] \emph{Every $L$-series is a chart of the same bank.} For an $L$-series
+$L(s,f)=\sum_n f(n)n^{-s}$ convergent at $s$, $L(s,f)=\sum_n f(x_n)\,B(s)_n$; in particular
+the plain chart $\sum_n$ reads $\zeta(s)$ off the bank for $\operatorname{Re}s>1$.
+\item[(v)] \emph{The lane-balanced chart reads the fiber.} The chart of
+Definition~\ref{def:fiber} --- the phasors summed in pairs, in the order they enter ---
+reads $\eta(s)=(1-2^{1-s})\zeta(s)$ off the bank for every $s$ with
+$\operatorname{Re}s>0$; this is the fiber $F_\Delta$ at carrier scale $\Delta=1$, the
+scale entering only as the factor $\Delta^{-s}$ of Theorem~\ref{thm:logweight}(iii).
+\item[(vi)] \emph{The chart's zero is an event.} In the strip $0<\operatorname{Re}s<1$,
+$\zeta(s)=0$ if and only if $B(s)$ lies in the kernel of the lane-balanced chart.
+\end{enumerate}
+\end{theorem}
+\leanref{CarrierReadout.bank_zero, CarrierReadout.bank_flow,
+CarrierReadout.bank_mem_heatDomain, CarrierReadout.heat_bank, CarrierReadout.bank_line,
+CarrierReadout.norm_bank_sq, CarrierReadout.chart_bank,
+CarrierReadout.LSeries_eq_chart_bank, CarrierReadout.laneChart_bank,
+CarrierReadout.lane_factor_ne_zero, CarrierReadout.zeta_zero_iff_bank_mem_ker}
+
+\begin{proof}[Proof sketch]
+(i) is $x_n^{-(s+s')}=x_n^{-s'}x_n^{-s}$, and membership in the domain of $e^{-s'H}$ is
+(iii) at $s+s'$. (ii) is (i) at $s=\tfrac12$, $s'=it$, with $\lvert x_n^{-it}\rvert=1$.
+(iii): $\lvert x_n^{-s}\rvert^2=x_n^{-2\operatorname{Re}s}$, and $\sum_n n^{-p}$
+converges if and only if $p>1$; the membership statement is
+\lean{CarrierReadout.bank_mem}$\ell$\lean{p_iff} (the name carries a script ell). (iv) is
+a reindexing of the $L$-series. (v) is the pairing of consecutive phasors together with
+$\eta=(1-2^{1-s})\zeta$ on $\operatorname{Re}s>0$ (\S\ref{sec:carrier}). (vi): in the
+open strip the lane factor
+$1-2^{1-s}$ does not vanish, since $\lvert2^{1-s}\rvert=2^{1-\operatorname{Re}s}>1$.
+\end{proof}
+
+(v) is (G1) made about the bank: the lane-balanced chart reads the object on the whole
+channel $\operatorname{Re}s>0$, where the plain chart reads nothing; and
+Theorem~\ref{thm:fiberisfunction} lifts it to every carrier scale, to the three-dimensional
+phasors, and to the statement that the function has no content beyond the chart. (vi) is the dictionary
+between the chart and the geometry that \S\ref{sec:fiber} promised: a zero of the
+one-dimensional function is the $H$-flow of $\mathbb 1$ entering the kernel of the chart.
+And (iii) is the item we would point at. The bank is square-summable strictly to the right
+of the critical line and its norm blows up \emph{at} the line: the line is where the
+Hilbert space in which the object lives ends. That is a property of the bank, established
+for every $s$. It says where the object lives, not where the chart vanishes.
+
+\begin{remark}[what this section does not say]\label{rem:hamiltonian}
+No statement above locates a zero or constrains where one may be.
+Theorem~\ref{thm:bank}(vi) is a dictionary, Theorem~\ref{thm:bank}(iii) is a property of
+the bank, and the identities of Theorem~\ref{thm:zetatrace} are Bost--Connes' partition
+function and the Euler product read on an operator. The spectrum of $H$ is
+$\{\log x_n\}$, the sites; it is the \emph{trace} of functions of $H$ that carries the
+arithmetic, and the vector the chart projects that carries the geometry.
+\end{remark}
+
+%======================================================================
+\section{Where the geometry is load-bearing}\label{sec:loadbearing}
+
+The chart of the bank is Hardy's $Z$ (Proposition~\ref{prop:isZ}), so everything the
+chart can say, the classical argument already says. This section is the inventory of
+what the chart cannot say: item by item, a property of the three-dimensional object, tied
+to a specific result that has no statement without it. Three of the nine are
+\emph{negative} or costly --- the geometry imposes a cost, or refutes something --- and those are
+the ones we would defend hardest, because a frame that only ever agrees with the
+classical picture is decoration.
+
+\paragraph{(G1) The lane split gives a series that converges \emph{on} the line.}
+The conductor sorts the fiber's phasors into $\pm$ channels; for $\zeta$ that is the
+non-principal character mod $2$, and the lane-balanced sum is $\eta$, convergent for
+$\operatorname{Re}s>0$. This is why the extractor can evaluate the object \emph{on} the
+critical line by summation, with no analytic continuation and no functional equation in
+the evaluator. The isolation theorems do not need it --- they work with $\Lambda$ --- but
+the \emph{locator} does not exist without it. Used: every evaluation in
+\S\ref{sec:extractor}.
+
+\paragraph{(G2) The same lane split imposes a cost, and it is linear.}
+The alternating sign that buys (G1) also manufactures a stationary point: the $n$-th
+term's phase is $\pi n-T\log(\Delta n)$, stationary at $n_\ast=T/\pi$, forcing a head
+$X>2T/\pi$ --- \emph{linear} in the ordinate, against $O(\sqrt T)$ for Riemann--Siegel.
+This is a geometric prediction with a measured consequence
+(\S\ref{sec:extractor}), and it is a cost rather than an advantage. We report it as such,
+and (O4) is the workaround. The carrier itself supplies far more than the head consumes:
+by the ordinate $y$ it has laid down $N(y)\ge(3r/p^{2})e^{2y}$ sites
+(Proposition~\ref{prop:geohead}), so the head is a truncation of the geometry's supply,
+not a shortage of it.
+
+\paragraph{(G3) The $\mu_6$ cell width is what refutes the sector balance law.}
+Theorem~\ref{thm:arcobstruction} is a theorem \emph{about} the carrier: a sector is an
+arc of width $2\pi/6=\pi/3$ --- the $\mu_6$ cell --- and the obstruction is that such an
+arc cannot cancel against its own antipode, so differencing antipodal sectors adds the
+masses. The constant $\sqrt3/2=\cos(\pi/6)$ in that bound is the cell half-width. Change
+the cell and the theorem changes; delete the geometry and there is no statement left to
+prove. Used: \S\ref{sec:pairing}, and it is why the $\mu_6$ machinery is not idle even
+though the balance law built on it is false. And the cell is the helix's, not a
+bookkeeping device: $\operatorname{cell}(n)$ is the angle of the helix at turn parameter
+$n/6$, six sites per turn, with the antipode half a turn up
+(Proposition~\ref{prop:cellangle}).
+
+\paragraph{(G4) The ordinate variable and the lane factor give the abscissa reading its
+dictionary \emph{and} its calibration.}
+Under $s=\tfrac12+iz$ a zero $\beta+i\gamma$ becomes a node $\gamma-i(\beta-\tfrac12)$,
+so the imaginary part of an eigenvalue is the signed distance from the critical line
+(\S\ref{sec:pencil}). That dictionary is the coordinate's, and the coordinate is
+Riemann's --- we claim no credit for it (\S\ref{sec:notclaimed}(v)). What \emph{is} the
+carrier's is the calibration: the fiber carries the lane factor $1-2^{1-s}$, whose zeros
+sit on $\operatorname{Re}s=1$ in closed form, supplying a known off-line node set at
+$\operatorname{Im}y=-\tfrac12$ spaced $2\pi/\log2$. An instrument claiming to measure the
+abscissa is then checkable against zeros whose abscissa is known and is not $\tfrac12$,
+and it passes to $2\times10^{-14}$. Without the lane structure there is no such standard
+and the reading is unfalsifiable.
+
+\paragraph{(G5) The double end is what produces the off-line pairing.}
+The geometry has two ends, mirror images through the origin, and the readout cannot tell
+which it reads; in the ordinate variable that end-swap is $z\mapsto\bar z$
+(Lemma~\ref{lem:crit}). This is not an aside: it is the step that composes the two
+symmetries into one. The identity $\Xi(\bar z)=\overline{\Xi(z)}$ consumes \emph{both} the
+conjugation symmetry of $\Lambda_0$ \emph{and} its functional equation --- neither alone
+suffices, precisely because $z\mapsto\bar z$ is the composite $s\mapsto1-\bar s$ --- and
+from it follow the off-line pairing (Theorem~\ref{thm:pairing}) and, through it, the strip
+parity law (Theorem~\ref{thm:stripparity}). Delete the double end and those two theorems
+have no proof here. The dependency is checkable in the sources, and one half of it is not
+in Mathlib at all: \lean{xiEntire_conj} is proved from Mathlib's functional equation
+\lean{completedRiemannZeta}$_0$\lean{_one_sub} together with the conjugation symmetry
+\lean{HelixCollapse.completedRiemannZeta}$_0$\lean{_conj}, which is this paper's
+(\S\ref{sec:formalization}: from the real Dirichlet coefficients on $\operatorname{Re}s>1$
+and the identity theorem), and \lean{offAxis_pairs} is proved from \lean{xiEntire_conj}.
+Nor are the two symmetries two in the geometry: the end-swap is one involution ---
+conjugation, phasor by phasor --- and the functional equation is what the chart reads of
+it (\S\ref{sec:fiber}, ``the functional equation is the double end''). That is the claim:
+not that either symmetry is new, but that the pairing is the chart reading of one
+geometric involution, and that the proof here consumes exactly that composite.
+
+\paragraph{(G6) The radial direction is what makes the band verification possible.}
+This is the strongest item and it is \S\ref{sec:bandverify}. The descent of
+\S\ref{sec:descent} discards the radius; what survives into the ordinate variable is a
+direction in which ``off the critical line'' reads as ``off the real axis''. A contour
+count over $\lvert\operatorname{Im}z\rvert\le h$ therefore counts the zeros with
+$\lvert\beta-\tfrac12\rvert\le h$ --- and matched against certified sign changes it
+certifies that no zero in a window has left the line by as much as $h$
+(Theorem~\ref{thm:bandverify}), and, with the sliver near $\operatorname{Re}s=1$ closed by
+an elementary certificate, that every zero with ordinate in the window lies on the line
+(Corollary~\ref{cor:bandfree}). The sign-based chain provably cannot make that statement:
+the proof is Theorem~\ref{thm:stripparity}, which says that a sign change registers the
+parity of the \emph{full} strip count, so a conjugate off-line pair, which adds two, is
+invisible to it (\S\ref{sec:notclaimed}(iv)). The band count sees it because the distance
+off the line survives the descent as a direction, $\operatorname{Im}z=\tfrac12-\beta$
+(equation~\eqref{eq:dict}), and that direction is the object's: it is exactly what the chart
+of \S\ref{sec:descent} dropped. Here the geometry is not restating an analytic argument in
+other words; it is supplying the coordinate in which the question is askable.
+
+\paragraph{(G7) The rank carries a count, and the eigenvalues carry the abscissa.}
+The band verification of (G6) counts by \emph{contour}, which is Turing's quantity reached
+in a different coordinate. The carrier offers a second counter, and it is the more
+informative one: the bank's log-jets are a power sum over the fiber's zeros, so a Hankel
+matrix built from them has a spectrum whose \emph{rank} counts distinct nodes and whose
+\emph{eigenvalues} return those nodes --- imaginary part included, which is the abscissa
+(\S\ref{sec:pencil}). A contour count returns an integer; the pencil returns the integer
+\emph{and} where the zeros are and how far off the line each one sits. Both halves are
+certified: the singular values by \S\ref{sec:certrank}, and the rank itself by
+Theorem~\ref{thm:rankcert} once the moments are restricted to a contour --- so this is a
+second certified counter, not merely a diagnostic.
+
+\paragraph{(G8) The focal picture is a theorem, for characters the identification misses.}
+Theorem~\ref{thm:focal} is an \emph{iff} between a geometric event --- the $\pm$ channels
+closing at a height --- and the vanishing of an $L$-value, for non-principal real $\chi$.
+It is genuine content about the model, and Proposition~\ref{prop:isZ} does not dissolve
+it, because the identification with $Z$ is specific to $\zeta$'s archimedean factor. What
+must be said, and is, is that it does not cover $\zeta$: the $\pm$ split is by character
+\emph{value} and degenerates at the trivial character (Remark~\ref{rem:zetabridge}).
+
+\paragraph{(G9) The fiber has a Hamiltonian, and the critical line is where its Hilbert
+space ends.}
+The warp's generator is an unbounded self-adjoint operator on $\ell^2(\mathbb N,\mathbb C)$
+with the phasors as eigenbasis (Theorem~\ref{thm:logweight}); the fiber is its flow, the
+bank $B(s)=e^{-sH}\mathbb 1$ (Theorem~\ref{thm:bank}); $\zeta$ is its trace, and the prime
+side of the explicit formula is the trace of a function of it (Theorem~\ref{thm:zetatrace}).
+Two consequences are the geometry's and not the chart's. The bank is square-summable exactly
+to the right of the critical line, $\lVert B(s)\rVert^2=\zeta(2\operatorname{Re}s)$, so the
+line is the boundary of the Hilbert space in which the object lives --- a fact with no
+one-dimensional expression, because the one-dimensional function is a chart of the bank and
+not the bank. And every $L$-series is a chart of the \emph{same} bank: the carrier-generic
+law of \S\ref{sec:contribution}, in operator form. Used: \S\ref{sec:hamiltonian}; it is the
+reading under which the ``generator'' of \S\ref{sec:contribution} is a theorem. Its
+eigenvalues are the geometry's twice over: the ordinates at which the climber reaches
+the sites (\S\ref{sec:fiber}), and the only continuous weights for which the carrier
+scale is a gauge (Theorem~\ref{thm:gauge}) --- the site weights are derived, not posited.
+Each of these is a compiled statement about the \emph{bank}, not about the number
+$\zeta(s)$: \lean{CarrierReadout.bank_mem}$\ell$\lean{p_iff} is the boundary,
+\lean{CarrierReadout.LSeries_eq_chart_bank} the universality,
+\lean{CarrierReadout.zeta_eq_heatTrace} the trace. A one-dimensional reader holding
+$\zeta(s)$ holds the value of one chart at one point; $\lVert B(s)\rVert^{2}$ is the value
+of \emph{another} chart of the same vector, at $2\operatorname{Re}s$, and the statement
+that the vector leaves $\ell^{2}$ at the line is about the vector.
+
+\paragraph{What this does not amount to.}
+Not that the geometry proves the isolation theorems --- it does not, and
+Proposition~\ref{prop:isZ} is the reason. What it does is supply the object that is
+computed (G1) and the cost of computing it (G2); the constant in a refutation (G3); a
+closed-form off-line calibration standard (G4); the involution behind two of the
+theorems (G5); the coordinate in which a statement the chart cannot make becomes
+provable (G6); a counter whose eigenvalues carry the abscissa (G7); one equivalence
+of its own (G8); and a Hamiltonian whose Hilbert space ends at the line (G9). Three of
+those nine are negative or costly, which is the test we would apply to any frame: one
+that only ever agrees with the classical picture is decoration.
+
+%======================================================================
 \section{What is not claimed}\label{sec:notclaimed}
 
 This section is not optional, and it is longer than the contribution on purpose.
@@ -1621,6 +2615,13 @@ statement of how much the readout can see about the difference. The readout cann
 distinguish an on-line zero from a conjugate off-line pair by its sign alone --- that
 is the content of the parity law, not a defect of the implementation.
 
+The qualification is Theorem~\ref{thm:bandverify}: the \emph{sign} cannot separate the
+two, but the band count can, and where both are certified the separation is established
+for that window --- and the band itself is removable (Corollary~\ref{cor:bandfree}). So
+the limitation is real for the chain of
+\S\S\ref{sec:ordinate}--\ref{sec:capstone} and is lifted, at a cost in evaluations, by
+\S\ref{sec:bandverify}.
+
 \item[(v)] \emph{The coordinate is Riemann's.} The substitution in which the
 functional-equation involution $s\mapsto1-s$ becomes complex conjugation is
 $s=\tfrac12+iz$, which is Riemann's $\Xi$ variable~\cite{Riemann1859}. The carrier supplies the
@@ -1651,6 +2652,15 @@ character \emph{value}, and for $\zeta$ there is no non-trivial value to sort by
 sector statistic that replaces it for $\zeta$ is refuted in
 Theorem~\ref{thm:arcobstruction}. What licenses the $\zeta$ chain is neither of these
 but the exact factorisation of Theorem~\ref{thm:weld}, which is an identity.
+
+\item[(ix)] \emph{The Hamiltonian reading is Bost--Connes', and the bank's boundary is a
+property of the bank.} That $\zeta$ is the partition function of an operator with
+spectrum $\{\log n\}$ is~\cite{BostConnes1995}; \S\ref{sec:hamiltonian} compiles it
+against this paper's operator and adds the bank, its unitary orbit on the line, its
+$\ell^2$-boundary, and the reading of every $L$-series as a chart of it. None of that
+locates a zero. Theorem~\ref{thm:bank}(vi) is a dictionary between the chart and the
+geometry, and Theorem~\ref{thm:bank}(iii) says where the object lives; neither says where
+the chart vanishes, and we make no such claim.
 \end{enumerate}
 
 \medskip\noindent
@@ -1727,8 +2737,17 @@ Euler--Maclaurin expansion
 carried with its classical explicit remainder
 $\lvert E\rvert\le\bigl\lvert(s)_{2K+1}\tfrac{B_{2K+2}}{(2K+2)!}N^{-\sigma-2K-1}\bigr\rvert
 \cdot\tfrac{\lvert s+2K+1\rvert}{\sigma+2K+1}$,
-plus an explicit allowance for the working-precision rounding. This returns an
-\emph{enclosure} $\zeta(s)\in v\pm\rho$. Since
+plus an accumulated bound for the working-precision rounding. This returns
+$\zeta(s)\in v\pm\rho$.
+
+A word on what that word carries. The \emph{truncation} bound is a theorem. The
+\emph{rounding} bound is the standard accumulation $M\cdot10^{-D}\sum\lvert\text{term}\rvert$
+over $M$ correctly-rounded operations --- an assumption about \texttt{mpmath}'s
+arithmetic, not a theorem about it, and it is the one place where ``certified'' below
+means \emph{certified relative to a stated model of the library}. Substituting a
+ball-arithmetic backend would discharge that assumption and change nothing else. It is
+worth being exact about this because the same word is used in \S\ref{sec:formalization}
+for machine-checked Lean, where it means something stronger. Since
 $\operatorname{sign}u_\Delta=\operatorname{sign}Z$ with
 $Z(t)=e^{i\vartheta(t)}\zeta(\tfrac12+it)$ and the two discarded factors strictly
 positive, the sign of the readout is proved wherever $\lvert Z\rvert>\rho$.
@@ -1947,10 +2966,20 @@ because the conclusions drawn from $M$ are certificates. It is supplied in
 \begin{itemize}
 \item $\lvert\tfrac14+z^{2}\rvert\le\tfrac14+(\lvert m\rvert+r)^{2}$ and
 $\lvert\pi^{-s/2}\rvert\le\pi^{-(1/2-r)/2}$, both elementary;
-\item $\lvert\Gamma(s/2)\rvert$ by Stirling with its classical explicit remainder
-$\lvert\log\Gamma(w)-[(w-\tfrac12)\log w-w+\tfrac12\log2\pi]\rvert\le1/(12\lvert w\rvert)$,
-valid for $\operatorname{Re}w>0$, with $\operatorname{Re}[(w-\tfrac12)\log w-w]$ bounded
-over the box by its value at a corner, each product being linear in each factor;
+\item $\lvert\Gamma(s/2)\rvert$ by Stirling with its explicit remainder. The familiar
+constant $1/(12\lvert w\rvert)$ is the \emph{real-argument} form. For complex $w$ the
+remainder is sector-dependent:
+\[
+  \lvert R_1(w)\rvert\;\le\;\frac{\sec^{2}(\tfrac12\arg w)}{12\lvert w\rvert}.
+\]
+On every box used
+here $\operatorname{Re}w>0$ and $\operatorname{Im}w>0$, so $0<\arg w<\pi/2$ and
+$\sec^{2}(\tfrac12\arg w)<2$, giving the safe uniform bound $1/(6\lvert w\rvert)$ --- which
+is what the code uses. The difference is numerically immaterial ($\lvert w\rvert\approx
+m/2$, so the term is $\sim10^{-3}$ at $m=14$), but the real-argument hypothesis is not the
+one that applies here and we do not invoke it. $\operatorname{Re}[(w-\tfrac12)\log w-w]$
+is bounded over the box by its value at a corner, each product being linear in each
+factor;
 \item $\lvert\zeta(s)\rvert$ \emph{term by term from the same Euler--Maclaurin expansion
 the certified evaluator uses}. This is the step that removes the need for a quoted
 subconvexity constant: every term, and the remainder, is an explicit function of
@@ -2036,8 +3065,10 @@ fiber and descent (\S\S\ref{sec:fiber}--\ref{sec:descent})
 \end{center}
 
 \noindent
-The geometry modules are what make \S\S\ref{sec:geometry}--\ref{sec:descent} statements
-rather than a picture: the helix and its velocity, the closed-form arclength, the
+The counts are the size of the artifact and nothing more: they are given so that a
+reader can find the sources and check that a cited name exists, not as a measure of
+content, and several of the counted theorems are one-line facts. The geometry modules
+are what make \S\S\ref{sec:geometry}--\ref{sec:descent} statements rather than a picture: the helix and its velocity, the closed-form arclength, the
 climber and the height identity $z=e^{y}$, the carrier index $N(y)=S(k(y))/\Delta$, the
 Cayley step, the global inverse of the height readout, the antipodal cancellation of
 the $\mu_6$ cell, the residue law, and Theorem~\ref{thm:focal} --- the bridge
@@ -2045,7 +3076,7 @@ identifying focal $\pm$ closure with the vanishing of the $L$-function --- are a
 machine-checked, with the same three-axiom footprint as the rest.
 
 \noindent
-Five further modules are cited above but are not part of that chain and are not
+Ten further modules are cited above but are not part of that chain and are not
 counted in the table:
 
 \begin{center}\footnotesize
@@ -2058,6 +3089,11 @@ module & theorems & carries\\
 \lean{UnitMidpoint.lean} & 8 & \\
 \lean{ZetaSectorBank.lean} & 11 & the $\mu_6$ sector decomposition, Remark~\ref{rem:zetabridge}\\
 \lean{SectorBalanceRefuted.lean} & 11 & Theorem~\ref{thm:arcobstruction}\\
+\lean{LogWeightOperator.lean} & 20 & Theorem~\ref{thm:logweight}\\
+\lean{CarrierHamiltonian.lean} & 18 & Theorems~\ref{thm:generator}, \ref{thm:zetatrace}\\
+\lean{CarrierBank.lean} & 14 & Theorem~\ref{thm:bank}\\
+\lean{CarrierRegistration.lean} & 11 & Theorem~\ref{thm:gauge}, Propositions~\ref{prop:cellangle}, \ref{prop:geohead}, \S\ref{sec:fiber}\\
+\lean{FiberIsTheFunction.lean} & 10 & Theorem~\ref{thm:fiberisfunction}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2071,7 +3107,7 @@ at all, so that conditional result is vacuous rather than useful. After it,
 \textbf{no theorem cited in this paper takes an unproved proposition as an argument.}
 
 \noindent
-Zero \lean{sorry}, zero \lean{axiom}. Every one of the $109$ identifiers named in a
+Zero \lean{sorry}, zero \lean{axiom}. Every one of the $167$ identifiers named in a
 \textsc{Lean:} line above was checked \emph{individually} with \lean{#print axioms},
 and each reports exactly
 \[
@@ -2083,7 +3119,11 @@ reported \lean{sorryAx}; without that control the audit would not establish that
 procedure can fail.
 
 \paragraph{What is taken from outside.}
-The construction rests on four facts from Mathlib, and on no others:
+The construction rests on the following facts from Mathlib. An earlier draft listed
+four and said ``and on no others''; that was wrong --- the boundary proposition
+(Proposition~\ref{prop:boundary}) consumes the non-vanishing of $\zeta$ on
+$\operatorname{Re}s=1$, which is not a formality, and several smaller facts are used
+besides. The list below was extracted from the sources rather than recalled:
 
 \begin{center}\footnotesize\raggedright
 \begin{tabular}{@{}ll@{}}
@@ -2094,12 +3134,30 @@ identifier & content\\
 \lean{completedRiemannZeta}$_0$ & its entire companion $\Lambda_0$\\
 \lean{completedRiemannZeta_one_sub} & the functional equation $\Lambda(1-s)=\Lambda(s)$\\
 \lean{differentiable_completedZeta}$_0$ & $\Lambda_0$ is entire\\
+\lean{completedRiemannZeta_eq} & $\Lambda=\Lambda_0-\tfrac1s-\tfrac1{1-s}$\\
+\lean{riemannZeta_def_of_ne_zero} & $\zeta$ from $\Lambda$ off the poles\\
+\lean{Gamma}$\mathbb R$ & the archimedean factor\\
+\lean{Gamma}$\mathbb R$\lean{_ne_zero_of_re_pos} & $\GR\ne0$ for $\operatorname{Re}s>0$\\
+\lean{riemannZeta_ne_zero_of_one_lt_re} & $\zeta\ne0$ for $\operatorname{Re}s>1$\\
+\lean{riemannZeta_ne_zero_of_one_le_re} & $\zeta\ne0$ for $\operatorname{Re}s\ge1$\\
+\midrule
+\lean{zeta_eq_tsum_one_div_nat_add_one_cpow} & $\zeta(s)=\sum_n(n+1)^{-s}$, $\operatorname{Re}s>1$\\
+\lean{LSeries_vonMangoldt_eq_deriv_riemannZeta_div} & $\sum_n\Lambda(n)n^{-s}=-\zeta'/\zeta$, $\operatorname{Re}s>1$\\
+\lean{riemannZeta_eulerProduct_tprod} & the Euler product, $\operatorname{Re}s>1$\\
+\lean{Real.log_nat_eq_sum_factorization} & $\log n=\sum_p v_p(n)\log p$\\
+\lean{LinearPMap.adjoint_isFormalAdjoint} & the adjoint of an unbounded operator\\
+\lean{HilbertBasis.mk} & orthonormal and total $\Rightarrow$ Hilbert basis\\
+\lean{Real.summable_nat_rpow_inv} & $\sum_n n^{-p}<\infty\iff p>1$\\
 \bottomrule
 \end{tabular}
 \end{center}
 
 \noindent
-Those are the analytic inputs, and they are the only ones.
+The substantive one among the first group is the non-vanishing on the line
+$\operatorname{Re}s=1$ (the last row of that group), a theorem of Hadamard and de la
+Vall\'ee Poussin on which Proposition~\ref{prop:boundary} rests. The second group serves
+\S\ref{sec:hamiltonian} only, and is why Theorem~\ref{thm:zetatrace} is described there as
+Mathlib's analytic facts read on an operator.
 
 In particular the reality of $\Lambda(\tfrac12+it)$ --- Proposition~\ref{prop:xireal},
 on which the whole readout depends --- is \emph{not} assumed. It is proved here, in a
@@ -2117,9 +3175,9 @@ claimed against any other.
 \begin{center}\footnotesize
 \begin{tabular}{@{}ll@{}}
 \toprule
-Lean~4 toolchain & \lean{leanprover/lean4:v4.33.0-rc2}\\
-Mathlib & \lean{v4.33.0-rc2}\\
-Mathlib commit & \lean{51e6992efd06126df61a496bebf8f49482a4e129}\\
+Lean~4 toolchain & \lean{leanprover/lean4:v4.34.0}\\
+Mathlib tag (\lean{inputRev} in \lean{lake-manifest.json}) & \lean{v4.34.0}\\
+Mathlib commit (the tag's target) & \lean{5ed2965256430c3649e86755f9576b54eca72435}\\
 \bottomrule
 \end{tabular}
 \end{center}
@@ -2130,9 +3188,10 @@ Mathlib commit & \lean{51e6992efd06126df61a496bebf8f49482a4e129}\\
 \paragraph{The proofs.}
 With the toolchain and revision of \S\ref{sec:formalization} in place,
 \begin{center}
-\lean{lake build RequestProject.CarrierUniqueEvent RequestProject.CarrierStripParity}
+\lean{lake build RequestProject.CarrierUniqueEvent RequestProject.CarrierStripParity RequestProject.CarrierBank}
 \end{center}
-compiles the two capstone modules and, transitively, the other five. The axiom audit
+compiles the two capstone modules and, transitively, the other five; the third target
+compiles the operator modules of \S\ref{sec:hamiltonian}. The axiom audit
 is a separate file of \lean{#print axioms} lines carrying the positive control, run
 with \lean{lake env lean}; it is not part of the library build, so that the control's
 \lean{sorry} never enters the tree.
@@ -2185,6 +3244,8 @@ script & claim tested & pre-registered refutation\\
   & any sign disagreement in $400$ probes\\
 \lean{checks/winding_unsound.py} & naive winding test unsound
   & a count stable under refinement\\
+\lean{checks/band_verification.py} & band count $=$ real-zero count
+  & a window where they differ\\
 \lean{checks/region_bounds_val.py} & $M$ is an upper bound
   & any sampled $\lvert\Xi\rvert$ above $M$\\
 \lean{checks/certified_count.py} & counts match, soundly
@@ -2193,6 +3254,18 @@ script & claim tested & pre-registered refutation\\
   & any index with margin $\le1$\\
 \lean{checks/certified_bisect.py} & narrowing is evaluator-limited
   & narrowing stalling at the bank's floor\\
+\lean{checks/rank_certified.py} & contour Hankel has rank $K$
+  & rank above $K$, or $s_0$ non-integral\\
+\lean{checks/pencil_verify.py} & proposals verify at the anchors
+  & any proposal unverifiable\\
+\lean{checks/certified_rank.py} & singular values certified (Weyl)
+  & a rank-gap enclosure containing $0$\\
+\lean{checks/strip_sliver.py} & the sliver is zero-free
+  & a node with $\lvert\zeta\rvert-\mathrm{rad}\le L\rho$\\
+\lean{checks/operator_positivity.py} & inertia reads $0$, real windows
+  & a certified negative eigenvalue\\
+\lean{checks/positivity_control.py} & planted pair: $\lambda_{\min}<0$
+  & a planted pair with $\lambda_{\min}\ge0$\\
 \lean{checks/Sx_bounded.py} & $S_x$ bounded by $B(x)$
   & any $\lvert S_x\rvert$ exceeding $B(x)$\\
 \lean{checks/Sx_growth.py} & $\max\lvert S_x-S\rvert>\tfrac12$
@@ -2232,6 +3305,21 @@ projection; the double end, the focal cancellation and the height are features o
 object. The sorting is not a matter of taste --- the Cayley step is what makes the
 strip the image of a circle, and it is machine-checked, as are the helix, its arclength
 and the height identity $z=e^{y}$.
+
+\emph{As geometry doing work}, the accounting is \S\ref{sec:loadbearing}: the chart of
+the bank is Hardy's $Z$ up to a positive factor, so the isolation chain is what the chart
+reads and coincides with the classical argument, and the inventory there is of what the
+chart cannot say. Six of the nine items are ordinary --- an object, a cost, a constant, a calibration, an involution, an
+equivalence. Three are not: in the ordinate variable the distance off the line is a
+radial coordinate, and a certified band count matched against certified sign changes
+yields a statement about $\beta$ that the readout's sign provably cannot reach
+(Theorem~\ref{thm:bandverify}, band-free by Corollary~\ref{cor:bandfree}); the carrier's
+moment data carries a second counter, whose eigenvalues return the abscissa directly,
+whose singular values are certified (\S\ref{sec:certrank}) and whose inertia reads the
+off-line count (\S\ref{sec:inertia}); and the fiber's generator is a self-adjoint operator
+on $\ell^2$ whose flow is the bank and whose Hilbert space ends at the critical line
+(\S\ref{sec:hamiltonian}). Those are the places where the three-dimensional frame is not a
+way of speaking about a one-dimensional argument.
 
 \emph{As a computation}, the chain from the representation to
 $\zeta(\tfrac12+i\gamma)=0$ is machine-checked end to end, the implementation is
@@ -2323,6 +3411,23 @@ reprinted in \emph{Collected Papers}, Vol.~I, Springer, 1989.
 D.~J. Platt,
 \emph{Isolating some non-trivial zeros of zeta},
 Math. Comp. \textbf{86} (2017), no.~307, 2449--2467.
+
+\bibitem{BostConnes1995}
+J.-B. Bost and A. Connes,
+\emph{Hecke algebras, type III factors and phase transitions with spontaneous symmetry
+breaking in number theory},
+Selecta Math. (N.S.) \textbf{1} (1995), no.~3, 411--457.
+
+\bibitem{BerryKeating1999}
+M.~V. Berry and J.~P. Keating,
+\emph{The Riemann zeros and eigenvalue asymptotics},
+SIAM Rev. \textbf{41} (1999), no.~2, 236--266.
+
+\bibitem{Connes1999}
+A. Connes,
+\emph{Trace formula in noncommutative geometry and the zeros of the Riemann zeta
+function},
+Selecta Math. (N.S.) \textbf{5} (1999), no.~1, 29--106.
 
 \end{thebibliography}
 
