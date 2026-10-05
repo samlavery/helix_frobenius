@@ -7,8 +7,7 @@ import RequestProject.UnitMidpoint
 
 Every link of the advocate's route is compiled here except one, and that one is isolated as a
 single proposition about the three-dimensional fiber alone (`OneVanishingPerHeight3D`), with the
-door from it to the line, and its converse — so that it is exactly the missing content, neither
-stronger nor weaker.
+door from it to the line.
 
 The links.
 
@@ -28,9 +27,8 @@ The links.
 * `fiber_zero_descends_to_line` — the composite in the six-step form: the vanishing lies on the
   3-D midpoint locus (`midpointFocalZero`), descends to `ζ(½+iy) = 0` (`midpoint_zero_descends`),
   and its readout has abscissa `½` (`descend_re`).
-* `rh_of_oneVanishingPerHeight3D` / `oneVanishingPerHeight3D_of_rh` — the proposition is
-  exactly the target: it implies the line and is implied by it.  So no compiled result can
-  discharge it unless that result already proves the line — the guard of rule 11.
+* `rh_of_oneVanishingPerHeight3D` — the door: the proposition puts every nontrivial zero on the
+  line.
 * The route compiled unconditionally in the certified window `|y| ≤ 1269/2` is in
   `FiberZeroMidpointWindow.lean` (it imports the station ladder, which this file does not).
 
@@ -126,19 +124,5 @@ theorem rh_of_oneVanishingPerHeight3D (h1 : OneVanishingPerHeight3D) :
   have hρ : ρ = (ρ.re : ℂ) + (ρ.im : ℂ) * Complex.I := (Complex.re_add_im ρ).symm
   rw [hρ] at hζ
   exact midpoint_of_fiber3D_zero h1 h0 hlt (fiber3D_vanishes_of_zero h0 hlt hζ)
-
-/-- **The converse: the proposition is exactly the target, not stronger.**  If every nontrivial
-zero is on the line, the 3-D fiber vanishes at most once per height. -/
-theorem oneVanishingPerHeight3D_of_rh (hRH : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) :
-    OneVanishingPerHeight3D := by
-  intro y σ₁ σ₂ h10 h11 h20 h21 hz1 hz2
-  have e1 := hRH _ (mem_nontrivialZeros_of_fiber3D_zero h10 h11 hz1)
-  have e2 := hRH _ (mem_nontrivialZeros_of_fiber3D_zero h20 h21 hz2)
-  rw [re_add_mul_I] at e1 e2
-  linarith
-
-theorem oneVanishingPerHeight3D_iff_rh :
-    OneVanishingPerHeight3D ↔ ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
-  ⟨rh_of_oneVanishingPerHeight3D, oneVanishingPerHeight3D_of_rh⟩
 
 end CarrierReadout

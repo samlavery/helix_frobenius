@@ -186,10 +186,9 @@ impossible state, strict domination and balance at once).  Under the Hermite–B
 `IsHB E` the carrier *is* rigid (`carrierRigid_of_isHB`), so both branches are excluded — recovering
 `hb_no_offaxis_spectral_zero`.
 
-**Honesty boundary.**  This is entirely conditional on `IsHB E`.  For a `Λ`-built structure
-function that hypothesis is precisely "no off-line zeros" — i.e. RH itself.  The trilemma is the
-geometric *shape* the zeros must obey given HB; discharging `IsHB` unconditionally is RH and is
-neither assumed nor proved here. -/
+**Honesty boundary.**  This is entirely conditional on `IsHB E`.  The trilemma is the geometric
+*shape* the zeros must obey given HB; discharging `IsHB` for a `Λ`-built structure function is not
+proved in this file. -/
 
 /-- **Carrier rigidity (off-axis), de Branges avatar.**  `CarrierRigid E z` says one chirality
 strictly dominates the other at `z`: `‖E* z‖ < ‖E z‖ ∨ ‖E z‖ < ‖E* z‖`.  This is the drift-free
@@ -240,8 +239,7 @@ theorem offaxis_zero_rigid_branch_absurd {E : ℂ → ℂ} {z : ℂ}
 with `carrierRigid_of_isHB`: under Hermite–Biehler positivity the carrier is rigid off the real
 axis, the warp branch is excluded, and the cancelled branch is absurd — so no off-axis spectral
 zero exists.  This recovers `hb_no_offaxis_spectral_zero` through the rigidity/domination picture.
-It stays conditional on `IsHB E`; making `IsHB` unconditional for a `Λ`-built `E` is RH, and is
-neither assumed nor proved. -/
+It stays conditional on `IsHB E`; `IsHB` for a `Λ`-built `E` is not proved in this file. -/
 theorem rigidity_excludes_offaxis_zero {E : ℂ → ℂ} (hE : IsHB E) {z : ℂ} (hz : z.im ≠ 0) :
     Bcomp E z ≠ 0 := by
   intro hzero

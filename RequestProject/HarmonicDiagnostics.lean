@@ -112,8 +112,8 @@ theorem contrast_ratio (ρ_on : ℂ) (h_on : ρ_on ∈ ZD.OnLineZeros)
 The "per-zero biconditional" wrappers previously in this section
 (`defect_characterizes_line`, `ratio_characterizes_line`,
 `defect_pos_iff_offline`, `ratio_gt_one_iff_offline`,
-`harmonic_balance_implies_on_line`) were RH-equivalent input traps:
-their hypothesis was no easier than RH itself. They have been removed.
+`harmonic_balance_implies_on_line`) restated their conclusion as their
+hypothesis. They have been removed.
 
 Use `amplitudeDefect_eq_zero_iff`, `envelopeRatio_eq_one_iff`,
 `amplitudeDefect_pos_iff`, `envelopeRatio_gt_one_iff` from `ZetaZeroDefs`
@@ -454,19 +454,6 @@ theorem detector_balance_implies_on_line
   have h := balance ρ hρ 2 (by norm_num)
   exact (prime_detector_iff 2 (by norm_num)).mp h
 
-/-- **On-line → detector balanced at all primes**: If all nontrivial zeros
-lie on the critical line, then the cosh detector reads 1 at every prime
-for every nontrivial zero. -/
-theorem prime_detector_balance_all_of_on_line
-    (hline : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = CoshBalance) :
-    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros →
-      ∀ p : ℕ, Nat.Prime p → coshDetector ρ.re (Real.log (↑p)) = 1 := by
-  intro ρ hρ p hp
-  rw [coshDetector_eq_one_iff
-    (Real.log_ne_zero_of_pos_of_ne_one
-      (Nat.cast_pos.mpr hp.pos) (by exact_mod_cast hp.one_lt.ne'))]
-  exact hline ρ hρ
-
 /-! ## §5g. Positive-Cone Impossibility
 
 The reduced even prime channel is a **positive cone**: every cosh reading
@@ -565,47 +552,12 @@ theorem realizable_implies_online (ρ : ℂ) (hρ : ρ ∈ RealizableZeros) :
     ρ.re = CoshBalance :=
   (prime_detector_iff 2 (by norm_num)).mp (hρ.2 2 (by norm_num))
 
-/-- **Loop identity from on-line**: If all nontrivial zeros are on the line,
-the reflected prime-harmonic loop closes — cosh reads 1 at every prime. -/
-theorem reflected_loop_identity_of_on_line
-    (hline : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = CoshBalance)
-    (ρ : ℂ) (hρ : ρ ∈ ZD.NontrivialZeros)
-    (p : ℕ) (hp : Nat.Prime p) :
-    coshDetector ρ.re (Real.log (↑p)) = 1 := by
-  rw [coshDetector_eq_one_iff
-    (Real.log_ne_zero_of_pos_of_ne_one
-      (Nat.cast_pos.mpr hp.pos) (by exact_mod_cast hp.one_lt.ne'))]
-  exact hline ρ hρ
-
-/-- **The complete biconditional**: Detector balance at all primes for all
-nontrivial zeros ↔ all nontrivial zeros on the critical line.
-Both directions fully proved.
-
-The RH-valued forms (`detector_balance_implies_rh`,
-`prime_detector_balance_all`, `riemannHypothesis_iff_prime_detector_balance`)
-live in `RiemannHypothesisBridge.lean` / `DetectorBalance.lean` to avoid
-an import cycle; here we keep only the critical-line-valued biconditional. -/
-theorem detector_balance_iff_on_line :
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros →
-      ∀ p : ℕ, Nat.Prime p → coshDetector ρ.re (Real.log (↑p)) = 1) ↔
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = CoshBalance) :=
-  ⟨detector_balance_implies_on_line, prime_detector_balance_all_of_on_line⟩
-
-/-- **Detector balance ↔ critical line** (named alias). -/
-theorem prime_detector_balance_iff_critical_line :
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros →
-      ∀ p : ℕ, Nat.Prime p →
-        coshDetector ρ.re (Real.log (↑p)) = 1) ↔
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = CoshBalance) :=
-  detector_balance_iff_on_line
-
 /-! ## §5i. Per-zero diagnostics
 
 The per-prime classifier `coshDetector β (log p) = 1 ↔ β = CoshBalance`
-(from `prime_detector_iff` above) applied at `β = ρ.re`. These are
-diagnostic; they do NOT close RH because their per-zero biconditional
-collapses (across all ρ) to RH itself — the cosh side classifies, it
-does not witness.
+(from `prime_detector_iff` above) applied at `β = ρ.re`.  These are
+diagnostic: the cosh side classifies a zero it is given; it does not
+witness one.
 -/
 
 /-- **Online zeros are zeta zeros with zero excess**: An online nontrivial zero

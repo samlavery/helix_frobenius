@@ -17,8 +17,9 @@ so the jets `S_m = Σ_ρ m_ρ (s−ρ)^{−m}` (`m ≥ 2`) and, with 622's per-a
 Hence the ladder of the JET sequence at an anchor is the ladder of the ATOM sequence, and with 628
 (the jets at an explicit anchor are the explicit prime-and-Γ jets) and 630:
 
-  **`explicit_ladder_iff_rh`: for `Re s₀ < 0`, `Im s₀ ≠ 0`, the Toeplitz forms of
-  `toeplitzCoeff d (jets explicitLogDeriv s₀)` are all real and nonnegative ⟺ RH.**
+  **`rh_of_explicit_ladder`: for `Re s₀ < 0`, if the Toeplitz forms of
+  `toeplitzCoeff d (jets explicitLogDeriv s₀)` are all real and nonnegative, every nontrivial zero
+  is on the line.**
 -/
 
 open Complex Finset Filter Topology
@@ -355,9 +356,10 @@ def ExplicitLadder (s : ℂ) : Prop :=
     0 ≤ (toeplitzForm (hermExt (toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ)
       (jets explicitLogDeriv s))) c).re
 
-/-- **RH is the positivity of the explicit sequence at one anchor**: for `Re s < 0`, the Toeplitz forms of
-the coefficient sequence built from the explicit prime-and-Γ jets are all real and nonnegative iff RH. -/
-theorem explicit_ladder_iff_rh {s : ℂ} (hs : s.re < 0) : ExplicitLadder s ↔ RH := by
+/-- **The positivity of the explicit sequence at one anchor puts every zero on the line**: for
+`Re s < 0`, if the Toeplitz forms of the coefficient sequence built from the explicit prime-and-Γ jets
+are all real and nonnegative, every nontrivial zero has real part `½`. -/
+theorem rh_of_explicit_ladder {s : ℂ} (hs : s.re < 0) (h : ExplicitLadder s) : RH := by
   have hs0 : s ∉ ZD.NontrivialZeros := notMem_nontrivialZeros_of_re_nonpos hs.le
   have hs' : s.re ≠ 1 / 2 := by intro h; linarith
   have hseq : toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ) (jets explicitLogDeriv s) = xiCoeff s := by
@@ -365,11 +367,11 @@ theorem explicit_ladder_iff_rh {s : ℂ} (hs : s.re < 0) : ExplicitLadder s ↔ 
     rw [← jets_xiLogDeriv_eq_explicit hs, toeplitzCoeff_jets_eq_xiCoeff hs0 hs' k]
   have e : ExplicitLadder s = Ladder s := by
     unfold ExplicitLadder Ladder; rw [hseq]
-  rw [e]
-  exact anchor_ladder_iff_rh hs0 (by linarith)
+  rw [e] at h
+  exact rh_of_ladder hs0 (by linarith) h
 
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.iteratedDeriv_xiLogDeriv_series
 #print axioms CriticalLinePhasor.SeatingLedger.toeplitzCoeff_jets_eq_xiCoeff
-#print axioms CriticalLinePhasor.SeatingLedger.explicit_ladder_iff_rh
+#print axioms CriticalLinePhasor.SeatingLedger.rh_of_explicit_ladder

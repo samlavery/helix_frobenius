@@ -4,9 +4,9 @@ import RequestProject.SeatPrimeAnchor
 /-!
 # The prime-anchor seat as a Hermitian form: the attainment gap closed (ledger 548)
 
-`SeatPrimeAnchor.lean` proved RH ⟺ nonnegativity of the order-`N` FE-paired form along the
-real test family `x^N (x − m₀)` at anchors `1 < σ₀ < 3/2`, with the ⟸ direction resting on the
-attainment of the depth supremum (`rh_of_primeAnchorForm_nonneg`, hypothesis `∃ ρ, MaxDepth ρ`).
+`SeatPrimeAnchor.lean` proved that nonnegativity of the order-`N` FE-paired form along the
+real test family `x^N (x − m₀)` at anchors `1 < σ₀ < 3/2` puts every zero on the line, resting on
+the attainment of the depth supremum (`rh_of_primeAnchorForm_nonneg`, hypothesis `∃ ρ, MaxDepth ρ`).
 This file removes that hypothesis by widening the test family to every polynomial `R ∈ ℂ[y]` with
 `R(0) = 0`.  With the twisted nodes `x_ρ = 1/(s − ρ)` and `x'_ρ = 1/(ρ − (1 − s̄))` the form is
 
@@ -16,8 +16,8 @@ which is the Hermitian form `Σ_ρ m_ρ (Σ_j v̄_j u_ρ^{j+1})(Σ_k v_k u'_ρ^{
 coordinates `R(y) = Σ_j v_j (i y)^{j+1}`; for real `R` it is the compiled form
 (`hermTerm_real_family`).
 
-* On the line `x'_ρ = conj x_ρ`, so every term is `m_ρ |R(conj x_ρ)|² ≥ 0`
-  (`hermForm_re_nonneg_of_online`) — for every complex polynomial `R`.
+* At an on-line zero `x'_ρ = conj x_ρ`, so its term is `m_ρ |R(conj x_ρ)|² ≥ 0`
+  (`hermTerm_re_nonneg_of_online`) — for every complex polynomial `R`.
 * Off the line no extremality is needed.  At the anchor over ANY off-line zero `ρ₀` take
 
     `R_N(y) = y^N · Π_{ρ' ∈ F} (y − x'_{ρ'}) · (y − μ)`,
@@ -30,8 +30,9 @@ coordinates `R(y) = Σ_j v_j (i y)^{j+1}`; for real `R` it is the compiled form
   bracket `≤ −|G₀|(a−b)²/4 < 0`, and `ab > 1` makes the pair dominate the tail
   (`exists_hermForm_neg`).
 
-Main theorem `rh_iff_hermForm_nonneg`: RH ⟺ `Re Q_w(R) ≥ 0` for every anchor `1 < σ₀ < 3/2` and
-every `R` with `R(0) = 0` — unconditional in both directions.  No `sorry`, no `axiom`.
+Main theorem `online_of_hermForm_nonneg`: `Re Q_w(R) ≥ 0` for every anchor `1 < σ₀ < 3/2` and
+every `R` with `R(0) = 0` puts every nontrivial zero on the line, with no attainment hypothesis.
+No `sorry`, no `axiom`.
 -/
 
 open Complex Filter Topology
@@ -103,17 +104,6 @@ theorem hermTerm_re_nonneg_of_online {w : ℂ} (R : Polynomial ℂ) {ρ : Zero}
   · rw [Complex.ofReal_re]
     exact mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)
   · rw [Complex.ofReal_im]
-
-/-- **The on-line direction**: if every zero is on the line, the Hermitian form is nonnegative at
-every anchor along every polynomial. -/
-theorem hermForm_re_nonneg_of_online {w : ℂ} (R : Polynomial ℂ)
-    (hon : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) :
-    0 ≤ (hermForm w R).re := by
-  unfold hermForm
-  by_cases hsum : Summable (hermTerm w R)
-  · rw [Complex.re_tsum hsum]
-    exact tsum_nonneg (fun ρ => (hermTerm_re_nonneg_of_online R (hon ρ.val ρ.2)).1)
-  · rw [tsum_eq_zero_of_not_summable hsum, Complex.zero_re]
 
 /-! ## Chart formulas for the twisted nodes -/
 
@@ -488,20 +478,17 @@ theorem exists_hermForm_neg {ρ : Zero} (hoff : 1 / 2 < ρ.val.re) {σ₀ : ℝ}
     (Complex.re_le_norm _).trans htail
   linarith [hzre, hkey, hre_le]
 
-/-! ## The unconditional criterion -/
+/-! ## The door -/
 
-/-- **The prime-anchor seat criterion, unconditional in both directions.**  RH holds iff the
-Hermitian form `Q_w(R) = Σ_ρ m_ρ conj(R(conj x_ρ)) R(x'_ρ)` — whose entries are absolutely
-convergent, prime-computable Dirichlet series at anchors `1 < σ₀ < 3/2` — has nonnegative real
-part at every such anchor along every polynomial `R` with `R(0) = 0`. -/
-theorem rh_iff_hermForm_nonneg :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    (∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
-      0 ≤ (hermForm (anchor γ σ₀) R).re) := by
-  constructor
-  · intro hon γ σ₀ _ _ R _
-    exact hermForm_re_nonneg_of_online R hon
-  · intro hpos ρ hρ
+/-- **The prime-anchor seat door, with no attainment hypothesis.**  If the Hermitian form
+`Q_w(R) = Σ_ρ m_ρ conj(R(conj x_ρ)) R(x'_ρ)` — whose entries are absolutely convergent,
+prime-computable Dirichlet series at anchors `1 < σ₀ < 3/2` — has nonnegative real part at every
+such anchor along every polynomial `R` with `R(0) = 0`, every nontrivial zero is on the line. -/
+theorem online_of_hermForm_nonneg
+    (hpos : ∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
+      0 ≤ (hermForm (anchor γ σ₀) R).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  · intro ρ hρ
     by_contra hne
     rcases lt_or_gt_of_ne hne with hlt | hgt
     · have hoff : 1 / 2 < (feReflectZ ⟨ρ, hρ⟩).val.re := by
@@ -517,6 +504,5 @@ theorem rh_iff_hermForm_nonneg :
 
 end CriticalLinePhasor.SeatPrimeAnchorHermitian
 
-#print axioms CriticalLinePhasor.SeatPrimeAnchorHermitian.hermForm_re_nonneg_of_online
 #print axioms CriticalLinePhasor.SeatPrimeAnchorHermitian.exists_hermForm_neg
-#print axioms CriticalLinePhasor.SeatPrimeAnchorHermitian.rh_iff_hermForm_nonneg
+#print axioms CriticalLinePhasor.SeatPrimeAnchorHermitian.online_of_hermForm_nonneg

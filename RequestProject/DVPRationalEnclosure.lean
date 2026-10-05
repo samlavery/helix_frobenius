@@ -8,7 +8,7 @@ import Mathlib.Data.Rat.BigOperators
 /-!
 # Kernel-rational Taylor enclosures for exp, cos, sin
 
-Foundation of the finite-conjunct campaign (`seat_criterion_split_iff`
+Foundation of the finite-conjunct campaign (`online_of_seat_split`
 item (1), RH_LEDGER 342): a rigorous evaluation of ζ at low height reduces
 to rational arithmetic the kernel checks, plus ONE generic enclosure lemma
 per special function.  `Complex.exp_bound` supplies arbitrary-order error

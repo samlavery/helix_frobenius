@@ -23,8 +23,7 @@ Compiled here:
   `s = ½ + i·z` (the compiled `spectralCoord` rotation), the bank's
   `Re[logDeriv]/(σ−½)` has the seatMass sign for every finite bank of
   unitary clocks.  Even multiplicities never appear — the mass register is
-  parity-blind at finite rank exactly as at the limit
-  (`seatMass_nonneg_of_online`).
+  parity-blind at finite rank.
 
 The kill tree's remaining content is the middle arrow alone: a registered
 self-dual family with line-supported zero measure and locally-uniform

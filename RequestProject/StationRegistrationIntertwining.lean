@@ -13,8 +13,7 @@ station within half the local gap on both sides. Then
 * two distinct indices never register the same ordinate (`no_shared_ordinate`), so an off-line
   zero and its mirror (same ordinate, different zeros) cannot both be registered — every zero is on
   the line (`online_of_stationRegistration`);
-* hence **full intertwining** (`semiconj_of_stationRegistration`), and the enumeration is injective
-  (`injective_of_stationRegistration`).
+* and the enumeration is injective (`injective_of_stationRegistration`).
 
 This is the global form of `shadowing_implies_online_simple` (RegistrationShadowing.lean), chained
 to the intertwining register. The hypothesis is the residual tail law of the registry
@@ -90,12 +89,6 @@ theorem online_of_stationRegistration (R : StationRegistration t) (ρ : XiZeroIn
   · exact R.no_shared_ordinate hlt him
   · exact R.no_shared_ordinate hgt him.symm
 
-/-- **Full intertwining from a station registration.** -/
-theorem semiconj_of_stationRegistration (R : StationRegistration t) :
-    Function.Semiconj zeroHeightCorrespondence xiZeroLedgerOperator
-      (carrierThreeDOperator 1 1) :=
-  semiconj_of_online (online_of_stationRegistration R)
-
 /-- The same, as the Mathlib-facing statement on the zero set. -/
 theorem nontrivialZeros_online_of_stationRegistration (R : StationRegistration t) :
     ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
@@ -104,5 +97,4 @@ theorem nontrivialZeros_online_of_stationRegistration (R : StationRegistration t
 end CriticalLinePhasor.XiChannel
 
 #print axioms CriticalLinePhasor.XiChannel.online_of_stationRegistration
-#print axioms CriticalLinePhasor.XiChannel.semiconj_of_stationRegistration
 #print axioms CriticalLinePhasor.XiChannel.nontrivialZeros_online_of_stationRegistration

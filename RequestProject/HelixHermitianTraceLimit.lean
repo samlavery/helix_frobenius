@@ -3,9 +3,8 @@ import RequestProject.CaptureInterfaceAudit
 /-!
 # The Hermitian trace-limit reduction: the non-costume operator route to capture
 
-`HelixSpectralLimit` audits its own `SpectralLimitCaptures` as a costume: quantifying arbitrary
-real sequences pointwise re-encodes `Re ρ = ½` and gives the operator no work to do
-(`spectralLimitCaptures_iff_grh`).  This file states the genuine reduction.
+`HelixSpectralLimit` notes that its own `SpectralLimitCaptures` quantifies arbitrary real
+sequences pointwise and gives the operator no work to do.  This file states the genuine reduction.
 
 The object is a **Hermitian tower**: any sequence of Hermitian matrices `A n`, with the
 *canonical* eigenvalue resolvent traces
@@ -21,12 +20,11 @@ compiled completed resonance (`completed_resonates_of_traceIdentity`) forbids th
 off-line zero's pole parameter, and GRH follows (`grh_of_hermitian_traceLimit`).
 
 Register, priced exactly: the hypothesis is a statement about the canonical traces of a
-specific operator tower, uniform on compacts — not a per-zero re-encoding.  Its converse is
-*not* provable by re-encoding: constructing from GRH a Hermitian tower whose traces converge to
-the channel is the genuine Hilbert–Pólya construction problem, and no such construction is
-claimed here.  This is the corrected form of the conclusion's "the one remaining closure step
-is the operator": the remaining step is exactly `hlim`, with everything downstream compiled.
-No RH/GRH is assumed anywhere in this file.
+specific operator tower, uniform on compacts — not a per-zero re-encoding.  Exhibiting a
+Hermitian tower whose traces converge to the channel is the Hilbert–Pólya construction
+problem; this file supplies the door, not the tower.  This is the corrected form of the
+conclusion's "the one remaining closure step is the operator": the remaining step is exactly
+`hlim`, with everything downstream compiled.
 -/
 
 open Filter Topology Complex DirichletCharacter
@@ -95,23 +93,7 @@ theorem grh_of_hermitian_traceLimit (χ : DirichletCharacter ℂ N) (hχ : χ �
       (isOpen_offReal.mem_nhds hz)).continuousAt.tendsto).mono_left nhdsWithin_le_nhds
   exact completed_resonates_of_traceIdentity hχ hid hρ hfin
 
-/-- The trace-limit hypothesis is not a re-encoding: it implies the costume statement, but
-through the operator — every pole parameter is forced real by the tower's reality, and the
-constant sequence then witnesses the pointwise capture.  (The converse implication is exactly
-what the costume audit showed carries no operator content.) -/
-theorem spectralLimitCaptures_of_hermitian_traceLimit
-    (χ : DirichletCharacter ℂ N) (hχ : χ ≠ 1)
-    (k : ℕ → ℕ) (A : ∀ n, Matrix (Fin (k n)) (Fin (k n)) ℂ)
-    (hA : ∀ n, (A n).IsHermitian) (T : ℂ → ℂ)
-    (hid : ∀ z, T z = -logDeriv (completedLFunction χ) (1 / 2 + Complex.I * z))
-    (hlim : TendstoLocallyUniformlyOn
-      (fun n => hermitianResolventTrace (hA n)) T atTop offReal) :
-    HelixLimit.SpectralLimitCaptures χ :=
-  HelixLimit.spectralLimitCaptures_of_grh χ
-    (grh_of_hermitian_traceLimit χ hχ k A hA T hid hlim)
-
 end CriticalLinePhasor.CaptureInterfaceAudit
 
 #print axioms CriticalLinePhasor.CaptureInterfaceAudit.hermitianResolventTrace_differentiableOn
 #print axioms CriticalLinePhasor.CaptureInterfaceAudit.grh_of_hermitian_traceLimit
-#print axioms CriticalLinePhasor.CaptureInterfaceAudit.spectralLimitCaptures_of_hermitian_traceLimit

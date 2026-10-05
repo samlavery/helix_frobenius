@@ -8,8 +8,8 @@ This file isolates the Hilbert–Pólya content cleanly and **unconditionally**:
 cancellation of `Lχ` is realized as a kernel of the fixed self-adjoint generator `Aχ`, *then* every
 nontrivial zero lies on the critical line (GRH for `χ`).
 
-The realization hypothesis is the genuine RH-strength input — it is isolated as an explicit
-hypothesis, neither assumed globally nor proved here (proving it is GRH).  What *is* proved
+The realization hypothesis is the input — it is isolated as an explicit hypothesis, neither
+assumed globally nor proved here.  What *is* proved
 unconditionally is the implication: a self-adjoint kernel forces the spectral height
 `specHeight s = -i(s-1/2)` to be a **real** eigenvalue (von Neumann reality), hence `Re s = 1/2`.
 

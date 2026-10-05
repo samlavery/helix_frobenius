@@ -107,14 +107,8 @@ theorem PositiveStationRegistration.all_online_simple (R : PositiveStationRegist
     have h := R.online_simple ⟨(starRingEnd ℂ) ρ.val, hc⟩ hcp
     simpa only [Complex.conj_re, FoliatedGlobalPolarization.xiOrderNat_conj] using h
 
-theorem PositiveStationRegistration.semiconj (R : PositiveStationRegistration t) :
-    Function.Semiconj zeroHeightCorrespondence xiZeroLedgerOperator
-      (ThreeDFocal.carrierThreeDOperator 1 1) :=
-  semiconj_of_online (fun ρ => (R.all_online_simple ρ).1)
-
 end CriticalLinePhasor.XiChannel
 
 #print axioms CriticalLinePhasor.XiChannel.PositiveStationRegistration.ordinate_injective
 #print axioms CriticalLinePhasor.XiChannel.PositiveStationRegistration.online_simple
 #print axioms CriticalLinePhasor.XiChannel.PositiveStationRegistration.all_online_simple
-#print axioms CriticalLinePhasor.XiChannel.PositiveStationRegistration.semiconj

@@ -1140,73 +1140,6 @@ theorem allCanonicalZeroFibersRideCarrier_iff_eachZeroPoleResolvent_eq_carrierBa
   (globalCoordinateIdentification_iff_allCanonicalZeroFibersRideCarrier chiOne).symm.trans
     (globalCoordinateIdentification_iff_eachZeroPoleResolvent_eq_carrierBasisReadout chiOne z)
 
-/-- A self-adjoint xi receiver transfers every upper analytic zero all the way from its literal
-3D spectral fiber to its conservative native source and completed focal/operator event. -/
-theorem upperNative3DSourceTransfer_of_selfAdjointXiReceiver
-    (chiOne : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (nhdsWithin z {z}ᶜ) (nhds L)) :
-    ∀ rho ∈ ZD.NontrivialZeros, 0 < rho.im →
-      Nonempty (PrincipalZeroNative3DSourceTransfer chiOne rho) := by
-  have hglobal :=
-    (globalCoordinateIdentification_and_upperNative3D_of_selfAdjointXiReceiver
-      chiOne ha hReg).1
-  exact (globalCoordinateIdentification_iff_upperNative3DSourceTransfer chiOne).1 hglobal
-
-/-- The same receiver transfers the complete two-sided nontrivial zero set into native 3D
-sources, using the proved conjugation transport and real-axis exclusion. -/
-theorem allNative3DSourceTransfer_of_selfAdjointXiReceiver
-    (chiOne : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (nhdsWithin z {z}ᶜ) (nhds L)) :
-    ∀ rho ∈ ZD.NontrivialZeros,
-      Nonempty (PrincipalZeroNative3DSourceTransfer chiOne rho) := by
-  have hglobal :=
-    (globalCoordinateIdentification_and_upperNative3D_of_selfAdjointXiReceiver
-      chiOne ha hReg).1
-  exact (globalCoordinateIdentification_iff_allNative3DSourceTransfer chiOne).1 hglobal
-
-/-- The self-adjoint xi receiver route lands directly in the literal state-level assertion that
-every canonical analytic zero fiber rides its carrier, after which carrier-to-helix placement is
-already the geometric field `CarrierState3D.point_eq_gammaY`. -/
-theorem allCanonicalZeroFibersRideCarrier_of_selfAdjointXiReceiver
-    (chiOne : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (nhdsWithin z {z}ᶜ) (nhds L)) :
-    ∀ (rho : ℂ) (hrho : rho ∈ ZD.NontrivialZeros),
-      (principalZeroAnalyticFiber3D hrho).RidesCarrier := by
-  apply allCanonicalZeroFibersRideCarrier_of_allNative3DSourceTransfer chiOne
-  exact allNative3DSourceTransfer_of_selfAdjointXiReceiver chiOne ha hReg
-
-/-- The self-adjoint xi receiver therefore identifies the analytic zero-ledger operator with the
-event-independent real carrier-height operator through the complete native 3D transfers. -/
-theorem xiZeroLedgerOperator_eq_carrierHeight_of_selfAdjointXiReceiver
-    (chiOne : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (nhdsWithin z {z}ᶜ) (nhds L)) :
-    CriticalLinePhasor.XiChannel.xiZeroLedgerOperator =
-      CriticalLinePhasor.XiChannel.xiCarrierHeightOperator := by
-  apply xiZeroLedgerOperator_eq_carrierHeight_of_allNative3DSourceTransfer chiOne
-  exact allNative3DSourceTransfer_of_selfAdjointXiReceiver chiOne ha hReg
-
-/-- Receiver capstone: the same native 3D assembly returns both the global coordinate identity
-and its basiswise zero-ledger/carrier-height operator realization. -/
-theorem globalCoordinateIdentification_and_zeroLedger_eq_carrierHeight_of_selfAdjointXiReceiver
-    (chiOne : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (nhdsWithin z {z}ᶜ) (nhds L)) :
-    (∀ (T : ℝ) (hT : GoodHeight T), classicalSContour hT = Smult T) ∧
-      CriticalLinePhasor.XiChannel.xiZeroLedgerOperator =
-        CriticalLinePhasor.XiChannel.xiCarrierHeightOperator := by
-  have hall := allNative3DSourceTransfer_of_selfAdjointXiReceiver chiOne ha hReg
-  have hop := xiZeroLedgerOperator_eq_carrierHeight_of_allNative3DSourceTransfer chiOne hall
-  exact ⟨(globalCoordinateIdentification_iff_zeroLedger_eq_carrierHeight chiOne).2 hop, hop⟩
-
 /-! ## The one-sided reduction
 
 The area-normalized fiber magnitude at a zero is `n^{1/2 - Re rho}` up to the positive
@@ -1336,8 +1269,3 @@ end CriticalLinePhasor.ContourArgument
 #print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_iff_basisResolvedCarrierResolventBridge
 #print axioms CriticalLinePhasor.ContourArgument.carrierHeightResolventTrace_of_globalCoordinateIdentification
 #print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_basisResolvedBridge_and_carrierTrace_of_allNative3DSourceTransfer
-#print axioms CriticalLinePhasor.ContourArgument.upperNative3DSourceTransfer_of_selfAdjointXiReceiver
-#print axioms CriticalLinePhasor.ContourArgument.allNative3DSourceTransfer_of_selfAdjointXiReceiver
-#print axioms CriticalLinePhasor.ContourArgument.allCanonicalZeroFibersRideCarrier_of_selfAdjointXiReceiver
-#print axioms CriticalLinePhasor.ContourArgument.xiZeroLedgerOperator_eq_carrierHeight_of_selfAdjointXiReceiver
-#print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_and_zeroLedger_eq_carrierHeight_of_selfAdjointXiReceiver

@@ -21,9 +21,9 @@ polynomial `R(x) = x^N (x − m₀)` with `Q_w(v_R) < 0`.  Mechanism: at that an
 `{ρ*, 1−ρ̄*}` has node product `ab = 1/((σ₀−½)² − y²)` while every other zero has node product
 `≤ K < ab`, so the pair's cross term `2 m R(a) R(b) < 0` dominates geometrically in `N`.
 
-Together with the on-line direction (`primeAnchorForm_re_nonneg_of_online`) this is the seat
-relocated to the prime-computable bank: RH ⟺ the order-`n` FE-paired form is nonnegative at every
-anchor with `1 < Re s < 3/2` and every `n`.  No `sorry`, no `axiom`.
+This is the seat door relocated to the prime-computable bank (`rh_of_primeAnchorForm_nonneg`):
+nonnegativity of the order-`n` FE-paired form at every anchor with `1 < Re s < 3/2` and every `n`
+puts every zero on the line.  No `sorry`, no `axiom`.
 -/
 
 open Complex Filter Topology
@@ -105,16 +105,6 @@ theorem primeAnchorTerm_re_nonneg_of_online {w : ℂ} (N : ℕ) (m₀ : ℝ) {ρ
   · rw [Complex.ofReal_re]
     exact mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)
   · rw [Complex.ofReal_im]
-
-/-- **The on-line direction**: if every zero is on the line, the form is real and nonnegative at
-every anchor (given summability). -/
-theorem primeAnchorForm_re_nonneg_of_online {w : ℂ} (N : ℕ) (m₀ : ℝ)
-    (hon : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-    (hsum : Summable (primeAnchorTerm w N m₀)) :
-    0 ≤ (primeAnchorForm w N m₀).re := by
-  unfold primeAnchorForm
-  rw [Complex.re_tsum hsum]
-  exact tsum_nonneg (fun ρ => (primeAnchorTerm_re_nonneg_of_online N m₀ (hon ρ.val ρ.2)).1)
 
 /-! ## The pair at a locally extremal off-line zero -/
 
@@ -766,7 +756,6 @@ theorem rh_of_primeAnchorForm_nonneg (hattain : ∃ ρ : Zero, MaxDepth ρ)
 
 end CriticalLinePhasor.SeatPrimeAnchor
 
-#print axioms CriticalLinePhasor.SeatPrimeAnchor.primeAnchorForm_re_nonneg_of_online
 #print axioms CriticalLinePhasor.SeatPrimeAnchor.strictLeader_of_maxDepth
 #print axioms CriticalLinePhasor.SeatPrimeAnchor.exists_primeAnchorForm_neg_of_maxDepth
 #print axioms CriticalLinePhasor.SeatPrimeAnchor.rh_of_primeAnchorForm_nonneg

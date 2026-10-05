@@ -1,14 +1,15 @@
 import RequestProject.HerglotzSweep
 
 /-!
-# The ladder at one anchor, part 1: definitions and `RH ⟹ ladder` (ledger 630)
+# The ladder at one anchor, part 1: definitions and the atomic Gram identity (ledger 630)
 
 At an anchor `s` off the line and off the zero set, the transported measure of the nontrivial zeros has
 coefficient sequence `μ_k = Σ_ρ m_ρ ω_ρ w_ρ^k` (`xiCoeff`), `ω_ρ = 1/((s−ρ)(ρ−c))`, `w_ρ = (ρ−c)/(s−ρ)`.
 The **ladder** at `s` is the positivity of every Toeplitz form of the Hermitian extension of this sequence
-(`Ladder`). Under RH every `w_ρ` is unimodular and every `ω_ρ = 1/|s−ρ|²` is a positive real, so the
-sequence is the Fourier sequence of a positive atomic measure and the Gram identity gives the ladder
-(`ladder_of_rh`). The converse is part 2.
+(`Ladder`). For a positive unimodular atomic measure the Gram identity makes every Toeplitz form real and
+nonnegative (`toeplitzForm_atomCoeffI_nonneg`); at an on-line zero `ω_ρ = 1/|s−ρ|²`
+(`atomWeight_eq_of_online`), and the line weights are summable (`summable_lineWeight`).  The door
+`ladder ⟹` every zero on the line is part 2.
 -/
 
 open Complex Finset
@@ -164,39 +165,7 @@ theorem summable_lineWeight {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) :
           gcongr; exact hC ρ.val ρ.property
       _ = C * ((ZD.xiOrderNat ρ.val : ℝ) / ‖ρ.val‖ ^ 2) := by ring
 
-/-! ## `RH ⟹` the ladder at every anchor -/
-
-/-- **Under RH the ladder holds at every anchor** off the line and off the zeros: the transported measure
-is a positive unimodular atomic measure, and the Gram identity applies. -/
-theorem ladder_of_rh {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hRH : RH) : Ladder s := by
-  set ω : {ρ : ℂ // ρ ∈ ZD.NontrivialZeros} → ℝ :=
-    fun ρ => (ZD.xiOrderNat ρ.val : ℝ) * (Complex.normSq (s - ρ.val))⁻¹ with hωdef
-  set w : {ρ : ℂ // ρ ∈ ZD.NontrivialZeros} → ℂ := fun ρ => transport s ρ.val with hwdef
-  have hw : ∀ ρ, ‖w ρ‖ = 1 := fun ρ =>
-    transport_line_norm (hRH ρ.val ρ.property) (sub_ne_zero_of_notMem hs ρ.property)
-  have hω : ∀ ρ, 0 ≤ ω ρ := fun ρ =>
-    mul_nonneg (Nat.cast_nonneg _) (inv_nonneg.mpr (Complex.normSq_nonneg _))
-  have hsum : Summable ω := summable_lineWeight hs
-  have hcoeff : ∀ k : ℕ, xiCoeff s k = atomCoeffI ω w k := by
-    intro k
-    unfold xiCoeff atomCoeffI
-    apply tsum_congr
-    intro ρ
-    rw [atomWeight_eq_of_online (hRH ρ.val ρ.property), zpow_natCast, hωdef, hwdef]
-    push_cast
-    ring
-  have hext : hermExt (xiCoeff s) = atomCoeffI ω w := by
-    funext k
-    unfold hermExt
-    split_ifs with hk
-    · rw [hcoeff, Int.toNat_of_nonneg hk]
-    · rw [hcoeff, atomCoeffI_conj hsum hw, Int.toNat_of_nonneg (by omega), neg_neg]
-  intro N c
-  rw [hext]
-  exact toeplitzForm_atomCoeffI_nonneg hω hsum hw c
-
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.toeplitzForm_atomCoeffI_nonneg
 #print axioms CriticalLinePhasor.SeatingLedger.summable_lineWeight
-#print axioms CriticalLinePhasor.SeatingLedger.ladder_of_rh

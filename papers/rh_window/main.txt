@@ -1,0 +1,396 @@
+                  The Riemann hypothesis up to height 634.5,
+                         checked by the Lean kernel
+                                               Samuel Lavery
+
+                                        Draft, 29 September 2026
+
+
+                                                   Abstract
+          We give a proof, checked by the kernel of the Lean 4 proof assistant against Mathlib’s
+      definition of the Riemann zeta function, that every nontrivial zero ρ of ζ with | Im ρ| ≤ 634.5
+      lies on the critical line Re s = 12 , and that every such zero with 0 < Im ρ ≤ 634.5 is a simple zero
+      of the Riemann ξ-function. A multiplicity-weighted count of 366 zeros in the window is also
+      checked, so there are exactly 366 zeros with 0 < Im ρ ≤ 634.5. The proof follows Turing’s scheme.
+      Sign changes of the Hardy Z-function certify zeros on the line, and an argument-principle count
+      certifies that there are no others. Every numerical fact enters as a rational inequality whose proof
+      the kernel checks. The only axioms used are Lean’s three standard ones, and the development
+      does not use native code evaluation. We also derive the instance T = 634.5 of the predicate
+      riemannZeta.RH_up_to of the PrimeNumberTheorem+ project, which at the revision we use
+      records the numerical verifications of Platt, of Gourdon–Wedeniwski and of Platt–Trudgian as
+      statements without proofs. The height is small by the standards of numerical verification. The
+      contribution is a verification whose trusted base is the Lean kernel and the definitions, not
+      numerical software. The development consists of 367 generated certificate modules (546 MB of
+      Lean source), and it builds on a laptop under a documented memory limit.
+
+
+1     Introduction
+Numerical verification of the Riemann hypothesis (RH) up to a height T means proving that every
+zero β + iγ of ζ with 0 < γ ≤ T has β = 12 . The method in use since Turing [10] has two
+parts. Zeros on the critical line are located by sign changes of the real-valued Hardy function
+Z(t) = eiθ(t) ζ( 12 + it). An independent count of all zeros up to height T then shows that the list
+is complete. The current record is due to Platt and Trudgian [7], who “verify numerically, in a
+rigorous way using interval arithmetic, that the Riemann hypothesis is true up to height 3 · 1012 ”.
+    These computations are rigorous in the sense of interval arithmetic, and they run in ordinary
+software. Formal libraries use their conclusions as hypotheses. At revision 21998bb the PrimeNum-
+berTheorem+ (PNT+) project [8] states three such results in Lean, each closed by sorry:
+ theorem Platt_theorem : riemannZeta.RH_up_to 30610046000 := sorry
+ theorem GW_theorem    : riemannZeta.RH_up_to 2445999556030 := sorry
+ theorem PT_theorem_1 : riemannZeta.RH_up_to 3e12 := sorry
+
+This paper gives a kernel-checked proof of the same kind of statement at a much smaller height.
+
+Results. All theorems below are checked by the Lean kernel, version 4.34.0, with Mathlib at tag
+v4.34.0. Their axiom footprint is exactly [propext, Classical.choice, Quot.sound].
+    1. Every nontrivial zero with | Im ρ| ≤ 634.5 has Re ρ = 12 (Theorem 1).
+
+                                                       1
+    2. Every nontrivial zero with 0 < Im ρ ≤ 634.5 is a simple zero of ξ (Theorem 3), and the
+       multiplicity-weighted count in that window is 366 (Theorem 2).
+
+    3. PNT+’s riemannZeta.RH_up_to (1269/2) holds (Theorem 4).
+
+    4. Mathlib’s RiemannHypothesis follows from one explicitly named hypothesis about the paired
+       Dirichlet eta series: at each height it vanishes for at most one abscissa in the strip (Section 4).
+       The hypothesis itself is not proved here beyond height 634.5.
+
+Scope. Nothing here is new as mathematics. Zeros of ζ in this range were computed, and shown
+to lie on the critical line, in the 1930s; see [9] for the history. 634.5 is also tiny next to 3 · 1012 : the
+window holds 366 zeros, against about 1.2 · 1013 . It lies far below every height that PNT+ records
+as a theorem without proof (3.06 · 1010 and above). The one contribution is the trusted base of
+a classical computation. That base shrinks to the Lean kernel and to Mathlib’s definitions of ζ,
+Γ, log, cos and π. The numerical data enters only as rational witnesses that the kernel re-checks.
+Section 6 discusses how the cost grows with height.
+
+
+2     Statements and trust base
+2.1    Definitions
+Mathlib defines riemannZeta on all of C. At the pole s = 1 it takes a fixed value that plays no
+role here. The nontrivial zeros are
+ def ZD.NontrivialZeros : Set C :=
+   { s : C | 0 < s.re ∧ s.re < 1 ∧ riemannZeta s = 0 }
+
+Mathlib’s completedRiemannZeta is Λ(s) = π −s/2 Γ(s/2)ζ(s). The development uses the Riemann
+ξ-function in the form
+
+                        ξ(s) = s(s−1)
+                                  2   Λ0 (s) + 21 = 12 s(s − 1) π −s/2 Γ(s/2)ζ(s),
+
+where Λ0 is Mathlib’s entire part completedRiemannZeta0 . The multiplicity of a zero is the order
+of vanishing of ξ, ZD.xiOrderNat z := analyticOrderNatAt riemannXi z.
+
+2.2    Main theorems
+Theorem 1 (the window). Every nontrivial zero ρ of ζ with | Im ρ| ≤ 634.5 satisfies Re ρ = 12 .
+ theorem CriticalLinePhasor.DVP.online_below_1269o2 :
+     ∀ ρ ∈ ZD.NontrivialZeros, |ρ.im| ≤ 1269/2 → ρ.re = 1/2
+
+
+Theorem 2 (the census). The number of zeros with 0 < Re s < 1 and 0 < Im s ≤ 634.5, counted
+with multiplicity, is 366.
+ def stripZeroCountMult (T : R) : N :=
+   Σ ρ ∈ stripZeroFinset T, ZD.xiOrderNat ρ
+ theorem CriticalLinePhasor.DVP.stripZeroCountMult_1269o2 :
+     stripZeroCountMult (1269/2) = 366
+
+Here stripZeroFinset T is the finite set of nontrivial zeros with 0 < Im ρ ≤ T .
+
+
+                                                     2
+Theorem 3 (simplicity). Every nontrivial zero ρ with 0 < Im ρ ≤ 634.5 is a simple zero of ξ.
+ theorem VerifiedWindow.xiOrder_eq_one_below_1269o2 {ρ : C}
+     (hρ : ρ ∈ ZD.NontrivialZeros) (hpos : 0 < ρ.im) (hle : ρ.im ≤ 1269 / 2) :
+     ZD.xiOrderNat ρ = 1
+
+
+    Theorems 2 and 3 together say there are exactly 366 distinct zeros with 0 < Im ρ ≤ 634.5. In
+the open strip, π −s/2 Γ(s/2) and 12 s(s − 1) have no zeros, so these are also simple zeros of ζ. We
+state this in prose; the compiled statement is about ξ.
+
+Theorem 4 (PNT+’s predicate). With PNT+’s definitions (file IEANTN/ZetaDefinitions.lean
+at revision 21998bb)
+ noncomputable def riemannZeta.zeroes : Set C := {s : C | riemannZeta s = 0}
+ noncomputable def riemannZeta.zeroes_rect (I J : Set R) : Set C :=
+   {s : C | s.re ∈ I ∧ s.im ∈ J ∧ s ∈ zeroes}
+ noncomputable def riemannZeta.RH_up_to (T : R) : Prop :=
+   IsEmpty (riemannZeta.zeroes_rect (Set.Ioo 0.5 1) (Set.Icc 0 T))
+
+we have
+ theorem VerifiedWindow.pnt_RH_up_to_1269o2 : riemannZeta.RH_up_to (1269 / 2)
+
+
+    The proof derives it from Theorem 1. A zero in PNT+’s rectangle is a nontrivial zero with
+| Im s| ≤ 634.5 and Re s > 21 .
+
+2.3    What is trusted
+    • Trusted: the Lean 4 kernel (v4.34.0). The Mathlib definitions of ζ, Γ, log, cos, sin, π and
+      analytic order at tag v4.34.0. For Theorem 4 only, the three PNT+ definitions displayed
+      above.
+
+    • Axioms: #print axioms reports exactly [propext, Classical.choice, Quot.sound] for
+      every theorem in this section. The dependency closure contains no sorry and no user
+      axiom. None of the ladder, station, census or segment modules uses native_decide, so
+      Lean.ofReduceBool does not appear.
+
+    • Untrusted: the Python programs that generate the certificate modules. They choose the
+      station heights, the rational phase stand-ins and the rational bounds. A wrong choice makes
+      a module fail to compile. It cannot make a false statement compile.
+
+
+3     Method
+The proof is Turing’s scheme carried out inside the kernel. We describe it in standard terms;
+Table 1 maps the Lean names.
+
+3.1    Hardy’s function and the sign at a station
+On the critical line, Λ( 21 + it) is real. The development works with
+                                                    1
+              G(t) = Re Λ( 21 + it) = eRe log ΓR ( 2 +it) Z(t),   Z(t) = eiθ(t) ζ( 21 + it),
+
+
+                                                    3
+where θ(t) = 0t Re (Γ′R /ΓR )( 12 + iu) du is the Riemann–Siegel theta function. G and Z have the
+              R
+
+same sign. A sign change of G on [a, b] gives a zero on the line in (a, b) by the intermediate value
+theorem (hardyG_sign_change1269o2).
+    The sign is read through a rational proxy phase. Suppose |φ−θ(t)| < π/2. Then a positive value
+of cos φ Re ζ( 12 + it) − sin φ Im ζ( 12 + it) implies Z(t) > 0, and a negative value implies Z(t) < 0
+(hardyG_sign_of_proxy). The tolerance is more than a radian. So θ(t) is never needed to many
+digits. The development proves an enclosure |θ(30) + 15    2 π − 31.6323| ≤ 0.105 (theta30_enclosure)
+and then the increment bound
+                                                         1          1
+       (θ(T ) − θ(T1 )) − (θmain (T ) − θmain (T1 )) ≤ 10        −      ,   θmain (T ) = T2 log 2π
+                                                                                                T
+                                                                                                   − T2
+                                                            T1       T
+(theta_increment_enclosure_from). Together these place a rational φ plus an integer multiple
+of 2π within π/2 of θ(t) at every station.
+
+3.2   Certified evaluation
+At a station t the quantity Re e−iφ ζ( 12 + it) is bounded below or above using the Euler–
+                                                    
+
+Maclaurin formula truncated after N terms. N is chosen per station, between 200 and 4000;
+most stations use N = 250 or N = 900. The boundary term N 1−s /(s − 1) is evaluated
+exactly (boundary_re_eval_half), and the remainder is bounded explicitly. Each summand
+n−1/2 cos(t log n − φ) is enclosed by rationals from three ingredients:
+
+                                 n ≤ log n ≤ ℓn for n ≤ 4000, each proved from bounds on the
+  • tables of rational brackets ℓ−            +
+
+    exponential;
+  • rational brackets for n−1/2 ;
+  • Taylor polynomials for cos and sin with explicit remainder.
+The station’s conclusion is a single inequality between rational numbers, checked by norm_num. A
+station is therefore a large but elementary certificate. At t = 150.5 it runs to 22,162 lines.
+
+3.3   The count
+Completeness comes from the argument principle. Call a height T good when a certificate shows
+Re ζ(σ + iT ) ≥ 15 for 21 ≤ σ ≤ 2 (re_pos_at_1269o2). That certificate comes from an Euler–
+Maclaurin lower bound with N = 1000 on seven σ-intervals (re_zeta1269o2_lower). At a good
+height, the continuous logarithm of ζ along the top of the standard contour stays on the principal
+branch. This gives |S(T )| = | arg ζ( 12 + iT )|/π < 12 . The compiled argument-principle iden-
+tity (classicalSContour_eq_Smult_add_offLine) reads N (T ) = θ(T )/π + 1 + S(T ) with N (T )
+counted with multiplicity. Combined with the enclosure of θ(634.5), it pins the integer N (634.5)
+to 366 (Theorem 2).
+
+3.4   Exhaustion and simplicity
+The ladder is 367 stations 10 ≤ t0 < t1 < · · · < t366 ≤ 634.5 with G(ti )G(ti+1 ) < 0 for ev-
+ery i (LadderData1269o2, discharged by ladder1269o2Data_holds). It gives 366 distinct zeros
+on the line. Any further zero in the window, on or off the line, or any zero of order at least
+two, would push the weighted count above 366. The same finite-set argument proves Theorem 1
+(online_below_1269o2_of_ladder) and Theorem 3. Zeros with negative imaginary part follow
+by conjugation.
+
+                                                    4
+Lean name                                Standard meaning
+riemannZeta, completedRiemannZeta        ζ(s); Λ(s) = π −s/2 Γ(s/2)ζ(s)
+ZD.riemannXi, ZD.xiOrderNat              ξ(s) = 21 s(s − 1)Λ(s); order of vanishing of ξ
+ZD.NontrivialZeros                       zeros with 0 < Re s < 1
+                                         2 + it; Riemann–Siegel θ(t)
+                                         1
+line t, theta
+hardyG                                   Re Λ( 21 + it), a positive multiple of Hardy’s Z(t)
+hardyG_sign_of_proxy                     sign of Z through a phase within π/2 of θ(t)
+station_301o2_sign (etc.)                certified sign of Z at one station
+LadderData1269o2                         367 stations with alternating signs
+GoodHeight                               no zeros on the top edge of the contour at height T
+classicalSContour                        S(T ) computed along the contour
+stripZeroCountMult                       N (T ), counted with multiplicity
+                                         the paired eta series k ((2k + 1)−s − (2k + 2)−s ) at s = σ + iy
+                                                                 P
+laneChart3D
+OneVanishingPerHeight3D                  for each y, at most one σ ∈ (0, 1) with η(σ + iy) = 0
+
+Table 1: Lean names and their standard meanings. The Lean identifiers come from a larger
+development and keep its naming.
+
+
+3.5    Rungs
+The window was built in 31 rungs, with top heights 58, 63, 74, 81, 91, 109, 126, 144.5, . . . , 607.5, 634.5.
+Each rung has its own good height, segment certificate, census and exhaustion. The final theorems
+use only the top rung. The bottom rung, online_below_58, is the smallest slice. It uses 13 stations
+and is suitable for a quick check (Section 5).
+
+
+4     The one-hypothesis interface
+Let η(s) = n≥1 (−1)n−1 n−s = (1 − 21−s )ζ(s) for Re s > 0. The development represents the paired
+            P
+
+series k (2k + 1)−s − (2k + 2)−s as a sum of planar vectors, laneChart3D σ y at s = σ + iy. It
+      P
+
+proves that this vanishes for 0 < σ < 1 exactly when ζ(σ + iy) = 0 (fiber3D_vanishes_iff_zero).
+The factor 1 − 21−s vanishes only on Re s = 1. The named hypothesis is
+ def CarrierReadout.OneVanishingPerHeight3D : Prop :=
+   ∀ (y σ 1 σ 2 : R), 0 < σ 1 → σ 1 < 1 → 0 < σ 2 → σ 2 < 1 →
+     laneChart3D σ 1 y = 0 → laneChart3D σ 2 y = 0 → σ 1 = σ 2
+
+and the compiled theorem is
+ theorem OneAssumptionRH.riemannHypothesis_of_oneAssumption
+     (h : CarrierReadout.OneVanishingPerHeight3D) : RiemannHypothesis
+
+where RiemannHypothesis is Mathlib’s statement. The proof is short. By the functional equation
+and conjugation, a zero at σ+iy comes with a zero at (1−σ)+iy (fiber3D_vanishes_at_partner).
+The hypothesis then forces σ = 1 − σ. The bridge RHBridge.no_offline_zeros_implies_rh
+converts the result to Mathlib’s form. The hypothesis restricted to |y| ≤ 634.5 is a theorem
+(CarrierReadout.oneVanishingPerHeight3D_below), by Theorem 1. Above that height it is not
+proved here.
+
+
+
+
+                                                     5
+5       Engineering and reproducibility
+Size. The window rests on 367 generated station modules totalling 546.2 MB of Lean source.
+Around them sit 31 rungs of census, segment and exhaustion modules, the rational log
+and square-root tables to 4000, and the contour-integral machinery. A Python program
+(tmp/att271_station_emitter.py in the repository) emits the station modules from witness
+tables. It is untrusted.
+
+Throttling. The station modules dominate the cost. At default parallelism, which here is one
+module per core on 12 cores, the build exhausted a 32 GB laptop. Every build reported here used
+ env LEAN_NUM_THREADS=2 nice -n 10 lake build <Module>
+
+which caps Lake at about two concurrent modules.
+
+Measured costs (Apple M2 Max, 12 cores, 32 GB, macOS; wall time and peak resident memory
+from /usr/bin/time -l):
+
+Task                                                                                       Wall time    Peak RSS
+PNT+ IEANTN.ZetaDefinitions (with its PNT+ dependency)                                        35.6 s       3.7 GB
+Load full window and check the bridge file                                                   282.6 s       5.9 GB
+Load full window, print axioms only                                                          280.3 s       6.2 GB
+Re-check a station module from source (60 modules, heights 150–256)            51–247 s (median 75)             —
+Fast slice: re-check the 15 height-58 modules from source†                                   741.6 s       6.5 GB
+Write the bridge module’s olean (lake env lean -o)                                           257.8 s       9.1 GB
+Run Check.lean (all statements and axiom footprints)                                         251.3 s       8.8 GB
+ †
+     One lake env lean at a time against existing oleans, while a separate two-module build was running; the times
+               are upper bounds for an idle machine. Peak memory is dominated by loading Mathlib.
+
+
+Checking. In the directory papers/rh_window/, the file Check.lean imports the capstones. It
+prints the statement and axiom footprint of every theorem in Section 2 and Section 4. The file
+ARTIFACT.md in the same directory gives the full build recipe.
+
+Build state. In the working tree used for this draft, Lake’s traces marked some station oleans
+as out of date with respect to their sources. Before we stopped that rebuild, 60 of them had been
+re-checked from the current sources without error. Importing an olean does not re-run the kernel
+on its proofs. A reader should therefore certify the artifact by one of two routes: a complete build
+from a clean checkout, or a replay of the kernel over the oleans with lean4checker. Neither has
+been run for this draft.
+
+
+6       Scaling with height
+Two things grow with T : the number of stations and the size of each. The number of zeros up
+to T is N (T ) ≈ 2π
+                 T
+                    log 2πe
+                         T
+                            + 78 , which is about 366 at 634.5, 415 at 700, 649 at 1000 and 1517 at
+2000. The ladder uses one station per zero, plus one. Station modules grow with height as the
+Euler–Maclaurin truncation lengthens. A least-squares fit over the 367 modules with t ≥ 50 gives
+size roughly proportional to t1.26 , with medians of 0.17 MB below t = 100 and 1.84 MB between 500
+and 634.5. Extending to T = 1000 would add about 283 stations of 2–4 MB each. At the per-station
+
+
+                                                          6
+re-check times measured above, that is days of throttled laptop time, not months. These figures
+are extrapolations, not measurements. Very large heights would need a different evaluation, such
+as the Riemann–Siegel formula or the Odlyzko–Schönhage algorithm, in place of Euler–Maclaurin,
+and certified arithmetic well beyond hand-written rational tables.
+
+
+7    Related work
+Numerical verification. Platt and Trudgian [7]: “We verify numerically, in a rigorous way using
+interval arithmetic, that the Riemann hypothesis is true up to height 3·1012 .” The methods descend
+from Turing [10], with corrections by Lehman [5]; see Booker [2] for an account.
+
+Formal libraries. PNT+ [8] defines riemannZeta.RH_up_to and states the verifications of Platt,
+of Gourdon–Wedeniwski and of Platt–Trudgian with sorry (Section 1). On the Lean community
+Zulip, in January 2026, the PNT+ discussion “N(T)” asked whether Mathlib or PNT+ had ma-
+chinery to define the zero count N (T ). The reply was that it did not yet exist there. The definitions
+zeroes and zeroes_rect used in Theorem 4 were proposed in that discussion. Loeffler and Stoll [6]
+formalize ζ and Dirichlet L-functions in Mathlib, including a formal statement of RH. In Isabelle,
+Eberl’s entry [3] “builds upon the results about formal and analytic Dirichlet series to define the
+Hurwitz ζ function ζ(a, s) and, based on that, the Riemann ζ function ζ(s)”. We found no entry
+in the Archive of Formal Proofs that verifies zeros of ζ.
+
+Zeros in proof assistants. Alpöge and Furman [1] prove that “at least two thirds of the nontriv-
+ial zeros of the Riemann zeta function, counted with multiplicity, are simple and lie on the critical
+line”. They provide a Lean 4 formalization that includes the Riemann–von Mangoldt counting
+formulas. That result concerns proportions of zeros at large height, not the location of individual
+zeros. A recent upload by Islam [4] states that “the Real part is proved, for ζ to height 3 × 1012
+on the certificate of Platt and Trudgian”. It takes the numerical certificate as an input rather than
+checking it in the kernel. Several public repositories formalize Hardy’s theorem or zero counting in
+Lean without placing individual zeros.
+
+Priority. We searched the sources above, the PNT+ discussion on the Lean Zulip and the Archive
+of Formal Proofs. We found no earlier proof-assistant verification of RH up to any positive height.
+The search is not exhaustive. We make no stronger claim.
+
+
+Disclosure of AI assistance
+[For the author to finalize.] The Lean development and this manuscript were produced with
+extensive assistance from Claude, an AI system developed by Anthropic. It helped generate the
+certificate modules, write the proofs of the bridge and simplicity theorems, and draft the text.
+Every theorem stated here has been checked by the Lean kernel as described in Section 2.
+
+
+References
+ [1] L. Alpöge and R. Furman, More than two thirds of the zeta zeros are simple and on the
+     critical line, arXiv:2608.13637, 2026. Lean formalization: https://github.com/anthropics/
+     zeta-23-lean.
+
+
+                                                  7
+ [2] A. R. Booker, Turing and the Riemann hypothesis, Notices Amer. Math. Soc. 53 (2006), no. 10,
+     1208–1211.
+
+ [3] M. Eberl, The Hurwitz and Riemann ζ functions, Archive of Formal Proofs, October 2017.
+
+ [4] M. F. Islam, A formal proof of the real part of the Riemann hypothesis, Zenodo record 22949645,
+     September 2026.
+
+ [5] R. S. Lehman, On the distribution of zeros of the Riemann zeta-function, Proc. London Math.
+     Soc. (3) 20 (1970), 303–320.
+
+ [6] D. Loeffler and M. Stoll, Formalizing zeta and L-functions in Lean, Annals of Formalized
+     Mathematics; arXiv:2503.00959, 2025.
+
+ [7] D. Platt and T. Trudgian, The Riemann hypothesis is true up to 3 · 1012 , Bull. London Math.
+     Soc. 53 (2021), no. 3, 792–797.
+
+ [8] A. Kontorovich, T. Tao et al., PrimeNumberTheorem+,                    https://github.com/
+     AlexKontorovich/PrimeNumberTheoremAnd, revision 21998bb.
+
+ [9] E. C. Titchmarsh, The Theory of the Riemann Zeta-Function, 2nd ed., revised by D. R. Heath-
+     Brown, Oxford University Press, 1986.
+
+[10] A. M. Turing, Some calculations of the Riemann zeta-function, Proc. London Math. Soc. (3)
+     3 (1953), 99–117.
+
+
+
+
+                                                 8
+

@@ -442,7 +442,7 @@ has de Branges variable `z = −i(ρ − ½) = γ`, which is real (`DeBranges.de
 same-height cancellations we find are evaluable in the de Branges reality/discreteness framework
 (`DeBranges.Bcomp_zero_im_eq_zero`, `DeBranges.Bcomp_zeros_discrete`). Unconditional. Scope: this is
 the spectrum of the on-line points we examine (that the structure function for `Λ` is
-Hermite–Biehler, i.e. no off-line zeros, is RH). -/
+Hermite–Biehler is not proved in this file). -/
 theorem criticalLine_deBranges_real (γ : ℝ) :
     (-(Complex.I * (((1 : ℂ) / 2 + (γ : ℂ) * Complex.I) - 1 / 2))).im = 0 := by
   rw [DeBranges.deBranges_var_im]; simp

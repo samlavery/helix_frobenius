@@ -19,14 +19,12 @@ side is built from:
   involution ↔ circle conjugation, readouts of norm one) supply the
   operator reading of the registered events.
 
-**The capstone**: `GRH χ` holds **iff** every nontrivial zero registers as
-a spectral Gram event at a real source height.  Forward: on-line zeros are
-found by exact focal cancellation at height `e^y` and rank-drop the Gram
-pencil (`L_zero_imp_spectral_gram_event`).  Backward: a registered zero
-sits at a represented point, and represented points have `Re = ½` by
-construction — reality earned from the geometry, not assumed.  Combined
-with `selfAdjointReceiver_xi_iff_rh` this places all three faces —
-receiver, registration, and line — in one compiled equivalence class.
+**The capstone**: if every nontrivial zero registers as a spectral Gram event
+at a real source height, `GRH χ` holds: a registered zero sits at a represented
+point, and represented points have `Re = ½` by construction — reality earned
+from the geometry, not assumed.  On-line zeros are found by exact focal
+cancellation at height `e^y` and rank-drop the Gram pencil
+(`L_zero_imp_spectral_gram_event`).
 No `axiom`, no `sorry`.
 -/
 
@@ -42,24 +40,20 @@ theorem reprPoint_re (χ : DirichletCharacter ℂ q) (Z : ℝ) :
     (reprPoint χ Z).re = 1 / 2 := by
   simp [reprPoint]
 
-/-- **The Gram-registration capstone.**  `GRH χ` holds iff every
-nontrivial zero of `L(·,χ)` is a spectral Gram event at a real source
-height: the zero is the represented point of a real height at which the
-structurally self-adjoint harmonic-cell Gram pencil drops rank. -/
-theorem grh_iff_spectral_gram_registration (χ : DirichletCharacter ℂ q)
-    (μ lam : ℂ) (hlam : lam ≠ μ) :
-    GRHSpectral.GRH χ ↔
-      ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
-        ∃ Z : ℝ, ρ = reprPoint χ Z ∧ (GramH χ Z μ lam).det = 0 := by
-  constructor
-  · intro hGRH ρ hρ
-    exact L_zero_imp_spectral_gram_event χ ρ μ lam hlam (hGRH ρ hρ) hρ.2.2
-  · intro hreg ρ hρ
-    obtain ⟨Z, hZ, _⟩ := hreg ρ hρ
-    rw [hZ]
-    exact reprPoint_re χ Z
+/-- **The Gram-registration capstone.**  If every nontrivial zero of `L(·,χ)` is a spectral Gram
+event at a real source height — the represented point of a real height at which the structurally
+self-adjoint harmonic-cell Gram pencil drops rank — `GRH χ` holds. -/
+theorem grh_of_spectral_gram_registration (χ : DirichletCharacter ℂ q)
+    (μ lam : ℂ)
+    (hreg : ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
+        ∃ Z : ℝ, ρ = reprPoint χ Z ∧ (GramH χ Z μ lam).det = 0) :
+    GRHSpectral.GRH χ := by
+  intro ρ hρ
+  obtain ⟨Z, hZ, _⟩ := hreg ρ hρ
+  rw [hZ]
+  exact reprPoint_re χ Z
 
 end CriticalLinePhasor.HarmonicCell
 
 #print axioms CriticalLinePhasor.HarmonicCell.reprPoint_re
-#print axioms CriticalLinePhasor.HarmonicCell.grh_iff_spectral_gram_registration
+#print axioms CriticalLinePhasor.HarmonicCell.grh_of_spectral_gram_registration

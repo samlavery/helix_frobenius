@@ -5,7 +5,7 @@ import RequestProject.SeatPrimeAnchorHermitian
 /-!
 # The seat form as a finite functional of the jets of `ξ′/ξ` (ledger 594)
 
-The compiled door `rh_iff_hermForm_nonneg` has hypothesis `Re Q_w(R) ≥ 0` with
+The compiled door `online_of_hermForm_nonneg` has hypothesis `Re Q_w(R) ≥ 0` with
 `Q_w(R) = hermForm w R = Σ'_ρ m_ρ · conj(R(x̄_ρ)) · R(x′_ρ)`, nodes `x_ρ = 1/(s−ρ)`, `x′_ρ = 1/(ρ−c)`,
 `s = ½ + i w`, `c = 1 − s̄`. The nodes satisfy ONE relation, `x + x′ = d·x·x′` with `d = s − c` real,
 which reduces every monomial `x^j x′^k` to pure powers by a Pascal-type recursion (`pf`,
@@ -471,27 +471,24 @@ theorem hermForm_anchor_eq_jets (γ σ₀ : ℝ) (h : 1 < σ₀) (R : Polynomial
   rw [hermForm_eq_jets _ R hR (hs ▸ anchor_s_not_zero h) (hc ▸ anchor_c_not_zero h)
     (by rw [hs, hc]; exact hd), hs, hc]
 
-/-- **The door, read on the prime side.** RH ⟺ for all `γ`, all `1 < σ₀ < 3/2`, all `R` with
-`R(0) = 0`: `Re Σ_{j,k} conj(r_j) r_k · jetValue(σ₀+iγ, 1−σ₀+iγ) j k ≥ 0`. The right-hand side
-mentions only the jets of `ξ′/ξ` at points with `Re s > 1` and `Re s < 0`. -/
-theorem rh_iff_jets_nonneg :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    (∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
+/-- **The door, read on the prime side.** If for all `γ`, all `1 < σ₀ < 3/2`, all `R` with
+`R(0) = 0`: `Re Σ_{j,k} conj(r_j) r_k · jetValue(σ₀+iγ, 1−σ₀+iγ) j k ≥ 0`, every nontrivial zero
+is on the line. The hypothesis mentions only the jets of `ξ′/ξ` at points with `Re s > 1` and
+`Re s < 0`. -/
+theorem online_of_jets_nonneg
+    (H : ∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
       0 ≤ (∑ j ∈ range (R.natDegree + 1), ∑ k ∈ range (R.natDegree + 1),
           ((starRingEnd ℂ) (R.coeff j) * R.coeff k)
             * jetValue ((σ₀ : ℂ) + (γ : ℂ) * I) (((1 - σ₀ : ℝ) : ℂ) + (γ : ℂ) * I)
-                (2 * R.natDegree + 2) j k).re) := by
-  rw [rh_iff_hermForm_nonneg]
-  constructor
-  · intro H γ σ₀ h1 h2 R hR
-    rw [← hermForm_anchor_eq_jets γ σ₀ h1 R hR]
-    exact H γ σ₀ h1 h2 R hR
-  · intro H γ σ₀ h1 h2 R hR
-    rw [hermForm_anchor_eq_jets γ σ₀ h1 R hR]
-    exact H γ σ₀ h1 h2 R hR
+                (2 * R.natDegree + 2) j k).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  apply online_of_hermForm_nonneg
+  intro γ σ₀ h1 h2 R hR
+  rw [hermForm_anchor_eq_jets γ σ₀ h1 R hR]
+  exact H γ σ₀ h1 h2 R hR
 
 #print axioms hermForm_eq_monomialValues
 #print axioms hermForm_eq_jets
-#print axioms rh_iff_jets_nonneg
+#print axioms online_of_jets_nonneg
 
 end CriticalLinePhasor.ContourArgument

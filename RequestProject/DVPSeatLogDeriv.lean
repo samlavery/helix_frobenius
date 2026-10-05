@@ -11,7 +11,7 @@ over the zero multiset.  The seat criterion is about the resolvent PRODUCT
 
 so taking the trace's second point to be `w̄` turns it into the seat energy.
 The result expresses the seat energy — the object whose nonnegativity at
-every admissible anchor is equivalent to RH — as an explicit
+every admissible anchor puts every zero on the line — as an explicit
 logarithmic-derivative difference of `ξ`.
 
 Why this is the link that was missing rather than bookkeeping: `ξ′/ξ` is

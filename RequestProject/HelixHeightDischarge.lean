@@ -11,19 +11,17 @@ import RequestProject.HelixHeightIntertwining
 * **B. Green transport** — `⟪T (L f), T g⟫ = ⟪T f, T (L* g)⟫`;
 * **C. symmetry of the ledger operator** — `L.IsSymmetric`.
 
-Each failed at one tactic. None of the three is a tactic error: the intermediate claim is, in each
-case, equivalent to every zero lying on the line, and the descent file already computes the exact
-defect on the antisymmetric pair mode `single ρ 1 − single (1 − ρ̄) 1`:
+Each failed at one tactic. None of the three is a tactic error: the intermediate claim in each case
+puts every zero on the line, and the descent file already computes the exact defect on the
+antisymmetric pair mode `single ρ 1 − single (1 − ρ̄) 1`:
 
 * A fails by `T (L (difference mode)) = single (state) (−2i(Re ρ − ½))`
   (`zeroHeightCorrespondence_ledger_difference`);
 * B fails by the Green defect `2i(Re ρ − ½)` (`zeroHeightCorrespondence_green_defect`);
 * C fails because `L = height − i·drift` and `i·drift` is skew: the `−I = I` goal is `conj I = I`.
 
-So the three routes are three more coordinates on the same statement, and each is compiled below as
-an iff (`kernel_descent_iff_online`, `green_transport_iff_online`, `ledger_isSymmetric_iff_online`).
-The three examples of the attempts file are then true exactly as
-`semiconj_of_kernel_descent`, `semiconj_of_green_transport`, `semiconj_of_ledger_symmetric`.
+So each route, if it holds, puts every zero on the line; each is compiled below as a door
+(`online_of_kernel_descent`, `online_of_green_transport`, `online_of_ledger_isSymmetric`).
 
 The correspondence used here is built from the zeros (mode ρ ↦ carrier state at Im ρ), so its
 intertwining defect is the drift Re ρ − ½ itself. The version that consumes the Euler product is the
@@ -38,87 +36,45 @@ namespace CriticalLinePhasor.XiChannel
 
 open ThreeDFocal
 
-/-- On the line the formal adjoint is the height operator as well. -/
-theorem xiZeroLedgerFormalAdjoint_eq_height_of_online
-    (h : ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2) :
-    xiZeroLedgerFormalAdjoint = xiCarrierHeightOperator := by
-  apply Finsupp.lhom_ext
-  intro ρ c
-  rw [xiZeroLedgerFormalAdjoint_single', xiCarrierHeightOperator,
-    UnconditionalFrobenius.diagOp_single, poleParam_eq_im_of_re_half (h ρ), Complex.conj_ofReal]
-
-/-- **A.** Kernel descent through the ledger operator ⟺ every zero on the line. -/
-theorem kernel_descent_iff_online :
-    (∀ f : XiZeroIndex →₀ ℂ, zeroHeightCorrespondence f = 0 →
-        zeroHeightCorrespondence (xiZeroLedgerOperator f) = 0)
-      ↔ ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
-  constructor
-  · intro H ρ
-    have h := H _ (zeroHeightCorrespondence_difference ρ)
-    rw [zeroHeightCorrespondence_ledger_difference] at h
-    have h1 := congrArg (fun F : CarrierThreeDMode 1 1 => F (carrierState3D 1 1 ρ.val.im)) h
-    simp only [Finsupp.single_eq_same, Finsupp.zero_apply] at h1
-    have h2 := congrArg Complex.im h1
-    simp [Complex.mul_im] at h2
-    linarith
-  · intro h f hf
-    rw [semiconj_of_online h f, hf, map_zero]
-
-/-- **B.** Green transport through the correspondence ⟺ every zero on the line. -/
-theorem green_transport_iff_online :
-    (∀ f g : XiZeroIndex →₀ ℂ,
-        inner ℂ (zeroHeightCorrespondence (xiZeroLedgerOperator f)) (zeroHeightCorrespondence g)
-          = inner ℂ (zeroHeightCorrespondence f)
-              (zeroHeightCorrespondence (xiZeroLedgerFormalAdjoint g)))
-      ↔ ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
-  constructor
-  · intro H ρ
-    have hd := zeroHeightCorrespondence_green_defect ρ
-    rw [H (reflectedDifferenceMode ρ) (Finsupp.single ρ 1), sub_self] at hd
-    have h2 := congrArg Complex.im hd
-    simp [Complex.mul_im] at h2
-    linarith
-  · intro h f g
-    rw [semiconj_of_online h f, xiZeroLedgerFormalAdjoint_eq_height_of_online h,
-      ← xiZeroLedgerOperator_eq_height_of_online h, semiconj_of_online h g]
-    exact carrierThreeDOperator_isSymmetric 1 1 _ _
-
-/-- **C.** Symmetry of the ledger operator ⟺ every zero on the line. -/
-theorem ledger_isSymmetric_iff_online :
-    xiZeroLedgerOperator.IsSymmetric ↔ ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
-  constructor
-  · intro hs ρ
-    have hp := UnconditionalFrobenius.symmetric_eigenvalue_real hs
-      (xiZeroLedgerOperator_hasEigenvalue ρ)
-    rw [HelixLimit.poleParam_im] at hp
-    linarith
-  · intro h
-    rw [xiZeroLedgerOperator_eq_height_of_online h]
-    exact xiCarrierHeightOperator_isSymmetric
-
-/-- The attempts file's example A, true through the iff. -/
-theorem semiconj_of_kernel_descent
+/-- **A.** Kernel descent through the ledger operator puts every zero on the line. -/
+theorem online_of_kernel_descent
     (H : ∀ f : XiZeroIndex →₀ ℂ, zeroHeightCorrespondence f = 0 →
         zeroHeightCorrespondence (xiZeroLedgerOperator f) = 0) :
-    Function.Semiconj zeroHeightCorrespondence xiZeroLedgerOperator (carrierThreeDOperator 1 1) :=
-  semiconj_of_online (kernel_descent_iff_online.1 H)
+    ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
+  intro ρ
+  have h := H _ (zeroHeightCorrespondence_difference ρ)
+  rw [zeroHeightCorrespondence_ledger_difference] at h
+  have h1 := congrArg (fun F : CarrierThreeDMode 1 1 => F (carrierState3D 1 1 ρ.val.im)) h
+  simp only [Finsupp.single_eq_same, Finsupp.zero_apply] at h1
+  have h2 := congrArg Complex.im h1
+  simp [Complex.mul_im] at h2
+  linarith
 
-/-- The attempts file's example B, true through the iff. -/
-theorem semiconj_of_green_transport
+/-- **B.** Green transport through the correspondence puts every zero on the line. -/
+theorem online_of_green_transport
     (H : ∀ f g : XiZeroIndex →₀ ℂ,
         inner ℂ (zeroHeightCorrespondence (xiZeroLedgerOperator f)) (zeroHeightCorrespondence g)
           = inner ℂ (zeroHeightCorrespondence f)
               (zeroHeightCorrespondence (xiZeroLedgerFormalAdjoint g))) :
-    Function.Semiconj zeroHeightCorrespondence xiZeroLedgerOperator (carrierThreeDOperator 1 1) :=
-  semiconj_of_online (green_transport_iff_online.1 H)
+    ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
+  intro ρ
+  have hd := zeroHeightCorrespondence_green_defect ρ
+  rw [H (reflectedDifferenceMode ρ) (Finsupp.single ρ 1), sub_self] at hd
+  have h2 := congrArg Complex.im hd
+  simp [Complex.mul_im] at h2
+  linarith
 
-/-- The attempts file's example C, true through the iff. -/
-theorem semiconj_of_ledger_symmetric (hs : xiZeroLedgerOperator.IsSymmetric) :
-    Function.Semiconj zeroHeightCorrespondence xiZeroLedgerOperator (carrierThreeDOperator 1 1) :=
-  semiconj_of_online (ledger_isSymmetric_iff_online.1 hs)
+/-- **C.** Symmetry of the ledger operator puts every zero on the line. -/
+theorem online_of_ledger_isSymmetric (hs : xiZeroLedgerOperator.IsSymmetric) :
+    ∀ ρ : XiZeroIndex, ρ.val.re = 1 / 2 := by
+  intro ρ
+  have hp := UnconditionalFrobenius.symmetric_eigenvalue_real hs
+    (xiZeroLedgerOperator_hasEigenvalue ρ)
+  rw [HelixLimit.poleParam_im] at hp
+  linarith
 
 end CriticalLinePhasor.XiChannel
 
-#print axioms CriticalLinePhasor.XiChannel.kernel_descent_iff_online
-#print axioms CriticalLinePhasor.XiChannel.green_transport_iff_online
-#print axioms CriticalLinePhasor.XiChannel.ledger_isSymmetric_iff_online
+#print axioms CriticalLinePhasor.XiChannel.online_of_kernel_descent
+#print axioms CriticalLinePhasor.XiChannel.online_of_green_transport
+#print axioms CriticalLinePhasor.XiChannel.online_of_ledger_isSymmetric

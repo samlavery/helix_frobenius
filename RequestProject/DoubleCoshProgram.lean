@@ -61,7 +61,7 @@ Specific capstones:
   for `r > 1` on nontrivial zeros.
 * `rho_online_iff_residue_zero`: `ρ ∈ OnLineZeros ↔ pairAgreementDefect r ρ.re = 0`.
 * `no_offline_zeros_implies_rh`: `(∀ ρ ∈ NontrivialZeros, ρ.re = 1/2) → RiemannHypothesis`.
-* `RiemannHypothesis_iff_classifier_balance`: full biconditional.
+* `classifier_balance_implies_RiemannHypothesis`: classifier balance at one scale `r > 1` gives `RiemannHypothesis`.
 * `finitePairedIntegral_of_odd_vanishes`: Stage B Condition (3).
 * `cosh_shift_half_via_pair`: algebraic inversion for Riemann-style bridge.
 
@@ -95,65 +95,16 @@ def NoOfflineZeros : Prop :=
 theorem RiemannHypothesis_of_no_offline (h : NoOfflineZeros) : RiemannHypothesis :=
   no_offline_zeros_implies_rh h
 
-/-- **Capstone (biconditional)**: `NoOfflineZeros` is equivalent to
-`RiemannHypothesis`. -/
-theorem NoOfflineZeros_iff_RiemannHypothesis :
-    NoOfflineZeros ↔ RiemannHypothesis := by
-  constructor
-  · exact RiemannHypothesis_of_no_offline
-  · intro hRH ρ hρ
-    have hne1 : ρ ≠ 1 := by
-      intro h
-      have := hρ.2.1
-      rw [h, Complex.one_re] at this
-      linarith
-    have hnt : ¬ ∃ n : ℕ, ρ = -2 * (↑n + 1) := by
-      rintro ⟨n, hn⟩
-      have hre := congr_arg Complex.re hn
-      have hcalc : ((-2 : ℂ) * ((n : ℂ) + 1)).re = -2 * ((n : ℝ) + 1) := by
-        simp [Complex.mul_re]
-      rw [hcalc] at hre
-      have hpos : (0 : ℝ) < ((n : ℝ) + 1) := by positivity
-      linarith [hρ.1]
-    exact hRH ρ hρ.2.2 hnt hne1
+/-! ### §2. Classifier door — pair-agreement balance gives the internal form -/
 
-/-! ### §2. Classifier equivalence — internal RH form ↔ pair-agreement balance -/
-
-/-- **NoOffline ↔ Universal classifier-balance at any single admissible scale**.
-The classifier provides a pair-observable restatement of RH. -/
-theorem NoOfflineZeros_iff_classifier_balance {r : ℝ} (hr : 1 < r) :
-    NoOfflineZeros ↔
-    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect r ρ.re = 0 := by
-  unfold NoOfflineZeros
-  constructor
-  · intro h ρ hρ
-    rw [h ρ hρ]; exact residue_balanced r
-  · intro h ρ hρ
-    exact (classifier_iff_online ρ hρ hr).mp (h ρ hρ)
-
-/-- **Triple equivalence**: RH, NoOffline, classifier-balance. -/
-theorem RH_iff_NoOffline_iff_classifier {r : ℝ} (hr : 1 < r) :
-    (RiemannHypothesis ↔ NoOfflineZeros) ∧
-    (NoOfflineZeros ↔
-      ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect r ρ.re = 0) :=
-  ⟨NoOfflineZeros_iff_RiemannHypothesis.symm,
-   NoOfflineZeros_iff_classifier_balance hr⟩
-
-/-! ### §3. FE-reflected no-offline form
-
-If no-offline is proved for a zero set, the FE-reflected zero set also
-satisfies no-offline — automatic via the classifier's FE-invariance. -/
-
-/-- **FE-closure of no-offline**: if no nontrivial zero is offline, then
-no FE-reflected zero is offline either. Automatic via the FE-invariance
-of `ZD.NontrivialZeros` (provable from Mathlib's `riemannZeta_one_sub`). -/
-theorem NoOffline_fe_stable (h : NoOfflineZeros) :
-    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → (1 - ρ).re = 1/2 := by
+/-- **Universal classifier-balance at any single admissible scale gives `NoOfflineZeros`**. -/
+theorem noOfflineZeros_of_classifier_balance {r : ℝ} (hr : 1 < r)
+    (h : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect r ρ.re = 0) :
+    NoOfflineZeros := by
   intro ρ hρ
-  have hre : ρ.re = 1/2 := h ρ hρ
-  simp only [Complex.sub_re, Complex.one_re, hre]; norm_num
+  exact (classifier_iff_online ρ hρ hr).mp (h ρ hρ)
 
-/-! ### §4. Consumer interface — a single theorem any `no_offline` proof can
+/-! ### §3. Consumer interface — a single theorem any `no_offline` proof can
 hit -/
 
 /-- **The single theorem any proof route should target**: `NoOfflineZeros`.
@@ -163,15 +114,12 @@ If you can prove it, this file + `RiemannHypothesisBridge` gives you
 Parallel proof efforts (GPT working on no-offline, classical analytic
 approaches, the paired-cosh bridge when Riemann's ξ-integral is
 formalized) all land here. -/
-theorem target_theorem : NoOfflineZeros ↔ RiemannHypothesis :=
-  NoOfflineZeros_iff_RiemannHypothesis
+theorem target_theorem : NoOfflineZeros → RiemannHypothesis :=
+  RiemannHypothesis_of_no_offline
 
-/-! ### §5. Axiom hygiene -/
+/-! ### §4. Axiom hygiene -/
 
-#print axioms NoOfflineZeros_iff_RiemannHypothesis
-#print axioms NoOfflineZeros_iff_classifier_balance
-#print axioms RH_iff_NoOffline_iff_classifier
-#print axioms NoOffline_fe_stable
+#print axioms noOfflineZeros_of_classifier_balance
 #print axioms target_theorem
 
 end DoubleCoshProgram

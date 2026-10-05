@@ -1,7 +1,7 @@
 import RequestProject.LadderMinor
 
 /-!
-# The ladder at one anchor, part 2b: `ladder ⟹ RH`, and the equivalence (ledger 630)
+# The ladder at one anchor, part 2b: the ladder puts every zero on the line (ledger 630)
 
 If a zero `ρ₀` lies left of the line, its transported atom has `‖w_{ρ₀}‖ > 1` (`one_lt_norm_transport_iff`).
 The moduli `‖w_ρ‖ ≥ 1 + η` occur for finitely many zeros (`finite_transport_ge`), so the largest modulus
@@ -11,7 +11,8 @@ sum over `B` and a tail that tends to `0` by dominated convergence. The ladder's
 to `0` with `u_ρ` distinct unimodular; its Cesàro means against `conj(u_{ρ*})^k` tend to `m_{ρ*} ω_{ρ*} ≠ 0`,
 a contradiction. Hence every zero has `Re ρ ≥ ½`, and by mirror symmetry `Re ρ = ½`.
 
-**`anchor_ladder_iff_rh`: at any anchor `s` in the channel off the zero set, `Ladder s ↔ RH`.**
+**`rh_of_ladder`: at any anchor `s` in the channel off the zero set, `Ladder s` puts every zero on the
+line.**
 -/
 
 open Complex Finset Filter Topology
@@ -289,13 +290,7 @@ theorem rh_of_ladder {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hs' : s.re < 1 /
   simp only [Complex.sub_re, Complex.one_re, Complex.conj_re] at h2
   linarith
 
-/-- **One anchor's ladder is equivalent to RH.** -/
-theorem anchor_ladder_iff_rh {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hs' : s.re < 1 / 2) :
-    Ladder s ↔ RH :=
-  ⟨rh_of_ladder hs hs', ladder_of_rh hs⟩
-
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.re_ge_half_of_ladder
 #print axioms CriticalLinePhasor.SeatingLedger.rh_of_ladder
-#print axioms CriticalLinePhasor.SeatingLedger.anchor_ladder_iff_rh

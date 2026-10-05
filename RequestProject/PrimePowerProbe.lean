@@ -50,7 +50,7 @@ and the global transport is the Euler/Mangoldt superposition over all prime powe
    the channel closes onto the explicit-formula side, `M(σ,h) = −L'/L(σ + i h, χ)`.
 4. `LFunction_ne_zero_of_one_lt_re`, `noDominance_no_offline_zero` — **no-dominance**: in the
    region of absolute convergence (`σ > 1`) the ledger always closes (`L ≠ 0`), so there is no
-   off-line drift there.  (The critical-line statement is RH and is *not* claimed.)
+   off-line drift there.  (The critical-line statement is *not* claimed.)
 5. `cupHeight_nonneg`, `cup_self_eq_two_energy`, `cup_intertwining` — **geometry ↔ arithmetic
    intertwining**: the continuous chiral-cup energy of the truncated probe fibre equals exactly
    twice the prime-power ledger energy `∑_{n<N} ‖Λ(n) χ(n) n^(−(σ+ih))‖²`.  The geometric cup never

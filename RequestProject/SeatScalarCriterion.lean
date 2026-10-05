@@ -6,7 +6,8 @@ import RequestProject.FoliatedGlobalPolarization
 
 `hp_pencil` (`prop:scalarseat`) works with
 `S(s) = Σ_ρ m_ρ (s−ρ)^{-1}(s̄−1+ρ)^{-1}`, whose closed form is
-`2 Re[ξ'/ξ](s)/(2σ−1)`, and RH ⟺ `S ≥ 0` in the strip off the zero set.
+`2 Re[ξ'/ξ](s)/(2σ−1)`, and `S ≥ 0` in the strip off the zero set puts every
+nontrivial zero on the critical line (`online_of_seat_energy_nonneg`).
 
 This file compiles the engine identity in spectral coordinates: the seat
 energy is the FE-pairing energy of the resolvent vector
@@ -97,34 +98,9 @@ theorem spectralCoord_real_of_online {ρ : ℂ} (h : ρ.re = 1 / 2) :
     Complex.I_im, Complex.sub_re, Complex.sub_im, neg_zero, zero_mul]
   norm_num [h]
 
-/-- **The forward half of the scalar seat criterion, compiled**: if every
-nontrivial zero lies on the critical line, every seat-energy term is
-`m_ρ · |t_ρ − w|⁻²`, so the energy has nonnegative real part at every
-admissible anchor.  The converse — an off-line zero forces a negative anchor
-value — is the criterion's open content; its finite-window form is the
-witness `feFormOn_offlineWitness` of the global polarization file. -/
-theorem seat_energy_nonneg_of_online
-    (hon : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) {w : ℂ}
-    (hw : (1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros)
-    (hw' : (1 / 2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros)
-    (him : w - (starRingEnd ℂ) w ≠ 0) :
-    0 ≤ (∑' ρ : {ρ : ℂ // ρ ∈ ZD.NontrivialZeros},
-        (ZD.xiOrderNat ρ.val : ℂ) *
-          ((spectralCoord ρ.val - w)⁻¹ *
-            (spectralCoord ρ.val - (starRingEnd ℂ) w)⁻¹)).re := by
-  have hsum := summable_seat_energy hw hw' him
-  rw [Complex.re_tsum hsum]
-  refine tsum_nonneg fun ρ => ?_
-  have hfac : spectralCoord ρ.val - (starRingEnd ℂ) w
-      = (starRingEnd ℂ) (spectralCoord ρ.val - w) := by
-    rw [map_sub, spectralCoord_real_of_online (hon ρ.val ρ.2)]
-  rw [hfac, ← map_inv₀, Complex.mul_conj, ← Complex.ofReal_natCast,
-    ← Complex.ofReal_mul, Complex.ofReal_re]
-  exact mul_nonneg (Nat.cast_nonneg _) (Complex.normSq_nonneg _)
+/-! ## The door's witness, piece (i): exact off-line term blow-up
 
-/-! ## The converse witness, piece (i): exact off-line term blow-up
-
-The criterion's converse (an off-line zero forces a negative anchor value)
+The criterion's door (an off-line zero forces a negative anchor value)
 decomposes as (i) the family term at the off-line zero, (ii) a uniform tail
 bound on an anchor ball, (iii) limit assembly.  Piece (i) is *exact*: at the
 vertical anchor `w = t₀ + εi` the seat term of a zero with spectral
@@ -167,7 +143,7 @@ theorem seat_term_vertical_neg (t₀ : ℂ) {ε : ℝ}
   have hneg : ε * (2 * t₀.im + ε) < 0 := by nlinarith
   exact inv_lt_zero.mpr hneg
 
-/-! ## Converse pieces toward (ii): the partner term, the chart isometry, and
+/-! ## Door pieces toward (ii): the partner term, the chart isometry, and
 the far-zero majorant -/
 
 /-- **The FE partner doubles the negativity**: at the same vertical anchor the
@@ -255,7 +231,7 @@ theorem seat_term_far_bound {w : ℂ} {S : ℝ}
         mul_le_mul_of_nonneg_left hprod (Nat.cast_nonneg _)
     _ = 4 * (ZD.xiOrderNat ρ.val : ℝ) / ‖ρ.val‖ ^ 2 := by ring
 
-/-! ## Assembly of the converse: the two spectral coordinates line up -/
+/-! ## Assembly of the door: the two spectral coordinates line up -/
 
 /-- The two `spectralCoord` definitions agree. -/
 theorem spectralCoord_eq_foliated (ρ : ℂ) :
@@ -377,7 +353,7 @@ theorem exists_clearance (ρ₀ ρstar : ℂ) :
     constructor <;> linarith [hf.1, hf.2]
 
 set_option maxHeartbeats 1600000 in
-/-- **The converse of the scalar seat criterion, compiled**: an off-line zero
+/-- **The door witness of the scalar seat criterion, compiled**: an off-line zero
 (`Re ρ₀ > ½`) forces an admissible anchor at which the seat energy is
 strictly negative.  The anchor is vertical over the zero's spectral
 coordinate; the reflection family contributes the exact value
@@ -691,27 +667,22 @@ theorem exists_seat_energy_neg {ρ₀ : ℂ} (hρ₀ : ρ₀ ∈ ZD.NontrivialZe
   have hC2X : C < 2 / X := (lt_div_iff₀ hXpos).mpr hCX
   linarith [htail_re, hfamval, hC2X]
 
-/-- **The scalar seat criterion, as a compiled iff** (`prop:scalarseat` of
-`hp_pencil`, machine-checked in spectral coordinates): every nontrivial zero
-lies on the critical line **iff** the seat energy is nonnegative at every
-admissible anchor.  Forward: on-line terms are `m_ρ·|t_ρ−w|⁻²`.  Converse:
-an off-line zero (either side, via its FE partner) yields an anchor with
-strictly negative energy.  With `seat_energy_identity` the left side of the
-inequality is the explicit arithmetic function
-`[−i(ξ'/ξ(s) − ξ'/ξ(1−s̄))]/(w−w̄)`. -/
-theorem seat_criterion_iff :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ ∀ w : ℂ, ((1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
+/-- **The scalar seat door** (`prop:scalarseat` of `hp_pencil`, machine-checked
+in spectral coordinates): if the seat energy is nonnegative at every admissible
+anchor, every nontrivial zero lies on the critical line — an off-line zero
+(either side, via its FE partner) yields an anchor with strictly negative
+energy.  With `seat_energy_identity` the energy is the explicit arithmetic
+function `[−i(ξ'/ξ(s) − ξ'/ξ(1−s̄))]/(w−w̄)`. -/
+theorem online_of_seat_energy_nonneg
+    (hpos : ∀ w : ℂ, ((1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
           ((1 / 2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros) →
           (w - (starRingEnd ℂ) w ≠ 0) →
           0 ≤ (∑' ρ : {ρ : ℂ // ρ ∈ ZD.NontrivialZeros},
               (ZD.xiOrderNat ρ.val : ℂ) *
                 ((spectralCoord ρ.val - w)⁻¹ *
-                  (spectralCoord ρ.val - (starRingEnd ℂ) w)⁻¹)).re := by
-  constructor
-  · intro hon w hw hw' him
-    exact seat_energy_nonneg_of_online hon hw hw' him
-  · intro hpos ρ hρ
+                  (spectralCoord ρ.val - (starRingEnd ℂ) w)⁻¹)).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  · intro ρ hρ
     by_contra hne
     rcases lt_or_gt_of_ne hne with hlt | hgt
     · have hmem' := CriticalLinePhasor.FoliatedGlobalPolarization.feReflect_mem hρ
@@ -1073,7 +1044,7 @@ theorem seat_energy_nonneg_of_outside_strip {w : ℂ} (hstrip : 1 / 2 < |w.im|) 
 /-- **The band-local seat criterion** (`prop:bandlocal` (ii) of `hp_pencil`,
 compiled): seat-energy positivity at anchors of height at most `H` forces
 every zero of height at most `H` onto the critical line.  The witness anchor
-of the converse sits exactly at the off-line zero's ordinate, so the
+sits exactly at the off-line zero's ordinate, so the
 criterion is height-local with no boundary loss in this direction. -/
 theorem zeros_online_of_band_nonneg {H : ℝ}
     (hpos : ∀ w : ℂ, |w.re| ≤ H →
@@ -1113,10 +1084,10 @@ theorem zeros_online_of_band_nonneg {H : ℝ}
 
 A zero can contribute negatively only at anchors strictly shallower than
 itself: the term's product has real part
-`(Im ρ − Re w)² + (Im w)² − (β−½)²`.  Stratifying the criterion by the depth
-`d` interpolates between the proven exterior rung (`d = ½`,
-`seat_energy_nonneg_of_outside_strip`) and RH (`d = 0`,
-`seat_criterion_iff`). -/
+`(Im ρ − Re w)² + (Im w)² − (β−½)²`.  Stratifying the criterion by a positive
+depth `d` descends from the proven exterior rung (`d = ½`,
+`seat_energy_nonneg_of_outside_strip`) toward the door at the line
+(`online_of_seat_energy_nonneg`). -/
 
 /-- Zeros no deeper than the anchor contribute nonnegatively — exact. -/
 theorem seat_term_nonneg_of_shallow {w : ℂ}
@@ -1163,10 +1134,10 @@ theorem seat_term_nonneg_of_shallow {w : ℂ}
   have hm : (0:ℝ) ≤ (ZD.xiOrderNat ρ.val : ℝ) := Nat.cast_nonneg _
   nlinarith [hdivpos, hm]
 
-/-- **The ladder's forward rungs**: if every zero has depth at most `d`, the
-seat energy is nonnegative at every admissible anchor of depth at least
-`d`. -/
-theorem seat_energy_nonneg_of_depth {d : ℝ}
+/-- **The ladder's forward rungs**: at positive depth `d`, if every zero has
+depth at most `d`, the seat energy is nonnegative at every admissible anchor of
+depth at least `d`. -/
+theorem seat_energy_nonneg_of_depth {d : ℝ} (_hd0 : 0 < d)
     (hd : ∀ ρ ∈ ZD.NontrivialZeros, |ρ.re - 1 / 2| ≤ d)
     {w : ℂ}
     (hw : (1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros)
@@ -1182,13 +1153,12 @@ theorem seat_energy_nonneg_of_depth {d : ℝ}
   refine tsum_nonneg fun ρ => ?_
   exact seat_term_nonneg_of_shallow ρ (le_trans (hd ρ.val ρ.2) hdepth)
 
-/-- **The depth-quantified criterion**: for every `d ≥ 0`, confinement of the
+/-- **The depth-quantified criterion**: for every `d > 0`, confinement of the
 zeros to depth `d` is *equivalent* to seat positivity at all admissible
 anchors of depth at least `d`.  At `d = ½` the left side is the strip bound
-(true) and the right side is the proven exterior positivity; at `d = 0` the
-statement is `seat_criterion_iff`, i.e. RH.  The ladder is the compiled
-interpolation between the proven and the open endpoint. -/
-theorem depth_criterion_iff {d : ℝ} (hd0 : 0 ≤ d) :
+(true) and the right side is the proven exterior positivity.  The line itself
+is reached by the door `online_of_seat_energy_nonneg`. -/
+theorem depth_criterion_iff {d : ℝ} (hd0 : 0 < d) :
     (∀ ρ ∈ ZD.NontrivialZeros, |ρ.re - 1 / 2| ≤ d)
       ↔ ∀ w : ℂ, d ≤ |w.im| →
           ((1 / 2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
@@ -1200,7 +1170,7 @@ theorem depth_criterion_iff {d : ℝ} (hd0 : 0 ≤ d) :
                   (spectralCoord ρ.val - (starRingEnd ℂ) w)⁻¹)).re := by
   constructor
   · intro hconf w hdepth hw hw' him
-    exact seat_energy_nonneg_of_depth hconf hw hw' him hdepth
+    exact seat_energy_nonneg_of_depth hd0 hconf hw hw' him hdepth
   · intro hpos ρ hρ
     by_contra hdeep
     push_neg at hdeep
@@ -1365,14 +1335,13 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.SeatScalar.chart_conj_anchor
 #print axioms CriticalLinePhasor.SeatScalar.summable_seat_energy
 #print axioms CriticalLinePhasor.SeatScalar.seat_energy_identity
-#print axioms CriticalLinePhasor.SeatScalar.seat_energy_nonneg_of_online
 #print axioms CriticalLinePhasor.SeatScalar.seat_term_vertical
 #print axioms CriticalLinePhasor.SeatScalar.seat_term_vertical_neg
 #print axioms CriticalLinePhasor.SeatScalar.seat_term_vertical_partner
 #print axioms CriticalLinePhasor.SeatScalar.seat_term_far_bound
 #print axioms CriticalLinePhasor.SeatScalar.exists_clearance
 #print axioms CriticalLinePhasor.SeatScalar.exists_seat_energy_neg
-#print axioms CriticalLinePhasor.SeatScalar.seat_criterion_iff
+#print axioms CriticalLinePhasor.SeatScalar.online_of_seat_energy_nonneg
 #print axioms CriticalLinePhasor.SeatScalar.zeros_online_of_band_nonneg
 #print axioms CriticalLinePhasor.SeatScalar.seat_tail_norm_le
 #print axioms CriticalLinePhasor.SeatScalar.seat_tail_tsum_le

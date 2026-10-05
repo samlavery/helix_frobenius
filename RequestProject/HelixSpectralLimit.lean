@@ -35,7 +35,7 @@ theorem poleParam_im (ρ : ℂ) : (poleParam ρ).im = -(ρ.re - 1 / 2) := by
 /-- **The open spectral-limit target.** For channel `χ`, every nontrivial zero's pole
     parameter `z(ρ)` is the limit of a sequence of **real** numbers — the real spectral
     values `μ_{N,j}` of the self-adjoint finite Dirac operators `A_N`. This is the
-    `T_N → −Λ'/Λ` capture statement: OPEN, and equivalent to GRH for `χ`. -/
+    `T_N → −Λ'/Λ` capture statement: OPEN; it gives GRH for `χ` (`grh_of_spectralLimitCaptures`). -/
 def SpectralLimitCaptures (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
     ∃ μ : ℕ → ℝ, Tendsto (fun k => (μ k : ℂ)) atTop (nhds (poleParam ρ))
@@ -56,26 +56,11 @@ theorem grh_of_spectralLimitCaptures (χ : DirichletCharacter ℂ N)
   rw [poleParam_im] at him
   linarith
 
-/-- **Reverse: GRH ⟹ SpectralLimitCaptures.** If `ρ` is on the line then `poleParam ρ` is already
-    real, so the *constant* real sequence `(poleParam ρ).re` converges to it. Note this uses **no
-    operator at all** — it just re-encodes `Re ρ = ½`. -/
-theorem spectralLimitCaptures_of_grh (χ : DirichletCharacter ℂ N)
-    (h : GRHSpectral.GRH χ) : SpectralLimitCaptures χ := by
-  intro ρ hρ
-  have him : (poleParam ρ).im = 0 := by rw [poleParam_im, h ρ hρ]; ring
-  have hreal : ((poleParam ρ).re : ℂ) = poleParam ρ := by
-    apply Complex.ext <;> simp [him]
-  exact ⟨fun _ => (poleParam ρ).re, by simpa [hreal] using tendsto_const_nhds⟩
-
-/-- **`SpectralLimitCaptures χ ↔ GRH χ` — the stated target is a costume.** The `Prop` quantifies
-    over *arbitrary* real sequences, never the spectrum of `A_N`; a real sequence can only converge
-    to `poleParam ρ` when that is real, i.e. `Re ρ = ½`. So `SpectralLimitCaptures` is GRH unfolded,
-    and proving it gives no leverage from the operator. The genuine Hilbert–Pólya statement — that
-    the **eigenvalues of `A_N`** accumulate at the zeros' pole-params — is a *different* proposition,
-    not stated here, and is a question about the specific `lossMatrix`, not about `poleParam`. -/
-theorem spectralLimitCaptures_iff_grh (χ : DirichletCharacter ℂ N) :
-    SpectralLimitCaptures χ ↔ GRHSpectral.GRH χ :=
-  ⟨grh_of_spectralLimitCaptures χ, spectralLimitCaptures_of_grh χ⟩
+/- **Note on `SpectralLimitCaptures`.** The `Prop` quantifies over *arbitrary* real sequences,
+   never the spectrum of `A_N`; a real sequence can only converge to `poleParam ρ` when that is real.
+   The genuine Hilbert–Pólya statement — that the **eigenvalues of `A_N`** accumulate at the zeros'
+   pole-params — is a *different* proposition, not stated here, and is a question about the specific
+   `lossMatrix`, not about `poleParam`. -/
 
 /-- **Hilbert–Pólya capstone — self-adjointness forces the line, no positivity.** If every
     nontrivial zero's pole parameter `z(ρ) = γ − i(σ − ½)` is an eigenvalue of *some* Hermitian

@@ -7,8 +7,8 @@ import RequestProject.XiHelixChart
 
 The Road B chain (theta representation, batch-27 O-lane) computes the sign of the chart
 numerator `Im[Ξ′(z) · conj Ξ(z)]` for `z` in the strip `0 < Im z < 5/2`, where
-`Ξ(z) = riemannXi (1/2 − i z)` is the Xi chart readout.  The seat criterion
-(`seat_criterion_iff`) consumes seat-energy nonnegativity at every admissible anchor.
+`Ξ(z) = riemannXi (1/2 − i z)` is the Xi chart readout.  The seat door
+(`online_of_seat_energy_nonneg`) consumes seat-energy nonnegativity at every admissible anchor.
 This file compiles the missing wiring:
 
 * the **numerator → quotient bridge**: `(w/v).im = (w · conj v).im / normSq v`, so the
@@ -142,7 +142,7 @@ theorem rh_of_chart_numerator_im_nonpos
     (h : ∀ z : ℂ, 0 < z.im → z.im ≤ 1 / 2 →
       (deriv xiChart z * (starRingEnd ℂ) (xiChart z)).im ≤ 0) :
     ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
-  rw [CriticalLinePhasor.SeatScalar.seat_criterion_iff]
+  apply CriticalLinePhasor.SeatScalar.online_of_seat_energy_nonneg
   intro w hw hw' him
   by_cases hstrip : |w.im| ≤ 1 / 2
   · -- inside the strip: |Im w| ≤ 1/2, Im w ≠ 0 by admissibility

@@ -19,15 +19,15 @@ nontrivial zeros (`riemannXi_eq_zero_iff`).  This file proves, unconditionally:
 * **Regularity** (`xiChannel_regular`): at every `z₀` whose line point is *not* a zero,
   the channel has a finite limit.  Together: **the singular set of the ξ-channel is
   exactly `poleParam '' NontrivialZeros`** — no archimedean noise, no pole at `s = 0, 1`.
-* **The equivalence** (`xiChannel_offReal_regular_iff_RH`): Mathlib's literal
-  `RiemannHypothesis` is *equivalent* to "the ξ-channel is regular off the real axis".
-  A sourceless zero **is** a resonance of the channel at a non-real parameter.
+* **The door** (`rh_of_xiChannel_offReal_regular`): "the ξ-channel is regular off the real
+  axis" gives Mathlib's literal `RiemannHypothesis`. A sourceless zero **is** a resonance of the
+  channel at a non-real parameter.
 * **The capstone corollary** (`RiemannHypothesis_of_selfAdjoint_xiChannel_receiver`):
   any self-adjoint receiver of the ξ-channel — regular off its (automatically real)
   spectrum — forces `RiemannHypothesis`, by spectral reality alone.
 
-Everything here is unconditional: no RH is assumed, and the equivalence isolates the
-dangerous hypothesis `hReg` in its exact operator form.  The remaining Stage-2 work
+Everything here is unconditional: no RH is assumed, and the door isolates the hypothesis `hReg`
+in its exact operator form.  The remaining Stage-2 work
 (D2) is the ledger operator whose spectrum is the closed ±event set.  No `sorry`, no
 `axiom` beyond the standard three.
 -/
@@ -115,67 +115,38 @@ theorem xiChannel_regular {z₀ : ℂ} (hz : (1 / 2 + Complex.I * z₀) ∉ ZD.N
     exact hc.tendsto z₀
   exact ⟨-logDeriv ZD.riemannXi s₀, hlog.tendsto.comp haff⟩
 
-/-! ## §3 The equivalence: RH = regularity off the reals -/
-
-/-- Mathlib's `RiemannHypothesis` places every member of `NontrivialZeros` on the line. -/
-theorem rh_implies_line (hRH : RiemannHypothesis) {ρ : ℂ}
-    (hρ : ρ ∈ ZD.NontrivialZeros) : ρ.re = 1 / 2 := by
-  refine hRH ρ hρ.2.2 ?_ ?_
-  · rintro ⟨n, hn⟩
-    have hre := congrArg Complex.re hn
-    have hcalc : ((-2 : ℂ) * ((n : ℂ) + 1)).re = -2 * ((n : ℝ) + 1) := by
-      simp [Complex.mul_re]
-    rw [hcalc] at hre
-    have h0 := hρ.1
-    have hn0 : (0 : ℝ) ≤ (n : ℝ) := Nat.cast_nonneg n
-    nlinarith
-  · intro h1
-    have := hρ.2.1
-    rw [h1, Complex.one_re] at this
-    exact lt_irrefl _ this
+/-! ## §3 The door: regularity off the reals gives RH -/
 
 /-- The spectral parameter of a zero is off the reals exactly when the zero is off the
 line: `(poleParam ρ).im = ½ − ρ.re`. -/
 theorem poleParam_im (ρ : ℂ) : (poleParam ρ).im = 1 / 2 - ρ.re := by
   simp [poleParam]
 
-/-- **The equivalence (D3)**: Mathlib's `RiemannHypothesis` holds **iff** the ξ-channel is
-regular off the real axis.  A sourceless zero *is* a non-real resonance of the channel;
-`hReg` — the dangerous hypothesis — is precisely the right-hand side. -/
-theorem xiChannel_offReal_regular_iff_RH :
-    (∀ z : ℂ, z.im ≠ 0 → ∃ L, Tendsto xiChannel (𝓝[≠] z) (𝓝 L)) ↔ RiemannHypothesis := by
-  constructor
-  · intro hreg
-    refine RHBridge.no_offline_zeros_implies_rh ?_
-    intro ρ hρ
-    by_contra hne
-    refine xiChannel_resonates hρ (hreg (poleParam ρ) ?_)
-    rw [poleParam_im]
-    intro h
-    exact hne (by linarith)
-  · intro hRH z hz
-    refine xiChannel_regular ?_
-    intro hmem
-    have hre := rh_implies_line hRH hmem
-    have him : (1 / 2 + Complex.I * z).re = 1 / 2 - z.im := by
-      simp [Complex.add_re, Complex.mul_re]
-      ring
-    rw [him] at hre
-    exact hz (by linarith)
+/-- **The door (D3)**: if the ξ-channel is regular off the real axis, Mathlib's
+`RiemannHypothesis` holds. A sourceless zero *is* a non-real resonance of the channel. -/
+theorem rh_of_xiChannel_offReal_regular
+    (hreg : ∀ z : ℂ, z.im ≠ 0 → ∃ L, Tendsto xiChannel (𝓝[≠] z) (𝓝 L)) : RiemannHypothesis := by
+  refine RHBridge.no_offline_zeros_implies_rh ?_
+  intro ρ hρ
+  by_contra hne
+  refine xiChannel_resonates hρ (hreg (poleParam ρ) ?_)
+  rw [poleParam_im]
+  intro h
+  exact hne (by linarith)
 
 /-! ## §4 The self-adjoint capstone for ζ -/
 
 /-- **RH from a self-adjoint ξ-channel receiver.**  If any self-adjoint element of any
 C*-algebra receives the ξ-channel — the channel is regular off its spectrum — then
 `RiemannHypothesis` holds: self-adjoint spectra are real (von Neumann reality), so
-regularity off the spectrum gives regularity off the reals, and the equivalence closes.
+regularity off the spectrum gives regularity off the reals, and the door closes.
 Unconditional; the single remaining input is the receiver hypothesis `hReg` — the
 operator form of *every zero has a source*. -/
 theorem RiemannHypothesis_of_selfAdjoint_xiChannel_receiver
     {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
     (hReg : ∀ z, z ∉ spectrum ℂ a → ∃ L, Tendsto xiChannel (𝓝[≠] z) (𝓝 L)) :
     RiemannHypothesis := by
-  refine xiChannel_offReal_regular_iff_RH.mp (fun z hz => hReg z fun hmem => hz ?_)
+  refine rh_of_xiChannel_offReal_regular (fun z hz => hReg z fun hmem => hz ?_)
   exact ha.im_eq_zero_of_mem_spectrum hmem
 
 /-! ## §5 The real section: the wave at the perpendicular

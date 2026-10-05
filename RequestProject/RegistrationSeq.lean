@@ -25,7 +25,7 @@ Everything of 601 applies per index. New here:
 * `nontrivialZeros_online_of_primeSeqResid`: the same on the registry's object, cutoffs `X n`;
 * `seqResid_station_abs_le`: the DC of 602 per station, with the explicit constant `24 + |A'| + B n`.
 
-**Inhabitant under RH and simplicity (the 603 calibration rule).** Take `Ŝ_n ≡ n − 3/2 − ϑ(γ_n)/π`
+**Inhabitant with on-line simple zeros (the 603 calibration rule).** Take `Ŝ_n ≡ n − 3/2 − ϑ(γ_n)/π`
 with `γ_n` the `n`-th positive ordinate. Then `ϑ/π + Ŝ_n` crosses `n − 3/2` first at `γ_n` (`ϑ`
 strictly increasing above `10`), the stations are the zeros, strictly increasing, and
 `R_n(γ_n) = N(γ_n) − n + ½ = ½` for every `n`, so the adjacent law holds with margin `1`. The

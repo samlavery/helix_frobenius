@@ -31,7 +31,7 @@ exactly the statement that the Krein space is a Hilbert space.  A self-adjoint
 operator has real spectrum on a definite space and need not on an indefinite
 one; that gap is where the arithmetic must enter, and nothing here closes it.
 
-Scope: no claim is made that the pairing is definite.  That is RH.
+Scope: no claim is made that the pairing is definite.
 -/
 
 open Complex
@@ -117,8 +117,7 @@ theorem pairBlock_indefinite {m : ℝ} (hm : 0 < m) :
 /-- **The dichotomy.**  For a zero on the critical line the reflection is the
 zero itself, so the block is one-dimensional with positive norm `2m`; off the
 line the block is two-dimensional and indefinite.  Definiteness of the
-polarization is therefore exactly the assertion that every zero lies on the
-critical line. -/
+polarization therefore puts every zero on the critical line. -/
 theorem pairBlock_definite_iff {m : ℝ} (hm : 0 < m) (ρ : ℂ) :
     (feReflect ρ = ρ ↔ ρ.re = 1 / 2) ∧
       ((0 < (pairForm m (1, 1) (1, 1)).re) ∧ ((pairForm m (1, -1) (1, -1)).re < 0)) :=

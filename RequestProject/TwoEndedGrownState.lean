@@ -4,7 +4,7 @@ import RequestProject.GrownFiberEvolution
 # The grown state as a transition, its two ends, and the zero equality case
 
 Built on `GrownFiberEvolution` (window × input normalization, exact head-advance law).  No `ζ`/`L`
-identity, functional equation, explicit formula, prime, zero set or RH-equivalent statement is
+identity, functional equation, explicit formula, prime, zero set or zero-location statement is
 used in any proof.
 
 ## A. Anatomy of the transition

@@ -16,30 +16,12 @@ separates concerns as:
 * Orthogonality bridge: `ZeroCoefficientVanishesByOrthogonality`
   (in `WeilZeroOrthogonality.lean`)
 
-The forward direction `RiemannHypothesis → ExplicitFormulaBridge ψ` is
-**circular** as a route to RH (it derives a bridge *from* RH). It is
-preserved here for historical reasons only. Do NOT use this direction
-to "prove" RH.
+# The Gaussian explicit-formula bridge (legacy)
 
-# `ExplicitFormulaBridge` from `RiemannHypothesis` (legacy)
-
-Item (1) of the Weil-bridge completion program.
-
-## What we prove
-
-Unconditionally (only mathlib-standard axioms):
-
-  `RiemannHypothesis → ∀ ψ, ExplicitFormulaBridge ψ`
-
-i.e., **if RH holds, every test function has a bridge**. The bridge's
-field `zero_forces_vanishing` reduces to `averageEnergyDefect ψ (1/2) = 0`,
-which is direct from `energyDefect_zero_on_line` (no Parseval needed).
-
-The reverse direction `(∃ ψ admissible, ExplicitFormulaBridge ψ) → RH`
-is proved below modulo the averaged Parseval identity
-(`riemann_hypothesis_of_bridge` closes it for the Gaussian once the
-`hparseval` hypothesis is discharged). Together these give
-`RH ↔ Nonempty (ExplicitFormulaBridge ψ)` for any admissible ψ.
+Item (1) of the Weil-bridge completion program. The door direction
+`(∃ ψ admissible, ExplicitFormulaBridge ψ) → RH` is proved modulo the averaged Parseval identity
+(`riemann_hypothesis_of_bridge` closes it for the Gaussian once the `hparseval` hypothesis is
+discharged).
 -/
 
 open Real Complex MeasureTheory
@@ -136,16 +118,6 @@ theorem weilGaussianBridge_of_explicitFormulaBridge
     WeilGaussianBridge := by
   intro ρ hρ
   exact bridge.zero_forces_vanishing ρ hρ
-
-/-- If every nontrivial zero is on the balance line, the Gaussian channel is
-    balanced at every nontrivial zero. -/
-theorem weilGaussianBridge_of_nontrivialZeros_on_line
-    (hline : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = CoshBalance) :
-    WeilGaussianBridge := by
-  intro ρ hρ
-  unfold BalancedChannel
-  rw [hline ρ hρ, CoshBalance_eq_half]
-  exact averageEnergyDefect_zero_on_line gaussianKernel
 
 /-- **Structural extraction.** By definition `BalancedChannel ψ ρ` *is*
 `averageEnergyDefect ψ ρ.re = 0`. -/

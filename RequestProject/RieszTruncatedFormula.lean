@@ -8,10 +8,10 @@ Ledger 567 (Bochner): every taper with a plateau at a front `x > 1` has a signed
 its finite-stage marriage measure is Krein by a universal shape constant. The route around is to
 remove the plateau: the RIESZ window `w(n) = (1 − log n/log x)₊`, no phasor ever fully grown. Its
 kernel is `K_R(w) = (x^w − 1)/(L w²) = expRatio(L, w)/w`, and on the line
-`Re K_R(iu) = (1 − cos Lu)/(L u²) ≥ 0` — the Fejér kernel. Under RH the finite-stage density is a
-POSITIVE measure at every front; an off-line pair enters with amplitude `x^{δ}` and a phase, so
-`RH ⟺ D_{R,x}(t) ≥ 0 for all x > 1, t` (the density-register form of Weil positivity on the Fejér
-class). This file compiles the identity for that window:
+`Re K_R(iu) = (1 − cos Lu)/(L u²) ≥ 0` — the Fejér kernel. Each on-line zero contributes a
+POSITIVE density at every front; an off-line pair enters with amplitude `x^{δ}` and a phase
+(the density-register form of Weil positivity on the Fejér class). This file compiles the
+identity for that window:
 
   `Σ_n (1 − log n/L)₊ Λ(n) n^{−s₀} = −ζ′/ζ(s₀) + K_R(1−s₀) + K_R(−s₀) − Σ′_ρ m_ρ K_R(ρ−s₀) + R_clock(s₀)`.
 

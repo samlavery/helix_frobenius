@@ -14,8 +14,9 @@ and at the mirror `c = 1 − s̄`. Two function-level facts fold the mirror jets
   from the slope characterisation with no differentiability hypothesis: at a point of
   non-differentiability both sides are `0`).
 
-Result: **`rh_iff_jets_s_nonneg`** — RH ⟺ a sign condition on a finite functional of the jets of `ξ′/ξ`
-at the single point `s = σ₀ + iγ`, `1 < σ₀ < 3/2`, quantified over `γ`, `σ₀`, and test polynomials.
+Result: **`online_of_jets_s_nonneg`** — a sign condition on a finite functional of the jets of `ξ′/ξ`
+at the single point `s = σ₀ + iγ`, `1 < σ₀ < 3/2`, quantified over `γ`, `σ₀`, and test polynomials,
+puts every nontrivial zero on the line.
 -/
 
 open Complex Finset Filter Topology
@@ -160,27 +161,24 @@ theorem hermForm_anchor_eq_jets_s (γ σ₀ : ℝ) (h : 1 < σ₀) (R : Polynomi
   rw [hermForm_eq_jets_s _ R hR (hs ▸ anchor_s_not_zero h) (hc ▸ anchor_c_not_zero h)
     (by rw [hs, hc]; exact hd), hs, hc, anchor_gap]
 
-/-- **The door with jets at one prime-chart point.** RH ⟺ for all `γ`, all `1 < σ₀ < 3/2`, all `R` with
-`R(0) = 0`: `Re Σ_{j,k} conj(r_j) r_k · jetValueS(σ₀+iγ, 2σ₀−1) j k ≥ 0`. The hypothesis side mentions
-only `2Re(ξ′/ξ)(s)`, the jets `(ξ′/ξ)^{(m)}(s)` and their conjugates, at `s = σ₀ + iγ`, `Re s > 1`. -/
-theorem rh_iff_jets_s_nonneg :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    (∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
+/-- **The door with jets at one prime-chart point.** If for all `γ`, all `1 < σ₀ < 3/2`, all `R` with
+`R(0) = 0`: `Re Σ_{j,k} conj(r_j) r_k · jetValueS(σ₀+iγ, 2σ₀−1) j k ≥ 0`, every nontrivial zero is on
+the line. The hypothesis mentions only `2Re(ξ′/ξ)(s)`, the jets `(ξ′/ξ)^{(m)}(s)` and their conjugates,
+at `s = σ₀ + iγ`, `Re s > 1`. -/
+theorem online_of_jets_s_nonneg
+    (H : ∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
       0 ≤ (∑ j ∈ range (R.natDegree + 1), ∑ k ∈ range (R.natDegree + 1),
           ((starRingEnd ℂ) (R.coeff j) * R.coeff k)
             * jetValueS ((σ₀ : ℂ) + (γ : ℂ) * I) ((2 * σ₀ - 1 : ℝ) : ℂ)
-                (2 * R.natDegree + 2) j k).re) := by
-  rw [rh_iff_hermForm_nonneg]
-  constructor
-  · intro H γ σ₀ h1 h2 R hR
-    rw [← hermForm_anchor_eq_jets_s γ σ₀ h1 R hR]
-    exact H γ σ₀ h1 h2 R hR
-  · intro H γ σ₀ h1 h2 R hR
-    rw [hermForm_anchor_eq_jets_s γ σ₀ h1 R hR]
-    exact H γ σ₀ h1 h2 R hR
+                (2 * R.natDegree + 2) j k).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  apply online_of_hermForm_nonneg
+  intro γ σ₀ h1 h2 R hR
+  rw [hermForm_anchor_eq_jets_s γ σ₀ h1 R hR]
+  exact H γ σ₀ h1 h2 R hR
 
 #print axioms iteratedDeriv_conj_comm
 #print axioms jet_mirror
-#print axioms rh_iff_jets_s_nonneg
+#print axioms online_of_jets_s_nonneg
 
 end CriticalLinePhasor.ContourArgument

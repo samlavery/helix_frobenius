@@ -288,7 +288,7 @@ theorem inner_eq_finiteCarrier {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ
 /-- **Gram positivity (the de Branges background).**  Any finite family of carrier vectors has a
 positive‑semidefinite Gram form `∑ᵢⱼ conj(cᵢ)·cⱼ·⟨vᵢ,vⱼ⟩ = ‖∑ cᵢvᵢ‖² ≥ 0` — the positive‑kernel
 fact underlying a de Branges / Hermite–Biehler space.  The *global* Hermite–Biehler condition for a
-`Λ`‑built structure (no off‑line zeros) is RH‑level. -/
+`Λ`‑built structure is not proved here. -/
 theorem carrier_gram_nonneg {n : ℕ} (v : Fin n → (ℕ →₀ ℂ)) (c : Fin n → ℂ) :
     0 ≤ (∑ i, ∑ j, (starRingEnd ℂ) (c i) * c j * (inner ℂ (v i) (v j))).re :=
   DeBranges.gram_quadratic_form_nonneg v c

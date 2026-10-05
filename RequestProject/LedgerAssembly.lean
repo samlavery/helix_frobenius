@@ -10,8 +10,8 @@ The assembly hub of the S(t) thread.  The single residual proposition of the thr
 named once — `IntegratedDefectSublinear`, sublinearity of the running integral of the
 off-line defect ledger — and every compiled face of the identification is proven
 equivalent to it: the good-height coordinate identity, parameter-preserving kernel
-coupling of every upper zero, the no-radial-drift equation, the complete native 3D
-certificate, and off-real regularity of the ξ-channel receiver.  Any one face proven
+coupling of every upper zero, the no-radial-drift equation, and the complete native 3D
+certificate.  Any one face proven
 = all faces proven = every zero rides the carrier.
 
 **Search record for the residual (per the prove-absence rule).**  The residual cannot
@@ -81,19 +81,9 @@ theorem integratedDefectSublinear_iff_upperNative3DCertificate
   integratedDefectSublinear_iff_globalCoordinateIdentification.trans
     (globalCoordinateIdentification_iff_upperNative3DCertificate χ₁)
 
-/-- Face 4: off-real regularity of the ξ-channel receiver. -/
-theorem integratedDefectSublinear_iff_xiChannel_offReal_regular
-    (χ₁ : DirichletCharacter ℂ 1) :
-    IntegratedDefectSublinear ↔
-      ∀ z : ℂ, z.im ≠ 0 →
-        ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (𝓝[≠] z) (𝓝 L) :=
-  integratedDefectSublinear_iff_globalCoordinateIdentification.trans
-    (globalCoordinateIdentification_iff_xiChannel_offReal_regular χ₁)
-
 end CriticalLinePhasor.ContourArgument
 
 #print axioms CriticalLinePhasor.ContourArgument.integratedDefectSublinear_iff_globalCoordinateIdentification
 #print axioms CriticalLinePhasor.ContourArgument.integratedDefectSublinear_iff_upperKernelCoupling
 #print axioms CriticalLinePhasor.ContourArgument.integratedDefectSublinear_iff_upperNoRadialDrift
 #print axioms CriticalLinePhasor.ContourArgument.integratedDefectSublinear_iff_upperNative3DCertificate
-#print axioms CriticalLinePhasor.ContourArgument.integratedDefectSublinear_iff_xiChannel_offReal_regular

@@ -14,8 +14,8 @@ import RequestProject.ArchSideJets
 transports into the closed unit disc, with summable weights. So its coefficient sequence is **bounded,
 unconditionally** (`pairedArchCoeff_bounded`), and the leaf moves entirely onto the arithmetic side:
 
-  **`rh_iff_pairedPrime_polynomial`: RH ⟺ the paired prime coefficients at `−1 + 20i` are polynomially
-  bounded.**
+  **`rh_of_pairedPrime_polynomial`: a polynomial bound on the paired prime coefficients at `−1 + 20i`
+  puts every nontrivial zero on the line.**
 -/
 
 open Complex Finset Filter Topology
@@ -337,46 +337,30 @@ theorem explicitCoeff_split (k : ℕ) :
     jets_add_contDiffOn anchor20_mem pairedArch_contDiffOn pairedPrime_contDiffOn,
     toeplitzCoeff_add]
 
-/-- **RH is a polynomial bound on the paired prime coefficients alone.** -/
-theorem rh_iff_pairedPrime_polynomial :
-    (∃ C : ℝ, ∃ p : ℕ, ∀ k,
-      ‖toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖ ≤ C * (1 + (k : ℝ) ^ p)) ↔ RH := by
+/-- **A polynomial bound on the paired prime coefficients alone puts every zero on the line.** -/
+theorem rh_of_pairedPrime_polynomial
+    (hpoly : ∃ C : ℝ, ∃ p : ℕ, ∀ k,
+      ‖toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖ ≤ C * (1 + (k : ℝ) ^ p)) : RH := by
   obtain ⟨K, hK⟩ := pairedArchCoeff_bounded
   have hK0 : 0 ≤ K := le_trans (norm_nonneg _) (hK 0)
   have hs : anchor20.re < 0 := by rw [anchor20_re]; norm_num
   have hd : ((2 * anchor20.re - 1 : ℝ) : ℂ) = -3 := by rw [anchor20_re]; norm_num
-  rw [← explicit_polynomial_growth_iff_rh hs, hd]
-  constructor
-  · rintro ⟨C, p, h⟩
-    refine ⟨C + K, p, fun k => ?_⟩
-    have hk : (1 : ℝ) ≤ 1 + (k : ℝ) ^ p := by
-      have : (0 : ℝ) ≤ (k : ℝ) ^ p := by positivity
-      linarith
-    rw [explicitCoeff_split k]
-    calc ‖toeplitzCoeff (-3) (jets pairedArch anchor20) k
-          + toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖
-        ≤ ‖toeplitzCoeff (-3) (jets pairedArch anchor20) k‖
-          + ‖toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖ := norm_add_le _ _
-      _ ≤ K + C * (1 + (k : ℝ) ^ p) := by gcongr; exacts [hK k, h k]
-      _ ≤ (C + K) * (1 + (k : ℝ) ^ p) := by nlinarith
-  · rintro ⟨C, p, h⟩
-    refine ⟨C + K, p, fun k => ?_⟩
-    have hk : (1 : ℝ) ≤ 1 + (k : ℝ) ^ p := by
-      have : (0 : ℝ) ≤ (k : ℝ) ^ p := by positivity
-      linarith
-    have hsplit : toeplitzCoeff (-3) (jets pairedPrime anchor20) k
-        = toeplitzCoeff (-3) (jets explicitLogDeriv anchor20) k
-          - toeplitzCoeff (-3) (jets pairedArch anchor20) k := by
-      rw [explicitCoeff_split k]; ring
-    rw [hsplit]
-    calc ‖toeplitzCoeff (-3) (jets explicitLogDeriv anchor20) k
-          - toeplitzCoeff (-3) (jets pairedArch anchor20) k‖
-        ≤ ‖toeplitzCoeff (-3) (jets explicitLogDeriv anchor20) k‖
-          + ‖toeplitzCoeff (-3) (jets pairedArch anchor20) k‖ := norm_sub_le _ _
-      _ ≤ C * (1 + (k : ℝ) ^ p) + K := by gcongr; exacts [h k, hK k]
-      _ ≤ (C + K) * (1 + (k : ℝ) ^ p) := by nlinarith
+  apply rh_of_explicit_polynomial_growth hs
+  rw [hd]
+  obtain ⟨C, p, h⟩ := hpoly
+  refine ⟨C + K, p, fun k => ?_⟩
+  have hk : (1 : ℝ) ≤ 1 + (k : ℝ) ^ p := by
+    have : (0 : ℝ) ≤ (k : ℝ) ^ p := by positivity
+    linarith
+  rw [explicitCoeff_split k]
+  calc ‖toeplitzCoeff (-3) (jets pairedArch anchor20) k
+        + toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖
+      ≤ ‖toeplitzCoeff (-3) (jets pairedArch anchor20) k‖
+        + ‖toeplitzCoeff (-3) (jets pairedPrime anchor20) k‖ := norm_add_le _ _
+    _ ≤ K + C * (1 + (k : ℝ) ^ p) := by gcongr; exacts [hK k, h k]
+    _ ≤ (C + K) * (1 + (k : ℝ) ^ p) := by nlinarith
 
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.pairedArchCoeff_bounded
-#print axioms CriticalLinePhasor.SeatingLedger.rh_iff_pairedPrime_polynomial
+#print axioms CriticalLinePhasor.SeatingLedger.rh_of_pairedPrime_polynomial

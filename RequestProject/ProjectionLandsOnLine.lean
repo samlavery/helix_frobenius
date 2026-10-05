@@ -96,20 +96,16 @@ theorem offLine_zero_not_chartReadout {p r : ℝ} (ρ : ℂ) (_hζ : riemannZeta
     ∀ s : CarrierState3D p r, s.chartReadout ≠ ρ :=
   fun s => not_chartReadout_of_re_ne ρ hoff s
 
-/-- **What the projection theorem says RH is.**  Because the image of the projection is exactly the line,
-the Riemann Hypothesis is equivalent to COVERAGE: every nontrivial zero is the chart readout of some
-carrier state.  The projection theorem is the forward half (the image is the line); the converse half
-(every zero is in the image) is the seating, and it is the whole content of RH. -/
-theorem riemannHypothesis_iff_zeros_covered {p r : ℝ} (hp : p ≠ 0) :
-    RiemannHypothesis ↔
-      ∀ (ρ : ℂ), riemannZeta ρ = 0 → (¬∃ n : ℕ, ρ = -2 * (n + 1)) → ρ ≠ 1 →
-        ∃ s : CarrierState3D p r, s.chartReadout = ρ := by
-  constructor
-  · intro hRH ρ hζ hnt h1
-    exact exists_chartReadout_eq hp ρ (hRH ρ hζ hnt h1)
-  · intro hcov ρ hζ hnt h1
-    obtain ⟨s, hs⟩ := hcov ρ hζ hnt h1
-    rw [← hs]
-    exact s.chartReadout_re
+/-- **Coverage gives RH.**  Because the image of the projection is exactly the line, COVERAGE — every
+nontrivial zero is the chart readout of some carrier state — gives the Riemann Hypothesis. Coverage is
+the seating. -/
+theorem riemannHypothesis_of_zeros_covered {p r : ℝ}
+    (hcov : ∀ (ρ : ℂ), riemannZeta ρ = 0 → (¬∃ n : ℕ, ρ = -2 * (n + 1)) → ρ ≠ 1 →
+        ∃ s : CarrierState3D p r, s.chartReadout = ρ) :
+    RiemannHypothesis := by
+  intro ρ hζ hnt h1
+  obtain ⟨s, hs⟩ := hcov ρ hζ hnt h1
+  rw [← hs]
+  exact s.chartReadout_re
 
 end CriticalLinePhasor.ThreeDFocal

@@ -1223,7 +1223,7 @@ program, in ledger dress: IF every entry of a readout's ledger charts back to a
 helix height (`hfaithful` — attribution, = `Exhaustive` = DPI), THEN the readout's
 Li ladder is nonnegative at every order.  The implication is a theorem; positivity
 costs nothing beyond attribution.  With Bombieri–Lagarias (anchor, not re-derived),
-ladder nonnegativity for every Dirichlet readout IS GRH. -/
+ladder nonnegativity for every Dirichlet readout gives GRH. -/
 theorem grh_from_helix_li_positivity {ι : Type*} (s : Finset ι) (z : ι → ℂ)
     (hfaithful : ∀ i ∈ s, ∃ y : ℝ,
       z i = 1 - (((1/2 : ℝ) : ℂ) + y * Complex.I)⁻¹)

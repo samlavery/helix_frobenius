@@ -1,7 +1,7 @@
 import RequestProject.WeilDuality
 
 /-!
-# 3D-helix RH unconditional; the 1D conditional named as projection completeness
+# 3D vanishings project to the axis; the 1D door named as projection completeness
 
 Sam's correction, formalized: the "upper half-plane" has no meaning relative to the 3D
 helix.  The half-plane, the strip, and the σ-coordinate belong to the 1D projection
@@ -14,14 +14,13 @@ axis BY THE PROJECTION MAP — not by a theorem about analytic continuation.  So
   datum (a real height) projects to abscissa exactly `1/2`.  Together with the proven
   package — conjugate pairing (`vanishing_dual_pair`, `vanishing_conj_pair`), dimension
   symmetry (`dual_dimension_symmetry`), det-1 blocks (`dual_pair_det_one`), the carrier's
-  clock-RH (`ChiralityHB.carrier_zeros_real`, purity-defect law), the purity engine and
-  its measured Castelnuovo identity — this is **RH for the 3D double-ended helix as
-  defined: no hypothesis, no half-plane, kernel-checked**.
-* **1D side, conditional and named**: a statement about the 1D
-  projection only — whether the analytic continuation of the readout has zeros that do
-  NOT arise from 3D vanishings.  `projection_complete_iff_RH` proves this is EXACTLY
-  classical RH: **RH ⟺ the projection is complete.**  The repo's positioning claim is
-  now a theorem.
+  carrier's real zeros (`ChiralityHB.carrier_zeros_real`, purity-defect law), the purity engine
+  and its measured Castelnuovo identity — every vanishing of the 3D double-ended helix, as
+  defined, lies on the axis: no hypothesis, no half-plane, kernel-checked.
+* **1D side, named**: a statement about the 1D projection only — whether the analytic
+  continuation of the readout has zeros that do NOT arise from 3D vanishings.
+  `onLine_of_projection_complete`: **if the projection is complete, every zero of the
+  completed readout lies on the line.**
 
 No `sorry`, no `axiom` beyond the standard three.
 -/
@@ -51,31 +50,21 @@ theorem arisesFromHelix_on_conj_axis {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re
   rw [hγ]
   exact helix_vanishing_projects_to_conj_axis γ
 
-/-- **The positioning claim as a theorem: RH ⟺ projection completeness.**  The classical
-Riemann Hypothesis for the completed zeta is EXACTLY the statement that every zero of the
-1D continuation arises from a 3D vanishing of the helix.  The conditional thus lives
-entirely in the 1D chart — the 3D object carries none of it. -/
-theorem projection_complete_iff_RH :
-    (∀ ρ : ℂ, completedRiemannZeta ρ = 0 → arisesFromHelix ρ)
-      ↔ (∀ ρ : ℂ, completedRiemannZeta ρ = 0 → ρ.re = 1 / 2) := by
-  constructor
-  · intro h ρ hρ
-    exact arisesFromHelix_on_conj_axis (h ρ hρ)
-  · intro h ρ hρ
-    have hre := h ρ hρ
-    have hρ' : (1 / 2 + (ρ.im : ℂ) * Complex.I) = ρ := by
-      apply Complex.ext
-      · rw [helix_vanishing_projects_to_conj_axis ρ.im, hre]
-      · simp [Complex.add_im, Complex.mul_im]
-    exact ⟨ρ.im, hρ'.symm, by rw [hρ']; exact hρ⟩
+/-- **The door: projection completeness puts every zero on the line.**  If every zero of the
+1D continuation arises from a 3D vanishing of the helix, every zero of the completed readout
+lies on the line.  The hypothesis lives entirely in the 1D chart. -/
+theorem onLine_of_projection_complete
+    (h : ∀ ρ : ℂ, completedRiemannZeta ρ = 0 → arisesFromHelix ρ) :
+    ∀ ρ : ℂ, completedRiemannZeta ρ = 0 → ρ.re = 1 / 2 := by
+  intro ρ hρ
+  exact arisesFromHelix_on_conj_axis (h ρ hρ)
 
-/-- **3D-helix RH, unconditional** — the named capstone: every zero that arises from the
-helix lies on the conjugation axis.  No hypothesis: the 3D representation's vanishing
-data are real heights, and the projection map puts them at abscissa `1/2`.  The only
-conditional statement in the program is `projection_complete_iff_RH` — and it lives
-entirely in the 1D chart, where it is EXACTLY classical RH.  (The upper half-plane, the
-strip, and the coherence hypothesis of `SummedFiberHB.coherence_implies_conj_axis` are
-all 1D-chart objects; the 3D representation never needs them.) -/
+/-- **Helix vanishings lie on the axis, unconditional** — the named capstone: every zero that
+arises from the helix lies on the conjugation axis.  No hypothesis: the 3D representation's
+vanishing data are real heights, and the projection map puts them at abscissa `1/2`.  (The upper
+half-plane, the strip, and the coherence hypothesis of
+`SummedFiberHB.coherence_implies_conj_axis` are all 1D-chart objects; the 3D representation never
+needs them.) -/
 theorem helix3D_RH {ρ : ℂ} (h : arisesFromHelix ρ) : ρ.re = 1 / 2 :=
   arisesFromHelix_on_conj_axis h
 

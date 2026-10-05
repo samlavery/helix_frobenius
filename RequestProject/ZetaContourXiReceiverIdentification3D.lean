@@ -10,11 +10,8 @@ two-sided extension needed by the xi-channel:
 
 * conjugation transports every nontrivial zero to another nontrivial zero;
 * the proved low-height zero-free region excludes a nontrivial zero on the real axis;
-* therefore upper no-drift is equivalent to no-drift for the complete nontrivial zero set;
-* all-good-height contour/carrier agreement is equivalent to off-real regularity of the
-  independently defined xi-channel; and
-* any self-adjoint receiver of that channel supplies the complete native 3D certificate for every
-  upper zero.
+* therefore upper no-drift is equivalent to no-drift for the complete nontrivial zero set; and
+* all-good-height contour/carrier agreement gives Mathlib's `RiemannHypothesis`.
 -/
 
 open Complex ComplexConjugate Filter Topology
@@ -67,52 +64,18 @@ theorem globalCoordinateIdentification_iff_allNoRadialDrift
   (globalCoordinateIdentification_iff_upperNoRadialDrift χ₁ n hn).trans
     (upperNoRadialDrift_iff_allNoRadialDrift n hn)
 
-/-- The global contour/carrier identification is equivalent to Mathlib's literal zeta statement.
-The forward direction derives the half-unit from the area-law/no-drift theorem for every zero; the
-reverse direction converts the literal statement back into the no-drift equation. -/
-theorem globalCoordinateIdentification_iff_riemannHypothesis
-    (χ₁ : DirichletCharacter ℂ 1) :
-    (∀ (T : ℝ) (hT : GoodHeight T), classicalSContour hT = Smult T) ↔
-      RiemannHypothesis := by
-  rw [globalCoordinateIdentification_iff_allNoRadialDrift χ₁ 2 (by norm_num)]
-  constructor
-  · intro hall
-    apply RHBridge.no_offline_zeros_implies_rh
-    intro ρ hρ
-    have hre : ρ.re = carrierAbscissa :=
-      (noRadialDrift_iff_carrierAbscissa 2 ρ.re (by norm_num)).1 (hall ρ hρ)
-    simpa only [carrierAbscissa_eq_half] using hre
-  · intro hRH ρ hρ
-    have hre : ρ.re = 1 / 2 := CriticalLinePhasor.XiChannel.rh_implies_line hRH hρ
-    apply (noRadialDrift_iff_carrierAbscissa 2 ρ.re (by norm_num)).2
-    simpa only [carrierAbscissa_eq_half] using hre
-
-/-- The independently continued contour coordinate agrees with the native carrier coordinate at
-every good height exactly when the independently defined xi-channel is regular off the real
-spectral axis. -/
-theorem globalCoordinateIdentification_iff_xiChannel_offReal_regular
-    (χ₁ : DirichletCharacter ℂ 1) :
-    (∀ (T : ℝ) (hT : GoodHeight T), classicalSContour hT = Smult T) ↔
-      ∀ z : ℂ, z.im ≠ 0 →
-        ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (𝓝[≠] z) (𝓝 L) :=
-  (globalCoordinateIdentification_iff_riemannHypothesis χ₁).trans
-    CriticalLinePhasor.XiChannel.xiChannel_offReal_regular_iff_RH.symm
-
-/-- A self-adjoint receiver of the xi-channel closes the global coordinate identity and hence
-selects the complete native 3D certificate for every upper nontrivial zero. -/
-theorem globalCoordinateIdentification_and_upperNative3D_of_selfAdjointXiReceiver
+/-- The global contour/carrier identification gives Mathlib's literal zeta statement: the
+half-unit follows from the area-law/no-drift theorem for every zero. -/
+theorem riemannHypothesis_of_globalCoordinateIdentification
     (χ₁ : DirichletCharacter ℂ 1)
-    {A : Type*} [CStarAlgebra A] {a : A} (ha : IsSelfAdjoint a)
-    (hReg : ∀ z, z ∉ spectrum ℂ a →
-      ∃ L, Tendsto CriticalLinePhasor.XiChannel.xiChannel (𝓝[≠] z) (𝓝 L)) :
-    (∀ (T : ℝ) (hT : GoodHeight T), classicalSContour hT = Smult T) ∧
-      ∀ ρ ∈ ZD.NontrivialZeros, 0 < ρ.im →
-        Nonempty (PrincipalContourNative3DCertificate χ₁ ρ) := by
-  have hRH : RiemannHypothesis :=
-    CriticalLinePhasor.XiChannel.RiemannHypothesis_of_selfAdjoint_xiChannel_receiver ha hReg
-  have hglobal := (globalCoordinateIdentification_iff_riemannHypothesis χ₁).2 hRH
-  exact ⟨hglobal,
-    (globalCoordinateIdentification_iff_upperNative3DCertificate χ₁).1 hglobal⟩
+    (hid : ∀ (T : ℝ) (hT : GoodHeight T), classicalSContour hT = Smult T) :
+    RiemannHypothesis := by
+  have hall := (globalCoordinateIdentification_iff_allNoRadialDrift χ₁ 2 (by norm_num)).1 hid
+  apply RHBridge.no_offline_zeros_implies_rh
+  intro ρ hρ
+  have hre : ρ.re = carrierAbscissa :=
+    (noRadialDrift_iff_carrierAbscissa 2 ρ.re (by norm_num)).1 (hall ρ hρ)
+  simpa only [carrierAbscissa_eq_half] using hre
 
 end CriticalLinePhasor.ContourArgument
 
@@ -120,6 +83,4 @@ end CriticalLinePhasor.ContourArgument
 #print axioms CriticalLinePhasor.ContourArgument.nontrivialZero_im_ne_zero
 #print axioms CriticalLinePhasor.ContourArgument.upperNoRadialDrift_iff_allNoRadialDrift
 #print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_iff_allNoRadialDrift
-#print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_iff_riemannHypothesis
-#print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_iff_xiChannel_offReal_regular
-#print axioms CriticalLinePhasor.ContourArgument.globalCoordinateIdentification_and_upperNative3D_of_selfAdjointXiReceiver
+#print axioms CriticalLinePhasor.ContourArgument.riemannHypothesis_of_globalCoordinateIdentification

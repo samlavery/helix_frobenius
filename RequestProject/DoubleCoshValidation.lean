@@ -24,8 +24,8 @@ reflection `ρ ↔ 1 − ρ`.
   falls into exactly one of the two classifier classes.
 * **(V6) FE coherence**: the verdict on `ρ` equals the verdict on `1 − ρ`
   (whose real parts are `β` and `1 − β`, same `|δ|`).
-* **(V7) Single-scale capstone**: RH is equivalent to `R_double(ρ.re, r) = 0`
-  holding for every nontrivial zero at **any single fixed scale** `r > 1`.
+* **(V7) Single-scale door**: `R_double(ρ.re, r) = 0` holding for every nontrivial zero at
+  **any single fixed scale** `r > 1` puts every nontrivial zero on the line.
 
 Together these show the classifier is a lossless observable: its verdict
 at any single admissible scale `r > 1` determines the critical-line status
@@ -181,30 +181,23 @@ theorem rho_offline_iff_residue_pos
 
 /-! ### §6. Single-scale capstone -/
 
-/-- **(V7) Single-scale RH equivalence**: RH is equivalent to the classifier
-reading zero on every nontrivial zero at **any single fixed scale** `r > 1`.
-Checking at one scale suffices — the classifier is lossless. -/
-theorem rh_iff_classifier_at_scale {r : ℝ} (hr : 1 < r) :
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect r ρ.re = 0) ↔
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2) := by
-  constructor
-  · intro h ρ hρ
-    exact (classifier_iff_online ρ hρ hr).mp (h ρ hρ)
-  · intro h ρ hρ
-    rw [h ρ hρ]; exact residue_balanced r
+/-- **(V7) Single-scale door**: the classifier reading zero on every nontrivial zero at **any single
+fixed scale** `r > 1` puts every nontrivial zero on the line. Checking at one scale suffices — the
+classifier is lossless. -/
+theorem rh_of_classifier_at_scale {r : ℝ} (hr : 1 < r)
+    (h : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect r ρ.re = 0) :
+    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2 := by
+  intro ρ hρ
+  exact (classifier_iff_online ρ hρ hr).mp (h ρ hρ)
 
-/-- **(V7′) Multi-scale equivalent**: reading zero at **every** `r > 1` is
-equivalent to RH — identical to V7 by pointwise application. -/
-theorem rh_iff_classifier_all_scales :
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros →
-      ∀ r : ℝ, 1 < r → pairAgreementDefect r ρ.re = 0) ↔
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2) := by
-  constructor
-  · intro h ρ hρ
-    have : pairAgreementDefect 2 ρ.re = 0 := h ρ hρ 2 (by norm_num)
-    exact (classifier_iff_online ρ hρ (by norm_num : (1:ℝ) < 2)).mp this
-  · intro h ρ hρ r hr
-    rw [h ρ hρ]; exact residue_balanced r
+/-- **(V7′) Multi-scale door**: reading zero at **every** `r > 1` puts every nontrivial zero on the
+line — V7 at `r = 2`. -/
+theorem rh_of_classifier_all_scales
+    (h : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ∀ r : ℝ, 1 < r → pairAgreementDefect r ρ.re = 0) :
+    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2 := by
+  intro ρ hρ
+  have : pairAgreementDefect 2 ρ.re = 0 := h ρ hρ 2 (by norm_num)
+  exact (classifier_iff_online ρ hρ (by norm_num : (1:ℝ) < 2)).mp this
 
 /-! ### §7. Classification bundles applied to the zero set -/
 
@@ -272,13 +265,12 @@ example (ρ : ℂ) (hρ : ρ ∈ ZD.OffLineZeros) :
         have : Real.pi = 3 := by linarith [(show Real.pi / 3 = 1 from h)]
         linarith)
 
-/-- RH is equivalent to classifier balance at r = π/3. -/
-example :
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros →
-      pairAgreementDefect (Real.pi / 3) ρ.re = 0) ↔
-    (∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2) :=
-  rh_iff_classifier_at_scale
-    (by have := Real.pi_gt_three; linarith : (1:ℝ) < Real.pi / 3)
+/-- Classifier balance at r = π/3 puts every nontrivial zero on the line. -/
+example
+    (h : ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → pairAgreementDefect (Real.pi / 3) ρ.re = 0) :
+    ∀ ρ : ℂ, ρ ∈ ZD.NontrivialZeros → ρ.re = 1/2 :=
+  rh_of_classifier_at_scale
+    (by have := Real.pi_gt_three; linarith : (1:ℝ) < Real.pi / 3) h
 
 /-! ### §9. Axiom hygiene
 
@@ -292,8 +284,8 @@ Any leak indicates an upstream issue. -/
 #print axioms zeta_zero_classifier_dichotomy
 #print axioms classifier_fe_invariant
 #print axioms classifier_fe_zero_pair
-#print axioms rh_iff_classifier_at_scale
-#print axioms rh_iff_classifier_all_scales
+#print axioms rh_of_classifier_at_scale
+#print axioms rh_of_classifier_all_scales
 #print axioms rho_online_iff_residue_zero
 #print axioms rho_offline_iff_residue_pos
 #print axioms classifierReport

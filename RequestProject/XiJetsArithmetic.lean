@@ -11,7 +11,7 @@ On `Re s > 1` the house has `ξ′/ξ(s) = 1/s + 1/(s−1) − (log π)/2 + ½·
 
   `(ξ′/ξ)^{(m)}(s) = (−1)^m m! (s^{−m−1} + (s−1)^{−m−1}) + (½ Γ′/Γ(·/2))^{(m)}(s) − (−1)^m Σ Λ(n) (log n)^m n^{−s}`
 
-(`iter_deriv_inv`, `LSeries_iteratedDeriv`). Combined with `rh_iff_jets_s_nonneg` this puts the
+(`iter_deriv_inv`, `LSeries_iteratedDeriv`). Combined with `online_of_jets_s_nonneg` this puts the
 door's hypothesis entirely in the prime chart: pole jets, the Archimedean jet, and the log-weighted
 von Mangoldt series at `s = σ₀ + iγ`.
 -/
@@ -157,18 +157,18 @@ theorem jetValueS_eq_jetValueP {s : ℂ} (hs : 1 < s.re) (d : ℂ) (M j k : ℕ)
       rw [xi_jet_arith hs (by omega : 1 ≤ l + 1)]
       rfl)
 
-/-- **The door in the prime chart.** RH ⟺ for all `γ`, all `1 < σ₀ < 3/2`, all `R` with `R(0) = 0`:
-`Re Σ_{j,k} conj(r_j) r_k · jetValueP(σ₀+iγ, 2σ₀−1) j k ≥ 0`. The hypothesis side is built from
-`1/s`, `1/(s−1)`, `log π`, the jets of `½Γ′/Γ(·/2)`, and `Σ Λ(n)(log n)^m n^{−s}` at `s = σ₀ + iγ` —
-no zero of `ζ` appears in it. -/
-theorem rh_iff_prime_jets_nonneg :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    (∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
+/-- **The door in the prime chart.** If for all `γ`, all `1 < σ₀ < 3/2`, all `R` with `R(0) = 0`:
+`Re Σ_{j,k} conj(r_j) r_k · jetValueP(σ₀+iγ, 2σ₀−1) j k ≥ 0`, every nontrivial zero is on the line.
+The hypothesis is built from `1/s`, `1/(s−1)`, `log π`, the jets of `½Γ′/Γ(·/2)`, and
+`Σ Λ(n)(log n)^m n^{−s}` at `s = σ₀ + iγ` — no zero of `ζ` appears in it. -/
+theorem online_of_prime_jets_nonneg
+    (H : ∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
       0 ≤ (∑ j ∈ Finset.range (R.natDegree + 1), ∑ k ∈ Finset.range (R.natDegree + 1),
           ((starRingEnd ℂ) (R.coeff j) * R.coeff k)
             * jetValueP ((σ₀ : ℂ) + (γ : ℂ) * I) ((2 * σ₀ - 1 : ℝ) : ℂ)
-                (2 * R.natDegree + 2) j k).re) := by
-  rw [rh_iff_jets_s_nonneg]
+                (2 * R.natDegree + 2) j k).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  apply online_of_jets_s_nonneg
   have hre : ∀ γ σ₀ : ℝ, 1 < σ₀ → 1 < ((σ₀ : ℂ) + (γ : ℂ) * I).re := by
     intro γ σ₀ h
     simpa using h
@@ -182,15 +182,11 @@ theorem rh_iff_prime_jets_nonneg :
     intro γ σ₀ h R
     refine Finset.sum_congr rfl (fun j _ => Finset.sum_congr rfl (fun k _ => ?_))
     rw [jetValueS_eq_jetValueP (hre γ σ₀ h)]
-  constructor
-  · intro H γ σ₀ h1 h2 R hR
-    rw [← key γ σ₀ h1 R]
-    exact H γ σ₀ h1 h2 R hR
-  · intro H γ σ₀ h1 h2 R hR
-    rw [key γ σ₀ h1 R]
-    exact H γ σ₀ h1 h2 R hR
+  intro γ σ₀ h1 h2 R hR
+  rw [key γ σ₀ h1 R]
+  exact H γ σ₀ h1 h2 R hR
 
 #print axioms xi_jet_arith
-#print axioms rh_iff_prime_jets_nonneg
+#print axioms online_of_prime_jets_nonneg
 
 end CriticalLinePhasor.ContourArgument

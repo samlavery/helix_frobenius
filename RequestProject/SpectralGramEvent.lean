@@ -22,8 +22,7 @@ cell Gram matrix (`HarmonicCell.GramH`); its rank-drop `det = 0` is the spectral
 zero `ρ` can equal `reprPoint χ Z` for a real `Z` **only** when `Re ρ = 1/2`.  The implication is
 therefore stated for zeros **on the critical line** (`hcrit : ρ.re = 1/2`); on that line it is a
 genuine, fully **unconditional** theorem.  Dropping `hcrit` would assert that *every* zero is so
-represented — i.e. that every zero lies on the critical line — which is GRH, and is deliberately
-**not** assumed or proved here (consistent with the rest of the project).  The diagonal calibration
+represented, which is not proved in this file.  The diagonal calibration
 is required admissible (`hlam : lam ≠ μ`).
 
 No `axiom`, no `sorry`.

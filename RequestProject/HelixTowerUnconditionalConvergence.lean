@@ -3,13 +3,10 @@ import RequestProject.HelixTraceLimitConverse
 /-!
 # The symmetrized line tower converges unconditionally
 
-Brick 1 of the interior program at the certified trace-limit wall.  The converse
-theorem `traceLimit_of_rh` consumes RH in exactly one place — the surjectivity of the
-index bijection `zerosEquiv` — while its entire tail machinery (the pairing closed
-form, the `8B·m/‖ρ‖²` per-term bound, the compiled counting summability) is RH-free.
-This file re-runs that machinery on the **native** two-sided event index, with the
-RH-derived facts replaced by definitional ones: the on-line zeros have `re = ½` and
-`|im| = ordinate` *by construction* (`line γ = ½ + iγ`).
+Brick 1 of the interior program at the trace-limit box.  The tail machinery — the
+pairing closed form, the `8B·m/‖ρ‖²` per-term bound, the compiled counting summability —
+runs here on the **native** two-sided event index, where the on-line zeros have `re = ½`
+and `|im| = ordinate` *by construction* (`line γ = ½ + iγ`).
 
 * `zeroOf` / `zeroOf_mem` / `zeroOfSub_injective` — the genuine zero attached to a
   two-sided event index, its compiled ledger membership on both legs, and the

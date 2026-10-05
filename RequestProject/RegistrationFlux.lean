@@ -12,8 +12,9 @@ import RequestProject.FejerTail
   defects.
 * **`boundaryTerm_split`**: at any distance `D > 0`, the boundary term is the near part (the count
   minus the weights of the zeros within `D` of the gap, finitely many) minus the weights of the far
-  zeros; for on-line far zeros the far part is at most `(2(b − a)/(πL)) Σ_far m_ρ / dist²`
-  (**`far_weights_le`**), the second moment of the far zeros against the gap.
+  zeros. An on-line zero at distance `dist > 0` from the gap has weight at most
+  `(2(b − a)/(πL)) / dist²` (**`gapWeight_le_of_far`**), and the far second moment
+  `Σ' m_ρ / max(dist, D)²` is summable (**`summable_far_moment`**).
 -/
 
 open Complex Set MeasureTheory Filter Topology
@@ -247,41 +248,8 @@ theorem summable_far_moment {a b D : ℝ} (hD : 0 < D) :
     _ ≤ 4 * ((ZD.xiOrderNat ρ.val : ℝ) / ‖ρ.val‖ ^ 2) * max (gapDist a b ρ.val.im) D ^ 2 :=
         mul_le_mul_of_nonneg_left hsq (by positivity)
 
-/-- **The far weights of on-line zeros are at most `(2(b − a)/(πL))` times the far second moment.** -/
-theorem far_weights_le {L : ℝ} (hL : 0 < L) {a b : ℝ} (hab : a ≤ b) {D : ℝ} (hD : 0 < D)
-    (honline : ∀ ρ : Zero, D ≤ gapDist a b ρ.val.im → ρ.val.re = 1 / 2) :
-    ∑' ρ : ↑({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ),
-        (ZD.xiOrderNat ρ.val.val : ℝ) * gapWeight L a b ρ.val.val
-      ≤ (2 * (b - a) / (π * L)) * ∑' ρ : ↑({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ),
-          (ZD.xiOrderNat ρ.val.val : ℝ) / gapDist a b ρ.val.val.im ^ 2 := by
-  have hπ := Real.pi_pos
-  have hfar : ∀ ρ : ↑({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ), D ≤ gapDist a b ρ.val.val.im := by
-    intro ρ
-    have := ρ.2
-    simp only [Set.mem_compl_iff, Set.mem_ofPred_eq, not_lt] at this
-    exact this
-  have hs1 : Summable (fun ρ : ↑({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ) =>
-      (ZD.xiOrderNat ρ.val.val : ℝ) * gapWeight L a b ρ.val.val) :=
-    (summable_weights hL hab).subtype _
-  have hs2 : Summable (fun ρ : ↑({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ) =>
-      (ZD.xiOrderNat ρ.val.val : ℝ) / gapDist a b ρ.val.val.im ^ 2) := by
-    have := (summable_far_moment (a := a) (b := b) hD).subtype ({ρ : Zero | gapDist a b ρ.val.im < D}ᶜ)
-    refine this.congr (fun ρ => ?_)
-    simp only [Function.comp]
-    rw [max_eq_left (hfar ρ)]
-  rw [← tsum_mul_left]
-  refine Summable.tsum_le_tsum (fun ρ => ?_) hs1 (hs2.mul_left _)
-  have hρ := honline ρ.val (hfar ρ)
-  have hpos : 0 < gapDist a b ρ.val.val.im := lt_of_lt_of_le hD (hfar ρ)
-  calc (ZD.xiOrderNat ρ.val.val : ℝ) * gapWeight L a b ρ.val.val
-      ≤ (ZD.xiOrderNat ρ.val.val : ℝ) * ((2 * (b - a) / (π * L)) * (1 / gapDist a b ρ.val.val.im ^ 2)) :=
-        mul_le_mul_of_nonneg_left (gapWeight_le_of_far hL hab hρ hpos) (by positivity)
-    _ = (2 * (b - a) / (π * L)) * ((ZD.xiOrderNat ρ.val.val : ℝ) / gapDist a b ρ.val.val.im ^ 2) := by
-        ring
-
 end CriticalLinePhasor.ContourArgument
 
 #print axioms CriticalLinePhasor.ContourArgument.boundaryTerm_add
 #print axioms CriticalLinePhasor.ContourArgument.run_count
 #print axioms CriticalLinePhasor.ContourArgument.boundaryTerm_split
-#print axioms CriticalLinePhasor.ContourArgument.far_weights_le

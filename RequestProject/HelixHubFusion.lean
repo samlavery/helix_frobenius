@@ -2,28 +2,21 @@ import RequestProject.HelixChannelDecomposition
 import RequestProject.LedgerAssembly
 
 /-!
-# The fusion: the S(t) hub and the tower certificate are one wall
+# The S(t) hub's door, and the tower's off-axis regularity
 
-Brick 3 of the interior program.  The S(t) thread's residual Prop
-(`IntegratedDefectSublinear` — the running integral of the off-line defect ledger is
-sublinear) and the GRH companion's certified trace-limit box were two equivalence
-webs certifying the same wall through different instruments.  This file fuses them:
+Brick 3 of the interior program.
 
-* **`integratedDefectSublinear_iff_riemannHypothesis`** — the S(t) hub's residual is
-  equivalent to Mathlib's `RiemannHypothesis`.  Forward: sublinearity forces the
-  coordinate identity at every good height (the compiled criterion), while an
-  off-line zero would make the coordinate defect strictly positive at any good
-  height above its ordinate (the compiled strict-positivity theorem, order
-  positivity included) — upper-half representative supplied by conjugation.
-  Backward: under RH every ledger member has real part `½` (compiled extraction),
-  so the off-line census vanishes identically and the integral is literally zero.
-* **`integratedDefectSublinear_iff_box`** — composed with the certified
-  biconditional: the S(t) residual is equivalent to the trace-limit box.  The five
-  faces of the S(t) hub, the coordinate identity, Mathlib's `RiemannHypothesis`,
-  and the tower's trace-limit box are now ONE compiled equivalence class — every
-  instrument pointed at one wall, machine-checked mutually equivalent.
-
-Proven in this file: both equivalences, unconditionally.
+* **`riemannHypothesis_of_integratedDefectSublinear`** — the S(t) hub's residual
+  (`IntegratedDefectSublinear` — the running integral of the off-line defect ledger is
+  sublinear) gives Mathlib's `RiemannHypothesis`: sublinearity forces the coordinate
+  identity at every good height (the compiled criterion), while an off-line zero would
+  make the coordinate defect strictly positive at any good height above its ordinate
+  (the compiled strict-positivity theorem, order positivity included) — upper-half
+  representative supplied by conjugation.
+* **`onLineLedgerLimit_differentiableOn`** — the tower's limit is holomorphic on the
+  whole off-real set, unconditionally.
+* **`channel_differentiableOn_of_box`** — under the trace-limit box the rotated channel
+  is holomorphic off the real axis.
 -/
 
 open Filter Topology Complex Asymptotics
@@ -72,51 +65,6 @@ theorem riemannHypothesis_of_integratedDefectSublinear
   rw [hid] at hposdefect
   simp at hposdefect
 
-/-- **The Riemann Hypothesis forces sublinearity**: under RH the off-line census
-vanishes identically, so the integrated defect is literally the zero function. -/
-theorem integratedDefectSublinear_of_riemannHypothesis
-    (hRH : RiemannHypothesis) : IntegratedDefectSublinear := by
-  have hcount : ∀ t : ℝ, offLineStripZeroCountMult t = 0 := by
-    intro t
-    classical
-    unfold offLineStripZeroCountMult
-    apply Finset.sum_eq_zero
-    intro ρ hρ
-    rw [Finset.mem_filter] at hρ
-    have hmem := ((stripZeroWindow_finite t).mem_toFinset.mp hρ.1).1
-    exact absurd (re_eq_half_of_riemannHypothesis hRH hmem) hρ.2
-  have hfun : (fun T => ∫ t in (0:ℝ)..T, (offLineStripZeroCountMult t : ℝ))
-      = fun _ => (0 : ℝ) := by
-    funext T
-    rw [intervalIntegral.integral_congr (g := fun _ => (0 : ℝ))
-      (fun t _ => by rw [hcount t, Nat.cast_zero])]
-    simp
-  show (fun T => ∫ t in (0:ℝ)..T, (offLineStripZeroCountMult t : ℝ))
-      =o[atTop] fun T : ℝ => T
-  rw [hfun]
-  exact isLittleO_zero _ _
-
-/-- **THE FUSION** — the S(t) hub's residual Prop is Mathlib's `RiemannHypothesis`:
-the two certificates certify one wall. -/
-theorem integratedDefectSublinear_iff_riemannHypothesis :
-    IntegratedDefectSublinear ↔ RiemannHypothesis :=
-  ⟨riemannHypothesis_of_integratedDefectSublinear,
-    integratedDefectSublinear_of_riemannHypothesis⟩
-
-/-- **The fused certificate**: the S(t) residual is equivalent to the tower's
-trace-limit box.  Every face of both webs — the coordinate identity, kernel
-coupling, no radial drift, native certificates, ξ-channel regularity, the
-integrated defect, `RiemannHypothesis`, and the trace limit — is now one compiled
-equivalence class. -/
-theorem integratedDefectSublinear_iff_box :
-    ∃ C : ℂ, (IntegratedDefectSublinear ↔
-      TendstoLocallyUniformlyOn
-        (fun n => normalizedSpectrumTrace (symmetrizedLineTowerSpectrum n)
-          (symmetrizedLineTowerOffsets n))
-        (fun z => (-Complex.I * xiChannel z) - (-Complex.I * C)) atTop offReal) := by
-  obtain ⟨C, hC⟩ := rh_iff_symmetrizedLineTower_traceLimit
-  exact ⟨C, integratedDefectSublinear_iff_riemannHypothesis.trans hC⟩
-
 /-! ## The principle: vanishing cannot happen in 3D off the midpoint axis -/
 
 /-- **The 3D source casts no off-axis singularity — unconditionally.**  The tower's
@@ -153,6 +101,3 @@ end CriticalLinePhasor.CaptureInterfaceAudit
 #print axioms CriticalLinePhasor.CaptureInterfaceAudit.onLineLedgerLimit_differentiableOn
 #print axioms CriticalLinePhasor.CaptureInterfaceAudit.channel_differentiableOn_of_box
 #print axioms CriticalLinePhasor.CaptureInterfaceAudit.riemannHypothesis_of_integratedDefectSublinear
-#print axioms CriticalLinePhasor.CaptureInterfaceAudit.integratedDefectSublinear_of_riemannHypothesis
-#print axioms CriticalLinePhasor.CaptureInterfaceAudit.integratedDefectSublinear_iff_riemannHypothesis
-#print axioms CriticalLinePhasor.CaptureInterfaceAudit.integratedDefectSublinear_iff_box

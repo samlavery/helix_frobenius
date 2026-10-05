@@ -4,11 +4,11 @@ import RequestProject.SpectralSide
 /-!
 # The GRH spectral criterion for Dirichlet `L(s,χ)`
 
-The GRH analog of `riemannHypothesis_iff_spectral_unitary`, for any non-principal
+The GRH analog of `riemannHypothesis_of_spectral_unitary`, for any non-principal
 Dirichlet character `χ` (χ₃ is an instance). Uses Mathlib's `DirichletCharacter.LFunction`
 and the same Möbius spectral value `w(ρ)=1−1/ρ`:
 
-* `GRH χ` ⟺ every nontrivial zero's `w(ρ)` is on the unit circle (`GRH_iff_spectral_unitary`);
+* every nontrivial zero's `w(ρ)` on the unit circle gives `GRH χ` (`grh_of_spectral_unitary`);
 * the **edge** is Euler-powered and already in Mathlib: no nontrivial zero has `Re ≥ 1`
   (`no_zero_re_ge_one`).
 -/
@@ -43,16 +43,13 @@ theorem nontrivial_ne_zero {χ : DirichletCharacter ℂ N} {ρ : ℂ}
     (hρ : ρ ∈ NontrivialZeros χ) : ρ ≠ 0 := by
   intro h; rw [h] at hρ; exact absurd hρ.1 (by simp)
 
-/-- **The GRH(χ) spectral criterion.** GRH for `χ` holds ⟺ every nontrivial zero's
-    Möbius spectral value `w(ρ) = 1 − 1/ρ` lies on the unit circle — i.e. the spectral
-    operator is unitary on the `χ`-zeros. -/
-theorem GRH_iff_spectral_unitary (χ : DirichletCharacter ℂ N) :
-    GRH χ ↔ (∀ ρ ∈ NontrivialZeros χ, Complex.normSq (SpectralSide.w ρ) = 1) := by
-  constructor
-  · intro h ρ hρ
-    exact (SpectralSide.w_unit_iff_half ρ (nontrivial_ne_zero hρ)).mpr (h ρ hρ)
-  · intro h ρ hρ
-    exact (SpectralSide.w_unit_iff_half ρ (nontrivial_ne_zero hρ)).mp (h ρ hρ)
+/-- **The GRH(χ) spectral door.** If every nontrivial zero's Möbius spectral value
+    `w(ρ) = 1 − 1/ρ` lies on the unit circle — the spectral operator is unitary on the
+    `χ`-zeros — GRH for `χ` holds. -/
+theorem grh_of_spectral_unitary (χ : DirichletCharacter ℂ N)
+    (h : ∀ ρ ∈ NontrivialZeros χ, Complex.normSq (SpectralSide.w ρ) = 1) : GRH χ := by
+  intro ρ hρ
+  exact (SpectralSide.w_unit_iff_half ρ (nontrivial_ne_zero hρ)).mp (h ρ hρ)
 
 /-- **The edge (Euler-powered, from Mathlib):** for non-principal `χ`, no zero has
     `Re ≥ 1`. This is what confines the zeros to the strip — the genuine Euler input,
@@ -68,5 +65,5 @@ theorem nontrivial_re_lt_one {χ : DirichletCharacter ℂ N} {ρ : ℂ}
 
 end GRHSpectral
 
-#print axioms GRHSpectral.GRH_iff_spectral_unitary
+#print axioms GRHSpectral.grh_of_spectral_unitary
 #print axioms GRHSpectral.no_zero_re_ge_one

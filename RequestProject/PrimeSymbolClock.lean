@@ -9,7 +9,7 @@ series in `n`, with factor `Λ(n) n^(-σ) exp(-iγ log n)` and a finite quadrati
 polynomial in `log n`. The paired first-order coefficient remains explicit.
 
 Search commands used before construction:
-`rg -n 'rh_iff_prime_jets_nonneg|hermForm_eq_hankel|primeJetsForm|primeSymbol|def pf' RequestProject`
+`rg -n 'online_of_prime_jets_nonneg|hermForm_eq_hankel|primeJetsForm|primeSymbol|def pf' RequestProject`
 `rg -n -i 'prime_?symbol|prime_?jets_?form|hockey.?stick|hankel|pascal|prime_?jet|herm_?form_?eq' --glob '*.lean' .`
 `rg -n -i 'pf_fst|pf_snd|pf.*closed|closed.*pf|partial.?fraction|choose_succ_succ|choose_pos|sum_range_add_choose' RequestProject .lake/packages/mathlib/Mathlib`
 `rg -n 'logMul|LSeriesSummable.*log|term_def|term_of_ne_zero|re_tsum|conj_tsum' .lake/packages/mathlib/Mathlib`
@@ -521,6 +521,6 @@ theorem primeSymbol_minor_at_eight {d : ℝ} (hd : 1 < d) :
 #print axioms primeSymbol_minor_at_eight
 #print axioms CriticalLinePhasor.ContourArgument.pf_identity
 #print axioms CriticalLinePhasor.ContourArgument.xi_jet_arith
-#print axioms CriticalLinePhasor.ContourArgument.rh_iff_prime_jets_nonneg
+#print axioms CriticalLinePhasor.ContourArgument.online_of_prime_jets_nonneg
 
 end CriticalLinePhasor.ContourArgument.PrimeClock

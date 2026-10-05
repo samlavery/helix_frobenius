@@ -530,7 +530,7 @@ theorem global_traceIdentity_of_local {Tspec TL : ℂ → ℂ}
 
 The principal-character (mod 1) L-function **is** `riemannZeta`
 (`DirichletCharacter.LFunction_modOne_eq`, Mathlib, definitional).  So the GRH capstone
-of this file, read at `χ = 1`, is RH: the strip zeros it places are ζ's own.  The GRH
+of this file, read at `χ = 1`, gives RH: the strip zeros it places are ζ's own.  The GRH
 part is `grh_of_harmonicTraceReceiver` — a self-adjoint receiver (regular off `ℝ`, the
 earned reality) that resonates at the zeros.  The out-of-strip cases (`Re ≥ 1`
 nonvanishing; `Re ≤ 0` trivial zeros via the completed-ζ functional equation) are
@@ -542,7 +542,7 @@ self-adjoint receiver `T` (regular off `ℝ`) that resonates at every nontrivial
 parameter yields Mathlib's `RiemannHypothesis`.  The GRH is
 `grh_of_harmonicTraceReceiver`; the trivial-character bridge is
 `LFunction_modOne_eq`.  **Pure and unconditional** — `rh_from_grh`: no operator, no
-receiver, no conditional beyond GRH itself.  The two GRH routes below (identity and
+receiver, no conditional beyond its GRH hypothesis.  The two GRH routes below (identity and
 correlation, each with its own isolated conditional) feed it. -/
 theorem RH_of_GRH_Trivial_Char (χ₁ : DirichletCharacter ℂ 1)
     (hgrh : GRHSpectral.GRH χ₁) :
@@ -607,8 +607,8 @@ The declarations below expose that identification boundary exactly.
 
 * `NativeCarrierCoverage χ` is midpoint-free: it says an analytic zero produces a completed
   fibre crossing at physical height `exp ρ.im`, whose ordinate is `ρ.im`.
-* `threeDCrossings_iff_grh_and_nativeCarrierCoverage` proves that the older identity premise is
-  precisely the conjunction of the critical-line conclusion and midpoint-free coverage.
+* `grh_and_nativeCarrierCoverage_of_threeDCrossings` proves that the older identity premise gives
+  both the critical-line conclusion and midpoint-free coverage.
 * `oneD_zeta_zero_correlated_proved` proves the disjunctive routing proposition unconditionally;
   `grh_of_oneDCorrelationEvidence` shows that the separate chart-to-kernel evidence is the
   substantive 1D identification premise.
@@ -636,40 +636,31 @@ def NativeCarrierCoverage {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) :
     CompletedThreeDZeroAtHeight χ (Real.exp ρ.im)
 
 open CriticalLinePhasor.ThreeDFocal in
-/-- The exact logical content of the identity premise: native-event coverage does not select an
-abscissa, while `GRH χ` supplies the analytic-zero identification with the area-law carrier. -/
-theorem threeDCrossings_iff_grh_and_nativeCarrierCoverage {N : ℕ} [NeZero N]
-    (χ : DirichletCharacter ℂ N) :
-    ThreeD_crossings_are_real_zeros χ ↔ GRHSpectral.GRH χ ∧ NativeCarrierCoverage χ := by
+/-- What the identity premise delivers: the critical-line conclusion and midpoint-free native-event
+coverage. -/
+theorem grh_and_nativeCarrierCoverage_of_threeDCrossings {N : ℕ} [NeZero N]
+    (χ : DirichletCharacter ℂ N) (h : ThreeD_crossings_are_real_zeros χ) :
+    GRHSpectral.GRH χ ∧ NativeCarrierCoverage χ := by
   constructor
-  · intro h
-    constructor
-    · intro ρ hρ
-      obtain ⟨Z, _hzero, hrepr⟩ := h ρ hρ
+  · intro ρ hρ
+    obtain ⟨Z, _hzero, hrepr⟩ := h ρ hρ
+    rw [hrepr]
+    simp [carrierPointAtHeight]
+  · intro ρ hρ
+    obtain ⟨Z, hzero, hrepr⟩ := h ρ hρ
+    have hy : ρ.im = Real.log Z := by
       rw [hrepr]
-      simp [carrierPointAtHeight]
-    · intro ρ hρ
-      obtain ⟨Z, hzero, hrepr⟩ := h ρ hρ
-      have hy : ρ.im = Real.log Z := by
-        rw [hrepr]
-        simp
-      have hZ : Real.exp ρ.im = Z := by
-        rw [hy, Real.exp_log hzero.1]
-      simpa only [hZ] using hzero
-  · rintro ⟨hgrh, hcoverage⟩ ρ hρ
-    have hzero := hcoverage ρ hρ
-    refine ⟨Real.exp ρ.im, hzero, ?_⟩
-    rw [carrierPointAtHeight_exp]
-    apply Complex.ext
-    · simpa using hgrh ρ hρ
-    · simp
+      simp
+    have hZ : Real.exp ρ.im = Z := by
+      rw [hy, Real.exp_log hzero.1]
+    simpa only [hZ] using hzero
 
 open CriticalLinePhasor.ThreeDFocal in
 /-- The identity premise directly contains the critical-line conclusion through its carrier
 equality; no fibre-operator or focal-cancellation fact is needed for this implication. -/
 theorem grh_of_threeDCrossings {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N)
-    (h : ThreeD_crossings_are_real_zeros χ) : GRHSpectral.GRH χ := by
-  exact (threeDCrossings_iff_grh_and_nativeCarrierCoverage χ).1 h |>.1
+    (h : ThreeD_crossings_are_real_zeros χ) : GRHSpectral.GRH χ :=
+  (grh_and_nativeCarrierCoverage_of_threeDCrossings χ h).1
 
 open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFrobenius
   CriticalLinePhasor.ThreeDFocal in
@@ -766,7 +757,7 @@ theorem grhComplete_of_resolvant_trace_1D_correlation
 end HelixLimit
 
 #print axioms HelixLimit.RH_of_GRH_Trivial_Char
-#print axioms HelixLimit.threeDCrossings_iff_grh_and_nativeCarrierCoverage
+#print axioms HelixLimit.grh_and_nativeCarrierCoverage_of_threeDCrossings
 #print axioms HelixLimit.grh_of_threeDCrossings
 #print axioms HelixLimit.oneD_zeta_zero_correlated_proved
 #print axioms HelixLimit.grh_of_oneDCorrelationEvidence
@@ -801,7 +792,7 @@ conjuncts are kernel-clean, but inhabiting a dossier does not compose those conj
 analytic-zero-to-native-event map.  The exact missing interfaces are exposed above:
 `NativeCarrierCoverage` for midpoint-free 3D coverage, and `OneDCorrelationEvidence χ` for the
 pointwise chart-to-kernel assertion.  The older 3D identity premise is decomposed by
-`threeDCrossings_iff_grh_and_nativeCarrierCoverage`; the older 1D routing proposition is proved
+`grh_and_nativeCarrierCoverage_of_threeDCrossings`; the older 1D routing proposition is proved
 unconditionally by `oneD_zeta_zero_correlated_proved`.
 
 The author's assignment of evidence to readings, cast leads in **bold**:

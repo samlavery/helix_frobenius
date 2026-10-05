@@ -53,10 +53,10 @@ trivially-known ceiling: Selberg (a positive proportion), Levinson (1/3),
 Conrey (2/5), Pratt–Robles–Zaharescu–Zeindler (5/12), and this artifact
 (2/3).  Each raises the floor; none touches the ceiling.
 
-**RH is the statement that the floor saturates the ceiling** — registered =
-all.  In this repository that is `grh_iff_spectral_gram_registration`
-(`RequestProject/GramRegistrationCapstone.lean`), an `iff` quantified over
-*every* nontrivial zero.  Saturation is a different quantity from a
+**Saturation of the floor at the ceiling — registered = all — gives RH.**
+In this repository that door is `grh_of_spectral_gram_registration`
+(`RequestProject/GramRegistrationCapstone.lean`), quantified over *every*
+nontrivial zero.  Saturation is a different quantity from a
 proportion, not a sharper constant on the same one: no density theorem, at
 2/3 or at any constant below 1, is progress toward it, and nothing in this
 file should be read as such.
@@ -497,7 +497,7 @@ Framing, unchanged by the above: this is a *floor*.  The ceiling is
 `stripZeroCountMult T` itself and is trivial
 (`sourcedWindow_ncard_le_census`), and saturation of the floor at that
 ceiling — not a larger constant below it — is what
-`grh_iff_spectral_gram_registration` states. -/
+`grh_of_spectral_gram_registration` consumes. -/
 theorem sourced_floor (χ : DirichletCharacter ℂ 1) :
     ∀ ε : ℝ, 0 < ε → ∃ T₀ : ℝ, ∀ T : ℝ, T₀ ≤ T →
       (2 / 3 - ε) * (stripZeroCountMult T : ℝ) ≤ ((sourcedWindow χ T).ncard : ℝ) := by

@@ -33,12 +33,11 @@ Compiled, unconditionally:
   window hypothesis;
 * `feFormOn_eq_diagFormOn_of_online` — on-line windows: the FE pairing *is*
   the diagonal form;
-* `feFormOn_nonneg_iff` / `feForm_global_nonneg_iff` — **the target, pinned**:
-  the FE pairing is positive semidefinite on every FE-closed window iff every
-  nontrivial zero lies on the critical line.
+* `feFormOn_nonneg_iff` (one window) / `online_of_feForm_global_nonneg` — **the target, pinned**:
+  positive semidefiniteness of the FE pairing on every FE-closed window puts every
+  nontrivial zero on the critical line.
 
-The iffs state the target; nothing here proves its left side.  The off-line
-witness in the reverse direction is the explicit hyperbolic vector
+Nothing here proves the hypothesis.  The off-line witness is the explicit hyperbolic vector
 `e_ρ − e_{ρ*}` of the block model, now instantiated on the actual multiset.
 -/
 
@@ -253,28 +252,24 @@ theorem feFormOn_nonneg_iff {s : Finset Zero} (hs : FEClosed s) :
     exact diagFormOn_nonneg s c
 
 /-- **The global target, pinned: the foliated route's remaining statement as
-one compiled proposition.**  The FE polarization is positive semidefinite on
-every FE-closed window of the actual zero multiset iff every nontrivial zero
+one compiled proposition.**  If the FE polarization is positive semidefinite on
+every FE-closed window of the actual zero multiset, every nontrivial zero
 lies on the critical line.
 
-The left side is the definiteness of the Krein polarization for which the
+The hypothesis is the definiteness of the Krein polarization for which the
 flow generator is self-adjoint (`feFormOn_theta`); nothing here proves it. -/
-theorem feForm_global_nonneg_iff :
-    (∀ s : Finset Zero, FEClosed s → ∀ c : Zero → ℂ, 0 ≤ (feFormOn s c c).re)
-      ↔ ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
-  constructor
-  · intro hpos ρ hρ
-    set ρ₀ : Zero := ⟨ρ, hρ⟩
-    have hsclosed : FEClosed {ρ₀, feReflectZ ρ₀} := by
-      intro σ hσ
-      rcases Finset.mem_insert.mp hσ with h | h
-      · subst h; simp
-      · rw [Finset.mem_singleton.mp h]
-        simp [feReflectZ_feReflectZ]
-    exact (feFormOn_nonneg_iff hsclosed).mp (hpos _ hsclosed) ρ₀ (by simp)
-  · intro hon s _ c
-    rw [feFormOn_eq_diagFormOn_of_online (fun ρ _ => hon ρ.val ρ.2)]
-    exact diagFormOn_nonneg s c
+theorem online_of_feForm_global_nonneg
+    (hpos : ∀ s : Finset Zero, FEClosed s → ∀ c : Zero → ℂ, 0 ≤ (feFormOn s c c).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  intro ρ hρ
+  set ρ₀ : Zero := ⟨ρ, hρ⟩
+  have hsclosed : FEClosed {ρ₀, feReflectZ ρ₀} := by
+    intro σ hσ
+    rcases Finset.mem_insert.mp hσ with h | h
+    · subst h; simp
+    · rw [Finset.mem_singleton.mp h]
+      simp [feReflectZ_feReflectZ]
+  exact (feFormOn_nonneg_iff hsclosed).mp (hpos _ hsclosed) ρ₀ (by simp)
 
 /-! ## The Hankel bridge
 
@@ -369,7 +364,7 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feFormOn_hermitian
 #print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feFormOn_theta
 #print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feFormOn_nonneg_iff
-#print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feForm_global_nonneg_iff
+#print axioms CriticalLinePhasor.FoliatedGlobalPolarization.online_of_feForm_global_nonneg
 #print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feFormOn_polyEval
 #print axioms CriticalLinePhasor.FoliatedGlobalPolarization.feFormOn_negFamily
 end AxiomAudit

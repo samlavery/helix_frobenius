@@ -1043,15 +1043,13 @@ theorem seat_interior_rung_one' : ∃ c : ℝ, 0 < c ∧ ∀ w : ℂ,
   rw [hzero] at hwindow
   simpa using hwindow
 
-/-- **The capstone, localized (a REDUCTION, not a closure).**  RH is
-equivalent to seat positivity on the RESIDUAL domain only: anchors of
-height `< e⁴ + 2 ≈ 57`, or of depth `< ½ − c/log(height + ½)`.  The
+/-- **The seat door, localized.**  Seat positivity on the RESIDUAL domain
+only — anchors of height `< e⁴ + 2 ≈ 57`, or of depth
+`< ½ − c/log(height + ½)` — puts every nontrivial zero on the line.  The
 complement — high and deep — is covered unconditionally by
-`seat_interior_rung_one'`.  This compiles exactly where the open content
-lives; it does not diminish its strength. -/
-theorem seat_criterion_residual_iff : ∃ c : ℝ, 0 < c ∧
-    ((∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ ∀ w : ℂ, ((1/2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
+`seat_interior_rung_one'`. -/
+theorem online_of_seat_residual : ∃ c : ℝ, 0 < c ∧
+    ((∀ w : ℂ, ((1/2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
           ((1/2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros) →
           (w - (starRingEnd ℂ) w ≠ 0) →
           (|w.re| < Real.exp 4 + 2 ∨
@@ -1060,14 +1058,12 @@ theorem seat_criterion_residual_iff : ∃ c : ℝ, 0 < c ∧
               (ZD.xiOrderNat ρ.val : ℂ) *
                 ((CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val - w)⁻¹ *
                   (CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val
-                    - (starRingEnd ℂ) w)⁻¹)).re) := by
+                    - (starRingEnd ℂ) w)⁻¹)).re)
+      → ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) := by
   obtain ⟨c, hcpos, hrung⟩ := seat_interior_rung_one'
   refine ⟨c, hcpos, ?_⟩
-  constructor
-  · intro hon w hw hw' him _
-    exact seat_criterion_iff.mp hon w hw hw' him
   · intro hres
-    apply seat_criterion_iff.mpr
+    apply online_of_seat_energy_nonneg
     intro w hw hw' him
     by_cases hcase : |w.re| < Real.exp 4 + 2 ∨
         |w.im| < 1/2 - c / Real.log (|w.re| + 1/2)
@@ -1075,19 +1071,18 @@ theorem seat_criterion_residual_iff : ∃ c : ℝ, 0 < c ∧
     · push_neg at hcase
       exact hrung w hcase.1 hcase.2 hw hw' him
 
-/-- **The capstone, factored (a REDUCTION, not a closure).**  RH is
-equivalent to the conjunction of
+/-- **The seat door, factored.**  The conjunction of
 (1) a FINITE statement — the zeros of ordinate `< e⁴ + 5/2 ≈ 57.1`
     (finitely many; classically eleven) lie on the line — and
 (2) the shallow channel — seat positivity at anchors of height `≥ e⁴ + 2`
-    and depth `< ½ − c/log(height + ½)`.
+    and depth `< ½ − c/log(height + ½)` —
+puts every nontrivial zero on the line.
 Low anchors are covered by (1) through the window law (an on-line window
 zero has depth `0`, so the deep-window is empty at EVERY anchor depth);
 high-and-deep anchors by `seat_interior_rung_one'`; high-and-shallow is
-(2).  Item (2) carries the full open content. -/
-theorem seat_criterion_split_iff : ∃ c : ℝ, 0 < c ∧
-    ((∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ ((∀ ρ ∈ ZD.NontrivialZeros,
+(2). -/
+theorem online_of_seat_split : ∃ c : ℝ, 0 < c ∧
+    (((∀ ρ ∈ ZD.NontrivialZeros,
             |ρ.im| < Real.exp 4 + 5/2 → ρ.re = 1 / 2) ∧
         ∀ w : ℂ, ((1/2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
           ((1/2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros) →
@@ -1098,15 +1093,12 @@ theorem seat_criterion_split_iff : ∃ c : ℝ, 0 < c ∧
               (ZD.xiOrderNat ρ.val : ℂ) *
                 ((CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val - w)⁻¹ *
                   (CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val
-                    - (starRingEnd ℂ) w)⁻¹)).re)) := by
+                    - (starRingEnd ℂ) w)⁻¹)).re)
+      → ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) := by
   obtain ⟨c, hcpos, hrung⟩ := seat_interior_rung_one'
   refine ⟨c, hcpos, ?_⟩
-  constructor
-  · intro hon
-    exact ⟨fun ρ hρ _ => hon ρ hρ,
-      fun w hw hw' him _ _ => seat_criterion_iff.mp hon w hw hw' him⟩
   · rintro ⟨hfin, hchan⟩
-    apply seat_criterion_iff.mpr
+    apply online_of_seat_energy_nonneg
     intro w hw hw' him
     by_cases hlow : |w.re| < Real.exp 4 + 2
     · -- the low strip: window zeros are on the line, deep-window empty
@@ -1143,8 +1135,8 @@ end CriticalLinePhasor.DVP
 section AxiomAudit
 #print axioms CriticalLinePhasor.DVP.seat_interior_rung_one
 #print axioms CriticalLinePhasor.DVP.seat_interior_rung_one'
-#print axioms CriticalLinePhasor.DVP.seat_criterion_residual_iff
-#print axioms CriticalLinePhasor.DVP.seat_criterion_split_iff
+#print axioms CriticalLinePhasor.DVP.online_of_seat_residual
+#print axioms CriticalLinePhasor.DVP.online_of_seat_split
 #print axioms CriticalLinePhasor.DVP.window_xiOrderNat_count
 #print axioms CriticalLinePhasor.DVP.abs_window_xiOrderNat_count
 #print axioms CriticalLinePhasor.DVP.tail_tau_bound

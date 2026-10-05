@@ -127,19 +127,15 @@ theorem ends_agree_iff_online (ρ : ℂ) :
   rw [him]
   constructor <;> intro h <;> linarith
 
-/-- **The trace's pair reading**: RH ⟺ every analytic zero's two
+/-- **The trace's pair reading**: if every analytic zero's two
 side-eigenvalues coincide — the eigenvalue map of the double-ended helix
-lands on the axis. -/
-theorem rh_iff_all_end_pairs_coincide :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    ∀ ρ ∈ ZD.NontrivialZeros,
+lands on the axis — every zero is on the line. -/
+theorem online_of_all_end_pairs_coincide
+    (h : ∀ ρ ∈ ZD.NontrivialZeros,
       HilbertPolya.spectralCoord (1 - (starRingEnd ℂ) ρ)
-        = HilbertPolya.spectralCoord ρ := by
-  constructor
-  · intro h ρ hρ
-    exact (ends_agree_iff_online ρ).mpr (h ρ hρ)
-  · intro h ρ hρ
-    exact (ends_agree_iff_online ρ).mp (h ρ hρ)
+        = HilbertPolya.spectralCoord ρ) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
+  fun ρ hρ => (ends_agree_iff_online ρ).mp (h ρ hρ)
 
 /-! ## The Frobenius linkage: det = 1 across the two ends
 
@@ -148,8 +144,8 @@ the helix and anti-helix conjugate, det = 1.*  The two ends' events sit at
 the SAME height (`(1 − conj ρ).im = ρ.im`), carry the amplitude faces
 `(α, α⁻¹)` with `α = e^{β − 1/2}` — det 1 BY CONJUGACY, the compiled
 Frobenius similitude — and the face is a helix strand (elliptic,
-tempered) exactly on the line.  RH = **temperedness of the spectrum**:
-every end-pair face is a helix strand, not a spiral. -/
+tempered) exactly on the line.  **Temperedness of the spectrum** — every
+end-pair face a helix strand, not a spiral — puts every zero on the line. -/
 
 /-- The amplitude face an event shows its end-pair: `e^{β − 1/2}`. -/
 def endPairFace (ρ : ℂ) : ℂ := Complex.exp (((ρ.re - 1 / 2 : ℝ) : ℂ))
@@ -184,31 +180,28 @@ theorem endFace_helix_iff_online (ρ : ℂ) :
   rw [Real.exp_eq_one_iff]
   constructor <;> intro h <;> linarith
 
-/-- **RH = temperedness of the spectrum**: every vanishing's end-pair face
-is a helix strand, not a spiral — the radial dichotomy landed on the zero
-set itself. -/
-theorem rh_iff_spectrum_tempered :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    ∀ ρ ∈ ZD.NontrivialZeros,
-      CriticalLinePhasor.HelixStrand.IsHelixStrand (endPairFace ρ) := by
-  constructor
-  · intro h ρ hρ
-    exact (endFace_helix_iff_online ρ).mpr (h ρ hρ)
-  · intro h ρ hρ
-    exact (endFace_helix_iff_online ρ).mp (h ρ hρ)
+/-- **Temperedness of the spectrum puts every zero on the line**: if every
+vanishing's end-pair face is a helix strand, not a spiral — the radial
+dichotomy landed on the zero set itself — every zero is on the line. -/
+theorem online_of_spectrum_tempered
+    (h : ∀ ρ ∈ ZD.NontrivialZeros,
+      CriticalLinePhasor.HelixStrand.IsHelixStrand (endPairFace ρ)) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
+  fun ρ hρ => (endFace_helix_iff_online ρ).mp (h ρ hρ)
 
 /-! ## The no-spiral law: the exact complement, the trace meter, the isometry form
 
 The faces are REAL AND POSITIVE (`e^{β−1/2} > 0`), so the strand dichotomy is
 exhaustive AND exclusive on the zero set: every end-pair face is exactly one
-of helix (on-line) or spiral (off-line) — no third branch.  RH = "no spiral
-faces."  The face's 1-D readout is the trace meter
+of helix (on-line) or spiral (off-line) — no third branch.  "No spiral
+faces" puts every zero on the line.  The face's 1-D readout is the trace meter
 `α + α⁻¹ = 2·cosh(β − 1/2)`: DC floor exactly `2`, the excess `≥ 0` vanishing
 precisely on the line, and a spiral face rings the compiled non-tempered
 signature `|trace| > 2`.  In the operator register the split is literal:
 `det (strandBlock face) = 1` is FREE at every zero (the similitude, SL₂),
-and RH ⟺ every face's block is an ISOMETRY (the maximal compact, SU₂) —
-the remaining field is "exhibit the isometry", discharged by identity. -/
+and every face's block an ISOMETRY (the maximal compact, SU₂) puts every
+zero on the line — the remaining field is "exhibit the isometry", discharged
+by identity. -/
 
 open Matrix
 
@@ -268,17 +261,15 @@ theorem endFace_not_helix_and_spiral (ρ : ℂ) :
   rintro ⟨hh, hs⟩
   exact hs.2.2 (CriticalLinePhasor.HelixStrand.tempered_of_isHelixStrand hh)
 
-/-- **RH = the no-spiral law**: no vanishing's end-pair face is a spiral. -/
-theorem rh_iff_no_spiral_faces :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    ∀ ρ ∈ ZD.NontrivialZeros,
-      ¬ CriticalLinePhasor.HelixStrand.IsSpiralStrand (endPairFace ρ) := by
-  constructor
-  · intro h ρ hρ hs
-    exact (endFace_spiral_iff_offline ρ).mp hs (h ρ hρ)
-  · intro h ρ hρ
-    by_contra hne
-    exact h ρ hρ ((endFace_spiral_iff_offline ρ).mpr hne)
+/-- **The no-spiral law puts every zero on the line**: if no vanishing's
+end-pair face is a spiral, every zero is on the line. -/
+theorem online_of_no_spiral_faces
+    (h : ∀ ρ ∈ ZD.NontrivialZeros,
+      ¬ CriticalLinePhasor.HelixStrand.IsSpiralStrand (endPairFace ρ)) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  intro ρ hρ
+  by_contra hne
+  exact h ρ hρ ((endFace_spiral_iff_offline ρ).mpr hne)
 
 /-- **The pair's radial ledger closes exactly**: the two ends' log-radii sum
 to `0` at EVERY zero — det = 1 in the log register, the DC of the radial
@@ -407,19 +398,16 @@ theorem endFace_isometry_iff_online (ρ : ℂ) :
     exact CriticalLinePhasor.HelixStrand.helix_strandBlock_isometry
       ((endFace_helix_iff_online ρ).mpr h)
 
-/-- **RH = the zero set's transverse monodromy lands in the maximal
-compact**: det = 1 holds at every zero for free; RH says every face's
-block is moreover an isometry — SL₂ given, SU₂ the field. -/
-theorem rh_iff_all_faces_isometry :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    ∀ ρ ∈ ZD.NontrivialZeros,
+/-- **The zero set's transverse monodromy in the maximal compact puts every
+zero on the line**: det = 1 holds at every zero for free; if every face's
+block is moreover an isometry — SL₂ given, SU₂ the field — every zero is on
+the line. -/
+theorem online_of_all_faces_isometry
+    (h : ∀ ρ ∈ ZD.NontrivialZeros,
       (CriticalLinePhasor.RamanujanLimit.strandBlock (endPairFace ρ))ᴴ *
-        CriticalLinePhasor.RamanujanLimit.strandBlock (endPairFace ρ) = 1 := by
-  constructor
-  · intro h ρ hρ
-    exact (endFace_isometry_iff_online ρ).mpr (h ρ hρ)
-  · intro h ρ hρ
-    exact (endFace_isometry_iff_online ρ).mp (h ρ hρ)
+        CriticalLinePhasor.RamanujanLimit.strandBlock (endPairFace ρ) = 1) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
+  fun ρ hρ => (endFace_isometry_iff_online ρ).mp (h ρ hρ)
 
 /-! ## Layer 4: the Frobenius operator — the end exchange, acting
 
@@ -428,8 +416,8 @@ action.  Here it acts.  `endExchange ρ = 1 − conj ρ` is THE Frobenius of
 this skeleton: an involution preserving the zero set, acting on the
 spectrum as conjugation (pairing `(λ, λ̄)`), on the faces as inversion
 (the det-1 similitude in action form), and fixing an event exactly when
-it sits on the critical line.  **RH = the zero set is pointwise
-Frobenius-fixed.**  The Weil proof shape then compiles: similitude
+it sits on the critical line.  **A pointwise Frobenius-fixed zero set is
+on the line.**  The Weil proof shape then compiles: similitude
 (free) + ONE Frobenius-invariant positive weight intertwined with the
 face action ⟹ unit faces ⟹ RH — Castelnuovo positivity's seat,
 relocated to a single exhibitable object. -/
@@ -481,16 +469,12 @@ theorem endExchange_fixed_iff (ρ : ℂ) :
     · rw [Complex.sub_im, Complex.one_im, Complex.conj_im]
       ring
 
-/-- **RH = the zero set is pointwise Frobenius-fixed** — the fixed-point
+/-- **A pointwise Frobenius-fixed zero set is on the line** — the fixed-point
 chart of the box. -/
-theorem rh_iff_zeros_endExchange_fixed :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    ∀ ρ ∈ ZD.NontrivialZeros, endExchange ρ = ρ := by
-  constructor
-  · intro h ρ hρ
-    exact (endExchange_fixed_iff ρ).mpr (h ρ hρ)
-  · intro h ρ hρ
-    exact (endExchange_fixed_iff ρ).mp (h ρ hρ)
+theorem online_of_zeros_endExchange_fixed
+    (h : ∀ ρ ∈ ZD.NontrivialZeros, endExchange ρ = ρ) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 :=
+  fun ρ hρ => (endExchange_fixed_iff ρ).mp (h ρ hρ)
 
 /-- **The Weil shape, per event**: a Frobenius-invariant POSITIVE weight
 against which the face acts with its full similitude forces a unit face —
@@ -551,22 +535,22 @@ theorem control_weight_pos_sim :
 end CriticalLinePhasor.CellEdgeDoor
 
 #print axioms CriticalLinePhasor.CellEdgeDoor.endPair_det_one
-#print axioms CriticalLinePhasor.CellEdgeDoor.rh_iff_spectrum_tempered
+#print axioms CriticalLinePhasor.CellEdgeDoor.online_of_spectrum_tempered
 #print axioms CriticalLinePhasor.CellEdgeDoor.conjugate_end_mem
-#print axioms CriticalLinePhasor.CellEdgeDoor.rh_iff_all_end_pairs_coincide
+#print axioms CriticalLinePhasor.CellEdgeDoor.online_of_all_end_pairs_coincide
 #print axioms CriticalLinePhasor.CellEdgeDoor.pencil_sees_registered_vanishing
 #print axioms CriticalLinePhasor.CellEdgeDoor.riemannHypothesis_of_cell_edge_registration
 #print axioms CriticalLinePhasor.CellEdgeDoor.riemannHypothesis_of_pencil_cell_stack
 #print axioms CriticalLinePhasor.CellEdgeDoor.endFace_spiral_iff_offline
 #print axioms CriticalLinePhasor.CellEdgeDoor.endFace_helix_or_spiral
-#print axioms CriticalLinePhasor.CellEdgeDoor.rh_iff_no_spiral_faces
+#print axioms CriticalLinePhasor.CellEdgeDoor.online_of_no_spiral_faces
 #print axioms CriticalLinePhasor.CellEdgeDoor.endPair_radial_ledger_zero
 #print axioms CriticalLinePhasor.CellEdgeDoor.endFace_trace_eq_two_iff_online
 #print axioms CriticalLinePhasor.CellEdgeDoor.strand_radius_one_of_unitary
-#print axioms CriticalLinePhasor.CellEdgeDoor.rh_iff_all_faces_isometry
+#print axioms CriticalLinePhasor.CellEdgeDoor.online_of_all_faces_isometry
 #print axioms CriticalLinePhasor.CellEdgeDoor.endExchange_involutive
 #print axioms CriticalLinePhasor.CellEdgeDoor.endPairFace_endExchange
-#print axioms CriticalLinePhasor.CellEdgeDoor.rh_iff_zeros_endExchange_fixed
+#print axioms CriticalLinePhasor.CellEdgeDoor.online_of_zeros_endExchange_fixed
 #print axioms CriticalLinePhasor.CellEdgeDoor.face_norm_one_of_invariant_weight
 #print axioms CriticalLinePhasor.CellEdgeDoor.riemannHypothesis_of_frobenius_weight
 #print axioms CriticalLinePhasor.CellEdgeDoor.control_weight_pos_sim

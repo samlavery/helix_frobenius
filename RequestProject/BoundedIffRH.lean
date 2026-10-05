@@ -1,20 +1,18 @@
 import RequestProject.JetsAreAtoms
 
 /-!
-# RH is the boundedness of the explicit sequence (ledger 632)
+# Boundedness of the explicit sequence puts every zero on the line (ledger 632)
 
 The growth argument of 630 used the ladder only through the minor bound `‖μ_k‖ ≤ μ_0`. Hence a mere
-bound `‖μ_k‖ ≤ C` already forces every zero to the line (`re_ge_half_of_bounded`), and conversely under
-RH `‖μ_k‖ ≤ Σ m_ρ ω_ρ = μ_0` since every atom is unimodular with positive weight. So
+bound `‖μ_k‖ ≤ C` already forces every zero to the line (`re_ge_half_of_bounded`). So
 
-  **`rh_iff_bounded`: RH ⟺ the coefficient sequence at one channel anchor is bounded**, and with 628/631
-  **`explicit_bounded_iff_rh`: RH ⟺ the explicit prime-and-Γ sequence at one anchor `Re s < 0` is bounded.**
+  **`rh_of_bounded`: a bounded coefficient sequence at one channel anchor puts every zero on the line**,
+  and with 628/631 **`rh_of_explicit_bounded`: so does a bounded explicit prime-and-Γ sequence at one
+  anchor `Re s < 0`.**
 
-Equivalently the power series `Σ μ_k z^k` has radius of convergence `1`: the Cayley image of the channel
-is the disc, and `ξ′/ξ` is holomorphic on the channel iff RH. In the carrier picture (att632): the prime
-side is purely oscillatory on the carrier after the uniform cancels the Poisson DC prime by prime, so the
-transported measure is `Γ density − (1/π)|s₀−½−iy|^{−2}·Re Σ Λ(n) n^{−½−iy}`, and its positivity is
-Weil's criterion in the anchored class. That positivity is not proved here.
+In the carrier picture (att632): the prime side is purely oscillatory on the carrier after the uniform
+cancels the Poisson DC prime by prime, so the transported measure is
+`Γ density − (1/π)|s₀−½−iy|^{−2}·Re Σ Λ(n) n^{−½−iy}`. Its positivity is not proved here.
 -/
 
 open Complex Finset Filter Topology
@@ -189,29 +187,22 @@ theorem rh_of_bounded {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hs' : s.re < 1 
   simp only [Complex.sub_re, Complex.one_re, Complex.conj_re] at h2
   linarith
 
-/-- **RH ⟹ bounded**, by the minor bound of the ladder. -/
-theorem bounded_of_rh {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hRH : RH) :
-    ∀ k, ‖xiCoeff s k‖ ≤ (xiCoeff s 0).re :=
-  ladder_coeff_bound (ladder_of_rh hs hRH)
-
-/-- **RH is the boundedness of the coefficient sequence at one channel anchor.** -/
-theorem rh_iff_bounded {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hs' : s.re < 1 / 2) :
-    RH ↔ ∃ C : ℝ, ∀ k, ‖xiCoeff s k‖ ≤ C :=
-  ⟨fun h => ⟨_, bounded_of_rh hs h⟩, fun ⟨_, hC⟩ => rh_of_bounded hs hs' hC⟩
-
-/-- **RH is the boundedness of the explicit prime-and-Γ sequence at one anchor `Re s < 0`.** -/
-theorem explicit_bounded_iff_rh {s : ℂ} (hs : s.re < 0) :
-    (∃ C : ℝ, ∀ k, ‖toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ) (jets explicitLogDeriv s) k‖ ≤ C) ↔ RH := by
+/-- **Boundedness of the explicit prime-and-Γ sequence at one anchor `Re s < 0` puts every zero on
+the line.** -/
+theorem rh_of_explicit_bounded {s : ℂ} (hs : s.re < 0)
+    (h : ∃ C : ℝ, ∀ k, ‖toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ) (jets explicitLogDeriv s) k‖ ≤ C) :
+    RH := by
   have hs0 : s ∉ ZD.NontrivialZeros := notMem_nontrivialZeros_of_re_nonpos hs.le
   have hs' : s.re ≠ 1 / 2 := by intro h; linarith
   have hseq : ∀ k, toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ) (jets explicitLogDeriv s) k = xiCoeff s k := by
     intro k
     rw [← jets_xiLogDeriv_eq_explicit hs, toeplitzCoeff_jets_eq_xiCoeff hs0 hs' k]
-  simp only [hseq]
-  exact (rh_iff_bounded hs0 (by linarith)).symm
+  simp only [hseq] at h
+  obtain ⟨C, hC⟩ := h
+  exact rh_of_bounded hs0 (by linarith) hC
 
 end CriticalLinePhasor.SeatingLedger
 
 #print axioms CriticalLinePhasor.SeatingLedger.re_ge_half_of_bounded
-#print axioms CriticalLinePhasor.SeatingLedger.rh_iff_bounded
-#print axioms CriticalLinePhasor.SeatingLedger.explicit_bounded_iff_rh
+#print axioms CriticalLinePhasor.SeatingLedger.rh_of_bounded
+#print axioms CriticalLinePhasor.SeatingLedger.rh_of_explicit_bounded

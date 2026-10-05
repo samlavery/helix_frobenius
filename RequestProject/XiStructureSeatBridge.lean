@@ -298,28 +298,18 @@ theorem xiStructure_dominates_interior_rung :
   · rw [Complex.neg_im, abs_neg, abs_of_pos hz, Complex.neg_re, abs_neg]
     exact hdep
 
-/-- **RH gives the non-strict domination.**  Transport of `seat_energy_nonneg_of_online`. -/
-theorem xiStructure_dominates_of_rh (hon : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-    {z : ℂ} (hz : 0 < z.im) :
-    ‖Estar xiStructure z‖ ≤ ‖xiStructure z‖ :=
-  dominates_of_seat_nonneg hz (fun hw hw' him =>
-    seat_energy_nonneg_of_online hon hw hw' him)
-
-/-- **THE NON-STRICT CRITERION, AS AN IFF.**  The Riemann Hypothesis is *equivalent* to
-the **non-strict** Hermite–Biehler domination `‖E* z‖ ≤ ‖E z‖` of the Lagarias structure
-function on the open upper half plane.
+/-- **THE NON-STRICT DOOR.**  The **non-strict** Hermite–Biehler domination
+`‖E* z‖ ≤ ‖E z‖` of the Lagarias structure function on the open upper half plane puts
+every nontrivial zero on the critical line.
 
 This strictly improves `rh_of_xiStructure_isHB`, which consumes the strict hypothesis
-`IsHB xiStructure`: the strict inequality is not needed.  The converse direction runs
-through `SeatScalar.exists_seat_energy_neg`; note that the strictly negative seat value
-already forces `ξ ≠ 0` at the anchor, so no separate non-vanishing input is used. -/
-theorem rh_iff_xiStructure_dominates :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ ∀ z : ℂ, 0 < z.im → ‖Estar xiStructure z‖ ≤ ‖xiStructure z‖ := by
-  constructor
-  · intro hon z hz
-    exact xiStructure_dominates_of_rh hon hz
-  · intro hdom ρ hρ
+`IsHB xiStructure`: the strict inequality is not needed.  The proof runs through
+`SeatScalar.exists_seat_energy_neg`; note that the strictly negative seat value already
+forces `ξ ≠ 0` at the anchor, so no separate non-vanishing input is used. -/
+theorem online_of_xiStructure_dominates
+    (hdom : ∀ z : ℂ, 0 < z.im → ‖Estar xiStructure z‖ ≤ ‖xiStructure z‖) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  · intro ρ hρ
     by_contra hne
     -- pass to the side of the critical line with `Re > ½`
     obtain ⟨ρ₀, hρ₀mem, hρ₀re⟩ :
@@ -388,6 +378,5 @@ end CriticalLinePhasor.XiStructure
 section AxiomAudit3
 #print axioms CriticalLinePhasor.XiStructure.seat_energy_conj_eq
 #print axioms CriticalLinePhasor.XiStructure.xiStructure_dominates_interior_rung
-#print axioms CriticalLinePhasor.XiStructure.xiStructure_dominates_of_rh
-#print axioms CriticalLinePhasor.XiStructure.rh_iff_xiStructure_dominates
+#print axioms CriticalLinePhasor.XiStructure.online_of_xiStructure_dominates
 end AxiomAudit3

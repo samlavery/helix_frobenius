@@ -22,8 +22,8 @@ This file compiles exactly that theorem, and shows where its hypothesis lives.
   first nontrivial one: the two-phasor η-stage `1 − 2^{−(½+iz)}` vanishes at `z = i/2` (the helix
   end, `Re s = 0`), off the fold. So "built from carrier states" does not give source labelling.
   Source labelling is real-rootedness of the approximants: by `limit_dominance` it forces RH
-  (here), and classically (Pólya, Laguerre–Pólya class) it is available exactly under RH, via the
-  Hadamard product over the zeros themselves — the spectral side, labelled by the zeros.
+  (here); classically (Pólya, Laguerre–Pólya class) it is built from the Hadamard product over the
+  zeros themselves — the spectral side, labelled by the zeros.
 
 Nothing here is conditional; the structure asserts nothing. No `sorry`, no `axiom`.
 -/

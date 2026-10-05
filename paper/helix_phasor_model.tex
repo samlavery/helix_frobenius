@@ -50,9 +50,9 @@ the signed channel closed, the Gram determinant rank-dropping by exactly one
 converse implication}: any nontrivial cancellation realized as a kernel of the fixed self-adjoint
 generator lies on the critical line, by von Neumann reality
 (\code{GRH\_from\_nontrivial\_A$\chi$\_realization}).  \emph{The isolated gap}: whether \emph{all}
-nontrivial zeros are so realized --- whether \emph{every zero has a source} --- is proved
-equivalent to the critical-line statement, hence to GRH for $\chi$
-(\code{everyZeroHasSource\_iff\_critical}); it is neither assumed nor proved.  The frame split is
+nontrivial zeros are so realized --- whether \emph{every zero has a source} --- is the named
+input of a proved door to the critical line, hence to GRH for $\chi$
+(\code{critical\_of\_everyZeroHasSource}); it is neither assumed nor proved.  The frame split is
 itself formalized: for the three-dimensional object \emph{as defined}, RH is unconditional ---
 every prime clock of the carrier obeys the exact purity-defect law (displacement off the
 conjugation axis --- the fixed locus of the conjugation anti-involution, the weld line where each
@@ -61,10 +61,10 @@ symmetry: the antihelix is the helix's conjugate, both strands share the same ha
 $=-\log\|\alpha\|/\ell$), so the unitary carrier has all zeros on the conjugation axis
 (\code{carrier\_zeros\_real}); duality is a perfect determinant-one pairing on the vanishing set
 with $d(\rho)=d(1-\rho)$; and purity of every vanishing pair reduces to one named operator-growth
-inequality --- the helix Castelnuovo --- measured as an identity of the carrier metric.  Classical
-RH is proved \emph{equivalent} to the completeness of the projection: every zero of the
-one-dimensional continuation arises from a three-dimensional vanishing
-(\code{projection\_complete\_iff\_RH}) --- no zero is \emph{sourceless}.  The conditional lives
+inequality --- the helix Castelnuovo --- measured as an identity of the carrier metric.  The
+completeness of the projection --- every zero of the one-dimensional continuation arising from a
+three-dimensional vanishing, no zero \emph{sourceless} --- is proved to give classical RH
+(\code{onLine\_of\_projection\_complete}).  The conditional lives
 entirely in the 1D chart, open and named: \emph{projection completeness}.
 
 The geometry beneath these statements is derived, not designed.  Uniform $\pi/3$-arclength placement
@@ -171,8 +171,8 @@ completed $\zeta$ and, at every conductor, for primitive Dirichlet $L$ ---
 conditionals: the bridge, and the winding-coherence hypothesis, now welded into a single
 implication --- coherence $\Rightarrow$ every collapse-wave zero real
 (\code{coherence\_implies\_conj\_axis}, Remark~\ref{rem:twowalls}).  The classical
-statement is the bridge and \emph{only} the bridge: RH $\iff$ every 1D zero arises from a 3D
-vanishing (\code{projection\_complete\_iff\_RH}); the 1D conditional --- projection completeness
+statement is reached through the bridge and \emph{only} the bridge: every 1D zero arising from a
+3D vanishing gives RH (\code{onLine\_of\_projection\_complete}); the 1D conditional --- projection completeness
 --- is never blurred into the 3D theorem, and the open additive-side link (Hermite--Biehler for
 the summed fiber) is named (Theorem~\ref{thm:clockrh}, Remark~\ref{rem:hbscope}).
 \end{enumerate}
@@ -210,9 +210,9 @@ nontrivial cancellation realized as a kernel event of the fixed self-adjoint gen
 $\Ree s=\tfrac12$, by von Neumann reality (Theorem~\ref{thm:kernelonline}).  Together with (3) this
 is a two-sided, unconditional Hilbert--P\'olya-type package for the critical-line zeros.
 
-\item \emph{The isolated gap is exactly GRH (Sections~\ref{sec:spectralGRH},~\ref{sec:admissible}).}
+\item \emph{The isolated gap (Sections~\ref{sec:spectralGRH},~\ref{sec:admissible}).}
 Whether \emph{all} nontrivial zeros are so realized --- whether \emph{every zero has a source} ---
-is proved equivalent to the critical-line statement, hence to GRH for $\chi$
+is the input of a proved door to the critical line, hence to GRH for $\chi$
 (Theorem~\ref{thm:grhreal}, Remark~\ref{rem:admissiblescope}).  It is stated as an explicit named
 hypothesis, neither assumed nor proved; conditional on it, every nontrivial zero is a represented
 eigen-event.
@@ -1280,20 +1280,20 @@ realizes it at $Z=e^{\Imm\rho}$. Equivalently an off-line $\rho$ admits \emph{no
 $Z=e^{t}>0$ (\code{nontrivial\_zero\_represented}).
 \end{theorem}
 
-\begin{remark}[Every zero has a source --- the sourceless-zero question; \code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}, \code{zero\_source\_admissibility\_of\_everyZeroHasSource}]\label{rem:bridge}
+\begin{remark}[Every zero has a source --- the sourceless-zero question; \code{EveryZeroHasSource}, \code{critical\_of\_everyZeroHasSource}, \code{zero\_source\_admissibility\_of\_everyZeroHasSource}]\label{rem:bridge}
 The readout reaches \emph{exactly} the critical line for real $Z$ (\code{criticalReadout\_re}), so the
 3D carrier's projection cannot land off-axis and cannot host an off-line zero; Theorem~\ref{thm:admiss}
 represents every zero \emph{presented on} the line. The hypothesis \emph{every zero has a source}
 (\code{EveryZeroHasSource}) asserts that every nontrivial zero arises this way --- from a real source
-height --- and its source form is proved to be exactly the critical-line statement
-(\code{everyZeroHasSource\_iff\_critical}), hence GRH for $\chi$; conditional on it, \emph{every}
+height --- and its source form is proved to put every zero on the critical line
+(\code{critical\_of\_everyZeroHasSource}), hence GRH for $\chi$; conditional on it, \emph{every}
 nontrivial zero (with no on-line hypothesis) is a represented admissible eigen-event
 (\code{zero\_source\_admissibility\_of\_everyZeroHasSource}, \code{RH\_of\_everyZeroAdmissible}). The same
 hypothesis is the representability bridge \code{EveryZeroAdmissible}; these two are the \emph{formalized}
 faces of the one undecided question (Remark~\ref{rem:admissiblescope}), whose completed-$\zeta$
 form --- and standing name --- is \emph{projection completeness}
-(\code{projection\_complete\_iff\_RH}, Theorem~\ref{thm:framesplit}). The de Branges
-$\mathrm{IsHB}\,\Lambda$ condition is the same RH content in the classical de Branges form
+(\code{onLine\_of\_projection\_complete}, Theorem~\ref{thm:framesplit}). The de Branges
+$\mathrm{IsHB}\,\Lambda$ condition is the classical de Branges form of the question
 (Remark~\ref{rem:hbscope}), which this work connects to but neither formalizes nor relies on --- open
 work in the de Branges program, not a conditional of this paper. The open question itself is posed,
 never assumed: RH fails only if a factor outside the
@@ -1304,10 +1304,10 @@ bound $|T_d-\gamma|\le 2\varepsilon/a$ (\code{real\_simple\_zero\_location}, \co
 \code{real\_simple\_zero\_unique}).
 \end{remark}
 
-\section{The self-adjoint realization and the GRH equivalence}\label{sec:spectralGRH}
+\section{The self-adjoint realization and the door to GRH}\label{sec:spectralGRH}
 
 The spectral layer realizes the cancellation events as kernel events of a fixed operator and then
-isolates, exactly, the RH-strength statement.  The 3D spectral-fiber readout converges to the
+isolates, exactly, the remaining statement.  The 3D spectral-fiber readout converges to the
 analytic $L$-function (\code{spectral\_fiber\_is\_Lfunction}); a zero is a kernel event of the
 configured spectral operator, and conversely (\code{spectral\_zero\_has\_kernel},
 \code{spectral\_kernel\_iff\_zero}, \code{cancellation\_equivalence}).  The generator $A_\chi$ is
@@ -1334,7 +1334,7 @@ eigen-height, hence to be real.
 \begin{theorem}[GRH from a self-adjoint realization; \code{GRH\_from\_nontrivial\_A$\chi$\_realization}, \code{GRH\_from\_spectral\_exhaustion}]\label{thm:grhreal}
 If every nontrivial cancellation of $L(\cdot,\chi)$ is realized as a kernel of the fixed
 self-adjoint generator $A_\chi$, then every nontrivial zero lies on the critical line --- GRH for
-$\chi$.  The implication is unconditional; the realization hypothesis is the isolated RH-strength
+$\chi$.  The implication is unconditional; the realization hypothesis is the isolated
 input.  The twin formulation through the sign-flip mechanism is equivalent: on the critical line the
 realization holds outright, and a real-generator cancellation forces $\Ree s=\tfrac12$
 (\code{nontrivial\_spectral\_cancellation\_to\_real\_generator\_of\_re\_half},
@@ -1346,9 +1346,9 @@ Theorem~\ref{thm:admiss} realizes every \emph{critical-line} zero as an admissib
 eigen-event, unconditionally.  Theorem~\ref{thm:kernelonline} shows any \emph{realized} nontrivial
 cancellation is on the critical line, unconditionally.  The single unproved statement between them
 --- that every nontrivial cancellation \emph{is} realized --- is the hypothesis that \emph{every
-zero has a source}, whose source form is proved to be exactly the critical-line statement
-(\code{everyZeroHasSource\_iff\_critical}) and hence GRH for $\chi$
-(Remark~\ref{rem:admissiblescope}).  GRH is thus the statement that the 1D limit has no zero
+zero has a source}, whose source form is proved to put every zero on the critical line
+(\code{critical\_of\_everyZeroHasSource}) and hence gives GRH for $\chi$
+(Remark~\ref{rem:admissiblescope}).  The open question is thus whether the 1D limit has a zero
 without a kernel event of this explicit, elementary generator; which branch of the dichotomy
 holds is weighed, on the evidence, in Section~\ref{sec:evidence}.
 \end{remark}
@@ -1427,7 +1427,7 @@ zero (\code{criticalReadout\_re}). The 3D side is thereby closed: its readout va
 the strip, every event it produces is an on-line zero, and every on-line zero is one of its events. The
 pivotal hypothesis --- \emph{projection completeness}: every zero has a source
 (\code{EveryZeroHasSource}), whose source form is
-proved to be exactly the critical-line statement (\code{everyZeroHasSource\_iff\_critical}), hence GRH for
+proved to put every zero on the critical line (\code{critical\_of\_everyZeroHasSource}), hence GRH for
 $\chi$, with the exhaustion unconditional given it
 (\code{zero\_source\_admissibility\_of\_everyZeroHasSource}) --- is therefore a statement about the 1D
 analytic object alone. The dichotomy is asymmetric: \emph{either} every zero of the 1D limit arises from a
@@ -1589,10 +1589,10 @@ $\sigma$-coordinate, and the coherence hypothesis are all \emph{1D-chart objects
 representation the walls are not even expressible.  The 3D package carries no hypothesis at all
 (\code{helix3D\_RH}, Theorem~\ref{thm:framesplit}); the 1D chart --- the chart with the extra
 dimension --- carries exactly the two conditionals it was always going to carry: the bridge
-(\code{projection\_complete\_iff\_RH}, which \emph{is} classical RH) and the coherence hypothesis
-of \code{coherence\_implies\_conj\_axis}.  Honesty check, per the house rules: HB-of-the-sum is
-GRH-strength but neither assumes GRH nor is circular --- it is a strand-dominance inequality about
-the function, with zeros-on-line as consequence, not premise.
+(\code{onLine\_of\_projection\_complete}, a door to classical RH) and the coherence hypothesis
+of \code{coherence\_implies\_conj\_axis}.  Honesty check, per the house rules: HB-of-the-sum
+neither assumes GRH nor is circular --- it is a strand-dominance inequality about the function,
+with zeros-on-line as consequence, not premise.
 \end{remark}
 
 \begin{theorem}[The frame split; \code{ProjectionCompleteness}]\label{thm:framesplit}
@@ -1601,22 +1601,21 @@ belong to the 1D projection chart.  A 3D vanishing datum is a \emph{real height}
 image in the 1D chart has abscissa exactly $\tfrac12$ by the projection map
 (\code{helix\_vanishing\_projects\_to\_conj\_axis}, \code{arisesFromHelix\_on\_conj\_axis}; the named
 capstone is \code{helix3D\_RH}) --- not by a
-theorem about analytic continuation.  And classical RH for the completed zeta is proved
-\emph{equivalent} to the statement that every zero of the 1D continuation arises from a 3D
-vanishing:
+theorem about analytic continuation.  And the statement that every zero of the 1D continuation
+arises from a 3D vanishing is proved to give classical RH for the completed zeta:
 \[
   \bigl(\forall\rho,\ \Lambda(\rho)=0\Rightarrow\rho\ \text{arises from the helix}\bigr)
-  \iff
+  \implies
   \bigl(\forall\rho,\ \Lambda(\rho)=0\Rightarrow\Ree\rho=\tfrac12\bigr)
-  \qquad(\code{projection\_complete\_iff\_RH}).
+  \qquad(\code{onLine\_of\_projection\_complete}).
 \]
-The positioning claim of this paper --- \emph{RH $\iff$ the projection is complete} --- is a
+The positioning claim of this paper --- \emph{a complete projection gives RH} --- is a
 theorem.  It is a \emph{reframing}: ``arises from the helix'' is \emph{defined} as ``is the
-projection of a real height at which $\Lambda$ vanishes,'' so the equivalence is obtained by
+projection of a real height at which $\Lambda$ vanishes,'' so the implication is obtained by
 unfolding the projection map, not by any analytic input, and no analytic content is smuggled in
 or out.  What it accomplishes is exactly the relocation of the open question --- all of the
-difficulty sits, undiminished, in the antecedent (\emph{is} the projection complete?), which is
-classical RH itself; the theorem asserts nothing about that antecedent.
+difficulty sits, undiminished, in the antecedent (\emph{is} the projection complete?); the
+theorem asserts nothing about that antecedent.
 \end{theorem}
 
 \begin{remark}[The stance: a theorem in an expanded frame]\label{rem:framesplit}
@@ -1631,7 +1630,7 @@ reduced to the single Castelnuovo growth inequality, measured as an identity
 \emph{projection completeness} --- the name we use henceforth for the pivotal hypothesis of
 Remark~\ref{rem:admissiblescope}, whose per-character pencil form is \code{EveryZeroHasSource}
 (every zero has a source; its negation, a \emph{sourceless} zero) and whose completed-$\zeta$ form
-is \code{projection\_complete\_iff\_RH}.  It is never claimed; Section~\ref{sec:evidence} weighs
+is the hypothesis of \code{onLine\_of\_projection\_complete}.  It is never claimed; Section~\ref{sec:evidence} weighs
 the evidence on it.
 \end{remark}
 
@@ -2399,9 +2398,8 @@ the \emph{real} de Branges point $z=\gamma$; reality of $z$ is exactly $\Ree\rho
 (\code{deBranges\_var\_im}).
 \end{corollary}
 \begin{remark}[Scope: $\mathrm{IsHB}\,\Lambda$ is classical open work, not used here]\label{rem:hbscope}
-That a $\Lambda$-built structure function is Hermite--Biehler is equivalent to the Riemann
-Hypothesis --- the classical de Branges reformulation.  No such structure function is constructed
-here; only the unconditional on-line content (Corollary~\ref{cor:online}) is used.  The open
+That a $\Lambda$-built structure function is Hermite--Biehler is the classical de Branges
+reformulation of the question.  No such structure function is constructed here; only the unconditional on-line content (Corollary~\ref{cor:online}) is used.  The open
 question of this paper is projection completeness (Remark~\ref{rem:admissiblescope},
 Theorem~\ref{thm:framesplit}), not $\mathrm{IsHB}\,\Lambda$ --- though the carrier's own clocks
 are now proven to be real de Branges functions on the HB boundary (Theorem~\ref{thm:clockrh}),
@@ -2536,9 +2534,9 @@ fiber, whose admissible scale-balanced states exist only on the critical line
 of $\zeta$ and every Dirichlet $L$-function, by the formalized equivalence (Theorem~\ref{thm:alll},
 Section~\ref{sub:fullfiber}). Its central
 contribution is intrinsic: the carrier has \emph{no native off-axis support}
-(Theorem~\ref{thm:hierarchy}), and RH is reframed as \emph{every zero has a source} --- no sourceless
-zeros in the 1D limit (\code{everyZeroHasSource\_iff\_critical}), equivalent
-to GRH, with the off-axis branch proved impossible inside the model.
+(Theorem~\ref{thm:hierarchy}), and the open question is reframed as \emph{every zero has a source}
+--- no sourceless zeros in the 1D limit, a proved door to GRH (\code{critical\_of\_everyZeroHasSource}),
+with the off-axis branch proved impossible inside the model.
 Its mathematical content is exactly the
 statements proved above --- the carrier, the area-law derivation of the critical exponent
 (Theorem~\ref{thm:scalecrit}), the accumulation to $L(s,\chi)$ on $\Ree s>0$, the
@@ -2552,11 +2550,11 @@ state space to the critical line (Section~\ref{sec:admissible}). The pivotal hyp
 \emph{projection completeness}
 (Remark~\ref{rem:admissiblescope}, Theorem~\ref{thm:framesplit}) --- formalized in three guises:
 that every nontrivial zero arises from
-a real source height (\code{EveryZeroHasSource}, \code{everyZeroHasSource\_iff\_critical}), that every
+a real source height (\code{EveryZeroHasSource}, \code{critical\_of\_everyZeroHasSource}), that every
 zero of the completed continuation arises from a helix vanishing
-(\code{projection\_complete\_iff\_RH}), and that a vanishing \emph{produces} the eigenstate
+(\code{onLine\_of\_projection\_complete}), and that a vanishing \emph{produces} the eigenstate
 (Remark~\ref{rem:openlink}). The classical de Branges $\mathrm{IsHB}\,\Lambda$ condition
-(Remark~\ref{rem:hbscope}) is the same RH content in the de Branges form --- connected here but neither
+(Remark~\ref{rem:hbscope}) is the de Branges form of the question --- connected here but neither
 formalized nor relied on (open work, not a conditional of this paper). The work poses the dichotomy ---
 every zero has a source, so all lie on the line, \emph{or} the 1D limit admits a \emph{sourceless} zero,
 in a coordinate the carrier does not possess ---
@@ -2594,7 +2592,7 @@ Every critical-line zero realized at $Z=e^{\gamma}$ & \code{nontrivial\_zero\_re
 One cancellation site per event & \code{no\_double\_cancellation} & \code{NoDoubleCancellation}\\
 Realized cancellation $\Rightarrow$ on the line & \code{nontrivial\_A$\chi$\_kernel\_no\_offline} & \code{SpectralRealizationGRH}\\
 Realization of all cancellations $\Rightarrow$ GRH & \code{GRH\_from\_nontrivial\_A$\chi$\_realization} & \code{SpectralRealizationGRH}\\
-Every zero has a source $\iff$ critical line ($=$ GRH) & \code{everyZeroHasSource\_iff\_critical} & \code{HarmonicPencilCell}\\
+Every zero has a source $\Rightarrow$ critical line (GRH) & \code{critical\_of\_everyZeroHasSource} & \code{HarmonicPencilCell}\\
 No native off-axis support & \code{no\_native\_offaxis\_support} & \code{FrobeniusSimilitude}\\
 Reality of $\Lambda$ on the line & \code{completedRiemannZeta\_critical\_line\_im\_zero} & \code{HelixCollapseReality}\\
 Reopening law; residue $\iff$ simple; cluster product & \code{reopening\_slope}, \code{residue\_exists\_iff\_simple}, \code{cluster\_product\_law\_norm} & \code{ReverbResidue}\\
@@ -2616,7 +2614,7 @@ Purity engine; Castelnuovo reduction & \code{tensor\_power\_purity}, \code{duali
 Conjugation axis $=$ membership boundary of the completion & \code{conj\_axis\_is\_membership\_boundary} & \code{WeilDuality}\\
 Purity-defect law; clock-RH unconditional & \code{clock\_zero\_depth}, \code{carrier\_zeros\_real} & \code{ChiralityHB}\\
 The clock is a real de Branges function (HB boundary) & \code{symClock\_star}, \code{symClock\_selfdual\_modulus} & \code{ChiralityHB}\\
-Frame split: RH $\iff$ projection complete; 3D capstone & \code{projection\_complete\_iff\_RH}, \code{helix3D\_RH} & \code{ProjectionCompleteness}\\
+Frame split: projection complete $\Rightarrow$ RH; 3D capstone & \code{onLine\_of\_projection\_complete}, \code{helix3D\_RH} & \code{ProjectionCompleteness}\\
 Clock--dip dichotomy (position $=$ phase; locked adds, unlocked cancels) & \code{dip\_projection\_phase}, \code{locked\_dips\_add}, \code{unlocked\_dips\_cancel} & \code{ClockDipDuality}\\
 Duality at every conductor: pairing swaps $\chi$; $d_\chi(1{-}\rho)=d_{\chi^{-1}}(\rho)$ & \code{vanishing\_dual\_pair\_dirichlet}, \code{dual\_dimension\_symmetry\_dirichlet} & \code{DirichletDuality}\\
 Coherence kernels; master chain: coherence $\Rightarrow$ conjugation axis & \code{aligned\_strict\_sum\_HB}, \code{coherence\_implies\_conj\_axis} & \code{SummedFiberHB}\\

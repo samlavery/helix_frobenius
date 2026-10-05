@@ -3,8 +3,7 @@ import RequestProject.HelixSymmetrizedLineTower
 /-!
 # The ledger pairing closed form and the FE order transport
 
-Foundations for the `RH ⟹ hlim` converse — the direction that would certify the trace-limit
-wall as exactly biconditional.  Two unconditional layers:
+Foundations for the symmetrized tower's tail machinery.  Two unconditional layers:
 
 * **The pairing closed form** (`pairedLedgerTerm_closedForm`): the rotated Hadamard unit term
   collapses to a single quotient,
@@ -20,9 +19,8 @@ wall as exactly biconditional.  Two unconditional layers:
   same multiplicity.  This is the accounting that matches the symmetrized tower's conjugate leg
   (which repeats the window multiplicity) with the ledger's own weight at the conjugate zero.
 
-Register: everything here is unconditional; the `RH ⟹ hlim` assembly (index bijection under
-RH, uniform tail summation, `tendstoUniformlyOn_tsum`) is the named remaining construction.
-No RH/GRH is assumed anywhere in this file.
+Register: everything here is unconditional; the tail assembly on the native two-sided index is
+`HelixTowerUnconditionalConvergence.lean`.
 -/
 
 open Complex Filter Topology

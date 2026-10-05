@@ -63,15 +63,15 @@ theorem xiStructure_dominates_residual_iff_634 : ∃ c : ℝ, 0 < c ∧
       · push Not at hdeep
         exact h z hz hlow hdeep
 
-/-- The zero-location target is equivalent to domination on the shallow channel above
-height 634. -/
-theorem rh_iff_shallow_channel_dominates_634 : ∃ c : ℝ, 0 < c ∧
-    ((∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ (∀ z : ℂ, 0 < z.im → 634 < |z.re| →
+/-- Domination on the shallow channel above height 634 puts every nontrivial zero on the
+line. -/
+theorem online_of_shallow_channel_dominates_634 : ∃ c : ℝ, 0 < c ∧
+    ((∀ z : ℂ, 0 < z.im → 634 < |z.re| →
             z.im < 1 / 2 - c / Real.log (|z.re| + 1 / 2) →
-            ‖Estar xiStructure z‖ ≤ ‖xiStructure z‖)) := by
+            ‖Estar xiStructure z‖ ≤ ‖xiStructure z‖)
+      → ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) := by
   obtain ⟨c, hc, hiff⟩ := xiStructure_dominates_residual_iff_634
-  exact ⟨c, hc, rh_iff_xiStructure_dominates.trans hiff⟩
+  exact ⟨c, hc, fun h => online_of_xiStructure_dominates (hiff.mpr h)⟩
 
 end CriticalLinePhasor.XiStructure
 
@@ -79,5 +79,5 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.XiStructure.xiStructure_dominates_of_low634
 #print axioms CriticalLinePhasor.XiStructure.exp_four_le_55
 #print axioms CriticalLinePhasor.XiStructure.xiStructure_dominates_residual_iff_634
-#print axioms CriticalLinePhasor.XiStructure.rh_iff_shallow_channel_dominates_634
+#print axioms CriticalLinePhasor.XiStructure.online_of_shallow_channel_dominates_634
 end AxiomAudit

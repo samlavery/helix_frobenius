@@ -529,24 +529,10 @@ theorem conditionalRH_from_stationary_envelopes
 theorem NontrivialZeros_def : NontrivialZeros =
     { s : ℂ | 0 < s.re ∧ s.re < 1 ∧ riemannZeta s = 0 } := rfl
 
-/-- Mathlib's `RiemannHypothesis` implies all zeros in `NontrivialZeros`
-    have `Re(ρ) = 1/2`. This is the easy direction. -/
-theorem RiemannHypothesis_implies_NontrivialZeros :
-    RiemannHypothesis → ∀ ρ : ℂ, ρ ∈ NontrivialZeros → ρ.re = 1 / 2 := by
-  intro hRH ρ ⟨hρ0, hρ1, hζ⟩
-  apply hRH ρ hζ
-  · intro ⟨n, hn⟩
-    have : ρ.re = (-2 * ((n : ℂ) + 1)).re := by rw [hn]
-    simp [Complex.add_re, Complex.mul_re, Complex.natCast_re, Complex.natCast_im] at this
-    linarith
-  · intro h; rw [h] at hρ1; simp at hρ1
-
 /-
-Conversely, if all zeros in `NontrivialZeros` have `Re(ρ) = 1/2`,
-    then Mathlib's `RiemannHypothesis` holds.
-    The reverse direction uses: (1) `riemannZeta_ne_zero_of_one_le_re`
-    to show non-trivial zeros have `Re < 1`, and (2) the functional
-    equation to show they have `Re > 0`.
+If all zeros in `NontrivialZeros` have `Re(ρ) = 1/2`, then Mathlib's `RiemannHypothesis` holds.
+    This uses: (1) `riemannZeta_ne_zero_of_one_le_re` to show non-trivial zeros have `Re < 1`,
+    and (2) the functional equation to show they have `Re > 0`.
 -/
 theorem NontrivialZeros_implies_RiemannHypothesis :
     (∀ ρ : ℂ, ρ ∈ NontrivialZeros → ρ.re = 1 / 2) → RiemannHypothesis := by
@@ -574,13 +560,6 @@ theorem NontrivialZeros_implies_RiemannHypothesis :
       norm_num [ show s = 0 by refine' Complex.ext _ _ <;> simp +decide [ * ] ] at *;
       norm_num [ riemannZeta_zero ] at hs;
   · exact h s ⟨ by linarith, by linarith [ show s.re < 1 from lt_of_not_ge fun h => absurd hs <| riemannZeta_ne_zero_of_one_le_re h ], hs ⟩
-
-/-- **The equivalence**: Mathlib's `RiemannHypothesis` is equivalent to
-    "all zeros in `NontrivialZeros` have `Re(ρ) = 1/2`". -/
-theorem RiemannHypothesis_iff_NontrivialZeros :
-    RiemannHypothesis ↔ (∀ ρ : ℂ, ρ ∈ NontrivialZeros → ρ.re = 1 / 2) :=
-  ⟨RiemannHypothesis_implies_NontrivialZeros,
-   NontrivialZeros_implies_RiemannHypothesis⟩
 
 -- ═══════════════════════════════════════════════════════════════════════════
 -- §11  Axiom audit

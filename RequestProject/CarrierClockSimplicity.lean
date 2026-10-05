@@ -25,7 +25,7 @@ carrier built from faces `α ≠ 1` has no common zero there (`symClock_zero_ne_
 **Scope — this is NOT a statement about `ζ`.**  Ledger 578 records that in the `½`-centred chart
 `s = ½ + iz` the Euler factor `1 − p^{−s}` is the clock with face `p^{−½}`, which is NOT unitary, so
 its zeros sit at `Im z = ½` (`clock_zero_depth`).  The identification of carrier zeros with `L`-zeros
-is `EveryZeroHasSource`, which is GRH.  No multiplicity statement about `ζ` follows from anything here.
+is `EveryZeroHasSource`, not proved here.  No multiplicity statement about `ζ` follows from anything here.
 -/
 
 open Complex

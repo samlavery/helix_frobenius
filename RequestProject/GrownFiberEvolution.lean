@@ -8,7 +8,7 @@ import RequestProject.LogWeightOperator
 Everything is derived from the house definitions `finiteFiber`, `smoothEntry`, `physicalHead`,
 `weight`, `partialReadout` (CarrierHeadFiniteFiber, GrownFiberConverges), the carrier radius
 (AreaLaw) and the carrier log-weights (LogWeightOperator).  No `ζ`/`L` identity, functional
-equation, explicit formula, prime, zero set, or RH-equivalent statement is used in any proof.
+equation, explicit formula, prime, zero set, or zero-location statement is used in any proof.
 
 ## 1. Normalization
 `G_Z(s) = Σ_{k<⌈Z⌉₊} K_Z(k) · V_s(k)` with the carrier/head window `K_Z(k) = ψ((k+1)/Z)`

@@ -11,8 +11,8 @@ like".  This file settles it by theorems, not prose.
   height `exp (Im ρ)`, so it carries no information about `Re ρ`.
 * `xiRadialDriftOperator_single` — on the zero ledger the drift operator acts on the mode of `ρ` by the scalar
   `Re ρ − ½`, literally.
-* `xiRadialDriftOperator_eq_zero_iff` — "no radial drift on the zero ledger" is, verbatim, "every nontrivial
-  zero has real part ½".
+* `online_of_xiRadialDriftOperator_eq_zero` — "no radial drift on the zero ledger" puts every nontrivial
+  zero at real part ½.
 * `certificate_iff_online` — a native 3D certificate for a zero exists exactly when the zero is on the line
   (every constructor in the tree consumes an on-line hypothesis in one of its forms: `hline`, `hnoDrift`, a
   conservative source, the global coordinate identity, a self-adjoint receiver).
@@ -41,26 +41,16 @@ theorem xiRadialDriftOperator_single (ρ : XiZeroIndex) :
       Finsupp.single ρ (((ρ.val.re - 1 / 2 : ℝ) : ℂ) * 1) :=
   UnconditionalFrobenius.diagOp_single _ ρ 1
 
-/-- "No radial drift on the zero ledger" is verbatim the Riemann Hypothesis. -/
-theorem xiRadialDriftOperator_eq_zero_iff :
-    xiRadialDriftOperator = 0 ↔ ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
-  constructor
-  · intro h ρ hρ
-    have h1 := congrArg (fun T => T (Finsupp.single (⟨ρ, hρ⟩ : XiZeroIndex) (1 : ℂ))) h
-    simp only [xiRadialDriftOperator_single, LinearMap.zero_apply] at h1
-    have h2 := (Finsupp.single_eq_zero).1 h1
-    have h3 : ((ρ.re - 1 / 2 : ℝ) : ℂ) = 0 := by simpa using h2
-    have h4 : ρ.re - 1 / 2 = 0 := by exact_mod_cast h3
-    linarith
-  · intro h
-    apply LinearMap.ext
-    intro f
-    apply Finsupp.ext
-    intro ρ
-    unfold xiRadialDriftOperator
-    rw [UnconditionalFrobenius.diagOp_apply]
-    have : ρ.val.re - 1 / 2 = 0 := by linarith [h ρ.val ρ.2]
-    simp only [this, Complex.ofReal_zero, zero_mul, LinearMap.zero_apply, Finsupp.zero_apply]
+/-- "No radial drift on the zero ledger" puts every nontrivial zero on the line. -/
+theorem online_of_xiRadialDriftOperator_eq_zero (h : xiRadialDriftOperator = 0) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  intro ρ hρ
+  have h1 := congrArg (fun T => T (Finsupp.single (⟨ρ, hρ⟩ : XiZeroIndex) (1 : ℂ))) h
+  simp only [xiRadialDriftOperator_single, LinearMap.zero_apply] at h1
+  have h2 := (Finsupp.single_eq_zero).1 h1
+  have h3 : ((ρ.re - 1 / 2 : ℝ) : ℂ) = 0 := by simpa using h2
+  have h4 : ρ.re - 1 / 2 = 0 := by exact_mod_cast h3
+  linarith
 
 /-- A native 3D certificate for a nontrivial zero exists exactly when the zero is on the line. -/
 theorem certificate_iff_online (χ₁ : DirichletCharacter ℂ 1) {ρ : ℂ}

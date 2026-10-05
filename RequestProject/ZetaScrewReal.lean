@@ -11,10 +11,9 @@ spectral coordinate of `ρ̄` is `−t̄_ρ` (`spectralCoord_conj`), the multipl
 Reindexing the sum by the conjugation involution on the compiled zero subtype gives
 
 * `zetaScrew_conj`, `zetaScrew_im` — **Ψ is real** at every `t`;
-* `zetaScrew_re_nonneg_of_online` — if every zero is on the line, `Ψ(t) ≥ 0` (each term is
-  `m_ρ(1 − cos t_ρ t)/t_ρ² ≥ 0`): the forward half of Suzuki's pointwise criterion.
+* `screwTerm_re_nonneg_of_online` — for an on-line zero, its term `m_ρ(1 − cos t_ρ t)/t_ρ²` is `≥ 0`.
 
-The converse (Ψ ≥ 0 ∀t ⟹ RH) is Suzuki [13, Thm 1.7/11.1], not compiled.
+The door (Ψ ≥ 0 for every `t` ⟹ RH) is Suzuki [13, Thm 1.7/11.1], not compiled.
 No `sorry`, no `axiom`.
 -/
 
@@ -84,15 +83,7 @@ theorem screwTerm_re_nonneg_of_online {ρ : Zeros} (hre : ρ.val.re = 1 / 2) (t 
   rw [h, sub_zero] at h0
   linarith
 
-/-- **Ψ ≥ 0 when every zero is on the line** — the forward half of the pointwise criterion. -/
-theorem zetaScrew_re_nonneg_of_online (hRH : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) (t : ℝ) :
-    0 ≤ (zetaScrew t).re := by
-  unfold zetaScrew
-  rw [Complex.re_tsum (screwTerm_summable t)]
-  exact tsum_nonneg (fun ρ => screwTerm_re_nonneg_of_online (hRH ρ.val ρ.2) t)
-
 end CriticalLinePhasor.HilbertPolya
 
 #print axioms CriticalLinePhasor.HilbertPolya.screwTerm_conjZero
 #print axioms CriticalLinePhasor.HilbertPolya.zetaScrew_im
-#print axioms CriticalLinePhasor.HilbertPolya.zetaScrew_re_nonneg_of_online

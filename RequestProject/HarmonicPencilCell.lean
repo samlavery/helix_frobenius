@@ -426,46 +426,46 @@ statement about the 1D analytic object alone: that the limit function admits no 
 zero** — a vanishing at an off-line point of the 1D chart (a coordinate the carrier does not
 possess; `σ` is a dial of the readout, not a place in the geometry) with no event behind it.  We
 isolate this as the explicit hypothesis **every zero has a source**, prove that the source form
-is exactly the critical-line statement (GRH for `χ`), and show that, conditional on it,
-`zero_source_admissibility` upgrades to an unconditional form.  It is isolated as a hypothesis,
-neither assumed globally nor proved here. -/
+puts every zero on the critical line, and show that, given it, `zero_source_admissibility`
+upgrades to an unconditional form.  It is isolated as a hypothesis, neither assumed globally nor
+proved here. -/
 
 /-- **Every zero has a source**: every nontrivial zero of `Lχ` arises from a real source height
 `Z > 0` through the projection `Z ↦ 1/2 + i·τχ(log Z)`.  The alternative is a *sourceless zero*
-— a vanishing of the 1D limit with no 3D event behind it.  The source form is exactly GRH for
-`χ` (`everyZeroHasSource_iff_critical`); it is an explicit input, not a theorem. -/
+— a vanishing of the 1D limit with no 3D event behind it.  The source form puts every zero on
+the critical line (`critical_of_everyZeroHasSource`); it is an explicit input, not a theorem. -/
 def EveryZeroHasSource (χ : DirichletCharacter ℂ q) : Prop :=
   ∀ ρ : ℂ, NontrivialZeroChi χ ρ →
     ∃ Z : ℝ, 0 < Z ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I
 
-/-- **Sourced ⇔ critical.**  Every zero has a source iff every nontrivial zero lies on the
-critical line: a real height's readout has `re = 1/2`, and conversely `Z = exp (im ρ)` sources
-an on-line zero.  The hypothesis is GRH for `χ`, stated in source form. -/
-theorem everyZeroHasSource_iff_critical (χ : DirichletCharacter ℂ q) :
-    EveryZeroHasSource χ ↔ ∀ ρ : ℂ, NontrivialZeroChi χ ρ → ρ.re = 1 / 2 := by
-  constructor
-  · intro hsrc ρ hnt
-    obtain ⟨Z, _, hZ⟩ := hsrc ρ hnt
-    rw [hZ]
-    simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
-  · intro hcrit ρ hnt
-    refine ⟨Real.exp ρ.im, Real.exp_pos _, ?_⟩
-    rw [tauChi, Real.log_exp]
-    apply Complex.ext
-    · simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, hcrit ρ hnt]
-    · simp [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]
+/-- **Sourced ⇒ critical.**  A real height's readout has `re = 1/2`, so if every zero has a
+source, every nontrivial zero lies on the critical line. -/
+theorem critical_of_everyZeroHasSource (χ : DirichletCharacter ℂ q)
+    (hsrc : EveryZeroHasSource χ) : ∀ ρ : ℂ, NontrivialZeroChi χ ρ → ρ.re = 1 / 2 := by
+  intro ρ hnt
+  obtain ⟨Z, _, hZ⟩ := hsrc ρ hnt
+  rw [hZ]
+  simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im]
 
-/-- **Conditional unconditional form.**  Conditional on every zero having a source
-(`EveryZeroHasSource χ`, i.e. GRH for `χ`), every nontrivial zero `ρ` of `Lχ` — with no
-critical-line hypothesis — arises from an **admissible** real source height: `∃ Z > 0`,
-`Admissibleχ Z`, and `ρ = 1/2 + i·τχ(log Z)`.  The GRH-strength content is entirely carried by
-the explicit hypothesis `hsrc`; nothing here proves GRH. -/
+/-- **A point on the critical line has a source** (pointwise): `Z = exp (im ρ)` sources it. -/
+theorem source_of_re_half (χ : DirichletCharacter ℂ q) {ρ : ℂ} (h : ρ.re = 1 / 2) :
+    ∃ Z : ℝ, 0 < Z ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I := by
+  refine ⟨Real.exp ρ.im, Real.exp_pos _, ?_⟩
+  rw [tauChi, Real.log_exp]
+  apply Complex.ext
+  · simp [Complex.add_re, Complex.mul_re, Complex.ofReal_re, Complex.ofReal_im, h]
+  · simp [Complex.add_im, Complex.mul_im, Complex.ofReal_re, Complex.ofReal_im]
+
+/-- **Unconditional form, given sources.**  Given that every zero has a source
+(`EveryZeroHasSource χ`), every nontrivial zero `ρ` of `Lχ` — with no critical-line hypothesis —
+arises from an **admissible** real source height: `∃ Z > 0`, `Admissibleχ Z`, and
+`ρ = 1/2 + i·τχ(log Z)`.  All of the content is carried by the explicit hypothesis `hsrc`. -/
 theorem zero_source_admissibility_of_everyZeroHasSource (χ : DirichletCharacter ℂ q)
     (hsrc : EveryZeroHasSource χ) (ρ : ℂ) (hnontriv : NontrivialZeroChi χ ρ) :
     ∃ Z : ℝ, 0 < Z ∧ Admissible χ Z
       ∧ ρ = (1 / 2 : ℂ) + (tauChi χ (Real.log Z) : ℂ) * I :=
   zero_source_admissibility χ ρ hnontriv
-    ((everyZeroHasSource_iff_critical χ).mp hsrc ρ hnontriv)
+    (critical_of_everyZeroHasSource χ hsrc ρ hnontriv)
 
 /-! ## 11. The channel-agnostic pencil layer and the finite (crutch-free) instantiation
 

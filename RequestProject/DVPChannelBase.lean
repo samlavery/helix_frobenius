@@ -194,18 +194,15 @@ theorem seat_channel_of_online_range {T : ℝ}
     exact h1
   · exact hupper w hw hw' him hpos hre
 
-/-- **The remaining node, exactly**: with the base absorbed, RH is
-equivalent to every zero of ordinate ABOVE `58` lying on the line. -/
-theorem rh_iff_online_above_58 :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1/2)
-      ↔ (∀ ρ ∈ ZD.NontrivialZeros, 58 < |ρ.im| → ρ.re = 1/2) := by
-  constructor
-  · intro h ρ hρ _
-    exact h ρ hρ
-  · intro h ρ hρ
-    rcases le_or_gt |ρ.im| 58 with hle | hgt
-    · exact online_below_58 ρ hρ hle
-    · exact h ρ hρ hgt
+/-- **The remaining node**: with the base absorbed, every zero of ordinate ABOVE `58` lying on
+the line puts every nontrivial zero on the line. -/
+theorem online_of_online_above_58
+    (h : ∀ ρ ∈ ZD.NontrivialZeros, 58 < |ρ.im| → ρ.re = 1/2) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1/2 := by
+  intro ρ hρ
+  rcases le_or_gt |ρ.im| 58 with hle | hgt
+  · exact online_below_58 ρ hρ hle
+  · exact h ρ hρ hgt
 
 end CriticalLinePhasor.DVP
 
@@ -213,5 +210,5 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.DVP.deep_tube_empty
 #print axioms CriticalLinePhasor.DVP.seat_channel_base
 #print axioms CriticalLinePhasor.DVP.seat_channel_of_online_range
-#print axioms CriticalLinePhasor.DVP.rh_iff_online_above_58
+#print axioms CriticalLinePhasor.DVP.online_of_online_above_58
 end AxiomAudit

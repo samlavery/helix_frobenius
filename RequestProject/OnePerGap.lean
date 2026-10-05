@@ -18,8 +18,7 @@ the hypothesis `OnePerGap t`, stated on the compiled strip census (`stripZeroFin
   off-line zero and its mirror `1 − ρ̄` are two zeros at one ordinate, so their gap would count at
   least two; a multiple zero counts at least two by itself;
 * hence RH on the whole zero set (`nontrivialZeros_online_of_onePerGap`, via the conjugation
-  symmetry of the zero set) and full intertwining of the height correspondence
-  (`semiconj_of_onePerGap`, via 597).
+  symmetry of the zero set).
 
 This is Track C's "density one per box" leaf with the boxes taken to be the station gaps, and the
 count register's form of the residual tail law. The stations themselves — the prime-forced
@@ -139,10 +138,10 @@ theorem nontrivialZeros_online_of_onePerGap {t : ℕ → ℝ} (H : OnePerGap t)
     simpa using this
 
 /-- **RH from one zero per gap with the first station at or below 58**: the range below is the
-compiled ladder (`rh_iff_online_above_58`). -/
+compiled ladder (`online_of_online_above_58`). -/
 theorem nontrivialZeros_online_of_onePerGap_of_le_58 {t : ℕ → ℝ} (H : OnePerGap t)
     (h58 : t 0 ≤ 58) : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
-  rw [CriticalLinePhasor.DVP.rh_iff_online_above_58]
+  apply CriticalLinePhasor.DVP.online_of_online_above_58
   intro ρ hρ h58'
   rcases lt_trichotomy 0 ρ.im with hpos | hzero | hneg
   · have hab : t 0 < ρ.im := by
@@ -160,16 +159,8 @@ theorem nontrivialZeros_online_of_onePerGap_of_le_58 {t : ℕ → ℝ} (H : OneP
     have := (online_simple_of_onePerGap H hc hcpos hab).1
     simpa using this
 
-/-- **Full intertwining from one zero per gap** (first station at or below 58). -/
-theorem semiconj_of_onePerGap {t : ℕ → ℝ} (H : OnePerGap t) (h58 : t 0 ≤ 58) :
-    Function.Semiconj XiChannel.zeroHeightCorrespondence XiChannel.xiZeroLedgerOperator
-      (ThreeDFocal.carrierThreeDOperator 1 1) :=
-  XiChannel.semiconj_iff_nontrivialZeros_online.2
-    (nontrivialZeros_online_of_onePerGap_of_le_58 H h58)
-
 end CriticalLinePhasor.ContourArgument
 
 #print axioms CriticalLinePhasor.ContourArgument.online_simple_of_onePerGap
 #print axioms CriticalLinePhasor.ContourArgument.nontrivialZeros_online_of_onePerGap
 #print axioms CriticalLinePhasor.ContourArgument.nontrivialZeros_online_of_onePerGap_of_le_58
-#print axioms CriticalLinePhasor.ContourArgument.semiconj_of_onePerGap

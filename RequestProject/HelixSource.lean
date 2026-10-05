@@ -102,37 +102,11 @@ theorem grh_of_sourceComplete (χ : DirichletCharacter ℂ N) (h : SourceComplet
   obtain ⟨ψ, hρeq⟩ := h ρ hρ
   rw [hρeq, ψ.poleCoord_re]
 
--- (Commented out at request.) Backward direction `GRH χ → SourceComplete χ` — the trivial
--- necessity: each on-line zero ρ yields a source mode `rate := ρ − ½` (`Re = 0` since `Re ρ = ½`).
--- Not used in the forward attack (`grh_of_sourceComplete` is the σ-free reduction); it stays a
--- 5-line fact, re-derivable on demand.
--- /-- Reverse of `grh_of_sourceComplete`: if every nontrivial zero is on the line, each is captured by
---     the source mode with `rate := ρ − ½`, whose `conserved` field holds because `Re ρ = ½` gives
---     `Re (rate) = 0`. -/
--- theorem sourceComplete_of_grh (χ : DirichletCharacter ℂ N) (h : GRHSpectral.GRH χ) :
---     SourceComplete χ := by
---   intro ρ hρ
---   have hre : (ρ - 1 / 2 : ℂ).re = 0 := by
---     rw [Complex.sub_re, h ρ hρ]; norm_num
---   refine ⟨{ rate := ρ - 1 / 2, amp := 1, amp_ne := one_ne_zero, conserved := ?_ }, ?_⟩
---   · intro τ; rw [hre]; simp
---   · show ρ = 1 / 2 + (ρ - 1 / 2); ring
-
--- (Commented out at request.) The packaged equivalence `SourceComplete χ ↔ GRH χ`.
--- Note: both directions remain available individually — `grh_of_sourceComplete` (forward, the
--- substantive σ-free reduction) and `sourceComplete_of_grh` (backward, the one-line `rate := ρ−½`
--- construction). The equivalence is therefore still a fact even with this named theorem removed.
--- /-- `SourceComplete χ ↔ GRH χ`. Forward: the σ-free source forcing (`grh_of_sourceComplete`).
---     Backward: build the capturing modes from the on-line locations (`sourceComplete_of_grh`). -/
--- theorem sourceComplete_iff_grh (χ : DirichletCharacter ℂ N) :
---     SourceComplete χ ↔ GRHSpectral.GRH χ :=
---   ⟨grh_of_sourceComplete χ, sourceComplete_of_grh χ⟩
-
 /-! ## The regularized source trace and the trace-identity target (DEPRECATED PATH)
 
 This resolvent / partial-fraction source-trace route (`sourceTrace = L′/L` over the on-line
 source-mode pole-coords) is **deprecated** — retained for reference, no longer the active
-approach.  It is still honest and GRH-equivalent, and `→ GRH` is fully wired
+approach.  It is still honest, and `→ GRH` is fully wired
 (`grh_of_traceIdentity`).  The active route is the spectral / characteristic-determinant
 (Frobenius-eigenphase) trace identity, which realizes the nontrivial zeros as the spectrum of
 the spin/Frobenius operator (`det(1 − T·Frob)`) rather than as poles of this partial fraction. -/
@@ -147,8 +121,7 @@ noncomputable def sourceTrace (modes : ℕ → SourceMode) (s : ℂ) : ℂ :=
 /-- **DEPRECATED PATH** (superseded by the spectral / characteristic-determinant Frobenius route).
     The resolvent / partial-fraction source-trace identity: the source trace equals the
     log-derivative `L'/L` of the channel `χ` (so `−sourceTrace` is the von Mangoldt prime field
-    `−L'/L`), with the on-line source-mode pole-coords as its poles. Still honest and
-    GRH-equivalent — `SourceTraceIdentity ⟺ {nontrivial zeros} = {on-line pole-coords}` — and
+    `−L'/L`), with the on-line source-mode pole-coords as its poles. Still honest, and
     `→ GRH` is wired (`grh_of_traceIdentity`, via pole-matching + `SourceComplete`). But it is **no
     longer the active route**: the current approach realizes the zeros as the *spectrum* of the
     spin/Frobenius operator (characteristic determinant `det(1 − T·Frob)`), not as poles of this
@@ -529,16 +502,16 @@ theorem grh_of_traceIdentity_separated (modes : ℕ → SourceMode) (χ : Dirich
     let ⟨δ, hδ, hsep, htends, hsum⟩ := hreg ρ hρ hne
     hasLocalMtest_resolvent modes hδ hsep htends hsum
 
-/-! ## The Euler-product (prime-side) ingredient — and the honest wall
+/-! ## The Euler-product (prime-side) ingredient
 
 `SourceTraceIdentity` asserts the **zero-side** (Hadamard) expansion `∑ₙ[1/(s−cₙ)+1/cₙ] = L'/L`,
 where the `cₙ` are the source-mode pole-coords (all on the line by `SourceMode.noDrift`). By
-`grh_of_traceIdentity_separated`, that identity *implies GRH* — so it cannot be proven without proving
-GRH. What Euler product + completion genuinely give is the **prime-side** identity below: `−L'/L`
-equals the von Mangoldt Dirichlet series `∑ χ(n)Λ(n)n^{-s}` (the helix's prime field). The bridge from
-this prime side to the zero side is the explicit/trace formula (classical, hard — only the local
-`MeromorphicOn.extract_zeros_poles_log` is in mathlib), and forcing the resulting zero-modes on-line
-is exactly GRH. So the "projection-loss geometry / identification" step is the GRH content itself. -/
+`grh_of_traceIdentity_separated`, that identity *implies GRH*. What Euler product + completion give
+is the **prime-side** identity below: `−L'/L` equals the von Mangoldt Dirichlet series
+`∑ χ(n)Λ(n)n^{-s}` (the helix's prime field). The bridge from this prime side to the zero side is
+the explicit/trace formula (classical — only the local `MeromorphicOn.extract_zeros_poles_log` is in
+mathlib); placing the resulting zero-modes on the line is the "projection-loss geometry /
+identification" step, not proved in this file. -/
 
 open ArithmeticFunction in
 /-- **Euler-product prime-side form of `−L'/L`** (`Re s > 1`): the log-derivative equals the von

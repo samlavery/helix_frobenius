@@ -16,7 +16,7 @@ Frobenius acting there.  The dictionary with Deligne's setting (`X/𝔽_q`, Frob
 | duality is a perfect pairing              | `dual_dimension_symmetry` (jets die together)   |
 | normalized dual pair has det 1            | `dual_pair_det_one` (this file), `strand_weights_det_one`, `frobenius_conjugate_det_one` |
 | Lefschetz trace formula                   | the medium spectroscopy (Euler clocks, ±4%)     |
-| purity `|α| = q^{w/2}` (**Deligne's theorem**) | all vanishings on the conjugation axis (**open** = GRH: `EveryZeroHasSource`) |
+| purity `|α| = q^{w/2}` (**Deligne's theorem**) | all vanishings on the conjugation axis (**open**: `EveryZeroHasSource`) |
 
 Three tiers of honesty about this analogy:
 * **Literal**: at each prime, GL(2) purity IS Deligne's theorem (Ramanujan–Petersson via

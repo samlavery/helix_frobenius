@@ -83,45 +83,22 @@ def XiCarrierShadow.toXiZeroIndex (shadow : XiCarrierShadow) : XiZeroIndex :=
     shadow.toXiZeroIndex.val.re = 1 / 2 :=
   shadow.analyticParameter_re
 
-/-- The shadow embedding covers the analytic zero ledger exactly when every ledger parameter is
-the carrier projection at its own ordinate. -/
-theorem XiCarrierShadow.toXiZeroIndex_surjective_iff :
-    Function.Surjective XiCarrierShadow.toXiZeroIndex ↔
-      ∀ rho : XiZeroIndex, rho.val.re = 1 / 2 := by
-  constructor
-  · intro hsurj rho
-    obtain ⟨shadow, rfl⟩ := hsurj rho
-    exact shadow.toXiZeroIndex_re
-  · intro honline rho
-    let height : ℝ := Real.exp rho.val.im
-    have height_pos : 0 < height := Real.exp_pos rho.val.im
-    have hpoint : carrierPointAtHeight height = rho.val := by
-      rw [show height = Real.exp rho.val.im by rfl, carrierPointAtHeight_exp]
-      apply Complex.ext
-      · simpa [carrierPoint, carrierAbscissa_eq_half] using (honline rho).symm
-      · simp [carrierPoint]
-    let shadow : XiCarrierShadow :=
-      { height := height
-        height_pos := height_pos
-        xi_zero := by
-          rw [hpoint]
-          exact (ZD.riemannXi_eq_zero_iff rho.val).mpr rho.property }
-    refine ⟨shadow, ?_⟩
-    apply Subtype.ext
-    exact hpoint
+/-- If the shadow embedding covers the analytic zero ledger, every ledger parameter is on the
+line: each is the carrier projection at its own ordinate. -/
+theorem XiCarrierShadow.online_of_toXiZeroIndex_surjective
+    (hsurj : Function.Surjective XiCarrierShadow.toXiZeroIndex) :
+    ∀ rho : XiZeroIndex, rho.val.re = 1 / 2 := by
+  intro rho
+  obtain ⟨shadow, rfl⟩ := hsurj rho
+  exact shadow.toXiZeroIndex_re
 
-/-- Coverage of the analytic zero ledger by carrier shadows has exactly the content needed by
-Mathlib's zeta-zero predicate. -/
-theorem XiCarrierShadow.toXiZeroIndex_surjective_iff_riemannHypothesis :
-    Function.Surjective XiCarrierShadow.toXiZeroIndex ↔ RiemannHypothesis := by
-  rw [XiCarrierShadow.toXiZeroIndex_surjective_iff]
-  constructor
-  · intro honline
-    apply RHBridge.no_offline_zeros_implies_rh
-    intro rho hrho
-    exact honline ⟨rho, hrho⟩
-  · intro hRH rho
-    exact CriticalLinePhasor.XiChannel.rh_implies_line hRH rho.property
+/-- Coverage of the analytic zero ledger by carrier shadows gives Mathlib's zeta-zero predicate. -/
+theorem XiCarrierShadow.riemannHypothesis_of_toXiZeroIndex_surjective
+    (hsurj : Function.Surjective XiCarrierShadow.toXiZeroIndex) : RiemannHypothesis := by
+  have honline := XiCarrierShadow.online_of_toXiZeroIndex_surjective hsurj
+  apply RHBridge.no_offline_zeros_implies_rh
+  intro rho hrho
+  exact honline ⟨rho, hrho⟩
 
 end CriticalLinePhasor.ContourArgument
 
@@ -132,8 +109,8 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.ContourArgument.XiCarrierShadow.noRadialDrift
 #print axioms CriticalLinePhasor.ContourArgument.xiCarrierShadowRadialDriftOperator_eq_zero
 #print axioms CriticalLinePhasor.ContourArgument.XiCarrierShadow.toXiZeroIndex_re
-#print axioms CriticalLinePhasor.ContourArgument.XiCarrierShadow.toXiZeroIndex_surjective_iff
+#print axioms CriticalLinePhasor.ContourArgument.XiCarrierShadow.online_of_toXiZeroIndex_surjective
 #print axioms
-  CriticalLinePhasor.ContourArgument.XiCarrierShadow.toXiZeroIndex_surjective_iff_riemannHypothesis
+  CriticalLinePhasor.ContourArgument.XiCarrierShadow.riemannHypothesis_of_toXiZeroIndex_surjective
 
 end AxiomAudit

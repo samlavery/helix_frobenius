@@ -19,7 +19,7 @@ import RequestProject.DVPSeatRungOne
 Thirteen certified station signs alternate, so `LadderData` holds; with
 the compiled census `N_all(58) = 12` the exhaustion forces **every
 nontrivial zero of ordinate `|γ| ≤ 58` onto the critical line** — in
-particular the finite conjunct of `seat_criterion_split_iff`
+particular the finite conjunct of `online_of_seat_split`
 (`|γ| < e⁴ + 5/2`), UNCONDITIONALLY.
 -/
 
@@ -75,12 +75,10 @@ theorem conjunct_one :
     ∀ ρ ∈ ZD.NontrivialZeros, |ρ.im| < Real.exp 4 + 5/2 → ρ.re = 1/2 :=
   conjunct_one_of_ladder ladderData_holds
 
-/-- **The seat criterion, finite conjunct absorbed**: with conjunct 1 a
-theorem, the split collapses — RH is EQUIVALENT to the shallow channel
-alone. -/
-theorem seat_criterion_channel_iff : ∃ c : ℝ, 0 < c ∧
-    ((∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-      ↔ ∀ w : ℂ, ((1/2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
+/-- **The seat door, finite conjunct absorbed**: with conjunct 1 a theorem,
+the shallow channel alone puts every nontrivial zero on the line. -/
+theorem online_of_seat_channel : ∃ c : ℝ, 0 < c ∧
+    ((∀ w : ℂ, ((1/2 + Complex.I * w) ∉ ZD.NontrivialZeros) →
           ((1/2 + Complex.I * (starRingEnd ℂ) w) ∉ ZD.NontrivialZeros) →
           (w - (starRingEnd ℂ) w ≠ 0) →
           Real.exp 4 + 2 ≤ |w.re| →
@@ -89,15 +87,10 @@ theorem seat_criterion_channel_iff : ∃ c : ℝ, 0 < c ∧
               (ZD.xiOrderNat ρ.val : ℂ) *
                 ((CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val - w)⁻¹ *
                   (CriticalLinePhasor.HilbertPolya.spectralCoord ρ.val
-                    - (starRingEnd ℂ) w)⁻¹)).re) := by
-  obtain ⟨c, hc, hiff⟩ := seat_criterion_split_iff
-  refine ⟨c, hc, ?_⟩
-  rw [hiff]
-  constructor
-  · rintro ⟨_, h2⟩
-    exact h2
-  · intro h2
-    exact ⟨conjunct_one, h2⟩
+                    - (starRingEnd ℂ) w)⁻¹)).re)
+      → ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) := by
+  obtain ⟨c, hc, hdoor⟩ := online_of_seat_split
+  exact ⟨c, hc, fun h2 => hdoor ⟨conjunct_one, h2⟩⟩
 
 end CriticalLinePhasor.DVP
 
@@ -105,5 +98,5 @@ section AxiomAudit
 #print axioms CriticalLinePhasor.DVP.ladderData_holds
 #print axioms CriticalLinePhasor.DVP.online_below_58
 #print axioms CriticalLinePhasor.DVP.conjunct_one
-#print axioms CriticalLinePhasor.DVP.seat_criterion_channel_iff
+#print axioms CriticalLinePhasor.DVP.online_of_seat_channel
 end AxiomAudit

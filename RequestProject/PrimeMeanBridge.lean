@@ -130,42 +130,6 @@ theorem rh_of_primeCrossingMeanAgreement {c : ℝ} (hc : 0 < c) (hc1 : c < 1)
   have h1 : -((ε / 2) * T) ≤ ∫ t in (0:ℝ)..T, registryStrain c t := neg_le_of_abs_le hQ
   linarith
 
-
-/-- Under RH the off-line ledger vanishes identically. -/
-theorem offLineStripZeroCountMult_eq_zero_of_rh (hRH : RiemannHypothesis) (T : ℝ) :
-    offLineStripZeroCountMult T = 0 := by
-  unfold offLineStripZeroCountMult
-  apply Finset.sum_eq_zero
-  intro ρ hρ
-  exfalso
-  obtain ⟨hmem, hoff⟩ := Finset.mem_filter.mp hρ
-  exact hoff (CriticalLinePhasor.Source.re_eq_half_of_rh hRH
-    ((stripZeroWindow_finite T).mem_toFinset.mp hmem).1)
-
-theorem primeCrossingMeanAgreement_of_rh {c : ℝ} (hc : 0 < c) (hc1 : c < 1)
-    (hRH : RiemannHypothesis) : PrimeCrossingMeanAgreement c := by
-  intro ε hε
-  have hzero : ∀ T : ℝ, (∫ t in (0:ℝ)..T, (offLineStripZeroCountMult t : ℝ)) = 0 := by
-    intro T
-    have : ∀ t : ℝ, ((offLineStripZeroCountMult t : ℕ) : ℝ) = 0 := by
-      intro t; rw [offLineStripZeroCountMult_eq_zero_of_rh hRH t]; simp
-    simp [this]
-  have hq := (registryStrain_integral_isLittleO hc hc1).bound (c := ε / 2) (by positivity)
-  have hL := littlewood_integral_isLittleO.bound (c := ε / 2) (by positivity)
-  filter_upwards [hq, hL, eventually_ge_atTop (0:ℝ)] with T hQ hLT hT0
-  rw [Real.norm_eq_abs, Real.norm_eq_abs, abs_of_nonneg hT0] at hQ hLT
-  have h1 : ∫ t in (0:ℝ)..T, registryStrain c t ≤ (ε / 2) * T := le_trans (le_abs_self _) hQ
-  have h2 : -((ε / 2) * T) ≤ ∫ t in (0:ℝ)..T, SAll t := neg_le_of_abs_le hLT
-  have h3 := integral_smult_split T
-  rw [hzero T] at h3
-  linarith
-
-/-- **The agreement is exactly the Riemann Hypothesis** — no slack. -/
-theorem primeCrossingMeanAgreement_iff_rh {c : ℝ} (hc : 0 < c) (hc1 : c < 1) :
-    PrimeCrossingMeanAgreement c ↔ RiemannHypothesis :=
-  ⟨rh_of_primeCrossingMeanAgreement hc hc1, primeCrossingMeanAgreement_of_rh hc hc1⟩
-
-
 end CriticalLinePhasor.DVP
 
 #print axioms CriticalLinePhasor.DVP.littlewood_integral_isLittleO
@@ -173,4 +137,3 @@ end CriticalLinePhasor.DVP
 #print axioms CriticalLinePhasor.DVP.smult_sub_registryStrain_add_offline_isLittleO
 #print axioms CriticalLinePhasor.DVP.smultIntegralSublinear_iff_offline_mean
 #print axioms CriticalLinePhasor.DVP.rh_of_primeCrossingMeanAgreement
-#print axioms CriticalLinePhasor.DVP.primeCrossingMeanAgreement_iff_rh

@@ -15,14 +15,11 @@ space — exactly when RH holds.  This file compiles the zero side in the house 
 * `helixVec t ρ = √m_ρ (e^{i t_ρ t} − 1)/t_ρ` — one circle per zero, radius `1/t_ρ`, angular
   speed `t_ρ`, through the origin at `t = 0`; the conjugate zero gives the anti-helix.
 * `helix_chordal_term_online`: for an on-line zero the squared chord equals `2 Re screwTerm`.
-* `helix_chordal_profile_of_online`: **if every zero is on the line, the helix
-  `t ↦ (helixVec t ρ)_ρ ∈ ℓ²(Zeros)` has chordal profile `2 Re zetaScrew(t − u)`**, its
-  profile the explicit prime-side kinked ramp by Suzuki's identity.  This ℓ²(Zeros) helix is
-  indexed by the zeros: it is the spectral shadow of the carrier, not the carrier (whose
-  state space is `CarrierThreeDMode`, indexed by height) — RH_LEDGER 529 retracts the earlier
-  identification of it with the house double-ended helix.
+  This ℓ²(Zeros) helix is indexed by the zeros: it is the spectral shadow of the carrier, not
+  the carrier (whose state space is `CarrierThreeDMode`, indexed by height) — RH_LEDGER 529
+  retracts the earlier identification of it with the house double-ended helix.
 
-The converse (an off-line zero makes the screw kernel indefinite) is the Krein/Hilbert
+The door direction (an off-line zero makes the screw kernel indefinite) is the Krein/Hilbert
 dichotomy of `FoliatedPolarization` and Suzuki's Thm 1.2 of [13]; not compiled here.
 No `sorry`, no `axiom`.
 -/
@@ -183,21 +180,7 @@ theorem helix_chordal_term_online {ρ : Zeros} (hre : ρ.val.re = 1 / 2) (t u : 
   rw [hr]
   ring
 
-/-- **The helix through the origin has chordal profile `2 Re Ψ`, given every zero on the
-line.**  The zero-side helix `t ↦ (helixVec t ρ)_ρ ∈ ℓ²(Zeros)` — one circle per zero, radius
-`1/t_ρ`, speed `t_ρ`, conjugate zeros the anti-helix — has squared chord between times `t`
-and `u` equal to `2 Re zetaScrew (t − u)`; by Suzuki's Thm 1.1 that is the explicit
-prime-side kinked ramp.  This is the on-line (Hilbert-space) branch of the Krein/Hilbert
-dichotomy of `FoliatedPolarization`. -/
-theorem helix_chordal_profile_of_online (hRH : ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2)
-    (t u : ℝ) :
-    ∑' ρ : Zeros, Complex.normSq (helixVec t ρ - helixVec u ρ) = 2 * (zetaScrew (t - u)).re := by
-  unfold zetaScrew
-  rw [Complex.re_tsum (screwTerm_summable (t - u)), ← tsum_mul_left]
-  exact tsum_congr (fun ρ => helix_chordal_term_online (hRH ρ.val ρ.2) t u)
-
 end CriticalLinePhasor.HilbertPolya
 
 #print axioms CriticalLinePhasor.HilbertPolya.screwTerm_summable
 #print axioms CriticalLinePhasor.HilbertPolya.helix_chordal_term_online
-#print axioms CriticalLinePhasor.HilbertPolya.helix_chordal_profile_of_online

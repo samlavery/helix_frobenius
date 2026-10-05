@@ -17,7 +17,7 @@ The diagonal operator `W = diag(w(ρ_k))` on a finite zero-set is:
 * the **functional equation** pairs spectral values reciprocally: `w(ρ)·w(1−ρ) = 1`
 
 All unconditional. The remaining (open) input is that the *actual* zeros put `W` on the
-circle — equivalently `W` unitary, equivalently RH.
+circle, i.e. `W` unitary; that gives RH (`riemannHypothesis_of_spectral_unitary`).
 -/
 
 open Complex
@@ -66,8 +66,7 @@ theorem half_of_w_power_norm_eq_one (ρ : ℂ) (hρ : ρ ≠ 0) (M : ℕ) (hM : 
 /-- **Finite-set spectral-unitary ⟺ on the line.** For an arbitrary finite set of
     nonzero points, every spectral value on the unit circle ⟺ every point has `Re = ½`.
     This is `w_unit_iff_half` aggregated over a `Finset` — it is **not** RH (no
-    `riemannZeta`, no actual zeros). The RH statement is
-    `riemannHypothesis_iff_spectral_unitary`. -/
+    `riemannZeta`, no actual zeros). The RH door is `riemannHypothesis_of_spectral_unitary`. -/
 theorem spectral_unitary_iff_on_line (zeros : Finset ℂ) (h0 : ∀ ρ ∈ zeros, ρ ≠ 0) :
     (∀ ρ ∈ zeros, Complex.normSq (w ρ) = 1) ↔ (∀ ρ ∈ zeros, ρ.re = 1 / 2) :=
   ⟨fun h ρ hρ => (w_unit_iff_half ρ (h0 ρ hρ)).mp (h ρ hρ),
@@ -91,19 +90,15 @@ theorem w_FE_reciprocal (ρ : ℂ) (hρ : ρ ≠ 0) (hρ1 : (1 : ℂ) - ρ ≠ 0
     w ρ * w (1 - ρ) = 1 := by
   unfold w; field_simp; ring
 
-/-- **Spectral criterion for RH (unconditional).** Mathlib's `RiemannHypothesis`
-    holds **iff** the Möbius operator is unitary on the nontrivial zeros — every
-    `‖w(ρ)‖ = 1`. This replaces the sorried `rh_from_ef` route with a clean
-    equivalence: RH is the unitarity of the helix spectral operator. -/
-theorem riemannHypothesis_iff_spectral_unitary :
-    RiemannHypothesis ↔
-      (∀ ρ ∈ VMEFStandalone.NontrivialZeros, Complex.normSq (w ρ) = 1) := by
-  rw [VMEFStandalone.RiemannHypothesis_iff_NontrivialZeros]
-  refine ⟨fun h ρ hρ => ?_, fun h ρ hρ => ?_⟩
-  · have hne : ρ ≠ 0 := by rintro rfl; exact absurd hρ.1 (by simp)
-    exact (w_unit_iff_half ρ hne).mpr (h ρ hρ)
-  · have hne : ρ ≠ 0 := by rintro rfl; exact absurd hρ.1 (by simp)
-    exact (w_unit_iff_half ρ hne).mp (h ρ hρ)
+/-- **Spectral door for RH (unconditional).** If the Möbius operator is unitary on the
+    nontrivial zeros — every `‖w(ρ)‖ = 1` — Mathlib's `RiemannHypothesis` holds. -/
+theorem riemannHypothesis_of_spectral_unitary
+    (h : ∀ ρ ∈ VMEFStandalone.NontrivialZeros, Complex.normSq (w ρ) = 1) :
+    RiemannHypothesis := by
+  apply VMEFStandalone.NontrivialZeros_implies_RiemannHypothesis
+  intro ρ hρ
+  have hne : ρ ≠ 0 := by rintro rfl; exact absurd hρ.1 (by simp)
+  exact (w_unit_iff_half ρ hne).mp (h ρ hρ)
 
 end SpectralSide
 

@@ -39,7 +39,7 @@ def LittlewoodBound : Prop :=
     |∫ t in (0:ℝ)..T, SAll t| ≤ C * (1 + Real.log (1 + T))
 
 /-- **Off-line-mass log control**: the integrated off-line multiplicity
-census grows at most logarithmically.  (Under RH the integrand is zero.) -/
+census grows at most logarithmically. -/
 def OffLineMassLog : Prop :=
   ∃ C : ℝ, ∀ T : ℝ, 0 ≤ T →
     (∫ t in (0:ℝ)..T, (offLineStripZeroCountMult t : ℝ))

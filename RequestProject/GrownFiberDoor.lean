@@ -15,8 +15,7 @@ carrier's own heads `physicalHead y`.  No strip, no flow on a transform.
   side would be a second event at the same height).
 * **`rh_of_headClean`** — the door: `HeadClean Z → RiemannHypothesis` for any head sequence `Z n → ∞` (Hurwitz on the
   band through `finiteFiber_tendstoLocallyUniformlyOn`, then the two ends).
-* `headClean_of_rh`, `headClean_iff_rh` — the clause is inhabited under RH and is exactly RH.
-* `rh_of_carrierHeadClean`, `carrierHeadClean_iff_rh` — on the carrier's own heads `physicalHead n`.
+* `rh_of_carrierHeadClean` — the door on the carrier's own heads `physicalHead n`.
 -/
 
 open Complex Filter Topology Set
@@ -153,42 +152,6 @@ theorem rh_of_headClean (Z : ℕ → ℝ) (hZ : Tendsto Z atTop atTop) (h : Head
     linarith
   · exact key ρ hρ hgt
 
-/-- **The clause is inhabited under RH.** -/
-theorem headClean_of_rh (Z : ℕ → ℝ) (hZ : Tendsto Z atTop atTop) (hRH : RiemannHypothesis) : HeadClean Z := by
-  intro K hK hKc
-  rcases K.eq_empty_or_nonempty with hKe | hKne
-  · rw [hKe]; simp
-  have hne : ∀ s ∈ K, etaTailLimit s ≠ 0 := by
-    intro s hs h0
-    have hb := hK hs
-    rw [etaTailLimit_eq_on_farBand hb] at h0
-    rcases mul_eq_zero.mp h0 with h1 | h1
-    · exact conduction_ne_zero hb.2 h1
-    · have hmem : s ∈ ZD.NontrivialZeros := ⟨by linarith [hb.1], hb.2, h1⟩
-      have := CriticalLinePhasor.Source.re_eq_half_of_rh hRH hmem
-      linarith [hb.1]
-  have hcont : ContinuousOn etaTailLimit K := by
-    have h2 : Continuous (fun s : ℂ => (2 : ℂ) ^ ((1 : ℂ) - s)) :=
-      continuous_const.cpow (continuous_const.sub continuous_id) (fun _ => by
-        rw [Complex.mem_slitPlane_iff]; left; norm_num)
-    have hζ : ContinuousOn riemannZeta K := fun s hs =>
-      (differentiableAt_riemannZeta (ne_one_of_mem_farBand (hK hs))).continuousAt.continuousWithinAt
-    have hprod : ContinuousOn (fun s : ℂ => (1 - (2 : ℂ) ^ ((1 : ℂ) - s)) * riemannZeta s) K :=
-      (continuous_const.sub h2).continuousOn.mul hζ
-    exact hprod.congr fun s hs => etaTailLimit_eq_on_farBand (hK hs)
-  obtain ⟨w, hw, hwmin⟩ := hKc.exists_isMinOn hKne hcont.norm
-  have hm : 0 < ‖etaTailLimit w‖ := norm_pos_iff.mpr (hne w hw)
-  have hunif := (tendstoLocallyUniformlyOn_iff_forall_isCompact isOpen_rightHalf).mp
-    (finiteFiber_tendstoLocallyUniformlyOn Z hZ) K (hK.trans farBand_subset_rightHalf) hKc
-  filter_upwards [Metric.tendstoUniformlyOn_iff.mp hunif _ hm] with n hn s hs h0
-  have h1 := hn s hs
-  rw [h0, dist_zero_right] at h1
-  exact absurd (hwmin hs) (not_le.mpr h1)
-
-/-- **Exactness:** the clause is the Riemann Hypothesis. -/
-theorem headClean_iff_rh (Z : ℕ → ℝ) (hZ : Tendsto Z atTop atTop) : HeadClean Z ↔ RiemannHypothesis :=
-  ⟨rh_of_headClean Z hZ, headClean_of_rh Z hZ⟩
-
 /-! ### On the carrier's own heads -/
 
 /-- The carrier's heads at the integer ordinates, `W(n) = physicalHead n`. -/
@@ -201,11 +164,7 @@ theorem carrierHeads_tendsto : Tendsto carrierHeads atTop atTop :=
 theorem rh_of_carrierHeadClean (h : HeadClean carrierHeads) : RiemannHypothesis :=
   rh_of_headClean carrierHeads carrierHeads_tendsto h
 
-theorem carrierHeadClean_iff_rh : HeadClean carrierHeads ↔ RiemannHypothesis :=
-  headClean_iff_rh carrierHeads carrierHeads_tendsto
-
 end CriticalLinePhasor.GrownFiber
 
 #print axioms CriticalLinePhasor.GrownFiber.rh_of_headClean
-#print axioms CriticalLinePhasor.GrownFiber.headClean_iff_rh
-#print axioms CriticalLinePhasor.GrownFiber.carrierHeadClean_iff_rh
+#print axioms CriticalLinePhasor.GrownFiber.rh_of_carrierHeadClean

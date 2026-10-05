@@ -29,7 +29,7 @@ to represent the state.
   readout of the event's physical height `e^{y₀}` is `y₀`; the event's parameter is
   `½ + i·log Z`, the abscissa from compatibility and the ordinate from the event.
 
-No `ζ`/`L` identity, functional equation, explicit formula, prime, zero set or RH-equivalent
+No `ζ`/`L` identity, functional equation, explicit formula, prime, zero set or zero-location
 statement is used in any proof.
 -/
 

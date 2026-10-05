@@ -325,7 +325,7 @@ def coshGaussTest_prime_sum_summable_target (β : ℝ) : Prop :=
 Combining the closed-form zero side (via W1) with the classical Weil
 identity for the Gaussian pair `(h, φ) = (exp(−x²)·cosh((β−1/2)·x),
 exp(−z²/4))`: IF `WeilFormula h φ` holds (classical analytic number
-theory, a single named Prop — not an RH-equivalent assumption), THEN
+theory, a single named Prop about the explicit formula), THEN
 ```
 Σ_ρ exp((ρ−1/2)²/4) = weilRHS_arch h φ − weilRHS_prime h.
 ```

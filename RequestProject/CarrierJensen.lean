@@ -43,19 +43,18 @@ never intrinsic.
   difference `S_class − S` counts is `N_strip − N_line`, and because `zeroEventCount` is an
   `ncard` of *ordinates* it is multiplicity-free — so the quantity bounded is the off-line
   census **with multiplicity, plus the on-line multiplicity excess**, not off-line zeros alone.
-  Both summands vanish exactly under RH-with-simple-zeros.
 
 That second direction is **not** an analytic estimate of the same species as the first.  It is
 the registration/seat question — which chart zeros have native sources — at a weaker quantifier
 than RH.  It belongs with the saturation cluster, not with Jensen/Backlund:
-`GramRegistrationCapstone.grh_iff_spectral_gram_registration`,
-`HarmonicPencilCell.EveryZeroHasSource` / `everyZeroHasSource_iff_critical`,
+`GramRegistrationCapstone.grh_of_spectral_gram_registration`,
+`HarmonicPencilCell.EveryZeroHasSource` / `critical_of_everyZeroHasSource`,
 `SourceHolonomy.Exhaustive`.  Same species as those, weaker quantifier — not an estimate
 awaiting a sharper technique.
 
 **What is chart-dependent here is the filing, not the content.**  The lower direction is a real,
 undischarged mathematical statement.  It is *not* vacuous, and the carrier does not dissolve it:
-asserting `N_off = 0` natively is exactly RH, and nothing here gets that for free.
+asserting `N_off = 0` natively gives RH, and nothing here gets that for free.
 
 **Negative result, recorded so it is not re-attempted.**  Density/proportion results cannot
 reach the lower direction.  Zeta23's Theorem A (`Zeta23.thmA_cumulative`, `(2/3 − ε)·N ≤ N₀*`)

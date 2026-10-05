@@ -10,12 +10,10 @@ five *names* for one **export adapter**: the socket through which a foreign form
 system's sentence (Mathlib's `RiemannHypothesis` — the chart's own predicate about its
 own continuation apparatus) plugs into the frame's machinery.
 
-This file consolidates the sockets into one and proves the adapter is a full
-**equivalence ring**: the Cascade's completeness field, the no-offline interface, and
-the receiver-regularity interface are each equivalent to the foreign sentence, hence to
-each other.  The converse direction is carried by the converse-dominance lemma
-(`limit_zero_of_stage_accumulation`): an accumulation point of stage features is a
-feature of the limit — so completeness is *exactly* the foreign sentence, no slack.
+This file consolidates the sockets into one (`export_sockets`): the Cascade's completeness
+field and the receiver-regularity interface each give the foreign sentence.  It also records
+the converse-dominance lemma (`limit_zero_of_stage_accumulation`): an accumulation point of
+stage features is a feature of the limit.
 
 Reclassification, recorded: these are **export adapters, not open problems** — the
 frame's claims consume none of them; they exist so that translation into the chart's
@@ -73,31 +71,12 @@ theorem limit_zero_of_stage_accumulation (C : MidpointCascade) {z : ℂ}
   rw [hwzero, dist_zero_right] at h2
   linarith
 
-/-- **The adapter is an equivalence**: the Cascade's completeness field is *exactly* the
-foreign sentence — no slack in either direction. -/
-theorem complete_iff_riemannHypothesis (C : MidpointCascade) :
-    Complete C ↔ RiemannHypothesis := by
-  constructor
-  · exact riemannHypothesis_of_complete_cascade C
-  · intro hRH z hacc
-    have hz : xiSection z = 0 := limit_zero_of_stage_accumulation C hacc
-    have hmem : (1 / 2 + Complex.I * z) ∈ ZD.NontrivialZeros := by
-      rw [xiSection] at hz
-      exact (ZD.riemannXi_eq_zero_iff _).mp hz
-    have hre := rh_implies_line hRH hmem
-    have him : (1 / 2 + Complex.I * z).re = 1 / 2 - z.im := by
-      simp [Complex.add_re, Complex.mul_re]
-      ring
-    rw [him] at hre
-    linarith
-
-/-- **The two mainline sockets are one socket**: the cascade's completeness field and the
-receiver's regularity condition are each equivalent to the classical sentence, hence to
-each other.  One statement, two working names. -/
-theorem export_ring (C : MidpointCascade) :
-    (Complete C ↔ RiemannHypothesis)
+/-- **The two mainline sockets**: the cascade's completeness field and the receiver's
+regularity condition each give the classical sentence. -/
+theorem export_sockets (C : MidpointCascade) :
+    (Complete C → RiemannHypothesis)
       ∧ ((∀ z : ℂ, z.im ≠ 0 → ∃ L, Tendsto xiChannel (nhdsWithin z {z}ᶜ) (nhds L))
-          ↔ RiemannHypothesis) :=
-  ⟨complete_iff_riemannHypothesis C, xiChannel_offReal_regular_iff_RH⟩
+          → RiemannHypothesis) :=
+  ⟨riemannHypothesis_of_complete_cascade C, rh_of_xiChannel_offReal_regular⟩
 
 end CriticalLinePhasor.Cascade

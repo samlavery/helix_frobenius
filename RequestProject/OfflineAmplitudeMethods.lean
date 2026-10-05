@@ -32,7 +32,7 @@ explicit-formula representation of the weighted prime harmonic sum. Concretely:
 - The nonprincipal channel (from L(s, χ₃)) sees zero-pair envelopes Q(r, β_L)
   for each nontrivial zero β_L + it of L(s, χ₃).
 
-Under RH/GRH all β = CoshBalance and Q = 2r^{1/2} (balanced). Any off-line zero forces
+An on-line zero has β = CoshBalance and Q = 2r^{1/2} (balanced). Any off-line zero forces
 Q > 2r^{1/2}, creating a strictly positive defect.
 
 ## Where the defect lands
@@ -296,7 +296,7 @@ Each L-function contributes zero-pair envelopes from its own zeros:
 - Principal channel total envelope: Σ_{ρ_ζ} Q(r, β_ρ)  (sum over ζ-zeros)
 - Nonprincipal channel total envelope: Σ_{ρ_L} Q(r, β_ρ)  (sum over L-zeros)
 
-Under RH/GRH, every β = CoshBalance, so both channels see only balanced envelopes.
+On-line zeros have β = CoshBalance and contribute only balanced envelopes.
 Any off-line zero in either function creates a defect in the corresponding channel.
 -/
 

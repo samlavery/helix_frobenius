@@ -4,7 +4,7 @@ import RequestProject.XiJetsArithmetic
 /-!
 # The prime symbol: the door collected by `n` (ledger 596)
 
-`rh_iff_prime_jets_nonneg` (595) writes the door's hypothesis as a finite functional of jets. Collecting
+`online_of_prime_jets_nonneg` (595) writes the door's hypothesis as a finite functional of jets. Collecting
 the prime side by `n` instead of by derivative order gives the normal form
 
   `primeJetsForm R s = dcForm R s − Σ'_n ( Λ(n) n^{−s} · 𝒜_R(log n) + conj(Λ(n) n^{−s}) · 𝒜′_R(log n) )`
@@ -518,15 +518,16 @@ theorem primeJetsForm_collect (R : Polynomial ℂ) (hR : R.coeff 0 = 0) {s : ℂ
     rw [jetValueP_collect hs d M (by omega) (by omega)]
     ring
 
-/-- **The door on the prime symbol.** RH ⟺ for all `γ`, `1 < σ₀ < 3/2`, `R` with `R(0) = 0`:
-`Re[ dcForm R s d − 2 Σ'_n Re(Λ(n) n^{−s} 𝒜_R(log n)) ] ≥ 0` at `s = σ₀ + iγ`, `d = 2σ₀ − 1`. -/
-theorem rh_iff_prime_symbol_nonneg :
-    (∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2) ↔
-    (∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
+/-- **The door on the prime symbol.** If for all `γ`, `1 < σ₀ < 3/2`, `R` with `R(0) = 0`:
+`Re[ dcForm R s d − 2 Σ'_n Re(Λ(n) n^{−s} 𝒜_R(log n)) ] ≥ 0` at `s = σ₀ + iγ`, `d = 2σ₀ − 1`,
+every nontrivial zero is on the line. -/
+theorem online_of_prime_symbol_nonneg
+    (H : ∀ γ σ₀ : ℝ, 1 < σ₀ → σ₀ < 3 / 2 → ∀ R : Polynomial ℂ, R.coeff 0 = 0 →
       0 ≤ (dcForm R ((σ₀ : ℂ) + (γ : ℂ) * I) ((2 * σ₀ - 1 : ℝ) : ℂ) (2 * R.natDegree + 2)
         - ∑' n : ℕ, (2 : ℂ) * (((LSeries.term Λc ((σ₀ : ℂ) + (γ : ℂ) * I) n
-            * primeSymbolForm R ((2 * σ₀ - 1 : ℝ) : ℂ) (2 * R.natDegree + 2) (Real.log n)).re : ℝ) : ℂ)).re) := by
-  rw [rh_iff_prime_jets_nonneg]
+            * primeSymbolForm R ((2 * σ₀ - 1 : ℝ) : ℂ) (2 * R.natDegree + 2) (Real.log n)).re : ℝ) : ℂ)).re) :
+    ∀ ρ ∈ ZD.NontrivialZeros, ρ.re = 1 / 2 := by
+  apply online_of_prime_jets_nonneg
   have hre : ∀ γ σ₀ : ℝ, 1 < σ₀ → 1 < ((σ₀ : ℂ) + (γ : ℂ) * I).re := by
     intro γ σ₀ h
     simpa using h
@@ -536,14 +537,10 @@ theorem rh_iff_prime_symbol_nonneg :
           - ∑' n : ℕ, (2 : ℂ) * (((LSeries.term Λc ((σ₀ : ℂ) + (γ : ℂ) * I) n
               * primeSymbolForm R ((2 * σ₀ - 1 : ℝ) : ℂ) (2 * R.natDegree + 2) (Real.log n)).re : ℝ) : ℂ) :=
     fun γ σ₀ h R hR => primeJetsForm_collect R hR (hre γ σ₀ h) (Complex.conj_ofReal _) _
-  constructor
-  · intro H γ σ₀ h1 h2 R hR
-    rw [← key γ σ₀ h1 R hR]
-    exact H γ σ₀ h1 h2 R hR
-  · intro H γ σ₀ h1 h2 R hR
-    have := H γ σ₀ h1 h2 R hR
-    rw [← key γ σ₀ h1 R hR] at this
-    exact this
+  intro γ σ₀ h1 h2 R hR
+  have := H γ σ₀ h1 h2 R hR
+  rw [← key γ σ₀ h1 R hR] at this
+  exact this
 
 /-! ## 5. Closed form of the symbol -/
 
@@ -567,6 +564,6 @@ theorem primeSymbol_zero {d : ℂ} (hd : d ≠ 0) {M j k : ℕ} (hj : 1 ≤ j) (
 
 #print axioms pf_fst_closed
 #print axioms primeJetsForm_collect
-#print axioms rh_iff_prime_symbol_nonneg
+#print axioms online_of_prime_symbol_nonneg
 
 end CriticalLinePhasor.ContourArgument

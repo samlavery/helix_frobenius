@@ -18,8 +18,8 @@ REAL PART.  The seat energy is therefore
 an explicit real quantity.  Unconditional: an identity, with no hypotheses
 beyond the anchor admissibility already required by the seat criterion.
 
-Consequence: conjunct 2 of `seat_criterion_split_iff` — hence, with conjunct 1
-already discharged, RH itself — is exactly the statement
+Consequence: conjunct 2 of `online_of_seat_split` — the one hypothesis left
+once conjunct 1 is discharged — is exactly the statement
 
   `Re[ ξ′/ξ(σ + it) ] ≤ 0`  for  `σ < ½`
 

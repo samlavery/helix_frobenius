@@ -201,25 +201,19 @@ theorem rh_of_polynomial_growth {s : ℂ} (hs : s ∉ ZD.NontrivialZeros) (hs' :
   rh_of_subexponential hs hs' (fun _ hR => normalized_decay_of_polynomial_growth hC hR)
 
 /-- Polynomial growth of the explicit prime-and-Gamma coefficients is a sufficient endpoint. -/
-theorem explicit_polynomial_growth_iff_rh {s : ℂ} (hs : s.re < 0) :
-    (∃ C : ℝ, ∃ p : ℕ, ∀ k,
+theorem rh_of_explicit_polynomial_growth {s : ℂ} (hs : s.re < 0)
+    (h : ∃ C : ℝ, ∃ p : ℕ, ∀ k,
       ‖toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ) (jets explicitLogDeriv s) k‖ ≤
-        C * (1 + (k : ℝ) ^ p)) ↔ RH := by
+        C * (1 + (k : ℝ) ^ p)) : RH := by
   have hs0 : s ∉ ZD.NontrivialZeros := notMem_nontrivialZeros_of_re_nonpos hs.le
   have hs' : s.re ≠ 1 / 2 := by linarith
   have hseq : ∀ k, toeplitzCoeff ((2 * s.re - 1 : ℝ) : ℂ)
       (jets explicitLogDeriv s) k = xiCoeff s k := by
     intro k
     rw [← jets_xiLogDeriv_eq_explicit hs, toeplitzCoeff_jets_eq_xiCoeff hs0 hs' k]
-  simp only [hseq]
-  constructor
-  · rintro ⟨C, p, hC⟩
-    exact rh_of_polynomial_growth hs0 (by linarith) hC
-  · intro hRH
-    refine ⟨(xiCoeff s 0).re / 2, 0, ?_⟩
-    intro k
-    convert bounded_of_rh hs0 hRH k using 1
-    ring
+  simp only [hseq] at h
+  obtain ⟨C, p, hC⟩ := h
+  exact rh_of_polynomial_growth hs0 (by linarith) hC
 
 /-- The one-anchor polynomial estimate reaches Mathlib's literal statement. -/
 theorem riemannHypothesis_of_explicit_fixed_anchor_polynomial_growth
@@ -227,8 +221,7 @@ theorem riemannHypothesis_of_explicit_fixed_anchor_polynomial_growth
       ‖toeplitzCoeff (-3) (jets explicitLogDeriv ((-1 : ℂ) + 20 * I)) k‖ ≤
         C * (1 + (k : ℝ) ^ p)) : RiemannHypothesis := by
   apply RHBridge.no_offline_zeros_implies_rh
-  apply (explicit_polynomial_growth_iff_rh
-    (s := (-1 : ℂ) + 20 * I) (by norm_num)).mp
+  apply rh_of_explicit_polynomial_growth (s := (-1 : ℂ) + 20 * I) (by norm_num)
   convert hbound using 1 <;> norm_num
 
 end CriticalLinePhasor.SeatingLedger
@@ -237,5 +230,5 @@ end CriticalLinePhasor.SeatingLedger
 #print axioms CriticalLinePhasor.SeatingLedger.rh_of_subexponential
 #print axioms CriticalLinePhasor.SeatingLedger.normalized_decay_of_polynomial_growth
 #print axioms CriticalLinePhasor.SeatingLedger.rh_of_polynomial_growth
-#print axioms CriticalLinePhasor.SeatingLedger.explicit_polynomial_growth_iff_rh
+#print axioms CriticalLinePhasor.SeatingLedger.rh_of_explicit_polynomial_growth
 #print axioms CriticalLinePhasor.SeatingLedger.riemannHypothesis_of_explicit_fixed_anchor_polynomial_growth

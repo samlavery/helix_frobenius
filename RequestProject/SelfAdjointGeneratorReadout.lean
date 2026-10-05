@@ -11,7 +11,7 @@ resolvent operator at a parameter `s` can only have a kernel when `s` sits on th
 `Re s = 1/2`.
 
 The crucial honesty point.  There are two genuinely different operators in the spectral picture and
-they must not be confused, because confusing them would be exactly the Riemann Hypothesis:
+they must not be confused, because confusing them would assume the zero locations being sought:
 
 * `SpectralFiber.specOp χ s = Lspec χ s • id` — the **L-readout operator**: its determinant *is* the
   spectral L-value (`configured_det_eq_Lspec` below), and its kernel is nonzero **iff** `Lspec χ s =

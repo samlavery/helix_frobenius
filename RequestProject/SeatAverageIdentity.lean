@@ -15,7 +15,7 @@ so integrating in `t` one zero at a time needs exactly
 Summing that over a window of ordinates turns the averaged seat into
 `π [ N(T,2T) − 2 N(σ; T,2T) ]`, i.e. **the averaged seat IS the statement that at most half the
 zeros in the window lie to the right of `σ`** — a zero-density statement, unconditionally true for
-every fixed `σ > ½` by Ingham.  The pointwise statement is RH.  This file compiles the calculus
+every fixed `σ > ½` by Ingham.  The pointwise statement is not proved here.  This file compiles the calculus
 step; the number-theoretic content around it is not compiled.
 
 The `sign` is the whole point: a zero to the LEFT of the anchor contributes `+π`, one to the RIGHT
