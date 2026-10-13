@@ -1,6 +1,7 @@
 import RequestProject.GrownFiberConverges
 import RequestProject.AreaLaw
 import RequestProject.LogWeightOperator
+import RequestProject.WheelRouting
 
 /-!
 # The carrier-driven grown fiber: normalization, head-evolution law, carrier scale inside the term
@@ -444,5 +445,74 @@ theorem gaugedFiber_eq {Δ : ℝ} (hΔ : 0 < Δ) (Z : ℝ) (s : ℂ) :
   rw [show -s * ((Real.log Δ : ℂ) + (Real.log ((k : ℝ) + 1) : ℂ))
       = -s * (Real.log Δ : ℂ) + -s * (Real.log ((k : ℝ) + 1) : ℂ) by ring, Complex.exp_add]
   ring
+
+/-! ## 5. The routed grown fiber (ledger 1141)
+
+The routing of the phasor at site `k` (phasor `n = k + 1`) is a parameter `r : Routing`
+(RequestProject.WheelRouting): `Routing.eta` for the trivial function, a conductor walk otherwise.
+The definitions above are unchanged; `inputPhasor_eq_routed_eta`, `finiteFiber_eq_routed_eta` and
+`gaugedFiber_eq_routed_eta` prove they are the η specialisations, and `routedGaugedFiber_eq`
+extends the gauge covariance to every routing. -/
+
+section Routed
+
+open EisensteinWheelBank
+
+/-- The routed warped input at site `k`: routed coefficient times the warp `(k+1)^{−s}`. -/
+def routedInput (r : Routing) (s : ℂ) (k : ℕ) : ℂ := r.coeff (k + 1) * ((k : ℂ) + 1) ^ (-s)
+
+/-- The routed grown fiber at head `Z`. -/
+def routedGrownFiber (r : Routing) (Z : ℝ) (s : ℂ) : ℂ :=
+  ∑ k ∈ range ⌈Z⌉₊, ((headWindow Z k : ℝ) : ℂ) * routedInput r s k
+
+/-- The routed grown fiber read through the carrier-scaled log-weights
+`CarrierReadout.carrierLogWeight Δ k`. -/
+def routedGaugedFiber (r : Routing) (Δ Z : ℝ) (s : ℂ) : ℂ :=
+  ∑ k ∈ range ⌈Z⌉₊, ((headWindow Z k : ℝ) : ℂ) *
+    (r.coeff (k + 1) * Complex.exp (-s * (CarrierReadout.carrierLogWeight Δ k : ℂ)))
+
+/-- `inputPhasor` is the η routed input. -/
+theorem inputPhasor_eq_routed_eta (s : ℂ) (k : ℕ) : inputPhasor s k = routedInput .eta s k := by
+  unfold routedInput
+  rw [coeff_eta]
+  rfl
+
+/-- `finiteFiber` is the η routed grown fiber. -/
+theorem finiteFiber_eq_routed_eta (Z : ℝ) (s : ℂ) :
+    finiteFiber Z s = routedGrownFiber .eta Z s := by
+  rw [finiteFiber_eq_window_input]
+  unfold routedGrownFiber
+  exact Finset.sum_congr rfl fun k _ => by rw [inputPhasor_eq_routed_eta]
+
+/-- `gaugedFiber` is the η routed gauged fiber. -/
+theorem gaugedFiber_eq_routed_eta (Δ Z : ℝ) (s : ℂ) :
+    gaugedFiber Δ Z s = routedGaugedFiber .eta Δ Z s := by
+  unfold gaugedFiber routedGaugedFiber
+  exact Finset.sum_congr rfl fun k _ => by rw [coeff_eta]
+
+/-- **Gauge covariance for every routing**: the harmonic scaling of the carrier by `Δ` multiplies
+the routed grown fiber by the global factor `Δ^{−s}`. -/
+theorem routedGaugedFiber_eq (r : Routing) {Δ : ℝ} (hΔ : 0 < Δ) (Z : ℝ) (s : ℂ) :
+    routedGaugedFiber r Δ Z s = (Δ : ℂ) ^ (-s) * routedGrownFiber r Z s := by
+  unfold routedGaugedFiber routedGrownFiber
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl fun k _ => ?_
+  unfold routedInput CarrierReadout.carrierLogWeight
+  have hk : (0 : ℝ) < (k : ℝ) + 1 := by positivity
+  have hΔc : (Δ : ℂ) ^ (-s) = Complex.exp (-s * (Real.log Δ : ℂ)) := by
+    rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast hΔ.ne'), ← Complex.ofReal_log hΔ.le]
+    congr 1; ring
+  have hkc : ((k : ℂ) + 1) ^ (-s) = Complex.exp (-s * (Real.log ((k : ℝ) + 1) : ℂ)) := by
+    rw [Complex.cpow_def_of_ne_zero (by exact_mod_cast hk.ne'),
+      show ((k : ℂ) + 1) = (((k : ℝ) + 1 : ℝ) : ℂ) by push_cast; rfl,
+      ← Complex.ofReal_log hk.le]
+    congr 1; ring
+  rw [hΔc, hkc, Real.log_mul hΔ.ne' hk.ne']
+  push_cast
+  rw [show -s * ((Real.log Δ : ℂ) + (Real.log ((k : ℝ) + 1) : ℂ))
+      = -s * (Real.log Δ : ℂ) + -s * (Real.log ((k : ℝ) + 1) : ℂ) by ring, Complex.exp_add]
+  ring
+
+end Routed
 
 end CriticalLinePhasor.GrownFiberEvolution

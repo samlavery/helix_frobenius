@@ -90,16 +90,17 @@ is the whole point.
 A shift `x ↦ x + c` and a nonzero rescaling `x ↦ k·x` (and more generally any affine
 `x ↦ k·x + c`) are **bijections** of `ℝ` (`shift_bijective`, `rescale_bijective`,
 `affineCoord_bijective`, with the explicit inverse `affineCoordEquiv`): they neither lose nor gain
-information. In particular the midpoint rescaling `halve = (·)/2` identifies the pairs
-`(1, 1/2)`, `(π/3, π/6)` and `(log 7, log 7 / 2)` — from the geometric-projection perspective these
-are **the same value** (`same_value_under_halve`, `halve_bijective`).
+information. In particular `halve = (·)/2` sends `1` to `1/2`, `π/3` to `π/6`, and
+`log 7` to `log 7 / 2` (`same_value_under_halve`, `halve_bijective`). This rescales
+coordinate values; it does not select a geometric midpoint. The native signed origin
+is zero and remains zero under this rescaling.
 
 ## Honest scope note (no Riemann Hypothesis is proved)
 
-The "critical line at `1/2`" enters only as the literal numeric midpoint of the height
-parametrisation (`midpoint_to_critical`: helix midpoint → circle midpoint → `1/2`). It is a
-statement about coordinates and information flow and carries **no** number-theoretic content; it
-does **not** prove or bear on the Riemann Hypothesis.
+The legacy theorem `midpoint_to_critical` is the identity `pipeline (1/2) = 1/2`,
+one instance of `pipeline t = t`. The pipeline also preserves zero; it neither
+selects `1/2` nor translates the native signed-height origin to it. A translated
+analytic readout such as `1/2 + i*t` is a separate map.
 -/
 
 namespace ConeProjection
@@ -263,7 +264,7 @@ theorem unitCircleProj_on_circle (t : ℝ) :
     (unitCircleProj t).1 ^ 2 + (unitCircleProj t).2 ^ 2 = 1 := by
       exact Real.cos_sq_add_sin_sq _
 
-/-! ### The 2D→1D log projection and the critical-line midpoint -/
+/-! ### The 2D→1D log projection preserves the signed height -/
 
 /-- The strictly-positive height encoding. -/
 def heightEncode (h : ℝ) : ℝ := Real.exp h
@@ -290,8 +291,8 @@ theorem pipeline_id (t : ℝ) : pipeline t = t := by
 theorem pipeline_bijective : Function.Bijective pipeline := by
   rw [ show ConeProjection.pipeline = id by exact funext pipeline_id ] ; exact Function.bijective_id
 
-/-- The helix midpoint (parameter `1/2`) is carried by the faithful pipeline to the "critical
-line" value `1/2`. A literal coordinate statement; see the module docstring. -/
+/-- The retained-height pipeline preserves the chosen input `1/2`, as it preserves every input.
+This legacy theorem name does not identify `1/2` as the native helix midpoint. -/
 theorem midpoint_to_critical : pipeline (1 / 2) = 1 / 2 := by
   exact pipeline_id _
 
@@ -299,21 +300,22 @@ theorem midpoint_to_critical : pipeline (1 / 2) = 1 / 2 := by
 
 The closure file `HilbertPolyaChain.lean` consumes projection faithfulness through the concrete
 operator readout `SpectralSide.w ρ` and the equivalent Möbius/Pythagorean readout.  The cone
-pipeline is the retained-height/log projection; the bridge below states exactly how a midpoint
-event in that pipeline supplies the readout atom needed by the HP closure.
+pipeline is the retained-height/log projection. The identity below tests a chosen retained
+coordinate value; it does not force an arbitrary event to have that value.
 -/
 
-/-- The faithful cone pipeline has the same midpoint equation as the retained coordinate. -/
+/-- Testing the pipeline against `1/2` is exactly testing its unchanged input against `1/2`. -/
 theorem pipeline_midpoint_iff (x : ℝ) : pipeline x = 1 / 2 ↔ x = 1 / 2 := by
   rw [pipeline_id x]
 
 /-! The two HP-closure bridge theorems formerly here are staged with the
 RequestProject2 infrastructure (see note at top of file). -/
 
-/-- The reflected `π/3` source coordinate. A sign-changing crossing is fixed by this reflection. -/
+/-- Reflection in an uncentered affine `π/3` chart. With `v = u-π/6` its action is `v ↦ -v`.
+It is not native negation on an already centered coordinate, nor does it assert crossing fixation. -/
 noncomputable def piThirdSignFlip (u : ℝ) : ℝ := Real.pi / 3 - u
 
-/-- The fixed point of the `π/3` sign-flip reflection is exactly the midpoint `π/6`. -/
+/-- The fixed point in the uncentered affine `π/3` chart is `π/6`, or zero after centering. -/
 theorem piThirdSignFlip_fixed_iff_midpoint (u : ℝ) :
     piThirdSignFlip u = u ↔ u = Real.pi / 6 := by
   unfold piThirdSignFlip
@@ -326,10 +328,9 @@ theorem piThirdSignFlip_fixed_iff_midpoint (u : ℝ) :
 A coordinate **shift** (translation) and a nonzero **rescaling** are bijections of `ℝ`. Hence they
 neither **lose** information (they are *injective*: distinct inputs stay distinct) nor **invent**
 information (they are *surjective*: every value is attained), and they are exactly **reversible**
-(explicit inverse). From this geometric-projection perspective the value pairs `(1, 1/2)`,
-`(π/3, π/6)` and `(log 7, log 7 / 2)` are **the same value**: each pair is identified by the single
-information-preserving midpoint rescaling `halve = (·)/2` — the very `midpoint ↦ 1/2` coordinate
-change used above. -/
+(explicit inverse). The pairs `(1, 1/2)`, `(π/3, π/6)` and `(log 7, log 7 / 2)`
+are input/output pairs of the bijection `halve = (·)/2`. This is a change of scale,
+not a derivation of a distinguished native midpoint; zero remains zero. -/
 
 /-- A coordinate **shift** (translation) by `c`. -/
 def shift (c x : ℝ) : ℝ := x + c
@@ -379,30 +380,27 @@ def affineCoordEquiv {k : ℝ} (hk : k ≠ 0) (c : ℝ) : ℝ ≃ ℝ where
   left_inv := by intro x; simp only [ConeProjection.affineCoord]; field_simp; ring
   right_inv := by intro y; simp only [ConeProjection.affineCoord]; field_simp; ring
 
-/-- The **midpoint rescaling** `halve = (·)/2`: the information-preserving coordinate change that
-carries "full" coordinates to "midpoint / critical-line" coordinates. -/
+/-- The bijective rescaling `halve = (·)/2`; it preserves the centered origin zero. -/
 def halve (x : ℝ) : ℝ := rescale (1 / 2) x
 
 /-- The midpoint rescaling is a **bijection**: it neither loses nor gains information. -/
 theorem halve_bijective : Function.Bijective halve :=
   rescale_bijective (by norm_num)
 
-/-- `1` and `1/2` are the same value under the midpoint rescaling. -/
+/-- Halving the coordinate `1` gives `1/2`. -/
 theorem halve_one : halve 1 = 1 / 2 := by
   simp [ConeProjection.halve, ConeProjection.rescale]
 
-/-- `π/3` and `π/6` are the same value under the midpoint rescaling. -/
+/-- Halving the coordinate `π/3` gives `π/6`. -/
 theorem halve_pi_div_three : halve (Real.pi / 3) = Real.pi / 6 := by
   simp only [ConeProjection.halve, ConeProjection.rescale]; ring
 
-/-- `log 7` and `log 7 / 2` are the same value under the midpoint rescaling. -/
+/-- Halving the coordinate `log 7` gives `log 7 / 2`. -/
 theorem halve_log_seven : halve (Real.log 7) = Real.log 7 / 2 := by
   simp only [ConeProjection.halve, ConeProjection.rescale]; ring
 
-/-- **The values are "the same" from the projection perspective.** The pairs `(1, 1/2)`,
-`(π/3, π/6)` and `(log 7, log 7 / 2)` are each identified by the single information-preserving
-(bijective) midpoint rescaling `halve`; by `halve_bijective` this coordinate change neither loses
-nor gains information. -/
+/-- Three input/output pairs of the bijective rescaling `halve`.
+These identities do not select a native midpoint; the rescaling preserves zero. -/
 theorem same_value_under_halve :
     halve 1 = 1 / 2 ∧ halve (Real.pi / 3) = Real.pi / 6 ∧
       halve (Real.log 7) = Real.log 7 / 2 :=

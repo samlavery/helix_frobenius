@@ -32,7 +32,12 @@ open Real BigOperators Complex
 
 noncomputable section
 
-/-! ## Shared midpoint and `π/3` chart definitions -/
+/-! ## Shared affine midpoint and `π/3` chart definitions
+
+These legacy `MIDPOINT_*` names belong to uncentered readout charts. The native signed
+helix midpoint is zero. Here `arcChart σ = (π/3)*σ`, so its centered displacement is
+`arcChart σ - π/6 = (π/3)*(σ-1/2)`. The constants below do not redefine the native origin.
+-/
 
 /-- The natural-units rechart of the strip coordinate: `σ` in units of the channel arc `π/3`. -/
 noncomputable def arcChart (x : ℝ) : ℝ := Real.pi / 3 * x
@@ -40,10 +45,10 @@ noncomputable def arcChart (x : ℝ) : ℝ := Real.pi / 3 * x
 /-- The explicit inverse of the `π/3` rechart. -/
 noncomputable def arcChartInv (u : ℝ) : ℝ := 3 / Real.pi * u
 
-/-- The midpoint in the native `π/3` source chart. -/
+/-- The midpoint value in the uncentered affine `π/3` chart, not the native signed origin. -/
 noncomputable def MIDPOINT_3D : ℝ := Real.pi / 6
 
-/-- The midpoint in the 2D unit-circle angle chart. -/
+/-- The assigned midpoint value in the uncentered 2D angle chart. -/
 noncomputable def MIDPOINT_2D : ℝ := Real.pi / 6
 
 /-- The midpoint in the normalized 1D readout. -/
@@ -89,9 +94,9 @@ theorem arcChart_line_midpoint (x : ℝ) : arcChart x = MIDPOINT_3D ↔ x = MIDP
 
 /-! ## 3D → 2D → 1D Projection Chain
 
-The projection chain tracks how the **height** of a zero changes type
-at each level. The midpoint is structural at every level — it is the
-midpoint of the helix / circle / strip by construction.
+This coordinate scaffold tracks height data through the indicated stages.
+Its transverse chart coordinates are assigned constants at each level; they
+do not compute a native midpoint from the point. The native signed origin remains zero.
 
 | Level | Height type | Height value |
 |-------|-------------|--------------|
@@ -104,18 +109,18 @@ splits off). 2D→1D unwraps via `log`: `exp(iy) ↦ iy`. The log appears
 exactly once, at the 2D→1D boundary (Rule Eight).
 -/
 
-/-- A point on the 3D source helix. The helix sits at `MIDPOINT_3D` (= π/6)
-in the π/3 source chart by construction. Height `z` is the real axial
-climb (∝ √n for integer n). -/
+/-- Positive height data for the source scaffold. Its separately assigned affine
+coordinate `sourceCoord` is `π/6`; the structure does not shift the native signed origin.
+Height `z` is the real axial climb (∝ √n for integer n). -/
 structure HelixPoint where
   z : ℝ
   z_pos : 0 < z
 
-/-- The source coordinate of any helix point is the midpoint — the helix
-is defined at π/6 in the π/3 chart. This is geometry, not a hypothesis. -/
+/-- A constant uncentered affine chart value, independent of the supplied point.
+Subtracting `MIDPOINT_3D` gives the centered value zero. -/
 noncomputable def HelixPoint.sourceCoord (_p : HelixPoint) : ℝ := MIDPOINT_3D
 
-/-- Every helix point sits at the 3D midpoint. -/
+/-- The assigned affine source coordinate equals its stipulated chart midpoint. -/
 theorem HelixPoint.sourceCoord_eq_midpoint (p : HelixPoint) :
     p.sourceCoord = MIDPOINT_3D := rfl
 
@@ -139,8 +144,9 @@ is a `HelixPoint` paired with a natural number, so any helix point and any index
 it. Correspondingly `HelixPoint.sourceCoord` and `ZetaZero2D.angleCoord` are **constant
 functions** (they discard their argument and return the midpoint), so the downstream
 `Re = 1/2` facts record the chart convention **by construction** and derive nothing about
-zeros of ζ. Nothing outside this file references `ZetaZero3D`, `ZetaZero2D` or `to1D`:
-this block is a dormant coordinate scaffold, and no result in the repository rests on it. -/
+zeros of ζ. No other module in the active `RequestProject` tree refers to these scaffold
+structures. The staged `staging_rp2/HilbertPolyaChain.lean` does refer to their chart facts;
+those uses retain the constant-coordinate scope described here. -/
 structure ZetaZero3D where
   point : HelixPoint
   /-- The harmonic index: which harmonic this crossing produces (the n in nπ).
@@ -148,7 +154,7 @@ structure ZetaZero3D where
   zero `ρ_n` in spectral form. -/
   harmonicIndex : ℕ
 
-/-- The 3D source coordinate of a zeta zero is the midpoint. -/
+/-- The scaffold's assigned affine source coordinate is its chart midpoint. -/
 theorem ZetaZero3D.sourceCoord_midpoint (z3 : ZetaZero3D) :
     z3.point.sourceCoord = MIDPOINT_3D := rfl
 
@@ -162,9 +168,9 @@ structure ZetaZero2D where
   w : ℂ
   w_on_circle : ‖w‖ = 1
 
-/-- The 2D midpoint is structural: the projected zero sits at `MIDPOINT_2D`
-in the unit-circle angle chart.  This is a constant function — it discards its
-argument — so it stipulates the chart position rather than computing it. -/
+/-- The assigned coordinate is `MIDPOINT_2D` in the uncentered angle chart.
+This constant function discards its argument; it stipulates a chart position
+rather than computing the native signed coordinate. -/
 noncomputable def ZetaZero2D.angleCoord (_z2 : ZetaZero2D) : ℝ := MIDPOINT_2D
 
 /-! ### 2D → 1D projection

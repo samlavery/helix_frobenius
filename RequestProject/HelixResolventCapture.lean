@@ -622,7 +622,9 @@ open CriticalLinePhasor.SelfAdjointGenerator CriticalLinePhasor.UnconditionalFro
   CriticalLinePhasor.ThreeDFocal in
 /-- Legacy identity premise in physical-height coordinates.  A completed fibre crossing occurs
 by focal cancellation at a positive helix height `Z`; its analytic ordinate is `y = log Z`.  The equality
-`ρ = carrierPointAtHeight Z` also includes the critical-line conclusion. -/
+`ρ = carrierPointAtHeight Z` also includes the critical-line conclusion. Scope (cleanup, ledger 1237):
+`CompletedThreeDZeroAtHeight` is readout-defined (`Dcell` = nonzero constant × L-value), so "completed fibre
+crossing" here is the analytic readout vanishing, not an independently native event. -/
 def ThreeD_crossings_are_real_zeros {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ρ ∈ GRHSpectral.NontrivialZeros χ, ∃ Z : ℝ,
     CompletedThreeDZeroAtHeight χ Z ∧ ρ = carrierPointAtHeight Z
@@ -630,7 +632,10 @@ def ThreeD_crossings_are_real_zeros {N : ℕ} [NeZero N] (χ : DirichletCharacte
 open CriticalLinePhasor.ThreeDFocal in
 /-- Midpoint-free analytic coverage in physical-height coordinates: the zero with ordinate
 `ρ.im` produces a completed fibre event at helix height `Z = exp ρ.im`, so `log Z = ρ.im`.
-This proposition contains neither `carrierPointAtHeight` nor an equality fixing the real part. -/
+This proposition contains neither `carrierPointAtHeight` nor an equality fixing the real part.
+Scope (cleanup, ledger 1237): despite the name, this is an observer-side statement. Unfolded
+(`CapstoneDoorAudit.nativeCarrierCoverage_iff`), it says every zero's ordinate also carries an L-zero at
+`½ + i·Im ρ`. It establishes no native provenance. -/
 def NativeCarrierCoverage {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
     CompletedThreeDZeroAtHeight χ (Real.exp ρ.im)
@@ -671,7 +676,8 @@ places a kernel at the analytic zero. -/
 def OneD_zeta_zero_correlated {N : ℕ} [NeZero N] (χ : DirichletCharacter ℂ N) : Prop :=
   ∀ ρ ∈ GRHSpectral.NontrivialZeros χ,
     -- 3D primary: the completed fibre has a focal cancellation at physical height `Z`,
-    -- whose chart ordinate is `log Z`.
+    -- whose chart ordinate is `log Z`.  (Cleanup, ledger 1237: the completed predicate is
+    -- readout-defined; this branch is observer-side.)
     (∃ Z : ℝ, CompletedThreeDZeroAtHeight χ Z ∧ ρ = carrierPointAtHeight Z)
     ∨
     -- 3D NOT primary → 1D primary: the chart reports a zero and its ordinate.  The operative

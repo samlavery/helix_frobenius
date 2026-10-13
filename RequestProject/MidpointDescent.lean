@@ -15,13 +15,15 @@ This file states and proves each step on the paper's objects.
 
 * **The descent of a vanishing datum.**  A 3-D vanishing datum is a real height `γ`
   (the ordinate of the event); its descent is `π(γ) = ½ + iγ` (`descend`).
-* **Midpoint → midpoint.**  The 3-D midpoint locus is the fixed set of the end-swap, which in
-  the ordinate variable is conjugation `z ↦ z̄` (`CarrierOffLinePairing.crit_is_conj`): a real
+* **Balanced locus through the charts.** The same-height reflection `s ↦ 1-conj(s)` becomes
+  conjugation `z ↦ z̄` in the rotated spectral chart `s = 1/2+iz`
+  (`CarrierOffLinePairing.crit_is_conj`): a real
   `γ` is fixed (`descend_fixed_by_endSwap`); after the Cayley step it lies on the unit circle,
   the 2-D midpoint (`descend_on_unit_circle`, via `Readout.cayley_real_norm_one`); and its
   abscissa is exactly `½` (`descend_re`; the house's `midpoint_projects_to_half`), the fixed
-  locus of the functional-equation reflection (`descend_fixed_by_reflection`; the house's
-  `reflection_fixes_iff`).
+  abscissa of the functional-equation reflection (`descend_fixed_by_reflection`; the house's
+  `reflection_fixes_iff`). Native height reversal is instead `γ ↦ -γ`, centered at zero;
+  full reflection sends `π(γ)` to `π(-γ)`.
 * **The vanishing upstairs.**  `F₃(γ) := laneChart3D (½) γ = 0`: the focal cancellation of the
   three-dimensional phasors at the midpoint locus, at height `e^γ`.  (The phasors themselves
   never vanish — `fiber_phasor_ne_zero`; the only 3-D vanishing is the channels closing.)
@@ -54,7 +56,8 @@ theorem descend_eq (γ : ℝ) : descend γ = (1 : ℂ) / 2 + (γ : ℂ) * Comple
 
 /-! ### Midpoint → midpoint -/
 
-/-- The end-swap in the ordinate variable is conjugation; a real height is fixed by it. -/
+/-- Same-height reflection is conjugation in the rotated spectral chart; it fixes real heights.
+This is distinct from native signed-height reversal `γ ↦ -γ`. -/
 theorem descend_fixed_by_endSwap (γ : ℝ) : (starRingEnd ℂ) (γ : ℂ) = (γ : ℂ) :=
   Complex.conj_ofReal γ
 
@@ -67,8 +70,9 @@ theorem descend_on_unit_circle (γ : ℝ) : ‖Readout.cayley (γ : ℂ)‖ = 1 
 theorem descend_re (γ : ℝ) : (descend γ).re = 1 / 2 := by
   rw [descend_eq]; simp [Complex.add_re, Complex.mul_re]
 
-/-- The 1-D midpoint is the fixed locus of the functional-equation reflection `s ↦ 1 − s`
-(the house's `reflection_fixes_iff`). -/
+/-- The descended point and its full reflection have equal real parts.
+The full reflection sends `descend γ` to `descend (-γ)`; this theorem does not
+assert equality of those complex points. -/
 theorem descend_fixed_by_reflection (γ : ℝ) : (1 - descend γ).re = (descend γ).re := by
   rw [Complex.sub_re, Complex.one_re, descend_re]; norm_num
 

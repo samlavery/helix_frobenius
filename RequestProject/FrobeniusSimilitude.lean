@@ -380,10 +380,11 @@ theorem scaleBalanced_setOf_eq (p r : ℝ) (hr : 0 < r) :
   ext σ
   rw [Set.mem_setOf_eq, Set.mem_singleton_iff, scaleBalanced_iff p r hr]
 
-/-- **The functional‑equation reflection fixes exactly the critical line.**  The dualizing map
-`s ↦ 1−s` (which pairs the two chiral fibers) has `Re(1−s) = Re s` iff `Re s = ½`: off‑axis it sends
-an abscissa imbalance `σ` to the opposite imbalance `1−σ` (a dual *pair*, not a self‑conjugate
-state), so the double‑ended carrier closes only on the fixed locus `Re s = ½`. -/
+/-- **The functional-equation reflection preserves the abscissa exactly on the critical line.**
+The map `s ↦ 1-s` has `Re(1-s) = Re s` iff `Re s = 1/2`; it reverses height on that line.
+Its full complex fixed point is only `s = 1/2`. The same-height action `s ↦ 1-conj(s)`
+fixes the whole line. In the centered coordinate `u = s-1/2` these actions are `-u`
+and `-conj(u)`, respectively; both negate the real displacement from the native origin. -/
 theorem reflection_fixes_iff (s : ℂ) : (1 - s).re = s.re ↔ s.re = 1 / 2 := by
   rw [Complex.sub_re, Complex.one_re]
   constructor <;> intro h <;> linarith
@@ -396,8 +397,9 @@ theorem reflection_fixes_iff (s : ℂ) : (1 - s).re = s.re ↔ s.re = 1 / 2 := b
 3. **Off‑axis inadmissibility**: every `σ ≠ ½` is *not* a scale‑balanced state.
 4. **Unitary chiral block at the balanced axis**: the two chiral fibers `z, z̄` form a
    determinant‑one unitary transverse block.
-5. **Functional‑equation duality**: `s ↦ 1−s` fixes exactly `Re s = ½`, on which the on‑line de
-   Branges variable is real — the locus where the double‑ended carrier closes.
+5. **Functional-equation duality**: `s ↦ 1-s` preserves the abscissa exactly when `Re s = 1/2`,
+   on which the on-line de Branges variable is real. This conjunct compares real parts,
+   not full complex points.
 
 This is the model's admissible internal state space. -/
 theorem no_native_offaxis_support (p r : ℝ) (hr : 0 < r) (y : ℝ) (n : ℕ) :

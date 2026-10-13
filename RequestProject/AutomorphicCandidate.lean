@@ -16,8 +16,9 @@ re-labelling.
   *conjugate* of the helix: the transverse block is `diag(z, z̄)`, determinant one
   (`FrobeniusSimilitude.frobeniusBlock_det_one`, `frobeniusBlock_unitary`), and `det = 1 ⟺ |z| = 1`
   is exactly the de Branges helix/anti-helix *balance* `‖E z‖ = ‖E* z‖ ⟺ z` real
-  (`frobeniusBlock_deBranges_reality_bridge`).  The dualizing reflection `s ↦ 1−s` fixes *exactly*
-  the critical line (`reflection_fixes_iff`: `(1−s).re = s.re ↔ s.re = ½`), and the abscissa `½` is
+  (`frobeniusBlock_deBranges_reality_bridge`). The dualizing reflection `s ↦ 1-s` preserves
+  the real part exactly on the critical line (`reflection_fixes_iff`:
+  `(1-s).re = s.re ↔ s.re = 1/2`), and the abscissa `1/2` is
   not chosen but **forced** by the arclength area law (`scaleBalanced_iff`: the carrier admits a
   scale-balanced fiber iff `σ = ½`).  The link survives *every* unit-modulus warp
   (`warpedBlock_det_one_of_warp`), so the whole twist family carries the functional equation,
@@ -87,8 +88,8 @@ theorem midpoint_projects_to_half (γ : ℝ) :
 
 * **(angle — functional equation)** the Frobenius conjugate block has determinant one
   (`FrobeniusSimilitude.frobeniusBlock_det_one`), preserved by every unit-modulus warp
-  (`warpedBlock_det_one_of_warp`), and the dualizing reflection `s ↦ 1−s` fixes exactly the critical
-  line (`reflection_fixes_iff`);
+  (`warpedBlock_det_one_of_warp`), and the dualizing reflection `s ↦ 1-s` preserves the abscissa
+  exactly on the critical line (`reflection_fixes_iff`), while reversing height;
 * **(continuation)** the phasor readout continues to `LFunction χ` on the whole strip `Re s > 0`,
   past the `Re = 1` wall (`dirichlet_strip_tendsto_LFunction`);
 * **(height — completeness/boundedness)** the fiber is three-dimensionally exhaustive
@@ -105,7 +106,7 @@ theorem candidate_wellformed
     (E : ℂ → ℂ) (p r : ℝ) (hr : 0 < r) (y : ℝ) (n : ℕ) {A w : ℂ} (hA : ‖A‖ = 1) (hw : ‖w‖ = 1)
     {q : ℕ} [NeZero q] (χ : DirichletCharacter ℂ q) (hχ : χ ≠ 1) :
     -- (angle) functional equation: the Frobenius conjugate block has det one, the warp preserves it,
-    -- and the reflection s ↦ 1−s fixes exactly the critical line
+    -- and the reflection s ↦ 1-s preserves the real part exactly on the critical line
     (FrobeniusSimilitude.frobeniusBlock y n).det = 1
       ∧ (warpedBlock (A * w)).det = 1
       ∧ (∀ t : ℂ, (1 - t).re = t.re ↔ t.re = 1 / 2)

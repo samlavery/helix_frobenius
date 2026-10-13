@@ -25,6 +25,18 @@ import RequestProject.SourceIsCancellation
 * `fiber_blind_to_commonMode`: the source limit is unchanged by adding `c·Z^{1−s}` to the full bank.
 
 No `sorry`, no `axiom`.
+
+**Scope (cleanup, ledger 1237).** `Arrow1` is an OBSERVER-SIDE coverage statement. Its representation
+predicate `CompletedFocalCancellationRepresents` is readout-defined (`Dcell` is a nonzero constant times the
+L-value; see the `ThreeDFocalEvent` header). It is NOT the canonical native missing theorem, and no replacement
+"remaining theorem" is formulated here. Repository status, recorded as absences:
+* (a) the rich finite native geometry runs forward: `FocalEventProjection.FocalEvent` (bank-level cancellation at the
+  native head) → pencil rank drop → J / two-ended state → post-cancellation state `(M, Z)` → geometric readout;
+* (b) the completed drift-free phasor closure runs forward to analytic vanishing
+  (`GeometricPhasorClosure.Phi_zero_iff_closure`);
+* (c) no compiled bridge connects (a) and (b);
+* (d) native exhaustiveness (every analytic vanishing measured by a native event) is unresolved.
+§§2–3 (the η conductor's bank fold) are native bank-level facts.
 -/
 
 open Complex Filter Topology
@@ -38,7 +50,8 @@ variable {q : ℕ} [NeZero q]
 
 /-! ## 1. Arrow 1 and what it delivers -/
 
-/-- **Arrow 1 over the open strip**: every measured vanishing is a completed focal cancellation representing it. -/
+/-- **Arrow 1 over the open strip**: every measured vanishing is a completed focal cancellation representing it.
+Observer-side coverage statement (readout-defined representation); not the canonical native exhaustiveness theorem. -/
 def Arrow1 (χ : DirichletCharacter ℂ q) : Prop :=
   ∀ ρ : ℂ, 0 < ρ.re → ρ.re < 1 → DirichletCharacter.LFunction χ ρ = 0 →
     ThreeDFocal.CompletedFocalCancellationRepresents χ ρ

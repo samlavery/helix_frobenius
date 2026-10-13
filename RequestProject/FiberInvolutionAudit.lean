@@ -7,10 +7,13 @@ Two involutions act on the coordinate object `(σ, y) ↦ (phasor3D χ₂ σ y n
 
 * **Conjugation** `J₁ : (σ, y) ↦ (σ, −y)`.  The chart intertwines it with complex conjugation
   (`laneChart3D_neg`, termwise: `mellinSpin (−y) = conj (mellinSpin y)`), so a vanishing at `x`
-  is a vanishing at `J₁x`.  Its fixed locus is `y = 0` — the real axis of the ordinate, not the
-  midpoint.  (`fixed_of_conjugation_iff`.)
+  is a vanishing at `J₁x`. Its fixed signed ordinate is `y = 0`, the native origin of this
+  height reversal. (`fixed_of_conjugation_iff`.)
 * **The σ-reflection** `J₂ : (σ, y) ↦ (1 − σ, y)`.  Its fixed locus is `σ = ½`
-  (`reflection_fixes_iff`, `partner_eq_self_iff`).  The configuration at `J₂x` is the sitewise
+  (`reflection_fixes_iff`, `partner_eq_self_iff`). Here σ is an uncentered analytic exponent:
+  in the transverse coordinate `δ = σ - ½`, this is `δ ↦ -δ`, fixed at zero.
+  The transverse displacement δ and the signed height y are different coordinates.
+  The configuration at `J₂x` is the sitewise
   reciprocal rescaling of the configuration at `x` (`phasor3D_partner_rescale`), and its chart is
   the `(1 − 2σ)`-th radial moment of `x`'s configuration — a DIFFERENT linear functional of the same
   configuration (`laneChart3D_reflect_eq_moment`).  Geometrically nothing relates the `0`-moment

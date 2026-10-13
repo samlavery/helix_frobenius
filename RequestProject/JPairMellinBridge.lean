@@ -14,6 +14,13 @@ Expectation-free next step: compare the two concrete Cartesian triples.
 Strategy A: `have h := hJ.symm.trans (realize_globalHelixInvolution f)`.
 Strategy B: `apply (Real.rpow_right_inj hn0 hn1).mp` after the two magnitude formulas.
 The local pair hypothesis below is full state identification, not an assumed amplitude equality.
+
+Scope (cleanup, ledger 1237): DEMOTED-SEMANTICS. The pair hypothesis identifies the J-image with the
+fiber phasor at `1 − s`, the older reflected-chart convention. Canonical physical J is the same-height
+feet involution (conjugation, radius kept); `ρ ↦ 1 − conj ρ` is the same-height transverse partner;
+`ρ ↦ 1 − ρ` is the functional-equation reflection. `JPairIdentificationStatus.actual_jPair` computes the
+actual J-pair (`s` with `conj s`), and `JPairForwardReadout` shows its two ends have equal amplitude. The
+statements here stay valid under their hypothesis and must not be cited as canonical physical J.
 -/
 noncomputable section
 open Complex ConeProjection

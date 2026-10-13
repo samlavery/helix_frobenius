@@ -209,7 +209,9 @@ theorem xiChannel_eq_constant_add_carrierHeightResolventTrace_of_all_scaleBalanc
   intro z hz
   rw [hC z hz, xiZeroResolventTrace_eq_carrierHeightResolventTrace_of_all_scaleBalanced hall z]
 
-/-- Completed reflection on the analytic zero index.  Membership is transported by the entire
+/-- Same-height completed reflection on the analytic zero index: `s ↦ 1-conj(s)`.
+In the centered coordinate `u = s-1/2` this is `u ↦ -conj(u)`, distinct from the
+full height-reversing reflection `u ↦ -u`. Membership is transported by the entire
 xi functional equation; no carrier event or real-coordinate premise occurs here. -/
 noncomputable def xiZeroReflection (ρ : XiZeroIndex) : XiZeroIndex :=
   ⟨1 - (starRingEnd ℂ) ρ.val, by

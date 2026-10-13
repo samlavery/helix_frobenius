@@ -5,6 +5,10 @@ import RequestProject.ThreeDFocalEvent
 /-!
 # The twin resolvent-trace capture formulas: one per reading of "the zero"
 
+Scope (cleanup, ledger 1237): the "completed 3D zero" consumed below is the readout-defined
+`ThreeDFocal.CompletedThreeDZeroAtHeight`, and the placement at `1/2 + iγ` is the chart's readout
+(`carrierAbscissa`), not a native balance result.
+
 There are two legitimate addresses for a carrier event.  In three dimensions the event is
 the point `line γ = 1/2 + iγ` where the fibre closes residue-free; in the one-dimensional
 readout the event is the real ordinate `γ`.  This file formalises **two capture formulas,

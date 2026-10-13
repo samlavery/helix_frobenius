@@ -14,6 +14,20 @@ equivalent to `LFunction χ (carrierPointAtHeight Z) = 0`.
 Both harmonic and von Neumann Gram operators are lifted to the three spatial carrier coordinates
 as `G ⊗ I₃`.  The determinant cube and rank-drop equivalences prove that spatial lifting
 neither creates nor removes a cancellation.
+
+**Scope (cleanup, ledger 1237).**
+* The completed level is OBSERVER-SIDE. `CompletedThreeDZeroAtHeight χ Z := 0 < Z ∧ Dcell χ Z = 0`, and
+  `Dcell χ Z = Vcell·Ucell·L(χ, reprPoint χ Z)` with `Ucell = π/3` and `Vcell = 1` constants
+  (`FocalCancellationFindsZeros.focal_residual_eq_cell_scaled_L`). So `completedThreeDZeroAtHeight_iff_L_zero`
+  holds by construction. The word "completed" does not give these predicates native provenance;
+  the same applies to `CompletedFocalCancellationRepresents` and its lemmas.
+* The finite level (`FocalBank`, `carrierBank`, `focalClosure`, `ThreeDZero`, `ThreeDZeroAtHeight`) is valid
+  auxiliary finite spectral machinery: a FREE cutoff `N`, a FIXED balanced amplitude `carrierAmplitude`, and
+  NO native physical-head/ordinate coupling. It is not interchangeable with the canonical rich event
+  `FocalEventProjection.FocalEvent`, which cancels exactly at the native head `physicalHead y` with its own
+  amplitude law.
+* `completedThreeDZeroAtHeight_on_midline` and `threeDZero_on_midline` are consequences of the chosen readout
+  (`carrierPointAtHeight` has real part `carrierAbscissa` by definition), not proofs of native balance.
 -/
 
 open Complex Matrix
@@ -74,7 +88,9 @@ theorem offCarrier_has_radialDrift (n σ : ℝ) (hn : 1 < n)
   intro h
   exact hoff ((noRadialDrift_iff_carrierAbscissa n σ hn).1 h)
 
-/-- A finite phasor bank whose phase profile is indexed by the carrier height. -/
+/-- A finite phasor bank whose phase profile is indexed by the carrier height. Auxiliary finite spectral
+machinery: its `cutoff` is a free parameter, not the native head `physicalHead y`; not interchangeable
+with `FocalEventProjection.FocalEvent`. -/
 structure FocalBank where
   amplitude : ℕ → ℝ
   phase : ℝ → ℕ → ℝ
@@ -261,7 +277,8 @@ theorem vonNeumannGram3D_rankDrop_iff (z : ℝ) (mu lam : ℂ) :
   exact spatialLiftGram_rankDrop_iff (vonNeumannGram z mu lam)
 
 /-- Ordinate-level form of a native focal cancellation.  The physical-height form used for the
-3D helix is `ThreeDZeroAtHeight χ bank Z`, with ordinate `y = log Z`. -/
+3D helix is `ThreeDZeroAtHeight χ bank Z`, with ordinate `y = log Z`. Finite closure of a bank with a
+free cutoff; not the canonical rich event `FocalEventProjection.FocalEvent` (no native-head coupling). -/
 noncomputable def ThreeDZero (χ : DirichletCharacter ℂ q) (bank : FocalBank) (z : ℝ) : Prop :=
   focalClosure χ bank z
 
@@ -291,7 +308,8 @@ theorem threeDZeroAtHeight_iff
 
 /-- A completed native 3D zero at physical helix height `Z`: the represented fibre's normalized
 focal residual vanishes exactly at that positive height.  Unlike the finite `ThreeDZero`, this is
-the completed L-function fibre event. -/
+the completed L-function fibre event. OBSERVER-SIDE: `Dcell χ Z` is a nonzero constant times
+`L(χ, ½ + i log Z)`, so this predicate is the analytic readout vanishing, not an independently native event. -/
 noncomputable def CompletedThreeDZeroAtHeight
     (χ : DirichletCharacter ℂ q) (Z : ℝ) : Prop :=
   0 < Z ∧ HarmonicCell.Dcell χ Z = 0
@@ -307,7 +325,8 @@ theorem reprPoint_eq_carrierPointAtHeight
   ring
 
 /-- The completed 3D focal crossing at physical height `Z` is exactly an analytic L-function zero
-at the fibre's readout point `carrierAbscissa + i log Z`. -/
+at the fibre's readout point `carrierAbscissa + i log Z`. Holds by construction (`Dcell` is defined
+through the L-value); an observer-side identity, not a native → analytic bridge. -/
 theorem completedThreeDZeroAtHeight_iff_L_zero
     (χ : DirichletCharacter ℂ q) (Z : ℝ) (hZ : 0 < Z) :
     CompletedThreeDZeroAtHeight χ Z ↔
@@ -317,7 +336,8 @@ theorem completedThreeDZeroAtHeight_iff_L_zero
     reprPoint_eq_carrierPointAtHeight χ Z hZ]
 
 /-- Every completed fibre crossing is read on the area-law midpoint; the focal-cancellation
-hypothesis supplies the event, while the real coordinate comes only from carrier geometry. -/
+hypothesis supplies the event, while the real coordinate comes only from carrier geometry.
+Consequence of the chosen readout (the hypothesis is unused); not a proof of native balance. -/
 theorem completedThreeDZeroAtHeight_on_midline
     (χ : DirichletCharacter ℂ q) (Z : ℝ)
     (_hzero : CompletedThreeDZeroAtHeight χ Z) :
@@ -326,7 +346,8 @@ theorem completedThreeDZeroAtHeight_on_midline
 
 /-- Exact focal cancellation representing a specified analytic parameter.  The parameter is not
 an independent label on the event: it must be the readout of the same positive physical helix
-height at which `Dcell` vanishes. -/
+height at which `Dcell` vanishes. OBSERVER-SIDE: built from `CompletedThreeDZeroAtHeight`, which is
+readout-defined (see the module header). -/
 noncomputable def CompletedFocalCancellationRepresents
     (χ : DirichletCharacter ℂ q) (ρ : ℂ) : Prop :=
   ∃ Z : ℝ, CompletedThreeDZeroAtHeight χ Z ∧ carrierPointAtHeight Z = ρ
@@ -655,7 +676,8 @@ theorem completedThreeDZeroAtHeight_focal_rankDrop_eigenvector_noRadialDrift
   simpa [e] using heigen.2
 
 omit [NeZero q] in
-/-- The carrier coordinate of every native 3-D zero lies on the midline. -/
+/-- The carrier coordinate of every native 3-D zero lies on the midline. Consequence of the chosen
+readout (`carrierAbscissa`); not a proof of native balance. -/
 theorem threeDZero_on_midline (χ : DirichletCharacter ℂ q) (bank : FocalBank) (z : ℝ)
     (_ : ThreeDZero χ bank z) :
     (carrierPoint z).re = 1 / 2 := by

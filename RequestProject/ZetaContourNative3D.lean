@@ -10,6 +10,11 @@ joins their proved interfaces for the principal character modulo one.  Every upp
 nontrivial zeta zero is either the completed focal cancellation at physical height
 `Z = exp ρ.im`, together with every corresponding 3D harmonic-pencil rank drop, or it produces an
 explicit higher good contour where the independent and native global coordinates differ.
+
+Scope (cleanup, ledger 1237): the "completed focal-event type" (`ThreeDFocal.CompletedThreeDZeroAtHeight`)
+is readout-defined (`Dcell` = nonzero constant × the L-value at `½ + i log Z`). It is not constructed
+independently of the analytic side, and it is not the rich physical `FocalEventProjection.FocalEvent`. "Native"
+in this file's title refers to physical-height coordinates, not to native provenance of the event.
 -/
 
 open Complex Matrix

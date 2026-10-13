@@ -14,7 +14,7 @@ weight `1`.
 * `fiber_det_one`        — the determinant/modulus ledger: `∏ᵢ weight i = 1`.
 * `localPoly_reciprocal` — the per-place functional equation: the local factor's numerator
   `∏ᵢ (1 - λᵢ X)` is self-reciprocal, `= (-X)^|ι| · localPoly X⁻¹`, using the ledger.
-* `fiber_reflection_axis` — the reflection `s ↦ 1 - s` fixes exactly `Re s = ½`
+* `fiber_reflection_axis` — the reflection `s ↦ 1-s` preserves the real part exactly at `Re s = 1/2`
   (`FrobeniusSimilitude.reflection_fixes_iff`, fiber-independent).
 * `warpFiber`            — every dual-compatible unit warp preserves the fiber, its ledger, and
   its reciprocity (generalising `AutomorphicCandidate.warpedBlock_det_one_of_warp`).
@@ -106,8 +106,9 @@ theorem localPoly_reciprocal {X : ℂ} (hX : X ≠ 0) :
       linear_combination (-W.weight i) * mul_inv_cancel₀ hX
   rw [hstep1, hstep2, hprodinv, one_mul, hstep3]
 
-/-- **The reflection axis** (fiber-independent): the dualizing reflection `s ↦ 1 - s` fixes
-exactly the critical line `Re s = ½`.  Re-exported from `FrobeniusSimilitude`. -/
+/-- **Abscissa preservation** (fiber-independent): `s ↦ 1-s` preserves the real part
+exactly on the critical line. It reverses height there; only `s ↦ 1-conj(s)` fixes
+every complex point of that line. Re-exported from `FrobeniusSimilitude`. -/
 theorem fiber_reflection_axis (s : ℂ) : (1 - s).re = s.re ↔ s.re = 1 / 2 :=
   FrobeniusSimilitude.reflection_fixes_iff s
 

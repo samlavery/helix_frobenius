@@ -5,10 +5,13 @@ import RequestProject.RoundTrip
 # The global 3D double-helix involution and its readout
 
 The source-independent carrier symmetry is defined first in 3D cylindrical coordinates.  It keeps
-the radial ledger and exchanges helix with anti-helix by negating phase and signed height.  The
-Cayley projection intertwines this with conjugation on the unit circle.  Only afterwards does the
-positive-height encoding followed by logarithm produce the analytic ordinate; the resulting strip
-coordinate is sent to both complex conjugation and `s ↦ 1 - s`.
+the radial ledger and exchanges helix with anti-helix by negating phase and signed height.
+The native signed-height midpoint is zero. The Cayley projection intertwines this with
+conjugation on the unit circle. The positive encoding `exp(height)` has fixed value one;
+its logarithm recovers the signed height and its zero midpoint exactly.
+Only the downstream strip coordinate adds `1/2`: `s = 1/2 + i * height`.
+On this carrier image, which has real part `1/2` by construction, conjugation and
+`s ↦ 1 - s` agree. This does not identify those two actions on a general complex parameter.
 -/
 
 open Complex
@@ -122,7 +125,8 @@ theorem stripReadout_globalHelixInvolution_one_sub (f : Fiber) :
     simp [stripReadout, analyticOrdinate_globalHelixInvolution,
       Complex.mul_re, Complex.mul_im] <;> norm_num
 
-/-- The unique fixed ordinate of the readout involution is the half-unit. -/
+/-- The fixed translated complex readout is `1/2`, corresponding to signed ordinate zero.
+The half-unit is the strip-chart translation, not the native helix midpoint. -/
 theorem stripReadout_fixed_iff_half (f : Fiber) :
     stripReadout (globalHelixInvolution f) = stripReadout f ↔
       stripReadout f = (1 / 2 : ℂ) := by

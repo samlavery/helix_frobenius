@@ -6,8 +6,12 @@ import RequestProject.FiberZeroMidpointWindow
 
 `laneChart3D σ y` carries the unit-1 abscissa: the Cayley image of the end swap, where the partner
 of `σ` is `1 − σ` and the fixed point is `1/2`.  The house writes results in the harmonic register:
-the carrier is scaled by a harmonic unit `U` (canonically `π/3`), the carrier abscissa reads
+the analytic abscissa is scaled by a harmonic unit `U` (canonically `π/3`), and reads
 `σ_c = U·σ`, the partner reads `U − σ_c`, and the fixed point reads `U/2` (`π/6` at `U = π/3`).
+
+This is an uncentered affine register. Its centered displacement is `σ_c-U/2`,
+which negates under the partner action and is fixed at zero. Neither the choice
+of unit nor this affine chart changes the native signed helix midpoint from zero.
 
 This module restates the compiled unit-chart theorems in that register.  It adds no content: every
 proof is the gauge law of `UnitMidpoint` (`σ = 1/2 ↔ σ·U = U/2`) applied to a compiled statement.
@@ -28,8 +32,8 @@ open CriticalLinePhasor
 
 namespace CarrierReadout
 
-/-- The lane chart in the harmonic register with unit `U`: carrier abscissa `σ_c` is the unit
-abscissa `σ_c / U`. -/
+/-- The lane chart in the uncentered harmonic register: `σ_c / U` is the analytic abscissa.
+The corresponding centered displacement is `σ_c-U/2`. -/
 noncomputable def laneChartH (U σc y : ℝ) : ℂ := laneChart3D (σc / U) y
 
 /-- `(U − σ_c) / U = 1 − σ_c / U`: the end swap in carrier units is the unit-chart swap. -/
@@ -84,8 +88,8 @@ theorem oneVanishingPerHeightH_iff {U : ℝ} (hU : 0 < U) :
       (div_pos h20 hU) ((div_lt_one hU).mpr h21) hz1 hz2
     exact (div_left_inj' hU.ne').mp key
 
-/-- **In the window `|y| ≤ 1269/2`, every vanishing sits at the carrier's midpoint `U/2`**,
-unconditionally (`midpoint_of_fiber3D_zero_below`). -/
+/-- In the window `|y| ≤ 1269/2`, every vanishing has affine chart coordinate `U/2`,
+or centered displacement zero (`midpoint_of_fiber3D_zero_below`). -/
 theorem midpointH_of_zero_below {U σc y : ℝ} (hU : 0 < U) (h0 : 0 < σc) (h1 : σc < U)
     (hy : |y| ≤ 1269 / 2) (hz : laneChartH U σc y = 0) : σc = U / 2 := by
   unfold laneChartH at hz

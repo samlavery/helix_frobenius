@@ -31,6 +31,14 @@ energy/mass equals that of each cancelling phasor.  `focal_cancellation_site` in
 concrete carrier site `n`, where the cancelling charged phasors are `±1·n^{-σ}·(spin)` and the
 common amplitude is `r = n^{-σ}`.
 
+**Scope of §3 (ledger 1231).** The site instance places a `+` phasor and a `−` phasor on the SAME
+integer `n`. That is a two-phasor illustration of the conservation law, not the conductor's bank
+structure. On the carrier the conductor creates ONE phasor per integer, its charge set by `χ(n)`
+(`LFunctionPhasor.phasorTerm_bucketed`), so the positive, negative and neutral banks sit on disjoint
+integers and share the fiber's amplitude law. A focal cancellation is the positive-bank resultant
+cancelling the negative-bank resultant (`FocalEventProjection.FocalEvent`). The same-integer pair
+cancels identically at every `σ` and every height and models no focal event.
+
 No `axiom`, no `sorry`.
 -/
 
@@ -155,7 +163,9 @@ theorem chargedNeg_isCharged (σ y : ℝ) (n : ℕ) (hn : 0 < n) :
   · rw [phasor3D_plane, phasorTerm_norm negW σ y n hn]; simp [negW]
 
 /-- **The positive and negative channels at a site cancel exactly.**  Their radiating spin-plane
-arrows are negatives of each other, so their sum is `0` — the focal cancellation event. -/
+arrows are negatives of each other, so their sum is `0`. Scope: both phasors sit on the same
+integer, which the conductor never produces; this illustrates the two-phasor law and is not a focal
+event (see the module header). -/
 theorem charged_exact_cancellation (σ y : ℝ) (n : ℕ) :
     ExactCancellation (phasor3D posW σ y n) (phasor3D negW σ y n) := by
   simp only [ExactCancellation, phasor3D_plane, phasorTerm]

@@ -1,16 +1,20 @@
 import Mathlib
 
 /-!
-# UNIT/2: criticality is midpointness, and RH's native chart contains no number
+# Midpoints and fixed loci in explicitly distinguished charts
 
-Sam's reframing, formalized.  The Riemann Hypothesis in Riemann's own variable (`Ξ(t)`,
-`s = 1/2 + i·t`) never mentions `1/2`: it says the roots are **real** — on the fixed axis of
-complex conjugation, the midpoint of the fundamental involution.  The number `1/2` is only
-the **translation constant** between the arithmetic counting chart (where the unit is set by
-the normalization) and the centered symmetry chart.  In a base-`b` counting system the same
-locus reads `log b / 2`; in the π/3 helix cell the conjugation axis sits at `π/6`; over `𝔽_q`
-it is `|Frobenius| = q^{1/2}` (the repo's `midpoint_forcing`).  The invariant is *midpointness
-of an involution*; the coordinate is gauge.
+The native signed helix coordinate reflects about zero. In an affine analytic chart
+`s = c/2 + u`, the same origin reflection `u ↦ -u` reads `s ↦ c-s`.
+The value `c/2` belongs to this translated chart, not to an already centered helix coordinate.
+
+The rotated spectral chart `t = -i(s-c/2)` also has centered origin zero, but conjugation
+of `t` fixes the whole real axis. This is the same-height analytic action `s ↦ c-conj(s)`;
+it is distinct from the full reflection `s ↦ c-s`, which negates `t`.
+Reality in this spectral chart reads `Re s = c/2` in the analytic chart.
+
+The circle result below concerns the separately specified action `z ↦ exp(iΔ) * conj(z)`.
+Its axis has angle `Δ/2` modulo π. At `Δ = π/3` this is the π/6 axis;
+that angular axis is not the midpoint of the native signed double helix.
 
 * `real_axis_is_conjugation_midpoint` — the fixed locus of conjugation is exactly `ℝ`
   (`im = 0`): the centered chart's statement, containing no number.
@@ -101,9 +105,8 @@ theorem conj_fixed_iff (Δ : ℝ) (z : ℂ) :
     calc u * u * (starRingEnd ℂ) z = (starRingEnd ℂ) z * u * u := by ring
       _ = z := h2
 
-/-- **The Eisenstein cell's conjugation axis is at π/6** — the half of the π/3 cell unit:
-the hexagon's edge-midpoint axis.  The same UNIT/2 formula as the critical line, in the
-carrier's own geometry. -/
+/-- For the explicitly rotated conjugation `z ↦ exp(iπ/3) * conj(z)`, the fixed axis
+has angle π/6 modulo π. This angular chart does not shift the native helix origin. -/
 theorem eisenstein_conj_axis (z : ℂ) :
     Complex.exp (Complex.I * (Real.pi / 3 : ℝ)) * (starRingEnd ℂ) z = z ↔
       (z * Complex.exp (-(Complex.I * ((Real.pi / 6 : ℝ) : ℂ)))).im = 0 := by
