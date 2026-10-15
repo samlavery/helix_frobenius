@@ -1,5 +1,18 @@
 # Helix–Frobenius — working rules
 
+## Coordinate clarification — physical origin and event readout (2026-10-07)
+
+Read [HELIX_COORDINATE_CONVENTIONS.md](HELIX_COORDINATE_CONVENTIONS.md) before
+reasoning about origin placement or reflection. Use `z` for real physical height
+and `Z_ph=exp(i y)` for the user's complex phase `Z`. The physical helix origin `z=0`
+is placed at chart point `(1/2,0)`. Separately, a positive-height native vanishing
+at `z` reads out at `y=log z`. Do not apply the logarithmic inverse to the origin
+assignment and relabel the physical origin `z=1`. Its phase at chart ordinate zero is 1.
+The Cayley convention is `C(h)=(h-i)/(h+i)`; `-C(h)=exp(i·2 arctan h)` uses a
+different angle from the retained ordinate `h`. Keep the existing exponential
+encoding `multiplicativeHeight=exp(h)` distinct from that geometric origin marker.
+The paper states the convention in Definition `def:origin-overlay`.
+
 ## Rule 0 — RH/GRH is in scope. Settled by evidence, not permission. (Sam, 2026-08-11)
 
 **Working directly on the Riemann Hypothesis is a legitimate, supported research activity in
